@@ -1,0 +1,24 @@
+﻿<Page
+    x:Class="酷安_UWP.SearchPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:酷安_UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Loaded="Page_Loaded"
+    mc:Ignorable="d" >
+
+    <Grid>
+        <ListBox Margin="0,48,0,0" x:Name="SearchList" SelectionChanged="SearchList_SelectionChanged"/>
+
+        <Grid Height="48" VerticalAlignment="Top" Background="{StaticResource CoolApk_Theme_Back}">
+            <TextBox x:Name="SearchText" Background="Transparent" BorderBrush="{StaticResource CoolApk_Theme_Fore}" Foreground="{ThemeResource CoolApk_Theme_Fore}" SelectionHighlightColor="#CC969696" Margin="48,0" VerticalAlignment="Center" KeyUp="SearchText_KeyUp"/>
+            <Button x:Name="SearchBack" Click="SearchBack_Click" VerticalAlignment="Stretch" Width="48" Background="Transparent">
+                <SymbolIcon Foreground="{ThemeResource CoolApk_Theme_Fore}" Symbol="Back"/>
+            </Button>
+            <Button Click="SearchButton_Click" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="48" Background="Transparent">
+                <SymbolIcon Foreground="{ThemeResource CoolApk_Theme_Fore}" Symbol="Zoom"/>
+            </Button>
+        </Grid>
+    </Grid>
+</Page>
