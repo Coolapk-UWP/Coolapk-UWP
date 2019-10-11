@@ -76,6 +76,9 @@ namespace 酷安_UWP
         }
 
         Uri blank = new Uri("about:blank");
+        /// <summary>
+        /// 用于加载动态的文字内容
+        /// </summary>
         private void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
             WebView view = sender as WebView;
@@ -96,6 +99,10 @@ namespace 酷安_UWP
                 view.NavigateToString(s);
             }
         }
+
+/// <summary>
+/// 存放应用支持的表情的数组，表情图片位于/Emoji，文件名里有“(2)”的是同一个表情里的旧表情
+/// </summary>
         public readonly static string[] emojis = new string[] {"(cos滑稽)",
 "(haha)",
 "(OK)",
