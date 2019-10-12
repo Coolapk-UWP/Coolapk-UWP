@@ -1,4 +1,5 @@
 # Coolapk UWP
+[![Downloads](https://img.shields.io/github/downloads/felixse/FluentTerminal/total.svg?label=Downloads)](https://github.com/Tangent-90/Coolapk-UWP/releases)
 一个基于UWP的酷安客户端
 
 基于[@一块小板子](http://www.coolapk.com/u/695942)的源码([Github链接](https://github.com/oboard/CoolApk-UWP))
