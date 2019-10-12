@@ -20,6 +20,7 @@
 ### 使用应用安装脚本安装应用
 - 下载并解压最新的[安装包](https://github.com/Tangent-90/Coolapk-UWP/releases)
 - 如果没有应用安装脚本，下载[`Install.ps1`](Install.ps1)到目标目录
+![Install.ps1](Screenshots/Snipaste_2019-10-12_22-49-11.png)
 - 右击`Install.ps1`，选择“使用PowerShell运行”
 - 应用安装脚本将会引导您完成此过程的剩余部分
 ### 使用应用安装程序安装应用
@@ -28,4 +29,7 @@
   - 如果您想开发UWP应用，您可以开启[开发人员模式](https://docs.microsoft.com/zh-cn/windows/uwp/get-started/enable-your-device-for-development)，**对于大多数不需要做UWP开发的用户来说，开发人员模式是没有必要的**
 - 安装*.cer证书到`本地计算机`→`受信任的根证书颁发机构`
   - 这项操作需要用到管理员权限，如果您安装证书时没有用到该权限，则可能是因为您将证书安装到了错误的位置或者您使用的是超级管理员账户
+![安装证书](Screenshots/Snipaste_2019-10-12_22-46-37.png)
+![导入本地计算机](Screenshots/Snipaste_2019-10-12_22-47-51.png)
+![储存到受信任的根证书颁发机构](Screenshots/Snipaste_2019-10-12_22-48-11.png)
 - 双击*.appxbundle
