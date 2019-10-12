@@ -18,7 +18,7 @@
 - 至少50MB的空余储存空间(用于储存安装包与安装应用)
 ### 使用应用安装脚本安装应用
 - 下载并解压最新的[安装包](https://github.com/Tangent-90/Coolapk-UWP/releases)
-- 如果没有应用安装脚本，下载`[Install.ps1](https://github.com/Tangent-90/Coolapk-UWP/blob/master/Install.ps1)`到目标目录
+- 如果没有应用安装脚本，下载[`Install.ps1`](Install.ps1)到目标目录
 - 右击`Install.ps1`，选择“使用PowerShell运行”
 - 应用安装脚本将会引导您完成此过程的剩余部分
 ### 使用应用安装程序安装应用
