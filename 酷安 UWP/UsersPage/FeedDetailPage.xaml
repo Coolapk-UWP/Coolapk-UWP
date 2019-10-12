@@ -10,13 +10,231 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <local:TemplateSelector x:Key="tmpsle" DataTemplate1="{StaticResource Feed}" DataTemplate2="{StaticResource Feed_reply}"/>
+        <!--动态-->
+        <DataTemplate x:Key="Feed" x:DataType="local:Feed">
+            <ListViewItem Margin="0,5" Tag="{x:Bind}">
+                <Grid MinWidth="300">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Ellipse Width="50" Height="50" HorizontalAlignment="Left" >
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Margin="60,0,0,0" Grid.Row="0" Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <TextBlock Margin="60,0,0,0" Grid.Row="1" Text="{x:Bind GetValue('device_title')}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Gray"/>
+                        </Grid>
+                        <Button Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <SymbolIcon Symbol="More"/>
+                        </Button>
+
+                    </Grid>
+                    <Grid Grid.Row="1" Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="300"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <WebView ScrollViewer.VerticalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" Tag="{x:Bind GetValue('message')}" Source="about:blank" NavigationCompleted="WebView_NavigationCompleted"/>
+                        <GridView Grid.Row="1" Margin="0,20,0,0" HorizontalAlignment="Center" SelectionChanged="GridView_SelectionChanged" Tag="{x:Bind GetValue4('picArr')}" ItemsSource="{x:Bind GetValue4('picArr')}">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Image MaxWidth="200" MaxHeight="200" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
+                                </DataTemplate>
+                                <!--
+                                注意：
+                                一个模板里，binging 和 x:bind 不能同时使用
+                                binding默认oneway模式
+                                x:bind默认onetime模式
+                                ，Mode=TwoWay是双向模式
+
+                                微软推荐x:bind
+                                性能更高，而且支持方法转换
+
+                                {x:bind AAAA}
+                                {x:bind AAAA, Mode = OneWay}
+                                {x:bind method(AAAA), Mode = OneWay}
+
+
+                                public string method (string value）{
+                                }
+                                -->
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </Grid>
+                </Grid>
+            </ListViewItem>
+        </DataTemplate>
+
+        <!--回复-->
+        <DataTemplate x:Key="Feed_reply" x:DataType="local:Feed">
+            <ListViewItem Margin="0,5" Tag="{x:Bind}" Tapped="Grid_Tapped">
+                <Grid MinWidth="250">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Ellipse Width="30" Height="30" HorizontalAlignment="Left" >
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <TextBlock Margin="5,0" Text="{x:Bind GetValue('username')}" VerticalAlignment="Center"/>
+                            <TextBlock VerticalAlignment="Center" Margin="8,0">回复</TextBlock>
+                            <TextBlock Margin="5,0" Text="{x:Bind GetValue('rusername')}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <Button Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <SymbolIcon Symbol="More"/>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="1" Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <WebView ScrollViewer.VerticalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" Tag="{x:Bind GetValue('message')}" Source="about:blank" NavigationCompleted="WebView_NavigationCompleted"/>
+                        <GridView Grid.Row="1" Margin="0,20,0,0" HorizontalAlignment="Center" SelectionChanged="GridView_SelectionChanged" Tag="{x:Bind GetValue('pic')}">
+                            <Image MaxWidth="200" MaxHeight="200" MinHeight="0" MinWidth="0" Source="{x:Bind GetValue2('pic')}" Stretch="UniformToFill"/>
+                        </GridView>
+                    </Grid>
+
+                    <Grid Grid.Row="2" Margin="10,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Background="{x:Null}" Grid.Column="0" HorizontalAlignment="Center">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <SymbolIcon Symbol="Like" Grid.Column="0"/>
+                                <TextBlock Margin="10,0,0,0" Text="{x:Bind GetValue('likenum')}" Grid.Column="1"/>
+                            </Grid>
+                        </Button>
+                        <Button Background="{x:Null}" Grid.Column="1" HorizontalAlignment="Center">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <SymbolIcon Symbol="Comment" Grid.Column="0"/>
+                                <TextBlock Margin="10,0,0,0" Text="{x:Bind GetValue('replynum')}" Grid.Column="1"/>
+                            </Grid>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </ListViewItem>
+        </DataTemplate>
+        <DataTemplate x:Key="feed_reply_list" x:DataType="local:Feed2">
+            <StackPanel>
+                <TextBlock Text="{x:Bind ListType}" FontSize="16" Margin="10"/>
+                <ListView ItemTemplate="{StaticResource Feed_reply}" ItemsSource="{x:Bind GetFeeds('')}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="likesUser" x:DataType="local:Feed">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Ellipse Width="30" Height="30" HorizontalAlignment="Left" >
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock Margin="5,0" Text="{x:Bind GetValue('username')}" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
     <Grid>
 
-        <Grid Height="48" VerticalAlignment="Top" cu:Background="{StaticResource CoolApk_Theme_Back}" fcu:Background="{ThemeResource SystemControlAcrylicElementBrush}">
-            <Button Click="Button_Click" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="48" Background="Transparent">
+        <Grid Height="48" x:Name="TitleBar" VerticalAlignment="Top" cu:Background="{StaticResource CoolApk_Theme_Back}" fcu:Background="{ThemeResource SystemControlAcrylicElementBrush}">
+            <Button Click="BackButton_Click" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="48" Background="Transparent">
                 <SymbolIcon Symbol="Back" Foreground="{StaticResource CoolApk_Theme_Fore}"/>
             </Button>
-            <TextBlock Margin="50,0,0,2" Foreground="{StaticResource CoolApk_Theme_Fore}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <TextBlock Margin="50,0,0,2" x:Name="TitleTextBlock" Foreground="{StaticResource CoolApk_Theme_Fore}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
         </Grid>
+        <ScrollViewer Margin="0,48,0,0" ViewChanged="ScrollViewer_ViewChanged">
+            <StackPanel>
+                <ListView x:Name="FeedDetailList" ItemTemplateSelector="{StaticResource tmpsle}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+                <Pivot x:Name="FeedDetailPivot">
+                    <PivotItem Loaded="PivotItem_Loaded" Tag="1">
+                        <PivotItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>回复</TextBlock>
+                                <TextBlock Margin="5,0" Text="{Binding replynum}"/>
+                                <Button Click="Button_Click">▼</Button>
+                            </StackPanel>
+                        </PivotItem.Header>
+                        <ListView x:Name="replyListView" ItemTemplate="{StaticResource feed_reply_list}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                    </PivotItem>
+                    <PivotItem Loaded="PivotItem_Loaded" Tag="2">
+                        <PivotItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>赞</TextBlock>
+                                <TextBlock Margin="5,0" Text="{Binding likenum}"/>
+                            </StackPanel>
+                        </PivotItem.Header>
+                        <ListView x:Name="likeListView" ItemTemplate="{StaticResource likesUser}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                    </PivotItem>
+                    <PivotItem Loaded="PivotItem_Loaded" Tag="3">
+                        <PivotItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>转发</TextBlock>
+                                <TextBlock Margin="5,0" Text="{Binding forwardnum}"/>
+                            </StackPanel>
+                        </PivotItem.Header>
+                        <ListView x:Name="shareuserListView" ItemTemplate="{StaticResource likesUser}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                    </PivotItem>
+                </Pivot>
+            </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="FScrollViewer" Visibility="Collapsed" ZoomMode="Enabled">
+            <FlipView Visibility="Collapsed" x:Name="SFlipView"/>
+        </ScrollViewer>
+        <Button x:Name="CloseFlip" Visibility="Collapsed" Click="CloseFlip_Click"  HorizontalAlignment="Right" VerticalAlignment="Top" Width="48" Foreground="White" Height="48">
+            <SymbolIcon Symbol="Cancel" Foreground="White"/>
+        </Button>
     </Grid>
 </Page>

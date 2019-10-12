@@ -27,6 +27,8 @@ namespace 酷安_UWP
     public sealed partial class IndexPage : Page
     {
         MainPage mainPage;
+        int page = 1;
+        string lastItem;
         public IndexPage()
         {
             this.InitializeComponent();
@@ -46,6 +48,7 @@ namespace 酷安_UWP
             listView.ItemsSource = FeedsCollection;
 
             JArray Root = await CoolApkSDK.GetIndexList(1, string.Empty);
+            lastItem = Root.Last["entityId"].ToString();
             foreach (JObject i in Root)
                 FeedsCollection.Add(new Feed(i));
             timer.Interval = new TimeSpan(0, 0, 7);
@@ -76,33 +79,39 @@ namespace 酷安_UWP
         }
 
         Uri blank = new Uri("about:blank");
+        private object array;
+
         /// <summary>
         /// 用于加载动态的文字内容
         /// </summary>
         private void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
-            WebView view = sender as WebView;
-            string s = view.Tag as string;
-            s = "<body style=\"font-family:\"segoe ui\",\"microsoft yahei\",\"microsoft mhei\",stheititc,sans-serif\">" + s + "</body>";
-            if (view.Source.Equals(blank) && !(s is null))
+            try
             {
-                foreach (var i in emojis)
+                WebView view = sender as WebView;
+                string s = view.Tag as string;
+                s = "<body style=\"font-family:\"segoe ui\",\"microsoft yahei\",\"microsoft mhei\",stheititc,sans-serif\">" + s + "</body>";
+                if (view.Source.Equals(blank) && !(s is null))
                 {
-                    if (s.Contains(i))
+                    foreach (var i in emojis)
                     {
-                        if (i.Contains('('))
-                            s = s.Replace('#' + i, $"<img style=\"width: 70; height: 70\" src=\"ms-appx-web:///Emoji/{i}.png\">");
-                        else
-                            s = s.Replace(i, $"<img style=\"width: 70; height: 70\" src=\"ms-appx-web:///Emoji/{i}.png\">");
+                        if (s.Contains(i))
+                        {
+                            if (i.Contains('('))
+                                s = s.Replace('#' + i, $"<img style=\"width: 30; height: 30\" src=\"ms-appx-web:///Emoji/{i}.png\">");
+                            else
+                                s = s.Replace(i, $"<img style=\"width: 30; height: 30\" src=\"ms-appx-web:///Emoji/{i}.png\">");
+                        }
                     }
+                    view.NavigateToString(s);
                 }
-                view.NavigateToString(s);
             }
+            catch { }
         }
 
-/// <summary>
-/// 存放应用支持的表情的数组，表情图片位于/Emoji，文件名里有“(2)”的是同一个表情里的旧表情
-/// </summary>
+        /// <summary>
+        /// 存放应用支持的表情的数组，表情图片位于/Emoji，文件名里有“(2)”的是同一个表情里的旧表情
+        /// </summary>
         public readonly static string[] emojis = new string[] {"(cos滑稽)",
 "(haha)",
 "(OK)",
@@ -542,9 +551,28 @@ namespace 酷安_UWP
 "[Google滑稽]",
 "[SegoeUI滑稽]" };
 
-        private async void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
+        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, "动态", null });
+        private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
-            await new MessageDialog(((sender as FrameworkElement).Tag as Feed).GetValue("uid")).ShowAsync();
+            var sv = sender as ScrollViewer;
+
+            if (!e.IsIntermediate)
+                if (sv.VerticalOffset == sv.ScrollableHeight)
+                {
+                    mainPage.ActiveProgressRing();
+
+                    ObservableCollection<Feed> FeedsCollection = listView.ItemsSource as ObservableCollection<Feed>;
+                    JArray Root = await CoolApkSDK.GetIndexList(++page, lastItem);
+                    if (Root.Count != 0)
+                    {
+                        lastItem = Root.Last["entityId"].ToString();
+                        foreach (JObject i in Root)
+                            FeedsCollection.Add(new Feed(i));
+                    }
+                    else
+                        page--;
+                    mainPage.DeactiveProgressRing();
+                }
         }
     }
 }

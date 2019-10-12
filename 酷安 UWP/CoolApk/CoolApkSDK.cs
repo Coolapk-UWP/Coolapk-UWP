@@ -201,27 +201,66 @@ namespace 酷安_UWP
                 return new JArray();
             }
         }
-        /*
-        public static DataItem GetFeedDetailByJson(string feed)
-        {
-            try
-            {
-                DataItem feed1 = JsonConvert.DeserializeObject<DataItem>(feed);
-                return feed1;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
 
-        public static async Task<DataItem> getFeedDetailById(dynamic feedId)
+        public static async Task<JObject> getFeedDetailById(dynamic feedId)
         {
             try
             {
                 string result = await GetCoolApkMessage("https://api.coolapk.com/v6/feed/detail?id=" + feedId);
-                DataItem feed1 = JsonConvert.DeserializeObject<DataItem>(result);
-                return feed1;
+                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+                return (JObject)jo["data"];
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public static async Task<JArray> getFeedReplyListById(dynamic feedId, dynamic page, dynamic discussMode, dynamic fromFeedAuthor, dynamic firstItem, dynamic lastItem)
+        {
+            try
+            {
+                string result = await GetCoolApkMessage($"https://api.coolapk.com/v6/feed/replyList?id={feedId}&listType=lastupdate_desc&page={page}&firstItem={firstItem}&lastItem={lastItem}&discussMode={discussMode}&feedType=feed&blockStatus=0&fromFeedAuthor={fromFeedAuthor}");
+                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+                return (JArray)jo["data"];
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public static async Task<JArray> getFeedLikeUsersListById(dynamic feedId, dynamic page, dynamic firstItem, dynamic lastItem)
+        {
+            try
+            {
+                string result = await GetCoolApkMessage($"https://api.coolapk.com/v6/feed/likeList?id={feedId}&listType=lastupdate_desc&page={page}&firstItem={firstItem}&lastItem={lastItem}");
+                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+                return (JArray)jo["data"];
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public static async Task<JArray> getReplyListById(dynamic feedId, dynamic page, dynamic discussMode, dynamic fromFeedAuthor, dynamic lastItem)
+        {
+            try
+            {
+                string result = await GetCoolApkMessage($"https://api.coolapk.com/v6/feed/replyList?id={feedId}&listType=&page={page}&lastItem={lastItem}&discussMode={discussMode}&feedType=feed_reply&blockStatus=0&fromFeedAuthor={fromFeedAuthor}");
+                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+                return (JArray)jo["data"];
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public static async Task<JArray> getShareListById(dynamic feedId, dynamic page)
+        {
+            try
+            {
+                string result = await GetCoolApkMessage($"https://api.coolapk.com/v6/feed/forwardList?id={feedId}&Type=feed&page={page}");
+                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+                return (JArray)jo["data"];
             }
             catch (Exception)
             {
@@ -229,7 +268,7 @@ namespace 酷安_UWP
             }
         }
 
-
+        /*
         public static async Task<string> GetCoolApkUserFaceUri(dynamic NameOrID)
         {
             String body = await Web.GetHttp("https://www.coolapk.com/u/" + NameOrID);

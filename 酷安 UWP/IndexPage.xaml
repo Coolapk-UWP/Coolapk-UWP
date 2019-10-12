@@ -118,7 +118,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <SymbolIcon Symbol="Comment" Grid.Column="0"/>
-                                <TextBlock Margin="10,0,0,0" Text="{x:Bind GetValue('commentnum')}" Grid.Column="1"/>
+                                <TextBlock Margin="10,0,0,0" Text="{x:Bind GetValue('replynum')}" Grid.Column="1"/>
                             </Grid>
                         </Button>
                         <Button Background="{x:Null}" Grid.Column="2" HorizontalAlignment="Center">
@@ -128,7 +128,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <SymbolIcon Symbol="Link" Grid.Column="0"/>
-                                <TextBlock Margin="10,0,0,0" Text="{x:Bind GetValue('share_num')}" Grid.Column="1"/>
+                                <TextBlock Margin="10,0,0,0" Text="{x:Bind GetValue('forwardnum')}" Grid.Column="1"/>
                             </Grid>
                         </Button>
                     </Grid>
@@ -222,12 +222,14 @@
     </Page.Resources>
 
     <Grid>
-        <ListView Name="listView" ItemTemplateSelector="{StaticResource FTemplateSelector}" SelectionMode="Single">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
+        <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
+            <ListView Name="listView" ItemTemplateSelector="{StaticResource FTemplateSelector}" SelectionMode="Single">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+        </ScrollViewer>
     </Grid>
 </Page>

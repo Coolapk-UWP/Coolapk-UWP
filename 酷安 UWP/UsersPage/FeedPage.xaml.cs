@@ -68,126 +68,18 @@ namespace 酷安_UWP
                     if (s.Contains(i))
                     {
                         if (i.Contains('('))
-                            s = s.Replace('#' + i, $"<img style=\"width: 70; height: 70\" src=\"ms-appx-web:///Emoji/{i}.png\">");
+                            s = s.Replace('#' + i, $"<img style=\"width: 30; height: 30\" src=\"ms-appx-web:///Emoji/{i}.png\">");
                         else
-                            s = s.Replace(i, $"<img style=\"width: 70; height: 70\" src=\"ms-appx-web:///Emoji/{i}.png\">");
+                            s = s.Replace(i, $"<img style=\"width: 30; height: 30\" src=\"ms-appx-web:///Emoji/{i}.png\">");
                     }
                 }
                 view.NavigateToString(s);
             }
         }
 
-        private async void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
+        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            await new MessageDialog(((sender as FrameworkElement).Tag as Feed).GetValue("uid")).ShowAsync();
-        }
-    }
 
-    public class Feed
-    {
-        JObject jObject;
-        public Feed(JObject jObject) => this.jObject = jObject;
-        public string GetValue(string value)
-        {
-            if (jObject.TryGetValue(value, out JToken token))
-                return token.ToString();
-            else
-                return string.Empty;
-        }
-        public Feed[] GetSelfs() => new Feed[] { this };
-        public ImageSource GetValue2(string value) => new BitmapImage(new Uri(jObject.GetValue(value).ToString()));
-        public ImageSource[] GetValue3(string value)
-        {
-            JArray array = (JArray)jObject.GetValue(value);
-            List<BitmapImage> images = new List<BitmapImage>();
-            foreach (var item in array)
-                if (!string.IsNullOrEmpty(item.ToString()))
-                    //获取缩略图
-                    images.Add(new BitmapImage(new Uri(item.ToString()+"s.jpg")));
-            return images.ToArray();
-        }
-        public Feed[] GetFeeds(string value)
-        {
-            JArray array = (JArray)jObject.GetValue(value);
-            List<Feed> fs = new List<Feed>();
-            foreach (JObject item in array)
-                if (!string.IsNullOrEmpty(item.ToString()))
-                    fs.Add(new Feed(item));
-            return fs.ToArray();
-        }
-        public Uri GetValue4(string value) => new Uri(jObject.GetValue(value).ToString());
-    }
-
-    public class Feeds
-    {
-
-    }
-
-    public class FirstTemplateSelector : DataTemplateSelector
-    {
-        public DataTemplate DataTemplate0 { get; set; }
-        public DataTemplate DataTemplate1 { get; set; }
-        public DataTemplate DataTemplate2 { get; set; }
-        protected override DataTemplate SelectTemplateCore(object item)
-        {
-            Feed feed = item as Feed;
-            switch (feed.GetValue("entityType"))
-            {
-                case "feed":
-                    return DataTemplate1;
-                case "card":
-                    return DataTemplate2;
-                default:
-                    return DataTemplate0;
-            }
-        }
-    }
-    public class SecondTemplateSelector : DataTemplateSelector
-    {
-        public DataTemplate DataTemplate0 { get; set; }
-        public DataTemplate DataTemplate1 { get; set; }
-        public DataTemplate DataTemplate2 { get; set; }
-        public DataTemplate DataTemplate3 { get; set; }
-        protected override DataTemplate SelectTemplateCore(object item)
-        {
-            Feed feed = item as Feed;
-            switch (feed.GetValue("entityTemplate"))
-            {
-                case "imageCarouselCard_1":
-                    return DataTemplate1;
-                case "iconMiniGridCard":
-                case "iconLinkGridCard":
-                    return DataTemplate2;
-                case "messageCard":
-                    return DataTemplate3;
-                default:
-                    return DataTemplate0;
-            }
-        }
-    }
-    public class ThirdTemplateSelector : DataTemplateSelector
-    {
-        public DataTemplate DataTemplate0 { get; set; }
-        public DataTemplate DataTemplate1 { get; set; }
-        public DataTemplate DataTemplate2 { get; set; }
-        public DataTemplate DataTemplate3 { get; set; }
-        public DataTemplate DataTemplate4 { get; set; }
-        protected override DataTemplate SelectTemplateCore(object item)
-        {
-            Feed feed = item as Feed;
-            switch (feed.GetValue("entityType"))
-            {
-                case "image_1":
-                    return DataTemplate1;
-                case "iconLink":
-                    return DataTemplate2;
-                case "dyh":
-                    return DataTemplate3;
-                case "topic":
-                    return DataTemplate4;
-                default:
-                    return DataTemplate0;
-            }
         }
     }
 }
