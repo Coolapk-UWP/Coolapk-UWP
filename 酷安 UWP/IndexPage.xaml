@@ -155,7 +155,7 @@
         <DataTemplate x:Key="iconLink" x:DataType="local:Feed">
             <Button Background="Transparent" HorizontalAlignment="Stretch">
                 <StackPanel>
-                    <Image Source="{x:Bind GetValue2('pic')}" Height="48" Width="48"/>
+                    <Image Source="{x:Bind GetValue5('pic')}" Height="48" Width="48"/>
                     <TextBlock HorizontalAlignment="Center" Text="{x:Bind GetValue('title')}"/>
                 </StackPanel>
             </Button>
@@ -163,7 +163,7 @@
         <DataTemplate x:Key="dyh" x:DataType="local:Feed">
             <Button Background="Transparent" HorizontalAlignment="Stretch">
                 <StackPanel>
-                    <Image Source="{x:Bind GetValue2('logo')}" Height="25" Width="25"/>
+                    <Image Source="{x:Bind GetValue5('logo')}" Height="25" Width="25"/>
                     <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{x:Bind GetValue('title')}"/>
                 </StackPanel>
             </Button>
@@ -171,7 +171,7 @@
         <DataTemplate x:Key="topic" x:DataType="local:Feed">
             <Button Background="Transparent" HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="{x:Bind GetValue2('logo')}" Height="18" Width="18"/>
+                    <Image Source="{x:Bind GetValue5('logo')}" Height="18" Width="18"/>
                     <TextBlock HorizontalAlignment="Center" Text="{x:Bind GetValue('title')}"/>
                 </StackPanel>
             </Button>
