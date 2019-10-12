@@ -569,8 +569,7 @@ namespace 酷安_UWP
                         foreach (JObject i in Root)
                             FeedsCollection.Add(new Feed(i));
                     }
-                    else
-                        page--;
+                    else page--;
                     mainPage.DeactiveProgressRing();
                 }
         }

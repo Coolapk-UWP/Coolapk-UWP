@@ -28,6 +28,13 @@ namespace 酷安_UWP
                 return new BitmapImage(new Uri(s + ".s.jpg"));
             else return new BitmapImage();
         }
+        public ImageSource GetValue5(string value)
+        {
+            string s = jObject.GetValue(value).ToString();
+            if (!string.IsNullOrEmpty(s))
+                return new BitmapImage(new Uri(s));
+            else return new BitmapImage();
+        }
 
         public ImageSource[] GetValue3(string value)
         {

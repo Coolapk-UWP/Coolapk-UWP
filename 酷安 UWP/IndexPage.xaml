@@ -150,7 +150,7 @@
         </DataTemplate>
         <!--三级-->
         <DataTemplate x:Key="image_1" x:DataType="local:Feed">
-            <Image Source="{x:Bind GetValue2('pic')}"/>
+            <Image Source="{x:Bind GetValue5('pic')}"/>
         </DataTemplate>
         <DataTemplate x:Key="iconLink" x:DataType="local:Feed">
             <Button Background="Transparent" HorizontalAlignment="Stretch">
