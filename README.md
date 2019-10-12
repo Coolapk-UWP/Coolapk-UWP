@@ -1,5 +1,5 @@
 # Coolapk UWP
-一个基于UWP的酷安客户端
+一个适用于Windows通用平台的第三方酷安客户端
 
 基于[@一块小板子](http://www.coolapk.com/u/695942)的源码([Github链接](https://github.com/oboard/CoolApk-UWP))
 ## 现有功能
