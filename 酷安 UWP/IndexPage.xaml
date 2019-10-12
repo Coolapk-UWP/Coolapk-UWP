@@ -35,7 +35,7 @@
         </DataTemplate>
         <!--动态-->
         <DataTemplate x:Key="Feed" x:DataType="local:Feed">
-            <ListViewItem Margin="0,5"  Tapped="FeedListViewItem_Tapped" Tag="{x:Bind}">
+            <ListViewItem Margin="0,5" Tag="{x:Bind}" Tapped="FeedListViewItem_Tapped">
                 <Grid MinWidth="300">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -43,21 +43,23 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
-
-                        <Ellipse Width="50" Height="50" HorizontalAlignment="Left" >
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
-                            </Ellipse.Fill>
-                        </Ellipse>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Margin="60,0,0,0" Grid.Row="0" Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                            <TextBlock Margin="60,0,0,0" Grid.Row="1" Text="{x:Bind GetValue('device_title')}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Gray"/>
-                        </Grid>
+                        <Button Click="Button_Click" Tag="{x:Bind GetValue('uid')}" Background="{x:Null}">
+                            <Grid>
+                                <Ellipse Width="50" Height="50" HorizontalAlignment="Left" >
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Margin="60,0,0,0" Grid.Row="0" Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                    <TextBlock Margin="60,0,0,0" Grid.Row="1" Text="{x:Bind GetValue('device_title')}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Gray"/>
+                                </Grid>
+                            </Grid>
+                        </Button>
                         <Button Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Top">
                             <SymbolIcon Symbol="More"/>
                         </Button>
@@ -65,13 +67,13 @@
                     </Grid>
                     <Grid Grid.Row="1" Margin="5">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="300"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <WebView ScrollViewer.VerticalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" Tag="{x:Bind GetValue('message')}" Source="about:blank" NavigationCompleted="WebView_NavigationCompleted"/>
-                        <GridView Grid.Row="1" Margin="0,20,0,0" HorizontalAlignment="Center" ItemsSource="{x:Bind GetValue3('picArr')}">
+                        <GridView Grid.Row="1" Margin="0,20,0,0" HorizontalAlignment="Center" Tag="{x:Bind GetValue4('picArr')}" ItemsSource="{x:Bind GetValue4('picArr')}">
                             <GridView.ItemTemplate>
-                                <DataTemplate x:DataType="ImageSource">
+                                <DataTemplate x:DataType="x:String">
                                     <Image MaxWidth="200" MaxHeight="200" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
                                 </DataTemplate>
                                 <!--
@@ -128,7 +130,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <SymbolIcon Symbol="Link" Grid.Column="0"/>
-                                <TextBlock Margin="10,0,0,0" Text="{x:Bind GetValue('forwardnum')}" Grid.Column="1"/>
+                                <TextBlock Margin="10,0,0,0" Text="{x:Bind GetValue('share_num')}" Grid.Column="1"/>
                             </Grid>
                         </Button>
                     </Grid>

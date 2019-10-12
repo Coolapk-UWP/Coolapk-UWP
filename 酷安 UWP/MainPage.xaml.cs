@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define test
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -33,8 +34,12 @@ namespace 酷安_UWP
         Color CoolBackHoverColor = Color.FromArgb(255, 255, 255, 255);
         Color CoolBackColor = Color.FromArgb(255, 230, 230, 230);
         //Color.FromArgb(255, 72, 174, 76);
-        public static int seletedItem = 4;
-
+        public static int seletedItem =
+#if test
+            5;
+#else
+        4;
+#endif
         public MainPage()
         {
             this.InitializeComponent();
@@ -101,6 +106,9 @@ namespace 酷安_UWP
                 case 4:
                     pageType = typeof(IndexPage);
                     break;
+                case 5:
+                    pageType = typeof(TestPage);
+                    break;
             }
             if (hamburgerMenuControl.SelectedIndex != seletedItem - 1)
             {
@@ -159,10 +167,11 @@ namespace 酷安_UWP
         {
             List<MenuItem> items = new List<MenuItem>
             {
-                new MenuItem() { Icon = Symbol.Home, Name = "应用●游戏", PageType = typeof(AppRecommendPage), Index = 1 },
+                new MenuItem() { Icon = Symbol.View, Name = "应用●游戏", PageType = typeof(AppRecommendPage), Index = 1 },
                 new MenuItem() { Icon = Symbol.ContactPresence, Name = "开发者中心", PageType = typeof(DeveloperPage), Index = 2 },
                 new MenuItem() { Icon = Symbol.Contact, Name = "我", PageType = typeof(MyPage), Index = 3 },
-                new MenuItem() { Icon = Symbol.Home, Name = "头条", PageType = typeof(IndexPage), Index = 4 }
+                new MenuItem() { Icon = Symbol.Home, Name = "头条", PageType = typeof(IndexPage), Index = 4 },
+                new MenuItem() { Icon = Symbol.Shuffle, Name = "test page", PageType = typeof(TestPage), Index = 5 }
             };
             return items;
         }

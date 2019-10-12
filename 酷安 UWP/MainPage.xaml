@@ -129,6 +129,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="hamburgerMenuControl.DisplayMode" Value="CompactInline"/>
+                        <Setter Target="hamburgerMenuControl.IsPaneOpen" Value="true"/>
                         <Setter Target="VFrame.Margin" Value="0"/>
                     </VisualState.Setters>
                 </VisualState>

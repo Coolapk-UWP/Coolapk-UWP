@@ -41,7 +41,7 @@ namespace 酷安_UWP
 
             // 创建一个可重用的CryptographicHash对象           
             CryptographicHash objHash = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5).CreateHash();
-            
+
             IBuffer buffMsg1 = CryptographicBuffer.ConvertStringToBinary(inputString, BinaryStringEncoding.Utf8);
             objHash.Append(buffMsg1);
             IBuffer buffHash1 = objHash.GetValueAndReset();
@@ -151,8 +151,8 @@ namespace 酷安_UWP
 
         public static async Task<JObject> GetUserProfileByID(dynamic uid)
         {
-            string result = await GetCoolApkMessage("https://api.coolapk.com/v6/user/profile?uid=" + uid);
-            return (JObject)JsonConvert.DeserializeObject(result);
+            string result = await GetCoolApkMessage("https://api.coolapk.com/v6/user/space?uid=" + uid);
+            return (JObject)((JObject)JsonConvert.DeserializeObject(result))["data"];
         }
 
         /**
@@ -174,11 +174,11 @@ namespace 酷安_UWP
             }
         }*/
 
-        public static async Task<JArray> GetFeedListByID(dynamic uid, dynamic page, dynamic firstItem)
+        public static async Task<JArray> GetFeedListByID(dynamic uid, dynamic page, dynamic firstItem, dynamic lastItem)
         {
             try
             {
-                string str = await GetCoolApkMessage("https://api.coolapk.com/v6/user/feedList?uid=" + uid + "&page=" + page + "&firstItem=" + firstItem);
+                string str = await GetCoolApkMessage($"https://api.coolapk.com/v6/user/feedList?uid={uid}&page={page}&firstItem={firstItem}&lastItem={lastItem}");
                 JObject jo = (JObject)JsonConvert.DeserializeObject(str);
                 return (JArray)jo["data"];
             }

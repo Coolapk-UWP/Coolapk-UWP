@@ -23,10 +23,13 @@ using Windows.UI.Xaml.Navigation;
 
 namespace 酷安_UWP
 {
-    public sealed partial class FeedPage : Page
+    public interface IReadNextPage { void ReadNextPage(); }
+    public sealed partial class FeedPage : Page, IReadNextPage
     {
         MainPage mainPage;
         string uid;
+        int page = 0;
+        string firstItem = string.Empty, lastItem = string.Empty;
 
         public FeedPage()
         {
@@ -49,37 +52,66 @@ namespace 酷安_UWP
             ObservableCollection<Feed> FeedsCollection = new ObservableCollection<Feed>();
             listView.ItemsSource = FeedsCollection;
 
-            JArray Root = await CoolApkSDK.GetFeedListByID(uid, 1, "");
-            foreach (JObject i in Root)
-                FeedsCollection.Add(new Feed(i));
+            JArray Root = await CoolApkSDK.GetFeedListByID(uid, ++page, firstItem, lastItem);
+            if (!(Root is null))
+            {
+                firstItem = Root.First["id"].ToString();
+                lastItem = Root.Last["id"].ToString();
+                foreach (JObject i in Root)
+                    FeedsCollection.Add(new Feed(i));
+            }
+            else page--;
             mainPage.DeactiveProgressRing();
         }
-        private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
         Uri blank = new Uri("about:blank");
         private void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
-            WebView view = sender as WebView;
-            string s = view.Tag as string;
-            s = "<body style=\"font-family:\"segoe ui\",\"microsoft yahei\",\"microsoft mhei\",stheititc,sans-serif\">" + s + "</body>";
-            if (view.Source.Equals(blank) && !(s is null))
+            try
             {
-                foreach (var i in IndexPage.emojis)
+                WebView view = sender as WebView;
+                string s = view.Tag as string;
+                s = "<body style=\"font-family:\"segoe ui\",\"microsoft yahei\",\"microsoft mhei\",stheititc,sans-serif\">" + s + "</body>";
+                if (view.Source.Equals(blank) && !(s is null))
                 {
-                    if (s.Contains(i))
+                    foreach (var i in IndexPage.emojis)
                     {
-                        if (i.Contains('('))
-                            s = s.Replace('#' + i, $"<img style=\"width: 30; height: 30\" src=\"ms-appx-web:///Emoji/{i}.png\">");
-                        else
-                            s = s.Replace(i, $"<img style=\"width: 30; height: 30\" src=\"ms-appx-web:///Emoji/{i}.png\">");
+                        if (s.Contains(i))
+                        {
+                            if (i.Contains('('))
+                                s = s.Replace('#' + i, $"<img style=\"width: 30; height: 30\" src=\"ms-appx-web:///Emoji/{i}.png\">");
+                            else
+                                s = s.Replace(i, $"<img style=\"width: 30; height: 30\" src=\"ms-appx-web:///Emoji/{i}.png\">");
+                        }
                     }
+                    view.NavigateToString(s);
                 }
-                view.NavigateToString(s);
             }
+            catch { }
         }
 
-        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
-        {
 
+        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, "动态", null });
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button i = sender as Button;
+            mainPage.Frame.Navigate(typeof(UserPage), new object[] { i.Tag as string, mainPage });
+        }
+
+        public async void ReadNextPage()
+        {
+            mainPage.ActiveProgressRing();
+
+            ObservableCollection<Feed> FeedsCollection = listView.ItemsSource as ObservableCollection<Feed>;
+            JArray Root = await CoolApkSDK.GetFeedListByID(uid, ++page, firstItem, lastItem);
+            if (Root.Count != 0)
+            {
+                lastItem = Root.Last["id"].ToString();
+                foreach (JObject i in Root)
+                    FeedsCollection.Add(new Feed(i));
+            }
+            else page--;
+            mainPage.DeactiveProgressRing();
         }
     }
 }

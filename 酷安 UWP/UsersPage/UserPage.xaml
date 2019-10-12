@@ -17,5 +17,49 @@
             </Button>
             <TextBlock Margin="50,0,0,2" x:Name="TitleTextBlock" Foreground="{StaticResource CoolApk_Theme_Fore}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
         </Grid>
+        <ScrollViewer Margin="0,48,0,0" ViewChanged="ScrollViewer_ViewChanged">
+            <StackPanel>
+                <Grid x:Name="UserDetailGrid">
+                    <SymbolIcon Margin="10" HorizontalAlignment="Left" Width="80" Symbol="Contact" RenderTransformOrigin="0.5,0.5" >
+                        <SymbolIcon.RenderTransform>
+                            <CompositeTransform ScaleX="1.5" ScaleY="1.5"/>
+                        </SymbolIcon.RenderTransform>
+                    </SymbolIcon>
+                    <Ellipse Width="80" Height="80" Margin="10,0" HorizontalAlignment="Left" >
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{Binding UserFace}"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <Grid VerticalAlignment="Center" Margin="100,0,10,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding UserName}" FontSize="20"/>
+                        <StackPanel Grid.Row="1" Orientation="Horizontal">
+                            <TextBlock Margin="0,0,3,0" Text="{Binding FollowNum}"/>
+                            <TextBlock>关注</TextBlock>
+                            <TextBlock Margin="10,0,3,0" Text="{Binding FansNum}"/>
+                            <TextBlock>粉丝</TextBlock>
+                            <TextBlock Margin="10,0,3,0" Text="Lv."/>
+                            <TextBlock Name="level" Text="{Binding Level}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding bio}" FontSize="12" TextWrapping="Wrap" Grid.Row="3"/>
+                    </Grid>
+                </Grid>
+                <Pivot x:Name="ListPivot">
+                    <PivotItem>
+                        <PivotItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>动态</TextBlock>
+                                <TextBlock FontSize="16" VerticalAlignment="Bottom" Text="{Binding FeedNum}"/>
+                            </StackPanel>
+                        </PivotItem.Header>
+                        <Frame x:Name="FeedListFrame"/>
+                    </PivotItem>
+                </Pivot>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

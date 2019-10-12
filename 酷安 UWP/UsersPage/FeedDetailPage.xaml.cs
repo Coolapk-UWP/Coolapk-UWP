@@ -92,7 +92,8 @@ namespace 酷安_UWP
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            Button i = sender as Button;
+            Frame.Navigate(typeof(UserPage), new object[] { i.Tag as string, mainPage });
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -238,6 +239,17 @@ namespace 酷安_UWP
                     }
                     mainPage.DeactiveProgressRing();
                 }
+        }
+
+        private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+                ListViewItem i = sender as ListViewItem;
+                Frame.Navigate(typeof(UserPage), new object[] { i.Tag as string, mainPage });
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)

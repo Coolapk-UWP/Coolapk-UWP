@@ -79,8 +79,7 @@ namespace 酷安_UWP
         }
 
         Uri blank = new Uri("about:blank");
-        private object array;
-
+        
         /// <summary>
         /// 用于加载动态的文字内容
         /// </summary>
@@ -572,6 +571,12 @@ namespace 酷安_UWP
                     else page--;
                     mainPage.DeactiveProgressRing();
                 }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button i = sender as Button;
+            mainPage.Frame.Navigate(typeof(UserPage), new object[] { i.Tag as string, mainPage });
         }
     }
 }

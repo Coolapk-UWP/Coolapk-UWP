@@ -21,23 +21,26 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
-                        <Ellipse Width="50" Height="50" HorizontalAlignment="Left" >
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
-                            </Ellipse.Fill>
-                        </Ellipse>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Margin="60,0,0,0" Grid.Row="0" Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                            <TextBlock Margin="60,0,0,0" Grid.Row="1" Text="{x:Bind GetValue('device_title')}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Gray"/>
-                        </Grid>
+                        <Button Click="Button_Click" Tag="{x:Bind GetValue('uid')}" Background="{x:Null}">
+                            <Grid>
+                                <Ellipse Width="50" Height="50" HorizontalAlignment="Left" >
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Margin="60,0,0,0" Grid.Row="0" Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                    <TextBlock Margin="60,0,0,0" Grid.Row="1" Text="{x:Bind GetValue('device_title')}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Gray"/>
+                                </Grid>
+                            </Grid>
+                        </Button>
                         <Button Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Top">
                             <SymbolIcon Symbol="More"/>
                         </Button>
-
                     </Grid>
                     <Grid Grid.Row="1" Margin="5">
                         <Grid.RowDefinitions>
@@ -86,14 +89,20 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Ellipse Width="30" Height="30" HorizontalAlignment="Left" >
-                                <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                            <TextBlock Margin="5,0" Text="{x:Bind GetValue('username')}" VerticalAlignment="Center"/>
+                            <Button Click="Button_Click" Tag="{x:Bind GetValue('uid')}" Background="{x:Null}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse Width="30" Height="30" HorizontalAlignment="Left" >
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <TextBlock Margin="5,0" Text="{x:Bind GetValue('username')}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
                             <TextBlock VerticalAlignment="Center" Margin="8,0">回复</TextBlock>
-                            <TextBlock Margin="5,0" Text="{x:Bind GetValue('rusername')}" VerticalAlignment="Center" />
+                            <Button Click="Button_Click" Tag="{x:Bind GetValue('ruid')}" Background="{x:Null}">
+                                <TextBlock Margin="5,0" Text="{x:Bind GetValue('rusername')}" VerticalAlignment="Center" />
+                            </Button>
                         </StackPanel>
                         <Button Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Top">
                             <SymbolIcon Symbol="More"/>
@@ -152,14 +161,16 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="likesUser" x:DataType="local:Feed">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Ellipse Width="30" Height="30" HorizontalAlignment="Left" >
-                    <Ellipse.Fill>
-                        <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
-                    </Ellipse.Fill>
-                </Ellipse>
-                <TextBlock Margin="5,0" Text="{x:Bind GetValue('username')}" VerticalAlignment="Center"/>
-            </StackPanel>
+            <ListViewItem Tapped="ListViewItem_Tapped" Tag="{x:Bind GetValue('uid')}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse Width="30" Height="30" HorizontalAlignment="Left" >
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <TextBlock Margin="5,0" Text="{x:Bind GetValue('username')}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </ListViewItem>
         </DataTemplate>
     </Page.Resources>
 
@@ -186,7 +197,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock>回复</TextBlock>
                                 <TextBlock Margin="5,0" Text="{Binding replynum}"/>
-                                <Button Click="Button_Click">▼</Button>
+                                <Button Background="{x:Null}" Click="Button_Click_1">▼</Button>
                             </StackPanel>
                         </PivotItem.Header>
                         <ListView x:Name="replyListView" ItemTemplate="{StaticResource feed_reply_list}">
