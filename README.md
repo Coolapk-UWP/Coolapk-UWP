@@ -1,4 +1,4 @@
-![酷安](https://coolapk.com/static/images/header-logo.png)
+![酷安](logo.png)
 
 # Coolapk UWP
 一个基于UWP的酷安客户端
