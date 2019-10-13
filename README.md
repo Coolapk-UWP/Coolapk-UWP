@@ -3,7 +3,7 @@
 # Coolapk UWP
 一个基于UWP的酷安客户端
 
-基于[@一块小板子](http://www.coolapk.com/u/695942)的源码([Github链接](https://github.com/oboard/CoolApk-UWP))
+基于[@一块小板子](http://www.coolapk.com/u/695942)的源码([Github](https://github.com/oboard/CoolApk-UWP))
 
 ## 现有功能
 1. 浏览和下载应用
@@ -70,11 +70,11 @@
   ![应用详情](http://image.coolapk.com/feed/2019/1011/21/1049834_0e5928bf_0447_7134@480x800.jpeg.m.jpg)
 
 ## 鸣谢
-- 酷安UWP原作者[@一块小板子](http://www.coolapk.com/u/695942)[Github](https://github.com/oboard)
-- OpenCoolapk作者[@roykio](http://www.coolapk.com/u/703542)[Github](https://github.com/roykio)
-- CoolapkTokenCrack作者[@ZCKun](http://www.coolapk.com/u/654147)[Github](https://github.com/ZCKun)
-- Coolapk-kotlin作者[@bjzhou](http://www.coolapk.com/u/528097)[Github](https://github.com/bjzhou)
-- 酷安开发者控制台作者[@TaRGroup](http://www.coolapk.com/u/803922)[Github](https://github.com/TaRGroup)
-- 酷安开发者平台作者[@LingC](http://www.coolapk.com/u/745652)[Github](https://github.com/HelloLingC)
+- 酷安UWP原作者[@一块小板子](http://www.coolapk.com/u/695942)([Github](https://github.com/oboard))
+- OpenCoolapk作者[@roykio](http://www.coolapk.com/u/703542)([Github](https://github.com/roykio))
+- CoolapkTokenCrack作者[@ZCKun](http://www.coolapk.com/u/654147)([Github](https://github.com/ZCKun))
+- Coolapk-kotlin作者[@bjzhou](http://www.coolapk.com/u/528097)([Github](https://github.com/bjzhou))
+- 酷安开发者控制台作者[@TaRGroup](http://www.coolapk.com/u/803922)([Github](https://github.com/TaRGroup))
+- 酷安开发者平台作者[@LingC](http://www.coolapk.com/u/745652)([Github](https://github.com/HelloLingC))
 - 以及所有为酷安UWP项目做出贡献的同志们
 - **铺路尚未成功，同志仍需努力！**
