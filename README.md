@@ -18,8 +18,7 @@
 ![动态](Screenshots/2019-10-13-124904.jpg)
 ![动态详情](Screenshots/2019-10-13-124940.jpg)
 - Mobile
-![主页](http://image.coolapk.com/feed/2019/1011/21/1049834_51aa286c_0447_7126@480x800.jpeg.m.jpg)
-![动态](http://m.qpic.cn/psb?/V11c3we24eJ6Sb/3oTZ12V7J7TBVWAEv7yQLxbfGYdInRsiTPSPbHJ6Eis!/b/dLYAAAAAAAAA&bo=4AEgAwAAAAABB.I!&rf=viewer_4)
+![主页](http://image.coolapk.com/feed/2019/1011/21/1049834_51aa286c_0447_7126@480x800.jpeg.m.jpg)![动态](http://m.qpic.cn/psb?/V11c3we24eJ6Sb/3oTZ12V7J7TBVWAEv7yQLxbfGYdInRsiTPSPbHJ6Eis!/b/dLYAAAAAAAAA&bo=4AEgAwAAAAABB.I!&rf=viewer_4)
 
 ## 支持的语言
 中文
