@@ -34,9 +34,9 @@ namespace 酷安_UWP
             mainPage = e.Parameter as MainPage;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            mainPage.Frame.Navigate(typeof(UserPage), new object[] { uid.Text, mainPage });
+            mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(uid.Text), mainPage });
         }
     }
 }

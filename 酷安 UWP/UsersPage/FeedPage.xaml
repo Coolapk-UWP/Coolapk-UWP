@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -21,23 +22,26 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
-                        <Button Click="Button_Click" Tag="{x:Bind GetValue('uid')}" Background="{x:Null}">
-                            <Grid>
-                                <Ellipse Width="50" Height="50" HorizontalAlignment="Left" >
-                                    <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
-                                    </Ellipse.Fill>
-                                </Ellipse>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Click="Button_Click" Tag="{x:Bind GetValue('uid')}" Background="{x:Null}">
                                 <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Margin="60,0,0,0" Grid.Row="0" Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                                    <TextBlock Margin="60,0,0,0" Grid.Row="1" Text="{x:Bind GetValue('device_title')}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Gray"/>
+                                    <Ellipse Width="50" Height="50" HorizontalAlignment="Left" >
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Margin="60,0,0,0" Grid.Row="0" Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                        <TextBlock Margin="60,0,0,0" Grid.Row="1"  Text="{x:Bind GetValue('device_title')}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Gray"/>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </Button>
+                            </Button>
+                            <TextBlock Margin="10" Text="{x:Bind GetValue('dateline')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        </StackPanel>
                         <Button Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Top">
                             <SymbolIcon Symbol="More"/>
                         </Button>
@@ -45,11 +49,11 @@
                     </Grid>
                     <Grid Grid.Row="1" Margin="5">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="300"/>
+                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <WebView ScrollViewer.VerticalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" Tag="{x:Bind GetValue('message')}" Source="about:blank" NavigationCompleted="WebView_NavigationCompleted"/>
-                        <GridView Grid.Row="1" Margin="0,20,0,0" HorizontalAlignment="Center" Tag="{x:Bind GetValue4('picArr')}" ItemsSource="{x:Bind GetValue4('picArr')}">
+                        <controls:MarkdownTextBlock Text="{x:Bind GetValue('message')}"/>
+                        <GridView Grid.Row="1" MinHeight="0" Margin="0,20,0,0" HorizontalAlignment="Center" Tag="{x:Bind GetValue4('picArr')}" ItemsSource="{x:Bind GetValue4('picArr')}">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="x:String">
                                     <Image MaxWidth="200" MaxHeight="200" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>

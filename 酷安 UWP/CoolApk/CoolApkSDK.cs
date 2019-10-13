@@ -17,89 +17,28 @@ namespace 酷安_UWP
     class CoolApkSDK
     {
         //超级感谢！！！👉 https://github.com/ZCKun/CoolapkTokenCrack
-        public static string GetToken()
+        public static string GetAppToken()
         {
-            String DEVICE_ID = "8513efac-09ea-3709-b214-95b366f1a185";
+            string DEVICE_ID = Guid.NewGuid().ToString();
             long UnixDate = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
             string t = UnixDate.ToString();
-            string hex_t = "0x" + Ten2Hex(t);
+            string hex_t = "0x" + string.Format("{0:x}", UnixDate);
             // 时间戳加密
             string md5_t = GetMD5(t);
-            // 不知道什么鬼字符串拼接
             string a = "token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?" + md5_t + "$" + DEVICE_ID + "&com.coolapk.market";
-            // 不知道什么鬼字符串拼接 后的字符串再次加密
-            //md5_a = hashlib.md5(base64.b64encode(a.encode('utf-8)).hexdigest()
             string md5_a = GetMD5(Convert.ToBase64String(Encoding.UTF8.GetBytes(a)));
             string token = md5_a + DEVICE_ID + hex_t;
-
             return token;
         }
 
+        //来源：https://blog.csdn.net/lindexi_gd/article/details/48951849
         public static string GetMD5(string inputString)
         {
-            //来源：https://blog.csdn.net/lindexi_gd/article/details/48951849
-
-            // 创建一个可重用的CryptographicHash对象           
             CryptographicHash objHash = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5).CreateHash();
-
-            IBuffer buffMsg1 = CryptographicBuffer.ConvertStringToBinary(inputString, BinaryStringEncoding.Utf8);
-            objHash.Append(buffMsg1);
+            objHash.Append(CryptographicBuffer.ConvertStringToBinary(inputString, BinaryStringEncoding.Utf8));
             IBuffer buffHash1 = objHash.GetValueAndReset();
             return CryptographicBuffer.EncodeToHexString(buffHash1);
         }
-
-        public static string Ten2Hex(string ten)
-        {
-            ulong tenValue = Convert.ToUInt64(ten);
-            ulong divValue, resValue;
-            string hex = "";
-            do
-            {
-                //divValue = (ulong)Math.Floor(tenValue / 16);
-
-                divValue = (ulong)Math.Floor((decimal)(tenValue / 16));
-
-                resValue = tenValue % 16;
-                hex = TenValue2Char(resValue) + hex;
-                tenValue = divValue;
-            }
-            while (tenValue >= 16);
-            if (tenValue != 0)
-                hex = TenValue2Char(tenValue) + hex;
-            return hex;
-        }
-        public static string TenValue2Char(ulong ten)
-        {
-            switch (ten)
-            {
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                case 8:
-                case 9:
-                    return ten.ToString();
-                case 10:
-                    return "A";
-                case 11:
-                    return "B";
-                case 12:
-                    return "C";
-                case 13:
-                    return "D";
-                case 14:
-                    return "E";
-                case 15:
-                    return "F";
-                default:
-                    return "";
-            }
-        }
-
 
         public static async Task<string> GetCoolApkMessage(string url)
         {
@@ -109,49 +48,44 @@ namespace 酷安_UWP
             {
                 var mClient = new HttpClient();
 
-                mClient.DefaultRequestHeaders.Add("User-Agent", "Dalvik/2.1.0 (Linux; U; Android 9; MI 8 SE MIUI/9.5.9) (#Build; Xiaomi; MI 8 SE; PKQ1.181121.001; 9) +CoolMarket/9.2.2-1905301");
+                //mClient.DefaultRequestHeaders.Add("User-Agent", "Dalvik/2.1.0 (Linux; U; Android 9; MI 8 SE MIUI/9.5.9) (#Build; Xiaomi; MI 8 SE; PKQ1.181121.001; 9) +CoolMarket/9.2.2-1905301");
                 mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
                 mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "28");
                 mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
                 mClient.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
-                mClient.DefaultRequestHeaders.Add("X-App-Token", GetToken());
+                mClient.DefaultRequestHeaders.Add("X-App-Token", GetAppToken());
                 mClient.DefaultRequestHeaders.Add("X-App-Version", "9.2.2");
                 mClient.DefaultRequestHeaders.Add("X-App-Code", "1905301");
                 mClient.DefaultRequestHeaders.Add("X-Api-Version", "9");
-                mClient.DefaultRequestHeaders.Add("X-App-Device", "QRTBCOgkUTgsTat9WYphFI7kWbvFWaYByO1YjOCdjOxAjOxEkOFJjODlDI7ATNxMjM5MTOxcjMwAjN0AyOxEjNwgDNxITM2kDMzcTOgsTZzkTZlJ2MwUDNhJ2MyYzM");
-                mClient.DefaultRequestHeaders.Add("X-Dark-Mode", "0");
+                //mClient.DefaultRequestHeaders.Add("X-App-Device", "QRTBCOgkUTgsTat9WYphFI7kWbvFWaYByO1YjOCdjOxAjOxEkOFJjODlDI7ATNxMjM5MTOxcjMwAjN0AyOxEjNwgDNxITM2kDMzcTOgsTZzkTZlJ2MwUDNhJ2MyYzM");
+                //mClient.DefaultRequestHeaders.Add("X-Dark-Mode", "0");
                 mClient.DefaultRequestHeaders.Add("Host", "api.coolapk.com");
-
-                return await mClient.GetStringAsync(url);
+                return await mClient.GetStringAsync("https://api.coolapk.com/v6" + url);
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"ex={e.Message}\n" +
-                    $"{e.Source}\n" +
-                    $"{e.InnerException}\n");
-                return "";
+                throw;
             }
         }
 
-        /*
-        public static async Task<string> GetUserIDByName(String name)
+        public static async Task<string> GetUserIDByName(string name)
         {
             try
             {
                 string uid = await Web.GetHttp("https://www.coolapk.com/n/" + name);
-                uid = uid.Split("coolmarket://www.coolapk.com/u/")[1];
-                uid = uid.Split(@"""")[0];
+                uid = uid.Split(new string[] { "coolmarket://www.coolapk.com/u/" },StringSplitOptions.RemoveEmptyEntries)[1];
+                uid = uid.Split(new string[] { @"""" },StringSplitOptions.RemoveEmptyEntries)[0];
                 return uid;
             }
             catch (Exception e)
             {
-                return null;
+                throw;
             }
-        }*/
+        }
 
         public static async Task<JObject> GetUserProfileByID(dynamic uid)
         {
-            string result = await GetCoolApkMessage("https://api.coolapk.com/v6/user/space?uid=" + uid);
+            string result = await GetCoolApkMessage("/user/space?uid=" + uid);
             return (JObject)((JObject)JsonConvert.DeserializeObject(result))["data"];
         }
 
@@ -178,13 +112,13 @@ namespace 酷安_UWP
         {
             try
             {
-                string str = await GetCoolApkMessage($"https://api.coolapk.com/v6/user/feedList?uid={uid}&page={page}&firstItem={firstItem}&lastItem={lastItem}");
+                string str = await GetCoolApkMessage($"/user/feedList?uid={uid}&page={page}&firstItem={firstItem}&lastItem={lastItem}");
                 JObject jo = (JObject)JsonConvert.DeserializeObject(str);
                 return (JArray)jo["data"];
             }
             catch (Exception)
             {
-                return new JArray();
+                throw;
             }
         }
 
@@ -192,13 +126,13 @@ namespace 酷安_UWP
         {
             try
             {
-                string str = await GetCoolApkMessage("https://api.coolapk.com/v6/main/indexV8?page=" + page);
+                string str = await GetCoolApkMessage("/main/indexV8?page=" + page);
                 JObject jo = (JObject)JsonConvert.DeserializeObject(str);
                 return (JArray)jo["data"];
             }
             catch (Exception)
             {
-                return new JArray();
+                throw;
             }
         }
 
@@ -206,65 +140,65 @@ namespace 酷安_UWP
         {
             try
             {
-                string result = await GetCoolApkMessage("https://api.coolapk.com/v6/feed/detail?id=" + feedId);
+                string result = await GetCoolApkMessage("/feed/detail?id=" + feedId);
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
                 return (JObject)jo["data"];
             }
             catch (Exception)
             {
-                return null;
+                throw;
             }
         }
         public static async Task<JArray> getFeedReplyListById(dynamic feedId, dynamic page, dynamic discussMode, dynamic fromFeedAuthor, dynamic firstItem, dynamic lastItem)
         {
             try
             {
-                string result = await GetCoolApkMessage($"https://api.coolapk.com/v6/feed/replyList?id={feedId}&listType=lastupdate_desc&page={page}&firstItem={firstItem}&lastItem={lastItem}&discussMode={discussMode}&feedType=feed&blockStatus=0&fromFeedAuthor={fromFeedAuthor}");
+                string result = await GetCoolApkMessage($"/feed/replyList?id={feedId}&listType=lastupdate_desc&page={page}&firstItem={firstItem}&lastItem={lastItem}&discussMode={discussMode}&feedType=feed&blockStatus=0&fromFeedAuthor={fromFeedAuthor}");
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
                 return (JArray)jo["data"];
             }
             catch (Exception)
             {
-                return null;
+                throw;
             }
         }
         public static async Task<JArray> getFeedLikeUsersListById(dynamic feedId, dynamic page, dynamic firstItem, dynamic lastItem)
         {
             try
             {
-                string result = await GetCoolApkMessage($"https://api.coolapk.com/v6/feed/likeList?id={feedId}&listType=lastupdate_desc&page={page}&firstItem={firstItem}&lastItem={lastItem}");
+                string result = await GetCoolApkMessage($"/feed/likeList?id={feedId}&listType=lastupdate_desc&page={page}&firstItem={firstItem}&lastItem={lastItem}");
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
                 return (JArray)jo["data"];
             }
             catch (Exception)
             {
-                return null;
+                throw;
             }
         }
         public static async Task<JArray> getReplyListById(dynamic feedId, dynamic page, dynamic discussMode, dynamic fromFeedAuthor, dynamic lastItem)
         {
             try
             {
-                string result = await GetCoolApkMessage($"https://api.coolapk.com/v6/feed/replyList?id={feedId}&listType=&page={page}&lastItem={lastItem}&discussMode={discussMode}&feedType=feed_reply&blockStatus=0&fromFeedAuthor={fromFeedAuthor}");
+                string result = await GetCoolApkMessage($"/feed/replyList?id={feedId}&listType=&page={page}&lastItem={lastItem}&discussMode={discussMode}&feedType=feed_reply&blockStatus=0&fromFeedAuthor={fromFeedAuthor}");
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
                 return (JArray)jo["data"];
             }
             catch (Exception)
             {
-                return null;
+                throw;
             }
         }
         public static async Task<JArray> getShareListById(dynamic feedId, dynamic page)
         {
             try
             {
-                string result = await GetCoolApkMessage($"https://api.coolapk.com/v6/feed/forwardList?id={feedId}&Type=feed&page={page}");
+                string result = await GetCoolApkMessage($"/feed/forwardList?id={feedId}&type=feed&page={page}");
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
                 return (JArray)jo["data"];
             }
             catch (Exception)
             {
-                return null;
+                throw;
             }
         }
 

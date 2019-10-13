@@ -53,7 +53,7 @@
                         <PivotItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock>动态</TextBlock>
-                                <TextBlock FontSize="16" VerticalAlignment="Bottom" Text="{Binding FeedNum}"/>
+                                <TextBlock Margin="3,0,0,0" Text="{Binding FeedNum}"/>
                             </StackPanel>
                         </PivotItem.Header>
                         <Frame x:Name="FeedListFrame"/>

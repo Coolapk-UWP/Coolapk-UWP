@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
@@ -16,9 +17,39 @@ namespace 酷安_UWP
         public string GetValue(string value)
         {
             if (jObject.TryGetValue(value, out JToken token))
-                return token.ToString();
-            else
-                return string.Empty;
+                if (value == "message")
+                {
+                    string s = token.ToString();
+                    s = s.Replace("\n", "\n\n");
+                    foreach (var i in IndexPage.emojis)
+                    {
+                        if (s.Contains(i))
+                        {
+                            if (i.Contains('('))
+                                s = s.Replace($"#{i})", $"\n![#{i})](ms-appx:/Emoji/{i}.png =24)");
+                            else s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}.png =24)");
+                        }
+                    }
+                    Regex regex = new Regex("<a.*?>\\S*"), regex2 = new Regex("href=\".*\""), regex3 = new Regex(">.*<");
+                    while (regex.IsMatch(s))
+                    {
+                        var h = regex.Match(s);
+                        string t = regex3.Match(h.Value).Value.Replace(">", string.Empty);
+                        t = t.Replace("<", string.Empty);
+                        s = s.Replace(h.Value, $"[{t}]({regex2.Match(h.Value).Value.Replace("href=", string.Empty)})");
+                    }
+                    return s;
+                }
+            else if (value == "dateline")
+                {
+                    long t = Convert.ToInt64(token.ToString());
+                    t *= 10000000;
+                    t += 621355968000000000;
+                    TimeSpan time = new TimeSpan(t);
+                    return (DateTime.Now - time).ToString(@"h\小时mm\分钟前");
+                }
+                else return token.ToString();
+            else                return string.Empty;
         }
         public Feed[] GetSelfs() => new Feed[] { this };
         public ImageSource GetValue2(string value)
@@ -46,6 +77,7 @@ namespace 酷安_UWP
                     images.Add(new BitmapImage(new Uri(item.ToString() + ".s.jpg")));
             return images.ToArray();
         }
+        public Feed[] GetFeed(string value) => new Feed[] { new Feed((JObject)jObject[value]) };
         public Feed[] GetFeeds(string value)
         {
             JArray array = (JArray)jObject.GetValue(value);
@@ -58,11 +90,15 @@ namespace 酷安_UWP
         public string[] GetValue4(string value)
         {
             JArray array = (JArray)jObject.GetValue(value);
-            List<string> s = new List<string>();
-            foreach (var item in array)
-                if (!string.IsNullOrEmpty(item.ToString()))
-                    s.Add(item.ToString() + ".s.jpg");
-            return s.ToArray();
+            if (array is null) return new string[] { };
+            else
+            {
+                List<string> s = new List<string>();
+                foreach (var item in array)
+                    if (!string.IsNullOrEmpty(item.ToString()))
+                        s.Add(item.ToString() + ".s.jpg");
+                return s.ToArray();
+            }
         }
     }
     public class Feed2 : Feed
@@ -73,7 +109,7 @@ namespace 酷安_UWP
 
         public Feed2(JObject jObject) : base(jObject) { }
         public Feed2(JObject jObject, string type) : base(jObject) => ListType = type;
-        public void SetJObject(JObject jObject) => base.jObject = jObject;
+
         public new Feed2[] GetFeeds(string value)
         {
             JArray array = new JArray();

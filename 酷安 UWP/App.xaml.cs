@@ -31,6 +31,7 @@ namespace 酷安_UWP
         /// <param name="e">有关启动请求和过程的详细信息。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            RegisterExceptionHandlingSynchronizationContext();
             Frame rootFrame = Window.Current.Content as Frame;
 
             // 不要在窗口已包含内容时重复应用程序初始化，
@@ -68,13 +69,8 @@ namespace 酷安_UWP
 
         private async void Application_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            string s = $"{e.Message}\n" +
-                $"{e.Exception}\n" +
-                $"{e.Exception.Source}\n" +
-                $"{e.Exception.StackTrace}";
-            Debug.WriteLine(s);
-            await new MessageDialog(s).ShowAsync();
             e.Handled = true;
+            await new MessageDialog($"Application Unhandled Exception:\n{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
         }
 
         /// <summary>
@@ -100,5 +96,19 @@ namespace 酷安_UWP
             //TODO: 保存应用程序状态并停止任何后台活动
             deferral.Complete();
         }
+
+        private void RegisterExceptionHandlingSynchronizationContext()
+        {
+            ExceptionHandlingSynchronizationContext
+                .Register()
+                .UnhandledException += SynchronizationContext_UnhandledException;
+        }
+
+        private async void SynchronizationContext_UnhandledException(object sender, AysncUnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            await new MessageDialog($"SynchronizationContext Unhandled Exception:\n{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
+        }
+
     }
 }

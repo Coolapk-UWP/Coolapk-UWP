@@ -63,32 +63,6 @@ namespace 酷安_UWP
             else page--;
             mainPage.DeactiveProgressRing();
         }
-        Uri blank = new Uri("about:blank");
-        private void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
-        {
-            try
-            {
-                WebView view = sender as WebView;
-                string s = view.Tag as string;
-                s = "<body style=\"font-family:\"segoe ui\",\"microsoft yahei\",\"microsoft mhei\",stheititc,sans-serif\">" + s + "</body>";
-                if (view.Source.Equals(blank) && !(s is null))
-                {
-                    foreach (var i in IndexPage.emojis)
-                    {
-                        if (s.Contains(i))
-                        {
-                            if (i.Contains('('))
-                                s = s.Replace('#' + i, $"<img style=\"width: 30; height: 30\" src=\"ms-appx-web:///Emoji/{i}.png\">");
-                            else
-                                s = s.Replace(i, $"<img style=\"width: 30; height: 30\" src=\"ms-appx-web:///Emoji/{i}.png\">");
-                        }
-                    }
-                    view.NavigateToString(s);
-                }
-            }
-            catch { }
-        }
-
 
         private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, "动态", null });
 

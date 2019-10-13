@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.Toolkit.Uwp.UI.Controls;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -65,7 +66,12 @@ namespace 酷安_UWP
             JObject detail = await CoolApkSDK.getFeedDetailById(id);
             JArray array = await CoolApkSDK.getFeedReplyListById(id, 1, 1, 0, string.Empty, string.Empty);
             FeedDetailList.ItemsSource = new Feed[] { new Feed(detail) };
-            FeedDetailPivot.DataContext = new { replynum = detail.GetValue("replynum").ToString(), likenum = detail.GetValue("likenum").ToString(), forwardnum = detail.GetValue("forwardnum").ToString() };
+            FeedDetailPivot.DataContext = new
+            {
+                replynum = detail.GetValue("replynum").ToString(),
+                likenum = detail.GetValue("likenum").ToString(),
+                forwardnum = detail.GetValue("forwardnum").ToString()
+            };
             if (array.Count != 0)
             {
                 feedfirstItem = array.First["id"].ToString();
@@ -101,33 +107,7 @@ namespace 酷安_UWP
             if (TitleTextBlock.Text != "回复")
                 Frame.GoBack();
         }
-
-        Uri blank = new Uri("about:blank");
-        private void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
-        {
-            try
-            {
-                WebView view = sender as WebView;
-                string s = view.Tag as string;
-                s = "<body style=\"font-family:\"segoe ui\",\"microsoft yahei\",\"microsoft mhei\",stheititc,sans-serif\">" + s + "</body>";
-                if (view.Source.Equals(blank) && !(s is null))
-                {
-                    foreach (var i in IndexPage.emojis)
-                    {
-                        if (s.Contains(i))
-                        {
-                            if (i.Contains('('))
-                                s = s.Replace('#' + i, $"<img style=\"width: 30; height: 30\" src=\"ms-appx-web:///Emoji/{i}.png\">");
-                            else
-                                s = s.Replace(i, $"<img style=\"width: 30; height: 30\" src=\"ms-appx-web:///Emoji/{i}.png\">");
-                        }
-                    }
-                    view.NavigateToString(s);
-                }
-            }
-            catch { }
-        }
-
+        
         private async void PivotItem_Loaded(object sender, RoutedEventArgs e)
         {
             PivotItem item = sender as PivotItem;
@@ -153,7 +133,7 @@ namespace 酷安_UWP
                     likeListView.ItemsSource = F;
                     break;
                 case "3":
-                    JArray roots = await CoolApkSDK.getShareListById(id, ++likepage);
+                    JArray roots = await CoolApkSDK.getShareListById(id, ++sharepage);
                     ObservableCollection<Feed> Fs = new ObservableCollection<Feed>();
                     if (roots.Count != 0)
                         foreach (JObject i in roots)
@@ -171,7 +151,8 @@ namespace 酷安_UWP
             if (TitleTextBlock.Text != "回复")
             {
                 ContentDialog1 contentDialog = new ContentDialog1();
-                contentDialog.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, "回复", (sender as FrameworkElement).Tag });
+                contentDialog.Navigate(typeof(FeedDetailPage),
+                    new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, "回复", (sender as FrameworkElement).Tag });
                 await contentDialog.ShowAsync();
             }
         }
@@ -241,41 +222,47 @@ namespace 酷安_UWP
                 }
         }
 
-        private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-                ListViewItem i = sender as ListViewItem;
-                Frame.Navigate(typeof(UserPage), new object[] { i.Tag as string, mainPage });
-        }
+        private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e) =>
+            Frame.Navigate(typeof(UserPage), new object[] { (sender as FrameworkElement).Tag as string, mainPage });
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
 
         }
 
+        private void MarkdownTextBlock_Loaded(object sender, RoutedEventArgs e)
+        {
+            MarkdownTextBlock block = sender as MarkdownTextBlock;
+            string s = block.Tag as string;
+
+        }
+
+        //https://www.cnblogs.com/arcsinw/p/8638526.html
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            SFlipView.Items.Clear();
             GridView view = sender as GridView;
+            List<ImageSource> list = new List<ImageSource>();
             if (view.Tag is string[])
             {
                 string[] ss = view.Tag as string[];
                 foreach (var s in ss)
-                    SFlipView.Items.Add(new Image() { Source = new BitmapImage(new Uri(s.Remove(s.Length - 6))) });
+                {
+                    list.Add(new BitmapImage(new Uri(s.Remove(s.Length - 6))));
+                }
                 SFlipView.SelectedIndex = view.SelectedIndex;
             }
             else if (view.Tag is string)
             {
                 string s = view.Tag as string;
-                SFlipView.Items.Add(new Image() { Source = new BitmapImage(new Uri(s)) });
+                if (string.IsNullOrWhiteSpace(s)) return;
+                list.Add(new BitmapImage(new Uri(s)));
             }
-            FScrollViewer.Visibility = SFlipView.Visibility = CloseFlip.Visibility = Visibility.Visible;
+            SFlipView.ItemsSource = list;
+            SFlipView.Visibility = CloseFlip.Visibility = Visibility.Visible;
         }
 
-        private void CloseFlip_Click(object sender, RoutedEventArgs e)
-        {
-            FScrollViewer.Visibility = SFlipView.Visibility = CloseFlip.Visibility = Visibility.Collapsed;
-            SFlipView.Items.Clear();
-        }
-
+        private void CloseFlip_Click(object sender, RoutedEventArgs e) => SFlipView.Visibility = CloseFlip.Visibility = Visibility.Collapsed;
     }
 
     public class TemplateSelector : DataTemplateSelector

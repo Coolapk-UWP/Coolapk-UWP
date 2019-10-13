@@ -95,7 +95,8 @@ namespace 酷安_UWP
                     pageType = typeof(SettingPage);
                     break;
                 case 1:
-                    pageType = typeof(AppRecommendPage);
+                    //pageType = typeof(AppRecommendPage);
+                    pageType = typeof(IndexPage);
                     break;
                 case 2:
                     pageType = typeof(DeveloperPage);
@@ -110,13 +111,12 @@ namespace 酷安_UWP
                     pageType = typeof(TestPage);
                     break;
             }
-            if (hamburgerMenuControl.SelectedIndex != seletedItem - 1)
-            {
-                hamburgerMenuControl.SelectedIndex = seletedItem - 1;
-                hamburgerMenuControl.SelectedOptionsIndex = seletedItem - 1 < 0 ? 0 : -1;
-            }
-            //VFrame.Navigate(typeof(FeedPage), new object[] { "536381", this });
-
+            /*
+             if (hamburgerMenuControl.SelectedIndex != seletedItem - 1)
+                        {
+                            hamburgerMenuControl.SelectedIndex = seletedItem - 1;
+                            hamburgerMenuControl.SelectedOptionsIndex = seletedItem - 1 < 0 ? 0 : -1;
+                        }*/
             VFrame.Navigate(pageType, this);
         }
 
@@ -167,12 +167,14 @@ namespace 酷安_UWP
         {
             List<MenuItem> items = new List<MenuItem>
             {
-                new MenuItem() { Icon = Symbol.View, Name = "应用●游戏", PageType = typeof(AppRecommendPage), Index = 1 },
-                new MenuItem() { Icon = Symbol.ContactPresence, Name = "开发者中心", PageType = typeof(DeveloperPage), Index = 2 },
-                new MenuItem() { Icon = Symbol.Contact, Name = "我", PageType = typeof(MyPage), Index = 3 },
-                new MenuItem() { Icon = Symbol.Home, Name = "头条", PageType = typeof(IndexPage), Index = 4 },
-                new MenuItem() { Icon = Symbol.Shuffle, Name = "test page", PageType = typeof(TestPage), Index = 5 }
-            };
+                //new MenuItem() { Icon = Symbol.View, Name = "应用●游戏", PageType = typeof(AppRecommendPage), Index = 1 },
+                //new MenuItem() { Icon = Symbol.ContactPresence, Name = "开发者中心", PageType = typeof(DeveloperPage), Index = 2 },
+                //new MenuItem() { Icon = Symbol.Contact, Name = "我", PageType = typeof(MyPage), Index = 3 },
+                new MenuItem() { Icon = Symbol.Home, Name = "头条", PageType = typeof(IndexPage), Index = 1/*4*/ }
+                #if test
+                ,new MenuItem() { Icon = Symbol.Shuffle, Name = "test page", PageType = typeof(TestPage), Index = 5 }
+#endif
+                };
             return items;
         }
 
