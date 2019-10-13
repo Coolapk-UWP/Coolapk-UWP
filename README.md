@@ -14,23 +14,33 @@
 
 ## 屏幕截图
 - PC/Hub
- - 头条
- ![头条](Screenshots/2019-10-13-130542.jpg)
- - 动态
- ![动态](Screenshots/2019-10-13-124904.jpg)
- - 动态详情
- ![动态详情](Screenshots/2019-10-13-124940.jpg)
+  - 启动图
+  ![启动图]
+  - 头条
+  ![头条](Screenshots/2019-10-13-130542.jpg)
+  - 应用与游戏
+  ![应用与游戏](Screenshots/2019-10-13-125244.jpg)
+  - 动态
+  ![动态](Screenshots/2019-10-13-124904.jpg)
+  - 动态详情
+  ![动态详情](Screenshots/2019-10-13-124940.jpg)
+  - 搜索
+  ![搜索]
+  - 应用详情
+  ![应用详情]
 - Mobile
- - 头条
- ![头条](http://image.coolapk.com/feed/2019/1011/21/1049834_51aa286c_0447_7126@480x800.jpeg.m.jpg)
- - 应用与游戏
- ![应用与游戏](http://image.coolapk.com/feed/2019/1011/21/1049834_1157a574_0447_7131@480x800.jpeg.m.jpg)
- - 动态
- ![动态](http://m.qpic.cn/psb?/V11c3we24eJ6Sb/3oTZ12V7J7TBVWAEv7yQLxbfGYdInRsiTPSPbHJ6Eis!/b/dLYAAAAAAAAA&bo=4AEgAwAAAAABB.I!&rf=viewer_4)
- - 搜索
- ![搜索](http://image.coolapk.com/feed/2019/1011/21/1049834_bd0a2a3d_0447_7133@480x800.jpeg.m.jpg)
- - 应用详情
- ![应用详情](http://image.coolapk.com/feed/2019/1011/21/1049834_0e5928bf_0447_7134@480x800.jpeg.m.jpg)
+  - 启动图
+  ![启动图](http://image.coolapk.com/feed/2019/1011/21/1049834_df0515be_0447_7124@480x800.jpeg.m.jpg)
+  - 头条
+  ![头条](http://image.coolapk.com/feed/2019/1011/21/1049834_51aa286c_0447_7126@480x800.jpeg.m.jpg)
+  - 应用与游戏
+  ![应用与游戏](http://image.coolapk.com/feed/2019/1011/21/1049834_1157a574_0447_7131@480x800.jpeg.m.jpg)
+  - 动态
+  ![动态](http://m.qpic.cn/psb?/V11c3we24eJ6Sb/3oTZ12V7J7TBVWAEv7yQLxbfGYdInRsiTPSPbHJ6Eis!/b/dLYAAAAAAAAA&bo=4AEgAwAAAAABB.I!&rf=viewer_4)
+  - 搜索
+  ![搜索](http://image.coolapk.com/feed/2019/1011/21/1049834_bd0a2a3d_0447_7133@480x800.jpeg.m.jpg)
+  - 应用详情
+  ![应用详情](http://image.coolapk.com/feed/2019/1011/21/1049834_0e5928bf_0447_7134@480x800.jpeg.m.jpg)
 
 ## 支持的语言
 中文
