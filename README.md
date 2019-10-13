@@ -8,6 +8,13 @@
 <a href="https://github.com/Tangent-90/Coolapk-UWP/releases/latest"><img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/Tangent-90/Coolapk-UWP/total.svg?label=DOWNLOAD&logo=github&style=for-the-badge"></a>
 <a href="https://pan.baidu.com/s/1Wjy-CUfjm0sOHCKLwQEALQ"><img alt="GitHub All Releases" src="https://img.shields.io/badge/download-%e5%af%86%e7%a0%81%ef%bc%9alIIl-magenta.svg?label=%e4%b8%8b%e8%bd%bd&logo=baidu&style=for-the-badge"></a>
 
+## Table of contents
+- [现有功能](#现有功能)
+- [支持的语言](#支持的语言)
+- [如何安装应用](#如何安装应用)
+- [屏幕截图](#屏幕截图)
+- [鸣谢](#鸣谢)
+
 ## 现有功能
 1. 浏览和下载应用
 2. 访问开发人员中心
