@@ -5,6 +5,6 @@
     xmlns:local="using:酷安_UWP.UsersPage"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Style="{StaticResource dialogStyle1}" PrimaryButtonText=" ">
+    mc:Ignorable="d" CloseButtonStyle="{ThemeResource NavigationBackButtonNormalStyle}" CloseButtonText="&#xE112;">
     <Frame x:Name="VFrame"/>
 </ContentDialog>
