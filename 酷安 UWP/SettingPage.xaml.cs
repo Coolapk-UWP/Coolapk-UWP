@@ -5,7 +5,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Foundation.Metadata;
 using Windows.Storage;
+using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -27,32 +29,66 @@ namespace 酷安_UWP
         public SettingPage()
         {
             this.InitializeComponent();
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            IsNoPicsMode.IsOn = Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]);
+            IsUseOldEmojiMode.IsOn = Convert.ToBoolean(localSettings.Values["IsUseOldEmojiMode"]);
+            IsDarkMode.IsOn = Convert.ToBoolean(localSettings.Values["IsDarkMode"]);
         }
 
-        ApplicationViewTitleBar TitleBar = ApplicationView.GetForCurrentView().TitleBar;
-        bool IsLight//标题栏颜色
+        static void InitializeSettings(ApplicationDataContainer localSettings)
         {
-            set
-            {
-                if (value == true)
-                    TitleBar.ButtonInactiveBackgroundColor =
-                        TitleBar.ButtonBackgroundColor =
-                        TitleBar.InactiveBackgroundColor =
-                        TitleBar.BackgroundColor = Windows.UI.Color.FromArgb(255, 252, 252, 255);
+            if (!localSettings.Values.ContainsKey("IsNoPicsMode"))
+                localSettings.Values.Add("IsNoPicsMode", false);
+            if (!localSettings.Values.ContainsKey("IsUseOldEmojiMode"))
+                localSettings.Values.Add("IsUseOldEmojiMode", false);
+            if (!localSettings.Values.ContainsKey("IsDarkMode"))
+                localSettings.Values.Add("IsDarkMode", false);
+
+        }
+
+        public static void CheckTheme()
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            InitializeSettings(localSettings);
+            if (Window.Current.Content is FrameworkElement frameworkElement)
+                if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]) == false)
+                {
+                    frameworkElement.RequestedTheme = ElementTheme.Light;
+                    ChangeTitleBarColor(true);
+                }
                 else
-                    TitleBar.ButtonInactiveBackgroundColor =
-                        TitleBar.ButtonBackgroundColor =
-                        TitleBar.InactiveBackgroundColor =
-                        TitleBar.BackgroundColor = Windows.UI.Color.FromArgb(255, 18, 18, 21);
+                {
+                    frameworkElement.RequestedTheme = ElementTheme.Dark;
+                    ChangeTitleBarColor(false);
+                }
+
+            void ChangeTitleBarColor(bool value)//标题栏颜色
+            {
+                Color BackColor = value ? Colors.White : Colors.Black,
+                      ForeColor = value ? Colors.Black : Colors.White,
+                      CoolForeInactiveColor = value ? Color.FromArgb(255, 50, 50, 50) : Color.FromArgb(255, 200, 200, 200),
+                      CoolBackPressedColor = value ? Color.FromArgb(255, 200, 200, 200) : Color.FromArgb(255, 50, 50, 50);
+                if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+                {
+                    StatusBar statusBar = StatusBar.GetForCurrentView();
+                    statusBar.BackgroundOpacity = 1; // 透明度
+                    statusBar.BackgroundColor = BackColor;
+                    statusBar.ForegroundColor = ForeColor;
+                }
+                else
+                {
+                    var view = ApplicationView.GetForCurrentView().TitleBar;
+                    view.BackgroundColor = view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = BackColor;
+                    view.ForegroundColor = view.ButtonForegroundColor = view.ButtonHoverForegroundColor = view.ButtonPressedForegroundColor = ForeColor;
+                    view.InactiveForegroundColor = view.ButtonInactiveForegroundColor = CoolForeInactiveColor;
+                    view.ButtonHoverBackgroundColor = BackColor;
+                    view.ButtonPressedBackgroundColor = CoolBackPressedColor;
+                }
             }
         }
 
-        //Delegate
-        public delegate void ThemeChangeHandler(object sender, ElementTheme Theme);
-        public event ThemeChangeHandler ThemeChange = null;
 
-
-        private void CleanDataButton_Click(System.Object sender, RoutedEventArgs e)
+        private void CleanDataButton_Click(object sender, RoutedEventArgs e)
         {
             ApplicationData.Current.LocalSettings.Values.Clear();
             var cookieManager = new Windows.Web.Http.Filters.HttpBaseProtocolFilter().CookieManager;
@@ -60,30 +96,21 @@ namespace 酷安_UWP
                 cookieManager.DeleteCookie(item);
         }
 
-        private void ChangeThemeButton_Click(System.Object sender, RoutedEventArgs e)
+        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Window.Current.Content is FrameworkElement frameworkElement)
+            ToggleSwitch toggle = sender as ToggleSwitch;
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            switch (toggle.Tag as string)
             {
-                if (frameworkElement.RequestedTheme == ElementTheme.Dark)
-                {
-                    frameworkElement.RequestedTheme = ElementTheme.Light;
-                    //ToLight.Begin();//Storyboard
-                    IsLight = true;//标题栏颜色
-                    ThemeChange?.Invoke(this, ElementTheme.Light);//Delegate
-                }
-                else
-                {
-                    frameworkElement.RequestedTheme = ElementTheme.Dark;
-                    //ToNight.Begin();//Storyboard
-                    IsLight = false;//标题栏颜色
-                    ThemeChange?.Invoke(this, ElementTheme.Dark);//Delegate
-                }
+                case "0":
+                case "1":
+                    localSettings.Values[toggle.Name] = toggle.IsOn;
+                    break;
+                case "2":
+                    localSettings.Values["IsDarkMode"] = toggle.IsOn;
+                    CheckTheme();
+                    break;
             }
-        }
-
-        private void ToggleSwitch_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-
         }
     }
 }

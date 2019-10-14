@@ -5,55 +5,46 @@
     xmlns:local="using:酷安_UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
-    xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    mc:Ignorable="d"
+    mc:Ignorable="d" 
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
         <!--动态-->
         <DataTemplate x:Key="Feed" x:DataType="local:Feed">
-            <ListViewItem Margin="0,5" Tag="{x:Bind}" Tapped="FeedListViewItem_Tapped">
+            <ListViewItem Margin="0,5" Tag="{x:Bind}" Tapped="FeedListViewItem_Tapped" Template="{StaticResource ListViewItemTemplate1}">
                 <Grid MinWidth="300">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Grid Grid.Row="0">
-                        <StackPanel Orientation="Horizontal">
-                            <Button Click="Button_Click" Tag="{x:Bind GetValue('uid')}" Background="{x:Null}">
-                                <Grid>
-                                    <Ellipse Width="50" Height="50" HorizontalAlignment="Left" >
-                                        <Ellipse.Fill>
-                                            <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
-                                        </Ellipse.Fill>
-                                    </Ellipse>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Margin="60,0,0,0" Grid.Row="0" Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                                        <TextBlock Margin="60,0,0,0" Grid.Row="1"  Text="{x:Bind GetValue('device_title')}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Gray"/>
-                                    </Grid>
-                                </Grid>
-                            </Button>
-                            <TextBlock Margin="10" Text="{x:Bind GetValue('dateline')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        </StackPanel>
-                        <Button Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Top">
-                            <SymbolIcon Symbol="More"/>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <Button Style="{StaticResource ButtonStyle1}" Click="Button_Click" Tag="{x:Bind GetValue('uid')}" Background="{x:Null}">
+                            <Ellipse Width="50" Height="50" HorizontalAlignment="Left" >
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
                         </Button>
-
-                    </Grid>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <StackPanel Grid.Row="1">
+                                <TextBlock Text="{x:Bind GetValue('dateline')}" Foreground="Gray"/>
+                                <TextBlock Text="{x:Bind GetValue('device_title')}" Foreground="Gray"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
                     <Grid Grid.Row="1" Margin="5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <controls:MarkdownTextBlock Text="{x:Bind GetValue('message')}"/>
-                        <GridView Grid.Row="1" MinHeight="0" Margin="0,20,0,0" HorizontalAlignment="Center" Tag="{x:Bind GetValue4('picArr')}" ItemsSource="{x:Bind GetValue4('picArr')}">
+                        <GridView Grid.Row="1" MinHeight="0" Margin="0,20,0,0" HorizontalAlignment="Center" Tag="{x:Bind GetValue4('picArr',x:False)}" ItemsSource="{x:Bind GetValue4('picArr',x:True)}">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="x:String">
                                     <Image MaxWidth="200" MaxHeight="200" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
@@ -79,47 +70,29 @@
                             </GridView.ItemTemplate>
                         </GridView>
                     </Grid>
-                    <Grid Grid.Row="2" Margin="10,10,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Button Background="{x:Null}" Grid.Column="0" HorizontalAlignment="Center">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <SymbolIcon Symbol="Like" Grid.Column="0"/>
-                                <TextBlock Margin="10,0,0,0" Text="{x:Bind GetValue('likenum')}" Grid.Column="1"/>
-                            </Grid>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
+                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Like"/>
+                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('likenum')}" Grid.Column="1"/>
+                            </StackPanel>
                         </Button>
-                        <Button Background="{x:Null}" Grid.Column="1" HorizontalAlignment="Center">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <SymbolIcon Symbol="Comment" Grid.Column="0"/>
-                                <TextBlock Margin="10,0,0,0" Text="{x:Bind GetValue('replynum')}" Grid.Column="1"/>
-                            </Grid>
+                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Comment"/>
+                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('replynum')}" Grid.Column="1"/>
+                            </StackPanel>
                         </Button>
-                        <Button Background="{x:Null}" Grid.Column="2" HorizontalAlignment="Center">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <SymbolIcon Symbol="Link" Grid.Column="0"/>
-                                <TextBlock Margin="10,0,0,0" Text="{x:Bind GetValue('share_num')}" Grid.Column="1"/>
-                            </Grid>
+                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Link"/>
+                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('share_num')}" Grid.Column="1"/>
+                            </StackPanel>
                         </Button>
-                    </Grid>
+                    </StackPanel>
                 </Grid>
             </ListViewItem>
         </DataTemplate>
-
     </Page.Resources>
 
 

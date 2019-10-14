@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -37,9 +38,12 @@ namespace 酷安_UWP
         int sharepage = 0;
         string feedfirstItem, feedlastItem;
         string likefirstItem, likelastItem;
+        bool loaded = false;
+        ObservableCollection<ImageSource> list = new ObservableCollection<ImageSource>();
         public FeedDetailPage()
         {
             this.InitializeComponent();
+            SFlipView.ItemsSource = list;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -52,13 +56,16 @@ namespace 酷安_UWP
             TitleTextBlock.Text = title;
             mainPage.ActiveProgressRing();
             if (title == "动态")
+                if(!loaded)
                 LoadFeedDetail(id);
             if (title == "回复")
             {
                 TitleBar.Visibility = Visibility.Collapsed;
                 reply = ((object[])e.Parameter)[3] as Feed2;
+                if(!loaded)
                 LoadRepliesDetail(id);
             }
+            loaded = true;
         }
 
         public async void LoadFeedDetail(string id)
@@ -107,7 +114,7 @@ namespace 酷安_UWP
             if (TitleTextBlock.Text != "回复")
                 Frame.GoBack();
         }
-        
+
         private async void PivotItem_Loaded(object sender, RoutedEventArgs e)
         {
             PivotItem item = sender as PivotItem;
@@ -150,10 +157,23 @@ namespace 酷安_UWP
         {
             if (TitleTextBlock.Text != "回复")
             {
-                ContentDialog1 contentDialog = new ContentDialog1();
-                contentDialog.Navigate(typeof(FeedDetailPage),
-                    new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, "回复", (sender as FrameworkElement).Tag });
-                await contentDialog.ShowAsync();
+
+                if (FeedDetailPivot.SelectedIndex == 2)
+                {
+                    Frame.Navigate(typeof(FeedDetailPage),
+                        new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, "动态", (sender as FrameworkElement).Tag });
+                }
+                else
+                {
+                    ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                    ContentDialog1 contentDialog = new ContentDialog1
+                    {
+                        RequestedTheme = Convert.ToBoolean(localSettings.Values["IsDarkMode"]) ? ElementTheme.Dark : ElementTheme.Light
+                    };
+                    contentDialog.Navigate(typeof(FeedDetailPage),
+                        new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, "回复", (sender as FrameworkElement).Tag });
+                    await contentDialog.ShowAsync();
+                }
             }
         }
 
@@ -240,26 +260,20 @@ namespace 酷安_UWP
         //https://www.cnblogs.com/arcsinw/p/8638526.html
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SFlipView.Items.Clear();
+            list.Clear();
             GridView view = sender as GridView;
-            List<ImageSource> list = new List<ImageSource>();
             if (view.Tag is string[])
-            {
-                string[] ss = view.Tag as string[];
-                foreach (var s in ss)
-                {
+                foreach (var s in view.Tag as string[])
                     list.Add(new BitmapImage(new Uri(s.Remove(s.Length - 6))));
-                }
-                SFlipView.SelectedIndex = view.SelectedIndex;
-            }
             else if (view.Tag is string)
             {
                 string s = view.Tag as string;
                 if (string.IsNullOrWhiteSpace(s)) return;
                 list.Add(new BitmapImage(new Uri(s)));
             }
-            SFlipView.ItemsSource = list;
+            SFlipView.SelectedIndex = view.SelectedIndex;
             SFlipView.Visibility = CloseFlip.Visibility = Visibility.Visible;
+            view.SelectedIndex = -1;
         }
 
         private void CloseFlip_Click(object sender, RoutedEventArgs e) => SFlipView.Visibility = CloseFlip.Visibility = Visibility.Collapsed;

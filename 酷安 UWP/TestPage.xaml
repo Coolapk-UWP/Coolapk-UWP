@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    
     <Grid>
         <ScrollViewer>
             <StackPanel>
@@ -16,6 +16,8 @@
                 <Button Click="Button_Click">go to</Button>
                 <TextBox x:Name="txb1"/>
                 <controls:MarkdownTextBlock Text="{x:Bind txb1.Text,Mode=OneWay}"/>
+                <Button Click="Button_Click_1">get update</Button>
+                <Button Click="Button_Click_2">show dialog</Button>
             </StackPanel>
         </ScrollViewer>
     </Grid>

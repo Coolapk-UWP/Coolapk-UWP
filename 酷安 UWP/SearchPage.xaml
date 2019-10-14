@@ -11,13 +11,11 @@
     <Grid>
         <ListBox Margin="0,48,0,0" x:Name="SearchList" SelectionChanged="SearchList_SelectionChanged"/>
 
-        <Grid Height="48" VerticalAlignment="Top" Background="{StaticResource CoolApk_Theme_Back}">
-            <TextBox x:Name="SearchText" Background="Transparent" BorderBrush="{StaticResource CoolApk_Theme_Fore}" Foreground="{ThemeResource CoolApk_Theme_Fore}" SelectionHighlightColor="#CC969696" Margin="48,0" VerticalAlignment="Center" KeyUp="SearchText_KeyUp"/>
-            <Button x:Name="SearchBack" Click="SearchBack_Click" VerticalAlignment="Stretch" Width="48" Background="Transparent">
-                <SymbolIcon Foreground="{ThemeResource CoolApk_Theme_Fore}" Symbol="Back"/>
-            </Button>
+        <Grid Height="48" VerticalAlignment="Top" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <TextBox x:Name="SearchText" Background="Transparent" BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" SelectionHighlightColor="#CC969696" Margin="48,0" VerticalAlignment="Center" KeyUp="SearchText_KeyUp"/>
+            <Button x:Name="SearchBack" Click="SearchBack_Click" VerticalAlignment="Stretch" Width="48" Background="Transparent" Style="{ThemeResource NavigationBackButtonNormalStyle}"/>
             <Button Click="SearchButton_Click" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="48" Background="Transparent">
-                <SymbolIcon Foreground="{ThemeResource CoolApk_Theme_Fore}" Symbol="Zoom"/>
+                <SymbolIcon Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Symbol="Zoom"/>
             </Button>
         </Grid>
     </Grid>

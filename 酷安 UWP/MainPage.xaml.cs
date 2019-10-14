@@ -7,11 +7,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Foundation.Metadata;
 using Windows.Storage;
+using Windows.System;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
@@ -26,14 +28,6 @@ namespace 酷安_UWP
         //public static TextBlock _User_Name;
         //public static ImageBrush _User_Face;
         //public static ColumnDefinition _dcd, _lcd;
-
-        Color CoolColor = ((SolidColorBrush)Application.Current.Resources["CoolApk_Theme"]).Color;
-        Color CoolForeColor = ((SolidColorBrush)Application.Current.Resources["CoolApk_Theme_Fore"]).Color;
-        Color CoolForeInactiveColor = Color.FromArgb(255, 50, 50, 50);
-        Color CoolBackPressedColor = Color.FromArgb(255, 200, 200, 200);
-        Color CoolBackHoverColor = Color.FromArgb(255, 255, 255, 255);
-        Color CoolBackColor = Color.FromArgb(255, 230, 230, 230);
-        //Color.FromArgb(255, 72, 174, 76);
         public static int seletedItem =
 #if test
             5;
@@ -43,45 +37,10 @@ namespace 酷安_UWP
         public MainPage()
         {
             this.InitializeComponent();
-
-            // 判断是否存在 StatusBar
-            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-            {
-                StatusBar statusBar = StatusBar.GetForCurrentView();
-                statusBar.BackgroundOpacity = 1; // 透明度
-                statusBar.BackgroundColor = CoolBackColor;
-                statusBar.ForegroundColor = CoolForeColor;
-            }
-            else
-            {
-                var view = ApplicationView.GetForCurrentView().TitleBar;
-                // active
-                view.BackgroundColor = CoolBackColor;
-                view.ForegroundColor = CoolForeColor;
-
-                // inactive
-                view.InactiveBackgroundColor = CoolBackColor;
-                view.InactiveForegroundColor = CoolForeInactiveColor;
-
-                // button
-                view.ButtonBackgroundColor = CoolBackColor;
-                view.ButtonForegroundColor = CoolForeColor;
-
-                view.ButtonHoverBackgroundColor = CoolBackHoverColor;
-                view.ButtonHoverForegroundColor = CoolForeColor;
-
-                view.ButtonPressedBackgroundColor = CoolBackPressedColor;
-                view.ButtonPressedForegroundColor = CoolForeColor;
-
-                view.ButtonInactiveBackgroundColor = CoolBackColor;
-                view.ButtonInactiveForegroundColor = CoolForeInactiveColor;
-            }
             SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
-
-            //_dcd = dcd;
-
             hamburgerMenuControl.ItemsSource = MenuItem.GetMainItems();
             hamburgerMenuControl.OptionsItemsSource = MenuItem.GetOptionsItems();
+            SettingPage.CheckTheme();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

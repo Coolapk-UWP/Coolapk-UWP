@@ -8,7 +8,7 @@
     xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    mc:Ignorable="d"
+    mc:Ignorable="d" 
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded"
     >
@@ -289,7 +289,7 @@
             </PivotItem>
         </Pivot>
         <Grid Height="50" VerticalAlignment="Top">
-            <Button Click="SearchButton_Click" Width="60" Height="50" HorizontalAlignment="Right" Background="Transparent" Foreground="{StaticResource CoolApk_Theme_Fore}">
+            <Button Click="SearchButton_Click" Width="60" Height="50" HorizontalAlignment="Right" Background="Transparent" Foreground="{ThemeResource ApplicationForegroundThemeBrush}">
                 <SymbolIcon Symbol="Zoom"/>
             </Button>
         </Grid>

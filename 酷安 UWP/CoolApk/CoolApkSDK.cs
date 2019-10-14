@@ -48,6 +48,7 @@ namespace 酷安_UWP
             {
                 var mClient = new HttpClient();
 
+                mClient.DefaultRequestHeaders.UserAgent.ParseAdd(" +CoolMarket/9.2.2-1905301");
                 //mClient.DefaultRequestHeaders.Add("User-Agent", "Dalvik/2.1.0 (Linux; U; Android 9; MI 8 SE MIUI/9.5.9) (#Build; Xiaomi; MI 8 SE; PKQ1.181121.001; 9) +CoolMarket/9.2.2-1905301");
                 mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
                 mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "28");
@@ -62,7 +63,7 @@ namespace 酷安_UWP
                 mClient.DefaultRequestHeaders.Add("Host", "api.coolapk.com");
                 return await mClient.GetStringAsync("https://api.coolapk.com/v6" + url);
             }
-            catch (Exception e)
+            catch
             {
                 throw;
             }
@@ -77,7 +78,7 @@ namespace 酷安_UWP
                 uid = uid.Split(new string[] { @"""" },StringSplitOptions.RemoveEmptyEntries)[0];
                 return uid;
             }
-            catch (Exception e)
+            catch
             {
                 throw;
             }

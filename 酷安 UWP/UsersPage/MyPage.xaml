@@ -10,10 +10,10 @@
     <Grid>
 
         <ScrollViewer>
-            <StackPanel Background="{StaticResource CoolApk_Theme_Back}">
+            <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                 <Button Click="Login_Click" Height="100" IsEnabled="False" Background="#00000000" HorizontalAlignment="Stretch">
                     <Grid>
-                        <SymbolIcon Margin="10" HorizontalAlignment="Left" Width="80" Foreground="{StaticResource CoolApk_Theme_Fore}" Symbol="Contact" RenderTransformOrigin="0.5,0.5" >
+                        <SymbolIcon Margin="10" HorizontalAlignment="Left" Width="80" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Symbol="Contact" RenderTransformOrigin="0.5,0.5" >
                             <SymbolIcon.RenderTransform>
                                 <CompositeTransform ScaleX="1.5" ScaleY="1.5"/>
                             </SymbolIcon.RenderTransform>
@@ -23,7 +23,7 @@
                                 <ImageBrush x:Name="User_Face" />
                             </Ellipse.Fill>
                         </Ellipse>
-                        <TextBlock Name="User_Name" Text="请登录" FontSize="30" Foreground="{StaticResource CoolApk_Theme_Fore}" Margin="100,0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        <TextBlock Name="User_Name" Text="请登录" FontSize="30" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Margin="100,0" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
                         <Grid Name="levelGrid" Width="50" Margin="10,10" VerticalAlignment="Top" HorizontalAlignment="Right">
                             <Line Stretch="Fill" Stroke="Red" StrokeThickness="20" X2="1" StrokeEndLineCap="Round" />
@@ -38,17 +38,17 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Foreground="{StaticResource CoolApk_Theme_Fore}"   
+                    <Button Foreground="{ThemeResource ApplicationForegroundThemeBrush}"   
                        BorderThickness="0" BorderBrush="Transparent" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Button_Click">
                         <Grid>
-                            <TextBlock Name="dt" Text="0" Foreground="{StaticResource CoolApk_Theme_Fore}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,20"/>
-                            <TextBlock Text="动态" Foreground="{StaticResource CoolApk_Theme_Fore}" Margin="0,20,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Name="dt" Text="0" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,20"/>
+                            <TextBlock Text="动态" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Margin="0,20,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Grid>
                     </Button>
-                    <TextBlock Name="gz" Text="0" Foreground="{StaticResource CoolApk_Theme_Fore}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,20" Grid.Column="1"/>
-                    <TextBlock Text="关注" Foreground="{StaticResource CoolApk_Theme_Fore}" Margin="0,20,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1"/>
-                    <TextBlock Name="fs" Text="0" Foreground="{StaticResource CoolApk_Theme_Fore}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,20" Grid.Column="2"/>
-                    <TextBlock Text="粉丝" Foreground="{StaticResource CoolApk_Theme_Fore}" Margin="0,20,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2"/>
+                    <TextBlock Name="gz" Text="0" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,20" Grid.Column="1"/>
+                    <TextBlock Text="关注" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Margin="0,20,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1"/>
+                    <TextBlock Name="fs" Text="0" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,20" Grid.Column="2"/>
+                    <TextBlock Text="粉丝" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Margin="0,20,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2"/>
 
                 </Grid>
                 <ListBox SelectionChanged="ListBox_SelectionChanged"/>

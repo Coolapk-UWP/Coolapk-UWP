@@ -42,6 +42,8 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -166,6 +168,7 @@
     <Content Include="Assets\BadgeLogo.scale-150.png" />
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\BadgeLogo.scale-400.png" />
+    <Content Include="Assets\img_placeholder.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -302,18 +305,22 @@
     <Content Include="Emoji\[Blob滑稽].png" />
     <Content Include="Emoji\[cos滑稽].png" />
     <Content Include="Emoji\[doge].png" />
+    <Content Include="Emoji\[doge]2.png" />
     <Content Include="Emoji\[doge互粉].png" />
     <Content Include="Emoji\[doge原谅ta].png" />
+    <Content Include="Emoji\[doge原谅ta]2.png" />
     <Content Include="Emoji\[doge口罩].png" />
     <Content Include="Emoji\[doge吃惊].png" />
     <Content Include="Emoji\[doge吃瓜].png" />
     <Content Include="Emoji\[doge告辞].png" />
     <Content Include="Emoji\[doge呵斥].png" />
+    <Content Include="Emoji\[doge呵斥]2.png" />
     <Content Include="Emoji\[doge并不简单].png" />
     <Content Include="Emoji\[doge期待].png" />
     <Content Include="Emoji\[doge汗].png" />
     <Content Include="Emoji\[doge疑问].png" />
     <Content Include="Emoji\[doge笑哭].png" />
+    <Content Include="Emoji\[doge笑哭]2.png" />
     <Content Include="Emoji\[doge装酷].png" />
     <Content Include="Emoji\[doge酷].png" />
     <Content Include="Emoji\[doge问号].png" />
@@ -322,8 +329,10 @@
     <Content Include="Emoji\[Google滑稽].png" />
     <Content Include="Emoji\[NO].png" />
     <Content Include="Emoji\[ok].png" />
+    <Content Include="Emoji\[OK]2.png" />
     <Content Include="Emoji\[py交易].png" />
     <Content Include="Emoji\[qqdoge].png" />
+    <Content Include="Emoji\[qqdoge]2.png" />
     <Content Include="Emoji\[SegoeUI滑稽].png" />
     <Content Include="Emoji\[t耐克嘴].png" />
     <Content Include="Emoji\[wpy交易].png" />
@@ -421,24 +430,33 @@
     <Content Include="Emoji\[不开心].png" />
     <Content Include="Emoji\[乒乓].png" />
     <Content Include="Emoji\[二哈].png" />
+    <Content Include="Emoji\[二哈]2.png" />
     <Content Include="Emoji\[二哈盯].png" />
     <Content Include="Emoji\[亲亲].png" />
+    <Content Include="Emoji\[亲亲]2.png" />
     <Content Include="Emoji\[便便].png" />
     <Content Include="Emoji\[假笑].png" />
     <Content Include="Emoji\[偷看].png" />
     <Content Include="Emoji\[傲慢].png" />
+    <Content Include="Emoji\[傲慢]2.png" />
     <Content Include="Emoji\[再见].png" />
+    <Content Include="Emoji\[再见]2.png" />
     <Content Include="Emoji\[冷汗].png" />
     <Content Include="Emoji\[凋谢].png" />
+    <Content Include="Emoji\[凋谢]2.png" />
     <Content Include="Emoji\[刀].png" />
     <Content Include="Emoji\[勾引].png" />
     <Content Include="Emoji\[卖萌].png" />
     <Content Include="Emoji\[发呆].png" />
+    <Content Include="Emoji\[发呆]2.png" />
     <Content Include="Emoji\[发怒].png" />
+    <Content Include="Emoji\[发怒]2.png" />
     <Content Include="Emoji\[发抖].png" />
     <Content Include="Emoji\[受虐滑稽].png" />
     <Content Include="Emoji\[可怜].png" />
+    <Content Include="Emoji\[可怜]2.png" />
     <Content Include="Emoji\[可爱].png" />
+    <Content Include="Emoji\[可爱]2.png" />
     <Content Include="Emoji\[右哼哼].png" />
     <Content Include="Emoji\[吃瓜].png" />
     <Content Include="Emoji\[吐].png" />
@@ -446,6 +464,7 @@
     <Content Include="Emoji\[吓].png" />
     <Content Include="Emoji\[呲牙].png" />
     <Content Include="Emoji\[呵呵].png" />
+    <Content Include="Emoji\[呵呵]2.png" />
     <Content Include="Emoji\[咒骂].png" />
     <Content Include="Emoji\[咖啡].png" />
     <Content Include="Emoji\[哈哈].png" />
@@ -457,6 +476,7 @@
     <Content Include="Emoji\[喝茶].png" />
     <Content Include="Emoji\[喝酒].png" />
     <Content Include="Emoji\[喵喵].png" />
+    <Content Include="Emoji\[喵喵]2.png" />
     <Content Include="Emoji\[喵喵互粉].png" />
     <Content Include="Emoji\[喵喵再见].png" />
     <Content Include="Emoji\[喵喵原谅ta].png" />
@@ -477,12 +497,15 @@
     <Content Include="Emoji\[喵喵飞吻].png" />
     <Content Include="Emoji\[喷].png" />
     <Content Include="Emoji\[喷血].png" />
+    <Content Include="Emoji\[喷血]2.png" />
     <Content Include="Emoji\[嘘].png" />
     <Content Include="Emoji\[嘿哈].png" />
+    <Content Include="Emoji\[嘿哈]2.png" />
     <Content Include="Emoji\[嘿嘿].png" />
     <Content Include="Emoji\[噗].png" />
     <Content Include="Emoji\[困].png" />
     <Content Include="Emoji\[坏笑].png" />
+    <Content Include="Emoji\[坏笑]2.png" />
     <Content Include="Emoji\[墨镜滑稽].png" />
     <Content Include="Emoji\[大兵].png" />
     <Content Include="Emoji\[大哭].png" />
@@ -490,41 +513,53 @@
     <Content Include="Emoji\[奋斗].png" />
     <Content Include="Emoji\[奸笑].png" />
     <Content Include="Emoji\[委屈].png" />
+    <Content Include="Emoji\[委屈]2.png" />
     <Content Include="Emoji\[害怕].png" />
     <Content Include="Emoji\[害羞].png" />
+    <Content Include="Emoji\[害羞]2.png" />
     <Content Include="Emoji\[小嘴滑稽].png" />
     <Content Include="Emoji\[小纠结].png" />
     <Content Include="Emoji\[尴尬].png" />
     <Content Include="Emoji\[左哼哼].png" />
     <Content Include="Emoji\[差劲].png" />
     <Content Include="Emoji\[弱].png" />
+    <Content Include="Emoji\[弱]2.png" />
     <Content Include="Emoji\[强].png" />
+    <Content Include="Emoji\[强]2.png" />
     <Content Include="Emoji\[得意].png" />
     <Content Include="Emoji\[微微一笑].png" />
     <Content Include="Emoji\[微笑].png" />
     <Content Include="Emoji\[心碎].png" />
+    <Content Include="Emoji\[心碎]2.png" />
     <Content Include="Emoji\[快哭了].png" />
     <Content Include="Emoji\[怄火].png" />
     <Content Include="Emoji\[惊喜].png" />
     <Content Include="Emoji\[惊恐].png" />
     <Content Include="Emoji\[惊讶].png" />
+    <Content Include="Emoji\[惊讶]2.png" />
     <Content Include="Emoji\[憨笑].png" />
     <Content Include="Emoji\[懒得理].png" />
     <Content Include="Emoji\[我最美].png" />
+    <Content Include="Emoji\[我最美]2.png" />
     <Content Include="Emoji\[托腮].png" />
+    <Content Include="Emoji\[托腮]2.png" />
     <Content Include="Emoji\[抓狂].png" />
     <Content Include="Emoji\[折磨].png" />
     <Content Include="Emoji\[抠鼻].png" />
+    <Content Include="Emoji\[抠鼻]2.png" />
     <Content Include="Emoji\[抱拳].png" />
+    <Content Include="Emoji\[抱拳]2.png" />
     <Content Include="Emoji\[拥抱].png" />
     <Content Include="Emoji\[拳头].png" />
     <Content Include="Emoji\[挑眉坏笑].png" />
     <Content Include="Emoji\[挨打].png" />
     <Content Include="Emoji\[捂嘴笑].png" />
     <Content Include="Emoji\[捂脸].png" />
+    <Content Include="Emoji\[捂脸]2.png" />
     <Content Include="Emoji\[掩面笑].png" />
     <Content Include="Emoji\[握手].png" />
     <Content Include="Emoji\[撇嘴].png" />
+    <Content Include="Emoji\[撇嘴]2.png" />
     <Content Include="Emoji\[擦汗].png" />
     <Content Include="Emoji\[敲打].png" />
     <Content Include="Emoji\[斗鸡眼滑稽].png" />
@@ -550,16 +585,19 @@
     <Content Include="Emoji\[新酷币5毛].png" />
     <Content Include="Emoji\[新酷币].png" />
     <Content Include="Emoji\[无奈].png" />
+    <Content Include="Emoji\[无奈]2.png" />
     <Content Include="Emoji\[无语].png" />
     <Content Include="Emoji\[晕].png" />
     <Content Include="Emoji\[月亮].png" />
     <Content Include="Emoji\[机智].png" />
+    <Content Include="Emoji\[机智]2.png" />
     <Content Include="Emoji\[欢呼].png" />
     <Content Include="Emoji\[汗].png" />
     <Content Include="Emoji\[泪奔].png" />
     <Content Include="Emoji\[流汗].png" />
     <Content Include="Emoji\[流汗滑稽].png" />
     <Content Include="Emoji\[流泪].png" />
+    <Content Include="Emoji\[流泪]2.png" />
     <Content Include="Emoji\[滑稽].png" />
     <Content Include="Emoji\[火把].png" />
     <Content Include="Emoji\[灰色酷币].png" />
@@ -567,19 +605,26 @@
     <Content Include="Emoji\[爆怒].png" />
     <Content Include="Emoji\[爱你].png" />
     <Content Include="Emoji\[爱心].png" />
+    <Content Include="Emoji\[爱心]2.png" />
     <Content Include="Emoji\[爱情].png" />
     <Content Include="Emoji\[牛啤].png" />
     <Content Include="Emoji\[猪头].png" />
     <Content Include="Emoji\[玫瑰].png" />
+    <Content Include="Emoji\[玫瑰]2.png" />
     <Content Include="Emoji\[瓢虫].png" />
     <Content Include="Emoji\[疑问].png" />
+    <Content Include="Emoji\[疑问]2.png" />
     <Content Include="Emoji\[白眼].png" />
+    <Content Include="Emoji\[白眼]2.png" />
     <Content Include="Emoji\[白纹酷币].png" />
     <Content Include="Emoji\[皱眉].png" />
+    <Content Include="Emoji\[皱眉]2.png" />
     <Content Include="Emoji\[睡].png" />
+    <Content Include="Emoji\[睡]2.png" />
     <Content Include="Emoji\[示爱].png" />
     <Content Include="Emoji\[礼物].png" />
     <Content Include="Emoji\[笑哭].png" />
+    <Content Include="Emoji\[笑哭]2.png" />
     <Content Include="Emoji\[笑哭再见].png" />
     <Content Include="Emoji\[笑眼].png" />
     <Content Include="Emoji\[篮球].png" />
@@ -590,11 +635,14 @@
     <Content Include="Emoji\[绿药丸].png" />
     <Content Include="Emoji\[耐克嘴].png" />
     <Content Include="Emoji\[耶].png" />
+    <Content Include="Emoji\[耶]2.png" />
     <Content Include="Emoji\[胜利].png" />
     <Content Include="Emoji\[舒服].png" />
     <Content Include="Emoji\[舔].png" />
     <Content Include="Emoji\[色].png" />
+    <Content Include="Emoji\[色]2.png" />
     <Content Include="Emoji\[菜刀].png" />
+    <Content Include="Emoji\[菜刀]2.png" />
     <Content Include="Emoji\[蛋糕].png" />
     <Content Include="Emoji\[表面哭泣].png" />
     <Content Include="Emoji\[表面开心].png" />
@@ -605,52 +653,59 @@
     <Content Include="Emoji\[跳跳].png" />
     <Content Include="Emoji\[转圈].png" />
     <Content Include="Emoji\[鄙视].png" />
+    <Content Include="Emoji\[鄙视]2.png" />
     <Content Include="Emoji\[酷].png" />
+    <Content Include="Emoji\[酷]2.png" />
     <Content Include="Emoji\[酷安].png" />
     <Content Include="Emoji\[酷安绿帽].png" />
     <Content Include="Emoji\[酷安钓鱼].png" />
     <Content Include="Emoji\[酷币1%24].png" />
-    <Content Include="Emoji\[酷币100块] %282.png" />
     <Content Include="Emoji\[酷币100块].png" />
-    <Content Include="Emoji\[酷币10块] %282.png" />
+    <Content Include="Emoji\[酷币100块]2.png" />
     <Content Include="Emoji\[酷币10块].png" />
+    <Content Include="Emoji\[酷币10块]2.png" />
     <Content Include="Emoji\[酷币1].png" />
-    <Content Include="Emoji\[酷币1€] %282.png" />
     <Content Include="Emoji\[酷币1€].png" />
-    <Content Include="Emoji\[酷币1分] %282.png" />
+    <Content Include="Emoji\[酷币1€]2.png" />
     <Content Include="Emoji\[酷币1分].png" />
-    <Content Include="Emoji\[酷币1块] %282.png" />
+    <Content Include="Emoji\[酷币1分]2.png" />
     <Content Include="Emoji\[酷币1块].png" />
-    <Content Include="Emoji\[酷币1毛] %282.png" />
+    <Content Include="Emoji\[酷币1块]2.png" />
     <Content Include="Emoji\[酷币1毛].png" />
+    <Content Include="Emoji\[酷币1毛]2.png" />
     <Content Include="Emoji\[酷币2%24].png" />
-    <Content Include="Emoji\[酷币20块] %282.png" />
     <Content Include="Emoji\[酷币20块].png" />
+    <Content Include="Emoji\[酷币20块]2.png" />
     <Content Include="Emoji\[酷币2].png" />
-    <Content Include="Emoji\[酷币2€] %282.png" />
     <Content Include="Emoji\[酷币2€].png" />
-    <Content Include="Emoji\[酷币2分] %282.png" />
+    <Content Include="Emoji\[酷币2€]2.png" />
     <Content Include="Emoji\[酷币2分].png" />
-    <Content Include="Emoji\[酷币2块] %282.png" />
+    <Content Include="Emoji\[酷币2分]2.png" />
     <Content Include="Emoji\[酷币2块].png" />
+    <Content Include="Emoji\[酷币2块]2.png" />
     <Content Include="Emoji\[酷币2毛].png" />
+    <Content Include="Emoji\[酷币2毛]2.png" />
     <Content Include="Emoji\[酷币5%24].png" />
-    <Content Include="Emoji\[酷币50块] %282.png" />
     <Content Include="Emoji\[酷币50块].png" />
+    <Content Include="Emoji\[酷币50块]2.png" />
     <Content Include="Emoji\[酷币5].png" />
-    <Content Include="Emoji\[酷币5€] %282.png" />
     <Content Include="Emoji\[酷币5€].png" />
+    <Content Include="Emoji\[酷币5€]2.png" />
     <Content Include="Emoji\[酷币5分].png" />
-    <Content Include="Emoji\[酷币5块] %282.png" />
+    <Content Include="Emoji\[酷币5分]2.png" />
     <Content Include="Emoji\[酷币5块].png" />
+    <Content Include="Emoji\[酷币5块]2.png" />
     <Content Include="Emoji\[酷币5毛].png" />
-    <Content Include="Emoji\[酷币] %282.png" />
+    <Content Include="Emoji\[酷币5毛]2.png" />
     <Content Include="Emoji\[酷币].png" />
+    <Content Include="Emoji\[酷币]2.png" />
     <Content Include="Emoji\[酷币空].png" />
     <Content Include="Emoji\[闪电].png" />
     <Content Include="Emoji\[闭嘴].png" />
     <Content Include="Emoji\[阴险].png" />
+    <Content Include="Emoji\[阴险]2.png" />
     <Content Include="Emoji\[难过].png" />
+    <Content Include="Emoji\[难过]2.png" />
     <Content Include="Emoji\[飞吻].png" />
     <Content Include="Emoji\[饥饿].png" />
     <Content Include="Emoji\[饭].png" />
@@ -752,6 +807,12 @@
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>酷安 UWP_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

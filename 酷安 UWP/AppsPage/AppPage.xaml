@@ -10,11 +10,9 @@
     Loaded="Page_Loaded"
     mc:Ignorable="d" >
 
-    <Grid  >
-
-        <ScrollViewer >
+    <Grid>
+        <ScrollViewer>
             <StackPanel>
-
                 <Border Height="50"/>
                 <Grid >
                     <Image x:Name="AppIconImage" x:FieldModifier="Public" HorizontalAlignment="Left" Height="60" Margin="20" VerticalAlignment="Top" Width="60" />
@@ -26,7 +24,7 @@
                 </Grid>
                 <Grid  Padding="10" Height="50">
                     <TextBlock x:Name="AppXText" x:FieldModifier="Public" Text="" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
-                    <Button x:Name="DownloadButton" Click="DownloadButton_Click" Content="下载" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78" BorderThickness="0" Background="{StaticResource CoolApk_Theme}"   />
+                    <Button x:Name="DownloadButton" Click="DownloadButton_Click" Content="下载" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78" BorderThickness="0" Background="{ThemeResource CoolApk_Theme}"   />
                 </Grid>
                 <Grid Visibility="Collapsed" Margin="0,1,0,0" x:Name="DPanel" Padding="10" >
                     <TextBlock x:Name="AppDText" x:FieldModifier="Public" TextWrapping="Wrap" Text="" TextAlignment="Center"  VerticalAlignment="Top"/>
@@ -75,13 +73,11 @@
 
         <!--顶栏-->
 
-        <Grid Height="48" VerticalAlignment="Top" cu:Background="{StaticResource CoolApk_Theme_Back}" fcu:Background="{ThemeResource SystemControlAcrylicElementBrush}">
-            <Button Click="BackButton_Click" HorizontalAlignment="Left" VerticalAlignment="Stretch" Tag="3" Width="48" Background="Transparent">
-                <SymbolIcon Symbol="Back" Foreground="{StaticResource CoolApk_Theme_Fore}"/>
-            </Button>
-            <TextBlock Margin="50,0,0,2" x:Name="TitleTextBlock" Foreground="{StaticResource CoolApk_Theme_Fore}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Grid Height="48" VerticalAlignment="Top" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Button Click="BackButton_Click" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Style="{StaticResource NavigationBackButtonNormalStyle}"/>
+            <TextBlock Margin="50,0,0,2" x:Name="TitleTextBlock" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
             <Button HorizontalAlignment="Right" Width="48" Height="48" Background="Transparent">
-                <SymbolIcon Symbol="More" Foreground="{StaticResource CoolApk_Theme_Fore}"/>
+                <SymbolIcon Symbol="More" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
                 <Button.Flyout>
                     <MenuFlyout>
                         <MenuFlyoutItem Text="访问网页" Click="GotoUri_Click"/>

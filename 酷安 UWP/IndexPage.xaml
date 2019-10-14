@@ -6,9 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
-    xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
-    mc:Ignorable="d"
+    mc:Ignorable="d" 
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
@@ -39,46 +37,39 @@
         </DataTemplate>
         <!--动态-->
         <DataTemplate x:Key="Feed" x:DataType="local:Feed">
-            <ListViewItem Margin="0,5" Tag="{x:Bind}" Tapped="FeedListViewItem_Tapped">
+            <ListViewItem Margin="0,5" Tag="{x:Bind}" Tapped="FeedListViewItem_Tapped" Template="{StaticResource ListViewItemTemplate1}">
                 <Grid MinWidth="300">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Grid Grid.Row="0">
-                        <StackPanel Orientation="Horizontal">
-                            <Button Click="Button_Click" Tag="{x:Bind GetValue('uid')}" Background="{x:Null}">
-                                <Grid>
-                                    <Ellipse Width="50" Height="50" HorizontalAlignment="Left" >
-                                        <Ellipse.Fill>
-                                            <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
-                                        </Ellipse.Fill>
-                                    </Ellipse>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Margin="60,0,0,0" Grid.Row="0" Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                                        <TextBlock Margin="60,0,0,0" Grid.Row="1"  Text="{x:Bind GetValue('device_title')}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Gray"/>
-                                    </Grid>
-                                </Grid>
-                            </Button>
-                            <TextBlock Margin="10" Text="{x:Bind GetValue('dateline')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        </StackPanel>
-                        <Button Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Top">
-                            <SymbolIcon Symbol="More"/>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <Button Click="Button_Click" Style="{StaticResource ButtonStyle1}" Tag="{x:Bind GetValue('uid')}" Background="{x:Null}">
+                            <Ellipse Width="50" Height="50" HorizontalAlignment="Left" >
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
                         </Button>
-
-                    </Grid>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <StackPanel Grid.Row="1">
+                                <TextBlock Text="{x:Bind GetValue('infoHtml')}" Foreground="Gray"/>
+                                <TextBlock Text="{x:Bind GetValue('device_title')}" Foreground="Gray"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
                     <Grid Grid.Row="1" Margin="5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <controls:MarkdownTextBlock Text="{x:Bind GetValue('message')}"/>
-                        <GridView Grid.Row="1" MinHeight="0" Margin="0,20,0,0" HorizontalAlignment="Center" Tag="{x:Bind GetValue4('picArr')}" ItemsSource="{x:Bind GetValue4('picArr')}">
+                        <GridView Grid.Row="1" MinHeight="0" Margin="0,20,0,0" HorizontalAlignment="Center" Tag="{x:Bind GetValue4('picArr',x:False)}" ItemsSource="{x:Bind GetValue4('picArr',x:True)}">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="x:String">
                                     <Image MaxWidth="200" MaxHeight="200" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
@@ -104,44 +95,27 @@
                             </GridView.ItemTemplate>
                         </GridView>
                     </Grid>
-                    <Grid Grid.Row="2" Margin="10,10,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Button Background="{x:Null}" Grid.Column="0" HorizontalAlignment="Center">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <SymbolIcon Symbol="Like" Grid.Column="0"/>
-                                <TextBlock Margin="10,0,0,0" Text="{x:Bind GetValue('likenum')}" Grid.Column="1"/>
-                            </Grid>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
+                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Like"/>
+                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('likenum')}" Grid.Column="1"/>
+                            </StackPanel>
                         </Button>
-                        <Button Background="{x:Null}" Grid.Column="1" HorizontalAlignment="Center">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <SymbolIcon Symbol="Comment" Grid.Column="0"/>
-                                <TextBlock Margin="10,0,0,0" Text="{x:Bind GetValue('replynum')}" Grid.Column="1"/>
-                            </Grid>
+                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Comment"/>
+                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('replynum')}" Grid.Column="1"/>
+                            </StackPanel>
                         </Button>
-                        <Button Background="{x:Null}" Grid.Column="2" HorizontalAlignment="Center">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <SymbolIcon Symbol="Link" Grid.Column="0"/>
-                                <TextBlock Margin="10,0,0,0" Text="{x:Bind GetValue('share_num')}" Grid.Column="1"/>
-                            </Grid>
+                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Link"/>
+                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('share_num')}" Grid.Column="1"/>
+                            </StackPanel>
                         </Button>
-                    </Grid>
-                </Grid>
+                    </StackPanel>                </Grid>
             </ListViewItem>
         </DataTemplate>
 
@@ -163,113 +137,34 @@
         </DataTemplate>
         <!--三级-->
         <DataTemplate x:Key="image_1" x:DataType="local:Feed">
-            <Image Source="{x:Bind GetValue5('pic')}"/>
+            <ListViewItem Template="{StaticResource ListViewItemTemplate1}">
+                <Image Source="{x:Bind GetValue5('pic')}"/>
+            </ListViewItem>
         </DataTemplate>
         <DataTemplate x:Key="iconLink" x:DataType="local:Feed">
-            <StackPanel HorizontalAlignment="Stretch" Margin="5,0">
-                <Image Source="{x:Bind GetValue5('pic')}" Height="48" Width="48"/>
-                <TextBlock HorizontalAlignment="Center" Text="{x:Bind GetValue('title')}"/>
-            </StackPanel>
+            <ListViewItem Template="{StaticResource ListViewItemTemplate1}">
+                <StackPanel HorizontalAlignment="Stretch" Margin="5,0">
+                    <Image Source="{x:Bind GetValue5('pic')}" Height="48" Width="48"/>
+                    <TextBlock HorizontalAlignment="Center" Text="{x:Bind GetValue('title')}"/>
+                </StackPanel>
+            </ListViewItem>
         </DataTemplate>
         <DataTemplate x:Key="dyh" x:DataType="local:Feed">
-            <StackPanel HorizontalAlignment="Stretch">
-                <Image x:Name="im" Source="{x:Bind GetValue5('logo')}" Height="25" Width="25"/>
-                <TextBlock HorizontalAlignment="Center" Width="60" TextWrapping="Wrap" Text="{x:Bind GetValue('title')}"/>
-            </StackPanel>
+            <ListViewItem Template="{StaticResource ListViewItemTemplate1}">
+                <StackPanel HorizontalAlignment="Stretch">
+                    <Image x:Name="im" Source="{x:Bind GetValue5('logo')}" Height="25" Width="25"/>
+                    <TextBlock HorizontalAlignment="Center" Width="60" TextWrapping="Wrap" Text="{x:Bind GetValue('title')}"/>
+                </StackPanel>
+            </ListViewItem>
         </DataTemplate>
         <DataTemplate x:Key="topic" x:DataType="local:Feed">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <Image Source="{x:Bind GetValue5('logo')}" Height="18" Width="18"/>
-                <TextBlock Margin="3,0,0,0" MaxWidth="50" TextWrapping="Wrap" HorizontalAlignment="Center" Text="{x:Bind GetValue('title')}"/>
-            </StackPanel>
+            <ListViewItem Template="{StaticResource ListViewItemTemplate1}">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                    <Image Source="{x:Bind GetValue5('logo')}" Height="18" Width="18"/>
+                    <TextBlock Margin="3,0,0,0" MaxWidth="50" TextWrapping="Wrap" HorizontalAlignment="Center" Text="{x:Bind GetValue('title')}"/>
+                </StackPanel>
+            </ListViewItem>
         </DataTemplate>
-
-        <ControlTemplate x:Key="ListViewItemTemplate1" TargetType="ListViewItem">
-            <ListViewItemPresenter x:Name="Root" CheckBrush="{ThemeResource ListViewItemCheckBrush}" ContentMargin="{TemplateBinding Padding}" 
-                                   CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}" ContentTransitions="{TemplateBinding ContentTransitions}" 
-                                   CheckMode="{ThemeResource ListViewItemCheckMode}" DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}" 
-                                   DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}" DragBackground="{ThemeResource ListViewItemDragBackground}" 
-                                   DragForeground="{ThemeResource ListViewItemDragForeground}" FocusBorderBrush="{ThemeResource ListViewItemFocusBorderBrush}" 
-                                   FocusVisualMargin="{TemplateBinding FocusVisualMargin}" 
-                                   FocusSecondaryBorderBrush="{ThemeResource ListViewItemFocusSecondaryBorderBrush}" 
-                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Control.IsTemplateFocusTarget="True" 
-                                   PressedBackground="{x:Null}" 
-                                   PlaceholderBackground="{x:Null}" 
-                                   PointerOverForeground="{ThemeResource ListViewItemForegroundPointerOver}" 
-                                   PointerOverBackground="{x:Null}" 
-                                   ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}" 
-                                   SelectedForeground="{ThemeResource ListViewItemForegroundSelected}" 
-                                   SelectionCheckMarkVisualEnabled="{ThemeResource ListViewItemSelectionCheckMarkVisualEnabled}" 
-                                   SelectedBackground="{x:Null}" 
-                                   SelectedPressedBackground="{x:Null}" 
-                                   SelectedPointerOverBackground="{x:Null}" 
-                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal"/>
-                        <VisualState x:Name="Selected"/>
-                        <VisualState x:Name="PointerOver"/>
-                        <VisualState x:Name="PointerOverSelected"/>
-                        <VisualState x:Name="PointerOverPressed"/>
-                        <VisualState x:Name="Pressed"/>
-                        <VisualState x:Name="PressedSelected">
-                            <VisualState.Setters/>
-                        </VisualState>
-                    </VisualStateGroup>
-                    <VisualStateGroup x:Name="DisabledStates">
-                        <VisualState x:Name="Enabled"/>
-                        <VisualState x:Name="Disabled">
-                            <VisualState.Setters>
-                                <Setter Target="Root.RevealBorderThickness" Value="0"/>
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
-            </ListViewItemPresenter>
-        </ControlTemplate>
-
-        <Style x:Key="ListViewStyle1" TargetType="ListView">
-            <Setter Property="IsTabStop" Value="False"/>
-            <Setter Property="TabNavigation" Value="Once"/>
-            <Setter Property="IsSwipeEnabled" Value="True"/>
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto"/>
-            <Setter Property="ScrollViewer.IsHorizontalRailEnabled" Value="False"/>
-            <Setter Property="ScrollViewer.VerticalScrollMode" Value="Enabled"/>
-            <Setter Property="ScrollViewer.IsVerticalRailEnabled" Value="True"/>
-            <Setter Property="ScrollViewer.ZoomMode" Value="Disabled"/>
-            <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False"/>
-            <Setter Property="ScrollViewer.BringIntoViewOnFocusChange" Value="True"/>
-            <Setter Property="ItemContainerTransitions">
-                <Setter.Value>
-                    <TransitionCollection>
-                        <AddDeleteThemeTransition/>
-                        <ContentThemeTransition/>
-                        <ReorderThemeTransition/>
-                        <EntranceThemeTransition IsStaggeringEnabled="False"/>
-                    </TransitionCollection>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="ItemsPanel">
-                <Setter.Value>
-                    <ItemsPanelTemplate>
-                        <ItemsStackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ListView">
-                        <Border Background="{TemplateBinding Background}" BorderThickness="0" BorderBrush="{TemplateBinding BorderBrush}">
-                            <ScrollViewer x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" BringIntoViewOnFocusChange="{TemplateBinding ScrollViewer.BringIntoViewOnFocusChange}" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}" IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}" IsVerticalScrollChainingEnabled="{TemplateBinding ScrollViewer.IsVerticalScrollChainingEnabled}" IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}" IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}" IsHorizontalScrollChainingEnabled="{TemplateBinding ScrollViewer.IsHorizontalScrollChainingEnabled}" TabNavigation="{TemplateBinding TabNavigation}" VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}">
-                                <ItemsPresenter Footer="{TemplateBinding Footer}" FooterTransitions="{TemplateBinding FooterTransitions}" FooterTemplate="{TemplateBinding FooterTemplate}" Header="{TemplateBinding Header}" HeaderTransitions="{TemplateBinding HeaderTransitions}" HeaderTemplate="{TemplateBinding HeaderTemplate}" Padding="{TemplateBinding Padding}"/>
-                            </ScrollViewer>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Page.Resources>
 
     <Grid>
