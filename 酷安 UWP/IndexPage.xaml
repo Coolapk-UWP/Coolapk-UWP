@@ -168,7 +168,19 @@
     </Page.Resources>
 
     <Grid>
-        <TextBlock Margin="48,11" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top">头条</TextBlock>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="500" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="title.Margin" Value="10,11"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <TextBlock Margin="48,11" x:Name="title" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top">头条</TextBlock>
         <Button Click="Button_Click" Tag="Refresh" Height="48" Width="48" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Top">
             <SymbolIcon Symbol="Refresh"/>
         </Button>

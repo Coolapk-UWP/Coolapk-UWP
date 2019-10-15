@@ -9,7 +9,19 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBlock Margin="48,11" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top">设置</TextBlock>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="500" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="title.Margin" Value="10,11"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <TextBlock Margin="48,11" x:Name="title" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top">设置</TextBlock>
         <StackPanel Grid.Row="1" Margin="10,48,10,0">
             <ToggleSwitch x:Name="IsNoPicsMode" Tag="0" Header="无图模式" Toggled="ToggleSwitch_Toggled"/>
             <ToggleSwitch x:Name="IsUseOldEmojiMode" Tag="1" Header="使用旧式表情" Toggled="ToggleSwitch_Toggled"/>
