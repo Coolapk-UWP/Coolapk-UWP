@@ -541,9 +541,10 @@ namespace 酷安_UWP
                                 if (oldEmojis.Contains(s))
                                     s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}2.png =24)");
                                 else s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}.png =24)");
+                            else s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}.png =24)");
                         }
                     }
-                    Regex regex = new Regex("<a.*?>\\S*"), regex2 = new Regex("href=\".*\""), regex3 = new Regex(">.*<");
+                    Regex regex = new Regex("<a.*?>\\S*"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
                     while (regex.IsMatch(s))
                     {
                         var h = regex.Match(s);
@@ -556,22 +557,24 @@ namespace 酷安_UWP
                     return s;
                 }
                 else if (value == "dateline")
-                {
-                    long t = Convert.ToInt64(token.ToString());
-                    t *= 10000000;
-                    t += 621355968000000000;
-                    TimeSpan time = new TimeSpan(t);
-                    DateTime date = DateTime.Now - time;
-                    if (date.Day > 0)
-                        return date.ToString(@"d\天前");
-                    else if (date.Hour > 0)
-                        return date.ToString(@"h\小时前");
-                    else if (date.Minute > 0)
-                        return date.ToString(@"m\分钟前");
-                    else return "刚刚";
-                }
+                    return ConvertTime(token.ToString());
                 else return token.ToString();
             else return string.Empty;
+        }
+        public static string ConvertTime(string timestr)
+        {
+            long t = Convert.ToInt64(timestr);
+            t *= 10000000;
+            t += 621355968000000000;
+            TimeSpan time = new TimeSpan(t);
+            DateTime date = DateTime.Now - time;
+            if (date.Day > 0)
+                return date.ToString(@"d\天前");
+            else if (date.Hour > 0)
+                return date.ToString(@"h\小时前");
+            else if (date.Minute > 0)
+                return date.ToString(@"m\分钟前");
+            else return "刚刚";
         }
         public Feed[] GetSelfs() => new Feed[] { this };
         public ImageSource GetValue2(string value)
@@ -615,7 +618,7 @@ namespace 酷安_UWP
                     fs.Add(new Feed(item));
             return fs.ToArray();
         }
-        public string[] GetValue4(string value,bool ReturnFakePic)
+        public string[] GetValue4(string value, bool ReturnFakePic)
         {
             JArray array = (JArray)jObject.GetValue(value);
             if (array is null) return new string[] { };

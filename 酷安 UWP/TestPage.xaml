@@ -10,7 +10,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     
     <Grid>
-        <ScrollViewer>
+        <Button Style="{ThemeResource NavigationBackButtonNormalStyle}" Margin="48,2,0,0" Click="Button_Click_3" VerticalAlignment="Top"/>
+        <ScrollViewer  Margin="0,48,0,0">
             <StackPanel>
                 <TextBox Header="uid" x:Name="uid"/>
                 <Button Click="Button_Click">go to</Button>

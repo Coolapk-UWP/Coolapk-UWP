@@ -168,14 +168,22 @@
     </Page.Resources>
 
     <Grid>
-        <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
-            <ListView Name="listView" ItemTemplateSelector="{StaticResource FTemplateSelector}" SelectionMode="Single">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
+        <TextBlock Margin="48,11" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top">头条</TextBlock>
+        <Button Click="Button_Click" Tag="Refresh" Height="48" Width="48" Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <SymbolIcon Symbol="Refresh"/>
+        </Button>
+        <ScrollViewer x:Name="VScrollViewer" ViewChanged="ScrollViewer_ViewChanged" Margin="0,48,0,0">
+            <StackPanel>
+                <TextBlock Height="20"  HorizontalAlignment="Center">松手刷新</TextBlock>
+                <ListView Name="listView" ItemTemplateSelector="{StaticResource FTemplateSelector}" SelectionMode="Single">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+                <TextBlock Height="20"  HorizontalAlignment="Center">正在加载下一页……</TextBlock>
+            </StackPanel>
         </ScrollViewer>
     </Grid>
 </Page>

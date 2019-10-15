@@ -1,4 +1,4 @@
-﻿//#define test
+﻿#define test
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,7 +30,7 @@ namespace 酷安_UWP
         //public static ColumnDefinition _dcd, _lcd;
         public static int seletedItem =
 #if test
-            5;
+            0;
 #else
         4;
 #endif
@@ -47,7 +47,7 @@ namespace 酷安_UWP
         {
             base.OnNavigatedTo(e);
 
-            Type pageType = typeof(MyPage);
+            Type pageType = typeof(UserPage);
             switch (seletedItem)
             {
                 case 0:
@@ -61,13 +61,10 @@ namespace 酷安_UWP
                     pageType = typeof(DeveloperPage);
                     break;
                 case 3:
-                    pageType = typeof(MyPage);
+                    pageType = typeof(UserPage);
                     break;
                 case 4:
                     pageType = typeof(IndexPage);
-                    break;
-                case 5:
-                    pageType = typeof(TestPage);
                     break;
             }
             /*
@@ -130,9 +127,6 @@ namespace 酷安_UWP
                 //new MenuItem() { Icon = Symbol.ContactPresence, Name = "开发者中心", PageType = typeof(DeveloperPage), Index = 2 },
                 //new MenuItem() { Icon = Symbol.Contact, Name = "我", PageType = typeof(MyPage), Index = 3 },
                 new MenuItem() { Icon = Symbol.Home, Name = "头条", PageType = typeof(IndexPage), Index = 1/*4*/ }
-                #if test
-                ,new MenuItem() { Icon = Symbol.Shuffle, Name = "test page", PageType = typeof(TestPage), Index = 5 }
-#endif
                 };
             return items;
         }

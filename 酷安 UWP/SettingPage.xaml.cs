@@ -26,6 +26,7 @@ namespace 酷安_UWP
     /// </summary>
     public sealed partial class SettingPage : Page
     {
+        MainPage mainPage;
         public SettingPage()
         {
             this.InitializeComponent();
@@ -33,6 +34,11 @@ namespace 酷安_UWP
             IsNoPicsMode.IsOn = Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]);
             IsUseOldEmojiMode.IsOn = Convert.ToBoolean(localSettings.Values["IsUseOldEmojiMode"]);
             IsDarkMode.IsOn = Convert.ToBoolean(localSettings.Values["IsDarkMode"]);
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            mainPage = e.Parameter as MainPage;
         }
 
         static void InitializeSettings(ApplicationDataContainer localSettings)
@@ -112,5 +118,7 @@ namespace 酷安_UWP
                     break;
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e) => Frame.Navigate(typeof(TestPage),mainPage);
     }
 }

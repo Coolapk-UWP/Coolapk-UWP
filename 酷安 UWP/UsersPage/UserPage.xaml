@@ -5,44 +5,144 @@
     xmlns:local="using:酷安_UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" 
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d" NavigationCacheMode="Required"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <!--动态-->
+        <DataTemplate x:Key="Feed" x:DataType="local:Feed">
+            <ListViewItem Margin="0,5" Tag="{x:Bind}" Tapped="FeedListViewItem_Tapped" Template="{StaticResource ListViewItemTemplate1}">
+                <Grid MinWidth="300">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <Button Style="{StaticResource ButtonStyle1}" Click="Button_Click" Tag="{x:Bind GetValue('uid')}" Background="{x:Null}">
+                            <Ellipse Width="50" Height="50" HorizontalAlignment="Left" >
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Button>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <StackPanel Grid.Row="1">
+                                <TextBlock Text="{x:Bind GetValue('dateline')}" Foreground="Gray"/>
+                                <TextBlock Text="{x:Bind GetValue('device_title')}" Foreground="Gray"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                    <Grid Grid.Row="1" Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <controls:MarkdownTextBlock Text="{x:Bind GetValue('message')}"/>
+                        <GridView Grid.Row="1" MinHeight="0" Margin="0,20,0,0" HorizontalAlignment="Center" Tag="{x:Bind GetValue4('picArr',x:False)}" ItemsSource="{x:Bind GetValue4('picArr',x:True)}">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Image MaxWidth="200" MaxHeight="200" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
+                                </DataTemplate>
+                                <!--
+                                注意：
+                                一个模板里，binging 和 x:bind 不能同时使用
+                                binding默认oneway模式
+                                x:bind默认onetime模式
+                                ，Mode=TwoWay是双向模式
+
+                                微软推荐x:bind
+                                性能更高，而且支持方法转换
+
+                                {x:bind AAAA}
+                                {x:bind AAAA, Mode = OneWay}
+                                {x:bind method(AAAA), Mode = OneWay}
+
+
+                                public string method (string value）{
+                                }
+                                -->
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </Grid>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
+                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Like"/>
+                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('likenum')}" Grid.Column="1"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Comment"/>
+                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('replynum')}" Grid.Column="1"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Link"/>
+                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('share_num')}" Grid.Column="1"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </ListViewItem>
+        </DataTemplate>
+    </Page.Resources>
 
     <Grid>
         <Grid Height="48" VerticalAlignment="Top" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <Button Click="Button_Click" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Style="{StaticResource NavigationBackButtonNormalStyle}"/>
-            <TextBlock Margin="50,0,0,2" x:Name="TitleTextBlock" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="48"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="48"/>
+            </Grid.ColumnDefinitions>
+            <Button Click="Button_Click" Margin="2" Tag="0" Style="{StaticResource NavigationBackButtonNormalStyle}"/>
+            <TextBlock Margin="5,11" Grid.Column="1" x:Name="TitleTextBlock" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <Button Click="Button_Click" Tag="1" Background="{x:Null}" Grid.Column="2" Width="48" Height="48">
+                <SymbolIcon Symbol="Refresh"/>
+            </Button>
         </Grid>
-        <ScrollViewer Margin="0,48,0,0" ViewChanged="ScrollViewer_ViewChanged">
+        <ScrollViewer Margin="0,48,0,0" x:Name="VScrollViewer" ViewChanged="ScrollViewer_ViewChanged">
             <StackPanel>
-                <Grid x:Name="UserDetailGrid">
-                    <SymbolIcon Margin="10" HorizontalAlignment="Left" Width="80" Symbol="Contact" RenderTransformOrigin="0.5,0.5" >
-                        <SymbolIcon.RenderTransform>
-                            <CompositeTransform ScaleX="1.5" ScaleY="1.5"/>
-                        </SymbolIcon.RenderTransform>
-                    </SymbolIcon>
-                    <Ellipse Width="80" Height="80" Margin="10,0" HorizontalAlignment="Left" >
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{Binding UserFace}"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
-                    <Grid VerticalAlignment="Center" Margin="100,0,10,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding UserName}" FontSize="20"/>
-                        <StackPanel Grid.Row="1" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,3,0" Text="{Binding FollowNum}"/>
-                            <TextBlock>关注</TextBlock>
-                            <TextBlock Margin="10,0,3,0" Text="{Binding FansNum}"/>
-                            <TextBlock>粉丝</TextBlock>
-                            <TextBlock Margin="10,0,3,0" Text="Lv."/>
-                            <TextBlock Name="level" Text="{Binding Level}" TextWrapping="Wrap"/>
+                <TextBlock Height="20" HorizontalAlignment="Center">松手刷新</TextBlock>
+                <Grid x:Name="UserDetailGrid" Height="300" Background="{Binding Backgeound}">
+                    <StackPanel Orientation="Horizontal" Background="#55000000" VerticalAlignment="Bottom">
+                        <Grid>
+                            <SymbolIcon Margin="10" HorizontalAlignment="Left" Width="80" Symbol="Contact" RenderTransformOrigin="0.5,0.5" >
+                                <SymbolIcon.RenderTransform>
+                                    <CompositeTransform ScaleX="1.5" ScaleY="1.5"/>
+                                </SymbolIcon.RenderTransform>
+                            </SymbolIcon>
+                            <Ellipse Width="80" Height="80" Margin="10,0" HorizontalAlignment="Left" >
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding UserFace}"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Grid>
+                        <StackPanel Margin="10,0,10,3">
+                            <TextBlock Foreground="White" Text="{Binding UserName}" FontWeight="Bold" FontSize="20"/>
+                            <TextBlock Text="{Binding verify_title}" Foreground="White" FontSize="14" TextWrapping="Wrap"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Foreground="White" Margin="0,0,3,0" FontWeight="Bold" Text="{Binding FollowNum}"/>
+                                <TextBlock Foreground="White">关注</TextBlock>
+                                <TextBlock Margin="10,0,3,0" Foreground="White" FontWeight="Bold" Text="{Binding FansNum}"/>
+                                <TextBlock Foreground="White">粉丝</TextBlock>
+                                <TextBlock Margin="10,0,3,0" Foreground="White" Text="Lv."/>
+                                <TextBlock Name="level" Foreground="White" Text="{Binding Level}" FontWeight="Bold" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding bio}" Foreground="White" FontSize="12" TextWrapping="Wrap"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding gender}" Foreground="White" FontSize="12" Margin="2,0" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding city}" Foreground="White" FontSize="12" Margin="2,0" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding astro}" Foreground="White" FontSize="12" Margin="2,0"  TextWrapping="Wrap"/>
+                            </StackPanel>
                         </StackPanel>
-                        <TextBlock Text="{Binding bio}" FontSize="12" TextWrapping="Wrap" Grid.Row="3"/>
-                    </Grid>
+                    </StackPanel>
                 </Grid>
                 <Pivot x:Name="ListPivot">
                     <PivotItem>
@@ -52,9 +152,18 @@
                                 <TextBlock Margin="3,0,0,0" Text="{Binding FeedNum}"/>
                             </StackPanel>
                         </PivotItem.Header>
-                        <Frame x:Name="FeedListFrame"/>
+                        <StackPanel>
+                            <ListView Name="listView" ItemTemplate="{StaticResource Feed}">
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                            </ListView>
+                        </StackPanel>
                     </PivotItem>
                 </Pivot>
+                <TextBlock Height="20" HorizontalAlignment="Center">正在加载下一页……</TextBlock>
             </StackPanel>
         </ScrollViewer>
     </Grid>

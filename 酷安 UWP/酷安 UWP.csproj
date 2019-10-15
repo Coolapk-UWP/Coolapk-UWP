@@ -125,9 +125,6 @@
     <Compile Include="UsersPage\FeedDetailPage.xaml.cs">
       <DependentUpon>FeedDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UsersPage\FeedPage.xaml.cs">
-      <DependentUpon>FeedPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
     </Compile>
@@ -138,9 +135,6 @@
       <DependentUpon>AppPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\AppData.cs" />
-    <Compile Include="UsersPage\MyPage.xaml.cs">
-      <DependentUpon>MyPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
@@ -746,10 +740,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UsersPage\FeedPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="IndexPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -757,10 +747,6 @@
     <Page Include="UsersPage\LoginPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UsersPage\MyPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SearchPage.xaml">
       <Generator>MSBuild:Compile</Generator>

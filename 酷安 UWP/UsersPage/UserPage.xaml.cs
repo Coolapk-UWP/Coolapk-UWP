@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -26,23 +27,37 @@ namespace 酷安_UWP
     public sealed partial class UserPage : Page
     {
         MainPage mainPage;
-        string uid;
+        static string uid;
+        static int page = 0;
+        static string firstItem = string.Empty, lastItem = string.Empty;
+        static ObservableCollection<Feed> FeedsCollection = new ObservableCollection<Feed>();
         public UserPage()
         {
             this.InitializeComponent();
+            listView.ItemsSource = FeedsCollection;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            uid = (string)((object[])e.Parameter)[0];
             mainPage = ((object[])e.Parameter)[1] as MainPage;
-            LoadProfile();
+            if (uid != (string)((object[])e.Parameter)[0])
+            {
+                uid = (string)((object[])e.Parameter)[0];
+                mainPage.ActiveProgressRing();
+                FeedsCollection.Clear();
+                page = 0;
+                firstItem = lastItem = string.Empty;
+                LoadProfile();
+                ReadNextPageFeeds();
+                mainPage.DeactiveProgressRing();
+            }
+            else Refresh();
+            VScrollViewer.ChangeView(null, 20, null);
         }
 
         public async void LoadProfile()
         {
-            mainPage.ActiveProgressRing();
             JObject detail = await CoolApkSDK.GetUserProfileByID(uid);
             if (!(detail is null))
             {
@@ -53,12 +68,16 @@ namespace 酷安_UWP
                     FollowNum = detail["follow"].ToString(),
                     FansNum = detail["fans"].ToString(),
                     Level = detail["level"].ToString(),
-                    bio = detail["bio"].ToString()
+                    bio = detail["bio"].ToString(),
+                    Backgeound = new ImageBrush { ImageSource = new BitmapImage(new Uri(detail["cover"].ToString())) },
+                    verify_title = detail["verify_title"].ToString(),
+                    gender = int.Parse(detail["gender"].ToString()) == 1 ? "♂" : (int.Parse(detail["gender"].ToString()) == 0 ? "♀" : string.Empty),
+                    city = $"{detail["province"].ToString()} {detail["city"].ToString()}",
+                    astro = detail["astro"].ToString(),
+                    logintime = $"{Feed.ConvertTime(detail["logintime"].ToString())}活跃"
                 };
                 TitleTextBlock.Text = detail["username"].ToString();
                 ListPivot.DataContext = new { FeedNum = detail["feed"].ToString() };
-                FeedListFrame.Navigate(typeof(FeedPage), new object[] { detail["uid"].ToString(), mainPage });
-                mainPage.DeactiveProgressRing();
             }
             else
             {
@@ -67,18 +86,64 @@ namespace 酷安_UWP
             }
         }
 
+        async void ReadNextPageFeeds()
+        {
+            JArray Root = await CoolApkSDK.GetFeedListByID(uid, ++page, firstItem, lastItem);
+            if (!(Root is null) && Root.Count != 0)
+            {
+                firstItem = Root.First["id"].ToString();
+                lastItem = Root.Last["id"].ToString();
+                foreach (JObject i in Root)
+                    FeedsCollection.Add(new Feed(i));
+            }
+            else page--;
+        }
 
-        private void Button_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
+        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
+            => mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, "动态", null });
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            switch (button.Tag as string)
+            {
+                case "0":
+                    Frame.GoBack();
+                    break;
+                case "1":
+                    Refresh();
+                    VScrollViewer.ChangeView(null, 20, null);
+                    break;
+                default:
+                    mainPage.Frame.Navigate(typeof(UserPage), new object[] { button.Tag as string, mainPage });
+                    break;
+            }
+        }
+
+        async void Refresh()
+        {
+            mainPage.ActiveProgressRing();
+            LoadProfile();
+            JArray Root = await CoolApkSDK.GetFeedListByID(uid, 1, firstItem, lastItem);
+            if (!(Root is null) && Root.Count != 0)
+            {
+                firstItem = Root.First["id"].ToString();
+                for (int i = 0; i < Root.Count; i++)
+                    FeedsCollection.Insert(i, new Feed((JObject)Root[i]));
+            }
+            mainPage.DeactiveProgressRing();
+        }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
-            var sv = sender as ScrollViewer;
-
             if (!e.IsIntermediate)
-                if (sv.VerticalOffset == sv.ScrollableHeight)
+                if (VScrollViewer.VerticalOffset == 0)
                 {
-                    (((ListPivot.Items[ListPivot.SelectedIndex] as PivotItem).Content as Frame).Content as IReadNextPage).ReadNextPage();
+                    Refresh();
+                    VScrollViewer.ChangeView(null, 20, null);
                 }
+                else if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
+                    ReadNextPageFeeds();
         }
     }
 }

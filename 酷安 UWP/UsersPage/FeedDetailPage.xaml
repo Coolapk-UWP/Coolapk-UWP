@@ -198,11 +198,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Height="48" x:Name="TitleBar" VerticalAlignment="Top" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <Button Click="BackButton_Click" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Style="{StaticResource NavigationBackButtonNormalStyle}"/>
+            <Button Click="BackButton_Click" Style="{StaticResource NavigationBackButtonNormalStyle}"/>
             <TextBlock Margin="50,0,0,2" x:Name="TitleTextBlock" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <Button Click="Button_Click_1" HorizontalAlignment="Right" Width="48" Height="48" Background="{x:Null}">
+                <SymbolIcon Symbol="Refresh"/>
+            </Button>
         </Grid>
-        <ScrollViewer Grid.Row="1" ViewChanged="ScrollViewer_ViewChanged">
+        <ScrollViewer x:Name="VScrollViewer" Grid.Row="1" ViewChanged="ScrollViewer_ViewChanged">
             <StackPanel>
+                <TextBlock Height="20" HorizontalAlignment="Center">松手刷新</TextBlock>
                 <ListView x:Name="FeedDetailList" ItemTemplateSelector="{StaticResource tmpsle}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
@@ -216,7 +220,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock>回复</TextBlock>
                                 <TextBlock Margin="5,0" Text="{Binding replynum}"/>
-                                <!--<Button Background="{x:Null}" Click="Button_Click_1">▼</Button>-->
+                                <!--<Button Background="{x:Null}">▼</Button>-->
                             </StackPanel>
                         </PivotItem.Header>
                         <ListView x:Name="replyListView" ItemTemplate="{StaticResource feed_reply_list}">
@@ -258,9 +262,11 @@
                         </ListView>
                     </PivotItem>
                 </Pivot>
+                <TextBlock Height="20" HorizontalAlignment="Center">正在加载下一页……</TextBlock>
             </StackPanel>
         </ScrollViewer>
-        <FlipView Visibility="Collapsed" ScrollViewer.IsZoomChainingEnabled="True" ScrollViewer.BringIntoViewOnFocusChange="False" x:Name="SFlipView">
+
+        <FlipView Visibility="Collapsed" Background="Black" ScrollViewer.IsZoomChainingEnabled="True" ScrollViewer.BringIntoViewOnFocusChange="False" x:Name="SFlipView">
             <FlipView.ItemTemplate>
                 <DataTemplate>
                     <ScrollViewer x:Name="ScrollViewerMain" ZoomMode="Enabled"
@@ -276,7 +282,6 @@
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
-
         <Button x:Name="CloseFlip" Visibility="Collapsed" Click="CloseFlip_Click"  HorizontalAlignment="Right" VerticalAlignment="Top" Width="48" Foreground="White" Height="48">
             <SymbolIcon Symbol="Cancel" Foreground="White"/>
         </Button>

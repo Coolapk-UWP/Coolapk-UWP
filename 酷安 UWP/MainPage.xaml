@@ -117,7 +117,6 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="hamburgerMenuControl.DisplayMode" Value="CompactOverlay"/>
-                        <Setter Target="VFrame.Margin" Value="0"/>
                     </VisualState.Setters>
                 </VisualState>
                 <!--电脑-->
@@ -128,7 +127,6 @@
                     <VisualState.Setters>
                         <Setter Target="hamburgerMenuControl.DisplayMode" Value="CompactInline"/>
                         <Setter Target="hamburgerMenuControl.IsPaneOpen" Value="true"/>
-                        <Setter Target="VFrame.Margin" Value="0"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -138,8 +136,8 @@
                                 ItemTemplate="{StaticResource DefaultTemplate}" ItemClick="OnMenuItemClick" 
                                 OptionsItemTemplate="{StaticResource DefaultTemplate}" OptionsItemClick="OnMenuItemClick" SelectedIndex="0"
                                 DisplayMode="Overlay" PaneBackground="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <Frame x:Name="VFrame" Margin="0,48,0,0"/>
+            <Frame x:Name="VFrame"/>
         </controls:HamburgerMenu>
-        <ProgressRing Width="100" Height="100" x:Name="progressRing" IsActive="True" Foreground="{ThemeResource CoolApk_Theme}"/>
+        <ProgressRing Width="100" Height="100" x:Name="progressRing" Foreground="{ThemeResource CoolApk_Theme}"/>
     </Grid>
 </Page>

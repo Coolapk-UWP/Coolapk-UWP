@@ -27,39 +27,59 @@ namespace 酷安_UWP
     public sealed partial class IndexPage : Page
     {
         MainPage mainPage;
-        int page = 1;
-        string lastItem;
+        static int page = 0;
+        static string lastItem;
+        static ObservableCollection<Feed> FeedsCollection = new ObservableCollection<Feed>();
         public IndexPage()
         {
             this.InitializeComponent();
+            listView.ItemsSource = FeedsCollection;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             mainPage = e.Parameter as MainPage;
-            LoadIndex();
+            if (FeedsCollection.Count == 0)
+                GetIndexPage(++page);
+            VScrollViewer.ChangeView(null, 20, null);
         }
 
-        public async void LoadIndex()
+        public async void GetIndexPage(int page)
         {
             mainPage.ActiveProgressRing();
-            ObservableCollection<Feed> FeedsCollection = new ObservableCollection<Feed>();
-            listView.ItemsSource = FeedsCollection;
-
-            JArray Root = await CoolApkSDK.GetIndexList(1, string.Empty);
-            lastItem = Root.Last["entityId"].ToString();
-            foreach (JObject i in Root)
-                FeedsCollection.Add(new Feed(i));
-            timer.Interval = new TimeSpan(0, 0, 7);
-            timer.Tick += (s, e) =>
+            if (page == 1)
             {
-                if (flip.SelectedIndex < flip.Items.Count - 1)
-                    flip.SelectedIndex++;
-                else
-                    flip.SelectedIndex = 0;
-            };
-            timer.Start();
+                timer.Stop();
+                timer = new DispatcherTimer();
+                JArray Root = await CoolApkSDK.GetIndexList(page, string.Empty);
+                if (FeedsCollection.Count != 0)
+                    for (int i = 0; i < 3; i++)
+                        FeedsCollection.RemoveAt(0);
+                else lastItem = Root.Last["entityId"].ToString();
+                for (int i = 0; i < Root.Count; i++)
+                    FeedsCollection.Insert(i, new Feed((JObject)Root[i]));
+                timer.Interval = new TimeSpan(0, 0, 7);
+                timer.Tick += (s, e) =>
+                {
+                    if (flip.SelectedIndex < flip.Items.Count - 1)
+                        flip.SelectedIndex++;
+                    else
+                        flip.SelectedIndex = 0;
+                };
+                timer.Start();
+            }
+            else
+            {
+                JArray Root = await CoolApkSDK.GetIndexList(page, lastItem);
+                if (Root.Count != 0)
+                {
+                    lastItem = Root.Last["entityId"].ToString();
+                    foreach (JObject i in Root)
+                        FeedsCollection.Add(new Feed(i));
+                }
+                else page--;
+            }
             mainPage.DeactiveProgressRing();
         }
 
@@ -68,8 +88,7 @@ namespace 酷安_UWP
 
         private void FlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (flip is null)
-                flip = sender as FlipView;
+            if (flip is null) flip = sender as FlipView;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -79,32 +98,28 @@ namespace 酷安_UWP
         }
 
         private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, "动态", null });
-        private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
-            var sv = sender as ScrollViewer;
-
             if (!e.IsIntermediate)
-                if (sv.VerticalOffset == sv.ScrollableHeight)
-                {
-                    mainPage.ActiveProgressRing();
-
-                    ObservableCollection<Feed> FeedsCollection = listView.ItemsSource as ObservableCollection<Feed>;
-                    JArray Root = await CoolApkSDK.GetIndexList(++page, lastItem);
-                    if (Root.Count != 0)
+                if (FeedsCollection.Count != 0)
+                    if (VScrollViewer.VerticalOffset == 0)
                     {
-                        lastItem = Root.Last["entityId"].ToString();
-                        foreach (JObject i in Root)
-                            FeedsCollection.Add(new Feed(i));
+                        GetIndexPage(1);
+                        VScrollViewer.ChangeView(null, 20, null);
                     }
-                    else page--;
-                    mainPage.DeactiveProgressRing();
-                }
+                    else if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
+                        GetIndexPage(++page);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button i = sender as Button;
-            mainPage.Frame.Navigate(typeof(UserPage), new object[] { i.Tag as string, mainPage });
+            if (i.Tag as string == "Refresh")
+            {
+                GetIndexPage(1);
+                VScrollViewer.ChangeView(null, 20, null);
+            }
+            else mainPage.Frame.Navigate(typeof(UserPage), new object[] { i.Tag as string, mainPage });
         }
     }
 }

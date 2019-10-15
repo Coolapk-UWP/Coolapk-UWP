@@ -30,7 +30,7 @@ namespace 酷安_UWP
         public TestPage()
         {
             this.InitializeComponent();
-            //Button_Click(null, null);
+//            Button_Click(null, null);
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -58,6 +58,11 @@ namespace 酷安_UWP
             string a = file.Exists ? "y" : "n";
             MessageDialog dialog = new MessageDialog(a);
             await dialog.ShowAsync();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            Frame.GoBack();
         }
     }
 }

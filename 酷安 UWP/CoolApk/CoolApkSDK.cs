@@ -115,7 +115,7 @@ namespace 酷安_UWP
             {
                 string str = await GetCoolApkMessage($"/user/feedList?uid={uid}&page={page}&firstItem={firstItem}&lastItem={lastItem}");
                 JObject jo = (JObject)JsonConvert.DeserializeObject(str);
-                return (JArray)jo["data"];
+                return jo.HasValues ? (JArray)jo["data"] : new JArray();
             }
             catch (Exception)
             {

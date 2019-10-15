@@ -42,9 +42,7 @@ namespace 酷安_UWP
         public async static Task<object[]> CheckUpdate()
         {
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Accept", "application/vnd.github.v3+json");
-            client.DefaultRequestHeaders.Add("Host", "api.github.com");
-            string updateDetail = (await client.GetAsync(new Uri("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest"))).ToString();
+            string updateDetail = (await client.GetAsync(new Uri("https://api.github.com/repos/Tangent-90/Coolapk-UWP"))).ToString();
             string updatePacketURI = string.Empty;
             return new object[] { true, updateDetail, updatePacketURI };
         }
