@@ -552,6 +552,8 @@ namespace 酷安_UWP
                         t = t.Replace("<", string.Empty);
                         string tt = regex2.Match(h.Value).Value.Replace("href=", string.Empty);
                         tt = tt.Replace("\"", string.Empty);
+                        tt = tt.Replace($">{t}</a>", string.Empty);
+                        if (t == "查看更多") tt = "getmore";
                         s = s.Replace(h.Value, $"[{t}]({tt})");
                     }
                     return s;
@@ -563,17 +565,19 @@ namespace 酷安_UWP
         }
         public static string ConvertTime(string timestr)
         {
-            long t = Convert.ToInt64(timestr);
-            t *= 10000000;
-            t += 621355968000000000;
-            TimeSpan time = new TimeSpan(t);
-            DateTime date = DateTime.Now - time;
-            if (date.Day > 0)
-                return date.ToString(@"d\天前");
-            else if (date.Hour > 0)
-                return date.ToString(@"h\小时前");
-            else if (date.Minute > 0)
-                return date.ToString(@"m\分钟前");
+            DateTime time = new DateTime(1970, 1, 1).ToLocalTime().Add(new TimeSpan(Convert.ToInt64(timestr + "0000000")));
+            TimeSpan tt = DateTime.Now.Subtract(time);
+
+            if (tt.TotalDays > 365)
+                return $"{tt.TotalDays / 365}年前";
+            else if (tt.TotalDays > 30)
+                return $"{tt.TotalDays / 30}个月前";
+            else if (tt.Days > 1)
+                return $"{tt.Days}天前";
+            else if (tt.Hours > 0)
+                return $"{tt.Hours}小时前";
+            else if (tt.Minutes > 0)
+                return $"{tt.Minutes}分钟前";
             else return "刚刚";
         }
         public Feed[] GetSelfs() => new Feed[] { this };
@@ -582,7 +586,9 @@ namespace 酷安_UWP
             string s = jObject.GetValue(value).ToString();
             if (!string.IsNullOrEmpty(s))
                 if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
-                    return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png"));
+                    if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                        return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png"));
+                    else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png"));
                 else return new BitmapImage(new Uri(s + ".s.jpg"));
             else return new BitmapImage();
         }
@@ -591,7 +597,9 @@ namespace 酷安_UWP
             string s = jObject.GetValue(value).ToString();
             if (!string.IsNullOrEmpty(s))
                 if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
-                    return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png"));
+                    if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                        return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png"));
+                    else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png"));
                 else return new BitmapImage(new Uri(s));
             else return new BitmapImage();
         }
@@ -603,7 +611,9 @@ namespace 酷安_UWP
             foreach (var item in array)
                 if (!string.IsNullOrEmpty(item.ToString()))
                     if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
-                        images.Add(new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")));
+                        if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                            images.Add(new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")));
+                        else images.Add(new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")));
                     //获取缩略图
                     else images.Add(new BitmapImage(new Uri(item.ToString() + ".s.jpg")));
             return images.ToArray();
@@ -628,7 +638,9 @@ namespace 酷安_UWP
                 foreach (var item in array)
                     if (!string.IsNullOrEmpty(item.ToString()))
                         if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]) && ReturnFakePic)
-                            s.Add("ms-appx:/Assets/img_placeholder.png");
+                            if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                                s.Add("ms-appx:/Assets/img_placeholder_night.png");
+                            else s.Add("ms-appx:/Assets/img_placeholder.png");
                         else s.Add(item.ToString() + ".s.jpg");
                 return s.ToArray();
             }

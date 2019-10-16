@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -27,10 +28,10 @@ namespace 酷安_UWP
     public sealed partial class UserPage : Page
     {
         MainPage mainPage;
-        static string uid;
-        static int page = 0;
-        static string firstItem = string.Empty, lastItem = string.Empty;
-        static ObservableCollection<Feed> FeedsCollection = new ObservableCollection<Feed>();
+        string uid;
+        int page = 0;
+        string firstItem = string.Empty, lastItem = string.Empty;
+        ObservableCollection<Feed> FeedsCollection = new ObservableCollection<Feed>();
         public UserPage()
         {
             this.InitializeComponent();
@@ -41,18 +42,11 @@ namespace 酷安_UWP
         {
             base.OnNavigatedTo(e);
             mainPage = ((object[])e.Parameter)[1] as MainPage;
-            if (uid != (string)((object[])e.Parameter)[0])
-            {
-                uid = (string)((object[])e.Parameter)[0];
-                mainPage.ActiveProgressRing();
-                FeedsCollection.Clear();
-                page = 0;
-                firstItem = lastItem = string.Empty;
-                LoadProfile();
-                ReadNextPageFeeds();
-                mainPage.DeactiveProgressRing();
-            }
-            else Refresh();
+            uid = (string)((object[])e.Parameter)[0];
+            mainPage.ActiveProgressRing();
+            LoadProfile();
+            ReadNextPageFeeds();
+            mainPage.DeactiveProgressRing();
             VScrollViewer.ChangeView(null, 20, null);
         }
 
@@ -69,7 +63,7 @@ namespace 酷安_UWP
                     FansNum = detail["fans"].ToString(),
                     Level = detail["level"].ToString(),
                     bio = detail["bio"].ToString(),
-                    Backgeound = new ImageBrush { ImageSource = new BitmapImage(new Uri(detail["cover"].ToString())) },
+                    Backgeound = new ImageBrush { ImageSource = new BitmapImage(new Uri(detail["cover"].ToString())),Stretch=Stretch.UniformToFill },
                     verify_title = detail["verify_title"].ToString(),
                     gender = int.Parse(detail["gender"].ToString()) == 1 ? "♂" : (int.Parse(detail["gender"].ToString()) == 0 ? "♀" : string.Empty),
                     city = $"{detail["province"].ToString()} {detail["city"].ToString()}",
@@ -134,11 +128,19 @@ namespace 酷安_UWP
             mainPage.DeactiveProgressRing();
         }
 
+        private async void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
+        {
+            if (e.Link.IndexOf("/u/") == 0)
+                mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(e.Link.Replace("/u/", string.Empty)), mainPage });
+            if (e.Link.IndexOf("http") == 0)
+                await Launcher.LaunchUriAsync(new Uri(e.Link));
+        }
+
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             if (!e.IsIntermediate)
                 if (VScrollViewer.VerticalOffset == 0)
-                {
+                {   
                     Refresh();
                     VScrollViewer.ChangeView(null, 20, null);
                 }

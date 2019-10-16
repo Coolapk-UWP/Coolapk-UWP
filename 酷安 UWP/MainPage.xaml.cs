@@ -1,10 +1,10 @@
-﻿#define test
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.Foundation.Metadata;
 using Windows.Storage;
 using Windows.System;
@@ -29,7 +29,7 @@ namespace 酷安_UWP
         //public static ImageBrush _User_Face;
         //public static ColumnDefinition _dcd, _lcd;
         public static int seletedItem =
-#if test
+#if DEBUG
             0;
 #else
         4;
@@ -41,6 +41,31 @@ namespace 酷安_UWP
             hamburgerMenuControl.ItemsSource = MenuItem.GetMainItems();
             hamburgerMenuControl.OptionsItemsSource = MenuItem.GetOptionsItems();
             SettingPage.CheckTheme();
+        }
+
+        public static async void CheckUpdate()
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            Octokit.GitHubClient client = new Octokit.GitHubClient(new Octokit.ProductHeaderValue("Coolapk-UWP"));
+            var release = await client.Repository.Release.GetLatest("Tangent-90", "Coolapk-UWP");
+            var ver = release.TagName.Replace("v", string.Empty).Split('.');
+            if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major)
+            {
+                GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.Assets[1].BrowserDownloadUrl, release.Body) { RequestedTheme = Convert.ToBoolean(localSettings.Values["IsDarkMode"]) ? ElementTheme.Dark : ElementTheme.Light };
+                await dialog.ShowAsync();
+            }
+            else if (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
+            {
+                GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.Assets[1].BrowserDownloadUrl, release.Body) { RequestedTheme = Convert.ToBoolean(localSettings.Values["IsDarkMode"]) ? ElementTheme.Dark : ElementTheme.Light };
+                await dialog.ShowAsync();
+            }
+            else if (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build)
+            {
+                GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.Assets[1].BrowserDownloadUrl, release.Body) { RequestedTheme = Convert.ToBoolean(localSettings.Values["IsDarkMode"]) ? ElementTheme.Dark : ElementTheme.Light };
+                await dialog.ShowAsync();
+            }
+            else throw new Exception();
+
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -61,6 +62,13 @@ namespace 酷安_UWP
                     // 参数
                     rootFrame.Navigate(typeof(MainPage), e.Arguments);
                     this.UnhandledException += Application_UnhandledException;
+                    try
+                    {
+                        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                        SettingPage.InitializeSettings(localSettings);
+                        if (Convert.ToBoolean(localSettings.Values["CheckUpdateWhenLuanching"])) MainPage.CheckUpdate();
+                    }
+                    catch { }
                 }
                 // 确保当前窗口处于活动状态
                 Window.Current.Activate();

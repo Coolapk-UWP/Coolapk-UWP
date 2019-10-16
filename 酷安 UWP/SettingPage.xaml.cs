@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
 using Windows.Storage;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -30,10 +32,15 @@ namespace 酷安_UWP
         public SettingPage()
         {
             this.InitializeComponent();
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            ApplicationDataContainer     localSettings = ApplicationData.Current.LocalSettings;
             IsNoPicsMode.IsOn = Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]);
             IsUseOldEmojiMode.IsOn = Convert.ToBoolean(localSettings.Values["IsUseOldEmojiMode"]);
             IsDarkMode.IsOn = Convert.ToBoolean(localSettings.Values["IsDarkMode"]);
+            CheckUpdateWhenLuanching.IsOn = Convert.ToBoolean(localSettings.Values["CheckUpdateWhenLuanching"]);
+            VersionTextBlock.Text = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
+#if DEBUG
+            gotoTestPage.Visibility = Visibility.Visible;
+#endif
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -41,7 +48,7 @@ namespace 酷安_UWP
             mainPage = e.Parameter as MainPage;
         }
 
-        static void InitializeSettings(ApplicationDataContainer localSettings)
+        static public void InitializeSettings(ApplicationDataContainer localSettings)
         {
             if (!localSettings.Values.ContainsKey("IsNoPicsMode"))
                 localSettings.Values.Add("IsNoPicsMode", false);
@@ -49,7 +56,8 @@ namespace 酷安_UWP
                 localSettings.Values.Add("IsUseOldEmojiMode", false);
             if (!localSettings.Values.ContainsKey("IsDarkMode"))
                 localSettings.Values.Add("IsDarkMode", false);
-
+            if (!localSettings.Values.ContainsKey("CheckUpdateWhenLuanching"))
+                localSettings.Values.Add("CheckUpdateWhenLuanching", true);
         }
 
         public static void CheckTheme()
@@ -110,6 +118,7 @@ namespace 酷安_UWP
             {
                 case "0":
                 case "1":
+                case "3":
                     localSettings.Values[toggle.Name] = toggle.IsOn;
                     break;
                 case "2":
@@ -119,6 +128,19 @@ namespace 酷安_UWP
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) => Frame.Navigate(typeof(TestPage),mainPage);
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            switch (button.Tag as string)
+            {
+                case "0":
+                    Frame.Navigate(typeof(TestPage), mainPage);
+                    break;
+                case "1":
+                    try { MainPage.CheckUpdate(); }
+                    catch { await new MessageDialog("当前无可用更新。").ShowAsync(); }
+                    break;
+            }
+        }
     }
 }

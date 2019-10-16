@@ -47,11 +47,11 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <controls:MarkdownTextBlock Text="{x:Bind GetValue('message')}"/>
+                        <controls:MarkdownTextBlock Text="{x:Bind GetValue('message')}"  LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
                         <GridView Grid.Row="1" MinHeight="0" Margin="0,20,0,0" HorizontalAlignment="Center" SelectionChanged="GridView_SelectionChanged" Tag="{x:Bind GetValue4('picArr',x:False)}" ItemsSource="{x:Bind GetValue4('picArr',x:True)}">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="x:String">
-                                    <Image MaxWidth="200" MaxHeight="200" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
+                                    <Image MaxWidth="140" MaxHeight="140"  HorizontalAlignment="Left" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
                                 </DataTemplate>
                                 <!--
                                 注意：
@@ -110,10 +110,10 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <controls:MarkdownTextBlock Text="{x:Bind GetValue('message')}"/>
+                        <controls:MarkdownTextBlock LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False" Text="{x:Bind GetValue('message')}"/>
                         <GridView Grid.Row="1" MinHeight="0" Margin="0,20,0,0" HorizontalAlignment="Center" SelectionChanged="GridView_SelectionChanged" Tag="{x:Bind GetValue('pic')}">
-                            <GridViewItem MaxWidth="200" MaxHeight="200" MinHeight="0" MinWidth="0" >
-                                <Image MaxWidth="200" MaxHeight="200" Source="{x:Bind GetValue2('pic')}"/>
+                            <GridViewItem MaxWidth="140" HorizontalAlignment="Left" MaxHeight="140" MinHeight="0" MinWidth="0" >
+                                <Image MaxWidth="140" MaxHeight="140" Source="{x:Bind GetValue2('pic')}"/>
                             </GridViewItem>
                         </GridView>
                     </Grid>
@@ -144,7 +144,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <GridView HorizontalAlignment="Left" Grid.Row="0" ItemsSource="{x:Bind GetFeed('userInfo')}" ItemTemplate="{StaticResource user}"/>
-                    <controls:MarkdownTextBlock Grid.Row="1" Text="{x:Bind GetValue('message')}" Margin="25,0,10,0"/>
+                    <controls:MarkdownTextBlock Grid.Row="1" Text="{x:Bind GetValue('message')}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False" Margin="25,0,10,0"/>
                 </Grid>
             </ListViewItem>
         </DataTemplate>
@@ -262,7 +262,7 @@
                         </ListView>
                     </PivotItem>
                 </Pivot>
-                <TextBlock Height="20" HorizontalAlignment="Center">正在加载下一页……</TextBlock>
+                
             </StackPanel>
         </ScrollViewer>
 

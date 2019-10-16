@@ -9,6 +9,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -106,7 +107,7 @@ namespace 酷安_UWP
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button i = sender as Button;
-            Frame.Navigate(typeof(UserPage), new object[] { i.Tag as string, mainPage });
+            mainPage.Frame.Navigate(typeof(UserPage), new object[] { i.Tag as string, mainPage });
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -321,6 +322,14 @@ namespace 酷安_UWP
         {
             MarkdownTextBlock block = sender as MarkdownTextBlock;
             string s = block.Tag as string;
+        }
+
+        private async void MarkdownTextBlock_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            if (e.Link.IndexOf("/u/") == 0)
+                mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(e.Link.Replace("/u/", string.Empty)), mainPage });
+            if (e.Link.IndexOf("http") == 0)
+                await Launcher.LaunchUriAsync(new Uri(e.Link));
         }
 
         //https://www.cnblogs.com/arcsinw/p/8638526.html

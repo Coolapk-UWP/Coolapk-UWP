@@ -8,6 +8,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -120,6 +121,14 @@ namespace 酷安_UWP
                 VScrollViewer.ChangeView(null, 20, null);
             }
             else mainPage.Frame.Navigate(typeof(UserPage), new object[] { i.Tag as string, mainPage });
+        }
+
+        private async void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
+        {
+            if (e.Link.IndexOf("/u/") == 0)
+                mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(e.Link.Replace("/u/", string.Empty)), mainPage });
+            if (e.Link.IndexOf("http") == 0)
+                await Launcher.LaunchUriAsync(new Uri(e.Link));
         }
     }
 }

@@ -10,15 +10,26 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     
     <Grid>
-        <Button Style="{ThemeResource NavigationBackButtonNormalStyle}" Margin="48,2,0,0" Click="Button_Click_3" VerticalAlignment="Top"/>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="500" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="bu.Margin" Value="2,2,0,0"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Button Style="{ThemeResource NavigationBackButtonNormalStyle}" x:Name="bu" Margin="48,2,0,0" Click="Button_Click_3" VerticalAlignment="Top"/>
         <ScrollViewer  Margin="0,48,0,0">
             <StackPanel>
                 <TextBox Header="uid" x:Name="uid"/>
-                <Button Click="Button_Click">go to</Button>
+                <Button Click="Button_Click">go</Button>
                 <TextBox x:Name="txb1"/>
                 <controls:MarkdownTextBlock Text="{x:Bind txb1.Text,Mode=OneWay}"/>
-                <Button Click="Button_Click_1">get update</Button>
-                <Button Click="Button_Click_2">show dialog</Button>
             </StackPanel>
         </ScrollViewer>
     </Grid>

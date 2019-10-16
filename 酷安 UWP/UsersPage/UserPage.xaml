@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    mc:Ignorable="d" NavigationCacheMode="Required"
+    mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <!--动态-->
@@ -42,11 +42,11 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <controls:MarkdownTextBlock Text="{x:Bind GetValue('message')}"/>
+                        <controls:MarkdownTextBlock LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False" Text="{x:Bind GetValue('message')}"/>
                         <GridView Grid.Row="1" MinHeight="0" Margin="0,20,0,0" HorizontalAlignment="Center" Tag="{x:Bind GetValue4('picArr',x:False)}" ItemsSource="{x:Bind GetValue4('picArr',x:True)}">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="x:String">
-                                    <Image MaxWidth="200" MaxHeight="200" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
+                                    <Image MaxWidth="140" HorizontalAlignment="Left" MaxHeight="140" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
                                 </DataTemplate>
                                 <!--
                                 注意：
@@ -163,7 +163,7 @@
                         </StackPanel>
                     </PivotItem>
                 </Pivot>
-                <TextBlock Height="20" HorizontalAlignment="Center">正在加载下一页……</TextBlock>
+                
             </StackPanel>
         </ScrollViewer>
     </Grid>

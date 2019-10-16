@@ -30,7 +30,6 @@ namespace 酷安_UWP
         public TestPage()
         {
             this.InitializeComponent();
-//            Button_Click(null, null);
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -43,26 +42,6 @@ namespace 酷安_UWP
             mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(uid.Text), mainPage });
         }
 
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            object[] vs = await Web.CheckUpdate();
-            MessageDialog dialog = new MessageDialog(vs[1] as string);
-            await dialog.ShowAsync();
-        }
-
-        private async void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            StorageFolder folder = ApplicationData.Current.LocalFolder;
-            string str = folder.Path + "\\" + @"\Emoji\[酷币2€].png";
-            FileInfo file = new FileInfo(str);
-            string a = file.Exists ? "y" : "n";
-            MessageDialog dialog = new MessageDialog(a);
-            await dialog.ShowAsync();
-        }
-
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            Frame.GoBack();
-        }
+        private void Button_Click_3(object sender, RoutedEventArgs e) => Frame.GoBack();
     }
 }
