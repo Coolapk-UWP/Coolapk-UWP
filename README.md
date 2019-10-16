@@ -20,11 +20,9 @@
 - [鸣谢](#鸣谢)
 
 ## 现有功能
-1. 浏览和下载应用
-2. 访问开发人员中心
-3. 浏览头条贴
-4. 登录帐号
-5. 夜间模式
+1. 浏览应用
+2. 浏览头条贴
+3. 夜间模式
 
 ## 支持的语言
 中文
@@ -82,7 +80,5 @@
 - OpenCoolapk作者[@roykio](http://www.coolapk.com/u/703542)([Github](https://github.com/roykio))
 - CoolapkTokenCrack作者[@ZCKun](http://www.coolapk.com/u/654147)([Github](https://github.com/ZCKun))
 - Coolapk-kotlin作者[@bjzhou](http://www.coolapk.com/u/528097)([Github](https://github.com/bjzhou))
-- 酷安开发者控制台作者[@TaRGroup](http://www.coolapk.com/u/803922)([Github](https://github.com/TaRGroup))
-- 酷安开发者平台作者[@LingC](http://www.coolapk.com/u/745652)([Github](https://github.com/HelloLingC))
 - 以及所有为酷安UWP项目做出贡献的同志们
 - **铺路尚未成功，同志仍需努力！**
