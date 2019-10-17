@@ -33,6 +33,7 @@ namespace 酷安_UWP
         public DataTemplate DataTemplate1 { get; set; }
         public DataTemplate DataTemplate2 { get; set; }
         public DataTemplate DataTemplate3 { get; set; }
+        public DataTemplate DataTemplate4 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             Feed feed = item as Feed;
@@ -42,9 +43,13 @@ namespace 酷安_UWP
                     return DataTemplate1;
                 case "iconMiniGridCard":
                 case "iconLinkGridCard":
+                case "imageTextScrollCard":
+                case "feedScrollCard":
                     return DataTemplate2;
                 case "messageCard":
                     return DataTemplate3;
+                case "refreshCard":
+                    return DataTemplate4;
                 default:
                     return DataTemplate0;
             }
@@ -57,6 +62,8 @@ namespace 酷安_UWP
         public DataTemplate DataTemplate2 { get; set; }
         public DataTemplate DataTemplate3 { get; set; }
         public DataTemplate DataTemplate4 { get; set; }
+        public DataTemplate DataTemplate5 { get; set; }
+        public DataTemplate DataTemplate6 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             Feed feed = item as Feed;
@@ -70,8 +77,30 @@ namespace 酷安_UWP
                     return DataTemplate3;
                 case "topic":
                     return DataTemplate4;
+                case "feed":
+                    if (feed.GetValue("feedType") == "feedArticle") return DataTemplate5;
+                    else if (feed.GetValue("feedType") == "question") return DataTemplate6;
+                    else return DataTemplate0;
                 default:
                     return DataTemplate0;
+            }
+        }
+    }
+    public class FeedTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate DataTemplate1 { get; set; }
+        public DataTemplate DataTemplate2 { get; set; }
+        protected override DataTemplate SelectTemplateCore(object item)
+        {
+            Feed feed = item as Feed;
+            switch (feed.GetValue("feedType"))
+            {
+                case "feed":
+                    return DataTemplate1;
+                case "feedArticle":
+                    return DataTemplate2;
+                default:
+                    return DataTemplate1;
             }
         }
     }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -522,46 +523,80 @@ namespace 酷安_UWP
 "[SegoeUI滑稽]" };
 
         ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-        protected JObject jObject;
+        public JObject jObject;
         public Feed(JObject jObject) => this.jObject = jObject;
         public string GetValue(string value)
         {
             if (jObject.TryGetValue(value, out JToken token))
                 if (value == "message")
+                    return ProcessMessage(token.ToString());
+                else if (value == "message_raw_output")
                 {
-                    string s = token.ToString();
-                    s = s.Replace("\n", "\n\n");
-                    foreach (var i in emojis)
+                    JArray array = JArray.Parse(token.ToString());
+                    string s = string.Empty;
+                    foreach (JObject item in array)
                     {
-                        if (s.Contains(i))
-                        {
-                            if (i.Contains('('))
-                                s = s.Replace($"#{i})", $"\n![#{i})](ms-appx:/Emoji/{i}.png =24)");
-                            else if (Convert.ToBoolean(localSettings.Values["IsUseOldEmojiMode"]))
-                                if (oldEmojis.Contains(s))
-                                    s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}2.png =24)");
-                                else s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}.png =24)");
-                            else s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}.png =24)");
-                        }
-                    }
-                    Regex regex = new Regex("<a.*?>\\S*"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
-                    while (regex.IsMatch(s))
-                    {
-                        var h = regex.Match(s);
-                        string t = regex3.Match(h.Value).Value.Replace(">", string.Empty);
-                        t = t.Replace("<", string.Empty);
-                        string tt = regex2.Match(h.Value).Value.Replace("href=", string.Empty);
-                        tt = tt.Replace("\"", string.Empty);
-                        tt = tt.Replace($">{t}</a>", string.Empty);
-                        if (t == "查看更多") tt = "getmore";
-                        s = s.Replace(h.Value, $"[{t}]({tt})");
+                        if (item["type"].ToString() == "text")
+                            s += ProcessMessage(item["message"].ToString());
+                        else if (item["type"].ToString() == "image")
+                            s += $"\n\n![image]({item["url"].ToString()}.s.jpg)\n\n>{item["description"].ToString()}\n\n";
                     }
                     return s;
                 }
+                else if (value == "extra_url")
+                {
+                    if (!string.IsNullOrEmpty(token.ToString()))
+                        if (token.ToString().IndexOf("http") == 0)
+                            return new Uri(token.ToString()).Host;
+                        else return string.Empty;
+                    else return string.Empty;
+                }
+                else if (value == "infoHtml")
+                    return token.ToString().Replace("&nbsp;", string.Empty);
                 else if (value == "dateline")
                     return ConvertTime(token.ToString());
                 else return token.ToString();
+            else if (value == "message2")
+            {
+                if (string.IsNullOrEmpty(jObject["pic"].ToString()))
+                    return $"[{jObject["username"]}](/u/{jObject["uid"]})：{ProcessMessage(jObject["message"].ToString())}";
+                else
+                    return $"[{jObject["username"]}](/u/{jObject["uid"]})：{ProcessMessage(jObject["message"].ToString())}\n[查看图片]({jObject["pic"]})";
+            }
+            else if (value == "extra_url2")
+                return jObject["extra_url"].ToString();
             else return string.Empty;
+        }
+        string ProcessMessage(string s)
+        {
+            s = s.Replace("\n", "\n\n");
+            s = s.Replace("&#039;", "\'");
+            foreach (var i in emojis)
+            {
+                if (s.Contains(i))
+                {
+                    if (i.Contains('('))
+                        s = s.Replace($"#{i})", $"\n![#{i})](ms-appx:/Emoji/{i}.png =24)");
+                    else if (Convert.ToBoolean(localSettings.Values["IsUseOldEmojiMode"]))
+                        if (oldEmojis.Contains(s))
+                            s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}2.png =24)");
+                        else s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}.png =24)");
+                    else s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}.png =24)");
+                }
+            }
+            Regex regex = new Regex("<a.*?>\\S*"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
+            while (regex.IsMatch(s))
+            {
+                var h = regex.Match(s);
+                string t = regex3.Match(h.Value).Value.Replace(">", string.Empty);
+                t = t.Replace("<", string.Empty);
+                string tt = regex2.Match(h.Value).Value.Replace("href=", string.Empty);
+                tt = tt.Replace("\"", string.Empty);
+                tt = tt.Replace($">{t}</a>", string.Empty);
+                if (t == "查看更多") tt = "getmore";
+                s = s.Replace(h.Value, $"[{t}]({tt})");
+            }
+            return s;
         }
         public static string ConvertTime(string timestr)
         {
@@ -569,10 +604,10 @@ namespace 酷安_UWP
             TimeSpan tt = DateTime.Now.Subtract(time);
 
             if (tt.TotalDays > 365)
-                return $"{tt.TotalDays / 365}年前";
+                return $"{(int)(tt.TotalDays / 365)}年前";
             else if (tt.TotalDays > 30)
-                return $"{tt.TotalDays / 30}个月前";
-            else if (tt.Days > 1)
+                return $"{(int)(tt.TotalDays / 30)}个月前";
+            else if (tt.Days > 0)
                 return $"{tt.Days}天前";
             else if (tt.Hours > 0)
                 return $"{tt.Hours}小时前";
@@ -581,44 +616,77 @@ namespace 酷安_UWP
             else return "刚刚";
         }
         public Feed[] GetSelfs() => new Feed[] { this };
+        /// <summary>
+        /// 获取缩略图
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public ImageSource GetValue2(string value)
         {
-            string s = jObject.GetValue(value).ToString();
-            if (!string.IsNullOrEmpty(s))
-                if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
-                    if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
-                        return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png"));
-                    else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png"));
-                else return new BitmapImage(new Uri(s + ".s.jpg"));
+            if (jObject.TryGetValue(value, out JToken token))
+            {
+                string s = token.ToString();
+                if (!string.IsNullOrEmpty(s))
+                    if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
+                        if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                            return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png"));
+                        else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png"));
+                    else return new BitmapImage(new Uri(s + ".s.jpg"));
+                else return new BitmapImage();
+            }
             else return new BitmapImage();
         }
+        /// <summary>
+        /// 获取原图
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public ImageSource GetValue5(string value)
         {
-            string s = jObject.GetValue(value).ToString();
-            if (!string.IsNullOrEmpty(s))
-                if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
-                    if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
-                        return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png"));
-                    else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png"));
-                else return new BitmapImage(new Uri(s));
+            if (jObject.TryGetValue(value, out JToken token))
+            {
+                string s = token.ToString();
+                if (!string.IsNullOrEmpty(s))
+                    if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
+                        if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                            return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png"));
+                        else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png"));
+                    else return new BitmapImage(new Uri(s));
+                else return new BitmapImage();
+            }
             else return new BitmapImage();
         }
 
         public ImageSource[] GetValue3(string value)
         {
-            JArray array = (JArray)jObject.GetValue(value);
             List<BitmapImage> images = new List<BitmapImage>();
-            foreach (var item in array)
-                if (!string.IsNullOrEmpty(item.ToString()))
-                    if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
-                        if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
-                            images.Add(new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")));
-                        else images.Add(new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")));
-                    //获取缩略图
-                    else images.Add(new BitmapImage(new Uri(item.ToString() + ".s.jpg")));
+            if (jObject.TryGetValue(value, out JToken token))
+            {
+                JArray array = (JArray)token;
+                foreach (var item in array)
+                    if (!string.IsNullOrEmpty(item.ToString()))
+                        if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
+                            if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                                images.Add(new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")));
+                            else images.Add(new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")));
+                        //获取缩略图
+                        else images.Add(new BitmapImage(new Uri(item.ToString() + ".s.jpg")));
+            }
             return images.ToArray();
         }
-        public Feed[] GetFeed(string value) => new Feed[] { new Feed((JObject)jObject[value]) };
+        public Feed[] GetFeed(string value)
+        {
+            if (jObject[value] is null)
+                return new Feed[] { new Feed(new JObject()) };
+            else if (!jObject[value].HasValues)
+            {
+                if (!jObject.TryGetValue("v", out JToken token))
+                    jObject.Add("v", new JValue(true));
+                return new Feed[] { new Feed(new JObject()) };
+            }
+            return new Feed[] { new Feed((JObject)jObject[value]) };
+        }
+
         public Feed[] GetFeeds(string value)
         {
             JArray array = (JArray)jObject.GetValue(value);
@@ -630,20 +698,40 @@ namespace 酷安_UWP
         }
         public string[] GetValue4(string value, bool ReturnFakePic)
         {
-            JArray array = (JArray)jObject.GetValue(value);
-            if (array is null) return new string[] { };
-            else
+            if (jObject.TryGetValue(value, out JToken token))
             {
-                List<string> s = new List<string>();
-                foreach (var item in array)
-                    if (!string.IsNullOrEmpty(item.ToString()))
-                        if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]) && ReturnFakePic)
-                            if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
-                                s.Add("ms-appx:/Assets/img_placeholder_night.png");
-                            else s.Add("ms-appx:/Assets/img_placeholder.png");
-                        else s.Add(item.ToString() + ".s.jpg");
-                return s.ToArray();
+                JArray array = (JArray)token;
+                if (array is null) return new string[] { };
+                else
+                {
+                    List<string> s = new List<string>();
+                    foreach (var item in array)
+                        if (!string.IsNullOrEmpty(item.ToString()))
+                            if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]) && ReturnFakePic)
+                                if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                                    s.Add("ms-appx:/Assets/img_placeholder_night.png");
+                                else s.Add("ms-appx:/Assets/img_placeholder.png");
+                            else s.Add(item.ToString() + ".s.jpg");
+                    return s.ToArray();
+                }
             }
+            return new string[] { };
+        }
+        public Visibility GetVisibility(string value)
+        {
+            if (jObject.TryGetValue(value, out JToken token))
+            {
+                if (string.IsNullOrEmpty(token.ToString())) return Visibility.Collapsed;
+                else if (value == "v") return Visibility.Visible;
+                else return Visibility.Visible;
+            }
+            else if (value == "v2")
+            {
+                if (jObject.TryGetValue("v", out JToken token2))
+                    return Visibility.Collapsed;
+                return Visibility.Visible;
+            }
+            else return Visibility.Collapsed;
         }
     }
     public class Feed2 : Feed

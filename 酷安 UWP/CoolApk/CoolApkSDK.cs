@@ -123,7 +123,7 @@ namespace 酷安_UWP
             }
         }
 
-        public static async Task<JArray> GetIndexList(dynamic page, dynamic firstItem)
+        public static async Task<JArray> GetIndexList(dynamic page)
         {
             try
             {

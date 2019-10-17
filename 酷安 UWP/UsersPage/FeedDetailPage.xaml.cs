@@ -58,14 +58,13 @@ namespace 酷安_UWP
             {
                 id = (string)((object[])e.Parameter)[0];
                 mainPage.ActiveProgressRing();
-                if (title == "动态")
-                    LoadFeedDetail(id);
                 if (title == "回复")
                 {
                     TitleBar.Visibility = Visibility.Collapsed;
                     reply = ((object[])e.Parameter)[3] as Feed2;
                     LoadRepliesDetail(id);
                 }
+                else LoadFeedDetail(id);
             }
         }
 
@@ -80,6 +79,8 @@ namespace 酷安_UWP
                 likenum = detail.GetValue("likenum").ToString(),
                 forwardnum = detail.GetValue("forwardnum").ToString()
             };
+            TitleTextBlock.Text = detail["title"].ToString();
+            detail["feedTypeName"].ToString();//动态 图文
             if (array.Count != 0)
             {
                 feedfirstItem = array.First["id"].ToString();
@@ -161,7 +162,7 @@ namespace 酷安_UWP
                 if (FeedDetailPivot.SelectedIndex == 2)
                 {
                     Frame.Navigate(typeof(FeedDetailPage),
-                        new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, "动态", (sender as FrameworkElement).Tag });
+                        new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, (sender as FrameworkElement).Tag });
                 }
                 else
                 {
@@ -244,10 +245,12 @@ namespace 酷安_UWP
         private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             if (!e.IsIntermediate)
+            {
                 if (VScrollViewer.VerticalOffset == 0)
                 {
                     Refresh();
                     VScrollViewer.ChangeView(null, 20, null);
+                    refreshText.Visibility = Visibility.Collapsed;
                 }
                 else if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
                 {
@@ -255,9 +258,10 @@ namespace 酷安_UWP
                     switch (FeedDetailPivot.SelectedIndex.ToString())
                     {
                         case "0":
-                            if (TitleTextBlock.Text == "动态")
+                            if (TitleTextBlock.Text == "回复")
                             {
-                                JArray array = await CoolApkSDK.getFeedReplyListById(id, ++feedpage, 1, 0, feedfirstItem, feedlastItem);
+
+                                JArray array = await CoolApkSDK.getReplyListById(id, ++feedpage, 0, 0, feedlastItem);
                                 if (array.Count != 0)
                                 {
                                     feedlastItem = array.Last["id"].ToString();
@@ -266,10 +270,9 @@ namespace 酷安_UWP
                                 else
                                     feedpage--;
                             }
-                            if (TitleTextBlock.Text == "回复")
+                            else
                             {
-
-                                JArray array = await CoolApkSDK.getReplyListById(id, ++feedpage, 0, 0, feedlastItem);
+                                JArray array = await CoolApkSDK.getFeedReplyListById(id, ++feedpage, 1, 0, feedfirstItem, feedlastItem);
                                 if (array.Count != 0)
                                 {
                                     feedlastItem = array.Last["id"].ToString();
@@ -307,6 +310,8 @@ namespace 酷安_UWP
                     }
                     mainPage.DeactiveProgressRing();
                 }
+            }
+            else refreshText.Visibility = Visibility.Visible;
         }
 
         private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e) =>
@@ -315,7 +320,7 @@ namespace 酷安_UWP
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Refresh();
-            VScrollViewer.ChangeView(null, 20, null);
+            VScrollViewer.ChangeView(null, 0, null);
         }
 
         private void MarkdownTextBlock_Loaded(object sender, RoutedEventArgs e)
@@ -331,6 +336,41 @@ namespace 酷安_UWP
             if (e.Link.IndexOf("http") == 0)
                 await Launcher.LaunchUriAsync(new Uri(e.Link));
         }
+
+        private void MarkdownTextBlock_ImageResolving(object sender, ImageResolvingEventArgs e)
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
+            {
+                e.Handled = true;
+                if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                    e.Image = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
+                else e.Image = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
+            }
+        }
+
+        private void MarkdownTextBlock_ImageClicked(object sender, LinkClickedEventArgs e)
+        {
+            if (e.Link.IndexOf("http") == 0)
+            {
+                list.Clear();
+                list.Add(new BitmapImage(new Uri(e.Link.Remove(e.Link.Length - 6))));
+                SFlipView.Visibility = CloseFlip.Visibility = Visibility.Visible;
+            }
+        }
+
+        private async void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FrameworkElement element = sender as FrameworkElement;
+            string s = (element.Tag as Feed).GetValue("extra_url2");
+            if (s.IndexOf("/u/") == 0)
+                mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(s.Replace("/u/", string.Empty)), mainPage });
+            if (s.IndexOf("http") == 0)
+                await Launcher.LaunchUriAsync(new Uri(s));
+        }
+
+        private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e) 
+            => mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, null });
 
         //https://www.cnblogs.com/arcsinw/p/8638526.html
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -358,16 +398,20 @@ namespace 酷安_UWP
     {
         public DataTemplate DataTemplate1 { get; set; }
         public DataTemplate DataTemplate2 { get; set; }
+        public DataTemplate DataTemplate3 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             Feed feed = item as Feed;
-            switch (feed.GetValue("entityType"))
+            if (feed.GetValue("entityType") == "feed_reply")
+                return DataTemplate2;
+            switch (feed.GetValue("feedType"))
             {
                 case "feed":
                     return DataTemplate1;
-                case "feed_reply":
+                case "feedArticle":
+                    return DataTemplate3;
                 default:
-                    return DataTemplate2;
+                    return DataTemplate1;
             }
         }
     }

@@ -22,8 +22,8 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <TextBlock Margin="48,11" x:Name="title" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top">设置</TextBlock>
-        <ScrollViewer>
-            <StackPanel Grid.Row="1" Margin="10,48,10,0">
+        <ScrollViewer  Margin="10,48,10,0">
+            <StackPanel Grid.Row="1">
                 <ToggleSwitch x:Name="IsNoPicsMode" Tag="0" Header="无图模式" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="IsUseOldEmojiMode" Tag="1" Header="使用旧式表情" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="IsDarkMode" Tag="2" Header="夜间模式" Toggled="ToggleSwitch_Toggled"/>

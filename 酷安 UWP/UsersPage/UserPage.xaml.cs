@@ -44,10 +44,12 @@ namespace 酷安_UWP
             mainPage = ((object[])e.Parameter)[1] as MainPage;
             uid = (string)((object[])e.Parameter)[0];
             mainPage.ActiveProgressRing();
-            LoadProfile();
-            ReadNextPageFeeds();
+            if (!string.IsNullOrEmpty(uid))
+                LoadProfile();
+            //FeedsCollection.Add(((object[])e.Parameter)[2] as Feed);
+            if (FeedsCollection.Count == 0)
+                ReadNextPageFeeds();
             mainPage.DeactiveProgressRing();
-            VScrollViewer.ChangeView(null, 20, null);
         }
 
         public async void LoadProfile()
@@ -63,7 +65,7 @@ namespace 酷安_UWP
                     FansNum = detail["fans"].ToString(),
                     Level = detail["level"].ToString(),
                     bio = detail["bio"].ToString(),
-                    Backgeound = new ImageBrush { ImageSource = new BitmapImage(new Uri(detail["cover"].ToString())),Stretch=Stretch.UniformToFill },
+                    Backgeound = new ImageBrush { ImageSource = new BitmapImage(new Uri(detail["cover"].ToString())), Stretch = Stretch.UniformToFill },
                     verify_title = detail["verify_title"].ToString(),
                     gender = int.Parse(detail["gender"].ToString()) == 1 ? "♂" : (int.Parse(detail["gender"].ToString()) == 0 ? "♀" : string.Empty),
                     city = $"{detail["province"].ToString()} {detail["city"].ToString()}",
@@ -94,7 +96,7 @@ namespace 酷安_UWP
         }
 
         private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
-            => mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, "动态", null });
+            => mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, null });
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -106,7 +108,6 @@ namespace 酷安_UWP
                     break;
                 case "1":
                     Refresh();
-                    VScrollViewer.ChangeView(null, 20, null);
                     break;
                 default:
                     mainPage.Frame.Navigate(typeof(UserPage), new object[] { button.Tag as string, mainPage });
@@ -136,16 +137,48 @@ namespace 酷安_UWP
                 await Launcher.LaunchUriAsync(new Uri(e.Link));
         }
 
+        private async void Grid_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FrameworkElement element = sender as FrameworkElement;
+            string s = (element.Tag as Feed).GetValue("extra_url2");
+            if (s.IndexOf("/u/") == 0)
+                mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(s.Replace("/u/", string.Empty)), mainPage });
+            if (s.IndexOf("http") == 0)
+                await Launcher.LaunchUriAsync(new Uri(s));
+        }
+
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             if (!e.IsIntermediate)
+            {
                 if (VScrollViewer.VerticalOffset == 0)
-                {   
+                {
                     Refresh();
                     VScrollViewer.ChangeView(null, 20, null);
+                    refreshText.Visibility = Visibility.Collapsed;
                 }
                 else if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
                     ReadNextPageFeeds();
+            }
+            else refreshText.Visibility = Visibility.Visible;
+        }
+    }
+    public class TemplateSelector2 : DataTemplateSelector
+    {
+        public DataTemplate DataTemplate1 { get; set; }
+        public DataTemplate DataTemplate2 { get; set; }
+        protected override DataTemplate SelectTemplateCore(object item)
+        {
+            Feed feed = item as Feed;
+            switch (feed.GetValue("feedType"))
+            {
+                case "feed":
+                    return DataTemplate1;
+                case "feedArticle":
+                    return DataTemplate2;
+                default:
+                    return DataTemplate1;
+            }
         }
     }
 }

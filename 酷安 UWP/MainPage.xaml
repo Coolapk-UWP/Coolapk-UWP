@@ -8,14 +8,37 @@
     xmlns:local="using:酷安_UWP"
     mc:Ignorable="d" >
     <Page.Resources>
+
+        <ControlTemplate x:Key="HamburgerMenuTemplate1" TargetType="controls:HamburgerMenu">
+            <Grid>
+                <SplitView x:Name="MainSplitView" CompactPaneLength="{TemplateBinding CompactPaneLength}" DisplayMode="{TemplateBinding DisplayMode}" IsTabStop="False" IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" OpenPaneLength="{TemplateBinding OpenPaneLength}" PanePlacement="{TemplateBinding PanePlacement}" PaneBackground="{TemplateBinding PaneBackground}">
+                    <SplitView.Pane>
+                        <Grid x:Name="PaneGrid" FlowDirection="LeftToRight">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid Height="{TemplateBinding HamburgerHeight}" Margin="0,0,0,8" Grid.Row="0"/>
+                            <ListView x:Name="ButtonsListView" ItemTemplate="{TemplateBinding ItemTemplate}" IsItemClickEnabled="True" ItemsSource="{TemplateBinding ItemsSource}" ItemTemplateSelector="{TemplateBinding ItemTemplateSelector}" AutomationProperties.Name="Menu items" Grid.Row="1" SelectionMode="Single" SelectedItem="{Binding SelectedItem, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" TabIndex="1" ScrollViewer.VerticalScrollBarVisibility="Auto" Width="{TemplateBinding OpenPaneLength}"/>
+                            <ListView x:Name="OptionsListView" ItemTemplate="{TemplateBinding OptionsItemTemplate}" IsItemClickEnabled="True" ItemsSource="{TemplateBinding OptionsItemsSource}" ItemTemplateSelector="{TemplateBinding OptionsItemTemplateSelector}" Margin="0,20,0,8" AutomationProperties.Name="Option items" Grid.Row="2" SelectionMode="Single" SelectedItem="{Binding SelectedOptionsItem, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" SelectedIndex="{Binding SelectedOptionsIndex, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" TabIndex="2" VerticalAlignment="Bottom" ScrollViewer.VerticalScrollBarVisibility="Disabled" Width="{TemplateBinding OpenPaneLength}"/>
+                        </Grid>
+                    </SplitView.Pane>
+                    <ContentPresenter x:Name="ContentPart" Content="{TemplateBinding Content}" AutomationProperties.Name="Content"/>
+                </SplitView>
+                <Button x:Name="HamburgerButton" Background="Transparent" BorderThickness="0" Height="{TemplateBinding HamburgerHeight}" Margin="0,0,0,8" AutomationProperties.Name="Main button" Padding="0" TabIndex="0" VerticalAlignment="Top" Visibility="{TemplateBinding HamburgerVisibility}" Width="{TemplateBinding HamburgerWidth}">
+                    <ContentControl ContentTemplate="{TemplateBinding HamburgerMenuTemplate}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" IsTabStop="False" Margin="{TemplateBinding HamburgerMargin}"/>
+                </Button>
+            </Grid>
+        </ControlTemplate>
         <DataTemplate x:Key="DefaultTemplate" x:DataType="local:MenuItem">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="48" />
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <SymbolIcon Symbol="{x:Bind Icon}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
-                <TextBlock Grid.Column="1" Text="{x:Bind Name}" FontSize="16" VerticalAlignment="Center" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
+                <SymbolIcon Margin="-25,0,0,0" Symbol="{x:Bind Icon}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
+                <TextBlock Grid.Column="1" Margin="-5,0,0,0" Text="{x:Bind Name}" FontSize="16" VerticalAlignment="Center" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
             </Grid>
         </DataTemplate>
     </Page.Resources>
@@ -47,7 +70,7 @@
 
         <controls:HamburgerMenu x:Name="hamburgerMenuControl" ItemTemplate="{StaticResource DefaultTemplate}" ItemClick="OnMenuItemClick" 
                                 OptionsItemTemplate="{StaticResource DefaultTemplate}" OptionsItemClick="OnMenuItemClick" SelectedIndex="0"
-                                DisplayMode="Overlay" PaneBackground="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                                DisplayMode="Overlay" PaneBackground="{ThemeResource ApplicationPageBackgroundThemeBrush}" Template="{ThemeResource HamburgerMenuTemplate1}">
             <Frame x:Name="VFrame"/>
         </controls:HamburgerMenu>
         <ProgressRing Width="50" Height="50" x:Name="progressRing"/>
