@@ -134,5 +134,10 @@ namespace 酷安_UWP
             JObject jObject = JObject.Parse(txb2.Text);
             mainPage.Frame.Navigate(typeof(UserPage), new object[] { string.Empty, mainPage, new Feed(jObject) });
         }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

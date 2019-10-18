@@ -33,13 +33,18 @@ namespace 酷安_UWP
         string id;
         MainPage mainPage;
         ObservableCollection<Feed2> feeds = new ObservableCollection<Feed2>();
+        ObservableCollection<Feed> answers = new ObservableCollection<Feed>();
         ObservableCollection<Feed2> replys = new ObservableCollection<Feed2>();
         Feed2 reply;
         int feedpage = 1;
         int likepage = 0;
         int sharepage = 0;
+        int answerpage = 0;
         string feedfirstItem, feedlastItem;
         string likefirstItem, likelastItem;
+        string answerfirstItem, answerlastItem;
+        string answerSortType = "reply";
+        string listType = "lastupdate_desc", isFromAuthor = "0";
         static ObservableCollection<ImageSource> list = new ObservableCollection<ImageSource>();
         public FeedDetailPage()
         {
@@ -53,48 +58,64 @@ namespace 酷安_UWP
             //将传过来的数据 类型转换一下
             mainPage = ((object[])e.Parameter)[1] as MainPage;
             string title = (string)((object[])e.Parameter)[2];
-            TitleTextBlock.Text = title;
-            if (id != (string)((object[])e.Parameter)[0])
+            id = (string)((object[])e.Parameter)[0];
+            mainPage.ActiveProgressRing();
+            if (title == "回复")
             {
-                id = (string)((object[])e.Parameter)[0];
-                mainPage.ActiveProgressRing();
-                if (title == "回复")
-                {
-                    TitleBar.Visibility = Visibility.Collapsed;
-                    reply = ((object[])e.Parameter)[3] as Feed2;
-                    LoadRepliesDetail(id);
-                }
-                else LoadFeedDetail(id);
+                FeedDetailPivot.Visibility = Visibility.Visible;
+                TitleTextBlock.Text = title;
+                TitleBar.Visibility = Visibility.Collapsed;
+                reply = ((object[])e.Parameter)[3] as Feed2;
+                LoadRepliesDetail(id);
             }
+            else LoadFeedDetail(id);
         }
 
         public async void LoadFeedDetail(string id)
         {
-            JObject detail = await CoolApkSDK.getFeedDetailById(id);
-            JArray array = await CoolApkSDK.getFeedReplyListById(id, 1, 1, 0, string.Empty, string.Empty);
+            JObject detail = await CoolApkSDK.GetFeedDetailById(id);
             FeedDetailList.ItemsSource = new Feed[] { new Feed(detail) };
-            FeedDetailPivot.DataContext = new
-            {
-                replynum = detail.GetValue("replynum").ToString(),
-                likenum = detail.GetValue("likenum").ToString(),
-                forwardnum = detail.GetValue("forwardnum").ToString()
-            };
             TitleTextBlock.Text = detail["title"].ToString();
-            detail["feedTypeName"].ToString();//动态 图文
-            if (array.Count != 0)
+            if (detail["feedTypeName"].ToString() == "提问")
             {
-                feedfirstItem = array.First["id"].ToString();
-                feedlastItem = array.Last["id"].ToString();
-                feeds.Add(new Feed2(detail["hotReplyRows"], "热门回复"));
-                feeds.Add(new Feed2(array, "最新回复"));
+                AnswerList.Visibility = Visibility.Visible;
+                AnswerList.ItemsSource = answers;
+                JArray array = await CoolApkSDK.GetAnswerListById(id, answerSortType, $"{++answerpage}", answerfirstItem, answerlastItem);
+                if (!(array is null) && array.Count != 0)
+                {
+                    foreach (JObject item in array)
+                        answers.Add(new Feed(item));
+                    answerfirstItem = array.First["id"].ToString();
+                    answerlastItem = array.Last["id"].ToString();
+                }
+                else answerpage--;
             }
-            else feedpage--;
+            else
+            {
+                FeedDetailPivot.DataContext = new
+                {
+                    replynum = detail.GetValue("replynum").ToString(),
+                    likenum = detail.GetValue("likenum").ToString(),
+                    forwardnum = detail.GetValue("forwardnum").ToString()
+                };
+                FeedDetailPivot.Visibility = Visibility.Visible;
+                JArray array = await CoolApkSDK.GetFeedReplyListById(id, listType, "1", isFromAuthor, string.Empty, string.Empty);
+                ChangeModeButton.IsEnabled = true;
+                if (array.Count != 0)
+                {
+                    feedfirstItem = array.First["id"].ToString();
+                    feedlastItem = array.Last["id"].ToString();
+                    feeds.Add(new Feed2(detail["hotReplyRows"], "热门回复"));
+                    feeds.Add(new Feed2(array, "最新回复"));
+                }
+                else feedpage--;
+            }
             mainPage.DeactiveProgressRing();
         }
 
         public async void LoadRepliesDetail(string id)
         {
-            JArray array = await CoolApkSDK.getReplyListById(id, 1, 0, 0, string.Empty);
+            JArray array = await CoolApkSDK.GetReplyListById(id, "1", string.Empty);
             FeedDetailList.ItemsSource = new Feed[] { reply };
             FeedDetailPivot.DataContext = new { replynum = reply.GetValue("replynum").ToString(), likenum = string.Empty, forwardnum = string.Empty };
             if (array.Count != 0)
@@ -105,17 +126,9 @@ namespace 酷安_UWP
             else feedpage--;
             mainPage.DeactiveProgressRing();
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Button i = sender as Button;
-            mainPage.Frame.Navigate(typeof(UserPage), new object[] { i.Tag as string, mainPage });
-        }
+        private void Button_Click(object sender, RoutedEventArgs e) => mainPage.Frame.Navigate(typeof(UserPage), new object[] { (sender as Button).Tag as string, mainPage });
 
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (TitleTextBlock.Text != "回复")
-                Frame.GoBack();
-        }
+        private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
 
         private async void PivotItem_Loaded(object sender, RoutedEventArgs e)
         {
@@ -128,11 +141,10 @@ namespace 酷安_UWP
                         FeedDetailPivot.IsLocked = true;
                     break;
                 case "2":
-                    JArray root = await CoolApkSDK.getFeedLikeUsersListById(id, ++likepage, string.Empty, string.Empty);
+                    JArray root = await CoolApkSDK.GetFeedLikeUsersListById(id, $"{++likepage} ", string.Empty, string.Empty);
                     ObservableCollection<Feed> F = new ObservableCollection<Feed>();
                     if (root.Count != 0)
                     {
-
                         likefirstItem = root.First["uid"].ToString();
                         likelastItem = root.Last["uid"].ToString();
                         foreach (JObject i in root)
@@ -142,7 +154,7 @@ namespace 酷安_UWP
                     likeListView.ItemsSource = F;
                     break;
                 case "3":
-                    JArray roots = await CoolApkSDK.getShareListById(id, ++sharepage);
+                    JArray roots = await CoolApkSDK.GetForwardListById(id, $"{++sharepage}");
                     ObservableCollection<Feed> Fs = new ObservableCollection<Feed>();
                     if (roots.Count != 0)
                         foreach (JObject i in roots)
@@ -164,6 +176,9 @@ namespace 酷安_UWP
                     Frame.Navigate(typeof(FeedDetailPage),
                         new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, (sender as FrameworkElement).Tag });
                 }
+                else if (FeedDetailPivot.Visibility == Visibility.Collapsed)
+                    mainPage.Frame.Navigate(typeof(FeedDetailPage),
+                            new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, null });
                 else
                 {
                     ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
@@ -184,10 +199,30 @@ namespace 酷安_UWP
             switch (FeedDetailPivot.SelectedIndex.ToString())
             {
                 case "0":
-                    if (TitleTextBlock.Text == "动态")
+                    if (TitleTextBlock.Text == "回复")
                     {
-                        JObject detail = await CoolApkSDK.getFeedDetailById(id);
-                        JArray array = await CoolApkSDK.getFeedReplyListById(id, 1, 1, 0, feedfirstItem, feedlastItem);
+                        JArray array = await CoolApkSDK.GetReplyListById(id, "1", feedlastItem);
+                        if (array.Count != 0)
+                            feeds.Insert(0, new Feed2(array, string.Empty));
+                    }
+                    else if (FeedDetailPivot.Visibility == Visibility.Collapsed)
+                    {
+                        JArray array = await CoolApkSDK.GetAnswerListById(id, answerSortType, "1", answerfirstItem, answerlastItem);
+                        if (array.Count != 0)
+                        {
+                            for (int i = 0; i < array.Count; i++)
+                                for (int j = 0; j < answers.Count; j++)
+                                    if (((JObject)array[i])["id"].ToString() == answers[j].GetValue("id"))
+                                        answers.RemoveAt(j);
+                            for (int i = 0; i < array.Count; i++)
+                                answers.Insert(i, new Feed((JObject)array[i]));
+                            answerfirstItem = array.First["id"].ToString();
+                        }
+                    }
+                    else
+                    {
+                        JObject detail = await CoolApkSDK.GetFeedDetailById(id);
+                        JArray array = await CoolApkSDK.GetFeedReplyListById(id, listType, "1", isFromAuthor, feedfirstItem, feedlastItem);
                         FeedDetailList.ItemsSource = new Feed[] { new Feed(detail) };
                         FeedDetailPivot.DataContext = new
                         {
@@ -195,35 +230,31 @@ namespace 酷安_UWP
                             likenum = detail.GetValue("likenum").ToString(),
                             forwardnum = detail.GetValue("forwardnum").ToString()
                         };
-                        feeds.RemoveAt(0);
-                        feeds.Insert(0, new Feed2(detail["hotReplyRows"], "热门回复"));
+                        //if (feeds.Count > 0) feeds.RemoveAt(0);
+                        //feeds.Insert(0, new Feed2(detail["hotReplyRows"], "热门回复"));
                         if (array.Count != 0)
                         {
                             feedfirstItem = array.First["id"].ToString();
-                            feeds.Insert(1, new Feed2(array, "最新回复"));
+                            if (string.IsNullOrEmpty(feedlastItem)) feedlastItem = array.Last["id"].ToString();
+                            feeds.Insert(0, new Feed2(array, string.Empty));
                         }
                         else feedpage--;
                         mainPage.DeactiveProgressRing();
                     }
-                    if (TitleTextBlock.Text == "回复")
-                    {
-                        JArray array = await CoolApkSDK.getReplyListById(id, 1, 0, 0, feedlastItem);
-                        if (array.Count != 0)
-                            feeds.Insert(0, new Feed2(array, string.Empty));
-                    }
+
                     break;
                 case "1":
-                    JArray root = await CoolApkSDK.getFeedLikeUsersListById(id, 1, likefirstItem, likelastItem);
+                    JArray root = await CoolApkSDK.GetFeedLikeUsersListById(id, $"{++likepage}", likefirstItem, likelastItem);
                     if (root.Count != 0)
                     {
-                        likefirstItem = root.First["id"].ToString();
+                        likefirstItem = root.First["uid"].ToString();
                         ObservableCollection<Feed> F = likeListView.ItemsSource as ObservableCollection<Feed>;
                         for (int i = 0; i < root.Count; i++)
                             F.Insert(i, new Feed((JObject)root[i]));
                     }
                     break;
                 case "2":
-                    JArray roots = await CoolApkSDK.getShareListById(id, 1);
+                    JArray roots = await CoolApkSDK.GetForwardListById(id, $"{++sharepage}");
                     if (roots.Count != 0)
                     {
                         ObservableCollection<Feed> F = shareuserListView.ItemsSource as ObservableCollection<Feed>;
@@ -260,19 +291,28 @@ namespace 酷安_UWP
                         case "0":
                             if (TitleTextBlock.Text == "回复")
                             {
-
-                                JArray array = await CoolApkSDK.getReplyListById(id, ++feedpage, 0, 0, feedlastItem);
+                                JArray array = await CoolApkSDK.GetReplyListById(id, $"{++feedpage}", feedlastItem);
                                 if (array.Count != 0)
                                 {
                                     feedlastItem = array.Last["id"].ToString();
-                                    feeds.Add(new Feed2(array, string.Empty));
+                                    replys.Add(new Feed2(array, string.Empty));
                                 }
-                                else
-                                    feedpage--;
+                                else feedpage--;
+                            }
+                            else if (FeedDetailPivot.Visibility == Visibility.Collapsed)
+                            {
+                                JArray array = await CoolApkSDK.GetAnswerListById(id, answerSortType, $"{++answerpage}", answerfirstItem, answerlastItem);
+                                if (array.Count != 0)
+                                {
+                                    foreach (JObject item in array)
+                                        answers.Add(new Feed(item));
+                                    answerlastItem = array.Last["id"].ToString();
+                                }
+                                else answerpage--;
                             }
                             else
                             {
-                                JArray array = await CoolApkSDK.getFeedReplyListById(id, ++feedpage, 1, 0, feedfirstItem, feedlastItem);
+                                JArray array = await CoolApkSDK.GetFeedReplyListById(id, listType, $"{++feedpage}", isFromAuthor, feedfirstItem, feedlastItem);
                                 if (array.Count != 0)
                                 {
                                     feedlastItem = array.Last["id"].ToString();
@@ -283,10 +323,10 @@ namespace 酷安_UWP
                             }
                             break;
                         case "1":
-                            JArray root = await CoolApkSDK.getFeedLikeUsersListById(id, ++likepage, likefirstItem, likelastItem);
+                            JArray root = await CoolApkSDK.GetFeedLikeUsersListById(id, $"{++likepage}", likefirstItem, likelastItem);
                             if (root.Count != 0)
                             {
-                                likelastItem = root.Last["id"].ToString();
+                                likelastItem = root.Last["uid"].ToString();
                                 ObservableCollection<Feed> F = likeListView.ItemsSource as ObservableCollection<Feed>;
                                 foreach (JObject i in root)
                                     F.Add(new Feed(i));
@@ -295,7 +335,7 @@ namespace 酷安_UWP
                                 likepage--;
                             break;
                         case "2":
-                            JArray roots = await CoolApkSDK.getShareListById(id, ++sharepage);
+                            JArray roots = await CoolApkSDK.GetForwardListById(id, $"{++sharepage}");
                             if (roots.Count != 0)
                             {
                                 ObservableCollection<Feed> F = shareuserListView.ItemsSource as ObservableCollection<Feed>;
@@ -303,9 +343,7 @@ namespace 酷安_UWP
                                     F.Add(new Feed(i));
                             }
                             else
-                                likepage--;
-                            break;
-                        default:
+                                sharepage--;
                             break;
                     }
                     mainPage.DeactiveProgressRing();
@@ -321,12 +359,6 @@ namespace 酷安_UWP
         {
             Refresh();
             VScrollViewer.ChangeView(null, 0, null);
-        }
-
-        private void MarkdownTextBlock_Loaded(object sender, RoutedEventArgs e)
-        {
-            MarkdownTextBlock block = sender as MarkdownTextBlock;
-            string s = block.Tag as string;
         }
 
         private async void MarkdownTextBlock_LinkClicked(object sender, LinkClickedEventArgs e)
@@ -362,6 +394,11 @@ namespace 酷安_UWP
         private async void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
         {
             FrameworkElement element = sender as FrameworkElement;
+            if (!(element.Tag as string is null))
+            {
+                mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { (element.Tag as string).Replace("/feed/", string.Empty), mainPage, string.Empty });
+                return;
+            }
             string s = (element.Tag as Feed).GetValue("extra_url2");
             if (s.IndexOf("/u/") == 0)
                 mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(s.Replace("/u/", string.Empty)), mainPage });
@@ -369,8 +406,60 @@ namespace 酷安_UWP
                 await Launcher.LaunchUriAsync(new Uri(s));
         }
 
-        private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e) 
+        private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
             => mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, null });
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox box = sender as ComboBox;
+            switch (box.SelectedIndex)
+            {
+                case 0:
+                    answerSortType = "reply";
+                    break;
+                case 1:
+                    answerSortType = "like";
+                    break;
+                case 2:
+                    answerSortType = "dateline";
+                    break;
+            }
+            answers.Clear();
+            answerfirstItem = answerlastItem = string.Empty;
+            answerpage = 1;
+            Refresh();
+        }
+
+        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (MenuFlyoutItem i in (ChangeModeButton.Flyout as MenuFlyout).Items)
+                i.Icon = null;
+            MenuFlyoutItem item = sender as MenuFlyoutItem;
+            item.Icon = new SymbolIcon(Symbol.Accept);
+            switch (item.Tag as string)
+            {
+                case "0":
+                    listType = "lastupdate_desc";
+                    isFromAuthor = "0";
+                    break;
+                case "1":
+                    listType = "dateline_desc";
+                    isFromAuthor = "0";
+                    break;
+                case "2":
+                    listType = "popular";
+                    isFromAuthor = "0";
+                    break;
+                case "3":
+                    listType = string.Empty;
+                    isFromAuthor = "1";
+                    break;
+            }
+            feedpage = 1;
+            feedfirstItem = feedlastItem = string.Empty;
+            feeds.Clear();
+            Refresh();
+        }
 
         //https://www.cnblogs.com/arcsinw/p/8638526.html
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -399,19 +488,17 @@ namespace 酷安_UWP
         public DataTemplate DataTemplate1 { get; set; }
         public DataTemplate DataTemplate2 { get; set; }
         public DataTemplate DataTemplate3 { get; set; }
+        public DataTemplate DataTemplate4 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             Feed feed = item as Feed;
-            if (feed.GetValue("entityType") == "feed_reply")
-                return DataTemplate2;
+            if (feed.GetValue("entityType") == "feed_reply") return DataTemplate2;
             switch (feed.GetValue("feedType"))
             {
-                case "feed":
-                    return DataTemplate1;
-                case "feedArticle":
-                    return DataTemplate3;
-                default:
-                    return DataTemplate1;
+                case "feed": return DataTemplate1;
+                case "feedArticle": return DataTemplate3;
+                case "question": return DataTemplate4;
+                default: return DataTemplate1;
             }
         }
     }

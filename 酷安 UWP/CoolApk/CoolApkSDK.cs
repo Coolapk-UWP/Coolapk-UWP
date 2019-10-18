@@ -84,7 +84,8 @@ namespace 酷安_UWP
             }
         }
 
-        public static async Task<JObject> GetUserProfileByID(dynamic uid)
+
+        public static async Task<JObject> GetUserProfileByID(string uid)
         {
             string result = await GetCoolApkMessage("/user/space?uid=" + uid);
             return (JObject)((JObject)JsonConvert.DeserializeObject(result))["data"];
@@ -109,7 +110,7 @@ namespace 酷安_UWP
             }
         }*/
 
-        public static async Task<JArray> GetFeedListByID(dynamic uid, dynamic page, dynamic firstItem, dynamic lastItem)
+        public static async Task<JArray> GetFeedListByID(string uid, string page, string firstItem, string lastItem)
         {
             try
             {
@@ -123,7 +124,7 @@ namespace 酷安_UWP
             }
         }
 
-        public static async Task<JArray> GetIndexList(dynamic page)
+        public static async Task<JArray> GetIndexList(string page)
         {
             try
             {
@@ -137,7 +138,7 @@ namespace 酷安_UWP
             }
         }
 
-        public static async Task<JObject> getFeedDetailById(dynamic feedId)
+        public static async Task<JObject> GetFeedDetailById(string feedId)
         {
             try
             {
@@ -150,11 +151,11 @@ namespace 酷安_UWP
                 throw;
             }
         }
-        public static async Task<JArray> getFeedReplyListById(dynamic feedId, dynamic page, dynamic discussMode, dynamic fromFeedAuthor, dynamic firstItem, dynamic lastItem)
+        public static async Task<JArray> GetAnswerListById(string feedId, string sortType, string page, string firstItem, string lastItem)
         {
             try
             {
-                string result = await GetCoolApkMessage($"/feed/replyList?id={feedId}&listType=lastupdate_desc&page={page}&firstItem={firstItem}&lastItem={lastItem}&discussMode={discussMode}&feedType=feed&blockStatus=0&fromFeedAuthor={fromFeedAuthor}");
+                string result = await GetCoolApkMessage($"/question/answerList?id={feedId}&sort={sortType}&page={page}&firstItem={firstItem}&lastItem={lastItem}");
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
                 return (JArray)jo["data"];
             }
@@ -163,7 +164,35 @@ namespace 酷安_UWP
                 throw;
             }
         }
-        public static async Task<JArray> getFeedLikeUsersListById(dynamic feedId, dynamic page, dynamic firstItem, dynamic lastItem)
+        //回复
+        public static async Task<JArray> GetFeedReplyListById(string feedId, string listType, string page, string fromFeedAuthor, string firstItem, string lastItem)
+        {
+            try
+            {
+                string result = await GetCoolApkMessage($"/feed/replyList?id={feedId}&listType={listType}&page={page}&firstItem={firstItem}&lastItem={lastItem}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={fromFeedAuthor}");
+                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+                return (JArray)jo["data"];
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        //回复的回复
+        public static async Task<JArray> GetReplyListById(string feedId, string page, string lastItem)
+        {
+            try
+            {
+                string result = await GetCoolApkMessage($"/feed/replyList?id={feedId}&listType=&page={page}&lastItem={lastItem}&discussMode=0&feedType=feed_reply&blockStatus=0&fromFeedAuthor=0");
+                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+                return (JArray)jo["data"];
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public static async Task<JArray> GetFeedLikeUsersListById(string feedId, string page, string firstItem, string lastItem)
         {
             try
             {
@@ -176,20 +205,7 @@ namespace 酷安_UWP
                 throw;
             }
         }
-        public static async Task<JArray> getReplyListById(dynamic feedId, dynamic page, dynamic discussMode, dynamic fromFeedAuthor, dynamic lastItem)
-        {
-            try
-            {
-                string result = await GetCoolApkMessage($"/feed/replyList?id={feedId}&listType=&page={page}&lastItem={lastItem}&discussMode={discussMode}&feedType=feed_reply&blockStatus=0&fromFeedAuthor={fromFeedAuthor}");
-                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
-                return (JArray)jo["data"];
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        public static async Task<JArray> getShareListById(dynamic feedId, dynamic page)
+        public static async Task<JArray> GetForwardListById(string feedId, string page)
         {
             try
             {
@@ -204,7 +220,7 @@ namespace 酷安_UWP
         }
 
         /*
-        public static async Task<string> GetCoolApkUserFaceUri(dynamic NameOrID)
+        public static async Task<string> GetCoolApkUserFaceUri(string NameOrID)
         {
             String body = await Web.GetHttp("https://www.coolapk.com/u/" + NameOrID);
             body = Regex.Split(body, @"<div class=""msg_box"">")[1];

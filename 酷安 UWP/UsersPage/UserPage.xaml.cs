@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -54,18 +55,29 @@ namespace 酷安_UWP
 
         public async void LoadProfile()
         {
+            ImageSource getImage(string uri)
+            {
+                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
+                {
+                    if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                        return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
+                    else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
+                }
+                return new BitmapImage(new Uri(uri));
+            }
             JObject detail = await CoolApkSDK.GetUserProfileByID(uid);
             if (!(detail is null))
             {
                 UserDetailGrid.DataContext = new
                 {
-                    UserFace = new BitmapImage(new Uri(detail["userAvatar"].ToString())) as ImageSource,
+                    UserFace = getImage(detail["userAvatar"].ToString()),
                     UserName = detail["username"].ToString(),
                     FollowNum = detail["follow"].ToString(),
                     FansNum = detail["fans"].ToString(),
                     Level = detail["level"].ToString(),
                     bio = detail["bio"].ToString(),
-                    Backgeound = new ImageBrush { ImageSource = new BitmapImage(new Uri(detail["cover"].ToString())), Stretch = Stretch.UniformToFill },
+                    Backgeound = new ImageBrush { ImageSource = getImage(detail["cover"].ToString()), Stretch = Stretch.UniformToFill },
                     verify_title = detail["verify_title"].ToString(),
                     gender = int.Parse(detail["gender"].ToString()) == 1 ? "♂" : (int.Parse(detail["gender"].ToString()) == 0 ? "♀" : string.Empty),
                     city = $"{detail["province"].ToString()} {detail["city"].ToString()}",
@@ -84,7 +96,7 @@ namespace 酷安_UWP
 
         async void ReadNextPageFeeds()
         {
-            JArray Root = await CoolApkSDK.GetFeedListByID(uid, ++page, firstItem, lastItem);
+            JArray Root = await CoolApkSDK.GetFeedListByID(uid, $"{++page}", firstItem, lastItem);
             if (!(Root is null) && Root.Count != 0)
             {
                 firstItem = Root.First["id"].ToString();
@@ -119,7 +131,7 @@ namespace 酷安_UWP
         {
             mainPage.ActiveProgressRing();
             LoadProfile();
-            JArray Root = await CoolApkSDK.GetFeedListByID(uid, 1, firstItem, lastItem);
+            JArray Root = await CoolApkSDK.GetFeedListByID(uid, "1", firstItem, lastItem);
             if (!(Root is null) && Root.Count != 0)
             {
                 firstItem = Root.First["id"].ToString();
@@ -175,6 +187,8 @@ namespace 酷安_UWP
                 case "feed":
                     return DataTemplate1;
                 case "feedArticle":
+                case "answer":
+                case "question":
                     return DataTemplate2;
                 default:
                     return DataTemplate1;

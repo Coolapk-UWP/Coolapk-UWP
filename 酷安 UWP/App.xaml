@@ -11,6 +11,7 @@
         <Color x:Key="CoolApk_Fore">#000000</Color>
         <Color x:Key="CoolApk_Begin">#4C4CAF50</Color>
         <Color x:Key="CoolApk_End">#004CAF50</Color>
+        
         <ControlTemplate x:Key="ListViewItemTemplate1" TargetType="ListViewItem">
             <ListViewItemPresenter x:Name="Root" CheckBrush="{ThemeResource ListViewItemCheckBrush}" ContentMargin="{TemplateBinding Padding}" 
                                    CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}" ContentTransitions="{TemplateBinding ContentTransitions}" 

@@ -527,7 +527,7 @@ namespace 酷安_UWP
         public Feed(JObject jObject) => this.jObject = jObject;
         public string GetValue(string value)
         {
-            if (jObject.TryGetValue(value, out JToken token))
+            if (!(jObject is null) && jObject.TryGetValue(value, out JToken token))
                 if (value == "message")
                     return ProcessMessage(token.ToString());
                 else if (value == "message_raw_output")
@@ -571,6 +571,7 @@ namespace 酷安_UWP
         {
             s = s.Replace("\n", "\n\n");
             s = s.Replace("&#039;", "\'");
+            s = s.Replace("</a>", "</a> ");
             foreach (var i in emojis)
             {
                 if (s.Contains(i))
@@ -588,6 +589,11 @@ namespace 酷安_UWP
             while (regex.IsMatch(s))
             {
                 var h = regex.Match(s);
+                if (!h.Value.Contains("</a>"))
+                {
+                    s = s.Replace(h.Value + " ", h.Value);
+                    continue;
+                }
                 string t = regex3.Match(h.Value).Value.Replace(">", string.Empty);
                 t = t.Replace("<", string.Empty);
                 string tt = regex2.Match(h.Value).Value.Replace("href=", string.Empty);
@@ -602,11 +608,8 @@ namespace 酷安_UWP
         {
             DateTime time = new DateTime(1970, 1, 1).ToLocalTime().Add(new TimeSpan(Convert.ToInt64(timestr + "0000000")));
             TimeSpan tt = DateTime.Now.Subtract(time);
-
-            if (tt.TotalDays > 365)
-                return $"{(int)(tt.TotalDays / 365)}年前";
-            else if (tt.TotalDays > 30)
-                return $"{(int)(tt.TotalDays / 30)}个月前";
+            if (tt.TotalDays > 30)
+                return $"{time.Year}/{time.Month}/{time.Day}";
             else if (tt.Days > 0)
                 return $"{tt.Days}天前";
             else if (tt.Hours > 0)
@@ -676,15 +679,21 @@ namespace 酷安_UWP
         }
         public Feed[] GetFeed(string value)
         {
-            if (jObject[value] is null)
-                return new Feed[] { new Feed(new JObject()) };
-            else if (!jObject[value].HasValues)
+            if (jObject.TryGetValue(value, out JToken token))
             {
-                if (!jObject.TryGetValue("v", out JToken token))
-                    jObject.Add("v", new JValue(true));
-                return new Feed[] { new Feed(new JObject()) };
+                if (token is null)
+                    return new Feed[] { new Feed(new JObject()) };
+                else if (value == "extraData")
+                    return new Feed[] { new Feed(JObject.Parse(token.ToString())) };
+                else if (!token.HasValues)
+                {
+                    if (!jObject.TryGetValue("v", out JToken jtoken))
+                        jObject.Add("v", new JValue(true));
+                    return new Feed[] { new Feed(new JObject()) };
+                }
+                return new Feed[] { new Feed(token as JObject) };
             }
-            return new Feed[] { new Feed((JObject)jObject[value]) };
+            else return new Feed[] { new Feed(new JObject()) };
         }
 
         public Feed[] GetFeeds(string value)
@@ -722,6 +731,14 @@ namespace 酷安_UWP
             if (jObject.TryGetValue(value, out JToken token))
             {
                 if (string.IsNullOrEmpty(token.ToString())) return Visibility.Collapsed;
+                else if (value == "isFeedAuthor")
+                    if (token.ToString() == "1")
+                        return Visibility.Visible;
+                    else return Visibility.Collapsed;
+                else if (value == "feedType")
+                    if (token.ToString() == "answer")
+                        return Visibility.Visible;
+                    else return Visibility.Collapsed;
                 else if (value == "v") return Visibility.Visible;
                 else return Visibility.Visible;
             }

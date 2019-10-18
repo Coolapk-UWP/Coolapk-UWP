@@ -51,7 +51,7 @@ namespace 酷安_UWP
             {
                 timer.Stop();
                 timer = new DispatcherTimer();
-                JArray Root = await CoolApkSDK.GetIndexList(page);
+                JArray Root = await CoolApkSDK.GetIndexList($"{page}");
                 if (FeedsCollection.Count != 0)
                 {
                     for (int i = 0; i < 10; i++)
@@ -83,7 +83,7 @@ namespace 酷安_UWP
             }
             else
             {
-                JArray Root = await CoolApkSDK.GetIndexList(page);
+                JArray Root = await CoolApkSDK.GetIndexList($"{page}");
                 if (Root.Count != 0)
                     foreach (JObject i in Root)
                         FeedsCollection.Add(new Feed(i));
@@ -106,7 +106,8 @@ namespace 酷安_UWP
             timer.Stop();
         }
 
-        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, null });
+        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
+            => mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, null });
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             if (!e.IsIntermediate)
@@ -139,7 +140,7 @@ namespace 酷安_UWP
         {
             if (e.Link.IndexOf("/u/") == 0)
                 mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(e.Link.Replace("/u/", string.Empty)), mainPage });
-            if (e.Link.Replace("mailto:",string.Empty).IndexOf("http://image.coolapk.com") == 0)
+            if (e.Link.Replace("mailto:", string.Empty).IndexOf("http://image.coolapk.com") == 0)
                 await Launcher.LaunchUriAsync(new Uri(e.Link.Replace("mailto:", string.Empty)));
             if (e.Link.IndexOf("http") == 0)
                 await Launcher.LaunchUriAsync(new Uri(e.Link));
@@ -154,7 +155,13 @@ namespace 酷安_UWP
         private async void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
             FrameworkElement element = sender as FrameworkElement;
-            string s = (element.Tag as Feed).GetValue("extra_url2");
+            string s = (element.Tag as Feed).GetValue("url");
+            if (s.IndexOf("/feed/") == 0)
+            {
+                mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { s.Replace("/feed/", string.Empty), mainPage, string.Empty, null });
+                return;
+            }
+            s = (element.Tag as Feed).GetValue("extra_url2");
             if (s.IndexOf("/u/") == 0)
                 mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(s.Replace("/u/", string.Empty)), mainPage });
             if (s.IndexOf("http") == 0)
