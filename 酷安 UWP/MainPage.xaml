@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:local="using:酷安_UWP"
-    mc:Ignorable="d" >
+    mc:Ignorable="d">
     <Page.Resources>
 
         <ControlTemplate x:Key="HamburgerMenuTemplate1" TargetType="controls:HamburgerMenu">
@@ -49,20 +49,10 @@
                 <!--平板-->
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="500" />
+                        <AdaptiveTrigger MinWindowWidth="640"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="hamburgerMenuControl.DisplayMode" Value="CompactOverlay"/>
-                    </VisualState.Setters>
-                </VisualState>
-                <!--电脑-->
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="800" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="hamburgerMenuControl.DisplayMode" Value="CompactInline"/>
-                        <Setter Target="hamburgerMenuControl.IsPaneOpen" Value="true"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -71,8 +61,8 @@
         <controls:HamburgerMenu x:Name="hamburgerMenuControl" ItemTemplate="{StaticResource DefaultTemplate}" ItemClick="OnMenuItemClick" 
                                 OptionsItemTemplate="{StaticResource DefaultTemplate}" OptionsItemClick="OnMenuItemClick" SelectedIndex="0"
                                 DisplayMode="Overlay" PaneBackground="{ThemeResource ApplicationPageBackgroundThemeBrush}" Template="{ThemeResource HamburgerMenuTemplate1}">
-            <Frame x:Name="VFrame"/>
-        </controls:HamburgerMenu>
+                <Frame x:Name="VFrame"/>
+            </controls:HamburgerMenu>
         <ProgressRing Width="50" Height="50" x:Name="progressRing"/>
     </Grid>
 </Page>

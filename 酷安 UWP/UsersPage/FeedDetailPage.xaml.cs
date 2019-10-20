@@ -302,7 +302,7 @@ namespace 酷安_UWP
                             else if (FeedDetailPivot.Visibility == Visibility.Collapsed)
                             {
                                 JArray array = await CoolApkSDK.GetAnswerListById(id, answerSortType, $"{++answerpage}", answerfirstItem, answerlastItem);
-                                if (array.Count != 0)
+                                if (!(array is null) && array.Count != 0)
                                 {
                                     foreach (JObject item in array)
                                         answers.Add(new Feed(item));
@@ -407,8 +407,16 @@ namespace 酷安_UWP
         }
 
         private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
-            => mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, null });
-
+        {
+            if ((sender as FrameworkElement).Tag is Feed)
+                mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, null });
+            else if ((sender as FrameworkElement).Tag is Feed[])
+            {
+                var f = (sender as FrameworkElement).Tag as Feed[];
+                if (!string.IsNullOrEmpty(f[0].jObject.ToString()))
+                    mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { f[0].GetValue("id"), mainPage, string.Empty, null });
+            }
+        }
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox box = sender as ComboBox;

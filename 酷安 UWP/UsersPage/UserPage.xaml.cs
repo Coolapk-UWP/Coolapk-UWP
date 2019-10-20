@@ -47,7 +47,6 @@ namespace 酷安_UWP
             mainPage.ActiveProgressRing();
             if (!string.IsNullOrEmpty(uid))
                 LoadProfile();
-            //FeedsCollection.Add(((object[])e.Parameter)[2] as Feed);
             if (FeedsCollection.Count == 0)
                 ReadNextPageFeeds();
             mainPage.DeactiveProgressRing();
@@ -82,10 +81,10 @@ namespace 酷安_UWP
                     gender = int.Parse(detail["gender"].ToString()) == 1 ? "♂" : (int.Parse(detail["gender"].ToString()) == 0 ? "♀" : string.Empty),
                     city = $"{detail["province"].ToString()} {detail["city"].ToString()}",
                     astro = detail["astro"].ToString(),
-                    logintime = $"{Feed.ConvertTime(detail["logintime"].ToString())}活跃"
+                    logintime = $"{Process.ConvertTime(detail["logintime"].ToString())}活跃"
                 };
                 TitleTextBlock.Text = detail["username"].ToString();
-                ListPivot.DataContext = new { FeedNum = detail["feed"].ToString() };
+                ListHeader.DataContext = new { FeedNum = detail["feed"].ToString() };
             }
             else
             {
@@ -108,7 +107,16 @@ namespace 酷安_UWP
         }
 
         private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
-            => mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, null });
+        {
+            if ((sender as FrameworkElement).Tag is Feed)
+                mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, null });
+            else if ((sender as FrameworkElement).Tag is Feed[])
+            {
+                var f = (sender as FrameworkElement).Tag as Feed[];
+                if (!string.IsNullOrEmpty(f[0].jObject.ToString()))
+                    mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { f[0].GetValue("id"), mainPage, string.Empty, null });
+            }
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -173,26 +181,6 @@ namespace 酷安_UWP
                     ReadNextPageFeeds();
             }
             else refreshText.Visibility = Visibility.Visible;
-        }
-    }
-    public class TemplateSelector2 : DataTemplateSelector
-    {
-        public DataTemplate DataTemplate1 { get; set; }
-        public DataTemplate DataTemplate2 { get; set; }
-        protected override DataTemplate SelectTemplateCore(object item)
-        {
-            Feed feed = item as Feed;
-            switch (feed.GetValue("feedType"))
-            {
-                case "feed":
-                    return DataTemplate1;
-                case "feedArticle":
-                case "answer":
-                case "question":
-                    return DataTemplate2;
-                default:
-                    return DataTemplate1;
-            }
         }
     }
 }

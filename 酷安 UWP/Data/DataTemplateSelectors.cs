@@ -12,12 +12,18 @@ namespace 酷安_UWP
     {
         public DataTemplate DataTemplate1 { get; set; }
         public DataTemplate DataTemplate2 { get; set; }
+        public DataTemplate DataTemplate3 { get; set; }
+        public DataTemplate DataTemplate4 { get; set; }
+        public DataTemplate DataTemplate5 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             Feed feed = item as Feed;
             switch (feed.GetValue("entityType"))
             {
                 case "feed": return DataTemplate1;
+                case "user": return DataTemplate3;
+                case "topic": return DataTemplate4;
+                case "dyh": return DataTemplate5;
                 case "card":
                 default: return DataTemplate2;
             }
@@ -32,12 +38,19 @@ namespace 酷安_UWP
         public DataTemplate DataTemplate4 { get; set; }
         public DataTemplate DataTemplate5 { get; set; }
         public DataTemplate DataTemplate6 { get; set; }
+        public DataTemplate DataTemplate7 { get; set; }
+        public DataTemplate DataTemplate8 { get; set; }
+        public DataTemplate DataTemplate9 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             Feed feed = item as Feed;
             switch (feed.GetValue("entityTemplate"))
             {
+                case "selectorLinkCard":return DataTemplate8;
+                case "imageCard": return DataTemplate9;
                 case "imageCarouselCard_1": return DataTemplate1;
+                case "iconTabLinkGridCard": return DataTemplate7;
+                case "iconGridCard":
                 case "iconMiniGridCard":
                 case "iconLinkGridCard":return DataTemplate6;
                 case "imageTextScrollCard":
@@ -65,6 +78,7 @@ namespace 酷安_UWP
             switch (feed.GetValue("entityType"))
             {
                 case "image_1": return DataTemplate1;
+                case "icon":
                 case "iconLink": return DataTemplate2;
                 case "dyh": return DataTemplate3;
                 case "topic": return DataTemplate4;

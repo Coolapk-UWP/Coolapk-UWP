@@ -32,6 +32,7 @@ namespace 酷安_UWP
         public TestPage()
         {
             this.InitializeComponent();
+            url.Text = "/page/dataList?url=#/feed/digestList?type=0&is_html_article=0&tag=今日热点&message_status=all&title=有何高见&page=1";
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -44,7 +45,11 @@ namespace 酷安_UWP
             mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(uid.Text), mainPage });
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e) => Frame.GoBack();
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+                Frame.GoBack();
+        }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -109,35 +114,19 @@ namespace 酷安_UWP
             }
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            foreach (var item in IndexPage.FeedsCollection)
-            {
-                txb2.Text += item.jObject.ToString();
-                txb2.Text += "\n";
-            }
-        }
-
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { id.Text, mainPage, string.Empty });
         }
 
-        private void Button_Click_5(object sender, RoutedEventArgs e)
+        private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            JObject jObject = JObject.Parse(txb2.Text);
-            IndexPage.FeedsCollection.Add(new Feed(jObject));
+            Frame.Navigate(typeof(IndexPage), new object[] { mainPage, "/page/dataList?url=V8_NEWS_TODAY&title=%E7%83%AD%E9%97%BB&page=1" });
         }
 
-        private void Button_Click_6(object sender, RoutedEventArgs e)
+        private async void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            JObject jObject = JObject.Parse(txb2.Text);
-            mainPage.Frame.Navigate(typeof(UserPage), new object[] { string.Empty, mainPage, new Feed(jObject) });
-        }
-
-        private void Button_Click_7(object sender, RoutedEventArgs e)
-        {
-
+            txb1.Text = await CoolApkSDK.GetCoolApkMessage(url.Text);
         }
     }
 }

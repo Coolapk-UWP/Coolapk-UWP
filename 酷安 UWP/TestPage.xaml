@@ -15,7 +15,7 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="500" />
+                        <AdaptiveTrigger MinWindowWidth="640" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="bu.Margin" Value="2,2,0,0"/>
@@ -28,14 +28,14 @@
             <StackPanel>
                 <TextBox Header="uid" x:Name="uid"/>
                 <Button Click="Button_Click">go</Button>
+                <TextBox Header="url" x:Name="url"></TextBox>
+                <Button Click="Button_Click_5">get</Button>
                 <TextBox AcceptsReturn="True" x:Name="txb1" MaxHeight="250"/>
                 <Button Click="Button_Click_1">encode</Button>
                 <TextBox AcceptsReturn="True" x:Name="txb2" MaxHeight="250"/>
-                <Button Click="Button_Click_2">get index page data</Button>
-                <Button Click="Button_Click_5">add data to index page</Button>
-                <Button Click="Button_Click_6">add data to user page</Button>
                 <TextBox Header="id" x:Name="id"/>
                 <Button Click="Button_Click_4">go</Button>
+                <Button Click="Button_Click_2">go</Button>
             </StackPanel>
         </ScrollViewer>
     </Grid>

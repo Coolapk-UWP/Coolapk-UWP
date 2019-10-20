@@ -45,7 +45,7 @@ namespace 酷安_UWP
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            mainPage = e.Parameter as MainPage;
+            mainPage = (e.Parameter as object[])?[0] as MainPage;
         }
 
         static public void InitializeSettings(ApplicationDataContainer localSettings)

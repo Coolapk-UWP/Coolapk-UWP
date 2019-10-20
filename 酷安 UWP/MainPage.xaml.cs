@@ -98,13 +98,13 @@ namespace 酷安_UWP
                             hamburgerMenuControl.SelectedIndex = seletedItem - 1;
                             hamburgerMenuControl.SelectedOptionsIndex = seletedItem - 1 < 0 ? 0 : -1;
                         }*/
-            VFrame.Navigate(pageType, this);
+            VFrame.Navigate(pageType, new object[] { this, string.Empty });
         }
 
         private void OnMenuItemClick(object sender, ItemClickEventArgs e)
         {
             var menuItem = e.ClickedItem as MenuItem;
-            VFrame.Navigate(menuItem.PageType, this);
+            VFrame.Navigate(menuItem.PageType, new object[] { this, string.Empty });
             seletedItem = menuItem.Index;
             if (hamburgerMenuControl.DisplayMode != SplitViewDisplayMode.CompactInline)
                 hamburgerMenuControl.IsPaneOpen = false;

@@ -110,6 +110,7 @@
     <Compile Include="AppsPage\AppRecommendPage.xaml.cs">
       <DependentUpon>AppRecommendPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Data\Emojis.cs" />
     <Compile Include="DeveloperPage.xaml.cs">
       <DependentUpon>DeveloperPage.xaml</DependentUpon>
     </Compile>
@@ -117,8 +118,8 @@
     <Compile Include="GetUpdateContentDialog.xaml.cs">
       <DependentUpon>GetUpdateContentDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\DataTemplateSelectors.cs" />
-    <Compile Include="Model\Feed.cs" />
+    <Compile Include="Data\DataTemplateSelectors.cs" />
+    <Compile Include="Data\Feed.cs" />
     <Compile Include="TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
@@ -137,7 +138,7 @@
     <Compile Include="AppsPage\AppPage.xaml.cs">
       <DependentUpon>AppPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\AppData.cs" />
+    <Compile Include="Data\AppData.cs" />
     <Compile Include="SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>

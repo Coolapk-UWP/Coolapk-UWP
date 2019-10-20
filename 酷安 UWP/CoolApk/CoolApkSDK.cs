@@ -4,13 +4,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net.Http;
+using Windows.Web.Http;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage.Streams;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Web.Http.Filters;
 
 namespace 酷安_UWP
 {
@@ -61,7 +62,7 @@ namespace 酷安_UWP
                 //mClient.DefaultRequestHeaders.Add("X-App-Device", "QRTBCOgkUTgsTat9WYphFI7kWbvFWaYByO1YjOCdjOxAjOxEkOFJjODlDI7ATNxMjM5MTOxcjMwAjN0AyOxEjNwgDNxITM2kDMzcTOgsTZzkTZlJ2MwUDNhJ2MyYzM");
                 //mClient.DefaultRequestHeaders.Add("X-Dark-Mode", "0");
                 mClient.DefaultRequestHeaders.Add("Host", "api.coolapk.com");
-                return await mClient.GetStringAsync("https://api.coolapk.com/v6" + url);
+                return await mClient.GetStringAsync(new Uri("https://api.coolapk.com/v6" + url));
             }
             catch
             {

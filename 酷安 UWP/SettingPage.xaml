@@ -13,7 +13,7 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="500" />
+                        <AdaptiveTrigger MinWindowWidth="640" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="title.Margin" Value="10,11"/>

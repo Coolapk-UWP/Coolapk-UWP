@@ -8,218 +8,6 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Page.Resources>
-        <local:TemplateSelector2 x:Key="feedTemps" DataTemplate1="{StaticResource feed}" DataTemplate2="{StaticResource feedArticle}"/>
-        <!--动态-->
-        <DataTemplate x:Key="Feed" x:DataType="local:Feed">
-            <ListViewItem Margin="0,5" Template="{StaticResource ListViewItemTemplate1}">
-                <Grid MinWidth="300" Background="{ThemeResource AppBarBackgroundThemeBrush}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" Orientation="Horizontal">
-                        <Button Style="{StaticResource ButtonStyle1}" Click="Button_Click" Tag="{x:Bind GetValue('uid')}" Background="{x:Null}">
-                            <Ellipse Width="40" Height="40" HorizontalAlignment="Left" >
-                                <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                        </Button>
-                        <Grid VerticalAlignment="Center">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                            <StackPanel Grid.Row="1" Orientation="Horizontal">
-                                <TextBlock Text="{x:Bind GetValue('dateline')}" Foreground="Gray"/>
-                                <TextBlock Text="{x:Bind GetValue('info')}" Foreground="Gray" Margin="2,0"/>
-                                <TextBlock Text="{x:Bind GetValue('device_title')}" Foreground="Gray" Margin="2,0"/>
-                            </StackPanel>
-                        </Grid>
-                    </StackPanel>
-                    <ListView Grid.Row="1" Tag="{x:Bind}" Tapped="FeedListViewItem_Tapped"  Margin="3" ItemTemplateSelector="{StaticResource feedTemps}" ItemsSource="{x:Bind GetSelfs()}"/>
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,5,0">
-                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
-                            <StackPanel Orientation="Horizontal">
-                                <SymbolIcon Symbol="Like"/>
-                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('likenum')}" Grid.Column="1"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
-                            <StackPanel Orientation="Horizontal">
-                                <SymbolIcon Symbol="Comment"/>
-                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('replynum')}" Grid.Column="1"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
-                            <StackPanel Orientation="Horizontal">
-                                <SymbolIcon Symbol="Link"/>
-                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('share_num')}" Grid.Column="1"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                    <StackPanel Grid.Row="2" Visibility="{x:Bind GetVisibility('source_id')}" Margin="0,0,0,8" >
-                        <Grid Visibility="{x:Bind GetVisibility('v')}" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="10">
-                            <TextBlock Margin="5">抱歉，该转发已被删除。</TextBlock>
-                        </Grid>
-                        <ListView Visibility="{x:Bind GetVisibility('v2')}" ItemsSource="{x:Bind GetFeed('forwardSourceFeed')}">
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="local:Feed">
-                                    <ListViewItem Tag="{x:Bind}" Tapped="FeedListViewItem_Tapped" Template="{StaticResource ListViewItemTemplate1}">
-                                        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Button Grid.Row="1" Margin="10,0,0,3" Style="{StaticResource ButtonStyle1}" Padding="2" Click="Button_Click" Tag="{x:Bind GetValue('uid')}" Background="{x:Null}">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Ellipse Width="20" Height="20" HorizontalAlignment="Left" >
-                                                        <Ellipse.Fill>
-                                                            <ImageBrush ImageSource="{x:Bind GetValue2('userAvatar')}"/>
-                                                        </Ellipse.Fill>
-                                                    </Ellipse>
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <TextBlock Margin="5,0" Text="{x:Bind GetValue('username')}" VerticalAlignment="Center"/>
-                                                        <TextBlock Margin="5,0" Text="{x:Bind GetValue('dateline')}" Foreground="Gray" VerticalAlignment="Center"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </Button>
-                                            <ListView Grid.Row="2" ItemTemplateSelector="{StaticResource feedTemps}" ItemsSource="{x:Bind GetSelfs()}">
-                                                <ListView.ItemContainerStyle>
-                                                    <Style TargetType="ListViewItem">
-                                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                                    </Style>
-                                                </ListView.ItemContainerStyle>
-                                            </ListView>
-                                        </Grid>
-                                    </ListViewItem>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </StackPanel>
-                    <StackPanel Tapped="Grid_Tapped" Tag="{x:Bind}" Visibility="{x:Bind GetVisibility('extra_title')}" Margin="10,5" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Orientation="Horizontal" Grid.Row="3">
-                        <Grid Background="{ThemeResource SystemControlHighlightListAccentHighBrush}">
-                            <Image Width="50" Height="50" Source="{x:Bind GetValue2('extra_pic')}"/>
-                        </Grid>
-                        <StackPanel VerticalAlignment="Center" Margin="5">
-                            <TextBlock Text="{x:Bind GetValue('extra_title')}" TextWrapping="Wrap"/>
-                            <TextBlock Text="{x:Bind GetValue('extra_url')}" Foreground="Gray" TextWrapping="Wrap"/>
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel Grid.Row="4" Orientation="Horizontal">
-                        <Button Visibility="{x:Bind GetVisibility('location')}" Margin="5" Padding="6" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{x:Bind GetValue('location')}"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="{x:Bind GetVisibility('ttitle')}" Padding="6" Margin="5" >
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="20" Height="20" Source="{x:Bind GetValue5('tpic')}"/>
-                                <TextBlock Text="{x:Bind GetValue('ttitle')}" Margin="3,0,0,0"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="{x:Bind GetVisibility('dyh_name')}" Padding="6" Margin="5">
-                            <StackPanel  Orientation="Horizontal">
-                                <Image Width="20" Height="20" Source="{x:Null}"/>
-                                <TextBlock Text="{x:Bind GetValue('dyh_name')}" Margin="3,0,0,0"/>
-                            </StackPanel>
-                        </Button>
-                        <ListView Style="{StaticResource ListViewStyle1}" ItemsSource="{x:Bind GetFeeds('relationRows')}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="local:Feed">
-                                    <ListViewItem Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind}">
-                                        <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="6" Orientation="Horizontal">
-                                            <Image Width="20" Height="20" Source="{x:Bind GetValue5('logo')}"/>
-                                            <TextBlock Text="{x:Bind GetValue('title')}" Margin="3,0,0,0"/>
-                                        </StackPanel>
-                                    </ListViewItem>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </StackPanel>
-                </Grid>
-            </ListViewItem>
-        </DataTemplate>
-        <DataTemplate x:Key="feed" x:DataType="local:Feed">
-            <ListViewItem Template="{StaticResource ListViewItemTemplate1}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <controls:MarkdownTextBlock LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False" Text="{x:Bind GetValue('message')}"/>
-                    <GridView Grid.Row="1" MinHeight="0" Margin="0,20,0,0" HorizontalContentAlignment="Center" Tag="{x:Bind GetValue4('picArr',x:False)}" ItemsSource="{x:Bind GetValue4('picArr',x:True)}">
-                        <GridView.ItemTemplate>
-                            <DataTemplate x:DataType="x:String">
-                                <Image MaxWidth="100" HorizontalAlignment="Left" MaxHeight="100" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
-                            </DataTemplate>
-                            <!--
-                                注意：
-                                一个模板里，binging 和 x:bind 不能同时使用
-                                binding默认oneway模式
-                                x:bind默认onetime模式
-                                ，Mode=TwoWay是双向模式
-                                微软推荐x:bind
-                                性能更高，而且支持方法转换
-                                {x:bind AAAA}
-                                {x:bind AAAA, Mode = OneWay}
-                                {x:bind method(AAAA), Mode = OneWay}
-                                public string method (string value）{
-                                }
-                                -->
-                        </GridView.ItemTemplate>
-                    </GridView>
-                </Grid>
-            </ListViewItem>
-        </DataTemplate>
-
-        <DataTemplate x:Key="feedArticle" x:DataType="local:Feed">
-            <ListViewItem Template="{StaticResource ListViewItemTemplate1}">
-                <Grid Margin="0,0,0,8">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock FontSize="20" Margin="5,2" FontWeight="Black" TextWrapping="Wrap" Text="{x:Bind GetValue('message_title')}"/>
-                    <GridView Grid.Row="1" MinHeight="0" Margin="0,20,0,0" HorizontalContentAlignment="Center" Tag="{x:Bind GetValue4('picArr',x:False)}" ItemsSource="{x:Bind GetValue4('picArr',x:True)}">
-                        <GridView.ItemTemplate>
-                            <DataTemplate x:DataType="x:String">
-                                <Image MaxWidth="100" HorizontalAlignment="Left" MaxHeight="100" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
-                            </DataTemplate>
-                            <!--
-                                注意：
-                                一个模板里，binging 和 x:bind 不能同时使用
-                                binding默认oneway模式
-                                x:bind默认onetime模式
-                                ，Mode=TwoWay是双向模式
-                                微软推荐x:bind
-                                性能更高，而且支持方法转换
-                                {x:bind AAAA}
-                                {x:bind AAAA, Mode = OneWay}
-                                {x:bind method(AAAA), Mode = OneWay}
-                                public string method (string value）{
-                                }
-                                -->
-                        </GridView.ItemTemplate>
-                    </GridView>
-                    <controls:MarkdownTextBlock Grid.Row="2" Text="{x:Bind GetValue('message')}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
-                </Grid>
-            </ListViewItem>
-        </DataTemplate>
-    </Page.Resources>
-
     <Grid>
         <Grid Height="48" VerticalAlignment="Top" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <Grid.ColumnDefinitions>
@@ -271,26 +59,179 @@
                         </StackPanel>
                     </StackPanel>
                 </Grid>
-                <Pivot x:Name="ListPivot">
-                    <PivotItem>
-                        <PivotItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock>动态</TextBlock>
-                                <TextBlock Margin="3,0,0,0" Text="{Binding FeedNum}"/>
-                            </StackPanel>
-                        </PivotItem.Header>
-                        <StackPanel>
-                            <ListView Name="listView" ItemTemplate="{StaticResource Feed}">
-                                <ListView.ItemContainerStyle>
-                                    <Style TargetType="ListViewItem">
-                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                    </Style>
-                                </ListView.ItemContainerStyle>
-                            </ListView>
-                        </StackPanel>
-                    </PivotItem>
-                </Pivot>
+                <StackPanel Orientation="Horizontal" x:Name="ListHeader" Margin="12,5" >
+                    <TextBlock FontWeight="Black" FontSize="18" Margin="3,3,0,3">全部动态(</TextBlock>
+                    <TextBlock FontWeight="Black" FontSize="18"  Margin="0,3,0,3" Text="{Binding FeedNum}"/>
+                    <TextBlock FontWeight="Black" FontSize="18"  Margin="0,3,0,3">)</TextBlock>
+                </StackPanel>
+                <ListView Name="listView">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <!--动态-->
+                        <DataTemplate x:DataType="local:Feed">
+                            <ListViewItem HorizontalContentAlignment="Stretch" Margin="0,5" Template="{StaticResource ListViewItemTemplate1}">
+                                <Grid VerticalAlignment="Stretch" Padding="2" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                        <Button Click="Button_Click" Style="{StaticResource ButtonStyle1}" Tag="{x:Bind GetValue('uid')}" Background="{x:Null}">
+                                            <Ellipse Width="40" Height="40" HorizontalAlignment="Left" >
+                                                <Ellipse.Fill>
+                                                    <ImageBrush ImageSource="{x:Bind GetImage('userAvatar')}"/>
+                                                </Ellipse.Fill>
+                                            </Ellipse>
+                                        </Button>
+                                        <Grid VerticalAlignment="Center">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row="0" Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                                <TextBlock Text="{x:Bind GetValue('infoHtml')}" Foreground="Gray"/>
+                                                <TextBlock Text="{x:Bind GetValue('device_title')}" Foreground="Gray" Margin="5,0,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </StackPanel>
+                                    <Grid Tag="{x:Bind}" Tapped="FeedListViewItem_Tapped"  Grid.Row="1" Margin="3">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock FontSize="16" Visibility="{x:Bind GetVisibility('message_title')}" FontWeight="Black" TextWrapping="Wrap" Text="{x:Bind GetValue('message_title')}"/>
+                                        <controls:MarkdownTextBlock Grid.Row="1" Text="{x:Bind GetValue('message')}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
+                                        <GridView Grid.Row="2" HorizontalContentAlignment="Left" MinHeight="0" Margin="0,5,0,0" Tag="{x:Bind GetSmallImagesUrl('picArr',x:False)}" ItemsSource="{x:Bind GetSmallImagesUrl('picArr',x:True)}">
+                                            <GridView.ItemTemplate>
+                                                <DataTemplate x:DataType="x:String">
+                                                    <Image MaxWidth="80" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
+                                                </DataTemplate>
+                                                <!--
+                                注意：
+                                一个模板里，binging 和 x:bind 不能同时使用
+                                binding默认oneway模式
+                                x:bind默认onetime模式
+                                ，Mode=TwoWay是双向模式
+                                微软推荐x:bind
+                                性能更高，而且支持方法转换
 
+                                {x:bind AAAA}
+                                {x:bind AAAA, Mode = OneWay}
+                                {x:bind method(AAAA), Mode = OneWay}
+
+                                public string method (string value）{ }
+                                -->
+                                            </GridView.ItemTemplate>
+                                        </GridView>
+                                    </Grid>
+                                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,5,0">
+                                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal">
+                                                <SymbolIcon Symbol="Like"/>
+                                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('likenum')}" Grid.Column="1"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal">
+                                                <SymbolIcon Symbol="Comment"/>
+                                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('replynum')}" Grid.Column="1"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal">
+                                                <SymbolIcon Symbol="Link"/>
+                                                <TextBlock Margin="3,0" Text="{x:Bind GetValue('share_num')}" Grid.Column="1"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="2" Visibility="{x:Bind GetVisibility('source_id')}" Margin="0,0,0,8" >
+                                        <Grid Visibility="{x:Bind GetVisibility('v')}" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="10">
+                                            <TextBlock Margin="5">抱歉，该转发已被删除。</TextBlock>
+                                        </Grid>
+                                        <Grid Visibility="{x:Bind GetVisibility('v2')}" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Button Grid.Row="1" Margin="10,0,0,3" Style="{StaticResource ButtonStyle1}" Padding="2" Click="Button_Click" Tag="{x:Bind GetValue('forwardSourceFeed','uid')}" Background="{x:Null}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="5,0" Text="{x:Bind GetValue('forwardSourceFeed','username')}" VerticalAlignment="Center"/>
+                                                    <TextBlock Margin="5,0" Text="{x:Bind GetValue('forwardSourceFeed','dateline')}" Foreground="Gray" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Button>
+                                            <Grid Grid.Row="2" Tag="{x:Bind GetFeed('forwardSourceFeed')}" Tapped="FeedListViewItem_Tapped" Margin="3">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock FontSize="16" Visibility="{x:Bind GetVisibility('forwardSourceFeed','message_title')}" FontWeight="Black" TextWrapping="Wrap" Text="{x:Bind GetValue('forwardSourceFeed','message_title')}"/>
+                                                <controls:MarkdownTextBlock Grid.Row="1" Text="{x:Bind GetValue('forwardSourceFeed','message')}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
+                                                <GridView Grid.Row="2" HorizontalContentAlignment="Left" MinHeight="0" Margin="0,5,0,0" Tag="{x:Bind GetSmallImagesUrl('forwardSourceFeed','picArr',x:False)}" ItemsSource="{x:Bind GetSmallImagesUrl('forwardSourceFeed','picArr',x:True)}">
+                                                    <GridView.ItemTemplate>
+                                                        <DataTemplate x:DataType="x:String">
+                                                            <Image MaxWidth="80" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
+                                                        </DataTemplate>
+                                                    </GridView.ItemTemplate>
+                                                </GridView>
+                                            </Grid>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Tapped="Grid_Tapped" Tag="{x:Bind}" Visibility="{x:Bind GetVisibility('extra_title')}" Margin="10,5" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Orientation="Horizontal" Grid.Row="3">
+                                        <Grid Background="{ThemeResource SystemControlHighlightListAccentHighBrush}">
+                                            <Image Width="50" Height="50" Source="{x:Bind GetSmallImage('extra_pic')}"/>
+                                        </Grid>
+                                        <StackPanel VerticalAlignment="Center" Margin="5">
+                                            <TextBlock Text="{x:Bind GetValue('extra_title')}" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{x:Bind GetValue('extra_url')}" Foreground="Gray" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="4" Orientation="Horizontal">
+                                        <Button Visibility="{x:Bind GetVisibility('location')}" Margin="5" Padding="6" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{x:Bind GetValue('location')}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="{x:Bind GetVisibility('ttitle')}" Padding="6" Margin="5" >
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="20" Height="20" Source="{x:Bind GetImage('tpic')}"/>
+                                                <TextBlock Text="{x:Bind GetValue('ttitle')}" Margin="3,0,0,0"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="{x:Bind GetVisibility('dyh_name')}" Padding="6" Margin="5">
+                                            <StackPanel  Orientation="Horizontal">
+                                                <Image Width="20" Height="20" Source="{x:Null}"/>
+                                                <TextBlock Text="{x:Bind GetValue('dyh_name')}" Margin="3,0,0,0"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <ListView HorizontalContentAlignment="Stretch" Style="{StaticResource ListViewStyle1}" ItemsSource="{x:Bind GetFeeds('relationRows')}">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate x:DataType="local:Feed">
+                                                    <ListViewItem Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind}">
+                                                        <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="6" Orientation="Horizontal">
+                                                            <Image Width="20" Height="20" Source="{x:Bind GetImage('logo')}"/>
+                                                            <TextBlock Text="{x:Bind GetValue('title')}" Margin="3,0,0,0"/>
+                                                        </StackPanel>
+                                                    </ListViewItem>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </StackPanel>
+                                </Grid>
+                            </ListViewItem>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackPanel>
         </ScrollViewer>
     </Grid>
