@@ -50,7 +50,7 @@
   - 这项操作需要用到管理员权限，如果您安装证书时没有用到该权限，则可能是因为您将证书安装到了错误的位置或者您使用的是超级管理员账户
   ![安装证书](Screenshots/Snipaste_2019-10-12_22-46-37.png)
   ![导入本地计算机](Screenshots/Snipaste_2019-10-19_15-28-58.png)
-  ![储存到受信任的根证书颁发机构](Screenshots/Snipaste_2019-10-12_22-48-11.png)
+  ![储存到受信任的根证书颁发机构](Screenshots/Snipaste_2019-10-20_23-36-44.png)
 - 双击`*.appxbundle`，单击安装，坐和放宽
 ![安装](Screenshots/Snipaste_2019-10-13_12-42-40.png)
 
