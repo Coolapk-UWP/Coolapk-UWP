@@ -43,7 +43,7 @@ namespace 酷安_UWP
             SettingPage.CheckTheme();
         }
 
-        public static async void CheckUpdate()
+        public static async void CheckUpdate(bool canShowDialog)
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             Octokit.GitHubClient client = new Octokit.GitHubClient(new Octokit.ProductHeaderValue("Coolapk-UWP"));
@@ -64,8 +64,8 @@ namespace 酷安_UWP
                 GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.Assets[1].BrowserDownloadUrl, release.Body) { RequestedTheme = Convert.ToBoolean(localSettings.Values["IsDarkMode"]) ? ElementTheme.Dark : ElementTheme.Light };
                 await dialog.ShowAsync();
             }
-            else throw new Exception();
-
+            else if(canShowDialog)
+                await new Windows.UI.Popups.MessageDialog("当前无可用更新。").ShowAsync();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

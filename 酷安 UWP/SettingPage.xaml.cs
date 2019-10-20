@@ -32,7 +32,7 @@ namespace 酷安_UWP
         public SettingPage()
         {
             this.InitializeComponent();
-            ApplicationDataContainer     localSettings = ApplicationData.Current.LocalSettings;
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             IsNoPicsMode.IsOn = Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]);
             IsUseOldEmojiMode.IsOn = Convert.ToBoolean(localSettings.Values["IsUseOldEmojiMode"]);
             IsDarkMode.IsOn = Convert.ToBoolean(localSettings.Values["IsDarkMode"]);
@@ -128,7 +128,7 @@ namespace 酷安_UWP
             }
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             switch (button.Tag as string)
@@ -137,8 +137,7 @@ namespace 酷安_UWP
                     Frame.Navigate(typeof(TestPage), mainPage);
                     break;
                 case "1":
-                    try { MainPage.CheckUpdate(); }
-                    catch { await new MessageDialog("当前无可用更新。").ShowAsync(); }
+                    MainPage.CheckUpdate(true);
                     break;
             }
         }

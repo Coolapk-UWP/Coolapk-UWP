@@ -66,7 +66,7 @@ namespace 酷安_UWP
                     {
                         ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
                         SettingPage.InitializeSettings(localSettings);
-                        if (Convert.ToBoolean(localSettings.Values["CheckUpdateWhenLuanching"])) MainPage.CheckUpdate();
+                        if (Convert.ToBoolean(localSettings.Values["CheckUpdateWhenLuanching"])) MainPage.CheckUpdate(false);
                     }
                     catch { }
                 }
