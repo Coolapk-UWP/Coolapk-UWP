@@ -5,7 +5,7 @@
 
 基于[@一块小板子](http://www.coolapk.com/u/695942)的源码([Github](https://github.com/oboard/CoolApk-UWP))
 
-<a href="https://github.com/Tangent-90/Coolapk-UWP/blob/master/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/Tangent-90/Coolapk-UWP.svg?label=License&style=flat-square"></a>
+<a href="https://github.com/Tangent-90/Coolapk-UWP/master/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/Tangent-90/Coolapk-UWP.svg?label=License&style=flat-square"></a>
 <a href="https://github.com/Tangent-90/Coolapk-UWP/issues"><img alt="GitHub" src="https://img.shields.io/github/issues/Tangent-90/Coolapk-UWP.svg?label=Issues&style=flat-square"></a>
 <a href="https://github.com/Tangent-90/Coolapk-UWP/stargazers"><img alt="GitHub" src="https://img.shields.io/github/stars/Tangent-90/Coolapk-UWP.svg?label=Stars&style=flat-square"></a>
 
