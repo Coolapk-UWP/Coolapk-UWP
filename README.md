@@ -5,8 +5,12 @@
 
 基于[@一块小板子](http://www.coolapk.com/u/695942)的源码([Github](https://github.com/oboard/CoolApk-UWP))
 
+<a href="https://github.com/Tangent-90/Coolapk-UWP/blob/master/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/Tangent-90/Coolapk-UWP.svg?label=License&style=flat-square"></a>
+<a href="https://github.com/Tangent-90/Coolapk-UWP/issues"><img alt="GitHub" src="https://img.shields.io/github/issues/Tangent-90/Coolapk-UWP.svg?label=Issues&style=flat-square"></a>
+<a href="https://github.com/Tangent-90/Coolapk-UWP/stargazers"><img alt="GitHub" src="https://img.shields.io/github/stars/Tangent-90/Coolapk-UWP.svg?label=Stars&style=flat-square"></a>
+
 <a href="https://github.com/Tangent-90/Coolapk-UWP/releases/latest"><img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/Tangent-90/Coolapk-UWP/total.svg?label=DOWNLOAD&logo=github&style=for-the-badge"></a>
-<a href="https://pan.baidu.com/s/1Wjy-CUfjm0sOHCKLwQEALQ"><img alt="GitHub All Releases" src="https://img.shields.io/badge/download-%e5%af%86%e7%a0%81%ef%bc%9alIIl-magenta.svg?label=%e4%b8%8b%e8%bd%bd&logo=baidu&style=for-the-badge"></a>
+<a href="https://pan.baidu.com/s/1Wjy-CUfjm0sOHCKLwQEALQ"><img alt="Baidu Netdisk" src="https://img.shields.io/badge/download-%e5%af%86%e7%a0%81%ef%bc%9alIIl-magenta.svg?label=%e4%b8%8b%e8%bd%bd&logo=baidu&style=for-the-badge"></a>
 
 ## 目录
 - [现有功能](#现有功能)
@@ -50,7 +54,7 @@
   - 这项操作需要用到管理员权限，如果您安装证书时没有用到该权限，则可能是因为您将证书安装到了错误的位置或者您使用的是超级管理员账户
   ![安装证书](Screenshots/Snipaste_2019-10-12_22-46-37.png)
   ![导入本地计算机](Screenshots/Snipaste_2019-10-19_15-28-58.png)
-  ![储存到受信任的根证书颁发机构](Screenshots/Snipaste_2019-10-12_22-48-11.png)
+  ![储存到受信任的根证书颁发机构](Screenshots/Snipaste_2019-10-20_23-36-44.png)
 - 双击`*.appxbundle`，单击安装，坐和放宽
 ![安装](Screenshots/Snipaste_2019-10-13_12-42-40.png)
 
