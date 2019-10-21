@@ -43,10 +43,14 @@ namespace 酷安_UWP
         {
             base.OnNavigatedTo(e);
             mainPage = ((object[])e.Parameter)[1] as MainPage;
-            uid = (string)((object[])e.Parameter)[0];
+            string uid = (string)((object[])e.Parameter)[0];
             mainPage.ActiveProgressRing();
-            if (!string.IsNullOrEmpty(uid))
+            if (uid != this.uid)
+            {
+                this.uid = uid;
                 LoadProfile();
+                FeedsCollection.Clear();
+            }
             if (FeedsCollection.Count == 0)
                 ReadNextPageFeeds();
             mainPage.DeactiveProgressRing();

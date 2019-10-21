@@ -26,6 +26,8 @@
             <StackPanel Grid.Row="1">
                 <ToggleSwitch x:Name="IsNoPicsMode" Tag="0" Header="无图模式" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="IsUseOldEmojiMode" Tag="1" Header="使用旧式表情" Toggled="ToggleSwitch_Toggled"/>
+                <ToggleSwitch x:Name="IsAccentColorFollowSystem" Tag="4" Header="主题色跟随系统" Toggled="ToggleSwitch_Toggled"/>
+                <ToggleSwitch x:Name="IsBackgroundColorFollowSystem" Tag="5" Header="背景色跟随系统" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="IsDarkMode" Tag="2" Header="夜间模式" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="CheckUpdateWhenLuanching" Tag="3" Header="启动时检查更新" Toggled="ToggleSwitch_Toggled"/>
                 <Button x:Name="CleanDataButton" Visibility="Collapsed" Click="CleanDataButton_Click" Content="退出登录"/>

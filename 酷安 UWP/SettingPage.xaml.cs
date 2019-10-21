@@ -37,6 +37,9 @@ namespace 酷安_UWP
             IsUseOldEmojiMode.IsOn = Convert.ToBoolean(localSettings.Values["IsUseOldEmojiMode"]);
             IsDarkMode.IsOn = Convert.ToBoolean(localSettings.Values["IsDarkMode"]);
             CheckUpdateWhenLuanching.IsOn = Convert.ToBoolean(localSettings.Values["CheckUpdateWhenLuanching"]);
+            IsAccentColorFollowSystem.IsOn = Convert.ToBoolean(localSettings.Values["IsAccentColorFollowSystem"]);
+            IsBackgroundColorFollowSystem.IsOn = Convert.ToBoolean(localSettings.Values["IsBackgroundColorFollowSystem"]);
+            IsDarkMode.Visibility = IsBackgroundColorFollowSystem.IsOn ? Visibility.Collapsed : Visibility.Visible;
             VersionTextBlock.Text = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
 #if DEBUG
             gotoTestPage.Visibility = Visibility.Visible;
@@ -45,7 +48,7 @@ namespace 酷安_UWP
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            mainPage = (e.Parameter as object[])?[0] as MainPage;
+            mainPage = e.Parameter as MainPage;
         }
 
         static public void InitializeSettings(ApplicationDataContainer localSettings)
@@ -58,6 +61,10 @@ namespace 酷安_UWP
                 localSettings.Values.Add("IsDarkMode", false);
             if (!localSettings.Values.ContainsKey("CheckUpdateWhenLuanching"))
                 localSettings.Values.Add("CheckUpdateWhenLuanching", true);
+            if (!localSettings.Values.ContainsKey("IsAccentColorFollowSystem"))
+                localSettings.Values.Add("IsAccentColorFollowSystem", false);
+            if (!localSettings.Values.ContainsKey("IsBackgroundColorFollowSystem"))
+                localSettings.Values.Add("IsBackgroundColorFollowSystem", false);
         }
 
         public static void CheckTheme()
@@ -122,8 +129,15 @@ namespace 酷安_UWP
                     localSettings.Values[toggle.Name] = toggle.IsOn;
                     break;
                 case "2":
-                    localSettings.Values["IsDarkMode"] = toggle.IsOn;
+                    localSettings.Values[toggle.Name] = toggle.IsOn;
                     CheckTheme();
+                    break;
+                case "4":
+                    localSettings.Values[toggle.Name] = toggle.IsOn;
+                    break;
+                case "5":
+                    localSettings.Values[toggle.Name] = toggle.IsOn;
+                    IsDarkMode.Visibility = toggle.IsOn ? Visibility.Collapsed : Visibility.Visible;
                     break;
             }
         }

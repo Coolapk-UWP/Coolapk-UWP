@@ -80,7 +80,7 @@ namespace 酷安_UWP
                     break;
                 case 1:
                     //pageType = typeof(AppRecommendPage);
-                    pageType = typeof(IndexPage);
+                    pageType = typeof(InitialPage);
                     break;
                 case 2:
                     pageType = typeof(DeveloperPage);
@@ -89,7 +89,7 @@ namespace 酷安_UWP
                     pageType = typeof(UserPage);
                     break;
                 case 4:
-                    pageType = typeof(IndexPage);
+                    pageType = typeof(InitialPage);
                     break;
             }
             /*
@@ -98,13 +98,13 @@ namespace 酷安_UWP
                             hamburgerMenuControl.SelectedIndex = seletedItem - 1;
                             hamburgerMenuControl.SelectedOptionsIndex = seletedItem - 1 < 0 ? 0 : -1;
                         }*/
-            VFrame.Navigate(pageType, new object[] { this, string.Empty });
+            VFrame.Navigate(pageType, this);
         }
 
         private void OnMenuItemClick(object sender, ItemClickEventArgs e)
         {
             var menuItem = e.ClickedItem as MenuItem;
-            VFrame.Navigate(menuItem.PageType, new object[] { this, string.Empty });
+            VFrame.Navigate(menuItem.PageType, this);
             seletedItem = menuItem.Index;
             if (hamburgerMenuControl.DisplayMode != SplitViewDisplayMode.CompactInline)
                 hamburgerMenuControl.IsPaneOpen = false;
@@ -151,7 +151,7 @@ namespace 酷安_UWP
                 //new MenuItem() { Icon = Symbol.View, Name = "应用●游戏", PageType = typeof(AppRecommendPage), Index = 1 },
                 //new MenuItem() { Icon = Symbol.ContactPresence, Name = "开发者中心", PageType = typeof(DeveloperPage), Index = 2 },
                 //new MenuItem() { Icon = Symbol.Contact, Name = "我", PageType = typeof(MyPage), Index = 3 },
-                new MenuItem() { Icon = Symbol.Home, Name = "头条", PageType = typeof(IndexPage), Index = 1/*4*/ }
+                new MenuItem() { Icon = Symbol.Home, Name = "首页", PageType = typeof(InitialPage), Index = 1/*4*/ }
                 };
             return items;
         }

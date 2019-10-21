@@ -2,11 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using 酷安_UWP.Data;
@@ -76,16 +73,13 @@ namespace 酷安_UWP
         public JObject jObject;
         public Feed(JObject jObject) => this.jObject = jObject;
 
-        public string GetValue(string path, string key)
+        public string GetValue(string key)
         {
-            if (!(jObject is null) && jObject.TryGetValue(path, out JToken t))
-            {
-                JObject jObject = t as JObject;
-                if (!(jObject is null) && jObject.TryGetValue(key, out JToken token))
+            if (!(jObject is null) && jObject.TryGetValue(key, out JToken token))
+                switch (key)
                 {
-                    if (key == "message") return Process.ProcessMessage(token.ToString(), localSettings);
-                    else if (key == "message_raw_output")
-                    {
+                    case "message": return Process.ProcessMessage(token.ToString(), localSettings);
+                    case "message_raw_output":
                         JArray array = JArray.Parse(token.ToString());
                         string s = string.Empty;
                         foreach (JObject item in array)
@@ -93,74 +87,81 @@ namespace 酷安_UWP
                             if (item["type"].ToString() == "text")
                                 s += Process.ProcessMessage(item["message"].ToString(), localSettings);
                             else if (item["type"].ToString() == "image")
-                                s += $"\n\n![image]({item["url"].ToString()}.s.jpg)\n\n>{item["description"].ToString()}\n\n";
+                            {
+                                string d = string.IsNullOrEmpty(item["description"].ToString()) ? string.Empty : item["description"].ToString();
+                                s += $"\n\n![image]({item["url"].ToString()}.s.jpg)\n\n>{s}\n\n";
+                            }
                         }
                         return s;
-                    }
-                    else if (key == "extra_url")
-                    {
+                    case "extra_url":
                         if (!string.IsNullOrEmpty(token.ToString()))
                             if (token.ToString().IndexOf("http") == 0)
                                 return new Uri(token.ToString()).Host;
                             else return string.Empty;
                         else return string.Empty;
-                    }
-                    else if (key == "infoHtml") return token.ToString().Replace("&nbsp;", string.Empty);
-                    else if (key == "dateline") return Process.ConvertTime(token.ToString());
-                    else return token.ToString();
+                    case "infoHtml": return token.ToString().Replace("&nbsp;", string.Empty);
+                    case "dateline": return Process.ConvertTime(token.ToString());
+                    case "logintime": return Process.ConvertTime(token.ToString()) + "活跃";
+                    default: return token.ToString();
                 }
-                else if (key == "message2")
+            else switch (key)
                 {
-                    if (string.IsNullOrEmpty(jObject["pic"].ToString()))
-                        return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Process.ProcessMessage(jObject["message"].ToString(), localSettings)}";
-                    else
-                        return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Process.ProcessMessage(jObject["message"].ToString(), localSettings)}\n[查看图片]({jObject["pic"]})";
+                    case "message2":
+                        if (string.IsNullOrEmpty(jObject["pic"].ToString()))
+                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Process.ProcessMessage(jObject["message"].ToString(), localSettings)}";
+                        else
+                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Process.ProcessMessage(jObject["message"].ToString(), localSettings)}\n[查看图片]({jObject["pic"]})";
+                    case "extra_url2": return jObject["extra_url"].ToString();
+                    default: return string.Empty;
                 }
-                else if (key == "extra_url2") return jObject["extra_url"].ToString();
-                else return string.Empty;
-            }
-            else return string.Empty;
         }
 
-        public string GetValue(string key)
+        public string GetValue(string path, string key)
         {
-            if (!(jObject is null) && jObject.TryGetValue(key, out JToken token))
-                if (key == "message") return Process.ProcessMessage(token.ToString(), localSettings);
-                else if (key == "message_raw_output")
-                {
-                    JArray array = JArray.Parse(token.ToString());
-                    string s = string.Empty;
-                    foreach (JObject item in array)
-                    {
-                        if (item["type"].ToString() == "text")
-                            s += Process.ProcessMessage(item["message"].ToString(), localSettings);
-                        else if (item["type"].ToString() == "image")
-                            s += $"\n\n![image]({item["url"].ToString()}.s.jpg)\n\n>{item["description"].ToString()}\n\n";
-                    }
-                    return s;
-                }
-                else if (key == "extra_url")
-                {
-                    if (!string.IsNullOrEmpty(token.ToString()))
-                        if (token.ToString().IndexOf("http") == 0)
-                            return new Uri(token.ToString()).Host;
-                        else return string.Empty;
-                    else return string.Empty;
-                }
-                else if (key == "infoHtml") return token.ToString().Replace("&nbsp;", string.Empty);
-                else if (key == "dateline") return Process.ConvertTime(token.ToString());
-                else if (key == "logintime") return Process.ConvertTime(token.ToString()) + "活跃";
-                else return token.ToString();
-            else if (key == "message2")
+            if (!(jObject is null) && jObject.TryGetValue(path, out JToken t))
             {
-                if (string.IsNullOrEmpty(jObject["pic"].ToString()))
-                    return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Process.ProcessMessage(jObject["message"].ToString(), localSettings)}";
-                else
-                    return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Process.ProcessMessage(jObject["message"].ToString(), localSettings)}\n[查看图片]({jObject["pic"]})";
+                JObject jObject = JObject.Parse(t.ToString());
+                if (!(jObject is null) && jObject.TryGetValue(key, out JToken token))
+                {
+                    switch (key)
+                    {
+                        case "message": return Process.ProcessMessage(token.ToString(), localSettings);
+                        case "message_raw_output":
+                            JArray array = JArray.Parse(token.ToString());
+                            string s = string.Empty;
+                            foreach (JObject item in array)
+                            {
+                                if (item["type"].ToString() == "text")
+                                    s += Process.ProcessMessage(item["message"].ToString(), localSettings);
+                                else if (item["type"].ToString() == "image")
+                                    s += $"\n\n![image]({item["url"].ToString()}.s.jpg)\n\n>{item["description"].ToString()}\n\n";
+                            }
+                            return s;
+                        case "extra_url":
+                            if (!string.IsNullOrEmpty(token.ToString()))
+                                if (token.ToString().IndexOf("http") == 0)
+                                    return new Uri(token.ToString()).Host;
+                                else return string.Empty;
+                            else return string.Empty;
+                        case "infoHtml": return token.ToString().Replace("&nbsp;", string.Empty);
+                        case "dateline": return Process.ConvertTime(token.ToString());
+                        default: return token.ToString();
+                    }
+                }
+                return string.Empty;
             }
-            else if (key == "extra_url2") return jObject["extra_url"].ToString();
-            else return string.Empty;
+            else switch (key)
+                {
+                    case "message2":
+                        if (string.IsNullOrEmpty(jObject["pic"].ToString()))
+                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Process.ProcessMessage(jObject["message"].ToString(), localSettings)}";
+                        else
+                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Process.ProcessMessage(jObject["message"].ToString(), localSettings)}\n[查看图片]({jObject["pic"]})";
+                    case "extra_url2": return jObject["extra_url"].ToString();
+                    default: return string.Empty;
+                }
         }
+
 
         // 获取缩略图
         public ImageSource GetSmallImage(string value)
@@ -235,9 +236,10 @@ namespace 酷安_UWP
         {
             JArray array = (JArray)jObject.GetValue(value);
             List<Feed> fs = new List<Feed>();
-            foreach (JObject item in array)
-                if (!string.IsNullOrEmpty(item.ToString()))
-                    fs.Add(new Feed(item));
+            if (!(array is null))
+                foreach (JObject item in array)
+                    if (!string.IsNullOrEmpty(item.ToString()))
+                        fs.Add(new Feed(item));
             return fs.ToArray();
         }
         public string[] GetSmallImagesUrl(string key, bool isReturnFakePic)
@@ -287,47 +289,66 @@ namespace 酷安_UWP
             }
             return new string[] { };
         }
-        public Visibility GetVisibility(string key)
+        public bool GetVisibility(string key)
         {
             if (jObject.TryGetValue(key, out JToken token))
             {
-                if (string.IsNullOrEmpty(token.ToString())) return Visibility.Collapsed;
-                else if (key == "isFeedAuthor")
-                    if (token.ToString() == "1")
-                        return Visibility.Visible;
-                    else return Visibility.Collapsed;
-                else if (key == "feedType")
-                    if (token.ToString() == "answer")
-                        return Visibility.Visible;
-                    else return Visibility.Collapsed;
-                else if (key == "v") return Visibility.Visible;
-                else return Visibility.Visible;
+                if (string.IsNullOrEmpty(token.ToString())) return false;
+                else switch (key)
+                    {
+                        case "isFeedAuthor":
+                            if (token.ToString() == "1") return true;
+                            else return false;
+                        case "feedType":
+                            if (token.ToString() == "answer") return true;
+                            else return false;
+                        case "v": return true;
+                        default: return true;
+                    }
             }
             else if (key == "v2")
             {
-                if (jObject.TryGetValue("v", out JToken token2))
-                    return Visibility.Collapsed;
-                return Visibility.Visible;
+                if (jObject.TryGetValue("v", out JToken token2)) return false;
+                else return true;
             }
-            else return Visibility.Collapsed;
+            else if (key == "feedType2")
+            {
+                if (jObject.TryGetValue("feedType", out JToken token2))
+                    if (token2.ToString() == "question") return false;
+                return true;
+            }
+            else return false;
         }
-        public Visibility GetVisibility(string path, string key)
+        public bool GetVisibility(string path, string key)
         {
             if (jObject.TryGetValue(path, out JToken t))
             {
                 JObject jObject = t as JObject;
                 if (!(jObject is null) && jObject.TryGetValue(path, out JToken token))
                 {
-                    if (string.IsNullOrEmpty(token.ToString())) return Visibility.Collapsed;
-                    else if (key == "feedType")
-                        if (token.ToString() == "answer")
-                            return Visibility.Visible;
-                        else return Visibility.Collapsed;
-                    else return Visibility.Visible;
+                    if (string.IsNullOrEmpty(token.ToString())) return false;
+                    else switch (key)
+                        {
+                            case "isFeedAuthor":
+                                if (token.ToString() == "1") return true;
+                                else return false;
+                            case "feedType":
+                                if (token.ToString() == "answer") return true;
+                                else return false;
+                            default: return true;
+                        }
                 }
-                else return Visibility.Visible;
+                else return true;
             }
-            else return Visibility.Collapsed;
+            else return false;
+        }
+        public bool GetVisibility2(string key)
+        {
+            switch (key)
+            {
+                case "picArr": return jObject[key].HasValues ? true : false;
+                default: return GetFeeds(key).Count() > 0 ? true : false;
+            }
         }
         public Feed[] GetSelfs() => new Feed[] { this };
     }

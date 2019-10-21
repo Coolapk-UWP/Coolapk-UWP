@@ -15,10 +15,10 @@ using Windows.Web.Http.Filters;
 
 namespace 酷安_UWP
 {
-    class CoolApkSDK
+    static class CoolApkSDK
     {
         //超级感谢！！！👉 https://github.com/ZCKun/CoolapkTokenCrack
-        public static string GetAppToken()
+        static string GetAppToken()
         {
             string DEVICE_ID = Guid.NewGuid().ToString();
             long UnixDate = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
@@ -33,7 +33,7 @@ namespace 酷安_UWP
         }
 
         //来源：https://blog.csdn.net/lindexi_gd/article/details/48951849
-        public static string GetMD5(string inputString)
+        static string GetMD5(string inputString)
         {
             CryptographicHash objHash = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5).CreateHash();
             objHash.Append(CryptographicBuffer.ConvertStringToBinary(inputString, BinaryStringEncoding.Utf8));

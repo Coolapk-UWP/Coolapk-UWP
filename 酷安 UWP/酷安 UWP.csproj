@@ -120,6 +120,9 @@
     </Compile>
     <Compile Include="Data\DataTemplateSelectors.cs" />
     <Compile Include="Data\Feed.cs" />
+    <Compile Include="InitialPage.xaml.cs">
+      <DependentUpon>InitialPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
@@ -734,6 +737,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GetUpdateContentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InitialPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

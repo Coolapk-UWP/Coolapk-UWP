@@ -1,0 +1,19 @@
+﻿<Page
+    x:Class="酷安_UWP.InitialPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:酷安_UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" NavigationCacheMode="Required"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Pivot x:Name="MainPivot" SelectionChanged="Pivot_SelectionChanged">
+            <PivotItem Tag="-1"/>
+        </Pivot>
+        <Button Grid.Column="2" Click="Button_Click" Tag="Refresh" Height="48" Width="48" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <SymbolIcon Symbol="Refresh"/>
+        </Button>
+    </Grid>
+</Page>

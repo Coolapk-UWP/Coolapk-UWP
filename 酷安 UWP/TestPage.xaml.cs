@@ -121,7 +121,7 @@ namespace 酷安_UWP
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(IndexPage), new object[] { mainPage, "/page/dataList?url=V8_NEWS_TODAY&title=%E7%83%AD%E9%97%BB&page=1" });
+            Frame.Navigate(typeof(IndexPage), new object[] { mainPage, "/page/dataList?url=V8_NEWS_TODAY&title=%E7%83%AD%E9%97%BB&page=1" ,false});
         }
 
         private async void Button_Click_5(object sender, RoutedEventArgs e)
