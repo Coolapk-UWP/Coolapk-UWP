@@ -5,18 +5,62 @@
     xmlns:local="using:酷安_UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Loaded="Page_Loaded"
+    NavigationCacheMode="Required" SizeChanged="Page_SizeChanged"
     mc:Ignorable="d" >
-
+    <Page.Resources>
+        <DataTemplate x:Key="AppInfo" x:DataType="local:AppInfo">
+            <Grid Margin="20,10" Tag="{x:Bind GridTag}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Image Grid.RowSpan="3" Height="40" Width="40" Source="{x:Bind Icon}" x:Phase="2"/>
+                <TextBlock Grid.Column="1" Margin="10,0,0,0" TextWrapping="Wrap" Text="{x:Bind AppName}"/>
+                <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" TextWrapping="Wrap" Text="{x:Bind Size}" Foreground="Gray"/>
+                <TextBlock Grid.Column="1" Grid.Row="2" Margin="10,0,0,0" TextWrapping="Wrap" Text="{x:Bind DownloadNum}" Foreground="Gray" />
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
     <Grid>
-        <ListBox Margin="0,48,0,0" x:Name="SearchList" SelectionChanged="SearchList_SelectionChanged"/>
-
-        <Grid Height="48" VerticalAlignment="Top" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <TextBox x:Name="SearchText" Background="Transparent" BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" SelectionHighlightColor="#CC969696" Margin="48,0" VerticalAlignment="Center" KeyUp="SearchText_KeyUp"/>
-            <Button x:Name="SearchBack" Click="SearchBack_Click" VerticalAlignment="Stretch" Width="48" Background="Transparent" Style="{ThemeResource NavigationBackButtonNormalStyle}"/>
-            <Button Click="SearchButton_Click" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="48" Background="Transparent">
-                <SymbolIcon Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Symbol="Zoom"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Height="48" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="BackButtonColumnDefinition" Width="48"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="48"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="BackButton" Click="BackButton_Click" Width="48" Style="{ThemeResource NavigationBackButtonNormalStyle}"/>
+            <AutoSuggestBox Grid.Column="1" KeyUp="SearchTextBox_KeyUp" x:Name="SearchText" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="2" VerticalAlignment="Center" SelectedIndex="0" x:Name="SearchTypeComboBox" SelectionChanged="SearchTypeComboBox_SelectionChanged">
+                <ComboBox.Items>
+                    <ComboBoxItem>动态</ComboBoxItem>
+                    <ComboBoxItem>用户</ComboBoxItem>
+                    <ComboBoxItem>应用游戏</ComboBoxItem>
+                </ComboBox.Items>
+            </ComboBox>
+            <Button Grid.Column="3" Click="SearchButton_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle1}" Background="{x:Null}">
+                <SymbolIcon Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Symbol="Find"/>
             </Button>
         </Grid>
+        <Pivot Grid.Row="1" x:Name="DetailPivot" SelectionChanged="DetailPivot_SelectionChanged">
+            <PivotItem Header="动态">
+                <ListView  ItemTemplate="{StaticResource AppInfo}" SelectionChanged="SearchList_SelectionChanged"/>
+            </PivotItem>
+            <PivotItem Header="用户">
+                <ListView ItemTemplate="{StaticResource AppInfo}" SelectionChanged="SearchList_SelectionChanged"/>
+            </PivotItem>
+            <PivotItem Header="应用游戏">
+                <ListView x:Name="AppsResultList" ItemTemplate="{StaticResource AppInfo}" SelectionChanged="SearchList_SelectionChanged"/>
+            </PivotItem>
+        </Pivot>
     </Grid>
 </Page>

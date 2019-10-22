@@ -10,7 +10,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d" 
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    Loaded="Page_Loaded"
+    Loaded="Page_Loaded" NavigationCacheMode="Required"
     >
 
     <Page.Resources>
@@ -29,10 +29,30 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="640"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="border.Margin" Value="0"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <!--主体-->
-        <Pivot x:Name="Pivot1" >
-            <PivotItem Margin="0" Header="应用">
+        <Pivot x:Name="Pivot1">
+            <Pivot.LeftHeader>
+                <Border x:Name="border" Margin="48,0,0,0"/>
+            </Pivot.LeftHeader>
+            <Pivot.RightHeader>
+                <Button Click="SearchButton_Click" Width="48" Height="48" Background="{x:Null}">
+                    <SymbolIcon Symbol="Find"/>
+                </Button>
+            </Pivot.RightHeader>
+            <PivotItem Header="应用">
                 <ScrollViewer>
                     <StackPanel>
                         <controls:AdaptiveGridView x:Name="hotview"  DesiredWidth="120"
@@ -66,21 +86,20 @@
                 <ScrollViewer>
                     <StackPanel>
                         <Grid VerticalAlignment="Top">
-                            <TextBlock Text="推荐把玩"  VerticalAlignment="Top" Margin="10" HorizontalAlignment="Left"  />
+                            <TextBlock Text="推荐把玩" Foreground="Gray" VerticalAlignment="Top" Margin="10" HorizontalAlignment="Left"  />
                             <GridView x:Name="hotgview" 
                                                   Margin="0,35,0,10" Padding="10" 
                                                   IsItemClickEnabled="True"   ItemClick="Updateview_ItemClick" 
                                                   HorizontalAlignment="Center" SelectionMode="None"
                                                   ItemTemplate="{StaticResource GridViewDataTemplate}"/>
                         </Grid>
-                        <Grid  VerticalAlignment="Top" Margin="0,10">
-                            <TextBlock Text="全部游戏"  VerticalAlignment="Top" Margin="10" HorizontalAlignment="Left"  />
-                            <ListView x:Name="gamelist" 
+                        <Grid VerticalAlignment="Top" Margin="0,10">
+                            <TextBlock Text="全部游戏" Foreground="Gray" VerticalAlignment="Top" Margin="10" HorizontalAlignment="Left"  />
+                            <GridView x:Name="gamelist" 
                                                  Margin="0,35,0,10" Padding="10" 
                                                  HorizontalAlignment="Center" SelectionMode="None"
                                                  IsItemClickEnabled="True"  ItemClick="Gamelist_ItemClick" 
                                                  ItemTemplate="{StaticResource GridViewDataTemplate}"/>
-
                         </Grid>
                         <Border Height="60"/>
                     </StackPanel>
@@ -90,10 +109,10 @@
             <PivotItem Margin="0" Header="分类">
                 <ScrollViewer>
                     <StackPanel>
-                        <TextBlock Text="应用分类" Height="auto" VerticalAlignment="Top" Margin="10,10,0,10" />
-                        <StackPanel Background="White">
+                        <TextBlock FontWeight="Black" Text="应用分类" VerticalAlignment="Top" Margin="10,10,0,10" />
+                        <StackPanel >
                             <StackPanel VerticalAlignment="Top">
-                                <TextBlock Text="系统工具" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <TextBlock Text="系统工具" Foreground="Gray" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                 <Grid VerticalAlignment="Bottom" Height="65">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
@@ -106,10 +125,10 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Button Click="Classify_Click" Content="输入法" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="文件管理" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="清理优化" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="安全防护" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3" Background="#00000000"/>
+                                        <Button Click="Classify_Click" Content="输入法" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="文件管理" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="清理优化" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="安全防护" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3" Background="{x:Null}"/>
                                     </Grid>
                                     <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
@@ -119,13 +138,13 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Button Click="Classify_Click" Content="备份还原" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="辅助加强" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="#00000000"/>
+                                        <Button Click="Classify_Click" Content="备份还原" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="辅助加强" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="{x:Null}"/>
                                     </Grid>
                                 </Grid>
                             </StackPanel>
                             <StackPanel VerticalAlignment="Top">
-                                <TextBlock Text="桌面插件" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <TextBlock Foreground="Gray" Text="桌面插件" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                 <Grid VerticalAlignment="Bottom" Height="35">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -133,14 +152,14 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Button Click="Classify_Click" Content="桌面" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#00000000"/>
-                                    <Button Click="Classify_Click" Content="插件" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="#00000000"/>
-                                    <Button Click="Classify_Click" Content="锁屏" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Background="#00000000"/>
+                                    <Button Click="Classify_Click" Content="桌面" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}"/>
+                                    <Button Click="Classify_Click" Content="插件" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="{x:Null}"/>
+                                    <Button Click="Classify_Click" Content="锁屏" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Background="{x:Null}"/>
 
                                 </Grid>
                             </StackPanel>
                             <StackPanel VerticalAlignment="Top">
-                                <TextBlock Text="主题美化" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <TextBlock Text="主题美化" Foreground="Gray" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                 <Grid VerticalAlignment="Bottom" Height="65">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
@@ -153,10 +172,10 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Button Click="Classify_Click" Content="壁纸" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="图标" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="字体" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="开机动画" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3" Background="#00000000"/>
+                                        <Button Click="Classify_Click" Content="壁纸" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="图标" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="字体" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="开机动画" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3" Background="{x:Null}"/>
 
                                     </Grid>
                                     <Grid Grid.Row="1">
@@ -166,14 +185,14 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Button Click="Classify_Click" Content="CM主题" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="Layers主题" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="Xperia主题" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Background="#00000000"/>
+                                        <Button Click="Classify_Click" Content="CM主题" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="Layers主题" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="Xperia主题" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Background="{x:Null}"/>
                                     </Grid>
                                 </Grid>
                             </StackPanel>
                             <StackPanel VerticalAlignment="Top">
-                                <TextBlock Text="社交聊天" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <TextBlock Text="社交聊天" Foreground="Gray" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                 <Grid VerticalAlignment="Bottom" Height="65">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
@@ -186,10 +205,10 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Button Click="Classify_Click" Content="聊天" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="微博" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="交友" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="论坛" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3" Background="#00000000"/>
+                                        <Button Click="Classify_Click" Content="聊天" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="微博" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="交友" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="论坛" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3" Background="{x:Null}"/>
                                     </Grid>
                                     <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
@@ -198,12 +217,12 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Button Click="Classify_Click" Content="表情" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#00000000"/>
+                                        <Button Click="Classify_Click" Content="表情" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}"/>
                                     </Grid>
                                 </Grid>
                             </StackPanel>
                             <StackPanel VerticalAlignment="Top">
-                                <TextBlock Text="通讯网络" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <TextBlock Text="通讯网络" Foreground="Gray" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                 <Grid VerticalAlignment="Bottom" Height="65">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
@@ -216,10 +235,10 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Button Click="Classify_Click" Content="拨号" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="短信" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="浏览器" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="下载" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3" Background="#00000000"/>
+                                        <Button Click="Classify_Click" Content="拨号" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="短信" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="浏览器" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="下载" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3" Background="{x:Null}"/>
                                     </Grid>
                                     <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
@@ -229,30 +248,27 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Button Click="Classify_Click" Content="邮箱" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="WIFI" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="#00000000"/>
+                                        <Button Click="Classify_Click" Content="邮箱" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="WIFI" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="{x:Null}"/>
                                     </Grid>
                                 </Grid>
                             </StackPanel>
-
                         </StackPanel>
-
-                        <TextBlock Text="游戏分类" Height="auto" VerticalAlignment="Top" Margin="10,10,0,10" />
-
-                        <StackPanel Background="White">
+                        <TextBlock FontWeight="Black" Text="游戏分类" Height="auto" VerticalAlignment="Top" Margin="10,10,0,10" />
+                        <StackPanel >
                             <StackPanel VerticalAlignment="Top">
-                                <TextBlock Text="二次元" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <TextBlock Foreground="Gray" Text="二次元" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                 <Grid VerticalAlignment="Bottom" Height="35">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Button Click="Classify_Click" Content="二次元周边" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#00000000"/>
-                                    <Button Click="Classify_Click" Content="舰娘" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="#00000000"/>
+                                    <Button Click="Classify_Click" Content="二次元周边" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}"/>
+                                    <Button Click="Classify_Click" Content="舰娘" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="{x:Null}"/>
                                 </Grid>
                             </StackPanel>
                             <StackPanel VerticalAlignment="Top">
-                                <TextBlock Text="休闲" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <TextBlock Foreground="Gray" Text="休闲" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                 <Grid VerticalAlignment="Bottom" Height="65">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
@@ -265,10 +281,10 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Button Click="Classify_Click" Content="跳舞" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="涂鸦" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="跳跃" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Background="#00000000"/>
-                                        <Button Click="Classify_Click" Content="虐心" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3" Background="#00000000"/>
+                                        <Button Click="Classify_Click" Content="跳舞" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="涂鸦" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="跳跃" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Background="{x:Null}"/>
+                                        <Button Click="Classify_Click" Content="虐心" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3" Background="{x:Null}"/>
                                     </Grid>
                                     <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
@@ -278,7 +294,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Button Click="Classify_Click" Content="冒险" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#00000000"/>
+                                        <Button Click="Classify_Click" Content="冒险" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{x:Null}"/>
                                     </Grid>
                                 </Grid>
                             </StackPanel>
@@ -288,10 +304,5 @@
                 </ScrollViewer>
             </PivotItem>
         </Pivot>
-        <Grid Height="50" VerticalAlignment="Top">
-            <Button Click="SearchButton_Click" Width="60" Height="50" HorizontalAlignment="Right" Background="Transparent" Foreground="{ThemeResource ApplicationForegroundThemeBrush}">
-                <SymbolIcon Symbol="Zoom"/>
-            </Button>
-        </Grid>
     </Grid>
 </Page>

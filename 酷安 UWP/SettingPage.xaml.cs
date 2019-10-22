@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,6 +18,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -37,10 +39,11 @@ namespace 酷安_UWP
             IsUseOldEmojiMode.IsOn = Convert.ToBoolean(localSettings.Values["IsUseOldEmojiMode"]);
             IsDarkMode.IsOn = Convert.ToBoolean(localSettings.Values["IsDarkMode"]);
             CheckUpdateWhenLuanching.IsOn = Convert.ToBoolean(localSettings.Values["CheckUpdateWhenLuanching"]);
-            IsAccentColorFollowSystem.IsOn = Convert.ToBoolean(localSettings.Values["IsAccentColorFollowSystem"]);
+            //IsAccentColorFollowSystem.IsOn = Convert.ToBoolean(localSettings.Values["IsAccentColorFollowSystem"]);
             IsBackgroundColorFollowSystem.IsOn = Convert.ToBoolean(localSettings.Values["IsBackgroundColorFollowSystem"]);
             IsDarkMode.Visibility = IsBackgroundColorFollowSystem.IsOn ? Visibility.Collapsed : Visibility.Visible;
             VersionTextBlock.Text = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
+            uidTextBox.Text = localSettings.Values["UserName"] as string;
 #if DEBUG
             gotoTestPage.Visibility = Visibility.Visible;
 #endif
@@ -61,10 +64,16 @@ namespace 酷安_UWP
                 localSettings.Values.Add("IsDarkMode", false);
             if (!localSettings.Values.ContainsKey("CheckUpdateWhenLuanching"))
                 localSettings.Values.Add("CheckUpdateWhenLuanching", true);
-            if (!localSettings.Values.ContainsKey("IsAccentColorFollowSystem"))
-                localSettings.Values.Add("IsAccentColorFollowSystem", false);
+            //if (!localSettings.Values.ContainsKey("IsAccentColorFollowSystem"))
+            //    localSettings.Values.Add("IsAccentColorFollowSystem", false);
             if (!localSettings.Values.ContainsKey("IsBackgroundColorFollowSystem"))
-                localSettings.Values.Add("IsBackgroundColorFollowSystem", false);
+                localSettings.Values.Add("IsBackgroundColorFollowSystem", true);
+            if (!localSettings.Values.ContainsKey("UserName"))
+                localSettings.Values.Add("UserName", string.Empty);
+            if (!localSettings.Values.ContainsKey("Uid"))
+                localSettings.Values.Add("Uid", string.Empty);
+            if (!localSettings.Values.ContainsKey("UserAvatar"))
+                localSettings.Values.Add("UserAvatar", string.Empty);
         }
 
         public static void CheckTheme()
@@ -108,7 +117,6 @@ namespace 酷安_UWP
             }
         }
 
-
         private void CleanDataButton_Click(object sender, RoutedEventArgs e)
         {
             ApplicationData.Current.LocalSettings.Values.Clear();
@@ -121,6 +129,7 @@ namespace 酷安_UWP
         {
             ToggleSwitch toggle = sender as ToggleSwitch;
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            UISettings uiSettings = new UISettings();
             switch (toggle.Tag as string)
             {
                 case "0":
@@ -132,17 +141,24 @@ namespace 酷安_UWP
                     localSettings.Values[toggle.Name] = toggle.IsOn;
                     CheckTheme();
                     break;
-                case "4":
-                    localSettings.Values[toggle.Name] = toggle.IsOn;
-                    break;
+                //case "4":
+                //    localSettings.Values[toggle.Name] = toggle.IsOn;
+                //    if (toggle.IsOn) Application.Current.Resources["SystemAccentColor"] = uiSettings.GetColorValue(UIColorType.Accent);
+                //    else Application.Current.Resources["SystemAccentColor"] = Color.FromArgb(255, 76, 175, 80);
+                //    Window.Current.Content.UpdateLayout();
+                //    CheckTheme();
+                //    break;
                 case "5":
                     localSettings.Values[toggle.Name] = toggle.IsOn;
+                    localSettings.Values["IsDarkMode"] = uiSettings.GetColorValue(UIColorType.Background).Equals(Colors.Black) ? true : false;
+                    CheckTheme();
+                    IsDarkMode.IsOn = Convert.ToBoolean(localSettings.Values["IsDarkMode"]);
                     IsDarkMode.Visibility = toggle.IsOn ? Visibility.Collapsed : Visibility.Visible;
                     break;
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             switch (button.Tag as string)
@@ -152,6 +168,24 @@ namespace 酷安_UWP
                     break;
                 case "1":
                     MainPage.CheckUpdate(true);
+                    break;
+                case "fakeLogin":
+                    try
+                    {
+                        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                        if (string.IsNullOrEmpty(uidTextBox.Text))
+                            localSettings.Values["UserName"] = localSettings.Values["Uid"] = localSettings.Values["UserAvatar"] = string.Empty;
+                        else
+                        {
+                            string uid = await CoolApkSDK.GetUserIDByName(uidTextBox.Text);
+                            JObject r = await CoolApkSDK.GetUserProfileByID(uid);
+                            localSettings.Values["UserName"] = r["username"].ToString();
+                            localSettings.Values["Uid"] = uid;
+                            localSettings.Values["UserAvatar"] = r["userAvatar"].ToString();
+                        }
+                        mainPage.UpdateUserInfo(localSettings);
+                    }
+                    catch (Exception ex) { await new MessageDialog($"出现错误，可能是用户名不正确。\n{ex}").ShowAsync(); }
                     break;
             }
         }

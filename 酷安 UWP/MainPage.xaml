@@ -37,7 +37,12 @@
                     <ColumnDefinition Width="48" />
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <SymbolIcon Margin="-25,0,0,0" Symbol="{x:Bind Icon}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
+                <SymbolIcon Margin="-25,0,0,0" Symbol="{x:Bind Icon}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+                <Ellipse Margin="-3,0,0,0" Width="30" Height="30" Grid.RowSpan="2" HorizontalAlignment="Left" >
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{Binding Image}"/>
+                    </Ellipse.Fill>
+                </Ellipse>
                 <TextBlock Grid.Column="1" Margin="-5,0,0,0" Text="{x:Bind Name}" FontSize="16" VerticalAlignment="Center" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
             </Grid>
         </DataTemplate>

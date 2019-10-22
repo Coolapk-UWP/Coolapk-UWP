@@ -111,9 +111,6 @@
       <DependentUpon>AppRecommendPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\Emojis.cs" />
-    <Compile Include="DeveloperPage.xaml.cs">
-      <DependentUpon>DeveloperPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ExceptionCatcher.cs" />
     <Compile Include="GetUpdateContentDialog.xaml.cs">
       <DependentUpon>GetUpdateContentDialog.xaml</DependentUpon>
@@ -729,10 +726,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="AppsPage\AppRecommendPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DeveloperPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

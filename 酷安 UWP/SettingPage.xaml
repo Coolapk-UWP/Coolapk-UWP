@@ -24,9 +24,19 @@
         <TextBlock Margin="48,11" x:Name="title" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top">设置</TextBlock>
         <ScrollViewer  Margin="10,48,10,0">
             <StackPanel Grid.Row="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="uidTextBox" Header="输入你的用户名或UID"/>
+                    <Button Grid.Column="1" VerticalAlignment="Bottom" Click="Button_Click" Tag="fakeLogin">保存</Button>
+                </Grid>
+                <TextBlock TextWrapping="Wrap">“假装登录”后你可以从侧边栏快速进入个人动态（没有其他用处）。</TextBlock>
+                <TextBlock Margin="0,0,0,10" TextWrapping="Wrap">若不需要该功能，请保持输入框空白。</TextBlock>
                 <ToggleSwitch x:Name="IsNoPicsMode" Tag="0" Header="无图模式" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="IsUseOldEmojiMode" Tag="1" Header="使用旧式表情" Toggled="ToggleSwitch_Toggled"/>
-                <ToggleSwitch x:Name="IsAccentColorFollowSystem" Tag="4" Header="主题色跟随系统" Toggled="ToggleSwitch_Toggled"/>
+                <!--<ToggleSwitch x:Name="IsAccentColorFollowSystem" Tag="4" Header="主题色跟随系统" Toggled="ToggleSwitch_Toggled"/>-->
                 <ToggleSwitch x:Name="IsBackgroundColorFollowSystem" Tag="5" Header="背景色跟随系统" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="IsDarkMode" Tag="2" Header="夜间模式" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="CheckUpdateWhenLuanching" Tag="3" Header="启动时检查更新" Toggled="ToggleSwitch_Toggled"/>

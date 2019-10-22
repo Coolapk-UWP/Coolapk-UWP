@@ -14,8 +14,8 @@
         <ScrollViewer>
             <StackPanel>
                 <Border Height="50"/>
-                <Grid >
-                    <Image x:Name="AppIconImage" x:FieldModifier="Public" HorizontalAlignment="Left" Height="60" Margin="20" VerticalAlignment="Top" Width="60" />
+                <Grid>
+                    <Image x:Name="AppIconImage" x:FieldModifier="Public" HorizontalAlignment="Left" Height="60" Margin="20" VerticalAlignment="Top" Width="60"/>
                     <StackPanel Margin="100,10,0,0">
                         <TextBlock x:Name="AppTitleText" x:FieldModifier="Public" FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Padding="0,0,0,5"/>
                         <TextBlock x:Name="AppVText" x:FieldModifier="Public" Text="" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}" Padding="0,0,0,5"/>
@@ -24,7 +24,7 @@
                 </Grid>
                 <Grid  Padding="10" Height="50">
                     <TextBlock x:Name="AppXText" x:FieldModifier="Public" Text="" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
-                    <Button x:Name="DownloadButton" Click="DownloadButton_Click" Content="下载" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78" BorderThickness="0" Background="{ThemeResource CoolApk_Theme}"   />
+                    <Button x:Name="DownloadButton" Click="DownloadButton_Click" Content="下载" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78" BorderThickness="0" Background="{ThemeResource SystemControlHighlightListAccentHighBrush}"/>
                 </Grid>
                 <Grid Visibility="Collapsed" Margin="0,1,0,0" x:Name="DPanel" Padding="10" >
                     <TextBlock x:Name="AppDText" x:FieldModifier="Public" TextWrapping="Wrap" Text="" TextAlignment="Center"  VerticalAlignment="Top"/>
@@ -72,7 +72,6 @@
         </ScrollViewer>
 
         <!--顶栏-->
-
         <Grid Height="48" VerticalAlignment="Top" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <Button Click="BackButton_Click" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Style="{StaticResource NavigationBackButtonNormalStyle}"/>
             <TextBlock Margin="50,0,0,2" x:Name="TitleTextBlock" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />

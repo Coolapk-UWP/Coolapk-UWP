@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    mc:Ignorable="d"
+    mc:Ignorable="d" NavigationCacheMode="Required"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
@@ -473,8 +473,8 @@
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
-                <Pivot x:Name="FeedDetailPivot" Margin="5,0" Visibility="Collapsed">
-                    <PivotItem Loaded="PivotItem_Loaded" Tag="1">
+                <Pivot x:Name="FeedDetailPivot" SelectionChanged="FeedDetailPivot_SelectionChanged" Margin="5,0" Visibility="Collapsed">
+                    <PivotItem>
                         <PivotItem.Header>
                             <Button Background="{x:Null}" Style="{StaticResource ButtonStyle1}" FontSize="22" x:Name="ChangeModeButton" IsEnabled="False">
                                 <Button.Flyout>
@@ -500,7 +500,7 @@
                             </ListView.ItemContainerStyle>
                         </ListView>
                     </PivotItem>
-                    <PivotItem Loaded="PivotItem_Loaded" Tag="2">
+                    <PivotItem>
                         <PivotItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock>赞</TextBlock>
@@ -515,7 +515,7 @@
                             </ListView.ItemContainerStyle>
                         </ListView>
                     </PivotItem>
-                    <PivotItem Loaded="PivotItem_Loaded" Tag="3">
+                    <PivotItem>
                         <PivotItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock>转发</TextBlock>

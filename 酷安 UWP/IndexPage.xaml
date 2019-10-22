@@ -22,7 +22,8 @@
                                      DataTemplate1="{StaticResource image_1}" DataTemplate2="{StaticResource iconLink}"
                                      DataTemplate3="{StaticResource dyh}" DataTemplate4="{StaticResource dyh}"
                                      DataTemplate5="{StaticResource feedArticle2}" DataTemplate6="{StaticResource question2}"
-                                     DataTemplate7="{StaticResource textLink}"/>
+                                     DataTemplate7="{StaticResource textLink}" DataTemplate8="{StaticResource user2}"
+                                     DataTemplate9="{StaticResource imageSquare}"/>
         <!--一级-->
         <!--用户-->
         <DataTemplate x:Key="user" x:DataType="local:Feed">
@@ -66,7 +67,7 @@
                     </Grid.RowDefinitions>
                     <Ellipse Width="40" Height="40" Grid.RowSpan="2" HorizontalAlignment="Left" >
                         <Ellipse.Fill>
-                            <ImageBrush ImageSource="{x:Bind GetSmallImage('logo')}"/>
+                            <ImageBrush ImageSource="{x:Bind GetImage('logo')}"/>
                         </Ellipse.Fill>
                     </Ellipse>
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind GetValue('title')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -289,7 +290,7 @@
         <DataTemplate x:Key="selectorLinkCard" x:DataType="local:Feed">
             <StackPanel>
                 <ListViewItem HorizontalContentAlignment="Stretch" Template="{StaticResource ListViewItemTemplate1}">
-                    <ListView ItemsSource="{x:Bind GetFeeds('entities')}" SelectionMode="Single" SelectionChanged="ListView_SelectionChanged" Style="{StaticResource ListViewStyle1}">
+                    <ListView ItemsSource="{x:Bind GetFeeds('entities')}" SelectedIndex="0" SelectionMode="Single" Name="tabLostv" Style="{StaticResource ListViewStyle1}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -297,7 +298,7 @@
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="local:Feed">
-                                <ListViewItem>
+                                <ListViewItem Tapped="ListViewItem_Tapped_1">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Height="20" Width="20" x:Name="tp" x:Load="{x:Bind GetVisibility('pic')}" Source="{x:Bind GetImage('pic')}"/>
                                         <TextBlock Text="{x:Bind GetValue('title')}" TextWrapping="Wrap"/>
@@ -353,7 +354,7 @@
         </DataTemplate>
         <DataTemplate x:Key="iconLinkGridCard" x:DataType="local:Feed">
             <ListViewItem Template="{StaticResource ListViewItemTemplate1}">
-                <GridView ItemTemplateSelector="{StaticResource ThTemplateSelector}" ItemsSource="{x:Bind GetFeeds('entities')}"/>
+                <GridView SelectionMode="None" ItemTemplateSelector="{StaticResource ThTemplateSelector}" ItemsSource="{x:Bind GetFeeds('entities')}"/>
             </ListViewItem>
         </DataTemplate>
         <DataTemplate x:Key="imageTextScrollCard" x:DataType="local:Feed">
@@ -374,6 +375,28 @@
             </ListViewItem>
         </DataTemplate>
         <!--三级-->
+        <DataTemplate x:Key="imageSquare" x:DataType="local:Feed">
+            <ListViewItem Margin="0,5,0,15" MaxWidth="40" Template="{StaticResource ListViewItemTemplate1}" Tapped="Grid_Tapped" Tag="{x:Bind GetValue('uid')}" >
+                <Grid MaxHeight="40" MaxWidth="40">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="{x:Bind GetSmallImage('pic')}" Stretch="Uniform"/>
+                    </Grid.Background>
+                    <TextBlock Text="{x:Bind GetValue('title')}" TextWrapping="Wrap"/>
+                </Grid>
+            </ListViewItem>
+        </DataTemplate>
+        <DataTemplate x:Key="user2" x:DataType="local:Feed">
+            <ListViewItem Margin="0,5,0,15" MaxWidth="40" Template="{StaticResource ListViewItemTemplate1}" Tapped="Grid_Tapped" Tag="{x:Bind GetValue('uid')}" >
+                <StackPanel>
+                    <Ellipse HorizontalAlignment="Center" Width="40" Height="40">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{x:Bind GetImage('userAvatar')}"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <TextBlock TextWrapping="Wrap" Margin="0,2,0,0" TextAlignment="Center" Text="{x:Bind GetValue('username')}"/>
+                </StackPanel>
+            </ListViewItem>
+        </DataTemplate>
         <DataTemplate x:Key="textLink" x:DataType="local:Feed">
             <ListViewItem Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind}" Tapped="Grid_Tapped" HorizontalContentAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">

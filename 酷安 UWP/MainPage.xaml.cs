@@ -40,7 +40,51 @@ namespace 酷安_UWP
             SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
             hamburgerMenuControl.ItemsSource = MenuItem.GetMainItems();
             hamburgerMenuControl.OptionsItemsSource = MenuItem.GetOptionsItems();
+
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            UISettings uiSettings = new UISettings();
+            Application.Current.LeavingBackground += Current_Resuming;
+            Application.Current.Resuming += Current_Resuming;
+            uiSettings.ColorValuesChanged += async (sender, args) =>
+            {
+                if (Convert.ToBoolean(localSettings.Values["IsBackgroundColorFollowSystem"]))
+                {
+                    localSettings.Values["IsDarkMode"] = uiSettings.GetColorValue(UIColorType.Background).Equals(Colors.Black) ? true : false;
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.High, () => SettingPage.CheckTheme());
+                }
+                //if (Convert.ToBoolean(localSettings.Values["IsAccentColorFollowSystem"]))
+                //    await Dispatcher.RunAsync(CoreDispatcherPriority.High, () => Application.Current.Resources["SystemAccentColor"] = uiSettings.GetColorValue(UIColorType.Accent));
+            };
+            UpdateUserInfo(localSettings);
             SettingPage.CheckTheme();
+        }
+
+        public void UpdateUserInfo(ApplicationDataContainer localSettings)
+        {
+            ObservableCollection<MenuItem> items = hamburgerMenuControl.OptionsItemsSource as ObservableCollection<MenuItem>;
+            if (items.Count == 2) items.RemoveAt(0);
+            MenuItem item = new MenuItem
+            {
+                Index = -1,
+                PageType = typeof(UserPage),
+                Image = string.IsNullOrEmpty(localSettings.Values["UserAvatar"] as string) ? new BitmapImage() : new BitmapImage(new Uri(localSettings.Values["UserAvatar"] as string)),
+                Name = localSettings.Values["UserName"] as string,
+                Icon = Symbol.Contact
+            };
+            items.Insert(0, item);
+        }
+
+        private void Current_Resuming(object sender, object e)
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            UISettings uiSettings = new UISettings();
+            if (Convert.ToBoolean(localSettings.Values["IsBackgroundColorFollowSystem"]))
+            {
+                localSettings.Values["IsDarkMode"] = uiSettings.GetColorValue(UIColorType.Background).Equals(Colors.Black) ? true : false;
+                SettingPage.CheckTheme();
+            }
+            //if (Convert.ToBoolean(localSettings.Values["IsAccentColorFollowSystem"]))
+            //    await Dispatcher.RunAsync(CoreDispatcherPriority.High, () => Application.Current.Resources["SystemAccentColor"] = uiSettings.GetColorValue(UIColorType.Accent));
         }
 
         public static async void CheckUpdate(bool canShowDialog)
@@ -64,48 +108,50 @@ namespace 酷安_UWP
                 GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.Assets[1].BrowserDownloadUrl, release.Body) { RequestedTheme = Convert.ToBoolean(localSettings.Values["IsDarkMode"]) ? ElementTheme.Dark : ElementTheme.Light };
                 await dialog.ShowAsync();
             }
-            else if(canShowDialog)
+            else if (canShowDialog)
                 await new Windows.UI.Popups.MessageDialog("当前无可用更新。").ShowAsync();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
-            Type pageType = typeof(UserPage);
+            Type pageType = typeof(SettingPage);
             switch (seletedItem)
             {
                 case 0:
                     pageType = typeof(SettingPage);
                     break;
                 case 1:
-                    //pageType = typeof(AppRecommendPage);
                     pageType = typeof(InitialPage);
                     break;
                 case 2:
-                    pageType = typeof(DeveloperPage);
+                    pageType = typeof(SearchPage);
                     break;
                 case 3:
-                    pageType = typeof(UserPage);
-                    break;
-                case 4:
-                    pageType = typeof(InitialPage);
+                    pageType = typeof(AppRecommendPage);
                     break;
             }
-            /*
-             if (hamburgerMenuControl.SelectedIndex != seletedItem - 1)
-                        {
-                            hamburgerMenuControl.SelectedIndex = seletedItem - 1;
-                            hamburgerMenuControl.SelectedOptionsIndex = seletedItem - 1 < 0 ? 0 : -1;
-                        }*/
+            if (hamburgerMenuControl.SelectedIndex != seletedItem - 1)
+            {
+                hamburgerMenuControl.SelectedIndex = seletedItem - 1;
+                hamburgerMenuControl.SelectedOptionsIndex = seletedItem - 1 < 0 ? 0 : -1;
+            }
+            if (hamburgerMenuControl.SelectedOptionsIndex == seletedItem)
+                hamburgerMenuControl.SelectedOptionsIndex = 1;
             VFrame.Navigate(pageType, this);
         }
 
         private void OnMenuItemClick(object sender, ItemClickEventArgs e)
         {
-            var menuItem = e.ClickedItem as MenuItem;
-            VFrame.Navigate(menuItem.PageType, this);
-            seletedItem = menuItem.Index;
+            MenuItem menuItem = e.ClickedItem as MenuItem;
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            if (string.IsNullOrEmpty(menuItem.Name)) return;
+            else if (Equals(menuItem.Name, localSettings.Values["UserName"])) Frame.Navigate(typeof(UserPage), new object[] { localSettings.Values["Uid"], this });
+            else
+            {
+                VFrame.Navigate(menuItem.PageType, this);
+                seletedItem = menuItem.Index;
+            }
             if (hamburgerMenuControl.DisplayMode != SplitViewDisplayMode.CompactInline)
                 hamburgerMenuControl.IsPaneOpen = false;
         }
@@ -140,6 +186,7 @@ namespace 酷安_UWP
     public class MenuItem
     {
         public Symbol Icon { get; set; }
+        public ImageSource Image { get; set; }
         public string Name { get; set; }
         public Type PageType { get; set; }
         public int Index;
@@ -148,19 +195,19 @@ namespace 酷安_UWP
         {
             List<MenuItem> items = new List<MenuItem>
             {
-                //new MenuItem() { Icon = Symbol.View, Name = "应用●游戏", PageType = typeof(AppRecommendPage), Index = 1 },
-                //new MenuItem() { Icon = Symbol.ContactPresence, Name = "开发者中心", PageType = typeof(DeveloperPage), Index = 2 },
-                //new MenuItem() { Icon = Symbol.Contact, Name = "我", PageType = typeof(MyPage), Index = 3 },
-                new MenuItem() { Icon = Symbol.Home, Name = "首页", PageType = typeof(InitialPage), Index = 1/*4*/ }
-                };
+                new MenuItem() { Icon = Symbol.Home, Name = "首页", PageType = typeof(InitialPage), Index = 1, Image=new BitmapImage()},
+                new MenuItem() { Icon = Symbol.Find, Name = "搜素", PageType = typeof(SearchPage), Index = 2 , Image=new BitmapImage()},
+                new MenuItem() { Icon = Symbol.Shop, Name = "应用游戏", PageType = typeof(AppRecommendPage), Index = 3, Image=new BitmapImage()}
+            };
             return items;
         }
 
-        public static List<MenuItem> GetOptionsItems()
+        public static ObservableCollection<MenuItem> GetOptionsItems()
         {
-            List<MenuItem> items = new List<MenuItem>
+            ObservableCollection<MenuItem> items = new ObservableCollection<MenuItem>
             {
-                new MenuItem() { Icon = Symbol.Setting, Name = "设置", PageType = typeof(SettingPage), Index = 0 }
+                new MenuItem() { Icon = Symbol.Contact, Name = string.Empty, PageType = typeof(UserPage), Index = -1, Image=new BitmapImage()},
+                new MenuItem() { Icon = Symbol.Setting, Name = "设置", PageType = typeof(SettingPage), Index = 0, Image=new BitmapImage()}
             };
             return items;
         }

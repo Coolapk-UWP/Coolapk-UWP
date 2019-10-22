@@ -52,7 +52,10 @@ namespace 酷安_UWP
                 case "iconTabLinkGridCard": return DataTemplate7;
                 case "iconGridCard":
                 case "iconMiniGridCard":
+                case "iconMiniLinkGridCard":
                 case "iconLinkGridCard":return DataTemplate6;
+                case "imageSquareScrollCard":
+                case "iconScrollCard":
                 case "imageTextScrollCard":
                 case "feedScrollCard": return DataTemplate2;
                 case "messageCard": return DataTemplate3;
@@ -72,6 +75,8 @@ namespace 酷安_UWP
         public DataTemplate DataTemplate5 { get; set; }
         public DataTemplate DataTemplate6 { get; set; }
         public DataTemplate DataTemplate7 { get; set; }
+        public DataTemplate DataTemplate8 { get; set; }
+        public DataTemplate DataTemplate9 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             Feed feed = item as Feed;
@@ -79,6 +84,7 @@ namespace 酷安_UWP
             {
                 case "image_1": return DataTemplate1;
                 case "icon":
+                case "iconMiniLink":
                 case "iconLink": return DataTemplate2;
                 case "dyh": return DataTemplate3;
                 case "topic": return DataTemplate4;
@@ -87,6 +93,8 @@ namespace 酷安_UWP
                     else if (feed.GetValue("feedType") == "question") return DataTemplate6;
                     else return DataTemplate0;
                 case "textLink": return DataTemplate7;
+                case "user":return DataTemplate8;
+                case "imageSquare":return DataTemplate9;
                 default: return DataTemplate0;
             }
         }

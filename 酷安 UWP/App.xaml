@@ -6,7 +6,7 @@
     RequestedTheme="Dark">
 
     <Application.Resources>
-        <Color x:Key="SystemAccentColor">#4CAF50</Color>
+        <!--<Color x:Key="SystemAccentColor">#4CAF50</Color>-->
         <Color x:Key="CoolApk_Back">#FFFFFF</Color>
         <Color x:Key="CoolApk_Fore">#000000</Color>
         <Color x:Key="CoolApk_Begin">#4C4CAF50</Color>

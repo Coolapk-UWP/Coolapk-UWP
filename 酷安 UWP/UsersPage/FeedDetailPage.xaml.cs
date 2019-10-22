@@ -58,17 +58,31 @@ namespace 酷安_UWP
             //将传过来的数据 类型转换一下
             mainPage = ((object[])e.Parameter)[1] as MainPage;
             string title = (string)((object[])e.Parameter)[2];
-            id = (string)((object[])e.Parameter)[0];
-            mainPage.ActiveProgressRing();
-            if (title == "回复")
+            string id = (string)((object[])e.Parameter)[0];
+            if (this.id != id)
             {
-                FeedDetailPivot.Visibility = Visibility.Visible;
-                TitleTextBlock.Text = title;
-                TitleBar.Visibility = Visibility.Collapsed;
-                reply = ((object[])e.Parameter)[3] as Feed2;
-                LoadRepliesDetail(id);
+                mainPage.ActiveProgressRing();
+                this.id = id;
+                feeds.Clear();
+                answers.Clear();
+                replys.Clear();
+                reply = null;
+                feedpage = 1;
+                likepage = sharepage = answerpage = 0;
+                feedfirstItem = feedlastItem = likefirstItem = likelastItem = answerfirstItem = answerlastItem = string.Empty;
+                answerSortType = "reply";
+                listType = "lastupdate_desc";
+                isFromAuthor = "0";
+                if (title == "回复")
+                {
+                    FeedDetailPivot.Visibility = Visibility.Visible;
+                    TitleTextBlock.Text = title;
+                    TitleBar.Visibility = Visibility.Collapsed;
+                    reply = ((object[])e.Parameter)[3] as Feed2;
+                    LoadRepliesDetail(id);
+                }
+                else LoadFeedDetail(id);
             }
-            else LoadFeedDetail(id);
         }
 
         public async void LoadFeedDetail(string id)
@@ -129,43 +143,6 @@ namespace 酷安_UWP
         private void Button_Click(object sender, RoutedEventArgs e) => mainPage.Frame.Navigate(typeof(UserPage), new object[] { (sender as Button).Tag as string, mainPage });
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
-
-        private async void PivotItem_Loaded(object sender, RoutedEventArgs e)
-        {
-            PivotItem item = sender as PivotItem;
-            switch (item.Tag as string)
-            {
-                case "1":
-                    replyListView.ItemsSource = TitleTextBlock.Text == "回复" ? replys : feeds;
-                    if (TitleTextBlock.Text == "回复")
-                        FeedDetailPivot.IsLocked = true;
-                    break;
-                case "2":
-                    JArray root = await CoolApkSDK.GetFeedLikeUsersListById(id, $"{++likepage} ", string.Empty, string.Empty);
-                    ObservableCollection<Feed> F = new ObservableCollection<Feed>();
-                    if (root.Count != 0)
-                    {
-                        likefirstItem = root.First["uid"].ToString();
-                        likelastItem = root.Last["uid"].ToString();
-                        foreach (JObject i in root)
-                            F.Add(new Feed(i));
-                    }
-                    else likepage--;
-                    likeListView.ItemsSource = F;
-                    break;
-                case "3":
-                    JArray roots = await CoolApkSDK.GetForwardListById(id, $"{++sharepage}");
-                    ObservableCollection<Feed> Fs = new ObservableCollection<Feed>();
-                    if (roots.Count != 0)
-                        foreach (JObject i in roots)
-                            Fs.Add(new Feed(i));
-                    else sharepage--;
-                    shareuserListView.ItemsSource = Fs;
-                    break;
-                default:
-                    break;
-            }
-        }
 
         private async void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -417,6 +394,42 @@ namespace 酷安_UWP
                     mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { f[0].GetValue("id"), mainPage, string.Empty, null });
             }
         }
+
+        private async void FeedDetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Pivot item = sender as Pivot;
+            switch (item.SelectedIndex)
+            {
+                case 0:
+                    replyListView.ItemsSource = TitleTextBlock.Text == "回复" ? replys : feeds;
+                    if (TitleTextBlock.Text == "回复")
+                        FeedDetailPivot.IsLocked = true;
+                    break;
+                case 1:
+                    JArray root = await CoolApkSDK.GetFeedLikeUsersListById(id, $"{++likepage} ", string.Empty, string.Empty);
+                    ObservableCollection<Feed> F = new ObservableCollection<Feed>();
+                    if (root.Count != 0)
+                    {
+                        likefirstItem = root.First["uid"].ToString();
+                        likelastItem = root.Last["uid"].ToString();
+                        foreach (JObject i in root)
+                            F.Add(new Feed(i));
+                    }
+                    else likepage--;
+                    likeListView.ItemsSource = F;
+                    break;
+                case 2:
+                    JArray roots = await CoolApkSDK.GetForwardListById(id, $"{++sharepage}");
+                    ObservableCollection<Feed> Fs = new ObservableCollection<Feed>();
+                    if (roots.Count != 0)
+                        foreach (JObject i in roots)
+                            Fs.Add(new Feed(i));
+                    else sharepage--;
+                    shareuserListView.ItemsSource = Fs;
+                    break;
+            }
+        }
+
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox box = sender as ComboBox;

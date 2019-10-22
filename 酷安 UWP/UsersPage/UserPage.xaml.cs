@@ -48,6 +48,8 @@ namespace 酷安_UWP
             if (uid != this.uid)
             {
                 this.uid = uid;
+                page = 0;
+                firstItem = lastItem = string.Empty;
                 LoadProfile();
                 FeedsCollection.Clear();
             }

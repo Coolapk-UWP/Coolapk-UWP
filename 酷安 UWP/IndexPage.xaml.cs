@@ -131,7 +131,6 @@ namespace 酷安_UWP
                 else
                 {
                     mainPage.DeactiveProgressRing();
-
                     return false;
                 }
             }
@@ -225,7 +224,8 @@ namespace 酷安_UWP
                     }
                     else if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
                         if (string.IsNullOrEmpty(pageUrl)) GetIndexPage(++page);
-                        else GetUrlPage();
+                        else if (title.Text != "话题")
+                            GetUrlPage();
             }
             else refreshText.Visibility = Visibility.Visible;
         }
@@ -296,7 +296,6 @@ namespace 酷安_UWP
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             Pivot element = sender as Pivot;
             index = element.SelectedIndex;
             if (element.Items.Count == 1)
@@ -341,21 +340,24 @@ namespace 酷安_UWP
             }
         }
 
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
         {
-            ListView it = sender as ListView;
-            if (it.IsLoaded)
-            {
-                ObservableCollection<Feed> f = Feeds2[0];
-                for (int i = 0; i < f.Count; i++)
-                {
-                    if (f[i].GetValue("entityType") == "feed") f.RemoveAt(i);
-                }
-                urls[0] = $"/page/dataList?url={(it.ItemsSource as Feed[])[it.SelectedIndex].GetValue("url")}&title={(it.ItemsSource as Feed[])[it.SelectedIndex].GetValue("title")}";
-                urls[0] = urls[0].Replace("#", "%23");
-                pages[0] = 0;
-                GetUrlPage(++pages[0]);
-            }
+            ListView it = FindName("tabLostv") as ListView;
+            ObservableCollection<Feed> f = Feeds2[0];
+            for (int i = 0; i < f.Count; i++)
+                if (f[i].GetValue("entityType") == "feed") f.RemoveAt(i);
+            urls[0] = $"/page/dataList?url={(it.ItemsSource as Feed[])[it.SelectedIndex].GetValue("url")}&title={(it.ItemsSource as Feed[])[it.SelectedIndex].GetValue("title")}";
+            urls[0] = urls[0].Replace("#", "%23");
+            pages[0] = 0;
+            GetUrlPage(++pages[0]);
+        }
+
+        public void ChangeTabView(string u)
+        {
+            pageUrl = u;
+            page = 1;
+            Collection.Clear();
+            GetUrlPage();
         }
     }
 }

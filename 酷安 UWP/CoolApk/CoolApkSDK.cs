@@ -74,9 +74,9 @@ namespace 酷安_UWP
         {
             try
             {
-                string uid = await Web.GetHttp("https://www.coolapk.com/n/" + name);
-                uid = uid.Split(new string[] { "coolmarket://www.coolapk.com/u/" },StringSplitOptions.RemoveEmptyEntries)[1];
-                uid = uid.Split(new string[] { @"""" },StringSplitOptions.RemoveEmptyEntries)[0];
+                string uid = await new HttpClient().GetStringAsync(new Uri($"https://www.coolapk.com/n/{name}"));
+                uid = uid.Split(new string[] { "coolmarket://www.coolapk.com/u/" }, StringSplitOptions.RemoveEmptyEntries)[1];
+                uid = uid.Split(new string[] { @"""" }, StringSplitOptions.RemoveEmptyEntries)[0];
                 return uid;
             }
             catch
