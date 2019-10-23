@@ -33,6 +33,7 @@ namespace 酷安_UWP
         int page = 0;
         List<int> pages = new List<int>();
         string pageUrl;
+        string pu;
         ObservableCollection<Feed> Collection = new ObservableCollection<Feed>();
         int index;
         List<string> urls = new List<string>();
@@ -51,32 +52,35 @@ namespace 酷安_UWP
             if ((bool)vs[2]) TitleBar.Visibility = Visibility.Collapsed;
             if (string.IsNullOrEmpty(vs[1] as string))
             {
-                title.Text = "头条";
-                GetIndexPage(++page);
+                if (vs.Count() == 3)
+                {
+                    title.Text = "头条";
+                    GetIndexPage(++page);
+                }
             }
             else
             {
-                BackButton.Visibility = Visibility.Visible;
                 pageUrl = vs[1] as string;
-                if (pageUrl.Contains("&title="))
-                    title.Text = pageUrl.Substring(pageUrl.LastIndexOf("&title=") + 7);
-                if (pageUrl.IndexOf("/page") == -1)
-                    pageUrl = "/page/dataList?url=" + pageUrl;
-                else if (pageUrl.IndexOf("/page") == 0 && !pageUrl.Contains("/page/dataList"))
-                    pageUrl = pageUrl.Replace("/page", "/page/dataList");
+                BackButton.Visibility = Visibility.Visible;
+                if (pageUrl.Contains("&title=")) title.Text = pageUrl.Substring(pageUrl.LastIndexOf("&title=") + 7);
+                if (pageUrl.IndexOf("/page") == -1) pageUrl = "/page/dataList?url=" + pageUrl;
+                else if (pageUrl.IndexOf("/page") == 0 && !pageUrl.Contains("/page/dataList")) pageUrl = pageUrl.Replace("/page", "/page/dataList");
                 pageUrl = pageUrl.Replace("#", "%23");
                 index = -1;
-                GetUrlPage(++page);
+                GetUrlPage();
             }
         }
 
         async void GetUrlPage(int p = -1)
         {
-            if (index == -1) await GetUrlPage(1, pageUrl, Collection);
-            else
+            if (index == -1)
             {
-                int page = p == -1 ? ++pages[index] : p;
-                if (!await GetUrlPage(page, urls[index], Feeds2[index]) && p == -1)
+                if (!await GetUrlPage(p == -1 ? ++page : p, pageUrl, Collection))
+                    page--;
+            }
+            else if (p == -1)
+            {
+                if (!await GetUrlPage(page = p == -1 ? ++pages[index] : p, urls[index], Feeds2[index]))
                     pages[index]--;
             }
         }
@@ -89,21 +93,20 @@ namespace 酷安_UWP
                 string s = await CoolApkSDK.GetCoolApkMessage($"{url}&page={page}");
                 JObject jObject = (JObject)JsonConvert.DeserializeObject(s);
                 JArray Root = (JArray)jObject["data"];
-                if (FeedsCollection.Count != 0)
+                int n = 0;
+                if (FeedsCollection.Count > 0)
                 {
-                    for (int i = 0; i < Root.Count; i++)
-                    {
-                        if (i >= FeedsCollection.Count) break;
-                        if (Root.Contains(FeedsCollection[i].jObject))
-                        {
-                            FeedsCollection.RemoveAt(i);
-                            i--;
-                        }
-                    }
+                    var needDeleteItems = (from b in FeedsCollection
+                                           from c in Root
+                                           where b.GetValue("entityId") == c["entityId"].ToString()
+                                           select b).ToArray();
+                    foreach (var item in needDeleteItems)
+                        Collection.Remove(item);
+                    n = (from b in FeedsCollection
+                         where b.GetValue("entityFixed") == "1"
+                         select b).Count();
                 }
-                int f = 0;
-                if (title.Text == "专题") f = 3;
-                if (FeedsCollection.Count < f) f = 0;
+                int k = 0;
                 for (int i = 0; i < Root.Count; i++)
                 {
                     if (index == -1 && (Root[i] as JObject).TryGetValue("entityTemplate", out JToken t) && t.ToString() == "configCard")
@@ -112,7 +115,9 @@ namespace 酷安_UWP
                         title.Text = j["pageTitle"].ToString();
                         continue;
                     }
-                    FeedsCollection.Insert(f + i, new Feed((JObject)Root[i]));
+                    if ((Root[i] as JObject).TryGetValue("entityTemplate", out JToken tt) && tt.ToString() == "fabCard") continue;
+                    FeedsCollection.Insert(n + k, new Feed((JObject)Root[i]));
+                    k++;
                 }
                 mainPage.DeactiveProgressRing();
                 return true;
@@ -121,10 +126,9 @@ namespace 酷安_UWP
             {
                 string r = await CoolApkSDK.GetCoolApkMessage($"{url}&page={page}");
                 JArray Root = JObject.Parse(r)["data"] as JArray;
-                if (Root.Count != 0)
+                if (!(Root is null) && Root.Count != 0)
                 {
-                    foreach (JObject i in Root)
-                        FeedsCollection.Add(new Feed(i));
+                    foreach (JObject i in Root) FeedsCollection.Add(new Feed(i));
                     mainPage.DeactiveProgressRing();
                     return true;
                 }
@@ -144,32 +148,27 @@ namespace 酷安_UWP
                 timer.Stop();
                 timer = new DispatcherTimer();
                 JArray Root = await CoolApkSDK.GetIndexList($"{page}");
-                if (Collection.Count != 0)
+                if (Collection.Count > 0)
                 {
-                    for (int i = 0; i < 10; i++)
-                    {
-                        if (Collection[i].GetValue("entityFixed") == "0")
-                            Collection.RemoveAt(i);
-                    }
-                    for (int i = 0; i < Root.Count; i++)
-                    {
-                        if (i >= Collection.Count) break;
-                        if (Root.Contains(Collection[i].jObject))
-                        {
-                            Collection.RemoveAt(i);
-                            i--;
-                        }
-                    }
+                    var needDeleteItems = (from b in Collection
+                                           from c in Root
+                                           where b.GetValue("entityId") == c["entityId"].ToString()
+                                           select b).ToArray();
+                    foreach (var item in needDeleteItems)
+                        Collection.Remove(item);
                 }
+                int k = 0;
                 for (int i = 0; i < Root.Count; i++)
-                    Collection.Insert(i, new Feed((JObject)Root[i]));
+                {
+                    if ((Root[i] as JObject).TryGetValue("entityTemplate", out JToken tt) && tt.ToString() == "listCard") continue;
+                    Collection.Insert(k, new Feed((JObject)Root[i]));
+                    k++;
+                }
                 timer.Interval = new TimeSpan(0, 0, 7);
                 timer.Tick += (s, e) =>
                 {
-                    if (flip.SelectedIndex < flip.Items.Count - 1)
-                        flip.SelectedIndex++;
-                    else
-                        flip.SelectedIndex = 0;
+                    if (flip.SelectedIndex < flip.Items.Count - 1) flip.SelectedIndex++;
+                    else flip.SelectedIndex = 0;
                 };
                 timer.Start();
             }
@@ -224,8 +223,7 @@ namespace 酷安_UWP
                     }
                     else if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
                         if (string.IsNullOrEmpty(pageUrl)) GetIndexPage(++page);
-                        else if (title.Text != "话题")
-                            GetUrlPage();
+                        else GetUrlPage();
             }
             else refreshText.Visibility = Visibility.Visible;
         }
@@ -273,8 +271,7 @@ namespace 酷安_UWP
         private async void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
             FrameworkElement element = sender as FrameworkElement;
-            if (element.Tag is string)
-                mainPage.Frame.Navigate(typeof(UserPage), new object[] { element.Tag, mainPage });
+            if (element.Tag is string) mainPage.Frame.Navigate(typeof(UserPage), new object[] { element.Tag, mainPage });
             else if (element.Tag is Feed)
             {
                 Feed feed = element.Tag as Feed;
@@ -285,12 +282,9 @@ namespace 酷安_UWP
                     s += $"&title={feed.GetValue("title")}";
                     mainPage.Frame.Navigate(typeof(IndexPage), new object[] { mainPage, s, false });
                 }
-                else if (s.IndexOf('#') == 0)
-                    mainPage.Frame.Navigate(typeof(IndexPage), new object[] { mainPage, $"{s}&title={feed.GetValue("title")}", false });
-                else if (s.IndexOf("/feed/") == 0)
-                    mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { s.Replace("/feed/", string.Empty), mainPage, string.Empty, null });
-                else if (s.IndexOf("http") == 0)
-                    await Launcher.LaunchUriAsync(new Uri(s));
+                else if (s.IndexOf('#') == 0) mainPage.Frame.Navigate(typeof(IndexPage), new object[] { mainPage, $"{s}&title={feed.GetValue("title")}", false });
+                else if (s.IndexOf("/feed/") == 0) mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { s.Replace("/feed/", string.Empty), mainPage, string.Empty, null });
+                else if (s.IndexOf("http") == 0) await Launcher.LaunchUriAsync(new Uri(s));
             }
         }
 
@@ -342,20 +336,39 @@ namespace 酷安_UWP
 
         private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
         {
-            ListView it = FindName("tabLostv") as ListView;
-            ObservableCollection<Feed> f = Feeds2[0];
-            for (int i = 0; i < f.Count; i++)
-                if (f[i].GetValue("entityType") == "feed") f.RemoveAt(i);
-            urls[0] = $"/page/dataList?url={(it.ItemsSource as Feed[])[it.SelectedIndex].GetValue("url")}&title={(it.ItemsSource as Feed[])[it.SelectedIndex].GetValue("title")}";
-            urls[0] = urls[0].Replace("#", "%23");
-            pages[0] = 0;
-            GetUrlPage(++pages[0]);
+            Feed feed = (sender as ListViewItem).DataContext as Feed;
+            if (Feeds2.Count > 0)
+            {
+                ObservableCollection<Feed> feeds = Feeds2[0];
+                var needDeleteItems = (from b in feeds
+                                       where b.GetValue("entityType") == "feed"
+                                       select b).ToArray();
+                foreach (var item in needDeleteItems)
+                    feeds.Remove(item);
+                urls[0] = $"/page/dataList?url={feed.GetValue("url")}&title={feed.GetValue("title")}";
+                urls[0] = urls[0].Replace("#", "%23");
+                pages[0] = 0;
+
+            }
+            else
+            {
+                ObservableCollection<Feed> feeds = Collection;
+                var needDeleteItems = (from b in feeds
+                                       where b.GetValue("entityType") == "topic"
+                                       select b).ToArray();
+                foreach (var item in needDeleteItems)
+                    feeds.Remove(item);
+                pageUrl = $"/page/dataList?url={feed.GetValue("url")}&title={feed.GetValue("title")}";
+                pageUrl = pageUrl.Replace("#", "%23");
+                page = 0;
+            }
+            GetUrlPage();
         }
 
         public void ChangeTabView(string u)
         {
             pageUrl = u;
-            page = 1;
+            page = 0;
             Collection.Clear();
             GetUrlPage();
         }

@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    mc:Ignorable="d" NavigationCacheMode="Required"
+    mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
@@ -30,14 +30,14 @@
             <ListViewItem HorizontalContentAlignment="Stretch" Margin="5" Template="{StaticResource ListViewItemTemplate1}" Tapped="Grid_Tapped" Tag="{x:Bind GetValue('uid')}" >
                 <Grid Margin="5,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="55"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Ellipse Width="40" Height="40" Grid.RowSpan="2" HorizontalAlignment="Left" >
+                    <Ellipse Width="40" Height="40" Grid.RowSpan="2" HorizontalAlignment="Center" >
                         <Ellipse.Fill>
                             <ImageBrush ImageSource="{x:Bind GetImage('userAvatar')}"/>
                         </Ellipse.Fill>
@@ -58,7 +58,7 @@
             <ListViewItem HorizontalContentAlignment="Stretch" Margin="5" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Null}" >
                 <Grid Margin="5,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="55"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -85,7 +85,7 @@
             <ListViewItem HorizontalContentAlignment="Stretch" Margin="5" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Null}" >
                 <Grid VerticalAlignment="Center" Margin="5,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="55"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -150,7 +150,8 @@
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock Text="{x:Bind GetValue('username')}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{x:Bind GetValue('infoHtml')}" Foreground="Gray"/>
+                                <TextBlock Text="{x:Bind GetValue('dateline')}" Foreground="Gray"/>
+                                <TextBlock Text="{x:Bind GetValue('infoHtml')}" Foreground="Gray" Margin="5,0,0,0"/>
                                 <TextBlock Text="{x:Bind GetValue('device_title')}" Foreground="Gray" Margin="5,0,0,0"/>
                             </StackPanel>
                         </StackPanel>
@@ -213,18 +214,18 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Row="4" Orientation="Horizontal">
-                        <Button x:Name="loc" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Load="{x:Bind GetVisibility('location')}" Margin="5" Padding="6">
+                        <Button Style="{StaticResource ButtonStyle1}" x:Name="loc" Background="{x:Null}" x:Load="{x:Bind GetVisibility('location')}" Margin="5" Padding="6">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{x:Bind GetValue('location')}"/>
                             </StackPanel>
                         </Button>
-                        <Button x:Name="tti" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Load="{x:Bind GetVisibility('ttitle')}" Padding="6" Margin="5" >
+                        <Button x:Name="tti" Style="{StaticResource ButtonStyle1}" Background="{x:Null}" x:Load="{x:Bind GetVisibility('ttitle')}" Padding="6" Margin="5" >
                             <StackPanel Orientation="Horizontal">
                                 <Image x:Phase="6" Width="20" Height="20" Source="{x:Bind GetImage('tpic')}"/>
                                 <TextBlock Text="{x:Bind GetValue('ttitle')}" Margin="3,0,0,0"/>
                             </StackPanel>
                         </Button>
-                        <Button x:Name="dy" x:Load="{x:Bind GetVisibility('dyh_name')}" Padding="6" Margin="5">
+                        <Button x:Name="dy" Style="{StaticResource ButtonStyle1}" Background="{x:Null}" x:Load="{x:Bind GetVisibility('dyh_name')}" Padding="6" Margin="5">
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="20" Height="20" Source="{x:Null}"/>
                                 <TextBlock Text="{x:Bind GetValue('dyh_name')}" Margin="3,0,0,0"/>
@@ -290,19 +291,11 @@
         <DataTemplate x:Key="selectorLinkCard" x:DataType="local:Feed">
             <StackPanel>
                 <ListViewItem HorizontalContentAlignment="Stretch" Template="{StaticResource ListViewItemTemplate1}">
-                    <ListView ItemsSource="{x:Bind GetFeeds('entities')}" SelectedIndex="0" SelectionMode="Single" Name="tabLostv" Style="{StaticResource ListViewStyle1}">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            </Style>
-                        </ListView.ItemContainerStyle>
+                    <ListView ItemsSource="{x:Bind GetFeeds('entities')}" SelectedIndex="0" SelectionMode="Single" x:Name="tabListv" Style="{StaticResource ListViewStyle1}">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="local:Feed">
                                 <ListViewItem Tapped="ListViewItem_Tapped_1">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Height="20" Width="20" x:Name="tp" x:Load="{x:Bind GetVisibility('pic')}" Source="{x:Bind GetImage('pic')}"/>
-                                        <TextBlock Text="{x:Bind GetValue('title')}" TextWrapping="Wrap"/>
-                                    </StackPanel>
+                                    <TextBlock Text="{x:Bind GetValue('title')}"/>
                                 </ListViewItem>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -492,9 +485,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="48"/>
             </Grid.ColumnDefinitions>
-            <Button Style="{StaticResource NavigationBackButtonNormalStyle}" Margin="2"  x:Name="BackButton" Click="Button_Click" Tag="back" Visibility="Collapsed"/>
-            <TextBlock Grid.Column="1" Margin="0,11" x:Name="title" FontSize="20" HorizontalAlignment="Left"/>
-            <Button Grid.Column="2" Click="Button_Click" Tag="Refresh" Height="48" Background="{x:Null}">
+            <Button Style="{StaticResource NavigationBackButtonNormalStyle}" Height="48" Width="48" x:Name="BackButton" Click="Button_Click" Tag="back" Visibility="Collapsed"/>
+            <TextBlock Grid.Column="1" Margin="5,8" x:Name="title" FontSize="20" HorizontalAlignment="Left"/>
+            <Button Grid.Column="2" Click="Button_Click" Tag="Refresh" Height="48" Width="48" Style="{StaticResource ButtonStyle1}">
                 <SymbolIcon Symbol="Refresh"/>
             </Button>
         </Grid>

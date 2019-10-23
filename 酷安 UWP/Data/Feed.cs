@@ -82,14 +82,14 @@ namespace 酷安_UWP
                     case "message_raw_output":
                         JArray array = JArray.Parse(token.ToString());
                         string s = string.Empty;
-                        foreach (JObject item in array)
+                        foreach (var item in array)
                         {
                             if (item["type"].ToString() == "text")
                                 s += Process.ProcessMessage(item["message"].ToString(), localSettings);
                             else if (item["type"].ToString() == "image")
                             {
                                 string d = string.IsNullOrEmpty(item["description"].ToString()) ? string.Empty : item["description"].ToString();
-                                s += $"\n\n![image]({item["url"].ToString()}.s.jpg)\n\n>{s}\n\n";
+                                s += $"\n\n![image]({item["url"].ToString()}.s.jpg)\n\n>{d}\n\n";
                             }
                         }
                         return s;
@@ -120,33 +120,37 @@ namespace 酷安_UWP
         {
             if (!(jObject is null) && jObject.TryGetValue(path, out JToken t))
             {
-                JObject jObject = JObject.Parse(t.ToString());
-                if (!(jObject is null) && jObject.TryGetValue(key, out JToken token))
+                if (t.HasValues)
                 {
-                    switch (key)
+                    JObject jObject = JObject.Parse(t.ToString());
+                    if (!(jObject is null) && jObject.TryGetValue(key, out JToken token))
                     {
-                        case "message": return Process.ProcessMessage(token.ToString(), localSettings);
-                        case "message_raw_output":
-                            JArray array = JArray.Parse(token.ToString());
-                            string s = string.Empty;
-                            foreach (JObject item in array)
-                            {
-                                if (item["type"].ToString() == "text")
-                                    s += Process.ProcessMessage(item["message"].ToString(), localSettings);
-                                else if (item["type"].ToString() == "image")
-                                    s += $"\n\n![image]({item["url"].ToString()}.s.jpg)\n\n>{item["description"].ToString()}\n\n";
-                            }
-                            return s;
-                        case "extra_url":
-                            if (!string.IsNullOrEmpty(token.ToString()))
-                                if (token.ToString().IndexOf("http") == 0)
-                                    return new Uri(token.ToString()).Host;
+                        switch (key)
+                        {
+                            case "message": return Process.ProcessMessage(token.ToString(), localSettings);
+                            case "message_raw_output":
+                                JArray array = JArray.Parse(token.ToString());
+                                string s = string.Empty;
+                                foreach (JObject item in array)
+                                {
+                                    if (item["type"].ToString() == "text")
+                                        s += Process.ProcessMessage(item["message"].ToString(), localSettings);
+                                    else if (item["type"].ToString() == "image")
+                                        s += $"\n\n![image]({item["url"].ToString()}.s.jpg)\n\n>{item["description"].ToString()}\n\n";
+                                }
+                                return s;
+                            case "extra_url":
+                                if (!string.IsNullOrEmpty(token.ToString()))
+                                    if (token.ToString().IndexOf("http") == 0)
+                                        return new Uri(token.ToString()).Host;
+                                    else return string.Empty;
                                 else return string.Empty;
-                            else return string.Empty;
-                        case "infoHtml": return token.ToString().Replace("&nbsp;", string.Empty);
-                        case "dateline": return Process.ConvertTime(token.ToString());
-                        default: return token.ToString();
+                            case "infoHtml": return token.ToString().Replace("&nbsp;", string.Empty);
+                            case "dateline": return Process.ConvertTime(token.ToString());
+                            default: return token.ToString();
+                        }
                     }
+                    return string.Empty;
                 }
                 return string.Empty;
             }

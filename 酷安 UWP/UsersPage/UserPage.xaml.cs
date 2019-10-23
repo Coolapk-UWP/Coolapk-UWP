@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using 酷安_UWP.UsersPage;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -43,18 +44,10 @@ namespace 酷安_UWP
         {
             base.OnNavigatedTo(e);
             mainPage = ((object[])e.Parameter)[1] as MainPage;
-            string uid = (string)((object[])e.Parameter)[0];
+            uid = (string)((object[])e.Parameter)[0];
             mainPage.ActiveProgressRing();
-            if (uid != this.uid)
-            {
-                this.uid = uid;
-                page = 0;
-                firstItem = lastItem = string.Empty;
-                LoadProfile();
-                FeedsCollection.Clear();
-            }
-            if (FeedsCollection.Count == 0)
-                ReadNextPageFeeds();
+            LoadProfile();
+            ReadNextPageFeeds();
             mainPage.DeactiveProgressRing();
         }
 
@@ -104,7 +97,8 @@ namespace 酷安_UWP
             JArray Root = await CoolApkSDK.GetFeedListByID(uid, $"{++page}", firstItem, lastItem);
             if (!(Root is null) && Root.Count != 0)
             {
-                firstItem = Root.First["id"].ToString();
+                if (page == 1)
+                    firstItem = Root.First["id"].ToString();
                 lastItem = Root.Last["id"].ToString();
                 foreach (JObject i in Root)
                     FeedsCollection.Add(new Feed(i));
@@ -134,6 +128,12 @@ namespace 酷安_UWP
                     break;
                 case "1":
                     Refresh();
+                    break;
+                case "2":
+                    mainPage.Frame.Navigate(typeof(UserListPage), new object[] { mainPage, uid, true, TitleTextBlock.Text });
+                    break;
+                case "3":
+                    mainPage.Frame.Navigate(typeof(UserListPage), new object[] { mainPage, uid, false, TitleTextBlock.Text });
                     break;
                 default:
                     mainPage.Frame.Navigate(typeof(UserPage), new object[] { button.Tag as string, mainPage });

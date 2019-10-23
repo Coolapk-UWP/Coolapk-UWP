@@ -33,7 +33,7 @@ namespace 酷安_UWP
         }
 
         //来源：https://blog.csdn.net/lindexi_gd/article/details/48951849
-        static string GetMD5(string inputString)
+        public static string GetMD5(string inputString)
         {
             CryptographicHash objHash = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5).CreateHash();
             objHash.Append(CryptographicBuffer.ConvertStringToBinary(inputString, BinaryStringEncoding.Utf8));

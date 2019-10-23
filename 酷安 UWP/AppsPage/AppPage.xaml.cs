@@ -31,7 +31,7 @@ namespace 酷安_UWP
             this.Tag = applink;
             LaunchAppViewLoad(await Web.GetHttp(Tag.ToString()));
         }
-        private async void LaunchAppViewLoad(String str)
+        private void LaunchAppViewLoad(String str)
         {
             try { jstr = Web.ReplaceHtml(Regex.Split(Regex.Split(Regex.Split(str, "应用简介</p>")[1], @"<div class=""apk_left_title_info"">")[1], "</div>")[0].Trim()); } catch (Exception) { }
             try { vmstr = Web.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[2], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }

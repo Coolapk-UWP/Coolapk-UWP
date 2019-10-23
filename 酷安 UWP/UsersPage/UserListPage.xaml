@@ -1,0 +1,72 @@
+﻿<Page
+    x:Class="酷安_UWP.UsersPage.UserListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:酷安_UWP.UsersPage"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid VerticalAlignment="Top" x:Name="TitleBar">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="48"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="48"/>
+            </Grid.ColumnDefinitions>
+            <Button Style="{StaticResource NavigationBackButtonNormalStyle}" Height="48" Width="48" x:Name="BackButton" Click="Button_Click" Tag="back"/>
+            <TextBlock Grid.Column="1" Margin="5,8" x:Name="title" FontSize="20" HorizontalAlignment="Left"/>
+            <Button Grid.Column="2" Click="Button_Click" Style="{StaticResource ButtonStyle1}" Tag="Refresh" Width="48" Height="48" Background="{x:Null}">
+                <SymbolIcon Symbol="Refresh"/>
+            </Button>
+        </Grid>
+        <ScrollViewer Grid.Row="1" x:Name="VScrollViewer" ViewChanged="ScrollViewer_ViewChanged">
+            <StackPanel>
+                <TextBlock Height="20" HorizontalAlignment="Center" Visibility="Collapsed" x:Name="refreshText">松手刷新</TextBlock>
+                <ListView x:Name="UserList">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:UserInfo">
+                            <ListViewItem HorizontalContentAlignment="Stretch" Margin="5" Template="{StaticResource ListViewItemTemplate1}" Tapped="ListViewItem_Tapped" Tag="{x:Bind Uid}">
+                                <Grid Margin="5,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="55"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Ellipse Width="40" Height="40" Grid.RowSpan="3" HorizontalAlignment="Left">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource="{x:Bind UserAvatar}"/>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind UserName}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                                        <TextBlock Text="{x:Bind FollowNum}" Foreground="Gray"/>
+                                        <TextBlock Text="关注" Foreground="Gray" Margin="0,0,5,0"/>
+                                        <TextBlock Text="{x:Bind FansNum}" Foreground="Gray"/>
+                                        <TextBlock Text="粉丝" Foreground="Gray" Margin="0,0,5,0"/>
+                                        <TextBlock Text="{x:Bind LoginTime}" Foreground="Gray"/>
+                                    </StackPanel>
+                                    <TextBlock TextWrapping="Wrap" Grid.Row="2" Grid.Column="1" Foreground="Gray" Text="{x:Bind Bio}"/>
+                                </Grid>
+                            </ListViewItem>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

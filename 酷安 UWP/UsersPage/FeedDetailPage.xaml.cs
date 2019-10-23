@@ -63,16 +63,6 @@ namespace 酷安_UWP
             {
                 mainPage.ActiveProgressRing();
                 this.id = id;
-                feeds.Clear();
-                answers.Clear();
-                replys.Clear();
-                reply = null;
-                feedpage = 1;
-                likepage = sharepage = answerpage = 0;
-                feedfirstItem = feedlastItem = likefirstItem = likelastItem = answerfirstItem = answerlastItem = string.Empty;
-                answerSortType = "reply";
-                listType = "lastupdate_desc";
-                isFromAuthor = "0";
                 if (title == "回复")
                 {
                     FeedDetailPivot.Visibility = Visibility.Visible;
@@ -148,25 +138,24 @@ namespace 酷安_UWP
         {
             if (TitleTextBlock.Text != "回复")
             {
-                if (FeedDetailPivot.SelectedIndex == 2)
+                if ((sender as FrameworkElement).Tag is Feed f)
                 {
-                    Frame.Navigate(typeof(FeedDetailPage),
-                        new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, (sender as FrameworkElement).Tag });
-                }
-                else if (FeedDetailPivot.Visibility == Visibility.Collapsed)
-                    mainPage.Frame.Navigate(typeof(FeedDetailPage),
-                            new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, null });
-                else
-                {
-                    ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-                    ContentDialog1 contentDialog = new ContentDialog1
+                    if (f.GetValue("infoHtml") != "回复")
+                        mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { f.GetValue("id"), mainPage, string.Empty, null });
+                    else
                     {
-                        RequestedTheme = Convert.ToBoolean(localSettings.Values["IsDarkMode"]) ? ElementTheme.Dark : ElementTheme.Light
-                    };
-                    contentDialog.Navigate(typeof(FeedDetailPage),
-                        new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, "回复", (sender as FrameworkElement).Tag });
-                    await contentDialog.ShowAsync();
+                        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                        ContentDialog1 contentDialog = new ContentDialog1
+                        {
+                            RequestedTheme = Convert.ToBoolean(localSettings.Values["IsDarkMode"]) ? ElementTheme.Dark : ElementTheme.Light
+                        };
+                        contentDialog.Navigate(typeof(FeedDetailPage),
+                            new object[] { f.GetValue("id"), mainPage, "回复", (sender as FrameworkElement).Tag });
+                        await contentDialog.ShowAsync();
+                    }
                 }
+                else if ((sender as FrameworkElement).Tag is Feed[] fs)
+                    mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { fs[0].GetValue("id"), mainPage, string.Empty, null });
             }
         }
 
@@ -185,7 +174,7 @@ namespace 酷安_UWP
                     else if (FeedDetailPivot.Visibility == Visibility.Collapsed)
                     {
                         JArray array = await CoolApkSDK.GetAnswerListById(id, answerSortType, "1", answerfirstItem, answerlastItem);
-                        if (array.Count != 0)
+                        if (!(array is null) && array.Count != 0)
                         {
                             for (int i = 0; i < array.Count; i++)
                                 for (int j = 0; j < answers.Count; j++)
@@ -349,13 +338,14 @@ namespace 酷安_UWP
         private void MarkdownTextBlock_ImageResolving(object sender, ImageResolvingEventArgs e)
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
-            {
-                e.Handled = true;
-                if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
-                    e.Image = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
-                else e.Image = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
-            }
+            if (e.Url.IndexOf("ms-appx") != 0)
+                if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
+                {
+                    e.Handled = true;
+                    if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                        e.Image = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
+                    else e.Image = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
+                }
         }
 
         private void MarkdownTextBlock_ImageClicked(object sender, LinkClickedEventArgs e)

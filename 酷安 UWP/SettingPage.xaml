@@ -16,12 +16,12 @@
                         <AdaptiveTrigger MinWindowWidth="640" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="title.Margin" Value="10,11"/>
+                        <Setter Target="title.Margin" Value="10,8"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <TextBlock Margin="48,11" x:Name="title" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top">设置</TextBlock>
+        <TextBlock Margin="48,8" x:Name="title" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top">设置</TextBlock>
         <ScrollViewer  Margin="10,48,10,0">
             <StackPanel Grid.Row="1">
                 <Grid>
@@ -38,7 +38,7 @@
                 <ToggleSwitch x:Name="IsUseOldEmojiMode" Tag="1" Header="使用旧式表情" Toggled="ToggleSwitch_Toggled"/>
                 <!--<ToggleSwitch x:Name="IsAccentColorFollowSystem" Tag="4" Header="主题色跟随系统" Toggled="ToggleSwitch_Toggled"/>-->
                 <ToggleSwitch x:Name="IsBackgroundColorFollowSystem" Tag="5" Header="背景色跟随系统" Toggled="ToggleSwitch_Toggled"/>
-                <ToggleSwitch x:Name="IsDarkMode" Tag="2" Header="夜间模式" Toggled="ToggleSwitch_Toggled"/>
+                <ToggleSwitch x:Name="IsDarkMode" Tag="2" Header="黑色背景" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="CheckUpdateWhenLuanching" Tag="3" Header="启动时检查更新" Toggled="ToggleSwitch_Toggled"/>
                 <Button x:Name="CleanDataButton" Visibility="Collapsed" Click="CleanDataButton_Click" Content="退出登录"/>
                 <Button Tag="1" Click="Button_Click">检查更新</Button>

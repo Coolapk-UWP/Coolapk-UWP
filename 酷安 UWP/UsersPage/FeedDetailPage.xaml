@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    mc:Ignorable="d" NavigationCacheMode="Required"
+    mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
@@ -63,7 +63,7 @@
                     </StackPanel>
                     <controls:MarkdownTextBlock Grid.Row="4" ImageResolving="MarkdownTextBlock_ImageResolving" ImageClicked="MarkdownTextBlock_ImageClicked" Margin="5" Text="{x:Bind GetValue('message_raw_output')}"  LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
                     <StackPanel Grid.Row="5" Orientation="Horizontal">
-                        <Button x:Name="loca" x:Load="{x:Bind GetVisibility('location')}" Margin="5" Padding="6"  >
+                        <Button x:Name="loca" x:Load="{x:Bind GetVisibility('location')}" Background="{x:Null}" Margin="5" Padding="6" Style="{StaticResource ButtonStyle1}" >
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{x:Bind GetValue('location')}"/>
                             </StackPanel>
@@ -198,7 +198,7 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Row="7" Orientation="Horizontal">
-                        <Button x:Name="loc" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Load="{x:Bind GetVisibility('location')}" Margin="5" Padding="6">
+                        <Button x:Name="loc" Background="{x:Null}" x:Load="{x:Bind GetVisibility('location')}" Margin="5" Padding="6" Style="{StaticResource ButtonStyle1}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{x:Bind GetValue('location')}"/>
                             </StackPanel>
@@ -215,7 +215,6 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-
                     </StackPanel>
                 </Grid>
             </ListViewItem>
@@ -285,7 +284,7 @@
                             </GridView.ItemTemplate>
                         </GridView>
                     </Grid>
-                    <Button x:Name="loc" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Load="{x:Bind GetVisibility('location')}" Margin="5" Padding="6">
+                    <Button x:Name="loc" Background="{x:Null}" x:Load="{x:Bind GetVisibility('location')}" Margin="5" Padding="6" Style="{StaticResource ButtonStyle1}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{x:Bind GetValue('location')}"/>
                         </StackPanel>
@@ -302,7 +301,6 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-
                     <Grid  Grid.Row="7" >
                         <StackPanel Orientation="Horizontal" Margin="15,0" >
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Padding="8,0">
@@ -457,9 +455,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="48"/>
             </Grid.ColumnDefinitions>
-            <Button Click="BackButton_Click" Style="{StaticResource NavigationBackButtonNormalStyle}"/>
-            <TextBlock Margin="2,0,0,2" Grid.Column="1" x:Name="TitleTextBlock" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <Button Click="Button_Click_1" Grid.Column="2" HorizontalAlignment="Right" Width="48" Height="48" Background="{x:Null}">
+            <Button Click="BackButton_Click" Style="{StaticResource NavigationBackButtonNormalStyle}" Width="48" Height="48"/>
+            <TextBlock Margin="5,8" Grid.Column="1" x:Name="TitleTextBlock" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <Button Click="Button_Click_1" Grid.Column="2" HorizontalAlignment="Right" Width="48" Height="48" Style="{StaticResource ButtonStyle1}">
                 <SymbolIcon Symbol="Refresh"/>
             </Button>
         </Grid>
