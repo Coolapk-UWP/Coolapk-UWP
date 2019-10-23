@@ -35,7 +35,7 @@
 ### 最低需求
 - Windows 10 Build 15063及以上
 - 设备需支持ARM/ARM64/x86/x64
-- 至少50MB的空余储存空间(用于储存安装包与安装应用)
+- 至少100MB的空余储存空间(用于储存安装包与安装应用)
 
 ### 使用应用安装脚本安装应用
 - 下载并解压最新的[安装包`(UWP_x.x.x.0_Debug_Test.rar)`](https://github.com/Tangent-90/Coolapk-UWP/releases/latest)
