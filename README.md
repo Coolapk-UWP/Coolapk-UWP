@@ -65,11 +65,11 @@
 
 ## 屏幕截图
 - 启动图
-![启动图](Screenshots/2019-10-13-123321.png)
-- 头条
-![头条](Screenshots/2019-10-13-130542.jpg)
+![启动图](Screenshots/2019-10-23-127642.png)
+- 主页
+![主页](Screenshots/批注-2019-10-23-115333.jpg)
 - 应用与游戏
-![应用与游戏](Screenshots/2019-10-13-125244.jpg)
+![应用与游戏](Screenshots/批注-2019-10-23-115847.jpg)
 - 动态
 ![动态](Screenshots/2019-10-13-124904.jpg)
 - 动态详情
@@ -77,7 +77,7 @@
 - 搜索
 ![搜索](Screenshots/2019-10-13-132516.jpg)
 - 应用详情
-![应用详情](Screenshots/批注-2019-10-13-132558.jpg)
+![应用详情](Screenshots/批注-2019-10-23-115941.jpg)
 
 ## 鸣谢
 - 酷安UWP原作者[@一块小板子](http://www.coolapk.com/u/695942)([Github](https://github.com/oboard))
