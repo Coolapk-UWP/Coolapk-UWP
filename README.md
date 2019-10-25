@@ -35,7 +35,7 @@
 ### 最低需求
 - Windows 10 Build 15063及以上
 - 设备需支持ARM/ARM64/x86/x64
-- 至少50MB的空余储存空间(用于储存安装包与安装应用)
+- 至少100MB的空余储存空间(用于储存安装包与安装应用)
 
 ### 使用应用安装脚本安装应用
 - 下载并解压最新的[安装包`(UWP_x.x.x.0_Debug_Test.rar)`](https://github.com/Tangent-90/Coolapk-UWP/releases/latest)
@@ -70,14 +70,16 @@
 ![主页](Screenshots/批注-2019-10-23-115333.jpg)
 - 应用与游戏
 ![应用与游戏](Screenshots/批注-2019-10-23-115847.jpg)
-- 动态
-![动态](Screenshots/2019-10-13-124904.jpg)
-- 动态详情
-![动态详情](Screenshots/2019-10-13-124940.jpg)
-- 搜索
-![搜索](Screenshots/批注-2019-10-23-104349.jpg)
 - 应用详情
 ![应用详情](Screenshots/批注-2019-10-23-115941.jpg)
+- 动态
+![动态](Screenshots/批注-2019-10-23-223657.jpg)
+- 图文
+![图文](Screenshots/批注-2019-10-23-224009.jpg)
+- 问答
+![问答](Screenshots/批注-2019-10-23-224147.jpg)
+- 搜索
+![搜索](Screenshots/批注-2019-10-23-223335.jpg)
 
 ## 鸣谢
 - 酷安UWP原作者[@一块小板子](http://www.coolapk.com/u/695942)([Github](https://github.com/oboard))
