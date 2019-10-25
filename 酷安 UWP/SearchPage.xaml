@@ -153,7 +153,7 @@
                                                     <TextBlock Text="{x:Bind GetValue('extra_url')}" Foreground="Gray" TextWrapping="Wrap"/>
                                                 </StackPanel>
                                             </Grid>
-                                            <StackPanel Grid.Row="4" Orientation="Horizontal">
+                                            <ListView HorizontalContentAlignment="Stretch" Style="{StaticResource ListViewStyle1}" Grid.Row="4">
                                                 <StackPanel Background="{ThemeResource SystemControlBackgroundListLowBrush}" x:Name="loc" x:Load="{x:Bind GetVisibility('location')}" Margin="5" Padding="6" Orientation="Horizontal">
                                                     <TextBlock Text="{x:Bind GetValue('location')}"/>
                                                 </StackPanel>
@@ -161,7 +161,7 @@
                                                     <Image x:Phase="6" Width="20" Height="20" Source="{x:Bind GetImage('tpic')}"/>
                                                     <TextBlock Text="{x:Bind GetValue('ttitle')}" Margin="3,0,0,0"/>
                                                 </StackPanel>
-                                                <StackPanel Tag="{x:Bind GetValue('dyh_name2')}" x:Name="dy" Background="{ThemeResource SystemControlBackgroundListLowBrush}" x:Load="{x:Bind GetVisibility('dyh_name')}" Padding="6" Margin="5" Orientation="Horizontal">
+                                                <StackPanel Tag="{x:Bind GetValue('dyh_id2')}" x:Name="dy" Background="{ThemeResource SystemControlBackgroundListLowBrush}" x:Load="{x:Bind GetVisibility('dyh_name')}" Padding="6" Margin="5" Orientation="Horizontal">
                                                     <TextBlock Text="{x:Bind GetValue('dyh_name')}" Margin="3,0,0,0"/>
                                                 </StackPanel>
                                                 <ListView HorizontalContentAlignment="Stretch" Style="{StaticResource ListViewStyle1}" x:Name="relaRLis" x:Load="{x:Bind GetVisibility2('relationRows')}" ItemsSource="{x:Bind GetFeeds('relationRows')}">
@@ -176,7 +176,7 @@
                                                         </DataTemplate>
                                                     </ListView.ItemTemplate>
                                                 </ListView>
-                                            </StackPanel>
+                                            </ListView>
                                             <StackPanel x:Name="lik" x:Load="{x:Bind GetVisibility('feedType2')}" Orientation="Horizontal" Grid.Row="6" HorizontalAlignment="Left" Margin="0,0,5,0">
                                                 <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
                                                     <StackPanel Orientation="Horizontal">

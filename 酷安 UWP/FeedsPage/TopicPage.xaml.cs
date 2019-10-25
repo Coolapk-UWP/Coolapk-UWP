@@ -104,8 +104,10 @@ namespace 酷安_UWP.FeedsPage
             if (!(Root is null) && Root.Count != 0)
             {
                 if (page == 1)
+                {
                     firstItem = Root.First["id"].ToString();
-                lastItem = Root.Last["id"].ToString();
+                    lastItem = Root.Last["id"].ToString();
+                }
                 foreach (JObject i in Root)
                     FeedsCollection.Add(new Feed(i));
             }

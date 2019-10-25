@@ -218,7 +218,7 @@
                             <TextBlock Text="{x:Bind GetValue('extra_url')}" Foreground="Gray" TextWrapping="Wrap"/>
                         </StackPanel>
                     </Grid>
-                    <StackPanel Grid.Row="4" Orientation="Horizontal">
+                    <ListView HorizontalContentAlignment="Stretch" Style="{StaticResource ListViewStyle1}" Grid.Row="4">
                         <StackPanel Orientation="Horizontal" Background="{ThemeResource SystemControlBackgroundListLowBrush}" x:Name="loc" x:Load="{x:Bind GetVisibility('location')}" Margin="5" Padding="6">
                             <TextBlock Text="{x:Bind GetValue('location')}"/>
                         </StackPanel>
@@ -226,7 +226,7 @@
                             <Image x:Phase="6" Width="20" Height="20" Source="{x:Bind GetImage('tpic')}"/>
                             <TextBlock Text="{x:Bind GetValue('ttitle')}" Margin="3,0,0,0"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Tapped="Grid_Tapped" Tag="{x:Bind GetValue('dyh_name')}" x:Name="dy" Background="{ThemeResource SystemControlBackgroundListLowBrush}" x:Load="{x:Bind GetVisibility('dyh_name')}" Padding="6" Margin="5">
+                        <StackPanel Orientation="Horizontal" Tapped="Grid_Tapped" Tag="{x:Bind GetValue('dyh_id2')}" x:Name="dy" Background="{ThemeResource SystemControlBackgroundListLowBrush}" x:Load="{x:Bind GetVisibility('dyh_name')}" Padding="6" Margin="5">
                             <TextBlock Text="{x:Bind GetValue('dyh_name')}" Margin="3,0,0,0"/>
                         </StackPanel>
                         <ListView HorizontalContentAlignment="Stretch" Style="{StaticResource ListViewStyle1}" x:Name="relaRLis" x:Load="{x:Bind GetVisibility2('relationRows')}" ItemsSource="{x:Bind GetFeeds('relationRows')}">
@@ -241,7 +241,7 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                    </StackPanel>
+                    </ListView>
                     <ListView Background="{ThemeResource SystemControlBackgroundListLowBrush}" Style="{x:Bind listviewStyle}" Grid.Row="5" ItemsSource="{x:Bind GetFeeds('replyRows')}" x:Name="repRL" x:Load="{x:Bind GetVisibility2('replyRows')}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">

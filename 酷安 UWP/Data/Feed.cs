@@ -61,7 +61,7 @@ namespace 酷安_UWP
                         else
                             return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Tools.ProcessMessage(jObject["message"].ToString(), localSettings)}\n[查看图片]({jObject["pic"]})";
                     case "extra_url2": return jObject["extra_url"].ToString();
-                    case "dyh_name2": return jObject["dyh_name"].ToString() + "/tOOPen";
+                    case "dyh_id2": return "/dyh/" + jObject["dyh_id"].ToString();
                     default: return string.Empty;
                 }
         }
@@ -134,9 +134,9 @@ namespace 酷安_UWP
             else return new BitmapImage();
         }
         // 获取原图
-        public ImageSource GetImage(string value)
+        public ImageSource GetImage(string key)
         {
-            if (jObject.TryGetValue(value, out JToken token))
+            if (jObject.TryGetValue(key, out JToken token))
             {
                 string s = token.ToString();
                 if (!string.IsNullOrEmpty(s))
@@ -149,6 +149,25 @@ namespace 酷安_UWP
             }
             else return new BitmapImage();
         }
+
+        public ImageSource GetImage(string path, string key)
+        {
+            if (jObject.TryGetValue(path, out JToken t))
+                if ((t as JObject).TryGetValue(key, out JToken token))
+                {
+                    string s = token.ToString();
+                    if (!string.IsNullOrEmpty(s))
+                        if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
+                            if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                                return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png"));
+                            else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png"));
+                        else return new BitmapImage(new Uri(s));
+                    else return new BitmapImage();
+                }
+                else return new BitmapImage();
+            else return new BitmapImage();
+        }
+
 
         public ImageSource[] GetSmallImages(string value)
         {
@@ -250,6 +269,7 @@ namespace 酷安_UWP
                 if (string.IsNullOrEmpty(token.ToString())) return false;
                 else switch (key)
                     {
+                        case "isStickTop":
                         case "isFeedAuthor":
                             if (token.ToString() == "1") return true;
                             else return false;

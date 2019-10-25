@@ -26,16 +26,29 @@ namespace 酷安_UWP
             else if (str.IndexOf("/t/") == 0)
             {
                 string u = str.Replace("/t/", string.Empty);
-                mainPage.Frame.Navigate(typeof(TopicPage), new object[] { u.Substring(0, u.Contains('?') ? u.IndexOf('?') : u.Length), mainPage });
+                if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
+                if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
+                mainPage.Frame.Navigate(typeof(TopicPage), new object[] { u, mainPage });
+            }
+            else if (str.IndexOf("/dyh/") == 0)
+            {
+                string u = str.Replace("/dyh/", string.Empty);
+                if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
+                if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
+                mainPage.Frame.Navigate(typeof(DyhPage), new object[] { u, mainPage });
+            }
+
+            else if (str.IndexOf("https") == 0)
+            {
+                if (str.Contains("coolapk.com"))
+                    OpenLink(str.Replace("https://www.coolapk.com", string.Empty), mainPage);
+                else await Launcher.LaunchUriAsync(new Uri(str));
             }
             else if (str.IndexOf("http") == 0)
             {
                 if (str.Contains("coolapk.com"))
-                {
                     OpenLink(str.Replace("http://www.coolapk.com", string.Empty), mainPage);
-                    return;
-                }
-                await Launcher.LaunchUriAsync(new Uri(str));
+                else await Launcher.LaunchUriAsync(new Uri(str));
             }
         }
 
