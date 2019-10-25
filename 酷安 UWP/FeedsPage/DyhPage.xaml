@@ -1,0 +1,25 @@
+﻿<Page
+    x:Class="酷安_UWP.FeedsPage.DyhPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:酷安_UWP.FeedsPage"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid Height="48" x:Name="TitleBar" VerticalAlignment="Top" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="48"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="48"/>
+            </Grid.ColumnDefinitions>
+            <Button Click="Button_Click" Tag="0" Style="{StaticResource NavigationBackButtonNormalStyle}" Width="48" Height="48"/>
+            <TextBlock Margin="5,8" Grid.Column="1" x:Name="TitleTextBlock" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <Button Click="Button_Click" Tag="1" Grid.Column="2" HorizontalAlignment="Right" Width="48" Height="48" Style="{StaticResource ButtonStyle1}">
+                <SymbolIcon Symbol="Refresh"/>
+            </Button>
+        </Grid>
+    </Grid>
+</Page>

@@ -8,10 +8,10 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    KeyUp="UserControl_KeyUp">
+    HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
 
-    <Grid>
-        <FlipView Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ScrollViewer.IsZoomChainingEnabled="True" ScrollViewer.BringIntoViewOnFocusChange="False" x:Name="SFlipView">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" KeyUp="UserControl_KeyUp">
+        <!--<FlipView Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ScrollViewer.IsZoomChainingEnabled="True" ScrollViewer.BringIntoViewOnFocusChange="False" x:Name="SFlipView">
             <FlipView.ItemTemplate>
                 <DataTemplate>
                     <ScrollViewer x:Name="ScrollViewerMain" ZoomMode="Enabled"
@@ -26,23 +26,15 @@
                     </ScrollViewer>
                 </DataTemplate>
             </FlipView.ItemTemplate>
-        </FlipView>
-        <Button x:Name="CloseFlip" HorizontalAlignment="Right" VerticalAlignment="Top" Click="CloseFlip_Click" Width="48" Height="48">
-            <SymbolIcon Symbol="Cancel"/>
-        </Button>
-        <Button x:Name="SaveImage" Click="CloseFlip_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,48,0" Width="48" Height="48">
-            <SymbolIcon Symbol="Download"/>
-        </Button>
-        <Grid VerticalAlignment="Center" x:Name="DownloadStatePresenter">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="{x:Bind DownloadStatePresentProgressBar.Value,Mode=OneWay}"/>
-                <TextBlock>%</TextBlock>
-            </StackPanel>
-            <ProgressBar Grid.Row="1" Margin="50,0" x:Name="DownloadStatePresentProgressBar" Maximum="100"/>
-        </Grid>
+        </FlipView>-->
+        <ProgressRing IsActive="True" Height="50" Width="50"/>
+        <ScrollViewer x:Name="ScrollViewerMain" ZoomMode="Enabled" MinZoomFactor="0.5" DoubleTapped="ScrollViewerMain_DoubleTapped" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+            <Image x:Name="image" MaxWidth="{Binding Path=ViewportWidth,ElementName=ScrollViewerMain}" MaxHeight="{Binding Path=ViewportHeight,ElementName=ScrollViewerMain}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </ScrollViewer>
+        <CommandBar VerticalAlignment="Bottom" ClosedDisplayMode="Compact">
+            <AppBarButton Icon="Save" Label="保存原图" x:Name="SaveImage" Click="SaveImage_Click"/>
+            <AppBarButton Icon="Cancel" Label="关闭" x:Name="CloseFlip" Click="CloseFlip_Click"/>
+        </CommandBar>
     </Grid>
 </UserControl>

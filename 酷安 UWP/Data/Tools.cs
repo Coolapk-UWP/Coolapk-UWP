@@ -1,35 +1,42 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Windows.Web.Http;
-using Windows.Security.Cryptography;
-using Windows.Security.Cryptography.Core;
-using Windows.Storage.Streams;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Windows.Web.Http.Filters;
+using Windows.Security.Cryptography;
+using Windows.Security.Cryptography.Core;
+using Windows.Storage;
+using Windows.Storage.Streams;
+using Windows.System;
+using Windows.Web.Http;
+using 酷安_UWP.Data;
+using 酷安_UWP.FeedsPage;
 
 namespace 酷安_UWP
 {
-    static class CoolApkSDK
+    static class Tools
     {
-        //超级感谢！！！👉 https://github.com/ZCKun/CoolapkTokenCrack
-        static string GetAppToken()
+        public static async void OpenLink(string str, MainPage mainPage)
         {
-            string DEVICE_ID = Guid.NewGuid().ToString();
-            long UnixDate = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
-            string t = UnixDate.ToString();
-            string hex_t = "0x" + string.Format("{0:x}", UnixDate);
-            // 时间戳加密
-            string md5_t = GetMD5(t);
-            string a = "token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?" + md5_t + "$" + DEVICE_ID + "&com.coolapk.market";
-            string md5_a = GetMD5(Convert.ToBase64String(Encoding.UTF8.GetBytes(a)));
-            string token = md5_a + DEVICE_ID + hex_t;
-            return token;
+            if (str.IndexOf("/u/") == 0)
+                mainPage.Frame.Navigate(typeof(UserPage), new object[] { await Tools.GetUserIDByName(str.Replace("/u/", string.Empty)), mainPage });
+            else if (str.IndexOf("/feed/") == 0) mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { str.Replace("/feed/", string.Empty), mainPage, string.Empty, null });
+            else if (str.IndexOf("/t/") == 0)
+            {
+                string u = str.Replace("/t/", string.Empty);
+                mainPage.Frame.Navigate(typeof(TopicPage), new object[] { u.Substring(0, u.Contains('?') ? u.IndexOf('?') : u.Length), mainPage });
+            }
+            else if (str.IndexOf("http") == 0)
+            {
+                if (str.Contains("coolapk.com"))
+                {
+                    OpenLink(str.Replace("http://www.coolapk.com", string.Empty), mainPage);
+                    return;
+                }
+                await Launcher.LaunchUriAsync(new Uri(str));
+            }
         }
 
         //来源：https://blog.csdn.net/lindexi_gd/article/details/48951849
@@ -39,6 +46,74 @@ namespace 酷安_UWP
             objHash.Append(CryptographicBuffer.ConvertStringToBinary(inputString, BinaryStringEncoding.Utf8));
             IBuffer buffHash1 = objHash.GetValueAndReset();
             return CryptographicBuffer.EncodeToHexString(buffHash1);
+        }
+
+        public static string ProcessMessage(string s, ApplicationDataContainer localSettings)
+        {
+            s = s.Replace("\n", "\n\n");
+            s = s.Replace("&#039;", "\'");
+            s = s.Replace("</a>", "</a> ");
+            foreach (var i in Emojis.emojis)
+            {
+                if (s.Contains(i))
+                {
+                    if (i.Contains('('))
+                        s = s.Replace($"#{i})", $"\n![#{i})](ms-appx:/Emoji/{i}.png =24)");
+                    else if (Convert.ToBoolean(localSettings.Values["IsUseOldEmojiMode"]))
+                        if (Emojis.oldEmojis.Contains(s))
+                            s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}2.png =24)");
+                        else s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}.png =24)");
+                    else s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}.png =24)");
+                }
+            }
+            Regex regex = new Regex("<a.*?>\\S*"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
+            while (regex.IsMatch(s))
+            {
+                var h = regex.Match(s);
+                if (!h.Value.Contains("</a>"))
+                {
+                    s = s.Replace(h.Value + " ", h.Value);
+                    continue;
+                }
+                string t = regex3.Match(h.Value).Value.Replace(">", string.Empty);
+                t = t.Replace("<", string.Empty);
+                string tt = regex2.Match(h.Value).Value.Replace("href=", string.Empty);
+                tt = tt.Replace("\"", string.Empty);
+                tt = tt.Replace($">{t}</a>", string.Empty);
+                if (t == "查看更多") tt = "getmore";
+                s = s.Replace(h.Value, $"[{t}]({tt})");
+            }
+            return s;
+        }
+
+        public static string ConvertTime(string timestr)
+        {
+            DateTime time = new DateTime(1970, 1, 1).ToLocalTime().Add(new TimeSpan(Convert.ToInt64(timestr + "0000000")));
+            TimeSpan tt = DateTime.Now.Subtract(time);
+            if (tt.TotalDays > 30)
+                return $"{time.Year}/{time.Month}/{time.Day}";
+            else if (tt.Days > 0)
+                return $"{tt.Days}天前";
+            else if (tt.Hours > 0)
+                return $"{tt.Hours}小时前";
+            else if (tt.Minutes > 0)
+                return $"{tt.Minutes}分钟前";
+            else return "刚刚";
+        }
+
+        //超级感谢！！！👉 https://github.com/ZCKun/CoolapkTokenCrack
+        static string GetAppToken()
+        {
+            string DEVICE_ID = Guid.NewGuid().ToString();
+            long UnixDate = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+            string t = UnixDate.ToString();
+            string hex_t = "0x" + string.Format("{0:x}", UnixDate);
+            // 时间戳加密
+            string md5_t = Tools.GetMD5(t);
+            string a = "token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?" + md5_t + "$" + DEVICE_ID + "&com.coolapk.market";
+            string md5_a = Tools.GetMD5(Convert.ToBase64String(Encoding.UTF8.GetBytes(a)));
+            string token = md5_a + DEVICE_ID + hex_t;
+            return token;
         }
 
         public static async Task<string> GetCoolApkMessage(string url)

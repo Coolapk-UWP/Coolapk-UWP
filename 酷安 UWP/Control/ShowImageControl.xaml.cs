@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -21,6 +25,7 @@ namespace 酷安_UWP
     public sealed partial class ShowImageControl : UserControl
     {
         bool _Hide;
+        string url;
         public bool Hide
         {
             get => _Hide;
@@ -40,7 +45,9 @@ namespace 酷安_UWP
         public void ShowImage(string url)
         {
             Hide = false;
-            SFlipView.ItemsSource = new ImageSource[1] { new BitmapImage(new Uri(url)) };
+            this.url = url;
+            ScrollViewerMain.ChangeView(null, null, 1);
+            image.Source = new BitmapImage(new Uri(url));
         }
 
         private void CloseFlip_Click(object sender, RoutedEventArgs e) => Hide = true;
@@ -52,6 +59,31 @@ namespace 酷安_UWP
                 e.Handled = true;
                 Hide = true;
             }
+        }
+
+        private async void SaveImage_Click(object sender, RoutedEventArgs e)
+        {
+            string fileName = url.Substring(url.LastIndexOf('/') + 1);
+            FileSavePicker fileSavePicker = new FileSavePicker
+            {
+                SuggestedStartLocation = PickerLocationId.PicturesLibrary,
+                SuggestedFileName = fileName.Replace(fileName.Substring(fileName.LastIndexOf('.')), string.Empty)
+            };
+            fileSavePicker.FileTypeChoices.Add($"{fileName.Substring(fileName.LastIndexOf('.') + 1)}文件", new List<string>() { $"{fileName.Substring(fileName.LastIndexOf('.')) }" });
+            StorageFile file = await fileSavePicker.PickSaveFileAsync();
+            if (!(file is null))
+            {
+                HttpClient httpClient = new HttpClient();
+                using (Stream s = await httpClient.GetStreamAsync(url))
+                using (Stream fs = await file.OpenStreamForWriteAsync())
+                    await s.CopyToAsync(fs);
+            }
+        }
+
+        private void ScrollViewerMain_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            if (ScrollViewerMain.ZoomFactor != 2) ScrollViewerMain.ChangeView(null, null, 2);
+            else ScrollViewerMain.ChangeView(null, null, 1);
         }
     }
 }

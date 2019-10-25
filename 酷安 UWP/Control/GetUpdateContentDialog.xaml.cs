@@ -23,18 +23,18 @@ namespace 酷安_UWP
 {
     public sealed partial class GetUpdateContentDialog : ContentDialog
     {
-        string updateBrowserDownloadUrl;
+        string url;
         string Body { get; set; }
-        public GetUpdateContentDialog(string BrowserDownloadUrl,string body)
+        public GetUpdateContentDialog(string url,string body)
         {
             this.InitializeComponent();
-            updateBrowserDownloadUrl = BrowserDownloadUrl;
+            this.url = url;
             Body = body;
         }
 
         private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            await Launcher.LaunchUriAsync(new Uri(updateBrowserDownloadUrl));
+            await Launcher.LaunchUriAsync(new Uri(url));
             Hide();
         }
 

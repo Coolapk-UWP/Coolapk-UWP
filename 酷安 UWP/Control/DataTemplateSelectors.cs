@@ -46,18 +46,19 @@ namespace 酷安_UWP
             Feed feed = item as Feed;
             switch (feed.GetValue("entityTemplate"))
             {
-                case "selectorLinkCard":return DataTemplate8;
+                case "selectorLinkCard": return DataTemplate8;
                 case "imageCard": return DataTemplate9;
                 case "imageCarouselCard_1": return DataTemplate1;
                 case "iconTabLinkGridCard": return DataTemplate7;
                 case "iconGridCard":
                 case "iconMiniGridCard":
                 case "iconMiniLinkGridCard":
-                case "iconLinkGridCard":return DataTemplate6;
+                case "iconLinkGridCard": return DataTemplate6;
                 case "imageSquareScrollCard":
                 case "iconScrollCard":
                 case "imageTextScrollCard":
                 case "feedScrollCard": return DataTemplate2;
+                case "textCard":
                 case "messageCard": return DataTemplate3;
                 case "refreshCard": return DataTemplate4;
                 case "textLinkListCard": return DataTemplate5;
@@ -93,8 +94,8 @@ namespace 酷安_UWP
                     else if (feed.GetValue("feedType") == "question") return DataTemplate6;
                     else return DataTemplate0;
                 case "textLink": return DataTemplate7;
-                case "user":return DataTemplate8;
-                case "imageSquare":return DataTemplate9;
+                case "user": return DataTemplate8;
+                case "imageSquare": return DataTemplate9;
                 default: return DataTemplate0;
             }
         }

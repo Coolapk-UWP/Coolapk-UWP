@@ -21,7 +21,9 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <TextBlock Margin="48,8" x:Name="title" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top">设置</TextBlock>
+        <Border Height="48" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}" VerticalAlignment="Top">
+            <TextBlock Margin="48,8"  x:Name="title" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top">设置</TextBlock>
+        </Border>
         <ScrollViewer  Margin="10,48,10,0">
             <StackPanel Grid.Row="1">
                 <Grid>

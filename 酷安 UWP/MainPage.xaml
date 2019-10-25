@@ -65,7 +65,7 @@
 
         <controls:HamburgerMenu x:Name="hamburgerMenuControl" ItemTemplate="{StaticResource DefaultTemplate}" ItemClick="OnMenuItemClick" 
                                 OptionsItemTemplate="{StaticResource DefaultTemplate}" OptionsItemClick="OnMenuItemClick" SelectedIndex="0"
-                                DisplayMode="Overlay" PaneBackground="{ThemeResource ApplicationPageBackgroundThemeBrush}" Template="{ThemeResource HamburgerMenuTemplate1}">
+                                DisplayMode="Overlay" PaneBackground="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}" Template="{ThemeResource HamburgerMenuTemplate1}">
                 <Frame x:Name="VFrame"/>
             </controls:HamburgerMenu>
         <ProgressRing Width="50" Height="50" x:Name="progressRing"/>

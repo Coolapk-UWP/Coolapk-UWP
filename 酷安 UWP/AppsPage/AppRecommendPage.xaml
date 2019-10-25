@@ -42,6 +42,7 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+        <Border Height="48" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}" VerticalAlignment="Top"/>
         <!--主体-->
         <Pivot x:Name="Pivot1">
             <Pivot.LeftHeader>

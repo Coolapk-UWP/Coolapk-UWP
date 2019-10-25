@@ -11,7 +11,7 @@
         <!--登陆页面-->
         <WebView Margin="0,48,0,0" NavigationCompleted="WebView_NavigationCompleted" NavigationStarting="WebView_NavigationStarting" Source="https://account.coolapk.com/auth/login?forward=http%3A%2F%2Fdeveloper.coolapk.com"/>
 
-        <Grid Height="48" VerticalAlignment="Top" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid Height="48" VerticalAlignment="Top" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
             <Button Click="BackButton_Click" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Style="{StaticResource NavigationBackButtonNormalStyle}"/>
             <TextBlock Margin="50,0,0,2" Text="登录" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
         </Grid>

@@ -9,7 +9,6 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.System;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -18,25 +17,29 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-using 酷安_UWP.UsersPage;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
-namespace 酷安_UWP
+namespace 酷安_UWP.FeedsPage
 {
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class UserPage : Page
+    public sealed partial class TopicPage : Page
     {
+        Style listviewStyle { get; set; }
         MainPage mainPage;
-        string uid;
-        int page = 0;
-        string firstItem = string.Empty, lastItem = string.Empty;
+        string tag;
+        int page;
+        string firstItem;
+        string lastItem;
         ObservableCollection<Feed> FeedsCollection = new ObservableCollection<Feed>();
-        public UserPage()
+
+        public TopicPage()
         {
             this.InitializeComponent();
+            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile") listviewStyle = Application.Current.Resources["ListViewStyle2Mobile"] as Style;
+            else listviewStyle = Application.Current.Resources["ListViewStyle2Desktop"] as Style;
             listView.ItemsSource = FeedsCollection;
         }
 
@@ -44,14 +47,15 @@ namespace 酷安_UWP
         {
             base.OnNavigatedTo(e);
             mainPage = ((object[])e.Parameter)[1] as MainPage;
-            uid = (string)((object[])e.Parameter)[0];
+            tag = (string)((object[])e.Parameter)[0];
             mainPage.ActiveProgressRing();
-            LoadProfile();
-            ReadNextPageFeeds();
+            TitleTextBlock.Text = tag;
+            LoadTagDetail();
+            LoadFeeds();
             mainPage.DeactiveProgressRing();
         }
 
-        public async void LoadProfile()
+        public async void LoadTagDetail()
         {
             ImageSource getImage(string uri)
             {
@@ -64,37 +68,39 @@ namespace 酷安_UWP
                 }
                 return new BitmapImage(new Uri(uri));
             }
-            JObject detail = await CoolApkSDK.GetUserProfileByID(uid);
+            string r = await Tools.GetCoolApkMessage($"/topic/newTagDetail?tag={tag}");
+            JObject detail = JObject.Parse(r)["data"] as JObject;
             if (!(detail is null))
             {
-                UserDetailGrid.DataContext = new
+                TitleTextBlock.Text = detail["title"].ToString();
+                DetailGrid.DataContext = new
                 {
-                    UserFace = getImage(detail["userAvatar"].ToString()),
-                    UserName = detail["username"].ToString(),
-                    FollowNum = detail["follow"].ToString(),
-                    FansNum = detail["fans"].ToString(),
-                    Level = detail["level"].ToString(),
-                    bio = detail["bio"].ToString(),
-                    Backgeound = new ImageBrush { ImageSource = getImage(detail["cover"].ToString()), Stretch = Stretch.UniformToFill },
-                    verify_title = detail["verify_title"].ToString(),
-                    gender = int.Parse(detail["gender"].ToString()) == 1 ? "♂" : (int.Parse(detail["gender"].ToString()) == 0 ? "♀" : string.Empty),
-                    city = $"{detail["province"].ToString()} {detail["city"].ToString()}",
-                    astro = detail["astro"].ToString(),
-                    logintime = $"{Process.ConvertTime(detail["logintime"].ToString())}活跃"
+                    Logo = getImage(detail["logo"].ToString()),
+                    Title = detail["title"].ToString(),
+                    FollowNum = detail.TryGetValue("follownum", out JToken t) ? t.ToString() : detail["follow_num"].ToString(),
+                    CommentNum = detail.TryGetValue("commentnum", out JToken tt) ? tt.ToString() : detail["rating_total_num"].ToString(),
+                    Description = detail["description"].ToString(),
                 };
-                TitleTextBlock.Text = detail["username"].ToString();
-                ListHeader.DataContext = new { FeedNum = detail["feed"].ToString() };
-            }
-            else
-            {
-                Frame.GoBack();
-                await new MessageDialog("用户不存在").ShowAsync();
             }
         }
 
-        async void ReadNextPageFeeds()
+        async void LoadFeeds(int p = -1)
         {
-            JArray Root = await CoolApkSDK.GetFeedListByID(uid, $"{++page}", firstItem, lastItem);
+            string sortType = string.Empty;
+            switch (FeedTypeComboBox.SelectedIndex)
+            {
+                case 0:
+                    sortType = "lastupdate_desc";
+                    break;
+                case 1:
+                    sortType = "dateline_desc";
+                    break;
+                case 2:
+                    sortType = "popular";
+                    break;
+            }
+            string r = await Tools.GetCoolApkMessage($"/topic/tagFeedList?tag={tag}&page={(p == -1 ? ++page : p)}{(string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}")}{(string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}")}&listType={sortType}&blockStatus=0");
+            JArray Root = JObject.Parse(r)["data"] as JArray;
             if (!(Root is null) && Root.Count != 0)
             {
                 if (page == 1)
@@ -105,6 +111,7 @@ namespace 酷安_UWP
             }
             else page--;
         }
+
 
         private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -118,6 +125,14 @@ namespace 酷安_UWP
             }
         }
 
+        void Refresh()
+        {
+            mainPage.ActiveProgressRing();
+            LoadTagDetail();
+            LoadFeeds(1);
+            mainPage.DeactiveProgressRing();
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
@@ -129,48 +144,28 @@ namespace 酷安_UWP
                 case "1":
                     Refresh();
                     break;
-                case "2":
-                    mainPage.Frame.Navigate(typeof(UserListPage), new object[] { mainPage, uid, true, TitleTextBlock.Text });
-                    break;
-                case "3":
-                    mainPage.Frame.Navigate(typeof(UserListPage), new object[] { mainPage, uid, false, TitleTextBlock.Text });
-                    break;
                 default:
                     mainPage.Frame.Navigate(typeof(UserPage), new object[] { button.Tag as string, mainPage });
                     break;
             }
         }
 
-        async void Refresh()
+        private void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e) => Tools.OpenLink(e.Link, mainPage);
+        private void Grid_Tapped(object sender, TappedRoutedEventArgs e) => Tools.OpenLink((sender as FrameworkElement).Tag as string, mainPage);
+
+        private void PicA_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            mainPage.ActiveProgressRing();
-            LoadProfile();
-            JArray Root = await CoolApkSDK.GetFeedListByID(uid, "1", firstItem, lastItem);
-            if (!(Root is null) && Root.Count != 0)
+            if (sender is GridView view)
             {
-                firstItem = Root.First["id"].ToString();
-                for (int i = 0; i < Root.Count; i++)
-                    FeedsCollection.Insert(i, new Feed((JObject)Root[i]));
+                if (view.SelectedIndex > -1 && view.Tag is string[] ss)
+                    ShowImageControl.ShowImage(ss[view.SelectedIndex].Remove(ss[view.SelectedIndex].Length - 6));
+                view.SelectedIndex = -1;
             }
-            mainPage.DeactiveProgressRing();
-        }
-
-        private async void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
-        {
-            if (e.Link.IndexOf("/u/") == 0)
-                mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(e.Link.Replace("/u/", string.Empty)), mainPage });
-            if (e.Link.IndexOf("http") == 0)
-                await Launcher.LaunchUriAsync(new Uri(e.Link));
-        }
-
-        private async void Grid_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            FrameworkElement element = sender as FrameworkElement;
-            string s = (element.Tag as Feed).GetValue("extra_url2");
-            if (s.IndexOf("/u/") == 0)
-                mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(s.Replace("/u/", string.Empty)), mainPage });
-            if (s.IndexOf("http") == 0)
-                await Launcher.LaunchUriAsync(new Uri(s));
+            else if (sender is FrameworkElement fe)
+            {
+                if (fe != e.OriginalSource) return;
+                if (fe.Tag is string s) ShowImageControl.ShowImage(s);
+            }
         }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
@@ -184,9 +179,18 @@ namespace 酷安_UWP
                     refreshText.Visibility = Visibility.Collapsed;
                 }
                 else if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
-                    ReadNextPageFeeds();
+                    LoadFeeds();
             }
             else refreshText.Visibility = Visibility.Visible;
+        }
+
+        private void FeedTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (tag is null) return;
+            firstItem = lastItem = string.Empty;
+            page = 0;
+            FeedsCollection.Clear();
+            LoadFeeds();
         }
     }
 }

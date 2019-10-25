@@ -2,90 +2,39 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Windows.Storage;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using 酷安_UWP.Data;
 
 namespace 酷安_UWP
 {
-    static class Process
-    {
-        public static string ProcessMessage(string s, ApplicationDataContainer localSettings)
-        {
-            s = s.Replace("\n", "\n\n");
-            s = s.Replace("&#039;", "\'");
-            s = s.Replace("</a>", "</a> ");
-            foreach (var i in Emojis.emojis)
-            {
-                if (s.Contains(i))
-                {
-                    if (i.Contains('('))
-                        s = s.Replace($"#{i})", $"\n![#{i})](ms-appx:/Emoji/{i}.png =24)");
-                    else if (Convert.ToBoolean(localSettings.Values["IsUseOldEmojiMode"]))
-                        if (Emojis.oldEmojis.Contains(s))
-                            s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}2.png =24)");
-                        else s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}.png =24)");
-                    else s = s.Replace(i, $"\n![{i}(ms-appx:/Emoji/{i}.png =24)");
-                }
-            }
-            Regex regex = new Regex("<a.*?>\\S*"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
-            while (regex.IsMatch(s))
-            {
-                var h = regex.Match(s);
-                if (!h.Value.Contains("</a>"))
-                {
-                    s = s.Replace(h.Value + " ", h.Value);
-                    continue;
-                }
-                string t = regex3.Match(h.Value).Value.Replace(">", string.Empty);
-                t = t.Replace("<", string.Empty);
-                string tt = regex2.Match(h.Value).Value.Replace("href=", string.Empty);
-                tt = tt.Replace("\"", string.Empty);
-                tt = tt.Replace($">{t}</a>", string.Empty);
-                if (t == "查看更多") tt = "getmore";
-                s = s.Replace(h.Value, $"[{t}]({tt})");
-            }
-            return s;
-        }
-
-        public static string ConvertTime(string timestr)
-        {
-            DateTime time = new DateTime(1970, 1, 1).ToLocalTime().Add(new TimeSpan(Convert.ToInt64(timestr + "0000000")));
-            TimeSpan tt = DateTime.Now.Subtract(time);
-            if (tt.TotalDays > 30)
-                return $"{time.Year}/{time.Month}/{time.Day}";
-            else if (tt.Days > 0)
-                return $"{tt.Days}天前";
-            else if (tt.Hours > 0)
-                return $"{tt.Hours}小时前";
-            else if (tt.Minutes > 0)
-                return $"{tt.Minutes}分钟前";
-            else return "刚刚";
-        }
-
-    }
-
     public class Feed
     {
         static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public JObject jObject;
         public Feed(JObject jObject) => this.jObject = jObject;
-
+        public Style listviewStyle
+        {
+            get
+            {
+                if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile") return Application.Current.Resources["ListViewStyle2Mobile"] as Style;
+                else return Application.Current.Resources["ListViewStyle2Desktop"] as Style;
+            }
+        }
         public string GetValue(string key)
         {
             if (!(jObject is null) && jObject.TryGetValue(key, out JToken token))
                 switch (key)
                 {
-                    case "message": return Process.ProcessMessage(token.ToString(), localSettings);
+                    case "message": return Tools.ProcessMessage(token.ToString(), localSettings);
                     case "message_raw_output":
                         JArray array = JArray.Parse(token.ToString());
                         string s = string.Empty;
                         foreach (var item in array)
                         {
                             if (item["type"].ToString() == "text")
-                                s += Process.ProcessMessage(item["message"].ToString(), localSettings);
+                                s += Tools.ProcessMessage(item["message"].ToString(), localSettings);
                             else if (item["type"].ToString() == "image")
                             {
                                 string d = string.IsNullOrEmpty(item["description"].ToString()) ? string.Empty : item["description"].ToString();
@@ -100,18 +49,19 @@ namespace 酷安_UWP
                             else return string.Empty;
                         else return string.Empty;
                     case "infoHtml": return token.ToString().Replace("&nbsp;", string.Empty);
-                    case "dateline": return Process.ConvertTime(token.ToString());
-                    case "logintime": return Process.ConvertTime(token.ToString()) + "活跃";
+                    case "dateline": return Tools.ConvertTime(token.ToString());
+                    case "logintime": return Tools.ConvertTime(token.ToString()) + "活跃";
                     default: return token.ToString();
                 }
             else switch (key)
                 {
                     case "message2":
                         if (string.IsNullOrEmpty(jObject["pic"].ToString()))
-                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Process.ProcessMessage(jObject["message"].ToString(), localSettings)}";
+                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Tools.ProcessMessage(jObject["message"].ToString(), localSettings)}";
                         else
-                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Process.ProcessMessage(jObject["message"].ToString(), localSettings)}\n[查看图片]({jObject["pic"]})";
+                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Tools.ProcessMessage(jObject["message"].ToString(), localSettings)}\n[查看图片]({jObject["pic"]})";
                     case "extra_url2": return jObject["extra_url"].ToString();
+                    case "dyh_name2": return jObject["dyh_name"].ToString() + "/tOOPen";
                     default: return string.Empty;
                 }
         }
@@ -127,14 +77,14 @@ namespace 酷安_UWP
                     {
                         switch (key)
                         {
-                            case "message": return Process.ProcessMessage(token.ToString(), localSettings);
+                            case "message": return Tools.ProcessMessage(token.ToString(), localSettings);
                             case "message_raw_output":
                                 JArray array = JArray.Parse(token.ToString());
                                 string s = string.Empty;
                                 foreach (JObject item in array)
                                 {
                                     if (item["type"].ToString() == "text")
-                                        s += Process.ProcessMessage(item["message"].ToString(), localSettings);
+                                        s += Tools.ProcessMessage(item["message"].ToString(), localSettings);
                                     else if (item["type"].ToString() == "image")
                                         s += $"\n\n![image]({item["url"].ToString()}.s.jpg)\n\n>{item["description"].ToString()}\n\n";
                                 }
@@ -146,7 +96,7 @@ namespace 酷安_UWP
                                     else return string.Empty;
                                 else return string.Empty;
                             case "infoHtml": return token.ToString().Replace("&nbsp;", string.Empty);
-                            case "dateline": return Process.ConvertTime(token.ToString());
+                            case "dateline": return Tools.ConvertTime(token.ToString());
                             default: return token.ToString();
                         }
                     }
@@ -158,9 +108,9 @@ namespace 酷安_UWP
                 {
                     case "message2":
                         if (string.IsNullOrEmpty(jObject["pic"].ToString()))
-                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Process.ProcessMessage(jObject["message"].ToString(), localSettings)}";
+                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Tools.ProcessMessage(jObject["message"].ToString(), localSettings)}";
                         else
-                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Process.ProcessMessage(jObject["message"].ToString(), localSettings)}\n[查看图片]({jObject["pic"]})";
+                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Tools.ProcessMessage(jObject["message"].ToString(), localSettings)}\n[查看图片]({jObject["pic"]})";
                     case "extra_url2": return jObject["extra_url"].ToString();
                     default: return string.Empty;
                 }

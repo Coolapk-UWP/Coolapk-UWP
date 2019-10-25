@@ -95,17 +95,17 @@ namespace 酷安_UWP
             var ver = release.TagName.Replace("v", string.Empty).Split('.');
             if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major)
             {
-                GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.Assets[1].BrowserDownloadUrl, release.Body) { RequestedTheme = Convert.ToBoolean(localSettings.Values["IsDarkMode"]) ? ElementTheme.Dark : ElementTheme.Light };
+                GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.HtmlUrl, release.Body) { RequestedTheme = Convert.ToBoolean(localSettings.Values["IsDarkMode"]) ? ElementTheme.Dark : ElementTheme.Light };
                 await dialog.ShowAsync();
             }
             else if (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
             {
-                GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.Assets[1].BrowserDownloadUrl, release.Body) { RequestedTheme = Convert.ToBoolean(localSettings.Values["IsDarkMode"]) ? ElementTheme.Dark : ElementTheme.Light };
+                GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.HtmlUrl, release.Body) { RequestedTheme = Convert.ToBoolean(localSettings.Values["IsDarkMode"]) ? ElementTheme.Dark : ElementTheme.Light };
                 await dialog.ShowAsync();
             }
             else if (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build)
             {
-                GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.Assets[1].BrowserDownloadUrl, release.Body) { RequestedTheme = Convert.ToBoolean(localSettings.Values["IsDarkMode"]) ? ElementTheme.Dark : ElementTheme.Light };
+                GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.HtmlUrl, release.Body) { RequestedTheme = Convert.ToBoolean(localSettings.Values["IsDarkMode"]) ? ElementTheme.Dark : ElementTheme.Light };
                 await dialog.ShowAsync();
             }
             else if (canShowDialog)

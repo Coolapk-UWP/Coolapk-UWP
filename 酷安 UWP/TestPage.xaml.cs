@@ -42,7 +42,7 @@ namespace 酷安_UWP
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(uid.Text), mainPage });
+            mainPage.Frame.Navigate(typeof(UserPage), new object[] { await Tools.GetUserIDByName(uid.Text), mainPage });
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
@@ -126,7 +126,7 @@ namespace 酷安_UWP
 
         private async void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            txb1.Text = await CoolApkSDK.GetCoolApkMessage(url.Text);
+            txb1.Text = await Tools.GetCoolApkMessage(url.Text);
         }
     }
 }

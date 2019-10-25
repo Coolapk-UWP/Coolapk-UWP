@@ -44,6 +44,7 @@
     <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -56,6 +57,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -112,11 +114,17 @@
     </Compile>
     <Compile Include="Data\Emojis.cs" />
     <Compile Include="ExceptionCatcher.cs" />
-    <Compile Include="GetUpdateContentDialog.xaml.cs">
+    <Compile Include="Control\GetUpdateContentDialog.xaml.cs">
       <DependentUpon>GetUpdateContentDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\DataTemplateSelectors.cs" />
     <Compile Include="Data\Feed.cs" />
+    <Compile Include="FeedsPage\DyhPage.xaml.cs">
+      <DependentUpon>DyhPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FeedsPage\TopicPage.xaml.cs">
+      <DependentUpon>TopicPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="InitialPage.xaml.cs">
       <DependentUpon>InitialPage.xaml</DependentUpon>
     </Compile>
@@ -129,13 +137,13 @@
     <Compile Include="Control\ContentDialog1.xaml.cs">
       <DependentUpon>ContentDialog1.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UsersPage\FeedDetailPage.xaml.cs">
+    <Compile Include="FeedsPage\FeedDetailPage.xaml.cs">
       <DependentUpon>FeedDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IndexPage.xaml.cs">
+    <Compile Include="FeedsPage\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UsersPage\LoginPage.xaml.cs">
+    <Compile Include="FeedsPage\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppsPage\AppPage.xaml.cs">
@@ -145,7 +153,7 @@
     <Compile Include="SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Data\CoolApkSDK.cs" />
+    <Compile Include="Data\Tools.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -153,10 +161,10 @@
     <Compile Include="SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UsersPage\UserListPage.xaml.cs">
+    <Compile Include="FeedsPage\UserListPage.xaml.cs">
       <DependentUpon>UserListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UsersPage\UserPage.xaml.cs">
+    <Compile Include="FeedsPage\UserPage.xaml.cs">
       <DependentUpon>UserPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Web.cs" />
@@ -735,7 +743,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GetUpdateContentDialog.xaml">
+    <Page Include="Control\GetUpdateContentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FeedsPage\DyhPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FeedsPage\TopicPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -755,15 +771,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UsersPage\FeedDetailPage.xaml">
+    <Page Include="FeedsPage\FeedDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="IndexPage.xaml">
+    <Page Include="FeedsPage\IndexPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UsersPage\LoginPage.xaml">
+    <Page Include="FeedsPage\LoginPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -783,11 +799,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UsersPage\UserListPage.xaml">
+    <Page Include="FeedsPage\UserListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UsersPage\UserPage.xaml">
+    <Page Include="FeedsPage\UserPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

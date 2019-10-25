@@ -10,7 +10,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     
     <Grid>
-
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
@@ -23,7 +22,9 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <Button Style="{ThemeResource NavigationBackButtonNormalStyle}" x:Name="bu" Margin="48,2,0,0" Click="Button_Click_3" VerticalAlignment="Top"/>
+        <Border Height="48" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}" VerticalAlignment="Top">
+            <Button Style="{ThemeResource NavigationBackButtonNormalStyle}" x:Name="bu" Margin="48,2,0,0" Click="Button_Click_3" VerticalAlignment="Top"/>
+        </Border>
         <ScrollViewer  Margin="0,48,0,0">
             <StackPanel>
                 <TextBox Header="uid" x:Name="uid"/>

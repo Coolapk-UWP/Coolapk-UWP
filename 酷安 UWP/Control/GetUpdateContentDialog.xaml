@@ -7,8 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    Title="现在有新的更新。"
-    PrimaryButtonText="下载"
+    Title="更新"
+    PrimaryButtonText="在GitHub上查看"
     SecondaryButtonText="忽略"
     PrimaryButtonClick="ContentDialog_PrimaryButtonClick" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
     

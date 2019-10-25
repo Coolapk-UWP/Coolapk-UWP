@@ -23,14 +23,18 @@ namespace 酷安_UWP
     public sealed partial class SearchPage : Page
     {
         MainPage mainPage;
-        int[] pages = new int[2];
-        string[] lastItems = new string[2];
+        int[] pages = new int[3];
+        string[] lastItems = new string[3];
+        Style listviewStyle { get; set; }
         public SearchPage()
         {
             this.InitializeComponent();
+            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile") listviewStyle = Application.Current.Resources["ListViewStyle2Mobile"] as Style;
+            else listviewStyle = Application.Current.Resources["ListViewStyle2Desktop"] as Style;
             AppsResultList.ItemsSource = new ObservableCollection<AppInfo>();
             FeedList.ItemsSource = new ObservableCollection<Feed>();
             UserList.ItemsSource = new ObservableCollection<UserInfo>();
+            TopicList.ItemsSource = new ObservableCollection<Feed>();
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -102,7 +106,7 @@ namespace 酷安_UWP
                     sortType = "reply";
                     break;
             }
-            string r = await CoolApkSDK.GetCoolApkMessage($"/search?type=feed&feedType={feedType}&sort={sortType}&searchValue={keyWord}&page={++pages[0]}{(pages[0] > 1 ? "&lastItem=" + lastItems[0] : string.Empty)}&showAnonymous=-1");
+            string r = await Tools.GetCoolApkMessage($"/search?type=feed&feedType={feedType}&sort={sortType}&searchValue={keyWord}&page={++pages[0]}{(pages[0] > 1 ? "&lastItem=" + lastItems[0] : string.Empty)}&showAnonymous=-1");
             JArray Root = JObject.Parse(r)["data"] as JArray;
             ObservableCollection<Feed> FeedsCollection = FeedList.ItemsSource as ObservableCollection<Feed>;
             if (pages[0] == 1) FeedsCollection.Clear();
@@ -116,35 +120,32 @@ namespace 酷安_UWP
             mainPage.DeactiveProgressRing();
         }
 
-        private async void Grid_Tapped(object sender, TappedRoutedEventArgs e)
+        private void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e) => Tools.OpenLink(e.Link, mainPage);
+
+        private void PicA_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            FrameworkElement element = sender as FrameworkElement;
-            string s = (element.Tag as Feed).GetValue("extra_url2");
-            if (s.IndexOf("/u/") == 0)
-                mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(s.Replace("/u/", string.Empty)), mainPage });
-            if (s.IndexOf("http") == 0)
-                await Launcher.LaunchUriAsync(new Uri(s));
+            if (sender is GridView view)
+            {
+                if (view.SelectedIndex > -1 && view.Tag is string[] ss)
+                    ShowImageControl.ShowImage(ss[view.SelectedIndex].Remove(ss[view.SelectedIndex].Length - 6));
+                view.SelectedIndex = -1;
+            }
+            else if (sender is FrameworkElement fe)
+            {
+                if (fe != e.OriginalSource) return;
+                if (fe.Tag is string s) ShowImageControl.ShowImage(s);
+            }
         }
 
         private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if ((sender as FrameworkElement).Tag is Feed)
-                mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), mainPage, string.Empty, null });
-            else if ((sender as FrameworkElement).Tag is Feed[])
-            {
-                var f = (sender as FrameworkElement).Tag as Feed[];
-                if (!string.IsNullOrEmpty(f[0].jObject.ToString()))
-                    mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { f[0].GetValue("id"), mainPage, string.Empty, null });
-            }
+            if ((sender as FrameworkElement).Tag is Feed f)
+                mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { f.GetValue("id"), mainPage, string.Empty, null });
+            else if ((sender as FrameworkElement).Tag is Feed[] fs)
+                if (!string.IsNullOrEmpty(fs[0].jObject.ToString()))
+                    mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { fs[0].GetValue("id"), mainPage, string.Empty, null });
         }
 
-        private async void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
-        {
-            if (e.Link.IndexOf("/u/") == 0)
-                mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(e.Link.Replace("/u/", string.Empty)), mainPage });
-            if (e.Link.IndexOf("http") == 0)
-                await Launcher.LaunchUriAsync(new Uri(e.Link));
-        }
 
         private void Button_Click(object sender, RoutedEventArgs e) => mainPage.Frame.Navigate(typeof(UserPage), new object[] { (sender as FrameworkElement).Tag as string, mainPage });
         #endregion
@@ -165,7 +166,7 @@ namespace 酷安_UWP
 
             mainPage.ActiveProgressRing();
             ObservableCollection<UserInfo> infos = UserList.ItemsSource as ObservableCollection<UserInfo>;
-            string r = await CoolApkSDK.GetCoolApkMessage($"/search?type=user&searchValue={keyWord}&page={++pages[1]}{(pages[1] > 1 ? "&lastItem=" + lastItems[1] : string.Empty)}&showAnonymous=-1");
+            string r = await Tools.GetCoolApkMessage($"/search?type=user&searchValue={keyWord}&page={++pages[1]}{(pages[1] > 1 ? "&lastItem=" + lastItems[1] : string.Empty)}&showAnonymous=-1");
             JArray array = JObject.Parse(r)["data"] as JArray;
             if (!(array is null) && array.Count > 0)
             {
@@ -189,7 +190,7 @@ namespace 酷安_UWP
                         FansNum = t["fans"].ToString(),
                         FollowNum = t["follow"].ToString(),
                         Bio = t["bio"].ToString(),
-                        LoginTime = Process.ConvertTime(t["logintime"].ToString()) + "活跃",
+                        LoginTime = Tools.ConvertTime(t["logintime"].ToString()) + "活跃",
                         UserAvatar = getImage(t["userSmallAvatar"].ToString())
                     });
                 }
@@ -198,6 +199,24 @@ namespace 酷安_UWP
             mainPage.DeactiveProgressRing();
         }
         private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => mainPage.Frame.Navigate(typeof(UserPage), new object[] { (sender as FrameworkElement).Tag as string, mainPage });
+        #endregion
+        #region SearchTopic
+        async void SearchTopic(string keyWord)
+        {
+            mainPage.ActiveProgressRing();
+            string r = await Tools.GetCoolApkMessage($"/search?type=feedTopic&searchValue={keyWord}&page={++pages[2]}{(pages[2] > 1 ? "&lastItem=" + lastItems[2] : string.Empty)}&showAnonymous=-1");
+            JArray Root = JObject.Parse(r)["data"] as JArray;
+            ObservableCollection<Feed> FeedsCollection = TopicList.ItemsSource as ObservableCollection<Feed>;
+            if (pages[2] == 1) FeedsCollection.Clear();
+            if (!(Root is null) && Root.Count != 0)
+            {
+                lastItems[2] = Root.Last["id"].ToString();
+                foreach (JObject i in Root)
+                    FeedsCollection.Add(new Feed(i));
+            }
+            else pages[2]--;
+            mainPage.DeactiveProgressRing();
+        }
         #endregion
         #region SearchApp
         private async void SearchApps(string keyWord)
@@ -235,8 +254,7 @@ namespace 酷安_UWP
         #endregion
         private void SearchTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
-            if (e.Key == VirtualKey.Enter)
-                StartSearch();
+            if (e.Key == VirtualKey.Enter) SearchButton_Click(null, null);
         }
 
         void StartSearch()
@@ -254,6 +272,9 @@ namespace 酷安_UWP
                         SearchUsers(SearchText.Text);
                         break;
                     case 2:
+                        SearchTopic(SearchText.Text);
+                        break;
+                    case 3:
                         SearchApps(SearchText.Text);
                         break;
                 }
@@ -261,7 +282,18 @@ namespace 酷安_UWP
             }
         }
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e) => StartSearch();
+        private void Grid_Tapped(object sender, TappedRoutedEventArgs e) => Tools.OpenLink((sender as FrameworkElement).Tag as string, mainPage);
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            pages = new int[3];
+            lastItems = new string[3];
+            (FeedList.ItemsSource as ObservableCollection<Feed>).Clear();
+            (UserList.ItemsSource as ObservableCollection<UserInfo>).Clear();
+            (AppsResultList.ItemsSource as ObservableCollection<AppInfo>).Clear();
+            (TopicList.ItemsSource as ObservableCollection<Feed>).Clear();
+            StartSearch();
+        }
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
 

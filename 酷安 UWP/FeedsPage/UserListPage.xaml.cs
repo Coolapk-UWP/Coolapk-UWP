@@ -65,7 +65,7 @@ namespace 酷安_UWP.UsersPage
             if (p == 1)
             {
                 string url = isFollowList ? $"/user/followList?uid={uid}&page={p}" : $"/user/fansList?uid={uid}&page={p}";
-                string r = await CoolApkSDK.GetCoolApkMessage(url);
+                string r = await Tools.GetCoolApkMessage(url);
                 JArray array = JObject.Parse(r)["data"] as JArray;
                 if (!(array is null) && array.Count > 0)
                 {
@@ -90,7 +90,7 @@ namespace 酷安_UWP.UsersPage
                             FansNum = t["fans"].ToString(),
                             FollowNum = t["follow"].ToString(),
                             Bio = t["bio"].ToString(),
-                            LoginTime = Process.ConvertTime(t["logintime"].ToString()) + "活跃",
+                            LoginTime = Tools.ConvertTime(t["logintime"].ToString()) + "活跃",
                             UserAvatar = getImage(t["userSmallAvatar"].ToString())
                         });
                     }
@@ -99,7 +99,7 @@ namespace 酷安_UWP.UsersPage
             else if (p == -1)
             {
                 string url = isFollowList ? $"/user/followList?uid={uid}&page={++page}&firstItem={firstItem}&lastItem={lastItem}" : $"/user/fansList?uid={uid}&page={++page}&firstItem={firstItem}&lastItem={lastItem}";
-                string r = await CoolApkSDK.GetCoolApkMessage(url);
+                string r = await Tools.GetCoolApkMessage(url);
                 JArray array = JObject.Parse(r)["data"] as JArray;
                 if (!(array is null) && array.Count > 0)
                 {
@@ -114,7 +114,7 @@ namespace 酷安_UWP.UsersPage
                             FansNum = t["fans"].ToString(),
                             FollowNum = t["follow"].ToString(),
                             Bio = t["bio"].ToString(),
-                            LoginTime = Process.ConvertTime(t["logintime"].ToString()) + "活跃",
+                            LoginTime = Tools.ConvertTime(t["logintime"].ToString()) + "活跃",
                             UserAvatar = getImage(t["userSmallAvatar"].ToString())
                         });
                     }

@@ -3,21 +3,12 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.System;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -33,15 +24,17 @@ namespace 酷安_UWP
         int page = 0;
         List<int> pages = new List<int>();
         string pageUrl;
-        string pu;
         ObservableCollection<Feed> Collection = new ObservableCollection<Feed>();
         int index;
         List<string> urls = new List<string>();
         ObservableCollection<ObservableCollection<Feed>> Feeds2 = new ObservableCollection<ObservableCollection<Feed>>();
+        Style listviewStyle { get; set; }
         public IndexPage()
         {
             this.InitializeComponent();
             listView.ItemsSource = Collection;
+            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile") listviewStyle = Application.Current.Resources["ListViewStyle2Mobile"] as Style;
+            else listviewStyle = Application.Current.Resources["ListViewStyle2Desktop"] as Style;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -90,7 +83,7 @@ namespace 酷安_UWP
             mainPage.ActiveProgressRing();
             if (page == 1)
             {
-                string s = await CoolApkSDK.GetCoolApkMessage($"{url}&page={page}");
+                string s = await Tools.GetCoolApkMessage($"{url}&page={page}");
                 JObject jObject = (JObject)JsonConvert.DeserializeObject(s);
                 JArray Root = (JArray)jObject["data"];
                 int n = 0;
@@ -124,7 +117,7 @@ namespace 酷安_UWP
             }
             else
             {
-                string r = await CoolApkSDK.GetCoolApkMessage($"{url}&page={page}");
+                string r = await Tools.GetCoolApkMessage($"{url}&page={page}");
                 JArray Root = JObject.Parse(r)["data"] as JArray;
                 if (!(Root is null) && Root.Count != 0)
                 {
@@ -145,9 +138,7 @@ namespace 酷安_UWP
             mainPage.ActiveProgressRing();
             if (page == 1)
             {
-                timer.Stop();
-                timer = new DispatcherTimer();
-                JArray Root = await CoolApkSDK.GetIndexList($"{page}");
+                JArray Root = await Tools.GetIndexList($"{page}");
                 if (Collection.Count > 0)
                 {
                     var needDeleteItems = (from b in Collection
@@ -164,37 +155,16 @@ namespace 酷安_UWP
                     Collection.Insert(k, new Feed((JObject)Root[i]));
                     k++;
                 }
-                timer.Interval = new TimeSpan(0, 0, 7);
-                timer.Tick += (s, e) =>
-                {
-                    if (flip.SelectedIndex < flip.Items.Count - 1) flip.SelectedIndex++;
-                    else flip.SelectedIndex = 0;
-                };
-                timer.Start();
             }
             else
             {
-                JArray Root = await CoolApkSDK.GetIndexList($"{page}");
+                JArray Root = await Tools.GetIndexList($"{page}");
                 if (Root.Count != 0)
                     foreach (JObject i in Root)
                         Collection.Add(new Feed(i));
                 else this.page--;
             }
             mainPage.DeactiveProgressRing();
-        }
-
-        DispatcherTimer timer = new DispatcherTimer();
-        FlipView flip;
-
-        private void FlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (flip is null || flip != sender) flip = sender as FlipView;
-        }
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            base.OnNavigatedFrom(e);
-            timer.Stop();
         }
 
         private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
@@ -251,14 +221,10 @@ namespace 酷安_UWP
             }
         }
 
-        private async void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
+        private void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
         {
-            if (e.Link.IndexOf("/u/") == 0)
-                mainPage.Frame.Navigate(typeof(UserPage), new object[] { await CoolApkSDK.GetUserIDByName(e.Link.Replace("/u/", string.Empty)), mainPage });
-            if (e.Link.Replace("mailto:", string.Empty).IndexOf("http://image.coolapk.com") == 0)
-                await Launcher.LaunchUriAsync(new Uri(e.Link.Replace("mailto:", string.Empty)));
-            if (e.Link.IndexOf("http") == 0)
-                await Launcher.LaunchUriAsync(new Uri(e.Link));
+            if (e.Link.Replace("mailto:", string.Empty).IndexOf("http://image.coolapk.com") == 0) ShowImageControl.ShowImage(e.Link.Replace("mailto:", string.Empty));
+            else Tools.OpenLink(e.Link, mainPage);
         }
 
         private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
@@ -268,23 +234,21 @@ namespace 酷安_UWP
             VScrollViewer.ChangeView(null, 0, null);
         }
 
-        private async void Grid_Tapped(object sender, TappedRoutedEventArgs e)
+        private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
             FrameworkElement element = sender as FrameworkElement;
-            if (element.Tag is string) mainPage.Frame.Navigate(typeof(UserPage), new object[] { element.Tag, mainPage });
-            else if (element.Tag is Feed)
+            if (element.Tag is string s) Tools.OpenLink(s, mainPage);
+            else if (element.Tag is Feed feed)
             {
-                Feed feed = element.Tag as Feed;
-                string s = string.IsNullOrEmpty((element.Tag as Feed).GetValue("url")) ? (element.Tag as Feed).GetValue("extra_url2") : (element.Tag as Feed).GetValue("url");
-                if (s.IndexOf("/page") == 0)
+                string str = string.IsNullOrEmpty((element.Tag as Feed).GetValue("url")) ? (element.Tag as Feed).GetValue("extra_url2") : (element.Tag as Feed).GetValue("url");
+                if (str.IndexOf("/page") == 0)
                 {
-                    s = s.Replace("/page", "/page/dataList");
-                    s += $"&title={feed.GetValue("title")}";
-                    mainPage.Frame.Navigate(typeof(IndexPage), new object[] { mainPage, s, false });
+                    str = str.Replace("/page", "/page/dataList");
+                    str += $"&title={feed.GetValue("title")}";
+                    mainPage.Frame.Navigate(typeof(IndexPage), new object[] { mainPage, str, false });
                 }
-                else if (s.IndexOf('#') == 0) mainPage.Frame.Navigate(typeof(IndexPage), new object[] { mainPage, $"{s}&title={feed.GetValue("title")}", false });
-                else if (s.IndexOf("/feed/") == 0) mainPage.Frame.Navigate(typeof(FeedDetailPage), new object[] { s.Replace("/feed/", string.Empty), mainPage, string.Empty, null });
-                else if (s.IndexOf("http") == 0) await Launcher.LaunchUriAsync(new Uri(s));
+                else if (str.IndexOf('#') == 0) mainPage.Frame.Navigate(typeof(IndexPage), new object[] { mainPage, $"{str}&title={feed.GetValue("title")}", false });
+                else Tools.OpenLink(str, mainPage);
             }
         }
 
@@ -306,6 +270,7 @@ namespace 酷安_UWP
                         Tag = f[j],
                         Content = new ListView
                         {
+                            Style = listviewStyle,
                             ItemContainerStyle = style,
                             ItemTemplateSelector = Resources["FTemplateSelector"] as DataTemplateSelector,
                             ItemsSource = ff
@@ -371,6 +336,14 @@ namespace 酷安_UWP
             page = 0;
             Collection.Clear();
             GetUrlPage();
+        }
+
+        private void PicA_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            GridView view = sender as GridView;
+            if (view.SelectedIndex > -1 && view.Tag is string[] ss)
+                ShowImageControl.ShowImage(ss[view.SelectedIndex].Remove(ss[view.SelectedIndex].Length - 6));
+            view.SelectedIndex = -1;
         }
     }
 }

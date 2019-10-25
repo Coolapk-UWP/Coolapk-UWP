@@ -21,6 +21,7 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+        <Border Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}" Height="48" VerticalAlignment="Top"/>
         <Pivot x:Name="MainPivot" SelectionChanged="Pivot_SelectionChanged">
             <Pivot.LeftHeader>
                 <Border Margin="48,0,0,0" x:Name="mar"></Border>

@@ -94,7 +94,7 @@ namespace 酷安_UWP
 
             void ChangeTitleBarColor(bool value)//标题栏颜色
             {
-                Color BackColor = value ? Colors.White : Colors.Black,
+                Color BackColor = value ? Color.FromArgb(255, 242, 242, 242) : Color.FromArgb(255, 43, 43, 43),
                       ForeColor = value ? Colors.Black : Colors.White,
                       CoolForeInactiveColor = value ? Color.FromArgb(255, 50, 50, 50) : Color.FromArgb(255, 200, 200, 200),
                       CoolBackPressedColor = value ? Color.FromArgb(255, 200, 200, 200) : Color.FromArgb(255, 50, 50, 50);
@@ -177,8 +177,8 @@ namespace 酷安_UWP
                             localSettings.Values["UserName"] = localSettings.Values["Uid"] = localSettings.Values["UserAvatar"] = string.Empty;
                         else
                         {
-                            string uid = await CoolApkSDK.GetUserIDByName(uidTextBox.Text);
-                            JObject r = await CoolApkSDK.GetUserProfileByID(uid);
+                            string uid = await Tools.GetUserIDByName(uidTextBox.Text);
+                            JObject r = await Tools.GetUserProfileByID(uid);
                             localSettings.Values["UserName"] = r["username"].ToString();
                             localSettings.Values["Uid"] = uid;
                             localSettings.Values["UserAvatar"] = r["userAvatar"].ToString();

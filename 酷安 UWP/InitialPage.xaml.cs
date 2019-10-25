@@ -39,7 +39,7 @@ namespace 酷安_UWP
             if (pivot.Items.Count == 1 && (pivot.Items[0] as PivotItem).Tag as string == "-1")
             {
                 pivot.Items.Clear();
-                string r = await CoolApkSDK.GetCoolApkMessage("/main/init");
+                string r = await Tools.GetCoolApkMessage("/main/init");
                 JArray array = JObject.Parse(r)["data"] as JArray;
                 foreach (var item in array)
                 {
