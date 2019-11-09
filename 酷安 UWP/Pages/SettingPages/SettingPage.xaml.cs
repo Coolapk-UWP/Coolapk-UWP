@@ -88,8 +88,8 @@ namespace CoolapkUWP.Pages.SettingPages
                             JsonObject r = Tools.GetJSonObject(await Tools.GetJson("/user/space?uid=" + uid));
                             if (r != null)
                             {
-                                userName = r["username"].ToString();
-                                userAvatar = r["userSmallAvatar"].ToString();
+                                userName = r["username"].GetString();
+                                userAvatar = r["userSmallAvatar"].GetString();
                             }
                             else uid = string.Empty;
                         }

@@ -234,7 +234,7 @@ namespace CoolapkUWP
                     return new Feed[] { new Feed(new JsonObject()) };
                 else if (value == "extraData")
                     return new Feed[] { new Feed(JsonObject.Parse(token.ToString().Replace("\"", string.Empty))) };
-                else if (token.GetArray().Count == 0)
+                else if (token.ValueType != JsonValueType.Object)
                 {
                     if (!jObject.TryGetValue("v", out IJsonValue jtoken))
                         jObject.Add("v", new JsonObject());

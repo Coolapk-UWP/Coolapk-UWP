@@ -29,7 +29,6 @@ namespace CoolapkUWP.Data
             mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "28");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
             mClient.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
-            mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
             mClient.DefaultRequestHeaders.Add("X-App-Version", "9.2.2");
             mClient.DefaultRequestHeaders.Add("X-App-Code", "1905301");
             mClient.DefaultRequestHeaders.Add("X-Api-Version", "9");
@@ -186,6 +185,8 @@ namespace CoolapkUWP.Data
         {
             try
             {
+                mClient.DefaultRequestHeaders.Remove("X-App-Token");
+                mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
                 return await mClient.GetStringAsync(new Uri("https://api.coolapk.com/v6" + url));
             }
             catch (HttpRequestException e)
