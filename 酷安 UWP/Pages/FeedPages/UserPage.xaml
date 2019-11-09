@@ -1,0 +1,86 @@
+﻿<Page
+    x:Class="CoolapkUWP.Pages.FeedPages.UserPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:control="using:CoolapkUWP.Control"
+    xmlns:data="using:CoolapkUWP.Data"
+    mc:Ignorable="d" NavigationCacheMode="Required"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <control:DatatemplatesDictionary/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid>
+        <!--<Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>-->
+
+        <ScrollViewer x:Name="VScrollViewer" ViewChanged="ScrollViewer_ViewChanged">
+            <StackPanel Margin="{x:Bind data:Settings.stackPanelMargin}">
+                <TextBlock Height="20" HorizontalAlignment="Center" Visibility="Collapsed" x:Name="refreshText">松手刷新</TextBlock>
+                <Grid x:Name="UserDetailGrid" Height="300" Background="{Binding Background}" Tag="{Binding BackgroundUrl}" Tapped="PicA_Tapped">
+                    <Grid Background="#55000000" VerticalAlignment="Bottom">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse Width="80" Height="80" Margin="10,0" HorizontalAlignment="Left" Tapped="PicA_Tapped" Tag="{Binding UserFaceUrl}">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{Binding UserFace}"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <StackPanel Margin="0,0,5,3" Grid.Column="1">
+                            <TextBlock Foreground="White" Text="{Binding UserName}" FontWeight="Bold" FontSize="20"/>
+                            <TextBlock Text="{Binding verify_title}" Foreground="White" FontSize="14" TextWrapping="Wrap"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Click="Button_Click" Tag="2" Padding="0" Style="{StaticResource ButtonStyle1}" Background="{x:Null}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Foreground="White" Margin="0,0,3,0" FontWeight="Bold" Text="{Binding FollowNum}"/>
+                                        <TextBlock Foreground="White">关注</TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Click="Button_Click" Tag="3" Padding="0" Margin="5,0,0,0" Style="{StaticResource ButtonStyle1}" Background="{x:Null}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="0,0,3,0" Foreground="White" FontWeight="Bold" Text="{Binding FansNum}"/>
+                                        <TextBlock Foreground="White">粉丝</TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <TextBlock Margin="10,0,3,0" Foreground="White" Text="Lv." VerticalAlignment="Center"/>
+                                <TextBlock Name="level" Foreground="White" Text="{Binding Level}" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding bio}" Foreground="White" FontSize="14" TextWrapping="Wrap"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding gender}" Foreground="White" FontSize="12" Margin="2,0" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding city}" Foreground="White" FontSize="12" Margin="2,0" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding astro}" Foreground="White" FontSize="12" Margin="2,0"  TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding logintime}" Foreground="White" FontSize="12" Margin="2,0"  TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+
+                <ListView Name="listView" Style="{x:Bind data:Settings.ListViewStyle}" ScrollViewer.VerticalScrollMode="Disabled" ItemTemplate="{StaticResource feed}">
+                    <ListView.Header>
+                        <StackPanel Orientation="Horizontal" x:Name="ListHeader" Margin="20,0,0,0">
+                            <TextBlock FontWeight="Black" FontSize="16" Margin="3,3,0,3">全部动态(</TextBlock>
+                            <TextBlock FontWeight="Black" FontSize="16"  Margin="0,3,0,3" Text="{Binding FeedNum}"/>
+                            <TextBlock FontWeight="Black" FontSize="16" Margin="0,3,0,3">)</TextBlock>
+                        </StackPanel>
+                    </ListView.Header>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
+        <control:TitleBar BackButtonClick="TitleBar_BackButtonClick" RefreshButtonClick="{x:Bind Refresh}" x:Name="titleBar"/>
+    </Grid>
+</Page>

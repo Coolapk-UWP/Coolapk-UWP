@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace 酷安_UWP.Model
+namespace CoolapkUWP.Data
 {
     class AppData : INotifyPropertyChanged
     {
@@ -17,7 +17,6 @@ namespace 酷安_UWP.Model
             }
         }
 
-
         //标题
         private string title;
         public string Title
@@ -29,8 +28,7 @@ namespace 酷安_UWP.Model
                 this.OnPropertyChanged("Title");
             }
         }
-
-
+        
         //描述
         private string describe;
         public string Describe
@@ -42,11 +40,7 @@ namespace 酷安_UWP.Model
                 this.OnPropertyChanged("Describe");
             }
         }
-
-
-
-
-
+                          
         //Tag
         private string tag;
         public string Tag
@@ -59,21 +53,9 @@ namespace 酷安_UWP.Model
             }
         }
 
-
-
-
-        public AppData() { }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
-        }
+        protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace 酷安_UWP.Data
+﻿namespace CoolapkUWP.Data
 {
     static class Emojis
     {

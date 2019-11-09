@@ -1,0 +1,13 @@
+﻿<Page
+    x:Class="CoolapkUWP.Pages.FeedPages.InitialPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
+    xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
+    mc:Ignorable="d" NavigationCacheMode="Required"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Pivot x:Name="MainPivot" Style="{StaticResource PivotStyle1}" SelectionChanged="Pivot_SelectionChanged"/>
+</Page>

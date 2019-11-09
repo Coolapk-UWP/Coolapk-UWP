@@ -1,25 +1,13 @@
-﻿using Microsoft.Toolkit.Uwp.UI.Controls;
+﻿using CoolapkUWP.Data;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Storage;
 using Windows.System;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“内容对话框”项模板
 
-namespace 酷安_UWP
+namespace CoolapkUWP.Control
 {
     public sealed partial class GetUpdateContentDialog : ContentDialog
     {
@@ -40,11 +28,10 @@ namespace 酷安_UWP
 
         private void MarkdownTextBlock_ImageResolving(object sender, ImageResolvingEventArgs e)
         {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
+            if (Settings.GetBoolen("IsNoPicsMode"))
             {
                 e.Handled = true;
-                if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                if (Settings.GetBoolen("IsDarkMode"))
                     e.Image = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
                 else e.Image = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
             }

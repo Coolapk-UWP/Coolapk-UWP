@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CoolapkUWP.Control.ViewModels;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace 酷安_UWP
+namespace CoolapkUWP.Control
 {
-    public class FirstTemplateSelector : DataTemplateSelector
+    public class TemplateSelector : DataTemplateSelector
     {
         public DataTemplate DataTemplate1 { get; set; }
         public DataTemplate DataTemplate2 { get; set; }
@@ -18,15 +14,32 @@ namespace 酷安_UWP
         protected override DataTemplate SelectTemplateCore(object item)
         {
             Feed feed = item as Feed;
-            switch (feed.GetValue("entityType"))
+            if (feed.GetValue("entityType") == "feed_reply") return DataTemplate2;
+            else if (feed.GetValue("entityType") == "article") return DataTemplate5;
+            switch (feed.GetValue("feedType"))
             {
                 case "feed": return DataTemplate1;
-                case "user": return DataTemplate3;
-                case "topic": return DataTemplate4;
-                case "dyh": return DataTemplate5;
-                case "card":
-                default: return DataTemplate2;
+                case "feedArticle": return DataTemplate3;
+                case "question": return DataTemplate4;
+                default: return DataTemplate1;
             }
+        }
+    }
+
+    public class FirstTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate DataTemplate1 { get; set; }
+        public DataTemplate DataTemplate2 { get; set; }
+        public DataTemplate DataTemplate3 { get; set; }
+        public DataTemplate DataTemplate4 { get; set; }
+        public DataTemplate DataTemplate5 { get; set; }
+        protected override DataTemplate SelectTemplateCore(object item)
+        {
+            if (item is FeedViewModel) return DataTemplate1;
+            else if (item is UserViewModel) return DataTemplate3;
+            else if (item is TopicViewModel) return DataTemplate4;
+            else if (item is DyhViewModel) return DataTemplate5;
+            return DataTemplate2;
         }
     }
     public class SecondTemplateSelector : DataTemplateSelector
@@ -118,5 +131,14 @@ namespace 酷安_UWP
             }
         }
     }
-
+    public class SearchPageTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate DataTemplate1 { get; set; }
+        public DataTemplate DataTemplate2 { get; set; }
+        protected override DataTemplate SelectTemplateCore(object item)
+        {
+            if (item is AppViewModel) return DataTemplate1;
+            return DataTemplate2;
+        }
+    }
 }

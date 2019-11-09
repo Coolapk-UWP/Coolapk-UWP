@@ -1,8 +1,7 @@
 ﻿<UserControl
-    x:Class="酷安_UWP.ShowImageControl"
+    x:Class="CoolapkUWP.Control.ShowImageControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:酷安_UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -11,6 +10,10 @@
     HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" KeyUp="UserControl_KeyUp">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
         <!--<FlipView Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ScrollViewer.IsZoomChainingEnabled="True" ScrollViewer.BringIntoViewOnFocusChange="False" x:Name="SFlipView">
             <FlipView.ItemTemplate>
                 <DataTemplate>
@@ -28,11 +31,11 @@
             </FlipView.ItemTemplate>
         </FlipView>-->
         <ProgressRing IsActive="True" Height="50" Width="50"/>
-        <ScrollViewer x:Name="ScrollViewerMain" ZoomMode="Enabled" MinZoomFactor="0.5" DoubleTapped="ScrollViewerMain_DoubleTapped" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+        <ScrollViewer x:Name="ScrollViewerMain" ZoomMode="Enabled" MinZoomFactor="0.5" DoubleTapped="ScrollViewerMain_DoubleTapped" Margin="0,0,0,40" HorizontalScrollBarVisibility="Auto">
             <Image x:Name="image" MaxWidth="{Binding Path=ViewportWidth,ElementName=ScrollViewerMain}" MaxHeight="{Binding Path=ViewportHeight,ElementName=ScrollViewerMain}"
                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </ScrollViewer>
-        <CommandBar VerticalAlignment="Bottom" ClosedDisplayMode="Compact">
+        <CommandBar Grid.Row="1" VerticalAlignment="Bottom" ClosedDisplayMode="Compact">
             <AppBarButton Icon="Save" Label="保存原图" x:Name="SaveImage" Click="SaveImage_Click"/>
             <AppBarButton Icon="Cancel" Label="关闭" x:Name="CloseFlip" Click="CloseFlip_Click"/>
         </CommandBar>

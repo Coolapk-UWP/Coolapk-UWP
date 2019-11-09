@@ -1,117 +1,157 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CoolapkUWP.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Windows.Storage;
+using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace 酷安_UWP
+namespace CoolapkUWP
 {
-    public class Feed
+    public class Feed : Control.ViewModels.IEntity
     {
-        static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-        public JObject jObject;
-        public Feed(JObject jObject) => this.jObject = jObject;
-        public Style listviewStyle
+        public JsonObject jObject;
+        public Feed(JsonObject jObject)
+        {
+            this.jObject = jObject;
+            if (jObject.TryGetValue("entityId", out IJsonValue value1)) entityId = value1.ToString().Replace("\"", string.Empty);
+            if (jObject.TryGetValue("entityFixed", out IJsonValue value2) && value2.ToString().Replace("\"", string.Empty) == "1") entityFixed = true;
+            if (jObject.TryGetValue("entityType", out IJsonValue value3)) entityType = value3.ToString().Replace("\"", string.Empty);
+        }
+
+        public string entityId { get; private set; }
+        public bool entityFixed { get; private set; }
+        public string entityType { get; private set; }
+
+        public Style ListViewStyle
         {
             get
             {
-                if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile") return Application.Current.Resources["ListViewStyle2Mobile"] as Style;
+                if (Settings.IsMobile) return Application.Current.Resources["ListViewStyle2Mobile"] as Style;
                 else return Application.Current.Resources["ListViewStyle2Desktop"] as Style;
             }
         }
+
         public string GetValue(string key)
         {
-            if (!(jObject is null) && jObject.TryGetValue(key, out JToken token))
+            if (!(jObject is null) && jObject.TryGetValue(key, out IJsonValue token))
                 switch (key)
                 {
-                    case "message": return Tools.ProcessMessage(token.ToString(), localSettings);
+                    case "message": return Tools.GetMessageText(token.ToString().Replace("\"", string.Empty));
                     case "message_raw_output":
-                        JArray array = JArray.Parse(token.ToString());
+                        JsonArray array = JsonArray.Parse(token.ToString().Replace("\"", string.Empty));
                         string s = string.Empty;
                         foreach (var item in array)
                         {
-                            if (item["type"].ToString() == "text")
-                                s += Tools.ProcessMessage(item["message"].ToString(), localSettings);
-                            else if (item["type"].ToString() == "image")
+                            if (item.GetObject()["type"].ToString().Replace("\"", string.Empty) == "text")
+                                s += Tools.GetMessageText(item.GetObject()["message"].ToString().Replace("\"", string.Empty));
+                            else if (item.GetObject()["type"].ToString().Replace("\"", string.Empty) == "image")
                             {
-                                string d = string.IsNullOrEmpty(item["description"].ToString()) ? string.Empty : item["description"].ToString();
-                                s += $"\n\n![image]({item["url"].ToString()}.s.jpg)\n\n>{d}\n\n";
+                                string d = string.IsNullOrEmpty(item.GetObject()["description"].ToString().Replace("\"", string.Empty)) ? string.Empty : item.GetObject()["description"].ToString().Replace("\"", string.Empty);
+                                s += $"\n\n![image]({item.GetObject()["url"].ToString().Replace("\"", string.Empty)}.s.jpg)\n\n>{d}\n\n";
                             }
                         }
                         return s;
                     case "extra_url":
-                        if (!string.IsNullOrEmpty(token.ToString()))
-                            if (token.ToString().IndexOf("http") == 0)
-                                return new Uri(token.ToString()).Host;
+                        if (!string.IsNullOrEmpty(token.ToString().Replace("\"", string.Empty)))
+                            if (token.ToString().Replace("\"", string.Empty).IndexOf("http") == 0)
+                                return new Uri(token.ToString().Replace("\"", string.Empty)).Host;
                             else return string.Empty;
                         else return string.Empty;
-                    case "infoHtml": return token.ToString().Replace("&nbsp;", string.Empty);
-                    case "dateline": return Tools.ConvertTime(token.ToString());
-                    case "logintime": return Tools.ConvertTime(token.ToString()) + "活跃";
-                    default: return token.ToString();
+                    case "infoHtml": return token.ToString().Replace("\"", string.Empty).Replace("&nbsp;", string.Empty);
+                    case "createdate":
+                    case "dateline": return Tools.ConvertTime(double.Parse(token.ToString().Replace("\"", string.Empty)));
+                    case "logintime": return Tools.ConvertTime(double.Parse(token.ToString().Replace("\"", string.Empty))) + "活跃";
+                    default:
+                        switch (token.ValueType)
+                        {
+                            case JsonValueType.Null:
+                                return null;
+                            case JsonValueType.Boolean:
+                                return token.GetBoolean().ToString();
+                            case JsonValueType.Number:
+                                return token.ToString().Replace("\"", string.Empty).ToString();
+                            case JsonValueType.String:
+                                return token.ToString().Replace("\"", string.Empty);
+                            case JsonValueType.Array:
+                                return token.GetArray().ToString();
+                            case JsonValueType.Object:
+                                return token.GetObject().ToString();
+                        }
+                        return token.ToString();
                 }
             else switch (key)
                 {
                     case "message2":
-                        if (string.IsNullOrEmpty(jObject["pic"].ToString()))
-                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Tools.ProcessMessage(jObject["message"].ToString(), localSettings)}";
+                        if (string.IsNullOrEmpty(jObject["pic"].ToString().Replace("\"", string.Empty)))
+                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Tools.GetMessageText(jObject["message"].ToString().Replace("\"", string.Empty))}";
                         else
-                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Tools.ProcessMessage(jObject["message"].ToString(), localSettings)}\n[查看图片]({jObject["pic"]})";
-                    case "extra_url2": return jObject["extra_url"].ToString();
-                    case "dyh_id2": return "/dyh/" + jObject["dyh_id"].ToString();
+                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Tools.GetMessageText(jObject["message"].ToString().Replace("\"", string.Empty))}\n[查看图片]({jObject["pic"]})";
+                    case "extra_url2": return jObject["extra_url"].ToString().Replace("\"", string.Empty);
+                    case "dyh_id2": return "/dyh/" + jObject["dyh_id"].ToString().Replace("\"", string.Empty);
                     default: return string.Empty;
                 }
         }
 
         public string GetValue(string path, string key)
         {
-            if (!(jObject is null) && jObject.TryGetValue(path, out JToken t))
+            if (!(jObject is null) && jObject.TryGetValue(path, out IJsonValue t))
             {
-                if (t.HasValues)
+                JsonObject jObject = t.GetObject();
+                if (!(jObject is null) && jObject.TryGetValue(key, out IJsonValue token))
                 {
-                    JObject jObject = JObject.Parse(t.ToString());
-                    if (!(jObject is null) && jObject.TryGetValue(key, out JToken token))
+                    switch (key)
                     {
-                        switch (key)
-                        {
-                            case "message": return Tools.ProcessMessage(token.ToString(), localSettings);
-                            case "message_raw_output":
-                                JArray array = JArray.Parse(token.ToString());
-                                string s = string.Empty;
-                                foreach (JObject item in array)
-                                {
-                                    if (item["type"].ToString() == "text")
-                                        s += Tools.ProcessMessage(item["message"].ToString(), localSettings);
-                                    else if (item["type"].ToString() == "image")
-                                        s += $"\n\n![image]({item["url"].ToString()}.s.jpg)\n\n>{item["description"].ToString()}\n\n";
-                                }
-                                return s;
-                            case "extra_url":
-                                if (!string.IsNullOrEmpty(token.ToString()))
-                                    if (token.ToString().IndexOf("http") == 0)
-                                        return new Uri(token.ToString()).Host;
-                                    else return string.Empty;
+                        case "message": return Tools.GetMessageText(token.ToString().Replace("\"", string.Empty));
+                        case "message_raw_output":
+                            JsonArray array = JsonArray.Parse(token.ToString().Replace("\"", string.Empty));
+                            string s = string.Empty;
+                            foreach (var item in array)
+                            {
+                                if (item.GetObject()["type"].ToString().Replace("\"", string.Empty) == "text")
+                                    s += Tools.GetMessageText(item.GetObject()["message"].ToString().Replace("\"", string.Empty));
+                                else if (item.GetObject()["type"].ToString().Replace("\"", string.Empty) == "image")
+                                    s += $"\n\n![image]({item.GetObject()["url"].ToString().Replace("\"", string.Empty)}.s.jpg)\n\n>{item.GetObject()["description"].ToString().Replace("\"", string.Empty)}\n\n";
+                            }
+                            return s;
+                        case "extra_url":
+                            if (!string.IsNullOrEmpty(token.ToString().Replace("\"", string.Empty)))
+                                if (token.ToString().Replace("\"", string.Empty).IndexOf("http") == 0)
+                                    return new Uri(token.ToString().Replace("\"", string.Empty)).Host;
                                 else return string.Empty;
-                            case "infoHtml": return token.ToString().Replace("&nbsp;", string.Empty);
-                            case "dateline": return Tools.ConvertTime(token.ToString());
-                            default: return token.ToString();
-                        }
+                            else return string.Empty;
+                        case "infoHtml": return token.ToString().Replace("\"", string.Empty).Replace("&nbsp;", string.Empty);
+                        case "dateline": return Tools.ConvertTime(double.Parse(token.ToString().Replace("\"", string.Empty)));
+                        default:
+                            switch (token.ValueType)
+                            {
+                                case JsonValueType.Null:
+                                    return null;
+                                case JsonValueType.Boolean:
+                                    return token.GetBoolean().ToString();
+                                case JsonValueType.Number:
+                                    return token.ToString().Replace("\"", string.Empty).ToString();
+                                case JsonValueType.String:
+                                    return token.ToString().Replace("\"", string.Empty);
+                                case JsonValueType.Array:
+                                    return token.GetArray().ToString();
+                                case JsonValueType.Object:
+                                    return token.GetObject().ToString();
+                            }
+                            return token.ToString();
                     }
-                    return string.Empty;
                 }
                 return string.Empty;
             }
             else switch (key)
                 {
                     case "message2":
-                        if (string.IsNullOrEmpty(jObject["pic"].ToString()))
-                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Tools.ProcessMessage(jObject["message"].ToString(), localSettings)}";
+                        if (string.IsNullOrEmpty(jObject["pic"].ToString().Replace("\"", string.Empty)))
+                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Tools.GetMessageText(jObject["message"].ToString().Replace("\"", string.Empty))}";
                         else
-                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Tools.ProcessMessage(jObject["message"].ToString(), localSettings)}\n[查看图片]({jObject["pic"]})";
-                    case "extra_url2": return jObject["extra_url"].ToString();
+                            return $"[{jObject["username"]}](/u/{jObject["uid"]})：{Tools.GetMessageText(jObject["message"].ToString().Replace("\"", string.Empty))}\n[查看图片]({jObject["pic"]})";
+                    case "extra_url2": return jObject["extra_url"].ToString().Replace("\"", string.Empty);
                     default: return string.Empty;
                 }
         }
@@ -120,12 +160,12 @@ namespace 酷安_UWP
         // 获取缩略图
         public ImageSource GetSmallImage(string value)
         {
-            if (jObject.TryGetValue(value, out JToken token))
+            if (jObject.TryGetValue(value, out IJsonValue token))
             {
-                string s = token.ToString();
+                string s = token.ToString().Replace("\"", string.Empty);
                 if (!string.IsNullOrEmpty(s))
-                    if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
-                        if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                    if (Settings.GetBoolen("IsNoPicsMode"))
+                        if (Settings.GetBoolen("IsDarkMode"))
                             return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png"));
                         else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png"));
                     else return new BitmapImage(new Uri(s + ".s.jpg"));
@@ -136,12 +176,12 @@ namespace 酷安_UWP
         // 获取原图
         public ImageSource GetImage(string key)
         {
-            if (jObject.TryGetValue(key, out JToken token))
+            if (jObject.TryGetValue(key, out IJsonValue token))
             {
-                string s = token.ToString();
+                string s = token.ToString().Replace("\"", string.Empty);
                 if (!string.IsNullOrEmpty(s))
-                    if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
-                        if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                    if (Settings.GetBoolen("IsNoPicsMode"))
+                        if (Settings.GetBoolen("IsDarkMode"))
                             return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png"));
                         else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png"));
                     else return new BitmapImage(new Uri(s));
@@ -152,13 +192,13 @@ namespace 酷安_UWP
 
         public ImageSource GetImage(string path, string key)
         {
-            if (jObject.TryGetValue(path, out JToken t))
-                if ((t as JObject).TryGetValue(key, out JToken token))
+            if (jObject.TryGetValue(path, out IJsonValue t))
+                if (t.GetObject().TryGetValue(key, out IJsonValue token))
                 {
-                    string s = token.ToString();
+                    string s = token.ToString().Replace("\"", string.Empty);
                     if (!string.IsNullOrEmpty(s))
-                        if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
-                            if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                        if (Settings.GetBoolen("IsNoPicsMode"))
+                            if (Settings.GetBoolen("IsDarkMode"))
                                 return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png"));
                             else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png"));
                         else return new BitmapImage(new Uri(s));
@@ -172,65 +212,65 @@ namespace 酷安_UWP
         public ImageSource[] GetSmallImages(string value)
         {
             List<BitmapImage> images = new List<BitmapImage>();
-            if (jObject.TryGetValue(value, out JToken token))
+            if (jObject.TryGetValue(value, out IJsonValue token))
             {
-                JArray array = (JArray)token;
+                JsonArray array = token.GetArray();
                 foreach (var item in array)
-                    if (!string.IsNullOrEmpty(item.ToString()))
-                        if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]))
-                            if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                    if (!string.IsNullOrEmpty(item.ToString().Replace("\"", string.Empty)))
+                        if (Settings.GetBoolen("IsNoPicsMode"))
+                            if (Settings.GetBoolen("IsDarkMode"))
                                 images.Add(new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")));
                             else images.Add(new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")));
-                        else images.Add(new BitmapImage(new Uri(item.ToString() + ".s.jpg")));
+                        else images.Add(new BitmapImage(new Uri(item.ToString().Replace("\"", string.Empty) + ".s.jpg")));
             }
             return images.ToArray();
         }
 
         public Feed[] GetFeed(string value)
         {
-            if (jObject.TryGetValue(value, out JToken token))
+            if (jObject.TryGetValue(value, out IJsonValue token))
             {
                 if (token is null)
-                    return new Feed[] { new Feed(new JObject()) };
+                    return new Feed[] { new Feed(new JsonObject()) };
                 else if (value == "extraData")
-                    return new Feed[] { new Feed(JObject.Parse(token.ToString())) };
-                else if (!token.HasValues)
+                    return new Feed[] { new Feed(JsonObject.Parse(token.ToString().Replace("\"", string.Empty))) };
+                else if (token.GetArray().Count == 0)
                 {
-                    if (!jObject.TryGetValue("v", out JToken jtoken))
-                        jObject.Add("v", new JValue(true));
-                    return new Feed[] { new Feed(new JObject()) };
+                    if (!jObject.TryGetValue("v", out IJsonValue jtoken))
+                        jObject.Add("v", new JsonObject());
+                    return new Feed[] { new Feed(new JsonObject()) };
                 }
-                return new Feed[] { new Feed(token as JObject) };
+                return new Feed[] { new Feed(token as JsonObject) };
             }
-            else return new Feed[] { new Feed(new JObject()) };
+            else return new Feed[] { new Feed(new JsonObject()) };
         }
 
         public Feed[] GetFeeds(string value)
         {
-            JArray array = (JArray)jObject.GetValue(value);
+            JsonArray array = jObject[value].GetArray();
             List<Feed> fs = new List<Feed>();
             if (!(array is null))
-                foreach (JObject item in array)
+                foreach (var item in array)
                     if (!string.IsNullOrEmpty(item.ToString()))
-                        fs.Add(new Feed(item));
+                        fs.Add(new Feed(item.GetObject()));
             return fs.ToArray();
         }
         public string[] GetSmallImagesUrl(string key, bool isReturnFakePic)
         {
-            if (jObject.TryGetValue(key, out JToken token))
+            if (jObject.TryGetValue(key, out IJsonValue token))
             {
-                JArray array = (JArray)token;
+                JsonArray array = token.GetArray();
                 if (array is null) return new string[] { };
                 else
                 {
                     List<string> s = new List<string>();
                     foreach (var item in array)
-                        if (!string.IsNullOrEmpty(item.ToString()))
-                            if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]) && isReturnFakePic)
-                                if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                        if (!string.IsNullOrEmpty(item.ToString().Replace("\"", string.Empty)))
+                            if (Settings.GetBoolen("IsNoPicsMode") && isReturnFakePic)
+                                if (Settings.GetBoolen("IsDarkMode"))
                                     s.Add("ms-appx:/Assets/img_placeholder_night.png");
                                 else s.Add("ms-appx:/Assets/img_placeholder.png");
-                            else s.Add(item.ToString() + ".s.jpg");
+                            else s.Add(item.ToString().Replace("\"", string.Empty) + ".s.jpg");
                     return s.ToArray();
                 }
             }
@@ -238,23 +278,23 @@ namespace 酷安_UWP
         }
         public string[] GetSmallImagesUrl(string path, string key, bool isReturnFakePic)
         {
-            if (jObject.TryGetValue(path, out JToken t))
+            if (jObject.TryGetValue(path, out IJsonValue t))
             {
-                JObject jObject = t as JObject;
-                if (!(jObject is null) && jObject.TryGetValue(key, out JToken token))
+                JsonObject jObject = t.GetObject();
+                if (!(jObject is null) && jObject.TryGetValue(key, out IJsonValue token))
                 {
-                    JArray array = (JArray)token;
+                    JsonArray array = token.GetArray();
                     if (array is null) return new string[] { };
                     else
                     {
                         List<string> s = new List<string>();
                         foreach (var item in array)
-                            if (!string.IsNullOrEmpty(item.ToString()))
-                                if (Convert.ToBoolean(localSettings.Values["IsNoPicsMode"]) && isReturnFakePic)
-                                    if (Convert.ToBoolean(localSettings.Values["IsDarkMode"]))
+                            if (!string.IsNullOrEmpty(item.ToString().Replace("\"", string.Empty)))
+                                if (Settings.GetBoolen("IsNoPicsMode") && isReturnFakePic)
+                                    if (Settings.GetBoolen("IsDarkMode"))
                                         s.Add("ms-appx:/Assets/img_placeholder_night.png");
                                     else s.Add("ms-appx:/Assets/img_placeholder.png");
-                                else s.Add(item.ToString() + ".s.jpg");
+                                else s.Add(item.ToString().Replace("\"", string.Empty) + ".s.jpg");
                         return s.ToArray();
                     }
                 }
@@ -264,17 +304,17 @@ namespace 酷安_UWP
         }
         public bool GetVisibility(string key)
         {
-            if (jObject.TryGetValue(key, out JToken token))
+            if (jObject.TryGetValue(key, out IJsonValue token))
             {
-                if (string.IsNullOrEmpty(token.ToString())) return false;
+                if (string.IsNullOrEmpty(token.ToString().Replace("\"", string.Empty).Replace("{", string.Empty).Replace("}", string.Empty))) return false;
                 else switch (key)
                     {
                         case "isStickTop":
                         case "isFeedAuthor":
-                            if (token.ToString() == "1") return true;
+                            if (token.ToString().Replace("\"", string.Empty) == "1") return true;
                             else return false;
                         case "feedType":
-                            if (token.ToString() == "answer") return true;
+                            if (token.ToString().Replace("\"", string.Empty) == "answer") return true;
                             else return false;
                         case "v": return true;
                         default: return true;
@@ -282,32 +322,32 @@ namespace 酷安_UWP
             }
             else if (key == "v2")
             {
-                if (jObject.TryGetValue("v", out JToken token2)) return false;
+                if (jObject.TryGetValue("v", out IJsonValue token2)) return false;
                 else return true;
             }
             else if (key == "feedType2")
             {
-                if (jObject.TryGetValue("feedType", out JToken token2))
-                    if (token2.ToString() == "question") return false;
+                if (jObject.TryGetValue("feedType", out IJsonValue token2))
+                    if (token2.ToString().Replace("\"", string.Empty) == "question") return false;
                 return true;
             }
             else return false;
         }
         public bool GetVisibility(string path, string key)
         {
-            if (jObject.TryGetValue(path, out JToken t))
+            if (jObject.TryGetValue(path, out IJsonValue t))
             {
-                JObject jObject = t as JObject;
-                if (!(jObject is null) && jObject.TryGetValue(path, out JToken token))
+                JsonObject jObject = t.GetObject();
+                if (!(jObject is null) && jObject.TryGetValue(path, out IJsonValue token))
                 {
-                    if (string.IsNullOrEmpty(token.ToString())) return false;
+                    if (string.IsNullOrEmpty(token.ToString().Replace("\"", string.Empty))) return false;
                     else switch (key)
                         {
                             case "isFeedAuthor":
-                                if (token.ToString() == "1") return true;
+                                if (token.ToString().Replace("\"", string.Empty) == "1") return true;
                                 else return false;
                             case "feedType":
-                                if (token.ToString() == "answer") return true;
+                                if (token.ToString().Replace("\"", string.Empty) == "answer") return true;
                                 else return false;
                             default: return true;
                         }
@@ -320,7 +360,7 @@ namespace 酷安_UWP
         {
             switch (key)
             {
-                case "picArr": return jObject[key].HasValues ? true : false;
+                case "picArr": return jObject[key].ValueType != JsonValueType.Null;
                 default: return GetFeeds(key).Count() > 0 ? true : false;
             }
         }
@@ -328,24 +368,24 @@ namespace 酷安_UWP
     }
     class Feed2 : Feed
     {
-        JToken jToken = null;
+        IJsonValue jToken = null;
         public string ListType { get; private set; }
-        public Feed2(JToken token, string type) : this(new JObject(), type) => jToken = token;
+        public Feed2(IJsonValue token, string type) : this(new JsonObject(), type) => jToken = token;
 
-        public Feed2(JObject jObject) : base(jObject) { }
-        public Feed2(JObject jObject, string type) : base(jObject) => ListType = type;
+        public Feed2(JsonObject jObject) : base(jObject) { }
+        public Feed2(JsonObject jObject, string type) : base(jObject) => ListType = type;
 
         public new Feed2[] GetFeeds(string value)
         {
-            JArray array = new JArray();
+            JsonArray array = new JsonArray();
             if (jToken is null)
-                array = (JArray)jObject.GetValue(value);
+                array = jObject[value].GetArray();
             else
-                array = jToken as JArray;
+                array = jToken.GetArray();
             List<Feed2> fs = new List<Feed2>();
-            foreach (JObject item in array)
+            foreach (var item in array)
                 if (!string.IsNullOrEmpty(item.ToString()))
-                    fs.Add(new Feed2(item));
+                    fs.Add(new Feed2(item.GetObject()));
             return fs.ToArray();
         }
     }

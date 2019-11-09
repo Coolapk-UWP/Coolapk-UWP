@@ -1,0 +1,40 @@
+﻿<Page
+    x:Class="CoolapkUWP.Pages.SettingPages.TestPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
+    xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
+    xmlns:control="using:CoolapkUWP.Control"
+    xmlns:data="using:CoolapkUWP.Data"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <control:DatatemplatesDictionary/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid>
+        <ScrollViewer ViewChanging="ScrollViewer_ViewChanging">
+            <StackPanel Margin="{x:Bind data:Settings.stackPanelMargin}">
+                <TextBox Header="uid" x:Name="uid"/>
+                <Button Click="Button_Click">go</Button>
+                <TextBox Header="url" x:Name="url"></TextBox>
+                <Button Click="Button_Click_5">get</Button>
+                <TextBox AcceptsReturn="True" x:Name="txb1" MaxHeight="250"/>
+                <Button Click="Button_Click_1">encode</Button>
+                <TextBox AcceptsReturn="True" x:Name="txb2" MaxHeight="250"/>
+                <Button Click="Button_Click_6">show</Button>
+                <ListView ItemTemplate="{StaticResource feed}" x:Name="asa"/>
+                <TextBox Header="message" x:Name="message"/>
+                <Button Click="Button_Click_4">go</Button>
+                <Button Click="Button_Click_2">go</Button>
+            </StackPanel>
+        </ScrollViewer>
+
+        <control:TitleBar BackButtonClick="Button_Click_3" RefreshButtonVisibility="Collapsed"/>
+    </Grid>
+</Page>

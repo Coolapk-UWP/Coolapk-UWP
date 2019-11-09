@@ -20,7 +20,7 @@ using Windows.UI.Xaml.Navigation;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
-namespace 酷安_UWP
+namespace CoolapkUWP.Control
 {
     public sealed partial class ShowImageControl : UserControl
     {
@@ -44,8 +44,9 @@ namespace 酷安_UWP
 
         public void ShowImage(string url)
         {
-            Hide = false;
             this.url = url;
+            if (string.IsNullOrEmpty(url)) return;
+            Hide = false;
             ScrollViewerMain.ChangeView(null, null, 1);
             image.Source = new BitmapImage(new Uri(url));
         }
