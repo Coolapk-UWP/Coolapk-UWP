@@ -30,8 +30,10 @@
                 <Button Click="Button_Click_6">show</Button>
                 <ListView ItemTemplate="{StaticResource feed}" x:Name="asa"/>
                 <TextBox Header="message" x:Name="message"/>
-                <Button Click="Button_Click_4">go</Button>
+                <Button Click="Button_Click_4">show</Button>
                 <Button Click="Button_Click_2">go</Button>
+                <Slider ValueChanged="Slider_ValueChanged"/>
+                <TextBlock Text="{x:Bind Test.Value,Mode=OneWay}"/>
             </StackPanel>
         </ScrollViewer>
 

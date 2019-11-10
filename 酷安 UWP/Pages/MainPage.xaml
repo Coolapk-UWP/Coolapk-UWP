@@ -24,7 +24,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <SymbolIcon Symbol="{x:Bind Icon}"/>
-                    <Ellipse Margin="10,0,0,0" Width="30" Height="30" Grid.RowSpan="2" HorizontalAlignment="Left" >
+                    <Ellipse Margin="10,0,0,0" Width="28" Height="28" Grid.RowSpan="2" HorizontalAlignment="Left" >
                         <Ellipse.Fill>
                             <ImageBrush ImageSource="{Binding Image}"/>
                         </Ellipse.Fill>
@@ -157,11 +157,11 @@
                         <ColumnDefinition Width="48"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}"
+                    <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0"
                             VerticalAlignment="Bottom" Height="48" Width="48" x:Name="UserButton" Click="UserButton_Click">
                         <Grid>
                             <SymbolIcon Symbol="Contact" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
-                            <Ellipse Width="28" Height="28">
+                            <Ellipse Width="36" Height="36">
                                 <Ellipse.Fill>
                                     <ImageBrush ImageSource="{Binding Image}"/>
                                 </Ellipse.Fill>

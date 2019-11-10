@@ -112,6 +112,11 @@
     <Compile Include="Control\TitleBar.xaml.cs">
       <DependentUpon>TitleBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\ViewModels\Entity.cs" />
+    <Compile Include="Control\ViewModels\FeedReplyViewModel.cs" />
+    <Compile Include="Control\ViewModels\FeedViewModelBase.cs" />
+    <Compile Include="Control\ViewModels\FeedDetailViewModel.cs" />
+    <Compile Include="Control\ViewModels\SourceFeedViewModel.cs" />
     <Compile Include="Pages\AppPages\AppRecommendPage.xaml.cs">
       <DependentUpon>AppRecommendPage.xaml</DependentUpon>
     </Compile>

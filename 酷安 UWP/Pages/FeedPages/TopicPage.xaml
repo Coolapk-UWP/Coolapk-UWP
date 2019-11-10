@@ -35,12 +35,12 @@
                             <TextBlock>讨论</TextBlock>
                         </StackPanel>
                     </StackPanel>
+                    <ComboBox SelectedIndex="0" x:Name="FeedTypeComboBox" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" SelectionChanged="FeedTypeComboBox_SelectionChanged" Margin="10">
+                        <ComboBoxItem>最近回复</ComboBoxItem>
+                        <ComboBoxItem>按时间排序</ComboBoxItem>
+                        <ComboBoxItem>按热度排序</ComboBoxItem>
+                    </ComboBox>
                 </Grid>
-                <ComboBox SelectedIndex="0" x:Name="FeedTypeComboBox" SelectionChanged="FeedTypeComboBox_SelectionChanged" Margin="10">
-                    <ComboBoxItem>最近回复</ComboBoxItem>
-                    <ComboBoxItem>按时间排序</ComboBoxItem>
-                    <ComboBoxItem>按热度排序</ComboBoxItem>
-                </ComboBox>
                 <ListView ScrollViewer.VerticalScrollMode="Disabled" Name="listView" Style="{x:Bind data:Settings.ListViewStyle}" ItemTemplate="{StaticResource feed}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">

@@ -69,7 +69,7 @@
                 </ListView>
             </PivotItem>
             <PivotItem Header="应用游戏">
-                <ListView x:Name="AppsResultList" Padding="20,0" ItemTemplate="{StaticResource app}" SelectionChanged="AppResultList_SelectionChanged" Margin="{x:Bind data:Settings.stackPanelMargin}">
+                <ListView x:Name="AppsResultList" ItemTemplate="{StaticResource app}" SelectionChanged="AppResultList_SelectionChanged" Margin="{x:Bind stackPanelMargin}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -84,7 +84,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="BackButton" Margin="0,0,0,8" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" Click="BackButton_Click" Width="48" Style="{ThemeResource NavigationBackButtonNormalStyle}"/>
+            <Button x:Name="BackButton" Margin="0,0,0,4" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" Click="BackButton_Click" Width="48" Style="{ThemeResource NavigationBackButtonNormalStyle}"/>
             <AutoSuggestBox Grid.Column="1" KeyUp="SearchTextBox_KeyUp" x:Name="SearchText" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" Margin="0,0,0,8"
                             QueryIcon="Find" QuerySubmitted="SearchText_QuerySubmitted" TextChanged="SearchText_TextChanged"/>
             <ComboBox Grid.Column="2" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" SelectedIndex="0" x:Name="SearchTypeComboBox" SelectionChanged="SearchTypeComboBox_SelectionChanged" Margin="0,0,10,8">

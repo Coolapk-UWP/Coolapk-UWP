@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
 using System;
+using System.ComponentModel;
 using System.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -9,11 +10,26 @@ using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Pages.SettingPages
 {
+    class Test
+    {
+        public string Value { get; set; }
+    }
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class TestPage : Page
+    public sealed partial class TestPage : Page, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        Test test = null;
+        Test Test
+        {
+            get => test;
+            set
+            {
+                test = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Test"));
+            }
+        }
         public TestPage()
         {
             this.InitializeComponent();
@@ -116,8 +132,13 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-            FeedViewModel[] feed = new FeedViewModel[] { new FeedViewModel(Windows.Data.Json.JsonObject.Parse(txb2.Text), FeedDisplayMode.normal) };
+            FeedViewModel[] feed = new FeedViewModel[] { new FeedViewModel(Windows.Data.Json.JsonObject.Parse(txb2.Text)) };
             asa.ItemsSource = feed;
+        }
+
+        private void Slider_ValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+        {
+            Test = new Test { Value = e.NewValue.ToString() };
         }
     }
 }

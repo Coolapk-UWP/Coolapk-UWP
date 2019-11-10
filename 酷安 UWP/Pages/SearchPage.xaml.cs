@@ -103,7 +103,7 @@ namespace CoolapkUWP.Pages
             {
                 lastItems[0] = Root.Last().GetObject()["id"].GetString();
                 foreach (var i in Root)
-                    FeedsCollection.Add(new FeedViewModel(i.GetObject(), FeedDisplayMode.normal));
+                    FeedsCollection.Add(new FeedViewModel(i.GetObject()));
             }
             else pages[0]--;
             Tools.rootPage.HideProgressBar();

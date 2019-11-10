@@ -118,7 +118,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     firstItem = Root.First().GetObject()["id"].GetNumber();
                 lastItem = Root.Last().GetObject()["id"].GetNumber();
                 foreach (var i in Root)
-                    FeedsCollection.Add(new FeedViewModel(i, FeedDisplayMode.normal));
+                    FeedsCollection.Add(new FeedViewModel(i));
             }
             else page--;
         }
@@ -150,7 +150,7 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 firstItem = Root.First().GetObject()["id"].GetNumber();
                 for (int i = 0; i < Root.Count; i++)
-                    FeedsCollection.Insert(i, new FeedViewModel(Root[i], FeedDisplayMode.normal));
+                    FeedsCollection.Insert(i, new FeedViewModel(Root[i]));
             }
             Tools.rootPage.HideProgressBar();
         }

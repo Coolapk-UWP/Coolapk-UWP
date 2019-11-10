@@ -80,7 +80,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     ShowUserButton = showUserButton ? Visibility.Visible : Visibility.Collapsed,
                     url = showUserButton ? detail["userInfo"].GetObject()["url"].GetString() : string.Empty,
                     UserName = showUserButton ? detail["userInfo"].GetObject()["username"].GetString() : string.Empty,
-                    UserAvatar = showUserButton ? getImage(detail["userInfo"].GetObject()["userSmallAvatar"].ToString()) : new BitmapImage()
+                    UserAvatar = showUserButton ? getImage(detail["userInfo"].GetObject()["userSmallAvatar"].ToString().Replace("\"",string.Empty)) : new BitmapImage()
                 };
             }
         }

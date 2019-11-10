@@ -9,20 +9,10 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP
 {
-    public class Feed : Control.ViewModels.IEntity
+    class Feed : Control.ViewModels.Entity
     {
         public JsonObject jObject;
-        public Feed(JsonObject jObject)
-        {
-            this.jObject = jObject;
-            if (jObject.TryGetValue("entityId", out IJsonValue value1)) entityId = value1.ToString().Replace("\"", string.Empty);
-            if (jObject.TryGetValue("entityFixed", out IJsonValue value2) && value2.ToString().Replace("\"", string.Empty) == "1") entityFixed = true;
-            if (jObject.TryGetValue("entityType", out IJsonValue value3)) entityType = value3.ToString().Replace("\"", string.Empty);
-        }
-
-        public string entityId { get; private set; }
-        public bool entityFixed { get; private set; }
-        public string entityType { get; private set; }
+        public Feed(JsonObject jObject) : base(jObject) => this.jObject = jObject;
 
         public Style ListViewStyle
         {

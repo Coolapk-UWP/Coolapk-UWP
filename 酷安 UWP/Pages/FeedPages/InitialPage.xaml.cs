@@ -24,7 +24,7 @@ namespace CoolapkUWP.Pages.FeedPages
             this.InitializeComponent();
             Task.Run(async () =>
             {
-                await Task.Delay(100);
+                await Task.Delay(300);
                 await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
                     FrameworkElement element = VisualTreeHelper.GetChild(MainPivot, 0) as FrameworkElement;

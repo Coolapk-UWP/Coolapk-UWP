@@ -25,10 +25,10 @@ namespace CoolapkUWP.Pages.FeedPages
         int page = 0;
         List<int> pages = new List<int>();
         string pageUrl;
-        ObservableCollection<IEntity> Collection = new ObservableCollection<IEntity>();
+        ObservableCollection<Entity> Collection = new ObservableCollection<Entity>();
         int index;
         List<string> urls = new List<string>();
-        ObservableCollection<ObservableCollection<IEntity>> Feeds2 = new ObservableCollection<ObservableCollection<IEntity>>();
+        ObservableCollection<ObservableCollection<Entity>> Feeds2 = new ObservableCollection<ObservableCollection<Entity>>();
         InitialPage initialPage = null;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -84,7 +84,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        async Task<bool> GetUrlPage(int page, string url, ObservableCollection<IEntity> FeedsCollection)
+        async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
         {
             Tools.rootPage.ShowProgressBar();
             string s = await Tools.GetJson($"{url}{(url == "/main/indexV8" ? "?" : "&")}page={page}");
@@ -137,7 +137,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        IEntity GetIEntity(JsonObject token)
+        Entity GetIEntity(JsonObject token)
         {
             switch (token["entityType"].GetString())
             {
@@ -153,12 +153,12 @@ namespace CoolapkUWP.Pages.FeedPages
         private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if ((sender as FrameworkElement).Tag is Feed)
-                Tools.rootPage.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), Tools.rootPage, string.Empty, null });
+                Tools.rootPage.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), string.Empty});
             else if ((sender as FrameworkElement).Tag is Feed[])
             {
                 var f = (sender as FrameworkElement).Tag as Feed[];
                 if (!string.IsNullOrEmpty(f[0].jObject.ToString()))
-                    Tools.rootPage.Navigate(typeof(FeedDetailPage), new object[] { f[0].GetValue("id"), Tools.rootPage, string.Empty, null });
+                    Tools.rootPage.Navigate(typeof(FeedDetailPage), new object[] { f[0].GetValue("id"), string.Empty});
             }
         }
 
@@ -225,7 +225,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 element.Items.Clear();
                 for (int j = 0; j < f.Count(); j++)
                 {
-                    var ff = new ObservableCollection<IEntity>();
+                    var ff = new ObservableCollection<Entity>();
                     var i = new PivotItem
                     {
                         Tag = f[j],
@@ -252,7 +252,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 PivotItem item = i is null ? element.SelectedItem as PivotItem : i;
                 Feed feed = item.Tag as Feed;
                 ListView view = item.Content as ListView;
-                ObservableCollection<IEntity> feeds = view.ItemsSource as ObservableCollection<IEntity>;
+                ObservableCollection<Entity> feeds = view.ItemsSource as ObservableCollection<Entity>;
                 string u = feed.GetValue("url");
                 u = u.Replace("#", "%23");
                 u = "/page/dataList?url=" + u + $"&title={feed.GetValue("title")}";
@@ -265,7 +265,7 @@ namespace CoolapkUWP.Pages.FeedPages
             Feed feed = (sender as ListViewItem).DataContext as Feed;
             if (Feeds2.Count > 0)
             {
-                ObservableCollection<IEntity> feeds = Feeds2[0];
+                ObservableCollection<Entity> feeds = Feeds2[0];
                 var needDeleteItems = (from b in feeds
                                        where b.entityType == "feed"
                                        select b).ToArray();
@@ -278,7 +278,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             else
             {
-                ObservableCollection<IEntity> feeds = Collection;
+                ObservableCollection<Entity> feeds = Collection;
                 var needDeleteItems = (from b in feeds
                                        where b.entityType == "topic"
                                        select b).ToArray();

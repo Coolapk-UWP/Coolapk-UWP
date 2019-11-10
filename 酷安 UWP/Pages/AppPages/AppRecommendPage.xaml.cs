@@ -46,7 +46,7 @@ namespace CoolapkUWP.Pages.AppPages
             Tools.mainPage.ResetRowHeight();
             Task.Run(async () =>
             {
-               await Task.Delay(100);
+               await Task.Delay(300);
                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                {
                    FrameworkElement element = VisualTreeHelper.GetChild(Pivot1, 0) as FrameworkElement;

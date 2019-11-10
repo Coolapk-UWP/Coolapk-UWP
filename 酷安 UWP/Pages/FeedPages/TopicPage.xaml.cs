@@ -103,7 +103,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     lastItem = Root.Last().GetObject()["id"].GetNumber();
                 }
                 foreach (var i in Root)
-                    FeedsCollection.Add(new FeedViewModel(i, FeedDisplayMode.normal));
+                    FeedsCollection.Add(new FeedViewModel(i));
             }
             else page--;
         }

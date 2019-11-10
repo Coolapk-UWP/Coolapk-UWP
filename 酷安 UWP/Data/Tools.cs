@@ -53,7 +53,7 @@ namespace CoolapkUWP.Data
                 string u = str.Replace("/feed/", string.Empty);
                 if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
                 if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
-                rootPage.Navigate(typeof(FeedDetailPage), new object[] { u, rootPage, string.Empty, null });
+                rootPage.Navigate(typeof(FeedDetailPage), new object[] { u, string.Empty });
             }
             else if (str.IndexOf("/t/") == 0)
             {
@@ -259,42 +259,10 @@ namespace CoolapkUWP.Data
             catch { throw; }
         }
 
-        public static async Task<JsonObject> GetFeedDetailById(string feedId)
-        {
-            string result = await GetJson("/feed/detail?id=" + feedId);
-            JsonObject jo = JsonObject.Parse(result);
-            return jo["data"].GetObject();
-        }
-        public static async Task<JsonArray> GetAnswerListById(string feedId, string sortType, string page, string firstItem, string lastItem)
-        {
-            string result = await GetJson($"/question/answerList?id={feedId}&sort={sortType}&page={page}&firstItem={firstItem}&lastItem={lastItem}");
-            JsonObject jo = JsonObject.Parse(result);
-            return jo["data"].GetArray();
-        }
-        //回复
-        public static async Task<JsonArray> GetFeedReplyListById(string feedId, string listType, string page, string fromFeedAuthor, string firstItem, string lastItem)
-        {
-            string result = await GetJson($"/feed/replyList?id={feedId}&listType={listType}&page={page}&firstItem={firstItem}&lastItem={lastItem}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={fromFeedAuthor}");
-            JsonObject jo = JsonObject.Parse(result);
-            return jo["data"].GetArray();
-        }
         //回复的回复
         public static async Task<JsonArray> GetReplyListById(string feedId, string page, string lastItem)
         {
             string result = await GetJson($"/feed/replyList?id={feedId}&listType=&page={page}&lastItem={lastItem}&discussMode=0&feedType=feed_reply&blockStatus=0&fromFeedAuthor=0");
-            JsonObject jo = JsonObject.Parse(result);
-            return jo["data"].GetArray();
-        }
-
-        public static async Task<JsonArray> GetFeedLikeUsersListById(string feedId, string page, string firstItem, string lastItem)
-        {
-            string result = await GetJson($"/feed/likeList?id={feedId}&listType=lastupdate_desc&page={page}&firstItem={firstItem}&lastItem={lastItem}");
-            JsonObject jo = JsonObject.Parse(result);
-            return jo["data"].GetArray();
-        }
-        public static async Task<JsonArray> GetForwardListById(string feedId, string page)
-        {
-            string result = await GetJson($"/feed/forwardList?id={feedId}&type=feed&page={page}");
             JsonObject jo = JsonObject.Parse(result);
             return jo["data"].GetArray();
         }

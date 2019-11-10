@@ -38,7 +38,7 @@ namespace CoolapkUWP.Pages
             Settings.CheckTheme();
             Task.Run(async () =>
             {
-                await Task.Delay(100);
+                await Task.Delay(300);
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                  {
                      var aa = VisualTreeHelper.GetChild(hamburgerMenuControl, 0) as Grid;

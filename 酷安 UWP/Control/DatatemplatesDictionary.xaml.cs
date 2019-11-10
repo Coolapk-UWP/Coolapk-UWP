@@ -30,7 +30,7 @@ namespace CoolapkUWP.Control
         }
 
         private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
-            => Tools.rootPage.Navigate(typeof(FeedDetailPage), new object[] { (sender as FrameworkElement).Tag.ToString(), Tools.rootPage, string.Empty, null });
+            => Tools.rootPage.Navigate(typeof(FeedDetailPage), new object[] { (sender as FrameworkElement).Tag.ToString(), string.Empty });
 
     }
 }
