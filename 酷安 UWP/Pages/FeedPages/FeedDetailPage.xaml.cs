@@ -115,27 +115,8 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            //if (TitleBar.Title != "回复")
-            //{
-            //    if ((sender as FrameworkElement).Tag is Feed f)
-            //    {
-            //        if (f.GetValue("infoHtml") != "回复")
-            //            Tools.rootPage.Navigate(typeof(FeedDetailPage), new object[] { f.GetValue("id"), Tools.rootPage, string.Empty, null });
-            //        else
-            //        {
-            //            ContentDialog1 contentDialog = new ContentDialog1
-            //            {
-            //                RequestedTheme = Settings.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light
-            //            };
-            //            contentDialog.Navigate(typeof(FeedDetailPage),
-            //                new object[] { f.GetValue("id"), Tools.rootPage, "回复", (sender as FrameworkElement).Tag });
-            //            await contentDialog.ShowAsync();
-            //        }
-            //    }
-            //    else 
-            //    if ((sender as FrameworkElement).Tag is string s)
-            //        Tools.OpenLink(s);
-            //}
+            if ((sender as FrameworkElement).Tag is string s)
+                Tools.OpenLink(s);
         }
 
         async void Refresh()
@@ -146,40 +127,31 @@ namespace CoolapkUWP.Pages.FeedPages
                 switch (FeedDetailPivot.SelectedIndex.ToString())
                 {
                     case "0":
-                        //if (TitleBar.Title == "回复")
-                        //{
-                        //    JsonArray array = await Tools.GetReplyListById(id, "1", feedlastItem);
-                        //    if (array.Count != 0)
-                        //        feeds.Insert(0, new Feed2(array, $"第1页"));
-                        //}
-                        //else
+                        string res = await Tools.GetJson("/feed/detail?id=" + id);
+                        JsonObject detail = Tools.GetJSonObject(res);
+                        if (detail != null)
                         {
-                            string res = await Tools.GetJson("/feed/detail?id=" + id);
-                            JsonObject detail = Tools.GetJSonObject(res);
-                            if (detail != null)
+                            FeedDetail = new FeedDetailViewModel(detail);
+                            hotReplys.Clear();
+                            JsonArray values = detail["hotReplyRows"].GetArray();
+                            foreach (var item in values)
+                                hotReplys.Add(new FeedReplyViewModel(item));
+                            string re = await Tools.GetJson($"/feed/replyList?id={id}&listType={listType}&page={1}&firstItem={feedFirstItem}&lastItem={feedLastItem}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}");
+                            JsonArray array = Tools.GetDataArray(re);
+                            if (array.Count != 0)
                             {
-                                FeedDetail = new FeedDetailViewModel(detail);
-                                hotReplys.Clear();
-                                JsonArray values = detail["hotReplyRows"].GetArray();
-                                foreach (var item in values)
-                                    hotReplys.Add(new FeedReplyViewModel(item));
-                                string re = await Tools.GetJson($"/feed/replyList?id={id}&listType={listType}&page={1}&firstItem={feedFirstItem}&lastItem={feedLastItem}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}");
-                                JsonArray array = Tools.GetDataArray(re);
-                                if (array.Count != 0)
-                                {
-                                    feedFirstItem = array.First().GetObject()["id"].GetNumber();
-                                    if (feedLastItem == 0) feedLastItem = array.Last().GetObject()["id"].GetNumber();
-                                    var d = (from a in replys
-                                             from b in array
-                                             where a.id == b.GetObject()["id"].GetNumber()
-                                             select a).ToArray();
-                                    foreach (var item in d)
-                                        replys.Remove(item);
-                                    foreach (var item in array)
-                                        replys.Add(new FeedReplyViewModel(item));
-                                }
-                                else feedPage--;
+                                feedFirstItem = array.First().GetObject()["id"].GetNumber();
+                                if (feedLastItem == 0) feedLastItem = array.Last().GetObject()["id"].GetNumber();
+                                var d = (from a in replys
+                                         from b in array
+                                         where a.id == b.GetObject()["id"].GetNumber()
+                                         select a).ToArray();
+                                foreach (var item in d)
+                                    replys.Remove(item);
+                                foreach (var item in array)
+                                    replys.Add(new FeedReplyViewModel(item));
                             }
+                            else feedPage--;
                         }
                         break;
                     case "1":
@@ -258,16 +230,6 @@ namespace CoolapkUWP.Pages.FeedPages
                         switch (FeedDetailPivot.SelectedIndex.ToString())
                         {
                             case "0":
-                                //if (TitleBar.Title == "回复")
-                                //{
-                                //    JsonArray array = await Tools.GetReplyListById(id, $"{++feedpage}", feedlastItem);
-                                //    if (array.Count != 0)
-                                //    {
-                                //        feedlastItem = array.Last().GetObject()["id"].ToString();
-                                //        replys.Add(new Feed2(array, string.Empty));
-                                //    }
-                                //    else feedpage--;
-                                //}
                                 string re = await Tools.GetJson($"/feed/replyList?id={id}&listType={listType}&page={++feedPage}&firstItem={feedFirstItem}&lastItem={feedLastItem}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}");
                                 JsonArray array = Tools.GetDataArray(re);
                                 if (array.Count != 0)
