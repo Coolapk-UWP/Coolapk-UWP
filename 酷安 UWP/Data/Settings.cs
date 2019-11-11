@@ -49,7 +49,7 @@ namespace CoolapkUWP.Data
         public static Thickness stackPanelMargin = new Thickness(0, PageTitleHeight, 0, 2);
         public static VerticalAlignment titleContentVerticalAlignment = VerticalAlignment.Bottom;
 
-        public static bool GetBoolen(string key) => Convert.ToBoolean(localSettings.Values[key]);
+        public static bool GetBoolen(string key) => (bool)localSettings.Values[key];
         public static string GetString(string key) => localSettings.Values[key] as string;
         public static void Set(string key, object value) => localSettings.Values[key] = value;
 
@@ -125,7 +125,7 @@ namespace CoolapkUWP.Data
                 else
                 {
                     var view = ApplicationView.GetForCurrentView().TitleBar;
-                    //view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = BackColor;
+                    view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
                     view.ForegroundColor = view.ButtonForegroundColor = view.ButtonHoverForegroundColor = view.ButtonPressedForegroundColor = ForeColor;
                     view.InactiveForegroundColor = view.ButtonInactiveForegroundColor = ButtonForeInactiveColor;
                     view.ButtonHoverBackgroundColor = BackColor;

@@ -116,6 +116,7 @@
     <Compile Include="Control\ViewModels\FeedReplyViewModel.cs" />
     <Compile Include="Control\ViewModels\FeedViewModelBase.cs" />
     <Compile Include="Control\ViewModels\FeedDetailViewModel.cs" />
+    <Compile Include="Control\ViewModels\SimpleFeedReplyViewModel.cs" />
     <Compile Include="Control\ViewModels\SourceFeedViewModel.cs" />
     <Compile Include="Pages\AppPages\AppRecommendPage.xaml.cs">
       <DependentUpon>AppRecommendPage.xaml</DependentUpon>
@@ -838,6 +839,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
+      <Version>2.9.7</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
     </PackageReference>

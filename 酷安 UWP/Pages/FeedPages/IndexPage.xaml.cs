@@ -96,7 +96,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     var needDeleteItems = (from b in FeedsCollection
                                            from c in Root
-                                           where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"",string.Empty)
+                                           where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
                                            select b).ToArray();
                     foreach (var item in needDeleteItems)
                         Collection.Remove(item);
@@ -141,10 +141,10 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             switch (token["entityType"].GetString())
             {
-                case "feed":return new FeedViewModel(token, FeedDisplayMode.isFirstPageFeed);
-                case "user":return new UserViewModel(token);
-                case "topic":return new TopicViewModel(token);
-                case "dyh":return new DyhViewModel(token);
+                case "feed": return new FeedViewModel(token, FeedDisplayMode.isFirstPageFeed);
+                case "user": return new UserViewModel(token);
+                case "topic": return new TopicViewModel(token);
+                case "dyh": return new DyhViewModel(token);
                 case "card":
                 default: return new Feed(token);
             }
@@ -153,12 +153,12 @@ namespace CoolapkUWP.Pages.FeedPages
         private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if ((sender as FrameworkElement).Tag is Feed)
-                Tools.rootPage.Navigate(typeof(FeedDetailPage), new object[] { ((sender as FrameworkElement).Tag as Feed).GetValue("id"), string.Empty});
+                Tools.rootPage.Navigate(typeof(FeedDetailPage), ((sender as FrameworkElement).Tag as Feed).GetValue("id"));
             else if ((sender as FrameworkElement).Tag is Feed[])
             {
                 var f = (sender as FrameworkElement).Tag as Feed[];
                 if (!string.IsNullOrEmpty(f[0].jObject.ToString()))
-                    Tools.rootPage.Navigate(typeof(FeedDetailPage), new object[] { f[0].GetValue("id"), string.Empty});
+                    Tools.rootPage.Navigate(typeof(FeedDetailPage), f[0].GetValue("id"));
             }
         }
 

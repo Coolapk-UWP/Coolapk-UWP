@@ -39,6 +39,7 @@ namespace CoolapkUWP.Data
 
         public static async void OpenLink(string str)
         {
+            if (str is null) return;
             if (str.IndexOf("/u/") == 0)
             {
                 string u = str.Replace("/u/", string.Empty);
@@ -53,7 +54,7 @@ namespace CoolapkUWP.Data
                 string u = str.Replace("/feed/", string.Empty);
                 if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
                 if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
-                rootPage.Navigate(typeof(FeedDetailPage), new object[] { u, string.Empty });
+                rootPage.Navigate(typeof(FeedDetailPage), u);
             }
             else if (str.IndexOf("/t/") == 0)
             {
@@ -69,7 +70,14 @@ namespace CoolapkUWP.Data
                 if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
                 rootPage.Navigate(typeof(DyhPage), u);
             }
-
+            else if (str.IndexOf("/apk/") == 0)
+            {
+                string u = "http://www.coolapk.com" + str;
+                if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
+                if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
+                if (u.Contains('&')) u = u.Substring(0, u.IndexOf('&'));
+                rootPage.Navigate(typeof(Pages.AppPages.AppPage), u);
+            }
             else if (str.IndexOf("https") == 0)
             {
                 if (str.Contains("coolapk.com"))
@@ -98,7 +106,6 @@ namespace CoolapkUWP.Data
             s = s.Replace("\\", "\\\\");
             s = s.Replace("&#039;", "\'");
             s = s.Replace("&nbsp;", "\\&nbsp;");
-            s = s.Replace("<sub>", "\\<sub>");
             s = s.Replace("</a>", "</a> ");
             s = s.Replace(">", "\\>");
             s = s.Replace("#", "\\#");
@@ -112,7 +119,6 @@ namespace CoolapkUWP.Data
             s = s.Replace("-", "\\-");
             s = s.Replace("\\-\\-\\>", "-->");
             s = s.Replace("!\\-\\-", "!--");
-            s = s.Replace("*", "\\*");
             s = s.Replace(".", "\\.");
             s = s.Replace(":", "\\:");
             s = s.Replace("\n", "\n\n");
@@ -120,8 +126,8 @@ namespace CoolapkUWP.Data
             {
                 if (s.Contains(i))
                 {
-                    if (i.Contains("\\("))
-                        s = s.Replace($"\\#\\({i})", $"\n![#{i})](ms-appx:/Assets/Emoji/{i}.png =24)");
+                    if (i.Contains("("))
+                        s = s.Replace($"\\#\\{i})", $"\n![{i})](ms-appx:/Assets/Emoji/{i}.png =24)");
                     else if (Settings.GetBoolen("IsUseOldEmojiMode"))
                         if (Emojis.oldEmojis.Contains(i))
                             s = s.Replace($"\\{i}", $"\n![{i}(ms-appx:/Assets/Emoji/{i}2.png =24)");
@@ -140,13 +146,30 @@ namespace CoolapkUWP.Data
                 }
                 string t = regex3.Match(h.Value).Value.Replace(">", string.Empty);
                 t = t.Replace("<", string.Empty);
-                string tt = regex2.Match(h.Value).Value.Replace("href=", string.Empty);
-                tt = tt.Replace("\"", string.Empty);
-                tt = tt.Replace($"\\>{t}</a\\>", string.Empty);
+                string tt = regex2.Match(h.Value).Value.Replace("href=\"", string.Empty);
+                if (tt.IndexOf("\"") > 0)
+                {
+                    tt = tt.Substring(0, tt.IndexOf("\""));
+                    tt = tt.Replace("\\:", ":");
+                    tt = tt.Replace("\\.", ".");
+                    tt = tt.Replace("\'", "&#039;");
+                    tt = tt.Replace("\\&nbsp;", "&nbsp;");
+                    tt = tt.Replace("\\>", ">");
+                    tt = tt.Replace("\\#", "#");
+                    tt = tt.Replace("\\`", "`");
+                    tt = tt.Replace("\\*", "*");
+                    tt = tt.Replace("\\(", "(");
+                    tt = tt.Replace("\\~", "~");
+                    tt = tt.Replace("\\^", "^");
+                    tt = tt.Replace("\\[", "[");
+                    tt = tt.Replace("\\+", "+");
+                    tt = tt.Replace("\\-", "-");
+                }
                 if (t == "查看更多") tt = "get";
                 s = s.Replace(h.Value, $"[{t}]({tt})");
             }
             s = s.Replace(" ", "&nbsp;");
+            s = s.Replace("&nbsp;=24)", " =24)");
             return s;
         }
 
@@ -251,20 +274,11 @@ namespace CoolapkUWP.Data
             }
             catch (HttpRequestException e)
             {
-                //if (e.Message.Contains("404")) rootPage.ShowMessage("用户不存在");
-                //else
-                rootPage.ShowHttpExceptionMessage(e);
+                if (e.Message.Contains("404")) rootPage.ShowMessage("用户不存在");
+                else rootPage.ShowHttpExceptionMessage(e);
                 return "0";
             }
             catch { throw; }
-        }
-
-        //回复的回复
-        public static async Task<JsonArray> GetReplyListById(string feedId, string page, string lastItem)
-        {
-            string result = await GetJson($"/feed/replyList?id={feedId}&listType=&page={page}&lastItem={lastItem}&discussMode=0&feedType=feed_reply&blockStatus=0&fromFeedAuthor=0");
-            JsonObject jo = JsonObject.Parse(result);
-            return jo["data"].GetArray();
         }
     }
     /*

@@ -21,7 +21,7 @@ namespace CoolapkUWP.Pages
 {
     public sealed partial class MainPage : Page
     {
-        public static int seletedItem =
+        static int seletedItem =
 #if DEBUG
             0;
 #else

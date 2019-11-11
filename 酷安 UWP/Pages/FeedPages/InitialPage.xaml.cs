@@ -40,7 +40,7 @@ namespace CoolapkUWP.Pages.FeedPages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            Tools.mainPage.ResetRowHeight();
+            //Tools.mainPage.ResetRowHeight();
             if (MainPivot.Items.Count == 0)
                 Pivot_SelectionChanged(null, null);
         }

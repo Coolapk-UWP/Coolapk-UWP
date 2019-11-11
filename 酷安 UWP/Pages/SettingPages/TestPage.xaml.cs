@@ -132,7 +132,7 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-            FeedViewModel[] feed = new FeedViewModel[] { new FeedViewModel(Windows.Data.Json.JsonObject.Parse(txb2.Text)) };
+            FeedReplyViewModel[] feed = new FeedReplyViewModel[] { new FeedReplyViewModel(Windows.Data.Json.JsonObject.Parse(txb2.Text)) };
             asa.ItemsSource = feed;
         }
 

@@ -339,7 +339,6 @@
         </Style>
 
         <Style x:Key="ListViewStyle2Mobile" TargetType="ListView">
-            <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundListMediumBrush}"/>
             <Setter Property="IsTabStop" Value="False"/>
             <Setter Property="TabNavigation" Value="Once"/>
             <Setter Property="IsSwipeEnabled" Value="True"/>
@@ -383,7 +382,6 @@
         </Style>
 
         <Style x:Key="ListViewStyle2Desktop" TargetType="ListView">
-            <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundListMediumBrush}"/>
             <Setter Property="IsTabStop" Value="False"/>
             <Setter Property="TabNavigation" Value="Once"/>
             <Setter Property="IsSwipeEnabled" Value="True"/>

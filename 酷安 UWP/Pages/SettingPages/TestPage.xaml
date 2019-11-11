@@ -28,7 +28,7 @@
                 <Button Click="Button_Click_1">encode</Button>
                 <TextBox AcceptsReturn="True" x:Name="txb2" MaxHeight="250"/>
                 <Button Click="Button_Click_6">show</Button>
-                <ListView ItemTemplate="{StaticResource feed}" x:Name="asa"/>
+                <ListView ItemTemplate="{StaticResource feed_reply}" x:Name="asa"/>
                 <TextBox Header="message" x:Name="message"/>
                 <Button Click="Button_Click_4">show</Button>
                 <Button Click="Button_Click_2">go</Button>

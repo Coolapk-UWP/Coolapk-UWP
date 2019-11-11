@@ -9,15 +9,14 @@ namespace CoolapkUWP.Control.ViewModels
         public SourceFeedViewModel(IJsonValue t) : base(t)
         {
             JsonObject token = t.GetObject();
-            url = token["url"].GetString();
+            url = token.TryGetValue("url", out IJsonValue json) ? json.GetString() : $"/feed/{token["id"].ToString().Replace("\"", string.Empty)}";
             if (token["entityType"].GetString() != "article")
             {
                 uurl = token["userInfo"].GetObject()["url"].GetString();
-                username = token["username"].GetString();
-                string s = token["dateline"].ToString().Replace("\"", string.Empty);
-                dateline = Tools.ConvertTime(double.Parse(s));
+                username = token["userInfo"].GetObject()["username"].GetString();
+                dateline = Tools.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
                 message = Tools.GetMessageText(token["message"].GetString());
-                message_title = token["message_title"].GetString();
+                message_title = token.TryGetValue("message_title", out IJsonValue j) ? j.GetString() : string.Empty;
             }
             else
             {
@@ -27,11 +26,11 @@ namespace CoolapkUWP.Control.ViewModels
             }
             showMessage_title = !string.IsNullOrEmpty(message_title);
 
-            showPicArr = token["picArr"].GetArray().Count > 0 && !string.IsNullOrEmpty(token["picArr"].GetArray()[0].GetString()) ? true : false;
+            showPicArr = token.TryGetValue("picArr", out IJsonValue value) && value.GetArray().Count > 0 && !string.IsNullOrEmpty(value.GetArray()[0].GetString());
             if (showPicArr)
             {
                 List<string> vs = new List<string>();
-                foreach (var item in token["picArr"].GetArray())
+                foreach (var item in value.GetArray())
                     vs.Add(item.GetString() + ".s.jpg");
                 picArr = vs.ToArray();
             }

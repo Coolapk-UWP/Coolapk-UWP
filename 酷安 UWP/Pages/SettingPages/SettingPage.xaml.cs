@@ -98,6 +98,7 @@ namespace CoolapkUWP.Pages.SettingPages
                         Settings.Set("UserAvatar", userAvatar);
                         Tools.mainPage.UpdateUserInfo();
                     }
+                    catch (System.Net.Http.HttpRequestException ex) { Tools.rootPage.ShowHttpExceptionMessage(ex); }
                     catch (Exception ex) { await new MessageDialog($"出现错误，可能是用户名不正确。\n{ex}").ShowAsync(); }
                     break;
             }

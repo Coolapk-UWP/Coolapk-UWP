@@ -24,12 +24,7 @@ namespace CoolapkUWP.Pages
             this.InitializeComponent();
             Tools.rootPage = this;
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
-            {
                 Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-                var view = ApplicationView.GetForCurrentView().TitleBar;
-                view.ButtonBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
-
-            }
             else statusGrid.Visibility = Visibility.Collapsed;
             Application.Current.LeavingBackground += Current_Resuming;
             Application.Current.Resuming += Current_Resuming;

@@ -12,7 +12,9 @@ namespace CoolapkUWP.Control
         public event RoutedEventHandler RefreshButtonClick;
         public Visibility BackButtonVisibility { get => BackButton.Visibility; set => BackButton.Visibility = value; }
         public Visibility RefreshButtonVisibility { get => RefreshButton.Visibility; set => RefreshButton.Visibility = value; }
-
+        public double TitleHeight { get => titleGrid.Height; set => titleGrid.Height = value; }
+        public Symbol BackButtonSymbol { get => BackButtonIcon.Symbol; set => BackButtonIcon.Symbol= value; }
+        public object RefreshButtonTag { get => RefreshButton.Tag; set => RefreshButton.Tag = value; }
         public TitleBar()
         {
             this.InitializeComponent();

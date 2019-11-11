@@ -35,7 +35,6 @@ namespace CoolapkUWP.Control.ViewModels
                 showUser = true;
                 if (!string.IsNullOrEmpty(token["userInfo"].GetObject()["userSmallAvatar"].GetString()))
                     userSmallAvatar = new BitmapImage(new Uri(token["userInfo"].GetObject()["userSmallAvatar"].GetString()));
-
                 showExtra_url = token.TryGetValue("extra_title", out IJsonValue valueextra_title) && !string.IsNullOrEmpty(valueextra_title.GetString());
                 if (showExtra_url)
                 {
@@ -53,8 +52,6 @@ namespace CoolapkUWP.Control.ViewModels
             }
         }
         public string info { get; private set; }
-        public string likenum { get; private set; }
-        public string replynum { get; private set; }
         public string share_num { get; private set; }
         public string device_title { get; private set; }
         public bool showSourceFeed { get; private set; }
@@ -71,6 +68,8 @@ namespace CoolapkUWP.Control.ViewModels
         public string question_follow_num { get; private set; }
         public bool showUser { get; private set; }
         public bool showUser2 { get => !showUser; }
+        public string likenum { get; private set; }
+        public string replynum { get; private set; }
         public ImageSource userSmallAvatar { get; private set; } = new BitmapImage();
     }
 }
