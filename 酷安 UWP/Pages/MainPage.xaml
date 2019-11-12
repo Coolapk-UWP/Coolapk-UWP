@@ -214,5 +214,9 @@
                 </Grid>
             </Grid>
         </controls:HamburgerMenu>
+        <Grid x:Name="statusGrid" Height="32" Padding="0,0,140,0" VerticalAlignment="Top" Background="Transparent">
+            <ProgressBar Visibility="Collapsed" ShowError="False" ShowPaused="False" VerticalAlignment="Top" x:Name="statusBar"/>
+            <TextBlock Margin="16,3" FontSize="16" x:Name="messageTextBlock"/>
+        </Grid>
     </Grid>
 </Page>

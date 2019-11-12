@@ -218,7 +218,7 @@
                         </StackPanel>
                         <StackPanel Grid.Row="1">
                             <TextBlock TextWrapping="Wrap" FontWeight="Black" FontSize="18" Margin="0,3" Text="{x:Bind GetValue('message_title')}"/>
-                            <controls:MarkdownTextBlock IsTextSelectionEnabled="False" Text="{x:Bind GetValue('message')}"/>
+                            <controls:MarkdownTextBlock  ImageResolving="MarkdownTextBlock_ImageResolving" IsTextSelectionEnabled="False" Text="{x:Bind GetValue('message')}"/>
                         </StackPanel>
                     </Grid>
                 </ListViewItem>
@@ -239,6 +239,6 @@
                 </ListView>
             </StackPanel>
         </ScrollViewer>
-        <control:TitleBar x:Name="TitleBar" BackButtonClick="TitleBar_BackButtonClick" RefreshButtonClick="{x:Bind RefreshPage}"/>
+        <control:TitleBar x:Name="TitleBar" BackButtonClick="TitleBar_BackButtonClick" RefreshEvent="{x:Bind RefreshPage}"/>
     </Grid>
 </Page>

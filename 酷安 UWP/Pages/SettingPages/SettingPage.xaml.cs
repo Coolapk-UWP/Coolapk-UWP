@@ -72,7 +72,7 @@ namespace CoolapkUWP.Pages.SettingPages
             switch (button.Tag as string)
             {
                 case "gotoTestPage":
-                    Tools.rootPage.Navigate(typeof(TestPage), null);
+                    Tools.Navigate(typeof(TestPage), null);
                     break;
                 case "checkUpdate":
                     Settings.CheckUpdate();
@@ -98,7 +98,7 @@ namespace CoolapkUWP.Pages.SettingPages
                         Settings.Set("UserAvatar", userAvatar);
                         Tools.mainPage.UpdateUserInfo();
                     }
-                    catch (System.Net.Http.HttpRequestException ex) { Tools.rootPage.ShowHttpExceptionMessage(ex); }
+                    catch (System.Net.Http.HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
                     catch (Exception ex) { await new MessageDialog($"出现错误，可能是用户名不正确。\n{ex}").ShowAsync(); }
                     break;
             }

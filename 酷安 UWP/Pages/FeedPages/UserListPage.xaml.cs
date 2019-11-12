@@ -60,7 +60,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         async void LoadList(int p = -1)
         {
-            Tools.rootPage.ShowProgressBar();
+            Tools.ShowProgressBar();
             if (p == 1)
             {
                 string url = isFollowList ? $"/user/followList?uid={uid}&page={p}" : $"/user/fansList?uid={uid}&page={p}";
@@ -102,7 +102,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 }
                 else page--;
             }
-            Tools.rootPage.HideProgressBar();
+            Tools.HideProgressBar();
         }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)

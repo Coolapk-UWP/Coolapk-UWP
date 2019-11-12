@@ -1,26 +1,24 @@
 ﻿<ResourceDictionary
     x:Class="CoolapkUWP.Control.DatatemplatesDictionary"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:models="using:CoolapkUWP.Control.ViewModels"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:control="using:CoolapkUWP.Control"
+    xmlns:models="using:CoolapkUWP.Control.ViewModels"
     xmlns:data="using:CoolapkUWP.Data"
-        xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
-    xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)">
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls">
 
     <DataTemplate x:Key="Topic" x:DataType="models:TopicViewModel">
         <ListViewItem Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalContentAlignment="Stretch" Padding="0,4" BorderBrush="{ThemeResource SystemControlBackgroundListLowBrush}" BorderThickness="0,1" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind url}" Tapped="OnTapped">
             <Grid Margin="5,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="55"/>
+                    <ColumnDefinition Width="56"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Ellipse Width="40" Height="40" Grid.RowSpan="2" HorizontalAlignment="Left" >
+                <Ellipse Width="40" Height="40" Grid.RowSpan="2" HorizontalAlignment="Left" Margin="8" VerticalAlignment="Top">
                     <Ellipse.Fill>
                         <ImageBrush ImageSource="{x:Bind logo}"/>
                     </Ellipse.Fill>
@@ -40,14 +38,14 @@
         <ListViewItem Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalContentAlignment="Stretch" Padding="0,4" BorderBrush="{ThemeResource SystemControlBackgroundListLowBrush}" BorderThickness="0,1" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind url}" Tapped="OnTapped">
             <Grid VerticalAlignment="Center" Margin="5,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="55"/>
+                    <ColumnDefinition Width="56"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Ellipse Width="40" Height="40" Grid.RowSpan="2" HorizontalAlignment="Left" >
+                <Ellipse Width="40" Height="40" Grid.RowSpan="2" HorizontalAlignment="Left" Margin="8" VerticalAlignment="Top">
                     <Ellipse.Fill>
                         <ImageBrush ImageSource="{x:Bind logo}"/>
                     </Ellipse.Fill>
@@ -113,7 +111,7 @@
                 </StackPanel>
                 <StackPanel Grid.Row="2" Margin="3">
                     <TextBlock Tag="{x:Bind url}" Tapped="OnTapped" FontSize="16" x:Name="mTitleT" x:Load="{x:Bind showMessage_title}" FontWeight="Black" TextWrapping="Wrap" Text="{x:Bind message_title}"/>
-                    <controls:MarkdownTextBlock Tag="{x:Bind url}" Tapped="OnTapped" Text="{x:Bind message}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
+                    <controls:MarkdownTextBlock ImageResolving="MarkdownTextBlock_ImageResolving" Tag="{x:Bind url}" Tapped="OnTapped" Text="{x:Bind message}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
                     <GridView ScrollViewer.VerticalScrollMode="Disabled" Padding="0" Name="picA" Tapped="PicA_Tapped" HorizontalContentAlignment="Left" MinHeight="0" Margin="0,5,0,0" x:Load="{x:Bind showPicArr}" Tag="{x:Bind picArr}" ItemsSource="{x:Bind picArr}">
                         <GridView.ItemTemplate>
                             <DataTemplate x:DataType="x:String">
@@ -135,7 +133,7 @@
                         </StackPanel>
                         <StackPanel Grid.Row="1" Margin="3">
                             <TextBlock Tag="{x:Bind sourceFeed.url}" Tapped="OnTapped" FontSize="16" x:Name="sourceMT" x:Load="{x:Bind sourceFeed.showMessage_title}" FontWeight="Black" TextWrapping="Wrap" Text="{x:Bind sourceFeed.message_title}"/>
-                            <controls:MarkdownTextBlock Tag="{x:Bind sourceFeed.url}" Tapped="OnTapped" Text="{x:Bind sourceFeed.message}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
+                            <controls:MarkdownTextBlock ImageResolving="MarkdownTextBlock_ImageResolving" Tag="{x:Bind sourceFeed.url}" Tapped="OnTapped" Text="{x:Bind sourceFeed.message}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
                             <GridView ScrollViewer.VerticalScrollMode="Disabled" Padding="0" x:Name="sourcePic" Tapped="PicA_Tapped" HorizontalContentAlignment="Left" MinHeight="0" Margin="0,5,0,0" x:Load="{x:Bind sourceFeed.showPicArr}" Tag="{x:Bind sourceFeed.picArr}" ItemsSource="{x:Bind sourceFeed.picArr}">
                                 <GridView.ItemTemplate>
                                     <DataTemplate x:DataType="x:String">
@@ -182,7 +180,7 @@
                                     <Border Margin="5,0" BorderBrush="{ThemeResource SystemControlHighlightListAccentHighBrush}" BorderThickness="2" HorizontalAlignment="Left">
                                         <TextBlock Text="{x:Bind extraFlag}" />
                                     </Border>
-                                    <controls:MarkdownTextBlock Margin="5" Text="{x:Bind message}" TextWrapping="Wrap" IsTextSelectionEnabled="False" LinkClicked="MarkdownTextBlock_LinkClicked"/>
+                                    <controls:MarkdownTextBlock ImageResolving="MarkdownTextBlock_ImageResolving" Margin="5" Text="{x:Bind message}" TextWrapping="Wrap" IsTextSelectionEnabled="False" LinkClicked="MarkdownTextBlock_LinkClicked"/>
                                 </StackPanel>
                             </ListViewItem>
                         </DataTemplate>
@@ -227,35 +225,44 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" VerticalAlignment="Center">
-                    <Button Style="{StaticResource ButtonStyle1}" Padding="5" Tapped="OnTapped" Tag="{x:Bind uurl}" Background="{x:Null}">
-                        <StackPanel Orientation="Horizontal">
-                            <Ellipse Width="20" Height="20" HorizontalAlignment="Left" >
-                                <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{x:Bind userSmallAvatar}"/>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                            <TextBlock Margin="5,0" Text="{x:Bind username}" VerticalAlignment="Center"/>
-                            <Border BorderBrush="{ThemeResource SystemControlHighlightListAccentHighBrush}" BorderThickness="2" x:Name="isAu" x:Load="{x:Bind isFeedAuthor}">
-                                <TextBlock Margin="5,1" FontSize="12" Text="楼主"/>
-                            </Border>
-                        </StackPanel>
-                    </Button>
-                    <StackPanel Margin="30,0,0,0" Padding="0,-10,0,0" Orientation="Horizontal">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.RowSpan="4" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource ButtonStyle1}" Tapped="OnTapped" Tag="{x:Bind uurl}" Background="{x:Null}">
+                    <Ellipse Width="28" Height="28" Margin="0,4">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{x:Bind userSmallAvatar}"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </Button>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Style="{StaticResource ButtonStyle1}" Content="{x:Bind username}" Padding="0,4" Tapped="OnTapped" Tag="{x:Bind uurl}" Background="{x:Null}"/>
+                        <Border VerticalAlignment="Center" BorderBrush="{ThemeResource SystemControlHighlightListAccentHighBrush}" BorderThickness="2" x:Name="isAu" x:Load="{x:Bind isFeedAuthor}">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Margin" Value="5,1"/>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock FontSize="12" Text="楼主"/>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Padding="0,-10,0,0" Orientation="Horizontal">
                         <TextBlock Text="{x:Bind dateline}" Foreground="Gray" VerticalAlignment="Center"/>
                         <TextBlock VerticalAlignment="Center" Foreground="Gray">回复</TextBlock>
-                        <Button Style="{StaticResource ButtonStyle1}" Tapped="OnTapped" Margin="3,0" Tag="{x:Bind rurl}" Background="{x:Null}" Content="{x:Bind rusername,Mode=OneWay}"/>
+                        <Button Style="{StaticResource ButtonStyle1}" Tapped="OnTapped" Padding="4" Tag="{x:Bind rurl}" Background="{x:Null}" Content="{x:Bind rusername}"/>
                     </StackPanel>
                 </StackPanel>
-                <Grid Grid.Row="1" Margin="5" >
+                <Grid Grid.Column="1" Grid.Row="1" Margin="5" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <controls:MarkdownTextBlock Margin="5,0,0,0" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False" Text="{x:Bind message}"/>
+                    <controls:MarkdownTextBlock ImageResolving="MarkdownTextBlock_ImageResolving" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False" Text="{x:Bind message}"/>
                     <Image x:Name="pic" x:Load="{x:Bind showPic}" Grid.Row="1" Margin="0,5" MaxWidth="100" HorizontalAlignment="Left" Stretch="UniformToFill" Source="{x:Bind pic}" Tapped="Image_Tapped" Tag="{x:Bind picUrl}"/>
                 </Grid>
-                <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left">
                     <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center">
                         <StackPanel Orientation="Horizontal">
                             <SymbolIcon Symbol="Like"/>
@@ -268,45 +275,19 @@
                             <TextBlock Margin="3,0" Text="{x:Bind replynum}" Grid.Column="1"/>
                         </StackPanel>
                     </Button>
+                    <Button Background="{x:Null}" Padding="2" HorizontalAlignment="Center" Content="查看会话" Style="{StaticResource ButtonStyle1}" Foreground="Gray" Tapped="replyRowsItem_Tapped" Tag="{x:Bind}"/>
                 </StackPanel>
-                <ListView Margin="32,0,0,8" Background="{ThemeResource SystemControlBackgroundListLowBrush}" ScrollViewer.VerticalScrollMode="Disabled" x:Name="replyRows" x:Load="{x:Bind showreplyRows}" Grid.Row="3" Style="{x:Bind data:Settings.ListViewStyle}" ItemsSource="{x:Bind replyRows}">
+                <ListView Grid.Column="1" Margin="0,0,0,8" Background="{ThemeResource SystemControlBackgroundListLowBrush}" ScrollViewer.VerticalScrollMode="Disabled" x:Name="replyRows" x:Load="{x:Bind showreplyRows}" Grid.Row="3" Style="{x:Bind data:Settings.ListViewStyle}" ItemsSource="{x:Bind replyRows}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.Footer>
-                        <ListViewItem Tapped="replyRowsItem_Tapped" Template="{StaticResource ListViewItemTemplate1}" x:Name="replyRowsMore" x:Load="{x:Bind showreplyRowsMore}">
-                            <ListViewItem.ContextFlyout>
-                                <Flyout Opened="Flyout_Opened">
-                                    <Flyout.FlyoutPresenterStyle>
-                                        <Style TargetType="FlyoutPresenter">
-                                            <Setter Property="Padding" Value="0"/>
-                                            <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
-                                            <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
-                                            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
-                                            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-                                        </Style>
-                                    </Flyout.FlyoutPresenterStyle>
-                                    <Grid Tag="{x:Bind}" MaxWidth="{ThemeResource FlyoutThemeMaxWidth}" cu:Background="{ThemeResource SystemControlBackgroundListLowBrush}" fcu:Background="{ThemeResource SystemControlAcrylicElementBrush}">
-                                        <ScrollViewer x:Name="ScrollViewer">
-                                            <StackPanel Margin="0,48,0,0">
-                                                <ListView x:Name="FeedReplyList" ItemTemplate="{StaticResource feed_reply}">
-                                                    <ListView.ItemContainerStyle>
-                                                        <Style TargetType="ListViewItem">
-                                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                                        </Style>
-                                                    </ListView.ItemContainerStyle>
-                                                </ListView>
-                                            </StackPanel>
-                                        </ScrollViewer>
-                                        <control:TitleBar x:Name="TitleBar" Title="回复" BackButtonSymbol="Clear"/>
-                                    </Grid>
-                                </Flyout>
-                            </ListViewItem.ContextFlyout>
+                        <ListViewItem Tapped="replyRowsItem_Tapped" Template="{StaticResource ListViewItemTemplate1}" x:Name="replyRowsMore" x:Load="{x:Bind showreplyRowsMore}" Tag="{x:Bind}">
                             <StackPanel Orientation="Horizontal" Margin="4,0">
                                 <TextBlock Foreground="Gray">查看全部回复(</TextBlock>
-                                <TextBlock Foreground="Gray" Text="{x:Bind replyTotal}"/>
+                                <TextBlock Foreground="Gray" Text="{x:Bind replynum}"/>
                                 <TextBlock Foreground="Gray">)</TextBlock>
                             </StackPanel>
                         </ListViewItem>
@@ -314,7 +295,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="models:SimpleFeedReplyViewModel">
                             <ListViewItem Template="{StaticResource ListViewItemTemplate1}">
-                                <controls:MarkdownTextBlock Margin="4,0" Text="{x:Bind message}" IsTextSelectionEnabled="False" LinkClicked="MarkdownTextBlock_LinkClicked"/>
+                                <controls:MarkdownTextBlock ImageResolving="MarkdownTextBlock_ImageResolving" Margin="4,0" Text="{x:Bind message}" IsTextSelectionEnabled="False" LinkClicked="MarkdownTextBlock_LinkClicked"/>
                             </ListViewItem>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -353,7 +334,7 @@
         <ListViewItem HorizontalContentAlignment="Stretch" Padding="0,2" BorderBrush="{ThemeResource SystemControlBackgroundListLowBrush}" BorderThickness="0,1" Template="{StaticResource ListViewItemTemplate1}" Tapped="OnTapped" Tag="{x:Bind url}">
             <Grid Margin="5,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="55"/>
+                    <ColumnDefinition Width="56"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -361,7 +342,7 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <Ellipse Width="40" Height="40" Grid.RowSpan="3" HorizontalAlignment="Left">
+                <Ellipse Width="40" Height="40" Grid.RowSpan="3" HorizontalAlignment="Left" Margin="8" VerticalAlignment="Top">
                     <Ellipse.Fill>
                         <ImageBrush ImageSource="{x:Bind UserAvatar}"/>
                     </Ellipse.Fill>

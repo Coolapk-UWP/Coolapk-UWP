@@ -86,7 +86,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
         {
-            Tools.rootPage.ShowProgressBar();
+            Tools.ShowProgressBar();
             string s = await Tools.GetJson($"{url}{(url == "/main/indexV8" ? "?" : "&")}page={page}");
             JsonArray Root = Tools.GetDataArray(s);
             if (page == 1)
@@ -118,7 +118,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     FeedsCollection.Insert(n + k, GetIEntity(jo));
                     k++;
                 }
-                Tools.rootPage.HideProgressBar();
+                Tools.HideProgressBar();
                 return true;
             }
             else
@@ -126,12 +126,12 @@ namespace CoolapkUWP.Pages.FeedPages
                 if (Root.Count != 0)
                 {
                     foreach (var i in Root) FeedsCollection.Add(GetIEntity(i.GetObject()));
-                    Tools.rootPage.HideProgressBar();
+                    Tools.HideProgressBar();
                     return true;
                 }
                 else
                 {
-                    Tools.rootPage.HideProgressBar();
+                    Tools.HideProgressBar();
                     return false;
                 }
             }
@@ -153,12 +153,12 @@ namespace CoolapkUWP.Pages.FeedPages
         private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if ((sender as FrameworkElement).Tag is Feed)
-                Tools.rootPage.Navigate(typeof(FeedDetailPage), ((sender as FrameworkElement).Tag as Feed).GetValue("id"));
+                Tools.Navigate(typeof(FeedDetailPage), ((sender as FrameworkElement).Tag as Feed).GetValue("id"));
             else if ((sender as FrameworkElement).Tag is Feed[])
             {
                 var f = (sender as FrameworkElement).Tag as Feed[];
                 if (!string.IsNullOrEmpty(f[0].jObject.ToString()))
-                    Tools.rootPage.Navigate(typeof(FeedDetailPage), f[0].GetValue("id"));
+                    Tools.Navigate(typeof(FeedDetailPage), f[0].GetValue("id"));
             }
         }
 
@@ -186,7 +186,7 @@ namespace CoolapkUWP.Pages.FeedPages
             VScrollViewer.ChangeView(null, 0, null);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) => Tools.rootPage.Navigate(typeof(UserPage), (sender as FrameworkElement).Tag as string);
+        private void Button_Click(object sender, RoutedEventArgs e) => Tools.Navigate(typeof(UserPage), (sender as FrameworkElement).Tag as string);
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
         private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
@@ -206,9 +206,9 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     str = str.Replace("/page", "/page/dataList");
                     str += $"&title={feed.GetValue("title")}";
-                    Tools.rootPage.Navigate(typeof(IndexPage), new object[] { str, false, null });
+                    Tools.Navigate(typeof(IndexPage), new object[] { str, false, null });
                 }
-                else if (str.IndexOf('#') == 0) Tools.rootPage.Navigate(typeof(IndexPage), new object[] { $"{str}&title={feed.GetValue("title")}", false, null });
+                else if (str.IndexOf('#') == 0) Tools.Navigate(typeof(IndexPage), new object[] { $"{str}&title={feed.GetValue("title")}", false, null });
                 else Tools.OpenLink(str);
             }
         }
@@ -308,5 +308,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 StackPanelMargin = new Thickness(0, initialPage.ChangeRowHeight(height), 0, 2);
             }
         }
+
+        private void MarkdownTextBlock_ImageResolving(object sender, Microsoft.Toolkit.Uwp.UI.Controls.ImageResolvingEventArgs e) => Tools.SetEmojiPadding(sender);
     }
 }

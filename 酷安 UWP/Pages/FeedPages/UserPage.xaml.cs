@@ -2,6 +2,7 @@
 using CoolapkUWP.Data;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using Windows.Data.Json;
 using Windows.UI.Xaml;
@@ -18,13 +19,25 @@ namespace CoolapkUWP.Pages.FeedPages
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class UserPage : Page
+    public sealed partial class UserPage : Page, INotifyPropertyChanged
     {
         //ScrollViewer VScrollViewer;
         string uid;
         int page = 0;
         double firstItem = 0, lastItem = 0;
+        UserDetail userDetail;
+        UserDetail UserDetail
+        {
+            get => userDetail;
+            set
+            {
+                userDetail = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserDetail)));
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
         ObservableCollection<FeedViewModel> FeedsCollection = new ObservableCollection<FeedViewModel>();
+
         public UserPage()
         {
             this.InitializeComponent();
@@ -39,7 +52,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 if (e.Parameter as string != "0")
                 {
                     uid = e.Parameter as string;
-                    Tools.rootPage.ShowProgressBar();
+                    Tools.ShowProgressBar();
                     FeedsCollection.Clear();
                     page = 0;
                     firstItem = lastItem = 0;
@@ -48,7 +61,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     //GetVScrollViewer();
                     LoadProfile();
                     ReadNextPageFeeds();
-                    Tools.rootPage.HideProgressBar();
+                    Tools.HideProgressBar();
                 }
                 else
                 {
@@ -71,40 +84,27 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public async void LoadProfile()
         {
-            ImageSource getImage(string uri)
-            {
-                if (Settings.GetBoolen("IsNoPicsMode"))
-                {
-                    if (Settings.GetBoolen("IsDarkMode"))
-                        return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
-                    else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
-                }
-                return new BitmapImage(new Uri(uri));
-            }
-
             string result = await Tools.GetJson("/user/space?uid=" + uid);
             JsonObject detail = Tools.GetJSonObject(result);
             if (detail != null)
             {
-                UserDetailGrid.DataContext = new
+                this.UserDetail = new UserDetail
                 {
                     UserFaceUrl = detail["userAvatar"].GetString(),
-                    UserFace = getImage(detail["userAvatar"].GetString()),
                     UserName = detail["username"].GetString(),
                     FollowNum = detail["follow"].GetNumber(),
                     FansNum = detail["fans"].GetNumber(),
                     Level = detail["level"].GetNumber(),
-                    bio = detail["bio"].GetString(),
+                    Bio = detail["bio"].GetString(),
                     BackgroundUrl = detail["cover"].GetString(),
-                    Background = new ImageBrush { ImageSource = getImage(detail["cover"].GetString()), Stretch = Stretch.UniformToFill },
-                    verify_title = detail["verify_title"].GetString(),
-                    gender = detail["gender"].GetNumber() == 1 ? "♂" : (detail["gender"].GetNumber() == 0 ? "♀" : string.Empty),
-                    city = $"{detail["province"].GetString()} {detail["city"].GetString()}",
-                    astro = detail["astro"].GetString(),
-                    logintime = $"{Tools.ConvertTime(detail["logintime"].GetNumber())}活跃"
+                    Verify_title = detail["verify_title"].GetString(),
+                    Gender = detail["gender"].GetNumber() == 1 ? "♂" : (detail["gender"].GetNumber() == 0 ? "♀" : string.Empty),
+                    City = $"{detail["province"].GetString()} {detail["city"].GetString()}",
+                    Astro = detail["astro"].GetString(),
+                    Logintime = $"{Tools.ConvertTime(detail["logintime"].GetNumber())}活跃",
+                    FeedNum = detail["feed"].GetNumber()
                 };
                 titleBar.Title = detail["username"].GetString();
-                ListHeader.DataContext = new { FeedNum = detail["feed"].GetNumber() };
             }
         }
 
@@ -131,10 +131,10 @@ namespace CoolapkUWP.Pages.FeedPages
             switch (button.Tag as string)
             {
                 case "2":
-                    Tools.rootPage.Navigate(typeof(UserListPage), new object[] { uid, true, titleBar.Title });
+                    Tools.Navigate(typeof(UserListPage), new object[] { uid, true, titleBar.Title });
                     break;
                 case "3":
-                    Tools.rootPage.Navigate(typeof(UserListPage), new object[] { uid, false, titleBar.Title });
+                    Tools.Navigate(typeof(UserListPage), new object[] { uid, false, titleBar.Title });
                     break;
             }
         }
@@ -142,7 +142,7 @@ namespace CoolapkUWP.Pages.FeedPages
         async void Refresh()
         {
             if (UserDetailGrid.DataContext == null && FeedsCollection.Count == 0) return;
-            Tools.rootPage.ShowProgressBar();
+            Tools.ShowProgressBar();
             LoadProfile();
             string str = await Tools.GetJson($"/user/feedList?uid={uid}&page=1{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem ={lastItem}")}");
             JsonArray Root = Tools.GetDataArray(str);
@@ -152,7 +152,8 @@ namespace CoolapkUWP.Pages.FeedPages
                 for (int i = 0; i < Root.Count; i++)
                     FeedsCollection.Insert(i, new FeedViewModel(Root[i]));
             }
-            Tools.rootPage.HideProgressBar();
+            VScrollViewer.ChangeView(null, 20, null);
+            Tools.HideProgressBar();
         }
 
         private void PicA_Tapped(object sender, TappedRoutedEventArgs e)
@@ -160,7 +161,7 @@ namespace CoolapkUWP.Pages.FeedPages
             if (sender is FrameworkElement fe)
             {
                 if (fe != e.OriginalSource) return;
-                if (fe.Tag is string s) Tools.rootPage.ShowImage(s);
+                if (fe.Tag is string s) Tools.ShowImage(s);
             }
         }
 
@@ -176,7 +177,6 @@ namespace CoolapkUWP.Pages.FeedPages
                 if (VScrollViewer.VerticalOffset == 0)
                 {
                     Refresh();
-                    VScrollViewer.ChangeView(null, 20, null);
                     refreshText.Visibility = Visibility.Collapsed;
                 }
                 else if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
@@ -184,5 +184,37 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             else refreshText.Visibility = Visibility.Visible;
         }
+    }
+
+    internal class UserDetail
+    {
+        ImageSource GetImage(string uri)
+        {
+            if (Settings.GetBoolen("IsNoPicsMode"))
+            {
+                if (Settings.GetBoolen("IsDarkMode"))
+                    return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
+                else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
+            }
+            return new BitmapImage(new Uri(uri));
+        }
+
+        public string UserFaceUrl;
+        public ImageSource UserFace { get => GetImage(UserFaceUrl); }
+        public string UserName;
+        public double FollowNum;
+        public double FansNum;
+        public double FeedNum;
+        public double Level;
+        public string Bio;
+        public string BackgroundUrl;
+        public ImageBrush Background { get => new ImageBrush { ImageSource = GetImage(BackgroundUrl), Stretch = Stretch.UniformToFill }; }
+        public string Verify_title;
+        public string Gender;
+        public string City;
+        public string Astro;
+        public string Logintime;
+        public bool Has_bio { get => Bio.Length > 0; }
+        public bool Has_verify_title { get => Verify_title.Length > 0; }
     }
 }

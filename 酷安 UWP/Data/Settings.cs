@@ -87,16 +87,16 @@ namespace CoolapkUWP.Data
                     GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.HtmlUrl, release.Body) { RequestedTheme = Settings.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
                     await dialog.ShowAsync();
                 }
-                else Tools.rootPage?.ShowMessage("当前无可用更新。");
+                else Tools.ShowMessage("当前无可用更新。");
             }
-            catch (HttpRequestException ex) { Tools.rootPage?.ShowHttpExceptionMessage(ex); }
+            catch (HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
         }
 
         public static void CheckTheme()
         {
             InitializeSettings();
             //if (Window.Current?.Content is FrameworkElement frameworkElement)
-            var frameworkElement = Tools.rootPage;
+            var frameworkElement = Tools.mainPage;
             if (!GetBoolen("IsDarkMode"))
             {
                 frameworkElement.RequestedTheme = ElementTheme.Light;

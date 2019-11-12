@@ -5,12 +5,16 @@ using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.Pages.SettingPages;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Data.Json;
+using Windows.Foundation.Metadata;
 using Windows.UI;
 using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
@@ -31,6 +35,31 @@ namespace CoolapkUWP.Pages
         {
             this.InitializeComponent();
             Tools.mainPage = this;
+            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
+                Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            else statusGrid.Visibility = Visibility.Collapsed;
+            Application.Current.LeavingBackground += Current_Resuming;
+            Application.Current.Resuming += Current_Resuming;
+            new UISettings().ColorValuesChanged += Current_Resuming;
+            Settings.InitializeSettings();
+            if (Settings.GetBoolen("CheckUpdateWhenLuanching")) Settings.CheckUpdate();
+
+            SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
+            {
+                if (Tools.popups.Count > 0)
+                {
+                    ee.Handled = true;
+                    Popup popup = Tools.popups.Last();
+                    popup.IsOpen = false;
+                    Tools.popups.Remove(popup);
+                }
+                else if (Frame.CanGoBack)
+                {
+                    ee.Handled = true;
+                    Frame.GoBack();
+                }
+            };
+
             hamburgerMenuControl.ItemsSource = MenuItem.GetMainItems();
             hamburgerMenuControl.OptionsItemsSource = MenuItem.GetOptionsItems();
             if (Settings.IsMobile) TopBar.Margin = new Thickness(0);
@@ -52,6 +81,15 @@ namespace CoolapkUWP.Pages
                      };
                  });
             });
+        }
+
+        private async void Current_Resuming(object sender, object e)
+        {
+            if (Settings.GetBoolen("IsBackgroundColorFollowSystem"))
+            {
+                Settings.Set("IsDarkMode", new UISettings().GetColorValue(UIColorType.Background).Equals(Colors.Black) ? true : false);
+                await Dispatcher.RunAsync(CoreDispatcherPriority.High, () => Settings.CheckTheme());
+            }
         }
 
         public void UpdateUserInfo()
@@ -242,7 +280,7 @@ namespace CoolapkUWP.Pages
         {
             if (args.ChosenSuggestion is AppViewModel info)
             {
-                Tools.rootPage.Navigate(typeof(AppPage), "https://www.coolapk.com" + info.Url);
+                Tools.Navigate(typeof(AppPage), "https://www.coolapk.com" + info.Url);
                 sender.Text = info.AppName;
             }
             else if (args.ChosenSuggestion is SearchWord searchWord)
@@ -250,20 +288,69 @@ namespace CoolapkUWP.Pages
                 switch (searchWord.Symbol)
                 {
                     case Symbol.Shop:
-                        Tools.rootPage.Navigate(typeof(SearchPage), new object[] { 3, searchWord.Title.Substring(5) });
+                        Tools.Navigate(typeof(SearchPage), new object[] { 3, searchWord.Title.Substring(5) });
                         sender.Text = searchWord.Title.Substring(5);
                         break;
                     case Symbol.Contact:
-                        Tools.rootPage.Navigate(typeof(SearchPage), new object[] { 1, searchWord.Title.Substring(5) });
+                        Tools.Navigate(typeof(SearchPage), new object[] { 1, searchWord.Title.Substring(5) });
                         sender.Text = searchWord.Title.Substring(5);
                         break;
                     case Symbol.Find:
-                        Tools.rootPage.Navigate(typeof(SearchPage), new object[] { 0, searchWord.Title });
+                        Tools.Navigate(typeof(SearchPage), new object[] { 0, searchWord.Title });
                         sender.Text = searchWord.Title;
                         break;
                 }
             }
-            else if (args.ChosenSuggestion is null) Tools.rootPage.Navigate(typeof(SearchPage), new object[] { 0, sender.Text });
+            else if (args.ChosenSuggestion is null) Tools.Navigate(typeof(SearchPage), new object[] { 0, sender.Text });
+        }
+
+        public async void ShowProgressBar()
+        {
+            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+                await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
+            else
+            {
+                statusBar.Visibility = Visibility.Visible;
+                statusBar.IsIndeterminate = true;
+            }
+        }
+
+        public async void ShowMessage(string message)
+        {
+            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
+            {
+                messageTextBlock.Text = message;
+                await Task.Delay(3000);
+                messageTextBlock.Text = string.Empty;
+            }
+            else if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+            {
+                StatusBar statusBar = StatusBar.GetForCurrentView();
+                await statusBar.ProgressIndicator.ShowAsync();
+                statusBar.ProgressIndicator.Text = message;
+                await Task.Delay(3000);
+                await statusBar.ProgressIndicator.HideAsync();
+                statusBar.ProgressIndicator.Text = string.Empty;
+            }
+        }
+
+        public void ShowHttpExceptionMessage(System.Net.Http.HttpRequestException e)
+        {
+            if (e.Message.IndexOfAny(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }) != -1)
+                ShowMessage($"服务器错误： {e.Message.Replace("Response status code does not indicate success: ", string.Empty)}");
+            else if (e.Message == "An error occurred while sending the request.") ShowMessage("无法连接网络。");
+            else ShowMessage($"请检查网络连接。 {e.Message}");
+        }
+
+        public async void HideProgressBar()
+        {
+            if (!ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+            {
+                statusBar.Visibility = Visibility.Collapsed;
+                statusBar.IsIndeterminate = false;
+            }
+            else if (string.IsNullOrEmpty(StatusBar.GetForCurrentView().ProgressIndicator.Text))
+                await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
         }
     }
 
@@ -273,7 +360,7 @@ namespace CoolapkUWP.Pages
         public ImageSource Image { get; set; }
         public string Name { get; set; }
         public Type PageType { get; set; }
-        public int Index;
+        public int Index { get; set; }
 
         public static ObservableCollection<MenuItem> GetMainItems()
         {

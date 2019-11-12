@@ -46,10 +46,10 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             base.OnNavigatedTo(e);
             id = e.Parameter as string;
-            Tools.rootPage.ShowProgressBar();
+            Tools.ShowProgressBar();
             LoadDyhDetail();
             LoadFeeds();
-            Tools.rootPage.HideProgressBar();
+            Tools.HideProgressBar();
         }
         public async void LoadDyhDetail()
         {
@@ -104,10 +104,10 @@ namespace CoolapkUWP.Pages.FeedPages
 
         void Refresh()
         {
-            Tools.rootPage.ShowProgressBar();
+            Tools.ShowProgressBar();
             //LoadDyhDetail();
             LoadFeeds(1);
-            Tools.rootPage.HideProgressBar();
+            Tools.HideProgressBar();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

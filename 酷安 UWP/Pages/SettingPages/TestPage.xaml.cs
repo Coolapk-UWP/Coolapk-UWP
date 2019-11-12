@@ -39,7 +39,7 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            Tools.rootPage.Navigate(typeof(FeedPages.UserPage), await Tools.GetUserIDByName(uid.Text));
+            Tools.Navigate(typeof(FeedPages.UserPage), await Tools.GetUserIDByName(uid.Text));
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
@@ -113,13 +113,13 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            Tools.rootPage.ShowMessage(message.Text);
+            Tools.ShowMessage(message.Text);
             GC.Collect();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            Tools.rootPage.Navigate(typeof(FeedPages.DyhPage), "1324");
+            Tools.Navigate(typeof(FeedPages.DyhPage), "1324");
         }
 
         private async void Button_Click_5(object sender, RoutedEventArgs e)

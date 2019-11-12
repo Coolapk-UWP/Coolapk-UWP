@@ -15,6 +15,6 @@
                 <WebView NavigationCompleted="WebView_NavigationCompleted" NavigationStarting="WebView_NavigationStarting" Source="https://account.coolapk.com/auth/login?forward=http%3A%2F%2Fdeveloper.coolapk.com"/>
             </StackPanel>
         </ScrollViewer>
-        <control:TitleBar Title="登录" BackButtonClick="BackButton_Click" RefreshButtonVisibility="Collapsed"/>
+        <control:TitleBar Title="登录" BackButtonClick="BackButton_Click"/>
     </Grid>
 </Page>

@@ -42,7 +42,7 @@ namespace CoolapkUWP
                 // 当导航堆栈尚未还原时，导航到第一页，
                 // 并通过将所需信息作为导航参数传入来配置
                 // 参数
-                rootFrame.Navigate(typeof(Pages.RootPage), e.Arguments);
+                rootFrame.Navigate(typeof(Pages.MainPage), e.Arguments);
                 Window.Current.Content = rootFrame;
             }
 
@@ -65,7 +65,7 @@ namespace CoolapkUWP
         {
             e.Handled = true;
             await new MessageDialog($"Application Unhandled Exception:\n{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
-            Tools.rootPage.HideProgressBar();
+            Tools.HideProgressBar();
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace CoolapkUWP
         {
             e.Handled = true;
             await new MessageDialog($"SynchronizationContext Unhandled Exception:\n{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
-            Tools.rootPage.HideProgressBar();
+            Tools.HideProgressBar();
         }
 
     }

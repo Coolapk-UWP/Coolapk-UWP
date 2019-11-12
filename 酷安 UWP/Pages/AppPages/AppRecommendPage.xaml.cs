@@ -65,14 +65,14 @@ namespace CoolapkUWP.Pages.AppPages
             {
                 //网络信息
                 //LoadNewUpdate(await new HttpClient().GetStringAsync("https://www.coolapk.com/"));
-                Tools.rootPage.ShowProgressBar();
+                Tools.ShowProgressBar();
                 LoadHotApp(await new HttpClient().GetStringAsync("https://www.coolapk.com/apk/recommend"));
                 LoadDeveloperApp(await new HttpClient().GetStringAsync("https://www.coolapk.com/apk/developer"));
                 LoadHotGame(await new HttpClient().GetStringAsync("https://www.coolapk.com/game/"));
                 LoadHotGame(await new HttpClient().GetStringAsync("https://www.coolapk.com/game?p=2"));
                 LoadHotGame(await new HttpClient().GetStringAsync("https://www.coolapk.com/game?p=3"));
             }
-            catch (HttpRequestException ex) { Tools.rootPage.ShowHttpExceptionMessage(ex); }
+            catch (HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
             catch { throw; }
         }
 
@@ -165,7 +165,7 @@ namespace CoolapkUWP.Pages.AppPages
         #endregion
 
         private void Classify_Click(object sender, RoutedEventArgs e)
-            => Tools.rootPage.Navigate(typeof(SearchPage), new object[] { 3, ((Button)sender).Content.ToString() });
+            => Tools.Navigate(typeof(SearchPage), new object[] { 3, ((Button)sender).Content.ToString() });
 
         private void Updateview_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -173,7 +173,7 @@ namespace CoolapkUWP.Pages.AppPages
                 OpenAppPage("https://www.coolapk.com" + data.Tag);
         }
 
-        public void OpenAppPage(string link) => Tools.rootPage.Navigate(typeof(AppPage), link);
+        public void OpenAppPage(string link) => Tools.Navigate(typeof(AppPage), link);
 
         private void Gamelist_ItemClick(object sender, ItemClickEventArgs e)
         {

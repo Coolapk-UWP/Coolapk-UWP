@@ -32,7 +32,7 @@ namespace CoolapkUWP.Control.ViewModels
                         else if (item["type"].GetString() == "image")
                         {
                             string d = string.IsNullOrEmpty(item["description"].GetString()) ? string.Empty : item["description"].GetString();
-                            message_raw_output += $"\n\n![image]({item["url"].GetString()}.s.jpg)\n\n>{d}\n\n";
+                            message_raw_output += $"\n\n![{d.Replace("]", " ")}]({item["url"].GetString()}.s.jpg)\n\n>{d}\n\n";
                         }
                     }
                 }

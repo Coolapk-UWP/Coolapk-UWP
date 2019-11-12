@@ -12,13 +12,9 @@ namespace CoolapkUWP.Control.ViewModels
         public FeedReplyViewModel(IJsonValue t, bool showReplyRow = true) : base(t)
         {
             JsonObject token = t.GetObject();
-            showPic = token.TryGetValue("pic", out IJsonValue value) && !string.IsNullOrEmpty(value.GetString());
             dateline = Tools.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
             if (showPic)
-            {
-                picUrl = value.GetString();
                 pic = new BitmapImage(new Uri(picUrl));
-            }
             message = Tools.GetMessageText(token["message"].GetString());
             rurl = $"/u/{token["ruid"].GetNumber()}";
             rusername = token["rusername"].GetString();
@@ -42,8 +38,6 @@ namespace CoolapkUWP.Control.ViewModels
         public string replynum { get; private set; }
         public ImageSource userSmallAvatar { get; private set; } = new BitmapImage();
         public new string message { get; private set; }
-        public bool showPic { get; private set; }
-        public string picUrl { get; private set; }
         public ImageSource pic { get; private set; }
         public string rusername { get; private set; }
         public string rurl { get; private set; }
@@ -53,6 +47,5 @@ namespace CoolapkUWP.Control.ViewModels
         public bool showreplyRowsMore { get => replyRowsMore > 0; }
         public double replyRowsMore { get; private set; }
         public double replyRowsCount { get; private set; }
-        public double replyTotal { get => replyRowsMore + replyRowsCount; }
     }
 }

@@ -66,6 +66,6 @@
                 </Pivot>
             </StackPanel>
         </ScrollViewer>
-        <control:TitleBar x:Name="TitleBar" BackButtonClick="TitleBar_BackButtonClick" RefreshButtonClick="{x:Bind Refresh}"/>
+        <control:TitleBar x:Name="TitleBar" BackButtonClick="TitleBar_BackButtonClick" RefreshEvent="{x:Bind Refresh}"/>
     </Grid>
 </Page>

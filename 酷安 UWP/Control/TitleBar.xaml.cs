@@ -9,18 +9,16 @@ namespace CoolapkUWP.Control
     {
         public string Title { get => title.Text; set => title.Text = value; }
         public event RoutedEventHandler BackButtonClick;
-        public event RoutedEventHandler RefreshButtonClick;
+        public event RoutedEventHandler RefreshEvent;
         public Visibility BackButtonVisibility { get => BackButton.Visibility; set => BackButton.Visibility = value; }
-        public Visibility RefreshButtonVisibility { get => RefreshButton.Visibility; set => RefreshButton.Visibility = value; }
         public double TitleHeight { get => titleGrid.Height; set => titleGrid.Height = value; }
-        public Symbol BackButtonSymbol { get => BackButtonIcon.Symbol; set => BackButtonIcon.Symbol= value; }
-        public object RefreshButtonTag { get => RefreshButton.Tag; set => RefreshButton.Tag = value; }
-        public TitleBar()
-        {
-            this.InitializeComponent();
-        }
-
+        public Symbol BackButtonSymbol { get => BackButtonIcon.Symbol; set => BackButtonIcon.Symbol = value; }
+        public TitleBar() => this.InitializeComponent();
         private void BackButton_Click(object sender, RoutedEventArgs e) => BackButtonClick?.Invoke(sender, e);
-        private void RefreshButton_Click(object sender, RoutedEventArgs e) => RefreshButtonClick?.Invoke(sender, e);
+        private void titleGrid_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            if (e.OriginalSource is Grid || (e.OriginalSource is TextBlock a && a == title))
+                RefreshEvent?.Invoke(sender, e);
+        }
     }
 }

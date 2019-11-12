@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
-    mc:Ignorable="d" NavigationCacheMode="Required"
+    mc:Ignorable="d" 
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <ResourceDictionary>
@@ -50,6 +50,6 @@
                 </ListView>
             </StackPanel>
         </ScrollViewer>
-        <control:TitleBar x:Name="TitleBar" BackButtonClick="TitleBar_BackButtonClick" RefreshButtonClick="{x:Bind Refresh}"/>
+        <control:TitleBar x:Name="TitleBar" BackButtonClick="TitleBar_BackButtonClick" RefreshEvent="{x:Bind Refresh}"/>
     </Grid>
 </Page>

@@ -49,7 +49,7 @@ namespace CoolapkUWP.Pages.FeedPages
             base.OnNavigatedTo(e);
             if (id != e.Parameter as string)
             {
-                Tools.rootPage.ShowProgressBar();
+                Tools.ShowProgressBar();
                 id = e.Parameter as string;
                 LoadFeedDetail();
             }
@@ -84,7 +84,6 @@ namespace CoolapkUWP.Pages.FeedPages
                     FindName("FeedDetailPivot");
                     string r = await Tools.GetJson($"/feed/replyList?id={id}&listType={listType}&page={++feedPage}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}");
                     JsonArray array = Tools.GetDataArray(r);
-                    ChangeModeButton.IsEnabled = true;
                     if (array.Count != 0)
                     {
                         feedFirstItem = array.First().GetObject()["id"].GetNumber();
@@ -100,7 +99,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     else feedPage--;
                 }
             }
-            Tools.rootPage.HideProgressBar();
+            Tools.HideProgressBar();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) => Tools.OpenLink((sender as Button).Tag as string);
@@ -121,12 +120,12 @@ namespace CoolapkUWP.Pages.FeedPages
 
         async void Refresh()
         {
-            Tools.rootPage.ShowProgressBar();
+            Tools.ShowProgressBar();
             if (FeedDetailPivot != null)
             {
-                switch (FeedDetailPivot.SelectedIndex.ToString())
+                switch (FeedDetailPivot.SelectedIndex)
                 {
-                    case "0":
+                    case 0:
                         string res = await Tools.GetJson("/feed/detail?id=" + id);
                         JsonObject detail = Tools.GetJSonObject(res);
                         if (detail != null)
@@ -136,7 +135,8 @@ namespace CoolapkUWP.Pages.FeedPages
                             JsonArray values = detail["hotReplyRows"].GetArray();
                             foreach (var item in values)
                                 hotReplys.Add(new FeedReplyViewModel(item));
-                            string re = await Tools.GetJson($"/feed/replyList?id={id}&listType={listType}&page={1}&firstItem={feedFirstItem}&lastItem={feedLastItem}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}");
+                            if (feedPage == 0) feedPage = 1;
+                            string re = await Tools.GetJson($"/feed/replyList?id={id}&listType={listType}&page={1}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}");
                             JsonArray array = Tools.GetDataArray(re);
                             if (array.Count != 0)
                             {
@@ -154,7 +154,7 @@ namespace CoolapkUWP.Pages.FeedPages
                             else feedPage--;
                         }
                         break;
-                    case "1":
+                    case 1:
                         string result = await Tools.GetJson($"/feed/likeList?id={id}&listType=lastupdate_desc&page={++likePage}&firstItem={likeFirstItem}&lastItem={likeLastItem}");
                         JsonArray root = Tools.GetDataArray(result);
                         if (root.Count != 0)
@@ -173,7 +173,7 @@ namespace CoolapkUWP.Pages.FeedPages
                             }
                         }
                         break;
-                    case "2":
+                    case 2:
                         string r = await Tools.GetJson($"/feed/forwardList?id={id}&type=feed&page={++sharePage}");
                         JsonArray roots = Tools.GetDataArray(r);
                         if (roots.Count != 0)
@@ -209,7 +209,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 else answerPage--;
             }
             else LoadFeedDetail();
-            Tools.rootPage.HideProgressBar();
+            Tools.HideProgressBar();
         }
 
         private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
@@ -224,12 +224,12 @@ namespace CoolapkUWP.Pages.FeedPages
                 }
                 else if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
                 {
-                    Tools.rootPage.ShowProgressBar();
+                    Tools.ShowProgressBar();
                     if (FeedDetailPivot != null)
                     {
-                        switch (FeedDetailPivot.SelectedIndex.ToString())
+                        switch (FeedDetailPivot.SelectedIndex)
                         {
-                            case "0":
+                            case 0:
                                 string re = await Tools.GetJson($"/feed/replyList?id={id}&listType={listType}&page={++feedPage}&firstItem={feedFirstItem}&lastItem={feedLastItem}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}");
                                 JsonArray array = Tools.GetDataArray(re);
                                 if (array.Count != 0)
@@ -241,7 +241,7 @@ namespace CoolapkUWP.Pages.FeedPages
                                 else
                                     feedPage--;
                                 break;
-                            case "1":
+                            case 1:
                                 string result = await Tools.GetJson($"/feed/likeList?id={id}&listType=lastupdate_desc&page={++likePage}&firstItem={likeFirstItem}&lastItem={likeLastItem}");
                                 JsonArray root = Tools.GetDataArray(result);
                                 if (root.Count != 0)
@@ -262,7 +262,7 @@ namespace CoolapkUWP.Pages.FeedPages
                                 else
                                     likePage--;
                                 break;
-                            case "2":
+                            case 2:
                                 string r = await Tools.GetJson($"/feed/forwardList?id={id}&type=feed&page={++sharePage}");
                                 JsonArray roots = Tools.GetDataArray(r);
                                 if (roots.Count != 0)
@@ -287,7 +287,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         }
                         else answerPage--;
                     }
-                    Tools.rootPage.HideProgressBar();
+                    Tools.HideProgressBar();
                 }
             }
             else refreshText.Visibility = Visibility.Visible;
@@ -316,18 +316,19 @@ namespace CoolapkUWP.Pages.FeedPages
                         e.Image = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
                     else e.Image = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
                 }
+            Tools.SetEmojiPadding(sender);
         }
 
         private void MarkdownTextBlock_ImageClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
         {
-            if (e.Link.IndexOf("http") == 0) Tools.rootPage.ShowImage(e.Link.Remove(e.Link.Length - 6));
+            if (e.Link.IndexOf("http") == 0) Tools.ShowImage(e.Link.Remove(e.Link.Length - 6));
         }
 
-        private void Image_Tapped(object sender, TappedRoutedEventArgs e) => Tools.rootPage.ShowImage((sender as FrameworkElement).Tag as string);
+        private void Image_Tapped(object sender, TappedRoutedEventArgs e) => Tools.ShowImage((sender as FrameworkElement).Tag as string);
 
         private async void GetMoreHotReplyListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            Tools.rootPage.ShowProgressBar();
+            Tools.ShowProgressBar();
             if (hotReplyPage == 0)
                 hotReplys.Clear();
             string r = await Tools.GetJson($"/feed/hotReplyList?id={id}&page={++hotReplyPage}{(hotReplyPage > 1 ? $"&firstItem={hotReplyFirstItem}&lastItem={hotReplyLastItem}" : string.Empty)}&discussMode=1");
@@ -340,7 +341,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 hotReplyLastItem = array.Last().GetObject()["id"].GetNumber();
             }
             else hotReplyPage--;
-            Tools.rootPage.HideProgressBar();
+            Tools.HideProgressBar();
         }
 
         private async void FeedDetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -452,11 +453,11 @@ namespace CoolapkUWP.Pages.FeedPages
             if (view.SelectedIndex > -1)
             {
                 if (view.Tag is string[] ss)
-                    Tools.rootPage.ShowImage(ss[view.SelectedIndex].Remove(ss[view.SelectedIndex].Length - 6));
+                    Tools.ShowImage(ss[view.SelectedIndex].Remove(ss[view.SelectedIndex].Length - 6));
                 else if (view.Tag is string s)
                 {
                     if (string.IsNullOrWhiteSpace(s)) return;
-                    Tools.rootPage.ShowImage(s);
+                    Tools.ShowImage(s);
                 }
             }
             view.SelectedIndex = -1;

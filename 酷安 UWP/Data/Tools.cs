@@ -1,6 +1,8 @@
-﻿using CoolapkUWP.Pages;
+﻿using CoolapkUWP.Control;
+using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.FeedPages;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -11,13 +13,17 @@ using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage.Streams;
 using Windows.System;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Data
 {
     static class Tools
     {
-        public static RootPage rootPage = null;
         public static MainPage mainPage = null;
+        public static List<Popup> popups = new List<Popup>();
         static HttpClient mClient;
 
         static Tools()
@@ -37,6 +43,27 @@ namespace CoolapkUWP.Data
             mClient.DefaultRequestHeaders.Add("Host", "api.coolapk.com");
         }
 
+        public static void ShowProgressBar() => mainPage?.ShowProgressBar();
+        public static void HideProgressBar() => mainPage?.HideProgressBar();
+        public static void ShowMessage(string message) => mainPage.ShowMessage(message);
+        public static void ShowHttpExceptionMessage(HttpRequestException e) => mainPage?.ShowHttpExceptionMessage(e);
+
+        public static void Hide(this Popup popup)
+        {
+            if (popups.Contains(popup)) popups.Remove(popup);
+            popup.IsOpen = false;
+        }
+
+        public static void ShowImage(string url)
+        {
+            Popup popup = new Popup();
+            popup.Child = new ShowImageControl(url, popup);
+            popups.Add(popup);
+            popup.IsOpen = true;
+        }
+
+        public static void Navigate(Type pageType, object e) => mainPage?.Frame.Navigate(pageType, e);
+
         public static async void OpenLink(string str)
         {
             if (str is null) return;
@@ -46,29 +73,29 @@ namespace CoolapkUWP.Data
                 if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
                 if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
                 if (int.TryParse(u, out int uu))
-                    rootPage.Navigate(typeof(UserPage), u);
-                else rootPage.Navigate(typeof(UserPage), await GetUserIDByName(u));
+                    Navigate(typeof(UserPage), u);
+                else Navigate(typeof(UserPage), await GetUserIDByName(u));
             }
             else if (str.IndexOf("/feed/") == 0)
             {
                 string u = str.Replace("/feed/", string.Empty);
                 if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
                 if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
-                rootPage.Navigate(typeof(FeedDetailPage), u);
+                Navigate(typeof(FeedDetailPage), u);
             }
             else if (str.IndexOf("/t/") == 0)
             {
                 string u = str.Replace("/t/", string.Empty);
                 if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
                 if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
-                rootPage.Navigate(typeof(TopicPage), u);
+                Navigate(typeof(TopicPage), u);
             }
             else if (str.IndexOf("/dyh/") == 0)
             {
                 string u = str.Replace("/dyh/", string.Empty);
                 if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
                 if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
-                rootPage.Navigate(typeof(DyhPage), u);
+                Navigate(typeof(DyhPage), u);
             }
             else if (str.IndexOf("/apk/") == 0)
             {
@@ -76,7 +103,7 @@ namespace CoolapkUWP.Data
                 if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
                 if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
                 if (u.Contains('&')) u = u.Substring(0, u.IndexOf('&'));
-                rootPage.Navigate(typeof(Pages.AppPages.AppPage), u);
+                Navigate(typeof(Pages.AppPages.AppPage), u);
             }
             else if (str.IndexOf("https") == 0)
             {
@@ -90,6 +117,36 @@ namespace CoolapkUWP.Data
                     OpenLink(str.Replace("http://www.coolapk.com", string.Empty));
                 else await Launcher.LaunchUriAsync(new Uri(str));
             }
+        }
+
+        public static void SetEmojiPadding(object control)
+        {
+            Microsoft.Toolkit.Uwp.UI.Controls.MarkdownTextBlock textBlock = control as Microsoft.Toolkit.Uwp.UI.Controls.MarkdownTextBlock;
+            Task.Run(async () =>
+            {
+                await Task.Delay(100);
+                await textBlock.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    Border border = VisualTreeHelper.GetChild(textBlock, 0) as Border;
+                    StackPanel stackPanel = (border.Child as StackPanel);
+                    for (int j = 0; j < stackPanel.Children.Count; j++)
+                    {
+                        if (stackPanel.Children[j] is RichTextBlock a)
+                        {
+                            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(a); i++)
+                            {
+                                ScrollViewer viewer = VisualTreeHelper.GetChild(a, i) as ScrollViewer;
+                                Viewbox viewbox = viewer.Content as Viewbox;
+                                HyperlinkButton b = viewbox.Child as HyperlinkButton;
+                                Image image = b.Content as Image;
+                                Windows.UI.Xaml.Media.Imaging.BitmapImage bitmapImage = (image.Source as Windows.UI.Xaml.Media.Imaging.BitmapImage);
+                                if (bitmapImage.UriSource.AbsoluteUri.IndexOf("ms-appx") == 0)
+                                    b.Padding = new Thickness(0);
+                            }
+                        }
+                    }
+                });
+            });
         }
 
         //来源：https://blog.csdn.net/lindexi_gd/article/details/48951849
@@ -127,12 +184,10 @@ namespace CoolapkUWP.Data
                 if (s.Contains(i))
                 {
                     if (i.Contains("("))
-                        s = s.Replace($"\\#\\{i})", $"\n![{i})](ms-appx:/Assets/Emoji/{i}.png =24)");
-                    else if (Settings.GetBoolen("IsUseOldEmojiMode"))
-                        if (Emojis.oldEmojis.Contains(i))
-                            s = s.Replace($"\\{i}", $"\n![{i}(ms-appx:/Assets/Emoji/{i}2.png =24)");
-                        else s = s.Replace($"\\{i}", $"\n![{i}(ms-appx:/Assets/Emoji/{i}.png =24)");
-                    else s = s.Replace($"\\{i}", $"\n![{i}(ms-appx:/Assets/Emoji/{i}.png =24)");
+                        s = s.Replace($"\\#\\{i})", $"\n![{i})](ms-appx:/Assets/Emoji/{i}.png =20)");
+                    else if (Settings.GetBoolen("IsUseOldEmojiMode") && Emojis.oldEmojis.Contains(i))
+                        s = s.Replace($"\\{i}", $"\n![{i}(ms-appx:/Assets/Emoji/{i}2.png =20)");
+                    else s = s.Replace($"\\{i}", $"\n![{i}(ms-appx:/Assets/Emoji/{i}.png =20)");
                 }
             }
             Regex regex = new Regex("<a.*?\\>\\S*"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
@@ -169,7 +224,7 @@ namespace CoolapkUWP.Data
                 s = s.Replace(h.Value, $"[{t}]({tt})");
             }
             s = s.Replace(" ", "&nbsp;");
-            s = s.Replace("&nbsp;=24)", " =24)");
+            s = s.Replace("&nbsp;=20)", " =20)");
             return s;
         }
 
@@ -214,7 +269,7 @@ namespace CoolapkUWP.Data
             }
             catch (HttpRequestException e)
             {
-                rootPage.ShowHttpExceptionMessage(e);
+                ShowHttpExceptionMessage(e);
                 return string.Empty;
             }
             catch { throw; }
@@ -230,7 +285,7 @@ namespace CoolapkUWP.Data
             catch
             {
                 if (JsonObject.Parse(json).TryGetValue("message", out IJsonValue value))
-                    rootPage.ShowMessage($"{value.GetString()}");
+                    ShowMessage($"{value.GetString()}");
                 return null;
             }
         }
@@ -245,7 +300,7 @@ namespace CoolapkUWP.Data
             catch
             {
                 if (JsonObject.Parse(json).TryGetValue("message", out IJsonValue value))
-                    rootPage.ShowMessage($"{value.GetString()}");
+                    ShowMessage($"{value.GetString()}");
                 return null;
             }
         }
@@ -274,8 +329,8 @@ namespace CoolapkUWP.Data
             }
             catch (HttpRequestException e)
             {
-                if (e.Message.Contains("404")) rootPage.ShowMessage("用户不存在");
-                else rootPage.ShowHttpExceptionMessage(e);
+                if (e.Message.Contains("404")) ShowMessage("用户不存在");
+                else ShowHttpExceptionMessage(e);
                 return "0";
             }
             catch { throw; }

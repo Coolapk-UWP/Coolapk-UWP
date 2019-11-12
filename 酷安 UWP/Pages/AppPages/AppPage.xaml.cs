@@ -33,7 +33,7 @@ namespace CoolapkUWP.Pages.AppPages
             {
                 LaunchAppViewLoad(await new HttpClient().GetStringAsync(Tag.ToString()));
             }
-            catch (HttpRequestException ex) { Tools.rootPage?.ShowHttpExceptionMessage(ex); }
+            catch (HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
         }
         private void LaunchAppViewLoad(String str)
         {
@@ -156,7 +156,7 @@ namespace CoolapkUWP.Pages.AppPages
             {
                 KPanel.Visibility = Visibility.Collapsed;
             }*/
-            Tools.rootPage.HideProgressBar();
+            Tools.HideProgressBar();
         }
 
         private void CopyM_Click(object sender, RoutedEventArgs e)

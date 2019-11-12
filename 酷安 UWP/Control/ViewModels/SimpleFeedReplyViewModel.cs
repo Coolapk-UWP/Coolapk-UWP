@@ -13,11 +13,19 @@ namespace CoolapkUWP.Control.ViewModels
             username = token["username"].GetString();
             isFeedAuthor = token["isFeedAuthor"].GetNumber() == 1;
             message = Tools.GetMessageText($"<a href=\"{uurl}\">{username}{(isFeedAuthor ? "[楼主]" : string.Empty)}</a>:{token["message"].GetString()}");
+            showPic = token.TryGetValue("pic", out IJsonValue value) && !string.IsNullOrEmpty(value.GetString());
+            if (showPic)
+            {
+                picUrl = value.GetString();
+                message += $"&nbsp;\n[查看图片]({picUrl})";
+            }
         }
         public double id { get; private set; }
         public string uurl { get; private set; }
         public string username { get; private set; }
         public string message { get; private set; }
         public bool isFeedAuthor { get; private set; }
+        public bool showPic { get; private set; }
+        public string picUrl { get; private set; }
     }
 }

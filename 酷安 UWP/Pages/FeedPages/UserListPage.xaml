@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
-    mc:Ignorable="d" NavigationCacheMode="Required"
+    mc:Ignorable="d" 
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <ResourceDictionary>
@@ -26,6 +26,6 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <control:TitleBar x:Name="titleBar" BackButtonClick="TitleBar_BackButtonClick" RefreshButtonClick="TitleBar_RefreshButtonClick"/>
+        <control:TitleBar x:Name="titleBar" BackButtonClick="TitleBar_BackButtonClick" RefreshEvent="TitleBar_RefreshButtonClick"/>
     </Grid>
 </Page>

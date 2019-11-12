@@ -47,7 +47,7 @@ namespace CoolapkUWP.Pages
 
         async void SearchFeeds(string keyWord)
         {
-            Tools.rootPage.ShowProgressBar();
+            Tools.ShowProgressBar();
             string feedType = string.Empty;
             string sortType = string.Empty;
             switch (SearchFeedTypeComboBox.SelectedIndex)
@@ -106,12 +106,12 @@ namespace CoolapkUWP.Pages
                     FeedsCollection.Add(new FeedViewModel(i.GetObject()));
             }
             else pages[0]--;
-            Tools.rootPage.HideProgressBar();
+            Tools.HideProgressBar();
         }
 
         async void SearchUsers(string keyWord)
         {
-            Tools.rootPage.ShowProgressBar();
+            Tools.ShowProgressBar();
             ObservableCollection<UserViewModel> infos = UserList.ItemsSource as ObservableCollection<UserViewModel>;
             string r = await Tools.GetJson($"/search?type=user&searchValue={keyWord}&page={++pages[1]}{(pages[1] > 1 ? "&lastItem=" + lastItems[1] : string.Empty)}&showAnonymous=-1");
             JsonArray array = Tools.GetDataArray(r);
@@ -134,12 +134,12 @@ namespace CoolapkUWP.Pages
                 }
             }
             else pages[1]--;
-            Tools.rootPage.HideProgressBar();
+            Tools.HideProgressBar();
         }
 
         async void SearchTopic(string keyWord)
         {
-            Tools.rootPage.ShowProgressBar();
+            Tools.ShowProgressBar();
             string r = await Tools.GetJson($"/search?type=feedTopic&searchValue={keyWord}&page={++pages[2]}{(pages[2] > 1 ? "&lastItem=" + lastItems[2] : string.Empty)}&showAnonymous=-1");
             JsonArray Root = Tools.GetDataArray(r);
             ObservableCollection<TopicViewModel> FeedsCollection = TopicList.ItemsSource as ObservableCollection<TopicViewModel>;
@@ -151,12 +151,12 @@ namespace CoolapkUWP.Pages
                     FeedsCollection.Add(new TopicViewModel(i));
             }
             else pages[2]--;
-            Tools.rootPage.HideProgressBar();
+            Tools.HideProgressBar();
         }
         #region SearchApp
         private async void SearchApps(string keyWord)
         {
-            Tools.rootPage.ShowProgressBar();
+            Tools.ShowProgressBar();
             ObservableCollection<AppViewModel> infos = AppsResultList.ItemsSource as ObservableCollection<AppViewModel>;
             infos.Clear();
             try
@@ -179,16 +179,16 @@ namespace CoolapkUWP.Pages
                         DownloadNum = bodys[i * 15 + 5 + 7].Split('>')[1].Split('<')[0]
                     });
                 }
-                Tools.rootPage.HideProgressBar();
+                Tools.HideProgressBar();
             }
-            catch (HttpRequestException e) { Tools.rootPage.ShowHttpExceptionMessage(e); }
+            catch (HttpRequestException e) { Tools.ShowHttpExceptionMessage(e); }
             catch { throw; }
         }
 
         private void AppResultList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (AppsResultList.SelectedIndex == -1) return;
-            Tools.rootPage.Navigate(typeof(AppPages.AppPage), "https://www.coolapk.com" + (AppsResultList.Items[AppsResultList.SelectedIndex] as AppViewModel).Url);
+            Tools.Navigate(typeof(AppPages.AppPage), "https://www.coolapk.com" + (AppsResultList.Items[AppsResultList.SelectedIndex] as AppViewModel).Url);
             AppsResultList.SelectedIndex = -1;
         }
         #endregion

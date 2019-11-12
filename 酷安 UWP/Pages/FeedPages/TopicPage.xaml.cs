@@ -36,7 +36,7 @@ namespace CoolapkUWP.Pages.FeedPages
             base.OnNavigatedTo(e);
             if (tag != e.Parameter as string)
             {
-                Tools.rootPage.ShowProgressBar();
+                Tools.ShowProgressBar();
                 tag = e.Parameter as string;
                 page = 0;
                 firstItem = lastItem = 0;
@@ -45,7 +45,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 TitleBar.Title = tag;
                 LoadTagDetail();
                 LoadFeeds();
-                Tools.rootPage.HideProgressBar();
+                Tools.HideProgressBar();
             }
         }
 
@@ -111,10 +111,10 @@ namespace CoolapkUWP.Pages.FeedPages
         void Refresh()
         {
             if (FeedsCollection.Count == 0) return;
-            Tools.rootPage.ShowProgressBar();
+            Tools.ShowProgressBar();
             LoadTagDetail();
             LoadFeeds(1);
-            Tools.rootPage.HideProgressBar();
+            Tools.HideProgressBar();
         }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)

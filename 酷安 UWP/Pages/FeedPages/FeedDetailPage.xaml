@@ -25,7 +25,7 @@
         <ScrollViewer x:Name="VScrollViewer" Grid.Row="1" ViewChanged="ScrollViewer_ViewChanged">
             <StackPanel Margin="{x:Bind data:Settings.stackPanelMargin}">
                 <TextBlock Height="20" HorizontalAlignment="Center" Visibility="Collapsed" x:Name="refreshText">松手刷新</TextBlock>
-                <Grid>
+                <Grid Margin="4,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
@@ -52,8 +52,8 @@
                             <TextBlock Margin="5" Text="{x:Bind FeedDetail.message_title,Mode=OneWay}" Foreground="White" FontWeight="Black" TextWrapping="Wrap" FontSize="20"/>
                         </Grid>
                     </Grid>
-                    <Grid Background="{ThemeResource SystemControlBackgroundListLowBrush}" Grid.Row="2" x:Name="gotoQues" x:Load="{x:Bind FeedDetail.isAnswerFeed,Mode=OneWay}" Tapped="StackPanel_Tapped" Tag="{x:Bind FeedDetail.questionUrl,Mode=OneWay}" Margin="5,10">
-                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                    <Grid Height="32" Background="{ThemeResource SystemControlBackgroundListLowBrush}" Grid.Row="2" x:Name="gotoQues" x:Load="{x:Bind FeedDetail.isAnswerFeed,Mode=OneWay}" Tapped="StackPanel_Tapped" Tag="{x:Bind FeedDetail.questionUrl,Mode=OneWay}" Margin="5,10">
+                        <StackPanel VerticalAlignment="Center" Margin="4,0" Orientation="Horizontal">
                             <TextBlock>查看全部</TextBlock>
                             <TextBlock Text="{x:Bind FeedDetail.questionAnswerNum,Mode=OneWay}"/>
                             <TextBlock>个回答</TextBlock>
@@ -77,13 +77,13 @@
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
-                    <controls:MarkdownTextBlock Grid.Row="4" Margin="10,2" x:Name="feedArticlePresenter" x:Load="{x:Bind FeedDetail.isFeedArticle,Mode=OneWay}" ImageResolving="MarkdownTextBlock_ImageResolving" ImageClicked="MarkdownTextBlock_ImageClicked" Text="{x:Bind FeedDetail.message_raw_output,Mode=OneWay}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
+                    <controls:MarkdownTextBlock ImageResolving="MarkdownTextBlock_ImageResolving" Grid.Row="4" Margin="10,2" x:Name="feedArticlePresenter" x:Load="{x:Bind FeedDetail.isFeedArticle,Mode=OneWay}" ImageClicked="MarkdownTextBlock_ImageClicked" Text="{x:Bind FeedDetail.message_raw_output,Mode=OneWay}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
                     <Grid Grid.Row="4" Margin="10,2" x:Name="feedPresenter" x:Load="{x:Bind FeedDetail.isFeedArticle2,Mode=OneWay}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <controls:MarkdownTextBlock Text="{x:Bind FeedDetail.message,Mode=OneWay}"  LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
+                        <controls:MarkdownTextBlock ImageResolving="MarkdownTextBlock_ImageResolving" Text="{x:Bind FeedDetail.message,Mode=OneWay}"  LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
                         <GridView ScrollViewer.VerticalScrollMode="Disabled" x:Name="picA" x:Load="{x:Bind FeedDetail.showPicArr,Mode=OneWay}" Grid.Row="1" MinHeight="0" Padding="0" Margin="0,5,0,0" HorizontalContentAlignment="Left" SelectionChanged="GridView_SelectionChanged" Tag="{x:Bind FeedDetail.picArr,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.picArr,Mode=OneWay}">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="x:String">
@@ -110,7 +110,7 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <TextBlock FontSize="16" x:Name="sourceMT" x:Load="{x:Bind FeedDetail.sourceFeed.showMessage_title,Mode=OneWay}" FontWeight="Black" TextWrapping="Wrap" Text="{x:Bind FeedDetail.sourceFeed.message_title,Mode=OneWay}"/>
-                                <controls:MarkdownTextBlock Grid.Row="1" Text="{x:Bind FeedDetail.sourceFeed.message,Mode=OneWay}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
+                                <controls:MarkdownTextBlock ImageResolving="MarkdownTextBlock_ImageResolving" Grid.Row="1" Text="{x:Bind FeedDetail.sourceFeed.message,Mode=OneWay}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
                                 <GridView ScrollViewer.VerticalScrollMode="Disabled" x:Name="sourcePic" Grid.Row="2" HorizontalContentAlignment="Left" MinHeight="0" Padding="0" Margin="0,5,0,0"  x:Load="{x:Bind FeedDetail.showPicArr,Mode=OneWay}" Tag="{x:Bind FeedDetail.sourceFeed.picArr,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.sourceFeed.picArr,Mode=OneWay}">
                                     <GridView.ItemTemplate>
                                         <DataTemplate x:DataType="x:String">
@@ -168,7 +168,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock>回复</TextBlock>
                                 <TextBlock Margin="5,0" Text="{x:Bind FeedDetail.replynum,Mode=OneWay}"/>
-                                <Button Content="▼" Padding="0" Background="{x:Null}" Style="{StaticResource ButtonStyle1}" FontSize="22" x:Name="ChangeModeButton" IsEnabled="False">
+                                <Button Content="▼" Padding="0" Background="{x:Null}" Style="{StaticResource ButtonStyle1}" FontSize="22" x:Name="ChangeModeButton">
                                     <Button.Flyout>
                                         <MenuFlyout>
                                             <MenuFlyoutItem Tag="0" Click="MenuFlyoutItem_Click" Icon="Accept">最近回复</MenuFlyoutItem>
@@ -257,7 +257,7 @@
                                                 <Button Style="{StaticResource ButtonStyle1}" Padding="2" Tag="{x:Bind uurl}" Margin="4,0" Content="{x:Bind username}" VerticalAlignment="Center"/>
                                                 <TextBlock Text="{x:Bind dateline}" Foreground="Gray" VerticalAlignment="Center"/>
                                             </StackPanel>
-                                            <controls:MarkdownTextBlock Tag="{x:Bind url}" Tapped="Grid_Tapped" Grid.Row="1" Text="{x:Bind message}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False" Margin="8,0,10,10"/>
+                                            <controls:MarkdownTextBlock ImageResolving="MarkdownTextBlock_ImageResolving" Tag="{x:Bind url}" Tapped="Grid_Tapped" Grid.Row="1" Text="{x:Bind message}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False" Margin="8,0,10,10"/>
                                         </Grid>
                                     </ListViewItem>
                                 </DataTemplate>
@@ -275,6 +275,6 @@
                 </ListView>
             </StackPanel>
         </ScrollViewer>
-        <control:TitleBar x:Name="TitleBar" BackButtonClick="BackButton_Click" RefreshButtonClick="Button_Click_1"/>
+        <control:TitleBar x:Name="TitleBar" BackButtonClick="BackButton_Click" RefreshEvent="Button_Click_1"/>
     </Grid>
 </Page>
