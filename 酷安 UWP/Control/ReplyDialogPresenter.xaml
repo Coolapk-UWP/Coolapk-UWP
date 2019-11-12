@@ -9,8 +9,7 @@
     xmlns:local="using:CoolapkUWP.Control"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
-    mc:Ignorable="d"
-    cu:Background="{ThemeResource SystemControlBackgroundListLowBrush}" fcu:Background="{ThemeResource SystemControlAcrylicElementBrush}">
+    mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,7 +17,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid cu:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" fcu:Background="{ThemeResource SystemControlAcrylicElementBrush}">
         <ScrollViewer x:Name="VScrollViewer" ViewChanged="VScrollViewer_ViewChanged">
             <StackPanel Margin="{x:Bind data:Settings.stackPanelMargin}">
                 <ListView x:Name="FeedReplyList" ItemTemplate="{StaticResource feed_reply}">
