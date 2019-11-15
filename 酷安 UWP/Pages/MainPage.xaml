@@ -119,7 +119,7 @@
                         </SplitView.Pane>
                         <ContentPresenter x:Name="ContentPart" Content="{TemplateBinding Content}" AutomationProperties.Name="Content"/>
                     </SplitView>
-                    <Button x:Name="HamburgerButton" fcu:Style="{ThemeResource ButtonRevealStyle}" Background="Transparent" BorderThickness="0" Height="{TemplateBinding HamburgerHeight}" Margin="0,32,0,8" AutomationProperties.Name="Main button" Padding="0" TabIndex="0" VerticalAlignment="Top" Visibility="{TemplateBinding HamburgerVisibility}" Width="{TemplateBinding HamburgerWidth}">
+                    <Button x:Name="HamburgerButton" Click="HamburgerButton_Click" fcu:Style="{ThemeResource ButtonRevealStyle}" Background="Transparent" BorderThickness="0" Height="{TemplateBinding HamburgerHeight}" Margin="0,32,0,8" AutomationProperties.Name="Main button" Padding="0" TabIndex="0" VerticalAlignment="Top" Visibility="{TemplateBinding HamburgerVisibility}" Width="{TemplateBinding HamburgerWidth}">
                         <ContentControl ContentTemplate="{TemplateBinding HamburgerMenuTemplate}" Foreground="{TemplateBinding PaneForeground}" IsTabStop="False" Margin="{TemplateBinding HamburgerMargin}"/>
                     </Button>
                 </Grid>
@@ -214,9 +214,5 @@
                 </Grid>
             </Grid>
         </controls:HamburgerMenu>
-        <Grid x:Name="statusGrid" Height="32" Padding="0,0,140,0" VerticalAlignment="Top" Background="Transparent">
-            <ProgressBar Visibility="Collapsed" ShowError="False" ShowPaused="False" VerticalAlignment="Top" x:Name="statusBar"/>
-            <TextBlock Margin="16,3" FontSize="16" x:Name="messageTextBlock"/>
-        </Grid>
     </Grid>
 </Page>

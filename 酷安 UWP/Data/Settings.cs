@@ -15,7 +15,7 @@ namespace CoolapkUWP.Data
     static class Settings
     {
         static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-
+        public static UISettings uISettings = new UISettings();
         public static bool IsMobile = Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile";
 
         public static double FirstPageTitleHeight
@@ -33,15 +33,6 @@ namespace CoolapkUWP.Data
             {
                 if (IsMobile) return 48;
                 else return 80;
-            }
-        }
-
-        public static Style ListViewStyle
-        {
-            get
-            {
-                if (IsMobile) return Application.Current.Resources["ListViewStyle2Mobile"] as Style;
-                else return Application.Current.Resources["ListViewStyle2Desktop"] as Style;
             }
         }
 
@@ -95,20 +86,24 @@ namespace CoolapkUWP.Data
         public static void CheckTheme()
         {
             InitializeSettings();
-            //if (Window.Current?.Content is FrameworkElement frameworkElement)
-            var frameworkElement = Tools.mainPage;
-            if (!GetBoolen("IsDarkMode"))
+            if (Window.Current?.Content is FrameworkElement frameworkElement)
             {
-                frameworkElement.RequestedTheme = ElementTheme.Light;
-                ChangeTitleBarColor(true);
+                if (!GetBoolen("IsDarkMode"))
+                {
+                    frameworkElement.RequestedTheme = ElementTheme.Light;
+                    ChangeColor(true);
+                    foreach (var item in Tools.popups)
+                        item.RequestedTheme = ElementTheme.Light;
+                }
+                else
+                {
+                    frameworkElement.RequestedTheme = ElementTheme.Dark;
+                    ChangeColor(false);
+                    foreach (var item in Tools.popups)
+                        item.RequestedTheme = ElementTheme.Dark;
+                }
             }
-            else
-            {
-                frameworkElement.RequestedTheme = ElementTheme.Dark;
-                ChangeTitleBarColor(false);
-            }
-
-            void ChangeTitleBarColor(bool value)//标题栏颜色
+            void ChangeColor(bool value)//标题栏颜色
             {
                 Color BackColor = value ? Color.FromArgb(255, 242, 242, 242) : Color.FromArgb(255, 23, 23, 23),
                       ForeColor = value ? Colors.Black : Colors.White,

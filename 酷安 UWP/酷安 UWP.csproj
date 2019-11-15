@@ -112,6 +112,9 @@
     <Compile Include="Control\ReplyDialogPresenter.xaml.cs">
       <DependentUpon>ReplyDialogPresenter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\StatusGrid.xaml.cs">
+      <DependentUpon>StatusGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\TitleBar.xaml.cs">
       <DependentUpon>TitleBar.xaml</DependentUpon>
     </Compile>
@@ -119,15 +122,16 @@
     <Compile Include="Control\ViewModels\FeedReplyViewModel.cs" />
     <Compile Include="Control\ViewModels\FeedViewModelBase.cs" />
     <Compile Include="Control\ViewModels\FeedDetailViewModel.cs" />
+    <Compile Include="Control\ViewModels\IndexPageViewModel.cs" />
     <Compile Include="Control\ViewModels\SimpleFeedReplyViewModel.cs" />
     <Compile Include="Control\ViewModels\SourceFeedViewModel.cs" />
+    <Compile Include="Data\ImageCache.cs" />
     <Compile Include="Pages\AppPages\AppRecommendPage.xaml.cs">
       <DependentUpon>AppRecommendPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\DatatemplatesDictionary.xaml.cs" />
     <Compile Include="Control\ViewModels\FeedViewModel.cs" />
     <Compile Include="Control\ViewModels\SearchPageViewModel.cs" />
-    <Compile Include="Control\ViewModels\SettingViewModel.cs" />
     <Compile Include="Control\ViewModels\TopicViewModel.cs" />
     <Compile Include="Control\ViewModels\UserViewModel.cs" />
     <Compile Include="Data\Emojis.cs" />
@@ -758,6 +762,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Control\StatusGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Control\TitleBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -832,11 +840,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
-      <Version>2.9.7</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
     </PackageReference>

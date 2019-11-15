@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Data;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
@@ -42,8 +43,6 @@ namespace CoolapkUWP.Control.ViewModels
             {
                 if (token["feedType"].GetString() == "question")
                     showLikes = false;
-                if (token.TryGetValue("share_num", out IJsonValue value))
-                    share_num = value.ToString().Replace("\"", string.Empty);
             }
             else
             {
@@ -57,8 +56,7 @@ namespace CoolapkUWP.Control.ViewModels
                 if (!mode.HasFlag(FeedDisplayMode.notShowDyhName))
                 {
                     showDyh = true;
-                    if (!string.IsNullOrEmpty(token["dyh_info"].GetObject()["logo"].GetString()))
-                        dyhlogo = new BitmapImage(new Uri(token["dyh_info"].GetObject()["logo"].GetString()));
+                    dyhlogoUrl = token["dyh_info"].GetObject()["logo"].GetString();
                     dyhurl = token["dyh_info"].GetObject()["url"].GetString();
                     dyhname = token["dyh_name"].GetString();
                 }
@@ -73,29 +71,34 @@ namespace CoolapkUWP.Control.ViewModels
                 List<RelationRowsItem> vs = new List<RelationRowsItem>();
                 if (valuelocation != null && !string.IsNullOrEmpty(valuelocation.GetString()))
                     vs.Add(new RelationRowsItem { title = valuelocation.GetString() });
-                ImageSource l = new BitmapImage();
                 if (valuettitle != null && !string.IsNullOrEmpty(valuettitle.GetString()))
-                {
-                    if (!string.IsNullOrEmpty(token["tpic"].GetString()))
-                        l = new BitmapImage(new Uri(token["tpic"].GetString()));
-                    vs.Add(new RelationRowsItem { title = valuettitle.GetString(), url = token["turl"].GetString(), logo = l });
-                }
+                    vs.Add(new RelationRowsItem { title = valuettitle.GetString(), url = token["turl"].GetString(), logoUrl = token["tpic"].GetString() });
                 if (token["entityType"].GetString() != "article" && valuedyh != null && !string.IsNullOrEmpty(valuedyh.GetString()))
                     vs.Add(new RelationRowsItem { title = valuedyh.GetString(), url = $"/dyh/{token["dyh_id"].ToString().Replace("\"", string.Empty)}" });
                 if (valuerelationRows != null)
                     foreach (var i in valuerelationRows.GetArray())
                     {
                         JsonObject item = i.GetObject();
-                        l = new BitmapImage(new Uri(item["logo"].GetString()));
-                        vs.Add(new RelationRowsItem { title = item["title"].GetString(), url = item["url"].GetString(), logo = l });
+                        vs.Add(new RelationRowsItem { title = item["title"].GetString(), url = item["url"].GetString(), logoUrl = item["logo"].GetString() });
                     }
                 relationRows = vs.ToArray();
                 if (vs.Count == 0) showRelationRows = false;
             }
-
-            isStickTop = token.TryGetValue("isStickTop", out IJsonValue j) && j.GetNumber() == 1 ? true : false;
+            isStickTop = token.TryGetValue("isStickTop", out IJsonValue j) && j.GetNumber() == 1;
+            GetPic();
         }
-        public new string share_num { get; private set; }
+
+        private async void GetPic()
+        {
+            if (showDyh && !string.IsNullOrEmpty(dyhlogoUrl))
+                dyhlogo = await ImageCache.GetImage(ImageType.Icon, dyhlogoUrl);
+            if (showRelationRows)
+                foreach (var item in relationRows)
+                    if (!string.IsNullOrEmpty(item.logoUrl))
+                        item.logo = await ImageCache.GetImage(ImageType.Icon, item.logoUrl);
+        }
+
+        string dyhlogoUrl;
         public new string uurl { get; private set; }
         public new string info { get; private set; }
         public bool isStickTop { get; private set; }
@@ -116,7 +119,8 @@ namespace CoolapkUWP.Control.ViewModels
     class RelationRowsItem
     {
         public string url { get; set; }
-        public ImageSource logo { get; set; } = new BitmapImage();
+        public string logoUrl;
+        public ImageSource logo { get; set; }
         public string title { get; set; }
     }
     class ReplyRowsItem

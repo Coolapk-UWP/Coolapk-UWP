@@ -51,17 +51,6 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public async void LoadTagDetail()
         {
-            ImageSource getImage(string uri)
-            {
-                if (Settings.GetBoolen("IsNoPicsMode"))
-                {
-                    if (Settings.GetBoolen("IsDarkMode"))
-                        return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
-                    else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
-                }
-                return new BitmapImage(new Uri(uri));
-            }
-
             string r = await Tools.GetJson($"/topic/newTagDetail?tag={tag}");
             JsonObject detail = Tools.GetJSonObject(r);
             if (!(detail is null))
@@ -69,7 +58,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 TitleBar.Title = detail["title"].GetString();
                 DetailGrid.DataContext = new
                 {
-                    Logo = getImage(detail["logo"].GetString()),
+                    Logo = await ImageCache.GetImage(ImageType.Icon, detail["logo"].GetString()),
                     Title = detail["title"].GetString(),
                     FollowNum = detail.TryGetValue("follownum", out IJsonValue t) ? t.GetNumber() : detail["follow_num"].GetNumber(),
                     CommentNum = detail.TryGetValue("commentnum", out IJsonValue tt) ? tt.GetNumber() : detail["rating_total_num"].GetNumber(),

@@ -13,7 +13,7 @@
     d:DesignWidth="400"
     Tapped="titleGrid_Tapped">
 
-    <Grid x:Name="titleGrid" Height="{x:Bind data:Settings.PageTitleHeight}" VerticalAlignment="Top" 
+    <Grid x:Name="titleGrid" Height="{x:Bind data:Settings.PageTitleHeight}" VerticalAlignment="Top" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" BorderThickness="0,0,0,2" Padding="0,0,0,-2"
           cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" fcu:Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="48"/>

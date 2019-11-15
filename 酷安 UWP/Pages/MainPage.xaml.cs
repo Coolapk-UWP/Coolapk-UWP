@@ -8,7 +8,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Data.Json;
-using Windows.Foundation.Metadata;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
@@ -34,22 +33,26 @@ namespace CoolapkUWP.Pages
         public MainPage()
         {
             this.InitializeComponent();
-            Tools.mainPage = this;
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
                 Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            else statusGrid.Visibility = Visibility.Collapsed;
-            Application.Current.LeavingBackground += Current_Resuming;
-            Application.Current.Resuming += Current_Resuming;
-            new UISettings().ColorValuesChanged += Current_Resuming;
+            Application.Current.LeavingBackground += ChangeColor;
+            Settings.uISettings.ColorValuesChanged += ChangeColor;
             Settings.InitializeSettings();
             if (Settings.GetBoolen("CheckUpdateWhenLuanching")) Settings.CheckUpdate();
 
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
             {
-                if (Tools.popups.Count > 0)
+                if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop" && Tools.popups.Count > 1)
                 {
                     ee.Handled = true;
-                    Popup popup = Tools.popups.Last();
+                    Popup popup = Tools.popups[Tools.popups.Count - 2];
+                    popup.IsOpen = false;
+                    Tools.popups.Remove(popup);
+                }
+                else if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" && Tools.popups.Count > 0)
+                {
+                    ee.Handled = true;
+                    Popup popup = Tools.popups[Tools.popups.Count - 1];
                     popup.IsOpen = false;
                     Tools.popups.Remove(popup);
                 }
@@ -64,35 +67,20 @@ namespace CoolapkUWP.Pages
             hamburgerMenuControl.OptionsItemsSource = MenuItem.GetOptionsItems();
             if (Settings.IsMobile) TopBar.Margin = new Thickness(0);
             UpdateUserInfo();
+            Tools.mainPage = this;
             Settings.CheckTheme();
-            Task.Run(async () =>
-            {
-                await Task.Delay(300);
-                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                 {
-                     var aa = VisualTreeHelper.GetChild(hamburgerMenuControl, 0) as Grid;
-                     var a = aa.FindName("HamburgerButton") as Button;
-                     a.Click += (sender, ee) =>
-                     {
-                         ObservableCollection<MenuItem> items = hamburgerMenuControl.ItemsSource as ObservableCollection<MenuItem>;
-                         items.RemoveAt(0);
-                         if (hamburgerMenuControl.IsPaneOpen) items.Insert(0, new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -3, Image = new BitmapImage() });
-                         else items.Insert(0, new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -2, Image = new BitmapImage() });
-                     };
-                 });
-            });
         }
 
-        private async void Current_Resuming(object sender, object e)
+        private async void ChangeColor(object sender, object e)
         {
             if (Settings.GetBoolen("IsBackgroundColorFollowSystem"))
             {
-                Settings.Set("IsDarkMode", new UISettings().GetColorValue(UIColorType.Background).Equals(Colors.Black) ? true : false);
+                Settings.Set("IsDarkMode", Settings.uISettings.GetColorValue(UIColorType.Background).Equals(Colors.Black) ? true : false);
                 await Dispatcher.RunAsync(CoreDispatcherPriority.High, () => Settings.CheckTheme());
             }
         }
 
-        public void UpdateUserInfo()
+        public async void UpdateUserInfo()
         {
             ObservableCollection<MenuItem> items = hamburgerMenuControl.OptionsItemsSource as ObservableCollection<MenuItem>;
             if (items.Count == 2) items.RemoveAt(0);
@@ -100,7 +88,7 @@ namespace CoolapkUWP.Pages
             {
                 Index = -1,
                 PageType = typeof(UserPage),
-                Image = string.IsNullOrEmpty(Settings.GetString("UserAvatar")) ? new BitmapImage() : new BitmapImage(new Uri(Settings.GetString("UserAvatar"))),
+                Image = string.IsNullOrEmpty(Settings.GetString("UserAvatar")) ? null : await ImageCache.GetImage(ImageType.SmallAvatar, Settings.GetString("UserAvatar")),
                 Name = Settings.GetString("UserName"),
                 Icon = Symbol.Contact
             };
@@ -260,7 +248,7 @@ namespace CoolapkUWP.Pages
                                 AppName = item["title"].GetString(),
                                 DownloadNum = $"{item["score"].GetString()}分 {item["downCount"].GetString()}下载",
                                 Url = item["url"].GetString(),
-                                Icon = new BitmapImage(new Uri(item["logo"].GetString())),
+                                Icon = await ImageCache.GetImage(ImageType.Icon, (item["logo"].GetString())),
                                 Size = item["apksize"].GetString(),
                             });
                             break;
@@ -304,53 +292,15 @@ namespace CoolapkUWP.Pages
             else if (args.ChosenSuggestion is null) Tools.Navigate(typeof(SearchPage), new object[] { 0, sender.Text });
         }
 
-        public async void ShowProgressBar()
+        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-                await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
-            else
+            (sender as Button).Click += (s, ee) =>
             {
-                statusBar.Visibility = Visibility.Visible;
-                statusBar.IsIndeterminate = true;
-            }
-        }
-
-        public async void ShowMessage(string message)
-        {
-            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
-            {
-                messageTextBlock.Text = message;
-                await Task.Delay(3000);
-                messageTextBlock.Text = string.Empty;
-            }
-            else if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-            {
-                StatusBar statusBar = StatusBar.GetForCurrentView();
-                await statusBar.ProgressIndicator.ShowAsync();
-                statusBar.ProgressIndicator.Text = message;
-                await Task.Delay(3000);
-                await statusBar.ProgressIndicator.HideAsync();
-                statusBar.ProgressIndicator.Text = string.Empty;
-            }
-        }
-
-        public void ShowHttpExceptionMessage(System.Net.Http.HttpRequestException e)
-        {
-            if (e.Message.IndexOfAny(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }) != -1)
-                ShowMessage($"服务器错误： {e.Message.Replace("Response status code does not indicate success: ", string.Empty)}");
-            else if (e.Message == "An error occurred while sending the request.") ShowMessage("无法连接网络。");
-            else ShowMessage($"请检查网络连接。 {e.Message}");
-        }
-
-        public async void HideProgressBar()
-        {
-            if (!ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-            {
-                statusBar.Visibility = Visibility.Collapsed;
-                statusBar.IsIndeterminate = false;
-            }
-            else if (string.IsNullOrEmpty(StatusBar.GetForCurrentView().ProgressIndicator.Text))
-                await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
+                ObservableCollection<MenuItem> items = hamburgerMenuControl.ItemsSource as ObservableCollection<MenuItem>;
+                items.RemoveAt(0);
+                if (hamburgerMenuControl.IsPaneOpen) items.Insert(0, new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -3, Image = new BitmapImage() });
+                else items.Insert(0, new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -2, Image = new BitmapImage() });
+            };
         }
     }
 

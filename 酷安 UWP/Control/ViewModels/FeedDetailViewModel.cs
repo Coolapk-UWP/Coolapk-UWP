@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Data;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
@@ -15,13 +16,15 @@ namespace CoolapkUWP.Control.ViewModels
             title = token["title"].GetString();
             if (token["entityType"].GetString() != "article")
             {
+                if (token.TryGetValue("share_num", out IJsonValue s))
+                    share_num = s.ToString().Replace("\"", string.Empty);
                 if (token["feedType"].GetString() == "feedArticle")
                     isFeedArticle = true;
                 if (isFeedArticle)
                 {
                     has_message_cover = token.TryGetValue("message_cover", out IJsonValue value) && !string.IsNullOrEmpty(value.GetString());
                     if (has_message_cover)
-                        message_cover = new BitmapImage(new Uri(value.GetString()));
+                        message_cover_url = value.GetString();
                     JsonArray array = JsonArray.Parse(token["message_raw_output"].GetString());
                     message_raw_output = string.Empty;
                     foreach (var i in array)
@@ -32,7 +35,7 @@ namespace CoolapkUWP.Control.ViewModels
                         else if (item["type"].GetString() == "image")
                         {
                             string d = string.IsNullOrEmpty(item["description"].GetString()) ? string.Empty : item["description"].GetString();
-                            message_raw_output += $"\n\n![{d.Replace("]", " ")}]({item["url"].GetString()}.s.jpg)\n\n>{d}\n\n";
+                            message_raw_output += $"\n\n![{d.Replace("]", " ")}]({item["url"].GetString()})\n\n>{d}\n\n";
                         }
                     }
                 }
@@ -49,8 +52,8 @@ namespace CoolapkUWP.Control.ViewModels
             if (showTtitle)
             {
                 ttitle = valuettitle.GetString();
-                tpic = new BitmapImage(new Uri(token["tpic"].GetString()));
                 turl = token["turl"].GetString();
+                tpicUrl = token["tpic"].GetString();
             }
             show_dyh_name = token.TryGetValue("dyh_name", out IJsonValue valuedyh) && !string.IsNullOrEmpty(valuedyh.GetString());
             if (show_dyh_name)
@@ -69,15 +72,32 @@ namespace CoolapkUWP.Control.ViewModels
                     foreach (var i in valuerelationRows.GetArray())
                     {
                         JsonObject item = i.GetObject();
-                        vs.Add(new RelationRowsItem { title = item["title"].GetString(), url = item["url"].GetString(), logo = new BitmapImage(new Uri(item["logo"].GetString())) });
+                        vs.Add(new RelationRowsItem { title = item["title"].GetString(), url = item["url"].GetString(), logoUrl = item["logo"].GetString() });
                     }
                 if (vs.Count == 0) showRelationRows = false;
                 relationRows = vs.ToArray();
             }
+            GetPic();
         }
+
+        private async void GetPic()
+        {
+            if (has_message_cover)
+                message_cover = await ImageCache.GetImage(ImageType.SmallImage, message_cover_url);
+            if (showTtitle)
+                tpic = await ImageCache.GetImage(ImageType.Icon, tpicUrl);
+            if (showRelationRows)
+                foreach (var item in relationRows)
+                    if (!string.IsNullOrEmpty(item.logoUrl))
+                        item.logo = await ImageCache.GetImage(ImageType.Icon, item.logoUrl);
+        }
+
+        string tpicUrl;
+        public new string share_num { get; private set; }
         public bool isFeedArticle { get; private set; }
         public bool isFeedArticle2 { get => !isFeedArticle; }
         public bool has_message_cover { get; private set; }
+        public string message_cover_url { get; private set; }
         public ImageSource message_cover { get; private set; }
         public string message_raw_output { get; private set; }
         public bool showTtitle { get; private set; }
@@ -85,12 +105,12 @@ namespace CoolapkUWP.Control.ViewModels
         public string ttitle { get; private set; }
         public ImageSource tpic { get; private set; }
         public bool show_dyh_name { get; private set; }
-        public string dyhUrl { get; private set; }// /dyh/{id}
+        public string dyhUrl { get; private set; }
         public string dyh_name { get; private set; }
         public bool isAnswerFeed { get; private set; }
         public string questionUrl { get; private set; }
         public string title { get; private set; }
-        public string questionAnswerNum { get; private set; }//extraData.questionAnswerNum
+        public string questionAnswerNum { get; private set; }
         public bool showRelationRows { get; private set; }
         public RelationRowsItem[] relationRows { get; private set; }
     }

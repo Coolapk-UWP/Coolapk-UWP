@@ -1,6 +1,8 @@
 ﻿using CoolapkUWP.Data;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Windows.Data.Json;
+using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Control.ViewModels
 {
@@ -25,15 +27,23 @@ namespace CoolapkUWP.Control.ViewModels
                 message_title = token["title"].GetString();
             }
             showMessage_title = !string.IsNullOrEmpty(message_title);
-
             showPicArr = token.TryGetValue("picArr", out IJsonValue value) && value.GetArray().Count > 0 && !string.IsNullOrEmpty(value.GetArray()[0].GetString());
+            GetPic(token);
+        }
+
+        async void GetPic(JsonObject token)
+        {
             if (showPicArr)
             {
-                List<string> vs = new List<string>();
-                foreach (var item in value.GetArray())
-                    vs.Add(item.GetString() + ".s.jpg");
-                picArr = vs.ToArray();
+                picArr = new ObservableCollection<ImageSource>();
+                foreach (var item in token["picArr"].GetArray())
+                {
+                    pics.Add(item.GetString());
+                    picArr.Add(await ImageCache.GetImage(ImageType.SmallImage, item.GetString()));
+                }
             }
+            if (token.TryGetValue("pic", out IJsonValue value1) && !string.IsNullOrEmpty(value1.GetString()))
+                pic = await ImageCache.GetImage(ImageType.SmallImage, value1.GetString());
         }
         public string url { get; private set; }
         public string uurl { get; private set; }
@@ -43,6 +53,8 @@ namespace CoolapkUWP.Control.ViewModels
         public string message_title { get; private set; }
         public string message { get; private set; }
         public bool showPicArr { get; private set; }
-        public string[] picArr { get; private set; }
+        public List<string> pics { get; private set; } = new List<string>();
+        public ObservableCollection<ImageSource> picArr { get; private set; }
+        public ImageSource pic { get; private set; }
     }
 }

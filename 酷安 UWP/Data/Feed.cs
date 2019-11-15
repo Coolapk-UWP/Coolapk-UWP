@@ -356,27 +356,4 @@ namespace CoolapkUWP
         }
         public Feed[] GetSelfs() => new Feed[] { this };
     }
-    class Feed2 : Feed
-    {
-        IJsonValue jToken = null;
-        public string ListType { get; private set; }
-        public Feed2(IJsonValue token, string type) : this(new JsonObject(), type) => jToken = token;
-
-        public Feed2(JsonObject jObject) : base(jObject) { }
-        public Feed2(JsonObject jObject, string type) : base(jObject) => ListType = type;
-
-        public new Feed2[] GetFeeds(string value)
-        {
-            JsonArray array = new JsonArray();
-            if (jToken is null)
-                array = jObject[value].GetArray();
-            else
-                array = jToken.GetArray();
-            List<Feed2> fs = new List<Feed2>();
-            foreach (var item in array)
-                if (!string.IsNullOrEmpty(item.ToString()))
-                    fs.Add(new Feed2(item.GetObject()));
-            return fs.ToArray();
-        }
-    }
 }

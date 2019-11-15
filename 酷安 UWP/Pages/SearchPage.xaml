@@ -21,7 +21,7 @@
     <Grid>
         <Pivot Style="{StaticResource PivotStyle1}" x:Name="DetailPivot" Visibility="Visible" SelectionChanged="DetailPivot_SelectionChanged">
             <PivotItem Header="动态">
-                <ListView x:Name="FeedList" Style="{x:Bind data:Settings.ListViewStyle}" ItemTemplate="{StaticResource feed}" Margin="{x:Bind stackPanelMargin}">
+                <ListView x:Name="FeedList" Style="{StaticResource ListViewStyle}" ItemTemplate="{StaticResource feed}" Margin="{x:Bind stackPanelMargin}">
                     <ListView.Header>
                         <StackPanel Padding="20,10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Orientation="Horizontal">
                             <ComboBox x:Name="SearchFeedTypeComboBox" Header="搜索类型" SelectedIndex="0" SelectionChanged="SearchFeedTypeComboBox_SelectionChanged">

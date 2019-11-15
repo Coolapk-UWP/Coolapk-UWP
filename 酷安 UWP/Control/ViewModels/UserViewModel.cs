@@ -11,12 +11,17 @@ namespace CoolapkUWP.Control.ViewModels
             JsonObject token = t.GetObject();
             url = token["url"].GetString();
             UserName = token["username"].GetString();
-            FansNum = token["fans"].ToString().Replace("\"",string.Empty);
-            FollowNum = token["follow"].ToString().Replace("\"", string.Empty);
-            Bio = token["bio"].GetString();
-            LoginTime = Tools.ConvertTime(double.Parse(token["logintime"].ToString().Replace("\"", string.Empty))) + "活跃";
-            UserAvatar = new BitmapImage(new System.Uri(token["userSmallAvatar"].GetString()));
+            if (token.TryGetValue("fans", out IJsonValue a))
+            {
+                FansNum = a.ToString().Replace("\"", string.Empty);
+                FollowNum = token["follow"].ToString().Replace("\"", string.Empty);
+                if (token.TryGetValue("bio", out IJsonValue b))
+                    Bio = b.GetString();
+                LoginTime = Tools.ConvertTime(double.Parse(token["logintime"].ToString().Replace("\"", string.Empty))) + "活跃";
+            }
+            GetPic(token);
         }
+        async void GetPic(JsonObject token) => UserAvatar = await ImageCache.GetImage(ImageType.SmallAvatar, token["userSmallAvatar"].GetString());
         public string url { get; private set; }
         public string UserName { get; private set; }
         public string FollowNum { get; private set; }

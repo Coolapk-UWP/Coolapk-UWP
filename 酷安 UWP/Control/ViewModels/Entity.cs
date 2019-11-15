@@ -15,5 +15,4 @@ namespace CoolapkUWP.Control.ViewModels
         public bool entityFixed { get; private set; }
         public string entityType { get; private set; }
     }
-
 }

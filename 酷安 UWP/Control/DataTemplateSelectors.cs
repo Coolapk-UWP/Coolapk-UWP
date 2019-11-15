@@ -56,8 +56,7 @@ namespace CoolapkUWP.Control
         public DataTemplate DataTemplate9 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            Feed feed = item as Feed;
-            switch (feed.GetValue("entityTemplate"))
+            switch ((item as IndexPageViewModel).entityTemplate)
             {
                 case "selectorLinkCard": return DataTemplate8;
                 case "imageCard": return DataTemplate9;
@@ -93,42 +92,24 @@ namespace CoolapkUWP.Control
         public DataTemplate DataTemplate9 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            Feed feed = item as Feed;
-            switch (feed.GetValue("entityType"))
+            if (item is FeedViewModel f)
             {
-                case "image_1": return DataTemplate1;
-                case "icon":
-                case "iconMiniLink":
-                case "iconLink": return DataTemplate2;
-                case "dyh": return DataTemplate3;
-                case "topic": return DataTemplate4;
-                case "feed":
-                    if (feed.GetValue("feedType") == "feedArticle") return DataTemplate5;
-                    else if (feed.GetValue("feedType") == "question") return DataTemplate6;
-                    else return DataTemplate0;
-                case "textLink": return DataTemplate7;
-                case "user": return DataTemplate8;
-                case "imageSquare": return DataTemplate9;
-                default: return DataTemplate0;
+                if (f.isQuestionFeed) return DataTemplate6;
+                else if (f.showMessage_title) return DataTemplate5;
             }
-        }
-    }
-    public class FeedTemplateSelector : DataTemplateSelector
-    {
-        public DataTemplate DataTemplate1 { get; set; }
-        public DataTemplate DataTemplate2 { get; set; }
-        protected override DataTemplate SelectTemplateCore(object item)
-        {
-            Feed feed = item as Feed;
-            switch (feed.GetValue("feedType"))
-            {
-                case "feed": return DataTemplate1;
-                case "feedArticle":
-                case "answer":
-                case "question":
-                    return DataTemplate2;
-                default: return DataTemplate1;
-            }
+            else if (item is UserViewModel) return DataTemplate8;
+            else switch ((item as IndexPageViewModel).entityType)
+                {
+                    case "image_1": return DataTemplate1;
+                    case "icon":
+                    case "iconMiniLink":
+                    case "iconLink": return DataTemplate2;
+                    case "dyh": return DataTemplate3;
+                    case "topic": return DataTemplate4;
+                    case "textLink": return DataTemplate7;
+                    case "imageSquare": return DataTemplate9;
+                }
+            return DataTemplate0;
         }
     }
     public class SearchPageTemplateSelector : DataTemplateSelector

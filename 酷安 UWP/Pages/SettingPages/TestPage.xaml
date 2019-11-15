@@ -7,6 +7,7 @@
     xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:control="using:CoolapkUWP.Control"
+    xmlns:sto="using:Windows.Storage"
     xmlns:data="using:CoolapkUWP.Data"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -18,25 +19,24 @@
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
-        <ScrollViewer ViewChanging="ScrollViewer_ViewChanging">
+        <ScrollViewer>
             <StackPanel Margin="{x:Bind data:Settings.stackPanelMargin}">
                 <TextBox Header="uid" x:Name="uid"/>
                 <Button Click="Button_Click">go</Button>
                 <TextBox Header="url" x:Name="url"></TextBox>
                 <Button Click="Button_Click_5">get</Button>
-                <TextBox AcceptsReturn="True" x:Name="txb1" MaxHeight="250"/>
-                <Button Click="Button_Click_1">encode</Button>
-                <TextBox AcceptsReturn="True" x:Name="txb2" MaxHeight="250"/>
-                <Button Click="Button_Click_6">show</Button>
-                <ListView ItemTemplate="{StaticResource feed_reply}" x:Name="asa"/>
                 <TextBox Header="message" x:Name="message"/>
                 <Button Click="Button_Click_4">show</Button>
-                <Button Click="Button_Click_2">go</Button>
-                <Slider ValueChanged="Slider_ValueChanged"/>
-                <TextBlock Text="{x:Bind Test.Value,Mode=OneWay}"/>
+                <Image x:Name="imagea" Width="300"/>
+                <ListView x:Name="lis">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="BitmapImage">
+                            <Image Source="{x:Bind}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackPanel>
         </ScrollViewer>
-
         <control:TitleBar BackButtonClick="Button_Click_3"/>
     </Grid>
 </Page>

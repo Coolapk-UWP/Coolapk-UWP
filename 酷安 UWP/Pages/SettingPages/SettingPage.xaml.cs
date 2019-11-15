@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Data;
 using System;
+using System.Threading;
 using Windows.ApplicationModel;
 using Windows.Data.Json;
 using Windows.Storage;
@@ -9,6 +10,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -19,15 +21,18 @@ namespace CoolapkUWP.Pages.SettingPages
     /// </summary>
     public sealed partial class SettingPage : Page
     {
-        public SettingPage()
-        {
-            this.InitializeComponent();
-            Tools.mainPage.ResetRowHeight();
+        public SettingPage() => this.InitializeComponent();
 
+        CancellationTokenSource source = new CancellationTokenSource();
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            Tools.mainPage.ResetRowHeight();
             title.Height = Settings.FirstPageTitleHeight;
             stackP.Margin = new Thickness(0, Settings.FirstPageTitleHeight, 0, 50);
-
-            //IsNoPicsMode.IsOn = Settings.GetBoolen("IsNoPicsMode");
+            Tools.ShowProgressBar();
+            IsNoPicsMode.IsOn = Settings.GetBoolen("IsNoPicsMode");
             IsUseOldEmojiMode.IsOn = Settings.GetBoolen("IsUseOldEmojiMode");
             IsDarkMode.IsOn = Settings.GetBoolen("IsDarkMode");
             CheckUpdateWhenLuanching.IsOn = Settings.GetBoolen("CheckUpdateWhenLuanching");
@@ -38,6 +43,16 @@ namespace CoolapkUWP.Pages.SettingPages
 #if DEBUG
             gotoTestPage.Visibility = Visibility.Visible;
 #endif
+            CacheSizeTextBlock.Text = await ImageCache.GetCacheSize(source.Token);
+            CleanCacheButton.IsEnabled = true;
+            source = null;
+            Tools.HideProgressBar();
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            base.OnNavigatingFrom(e);
+            source.Cancel();
         }
 
         private void CleanDataButton_Click(object sender, RoutedEventArgs e)
@@ -58,7 +73,7 @@ namespace CoolapkUWP.Pages.SettingPages
                     Settings.CheckTheme();
                     break;
                 case "IsBackgroundColorFollowSystem":
-                    Settings.Set("IsDarkMode", new UISettings().GetColorValue(UIColorType.Background).Equals(Colors.Black) ? true : false);
+                    Settings.Set("IsDarkMode", Settings.uISettings.GetColorValue(UIColorType.Background).Equals(Colors.Black) ? true : false);
                     Settings.CheckTheme();
                     IsDarkMode.IsOn = Settings.GetBoolen("IsDarkMode");
                     IsDarkMode.Visibility = toggle.IsOn ? Visibility.Collapsed : Visibility.Visible;
@@ -76,6 +91,14 @@ namespace CoolapkUWP.Pages.SettingPages
                     break;
                 case "checkUpdate":
                     Settings.CheckUpdate();
+                    break;
+                case "CleanCache":
+                    button.IsEnabled = false;
+                    await ImageCache.CleanCache();
+                    button.IsEnabled = true;
+                    source = new CancellationTokenSource();
+                    CacheSizeTextBlock.Text = await ImageCache.GetCacheSize(source.Token);
+                    source = null;
                     break;
                 case "fakeLogin":
                     try

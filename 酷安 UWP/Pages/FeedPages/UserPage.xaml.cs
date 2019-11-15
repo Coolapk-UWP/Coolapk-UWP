@@ -69,6 +69,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     Frame.GoBack();
                 }
             }
+            //UserDetailGrid.Height = UserDetailGrid.Width;
         }
         /*
         async void GetVScrollViewer()
@@ -88,7 +89,7 @@ namespace CoolapkUWP.Pages.FeedPages
             JsonObject detail = Tools.GetJSonObject(result);
             if (detail != null)
             {
-                this.UserDetail = new UserDetail
+                UserDetail = new UserDetail
                 {
                     UserFaceUrl = detail["userAvatar"].GetString(),
                     UserName = detail["username"].GetString(),
@@ -102,7 +103,9 @@ namespace CoolapkUWP.Pages.FeedPages
                     City = $"{detail["province"].GetString()} {detail["city"].GetString()}",
                     Astro = detail["astro"].GetString(),
                     Logintime = $"{Tools.ConvertTime(detail["logintime"].GetNumber())}活跃",
-                    FeedNum = detail["feed"].GetNumber()
+                    FeedNum = detail["feed"].GetNumber(),
+                    UserFace = await ImageCache.GetImage(ImageType.SmallAvatar, detail["userSmallAvatar"].GetString()),
+                    Background = new ImageBrush { ImageSource = await ImageCache.GetImage(ImageType.OriginImage, detail["cover"].GetString()), Stretch = Stretch.UniformToFill }
                 };
                 titleBar.Title = detail["username"].GetString();
             }
@@ -167,7 +170,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            //UserDetailGrid.Height = e.NewSize.Width;
+            //UserDetailGrid.Height = UserDetailGrid.Width;
         }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
@@ -188,19 +191,8 @@ namespace CoolapkUWP.Pages.FeedPages
 
     internal class UserDetail
     {
-        ImageSource GetImage(string uri)
-        {
-            if (Settings.GetBoolen("IsNoPicsMode"))
-            {
-                if (Settings.GetBoolen("IsDarkMode"))
-                    return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
-                else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
-            }
-            return new BitmapImage(new Uri(uri));
-        }
-
         public string UserFaceUrl;
-        public ImageSource UserFace { get => GetImage(UserFaceUrl); }
+        public ImageSource UserFace;
         public string UserName;
         public double FollowNum;
         public double FansNum;
@@ -208,7 +200,7 @@ namespace CoolapkUWP.Pages.FeedPages
         public double Level;
         public string Bio;
         public string BackgroundUrl;
-        public ImageBrush Background { get => new ImageBrush { ImageSource = GetImage(BackgroundUrl), Stretch = Stretch.UniformToFill }; }
+        public ImageBrush Background;
         public string Verify_title;
         public string Gender;
         public string City;

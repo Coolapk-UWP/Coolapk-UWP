@@ -6,38 +6,34 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400"
-    HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
+    d:DesignWidth="400">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" KeyUp="UserControl_KeyUp">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <!--<FlipView Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ScrollViewer.IsZoomChainingEnabled="True" ScrollViewer.BringIntoViewOnFocusChange="False" x:Name="SFlipView">
+        <FlipView Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ScrollViewer.IsZoomChainingEnabled="True"
+                  ScrollViewer.BringIntoViewOnFocusChange="False" x:Name="SFlipView" ItemsSource="{x:Bind Images}"
+                  RightTapped="SFlipView_RightTapped">
+            <FlipView.ContextFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Icon="Pictures" Tag="origin" Click="MenuFlyoutItem_Click">查看原图</MenuFlyoutItem>
+                    <MenuFlyoutItem Icon="SaveLocal" Tag="save" Click="MenuFlyoutItem_Click">保存原图</MenuFlyoutItem>
+                </MenuFlyout>
+            </FlipView.ContextFlyout>
             <FlipView.ItemTemplate>
-                <DataTemplate>
-                    <ScrollViewer x:Name="ScrollViewerMain" ZoomMode="Enabled"
-                                          MinZoomFactor="0.5"
-                                          HorizontalScrollBarVisibility="Hidden"
-                                          VerticalScrollBarVisibility="Hidden">
-                        <Image Source="{Binding}"
-                                       MaxWidth="{Binding Path=ViewportWidth,ElementName=ScrollViewerMain}"
-                                       MaxHeight="{Binding Path=ViewportHeight,ElementName=ScrollViewerMain}"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
+                <DataTemplate x:DataType="ImageSource">
+                    <ScrollViewer x:Name="ScrollViewerMain" ZoomMode="Enabled" MinZoomFactor="0.5"
+                                  HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
+                                  DoubleTapped="ScrollViewerMain_DoubleTapped">
+                        <Image Source="{x:Bind}"
+                               MaxWidth="{Binding Path=ViewportWidth,ElementName=ScrollViewerMain}"
+                               MaxHeight="{Binding Path=ViewportHeight,ElementName=ScrollViewerMain}"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               ManipulationMode="TranslateX,TranslateY" ManipulationDelta="ScrollViewerMain_ManipulationDelta"/>
                     </ScrollViewer>
                 </DataTemplate>
             </FlipView.ItemTemplate>
-        </FlipView>-->
-        <ProgressRing IsActive="True" Height="50" Width="50"/>
-        <ScrollViewer x:Name="ScrollViewerMain" ZoomMode="Enabled" MinZoomFactor="0.5" DoubleTapped="ScrollViewerMain_DoubleTapped" Margin="0,0,0,40" HorizontalScrollBarVisibility="Auto">
-            <Image x:Name="image" MaxWidth="{Binding Path=ViewportWidth,ElementName=ScrollViewerMain}" MaxHeight="{Binding Path=ViewportHeight,ElementName=ScrollViewerMain}"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </ScrollViewer>
-        <CommandBar Grid.Row="1" VerticalAlignment="Bottom" ClosedDisplayMode="Compact">
-            <AppBarButton Icon="Save" Label="保存原图" x:Name="SaveImage" Click="SaveImage_Click"/>
-            <AppBarButton Icon="Cancel" Label="关闭" x:Name="CloseFlip" Click="CloseFlip_Click"/>
-        </CommandBar>
+        </FlipView>
+        <Button Margin="0,32,0,0" Style="{StaticResource ButtonStyle1}" VerticalAlignment="Top" Height="48" Width="48" Background="#66000000" x:Name="CloseFlip" Click="CloseFlip_Click">
+            <SymbolIcon Symbol="Clear"/>
+        </Button>
     </Grid>
 </UserControl>

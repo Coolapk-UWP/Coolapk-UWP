@@ -53,17 +53,6 @@ namespace CoolapkUWP.Pages.FeedPages
         }
         public async void LoadDyhDetail()
         {
-            ImageSource getImage(string uri)
-            {
-                if (Settings.GetBoolen("IsNoPicsMode"))
-                {
-                    if (Settings.GetBoolen("IsDarkMode"))
-                        return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
-                    else return new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
-                }
-                return new BitmapImage(new Uri(uri));
-            }
-
             string r = await Tools.GetJson($"/dyh/detail?dyhId={id}");
             JsonObject detail = Tools.GetJSonObject(r);
             if (detail != null)
@@ -73,14 +62,14 @@ namespace CoolapkUWP.Pages.FeedPages
                 bool showUserButton = detail["uid"].GetNumber() != 0;
                 DetailGrid.DataContext = new
                 {
-                    Logo = getImage(detail["logo"].GetString()),
+                    Logo = await ImageCache.GetImage(ImageType.Icon, detail["logo"].GetString()),
                     Title = detail["title"].GetString(),
                     Description = detail["description"].GetString(),
                     FollowNum = detail["follownum"].GetNumber(),
                     ShowUserButton = showUserButton ? Visibility.Visible : Visibility.Collapsed,
                     url = showUserButton ? detail["userInfo"].GetObject()["url"].GetString() : string.Empty,
                     UserName = showUserButton ? detail["userInfo"].GetObject()["username"].GetString() : string.Empty,
-                    UserAvatar = showUserButton ? getImage(detail["userInfo"].GetObject()["userSmallAvatar"].ToString().Replace("\"",string.Empty)) : new BitmapImage()
+                    UserAvatar = showUserButton ? await ImageCache.GetImage(ImageType.SmallAvatar, detail["userInfo"].GetObject()["userSmallAvatar"].ToString().Replace("\"",string.Empty)) : null
                 };
             }
         }

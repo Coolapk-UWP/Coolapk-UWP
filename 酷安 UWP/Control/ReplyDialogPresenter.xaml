@@ -20,7 +20,7 @@
     <Grid cu:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" fcu:Background="{ThemeResource SystemControlAcrylicElementBrush}">
         <ScrollViewer x:Name="VScrollViewer" ViewChanged="VScrollViewer_ViewChanged">
             <StackPanel Margin="{x:Bind data:Settings.stackPanelMargin}">
-                <ListView x:Name="FeedReplyList" ItemTemplate="{StaticResource feed_reply}">
+                <ListView x:Name="FeedReplyList" Margin="12,0" ItemTemplate="{StaticResource feed_reply}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -29,6 +29,6 @@
                 </ListView>
             </StackPanel>
         </ScrollViewer>
-        <local:TitleBar x:Name="TitleBar" Title="回复" BackButtonSymbol="Clear" TitleHeight="48"/>
+        <local:TitleBar x:Name="TitleBar" Title="回复" BackButtonSymbol="Clear"/>
     </Grid>
 </Page>

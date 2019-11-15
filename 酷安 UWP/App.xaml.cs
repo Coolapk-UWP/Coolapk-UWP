@@ -6,6 +6,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using CoolapkUWP.Data;
+using System.Threading.Tasks;
 
 namespace CoolapkUWP
 {
@@ -64,8 +65,11 @@ namespace CoolapkUWP
         private async void Application_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-            await new MessageDialog($"Application Unhandled Exception:\n{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
-            Tools.HideProgressBar();
+            if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
+            {
+                await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
+                Tools.HideProgressBar();
+            }
         }
 
         /// <summary>
@@ -82,15 +86,17 @@ namespace CoolapkUWP
             deferral.Complete();
         }
 
-        private void RegisterExceptionHandlingSynchronizationContext() 
+        private void RegisterExceptionHandlingSynchronizationContext()
             => ExceptionHandlingSynchronizationContext.Register().UnhandledException += SynchronizationContext_UnhandledException;
 
         private async void SynchronizationContext_UnhandledException(object sender, AysncUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-            await new MessageDialog($"SynchronizationContext Unhandled Exception:\n{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
-            Tools.HideProgressBar();
+            if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
+            {
+                await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
+                Tools.HideProgressBar();
+            }
         }
-
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Data;
 using CoolapkUWP.Pages.FeedPages;
+using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,8 +26,8 @@ namespace CoolapkUWP.Control
         {
             if (sender is GridView view)
             {
-                if (view.SelectedIndex > -1 && view.Tag is string[] ss)
-                    Tools.ShowImage(ss[view.SelectedIndex].Remove(ss[view.SelectedIndex].Length - 6));
+                if (view.SelectedIndex > -1 && view.Tag is List<string> ss)
+                    Tools.ShowImages(ss.ToArray(), view.SelectedIndex);
                 view.SelectedIndex = -1;
             }
         }
@@ -42,8 +43,7 @@ namespace CoolapkUWP.Control
             {
                 Popup popup = new Popup();
                 popup.Child = new ReplyDialogPresenter(frameworkElement.Tag, popup);
-                Tools.popups.Add(popup);
-                popup.IsOpen = true;
+                Tools.ShowPopup(popup);
             }
         }
 

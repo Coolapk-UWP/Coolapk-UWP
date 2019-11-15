@@ -23,11 +23,16 @@
                 </Grid>
                 <TextBlock TextWrapping="Wrap">“假装登录”后你可以从侧边栏快速进入个人动态（没有其他用处）。</TextBlock>
                 <TextBlock Margin="0,0,0,10" TextWrapping="Wrap">若不需要该功能，请保持输入框空白。</TextBlock>
-                <!--<ToggleSwitch x:Name="IsNoPicsMode" Header="无图模式" Toggled="ToggleSwitch_Toggled"/>-->
                 <ToggleSwitch x:Name="IsUseOldEmojiMode" Header="使用旧式表情" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="IsBackgroundColorFollowSystem" Header="背景色跟随系统" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="IsDarkMode" Header="背景色" Toggled="ToggleSwitch_Toggled"
                               OnContent="黑色" OffContent="白色"/>
+                <ToggleSwitch x:Name="IsNoPicsMode" Header="无图模式" Toggled="ToggleSwitch_Toggled"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center">图片缓存大小：</TextBlock>
+                    <TextBlock x:Name="CacheSizeTextBlock" VerticalAlignment="Center" Text="正在加载……"/>
+                    <Button x:Name="CleanCacheButton" Tag="CleanCache" Click="Button_Click" Margin="16,0" IsEnabled="False">清除</Button>
+                </StackPanel>
                 <ToggleSwitch x:Name="CheckUpdateWhenLuanching" Header="启动时检查更新" Toggled="ToggleSwitch_Toggled"/>
                 <Button x:Name="CleanDataButton" Visibility="Collapsed" Click="CleanDataButton_Click" Content="退出登录"/>
                 <Button Tag="checkUpdate" Click="Button_Click">检查更新</Button>

@@ -2,6 +2,7 @@
 using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -82,14 +83,16 @@ namespace CoolapkUWP.Pages.FeedPages
                 else
                 {
                     FindName("FeedDetailPivot");
+                    if (feedArticleTitle != null)
+                        feedArticleTitle.Height = feedArticleTitle.Width * 0.44;
                     string r = await Tools.GetJson($"/feed/replyList?id={id}&listType={listType}&page={++feedPage}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}");
                     JsonArray array = Tools.GetDataArray(r);
                     if (array.Count != 0)
                     {
                         feedFirstItem = array.First().GetObject()["id"].GetNumber();
                         feedLastItem = array.Last().GetObject()["id"].GetNumber();
-
                         hotReplyListView.ItemsSource = hotReplys;
+                        replyListView.ItemsSource = replys;
                         JsonArray values = detail["hotReplyRows"].GetArray();
                         foreach (var item in values)
                             hotReplys.Add(new FeedReplyViewModel(item));
@@ -105,12 +108,6 @@ namespace CoolapkUWP.Pages.FeedPages
         private void Button_Click(object sender, RoutedEventArgs e) => Tools.OpenLink((sender as Button).Tag as string);
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Refresh();
-            VScrollViewer.ChangeView(null, 0, null);
-        }
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -160,17 +157,9 @@ namespace CoolapkUWP.Pages.FeedPages
                         if (root.Count != 0)
                         {
                             likeFirstItem = root.First().GetObject()["uid"].GetNumber();
-                            ObservableCollection<User> F = likeListView.ItemsSource as ObservableCollection<User>;
+                            ObservableCollection<UserViewModel> F = likeListView.ItemsSource as ObservableCollection<UserViewModel>;
                             foreach (IJsonValue i in root)
-                            {
-                                JsonObject o = i.GetObject();
-                                F.Add(new User
-                                {
-                                    Url = o["url"].GetString(),
-                                    UserAvatar = new BitmapImage(new Uri(o["userSmallAvatar"].GetString())),
-                                    UserName = o["username"].GetString()
-                                });
-                            }
+                                F.Add(new UserViewModel(i));
                         }
                         break;
                     case 2:
@@ -181,7 +170,7 @@ namespace CoolapkUWP.Pages.FeedPages
                             ObservableCollection<SourceFeedViewModel> F = shareuserListView.ItemsSource as ObservableCollection<SourceFeedViewModel>;
                             for (int i = 0; i < roots.Count; i++)
                             {
-                                if (F.First().url == roots[i].GetObject()["url"].GetNumber().ToString()) return;
+                                if (F.First()?.url == roots[i].GetObject()["url"].GetString()) return;
                                 F.Insert(i, new SourceFeedViewModel(roots[i]));
                             }
                         }
@@ -209,7 +198,22 @@ namespace CoolapkUWP.Pages.FeedPages
                 else answerPage--;
             }
             else LoadFeedDetail();
+            VScrollViewer.ChangeView(null, 20, null);
             Tools.HideProgressBar();
+        }
+
+        private void ChangeHotReplysDisplayModeListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (iconText.Text == "")//(Symbol)0xE70E)
+            {
+                hotReplyListView.Visibility = Visibility.Collapsed;
+                iconText.Text = "";//(Symbol)0xE70D;
+            }
+            else
+            {
+                hotReplyListView.Visibility = Visibility.Visible;
+                iconText.Text = "";//(Symbol)0xE70E;
+            }
         }
 
         private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
@@ -247,17 +251,9 @@ namespace CoolapkUWP.Pages.FeedPages
                                 if (root.Count != 0)
                                 {
                                     likeLastItem = root.Last().GetObject()["uid"].GetNumber();
-                                    ObservableCollection<User> F = likeListView.ItemsSource as ObservableCollection<User>;
+                                    ObservableCollection<UserViewModel> F = likeListView.ItemsSource as ObservableCollection<UserViewModel>;
                                     foreach (IJsonValue i in root)
-                                    {
-                                        JsonObject o = i.GetObject();
-                                        F.Add(new User
-                                        {
-                                            Url = o["url"].GetString(),
-                                            UserAvatar = new BitmapImage(new Uri(o["userSmallAvatar"].GetString())),
-                                            UserName = o["username"].GetString()
-                                        });
-                                    }
+                                        F.Add(new UserViewModel(i));
                                 }
                                 else
                                     likePage--;
@@ -293,9 +289,6 @@ namespace CoolapkUWP.Pages.FeedPages
             else refreshText.Visibility = Visibility.Visible;
         }
 
-        private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e) =>
-            Frame.Navigate(typeof(UserPage), (sender as FrameworkElement).Tag as string);
-
         private void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e) => Tools.OpenLink(e.Link);
 
         private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
@@ -303,25 +296,18 @@ namespace CoolapkUWP.Pages.FeedPages
             FrameworkElement element = sender as FrameworkElement;
             if (element.Tag is null) return;
             else if (element.Tag is string s) Tools.OpenLink(s);
-            else if (element.Tag is Feed f) Tools.OpenLink(f.GetValue("url"));
         }
 
-        private void MarkdownTextBlock_ImageResolving(object sender, Microsoft.Toolkit.Uwp.UI.Controls.ImageResolvingEventArgs e)
+        private async void MarkdownTextBlock_ImageResolving(object sender, Microsoft.Toolkit.Uwp.UI.Controls.ImageResolvingEventArgs e)
         {
-            if (e.Url.IndexOf("ms-appx") != 0)
-                if (Settings.GetBoolen("IsNoPicsMode"))
-                {
-                    e.Handled = true;
-                    if (Settings.GetBoolen("IsDarkMode"))
-                        e.Image = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
-                    else e.Image = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
-                }
+            e.Image = await ImageCache.GetImage(ImageType.SmallImage, e.Url);
+            e.Handled = true;
             Tools.SetEmojiPadding(sender);
         }
 
         private void MarkdownTextBlock_ImageClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
         {
-            if (e.Link.IndexOf("http") == 0) Tools.ShowImage(e.Link.Remove(e.Link.Length - 6));
+            if (e.Link.IndexOf("http") == 0) Tools.ShowImage(e.Link);
         }
 
         private void Image_Tapped(object sender, TappedRoutedEventArgs e) => Tools.ShowImage((sender as FrameworkElement).Tag as string);
@@ -351,36 +337,23 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 switch (item.SelectedIndex)
                 {
-                    case 0:
-                        replyListView.ItemsSource =
-                            //TitleBar.Title == "回复" ? replys : 
-                            replys;
-                        if (TitleBar.Title == "回复")
-                            FeedDetailPivot.IsLocked = true;
-                        break;
                     case 1:
+                        if ((likeListView?.ItemsSource as ObservableCollection<UserViewModel>)?.Count > 0) return;
                         string result = await Tools.GetJson($"/feed/likeList?id={id}&listType=lastupdate_desc&page={++likePage}");
                         JsonArray root = Tools.GetDataArray(result);
-                        ObservableCollection<User> F = new ObservableCollection<User>();
+                        ObservableCollection<UserViewModel> F = new ObservableCollection<UserViewModel>();
                         if (root.Count != 0)
                         {
                             likeFirstItem = root.First().GetObject()["uid"].GetNumber();
                             likeLastItem = root.Last().GetObject()["uid"].GetNumber();
                             foreach (IJsonValue i in root)
-                            {
-                                JsonObject o = i.GetObject();
-                                F.Add(new User
-                                {
-                                    Url = o["url"].GetString(),
-                                    UserAvatar = new BitmapImage(new Uri(o["userSmallAvatar"].GetString())),
-                                    UserName = o["username"].GetString()
-                                });
-                            }
+                                F.Add(new UserViewModel(i));
                         }
                         else likePage--;
                         likeListView.ItemsSource = F;
                         break;
                     case 2:
+                        if ((shareuserListView.ItemsSource as ObservableCollection<SourceFeedViewModel>)?.Count > 0) return;
                         string r = await Tools.GetJson($"/feed/forwardList?id={id}&type=feed&page={++sharePage}");
                         JsonArray roots = Tools.GetDataArray(r);
                         ObservableCollection<SourceFeedViewModel> Fs = new ObservableCollection<SourceFeedViewModel>();
@@ -452,8 +425,8 @@ namespace CoolapkUWP.Pages.FeedPages
             GridView view = sender as GridView;
             if (view.SelectedIndex > -1)
             {
-                if (view.Tag is string[] ss)
-                    Tools.ShowImage(ss[view.SelectedIndex].Remove(ss[view.SelectedIndex].Length - 6));
+                if (view.Tag is List<string> ss)
+                    Tools.ShowImages(ss.ToArray(), view.SelectedIndex);
                 else if (view.Tag is string s)
                 {
                     if (string.IsNullOrWhiteSpace(s)) return;
@@ -479,11 +452,12 @@ namespace CoolapkUWP.Pages.FeedPages
         }
 
         //        private void CloseFlip_Click(object sender, RoutedEventArgs e) => SFlipView.Visibility = CloseFlip.Visibility = Visibility.Collapsed;
-    }
-    class User
-    {
-        public ImageSource UserAvatar { get; set; }
-        public string UserName { get; set; }
-        public string Url { get; set; }
+
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (feedArticleTitle != null)
+                feedArticleTitle.Height = feedArticleTitle.Width * 0.44;
+        }
     }
 }

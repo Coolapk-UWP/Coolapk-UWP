@@ -13,7 +13,7 @@ namespace CoolapkUWP.Control
     {
         string url;
         string Body { get; set; }
-        public GetUpdateContentDialog(string url,string body)
+        public GetUpdateContentDialog(string url, string body)
         {
             this.InitializeComponent();
             this.url = url;
@@ -26,15 +26,10 @@ namespace CoolapkUWP.Control
             Hide();
         }
 
-        private void MarkdownTextBlock_ImageResolving(object sender, ImageResolvingEventArgs e)
+        private async void MarkdownTextBlock_ImageResolving(object sender, ImageResolvingEventArgs e)
         {
-            if (Settings.GetBoolen("IsNoPicsMode"))
-            {
-                e.Handled = true;
-                if (Settings.GetBoolen("IsDarkMode"))
-                    e.Image = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
-                else e.Image = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 150, DecodePixelWidth = 150 };
-            }
+            e.Image = await ImageCache.GetImage(ImageType.OriginImage, e.Url);
+            e.Handled = true;
         }
     }
 }

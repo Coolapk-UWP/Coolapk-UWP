@@ -89,77 +89,72 @@ namespace CoolapkUWP.Pages.FeedPages
             Tools.ShowProgressBar();
             string s = await Tools.GetJson($"{url}{(url == "/main/indexV8" ? "?" : "&")}page={page}");
             JsonArray Root = Tools.GetDataArray(s);
-            if (page == 1)
-            {
-                int n = 0;
-                if (FeedsCollection.Count > 0)
+            if (Root != null && Root.Count > 0)
+                if (page == 1)
                 {
-                    var needDeleteItems = (from b in FeedsCollection
-                                           from c in Root
-                                           where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
-                                           select b).ToArray();
-                    foreach (var item in needDeleteItems)
-                        Collection.Remove(item);
-                    n = (from b in FeedsCollection
-                         where b.entityFixed
-                         select b).Count();
-                }
-                int k = 0;
-                for (int i = 0; i < Root.Count; i++)
-                {
-                    JsonObject jo = Root[i].GetObject();
-                    if (index == -1 && jo.TryGetValue("entityTemplate", out IJsonValue t) && t.ToString() == "configCard")
+                    int n = 0;
+                    if (FeedsCollection.Count > 0)
                     {
-                        JsonObject j = JsonObject.Parse(Root[i].GetObject()["extraData"].ToString());
-                        TitleBar.Title = j["pageTitle"].ToString();
-                        continue;
+                        var needDeleteItems = (from b in FeedsCollection
+                                               from c in Root
+                                               where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
+                                               select b).ToArray();
+                        foreach (var item in needDeleteItems)
+                            Collection.Remove(item);
+                        n = (from b in FeedsCollection
+                             where b.entityFixed
+                             select b).Count();
                     }
-                    if (jo.TryGetValue("entityTemplate", out IJsonValue tt) && tt.ToString() == "fabCard") continue;
-                    FeedsCollection.Insert(n + k, GetIEntity(jo));
-                    k++;
-                }
-                Tools.HideProgressBar();
-                return true;
-            }
-            else
-            {
-                if (Root.Count != 0)
-                {
-                    foreach (var i in Root) FeedsCollection.Add(GetIEntity(i.GetObject()));
+                    int k = 0;
+                    for (int i = 0; i < Root.Count; i++)
+                    {
+                        JsonObject jo = Root[i].GetObject();
+                        if (index == -1 && jo.TryGetValue("entityTemplate", out IJsonValue t) && t?.GetString() == "configCard")
+                        {
+                            JsonObject j = JsonObject.Parse(jo["extraData"].GetString());
+                            TitleBar.Title = j["pageTitle"].GetString();
+                            continue;
+                        }
+                        if (jo.TryGetValue("entityTemplate", out IJsonValue tt) && tt.GetString() == "fabCard") continue;
+                        FeedsCollection.Insert(n + k, GetEntity(jo));
+                        k++;
+                    }
                     Tools.HideProgressBar();
                     return true;
                 }
                 else
                 {
-                    Tools.HideProgressBar();
-                    return false;
+                    if (Root.Count != 0)
+                    {
+                        foreach (var i in Root) FeedsCollection.Add(GetEntity(i.GetObject()));
+                        Tools.HideProgressBar();
+                        return true;
+                    }
+                    else
+                    {
+                        Tools.HideProgressBar();
+                        return false;
+                    }
                 }
-            }
+            return false;
         }
 
-        Entity GetIEntity(JsonObject token)
+        Entity GetEntity(JsonObject token)
         {
             switch (token["entityType"].GetString())
             {
-                case "feed": return new FeedViewModel(token, FeedDisplayMode.isFirstPageFeed);
+                case "feed": return new FeedViewModel(token, pageUrl == "/main/indexV8" ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
                 case "user": return new UserViewModel(token);
                 case "topic": return new TopicViewModel(token);
                 case "dyh": return new DyhViewModel(token);
                 case "card":
-                default: return new Feed(token);
+                default: return new IndexPageViewModel(token);
             }
         }
 
         private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if ((sender as FrameworkElement).Tag is Feed)
-                Tools.Navigate(typeof(FeedDetailPage), ((sender as FrameworkElement).Tag as Feed).GetValue("id"));
-            else if ((sender as FrameworkElement).Tag is Feed[])
-            {
-                var f = (sender as FrameworkElement).Tag as Feed[];
-                if (!string.IsNullOrEmpty(f[0].jObject.ToString()))
-                    Tools.Navigate(typeof(FeedDetailPage), f[0].GetValue("id"));
-            }
+            Tools.OpenLink((sender as FrameworkElement).Tag as string);
         }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
@@ -199,70 +194,24 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             FrameworkElement element = sender as FrameworkElement;
             if (element.Tag is string s) Tools.OpenLink(s);
-            else if (element.Tag is Feed feed)
+            else if (element.Tag is IndexPageViewModel m)
             {
-                string str = string.IsNullOrEmpty((element.Tag as Feed).GetValue("url")) ? (element.Tag as Feed).GetValue("extra_url2") : (element.Tag as Feed).GetValue("url");
+                if (string.IsNullOrEmpty(m.url)) return;
+                string str = m.url;
                 if (str.IndexOf("/page") == 0)
                 {
                     str = str.Replace("/page", "/page/dataList");
-                    str += $"&title={feed.GetValue("title")}";
+                    str += $"&title={m.title}";
                     Tools.Navigate(typeof(IndexPage), new object[] { str, false, null });
                 }
-                else if (str.IndexOf('#') == 0) Tools.Navigate(typeof(IndexPage), new object[] { $"{str}&title={feed.GetValue("title")}", false, null });
+                else if (str.IndexOf('#') == 0) Tools.Navigate(typeof(IndexPage), new object[] { $"{str}&title={m.title}", false, null });
                 else Tools.OpenLink(str);
-            }
-        }
-
-        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Pivot element = sender as Pivot;
-            index = element.SelectedIndex;
-            if (element.Items.Count == 1)
-            {
-                Feed[] f = element.Tag as Feed[];
-                Style style = new Style(typeof(ListViewItem));
-                style.Setters.Add(new Setter(HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
-                element.Items.Clear();
-                for (int j = 0; j < f.Count(); j++)
-                {
-                    var ff = new ObservableCollection<Entity>();
-                    var i = new PivotItem
-                    {
-                        Tag = f[j],
-                        Content = new ListView
-                        {
-                            Style = Settings.ListViewStyle,
-                            ItemContainerStyle = style,
-                            ItemTemplateSelector = Resources["FTemplateSelector"] as DataTemplateSelector,
-                            ItemsSource = ff
-                        },
-                        Header = f[j].GetValue("title")
-                    };
-                    element.Items.Add(i);
-                    pages.Add(1);
-                    Feeds2.Add(ff);
-                    urls.Add("/page/dataList?url=" + f[j].GetValue("url").Replace("#", "%23") + $"&title={f[j].GetValue("title")}");
-                    if (j == 0) load(i);
-                }
-                return;
-            }
-            load();
-            void load(PivotItem i = null)
-            {
-                PivotItem item = i is null ? element.SelectedItem as PivotItem : i;
-                Feed feed = item.Tag as Feed;
-                ListView view = item.Content as ListView;
-                ObservableCollection<Entity> feeds = view.ItemsSource as ObservableCollection<Entity>;
-                string u = feed.GetValue("url");
-                u = u.Replace("#", "%23");
-                u = "/page/dataList?url=" + u + $"&title={feed.GetValue("title")}";
-                _ = GetUrlPage(1, u, feeds);
             }
         }
 
         private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
         {
-            Feed feed = (sender as ListViewItem).DataContext as Feed;
+            IndexPageViewModel model = (sender as ListViewItem).DataContext as IndexPageViewModel;
             if (Feeds2.Count > 0)
             {
                 ObservableCollection<Entity> feeds = Feeds2[0];
@@ -271,7 +220,7 @@ namespace CoolapkUWP.Pages.FeedPages
                                        select b).ToArray();
                 foreach (var item in needDeleteItems)
                     feeds.Remove(item);
-                urls[0] = $"/page/dataList?url={feed.GetValue("url")}&title={feed.GetValue("title")}";
+                urls[0] = $"/page/dataList?url={model.url}&title={model.title}";
                 urls[0] = urls[0].Replace("#", "%23");
                 pages[0] = 0;
 
@@ -284,7 +233,7 @@ namespace CoolapkUWP.Pages.FeedPages
                                        select b).ToArray();
                 foreach (var item in needDeleteItems)
                     feeds.Remove(item);
-                pageUrl = $"/page/dataList?url={feed.GetValue("url")}&title={feed.GetValue("title")}";
+                pageUrl = $"/page/dataList?url={model.url}&title={model.title}";
                 pageUrl = pageUrl.Replace("#", "%23");
                 page = 0;
             }
@@ -310,5 +259,54 @@ namespace CoolapkUWP.Pages.FeedPages
         }
 
         private void MarkdownTextBlock_ImageResolving(object sender, Microsoft.Toolkit.Uwp.UI.Controls.ImageResolvingEventArgs e) => Tools.SetEmojiPadding(sender);
+
+        private void Pivot_Loaded(object sender, RoutedEventArgs e)
+        {
+            Pivot element = sender as Pivot;
+            index = element.SelectedIndex;
+            if (element.Items.Count == 0)
+            {
+                Entity[] f = element.Tag as Entity[];
+                Style style = new Style(typeof(ListViewItem));
+                style.Setters.Add(new Setter(HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
+                for (int j = 0; j < f.Length; j++)
+                {
+                    IndexPageViewModel model = f[j] as IndexPageViewModel;
+                    var ff = new ObservableCollection<Entity>();
+                    var i = new PivotItem
+                    {
+                        Tag = f[j],
+                        Content = new ListView
+                        {
+                            Style = Application.Current.Resources["ListViewStyle"] as Style,
+                            ItemContainerStyle = style,
+                            ItemTemplateSelector = Resources["FTemplateSelector"] as DataTemplateSelector,
+                            ItemsSource = ff
+                        },
+                        Header = model.title
+                    };
+                    element.Items.Add(i);
+                    pages.Add(1);
+                    Feeds2.Add(ff);
+                    urls.Add("/page/dataList?url=" + model.url.Replace("#", "%23") + $"&title={model.title}");
+                    if (j == 0) load(element, i);
+                }
+                return;
+            }
+        }
+
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e) => load(sender as Pivot);
+
+        void load(Pivot element, PivotItem i = null)
+        {
+            PivotItem item = i is null ? element.SelectedItem as PivotItem : i;
+            IndexPageViewModel model = item.Tag as IndexPageViewModel;
+            ListView view = item.Content as ListView;
+            ObservableCollection<Entity> feeds = view.ItemsSource as ObservableCollection<Entity>;
+            string u = model.url;
+            u = u.Replace("#", "%23");
+            u = "/page/dataList?url=" + u + $"&title={model.title}";
+            _ = GetUrlPage(1, u, feeds);
+        }
     }
 }
