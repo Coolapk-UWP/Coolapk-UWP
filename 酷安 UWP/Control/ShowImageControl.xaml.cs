@@ -70,7 +70,11 @@ namespace CoolapkUWP.Control
                 else datas.Add(new ImageData(type, urls[i]));
                 Images.Add(null);
             }
-            SFlipView.SelectedIndex = index;
+            Task.Run(async() =>
+            {
+                await Task.Delay(20);
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => SFlipView.SelectedIndex = index);
+            });
         }
 
         private void WindowSizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
@@ -147,7 +151,10 @@ namespace CoolapkUWP.Control
         private async void SFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int i = SFlipView.SelectedIndex;
-            if (i == -1 || a) return;
+            if (i == -1 || a)
+            {
+                return;
+            }
             a = true;
             Images[i] = await datas[i].GetImage();
             a = false;

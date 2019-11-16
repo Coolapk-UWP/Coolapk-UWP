@@ -31,7 +31,6 @@ namespace CoolapkUWP.Pages
         public MainPage()
         {
             this.InitializeComponent();
-            Tools.mainPage = this;
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
                 Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             Application.Current.LeavingBackground += ChangeColor;
@@ -66,6 +65,7 @@ namespace CoolapkUWP.Pages
             hamburgerMenuControl.OptionsItemsSource = MenuItem.GetOptionsItems();
             if (Settings.IsMobile) TopBar.Margin = new Thickness(0);
             UpdateUserInfo();
+            Tools.mainPage = this;
             Settings.CheckTheme();
         }
 
