@@ -38,11 +38,7 @@ namespace CoolapkUWP.Pages.FeedPages
         public event PropertyChangedEventHandler PropertyChanged;
         ObservableCollection<FeedViewModel> FeedsCollection = new ObservableCollection<FeedViewModel>();
 
-        public UserPage()
-        {
-            this.InitializeComponent();
-            listView.ItemsSource = FeedsCollection;
-        }
+        public UserPage() => this.InitializeComponent();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -60,8 +56,8 @@ namespace CoolapkUWP.Pages.FeedPages
                     ListHeader.DataContext = UserDetailGrid.DataContext = null;
                     //GetVScrollViewer();
                     LoadProfile();
-                    ReadNextPageFeeds();
                     Tools.HideProgressBar();
+                    ReadNextPageFeeds();
                 }
                 else
                 {
@@ -164,7 +160,13 @@ namespace CoolapkUWP.Pages.FeedPages
             if (sender is FrameworkElement fe)
             {
                 if (fe != e.OriginalSource) return;
-                if (fe.Tag is string s) Tools.ShowImage(s);
+                if (fe.Tag is string s)
+                {
+                    if (s == UserDetail.BackgroundUrl)
+                        Tools.ShowImage(s, ImageType.OriginImage);
+                    else
+                        Tools.ShowImage(s, ImageType.SmallAvatar);
+                }
             }
         }
 

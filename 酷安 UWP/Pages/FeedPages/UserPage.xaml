@@ -31,7 +31,7 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Ellipse Width="56" Height="56" Margin="10,8" VerticalAlignment="Top" HorizontalAlignment="Left" Tapped="PicA_Tapped" Tag="{x:Bind UserDetail.UserFaceUrl}">
+                        <Ellipse Width="56" Height="56" Margin="10,8" VerticalAlignment="Top" HorizontalAlignment="Left" Tapped="PicA_Tapped" Tag="{x:Bind UserDetail.UserFaceUrl,Mode=OneWay}">
                             <Ellipse.Fill>
                                 <ImageBrush ImageSource="{x:Bind UserDetail.UserFace,Mode=OneWay}"/>
                             </Ellipse.Fill>
@@ -66,7 +66,7 @@
                     </Grid>
                 </Grid>
 
-                <ListView Name="listView" Style="{StaticResource ListViewStyle}" ScrollViewer.VerticalScrollMode="Disabled" ItemTemplate="{StaticResource feed}">
+                <ListView Name="listView" Style="{StaticResource ListViewStyle}" ItemsSource="{x:Bind FeedsCollection}" ScrollViewer.VerticalScrollMode="Disabled" ItemTemplate="{StaticResource feed}">
                     <ListView.Header>
                         <StackPanel Orientation="Horizontal" x:Name="ListHeader" Margin="12,4">
                             <TextBlock FontSize="16">全部动态(</TextBlock>

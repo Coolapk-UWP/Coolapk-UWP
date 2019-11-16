@@ -1,12 +1,12 @@
 ﻿using CoolapkUWP.Data;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Windows.Data.Json;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    class FeedReplyViewModel : SimpleFeedReplyViewModel
+    class FeedReplyViewModel : SimpleFeedReplyViewModel, INotifyPropertyChanged
     {
         public FeedReplyViewModel(IJsonValue t, bool showReplyRow = true) : base(t)
         {
@@ -33,16 +33,41 @@ namespace CoolapkUWP.Control.ViewModels
         private async void GetPic()
         {
             if (showPic)
-                pic = await ImageCache.GetImage(ImageType.SmallImage, picUrl);
+                pic = new ImageData
+                {
+                    Pic = await ImageCache.GetImage(ImageType.SmallImage, picUrl),
+                    url = picUrl
+                };
             if (!string.IsNullOrEmpty(userSmallAvatarUrl))
                 userSmallAvatar = await ImageCache.GetImage(ImageType.SmallAvatar, userSmallAvatarUrl);
         }
         string userSmallAvatarUrl;
+        private ImageSource userSmallAvatar1;
+        private ImageData pic1;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public string likenum { get; private set; }
         public string replynum { get; private set; }
-        public ImageSource userSmallAvatar { get; private set; } = new BitmapImage();
+        public ImageSource userSmallAvatar
+        {
+            get => userSmallAvatar1;
+            private set
+            {
+                userSmallAvatar1 = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(userSmallAvatar)));
+            }
+        }
         public new string message { get; private set; }
-        public ImageSource pic { get; private set; }
+        public ImageData pic
+        {
+            get => pic1;
+            private set
+            {
+                pic1 = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(pic)));
+            }
+        }
         public string dateline { get; private set; }
         public bool showreplyRows { get; set; }
         public SimpleFeedReplyViewModel[] replyRows { get; private set; }

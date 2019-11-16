@@ -26,7 +26,7 @@
                     <SymbolIcon Symbol="{x:Bind Icon}"/>
                     <Ellipse Margin="10,0,0,0" Width="28" Height="28" Grid.RowSpan="2" HorizontalAlignment="Left" >
                         <Ellipse.Fill>
-                            <ImageBrush ImageSource="{Binding Image}"/>
+                            <ImageBrush ImageSource="{x:Bind Image,Mode=OneWay}"/>
                         </Ellipse.Fill>
                     </Ellipse>
                     <TextBlock Grid.Column="1" Text="{x:Bind Name}" FontSize="16" VerticalAlignment="Center"/>
@@ -34,7 +34,7 @@
             </DataTemplate>
             <DataTemplate x:Key="SearchTemplate" x:DataType="local:MenuItem">
                 <AutoSuggestBox Margin="10,0" VerticalAlignment="Center" QueryIcon="Find" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" ItemTemplateSelector="{StaticResource tspl}"
-                                    TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted"/>
+                                TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" SuggestionChosen="AutoSuggestBox_SuggestionChosen"/>
             </DataTemplate>
             <Style x:Key="HamburgerMenuItemStyle" TargetType="ListViewItem">
                 <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
@@ -169,7 +169,7 @@
                         </Grid>
                     </Button>
                     <AutoSuggestBox Margin="2,0,15,8" Height="32" Grid.Column="1" VerticalAlignment="Bottom" QueryIcon="Find" ItemTemplateSelector="{StaticResource tspl}"
-                                    TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted"/>
+                                    TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" SuggestionChosen="AutoSuggestBox_SuggestionChosen"/>
                 </Grid>
                 <Grid Grid.Row="1" VerticalAlignment="Bottom" x:Name="BottomNavBar" Margin="0,2,0,0" 
                                     cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" fcu:Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">

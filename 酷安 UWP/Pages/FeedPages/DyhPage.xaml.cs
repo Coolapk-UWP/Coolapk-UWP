@@ -19,14 +19,6 @@ namespace CoolapkUWP.Pages.FeedPages
     /// </summary>
     public sealed partial class DyhPage : Page
     {
-        Style ListViewStyle
-        {
-            get
-            {
-                if (Settings.IsMobile) return Application.Current.Resources["ListViewStyle2Mobile"] as Style;
-                else return Application.Current.Resources["ListViewStyle2Desktop"] as Style;
-            }
-        }
         string id;
         int[] page = new int[2];
         double[] firstItem = new double[2];

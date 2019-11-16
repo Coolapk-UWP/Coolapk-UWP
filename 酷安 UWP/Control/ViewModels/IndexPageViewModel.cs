@@ -8,6 +8,8 @@ namespace CoolapkUWP.Control.ViewModels
 {
     class IndexPageViewModel : Entity
     {
+        private ImageSource pic1;
+
         public IndexPageViewModel(IJsonValue t) : base(t)
         {
             JsonObject token = t.GetObject();
@@ -77,7 +79,15 @@ namespace CoolapkUWP.Control.ViewModels
         public bool hasDescription { get; private set; }
         public string description { get; private set; }
         public bool hasPic { get; private set; }
-        public ImageSource pic { get; private set; }
+        public ImageSource pic
+        {
+            get => pic1;
+            private set
+            {
+                pic1 = value;
+                Changed(this, nameof(pic));
+            }
+        }
         public bool hasEntities { get; private set; }
         public Entity[] entities { get; private set; }
         public IndexPageViewModel[] self { get => new IndexPageViewModel[] { this }; }

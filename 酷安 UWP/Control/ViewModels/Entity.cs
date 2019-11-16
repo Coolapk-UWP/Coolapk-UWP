@@ -1,8 +1,9 @@
-﻿using Windows.Data.Json;
+﻿using System.ComponentModel;
+using Windows.Data.Json;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    class Entity
+    class Entity : INotifyPropertyChanged
     {
         public Entity(IJsonValue t)
         {
@@ -14,5 +15,9 @@ namespace CoolapkUWP.Control.ViewModels
         public string entityId { get; private set; }
         public bool entityFixed { get; private set; }
         public string entityType { get; private set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        internal void Changed(object s, string n) => PropertyChanged?.Invoke(s, new PropertyChangedEventArgs(n));
     }
 }

@@ -18,7 +18,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="48"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="48"/>
+            <!--<ColumnDefinition Width="48"/>-->
         </Grid.ColumnDefinitions>
         <!--<Button Style="{StaticResource NavigationBackButtonNormalStyle}" Height="48" Width="48" x:Name="BackButton" Click="BackButton_Click" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}"/>-->
         <Button Grid.Column="0" x:Name="BackButton" Click="BackButton_Click" Style="{StaticResource ButtonStyle1}" Width="48" Height="48" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}">

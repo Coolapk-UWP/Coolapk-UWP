@@ -12,6 +12,6 @@
     PrimaryButtonClick="ContentDialog_PrimaryButtonClick" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
     
     <ScrollViewer>
-        <controls:MarkdownTextBlock Text="{x:Bind Body}" ImageResolving="MarkdownTextBlock_ImageResolving" IsTextSelectionEnabled="False"/>
+        <controls:MarkdownTextBlock ImageClicked="MarkdownTextBlock_ImageClicked" Text="{x:Bind Body}" ImageResolving="MarkdownTextBlock_ImageResolving" IsTextSelectionEnabled="False"/>
     </ScrollViewer>
 </ContentDialog>

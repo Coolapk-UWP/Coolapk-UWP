@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Control;
 using System;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using Windows.ApplicationModel;
 using Windows.Foundation.Metadata;
 using Windows.Storage;
@@ -75,7 +76,14 @@ namespace CoolapkUWP.Data
                     || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
                     || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
                 {
-                    GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.HtmlUrl, release.Body) { RequestedTheme = Settings.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
+                    string s = release.Body;
+                    //Regex regex = new Regex("!\\[\\S*\\]\\(http\\S*\\)");
+                    //while (regex.IsMatch(s))
+                    //{
+                    //    string st = regex.Match(s).Value;
+                    //    s = s.Replace(st.Substring(st.IndexOf('(')), $"(file:///{(await ImageCache.GetImagePath(ImageType.OriginImage, st.Substring(st.IndexOf('(')).Replace("(", string.Empty).Replace(")", string.Empty))).Replace('\\', '/')})");
+                    //}
+                    GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.HtmlUrl, s) { RequestedTheme = GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
                     await dialog.ShowAsync();
                 }
                 else Tools.ShowMessage("当前无可用更新。");
@@ -83,9 +91,11 @@ namespace CoolapkUWP.Data
             catch (HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
         }
 
-        public static void CheckTheme()
+        public static async void CheckTheme()
         {
             InitializeSettings();
+            while (Window.Current?.Content is null)
+                await System.Threading.Tasks.Task.Delay(100);
             if (Window.Current?.Content is FrameworkElement frameworkElement)
             {
                 if (!GetBoolen("IsDarkMode"))

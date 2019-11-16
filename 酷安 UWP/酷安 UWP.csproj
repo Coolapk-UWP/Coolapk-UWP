@@ -122,6 +122,7 @@
     <Compile Include="Control\ViewModels\FeedReplyViewModel.cs" />
     <Compile Include="Control\ViewModels\FeedViewModelBase.cs" />
     <Compile Include="Control\ViewModels\FeedDetailViewModel.cs" />
+    <Compile Include="Control\ViewModels\ImageData.cs" />
     <Compile Include="Control\ViewModels\IndexPageViewModel.cs" />
     <Compile Include="Control\ViewModels\SimpleFeedReplyViewModel.cs" />
     <Compile Include="Control\ViewModels\SourceFeedViewModel.cs" />

@@ -1,10 +1,9 @@
 ﻿using CoolapkUWP.Data;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using Windows.Data.Json;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Control.ViewModels
 {
@@ -99,6 +98,8 @@ namespace CoolapkUWP.Control.ViewModels
         }
 
         string dyhlogoUrl;
+        private ImageSource dyhlogo1;
+
         public new string uurl { get; private set; }
         public new string info { get; private set; }
         public bool isStickTop { get; private set; }
@@ -107,7 +108,15 @@ namespace CoolapkUWP.Control.ViewModels
         public string dyhurl { get; private set; }
         public string dyhname { get; private set; }
         public string fromInfo { get; private set; }
-        public ImageSource dyhlogo { get; private set; }
+        public ImageSource dyhlogo
+        {
+            get => dyhlogo1;
+            private set
+            {
+                dyhlogo1 = value;
+                Changed(this, nameof(dyhlogo));
+            }
+        }
         public bool showDateline { get; private set; } = true;
         public bool showRelationRows { get; private set; }
         public bool showReplyRows { get; private set; }
@@ -116,11 +125,23 @@ namespace CoolapkUWP.Control.ViewModels
         public RelationRowsItem[] relationRows { get; private set; }
         public new bool showMessage_title { get; private set; }
     }
-    class RelationRowsItem
+    class RelationRowsItem : INotifyPropertyChanged
     {
         public string url { get; set; }
         public string logoUrl;
-        public ImageSource logo { get; set; }
+        private ImageSource logo1;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public ImageSource logo
+        {
+            get => logo1;
+            set
+            {
+                logo1 = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(logo)));
+            }
+        }
         public string title { get; set; }
     }
     class ReplyRowsItem

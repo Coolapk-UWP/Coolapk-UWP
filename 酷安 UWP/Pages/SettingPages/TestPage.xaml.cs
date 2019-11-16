@@ -29,7 +29,7 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             base.OnNavigatedTo(e);
             List<BitmapImage> v = new List<BitmapImage>();
-            foreach (var item in await (await ApplicationData.Current.LocalCacheFolder.GetFolderAsync("SmallImage")).GetFilesAsync())
+            foreach (var item in await (await ApplicationData.Current.LocalCacheFolder.GetFolderAsync("Icon")).GetFilesAsync())
             {
                 BitmapImage b = new BitmapImage();
                 await b.SetSourceAsync(await item.OpenReadAsync());

@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Data;
+using System.ComponentModel;
 using Windows.Data.Json;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -21,6 +22,7 @@ namespace CoolapkUWP.Control.ViewModels
             }
             GetPic(token);
         }
+
         async void GetPic(JsonObject token) => UserAvatar = await ImageCache.GetImage(ImageType.SmallAvatar, token["userSmallAvatar"].GetString());
         public string url { get; private set; }
         public string UserName { get; private set; }
@@ -28,6 +30,15 @@ namespace CoolapkUWP.Control.ViewModels
         public string FansNum { get; private set; }
         public string LoginTime { get; private set; }
         public string Bio { get; private set; }
-        public Windows.UI.Xaml.Media.ImageSource UserAvatar { get; private set; }
+        private Windows.UI.Xaml.Media.ImageSource userAvatar;
+        public Windows.UI.Xaml.Media.ImageSource UserAvatar
+        {
+            get => userAvatar;
+            private set
+            {
+                userAvatar = value;
+                Changed(this, nameof(UserAvatar));
+            }
+        }
     }
 }

@@ -1,10 +1,8 @@
 ﻿using CoolapkUWP.Data;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Text;
 using Windows.Data.Json;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Control.ViewModels
 {
@@ -27,17 +25,24 @@ namespace CoolapkUWP.Control.ViewModels
                         message_cover_url = value.GetString();
                     JsonArray array = JsonArray.Parse(token["message_raw_output"].GetString());
                     message_raw_output = string.Empty;
+                    StringBuilder builder = new StringBuilder();
                     foreach (var i in array)
                     {
                         JsonObject item = i.GetObject();
                         if (item["type"].GetString() == "text")
-                            message_raw_output += Tools.GetMessageText(item["message"].GetString());
+                            builder.Append(Tools.GetMessageText(item["message"].GetString()));
                         else if (item["type"].GetString() == "image")
                         {
                             string d = string.IsNullOrEmpty(item["description"].GetString()) ? string.Empty : item["description"].GetString();
-                            message_raw_output += $"\n\n![{d.Replace("]", " ")}]({item["url"].GetString()})\n\n>{d}\n\n";
+                            string p = item["url"].GetString();
+                            string st = string.Empty;
+                            if (p.Substring(p.LastIndexOf('.')).ToLower().Contains("gif"))
+                                st = "`GIF`\n\n";
+                            builder.Append($"\n\n{st}![{d.Replace("]", " ")}]({p})\n\n>{d}\n\n");
+                            feedArticlePics.Add(item["url"].GetString());
                         }
                     }
+                    message_raw_output = builder.ToString();
                 }
                 if (token["feedType"].GetString() == "answer")
                     isAnswerFeed = true;
@@ -93,17 +98,36 @@ namespace CoolapkUWP.Control.ViewModels
         }
 
         string tpicUrl;
+        private ImageSource tpic1;
+        private ImageSource message_cover1;
+        public List<string> feedArticlePics { get; private set; } = new List<string>();
         public new string share_num { get; private set; }
         public bool isFeedArticle { get; private set; }
         public bool isFeedArticle2 { get => !isFeedArticle; }
         public bool has_message_cover { get; private set; }
         public string message_cover_url { get; private set; }
-        public ImageSource message_cover { get; private set; }
+        public ImageSource message_cover
+        {
+            get => message_cover1;
+            private set
+            {
+                message_cover1 = value;
+                Changed(this, nameof(message_cover));
+            }
+        }
         public string message_raw_output { get; private set; }
         public bool showTtitle { get; private set; }
         public string turl { get; private set; }
         public string ttitle { get; private set; }
-        public ImageSource tpic { get; private set; }
+        public ImageSource tpic
+        {
+            get => tpic1;
+            private set
+            {
+                tpic1 = value;
+                Changed(this, nameof(tpic));
+            }
+        }
         public bool show_dyh_name { get; private set; }
         public string dyhUrl { get; private set; }
         public string dyh_name { get; private set; }

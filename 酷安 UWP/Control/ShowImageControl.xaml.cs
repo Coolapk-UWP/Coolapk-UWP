@@ -31,7 +31,7 @@ namespace CoolapkUWP.Control
                 if (Type == ImageType.SmallAvatar) Type = ImageType.BigAvatar;
                 else if (Type == ImageType.SmallImage) Type = ImageType.OriginImage;
             }
-            public async Task<ImageSource> GetImage() => await ImageCache.GetImage(Type, Url);
+            public async Task<ImageSource> GetImage() => await ImageCache.GetImage(Type, Url, true);
             public ImageType Type { get; private set; }
             public string Url { get; set; }
         }
@@ -48,18 +48,27 @@ namespace CoolapkUWP.Control
             this.popup = popup;
         }
 
-        public async void ShowImage(string url, ImageType type)
+        public void ShowImage(string url, ImageType type)
         {
-            datas.Add(new ImageData(type, url));
-            Images.Add(await datas[0].GetImage());
+            if (url.Substring(url.LastIndexOf('.')).ToLower().Contains("gif"))
+                if (type == ImageType.SmallImage)
+                    datas.Add(new ImageData(ImageType.OriginImage, url));
+                else
+                    datas.Add(new ImageData(ImageType.BigAvatar, url));
+            else datas.Add(new ImageData(type, url));
+            Images.Add(null);
         }
 
-        public async void ShowImages(string[] urls, ImageType type, int index)
+        public void ShowImages(string[] urls, ImageType type, int index)
         {
             for (int i = 0; i < urls.Length; i++)
             {
-                datas.Add(new ImageData(type, urls[i]));
-                Images.Add(await datas[i].GetImage());
+                if (urls[i].Substring(urls[i].LastIndexOf('.')).ToLower().Contains("gif"))
+                    if (type == ImageType.SmallImage)
+                        datas.Add(new ImageData(ImageType.OriginImage, urls[i]));
+                    else datas.Add(new ImageData(ImageType.BigAvatar, urls[i]));
+                else datas.Add(new ImageData(type, urls[i]));
+                Images.Add(null);
             }
             SFlipView.SelectedIndex = index;
         }
@@ -132,6 +141,16 @@ namespace CoolapkUWP.Control
                     }
                     break;
             }
+        }
+
+        bool a = false;
+        private async void SFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int i = SFlipView.SelectedIndex;
+            if (i == -1 || a) return;
+            a = true;
+            Images[i] = await datas[i].GetImage();
+            a = false;
         }
     }
 }

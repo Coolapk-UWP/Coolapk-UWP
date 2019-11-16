@@ -28,6 +28,15 @@ namespace CoolapkUWP.Control.ViewModels
         public string url { get; private set; }
         public string title { get; private set; }
         public string follownum { get; private set; }
-        public ImageSource logo { get; private set; }
+        private ImageSource logo1;
+        public ImageSource logo
+        {
+            get => logo1; 
+            private set
+            {
+                logo1 = value;
+                Changed(this, nameof(logo));
+            }
+        }
     }
 }

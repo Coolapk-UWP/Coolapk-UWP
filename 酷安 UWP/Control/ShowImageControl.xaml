@@ -11,7 +11,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" KeyUp="UserControl_KeyUp">
         <FlipView Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ScrollViewer.IsZoomChainingEnabled="True"
                   ScrollViewer.BringIntoViewOnFocusChange="False" x:Name="SFlipView" ItemsSource="{x:Bind Images}"
-                  RightTapped="SFlipView_RightTapped">
+                  RightTapped="SFlipView_RightTapped" SelectionChanged="SFlipView_SelectionChanged">
             <FlipView.ContextFlyout>
                 <MenuFlyout>
                     <MenuFlyoutItem Icon="Pictures" Tag="origin" Click="MenuFlyoutItem_Click">查看原图</MenuFlyoutItem>

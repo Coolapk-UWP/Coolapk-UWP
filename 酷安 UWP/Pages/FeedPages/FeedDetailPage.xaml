@@ -75,7 +75,7 @@
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
-                    <controls:MarkdownTextBlock ImageResolving="MarkdownTextBlock_ImageResolving" Grid.Row="4" Margin="10,2" x:Name="feedArticlePresenter" x:Load="{x:Bind FeedDetail.isFeedArticle,Mode=OneWay}" ImageClicked="MarkdownTextBlock_ImageClicked" Text="{x:Bind FeedDetail.message_raw_output,Mode=OneWay}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
+                    <controls:MarkdownTextBlock Tag="{x:Bind FeedDetail.feedArticlePics,Mode=OneWay}" ImageResolving="MarkdownTextBlock_ImageResolving" Grid.Row="4" Margin="10,2" x:Name="feedArticlePresenter" x:Load="{x:Bind FeedDetail.isFeedArticle,Mode=OneWay}" ImageClicked="MarkdownTextBlock_ImageClicked" Text="{x:Bind FeedDetail.message_raw_output,Mode=OneWay}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
                     <Grid Grid.Row="4" Margin="10,2" x:Name="feedPresenter" x:Load="{x:Bind FeedDetail.isFeedArticle2,Mode=OneWay}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
@@ -84,8 +84,18 @@
                         <controls:MarkdownTextBlock ImageResolving="MarkdownTextBlock_ImageResolving" Text="{x:Bind FeedDetail.message,Mode=OneWay}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
                         <GridView ScrollViewer.VerticalScrollMode="Disabled" x:Name="picA" x:Load="{x:Bind FeedDetail.showPicArr,Mode=OneWay}" Grid.Row="1" MinHeight="0" Padding="0" Margin="0,5,0,0" HorizontalContentAlignment="Left" SelectionChanged="GridView_SelectionChanged" Tag="{x:Bind FeedDetail.pics,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.picArr,Mode=OneWay}">
                             <GridView.ItemTemplate>
-                                <DataTemplate x:DataType="ImageSource">
-                                    <Image MaxWidth="80" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
+                                <DataTemplate x:DataType="viewModel:ImageData">
+                                    <Grid>
+                                        <Image MaxWidth="80" MinHeight="0" MinWidth="0" Source="{x:Bind Pic}" Stretch="UniformToFill"/>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                                            <Border x:Name="longPic" x:Load="{x:Bind IsLongPic}" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                                <TextBlock>长图</TextBlock>
+                                            </Border>
+                                            <Border x:Name="gif" x:Load="{x:Bind IsGif}" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                                <TextBlock>GIF</TextBlock>
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
                                 </DataTemplate>
                             </GridView.ItemTemplate>
                         </GridView>
@@ -111,8 +121,18 @@
                                 <controls:MarkdownTextBlock ImageResolving="MarkdownTextBlock_ImageResolving" Grid.Row="1" Text="{x:Bind FeedDetail.sourceFeed.message,Mode=OneWay}" LinkClicked="MarkdownTextBlock_LinkClicked" IsTextSelectionEnabled="False"/>
                                 <GridView ScrollViewer.VerticalScrollMode="Disabled" x:Name="sourcePic" Grid.Row="2" HorizontalContentAlignment="Left" MinHeight="0" Padding="0" Margin="0,5,0,0" x:Load="{x:Bind FeedDetail.showPicArr,Mode=OneWay}" Tag="{x:Bind FeedDetail.sourceFeed.pics,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.sourceFeed.picArr,Mode=OneWay}">
                                     <GridView.ItemTemplate>
-                                        <DataTemplate x:DataType="ImageSource">
-                                            <Image MaxWidth="80" MinHeight="0" MinWidth="0" Source="{x:Bind}" Stretch="UniformToFill"/>
+                                        <DataTemplate x:DataType="viewModel:ImageData">
+                                            <Grid>
+                                                <Image MaxWidth="80" MinHeight="0" MinWidth="0" Source="{x:Bind Pic}" Stretch="UniformToFill"/>
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                                                    <Border x:Name="longPic" x:Load="{x:Bind IsLongPic}" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                                        <TextBlock>长图</TextBlock>
+                                                    </Border>
+                                                    <Border x:Name="gif" x:Load="{x:Bind IsGif}" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                                        <TextBlock>GIF</TextBlock>
+                                                    </Border>
+                                                </StackPanel>
+                                            </Grid>
                                         </DataTemplate>
                                     </GridView.ItemTemplate>
                                 </GridView>
@@ -136,25 +156,25 @@
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="viewModel:RelationRowsItem">
                                 <StackPanel Padding="6" Tag="{x:Bind url}" Tapped="StackPanel_Tapped" Orientation="Horizontal" Background="{ThemeResource SystemControlBackgroundListLowBrush}">
-                                    <Image Width="20" Height="20" Source="{x:Bind logo}"/>
+                                    <Image Width="20" Height="20" Source="{x:Bind logo,Mode=OneWay}"/>
                                     <TextBlock Text="{x:Bind title}" Margin="3,0,0,0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
                     <StackPanel Grid.Row="8" x:Name="questionDetail" x:Load="{x:Bind FeedDetail.isQuestionFeed,Mode=OneWay}" Orientation="Horizontal" Margin="15,0">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Padding="8,0">
-                                <TextBlock Text="{x:Bind FeedDetail.question_answer_num,Mode=OneWay}"/>
-                                <TextBlock>人回答·</TextBlock>
-                                <TextBlock Text="{x:Bind FeedDetail.question_follow_num,Mode=OneWay}"/>
-                                <TextBlock Margin="0,0,5,0">人关注</TextBlock>
-                            </StackPanel>
-                            <ComboBox Margin="6,0" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
-                                <ComboBoxItem>热度排序</ComboBoxItem>
-                                <ComboBoxItem>点赞排序</ComboBoxItem>
-                                <ComboBoxItem>时间排序</ComboBoxItem>
-                            </ComboBox>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Padding="8,0">
+                            <TextBlock Text="{x:Bind FeedDetail.question_answer_num,Mode=OneWay}"/>
+                            <TextBlock>人回答·</TextBlock>
+                            <TextBlock Text="{x:Bind FeedDetail.question_follow_num,Mode=OneWay}"/>
+                            <TextBlock Margin="0,0,5,0">人关注</TextBlock>
                         </StackPanel>
+                        <ComboBox Margin="6,0" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
+                            <ComboBoxItem>热度排序</ComboBoxItem>
+                            <ComboBoxItem>点赞排序</ComboBoxItem>
+                            <ComboBoxItem>时间排序</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
                 </Grid>
                 <Pivot x:Name="FeedDetailPivot" SelectionChanged="FeedDetailPivot_SelectionChanged" Margin="5,0" x:Load="False">
                     <PivotItem>

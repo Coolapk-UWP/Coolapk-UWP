@@ -18,7 +18,7 @@ namespace CoolapkUWP.Control
         private void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
         {
             if (e.Link.Replace("mailto:", string.Empty).IndexOf("http://image.coolapk.com") == 0)
-                Tools.ShowImage(e.Link.Replace("mailto:", string.Empty));
+                Tools.ShowImage(e.Link.Replace("mailto:", string.Empty), ImageType.SmallImage);
             else Tools.OpenLink(e.Link);
         }
 
@@ -35,7 +35,8 @@ namespace CoolapkUWP.Control
         private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
             => Tools.Navigate(typeof(FeedDetailPage), (sender as FrameworkElement).Tag.ToString());
 
-        private void Image_Tapped(object sender, TappedRoutedEventArgs e) => Tools.ShowImage((sender as FrameworkElement).Tag as string);
+        private void Image_Tapped(object sender, TappedRoutedEventArgs e) 
+            => Tools.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
 
         private void replyRowsItem_Tapped(object sender, TappedRoutedEventArgs e)
         {

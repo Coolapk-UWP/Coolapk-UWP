@@ -220,11 +220,11 @@ namespace CoolapkUWP.Data
             if (popups.Contains(popup)) popups.Remove(popup);
         }
 
-        public static void ShowImage(string url)
+        public static void ShowImage(string url, ImageType type)
         {
             Popup popup = new Popup();
             ShowImageControl control = new ShowImageControl(popup);
-            control.ShowImage(url, ImageType.SmallImage);
+            control.ShowImage(url, type);
             popup.Child = control;
             ShowPopup(popup);
         }
@@ -309,13 +309,15 @@ namespace CoolapkUWP.Data
                     {
                         for (int i = 0; i < VisualTreeHelper.GetChildrenCount(a); i++)
                         {
-                            ScrollViewer viewer = VisualTreeHelper.GetChild(a, i) as ScrollViewer;
-                            Viewbox viewbox = viewer.Content as Viewbox;
-                            HyperlinkButton b = viewbox.Child as HyperlinkButton;
-                            Image image = b.Content as Image;
-                            Windows.UI.Xaml.Media.Imaging.BitmapImage bitmapImage = (image.Source as Windows.UI.Xaml.Media.Imaging.BitmapImage);
-                            if (bitmapImage.UriSource.AbsoluteUri.IndexOf("ms-appx") == 0)
-                                b.Padding = thickness;
+                            if (VisualTreeHelper.GetChild(a, i) is ScrollViewer viewer)
+                            {
+                                Viewbox viewbox = viewer.Content as Viewbox;
+                                HyperlinkButton b = viewbox.Child as HyperlinkButton;
+                                Image image = b.Content as Image;
+                                Windows.UI.Xaml.Media.Imaging.BitmapImage bitmapImage = (image.Source as Windows.UI.Xaml.Media.Imaging.BitmapImage);
+                                if (bitmapImage.UriSource.AbsoluteUri.IndexOf("ms-appx") == 0)
+                                    b.Padding = thickness;
+                            }
                         }
                     }
                 }
@@ -333,43 +335,46 @@ namespace CoolapkUWP.Data
 
         public static string GetMessageText(string s)
         {
-            s = s.Replace("\\", "\\\\");
-            s = s.Replace("&#039;", "\'");
-            s = s.Replace("&nbsp;", "\\&nbsp;");
-            s = s.Replace("</a>", "</a> ");
-            s = s.Replace(">", "\\>");
-            s = s.Replace("#", "\\#");
-            s = s.Replace("`", "\\`");
-            s = s.Replace("*", "\\*");
-            s = s.Replace("(", "\\(");
-            s = s.Replace("~", "\\~");
-            s = s.Replace("^", "\\^");
-            s = s.Replace("[", "\\[");
-            s = s.Replace("+", "\\+");
-            s = s.Replace("-", "\\-");
-            s = s.Replace("\\-\\-\\>", "-->");
-            s = s.Replace("!\\-\\-", "!--");
-            s = s.Replace(".", "\\.");
-            s = s.Replace(":", "\\:");
-            s = s.Replace("\n", "\n\n");
+            StringBuilder builder = new StringBuilder(s);
+            builder = builder.Replace("\\", "\\\\");
+            builder = builder.Replace("&#039;", "\'");
+            builder = builder.Replace("&nbsp;", "\\&nbsp;");
+            builder = builder.Replace("</a>", "</a> ");
+            builder = builder.Replace(">", "\\>");
+            builder = builder.Replace("#", "\\#");
+            builder = builder.Replace("`", "\\`");
+            builder = builder.Replace("*", "\\*");
+            builder = builder.Replace("(", "\\(");
+            builder = builder.Replace("~", "\\~");
+            builder = builder.Replace("^", "\\^");
+            builder = builder.Replace("[", "\\[");
+            builder = builder.Replace("+", "\\+");
+            builder = builder.Replace("-", "\\-");
+            builder = builder.Replace("\\-\\-\\>", "-->");
+            builder = builder.Replace("!\\-\\-", "!--");
+            builder = builder.Replace(".", "\\.");
+            builder = builder.Replace(":", "\\:");
+            builder = builder.Replace("\n", "\n\n");
             foreach (var i in Emojis.emojis)
             {
+                s = builder.ToString();
                 if (s.Contains(i))
                 {
                     if (i.Contains("("))
-                        s = s.Replace($"\\#\\{i})", $"\n![{i})](ms-appx:/Assets/Emoji/{i}.png =20)");
+                        builder = builder.Replace($"\\#\\{i})", $"\n![{i})](ms-appx:/Assets/Emoji/{i}.png =20)");
                     else if (Settings.GetBoolen("IsUseOldEmojiMode") && Emojis.oldEmojis.Contains(i))
-                        s = s.Replace($"\\{i}", $"\n![{i}(ms-appx:/Assets/Emoji/{i}2.png =20)");
-                    else s = s.Replace($"\\{i}", $"\n![{i}(ms-appx:/Assets/Emoji/{i}.png =20)");
+                        builder = builder.Replace($"\\{i}", $"\n![{i}(ms-appx:/Assets/Emoji/{i}2.png =20)");
+                    else builder = builder.Replace($"\\{i}", $"\n![{i}(ms-appx:/Assets/Emoji/{i}.png =20)");
                 }
             }
             Regex regex = new Regex("<a.*?\\>\\S*"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
             while (regex.IsMatch(s))
             {
+                s = builder.ToString();
                 var h = regex.Match(s);
                 if (!h.Value.Contains("</a\\>"))
                 {
-                    s = s.Replace(h.Value + " ", h.Value + "&nbsp;");
+                    builder = builder.Replace(h.Value + " ", h.Value + "&nbsp;");
                     continue;
                 }
                 string t = regex3.Match(h.Value).Value.Replace(">", string.Empty);
@@ -394,11 +399,11 @@ namespace CoolapkUWP.Data
                     tt = tt.Replace("\\-", "-");
                 }
                 if (t == "查看更多") tt = "get";
-                s = s.Replace(h.Value, $"[{t}]({tt})");
+                builder = builder.Replace(h.Value, $"[{t}]({tt})");
             }
-            s = s.Replace(" ", "&nbsp;");
-            s = s.Replace("&nbsp;=20)", " =20)");
-            return s;
+            builder = builder.Replace(" ", "&nbsp;");
+            builder = builder.Replace("&nbsp;=20)", " =20)");
+            return builder.ToString();
         }
 
         public static string ConvertTime(double timestr)

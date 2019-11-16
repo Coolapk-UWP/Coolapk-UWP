@@ -46,7 +46,7 @@
                 </Grid>
                 <Pivot IsLocked="True" SelectionChanged="MainPivot_SelectionChanged" x:Name="MainPivot">
                     <PivotItem Header="精选">
-                        <ListView ScrollViewer.VerticalScrollMode="Disabled" Name="listView" Style="{x:Bind ListViewStyle}" ItemTemplate="{StaticResource feed}">
+                        <ListView ScrollViewer.VerticalScrollMode="Disabled" Name="listView" Style="{StaticResource ListViewStyle}" ItemTemplate="{StaticResource feed}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -55,7 +55,7 @@
                         </ListView>
                     </PivotItem>
                     <PivotItem Header="广场">
-                        <ListView ScrollViewer.VerticalScrollMode="Disabled" Name="listView2" Style="{x:Bind ListViewStyle}" ItemTemplate="{StaticResource feed}">
+                        <ListView ScrollViewer.VerticalScrollMode="Disabled" Name="listView2" Style="{StaticResource ListViewStyle}" ItemTemplate="{StaticResource feed}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

@@ -300,17 +300,21 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private async void MarkdownTextBlock_ImageResolving(object sender, Microsoft.Toolkit.Uwp.UI.Controls.ImageResolvingEventArgs e)
         {
+            var deferral = e.GetDeferral();
             e.Image = await ImageCache.GetImage(ImageType.SmallImage, e.Url);
             e.Handled = true;
+            deferral.Complete();
             Tools.SetEmojiPadding(sender);
         }
 
         private void MarkdownTextBlock_ImageClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
         {
-            if (e.Link.IndexOf("http") == 0) Tools.ShowImage(e.Link);
+            List<string> vs = (sender as FrameworkElement).Tag as List<string>;
+            if (e.Link.IndexOf("http") == 0)
+                Tools.ShowImages(vs.ToArray(), vs.IndexOf(e.Link));
         }
 
-        private void Image_Tapped(object sender, TappedRoutedEventArgs e) => Tools.ShowImage((sender as FrameworkElement).Tag as string);
+        private void Image_Tapped(object sender, TappedRoutedEventArgs e) => Tools.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
 
         private async void GetMoreHotReplyListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -430,7 +434,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 else if (view.Tag is string s)
                 {
                     if (string.IsNullOrWhiteSpace(s)) return;
-                    Tools.ShowImage(s);
+                    Tools.ShowImage(s, ImageType.SmallImage);
                 }
             }
             view.SelectedIndex = -1;

@@ -7,6 +7,7 @@
     xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:CoolapkUWP.Data"
+    xmlns:local="using:CoolapkUWP.Pages.SettingPages"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -30,9 +31,30 @@
                 <ToggleSwitch x:Name="IsNoPicsMode" Header="无图模式" Toggled="ToggleSwitch_Toggled"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center">图片缓存大小：</TextBlock>
-                    <TextBlock x:Name="CacheSizeTextBlock" VerticalAlignment="Center" Text="正在加载……"/>
-                    <Button x:Name="CleanCacheButton" Tag="CleanCache" Click="Button_Click" Margin="16,0" IsEnabled="False">清除</Button>
+                    <TextBlock x:Name="CacheSizeTextBlock" VerticalAlignment="Center">正在加载……</TextBlock>
+                    <Button x:Name="RefreshCacheButton" Style="{StaticResource ButtonStyle1}" Tag="RefreshCache" Click="Button_Click" Padding="0" Margin="8,0,4,0" Background="Transparent" IsEnabled="False">
+                        <SymbolIcon Symbol="Refresh"/>
+                    </Button>
+                    <Button x:Name="CleanCacheButton" Tag="CleanCache" Click="Button_Click" IsEnabled="False">清除</Button>
                 </StackPanel>
+                <ListView x:Name="CacheSizeListView" SelectionMode="Multiple" ItemsSource="{x:Bind models}" SelectionChanged="CacheSizeListView_SelectionChanged">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:CacheSizeViewModel">
+                            <ListViewItem HorizontalContentAlignment="Stretch">
+                                <StackPanel>
+                                    <TextBlock Text="{x:Bind Title}"/>
+                                    <TextBlock Text="{x:Bind SizeString}"/>
+                                    <ProgressBar Maximum="{x:Bind TotalSize,Mode=OneWay}" Value="{x:Bind Size}"/>
+                                </StackPanel>
+                            </ListViewItem>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
                 <ToggleSwitch x:Name="CheckUpdateWhenLuanching" Header="启动时检查更新" Toggled="ToggleSwitch_Toggled"/>
                 <Button x:Name="CleanDataButton" Visibility="Collapsed" Click="CleanDataButton_Click" Content="退出登录"/>
                 <Button Tag="checkUpdate" Click="Button_Click">检查更新</Button>
@@ -40,7 +62,6 @@
                     <TextBlock FontSize="20" VerticalAlignment="Center" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">版本：</TextBlock>
                     <TextBlock x:Name="VersionTextBlock" FontSize="20" VerticalAlignment="Center" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
                 </StackPanel>
-                <!--<Button Tag="ShowExceptionList" Click="Button_Click">显示最近的错误记录</Button>-->
                 <Button Tag="gotoTestPage" Click="Button_Click" Visibility="Collapsed" x:Name="gotoTestPage" Content="go to test page"/>
             </StackPanel>
         </ScrollViewer>

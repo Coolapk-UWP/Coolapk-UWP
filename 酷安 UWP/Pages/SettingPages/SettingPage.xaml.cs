@@ -1,5 +1,7 @@
 ﻿using CoolapkUWP.Data;
 using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Threading;
 using Windows.ApplicationModel;
 using Windows.Data.Json;
@@ -16,6 +18,25 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages.SettingPages
 {
+    class CacheSizeViewModel : INotifyPropertyChanged
+    {
+        public double Size;
+        public string SizeString;
+        public string Title;
+        public double totalSize;
+        public ImageType type;
+        public double TotalSize
+        {
+            get => totalSize;
+            set
+            {
+                totalSize = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalSize)));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+    }
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
@@ -23,9 +44,10 @@ namespace CoolapkUWP.Pages.SettingPages
     {
         public SettingPage() => this.InitializeComponent();
 
-        CancellationTokenSource source = new CancellationTokenSource();
+        CancellationTokenSource source;
+        ObservableCollection<CacheSizeViewModel> models = new ObservableCollection<CacheSizeViewModel>();
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             Tools.mainPage.ResetRowHeight();
@@ -43,16 +65,55 @@ namespace CoolapkUWP.Pages.SettingPages
 #if DEBUG
             gotoTestPage.Visibility = Visibility.Visible;
 #endif
-            CacheSizeTextBlock.Text = await ImageCache.GetCacheSize(source.Token);
-            CleanCacheButton.IsEnabled = true;
-            source = null;
+            GetCacheSize();
             Tools.HideProgressBar();
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             base.OnNavigatingFrom(e);
-            source.Cancel();
+            if (source != null)
+                source.Cancel();
+        }
+
+        async void GetCacheSize()
+        {
+            Tools.ShowProgressBar();
+            CacheSizeTextBlock.Text = "正在加载……";
+            CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = false;
+            CacheSizeListView.SelectionMode = ListViewSelectionMode.None;
+            models.Clear();
+            double size = 0;
+            for (int i = 0; i < 5; i++)
+            {
+                source = new CancellationTokenSource();
+                string name = string.Empty;
+                switch (i)
+                {
+                    case 0: name = "缩略图"; break;
+                    case 1: name = "原图"; break;
+                    case 2: name = "小头像"; break;
+                    case 3: name = "大头像"; break;
+                    case 4: name = "图标"; break;
+                }
+                double s = await ImageCache.GetCacheSize((ImageType)i, source.Token);
+                size += s;
+                models.Add(new CacheSizeViewModel
+                {
+                    TotalSize = s,
+                    Size = s,
+                    SizeString = Tools.GetSizeString(s),
+                    Title = name,
+                    type = (ImageType)i
+                });
+                source = null;
+            }
+            CacheSizeTextBlock.Text = Tools.GetSizeString(size);
+            foreach (var item in models)
+                item.TotalSize = size;
+            RefreshCacheButton.IsEnabled = true;
+            CacheSizeListView.SelectionMode = ListViewSelectionMode.Multiple;
+            Tools.HideProgressBar();
         }
 
         private void CleanDataButton_Click(object sender, RoutedEventArgs e)
@@ -86,19 +147,16 @@ namespace CoolapkUWP.Pages.SettingPages
             Button button = sender as Button;
             switch (button.Tag as string)
             {
-                case "gotoTestPage":
-                    Tools.Navigate(typeof(TestPage), null);
-                    break;
-                case "checkUpdate":
-                    Settings.CheckUpdate();
-                    break;
+                case "gotoTestPage": Tools.Navigate(typeof(TestPage), null); break;
+                case "checkUpdate": Settings.CheckUpdate(); break;
+                case "RefreshCache": GetCacheSize(); break;
                 case "CleanCache":
-                    button.IsEnabled = false;
-                    await ImageCache.CleanCache();
-                    button.IsEnabled = true;
-                    source = new CancellationTokenSource();
-                    CacheSizeTextBlock.Text = await ImageCache.GetCacheSize(source.Token);
-                    source = null;
+                    CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = false;
+                    CacheSizeTextBlock.Text = "正在加载……";
+                    foreach (var item in CacheSizeListView.SelectedItems)
+                        await ImageCache.CleanCache((item as CacheSizeViewModel).type);
+                    GetCacheSize();
+                    CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = true;
                     break;
                 case "fakeLogin":
                     try
@@ -148,5 +206,7 @@ namespace CoolapkUWP.Pages.SettingPages
             title.Height += height;
             stackP.Margin = new Thickness(0, title.Height, 0, 50);
         }
+
+        private void CacheSizeListView_SelectionChanged(object sender, SelectionChangedEventArgs e) => CleanCacheButton.IsEnabled = e.AddedItems.Count > 0;
     }
 }

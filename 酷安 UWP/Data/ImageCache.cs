@@ -24,6 +24,30 @@ namespace CoolapkUWP.Data
         static BitmapImage darkNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
         static Dictionary<ImageType, StorageFolder> folders = new Dictionary<ImageType, StorageFolder>();
 
+        public static async Task<string> GetImagePath(ImageType type,string url)
+        {
+            if (string.IsNullOrEmpty(url)) return Settings.GetBoolen("IsDarkMode") ? "ms-appx:/Assets/img_placeholder_night.png" : "ms-appx:/Assets/img_placeholder.png";
+            else if (url.IndexOf("ms-appx") == 0) return url;
+            else
+            {
+                string fileName = Tools.GetMD5(url);
+                StorageFolder folder = await GetFolder(type);
+                var item = await folder.TryGetItemAsync(fileName);
+                if (type == ImageType.SmallImage)
+                    url += ".s.jpg";
+                if (item is null)
+                {
+                    StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
+                    try { await DownloadImage(file, url, false); }
+                    catch (Exception e) { if (e is FileLoadException) return file.Path; }
+                    return file.Path;
+                }
+                else if (item is StorageFile file) return file.Path;
+                else return Settings.GetBoolen("IsDarkMode") ? "ms-appx:/Assets/img_placeholder_night.png" : "ms-appx:/Assets/img_placeholder.png";
+            }
+
+        }
+
         public static async Task<BitmapImage> GetImage(ImageType type, string url, bool showMessage = false)
         {
             if (string.IsNullOrEmpty(url)) return new BitmapImage();
@@ -100,42 +124,34 @@ namespace CoolapkUWP.Data
                     }
                 }
                 catch (HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
-            else GetLocalImage(null);
         }
 
-        public static async Task<string> GetCacheSize(System.Threading.CancellationToken token)
+        public static async Task<double> GetCacheSize(ImageType type, System.Threading.CancellationToken token)
         {
             ulong size = 0;
-            for (int i = 0; i < 5; i++)
+            StorageFolder folder = await GetFolder(type);
+            int index = 0;
+            var query = folder.CreateFileQuery();
+            while (true)
             {
-                StorageFolder folder = await GetFolder((ImageType)i);
-                int index = 0;
-                var query = folder.CreateFileQuery();
-                while (true)
-                {
-                    var array = await query.GetFilesAsync((uint)index, 100);
-                    index += array.Count;
-                    if (array.Count > 0)
-                        foreach (var item in array)
-                        {
-                            token.ThrowIfCancellationRequested();
-                            size += (await item.GetBasicPropertiesAsync()).Size;
-                        }
-                    else break;
-                }
+                var array = await query.GetFilesAsync((uint)index, 100);
+                index += array.Count;
+                if (array.Count > 0)
+                    foreach (var item in array)
+                    {
+                        token.ThrowIfCancellationRequested();
+                        size += (await item.GetBasicPropertiesAsync()).Size;
+                    }
+                else break;
             }
-            return Tools.GetSizeString(size);
+            return size;
         }
 
-        public static async Task CleanCache()
+        public static async Task CleanCache(ImageType type)
         {
             Tools.ShowProgressBar();
-            for (int i = 0; i < 5; i++)
-            {
-                await (await GetFolder((ImageType)i)).DeleteAsync();
-                await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync(((ImageType)i).ToString());
-            }
-
+            await (await GetFolder(type)).DeleteAsync();
+            await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync(type.ToString());
             Tools.HideProgressBar();
         }
     }

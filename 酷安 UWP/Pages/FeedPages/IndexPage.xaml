@@ -76,7 +76,7 @@
                         <ListView Style="{StaticResource ListViewStyle1}" ScrollViewer.VerticalScrollMode="Disabled" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" MaxHeight="200" ItemsSource="{x:Bind entities}">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="viewmodel:IndexPageViewModel">
-                                    <Image MaxHeight="180" Tapped="Grid_Tapped" Tag="{x:Bind}" Source="{x:Bind pic}"/>
+                                    <Image MaxHeight="180" Tapped="Grid_Tapped" Tag="{x:Bind}" Source="{x:Bind pic,Mode=OneWay}"/>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
@@ -137,7 +137,7 @@
                 <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Margin="0,5,0,15" MaxWidth="40" Template="{StaticResource ListViewItemTemplate1}" Tapped="Grid_Tapped" Tag="{x:Bind url}">
                     <Grid MaxHeight="40" MaxWidth="40">
                         <Grid.Background>
-                            <ImageBrush ImageSource="{x:Bind pic}" Stretch="Uniform"/>
+                            <ImageBrush ImageSource="{x:Bind pic,Mode=OneWay}" Stretch="Uniform"/>
                         </Grid.Background>
                         <TextBlock Text="{x:Bind title}" TextWrapping="Wrap"/>
                     </Grid>
@@ -158,24 +158,24 @@
             <DataTemplate x:Key="textLink" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind}" Tapped="Grid_Tapped" HorizontalContentAlignment="Stretch">
                     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10" Orientation="Horizontal">
-                        <Image Height="20" Width="20"  Source="{x:Bind pic}"/>
+                        <Image Height="20" Width="20"  Source="{x:Bind pic,Mode=OneWay}"/>
                         <TextBlock Text="{x:Bind title}" TextWrapping="Wrap" Margin="8,0"/>
                     </StackPanel>
                 </ListViewItem>
             </DataTemplate>
             <DataTemplate x:Key="image_1" x:DataType="viewmodel:IndexPageViewModel">
-                <Image Tapped="Grid_Tapped" Source="{x:Bind pic}"  Tag="{x:Bind}"/>
+                <Image Tapped="Grid_Tapped" Source="{x:Bind pic,Mode=OneWay}"  Tag="{x:Bind}"/>
             </DataTemplate>
             <DataTemplate x:Key="iconLink" x:DataType="viewmodel:IndexPageViewModel">
                 <StackPanel Tag="{x:Bind}" Tapped="Grid_Tapped">
-                    <Image Source="{x:Bind pic}"  Height="36" Width="36"/>
+                    <Image Source="{x:Bind pic,Mode=OneWay}"  Height="36" Width="36"/>
                     <TextBlock HorizontalAlignment="Center" Text="{x:Bind title}"/>
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="dyh" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem Style="{StaticResource NoPaddingListViewItem}" VerticalContentAlignment="Top" Template="{StaticResource ListViewItemTemplate1}">
                     <StackPanel Tag="{x:Bind url}" Tapped="Grid_Tapped" Padding="2" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                        <Image Source="{x:Bind pic}"  Height="24" Width="24"/>
+                        <Image Source="{x:Bind pic,Mode=OneWay}"  Height="24" Width="24"/>
                         <TextBlock HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Text="{x:Bind title}"/>
                     </StackPanel>
                 </ListViewItem>
@@ -183,7 +183,7 @@
             <DataTemplate x:Key="feedArticle2" x:DataType="viewmodel:FeedViewModel">
                 <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind url}" Tapped="FeedListViewItem_Tapped">
                     <Grid Margin="0,10" Height="118" Width="260" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                        <Image Source="{x:Bind pic}"  Stretch="Uniform"/>
+                        <Image Source="{x:Bind pic,Mode=OneWay}"  Stretch="Uniform"/>
                         <Grid VerticalAlignment="Bottom" Background="#70000000">
                             <TextBlock Foreground="White" Margin="3,3,3,8" Text="{x:Bind message_title}" TextWrapping="Wrap" FontWeight="Black" FontSize="18"/>
                         </Grid>
@@ -201,7 +201,7 @@
                             <Button Click="Button_Click" VerticalAlignment="Top" Style="{StaticResource ButtonStyle1}" Tag="{x:Bind url}" Background="{x:Null}">
                                 <Ellipse Width="32" Height="32" HorizontalAlignment="Left" >
                                     <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{x:Bind userSmallAvatar}"/>
+                                        <ImageBrush ImageSource="{x:Bind userSmallAvatar,Mode=OneWay}"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
                             </Button>

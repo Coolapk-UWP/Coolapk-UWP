@@ -3,7 +3,6 @@ using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“内容对话框”项模板
 
@@ -28,8 +27,12 @@ namespace CoolapkUWP.Control
 
         private async void MarkdownTextBlock_ImageResolving(object sender, ImageResolvingEventArgs e)
         {
+            var deferral = e.GetDeferral();
             e.Image = await ImageCache.GetImage(ImageType.OriginImage, e.Url);
             e.Handled = true;
+            deferral.Complete();
         }
+
+        private void MarkdownTextBlock_ImageClicked(object sender, LinkClickedEventArgs e) => Tools.ShowImage(e.Link, ImageType.OriginImage);
     }
 }

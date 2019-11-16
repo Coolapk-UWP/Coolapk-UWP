@@ -61,6 +61,8 @@ namespace CoolapkUWP.Control.ViewModels
 
         string userSmallAvatarUrl;
         string extraPicUrl;
+        private ImageSource extra_pic1;
+        private ImageSource userSmallAvatar1;
 
         public string info { get; private set; }
         public string share_num { get; private set; }
@@ -80,7 +82,23 @@ namespace CoolapkUWP.Control.ViewModels
         public bool showUser2 { get => !showUser; }
         public string likenum { get; private set; }
         public string replynum { get; private set; }
-        public ImageSource extra_pic { get; private set; }
-        public ImageSource userSmallAvatar { get; private set; }
+        public ImageSource extra_pic
+        {
+            get => extra_pic1;
+            private set
+            {
+                extra_pic1 = value;
+                Changed(this, nameof(extra_pic));
+            }
+        }
+        public ImageSource userSmallAvatar
+        {
+            get => userSmallAvatar1;
+            private set
+            {
+                userSmallAvatar1 = value;
+                Changed(this, nameof(userSmallAvatar));
+            }
+        }
     }
 }

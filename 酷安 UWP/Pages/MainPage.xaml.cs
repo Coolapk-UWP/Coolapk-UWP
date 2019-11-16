@@ -5,8 +5,7 @@ using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.Pages.SettingPages;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using Windows.Data.Json;
 using Windows.UI;
 using Windows.UI.Core;
@@ -15,7 +14,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
@@ -33,6 +31,7 @@ namespace CoolapkUWP.Pages
         public MainPage()
         {
             this.InitializeComponent();
+            Tools.mainPage = this;
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
                 Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             Application.Current.LeavingBackground += ChangeColor;
@@ -67,7 +66,6 @@ namespace CoolapkUWP.Pages
             hamburgerMenuControl.OptionsItemsSource = MenuItem.GetOptionsItems();
             if (Settings.IsMobile) TopBar.Margin = new Thickness(0);
             UpdateUserInfo();
-            Tools.mainPage = this;
             Settings.CheckTheme();
         }
 
@@ -88,12 +86,12 @@ namespace CoolapkUWP.Pages
             {
                 Index = -1,
                 PageType = typeof(UserPage),
-                Image = string.IsNullOrEmpty(Settings.GetString("UserAvatar")) ? null : await ImageCache.GetImage(ImageType.SmallAvatar, Settings.GetString("UserAvatar")),
                 Name = Settings.GetString("UserName"),
                 Icon = Symbol.Contact
             };
             items.Insert(0, item);
             UserButton.DataContext = item;
+            item.Image = string.IsNullOrEmpty(Settings.GetString("UserAvatar")) ? null : await ImageCache.GetImage(ImageType.SmallAvatar, Settings.GetString("UserAvatar"));
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -134,7 +132,7 @@ namespace CoolapkUWP.Pages
                 hamburgerMenuControl.IsPaneOpen = true;
                 ObservableCollection<MenuItem> items = hamburgerMenuControl.ItemsSource as ObservableCollection<MenuItem>;
                 items.RemoveAt(0);
-                items.Insert(0, new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -3, Image = new BitmapImage() });
+                items.Insert(0, new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -3 });
                 return;
             }
             else
@@ -266,26 +264,20 @@ namespace CoolapkUWP.Pages
 
         private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            if (args.ChosenSuggestion is AppViewModel info)
+            if (args.ChosenSuggestion is AppViewModel app)
+                Tools.Navigate(typeof(AppPage), "https://www.coolapk.com" + app.Url);
+            else if (args.ChosenSuggestion is SearchWord word)
             {
-                Tools.Navigate(typeof(AppPage), "https://www.coolapk.com" + info.Url);
-                sender.Text = info.AppName;
-            }
-            else if (args.ChosenSuggestion is SearchWord searchWord)
-            {
-                switch (searchWord.Symbol)
+                switch (word.Symbol)
                 {
                     case Symbol.Shop:
-                        Tools.Navigate(typeof(SearchPage), new object[] { 3, searchWord.Title.Substring(5) });
-                        sender.Text = searchWord.Title.Substring(5);
+                        Tools.Navigate(typeof(SearchPage), new object[] { 3, word.Title.Substring(5) });
                         break;
                     case Symbol.Contact:
-                        Tools.Navigate(typeof(SearchPage), new object[] { 1, searchWord.Title.Substring(5) });
-                        sender.Text = searchWord.Title.Substring(5);
+                        Tools.Navigate(typeof(SearchPage), new object[] { 1, word.Title.Substring(5) });
                         break;
                     case Symbol.Find:
-                        Tools.Navigate(typeof(SearchPage), new object[] { 0, searchWord.Title });
-                        sender.Text = searchWord.Title;
+                        Tools.Navigate(typeof(SearchPage), new object[] { 0, word.Title });
                         break;
                 }
             }
@@ -298,16 +290,46 @@ namespace CoolapkUWP.Pages
             {
                 ObservableCollection<MenuItem> items = hamburgerMenuControl.ItemsSource as ObservableCollection<MenuItem>;
                 items.RemoveAt(0);
-                if (hamburgerMenuControl.IsPaneOpen) items.Insert(0, new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -3, Image = new BitmapImage() });
-                else items.Insert(0, new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -2, Image = new BitmapImage() });
+                if (hamburgerMenuControl.IsPaneOpen) items.Insert(0, new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -3 });
+                else items.Insert(0, new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -2 });
             };
+        }
+
+        private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            if (args.SelectedItem is AppViewModel app) sender.Text = app.AppName;
+            else if (args.SelectedItem is SearchWord word)
+            {
+                switch (word.Symbol)
+                {
+                    case Symbol.Shop:
+                        sender.Text = word.Title.Substring(5);
+                        break;
+                    case Symbol.Contact:
+                        sender.Text = word.Title.Substring(5);
+                        break;
+                    case Symbol.Find:
+                        sender.Text = word.Title;
+                        break;
+                }
+            }
         }
     }
 
-    public class MenuItem
+    public class MenuItem : INotifyPropertyChanged
     {
         public Symbol Icon { get; set; }
-        public ImageSource Image { get; set; }
+        private ImageSource image;
+        public event PropertyChangedEventHandler PropertyChanged;
+        public ImageSource Image
+        {
+            get => image;
+            set
+            {
+                image = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Image)));
+            }
+        }
         public string Name { get; set; }
         public Type PageType { get; set; }
         public int Index { get; set; }
@@ -316,9 +338,9 @@ namespace CoolapkUWP.Pages
         {
             ObservableCollection<MenuItem> items = new ObservableCollection<MenuItem>
             {
-                new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -3, Image=new BitmapImage()},
-                new MenuItem() { Icon = Symbol.Home, Name = "首页", PageType = typeof(InitialPage), Index = 1, Image=new BitmapImage()},
-                new MenuItem() { Icon = Symbol.Shop, Name = "应用游戏", PageType = typeof(AppRecommendPage), Index = 2, Image=new BitmapImage()}
+                new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -3},
+                new MenuItem() { Icon = Symbol.Home, Name = "首页", PageType = typeof(InitialPage), Index = 1},
+                new MenuItem() { Icon = Symbol.Shop, Name = "应用游戏", PageType = typeof(AppRecommendPage), Index = 2}
             };
             return items;
         }
@@ -327,8 +349,8 @@ namespace CoolapkUWP.Pages
         {
             ObservableCollection<MenuItem> items = new ObservableCollection<MenuItem>
             {
-                new MenuItem() { Icon = Symbol.Contact, Name = string.Empty, PageType = typeof(UserPage), Index = -1, Image=new BitmapImage()},
-                new MenuItem() { Icon = Symbol.Setting, Name = "设置", PageType = typeof(SettingPage), Index = 0, Image=new BitmapImage()}
+                new MenuItem() { Icon = Symbol.Contact, Name = string.Empty, PageType = typeof(UserPage), Index = -1},
+                new MenuItem() { Icon = Symbol.Setting, Name = "设置", PageType = typeof(SettingPage), Index = 0}
             };
             return items;
         }

@@ -35,11 +35,11 @@ namespace CoolapkUWP.Control.ViewModels
         {
             if (showPicArr)
             {
-                picArr = new ObservableCollection<ImageSource>();
+                picArr = new ObservableCollection<ImageData>();
                 foreach (var item in token["picArr"].GetArray())
                 {
                     pics.Add(item.GetString());
-                    picArr.Add(await ImageCache.GetImage(ImageType.SmallImage, item.GetString()));
+                    picArr.Add(new ImageData { Pic = await ImageCache.GetImage(ImageType.SmallImage, item.GetString()), url = item.GetString() });
                 }
             }
             if (token.TryGetValue("pic", out IJsonValue value1) && !string.IsNullOrEmpty(value1.GetString()))
@@ -54,7 +54,16 @@ namespace CoolapkUWP.Control.ViewModels
         public string message { get; private set; }
         public bool showPicArr { get; private set; }
         public List<string> pics { get; private set; } = new List<string>();
-        public ObservableCollection<ImageSource> picArr { get; private set; }
-        public ImageSource pic { get; private set; }
+        public ObservableCollection<ImageData> picArr { get; private set; }
+        private ImageSource pic1;
+        public ImageSource pic
+        {
+            get => pic1;
+            private set
+            {
+                pic1 = value;
+                Changed(this, nameof(pic));
+            }
+        }
     }
 }
