@@ -108,25 +108,18 @@ namespace CoolapkUWP.Pages.FeedPages
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             if (!e.IsIntermediate)
-            {
-                if (VScrollViewer.VerticalOffset == 0)
-                {
-                    LoadList(1);
-                    VScrollViewer.ChangeView(null, 20, null);
-                    refreshText.Visibility = Visibility.Collapsed;
-                }
-                else if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
+                if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
                     LoadList();
-            }
-            else refreshText.Visibility = Visibility.Visible;
         }
 
         private void TitleBar_RefreshButtonClick(object sender, RoutedEventArgs e)
         {
             LoadList(1);
-            VScrollViewer.ChangeView(null, 20, null);
+            VScrollViewer.ChangeView(null, 0, null);
         }
 
+        private void UserList_RefreshRequested(object sender, EventArgs e) => LoadList(1);
+  
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
     }
 }
