@@ -32,7 +32,7 @@
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
-        <Button Margin="0,32,0,0" Style="{StaticResource ButtonStyle1}" VerticalAlignment="Top" Height="48" Width="48" Background="#66000000" x:Name="CloseFlip" Click="CloseFlip_Click">
+        <Button Margin="0,32,0,0" Style="{StaticResource ButtonStyle1}" VerticalAlignment="Top" Height="48" Width="48" Background="#66000000" Foreground="White" x:Name="CloseFlip" Click="CloseFlip_Click">
             <SymbolIcon Symbol="Clear"/>
         </Button>
     </Grid>

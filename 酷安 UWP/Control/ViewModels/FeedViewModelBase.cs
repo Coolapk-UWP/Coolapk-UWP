@@ -17,7 +17,13 @@ namespace CoolapkUWP.Control.ViewModels
             share_num = token["forwardnum"].ToString().Replace("\"", string.Empty);
             if (token["entityType"].GetString() != "article")
             {
-                showSourceFeedGrid = !string.IsNullOrEmpty(token["source_id"]?.GetString());
+                if (token["feedType"].GetString() == "question")
+                {
+                    isQuestionFeed = true;
+                    question_answer_num = token["question_answer_num"].ToString().Replace("\"", string.Empty);
+                    question_follow_num = token["question_follow_num"].ToString().Replace("\"", string.Empty);
+                }
+                showSourceFeedGrid = !isQuestionFeed && !string.IsNullOrEmpty(token["source_id"]?.GetString());
                 if (showSourceFeedGrid)
                 {
                     showSourceFeed = token.TryGetValue("forwardSourceFeed", out IJsonValue jsonValue)
@@ -26,13 +32,7 @@ namespace CoolapkUWP.Control.ViewModels
                     if (showSourceFeed)
                         sourceFeed = new SourceFeedViewModel(jsonValue.GetObject());
                 }
-                if (token["feedType"].GetString() == "question")
-                {
-                    isQuestionFeed = true;
-                    question_answer_num = token["question_answer_num"].ToString().Replace("\"", string.Empty);
-                    question_follow_num = token["question_follow_num"].ToString().Replace("\"", string.Empty);
-                }
-                showUser = true;
+                //if (token["entityTemplate"].GetString() == "feedByDyhHeader") showUser = false;
                 if (showUser) userSmallAvatarUrl = token["userInfo"].GetObject()["userSmallAvatar"].GetString();
                 showExtra_url = token.TryGetValue("extra_title", out IJsonValue valueextra_title) && !string.IsNullOrEmpty(valueextra_title.GetString());
                 if (showExtra_url)
@@ -48,6 +48,7 @@ namespace CoolapkUWP.Control.ViewModels
                 }
                 device_title = token["device_title"].GetString();
             }
+            //else showUser = false;
             GetPic();
         }
 
@@ -78,7 +79,7 @@ namespace CoolapkUWP.Control.ViewModels
         public bool isQuestionFeed { get; private set; }
         public string question_answer_num { get; private set; }
         public string question_follow_num { get; private set; }
-        public bool showUser { get; private set; }
+        public bool showUser { get; private set; } = true;
         public bool showUser2 { get => !showUser; }
         public string likenum { get; private set; }
         public string replynum { get; private set; }

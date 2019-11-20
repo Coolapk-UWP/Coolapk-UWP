@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Control
 {
+    //https://www.cnblogs.com/arcsinw/p/8638526.html
     public sealed partial class ShowImageControl : UserControl
     {
         class ImageData

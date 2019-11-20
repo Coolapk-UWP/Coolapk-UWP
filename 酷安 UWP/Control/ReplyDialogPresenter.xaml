@@ -9,6 +9,7 @@
     xmlns:local="using:CoolapkUWP.Control"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -18,17 +19,19 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid cu:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" fcu:Background="{ThemeResource SystemControlAcrylicElementBrush}">
-        <ScrollViewer x:Name="VScrollViewer" ViewChanged="VScrollViewer_ViewChanged">
-            <StackPanel Margin="{x:Bind data:Settings.stackPanelMargin}">
-                <ListView x:Name="FeedReplyList" Margin="12,0" ItemTemplate="{StaticResource feed_reply}">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                </ListView>
-            </StackPanel>
-        </ScrollViewer>
+        <controls:PullToRefreshListView x:Name="FeedReplyList" ItemTemplate="{StaticResource feed_reply}" SelectionMode="None" RefreshRequested="FeedReplyList_RefreshRequested"
+                                        Padding="{x:Bind data:Settings.stackPanelMargin}" PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新">
+            <controls:PullToRefreshListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <control:GridPanel DesiredColumnWidth="384"/>
+                </ItemsPanelTemplate>
+            </controls:PullToRefreshListView.ItemsPanel>
+            <controls:PullToRefreshListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                </Style>
+            </controls:PullToRefreshListView.ItemContainerStyle>
+        </controls:PullToRefreshListView>
         <local:TitleBar x:Name="TitleBar" Title="回复" BackButtonSymbol="Clear"/>
     </Grid>
 </Page>

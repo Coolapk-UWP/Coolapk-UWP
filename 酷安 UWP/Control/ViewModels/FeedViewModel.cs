@@ -42,22 +42,22 @@ namespace CoolapkUWP.Control.ViewModels
             {
                 if (token["feedType"].GetString() == "question")
                     showLikes = false;
+                uurl = token["userInfo"].GetObject()["url"].GetString();
             }
             else
             {
-
-                if (token["dyh_info"].GetObject().TryGetValue("fromInfo", out IJsonValue value))
-                {
-                    showFromInfo = true;
-                    fromInfo = value.GetString();
-                    uurl = $"/u/{token["from_uid"].GetNumber()}";
-                }
                 if (!mode.HasFlag(FeedDisplayMode.notShowDyhName))
                 {
                     showDyh = true;
                     dyhlogoUrl = token["dyh_info"].GetObject()["logo"].GetString();
                     dyhurl = token["dyh_info"].GetObject()["url"].GetString();
                     dyhname = token["dyh_name"].GetString();
+                }
+                showFromInfo = token["dyh_info"].GetObject().TryGetValue("fromInfo", out IJsonValue value);
+                if (showFromInfo)
+                {
+                    fromInfo = value.GetString();
+                    uurl = $"/u/{token["from_uid"].GetNumber()}";
                 }
             }
 

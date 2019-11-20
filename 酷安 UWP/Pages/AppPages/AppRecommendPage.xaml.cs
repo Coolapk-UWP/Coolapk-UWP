@@ -18,45 +18,21 @@ namespace CoolapkUWP.Pages.AppPages
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class AppRecommendPage : Page, INotifyPropertyChanged
+    public sealed partial class AppRecommendPage : Page
     {
         public AppRecommendPage()
         {
             this.InitializeComponent();
         }
 
-        Grid grid = null;
-
-        private Thickness stackPanelMargin = new Thickness(0, Settings.FirstPageTitleHeight, 0, 2);
-        public Thickness StackPanelMargin
-        {
-            get => stackPanelMargin;
-            set
-            {
-                stackPanelMargin = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("stackPanelMargin"));
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            Tools.mainPage.ResetRowHeight();
-            Task.Run(async () =>
+            if (e.Parameter != null)
             {
-               await Task.Delay(300);
-               await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-               {
-                   FrameworkElement element = VisualTreeHelper.GetChild(Pivot1, 0) as FrameworkElement;
-                   Grid a = VisualTreeHelper.GetChild(element, 1) as Grid;
-                   ScrollViewer c = a.Children[0] as ScrollViewer;
-                   FrameworkElement d = c.FindName("Panel") as FrameworkElement;
-                   grid = d.FindName("HeaderGrid") as Grid;
-                   grid.Height = Settings.FirstPageTitleHeight;
-               });
-           });
+                Pivot1.IsLocked = true;
+                Pivot1.SelectedIndex = (int)e.Parameter;
+            }
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -179,18 +155,6 @@ namespace CoolapkUWP.Pages.AppPages
         {
             if (e.ClickedItem is AppData date)
                 OpenAppPage("https://www.coolapk.com/apk/" + date.Tag);
-        }
-
-        private void ScrollViewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
-        {
-            double height = (sender as ScrollViewer).VerticalOffset - e.FinalView.VerticalOffset;
-            Tools.mainPage.ChangeRowHeight(height);
-
-            if (height < 0 && height < Settings.FirstPageTitleHeight - 48 - grid.ActualHeight) height = Settings.FirstPageTitleHeight - 48 - grid.ActualHeight;
-            if ((grid.ActualHeight + height > Settings.FirstPageTitleHeight) ||
-                (grid.ActualHeight + height < Settings.FirstPageTitleHeight - 48)) return;
-            grid.Height += height;
-            StackPanelMargin = new Thickness(0, grid.Height, 0, 2);
         }
     }
 }

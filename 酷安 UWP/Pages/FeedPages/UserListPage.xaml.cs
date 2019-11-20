@@ -33,7 +33,7 @@ namespace CoolapkUWP.Pages.FeedPages
             UserList.ItemsSource = infos;
             Task.Run(async () =>
             {
-                await Task.Delay(1000);
+                await Task.Delay(300);
                 await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
                     VScrollViewer = (VisualTreeHelper.GetChild(UserList, 0) as Border).FindName("ScrollViewer") as ScrollViewer;

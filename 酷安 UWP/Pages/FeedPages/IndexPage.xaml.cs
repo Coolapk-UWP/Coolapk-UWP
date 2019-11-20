@@ -3,7 +3,6 @@ using CoolapkUWP.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
@@ -11,6 +10,7 @@ using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -20,7 +20,7 @@ namespace CoolapkUWP.Pages.FeedPages
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class IndexPage : Page, INotifyPropertyChanged
+    public sealed partial class IndexPage : Page
     {
         int page = 0;
         List<int> pages = new List<int>();
@@ -29,36 +29,14 @@ namespace CoolapkUWP.Pages.FeedPages
         int index;
         List<string> urls = new List<string>();
         ObservableCollection<ObservableCollection<Entity>> Feeds2 = new ObservableCollection<ObservableCollection<Entity>>();
-        InitialPage initialPage = null;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private Thickness stackPanelMargin = new Thickness(0, Settings.FirstPageTitleHeight, 0, 2);
-        public Thickness StackPanelMargin
-        {
-            get
-            {
-                if (initialPage != null) return stackPanelMargin;
-                else return Settings.stackPanelMargin;
-            }
-            set
-            {
-                stackPanelMargin = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("StackPanelMargin"));
-            }
-        }
-
-        public IndexPage()
-        {
-            this.InitializeComponent();
-            listView.ItemsSource = Collection;
-        }
+        public IndexPage() => this.InitializeComponent();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             object[] vs = e.Parameter as object[];
-            initialPage = vs[2] as InitialPage;
+            //initialPage = vs[2] as InitialPage;
             if ((bool)vs[1]) TitleBar.Visibility = Visibility.Collapsed;
             pageUrl = vs[0] as string;
             TitleBar.BackButtonVisibility = Visibility.Visible;
@@ -68,6 +46,14 @@ namespace CoolapkUWP.Pages.FeedPages
             pageUrl = pageUrl.Replace("#", "%23");
             index = -1;
             GetUrlPage();
+            Task.Run(async () =>
+            {
+                await Task.Delay(1000);
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    (((VisualTreeHelper.GetChild(listView, 0) as Border).Child as Grid).FindName("ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
+                });
+            });
         }
 
         async void GetUrlPage(int p = -1)
@@ -159,35 +145,28 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
+            ScrollViewer VScrollViewer = sender as ScrollViewer;
             if (!e.IsIntermediate)
             {
                 if (Collection.Count != 0)
-                    if (VScrollViewer.VerticalOffset == 0)
-                    {
-                        GetUrlPage(1);
-                        VScrollViewer.ChangeView(null, 20, null);
-                        refreshText.Visibility = Visibility.Collapsed;
-                    }
-                    else if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
+                    if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
                         //if (string.IsNullOrEmpty(pageUrl)) GetIndexPage(++page);
                         GetUrlPage();
             }
-            else refreshText.Visibility = Visibility.Visible;
         }
 
         public void RefreshPage()
         {
             GetUrlPage(1);
-            VScrollViewer.ChangeView(null, 0, null);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) => Tools.Navigate(typeof(UserPage), (sender as FrameworkElement).Tag as string);
+        private void Button_Click(object sender, RoutedEventArgs e)
+            => Tools.Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, (sender as FrameworkElement).Tag as string });
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
         private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
             GetUrlPage(1);
-            VScrollViewer.ChangeView(null, 0, null);
         }
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
@@ -248,16 +227,6 @@ namespace CoolapkUWP.Pages.FeedPages
             GetUrlPage();
         }
 
-        private void VScrollViewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
-        {
-            if (initialPage != null)
-            {
-                double height = (sender as ScrollViewer).VerticalOffset - e.FinalView.VerticalOffset;
-                Tools.mainPage.ChangeRowHeight(height);
-                StackPanelMargin = new Thickness(0, initialPage.ChangeRowHeight(height), 0, 2);
-            }
-        }
-
         private void MarkdownTextBlock_ImageResolving(object sender, Microsoft.Toolkit.Uwp.UI.Controls.ImageResolvingEventArgs e) => Tools.SetEmojiPadding(sender);
 
         private void Pivot_Loaded(object sender, RoutedEventArgs e)
@@ -268,21 +237,25 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 Entity[] f = element.Tag as Entity[];
                 Style style = new Style(typeof(ListViewItem));
-                style.Setters.Add(new Setter(HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
+                style.Setters.Add(new Setter(TemplateProperty, Application.Current.Resources["ListViewItemTemplate1"] as ControlTemplate));
                 for (int j = 0; j < f.Length; j++)
                 {
                     IndexPageViewModel model = f[j] as IndexPageViewModel;
                     var ff = new ObservableCollection<Entity>();
+                    var l = new ListView
+                    {
+                        Style = Application.Current.Resources["ListViewStyle"] as Style,
+                        ItemContainerStyle = style,
+                        ItemTemplateSelector = Resources["FTemplateSelector"] as DataTemplateSelector,
+                        ItemsSource = ff,
+                        ItemsPanel = Windows.UI.Xaml.Markup.XamlReader.Load("<ItemsPanelTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:c=\"using:CoolapkUWP.Control\"><c:GridPanel DesiredColumnWidth=\"384\" CubeInSameHeight=\"False\"/></ItemsPanelTemplate>") as ItemsPanelTemplate,
+                        SelectionMode = ListViewSelectionMode.None
+                    };
+                    l.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Disabled);
                     var i = new PivotItem
                     {
                         Tag = f[j],
-                        Content = new ListView
-                        {
-                            Style = Application.Current.Resources["ListViewStyle"] as Style,
-                            ItemContainerStyle = style,
-                            ItemTemplateSelector = Resources["FTemplateSelector"] as DataTemplateSelector,
-                            ItemsSource = ff
-                        },
+                        Content = l,
                         Header = model.title
                     };
                     element.Items.Add(i);

@@ -18,15 +18,15 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="48"/>
             <ColumnDefinition Width="*"/>
-            <!--<ColumnDefinition Width="48"/>-->
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <!--<Button Style="{StaticResource NavigationBackButtonNormalStyle}" Height="48" Width="48" x:Name="BackButton" Click="BackButton_Click" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}"/>-->
         <Button Grid.Column="0" x:Name="BackButton" Click="BackButton_Click" Style="{StaticResource ButtonStyle1}" Width="48" Height="48" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}">
             <SymbolIcon x:Name="BackButtonIcon" Symbol="Back"/>
         </Button>
         <TextBlock Grid.Column="1" Margin="{x:Bind data:Settings.titleTextMargin}" x:Name="title" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}"/>
-        <Button Grid.Column="2" Visibility="Collapsed" x:Name="MoreButton" Style="{StaticResource ButtonStyle1}" Width="48" Height="48" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}">
+        <!--<Button Grid.Column="2" Visibility="Collapsed" x:Name="MoreButton" Style="{StaticResource ButtonStyle1}" Width="48" Height="48" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}">
             <SymbolIcon Symbol="More"/>
-        </Button>
+        </Button>-->
+        <ComboBox x:Name="ChangeModeComboBox" Margin="8" SelectionChanged="ChangeModeComboBox_SelectionChanged" Grid.Column="2" Visibility="Collapsed" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}"/>
     </Grid>
 </UserControl>

@@ -25,22 +25,9 @@ namespace CoolapkUWP.Pages.SettingPages
             this.InitializeComponent();
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            List<BitmapImage> v = new List<BitmapImage>();
-            foreach (var item in await (await ApplicationData.Current.LocalCacheFolder.GetFolderAsync("Icon")).GetFilesAsync())
-            {
-                BitmapImage b = new BitmapImage();
-                await b.SetSourceAsync(await item.OpenReadAsync());
-                v.Add(b);
-            }
-            lis.ItemsSource = v;
-        }
-
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            Tools.Navigate(typeof(FeedPages.UserPage), await Tools.GetUserIDByName(uid.Text));
+            Tools.Navigate(typeof(FeedPages.FeedListPage), new object[] { FeedPages.FeedListType.UserPageList, await Tools.GetUserIDByName(uid.Text) });
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
@@ -56,8 +43,15 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private async void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            imagea.Source = await ImageCache.GetImage(ImageType.SmallImage, url.Text, true);
-            //await new MessageDialog(await Tools.GetJson(url.Text)).ShowAsync();
+            //Tools.Navigate(typeof(FeedPages.FeedListPage), new object[] { FeedPages.FeedListType.DYHPageList, "1324" });
+            await new MessageDialog(await Tools.GetJson(url.Text)).ShowAsync();
+        }
+
+        [Obsolete]
+        private void lis_RefreshRequested(object sender, EventArgs e)
+        {
+            var a = sender as Microsoft.Toolkit.Uwp.UI.Controls.PullToRefreshListView;
+            a.Items.Insert(0, new ListViewItem { Content = new TextBlock { Text = "bb" } });
         }
     }
 }

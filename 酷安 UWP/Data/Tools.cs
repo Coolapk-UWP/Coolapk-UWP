@@ -1,5 +1,4 @@
 ﻿using CoolapkUWP.Control;
-using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.FeedPages;
 using System;
 using System.Collections.Generic;
@@ -10,10 +9,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Data.Json;
-using Windows.Foundation.Metadata;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
-using Windows.Storage.Streams;
 using Windows.System;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -26,7 +23,7 @@ namespace CoolapkUWP.Data
     static class Tools
     {
         static HttpClient mClient;
-        public static MainPage mainPage = null;
+        public static Pages.MainPage mainPage = null;
         public static List<Popup> popups = new List<Popup>();
         static ObservableCollection<string> messageList = new ObservableCollection<string>();
         static bool isShowingMessage;
@@ -35,7 +32,6 @@ namespace CoolapkUWP.Data
         {
             mClient = new HttpClient();
             mClient.DefaultRequestHeaders.UserAgent.ParseAdd(" +CoolMarket/9.2.2-1905301");
-            //mClient.DefaultRequestHeaders.Add("User-Agent", "Dalvik/2.1.0 (Linux; U; Android 9; MI 8 SE MIUI/9.5.9) (#Build; Xiaomi; MI 8 SE; PKQ1.181121.001; 9) +CoolMarket/9.2.2-1905301");
             mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "28");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
@@ -44,7 +40,6 @@ namespace CoolapkUWP.Data
             mClient.DefaultRequestHeaders.Add("X-App-Code", "1905301");
             mClient.DefaultRequestHeaders.Add("X-Api-Version", "9");
             //mClient.DefaultRequestHeaders.Add("X-App-Device", "QRTBCOgkUTgsTat9WYphFI7kWbvFWaYByO1YjOCdjOxAjOxEkOFJjODlDI7ATNxMjM5MTOxcjMwAjN0AyOxEjNwgDNxITM2kDMzcTOgsTZzkTZlJ2MwUDNhJ2MyYzM");
-            //mClient.DefaultRequestHeaders.Add("X-Dark-Mode", "0");
             mClient.DefaultRequestHeaders.Add("Host", "api.coolapk.com");
             Popup popup = new Popup();
             popup.RequestedTheme = Settings.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
@@ -97,7 +92,7 @@ namespace CoolapkUWP.Data
         public static async void ShowProgressBar()
         {
             isShowingProgressBar = true;
-            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+            if (Settings.HasStatusBar)
             {
                 StatusBar.GetForCurrentView().ProgressIndicator.ProgressValue = null;
                 await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
@@ -106,103 +101,47 @@ namespace CoolapkUWP.Data
                 await statusGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar());
         }
 
-
         public static async void HideProgressBar()
         {
             isShowingProgressBar = false;
-            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar") && !isShowingMessage)
-                await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
-            else if (popups.Last().Child is StatusGrid statusGrid)
-                statusGrid.HideProgressBar();
+            if (Settings.HasStatusBar && !isShowingMessage) await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
+            else if (popups.Last().Child is StatusGrid statusGrid) statusGrid.HideProgressBar();
         }
 
-        static int messageNum = 0;
-
-        static void notified(object s, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            messageNum++;
-            if (messageList.Count > 0)
-                if (messageList.Last() != "已完成。")
-                    ShowMessage(messageList.Last());
-                else
-                {
-                    messageList.CollectionChanged -= notified;
-                    isShowingMessage = false;
-                    while (messageNum > 0 && messageList.Count > 0)
-                    {
-                        messageList.RemoveAt(messageList.Count - 1);
-                        messageNum--;
-                    }
-                    messageNum = 0;
-                    ShowMessage(string.Empty);
-                    HideProgressBar();
-                }
-        }
-
-        public static async void ShowMessage(string message, bool waitNextMessage = false)
+        public static async void ShowMessage(string message)
         {
             messageList.Add(message);
             if (!isShowingMessage)
             {
                 isShowingMessage = true;
-                if (waitNextMessage)
+                while (messageList.Count > 0)
                 {
-                    ShowProgressBar();
-                    messageNum++;
-                    messageList.CollectionChanged += notified;
-                    if (messageList.Count > 0)
-                        ShowMessage(messageList.Last());
-                }
-                else
-                {
-                    while (messageList.Count > 0)
+                    string s = $"[1/{messageList.Count}]{messageList[0]}";
+                    if (Settings.HasStatusBar)
                     {
-                        string s = $"[1/{messageList.Count}]{messageList[0]}";
-                        if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-                        {
-                            ShowMessage(s);
-                            await Task.Delay(3000);
-                            messageList.RemoveAt(0);
-                            if (messageList.Count == 0 && !isShowingProgressBar)
-                            {
-                                StatusBar statusBar = StatusBar.GetForCurrentView();
-                                statusBar.ProgressIndicator.Text = string.Empty;
-                                await statusBar.ProgressIndicator.HideAsync();
-                            }
-                        }
-                        else if (popups.Last().Child is StatusGrid statusGrid)
-                        {
-                            ShowMessage(s);
-                            await Task.Delay(3000);
-                            messageList.RemoveAt(0);
-                            await statusGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                            {
-                                if (messageList.Count == 0)
-                                    statusGrid.ShowMessage(string.Empty);
-                                if (!isShowingProgressBar) HideProgressBar();
-                            });
-                        }
+                        StatusBar statusBar = StatusBar.GetForCurrentView();
+                        statusBar.ProgressIndicator.Text = s;
+                        if (isShowingProgressBar) statusBar.ProgressIndicator.ProgressValue = null;
+                        else statusBar.ProgressIndicator.ProgressValue = 0;
+                        await statusBar.ProgressIndicator.ShowAsync();
+                        await Task.Delay(3000);
+                        if (messageList.Count == 0 && !isShowingProgressBar) await statusBar.ProgressIndicator.HideAsync();
+                        statusBar.ProgressIndicator.Text = string.Empty;
+                        messageList.RemoveAt(0);
                     }
-                    isShowingMessage = false;
+                    else if (popups.Last().Child is StatusGrid statusGrid)
+                    {
+                        await statusGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => statusGrid.ShowMessage(s));
+                        await Task.Delay(3000);
+                        messageList.RemoveAt(0);
+                        await statusGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                        {
+                            if (messageList.Count == 0) statusGrid.ShowMessage(string.Empty);
+                            if (!isShowingProgressBar) HideProgressBar();
+                        });
+                    }
                 }
-            }
-        }
-
-        static async void ShowMessage(string message)
-        {
-            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-            {
-                StatusBar statusBar = StatusBar.GetForCurrentView();
-                await statusBar.ProgressIndicator.ShowAsync();
-                statusBar.ProgressIndicator.Text = message;
-                if (isShowingProgressBar)
-                    statusBar.ProgressIndicator.ProgressValue = null;
-                else
-                    statusBar.ProgressIndicator.ProgressValue = 0;
-            }
-            else if (popups.Last().Child is StatusGrid statusGrid)
-            {
-                await statusGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => statusGrid.ShowMessage(message));
+                isShowingMessage = false;
             }
         }
 
@@ -243,42 +182,34 @@ namespace CoolapkUWP.Data
         public static async void OpenLink(string str)
         {
             if (str is null) return;
+            if (str.Contains('?')) str = str.Substring(0, str.IndexOf('?'));
+            if (str.Contains('%')) str = str.Substring(0, str.IndexOf('%'));
+            if (str.Contains('&')) str = str.Substring(0, str.IndexOf('&'));
             if (str.IndexOf("/u/") == 0)
             {
                 string u = str.Replace("/u/", string.Empty);
-                if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
-                if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
                 if (int.TryParse(u, out int uu))
-                    Navigate(typeof(UserPage), u);
-                else Navigate(typeof(UserPage), await GetUserIDByName(u));
+                    Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, u });
+                else Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, await GetUserIDByName(u) });
             }
             else if (str.IndexOf("/feed/") == 0)
             {
                 string u = str.Replace("/feed/", string.Empty);
-                if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
-                if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
                 Navigate(typeof(FeedDetailPage), u);
             }
             else if (str.IndexOf("/t/") == 0)
             {
                 string u = str.Replace("/t/", string.Empty);
-                if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
-                if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
-                Navigate(typeof(TopicPage), u);
+                Navigate(typeof(FeedListPage), new object[] { FeedListType.TagPageList, u });
             }
             else if (str.IndexOf("/dyh/") == 0)
             {
                 string u = str.Replace("/dyh/", string.Empty);
-                if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
-                if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
-                Navigate(typeof(DyhPage), u);
+                Navigate(typeof(FeedListPage), new object[] { FeedListType.DYHPageList, u });
             }
             else if (str.IndexOf("/apk/") == 0)
             {
                 string u = "http://www.coolapk.com" + str;
-                if (u.Contains('?')) u = u.Substring(0, u.IndexOf('?'));
-                if (u.Contains('%')) u = u.Substring(0, u.IndexOf('%'));
-                if (u.Contains('&')) u = u.Substring(0, u.IndexOf('&'));
                 Navigate(typeof(Pages.AppPages.AppPage), u);
             }
             else if (str.IndexOf("https") == 0)
@@ -329,7 +260,7 @@ namespace CoolapkUWP.Data
         {
             CryptographicHash objHash = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5).CreateHash();
             objHash.Append(CryptographicBuffer.ConvertStringToBinary(inputString, BinaryStringEncoding.Utf8));
-            IBuffer buffHash1 = objHash.GetValueAndReset();
+            Windows.Storage.Streams.IBuffer buffHash1 = objHash.GetValueAndReset();
             return CryptographicBuffer.EncodeToHexString(buffHash1);
         }
 
@@ -360,8 +291,7 @@ namespace CoolapkUWP.Data
                 s = builder.ToString();
                 if (s.Contains(i))
                 {
-                    if (i.Contains("("))
-                        builder = builder.Replace($"\\#\\{i})", $"\n![{i})](ms-appx:/Assets/Emoji/{i}.png =20)");
+                    if (i.Contains("(")) builder = builder.Replace($"\\#\\{i})", $"\n![{i})](ms-appx:/Assets/Emoji/{i}.png =20)");
                     else if (Settings.GetBoolen("IsUseOldEmojiMode") && Emojis.oldEmojis.Contains(i))
                         builder = builder.Replace($"\\{i}", $"\n![{i}(ms-appx:/Assets/Emoji/{i}2.png =20)");
                     else builder = builder.Replace($"\\{i}", $"\n![{i}(ms-appx:/Assets/Emoji/{i}.png =20)");
@@ -409,15 +339,11 @@ namespace CoolapkUWP.Data
         public static string ConvertTime(double timestr)
         {
             DateTime time = new DateTime(1970, 1, 1).ToLocalTime().Add(new TimeSpan(Convert.ToInt64(timestr) * 10000000));
-            TimeSpan tt = DateTime.Now.Subtract(time);
-            if (tt.TotalDays > 30)
-                return $"{time.Year}/{time.Month}/{time.Day}";
-            else if (tt.Days > 0)
-                return $"{tt.Days}天前";
-            else if (tt.Hours > 0)
-                return $"{tt.Hours}小时前";
-            else if (tt.Minutes > 0)
-                return $"{tt.Minutes}分钟前";
+            TimeSpan temptime = DateTime.Now.Subtract(time);
+            if (temptime.TotalDays > 30) return $"{time.Year}/{time.Month}/{time.Day}";
+            else if (temptime.Days > 0) return $"{temptime.Days}天前";
+            else if (temptime.Hours > 0) return $"{temptime.Hours}小时前";
+            else if (temptime.Minutes > 0) return $"{temptime.Minutes}分钟前";
             else return "刚刚";
         }
 
@@ -436,21 +362,20 @@ namespace CoolapkUWP.Data
             return token;
         }
 
-
         public static async Task<string> GetJson(string url)
         {
             try
             {
                 mClient.DefaultRequestHeaders.Remove("X-App-Token");
                 mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
-                return await mClient.GetStringAsync(new Uri("https://api.coolapk.com/v6" + url));
+                string v = await mClient.GetStringAsync(new Uri("https://api.coolapk.com/v6" + url));
+                return v;
             }
             catch (HttpRequestException e)
             {
                 ShowHttpExceptionMessage(e);
                 return string.Empty;
             }
-            catch { throw; }
         }
 
         public static JsonObject GetJSonObject(string json)
@@ -500,7 +425,7 @@ namespace CoolapkUWP.Data
         {
             try
             {
-                string uid = await new HttpClient().GetStringAsync(new Uri($"https://www.coolapk.com/n/{name}"));
+                string uid = await new HttpClient().GetStringAsync($"https://www.coolapk.com/n/name");
                 uid = uid.Split(new string[] { "coolmarket://www.coolapk.com/u/" }, StringSplitOptions.RemoveEmptyEntries)[1];
                 uid = uid.Split(new string[] { @"""" }, StringSplitOptions.RemoveEmptyEntries)[0];
                 return uid;
@@ -511,16 +436,6 @@ namespace CoolapkUWP.Data
                 else ShowHttpExceptionMessage(e);
                 return "0";
             }
-            catch { throw; }
         }
     }
-    /*
-    public static async Task<string> GetCoolApkUserFaceUri(string NameOrID)
-    {
-        String body = await new HttpClient().GetStringAsync("https://www.coolapk.com/u/" + NameOrID);
-        body = Regex.Split(body, @"<div class=""msg_box"">")[1];
-        body = Regex.Split(body, @"src=""")[1];
-        return Regex.Split(body, @"""")[0];
-    }
-    */
 }

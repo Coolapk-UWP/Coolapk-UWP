@@ -21,7 +21,6 @@ namespace CoolapkUWP.Pages
     {
         int[] pages = new int[3];
         string[] lastItems = new string[3];
-        private Thickness stackPanelMargin = new Thickness(0, Settings.FirstPageTitleHeight, 0, 2);
         public SearchPage()
         {
             this.InitializeComponent();
@@ -38,7 +37,6 @@ namespace CoolapkUWP.Pages
             {
                 if (!string.IsNullOrEmpty(vs[1] as string))
                 {
-                    DetailPivot.Visibility = Visibility.Visible;
                     SearchText.Text = vs[1] as string;
                     SearchTypeComboBox.SelectedIndex = Convert.ToInt32(vs[0]);
                 }
@@ -140,8 +138,7 @@ namespace CoolapkUWP.Pages
         async void SearchTopic(string keyWord)
         {
             Tools.ShowProgressBar();
-            string r = await Tools.GetJson($"/search?type=feedTopic&searchValue={keyWord}&page={++pages[2]}{(pages[2] > 1 ? "&lastItem=" + lastItems[2] : string.Empty)}&showAnonymous=-1");
-            JsonArray Root = Tools.GetDataArray(r);
+            JsonArray Root = Tools.GetDataArray(await Tools.GetJson($"/search?type=feedTopic&searchValue={keyWord}&page={++pages[2]}{(pages[2] > 1 ? "&lastItem=" + lastItems[2] : string.Empty)}&showAnonymous=-1"));
             ObservableCollection<TopicViewModel> FeedsCollection = TopicList.ItemsSource as ObservableCollection<TopicViewModel>;
             if (pages[2] == 1) FeedsCollection.Clear();
             if (Root.Count != 0)
@@ -203,19 +200,6 @@ namespace CoolapkUWP.Pages
                 DetailPivot.Visibility = Visibility.Collapsed;
             else
             {
-                Task.Run(async () =>
-                {
-                    await Task.Delay(100);
-                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                    {
-                        FrameworkElement element = VisualTreeHelper.GetChild(DetailPivot, 0) as FrameworkElement;
-                        Grid a = VisualTreeHelper.GetChild(element, 1) as Grid;
-                        ScrollViewer c = a.Children[0] as ScrollViewer;
-                        FrameworkElement d = c.FindName("Panel") as FrameworkElement;
-                        Grid grid = d.FindName("HeaderGrid") as Grid;
-                        grid.Height = Settings.FirstPageTitleHeight;
-                    });
-                });
                 switch (DetailPivot.SelectedIndex)
                 {
                     case 0:
@@ -243,43 +227,8 @@ namespace CoolapkUWP.Pages
         {
             if (SearchTypeComboBox.SelectedIndex != -1 && !(DetailPivot is null))
                 DetailPivot.SelectedIndex = SearchTypeComboBox.SelectedIndex;
-        }
-
-        ScrollViewer[] viewers = new ScrollViewer[3] { null, null, null };
-
-        private void DetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Task.Run(async () =>
-            {
-                bool a = true;
-                while (a)
-                {
-                    if (DetailPivot.SelectedIndex == 3) break;
-                    await Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
-                     {
-                         ListView list = FeedList;
-                         switch (DetailPivot.SelectedIndex)
-                         {
-                             case 0:
-                                 list = FeedList;
-                                 break;
-                             case 1:
-                                 list = UserList;
-                                 break;
-                             case 2:
-                                 list = TopicList;
-                                 break;
-                         }
-                         viewers[DetailPivot.SelectedIndex] = (VisualTreeHelper.GetChild(list, 0) as FrameworkElement).FindName("ScrollViewer") as ScrollViewer;
-                         a = viewers[DetailPivot.SelectedIndex] is null;
-                         if (!a) viewers[DetailPivot.SelectedIndex].ViewChanged += ScrollViewer_ViewChanged;
-                     });
-                    if (a) await Task.Delay(500);
-                }
-            });
-            if (DetailPivot.SelectedIndex != -1 && !(SearchTypeComboBox is null))
-                SearchTypeComboBox.SelectedIndex = DetailPivot.SelectedIndex;
-            StartSearch();
+            if (SearchTypeComboBox.SelectedIndex + 1 == SearchTypeComboBox.Items.Count || pages[SearchTypeComboBox.SelectedIndex] == 0)
+                StartSearch();
         }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)

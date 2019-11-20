@@ -3,8 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
-    xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:CoolapkUWP.Data"
     xmlns:local="using:CoolapkUWP.Pages.SettingPages"
@@ -12,8 +10,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <ScrollViewer ManipulationDelta="ScrollViewer_ManipulationDelta" ManipulationMode="TranslateY" ViewChanging="ScrollViewer_ViewChanging" Padding="10,0">
-            <StackPanel x:Name="stackP" Margin="0,128,0,2">
+        <ScrollViewer>
+            <StackPanel x:Name="stackP" Margin="{x:Bind data:Settings.stackPanelMargin}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -37,7 +35,8 @@
                     </Button>
                     <Button x:Name="CleanCacheButton" Tag="CleanCache" Click="Button_Click" IsEnabled="False">清除</Button>
                 </StackPanel>
-                <ListView x:Name="CacheSizeListView" SelectionMode="Multiple" ItemsSource="{x:Bind models}" SelectionChanged="CacheSizeListView_SelectionChanged">
+                <ListView x:Name="CacheSizeListView" SelectionMode="Multiple" ItemsSource="{x:Bind models}" 
+                          SelectionChanged="CacheSizeListView_SelectionChanged" ScrollViewer.VerticalScrollMode="Disabled">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -65,8 +64,5 @@
                 <Button Tag="gotoTestPage" Click="Button_Click" Visibility="Collapsed" x:Name="gotoTestPage" Content="go to test page"/>
             </StackPanel>
         </ScrollViewer>
-        <Border x:Name="title" cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" fcu:Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}" VerticalAlignment="Top">
-            <TextBlock Margin="{x:Bind data:Settings.titleTextMargin}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}">设置</TextBlock>
-        </Border>
     </Grid>
 </Page>

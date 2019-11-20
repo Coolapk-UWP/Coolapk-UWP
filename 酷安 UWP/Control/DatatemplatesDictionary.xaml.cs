@@ -1,9 +1,5 @@
 ﻿using CoolapkUWP.Data;
-using CoolapkUWP.Pages.FeedPages;
-using System.Collections.Generic;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 
 namespace CoolapkUWP.Control
@@ -24,16 +20,16 @@ namespace CoolapkUWP.Control
 
         private void PicA_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (sender is GridView view)
+            if (sender is Windows.UI.Xaml.Controls.GridView view)
             {
-                if (view.SelectedIndex > -1 && view.Tag is List<string> ss)
+                if (view.SelectedIndex > -1 && view.Tag is System.Collections.Generic.List<string> ss)
                     Tools.ShowImages(ss.ToArray(), view.SelectedIndex);
                 view.SelectedIndex = -1;
             }
         }
 
         private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
-            => Tools.Navigate(typeof(FeedDetailPage), (sender as FrameworkElement).Tag.ToString());
+            => Tools.Navigate(typeof(Pages.FeedPages.FeedDetailPage), (sender as FrameworkElement).Tag.ToString());
 
         private void Image_Tapped(object sender, TappedRoutedEventArgs e) 
             => Tools.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
@@ -42,7 +38,7 @@ namespace CoolapkUWP.Control
         {
             if (sender is FrameworkElement frameworkElement)
             {
-                Popup popup = new Popup();
+                var popup = new Windows.UI.Xaml.Controls.Primitives.Popup();
                 popup.Child = new ReplyDialogPresenter(frameworkElement.Tag, popup);
                 Tools.ShowPopup(popup);
             }

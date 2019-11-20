@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:data="using:CoolapkUWP.Data"
     mc:Ignorable="d" 
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded" 
@@ -28,15 +29,15 @@
 
     <Grid>
         <!--主体-->
-        <Pivot Style="{StaticResource PivotStyle1}" x:Name="Pivot1">
-            <PivotItem Header="应用">
-                <ScrollViewer ViewChanging="ScrollViewer_ViewChanging">
-                    <StackPanel Margin="{x:Bind stackPanelMargin}">
+        <Pivot x:Name="Pivot1" Margin="0,-48,0,0">
+            <PivotItem>
+                <ScrollViewer>
+                    <StackPanel Padding="{x:Bind data:Settings.stackPanelMargin}">
                         <controls:AdaptiveGridView x:Name="hotview"  DesiredWidth="120"
-                                                      IsItemClickEnabled="True"   ItemClick="Updateview_ItemClick"
-                                                      HorizontalAlignment="Stretch" SelectionMode="None"
-                                                     Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
-                                                      ItemTemplate="{StaticResource GridViewDataTemplate}">
+                                                   IsItemClickEnabled="True"   ItemClick="Updateview_ItemClick"
+                                                   HorizontalAlignment="Stretch" SelectionMode="None"
+                                                   Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
+                                                   ItemTemplate="{StaticResource GridViewDataTemplate}">
                             <controls:AdaptiveGridView.Header>
                                 <TextBlock Text="热门应用" Margin="12" HorizontalAlignment="Left" VerticalAlignment="Center"   Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}" />
                             </controls:AdaptiveGridView.Header>
@@ -59,9 +60,9 @@
                 </ScrollViewer>
             </PivotItem>
 
-            <PivotItem Margin="0" Header="游戏">
-                <ScrollViewer ViewChanging="ScrollViewer_ViewChanging">
-                    <StackPanel Margin="{x:Bind stackPanelMargin}">
+            <PivotItem>
+                <ScrollViewer>
+                    <StackPanel Padding="{x:Bind data:Settings.stackPanelMargin}">
                         <Grid VerticalAlignment="Top">
                             <TextBlock Text="推荐把玩" Foreground="Gray" VerticalAlignment="Top" Margin="10" HorizontalAlignment="Left"  />
                             <GridView x:Name="hotgview" 
@@ -83,9 +84,9 @@
                 </ScrollViewer>
             </PivotItem>
 
-            <PivotItem Margin="0" Header="分类">
-                <ScrollViewer ViewChanging="ScrollViewer_ViewChanging">
-                    <StackPanel Margin="{x:Bind stackPanelMargin}">
+            <PivotItem>
+                <ScrollViewer>
+                    <StackPanel Padding="{x:Bind data:Settings.stackPanelMargin}">
                         <TextBlock FontWeight="Black" Text="应用分类" VerticalAlignment="Top" Margin="10,10,0,10" />
                         <StackPanel >
                             <StackPanel VerticalAlignment="Top">

@@ -50,9 +50,6 @@ namespace CoolapkUWP.Pages.SettingPages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            Tools.mainPage.ResetRowHeight();
-            title.Height = Settings.FirstPageTitleHeight;
-            stackP.Margin = new Thickness(0, Settings.FirstPageTitleHeight, 0, 50);
             Tools.ShowProgressBar();
             IsNoPicsMode.IsOn = Settings.GetBoolen("IsNoPicsMode");
             IsUseOldEmojiMode.IsOn = Settings.GetBoolen("IsUseOldEmojiMode");
@@ -152,7 +149,7 @@ namespace CoolapkUWP.Pages.SettingPages
                 case "RefreshCache": GetCacheSize(); break;
                 case "CleanCache":
                     CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = false;
-                    CacheSizeTextBlock.Text = "正在加载……";
+                    CacheSizeTextBlock.Text = "正在处理……";
                     foreach (var item in CacheSizeListView.SelectedItems)
                         await ImageCache.CleanCache((item as CacheSizeViewModel).type);
                     GetCacheSize();
@@ -177,34 +174,12 @@ namespace CoolapkUWP.Pages.SettingPages
                         Settings.Set("UserName", userName);
                         Settings.Set("Uid", uid);
                         Settings.Set("UserAvatar", userAvatar);
-                        Tools.mainPage.UpdateUserInfo();
+                        Tools.mainPage.GetUserAvatar();
                     }
                     catch (System.Net.Http.HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
                     catch (Exception ex) { await new MessageDialog($"出现错误，可能是用户名不正确。\n{ex}").ShowAsync(); }
                     break;
             }
-        }
-
-        private void ScrollViewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
-        {
-            double height = (sender as ScrollViewer).VerticalOffset - e.FinalView.VerticalOffset;
-            Tools.mainPage.ChangeRowHeight(height);
-            ChangeTitleHeight(height);
-        }
-
-        private void ScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
-        {
-            double height = e.Delta.Translation.Y;
-            Tools.mainPage.ChangeRowHeight(height);
-            ChangeTitleHeight(height);
-        }
-        void ChangeTitleHeight(double height)
-        {
-            if (height < 0 && height < Settings.FirstPageTitleHeight - 48 - title.ActualHeight) height = Settings.FirstPageTitleHeight - 48 - title.ActualHeight;
-            if ((title.ActualHeight + height > Settings.FirstPageTitleHeight) ||
-                (title.ActualHeight + height < Settings.FirstPageTitleHeight - 48)) return;
-            title.Height += height;
-            stackP.Margin = new Thickness(0, title.Height, 0, 50);
         }
 
         private void CacheSizeListView_SelectionChanged(object sender, SelectionChangedEventArgs e) => CleanCacheButton.IsEnabled = e.AddedItems.Count > 0;

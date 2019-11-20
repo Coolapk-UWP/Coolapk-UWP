@@ -1,14 +1,11 @@
-﻿using CoolapkUWP.Control;
-using System;
-using System.Net.Http;
-using System.Text.RegularExpressions;
+﻿using System;
 using Windows.ApplicationModel;
-using Windows.Foundation.Metadata;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Data
 {
@@ -16,30 +13,13 @@ namespace CoolapkUWP.Data
     static class Settings
     {
         static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-        public static UISettings uISettings = new UISettings();
-        public static bool IsMobile = Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile";
-
-        public static double FirstPageTitleHeight
-        {
-            get
-            {
-                if (IsMobile) return 96;
-                else return 128;
-            }
-        }
-
-        public static double PageTitleHeight
-        {
-            get
-            {
-                if (IsMobile) return 48;
-                else return 80;
-            }
-        }
-
-        public static Thickness titleTextMargin = new Thickness(5, 12, 5, 12);
-        public static Thickness stackPanelMargin = new Thickness(0, PageTitleHeight, 0, 2);
-        public static VerticalAlignment titleContentVerticalAlignment = VerticalAlignment.Bottom;
+        public static UISettings uISettings => new UISettings();
+        public static bool HasStatusBar => Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
+        public static double PageTitleHeight => HasStatusBar ? 48 : 80;
+        public static SolidColorBrush SystemAccentColorBrush => Application.Current.Resources.ThemeDictionaries["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
+        public static Thickness titleTextMargin => new Thickness(5, 12, 5, 12);
+        public static Thickness stackPanelMargin => new Thickness(0, PageTitleHeight, 0, 2);
+        public static VerticalAlignment titleContentVerticalAlignment => VerticalAlignment.Bottom;
 
         public static bool GetBoolen(string key) => (bool)localSettings.Values[key];
         public static string GetString(string key) => localSettings.Values[key] as string;
@@ -76,19 +56,12 @@ namespace CoolapkUWP.Data
                     || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
                     || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
                 {
-                    string s = release.Body;
-                    //Regex regex = new Regex("!\\[\\S*\\]\\(http\\S*\\)");
-                    //while (regex.IsMatch(s))
-                    //{
-                    //    string st = regex.Match(s).Value;
-                    //    s = s.Replace(st.Substring(st.IndexOf('(')), $"(file:///{(await ImageCache.GetImagePath(ImageType.OriginImage, st.Substring(st.IndexOf('(')).Replace("(", string.Empty).Replace(")", string.Empty))).Replace('\\', '/')})");
-                    //}
-                    GetUpdateContentDialog dialog = new GetUpdateContentDialog(release.HtmlUrl, s) { RequestedTheme = GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
+                    var dialog = new Control.GetUpdateContentDialog(release.HtmlUrl, release.Body) { RequestedTheme = GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
                     await dialog.ShowAsync();
                 }
                 else Tools.ShowMessage("当前无可用更新。");
             }
-            catch (HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
+            catch (System.Net.Http.HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
         }
 
         public static async void CheckTheme()
@@ -98,20 +71,11 @@ namespace CoolapkUWP.Data
                 await System.Threading.Tasks.Task.Delay(100);
             if (Window.Current?.Content is FrameworkElement frameworkElement)
             {
-                if (!GetBoolen("IsDarkMode"))
-                {
-                    frameworkElement.RequestedTheme = ElementTheme.Light;
-                    ChangeColor(true);
-                    foreach (var item in Tools.popups)
-                        item.RequestedTheme = ElementTheme.Light;
-                }
-                else
-                {
-                    frameworkElement.RequestedTheme = ElementTheme.Dark;
-                    ChangeColor(false);
-                    foreach (var item in Tools.popups)
-                        item.RequestedTheme = ElementTheme.Dark;
-                }
+                ElementTheme elementTheme = GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
+                frameworkElement.RequestedTheme = elementTheme;
+                ChangeColor(!GetBoolen("IsDarkMode"));
+                foreach (var item in Tools.popups)
+                    item.RequestedTheme = elementTheme;
             }
             void ChangeColor(bool value)//标题栏颜色
             {
@@ -119,8 +83,7 @@ namespace CoolapkUWP.Data
                       ForeColor = value ? Colors.Black : Colors.White,
                       ButtonForeInactiveColor = value ? Color.FromArgb(255, 50, 50, 50) : Color.FromArgb(255, 200, 200, 200),
                       ButtonBackPressedColor = value ? Color.FromArgb(255, 200, 200, 200) : Color.FromArgb(255, 50, 50, 50);
-                Tools.mainPage?.ChangeButtonForeground();
-                if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+                if (HasStatusBar)
                 {
                     StatusBar statusBar = StatusBar.GetForCurrentView();
                     statusBar.BackgroundOpacity = 1; // 透明度

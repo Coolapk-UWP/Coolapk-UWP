@@ -4,28 +4,6 @@ using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Control
 {
-    public class TemplateSelector : DataTemplateSelector
-    {
-        public DataTemplate DataTemplate1 { get; set; }
-        public DataTemplate DataTemplate2 { get; set; }
-        public DataTemplate DataTemplate3 { get; set; }
-        public DataTemplate DataTemplate4 { get; set; }
-        public DataTemplate DataTemplate5 { get; set; }
-        protected override DataTemplate SelectTemplateCore(object item)
-        {
-            Feed feed = item as Feed;
-            if (feed.GetValue("entityType") == "feed_reply") return DataTemplate2;
-            else if (feed.GetValue("entityType") == "article") return DataTemplate5;
-            switch (feed.GetValue("feedType"))
-            {
-                case "feed": return DataTemplate1;
-                case "feedArticle": return DataTemplate3;
-                case "question": return DataTemplate4;
-                default: return DataTemplate1;
-            }
-        }
-    }
-
     public class FirstTemplateSelector : DataTemplateSelector
     {
         public DataTemplate DataTemplate1 { get; set; }
@@ -41,6 +19,7 @@ namespace CoolapkUWP.Control
             else if (item is DyhViewModel) return DataTemplate5;
             return DataTemplate2;
         }
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
     public class SecondTemplateSelector : DataTemplateSelector
     {
@@ -58,14 +37,9 @@ namespace CoolapkUWP.Control
         {
             switch ((item as IndexPageViewModel).entityTemplate)
             {
-                case "selectorLinkCard": return DataTemplate8;
-                case "imageCard": return DataTemplate9;
-                case "imageCarouselCard_1": return DataTemplate1;
-                case "iconTabLinkGridCard": return DataTemplate7;
-                case "iconGridCard":
-                case "iconMiniGridCard":
-                case "iconMiniLinkGridCard":
-                case "iconLinkGridCard": return DataTemplate6;
+                default: return DataTemplate0;
+                case "imageTextGridCard":
+                case "imageCarouselCard_1":
                 case "imageSquareScrollCard":
                 case "iconScrollCard":
                 case "imageTextScrollCard":
@@ -74,9 +48,16 @@ namespace CoolapkUWP.Control
                 case "messageCard": return DataTemplate3;
                 case "refreshCard": return DataTemplate4;
                 case "textLinkListCard": return DataTemplate5;
-                default: return DataTemplate0;
+                case "iconGridCard":
+                case "iconMiniGridCard":
+                case "iconMiniLinkGridCard":
+                case "iconLinkGridCard": return DataTemplate6;
+                case "iconTabLinkGridCard": return DataTemplate7;
+                case "selectorLinkCard": return DataTemplate8;
+                case "imageCard": return DataTemplate9;
             }
         }
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
     public class ThirdTemplateSelector : DataTemplateSelector
     {
@@ -90,6 +71,7 @@ namespace CoolapkUWP.Control
         public DataTemplate DataTemplate7 { get; set; }
         public DataTemplate DataTemplate8 { get; set; }
         public DataTemplate DataTemplate9 { get; set; }
+        public DataTemplate DataTemplate10 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             if (item is FeedViewModel f)
@@ -108,9 +90,11 @@ namespace CoolapkUWP.Control
                     case "topic": return DataTemplate4;
                     case "textLink": return DataTemplate7;
                     case "imageSquare": return DataTemplate9;
+                    case "imageText": return DataTemplate10;
                 }
             return DataTemplate0;
         }
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
     public class SearchPageTemplateSelector : DataTemplateSelector
     {
@@ -121,5 +105,6 @@ namespace CoolapkUWP.Control
             if (item is AppViewModel) return DataTemplate1;
             return DataTemplate2;
         }
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
 }

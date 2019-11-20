@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -23,7 +23,7 @@ namespace CoolapkUWP.Pages.FeedPages
     /// </summary>
     public sealed partial class FeedDetailPage : Page, INotifyPropertyChanged
     {
-        string id;
+        string feedId;
         FeedDetailViewModel feedDetail = null;
         FeedDetailViewModel FeedDetail
         {
@@ -34,262 +34,362 @@ namespace CoolapkUWP.Pages.FeedPages
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FeedDetail)));
             }
         }
-        ObservableCollection<FeedReplyViewModel> hotReplys = new ObservableCollection<FeedReplyViewModel>();
-        ObservableCollection<FeedReplyViewModel> replys = new ObservableCollection<FeedReplyViewModel>();
+        ObservableCollection<FeedReplyViewModel> hotReplies = new ObservableCollection<FeedReplyViewModel>();
+        ObservableCollection<FeedReplyViewModel> replies = new ObservableCollection<FeedReplyViewModel>();
         ObservableCollection<FeedViewModel> answers = new ObservableCollection<FeedViewModel>();
-
-        int feedPage, likePage, sharePage, answerPage, hotReplyPage;
-        double feedFirstItem, feedLastItem, likeFirstItem, likeLastItem, answerFirstItem, answerLastItem, hotReplyFirstItem, hotReplyLastItem;
+        ObservableCollection<UserViewModel> likes = new ObservableCollection<UserViewModel>();
+        ObservableCollection<SourceFeedViewModel> shares = new ObservableCollection<SourceFeedViewModel>();
+        int repliesPage, likesPage, sharesPage, answersPage, hotRepliesPage;
+        double replyFirstItem, replyLastItem, likeFirstItem, likeLastItem, answerFirstItem, answerLastItem, hotReplyFirstItem, hotReplyLastItem;
         string answerSortType = "reply";
-        string listType = "lastupdate_desc", isFromAuthor = "0";
+
         public event PropertyChangedEventHandler PropertyChanged;
-        public FeedDetailPage() => this.InitializeComponent();
+        public FeedDetailPage()
+        {
+            this.InitializeComponent();
+            Task.Run(async () =>
+            {
+                await Task.Delay(300);
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    ((VisualTreeHelper.GetChild(MainListView, 0) as Border).FindName("ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
+                    ((VisualTreeHelper.GetChild(RightSideListView, 0) as Border).FindName("ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
+                });
+            });
+        }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (id != e.Parameter as string)
-            {
-                Tools.ShowProgressBar();
-                id = e.Parameter as string;
-                LoadFeedDetail();
-            }
+            feedId = e.Parameter as string;
+            LoadFeedDetail();
         }
 
         public async void LoadFeedDetail()
         {
-            string result = await Tools.GetJson("/feed/detail?id=" + id);
-            JsonObject detail = Tools.GetJSonObject(result);
+            Tools.ShowProgressBar();
+            if (string.IsNullOrEmpty(feedId)) return;
+            JsonObject detail = Tools.GetJSonObject(await Tools.GetJson("/feed/detail?id=" + feedId));
             if (detail != null)
             {
                 FeedDetail = new FeedDetailViewModel(detail);
                 TitleBar.Title = FeedDetail.title;
+                Page_SizeChanged(null, null);
                 if (FeedDetail.isQuestionFeed)
                 {
-                    if (answerPage != 0 || answerLastItem != 0) return;
-                    FindName("AnswerList");
-                    AnswerList.ItemsSource = answers;
-                    string r = await Tools.GetJson($"/question/answerList?id={id}&sort={answerSortType}&page={++answerPage}");
-                    JsonArray array = Tools.GetDataArray(r);
-                    if (!(array is null) && array.Count != 0)
-                    {
-                        foreach (var item in array)
-                            answers.Add(new FeedViewModel(item, FeedDisplayMode.notShowMessageTitle));
-                        answerFirstItem = array.First().GetObject()["id"].GetNumber();
-                        answerLastItem = array.Last().GetObject()["id"].GetNumber();
-                    }
-                    else answerPage--;
+                    if (answersPage != 0 || answerLastItem != 0) return;
+                    AnswersListViewItem.Visibility = Visibility.Visible;
+                    PivotItemPanel.Visibility = Visibility.Collapsed;
+                    RefreshAnswers();
                 }
                 else
                 {
-                    FindName("FeedDetailPivot");
+                    PivotListViewItem.Visibility = Visibility.Visible;
                     if (feedArticleTitle != null)
                         feedArticleTitle.Height = feedArticleTitle.Width * 0.44;
-                    string r = await Tools.GetJson($"/feed/replyList?id={id}&listType={listType}&page={++feedPage}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}");
-                    JsonArray array = Tools.GetDataArray(r);
-                    if (array.Count != 0)
-                    {
-                        feedFirstItem = array.First().GetObject()["id"].GetNumber();
-                        feedLastItem = array.Last().GetObject()["id"].GetNumber();
-                        hotReplyListView.ItemsSource = hotReplys;
-                        replyListView.ItemsSource = replys;
-                        JsonArray values = detail["hotReplyRows"].GetArray();
-                        foreach (var item in values)
-                            hotReplys.Add(new FeedReplyViewModel(item));
-                        foreach (var item in array)
-                            replys.Add(new FeedReplyViewModel(item));
-                    }
-                    else feedPage--;
+                    RefreshHotFeed();
+                    RefreshFeedReply();
                 }
             }
             Tools.HideProgressBar();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) => Tools.OpenLink((sender as Button).Tag as string);
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string s = (sender as Button).Tag as string;
+            switch (s)
+            {
+                case "reply":
+                    FeedDetailPivot.SelectedIndex = 0;
+                    ToReplyPivotItemButton.BorderThickness = new Thickness(0, 0, 0, 2);
+                    ToLikePivotItemButton.BorderThickness = ToSharePivotItemButton.BorderThickness = new Thickness(0);
+                    ChangeFeedSortingComboBox.Visibility = Visibility.Visible;
+                    break;
+                case "like":
+                    FeedDetailPivot.SelectedIndex = 1;
+                    ToLikePivotItemButton.BorderThickness = new Thickness(0, 0, 0, 2);
+                    ToReplyPivotItemButton.BorderThickness = ToSharePivotItemButton.BorderThickness = new Thickness(0);
+                    ChangeFeedSortingComboBox.Visibility = Visibility.Collapsed;
+                    break;
+                case "share":
+                    FeedDetailPivot.SelectedIndex = 2;
+                    ToSharePivotItemButton.BorderThickness = new Thickness(0, 0, 0, 2);
+                    ToReplyPivotItemButton.BorderThickness = ToLikePivotItemButton.BorderThickness = new Thickness(0);
+                    ChangeFeedSortingComboBox.Visibility = Visibility.Collapsed;
+                    break;
+                default:
+                    Tools.OpenLink(s);
+                    break;
+            }
+        }
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if ((sender as FrameworkElement).Tag is string s)
-                Tools.OpenLink(s);
+            if ((sender as FrameworkElement).Tag is string s) Tools.OpenLink(s);
         }
 
         async void Refresh()
         {
             Tools.ShowProgressBar();
-            if (FeedDetailPivot != null)
+            if (PivotListViewItem.Visibility == Visibility.Visible)
             {
                 switch (FeedDetailPivot.SelectedIndex)
                 {
                     case 0:
-                        string res = await Tools.GetJson("/feed/detail?id=" + id);
-                        JsonObject detail = Tools.GetJSonObject(res);
-                        if (detail != null)
-                        {
-                            FeedDetail = new FeedDetailViewModel(detail);
-                            hotReplys.Clear();
-                            JsonArray values = detail["hotReplyRows"].GetArray();
-                            foreach (var item in values)
-                                hotReplys.Add(new FeedReplyViewModel(item));
-                            if (feedPage == 0) feedPage = 1;
-                            string re = await Tools.GetJson($"/feed/replyList?id={id}&listType={listType}&page={1}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}");
-                            JsonArray array = Tools.GetDataArray(re);
-                            if (array.Count != 0)
-                            {
-                                feedFirstItem = array.First().GetObject()["id"].GetNumber();
-                                if (feedLastItem == 0) feedLastItem = array.Last().GetObject()["id"].GetNumber();
-                                var d = (from a in replys
-                                         from b in array
-                                         where a.id == b.GetObject()["id"].GetNumber()
-                                         select a).ToArray();
-                                foreach (var item in d)
-                                    replys.Remove(item);
-                                foreach (var item in array)
-                                    replys.Add(new FeedReplyViewModel(item));
-                            }
-                            else feedPage--;
-                        }
+                        RefreshFeedReply(1);
                         break;
                     case 1:
-                        string result = await Tools.GetJson($"/feed/likeList?id={id}&listType=lastupdate_desc&page={++likePage}&firstItem={likeFirstItem}&lastItem={likeLastItem}");
-                        JsonArray root = Tools.GetDataArray(result);
-                        if (root.Count != 0)
-                        {
-                            likeFirstItem = root.First().GetObject()["uid"].GetNumber();
-                            ObservableCollection<UserViewModel> F = likeListView.ItemsSource as ObservableCollection<UserViewModel>;
-                            foreach (IJsonValue i in root)
-                                F.Add(new UserViewModel(i));
-                        }
+                        RefreshLikes(1);
                         break;
                     case 2:
-                        string r = await Tools.GetJson($"/feed/forwardList?id={id}&type=feed&page={++sharePage}");
-                        JsonArray roots = Tools.GetDataArray(r);
-                        if (roots.Count != 0)
-                        {
-                            ObservableCollection<SourceFeedViewModel> F = shareuserListView.ItemsSource as ObservableCollection<SourceFeedViewModel>;
-                            for (int i = 0; i < roots.Count; i++)
-                            {
-                                if (F.First()?.url == roots[i].GetObject()["url"].GetString()) return;
-                                F.Insert(i, new SourceFeedViewModel(roots[i]));
-                            }
-                        }
+                        RefreshShares();
                         break;
                 }
             }
-            else if (AnswerList != null)
+            else if (AnswersListViewItem.Visibility == Visibility.Visible)
             {
                 if (answerLastItem != 0) return;
-                string re = await Tools.GetJson($"/question/answerList?id={id}&sort={answerSortType}&page={++answerPage}");
-                JsonArray array = Tools.GetDataArray(re);
-                if (array != null && array.Count != 0)
+                RefreshAnswers(1);
+            }
+            else
+            {
+                LoadFeedDetail();
+                Tools.HideProgressBar();
+                return;
+            }
+            if (RefreshAll) await RefreshFeed();
+            Tools.HideProgressBar();
+        }
+        async Task RefreshFeed()
+        {
+            JsonObject detail = Tools.GetJSonObject(await Tools.GetJson("/feed/detail?id=" + feedId));
+            if (detail != null) FeedDetail = new FeedDetailViewModel(detail);
+        }
+        async void RefreshHotFeed(int p = -1)
+        {
+            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/feed/hotReplyList?id={feedId}&page={(p == -1 ? ++hotRepliesPage : p)}{(hotRepliesPage > 1 ? $"&firstItem={hotReplyFirstItem}&lastItem={hotReplyLastItem}" : string.Empty)}&discussMode=1"));
+            if (array != null && array.Count > 0)
+            {
+                if (p == -1 || hotRepliesPage == 1)
+                {
+                    var d = (from a in hotReplies
+                             from b in array
+                             where a.id == b.GetObject()["id"].GetNumber()
+                             select a).ToArray();
+                    foreach (var item in d)
+                        hotReplies.Remove(item);
+                    for (int i = 0; i < array.Count; i++)
+                        hotReplies.Insert(i, new FeedReplyViewModel(array[i]));
+                    hotReplyFirstItem = array.First().GetObject()["id"].GetNumber();
+                    if (hotRepliesPage == 1)
+                        hotReplyLastItem = array.Last().GetObject()["id"].GetNumber();
+                }
+                else
+                {
+                    hotReplyLastItem = array.Last().GetObject()["id"].GetNumber();
+                    foreach (var item in array)
+                        hotReplies.Add(new FeedReplyViewModel(item));
+                }
+            }
+            else if (p == -1)
+            {
+                hotRepliesPage--;
+                Tools.ShowMessage("没有更多热门回复了");
+            }
+        }
+        async void RefreshFeedReply(int p = -1)
+        {
+            string listType = string.Empty, isFromAuthor = string.Empty;
+            switch (ChangeFeedSortingComboBox.SelectedIndex)
+            {
+                case -1: return;
+                case 0:
+                    listType = "lastupdate_desc";
+                    isFromAuthor = "0";
+                    break;
+                case 1:
+                    listType = "dateline_desc";
+                    isFromAuthor = "0";
+                    break;
+                case 2:
+                    listType = "popular";
+                    isFromAuthor = "0";
+                    break;
+                case 3:
+                    listType = string.Empty;
+                    isFromAuthor = "1";
+                    break;
+            }
+            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/feed/replyList?id={feedId}&listType={listType}&page={(p == -1 ? ++repliesPage : p)}{(replyFirstItem == 0 ? string.Empty : $"&firstItem={replyFirstItem}")}{(replyLastItem == 0 ? string.Empty : $"&lastItem={replyLastItem}")}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}"));
+            if (array != null && array.Count != 0)
+            {
+                if (p == 1 || repliesPage == 1)
+                {
+                    var d = (from a in replies
+                             from b in array
+                             where a.id == b.GetObject()["id"].GetNumber()
+                             select a).ToArray();
+                    foreach (var item in d)
+                        replies.Remove(item);
+                    replyFirstItem = array.First().GetObject()["id"].GetNumber();
+                    if (repliesPage == 1)
+                        replyLastItem = array.Last().GetObject()["id"].GetNumber();
+                    for (int i = 0; i < array.Count; i++)
+                        replies.Insert(i, new FeedReplyViewModel(array[i]));
+                }
+                else
+                {
+                    replyLastItem = array.Last().GetObject()["id"].GetNumber();
+                    foreach (var item in array)
+                        replies.Add(new FeedReplyViewModel(item));
+                }
+            }
+            else if (p == -1)
+            {
+                repliesPage--;
+                Tools.ShowMessage("没有更多回复了");
+            }
+        }
+        async void RefreshAnswers(int p = -1)
+        {
+            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/question/answerList?id={feedId}&sort={answerSortType}&page={(p == -1 ? ++answersPage : p)}{(answerFirstItem == 0 ? string.Empty : $"&firstItem={answerFirstItem}")}{(answerLastItem == 0 ? string.Empty : $"&lastItem={answerLastItem}")}"));
+            if (array != null && array.Count != 0)
+            {
+                if (p == 1 || answersPage == 1)
                 {
                     var d = (from a in answers
                              from b in array
                              where a.url == b.GetObject()["url"].GetString()
                              select a).ToArray();
-                    foreach (var item in d) answers.Remove(item);
+                    foreach (var item in d)
+                        answers.Remove(item);
                     for (int i = 0; i < array.Count; i++)
                         answers.Insert(i, new FeedViewModel(array[i], FeedDisplayMode.notShowMessageTitle));
                     answerFirstItem = array.First().GetObject()["id"].GetNumber();
-                    if (answerPage == 1)
+                    if (answersPage == 1)
                         answerLastItem = array.Last().GetObject()["id"].GetNumber();
                 }
-                else answerPage--;
+                else
+                {
+                    answerLastItem = array.Last().GetObject()["id"].GetNumber();
+                    foreach (var item in array)
+                        answers.Add(new FeedViewModel(item, FeedDisplayMode.notShowMessageTitle));
+                }
             }
-            else LoadFeedDetail();
-            VScrollViewer.ChangeView(null, 20, null);
-            Tools.HideProgressBar();
+            else if (p == -1)
+            {
+                answersPage--;
+                Tools.ShowMessage("没有更多回答了");
+            }
+        }
+        async void RefreshLikes(int p = -1)
+        {
+            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/feed/likeList?id={feedId}&listType=lastupdate_desc&page={(p == -1 ? ++likesPage : p)}{(likeFirstItem == 0 ? string.Empty : $"&firstItem={likeFirstItem}")}{(likeLastItem == 0 ? string.Empty : $"&lastItem={likeLastItem}")}"));
+            if (array != null && array.Count != 0)
+            {
+                if (p == 1 || likesPage == 1)
+                {
+                    likeFirstItem = array.First().GetObject()["uid"].GetNumber();
+                    if (likesPage == 1)
+                        likeLastItem = array.Last().GetObject()["uid"].GetNumber();
+                    var d = (from a in likes
+                             from b in array
+                             where a.url == b.GetObject()["url"].GetString()
+                             select a).ToArray();
+                    foreach (var item in d)
+                        likes.Remove(item);
+                    for (int i = 0; i < array.Count; i++)
+                        likes.Insert(i, new UserViewModel(array[i]));
+                }
+                else
+                {
+                    likeLastItem = array.Last().GetObject()["uid"].GetNumber();
+                    foreach (var item in array)
+                        likes.Add(new UserViewModel(item));
+                }
+            }
+            else if (p == -1)
+            {
+                likesPage--;
+                Tools.ShowMessage("没有更多点赞用户了");
+            }
+        }
+        async void RefreshShares()
+        {
+            string r = await Tools.GetJson($"/feed/forwardList?id={feedId}&type=feed&page={++sharesPage}");
+            JsonArray array = Tools.GetDataArray(r);
+            if (array != null && array.Count != 0)
+            {
+                if (sharesPage == 1)
+                    foreach (var item in array)
+                        shares.Add(new SourceFeedViewModel(item));
+                else for (int i = 0; i < array.Count; i++)
+                    {
+                        if (shares.First()?.url == array[i].GetObject()["url"].GetString()) return;
+                        shares.Insert(i, new SourceFeedViewModel(array[i]));
+                    }
+            }
+            else
+            {
+                sharesPage--;
+                Tools.ShowMessage("没有更多转发了");
+            }
         }
 
         private void ChangeHotReplysDisplayModeListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (iconText.Text == "")//(Symbol)0xE70E)
             {
-                hotReplyListView.Visibility = Visibility.Collapsed;
+                GetMoreHotReplyListViewItem.Visibility = hotReplyListView.Visibility = Visibility.Collapsed;
                 iconText.Text = "";//(Symbol)0xE70D;
             }
             else
             {
-                hotReplyListView.Visibility = Visibility.Visible;
+                GetMoreHotReplyListViewItem.Visibility = hotReplyListView.Visibility = Visibility.Visible;
                 iconText.Text = "";//(Symbol)0xE70E;
             }
         }
 
-        private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
+            ScrollViewer scrollViewer = sender as ScrollViewer;
             if (!e.IsIntermediate)
             {
-                if (VScrollViewer.VerticalOffset == 0)
-                {
-                    Refresh();
-                    VScrollViewer.ChangeView(null, 20, null);
-                    refreshText.Visibility = Visibility.Collapsed;
-                }
-                else if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
+                double a = scrollViewer.VerticalOffset;
+                if (a == scrollViewer.ScrollableHeight)
                 {
                     Tools.ShowProgressBar();
-                    if (FeedDetailPivot != null)
-                    {
+                    scrollViewer.ChangeView(null, a, null);
+                    if (PivotListViewItem.Visibility == Visibility.Visible)
                         switch (FeedDetailPivot.SelectedIndex)
                         {
                             case 0:
-                                string re = await Tools.GetJson($"/feed/replyList?id={id}&listType={listType}&page={++feedPage}&firstItem={feedFirstItem}&lastItem={feedLastItem}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}");
-                                JsonArray array = Tools.GetDataArray(re);
-                                if (array.Count != 0)
-                                {
-                                    feedLastItem = array.Last().GetObject()["id"].GetNumber();
-                                    foreach (var item in array)
-                                        replys.Add(new FeedReplyViewModel(item));
-                                }
-                                else
-                                    feedPage--;
+                                RefreshFeedReply();
                                 break;
                             case 1:
-                                string result = await Tools.GetJson($"/feed/likeList?id={id}&listType=lastupdate_desc&page={++likePage}&firstItem={likeFirstItem}&lastItem={likeLastItem}");
-                                JsonArray root = Tools.GetDataArray(result);
-                                if (root.Count != 0)
-                                {
-                                    likeLastItem = root.Last().GetObject()["uid"].GetNumber();
-                                    ObservableCollection<UserViewModel> F = likeListView.ItemsSource as ObservableCollection<UserViewModel>;
-                                    foreach (IJsonValue i in root)
-                                        F.Add(new UserViewModel(i));
-                                }
-                                else
-                                    likePage--;
+                                RefreshLikes();
                                 break;
                             case 2:
-                                string r = await Tools.GetJson($"/feed/forwardList?id={id}&type=feed&page={++sharePage}");
-                                JsonArray roots = Tools.GetDataArray(r);
-                                if (roots.Count != 0)
-                                {
-                                    ObservableCollection<SourceFeedViewModel> F = shareuserListView.ItemsSource as ObservableCollection<SourceFeedViewModel>;
-                                    foreach (var i in roots)
-                                        F.Add(new SourceFeedViewModel(i));
-                                }
-                                else sharePage--;
+                                RefreshShares();
                                 break;
                         }
-                    }
-                    else if (AnswerList != null)
-                    {
-                        string re = await Tools.GetJson($"/question/answerList?id={id}&sort={answerSortType}&page={++answerPage}&firstItem={answerFirstItem}&lastItem={answerLastItem}");
-                        JsonArray array = Tools.GetDataArray(re);
-                        if (!(array is null) && array.Count != 0)
-                        {
-                            foreach (var item in array)
-                                answers.Add(new FeedViewModel(item, FeedDisplayMode.notShowMessageTitle));
-                            answerLastItem = array.Last().GetObject()["id"].GetNumber();
-                        }
-                        else answerPage--;
-                    }
+                    else if (AnswersListViewItem.Visibility == Visibility.Visible) RefreshAnswers();
                     Tools.HideProgressBar();
                 }
             }
-            else refreshText.Visibility = Visibility.Visible;
         }
 
         private void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e) => Tools.OpenLink(e.Link);
+
+        private void ChangeFeedSortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            repliesPage = 0;
+            replyFirstItem = replyLastItem = 0;
+            replies.Clear();
+            Refresh();
+        }
 
         private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -310,65 +410,25 @@ namespace CoolapkUWP.Pages.FeedPages
         private void MarkdownTextBlock_ImageClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
         {
             List<string> vs = (sender as FrameworkElement).Tag as List<string>;
-            if (e.Link.IndexOf("http") == 0)
-                Tools.ShowImages(vs.ToArray(), vs.IndexOf(e.Link));
+            if (e.Link.IndexOf("http") == 0) Tools.ShowImages(vs.ToArray(), vs.IndexOf(e.Link));
         }
 
         private void Image_Tapped(object sender, TappedRoutedEventArgs e) => Tools.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
 
-        private async void GetMoreHotReplyListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            Tools.ShowProgressBar();
-            if (hotReplyPage == 0)
-                hotReplys.Clear();
-            string r = await Tools.GetJson($"/feed/hotReplyList?id={id}&page={++hotReplyPage}{(hotReplyPage > 1 ? $"&firstItem={hotReplyFirstItem}&lastItem={hotReplyLastItem}" : string.Empty)}&discussMode=1");
-            JsonArray array = Tools.GetDataArray(r);
-            if (array != null && array.Count > 0)
-            {
-                foreach (var item in array)
-                    hotReplys.Add(new FeedReplyViewModel(item));
-                hotReplyFirstItem = array.First().GetObject()["id"].GetNumber();
-                hotReplyLastItem = array.Last().GetObject()["id"].GetNumber();
-            }
-            else hotReplyPage--;
-            Tools.HideProgressBar();
-        }
+        private void GetMoreHotReplyListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => RefreshHotFeed();
 
-        private async void FeedDetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void FeedDetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Pivot item = sender as Pivot;
-            if (FeedDetailPivot != null)
-            {
-                switch (item.SelectedIndex)
+            if (PivotListViewItem.Visibility == Visibility.Visible)
+                switch (FeedDetailPivot.SelectedIndex)
                 {
                     case 1:
-                        if ((likeListView?.ItemsSource as ObservableCollection<UserViewModel>)?.Count > 0) return;
-                        string result = await Tools.GetJson($"/feed/likeList?id={id}&listType=lastupdate_desc&page={++likePage}");
-                        JsonArray root = Tools.GetDataArray(result);
-                        ObservableCollection<UserViewModel> F = new ObservableCollection<UserViewModel>();
-                        if (root.Count != 0)
-                        {
-                            likeFirstItem = root.First().GetObject()["uid"].GetNumber();
-                            likeLastItem = root.Last().GetObject()["uid"].GetNumber();
-                            foreach (IJsonValue i in root)
-                                F.Add(new UserViewModel(i));
-                        }
-                        else likePage--;
-                        likeListView.ItemsSource = F;
+                        if (likes.Count == 0) RefreshLikes();
                         break;
                     case 2:
-                        if ((shareuserListView.ItemsSource as ObservableCollection<SourceFeedViewModel>)?.Count > 0) return;
-                        string r = await Tools.GetJson($"/feed/forwardList?id={id}&type=feed&page={++sharePage}");
-                        JsonArray roots = Tools.GetDataArray(r);
-                        ObservableCollection<SourceFeedViewModel> Fs = new ObservableCollection<SourceFeedViewModel>();
-                        if (roots.Count != 0)
-                            foreach (var i in roots)
-                                Fs.Add(new SourceFeedViewModel(i));
-                        else sharePage--;
-                        shareuserListView.ItemsSource = Fs;
+                        if (shares.Count == 0) RefreshShares();
                         break;
                 }
-            }
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -376,6 +436,7 @@ namespace CoolapkUWP.Pages.FeedPages
             ComboBox box = sender as ComboBox;
             switch (box.SelectedIndex)
             {
+                case -1: return;
                 case 0:
                     answerSortType = "reply";
                     break;
@@ -388,80 +449,101 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             answers.Clear();
             answerFirstItem = answerLastItem = 0;
-            answerPage = 0;
+            answersPage = 0;
             Refresh();
         }
 
-        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
-        {
-            foreach (MenuFlyoutItem i in (ChangeModeButton.Flyout as MenuFlyout).Items)
-                i.Icon = null;
-            MenuFlyoutItem item = sender as MenuFlyoutItem;
-            item.Icon = new SymbolIcon(Symbol.Accept);
-            switch (item.Tag as string)
-            {
-                case "0":
-                    listType = "lastupdate_desc";
-                    isFromAuthor = "0";
-                    break;
-                case "1":
-                    listType = "dateline_desc";
-                    isFromAuthor = "0";
-                    break;
-                case "2":
-                    listType = "popular";
-                    isFromAuthor = "0";
-                    break;
-                case "3":
-                    listType = string.Empty;
-                    isFromAuthor = "1";
-                    break;
-            }
-            feedPage = 1;
-            feedFirstItem = feedLastItem = 0;
-            replys.Clear();
-            Refresh();
-        }
-
-        //https://www.cnblogs.com/arcsinw/p/8638526.html
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             GridView view = sender as GridView;
             if (view.SelectedIndex > -1)
             {
-                if (view.Tag is List<string> ss)
-                    Tools.ShowImages(ss.ToArray(), view.SelectedIndex);
-                else if (view.Tag is string s)
-                {
-                    if (string.IsNullOrWhiteSpace(s)) return;
+                if (view.Tag is List<string> ss) Tools.ShowImages(ss.ToArray(), view.SelectedIndex);
+                else if (view.Tag is string s && !string.IsNullOrWhiteSpace(s))
                     Tools.ShowImage(s, ImageType.SmallImage);
-                }
             }
             view.SelectedIndex = -1;
-            /*
-            list.Clear();
-            GridView view = sender as GridView;
-            if (view.Tag is string[])
-                foreach (var s in view.Tag as string[])
-                    list.Add(new BitmapImage(new Uri(s.Remove(s.Length - 6))));
-            else if (view.Tag is string)
-            {
-                string s = view.Tag as string;
-                if (string.IsNullOrWhiteSpace(s)) return;
-                list.Add(new BitmapImage(new Uri(s)));
-            }
-            SFlipView.SelectedIndex = view.SelectedIndex;
-            SFlipView.Visibility = CloseFlip.Visibility = Visibility.Visible;
-            view.SelectedIndex = -1;*/
         }
-
-        //        private void CloseFlip_Click(object sender, RoutedEventArgs e) => SFlipView.Visibility = CloseFlip.Visibility = Visibility.Collapsed;
-
-
+        #region 界面模式切换
+        private double _detailListHeight;
+        private Thickness _detailListPadding;
+        private Thickness _mainListViewPadding;
+        double detailListHeight
+        {
+            get => _detailListHeight;
+            set
+            {
+                _detailListHeight = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(detailListHeight)));
+            }
+        }
+        Thickness detailListPadding
+        {
+            get => _detailListPadding;
+            set
+            {
+                _detailListPadding = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(detailListPadding)));
+            }
+        }
+        Thickness mainListViewPadding
+        {
+            get => _mainListViewPadding;
+            set
+            {
+                _mainListViewPadding = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(mainListViewPadding)));
+            }
+        }
+        bool RefreshAll;
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (feedArticleTitle != null)
                 feedArticleTitle.Height = feedArticleTitle.Width * 0.44;
+            void set()
+            {
+                mainListViewPadding = new Thickness(0);
+                detailListPadding = new Thickness(0, Settings.PageTitleHeight, 0, PivotItemPanel.ActualHeight + 16);
+                detailListHeight = e?.NewSize.Height ?? Window.Current.Bounds.Height;
+                RightColumnDefinition.Width = new GridLength(1, GridUnitType.Star);
+                MainListView.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Disabled);
+                MainListView.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
+                detailList.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Auto);
+                RightSideListView.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Auto);
+                RightSideListView.SetValue(Grid.ColumnProperty, 1);
+                RightSideListView.SetValue(Grid.RowProperty, 0);
+                RightSideListView.InvalidateArrange();
+                RefreshAll = false;
+            }
+            if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 768 && !(FeedDetail?.isFeedArticle ?? false))
+            {
+                LeftColumnDefinition.Width = new GridLength(384);
+                set();
+                PivotItemPanel.Margin = new Thickness(0, 0, Window.Current.Bounds.Width - 384, 0);
+            }
+            else if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 1024 && (FeedDetail?.isFeedArticle ?? false))
+            {
+                LeftColumnDefinition.Width = new GridLength(640);
+                set();
+                PivotItemPanel.Margin = new Thickness(0, 0, Window.Current.Bounds.Width - 648, 0);
+            }
+            else
+            {
+                mainListViewPadding = Settings.stackPanelMargin;
+                PivotItemPanel.Margin = new Thickness(0);
+                detailListPadding = new Thickness(0, 0, 0, PivotItemPanel.ActualHeight + 16);
+                detailListHeight = double.NaN;
+                LeftColumnDefinition.Width = new GridLength(1, GridUnitType.Star);
+                RightColumnDefinition.Width = new GridLength(0);
+                MainListView.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Auto);
+                MainListView.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Auto);
+                detailList.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Disabled);
+                RightSideListView.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Disabled);
+                RightSideListView.SetValue(Grid.ColumnProperty, 0);
+                RightSideListView.SetValue(Grid.RowProperty, 1);
+                RefreshAll = true;
+            }
         }
+        #endregion
     }
 }

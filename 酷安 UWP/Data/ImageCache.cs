@@ -4,7 +4,6 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Data
@@ -24,33 +23,22 @@ namespace CoolapkUWP.Data
         static BitmapImage darkNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
         static Dictionary<ImageType, StorageFolder> folders = new Dictionary<ImageType, StorageFolder>();
 
-        public static async Task<string> GetImagePath(ImageType type,string url)
+        private static async Task<StorageFolder> GetFolder(ImageType type)
         {
-            if (string.IsNullOrEmpty(url)) return Settings.GetBoolen("IsDarkMode") ? "ms-appx:/Assets/img_placeholder_night.png" : "ms-appx:/Assets/img_placeholder.png";
-            else if (url.IndexOf("ms-appx") == 0) return url;
+            StorageFolder folder;
+            if (folders.ContainsKey(type)) folder = folders[type];
             else
             {
-                string fileName = Tools.GetMD5(url);
-                StorageFolder folder = await GetFolder(type);
-                var item = await folder.TryGetItemAsync(fileName);
-                if (type == ImageType.SmallImage)
-                    url += ".s.jpg";
-                if (item is null)
-                {
-                    StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
-                    try { await DownloadImage(file, url, false); }
-                    catch (Exception e) { if (e is FileLoadException) return file.Path; }
-                    return file.Path;
-                }
-                else if (item is StorageFile file) return file.Path;
-                else return Settings.GetBoolen("IsDarkMode") ? "ms-appx:/Assets/img_placeholder_night.png" : "ms-appx:/Assets/img_placeholder.png";
+                folder = await ApplicationData.Current.LocalCacheFolder.TryGetItemAsync(type.ToString()) as StorageFolder;
+                if (folder is null) folder = await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync(type.ToString(), CreationCollisionOption.OpenIfExists);
+                if (!folders.ContainsKey(type)) folders.Add(type, folder);
             }
-
+            return folder;
         }
 
         public static async Task<BitmapImage> GetImage(ImageType type, string url, bool showMessage = false)
         {
-            if (string.IsNullOrEmpty(url)) return new BitmapImage();
+            if (string.IsNullOrEmpty(url)) return null;
             else if (url.IndexOf("ms-appx") == 0) return new BitmapImage(new Uri(url));
             else
             {
@@ -63,7 +51,7 @@ namespace CoolapkUWP.Data
                 {
                     StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
                     try { await DownloadImage(file, url, showMessage); }
-                    catch (Exception e) { if (e is FileLoadException) return GetLocalImage(file.Path); }
+                    catch (FileLoadException) { return GetLocalImage(file.Path); }
                     return GetLocalImage(file.Path);
                 }
                 else if (item is StorageFile file) return GetLocalImage(file.Path);
@@ -71,59 +59,22 @@ namespace CoolapkUWP.Data
             }
         }
 
-        private static async Task<StorageFolder> GetFolder(ImageType type)
-        {
-            StorageFolder folder;
-            if (folders.ContainsKey(type))
-                folder = folders[type];
-            else
-            {
-                folder = await ApplicationData.Current.LocalCacheFolder.TryGetItemAsync(type.ToString()) as StorageFolder;
-                if (folder is null) folder = await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync(type.ToString(), CreationCollisionOption.OpenIfExists);
-                if (!folders.ContainsKey(type)) folders.Add(type, folder);
-            }
-            return folder;
-        }
-
-        static BitmapImage GetLocalImage(string filename)
-        {
-            if (filename is null || Settings.GetBoolen("IsNoPicsMode"))
-                return Settings.GetBoolen("IsDarkMode") ? darkNoPicMode : whiteNoPicMode;
-            else
-                return new BitmapImage(new Uri(filename));
-        }
+        static BitmapImage GetLocalImage(string filename) => 
+            (filename is null || Settings.GetBoolen("IsNoPicsMode")) ? (Settings.GetBoolen("IsDarkMode") ? darkNoPicMode : whiteNoPicMode) 
+                                                                     : new BitmapImage(new Uri(filename));
 
         static async Task DownloadImage(StorageFile file, string url, bool showMessage)
         {
             if (!Settings.GetBoolen("IsNoPicsMode"))
                 try
                 {
-                    using (HttpClient client = new HttpClient())
-                    {
-                        HttpContent content = (await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead)).Content;
-                        long size = content.Headers.ContentLength ?? 0;
-                        if ((await file.GetBasicPropertiesAsync()).Size != (ulong)size)
-                        {
-                            int downedSize = 0;
-                            int readLength = 0;
-                            byte[] bytes = new byte[32768];
-                            using (Stream stream = await content.ReadAsStreamAsync())
-                            using (Stream fs = await file.OpenStreamForWriteAsync())
-                            {
-                                readLength = stream.Read(bytes, downedSize, bytes.Length);
-                                while (readLength > 0)
-                                {
-                                    fs.Write(bytes, 0, readLength);
-                                    fs.Position = downedSize += readLength;
-                                    if (showMessage) Tools.ShowMessage($"{Tools.GetSizeString(downedSize)}/{Tools.GetSizeString(size)}", true);
-                                    readLength = stream.Read(bytes, 0, bytes.Length);
-                                }
-                                if (showMessage) Tools.ShowMessage("已完成。");
-                            }
-                        }
-                    }
+                    if (showMessage) Tools.ShowProgressBar();
+                    using (Stream stream = await new HttpClient().GetStreamAsync(url))
+                    using (Stream fs = await file.OpenStreamForWriteAsync())
+                        await stream.CopyToAsync(fs);
                 }
                 catch (HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
+                finally { if (showMessage) Tools.HideProgressBar(); }
         }
 
         public static async Task<double> GetCacheSize(ImageType type, System.Threading.CancellationToken token)

@@ -1,21 +1,15 @@
 ﻿using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Data.Json;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -30,7 +24,7 @@ namespace CoolapkUWP.Control
         int page;
         double lastItem;
         ObservableCollection<FeedReplyViewModel> replys = new ObservableCollection<FeedReplyViewModel>();
-
+        ScrollViewer VScrollViewer;
         public ReplyDialogPresenter(object o, Popup popup)
         {
             this.InitializeComponent();
@@ -50,6 +44,15 @@ namespace CoolapkUWP.Control
             replys.Add(reply);
             GetReplys(false);
             Tools.HideProgressBar();
+            Task.Run(async () =>
+            {
+                await Task.Delay(200);
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    VScrollViewer = (VisualTreeHelper.GetChild(FeedReplyList, 0) as Border).FindName("ScrollViewer") as ScrollViewer;
+                    VScrollViewer.ViewChanged += VScrollViewer_ViewChanged;
+                });
+            });
         }
 
         private void WindowSizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
@@ -67,7 +70,7 @@ namespace CoolapkUWP.Control
             if (array != null && array.Count > 0)
                 if (isRefresh)
                 {
-                    VScrollViewer.ChangeView(null, 0, null);
+                    VScrollViewer?.ChangeView(null, 0, null);
                     var d = (from a in replys
                              from b in array
                              where a.id == b.GetObject()["id"].GetNumber()
@@ -89,10 +92,10 @@ namespace CoolapkUWP.Control
 
         private void VScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
-            if (VScrollViewer.VerticalOffset == 0)
-                GetReplys(true);
-            else if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
+            if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
                 GetReplys(false);
         }
+
+        private void FeedReplyList_RefreshRequested(object sender, EventArgs e) => GetReplys(true);
     }
 }

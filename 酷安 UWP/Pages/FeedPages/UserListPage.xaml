@@ -20,9 +20,14 @@
             <ListView.Header>
                 <TextBlock Height="20" HorizontalAlignment="Center" Visibility="Collapsed" x:Name="refreshText">松手刷新</TextBlock>
             </ListView.Header>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>

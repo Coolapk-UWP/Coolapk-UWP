@@ -1,5 +1,4 @@
-﻿<Page
-    x:Class="CoolapkUWP.Pages.SettingPages.TestPage"
+﻿<Page x:Class="CoolapkUWP.Pages.SettingPages.TestPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,7 +6,7 @@
     xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:control="using:CoolapkUWP.Control"
-    xmlns:sto="using:Windows.Storage"
+    xmlns:sto="using:CoolapkUWP.Pages.SettingPages"
     xmlns:data="using:CoolapkUWP.Data"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -27,14 +26,6 @@
                 <Button Click="Button_Click_5">get</Button>
                 <TextBox Header="message" x:Name="message"/>
                 <Button Click="Button_Click_4">show</Button>
-                <Image x:Name="imagea" Width="300"/>
-                <ListView x:Name="lis">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="BitmapImage">
-                            <Image Source="{x:Bind}"/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
             </StackPanel>
         </ScrollViewer>
         <control:TitleBar BackButtonClick="Button_Click_3"/>

@@ -1,27 +1,33 @@
 ﻿using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
-using CoolapkUWP.Pages.AppPages;
-using CoolapkUWP.Pages.FeedPages;
-using CoolapkUWP.Pages.SettingPages;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Windows.Data.Json;
-using Windows.UI;
 using Windows.UI.Core;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
 namespace CoolapkUWP.Pages
 {
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        ImageSource userAvatar;
+        ImageSource UserAvatar
+        {
+            get => userAvatar;
+            set
+            {
+                userAvatar = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserAvatar)));
+            }
+        }
+        bool a = true;
         static int seletedItem =
 #if DEBUG
             0;
@@ -33,24 +39,18 @@ namespace CoolapkUWP.Pages
             this.InitializeComponent();
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
                 Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            Application.Current.LeavingBackground += ChangeColor;
-            Settings.uISettings.ColorValuesChanged += ChangeColor;
+            Application.Current.LeavingBackground += ChangeThemeColor;
+            Settings.uISettings.ColorValuesChanged += ChangeThemeColor;
             Settings.InitializeSettings();
             if (Settings.GetBoolen("CheckUpdateWhenLuanching")) Settings.CheckUpdate();
 
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
             {
-                if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop" && Tools.popups.Count > 1)
+                int i = Settings.HasStatusBar ? Tools.popups.Count - 1 : Tools.popups.Count - 2;
+                if (i >= 0)
                 {
                     ee.Handled = true;
-                    Popup popup = Tools.popups[Tools.popups.Count - 2];
-                    popup.IsOpen = false;
-                    Tools.popups.Remove(popup);
-                }
-                else if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile" && Tools.popups.Count > 0)
-                {
-                    ee.Handled = true;
-                    Popup popup = Tools.popups[Tools.popups.Count - 1];
+                    Windows.UI.Xaml.Controls.Primitives.Popup popup = Tools.popups[i];
                     popup.IsOpen = false;
                     Tools.popups.Remove(popup);
                 }
@@ -60,221 +60,94 @@ namespace CoolapkUWP.Pages
                     Frame.GoBack();
                 }
             };
-
-            hamburgerMenuControl.ItemsSource = MenuItem.GetMainItems();
-            hamburgerMenuControl.OptionsItemsSource = MenuItem.GetOptionsItems();
-            if (Settings.IsMobile) TopBar.Margin = new Thickness(0);
-            UpdateUserInfo();
+            //if (Settings.HasStatusBar) TopBar.Margin = new Thickness(0);
+            GetUserAvatar();
             Tools.mainPage = this;
             Settings.CheckTheme();
+            GetIndexPageItems();
         }
 
-        private async void ChangeColor(object sender, object e)
+        private async void ChangeThemeColor(object sender, object e)
         {
             if (Settings.GetBoolen("IsBackgroundColorFollowSystem"))
             {
-                Settings.Set("IsDarkMode", Settings.uISettings.GetColorValue(UIColorType.Background).Equals(Colors.Black) ? true : false);
+                Settings.Set("IsDarkMode", Settings.uISettings.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background).Equals(Windows.UI.Colors.Black) ? true : false);
                 await Dispatcher.RunAsync(CoreDispatcherPriority.High, () => Settings.CheckTheme());
             }
         }
 
-        public async void UpdateUserInfo()
-        {
-            ObservableCollection<MenuItem> items = hamburgerMenuControl.OptionsItemsSource as ObservableCollection<MenuItem>;
-            if (items.Count == 2) items.RemoveAt(0);
-            MenuItem item = new MenuItem
-            {
-                Index = -1,
-                PageType = typeof(UserPage),
-                Name = Settings.GetString("UserName"),
-                Icon = Symbol.Contact
-            };
-            items.Insert(0, item);
-            UserButton.DataContext = item;
-            item.Image = string.IsNullOrEmpty(Settings.GetString("UserAvatar")) ? null : await ImageCache.GetImage(ImageType.SmallAvatar, Settings.GetString("UserAvatar"));
-        }
+        public async void GetUserAvatar()
+            => UserAvatar = string.IsNullOrEmpty(Settings.GetString("UserAvatar")) ? null : await ImageCache.GetImage(ImageType.SmallAvatar, Settings.GetString("UserAvatar"));
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        private void NavigateInVFrame(int index)
         {
-            base.OnNavigatedTo(e);
-            Type pageType = typeof(SettingPage);
-            switch (seletedItem)
+            switch (index)
             {
                 case 0:
-                    pageType = typeof(SettingPage);
-                    rect3.Foreground = Application.Current.Resources["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
-                    hamburgerMenuControl.SelectedIndex = -1;
-                    hamburgerMenuControl.SelectedOptionsIndex = 1;
-                    break;
-                case 1:
-                    pageType = typeof(InitialPage);
-                    rect1.Foreground = Application.Current.Resources["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
-                    hamburgerMenuControl.SelectedIndex = 1;
-                    hamburgerMenuControl.SelectedOptionsIndex = -1;
-                    break;
-                case 2:
-                    pageType = typeof(AppRecommendPage);
-                    rect2.Foreground = Application.Current.Resources["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
-                    hamburgerMenuControl.SelectedIndex = 2;
-                    hamburgerMenuControl.SelectedOptionsIndex = -1;
-                    break;
-            }
-            VFrame.Navigate(pageType, this);
-        }
-
-        private void OnMenuItemClick(object sender, ItemClickEventArgs e)
-        {
-            MenuItem menuItem = e.ClickedItem as MenuItem;
-            if (string.IsNullOrEmpty(menuItem.Name) || menuItem.Index == -3) return;
-            else if (menuItem.Name == Settings.GetString("UserName")) Frame.Navigate(typeof(UserPage), Settings.GetString("Uid"));
-            else if (menuItem.Index == -2)
-            {
-                hamburgerMenuControl.IsPaneOpen = true;
-                ObservableCollection<MenuItem> items = hamburgerMenuControl.ItemsSource as ObservableCollection<MenuItem>;
-                items.RemoveAt(0);
-                items.Insert(0, new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -3 });
-                return;
-            }
-            else
-            {
-                VFrame.Navigate(menuItem.PageType, this);
-                seletedItem = menuItem.Index;
-                switch (seletedItem)
-                {
-                    case 0:
-                        rect3.Foreground = Application.Current.Resources["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
-                        break;
-                    case 1:
-                        rect1.Foreground = Application.Current.Resources["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
-                        break;
-                    case 2:
-                        rect2.Foreground = Application.Current.Resources["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
-                        break;
-                }
-                ChangeButtonForeground();
-            }
-        }
-
-        private void UserButton_Click(object sender, RoutedEventArgs e)
-        {
-            MenuItem menuItem = (sender as FrameworkElement).DataContext as MenuItem;
-            if (string.IsNullOrEmpty(menuItem.Name)) return;
-            else if (menuItem.Name == Settings.GetString("UserName")) Frame.Navigate(typeof(UserPage), Settings.GetString("Uid"));
-        }
-
-        public void ResetRowHeight()
-        {
-            if (Window.Current.Bounds.Width < 769)
-                TopBar.Height = BottomNavBar.Height = 48;
-        }
-
-        public bool ChangeRowHeight(double height)
-        {
-            if (height < 0 && height < -BottomNavBar.ActualHeight) height = -BottomNavBar.ActualHeight;
-            if (Window.Current.Bounds.Width >= 769 ||
-                (BottomNavBar.ActualHeight + height > 48) ||
-                (BottomNavBar.ActualHeight + height < 0)) return false;
-            TopBar.Height = BottomNavBar.Height = BottomNavBar.ActualHeight + height;
-            return true;
-        }
-
-        private void AppBarButton_Click(object sender, RoutedEventArgs e)
-        {
-            Type pageType = typeof(SettingPage);
-            switch ((sender as FrameworkElement).Tag as string)
-            {
-                case "0":
-                    pageType = typeof(SettingPage);
+                    VFrame.Navigate(typeof(SettingPages.SettingPage));
                     seletedItem = 0;
-                    rect3.Foreground = Application.Current.Resources["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
-                    hamburgerMenuControl.SelectedIndex = -1;
-                    hamburgerMenuControl.SelectedOptionsIndex = 1;
-                    break;
-                case "1":
-                    pageType = typeof(InitialPage);
-                    seletedItem = 1;
-                    rect1.Foreground = Application.Current.Resources["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
-                    hamburgerMenuControl.SelectedOptionsIndex = -1;
-                    hamburgerMenuControl.SelectedIndex = 1;
-                    break;
-                case "2":
-                    pageType = typeof(AppRecommendPage);
-                    seletedItem = 2;
-                    rect2.Foreground = Application.Current.Resources["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
-                    hamburgerMenuControl.SelectedOptionsIndex = -1;
-                    hamburgerMenuControl.SelectedIndex = 2;
-                    break;
-            }
-            ChangeButtonForeground();
-            VFrame.Navigate(pageType, this);
-        }
-
-        public void ChangeButtonForeground()
-        {
-            Color color = Settings.GetBoolen("IsDarkMode") ? Colors.White : Colors.Black;
-            switch (seletedItem)
-            {
-                case 0:
-                    rect1.Foreground = rect2.Foreground = new SolidColorBrush(color);
+                    SetNavItemBorder(2);
                     break;
                 case 1:
-                    rect3.Foreground = rect2.Foreground = new SolidColorBrush(color);
+                    TopNavListView.SelectedIndex = 0;
+                    seletedItem = 1;
                     break;
                 case 2:
-                    rect1.Foreground = rect3.Foreground = new SolidColorBrush(color);
+                    TopNavListView.SelectedIndex = TopNavListView.Items.Count - 3;
+                    seletedItem = 2;
                     break;
             }
         }
-
+        #region 搜索框相关
         private async void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-            if (args.Reason == AutoSuggestionBoxTextChangeReason.SuggestionChosen) return;
-            string r = await Tools.GetJson($"/search/suggestSearchWordsNew?searchValue={sender.Text}&type=app");
-            JsonArray array = Tools.GetDataArray(r);
-            if (array != null && array.Count > 0)
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                ObservableCollection<object> observableCollection = new ObservableCollection<object>();
-                sender.ItemsSource = observableCollection;
-                foreach (var ite in array)
+                JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/search/suggestSearchWordsNew?searchValue={sender.Text}&type=app"));
+                if (array != null && array.Count > 0)
                 {
-                    JsonObject item = ite.GetObject();
-                    switch (item["entityType"].GetString())
+                    ObservableCollection<object> observableCollection = new ObservableCollection<object>();
+                    sender.ItemsSource = observableCollection;
+                    foreach (var ite in array)
                     {
-                        case "apk":
-                            observableCollection.Add(new AppViewModel
-                            {
-                                AppName = item["title"].GetString(),
-                                DownloadNum = $"{item["score"].GetString()}分 {item["downCount"].GetString()}下载",
-                                Url = item["url"].GetString(),
-                                Icon = await ImageCache.GetImage(ImageType.Icon, (item["logo"].GetString())),
-                                Size = item["apksize"].GetString(),
-                            });
-                            break;
-                        case "searchWord":
-                        default:
-                            Symbol s = Symbol.Find;
-                            if (item["logo"].GetString().Contains("cube")) s = Symbol.Shop;
-                            else if (item["logo"].GetString().Contains("xitongguanli")) s = Symbol.Contact;
-                            observableCollection.Add(new SearchWord { Symbol = s, Title = item["title"].GetString() });
-                            break;
+                        JsonObject item = ite.GetObject();
+                        switch (item["entityType"].GetString())
+                        {
+                            case "apk":
+                                observableCollection.Add(new AppViewModel
+                                {
+                                    AppName = item["title"].GetString(),
+                                    DownloadNum = $"{item["score"].GetString()}分 {item["downCount"].ToString().Replace("\"", string.Empty)}下载",
+                                    Url = item["url"].GetString(),
+                                    Icon = await ImageCache.GetImage(ImageType.Icon, (item["logo"].GetString())),
+                                    Size = item["apksize"].GetString(),
+                                });
+                                break;
+                            case "searchWord":
+                            default:
+                                Symbol s = Symbol.Find;
+                                if (item["logo"].GetString().Contains("cube")) s = Symbol.Shop;
+                                else if (item["logo"].GetString().Contains("xitongguanli")) s = Symbol.Contact;
+                                observableCollection.Add(new SearchWord { Symbol = s, Title = item["title"].GetString() });
+                                break;
+                        }
                     }
                 }
             }
         }
-
         private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             if (args.ChosenSuggestion is AppViewModel app)
-                Tools.Navigate(typeof(AppPage), "https://www.coolapk.com" + app.Url);
+                Tools.Navigate(typeof(AppPages.AppPage), "https://www.coolapk.com" + app.Url);
             else if (args.ChosenSuggestion is SearchWord word)
             {
                 switch (word.Symbol)
                 {
                     case Symbol.Shop:
-                        Tools.Navigate(typeof(SearchPage), new object[] { 3, word.Title.Substring(5) });
+                        Tools.Navigate(typeof(SearchPage), new object[] { 3, word.GetTitle() });
                         break;
                     case Symbol.Contact:
-                        Tools.Navigate(typeof(SearchPage), new object[] { 1, word.Title.Substring(5) });
+                        Tools.Navigate(typeof(SearchPage), new object[] { 1, word.GetTitle() });
                         break;
                     case Symbol.Find:
                         Tools.Navigate(typeof(SearchPage), new object[] { 0, word.Title });
@@ -283,88 +156,224 @@ namespace CoolapkUWP.Pages
             }
             else if (args.ChosenSuggestion is null) Tools.Navigate(typeof(SearchPage), new object[] { 0, sender.Text });
         }
-
-        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
-        {
-            (sender as Button).Click += (s, ee) =>
-            {
-                ObservableCollection<MenuItem> items = hamburgerMenuControl.ItemsSource as ObservableCollection<MenuItem>;
-                items.RemoveAt(0);
-                if (hamburgerMenuControl.IsPaneOpen) items.Insert(0, new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -3 });
-                else items.Insert(0, new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -2 });
-            };
-        }
-
         private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            if (args.SelectedItem is AppViewModel app) sender.Text = app.AppName;
-            else if (args.SelectedItem is SearchWord word)
-            {
-                switch (word.Symbol)
-                {
-                    case Symbol.Shop:
-                        sender.Text = word.Title.Substring(5);
-                        break;
-                    case Symbol.Contact:
-                        sender.Text = word.Title.Substring(5);
-                        break;
-                    case Symbol.Find:
-                        sender.Text = word.Title;
-                        break;
-                }
-            }
+            if (args.SelectedItem is ISearchPageViewModel m) sender.Text = m.GetTitle();
         }
-    }
-
-    public class MenuItem : INotifyPropertyChanged
-    {
-        public Symbol Icon { get; set; }
-        private ImageSource image;
-        public event PropertyChangedEventHandler PropertyChanged;
-        public ImageSource Image
+        #endregion
+        #region toIndexPage
+        List<string> IndexPageUrls = new List<string>();
+        private Visibility indexPageNavButtonVisibility = Visibility.Collapsed;
+        public Visibility IndexPageNavButtonVisibility
         {
-            get => image;
+            get => indexPageNavButtonVisibility;
             set
             {
-                image = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Image)));
+                indexPageNavButtonVisibility = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IndexPageNavButtonVisibility)));
             }
         }
-        public string Name { get; set; }
-        public Type PageType { get; set; }
-        public int Index { get; set; }
-
-        public static ObservableCollection<MenuItem> GetMainItems()
+        private Visibility indexPageFollowNavButtonVisibility = Visibility.Collapsed;
+        public Visibility IndexPageFollowNavButtonVisibility
         {
-            ObservableCollection<MenuItem> items = new ObservableCollection<MenuItem>
+            get => indexPageFollowNavButtonVisibility;
+            set
             {
-                new MenuItem() { Icon = Symbol.Find, Name = "搜索", PageType = null, Index = -3},
-                new MenuItem() { Icon = Symbol.Home, Name = "首页", PageType = typeof(InitialPage), Index = 1},
-                new MenuItem() { Icon = Symbol.Shop, Name = "应用游戏", PageType = typeof(AppRecommendPage), Index = 2}
-            };
-            return items;
+                indexPageFollowNavButtonVisibility = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IndexPageFollowNavButtonVisibility)));
+            }
+        }
+        private Visibility appPageFollowNavButtonVisibility = Visibility.Collapsed;
+        public Visibility AppPageNavButtonVisibility
+        {
+            get => appPageFollowNavButtonVisibility;
+            set
+            {
+                appPageFollowNavButtonVisibility = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AppPageNavButtonVisibility)));
+            }
+        }
+        int followItemNum;
+        async void GetIndexPageItems()
+        {
+            JsonArray array = Tools.GetDataArray(await Tools.GetJson("/main/init"));
+            if (array != null & array.Count > 0)
+            {
+                int i = 1;
+                foreach (var a in array)
+                    if (a.GetObject()["entityTemplate"].GetString() == "configCard")
+                        foreach (var b in a.GetObject()["entities"].GetArray())
+                        {
+                            JsonObject IndexPageNavItem = b.GetObject();
+                            switch (IndexPageNavItem["title"].GetString())
+                            {
+                                case "酷品":
+                                case "看看号":
+                                case "直播": continue;
+                            }
+                            ListViewItem listViewItem = new ListViewItem { Content = new TextBlock { Text = IndexPageNavItem["title"].GetString() } };
+                            if (IndexPageNavItem["title"].GetString() != "关注")
+                                listViewItem.SetBinding(VisibilityProperty, new Windows.UI.Xaml.Data.Binding
+                                {
+                                    Source = this,
+                                    Path = new PropertyPath("IndexPageNavButtonVisibility")
+                                });
+                            else listViewItem.Visibility = Visibility.Collapsed;
+                            IndexPageUrls.Add(IndexPageNavItem["title"].GetString() == "头条" ? "/main/indexV8" : $"{IndexPageNavItem["url"].GetString()}&title={IndexPageNavItem["title"].GetString()}");
+                            TopNavListView.Items.Insert(i++, listViewItem);
+                            if (IndexPageNavItem["title"].GetString() == "关注")
+                            {
+                                foreach (var t in IndexPageNavItem["entities"].GetArray())
+                                {
+                                    followItemNum++;
+                                    JsonObject followNavItem = t.GetObject();
+                                    if (followNavItem["entityType"].GetString() == "page")
+                                    {
+                                        ListViewItem listViewItem2 = new ListViewItem { Content = new TextBlock { Text = followNavItem["title"].GetString() } };
+                                        listViewItem2.SetBinding(VisibilityProperty, new Windows.UI.Xaml.Data.Binding
+                                        {
+                                            Source = this,
+                                            Path = new PropertyPath("IndexPageFollowNavButtonVisibility")
+                                        });
+                                        TopNavListView.Items.Insert(i++, listViewItem2);
+                                        IndexPageUrls.Add($"{followNavItem["url"].GetString()}&title={followNavItem["title"].GetString()}");
+                                    }
+                                }
+                            }
+                        }
+            }
+            if (a)
+            {
+                a = false;
+                NavigateInVFrame(seletedItem);
+            }
         }
 
-        public static ObservableCollection<MenuItem> GetOptionsItems()
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ObservableCollection<MenuItem> items = new ObservableCollection<MenuItem>
+            if (TopNavListView.SelectedIndex == -1) return;
+            else if (TopNavListView.SelectedIndex == 0)
             {
-                new MenuItem() { Icon = Symbol.Contact, Name = string.Empty, PageType = typeof(UserPage), Index = -1},
-                new MenuItem() { Icon = Symbol.Setting, Name = "设置", PageType = typeof(SettingPage), Index = 0}
-            };
-            return items;
+                (TopNavListView.Items[0] as FrameworkElement).Visibility = IndexPageFollowNavButtonVisibility = Visibility.Collapsed;
+                (TopNavListView.Items[1] as FrameworkElement).Visibility = IndexPageNavButtonVisibility = Visibility.Visible;
+                TopNavListView.SelectedIndex = 8;
+                (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Visible;
+                AppPageNavButtonVisibility = Visibility.Collapsed;
+            }
+            else if (TopNavListView.SelectedIndex == 1)
+            {
+                IndexPageFollowNavButtonVisibility = Visibility.Visible;
+                (TopNavListView.Items[1] as FrameworkElement).Visibility = Visibility.Collapsed;
+                TopNavListView.SelectedIndex = 2;
+                (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Visible;
+                AppPageNavButtonVisibility = Visibility.Collapsed;
+            }
+            else if (TopNavListView.SelectedIndex == TopNavListView.Items.Count - 5) return;
+            else if (TopNavListView.SelectedIndex == TopNavListView.Items.Count - 4)
+            {
+                (TopNavListView.Items[0] as FrameworkElement).Visibility = Visibility.Visible;
+                (TopNavListView.Items[1] as FrameworkElement).Visibility = IndexPageFollowNavButtonVisibility = IndexPageNavButtonVisibility = Visibility.Collapsed;
+                (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Collapsed;
+                AppPageNavButtonVisibility = Visibility.Visible;
+                TopNavListView.SelectedIndex = TopNavListView.Items.Count - 3;
+            }
+            else
+            {
+                void gotoAppRecommendPage(int i)
+                {
+                    AppPageNavButtonVisibility = Visibility.Visible;
+                    IndexPageFollowNavButtonVisibility = (TopNavListView.Items[1] as FrameworkElement).Visibility = (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Collapsed;
+                    VFrame.Navigate(typeof(AppPages.AppRecommendPage), i);
+                }
+                if (TopNavListView.SelectedIndex == TopNavListView.Items.Count - 3) gotoAppRecommendPage(0);
+                else if (TopNavListView.SelectedIndex == TopNavListView.Items.Count - 2) gotoAppRecommendPage(1);
+                else if (TopNavListView.SelectedIndex == TopNavListView.Items.Count - 1) gotoAppRecommendPage(2);
+                else if (TopNavListView.SelectedIndex > followItemNum)
+                {
+                    IndexPageFollowNavButtonVisibility = AppPageNavButtonVisibility = Visibility.Collapsed;
+                    (TopNavListView.Items[1] as FrameworkElement).Visibility = (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Visible;
+                    VFrame.Navigate(typeof(FeedPages.IndexPage), new object[] { IndexPageUrls[TopNavListView.SelectedIndex - 1], true, null });
+                }
+                else
+                {
+                    (TopNavListView.Items[1] as FrameworkElement).Visibility = AppPageNavButtonVisibility = Visibility.Collapsed;
+                    IndexPageFollowNavButtonVisibility = (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Visible;
+                    VFrame.Navigate(typeof(FeedPages.IndexPage), new object[] { IndexPageUrls[TopNavListView.SelectedIndex - 1], true, null });
+                }
+            }
+            SetNavItemBorder(0);
         }
-    }
 
-    public class HamberTemplateSelector : DataTemplateSelector
-    {
-        public DataTemplate DataTemplate1 { get; set; }
-        public DataTemplate DataTemplate2 { get; set; }
-        protected override DataTemplate SelectTemplateCore(object item)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem menuItem = item as MenuItem;
-            if (menuItem.Index == -3) return DataTemplate2;
-            return DataTemplate1;
+            (TopNavListView.Items[1] as FrameworkElement).Visibility = AppPageNavButtonVisibility = IndexPageFollowNavButtonVisibility = IndexPageNavButtonVisibility = Visibility.Collapsed;
+            (TopNavListView.Items[0] as FrameworkElement).Visibility = (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Visible;
+            if (sender == SettingButton)
+            {
+                VFrame.Navigate(typeof(SettingPages.SettingPage));
+                SetNavItemBorder(2);
+            }
+        }
+
+        void SetNavItemBorder(int mode)
+        {
+            Thickness thickness = new Thickness(0);
+            foreach (object item in TopNavListView.Items)
+            {
+                ListViewItem listViewItem = item as ListViewItem;
+                if (listViewItem is null) continue;
+                listViewItem.BorderThickness = thickness;
+            }
+
+            UserButton.BorderThickness = SettingButton.BorderThickness = thickness;
+            switch (mode)
+            {
+                case 0:
+                    (TopNavListView.Items[TopNavListView.SelectedIndex] as ListViewItem).BorderThickness = new Thickness(0, 0, 0, 2);
+                    break;
+                case 1:
+                    UserButton.BorderThickness = new Thickness(0, 0, 0, 2);
+                    break;
+                case 2:
+                    SettingButton.BorderThickness = new Thickness(0, 0, 0, 2);
+                    break;
+            }
+        }
+        #endregion
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width >= 768)
+            {
+                SearchBox.Visibility = Visibility.Visible;
+                SearchButton.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                SearchBox.Visibility = Visibility.Collapsed;
+                SearchButton.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Visibility = Visibility.Visible;
+            SearchButton.Visibility = Visibility.Collapsed;
+            SearchBox.Focus(FocusState.Keyboard);
+        }
+
+        private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (Window.Current.Bounds.Width < 768)
+            {
+                SearchBox.Visibility = Visibility.Collapsed;
+                SearchButton.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void UserButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (UserAvatar is null) return;
+            Frame.Navigate(typeof(FeedPages.FeedListPage), new object[] { FeedPages.FeedListType.UserPageList, Settings.GetString("Uid") });
         }
     }
 }

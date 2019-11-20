@@ -126,6 +126,7 @@
     <Compile Include="Control\ViewModels\IndexPageViewModel.cs" />
     <Compile Include="Control\ViewModels\SimpleFeedReplyViewModel.cs" />
     <Compile Include="Control\ViewModels\SourceFeedViewModel.cs" />
+    <Compile Include="Control\GridPanel.cs" />
     <Compile Include="Data\ImageCache.cs" />
     <Compile Include="Pages\AppPages\AppRecommendPage.xaml.cs">
       <DependentUpon>AppRecommendPage.xaml</DependentUpon>
@@ -142,15 +143,8 @@
       <DependentUpon>GetUpdateContentDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\DataTemplateSelectors.cs" />
-    <Compile Include="Data\Feed.cs" />
-    <Compile Include="Pages\FeedPages\DyhPage.xaml.cs">
-      <DependentUpon>DyhPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\FeedPages\TopicPage.xaml.cs">
-      <DependentUpon>TopicPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\FeedPages\InitialPage.xaml.cs">
-      <DependentUpon>InitialPage.xaml</DependentUpon>
+    <Compile Include="Pages\FeedPages\FeedListPage.xaml.cs">
+      <DependentUpon>FeedListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\ShowImageControl.xaml.cs">
       <DependentUpon>ShowImageControl.xaml</DependentUpon>
@@ -184,9 +178,6 @@
     </Compile>
     <Compile Include="Pages\FeedPages\UserListPage.xaml.cs">
       <DependentUpon>UserListPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\FeedPages\UserPage.xaml.cs">
-      <DependentUpon>UserPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -783,15 +774,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\FeedPages\DyhPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\FeedPages\TopicPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\FeedPages\InitialPage.xaml">
+    <Page Include="Pages\FeedPages\FeedListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -832,10 +815,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\FeedPages\UserListPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\FeedPages\UserPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
