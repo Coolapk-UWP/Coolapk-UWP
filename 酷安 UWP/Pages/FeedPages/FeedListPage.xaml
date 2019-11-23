@@ -29,7 +29,7 @@
                             </Ellipse.Fill>
                         </Ellipse>
                         <StackPanel Margin="0,0,5,3" Grid.Column="1">
-                            <TextBlock Foreground="White" Text="{x:Bind UserName}" FontWeight="Bold" FontSize="20"/>
+                            <TextBlock Foreground="White" Text="{x:Bind UserName}" FontWeight="Bold" FontSize="20" Margin="0,0,12,0"/>
                             <TextBlock x:Name="verify_title" x:Load="{x:Bind Has_verify_title}" Text="{x:Bind Verify_title}" Foreground="White" FontSize="14" TextWrapping="Wrap"/>
                             <StackPanel Orientation="Horizontal">
                                 <Button Click="Button_Click" Tag="follow" Padding="0" Style="{StaticResource ButtonStyle1}" Background="{x:Null}">
@@ -60,6 +60,9 @@
                                 <TextBlock FontSize="16" Foreground="White">)</TextBlock>
                             </StackPanel>
                         </StackPanel>
+                        <Button Grid.Column="1" Padding="2" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}" Background="Transparent"
+                                Style="{StaticResource ButtonStyle1}" Content="{x:Bind FollowStatus}" Click="Button_Click" Tag="FollowUser" Margin="4"
+                                x:Name="FollowButton" x:Load="{x:Bind ShowFollowStatus}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
                     </Grid>
                 </Border>
             </DataTemplate>

@@ -5,7 +5,14 @@ using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    class FeedViewModelBase : SourceFeedViewModel
+    interface ILike
+    {
+        string likenum { get; set; }
+        bool liked { get; set; }
+        string id { get; }
+    }
+
+    class FeedViewModelBase : SourceFeedViewModel, ILike
     {
         public FeedViewModelBase(IJsonValue t) : base(t)
         {
@@ -49,6 +56,7 @@ namespace CoolapkUWP.Control.ViewModels
                 device_title = token["device_title"].GetString();
             }
             //else showUser = false;
+            liked = token.TryGetValue("userAction", out IJsonValue v) ? v.GetObject()["like"].GetNumber() == 1 : false;
             GetPic();
         }
 
@@ -64,6 +72,7 @@ namespace CoolapkUWP.Control.ViewModels
         string extraPicUrl;
         private ImageSource extra_pic1;
         private ImageSource userSmallAvatar1;
+        private string likenum1;
 
         public string info { get; private set; }
         public string share_num { get; private set; }
@@ -81,8 +90,18 @@ namespace CoolapkUWP.Control.ViewModels
         public string question_follow_num { get; private set; }
         public bool showUser { get; private set; } = true;
         public bool showUser2 { get => !showUser; }
-        public string likenum { get; private set; }
+        public string likenum
+        {
+            get => likenum1;
+            set
+            {
+                likenum1 = value;
+                Changed(this, "likenum");
+            }
+        }
         public string replynum { get; private set; }
+        public bool liked { get; set; }
+        public bool liked2 { get => !liked; }
         public ImageSource extra_pic
         {
             get => extra_pic1;
@@ -101,5 +120,7 @@ namespace CoolapkUWP.Control.ViewModels
                 Changed(this, nameof(userSmallAvatar));
             }
         }
+
+        public string id => entityId;
     }
 }

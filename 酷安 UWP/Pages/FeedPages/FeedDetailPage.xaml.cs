@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Control;
 using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,6 +43,7 @@ namespace CoolapkUWP.Pages.FeedPages
         int repliesPage, likesPage, sharesPage, answersPage, hotRepliesPage;
         double replyFirstItem, replyLastItem, likeFirstItem, likeLastItem, answerFirstItem, answerLastItem, hotReplyFirstItem, hotReplyLastItem;
         string answerSortType = "reply";
+        string[] comboBoxItems = new string[] { "最近回复", "按时间排序", "按热度排序", "只看楼主" };
 
         public event PropertyChangedEventHandler PropertyChanged;
         public FeedDetailPage()
@@ -52,8 +54,8 @@ namespace CoolapkUWP.Pages.FeedPages
                 await Task.Delay(300);
                 await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
-                    ((VisualTreeHelper.GetChild(MainListView, 0) as Border).FindName("ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
-                    ((VisualTreeHelper.GetChild(RightSideListView, 0) as Border).FindName("ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
+                    (VisualTree.FindDescendantByName(MainListView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
+                    (VisualTree.FindDescendantByName(RightSideListView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
                 });
             });
         }
@@ -89,36 +91,60 @@ namespace CoolapkUWP.Pages.FeedPages
                         feedArticleTitle.Height = feedArticleTitle.Width * 0.44;
                     RefreshHotFeed();
                     RefreshFeedReply();
+                    TitleBar.ComboBoxVisibility = Visibility.Visible;
+                    TitleBar.ComboBoxSelectedIndex = 0;
                 }
             }
             Tools.HideProgressBar();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            string s = (sender as Button).Tag as string;
-            switch (s)
+            string tag = (sender as Button).Tag as string;
+            switch (tag)
             {
                 case "reply":
                     FeedDetailPivot.SelectedIndex = 0;
                     ToReplyPivotItemButton.BorderThickness = new Thickness(0, 0, 0, 2);
                     ToLikePivotItemButton.BorderThickness = ToSharePivotItemButton.BorderThickness = new Thickness(0);
-                    ChangeFeedSortingComboBox.Visibility = Visibility.Visible;
+                    TitleBar.ComboBoxVisibility = Visibility.Visible;
                     break;
                 case "like":
                     FeedDetailPivot.SelectedIndex = 1;
                     ToLikePivotItemButton.BorderThickness = new Thickness(0, 0, 0, 2);
                     ToReplyPivotItemButton.BorderThickness = ToSharePivotItemButton.BorderThickness = new Thickness(0);
-                    ChangeFeedSortingComboBox.Visibility = Visibility.Collapsed;
+                    TitleBar.ComboBoxVisibility = Visibility.Collapsed;
                     break;
                 case "share":
                     FeedDetailPivot.SelectedIndex = 2;
                     ToSharePivotItemButton.BorderThickness = new Thickness(0, 0, 0, 2);
                     ToReplyPivotItemButton.BorderThickness = ToLikePivotItemButton.BorderThickness = new Thickness(0);
-                    ChangeFeedSortingComboBox.Visibility = Visibility.Collapsed;
+                    TitleBar.ComboBoxVisibility = Visibility.Collapsed;
+                    break;
+                case "MakeLike":
+                    if (FeedDetail.liked)
+                    {
+                        JsonObject o = Tools.GetJSonObject(await Tools.GetJson($"/feed/unlike?id={feedId}&detail=0"));
+                        if (o != null)
+                        {
+                            FeedDetail.likenum = o["count"].GetNumber().ToString();
+                            (sender as Button).Content = "点赞";
+                            FeedDetail.liked = false;
+                        }
+                    }
+                    else
+                    {
+                        JsonObject o = Tools.GetJSonObject(await Tools.GetJson($"/feed/like?id={feedId}&detail=0"));
+                        if (o != null)
+                        {
+                            FeedDetail.likenum = o["count"].GetNumber().ToString();
+                            (sender as Button).Content = "已点赞";
+                            FeedDetail.liked = true;
+                        }
+                    }
                     break;
                 default:
-                    Tools.OpenLink(s);
+                    Tools.OpenLink(tag);
                     break;
             }
         }
@@ -202,7 +228,7 @@ namespace CoolapkUWP.Pages.FeedPages
         async void RefreshFeedReply(int p = -1)
         {
             string listType = string.Empty, isFromAuthor = string.Empty;
-            switch (ChangeFeedSortingComboBox.SelectedIndex)
+            switch (TitleBar.ComboBoxSelectedIndex)
             {
                 case -1: return;
                 case 0:
@@ -385,10 +411,13 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void ChangeFeedSortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            repliesPage = 0;
-            replyFirstItem = replyLastItem = 0;
-            replies.Clear();
-            Refresh();
+            if (!FeedDetail.isQuestionFeed && TitleBar.ComboBoxSelectedIndex != -1)
+            {
+                repliesPage = 0;
+                replyFirstItem = replyLastItem = 0;
+                replies.Clear();
+                Refresh();
+            }
         }
 
         private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
@@ -416,6 +445,12 @@ namespace CoolapkUWP.Pages.FeedPages
         private void Image_Tapped(object sender, TappedRoutedEventArgs e) => Tools.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
 
         private void GetMoreHotReplyListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => RefreshHotFeed();
+
+        private void Flyout_Opened(object sender, object e)
+        {
+            if (replyFlyoutFrame.Content is null)
+                replyFlyoutFrame.Navigate(typeof(MakeFeedPage), new object[] { MakeFeedMode.Reply, feedId, sender });
+        }
 
         private void FeedDetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -514,6 +549,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 RightSideListView.SetValue(Grid.RowProperty, 0);
                 RightSideListView.InvalidateArrange();
                 RefreshAll = false;
+                replyFlyoutFrame.Width = 640;
             }
             if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 768 && !(FeedDetail?.isFeedArticle ?? false))
             {
@@ -542,6 +578,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 RightSideListView.SetValue(Grid.ColumnProperty, 0);
                 RightSideListView.SetValue(Grid.RowProperty, 1);
                 RefreshAll = true;
+                replyFlyoutFrame.Width = double.NaN;
             }
         }
         #endregion

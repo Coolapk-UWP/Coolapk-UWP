@@ -127,7 +127,10 @@
     <Compile Include="Control\ViewModels\SimpleFeedReplyViewModel.cs" />
     <Compile Include="Control\ViewModels\SourceFeedViewModel.cs" />
     <Compile Include="Control\GridPanel.cs" />
+    <Compile Include="Data\BackgroundTask.cs" />
     <Compile Include="Data\ImageCache.cs" />
+    <Compile Include="Data\NotificationsNum.cs" />
+    <Compile Include="Data\TileManager.cs" />
     <Compile Include="Pages\AppPages\AppRecommendPage.xaml.cs">
       <DependentUpon>AppRecommendPage.xaml</DependentUpon>
     </Compile>
@@ -149,6 +152,12 @@
     <Compile Include="Control\ShowImageControl.xaml.cs">
       <DependentUpon>ShowImageControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\FeedPages\MakeFeedPage.xaml.cs">
+      <DependentUpon>MakeFeedPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\NotificationsPage.xaml.cs">
+      <DependentUpon>NotificationsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SettingPages\TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
@@ -158,8 +167,8 @@
     <Compile Include="Pages\FeedPages\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SettingPages\LoginPage.xaml.cs">
-      <DependentUpon>LoginPage.xaml</DependentUpon>
+    <Compile Include="Pages\BrowserPage.xaml.cs">
+      <DependentUpon>BrowserPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\AppPages\AppPage.xaml.cs">
       <DependentUpon>AppPage.xaml</DependentUpon>
@@ -171,6 +180,9 @@
     <Compile Include="Data\Tools.cs" />
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\UserHubPage.xaml.cs">
+      <DependentUpon>UserHubPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pages\SettingPages\SettingPage.xaml.cs">
@@ -782,6 +794,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\FeedPages\MakeFeedPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\NotificationsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\SettingPages\TestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -794,7 +814,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\SettingPages\LoginPage.xaml">
+    <Page Include="Pages\BrowserPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -815,6 +835,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\FeedPages\UserListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\UserHubPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -841,7 +865,6 @@
   <ItemGroup>
     <None Include="酷安 UWP_TemporaryKey.pfx" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

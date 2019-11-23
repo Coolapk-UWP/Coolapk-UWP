@@ -44,14 +44,15 @@ namespace CoolapkUWP.Pages.SettingPages
         private async void Button_Click_5(object sender, RoutedEventArgs e)
         {
             //Tools.Navigate(typeof(FeedPages.FeedListPage), new object[] { FeedPages.FeedListType.DYHPageList, "1324" });
-            await new MessageDialog(await Tools.GetJson(url.Text)).ShowAsync();
+            string s = await Tools.GetJson(url.Text);
+            System.Diagnostics.Debug.WriteLine(s);
+            await new MessageDialog(s).ShowAsync();
         }
 
-        [Obsolete]
-        private void lis_RefreshRequested(object sender, EventArgs e)
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            var a = sender as Microsoft.Toolkit.Uwp.UI.Controls.PullToRefreshListView;
-            a.Items.Insert(0, new ListViewItem { Content = new TextBlock { Text = "bb" } });
+            //Tools.Navigate(typeof(LoginPage), null);
+
         }
     }
 }

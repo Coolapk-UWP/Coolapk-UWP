@@ -23,6 +23,7 @@ namespace CoolapkUWP.Data
     static class Tools
     {
         static HttpClient mClient;
+        public static NotificationsNum notifications = new NotificationsNum();
         public static Pages.MainPage mainPage = null;
         public static List<Popup> popups = new List<Popup>();
         static ObservableCollection<string> messageList = new ObservableCollection<string>();
@@ -31,7 +32,7 @@ namespace CoolapkUWP.Data
         static Tools()
         {
             mClient = new HttpClient();
-            mClient.DefaultRequestHeaders.UserAgent.ParseAdd(" +CoolMarket/9.2.2-1905301");
+            //mClient.DefaultRequestHeaders.UserAgent.ParseAdd($"{mClient.DefaultRequestHeaders.UserAgent} +CoolMarket/9.2.2-1905301");
             mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "28");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
@@ -40,43 +41,15 @@ namespace CoolapkUWP.Data
             mClient.DefaultRequestHeaders.Add("X-App-Code", "1905301");
             mClient.DefaultRequestHeaders.Add("X-Api-Version", "9");
             //mClient.DefaultRequestHeaders.Add("X-App-Device", "QRTBCOgkUTgsTat9WYphFI7kWbvFWaYByO1YjOCdjOxAjOxEkOFJjODlDI7ATNxMjM5MTOxcjMwAjN0AyOxEjNwgDNxITM2kDMzcTOgsTZzkTZlJ2MwUDNhJ2MyYzM");
-            mClient.DefaultRequestHeaders.Add("Host", "api.coolapk.com");
-            Popup popup = new Popup();
-            popup.RequestedTheme = Settings.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
+            mClient.DefaultRequestHeaders.Add("Cookie", Settings.cookie);
+            Popup popup = new Popup { RequestedTheme = Settings.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
             StatusGrid statusGrid2 = new StatusGrid();
             popup.Child = statusGrid2;
             popups.Add(popup);
             popup.IsOpen = true;
         }
 
-        public static string GetSizeString(double size)
-        {
-            int index = 0;
-            while (true)
-            {
-                index++;
-                size /= 1024;
-                if (size > 0.7 && size < 716.8) break;
-                else if (size >= 716.8) continue;
-                else if (size <= 0.7)
-                {
-                    size *= 1024;
-                    index--;
-                    break;
-                }
-            }
-            string str = string.Empty;
-            switch (index)
-            {
-                case 0: str = "B"; break;
-                case 1: str = "KB"; break;
-                case 2: str = "MB"; break;
-                case 3: str = "GB"; break;
-                case 4: str = "TB"; break;
-            }
-            return $"{size.ToString("N2")} {str}";
-        }
-
+        #region UI相关
         public static void ShowPopup(Popup popup)
         {
             popup.RequestedTheme = Settings.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
@@ -87,6 +60,12 @@ namespace CoolapkUWP.Data
             popup.IsOpen = true;
             popups.Last().IsOpen = false;
             popups.Last().IsOpen = true;
+        }
+
+        public static void Hide(this Popup popup)
+        {
+            popup.IsOpen = false;
+            if (popups.Contains(popup)) popups.Remove(popup);
         }
 
         public static async void ShowProgressBar()
@@ -153,12 +132,6 @@ namespace CoolapkUWP.Data
             else ShowMessage($"请检查网络连接。 {e.Message}");
         }
 
-        public static void Hide(this Popup popup)
-        {
-            popup.IsOpen = false;
-            if (popups.Contains(popup)) popups.Remove(popup);
-        }
-
         public static void ShowImage(string url, ImageType type)
         {
             Popup popup = new Popup();
@@ -177,7 +150,7 @@ namespace CoolapkUWP.Data
             ShowPopup(popup);
         }
 
-        public static void Navigate(Type pageType, object e) => mainPage?.Frame.Navigate(pageType, e);
+        public static void Navigate(Type pageType, object e = null) => mainPage?.Frame.Navigate(pageType, e);
 
         public static async void OpenLink(string str)
         {
@@ -216,13 +189,13 @@ namespace CoolapkUWP.Data
             {
                 if (str.Contains("coolapk.com"))
                     OpenLink(str.Replace("https://www.coolapk.com", string.Empty));
-                else await Launcher.LaunchUriAsync(new Uri(str));
+                else Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
             }
             else if (str.IndexOf("http") == 0)
             {
                 if (str.Contains("coolapk.com"))
                     OpenLink(str.Replace("http://www.coolapk.com", string.Empty));
-                else await Launcher.LaunchUriAsync(new Uri(str));
+                else Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
             }
         }
 
@@ -254,6 +227,7 @@ namespace CoolapkUWP.Data
                 }
             });
         }
+        #endregion
 
         //来源：https://blog.csdn.net/lindexi_gd/article/details/48951849
         public static string GetMD5(string inputString)
@@ -262,6 +236,110 @@ namespace CoolapkUWP.Data
             objHash.Append(CryptographicBuffer.ConvertStringToBinary(inputString, BinaryStringEncoding.Utf8));
             Windows.Storage.Streams.IBuffer buffHash1 = objHash.GetValueAndReset();
             return CryptographicBuffer.EncodeToHexString(buffHash1);
+        }
+
+        //https://github.com/ZCKun/CoolapkTokenCrack
+        static string GetCoolapkAppToken()
+        {
+            string DEVICE_ID = Guid.NewGuid().ToString();
+            long UnixDate = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+            string t = UnixDate.ToString();
+            string hex_t = "0x" + string.Format("{0:x}", UnixDate);
+            // 时间戳加密
+            string md5_t = GetMD5(t);
+            string a = "token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?" + md5_t + "$" + DEVICE_ID + "&com.coolapk.market";
+            string md5_a = GetMD5(Convert.ToBase64String(Encoding.UTF8.GetBytes(a)));
+            string token = md5_a + DEVICE_ID + hex_t;
+            return token;
+        }
+
+        public static async Task<string> GetJson(string url, bool isBackground = false)
+        {
+            try
+            {
+                if (url != "/notification/checkCount") notifications?.RefreshNotificationsNum();
+                mClient.DefaultRequestHeaders.Remove("X-App-Token");
+                mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
+                mClient.DefaultRequestHeaders.Remove("Cookie");
+                mClient.DefaultRequestHeaders.Add("Cookie", Settings.cookie);
+                return await mClient.GetStringAsync(new Uri("https://api.coolapk.com/v6" + url));
+            }
+            catch (HttpRequestException e)
+            {
+                if (!isBackground) ShowHttpExceptionMessage(e);
+                return string.Empty;
+            }
+            catch
+            {
+                if (isBackground) return string.Empty;
+                else throw;
+            }
+        }
+
+        public static async Task<bool> Post(string url, HttpContent content)
+        {
+            try
+            {
+                if (url != "/notification/checkCount") notifications?.RefreshNotificationsNum();
+                mClient.DefaultRequestHeaders.Remove("X-App-Token");
+                mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
+                mClient.DefaultRequestHeaders.Remove("Cookie");
+                mClient.DefaultRequestHeaders.Add("Cookie", Settings.cookie);
+                var a = await mClient.PostAsync(new Uri("https://api.coolapk.com/v6" + url), content);
+                return !(GetJSonObject(await a.Content.ReadAsStringAsync()) is null);
+            }
+            catch (HttpRequestException e)
+            {
+                ShowHttpExceptionMessage(e);
+                return false;
+            }
+            catch { throw; }
+
+        }
+
+        public static JsonObject GetJSonObject(string json)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(json)) return null;
+                return JsonObject.Parse(json)["data"].GetObject();
+            }
+            catch
+            {
+                if (JsonObject.Parse(json).TryGetValue("message", out IJsonValue value))
+                    ShowMessage($"{value.GetString()}");
+                return null;
+            }
+        }
+
+        public static string GetObjectStrigInJson(string json)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(json)) return null;
+                return JsonObject.Parse(json)["data"].ToString().Replace("\"", string.Empty);
+            }
+            catch
+            {
+                if (JsonObject.Parse(json).TryGetValue("message", out IJsonValue value))
+                    ShowMessage($"{value.GetString()}");
+                return string.Empty;
+            }
+        }
+
+        public static JsonArray GetDataArray(string json)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(json)) return null;
+                return JsonObject.Parse(json)["data"].GetArray();
+            }
+            catch
+            {
+                if (JsonObject.Parse(json).TryGetValue("message", out IJsonValue value))
+                    ShowMessage($"{value.GetString()}");
+                return null;
+            }
         }
 
         public static string GetMessageText(string s)
@@ -347,67 +425,6 @@ namespace CoolapkUWP.Data
             else return "刚刚";
         }
 
-        //https://github.com/ZCKun/CoolapkTokenCrack
-        static string GetCoolapkAppToken()
-        {
-            string DEVICE_ID = Guid.NewGuid().ToString();
-            long UnixDate = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
-            string t = UnixDate.ToString();
-            string hex_t = "0x" + string.Format("{0:x}", UnixDate);
-            // 时间戳加密
-            string md5_t = GetMD5(t);
-            string a = "token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?" + md5_t + "$" + DEVICE_ID + "&com.coolapk.market";
-            string md5_a = GetMD5(Convert.ToBase64String(Encoding.UTF8.GetBytes(a)));
-            string token = md5_a + DEVICE_ID + hex_t;
-            return token;
-        }
-
-        public static async Task<string> GetJson(string url)
-        {
-            try
-            {
-                mClient.DefaultRequestHeaders.Remove("X-App-Token");
-                mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
-                string v = await mClient.GetStringAsync(new Uri("https://api.coolapk.com/v6" + url));
-                return v;
-            }
-            catch (HttpRequestException e)
-            {
-                ShowHttpExceptionMessage(e);
-                return string.Empty;
-            }
-        }
-
-        public static JsonObject GetJSonObject(string json)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(json)) return null;
-                return JsonObject.Parse(json)["data"].GetObject();
-            }
-            catch
-            {
-                if (JsonObject.Parse(json).TryGetValue("message", out IJsonValue value))
-                    ShowMessage($"{value.GetString()}");
-                return null;
-            }
-        }
-
-        public static JsonArray GetDataArray(string json)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(json)) return null;
-                return JsonObject.Parse(json)["data"].GetArray();
-            }
-            catch
-            {
-                if (JsonObject.Parse(json).TryGetValue("message", out IJsonValue value))
-                    ShowMessage($"{value.GetString()}");
-                return null;
-            }
-        }
-
         public static string ReplaceHtml(string str)
         {
             //换行和段落
@@ -423,6 +440,12 @@ namespace CoolapkUWP.Data
 
         public static async Task<string> GetUserIDByName(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                ShowMessage("请输入用户名");
+                return "0";
+            }
+
             try
             {
                 string uid = await new HttpClient().GetStringAsync($"https://www.coolapk.com/n/name");
@@ -436,6 +459,34 @@ namespace CoolapkUWP.Data
                 else ShowHttpExceptionMessage(e);
                 return "0";
             }
+        }
+
+        public static string GetSizeString(double size)
+        {
+            int index = 0;
+            while (true)
+            {
+                index++;
+                size /= 1024;
+                if (size > 0.7 && size < 716.8) break;
+                else if (size >= 716.8) continue;
+                else if (size <= 0.7)
+                {
+                    size *= 1024;
+                    index--;
+                    break;
+                }
+            }
+            string str = string.Empty;
+            switch (index)
+            {
+                case 0: str = "B"; break;
+                case 1: str = "KB"; break;
+                case 2: str = "MB"; break;
+                case 3: str = "GB"; break;
+                case 4: str = "TB"; break;
+            }
+            return $"{size.ToString("N2")} {str}";
         }
     }
 }

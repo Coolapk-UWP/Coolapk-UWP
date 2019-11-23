@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -51,7 +52,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 await Task.Delay(1000);
                 await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
-                    (((VisualTreeHelper.GetChild(listView, 0) as Border).Child as Grid).FindName("ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
+                    (VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
                 });
             });
         }

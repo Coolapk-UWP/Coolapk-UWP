@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -61,6 +62,8 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     return new UserDetail
                     {
+                        FollowStatus = detail["uid"].GetNumber().ToString() == Settings.GetString("uid") ? string.Empty
+                                                                                                         : detail["isFollow"].GetNumber() == 0 ? "关注" : "取消关注",
                         UserFaceUrl = detail["userAvatar"].GetString(),
                         UserName = detail["username"].GetString(),
                         FollowNum = detail["follow"].GetNumber(),
@@ -286,7 +289,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     await Task.Delay(300);
                     await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                     {
-                        VScrollViewer = ((VisualTreeHelper.GetChild(listView, 0) as Border).Child as Grid).FindName("ScrollViewer") as ScrollViewer;
+                        VScrollViewer = VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer;
                         VScrollViewer.ViewChanged += async (s, ee) =>
                         {
                             if (!ee.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
@@ -335,7 +338,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             switch (button.Tag as string)
@@ -345,6 +348,28 @@ namespace CoolapkUWP.Pages.FeedPages
                     break;
                 case "fans":
                     Tools.Navigate(typeof(UserListPage), new object[] { provider.Id, false, titleBar.Title });
+                    break;
+                case "FollowUser":
+                    JsonObject o = null;
+                    switch ((itemCollection[0] as UserDetail).FollowStatus)
+                    {
+                        case "关注":
+                            o = JsonObject.Parse(await Tools.GetJson($"/user/follow?uid={provider.Id}"));
+                            break;
+                        case "取消关注":
+                            o = JsonObject.Parse(await Tools.GetJson($"/user/unfollow?uid={provider.Id}"));
+                            break;
+                    }
+                    if (o != null)
+                    {
+                        if (o.TryGetValue("message", out IJsonValue value))
+                            Tools.ShowMessage($"{value.GetString()}");
+                        else
+                        {
+                            itemCollection.RemoveAt(0);
+                            itemCollection.Insert(0, await provider.GetDetail());
+                        }
+                    }
                     break;
                 default:
                     Tools.OpenLink(button.Tag as string);
@@ -383,6 +408,8 @@ namespace CoolapkUWP.Pages.FeedPages
         public string City;
         public string Astro;
         public string Logintime;
+        public string FollowStatus;
+        public bool ShowFollowStatus { get => !string.IsNullOrEmpty(FollowStatus); }
         public bool Has_bio { get => !string.IsNullOrEmpty(Bio); }
         public bool Has_verify_title { get => !string.IsNullOrEmpty(Verify_title); }
         public bool Has_Astro { get => !string.IsNullOrEmpty(Astro); }

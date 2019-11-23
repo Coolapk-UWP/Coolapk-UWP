@@ -1,7 +1,5 @@
 ﻿using CoolapkUWP.Data;
-using System.ComponentModel;
 using Windows.Data.Json;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Control.ViewModels
 {

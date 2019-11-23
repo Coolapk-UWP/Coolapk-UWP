@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using Windows.ApplicationModel.Background;
 using Windows.Data.Json;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -18,7 +20,7 @@ namespace CoolapkUWP.Pages
     {
         public event PropertyChangedEventHandler PropertyChanged;
         ImageSource userAvatar;
-        ImageSource UserAvatar
+        public ImageSource UserAvatar
         {
             get => userAvatar;
             set
@@ -43,7 +45,6 @@ namespace CoolapkUWP.Pages
             Settings.uISettings.ColorValuesChanged += ChangeThemeColor;
             Settings.InitializeSettings();
             if (Settings.GetBoolen("CheckUpdateWhenLuanching")) Settings.CheckUpdate();
-
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
             {
                 int i = Settings.HasStatusBar ? Tools.popups.Count - 1 : Tools.popups.Count - 2;
@@ -60,10 +61,9 @@ namespace CoolapkUWP.Pages
                     Frame.GoBack();
                 }
             };
-            //if (Settings.HasStatusBar) TopBar.Margin = new Thickness(0);
-            GetUserAvatar();
             Tools.mainPage = this;
             Settings.CheckTheme();
+            RegisterBackgroundTask();
             GetIndexPageItems();
         }
 
@@ -76,15 +76,12 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        public async void GetUserAvatar()
-            => UserAvatar = string.IsNullOrEmpty(Settings.GetString("UserAvatar")) ? null : await ImageCache.GetImage(ImageType.SmallAvatar, Settings.GetString("UserAvatar"));
-
         private void NavigateInVFrame(int index)
         {
             switch (index)
             {
                 case 0:
-                    VFrame.Navigate(typeof(SettingPages.SettingPage));
+                    VFrame.Navigate(typeof(UserHubPage));
                     seletedItem = 0;
                     SetNavItemBorder(2);
                     break;
@@ -127,7 +124,7 @@ namespace CoolapkUWP.Pages
                             default:
                                 Symbol s = Symbol.Find;
                                 if (item["logo"].GetString().Contains("cube")) s = Symbol.Shop;
-                                else if (item["logo"].GetString().Contains("xitongguanli")) s = Symbol.Contact;
+                                else if (item["logo"].GetString().Contains("xitongguanli")) s = Symbol.AllApps;
                                 observableCollection.Add(new SearchWord { Symbol = s, Title = item["title"].GetString() });
                                 break;
                         }
@@ -196,6 +193,12 @@ namespace CoolapkUWP.Pages
         int followItemNum;
         async void GetIndexPageItems()
         {
+            await Settings.CheckLoginInfo();
+            Tools.notifications.BadgeNumberChanged += (sender, e) =>
+            {
+                if (sender is NotificationsNum num) ChangeBadgeNum(num.BadgeNum);
+            };
+            ChangeBadgeNum(Tools.notifications.BadgeNum);
             JsonArray array = Tools.GetDataArray(await Tools.GetJson("/main/init"));
             if (array != null & array.Count > 0)
             {
@@ -248,6 +251,22 @@ namespace CoolapkUWP.Pages
                 NavigateInVFrame(seletedItem);
             }
         }
+
+        private void ChangeBadgeNum(double num)
+            => Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                                                                 {
+                                                                     if (num > 0)
+                                                                     {
+                                                                         NotifyStatus.Text = "";// ED0C
+                                                                         NotifyNumber.Visibility = Visibility.Visible;
+                                                                         NotifyNumber.Text = num.ToString();
+                                                                     }
+                                                                     else
+                                                                     {
+                                                                         NotifyStatus.Text = "";// ED0D
+                                                                         NotifyNumber.Visibility = Visibility.Collapsed;
+                                                                     }
+                                                                 });
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -308,10 +327,20 @@ namespace CoolapkUWP.Pages
         {
             (TopNavListView.Items[1] as FrameworkElement).Visibility = AppPageNavButtonVisibility = IndexPageFollowNavButtonVisibility = IndexPageNavButtonVisibility = Visibility.Collapsed;
             (TopNavListView.Items[0] as FrameworkElement).Visibility = (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Visible;
-            if (sender == SettingButton)
+            if (sender == UserButton)
             {
-                VFrame.Navigate(typeof(SettingPages.SettingPage));
+                VFrame.Navigate(typeof(UserHubPage));
                 SetNavItemBorder(2);
+            }
+            else if (sender == NotifiesCenterButton)
+            {
+                VFrame.Navigate(typeof(NotificationsPage));
+                SetNavItemBorder(1);
+            }
+            else if (sender == MakeFeedButton)
+            {
+                VFrame.Navigate(typeof(FeedPages.MakeFeedPage), new object[] { FeedPages.MakeFeedMode.Feed });
+                SetNavItemBorder(3);
             }
         }
 
@@ -324,18 +353,20 @@ namespace CoolapkUWP.Pages
                 if (listViewItem is null) continue;
                 listViewItem.BorderThickness = thickness;
             }
-
-            UserButton.BorderThickness = SettingButton.BorderThickness = thickness;
+            MakeFeedButton.BorderThickness = NotifiesCenterButton.BorderThickness = UserButton.BorderThickness = thickness;
             switch (mode)
             {
                 case 0:
                     (TopNavListView.Items[TopNavListView.SelectedIndex] as ListViewItem).BorderThickness = new Thickness(0, 0, 0, 2);
                     break;
                 case 1:
-                    UserButton.BorderThickness = new Thickness(0, 0, 0, 2);
+                    NotifiesCenterButton.BorderThickness = new Thickness(0, 0, 0, 2);
                     break;
                 case 2:
-                    SettingButton.BorderThickness = new Thickness(0, 0, 0, 2);
+                    UserButton.BorderThickness = new Thickness(0, 0, 0, 2);
+                    break;
+                case 3:
+                    MakeFeedButton.BorderThickness = new Thickness(0, 0, 0, 2);
                     break;
             }
         }
@@ -370,10 +401,22 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private void UserButton_Click(object sender, RoutedEventArgs e)
+        private async void RegisterBackgroundTask()
         {
-            if (UserAvatar is null) return;
-            Frame.Navigate(typeof(FeedPages.FeedListPage), new object[] { FeedPages.FeedListType.UserPageList, Settings.GetString("Uid") });
+            BackgroundAccessStatus status = await BackgroundExecutionManager.RequestAccessAsync();
+            if (status == BackgroundAccessStatus.Unspecified || status == BackgroundAccessStatus.DeniedByUser) return;
+
+            foreach (var item in BackgroundTaskRegistration.AllTasks)
+                if (item.Value.Name == "BackgroundTask")
+                    item.Value.Unregister(true);
+            BackgroundTaskBuilder taskBuilder = new BackgroundTaskBuilder
+            {
+                Name = "BackgroundTask",
+                TaskEntryPoint = typeof(BackgroundTask).FullName
+            };
+            taskBuilder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
+            taskBuilder.SetTrigger(new TimeTrigger(30, false));
+            taskBuilder.Register();
         }
     }
 }

@@ -6,22 +6,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:CoolapkUWP.Data"
     xmlns:local="using:CoolapkUWP.Pages.SettingPages"
+    xmlns:control="using:CoolapkUWP.Control"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
         <ScrollViewer>
             <StackPanel x:Name="stackP" Margin="{x:Bind data:Settings.stackPanelMargin}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBox x:Name="uidTextBox" Header="输入你的用户名或UID"/>
-                    <Button Grid.Column="1" VerticalAlignment="Bottom" Click="Button_Click" Tag="fakeLogin">保存</Button>
-                </Grid>
-                <TextBlock TextWrapping="Wrap">“假装登录”后你可以从侧边栏快速进入个人动态（没有其他用处）。</TextBlock>
-                <TextBlock Margin="0,0,0,10" TextWrapping="Wrap">若不需要该功能，请保持输入框空白。</TextBlock>
                 <ToggleSwitch x:Name="IsUseOldEmojiMode" Header="使用旧式表情" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="IsBackgroundColorFollowSystem" Header="背景色跟随系统" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="IsDarkMode" Header="背景色" Toggled="ToggleSwitch_Toggled"
@@ -64,5 +55,6 @@
                 <Button Tag="gotoTestPage" Click="Button_Click" Visibility="Collapsed" x:Name="gotoTestPage" Content="go to test page"/>
             </StackPanel>
         </ScrollViewer>
+        <control:TitleBar Title="设置" BackButtonClick="TitleBar_BackButtonClick"/>
     </Grid>
 </Page>

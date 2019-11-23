@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -49,7 +50,7 @@ namespace CoolapkUWP.Control
                 await Task.Delay(200);
                 await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
-                    VScrollViewer = (VisualTreeHelper.GetChild(FeedReplyList, 0) as Border).FindName("ScrollViewer") as ScrollViewer;
+                    VScrollViewer = VisualTree.FindDescendantByName(FeedReplyList, "ScrollViewer") as ScrollViewer;
                     VScrollViewer.ViewChanged += VScrollViewer_ViewChanged;
                 });
             });

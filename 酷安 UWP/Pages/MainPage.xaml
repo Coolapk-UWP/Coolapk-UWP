@@ -19,73 +19,78 @@
     </Page.Resources>
 
     <Grid>
-        <Grid>
-            <Frame x:Name="VFrame"/>
-            <Grid x:Name="PCTopBar" VerticalAlignment="Top" Height="{x:Bind data:Settings.PageTitleHeight}"
+        <Frame x:Name="VFrame"/>
+        <Grid x:Name="PCTopBar" VerticalAlignment="Top" Height="{x:Bind data:Settings.PageTitleHeight}"
                   cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" fcu:Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <ListView ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollMode="Disabled"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <ListView ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollMode="Disabled"
                           SelectionChanged="ListView_SelectionChanged" x:Name="TopNavListView" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsStackPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="MinWidth" Value="32"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ListViewItem">
-                                        <ListViewItemPresenter x:Name="Root" PressedBackground="Transparent" 
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsStackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="MinWidth" Value="32"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <ListViewItemPresenter x:Name="Root" PressedBackground="Transparent" 
                                                                PlaceholderBackground="Transparent" 
                                                                PointerOverBackground="Transparent" 
                                                                SelectedBackground="Transparent" 
                                                                SelectedPressedBackground="Transparent" 
                                                                SelectedPointerOverBackground="Transparent">
-                                            <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
-                                                <ContentPresenter Margin="0" Padding="6,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                            </Border>
-                                        </ListViewItemPresenter>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListViewItem Width="60">首页</ListViewItem>
-                    <AppBarSeparator Width="20"/>
-                    <ListViewItem>应用游戏</ListViewItem>
-                    <ListViewItem Visibility="{x:Bind AppPageNavButtonVisibility,Mode=OneWay}">应用</ListViewItem>
-                    <ListViewItem Visibility="{x:Bind AppPageNavButtonVisibility,Mode=OneWay}">游戏</ListViewItem>
-                    <ListViewItem Visibility="{x:Bind AppPageNavButtonVisibility,Mode=OneWay}">分类</ListViewItem>
-                </ListView>
-                <StackPanel Orientation="Horizontal" Grid.Column="1">
-                    <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
+                                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                            <ContentPresenter Margin="0" Padding="6,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                        </Border>
+                                    </ListViewItemPresenter>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListViewItem Width="60">首页</ListViewItem>
+                <AppBarSeparator Width="20"/>
+                <ListViewItem>应用游戏</ListViewItem>
+                <ListViewItem Visibility="{x:Bind AppPageNavButtonVisibility,Mode=OneWay}">应用</ListViewItem>
+                <ListViewItem Visibility="{x:Bind AppPageNavButtonVisibility,Mode=OneWay}">游戏</ListViewItem>
+                <ListViewItem Visibility="{x:Bind AppPageNavButtonVisibility,Mode=OneWay}">分类</ListViewItem>
+            </ListView>
+            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
                         VerticalAlignment="Bottom" Height="48" Width="48" Click="SearchButton_Click" x:Name="SearchButton">
-                        <SymbolIcon Symbol="Find"/>
-                    </Button>
-                    <AutoSuggestBox Visibility="Collapsed" LostFocus="SearchBox_LostFocus" x:Name="SearchBox" Margin="4,0,0,8" Height="32" Grid.Column="1" VerticalAlignment="Bottom" QueryIcon="Find" ItemTemplateSelector="{StaticResource tspl}" MinWidth="180"
+                    <SymbolIcon Symbol="Find"/>
+                </Button>
+                <AutoSuggestBox Visibility="Collapsed" LostFocus="SearchBox_LostFocus" x:Name="SearchBox" Margin="4,0,0,8" Height="32" Grid.Column="1" VerticalAlignment="Bottom" QueryIcon="Find" ItemTemplateSelector="{StaticResource tspl}" MinWidth="180"
                                 TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" SuggestionChosen="AutoSuggestBox_SuggestionChosen"/>
-                    <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0"
-                            VerticalAlignment="Bottom" Height="48" Width="48" x:Name="UserButton" Click="UserButton_Click">
-                        <Grid>
-                            <SymbolIcon Symbol="Contact"/>
-                            <Ellipse Width="26" Height="26">
-                                <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{x:Bind UserAvatar,Mode=OneWay}"/>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                        </Grid>
-                    </Button>
-                    <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
-                        VerticalAlignment="Bottom" Height="48" Width="48" Click="Button_Click" x:Name="SettingButton" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
-                        <SymbolIcon Symbol="Setting"/>
-                    </Button>
-                </StackPanel>
-            </Grid>
+                <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
+                        VerticalAlignment="Bottom" Height="48" Width="48" Click="Button_Click" x:Name="MakeFeedButton">
+                    <SymbolIcon Symbol="Add"/>
+                </Button>
+                <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
+                        VerticalAlignment="Bottom" Height="48" Width="48" Click="Button_Click" x:Name="NotifiesCenterButton" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="" x:Name="NotifyStatus"/>
+                        <TextBlock x:Name="NotifyNumber" VerticalAlignment="Bottom" Margin="2,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
+                        VerticalAlignment="Bottom" Height="48" Width="48" x:Name="UserButton" Click="Button_Click" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
+                    <Grid>
+                        <SymbolIcon Symbol="Contact"/>
+                        <Ellipse Width="26" Height="26">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{x:Bind UserAvatar,Mode=OneWay}"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </Grid>
+                </Button>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>

@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    class FeedReplyViewModel : SimpleFeedReplyViewModel, INotifyPropertyChanged
+    class FeedReplyViewModel : SimpleFeedReplyViewModel, INotifyPropertyChanged, ILike
     {
         public FeedReplyViewModel(IJsonValue t, bool showReplyRow = true) : base(t)
         {
@@ -27,6 +27,7 @@ namespace CoolapkUWP.Control.ViewModels
                 replyRows = models.ToArray();
                 replyRowsMore = token["replyRowsMore"].GetNumber();
             }
+            liked = token.TryGetValue("userAction", out IJsonValue v) ? v.GetObject()["like"].GetNumber() == 1 : false;
             GetPic();
         }
 
@@ -44,10 +45,19 @@ namespace CoolapkUWP.Control.ViewModels
         string userSmallAvatarUrl;
         private ImageSource userSmallAvatar1;
         private ImageData pic1;
+        private string likenum1;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string likenum { get; private set; }
+        public string likenum
+        {
+            get => likenum1;
+            set
+            {
+                likenum1 = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(likenum)));
+            }
+        }
         public string replynum { get; private set; }
         public ImageSource userSmallAvatar
         {
@@ -74,5 +84,9 @@ namespace CoolapkUWP.Control.ViewModels
         public bool showreplyRowsMore { get => replyRowsMore > 0; }
         public double replyRowsMore { get; private set; }
         public double replyRowsCount { get; private set; }
+        public bool liked { get; set; }
+        public bool liked2 { get => !liked; }
+
+        string ILike.id => id.ToString();
     }
 }

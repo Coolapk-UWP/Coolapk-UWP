@@ -3,6 +3,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:local="using:CoolapkUWP.Pages.FeedPages"
       xmlns:control="using:CoolapkUWP.Control"
       xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
       xmlns:viewModel="using:CoolapkUWP.Control.ViewModels"
@@ -345,7 +346,28 @@
             </Grid>
         </controls:PullToRefreshListView>
         <StackPanel x:Name="PivotItemPanel" Orientation="Horizontal" VerticalAlignment="Bottom" 
-                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="8,4">
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="8,0">
+            <Button Style="{StaticResource ButtonStyle1}">
+                写回复
+                <Button.Flyout>
+                    <Flyout Opened="Flyout_Opened">
+                        <Flyout.FlyoutPresenterStyle>
+                            <Style TargetType="FlyoutPresenter">
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+                                <Setter Property="MinWidth" Value="300"/>
+                                <Setter Property="MinHeight" Value="300"/>
+                            </Style>
+                        </Flyout.FlyoutPresenterStyle>
+                        <Frame x:Name="replyFlyoutFrame"/>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+            <Button Style="{StaticResource ButtonStyle1}" Click="Button_Click" Tag="MakeLike">点赞</Button>
+            <AppBarSeparator />
             <Button BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}" Style="{StaticResource ButtonStyle1}" 
                     Click="Button_Click" Tag="reply" x:Name="ToReplyPivotItemButton" BorderThickness="0,0,0,2">
                 <StackPanel Orientation="Horizontal">
@@ -367,13 +389,8 @@
                     <TextBlock Margin="3,0" Text="{x:Bind FeedDetail.share_num,Mode=OneWay}"/>
                 </StackPanel>
             </Button>
-            <ComboBox x:Name="ChangeFeedSortingComboBox" SelectedIndex="0" SelectionChanged="ChangeFeedSortingComboBox_SelectionChanged">
-                <ComboBoxItem>最近回复</ComboBoxItem>
-                <ComboBoxItem>按时间排序</ComboBoxItem>
-                <ComboBoxItem>按热度排序</ComboBoxItem>
-                <ComboBoxItem>只看楼主</ComboBoxItem>
-            </ComboBox>
         </StackPanel>
-        <control:TitleBar x:Name="TitleBar" BackButtonClick="BackButton_Click" RefreshEvent="{x:Bind Refresh}"/>
+        <control:TitleBar x:Name="TitleBar" BackButtonClick="BackButton_Click" RefreshEvent="{x:Bind Refresh}" ComboBoxItemsSource="{x:Bind comboBoxItems}"
+                          ComboBoxSelectionChange="ChangeFeedSortingComboBox_SelectionChanged"/>
     </Grid>
 </Page>

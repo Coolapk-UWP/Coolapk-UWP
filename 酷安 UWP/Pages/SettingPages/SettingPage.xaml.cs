@@ -58,7 +58,6 @@ namespace CoolapkUWP.Pages.SettingPages
             IsBackgroundColorFollowSystem.IsOn = Settings.GetBoolen("IsBackgroundColorFollowSystem");
             IsDarkMode.Visibility = IsBackgroundColorFollowSystem.IsOn ? Visibility.Collapsed : Visibility.Visible;
             VersionTextBlock.Text = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
-            uidTextBox.Text = Settings.GetString("UserName");
 #if DEBUG
             gotoTestPage.Visibility = Visibility.Visible;
 #endif
@@ -70,7 +69,10 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             base.OnNavigatingFrom(e);
             if (source != null)
+            {
                 source.Cancel();
+                Tools.HideProgressBar();
+            }
         }
 
         async void GetCacheSize()
@@ -155,33 +157,11 @@ namespace CoolapkUWP.Pages.SettingPages
                     GetCacheSize();
                     CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = true;
                     break;
-                case "fakeLogin":
-                    try
-                    {
-                        string userName, uid, userAvatar;
-                        userName = uid = userAvatar = string.Empty;
-                        if (!string.IsNullOrEmpty(uidTextBox.Text))
-                        {
-                            uid = await Tools.GetUserIDByName(uidTextBox.Text);
-                            JsonObject r = Tools.GetJSonObject(await Tools.GetJson("/user/space?uid=" + uid));
-                            if (r != null)
-                            {
-                                userName = r["username"].GetString();
-                                userAvatar = r["userSmallAvatar"].GetString();
-                            }
-                            else uid = string.Empty;
-                        }
-                        Settings.Set("UserName", userName);
-                        Settings.Set("Uid", uid);
-                        Settings.Set("UserAvatar", userAvatar);
-                        Tools.mainPage.GetUserAvatar();
-                    }
-                    catch (System.Net.Http.HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
-                    catch (Exception ex) { await new MessageDialog($"出现错误，可能是用户名不正确。\n{ex}").ShowAsync(); }
-                    break;
             }
         }
 
         private void CacheSizeListView_SelectionChanged(object sender, SelectionChangedEventArgs e) => CleanCacheButton.IsEnabled = e.AddedItems.Count > 0;
+
+        private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
     }
 }
