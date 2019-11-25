@@ -67,8 +67,11 @@ namespace CoolapkUWP
             e.Handled = true;
             if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
             {
-                await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
-                Tools.HideProgressBar();
+                if (Window.Current.Content != null)
+                {
+                    await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
+                    Tools.HideProgressBar();
+                }
             }
         }
 
@@ -94,8 +97,11 @@ namespace CoolapkUWP
             e.Handled = true;
             if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
             {
-                await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
-                Tools.HideProgressBar();
+                if (Window.Current.Content != null)
+                {
+                    await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
+                    Tools.HideProgressBar();
+                }
             }
         }
     }

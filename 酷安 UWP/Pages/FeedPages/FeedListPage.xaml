@@ -62,7 +62,8 @@
                         </StackPanel>
                         <Button Grid.Column="1" Padding="2" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}" Background="Transparent"
                                 Style="{StaticResource ButtonStyle1}" Content="{x:Bind FollowStatus}" Click="Button_Click" Tag="FollowUser" Margin="4"
-                                x:Name="FollowButton" x:Load="{x:Bind ShowFollowStatus}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                x:Name="FollowButton" x:Load="{x:Bind ShowFollowStatus}" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                Foreground="White"/>
                     </Grid>
                 </Border>
             </DataTemplate>
@@ -121,7 +122,7 @@
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
-        <controls:PullToRefreshListView ItemsSource="{x:Bind itemCollection}" Name="listView" Padding="{x:Bind data:Settings.stackPanelMargin}" ItemTemplateSelector="{StaticResource tempse}"
+        <controls:PullToRefreshListView ItemsSource="{x:Bind itemCollection}" x:Name="listView" Padding="{x:Bind data:Settings.stackPanelMargin}" ItemTemplateSelector="{StaticResource tempse}"
                                         SelectionMode="None" PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新" RefreshRequested="{x:Bind Refresh}">
             <controls:PullToRefreshListView.ItemsPanel>
                 <ItemsPanelTemplate>

@@ -24,6 +24,17 @@
                 <TextBox Header="message" x:Name="message"/>
                 <Button Click="Button_Click_4">show</Button>
                 <Button Click="Button_Click_1">to login page</Button>
+                <RichTextBlock TextWrapping="Wrap">
+                    <Paragraph>
+                        <Run>6666666666666</Run>
+                        <InlineUIContainer>
+                            <Image Source="/Assets/Emoji/(斗鸡眼滑稽.png" Height="20" Width="20" ToolTipService.ToolTip=""/>
+                        </InlineUIContainer>
+                        <Hyperlink Click="Hyperlink_Click">
+                            <Run Text="sduighuyg"/>
+                        </Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
             </StackPanel>
         </ScrollViewer>
         <control:TitleBar BackButtonClick="Button_Click_3"/>

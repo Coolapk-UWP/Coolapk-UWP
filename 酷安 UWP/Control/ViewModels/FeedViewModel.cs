@@ -151,9 +151,9 @@ namespace CoolapkUWP.Control.ViewModels
             string getMessage(JsonObject jObject)
             {
                 if (string.IsNullOrEmpty(jObject["pic"].GetString()))
-                    return $"[{jObject["username"].GetString()}](/u/{jObject["uid"].GetNumber()})：{Tools.GetMessageText(jObject["message"].GetString())}";
+                    return $@"<a href='/u/{jObject["uid"].GetNumber()}'>{jObject["username"].GetString()}</a>：{jObject["message"].GetString()}";
                 else
-                    return $"[{jObject["username"].GetString()}](/u/{jObject["uid"].GetNumber()})：{Tools.GetMessageText(jObject["message"].GetString())}\n[查看图片]({jObject["pic"].GetString()})";
+                    return $@"<a href='/u/{jObject["uid"].GetNumber()}'>{jObject["username"].GetString()}</a>：{jObject["message"].GetString()} <a href='{jObject["pic"].GetString()}'>查看图片</a>";
             }
             extraFlag = token["extraFlag"].GetString();
             id = token["id"].GetNumber();

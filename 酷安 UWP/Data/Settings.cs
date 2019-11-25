@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage;
@@ -20,11 +21,12 @@ namespace CoolapkUWP.Data
         public static Thickness titleTextMargin => new Thickness(5, 12, 5, 12);
         public static Thickness stackPanelMargin => new Thickness(0, PageTitleHeight, 0, 2);
         public static VerticalAlignment titleContentVerticalAlignment => VerticalAlignment.Bottom;
+        public static ElementTheme theme => GetBoolen("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
         public static bool GetBoolen(string key) => (bool)localSettings.Values[key];
         public static string GetString(string key) => localSettings.Values[key] as string;
         public static void Set(string key, object value) => localSettings.Values[key] = value;
 
-        public static void InitializeSettings()
+        static Settings()
         {
             if (!localSettings.Values.ContainsKey("IsNoPicsMode"))
                 localSettings.Values.Add("IsNoPicsMode", false);
@@ -44,50 +46,62 @@ namespace CoolapkUWP.Data
             }
             if (!localSettings.Values.ContainsKey("Uid"))
                 localSettings.Values.Add("Uid", string.Empty);
+            CheckTheme();
         }
 
         public static async void CheckUpdate()
         {
             try
             {
-                Octokit.GitHubClient client = new Octokit.GitHubClient(new Octokit.ProductHeaderValue("Coolapk-UWP"));
-                var release = await client.Repository.Release.GetLatest("Tangent-90", "Coolapk-UWP");
-                var ver = release.TagName.Replace("v", string.Empty).Split('.');
-                if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major
-                    || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
-                    || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
+                using (HttpClient client = new HttpClient())
                 {
-                    var dialog = new Control.GetUpdateContentDialog(release.HtmlUrl, release.Body) { RequestedTheme = GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
-                    await dialog.ShowAsync();
+                    client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0;)");
+                    var keys = Windows.Data.Json.JsonObject.Parse(await client.GetStringAsync("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest"));
+                    var ver = keys["tag_name"].GetString().Replace("v", string.Empty).Split('.');
+                    if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major
+                        || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
+                        || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
+                    {
+                        var dialog = new Control.GetUpdateContentDialog(keys["html_url"].GetString(), keys["body"].GetString()) { RequestedTheme = theme };
+                        await dialog.ShowAsync();
+                    }
+                    else Tools.ShowMessage("当前无可用更新。");
                 }
-                else Tools.ShowMessage("当前无可用更新。");
             }
-            catch (System.Net.Http.HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
+            catch (HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
         }
 
         public static async void CheckTheme()
         {
-            InitializeSettings();
             while (Window.Current?.Content is null)
                 await Task.Delay(100);
-            if (Window.Current?.Content is FrameworkElement frameworkElement)
+            if (Window.Current.Content is FrameworkElement frameworkElement)
             {
-                ElementTheme elementTheme = GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
-                frameworkElement.RequestedTheme = elementTheme;
-                ChangeColor(!GetBoolen("IsDarkMode"));
+                frameworkElement.RequestedTheme = theme;
                 foreach (var item in Tools.popups)
-                    item.RequestedTheme = elementTheme;
-            }
-            void ChangeColor(bool value)//标题栏颜色
-            {
-                Color BackColor = value ? Color.FromArgb(255, 242, 242, 242) : Color.FromArgb(255, 23, 23, 23),
-                      ForeColor = value ? Colors.Black : Colors.White,
-                      ButtonForeInactiveColor = value ? Color.FromArgb(255, 50, 50, 50) : Color.FromArgb(255, 200, 200, 200),
-                      ButtonBackPressedColor = value ? Color.FromArgb(255, 200, 200, 200) : Color.FromArgb(255, 50, 50, 50);
+                    item.RequestedTheme = theme;
+
+                Color? BackColor, ForeColor, ButtonForeInactiveColor, ButtonBackPressedColor;
+                BackColor = ForeColor = ButtonBackPressedColor = ButtonForeInactiveColor = null;
+                switch (theme)
+                {
+                    case ElementTheme.Light:
+                        BackColor = Color.FromArgb(255, 242, 242, 242);
+                        ForeColor = Colors.Black;
+                        ButtonForeInactiveColor = Color.FromArgb(255, 50, 50, 50);
+                        ButtonBackPressedColor = Color.FromArgb(255, 200, 200, 200);
+                        break;
+                    case ElementTheme.Dark:
+                        BackColor = Color.FromArgb(255, 23, 23, 23);
+                        ForeColor = Colors.White;
+                        ButtonForeInactiveColor = Color.FromArgb(255, 200, 200, 200);
+                        ButtonBackPressedColor = Color.FromArgb(255, 50, 50, 50);
+                        break;
+                }
                 if (HasStatusBar)
                 {
                     StatusBar statusBar = StatusBar.GetForCurrentView();
-                    statusBar.BackgroundOpacity = 1; // 透明度
+                    statusBar.BackgroundOpacity = 0; // 透明度
                     statusBar.BackgroundColor = BackColor;
                     statusBar.ForegroundColor = ForeColor;
                 }

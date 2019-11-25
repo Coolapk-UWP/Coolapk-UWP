@@ -19,8 +19,12 @@
     </Page.Resources>
 
     <Grid>
-        <Frame x:Name="VFrame"/>
-        <Grid x:Name="PCTopBar" VerticalAlignment="Top" Height="{x:Bind data:Settings.PageTitleHeight}"
+        <Frame x:Name="VFrame">
+            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">正在加载……</TextBlock>
+            </Grid>
+        </Frame>
+        <Grid x:Name="PCTopBar" VerticalAlignment="Top" Height="{x:Bind data:Settings.PageTitleHeight}" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" BorderThickness="0,0,0,2" Padding="0,0,0,-2"
                   cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" fcu:Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

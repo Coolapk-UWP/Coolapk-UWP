@@ -109,6 +109,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\MTextBlock.xaml.cs">
+      <DependentUpon>MTextBlock.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\ReplyDialogPresenter.xaml.cs">
       <DependentUpon>ReplyDialogPresenter.xaml</DependentUpon>
     </Compile>
@@ -128,6 +131,7 @@
     <Compile Include="Control\ViewModels\SourceFeedViewModel.cs" />
     <Compile Include="Control\GridPanel.cs" />
     <Compile Include="Data\BackgroundTask.cs" />
+    <Compile Include="Data\Emojis.cs" />
     <Compile Include="Data\ImageCache.cs" />
     <Compile Include="Data\NotificationsNum.cs" />
     <Compile Include="Data\TileManager.cs" />
@@ -139,7 +143,6 @@
     <Compile Include="Control\ViewModels\SearchPageViewModel.cs" />
     <Compile Include="Control\ViewModels\TopicViewModel.cs" />
     <Compile Include="Control\ViewModels\UserViewModel.cs" />
-    <Compile Include="Data\Emojis.cs" />
     <Compile Include="Data\Settings.cs" />
     <Compile Include="Data\ExceptionCatcher.cs" />
     <Compile Include="Control\GetUpdateContentDialog.xaml.cs">
@@ -762,6 +765,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Control\MTextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Control\ReplyDialogPresenter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -849,9 +856,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>4.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="Octokit">
-      <Version>0.36.0</Version>
     </PackageReference>
     <PackageReference Include="System.ObjectModel">
       <Version>4.3.0</Version>

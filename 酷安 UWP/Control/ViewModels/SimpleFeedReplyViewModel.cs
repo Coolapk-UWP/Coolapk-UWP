@@ -15,13 +15,13 @@ namespace CoolapkUWP.Control.ViewModels
             rurl = $"/u/{token["ruid"].GetNumber()}";
             rusername = token["rusername"].GetString();
             if (showRuser)
-                message = Tools.GetMessageText($"<a href=\"{uurl}\">{username}{(isFeedAuthor ? "[楼主]" : string.Empty)}</a>@ <a href=\"{rurl}\">{rusername}</a>:{token["message"].GetString()}");
-            else message = Tools.GetMessageText($"<a href=\"{uurl}\">{username}{(isFeedAuthor ? "[楼主]" : string.Empty)}</a>:{token["message"].GetString()}");
+                message = $"<a href=\"{uurl}\">{username}{(isFeedAuthor ? "(楼主)" : string.Empty)}</a>@<a href=\"{rurl}\">{rusername}</a>:{token["message"].GetString()}";
+            else message = $"<a href=\"{uurl}\">{username}{(isFeedAuthor ? "(楼主)" : string.Empty)}</a>:{token["message"].GetString()}";
             showPic = token.TryGetValue("pic", out IJsonValue value) && !string.IsNullOrEmpty(value.GetString());
             if (showPic)
             {
                 picUrl = value.GetString();
-                message += $"&nbsp;\n[查看图片]({picUrl})";
+                message += $" <a href=\"{picUrl}\">查看图片</a>";
             }
         }
         public bool showRuser { get => !string.IsNullOrEmpty(rusername); }

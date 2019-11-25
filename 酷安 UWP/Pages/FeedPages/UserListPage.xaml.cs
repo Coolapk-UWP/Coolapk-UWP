@@ -21,8 +21,8 @@ namespace CoolapkUWP.Pages.FeedPages
     /// </summary>
     public sealed partial class UserListPage : Page
     {
-        string uid;
         bool isFollowList;
+        string uid;
         int page = 1;
         double firstItem, lastItem;
         ObservableCollection<UserViewModel> infos = new ObservableCollection<UserViewModel>();
@@ -62,47 +62,26 @@ namespace CoolapkUWP.Pages.FeedPages
         async void LoadList(int p = -1)
         {
             Tools.ShowProgressBar();
-            if (p == 1)
+            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/user/{(isFollowList ? "followList" : "fansList")}?uid={uid}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}"));
+            if (array != null && array.Count > 0)
             {
-                string url = isFollowList ? $"/user/followList?uid={uid}&page={p}" : $"/user/fansList?uid={uid}&page={p}";
-                string r = await Tools.GetJson(url);
-                JsonArray array = Tools.GetDataArray(r);
-                if (array != null && array.Count > 0)
-                {
+                if (p == 1 || page == 1)
                     firstItem = array.First().GetObject()["fuid"].GetNumber();
-                    lastItem = array.Last().GetObject()["fuid"].GetNumber();
-                    if (infos.Count > 0)
-                    {
-                        var d = (from a in infos
-                                 from b in array
-                                 where a.UserName == b.GetObject()[isFollowList ? "fusername" : "username"].GetString()
-                                 select a).ToArray();
-                        foreach (var item in d)
-                            infos.Remove(item);
-                    }
+                lastItem = array.Last().GetObject()["fuid"].GetNumber();
+                var d = (from a in infos
+                         from b in array
+                         where a.UserName == b.GetObject()[isFollowList ? "fusername" : "username"].GetString()
+                         select a).ToArray();
+                foreach (var item in d)
+                    infos.Remove(item);
+                if (p == -1)
                     for (int i = 0; i < array.Count; i++)
-                    {
-                        IJsonValue t = isFollowList ? array[i].GetObject()["fUserInfo"] : array[i].GetObject()["userInfo"];
-                        infos.Insert(i, new UserViewModel(t));
-                    }
-                }
-            }
-            else if (p == -1)
-            {
-                string url = isFollowList ? $"/user/followList?uid={uid}&page={++page}&firstItem={firstItem}&lastItem={lastItem}" : $"/user/fansList?uid={uid}&page={++page}&firstItem={firstItem}&lastItem={lastItem}";
-                string r = await Tools.GetJson(url);
-                JsonArray array = Tools.GetDataArray(r);
-                if (array != null && array.Count > 0)
-                {
-                    lastItem = array.Last().GetObject()["fuid"].GetNumber();
+                        infos.Add(new UserViewModel(isFollowList ? array[i].GetObject()["fUserInfo"] : array[i].GetObject()["userInfo"]));
+                else
                     for (int i = 0; i < array.Count; i++)
-                    {
-                        IJsonValue t = isFollowList ? array[i].GetObject()["fUserInfo"] : array[i].GetObject()["userInfo"];
-                        infos.Add(new UserViewModel(t));
-                    }
-                }
-                else page--;
+                        infos.Insert(i, new UserViewModel(isFollowList ? array[i].GetObject()["fUserInfo"] : array[i].GetObject()["userInfo"]));
             }
+            else if (p == -1) page--;
             Tools.HideProgressBar();
         }
 
@@ -120,7 +99,7 @@ namespace CoolapkUWP.Pages.FeedPages
         }
 
         private void UserList_RefreshRequested(object sender, EventArgs e) => LoadList(1);
-  
+
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
     }
 }

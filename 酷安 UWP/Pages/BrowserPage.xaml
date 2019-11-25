@@ -9,9 +9,8 @@
     mc:Ignorable="d" >
 
     <Grid>
-        <WebView Margin="{x:Bind data:Settings.stackPanelMargin}" NavigationCompleted="WebView_NavigationCompleted"
-                 Source="https://account.coolapk.com/auth/loginByCoolapk" x:Name="webView"/>
-        <control:TitleBar Title="登录" BackButtonClick="BackButton_Click"/>
+        <WebView Margin="{x:Bind data:Settings.stackPanelMargin}" NavigationCompleted="WebView_NavigationCompleted" x:Name="webView"/>
+        <control:TitleBar x:Name="titleBar" BackButtonClick="BackButton_Click"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Height="{x:Bind data:Settings.PageTitleHeight}">
             <Button Background="Transparent" Style="{StaticResource ButtonStyle1}" Height="48" Click="{x:Bind CheckLogin}" 
                     VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" x:Name="TryLoginButton">

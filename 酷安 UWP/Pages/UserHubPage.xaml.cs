@@ -63,17 +63,12 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e) => Tools.Navigate(typeof(Pages.BrowserPage), new object[] { true, null });
+        private void LoginButton_Click(object sender, RoutedEventArgs e) => Tools.Navigate(typeof(BrowserPage), new object[] { true, null });
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             switch ((sender as FrameworkElement).Tag as string)
             {
-                case "logout":
-                    Settings.Logout();
-                    LoginButton.Visibility = Visibility.Visible;
-                    UserDetailGrid.Visibility = Visibility.Collapsed;
-                    break;
                 case "feed":
                     Tools.Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, Settings.GetString("Uid") });
                     break;
@@ -84,7 +79,7 @@ namespace CoolapkUWP.Pages
                     Tools.Navigate(typeof(UserListPage), new object[] { Settings.GetString("Uid"), false, userName });
                     break;
                 case "settings":
-                    Tools.Navigate(typeof(SettingPages.SettingPage), null);
+                    Tools.Navigate(typeof(SettingPages.SettingPage));
                     break;
             }
         }

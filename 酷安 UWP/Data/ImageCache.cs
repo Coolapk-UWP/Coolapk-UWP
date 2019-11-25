@@ -59,8 +59,32 @@ namespace CoolapkUWP.Data
             }
         }
 
-        static BitmapImage GetLocalImage(string filename) => 
-            (filename is null || Settings.GetBoolen("IsNoPicsMode")) ? (Settings.GetBoolen("IsDarkMode") ? darkNoPicMode : whiteNoPicMode) 
+        public static async Task<string> GetImagePath(ImageType type, string url, bool showMessage = false)
+        {
+            if (url.IndexOf("ms-appx") == 0) return url;
+            else if (string.IsNullOrEmpty(url) || Settings.GetBoolen("IsNoPicsMode"))
+                return Settings.GetBoolen("IsDarkMode") ? "ms-appx:/Assets/img_placeholder_night.png" : "ms-appx:/Assets/img_placeholder.png";
+            else
+            {
+                string fileName = Tools.GetMD5(url);
+                StorageFolder folder = await GetFolder(type);
+                var item = await folder.TryGetItemAsync(fileName);
+                if (type == ImageType.SmallImage)
+                    url += ".s.jpg";
+                if (item is null)
+                {
+                    StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
+                    try { await DownloadImage(file, url, showMessage); }
+                    catch (FileLoadException) { return file.Path; }
+                    return file.Path;
+                }
+                else if (item is StorageFile file) return file.Path;
+                else return null;
+            }
+        }
+
+        static BitmapImage GetLocalImage(string filename) =>
+            (filename is null || Settings.GetBoolen("IsNoPicsMode")) ? (Settings.GetBoolen("IsDarkMode") ? darkNoPicMode : whiteNoPicMode)
                                                                      : new BitmapImage(new Uri(filename));
 
         static async Task DownloadImage(StorageFile file, string url, bool showMessage)

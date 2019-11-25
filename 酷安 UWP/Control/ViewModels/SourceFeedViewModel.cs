@@ -17,13 +17,13 @@ namespace CoolapkUWP.Control.ViewModels
                 uurl = token["userInfo"].GetObject()["url"].GetString();
                 username = token["userInfo"].GetObject()["username"].GetString();
                 dateline = Tools.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
-                message = Tools.GetMessageText(token["message"].GetString());
+                message = token["message"].GetString();
                 message_title = token.TryGetValue("message_title", out IJsonValue j) ? j.GetString() : string.Empty;
             }
             else
             {
                 dateline = Tools.ConvertTime(token["digest_time"].GetNumber());
-                message = Tools.GetMessageText(token["message"].GetString().Substring(0, 120) + "……<a href=\"\">查看更多</a>");
+                message = token["message"].GetString().Substring(0, 120) + "……<a href=\"\">查看更多</a>";
                 message_title = token["title"].GetString();
             }
             showMessage_title = !string.IsNullOrEmpty(message_title);

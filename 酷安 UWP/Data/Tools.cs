@@ -32,7 +32,6 @@ namespace CoolapkUWP.Data
         static Tools()
         {
             mClient = new HttpClient();
-            //mClient.DefaultRequestHeaders.UserAgent.ParseAdd($"{mClient.DefaultRequestHeaders.UserAgent} +CoolMarket/9.2.2-1905301");
             mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "28");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
@@ -154,7 +153,12 @@ namespace CoolapkUWP.Data
 
         public static async void OpenLink(string str)
         {
-            if (str is null) return;
+            if (string.IsNullOrWhiteSpace(str)) return;
+            if (str == "/contacts/fans")
+            {
+                Navigate(typeof(UserListPage), new object[] { Settings.GetString("Uid"), false, "我" });
+                return;
+            }
             if (str.Contains('?')) str = str.Substring(0, str.IndexOf('?'));
             if (str.Contains('%')) str = str.Substring(0, str.IndexOf('%'));
             if (str.Contains('&')) str = str.Substring(0, str.IndexOf('&'));
@@ -164,68 +168,46 @@ namespace CoolapkUWP.Data
                 if (int.TryParse(u, out int uu))
                     Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, u });
                 else Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, await GetUserIDByName(u) });
+                return;
             }
             else if (str.IndexOf("/feed/") == 0)
             {
                 string u = str.Replace("/feed/", string.Empty);
                 Navigate(typeof(FeedDetailPage), u);
+                return;
             }
             else if (str.IndexOf("/t/") == 0)
             {
                 string u = str.Replace("/t/", string.Empty);
                 Navigate(typeof(FeedListPage), new object[] { FeedListType.TagPageList, u });
+                return;
             }
             else if (str.IndexOf("/dyh/") == 0)
             {
                 string u = str.Replace("/dyh/", string.Empty);
                 Navigate(typeof(FeedListPage), new object[] { FeedListType.DYHPageList, u });
+                return;
             }
             else if (str.IndexOf("/apk/") == 0)
             {
                 string u = "http://www.coolapk.com" + str;
                 Navigate(typeof(Pages.AppPages.AppPage), u);
+                return;
             }
             else if (str.IndexOf("https") == 0)
             {
                 if (str.Contains("coolapk.com"))
                     OpenLink(str.Replace("https://www.coolapk.com", string.Empty));
                 else Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
+                return;
             }
             else if (str.IndexOf("http") == 0)
             {
                 if (str.Contains("coolapk.com"))
                     OpenLink(str.Replace("http://www.coolapk.com", string.Empty));
                 else Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
+                return;
             }
-        }
-
-        public static async void SetEmojiPadding(object control)
-        {
-            Microsoft.Toolkit.Uwp.UI.Controls.MarkdownTextBlock textBlock = control as Microsoft.Toolkit.Uwp.UI.Controls.MarkdownTextBlock;
-            await textBlock.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            {
-                Border border = VisualTreeHelper.GetChild(textBlock, 0) as Border;
-                StackPanel stackPanel = (border.Child as StackPanel);
-                Thickness thickness = new Thickness(0);
-                for (int j = 0; j < stackPanel.Children.Count; j++)
-                {
-                    if (stackPanel.Children[j] is RichTextBlock a)
-                    {
-                        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(a); i++)
-                        {
-                            if (VisualTreeHelper.GetChild(a, i) is ScrollViewer viewer)
-                            {
-                                Viewbox viewbox = viewer.Content as Viewbox;
-                                HyperlinkButton b = viewbox.Child as HyperlinkButton;
-                                Image image = b.Content as Image;
-                                Windows.UI.Xaml.Media.Imaging.BitmapImage bitmapImage = (image.Source as Windows.UI.Xaml.Media.Imaging.BitmapImage);
-                                if (bitmapImage.UriSource.AbsoluteUri.IndexOf("ms-appx") == 0)
-                                    b.Padding = thickness;
-                            }
-                        }
-                    }
-                }
-            });
         }
         #endregion
 
@@ -342,77 +324,6 @@ namespace CoolapkUWP.Data
             }
         }
 
-        public static string GetMessageText(string s)
-        {
-            StringBuilder builder = new StringBuilder(s);
-            builder = builder.Replace("\\", "\\\\");
-            builder = builder.Replace("&#039;", "\'");
-            builder = builder.Replace("&nbsp;", "\\&nbsp;");
-            builder = builder.Replace("</a>", "</a> ");
-            builder = builder.Replace(">", "\\>");
-            builder = builder.Replace("#", "\\#");
-            builder = builder.Replace("`", "\\`");
-            builder = builder.Replace("*", "\\*");
-            builder = builder.Replace("(", "\\(");
-            builder = builder.Replace("~", "\\~");
-            builder = builder.Replace("^", "\\^");
-            builder = builder.Replace("[", "\\[");
-            builder = builder.Replace("+", "\\+");
-            builder = builder.Replace("-", "\\-");
-            builder = builder.Replace("\\-\\-\\>", "-->");
-            builder = builder.Replace("!\\-\\-", "!--");
-            builder = builder.Replace(".", "\\.");
-            builder = builder.Replace(":", "\\:");
-            builder = builder.Replace("\n", "\n\n");
-            foreach (var i in Emojis.emojis)
-            {
-                s = builder.ToString();
-                if (s.Contains(i))
-                {
-                    if (i.Contains("(")) builder = builder.Replace($"\\#\\{i})", $"\n![{i})](ms-appx:/Assets/Emoji/{i}.png =20)");
-                    else if (Settings.GetBoolen("IsUseOldEmojiMode") && Emojis.oldEmojis.Contains(i))
-                        builder = builder.Replace($"\\{i}", $"\n![{i}(ms-appx:/Assets/Emoji/{i}2.png =20)");
-                    else builder = builder.Replace($"\\{i}", $"\n![{i}(ms-appx:/Assets/Emoji/{i}.png =20)");
-                }
-            }
-            Regex regex = new Regex("<a.*?\\>\\S*"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
-            while (regex.IsMatch(s))
-            {
-                s = builder.ToString();
-                var h = regex.Match(s);
-                if (!h.Value.Contains("</a\\>"))
-                {
-                    builder = builder.Replace(h.Value + " ", h.Value + "&nbsp;");
-                    continue;
-                }
-                string t = regex3.Match(h.Value).Value.Replace(">", string.Empty);
-                t = t.Replace("<", string.Empty);
-                string tt = regex2.Match(h.Value).Value.Replace("href=\"", string.Empty);
-                if (tt.IndexOf("\"") > 0)
-                {
-                    tt = tt.Substring(0, tt.IndexOf("\""));
-                    tt = tt.Replace("\\:", ":");
-                    tt = tt.Replace("\\.", ".");
-                    tt = tt.Replace("\'", "&#039;");
-                    tt = tt.Replace("\\&nbsp;", "&nbsp;");
-                    tt = tt.Replace("\\>", ">");
-                    tt = tt.Replace("\\#", "#");
-                    tt = tt.Replace("\\`", "`");
-                    tt = tt.Replace("\\*", "*");
-                    tt = tt.Replace("\\(", "(");
-                    tt = tt.Replace("\\~", "~");
-                    tt = tt.Replace("\\^", "^");
-                    tt = tt.Replace("\\[", "[");
-                    tt = tt.Replace("\\+", "+");
-                    tt = tt.Replace("\\-", "-");
-                }
-                if (t == "查看更多") tt = "get";
-                builder = builder.Replace(h.Value, $"[{t}]({tt})");
-            }
-            builder = builder.Replace(" ", "&nbsp;");
-            builder = builder.Replace("&nbsp;=20)", " =20)");
-            return builder.ToString();
-        }
 
         public static string ConvertTime(double timestr)
         {
@@ -448,7 +359,7 @@ namespace CoolapkUWP.Data
 
             try
             {
-                string uid = await new HttpClient().GetStringAsync($"https://www.coolapk.com/n/name");
+                string uid = await new HttpClient().GetStringAsync("https://www.coolapk.com/n/" + name);
                 uid = uid.Split(new string[] { "coolmarket://www.coolapk.com/u/" }, StringSplitOptions.RemoveEmptyEntries)[1];
                 uid = uid.Split(new string[] { @"""" }, StringSplitOptions.RemoveEmptyEntries)[0];
                 return uid;

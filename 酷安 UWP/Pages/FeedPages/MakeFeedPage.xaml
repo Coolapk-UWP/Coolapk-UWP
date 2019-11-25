@@ -7,16 +7,40 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
+    xmlns:data="using:CoolapkUWP.Data"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBox x:Name="InputBox" AcceptsReturn="True" TextWrapping="Wrap"/>
-        <Grid Height="48" VerticalAlignment="Bottom"
-              cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" fcu:Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
-            <Button HorizontalAlignment="Right" Width="48" Height="48" Style="{StaticResource ButtonStyle1}" Click="Button_Click">
-                <SymbolIcon Symbol="Send"/>
-            </Button>
-        </Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="48"/>
+        </Grid.RowDefinitions>
+        <RichEditBox x:Name="InputBox" AcceptsReturn="True" TextWrapping="Wrap" ContextMenuOpening="InputBox_ContextMenuOpening"/>
+        <CommandBar Height="48" Grid.Row="1">
+            <AppBarButton Icon="Emoji2" Label="插入表情">
+                <Button.Flyout>
+                    <Flyout Opened="Flyout_Opened">
+                        <Flyout.FlyoutPresenterStyle>
+                            <Style TargetType="FlyoutPresenter">
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+                            </Style>
+                        </Flyout.FlyoutPresenterStyle>
+                        <GridView SelectionMode="None" ItemClick="GridView_ItemClick" IsItemClickEnabled="True" Padding="0,32,0,0">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="local:EmojiData">
+                                    <Image Width="24" Height="24" Margin="2" Source="{x:Bind emoji}"/>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </Flyout>
+                </Button.Flyout>
+            </AppBarButton>
+            <AppBarButton Icon="Send" Label="发送" Click="Button_Click"/>
+        </CommandBar>
     </Grid>
 </Page>

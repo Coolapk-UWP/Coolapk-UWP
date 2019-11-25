@@ -12,7 +12,6 @@ using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -76,19 +75,21 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 FeedDetail = new FeedDetailViewModel(detail);
                 TitleBar.Title = FeedDetail.title;
-                Page_SizeChanged(null, null);
                 if (FeedDetail.isQuestionFeed)
                 {
                     if (answersPage != 0 || answerLastItem != 0) return;
-                    AnswersListViewItem.Visibility = Visibility.Visible;
+                    FindName(nameof(AnswersListView));
                     PivotItemPanel.Visibility = Visibility.Collapsed;
                     RefreshAnswers();
                 }
                 else
                 {
-                    PivotListViewItem.Visibility = Visibility.Visible;
+                    FindName(nameof(FeedDetailPivot));
                     if (feedArticleTitle != null)
+                    {
                         feedArticleTitle.Height = feedArticleTitle.Width * 0.44;
+                        Page_SizeChanged(null, null);
+                    }
                     RefreshHotFeed();
                     RefreshFeedReply();
                     TitleBar.ComboBoxVisibility = Visibility.Visible;
@@ -159,7 +160,7 @@ namespace CoolapkUWP.Pages.FeedPages
         async void Refresh()
         {
             Tools.ShowProgressBar();
-            if (PivotListViewItem.Visibility == Visibility.Visible)
+            if (FeedDetailPivot != null)
             {
                 switch (FeedDetailPivot.SelectedIndex)
                 {
@@ -174,7 +175,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         break;
                 }
             }
-            else if (AnswersListViewItem.Visibility == Visibility.Visible)
+            else if (AnswersListView != null)
             {
                 if (answerLastItem != 0) return;
                 RefreshAnswers(1);
@@ -388,7 +389,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     Tools.ShowProgressBar();
                     scrollViewer.ChangeView(null, a, null);
-                    if (PivotListViewItem.Visibility == Visibility.Visible)
+                    if (FeedDetailPivot != null)
                         switch (FeedDetailPivot.SelectedIndex)
                         {
                             case 0:
@@ -401,47 +402,25 @@ namespace CoolapkUWP.Pages.FeedPages
                                 RefreshShares();
                                 break;
                         }
-                    else if (AnswersListViewItem.Visibility == Visibility.Visible) RefreshAnswers();
+                    else if (AnswersListView != null) RefreshAnswers();
                     Tools.HideProgressBar();
                 }
             }
         }
 
-        private void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e) => Tools.OpenLink(e.Link);
-
         private void ChangeFeedSortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!FeedDetail.isQuestionFeed && TitleBar.ComboBoxSelectedIndex != -1)
             {
-                repliesPage = 0;
+                repliesPage = 1;
                 replyFirstItem = replyLastItem = 0;
                 replies.Clear();
                 Refresh();
             }
         }
 
-        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            FrameworkElement element = sender as FrameworkElement;
-            if (element.Tag is null) return;
-            else if (element.Tag is string s) Tools.OpenLink(s);
-        }
-
-        private async void MarkdownTextBlock_ImageResolving(object sender, Microsoft.Toolkit.Uwp.UI.Controls.ImageResolvingEventArgs e)
-        {
-            var deferral = e.GetDeferral();
-            e.Image = await ImageCache.GetImage(ImageType.SmallImage, e.Url);
-            e.Handled = true;
-            deferral.Complete();
-            Tools.SetEmojiPadding(sender);
-        }
-
-        private void MarkdownTextBlock_ImageClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
-        {
-            List<string> vs = (sender as FrameworkElement).Tag as List<string>;
-            if (e.Link.IndexOf("http") == 0) Tools.ShowImages(vs.ToArray(), vs.IndexOf(e.Link));
-        }
-
+        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e) => Tools.OpenLink((sender as FrameworkElement).Tag as string);
+        
         private void Image_Tapped(object sender, TappedRoutedEventArgs e) => Tools.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
 
         private void GetMoreHotReplyListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => RefreshHotFeed();
@@ -454,7 +433,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void FeedDetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (PivotListViewItem.Visibility == Visibility.Visible)
+            if (FeedDetailPivot != null)
                 switch (FeedDetailPivot.SelectedIndex)
                 {
                     case 1:
@@ -501,8 +480,6 @@ namespace CoolapkUWP.Pages.FeedPages
         }
         #region 界面模式切换
         private double _detailListHeight;
-        private Thickness _detailListPadding;
-        private Thickness _mainListViewPadding;
         double detailListHeight
         {
             get => _detailListHeight;
@@ -512,24 +489,6 @@ namespace CoolapkUWP.Pages.FeedPages
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(detailListHeight)));
             }
         }
-        Thickness detailListPadding
-        {
-            get => _detailListPadding;
-            set
-            {
-                _detailListPadding = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(detailListPadding)));
-            }
-        }
-        Thickness mainListViewPadding
-        {
-            get => _mainListViewPadding;
-            set
-            {
-                _mainListViewPadding = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(mainListViewPadding)));
-            }
-        }
         bool RefreshAll;
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -537,19 +496,21 @@ namespace CoolapkUWP.Pages.FeedPages
                 feedArticleTitle.Height = feedArticleTitle.Width * 0.44;
             void set()
             {
-                mainListViewPadding = new Thickness(0);
-                detailListPadding = new Thickness(0, Settings.PageTitleHeight, 0, PivotItemPanel.ActualHeight + 16);
+                RightSideListView.Padding = Settings.stackPanelMargin;
+                detailList.Padding = new Thickness(0, Settings.PageTitleHeight, 0, PivotItemPanel.ActualHeight + 16);
                 detailListHeight = e?.NewSize.Height ?? Window.Current.Bounds.Height;
                 RightColumnDefinition.Width = new GridLength(1, GridUnitType.Star);
                 MainListView.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Disabled);
                 MainListView.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
+                MainListView.Padding = new Thickness(0);
+                MainListView.Margin = new Thickness(0);
                 detailList.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Auto);
                 RightSideListView.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Auto);
                 RightSideListView.SetValue(Grid.ColumnProperty, 1);
                 RightSideListView.SetValue(Grid.RowProperty, 0);
                 RightSideListView.InvalidateArrange();
                 RefreshAll = false;
-                replyFlyoutFrame.Width = 640;
+                replyFlyoutFrame.Width = (double)Application.Current.Resources["FlyoutThemeMaxWidth"];
             }
             if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 768 && !(FeedDetail?.isFeedArticle ?? false))
             {
@@ -565,9 +526,10 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             else
             {
-                mainListViewPadding = Settings.stackPanelMargin;
+                MainListView.Margin = new Thickness(0, 0, 0, PivotItemPanel.ActualHeight + 16);
+                MainListView.Padding = Settings.stackPanelMargin;
                 PivotItemPanel.Margin = new Thickness(0);
-                detailListPadding = new Thickness(0, 0, 0, PivotItemPanel.ActualHeight + 16);
+                detailList.Padding = RightSideListView.Padding = new Thickness(0, 0, 0, 12);
                 detailListHeight = double.NaN;
                 LeftColumnDefinition.Width = new GridLength(1, GridUnitType.Star);
                 RightColumnDefinition.Width = new GridLength(0);

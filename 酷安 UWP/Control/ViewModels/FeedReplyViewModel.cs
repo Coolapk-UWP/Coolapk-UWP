@@ -12,7 +12,7 @@ namespace CoolapkUWP.Control.ViewModels
         {
             JsonObject token = t.GetObject();
             dateline = Tools.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
-            message = Tools.GetMessageText(token["message"].GetString());
+            message = token["message"].GetString();
             userSmallAvatarUrl = token["userInfo"].GetObject()["userSmallAvatar"].GetString();
             likenum = token["likenum"].ToString().Replace("\"", string.Empty);
             replynum = token["replynum"].ToString().Replace("\"", string.Empty);

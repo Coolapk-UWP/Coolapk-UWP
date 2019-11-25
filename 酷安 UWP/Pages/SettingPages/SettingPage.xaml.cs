@@ -115,14 +115,6 @@ namespace CoolapkUWP.Pages.SettingPages
             Tools.HideProgressBar();
         }
 
-        private void CleanDataButton_Click(object sender, RoutedEventArgs e)
-        {
-            ApplicationData.Current.LocalSettings.Values.Clear();
-            var cookieManager = new Windows.Web.Http.Filters.HttpBaseProtocolFilter().CookieManager;
-            foreach (var item in cookieManager.GetCookies(new Uri("http://account.coolapk.com")))
-                cookieManager.DeleteCookie(item);
-        }
-
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
             ToggleSwitch toggle = sender as ToggleSwitch;
@@ -133,7 +125,7 @@ namespace CoolapkUWP.Pages.SettingPages
                     Settings.CheckTheme();
                     break;
                 case "IsBackgroundColorFollowSystem":
-                    Settings.Set("IsDarkMode", Settings.uISettings.GetColorValue(UIColorType.Background).Equals(Colors.Black) ? true : false);
+                    Settings.Set("IsDarkMode", Settings.uISettings.GetColorValue(UIColorType.Background).Equals(Colors.Black));
                     Settings.CheckTheme();
                     IsDarkMode.IsOn = Settings.GetBoolen("IsDarkMode");
                     IsDarkMode.Visibility = toggle.IsOn ? Visibility.Collapsed : Visibility.Visible;
@@ -149,18 +141,40 @@ namespace CoolapkUWP.Pages.SettingPages
                 case "gotoTestPage": Tools.Navigate(typeof(TestPage), null); break;
                 case "checkUpdate": Settings.CheckUpdate(); break;
                 case "RefreshCache": GetCacheSize(); break;
+                case "logout": Settings.Logout(); break;
+                case "reset":
+                    MessageDialog dialog = new MessageDialog("进行此操作会同时退出登录。\n你确定吗？", "提示");
+                    dialog.Commands.Add(new UICommand("是"));
+                    dialog.Commands.Add(new UICommand("否"));
+                    if ((await dialog.ShowAsync()).Label == "是")
+                    {
+                        ApplicationData.Current.LocalSettings.Values.Clear();
+                        Settings.Logout();
+                    }
+                    break;
                 case "CleanCache":
-                    CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = false;
+                    CleanCacheButton.IsEnabled = CleanAllCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = false;
                     CacheSizeTextBlock.Text = "正在处理……";
                     foreach (var item in CacheSizeListView.SelectedItems)
                         await ImageCache.CleanCache((item as CacheSizeViewModel).type);
+                    CleanAllCacheButton.IsEnabled = true;
+                    GetCacheSize();
+                    CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = true;
+                    break;
+                case "CleanAllCache":
+                    if (source != null) source.Cancel();
+                    CleanCacheButton.IsEnabled = CleanAllCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = false;
+                    CacheSizeTextBlock.Text = "正在处理……";
+                    for (int i = 0; i < 5; i++)
+                        await ImageCache.CleanCache((ImageType)i);
+                    CleanAllCacheButton.IsEnabled = true;
                     GetCacheSize();
                     CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = true;
                     break;
             }
         }
 
-        private void CacheSizeListView_SelectionChanged(object sender, SelectionChangedEventArgs e) => CleanCacheButton.IsEnabled = e.AddedItems.Count > 0;
+        private void CacheSizeListView_SelectionChanged(object sender, SelectionChangedEventArgs e) => CleanCacheButton.IsEnabled = (sender as ListView).SelectedItems.Count > 0;
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
     }

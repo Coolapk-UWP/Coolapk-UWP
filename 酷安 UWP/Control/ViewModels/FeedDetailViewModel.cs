@@ -30,16 +30,13 @@ namespace CoolapkUWP.Control.ViewModels
                     {
                         JsonObject item = i.GetObject();
                         if (item["type"].GetString() == "text")
-                            builder.Append(Tools.GetMessageText(item["message"].GetString()));
+                            builder.Append(item["message"].GetString());
                         else if (item["type"].GetString() == "image")
                         {
-                            string d = string.IsNullOrEmpty(item["description"].GetString()) ? string.Empty : item["description"].GetString();
-                            string p = item["url"].GetString();
-                            string st = string.Empty;
-                            if (p.Substring(p.LastIndexOf('.')).ToLower().Contains("gif"))
-                                st = "`GIF`\n\n";
-                            builder.Append($"\n\n{st}![{d.Replace("]", " ")}]({p})\n\n>{d}\n\n");
-                            feedArticlePics.Add(item["url"].GetString());
+                            string description = string.IsNullOrEmpty(item["description"].GetString()) ? string.Empty : item["description"].GetString();
+                            string uri = item["url"].GetString();
+                            builder.Append($"\n<a t=\"image\" href=\"{uri}\">{description}</a>\n");
+                            feedArticlePics.Add(uri);
                         }
                     }
                     message_raw_output = builder.ToString();

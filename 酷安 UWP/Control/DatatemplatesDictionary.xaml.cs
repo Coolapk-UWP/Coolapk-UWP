@@ -15,25 +15,15 @@ namespace CoolapkUWP.Control
         private void OnTapped(object sender, TappedRoutedEventArgs e)
             => Tools.OpenLink((sender as FrameworkElement).Tag as string);
 
-        private void MarkdownTextBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
-        {
-            if (e.Link.Replace("mailto:", string.Empty).IndexOf("http://image.coolapk.com") == 0)
-                Tools.ShowImage(e.Link.Replace("mailto:", string.Empty), ImageType.SmallImage);
-            else Tools.OpenLink(e.Link);
-        }
-
         private void PicA_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (sender is Windows.UI.Xaml.Controls.GridView view)
+            if (sender is GridView view)
             {
                 if (view.SelectedIndex > -1 && view.Tag is System.Collections.Generic.List<string> ss)
                     Tools.ShowImages(ss.ToArray(), view.SelectedIndex);
                 view.SelectedIndex = -1;
             }
         }
-
-        private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
-            => Tools.Navigate(typeof(Pages.FeedPages.FeedDetailPage), (sender as FrameworkElement).Tag.ToString());
 
         private void Image_Tapped(object sender, TappedRoutedEventArgs e)
             => Tools.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
@@ -47,8 +37,6 @@ namespace CoolapkUWP.Control
                 Tools.ShowPopup(popup);
             }
         }
-
-        private void MarkdownTextBlock_ImageResolving(object sender, Microsoft.Toolkit.Uwp.UI.Controls.ImageResolvingEventArgs e) => Tools.SetEmojiPadding(sender);
 
         private async void FeedButton_Click(object sender, RoutedEventArgs e)
         {
@@ -124,5 +112,8 @@ namespace CoolapkUWP.Control
             if (replyFlyoutFrame.Content is null)
                 replyFlyoutFrame.Navigate(typeof(Pages.FeedPages.MakeFeedPage), new object[] { Pages.FeedPages.MakeFeedMode.ReplyReply, ((double)element.Tag).ToString(), flyout });
         }
+
+        private void repRL_ItemClick(object sender, ItemClickEventArgs e)
+            => Tools.Navigate(typeof(Pages.FeedPages.FeedDetailPage), (e.ClickedItem as FrameworkElement).Tag.ToString());
     }
 }

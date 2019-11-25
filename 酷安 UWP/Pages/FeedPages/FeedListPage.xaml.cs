@@ -223,7 +223,7 @@ namespace CoolapkUWP.Pages.FeedPages
             public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
             {
                 if (p == 1 && page == 0) page = 1;
-                JsonArray Root = Tools.GetDataArray(await Tools.GetJson($"/dyhArticle/list?dyhId={Id}&type={(SelectedIndex == 0 ? "all" : "square")}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{((lastItem == 0) ? string.Empty : $" & lastItem ={lastItem}")}"));
+                JsonArray Root = Tools.GetDataArray(await Tools.GetJson($"/dyhArticle/list?dyhId={Id}&type={(SelectedIndex == 0 ? "all" : "square")}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{((lastItem == 0) ? string.Empty : $"&lastItem={lastItem}")}"));
                 if (!(Root is null) && Root.Count != 0)
                 {
                     if (page == 1 || p == 1)

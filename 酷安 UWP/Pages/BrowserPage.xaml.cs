@@ -27,7 +27,7 @@ namespace CoolapkUWP.Pages
                 else
                 {
                     TryLoginButton.Visibility = Visibility.Collapsed;
-                    GotoSystemBrowserButton.Visibility = Visibility.Collapsed;
+                    GotoSystemBrowserButton.Visibility = Visibility.Visible;
                 }
             }
         }
@@ -53,6 +53,7 @@ namespace CoolapkUWP.Pages
             if (IsLoginPage && args.Uri.AbsoluteUri == "https://www.coolapk.com/") CheckLogin();
             else if (args.Uri.AbsoluteUri == "https://account.coolapk.com/auth/loginByCoolapk")
                 IsLoginPage = true;
+            titleBar.Title = sender.DocumentTitle;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();

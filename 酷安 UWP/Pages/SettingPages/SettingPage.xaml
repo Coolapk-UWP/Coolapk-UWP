@@ -12,7 +12,7 @@
 
     <Grid>
         <ScrollViewer>
-            <StackPanel x:Name="stackP" Margin="{x:Bind data:Settings.stackPanelMargin}">
+            <StackPanel Padding="{x:Bind data:Settings.stackPanelMargin}">
                 <ToggleSwitch x:Name="IsUseOldEmojiMode" Header="使用旧式表情" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="IsBackgroundColorFollowSystem" Header="背景色跟随系统" Toggled="ToggleSwitch_Toggled"/>
                 <ToggleSwitch x:Name="IsDarkMode" Header="背景色" Toggled="ToggleSwitch_Toggled"
@@ -25,6 +25,7 @@
                         <SymbolIcon Symbol="Refresh"/>
                     </Button>
                     <Button x:Name="CleanCacheButton" Tag="CleanCache" Click="Button_Click" IsEnabled="False">清除</Button>
+                    <Button x:Name="CleanAllCacheButton" Tag="CleanAllCache" Click="Button_Click">清除全部</Button>
                 </StackPanel>
                 <ListView x:Name="CacheSizeListView" SelectionMode="Multiple" ItemsSource="{x:Bind models}" 
                           SelectionChanged="CacheSizeListView_SelectionChanged" ScrollViewer.VerticalScrollMode="Disabled">
@@ -45,8 +46,11 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                <StackPanel Orientation="Horizontal">
+                    <Button Click="Button_Click" Tag="logout">退出登录</Button>
+                    <Button Click="Button_Click" Tag="reset">恢复默认设置</Button>
+                </StackPanel>
                 <ToggleSwitch x:Name="CheckUpdateWhenLuanching" Header="启动时检查更新" Toggled="ToggleSwitch_Toggled"/>
-                <Button x:Name="CleanDataButton" Visibility="Collapsed" Click="CleanDataButton_Click" Content="退出登录"/>
                 <Button Tag="checkUpdate" Click="Button_Click">检查更新</Button>
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <TextBlock FontSize="20" VerticalAlignment="Center" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">版本：</TextBlock>

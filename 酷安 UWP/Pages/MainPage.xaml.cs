@@ -7,7 +7,6 @@ using System.ComponentModel;
 using Windows.ApplicationModel.Background;
 using Windows.Data.Json;
 using Windows.UI.Core;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -41,9 +40,6 @@ namespace CoolapkUWP.Pages
             this.InitializeComponent();
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
                 Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            Application.Current.LeavingBackground += ChangeThemeColor;
-            Settings.uISettings.ColorValuesChanged += ChangeThemeColor;
-            Settings.InitializeSettings();
             if (Settings.GetBoolen("CheckUpdateWhenLuanching")) Settings.CheckUpdate();
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
             {
@@ -62,18 +58,8 @@ namespace CoolapkUWP.Pages
                 }
             };
             Tools.mainPage = this;
-            Settings.CheckTheme();
             RegisterBackgroundTask();
             GetIndexPageItems();
-        }
-
-        private async void ChangeThemeColor(object sender, object e)
-        {
-            if (Settings.GetBoolen("IsBackgroundColorFollowSystem"))
-            {
-                Settings.Set("IsDarkMode", Settings.uISettings.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background).Equals(Windows.UI.Colors.Black) ? true : false);
-                await Dispatcher.RunAsync(CoreDispatcherPriority.High, () => Settings.CheckTheme());
-            }
         }
 
         private void NavigateInVFrame(int index)
@@ -334,7 +320,7 @@ namespace CoolapkUWP.Pages
             }
             else if (sender == NotifiesCenterButton)
             {
-                VFrame.Navigate(typeof(NotificationsPage));
+                VFrame.Navigate(typeof(NotificationsPage), NotificationPageType.Comment);
                 SetNavItemBorder(1);
             }
             else if (sender == MakeFeedButton)

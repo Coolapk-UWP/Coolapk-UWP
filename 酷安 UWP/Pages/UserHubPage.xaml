@@ -23,9 +23,9 @@
                     </Ellipse.Fill>
                 </Ellipse>
                 <StackPanel Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal">
-                    <TextBlock Foreground="White" Text="{x:Bind userName,Mode=OneWay}" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"/>
-                    <TextBlock Margin="12,0,4,0" Foreground="White" Text="Lv." VerticalAlignment="Center"/>
-                    <TextBlock Foreground="White" Text="{x:Bind levelNum,Mode=OneWay}" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="{x:Bind userName,Mode=OneWay}" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"/>
+                    <TextBlock Margin="12,0,4,0" Text="Lv." VerticalAlignment="Center"/>
+                    <TextBlock Text="{x:Bind levelNum,Mode=OneWay}" FontWeight="Bold" VerticalAlignment="Center"/>
                 </StackPanel>
                 <Grid Grid.Row="2" Padding="4">
                     <Grid.ColumnDefinitions>
@@ -36,29 +36,25 @@
                     <Button Tag="feed" Click="Button_Click" Grid.Column="0" HorizontalAlignment="Stretch" 
                         Style="{StaticResource ButtonStyle1}" VerticalAlignment="Stretch" Padding="0">
                         <StackPanel>
-                            <TextBlock Foreground="White" HorizontalAlignment="Center">动态</TextBlock>
-                            <TextBlock Foreground="White" HorizontalAlignment="Center" Text="{x:Bind feedNum,Mode=OneWay}"/>
+                            <TextBlock HorizontalAlignment="Center">动态</TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Text="{x:Bind feedNum,Mode=OneWay}"/>
                         </StackPanel>
                     </Button>
                     <Button Tag="follow" Click="Button_Click" Grid.Column="1" HorizontalAlignment="Stretch" 
                         Style="{StaticResource ButtonStyle1}" VerticalAlignment="Stretch" Padding="0">
                         <StackPanel>
-                            <TextBlock Foreground="White" HorizontalAlignment="Center">关注</TextBlock>
-                            <TextBlock Foreground="White" HorizontalAlignment="Center" Text="{x:Bind followNum,Mode=OneWay}"/>
+                            <TextBlock HorizontalAlignment="Center">关注</TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Text="{x:Bind followNum,Mode=OneWay}"/>
                         </StackPanel>
                     </Button>
                     <Button Tag="fans" Click="Button_Click" Grid.Column="2" HorizontalAlignment="Stretch" 
                         Style="{StaticResource ButtonStyle1}" VerticalAlignment="Stretch" Padding="0">
                         <StackPanel>
-                            <TextBlock Foreground="White" HorizontalAlignment="Center">粉丝</TextBlock>
-                            <TextBlock Foreground="White" HorizontalAlignment="Center" Text="{x:Bind fansNum,Mode=OneWay}"/>
+                            <TextBlock HorizontalAlignment="Center">粉丝</TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Text="{x:Bind fansNum,Mode=OneWay}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
-                <Button Style="{StaticResource ButtonStyle1}" Padding="16,4" Click="Button_Click" Background="Transparent"
-                    VerticalAlignment="Top" HorizontalAlignment="Right" Tag="logout">
-                    退出登录
-                </Button>
             </Grid>
             <Button Height="160" x:Name="LoginButton" Visibility="Collapsed" Click="LoginButton_Click" HorizontalAlignment="Stretch">
                 点击登录

@@ -29,12 +29,12 @@
           <uap:Rotation Preference="landscape" />
           <uap:Rotation Preference="landscapeFlipped" />
         </uap:InitialRotationPreference>
-        <uap:LockScreen Notification="badge" BadgeLogo="Assets\BadgeLogo.png"/>
+        <uap:LockScreen Notification="badge" BadgeLogo="Assets\BadgeLogo.png" />
       </uap:VisualElements>
       <Extensions>
         <Extension Category="windows.backgroundTasks" EntryPoint="CoolapkUWP.Data.BackgroundTask">
           <BackgroundTasks>
-            <Task Type="timer"/>
+            <Task Type="timer" />
           </BackgroundTasks>
         </Extension>
       </Extensions>

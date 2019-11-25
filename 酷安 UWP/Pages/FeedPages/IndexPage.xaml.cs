@@ -139,10 +139,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            Tools.OpenLink((sender as FrameworkElement).Tag as string);
-        }
+        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => Tools.OpenLink((sender as FrameworkElement).Tag as string);
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
@@ -156,10 +153,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        public void RefreshPage()
-        {
-            GetUrlPage(1);
-        }
+        public void RefreshPage() => GetUrlPage(1);
 
         private void Button_Click(object sender, RoutedEventArgs e)
             => Tools.Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, (sender as FrameworkElement).Tag as string });
@@ -227,8 +221,6 @@ namespace CoolapkUWP.Pages.FeedPages
             Collection.Clear();
             GetUrlPage();
         }
-
-        private void MarkdownTextBlock_ImageResolving(object sender, Microsoft.Toolkit.Uwp.UI.Controls.ImageResolvingEventArgs e) => Tools.SetEmojiPadding(sender);
 
         private void Pivot_Loaded(object sender, RoutedEventArgs e)
         {

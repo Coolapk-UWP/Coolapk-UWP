@@ -228,7 +228,7 @@
                         </StackPanel>
                         <StackPanel Grid.Row="1">
                             <TextBlock TextWrapping="Wrap" FontWeight="Black" FontSize="16" Margin="0,4" Text="{x:Bind message_title}"/>
-                            <controls:MarkdownTextBlock  ImageResolving="MarkdownTextBlock_ImageResolving" IsTextSelectionEnabled="False" Text="{x:Bind message}"/>
+                            <control:MTextBlock MessageText="{x:Bind message}"/>
                         </StackPanel>
                     </Grid>
                 </ListViewItem>
@@ -237,7 +237,7 @@
     </Page.Resources>
 
     <Grid>
-        <controls:PullToRefreshListView Name="listView" ItemsSource="{x:Bind Collection}" RefreshRequested="{x:Bind RefreshPage}" PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新"
+        <controls:PullToRefreshListView x:Name="listView" ItemsSource="{x:Bind Collection}" RefreshRequested="{x:Bind RefreshPage}" PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新"
                                         Padding="{x:Bind data:Settings.stackPanelMargin}" ItemTemplateSelector="{StaticResource FTemplateSelector}" SelectionMode="None">
             <controls:PullToRefreshListView.ItemsPanel>
                 <ItemsPanelTemplate>
