@@ -1,4 +1,4 @@
-![酷安](logo.png)
+<img alt="fluentterminal logo" src="./logo.png" width="200px" />
 
 # Coolapk UWP
 一个基于UWP的酷安客户端
