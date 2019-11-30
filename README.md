@@ -66,20 +66,23 @@
 ## 屏幕截图
 - 启动图
 ![启动图](Screenshots/2019-10-23-127642.png)
-- 主页
-![主页](Screenshots/批注-2019-10-23-115333.jpg)
-- 应用与游戏
-![应用与游戏](Screenshots/批注-2019-10-23-115847.jpg)
-- 应用详情
-![应用详情](Screenshots/批注-2019-10-23-115941.jpg)
-- 动态
-![动态](Screenshots/批注-2019-10-23-223657.jpg)
-- 图文
-![图文](Screenshots/批注-2019-10-23-224009.jpg)
-- 问答
-![问答](Screenshots/批注-2019-10-23-224147.jpg)
+- 首页
+![头条](Screenshots/批注-2019-11-30-184431.jpg)
+![关注](Screenshots/批注-2019-11-30-183949.jpg)
 - 搜索
-![搜索](Screenshots/批注-2019-10-23-223335.jpg)
+![搜索栏](Screenshots/批注-2019-11-30-182039.jpg)
+![搜索页面](Screenshots/批注-2019-11-30-182138.jpg)
+- 应用游戏
+![应用游戏](Screenshots/批注-2019-11-30-182900.jpg)
+- 应用详情
+![应用详情](Screenshots/批注-2019-11-30-182933.jpg)
+- 动态
+![个人动态](Screenshots/批注-2019-11-30-183116.jpg)
+- 图文
+![图文](Screenshots/批注-2019-11-30-183241.jpg)
+- 问答
+![问答](Screenshots/批注-2019-11-30-184130.jpg)
+
 
 ## 鸣谢
 - 酷安UWP原作者[@一块小板子](http://www.coolapk.com/u/695942)([Github](https://github.com/oboard))
