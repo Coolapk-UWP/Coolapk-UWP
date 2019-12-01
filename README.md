@@ -1,7 +1,7 @@
 <img alt="Coolapk LOGO" src="./logo.png" width="200px" />
 
 # Coolapk UWP
-一个基于UWP的酷安客户端
+一个基于UWP平台的酷安客户端
 
 基于[@一块小板子](http://www.coolapk.com/u/695942)的源码([Github](https://github.com/oboard/CoolApk-UWP))
 
