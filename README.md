@@ -5,6 +5,8 @@
 
 基于[@一块小板子](http://www.coolapk.com/u/695942)的源码([Github](https://github.com/oboard/CoolApk-UWP))
 
+欢迎感兴趣的伙伴继续完善这个程序 - [未完成的内容](#未完成的内容)
+
 <a href="https://github.com/Tangent-90/Coolapk-UWP/blob/master/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/Tangent-90/Coolapk-UWP.svg?label=License&style=flat-square"></a>
 <a href="https://github.com/Tangent-90/Coolapk-UWP/issues"><img alt="GitHub" src="https://img.shields.io/github/issues/Tangent-90/Coolapk-UWP.svg?label=Issues&style=flat-square"></a>
 <a href="https://github.com/Tangent-90/Coolapk-UWP/stargazers"><img alt="GitHub" src="https://img.shields.io/github/stars/Tangent-90/Coolapk-UWP.svg?label=Stars&style=flat-square"></a>
@@ -22,6 +24,7 @@
   - [更新应用](#更新应用)
 - [屏幕截图](#屏幕截图)
 - [鸣谢](#鸣谢)
+- [未完成的内容](#未完成的内容)
 
 ## 现有功能
 1. 动态磁贴
@@ -90,7 +93,6 @@
 - 问答
 ![问答](Screenshots/批注-2019-11-30-184130.jpg)
 
-
 ## 鸣谢
 - 酷安UWP原作者[@一块小板子](http://www.coolapk.com/u/695942)([Github](https://github.com/oboard))
 - OpenCoolapk作者[@roykio](http://www.coolapk.com/u/703542)([Github](https://github.com/roykio))
@@ -98,3 +100,6 @@
 - Coolapk-kotlin作者[@bjzhou](http://www.coolapk.com/u/528097)([Github](https://github.com/bjzhou))
 - 以及所有为酷安UWP项目做出贡献的同志们
 - **铺路尚未成功，同志仍需努力！**
+
+## 未完成的内容
+- 动态内容显示器的内容解析模块(/Control/MTextBlock.xaml.cs)
