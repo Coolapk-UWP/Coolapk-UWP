@@ -4,11 +4,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
-    xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
-    NavigationCacheMode="Required" SizeChanged="Page_SizeChanged"
+    NavigationCacheMode="Required"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
@@ -19,82 +17,61 @@
     </Page.Resources>
 
     <Grid>
-        <Frame x:Name="VFrame">
-            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">正在加载……</TextBlock>
-            </Grid>
-        </Frame>
-        <Grid x:Name="PCTopBar" VerticalAlignment="Top" Height="{x:Bind data:Settings.PageTitleHeight}" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" BorderThickness="0,0,0,2" Padding="0,0,0,-2"
-                  cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" fcu:Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <ListView ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollMode="Disabled"
-                          SelectionChanged="ListView_SelectionChanged" x:Name="TopNavListView" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsStackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="MinWidth" Value="32"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListViewItem">
-                                    <ListViewItemPresenter x:Name="Root" PressedBackground="Transparent" 
-                                                               PlaceholderBackground="Transparent" 
-                                                               PointerOverBackground="Transparent" 
-                                                               SelectedBackground="Transparent" 
-                                                               SelectedPressedBackground="Transparent" 
-                                                               SelectedPointerOverBackground="Transparent">
-                                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
-                                            <ContentPresenter Margin="0" Padding="6,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                        </Border>
-                                    </ListViewItemPresenter>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListViewItem Width="60">首页</ListViewItem>
-                <AppBarSeparator Width="20"/>
-                <ListViewItem>应用游戏</ListViewItem>
-                <ListViewItem Visibility="{x:Bind AppPageNavButtonVisibility,Mode=OneWay}">应用</ListViewItem>
-                <ListViewItem Visibility="{x:Bind AppPageNavButtonVisibility,Mode=OneWay}">游戏</ListViewItem>
-                <ListViewItem Visibility="{x:Bind AppPageNavButtonVisibility,Mode=OneWay}">分类</ListViewItem>
-            </ListView>
-            <StackPanel Orientation="Horizontal" Grid.Column="1">
-                <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
-                        VerticalAlignment="Bottom" Height="48" Width="48" Click="SearchButton_Click" x:Name="SearchButton">
-                    <SymbolIcon Symbol="Find"/>
-                </Button>
-                <AutoSuggestBox Visibility="Collapsed" LostFocus="SearchBox_LostFocus" x:Name="SearchBox" Margin="4,0,0,8" Height="32" Grid.Column="1" VerticalAlignment="Bottom" QueryIcon="Find" ItemTemplateSelector="{StaticResource tspl}" MinWidth="180"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Pivot x:Name="MainPivot" Margin="{x:Bind data:Settings.stackPanelMargin}" SelectionChanged="MainPivot_SelectionChanged"/>
+        <!--
+            <Pivot.RightHeader>
+                <StackPanel Orientation="Horizontal">
+                    <Button Background="Transparent" Padding="2" Click="SearchButton_Click" x:Name="SearchButton">
+                        <SymbolIcon Symbol="Find"/>
+                    </Button>
+                <AutoSuggestBox Visibility="Collapsed" LostFocus="SearchBox_LostFocus" x:Name="SearchBox" Margin="4,0,0,8" Height="32" Grid.Column="1" VerticalAlignment="Bottom" QueryIcon="Find" ItemTemplate="{StaticResource searchWord}" MinWidth="180"
                                 TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" SuggestionChosen="AutoSuggestBox_SuggestionChosen"/>
-                <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
-                        VerticalAlignment="Bottom" Height="48" Width="48" Click="Button_Click" x:Name="MakeFeedButton">
-                    <SymbolIcon Symbol="Add"/>
-                </Button>
-                <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
+                        <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
                         VerticalAlignment="Bottom" Height="48" Width="48" Click="Button_Click" x:Name="NotifiesCenterButton" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="" x:Name="NotifyStatus"/>
-                        <TextBlock x:Name="NotifyNumber" VerticalAlignment="Bottom" Margin="2,0"/>
-                    </StackPanel>
-                </Button>
-                <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
-                        VerticalAlignment="Bottom" Height="48" Width="48" x:Name="UserButton" Click="Button_Click" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
-                    <Grid>
-                        <SymbolIcon Symbol="Contact"/>
-                        <Ellipse Width="26" Height="26">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="{x:Bind UserAvatar,Mode=OneWay}"/>
-                            </Ellipse.Fill>
-                        </Ellipse>
-                    </Grid>
-                </Button>
-            </StackPanel>
-        </Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="" x:Name="NotifyStatus"/>
+                                <TextBlock x:Name="NotifyNumber" VerticalAlignment="Bottom" Margin="2,0"/>
+                            </StackPanel>
+                        </Button>
+                    <Button Background="Transparent" Padding="2" x:Name="UserButton">
+                        <Grid>
+                            <SymbolIcon Symbol="Contact"/>
+                            <Ellipse Width="20" Height="20">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{x:Bind UserAvatar,Mode=OneWay}"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Grid>
+                        <Button.Flyout>
+                            <Flyout>
+                                <control:UserHub/>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </StackPanel>
+            </Pivot.RightHeader>    
+                        -->
+        <CommandBar VerticalAlignment="Bottom" Grid.Row="1">
+            <CommandBar.Content>
+                <ComboBox Margin="4,4,0,0" x:Name="PivotItemsComboBox" SelectionChanged="PivotItemsComboBox_SelectionChanged"/>
+            </CommandBar.Content>
+            <AppBarButton Click="SearchButton_Click" x:Name="SearchButton" Label="搜索" Icon="Find"/>
+            <AppBarButton Click="NotificationCenterButton_Click" x:Name="NotificationCenterButton" Label="通知">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED0D;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="UserButton" Label="我" Icon="Contact">
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <control:UserHub/>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+        </CommandBar>
     </Grid>
 </Page>

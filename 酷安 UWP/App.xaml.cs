@@ -62,7 +62,7 @@ namespace CoolapkUWP
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
-        private async void Application_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private async void Application_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             e.Handled = true;
             if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))

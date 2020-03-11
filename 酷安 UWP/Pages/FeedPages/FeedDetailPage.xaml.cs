@@ -425,12 +425,6 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void GetMoreHotReplyListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => RefreshHotFeed();
 
-        private void Flyout_Opened(object sender, object e)
-        {
-            if (replyFlyoutFrame.Content is null)
-                replyFlyoutFrame.Navigate(typeof(MakeFeedPage), new object[] { MakeFeedMode.Reply, feedId, sender });
-        }
-
         private void FeedDetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (FeedDetailPivot != null)
@@ -510,7 +504,6 @@ namespace CoolapkUWP.Pages.FeedPages
                 RightSideListView.SetValue(Grid.RowProperty, 0);
                 RightSideListView.InvalidateArrange();
                 RefreshAll = false;
-                replyFlyoutFrame.Width = (double)Application.Current.Resources["FlyoutThemeMaxWidth"];
             }
             if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 768 && !(FeedDetail?.isFeedArticle ?? false))
             {
@@ -540,7 +533,6 @@ namespace CoolapkUWP.Pages.FeedPages
                 RightSideListView.SetValue(Grid.ColumnProperty, 0);
                 RightSideListView.SetValue(Grid.RowProperty, 1);
                 RefreshAll = true;
-                replyFlyoutFrame.Width = double.NaN;
             }
         }
         #endregion

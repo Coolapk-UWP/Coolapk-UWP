@@ -95,24 +95,6 @@ namespace CoolapkUWP.Control
             }
         }
 
-        private void Flyout_Opened(object sender, object e)
-        {
-            Flyout flyout = sender as Flyout;
-            FrameworkElement element = flyout.Target as FrameworkElement;
-            Frame replyFlyoutFrame = flyout.Content as Frame;
-            if (replyFlyoutFrame.Content is null)
-                replyFlyoutFrame.Navigate(typeof(Pages.FeedPages.MakeFeedPage), new object[] { Pages.FeedPages.MakeFeedMode.Reply, element.Tag, flyout });
-        }
-
-        private void Flyout_Opened_1(object sender, object e)
-        {
-            Flyout flyout = sender as Flyout;
-            FrameworkElement element = flyout.Target as FrameworkElement;
-            Frame replyFlyoutFrame = flyout.Content as Frame;
-            if (replyFlyoutFrame.Content is null)
-                replyFlyoutFrame.Navigate(typeof(Pages.FeedPages.MakeFeedPage), new object[] { Pages.FeedPages.MakeFeedMode.ReplyReply, ((double)element.Tag).ToString(), flyout });
-        }
-
         private void repRL_ItemClick(object sender, ItemClickEventArgs e)
             => Tools.Navigate(typeof(Pages.FeedPages.FeedDetailPage), (e.ClickedItem as FrameworkElement).Tag.ToString());
     }

@@ -51,11 +51,11 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             base.OnNavigatedTo(e);
             Tools.ShowProgressBar();
-            IsNoPicsMode.IsOn = Settings.GetBoolen("IsNoPicsMode");
-            IsUseOldEmojiMode.IsOn = Settings.GetBoolen("IsUseOldEmojiMode");
-            IsDarkMode.IsOn = Settings.GetBoolen("IsDarkMode");
-            CheckUpdateWhenLuanching.IsOn = Settings.GetBoolen("CheckUpdateWhenLuanching");
-            IsBackgroundColorFollowSystem.IsOn = Settings.GetBoolen("IsBackgroundColorFollowSystem");
+            IsNoPicsMode.IsOn = Settings.Get<bool>("IsNoPicsMode");
+            IsUseOldEmojiMode.IsOn = Settings.Get<bool>("IsUseOldEmojiMode");
+            IsDarkMode.IsOn = Settings.Get<bool>("IsDarkMode");
+            CheckUpdateWhenLuanching.IsOn = Settings.Get<bool>("CheckUpdateWhenLuanching");
+            IsBackgroundColorFollowSystem.IsOn = Settings.Get<bool>("IsBackgroundColorFollowSystem");
             IsDarkMode.Visibility = IsBackgroundColorFollowSystem.IsOn ? Visibility.Collapsed : Visibility.Visible;
             VersionTextBlock.Text = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
 #if DEBUG
@@ -127,7 +127,7 @@ namespace CoolapkUWP.Pages.SettingPages
                 case "IsBackgroundColorFollowSystem":
                     Settings.Set("IsDarkMode", Settings.uISettings.GetColorValue(UIColorType.Background).Equals(Colors.Black));
                     Settings.CheckTheme();
-                    IsDarkMode.IsOn = Settings.GetBoolen("IsDarkMode");
+                    IsDarkMode.IsOn = Settings.Get<bool>("IsDarkMode");
                     IsDarkMode.Visibility = toggle.IsOn ? Visibility.Collapsed : Visibility.Visible;
                     break;
             }

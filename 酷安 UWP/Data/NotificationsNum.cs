@@ -20,7 +20,6 @@ namespace CoolapkUWP.Data
                 if (value != badgeNum)
                 {
                     badgeNum = value;
-                    TileManager.SetBadgeNum(value);
                     BadgeNumberChanged?.Invoke(this, null);
                 }
             }
@@ -48,45 +47,36 @@ namespace CoolapkUWP.Data
             if (o != null)
             {
                 BadgeNum = o["badge"].GetNumber();
-                bool numChanged = false;
                 if (o["contacts_follow"].GetNumber() != followNum)
                 {
                     followNum = o["contacts_follow"].GetNumber();
-                    numChanged = true;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(followNum)));
                 }
                 if (o["message"].GetNumber() != messageNum)
                 {
                     messageNum = o["message"].GetNumber();
-                    numChanged = true;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(messageNum)));
                 }
                 if (o["atme"].GetNumber() != atMeNum)
                 {
                     atMeNum = o["atme"].GetNumber();
-                    numChanged = true;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(atMeNum)));
                 }
                 if (o["atcommentme"].GetNumber() != atCommentMeNum)
                 {
                     atCommentMeNum = o["atcommentme"].GetNumber();
-                    numChanged = true;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(atCommentMeNum)));
                 }
                 if (o["commentme"].GetNumber() != commentMeNum)
                 {
                     commentMeNum = o["commentme"].GetNumber();
-                    numChanged = true;
-                    //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(commentMeNum)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(commentMeNum)));
                 }
                 if (o["feedlike"].GetNumber() != feedLikeNum)
                 {
                     feedLikeNum = o["feedlike"].GetNumber();
-                    numChanged = true;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(feedLikeNum)));
                 }
-                if (numChanged)
-                    TileManager.SetTile(followNum, messageNum, atMeNum, atCommentMeNum, commentMeNum, feedLikeNum);
             }
         }
     }

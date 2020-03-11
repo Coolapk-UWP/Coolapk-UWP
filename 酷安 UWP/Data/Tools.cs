@@ -39,9 +39,10 @@ namespace CoolapkUWP.Data
             mClient.DefaultRequestHeaders.Add("X-App-Version", "9.2.2");
             mClient.DefaultRequestHeaders.Add("X-App-Code", "1905301");
             mClient.DefaultRequestHeaders.Add("X-Api-Version", "9");
-            //mClient.DefaultRequestHeaders.Add("X-App-Device", "QRTBCOgkUTgsTat9WYphFI7kWbvFWaYByO1YjOCdjOxAjOxEkOFJjODlDI7ATNxMjM5MTOxcjMwAjN0AyOxEjNwgDNxITM2kDMzcTOgsTZzkTZlJ2MwUDNhJ2MyYzM");
+            string s = Guid.NewGuid().ToString();
+            mClient.DefaultRequestHeaders.Add("X-App-Device", GetMD5(s + s + s) + "ady6r8"); //随便弄的
             mClient.DefaultRequestHeaders.Add("Cookie", Settings.cookie);
-            Popup popup = new Popup { RequestedTheme = Settings.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
+            Popup popup = new Popup { RequestedTheme = Settings.Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
             StatusGrid statusGrid2 = new StatusGrid();
             popup.Child = statusGrid2;
             popups.Add(popup);
@@ -51,7 +52,7 @@ namespace CoolapkUWP.Data
         #region UI相关
         public static void ShowPopup(Popup popup)
         {
-            popup.RequestedTheme = Settings.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
+            popup.RequestedTheme = Settings.Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
                 popups.Insert(popups.Count - 1, popup);
             else
@@ -156,7 +157,7 @@ namespace CoolapkUWP.Data
             if (string.IsNullOrWhiteSpace(str)) return;
             if (str == "/contacts/fans")
             {
-                Navigate(typeof(UserListPage), new object[] { Settings.GetString("Uid"), false, "我" });
+                Navigate(typeof(UserListPage), new object[] { Settings.Get<string>("Uid"), false, "我" });
                 return;
             }
             if (str.Contains('?')) str = str.Substring(0, str.IndexOf('?'));
@@ -186,12 +187,6 @@ namespace CoolapkUWP.Data
             {
                 string u = str.Replace("/dyh/", string.Empty);
                 Navigate(typeof(FeedListPage), new object[] { FeedListType.DYHPageList, u });
-                return;
-            }
-            else if (str.IndexOf("/apk/") == 0)
-            {
-                string u = "http://www.coolapk.com" + str;
-                Navigate(typeof(Pages.AppPages.AppPage), u);
                 return;
             }
             else if (str.IndexOf("https") == 0)
@@ -334,19 +329,6 @@ namespace CoolapkUWP.Data
             else if (temptime.Hours > 0) return $"{temptime.Hours}小时前";
             else if (temptime.Minutes > 0) return $"{temptime.Minutes}分钟前";
             else return "刚刚";
-        }
-
-        public static string ReplaceHtml(string str)
-        {
-            //换行和段落
-            string s = str.Replace("<br>", "\n").Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br />", "\n").Replace("<p>", "").Replace("</p>", "\n").Replace("&nbsp;", " ");
-            //链接彻底删除！
-            while (s.IndexOf("<a") > 0)
-            {
-                s = s.Replace(@"<a href=""" + Regex.Split(Regex.Split(s, @"<a href=""")[1], @""">")[0] + @""">", "");
-                s = s.Replace("</a>", "");
-            }
-            return s;
         }
 
         public static async Task<string> GetUserIDByName(string name)

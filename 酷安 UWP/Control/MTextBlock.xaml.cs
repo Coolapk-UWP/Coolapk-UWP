@@ -35,7 +35,8 @@ namespace CoolapkUWP.Control
         {
             Regex hrefRegex = new Regex("href=\".+?\"");
             string xamlContent = "<Paragraph>";
-            foreach (var item in GetStringList())
+            List<string> list = GetStringList();
+            foreach (var item in list)
             {
                 if (string.IsNullOrEmpty(item))
                     xamlContent += "</Paragraph><Paragraph>";
@@ -58,7 +59,7 @@ namespace CoolapkUWP.Control
             <Image Source='{await ImageCache.GetImagePath(ImageType.SmallImage, href)}' Tag='{href}' ToolTipService.ToolTip='{content}'/>";
                                 if (isGif)
                                     xamlContent += @"
-            <Border Background='{ThemeResource SystemControlBackgroundAccentBrush}' VerticalAlignment='Bottom' HorizontalAlignment='Righ'>
+            <Border Background='{ThemeResource SystemControlBackgroundAccentBrush}' VerticalAlignment='Bottom' HorizontalAlignment='Right'>
                 <TextBlock>GIF</TextBlock>
             </Border>
         </Grid>
@@ -75,8 +76,8 @@ namespace CoolapkUWP.Control
                             {
                                 if (!uris.ContainsKey(content)) uris.Add(content, href);
                                 xamlContent += $@"
-<Hyperlink Click='Hyperlink_Click' ToolTipService.ToolTip='{href}'>
-    <Run Text='{content}'/>
+<Hyperlink Click='Hyperlink_Click' ToolTipService.ToolTip='{href.Replace("&", "&amp;")}'>
+    <Run Text='{content.Replace("&", "&amp;")}'/>
 </Hyperlink>";
                             }
                             break;
@@ -90,7 +91,7 @@ namespace CoolapkUWP.Control
                             else xamlContent += $@"<Run Text='{item}'/>";
                             break;
                         case '[':
-                            if (Settings.GetBoolen("IsUseOldEmojiMode") && Emojis.oldEmojis.Contains(item))
+                            if (Settings.Get<bool>("IsUseOldEmojiMode") && Emojis.oldEmojis.Contains(item))
                                 xamlContent += $@"
 <InlineUIContainer>
     <Image Source='{$"/Assets/Emoji/{item}2.png"}' Height='20' Width='20' ToolTipService.ToolTip='{item}'/>
@@ -103,7 +104,7 @@ namespace CoolapkUWP.Control
                             else xamlContent += $@"<Run Text='{item}'/>";
                             break;
                         default:
-                            xamlContent += $@"<Run Text='{item}'/>";
+                            xamlContent += $@"<Run Text='{item.Replace("&", "&amp;")}'/>";
                             break;
                     }
             }
@@ -133,7 +134,7 @@ namespace CoolapkUWP.Control
 
         List<string> GetStringList()
         {
-            Regex linkRegex = new Regex("<a.*?>.*?</a>"), emojiRegex = new Regex(@"\[\S*?\]|#\(\S*?\)");
+            Regex linkRegex = new Regex("<a.*?>.*?</a>"), emojiRegex1 = new Regex(@"\[\S*?\]"), emojiRegex2 = new Regex(@"#\(\S*?\)");
             List<string> result = new List<string>();
             for (int i = 0; i < MessageText.Length;)
             {
@@ -154,11 +155,11 @@ namespace CoolapkUWP.Control
             {
                 for (int i = 0; i < result[j].Length;)
                 {
-                    var v = emojiRegex.Match(result[j], i);
+                    var v = emojiRegex1.Match(result[j], i);
                     int a = string.IsNullOrEmpty(v.Value) ? -1 : result[j].IndexOf(v.Value, i) - i;
                     if (a == 0)
                     {
-                        if (emojiRegex.IsMatch(result[j], i + v.Length) || result[j].Length > v.Length)
+                        if (Emojis.emojis.Contains(result[j].Substring(0, v.Length)) && (emojiRegex1.IsMatch(result[j], i + v.Length) || result[j].Length > v.Length))
                         {
                             result.Insert(j + 1, result[j].Substring(v.Length));
                             result[j] = result[j].Substring(0, v.Length);
@@ -167,8 +168,38 @@ namespace CoolapkUWP.Control
                     }
                     else if (a > 0)
                     {
-                        result.Insert(j + 1, result[j].Substring(a));
-                        result[j] = result[j].Substring(0, a);
+                        if (Emojis.emojis.Contains(result[j].Substring(a, v.Length)))
+                        {
+                            result.Insert(j + 1, result[j].Substring(a));
+                            result[j] = result[j].Substring(0, a);
+                        }
+                        i += a;
+                    }
+                    else if (a == -1) break;
+                }
+            }
+            for (int j = 0; j < result.Count; j++)
+            {
+                for (int i = 0; i < result[j].Length;)
+                {
+                    var v = emojiRegex2.Match(result[j], i);
+                    int a = string.IsNullOrEmpty(v.Value) ? -1 : result[j].IndexOf(v.Value, i) - i;
+                    if (a == 0)
+                    {
+                        if (Emojis.emojis.Contains(result[j].Substring(1, v.Length - 2)) && emojiRegex2.IsMatch(result[j], i + v.Length) || result[j].Length > v.Length)
+                        {
+                            result.Insert(j + 1, result[j].Substring(v.Length));
+                            result[j] = result[j].Substring(0, v.Length);
+                        }
+                        i += v.Length;
+                    }
+                    else if (a > 0)
+                    {
+                        if (Emojis.emojis.Contains(result[j].Substring(a + 1, v.Length - 2)))
+                        {
+                            result.Insert(j + 1, result[j].Substring(a));
+                            result[j] = result[j].Substring(0, a);
+                        }
                         i += a;
                     }
                     else if (a == -1) break;

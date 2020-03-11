@@ -19,11 +19,10 @@ namespace CoolapkUWP.Data
         public static double PageTitleHeight => HasStatusBar ? 48 : 80;
         public static SolidColorBrush SystemAccentColorBrush => Application.Current.Resources.ThemeDictionaries["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
         public static Thickness titleTextMargin => new Thickness(5, 12, 5, 12);
-        public static Thickness stackPanelMargin => new Thickness(0, PageTitleHeight, 0, 2);
+        public static Thickness stackPanelMargin => new Thickness(0, PageTitleHeight, 0, 0);
         public static VerticalAlignment titleContentVerticalAlignment => VerticalAlignment.Bottom;
-        public static ElementTheme theme => GetBoolen("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
-        public static bool GetBoolen(string key) => (bool)localSettings.Values[key];
-        public static string GetString(string key) => localSettings.Values[key] as string;
+        public static ElementTheme theme => Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
+        public static T Get<T>(string key) => (T)localSettings.Values[key];
         public static void Set(string key, object value) => localSettings.Values[key] = value;
 
         static Settings()
@@ -38,6 +37,8 @@ namespace CoolapkUWP.Data
                 localSettings.Values.Add("CheckUpdateWhenLuanching", true);
             if (!localSettings.Values.ContainsKey("IsBackgroundColorFollowSystem"))
                 localSettings.Values.Add("IsBackgroundColorFollowSystem", true);
+            if (!localSettings.Values.ContainsKey("DefaultFollowPageIndex"))
+                localSettings.Values.Add("DefaultFollowPageIndex", 0);
             if (localSettings.Values.ContainsKey("UserName"))
             {
                 localSettings.Values.Remove("Uid");

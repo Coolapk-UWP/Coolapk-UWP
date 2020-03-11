@@ -31,16 +31,15 @@ namespace CoolapkUWP.Pages.FeedPages
         List<string> urls = new List<string>();
         ObservableCollection<ObservableCollection<Entity>> Feeds2 = new ObservableCollection<ObservableCollection<Entity>>();
 
+        public bool CanLoadMore { get => Collection.Count != 0; }
         public IndexPage() => this.InitializeComponent();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             object[] vs = e.Parameter as object[];
-            //initialPage = vs[2] as InitialPage;
             if ((bool)vs[1]) TitleBar.Visibility = Visibility.Collapsed;
             pageUrl = vs[0] as string;
-            TitleBar.BackButtonVisibility = Visibility.Visible;
             if (pageUrl.Contains("&title=")) TitleBar.Title = pageUrl.Substring(pageUrl.LastIndexOf("&title=") + 7);
             if (pageUrl.IndexOf("/page") == -1 && pageUrl != "/main/indexV8") pageUrl = "/page/dataList?url=" + pageUrl;
             else if (pageUrl.IndexOf("/page") == 0 && !pageUrl.Contains("/page/dataList")) pageUrl = pageUrl.Replace("/page", "/page/dataList");
@@ -51,13 +50,12 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 await Task.Delay(1000);
                 await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
-                    (VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
-                });
+                    (VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged
+                );
             });
         }
 
-        async void GetUrlPage(int p = -1)
+        public async void GetUrlPage(int p = -1)
         {
             if (index == -1)
             {
@@ -144,13 +142,8 @@ namespace CoolapkUWP.Pages.FeedPages
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             ScrollViewer VScrollViewer = sender as ScrollViewer;
-            if (!e.IsIntermediate)
-            {
-                if (Collection.Count != 0)
-                    if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
-                        //if (string.IsNullOrEmpty(pageUrl)) GetIndexPage(++page);
-                        GetUrlPage();
-            }
+            if (!e.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight && CanLoadMore)
+                GetUrlPage();
         }
 
         public void RefreshPage() => GetUrlPage(1);
@@ -176,9 +169,9 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     str = str.Replace("/page", "/page/dataList");
                     str += $"&title={m.title}";
-                    Tools.Navigate(typeof(IndexPage), new object[] { str, false, null });
+                    Tools.Navigate(typeof(IndexPage), new object[] { str, false });
                 }
-                else if (str.IndexOf('#') == 0) Tools.Navigate(typeof(IndexPage), new object[] { $"{str}&title={m.title}", false, null });
+                else if (str.IndexOf('#') == 0) Tools.Navigate(typeof(IndexPage), new object[] { $"{str}&title={m.title}", false });
                 else Tools.OpenLink(str);
             }
         }
@@ -274,5 +267,7 @@ namespace CoolapkUWP.Pages.FeedPages
             u = "/page/dataList?url=" + u + $"&title={model.title}";
             _ = GetUrlPage(1, u, feeds);
         }
+
+        private void loginCard_Tapped(object sender, TappedRoutedEventArgs e) => Tools.Navigate(typeof(BrowserPage), new object[] { true, null });
     }
 }

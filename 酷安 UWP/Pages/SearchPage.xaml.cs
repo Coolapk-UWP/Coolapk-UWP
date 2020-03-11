@@ -3,16 +3,10 @@ using CoolapkUWP.Data;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Windows.Data.Json;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages
@@ -24,7 +18,6 @@ namespace CoolapkUWP.Pages
         public SearchPage()
         {
             this.InitializeComponent();
-            AppsResultList.ItemsSource = new ObservableCollection<AppViewModel>();
             FeedList.ItemsSource = new ObservableCollection<FeedViewModel>();
             UserList.ItemsSource = new ObservableCollection<UserViewModel>();
             TopicList.ItemsSource = new ObservableCollection<TopicViewModel>();
@@ -39,6 +32,7 @@ namespace CoolapkUWP.Pages
                 {
                     SearchText.Text = vs[1] as string;
                     SearchTypeComboBox.SelectedIndex = Convert.ToInt32(vs[0]);
+                    StartSearch();
                 }
             }
         }
@@ -150,49 +144,6 @@ namespace CoolapkUWP.Pages
             else pages[2]--;
             Tools.HideProgressBar();
         }
-        #region SearchApp
-        private async void SearchApps(string keyWord)
-        {
-            Tools.ShowProgressBar();
-            ObservableCollection<AppViewModel> infos = AppsResultList.ItemsSource as ObservableCollection<AppViewModel>;
-            infos.Clear();
-            try
-            {
-                string str = await new HttpClient().GetStringAsync(new Uri("https://www.coolapk.com/search?q=" + keyWord));
-                string body = Regex.Split(str, @"<div class=""left_nav"">")[1];
-                body = Regex.Split(body, @"<div class=""panel-footer ex-card-footer text-center"">")[0];
-                //&nbsp;处理
-                body = body.Replace("&nbsp;", " ");
-                string[] bodylist = Regex.Split(body, @"<a href=""");
-                string[] bodys = Regex.Split(body, @"\n");
-                for (int i = 0; i < bodylist.Length - 1; i++)
-                {
-                    infos.Add(new AppViewModel
-                    {
-                        Url = bodys[i * 15 + 5].Split('"')[1],
-                        Icon = new BitmapImage(new Uri(bodys[i * 15 + 5 + 3].Split('"')[3], UriKind.RelativeOrAbsolute)),
-                        AppName = bodys[i * 15 + 5 + 5].Split('>')[1].Split('<')[0],
-                        Size = bodys[i * 15 + 5 + 6].Split('>')[1].Split('<')[0],
-                        DownloadNum = bodys[i * 15 + 5 + 7].Split('>')[1].Split('<')[0]
-                    });
-                }
-                Tools.HideProgressBar();
-            }
-            catch (HttpRequestException e) { Tools.ShowHttpExceptionMessage(e); }
-            catch { throw; }
-        }
-
-        private void AppResultList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (AppsResultList.SelectedIndex == -1) return;
-            Tools.Navigate(typeof(AppPages.AppPage), "https://www.coolapk.com" + (AppsResultList.Items[AppsResultList.SelectedIndex] as AppViewModel).Url);
-            AppsResultList.SelectedIndex = -1;
-        }
-        #endregion
-        private void SearchTextBox_KeyUp(object sender, KeyRoutedEventArgs e)
-        {
-            if (e.Key == Windows.System.VirtualKey.Enter) SearchText_QuerySubmitted(null, null);
-        }
 
         void StartSearch()
         {
@@ -211,9 +162,6 @@ namespace CoolapkUWP.Pages
                     case 2:
                         SearchTopic(SearchText.Text);
                         break;
-                    case 3:
-                        SearchApps(SearchText.Text);
-                        break;
                 }
                 DetailPivot.Visibility = Visibility.Visible;
             }
@@ -225,7 +173,7 @@ namespace CoolapkUWP.Pages
 
         private void SearchTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SearchTypeComboBox.SelectedIndex != -1 && !(DetailPivot is null))
+            if (SearchTypeComboBox.SelectedIndex != -1 && DetailPivot != null)
                 DetailPivot.SelectedIndex = SearchTypeComboBox.SelectedIndex;
             if (SearchTypeComboBox.SelectedIndex + 1 == SearchTypeComboBox.Items.Count || pages[SearchTypeComboBox.SelectedIndex] == 0)
                 StartSearch();
@@ -234,9 +182,8 @@ namespace CoolapkUWP.Pages
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             ScrollViewer viewer = sender as ScrollViewer;
-            if (!e.IsIntermediate)
-                if (viewer.VerticalOffset == viewer.ScrollableHeight)
-                    StartSearch();
+            if (!e.IsIntermediate && viewer.VerticalOffset == viewer.ScrollableHeight)
+                StartSearch();
         }
 
         private void SearchFeedTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -245,21 +192,48 @@ namespace CoolapkUWP.Pages
             lastItems[0] = string.Empty;
             StartSearch();
         }
-
+        
+        #region 搜索框相关
+        private void SearchTextBox_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+                SearchText_QuerySubmitted(null, null);
+        }
         private void SearchText_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             pages = new int[3];
             lastItems = new string[3];
             (FeedList.ItemsSource as ObservableCollection<FeedViewModel>).Clear();
             (UserList.ItemsSource as ObservableCollection<UserViewModel>).Clear();
-            (AppsResultList.ItemsSource as ObservableCollection<AppViewModel>).Clear();
             (TopicList.ItemsSource as ObservableCollection<TopicViewModel>).Clear();
             StartSearch();
         }
-
-        private void SearchText_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        private async void SearchText_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/search/suggestSearchWordsNew?searchValue={sender.Text}&type=app"));
+                if (array != null && array.Count > 0)
+                    sender.ItemsSource = array.Select(i => new SearchWord(i.GetObject()));
+                else
+                    sender.ItemsSource = null;
+            }
+        }
+        private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            if (args.SelectedItem is SearchWord m)
+                sender.Text = m.GetTitle();
+        }
+        #endregion
 
+        private void DetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SearchTypeComboBox.SelectedIndex != DetailPivot.SelectedIndex)
+            {
+                SearchTypeComboBox.SelectedIndex = DetailPivot.SelectedIndex;
+                if (SearchTypeComboBox.SelectedIndex + 1 == SearchTypeComboBox.Items.Count || pages[SearchTypeComboBox.SelectedIndex] == 0)
+                    StartSearch();
+            }
         }
     }
 }

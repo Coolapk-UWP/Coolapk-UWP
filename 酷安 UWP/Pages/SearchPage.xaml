@@ -8,7 +8,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
-    mc:Ignorable="d" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d"
+    NavigationCacheMode="Required"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,7 +20,7 @@
     </Page.Resources>
 
     <Grid>
-        <Pivot x:Name="DetailPivot" IsLocked="True" Margin="0,-48,0,0">
+        <Pivot x:Name="DetailPivot" SelectionChanged="DetailPivot_SelectionChanged" Margin="0,-48,0,0">
             <Pivot.ItemContainerStyle>
                 <Style TargetType="PivotItem">
                     <Setter Property="Margin" Value="0"/>
@@ -96,23 +98,6 @@
                     </ListView>
                 </ScrollViewer>
             </PivotItem>
-            <PivotItem>
-                <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
-                    <ListView x:Name="AppsResultList" ItemTemplate="{StaticResource app}" Padding="{x:Bind data:Settings.stackPanelMargin}"
-                          ScrollViewer.VerticalScrollMode="Disabled" SelectionChanged="AppResultList_SelectionChanged">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <control:GridPanel DesiredColumnWidth="384"/>
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                    </ListView>
-                </ScrollViewer>
-            </PivotItem>
         </Pivot>
         <Grid Height="{x:Bind data:Settings.PageTitleHeight}" VerticalAlignment="Top" cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" fcu:Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
             <Grid.ColumnDefinitions>
@@ -123,12 +108,11 @@
             <Button x:Name="BackButton" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" Click="BackButton_Click" Width="48" 
                     Height="48" Style="{ThemeResource NavigationBackButtonNormalStyle}"/>
             <AutoSuggestBox Grid.Column="1" KeyUp="SearchTextBox_KeyUp" x:Name="SearchText" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" Margin="0,0,0,8"
-                            QueryIcon="Find" QuerySubmitted="SearchText_QuerySubmitted" TextChanged="SearchText_TextChanged"/>
+                            QueryIcon="Find" QuerySubmitted="SearchText_QuerySubmitted" TextChanged="SearchText_TextChanged" ItemTemplate="{StaticResource searchWord}" SuggestionChosen="AutoSuggestBox_SuggestionChosen"/>
             <ComboBox Grid.Column="2" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" SelectedIndex="0" x:Name="SearchTypeComboBox" SelectionChanged="SearchTypeComboBox_SelectionChanged" Margin="0,0,10,8">
                 <ComboBoxItem>动态</ComboBoxItem>
                 <ComboBoxItem>用户</ComboBoxItem>
                 <ComboBoxItem>话题</ComboBoxItem>
-                <ComboBoxItem>应用游戏</ComboBoxItem>
             </ComboBox>
         </Grid>
     </Grid>

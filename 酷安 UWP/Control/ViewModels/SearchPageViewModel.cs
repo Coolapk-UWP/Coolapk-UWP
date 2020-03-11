@@ -1,26 +1,19 @@
-﻿using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
+﻿using Windows.Data.Json;
+using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    interface ISearchPageViewModel
+    class SearchWord
     {
-        string GetTitle();
-    }
-    class AppViewModel : ISearchPageViewModel
-    {
-        public ImageSource Icon { get; set; }
-        public string Url { get; set; }
-        public string AppName { get; set; }
-        public string Size { get; set; }
-        public string DownloadNum { get; set; }
-
-        public string GetTitle() => AppName;
-    }
-    class SearchWord : ISearchPageViewModel
-    {
-        public Symbol Symbol { get; set; }
+        public Symbol Symbol { get; set; } = Symbol.Find;
         public string Title { get; set; }
+
+        public SearchWord(JsonObject keys)
+        {
+            if (keys["logo"].GetString().Contains("cube")) Symbol = Symbol.Shop;
+            else if (keys["logo"].GetString().Contains("xitongguanli")) Symbol = Symbol.AllApps;
+            Title = keys["title"].GetString();        
+        }
 
         public string GetTitle()
         {

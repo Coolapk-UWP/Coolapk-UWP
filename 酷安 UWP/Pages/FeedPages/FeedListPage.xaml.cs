@@ -62,8 +62,8 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     return new UserDetail
                     {
-                        FollowStatus = detail["uid"].GetNumber().ToString() == Settings.GetString("uid") ? string.Empty
-                                                                                                         : detail["isFollow"].GetNumber() == 0 ? "关注" : "取消关注",
+                        FollowStatus = detail["uid"].GetNumber().ToString() == Settings.Get<string>("uid") ? string.Empty
+                                                                                                           : detail["isFollow"].GetNumber() == 0 ? "关注" : "取消关注",
                         UserFaceUrl = detail["userAvatar"].GetString(),
                         UserName = detail["username"].GetString(),
                         FollowNum = detail["follow"].GetNumber(),
