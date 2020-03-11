@@ -166,34 +166,33 @@ namespace CoolapkUWP.Pages
             {
                 case NotificationPageType.Comment:
                     FindName(nameof(NavigateItems));
+                    titleBar.Title = ("通知");
                     uri = "list";
                     Load<SimpleNotificationViewModel>();
                     break;
                 case NotificationPageType.AtMe:
-                    setPageStyle("@我的动态");
+                    titleBar.Title = ("@我的动态");
+                    MainListView.Padding = Settings.stackPanelMargin;
                     Load();
                     break;
                 case NotificationPageType.AtCommentMe:
-                    setPageStyle("@我的评论");
+                    titleBar.Title = ("@我的评论");
+                    MainListView.Padding = Settings.stackPanelMargin;
                     uri = "atCommentMeList";
                     Load<AtCommentMeNotificationViewModel>();
                     break;
                 case NotificationPageType.Like:
-                    setPageStyle("我收到的赞");
+                    titleBar.Title = ("我收到的赞");
+                    MainListView.Padding = Settings.stackPanelMargin;
                     uri = "feedLikeList";
                     Load<LikeNotificationViewModel>();
                     break;
                 case NotificationPageType.Follow:
-                    setPageStyle("好友关注");
+                    titleBar.Title = ("好友关注");
+                    MainListView.Padding = Settings.stackPanelMargin;
                     uri = "contactsFollowList";
                     Load<SimpleNotificationViewModel>();
                     break;
-            }
-            void setPageStyle(string t)
-            {
-                MainListView.Padding = Settings.stackPanelMargin;
-                FindName(nameof(titleBar));
-                titleBar.Title = t;
             }
             await System.Threading.Tasks.Task.Delay(2000);
             (VisualTree.FindDescendantByName(MainListView, "ScrollViewer") as ScrollViewer).ViewChanged += (s, ee) =>

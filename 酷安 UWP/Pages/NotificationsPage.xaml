@@ -163,6 +163,6 @@
                 </ListView>
             </ListViewItem>
         </controls:PullToRefreshListView>
-        <control:TitleBar x:Name="titleBar" x:Load="False" BackButtonClick="TitleBar_BackButtonClick"/>
+        <control:TitleBar x:Name="titleBar" BackButtonClick="TitleBar_BackButtonClick"/>
     </Grid>
 </Page>
