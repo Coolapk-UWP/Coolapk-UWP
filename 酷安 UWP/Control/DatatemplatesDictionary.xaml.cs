@@ -8,9 +8,9 @@ using Windows.UI.Xaml.Input;
 
 namespace CoolapkUWP.Control
 {
-    public partial class DatatemplatesDictionary
+    public partial class DataTemplatesDictionary
     {
-        public DatatemplatesDictionary() => InitializeComponent();
+        public DataTemplatesDictionary() => InitializeComponent();
 
         private void OnTapped(object sender, TappedRoutedEventArgs e)
             => Tools.OpenLink((sender as FrameworkElement).Tag as string);

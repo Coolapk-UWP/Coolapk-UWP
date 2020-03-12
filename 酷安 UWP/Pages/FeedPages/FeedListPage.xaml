@@ -14,13 +14,13 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <control:DatatemplatesDictionary/>
+                <control:DataTemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate x:Key="UserDetail" x:DataType="local:UserDetail">
                 <xp:Shadow Z_Depth="3" Margin="4,0">
                     <Border x:Name="UserDetailBorder" MinHeight="200"
                         Background="{x:Bind Background,Mode=OneWay}" Tag="{x:Bind BackgroundUrl}" Tapped="UserDetailBorder_Tapped">
-                        <Grid Background="#99000000" VerticalAlignment="Bottom" x:Name="UserDetailGrid">
+                        <Grid Background="#99000000" VerticalAlignment="Bottom" x:Name="UserDetailGrid" Padding="0,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>

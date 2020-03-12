@@ -121,6 +121,7 @@ namespace CoolapkUWP.Pages
 
         private void SearchButton_Click(object sender, RoutedEventArgs e) => Tools.Navigate(typeof(SearchPage), new object[] { 0, null });
         private void NotificationCenterButton_Click(object sender, RoutedEventArgs e) => Tools.Navigate(typeof(NotificationsPage), NotificationPageType.Comment);
+
         #region toIndexPage
         string[] followUrls;
         int followIndex;
@@ -131,7 +132,7 @@ namespace CoolapkUWP.Pages
             ChangeBadgeNum(Tools.notifications.BadgeNum);
 
             JsonArray array = Tools.GetDataArray(await Tools.GetJson("/main/init"));
-            if (array != null & array.Count > 0)
+            if (array != null && array.Count > 0)
             {
                 string[] excludedTabs = new[] { "酷品", "看看号", "直播", "视频" };
                 var TabList = from a in array

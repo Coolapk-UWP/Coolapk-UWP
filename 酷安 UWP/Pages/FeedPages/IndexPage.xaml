@@ -15,22 +15,23 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <control:DatatemplatesDictionary/>
+                <control:DataTemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
             <control:FirstTemplateSelector x:Key="FTemplateSelector" DataTemplate1="{StaticResource feed}" DataTemplate2="{StaticResource Card}"
-                                           DataTemplate3="{StaticResource User}" DataTemplate4="{StaticResource Topic}" DataTemplate5="{StaticResource DYH}"/>
+                                           DataTemplate3="{StaticResource User}" DataTemplate4="{StaticResource Topic}" DataTemplate5="{StaticResource DYH}" DataTemplate6="{StaticResource coolPicture}"/>
             <control:SecondTemplateSelector x:Key="STemplateSelector" 
                                             DataTemplate1="{StaticResource null}" DataTemplate2="{StaticResource imageTextScrollCard}"
                                             DataTemplate3="{StaticResource messageCard}" DataTemplate4="{StaticResource refreshCard}"
                                             DataTemplate5="{StaticResource textLinkListCard}"
                                             DataTemplate7="{StaticResource iconTabLinkGridCard}" DataTemplate8="{StaticResource selectorLinkCard}"
-                                            DataTemplate9="{StaticResource imageCard}" DataTemplate10="{StaticResource loginCard}" DataTemplate11="{StaticResource emptyCard}"/>
+                                            DataTemplate9="{StaticResource imageCard}" DataTemplate10="{StaticResource loginCard}"
+                                            DataTemplate11="{StaticResource emptyCard}" DataTemplate12="{StaticResource feedCoolPictureGridCard}"/>
             <control:ThirdTemplateSelector x:Key="ThTemplateSelector" DataTemplate0="{StaticResource null}" 
                                            DataTemplate1="{StaticResource image_1}" DataTemplate2="{StaticResource iconLink}"
                                            DataTemplate3="{StaticResource dyh}" DataTemplate4="{StaticResource dyh}"
                                            DataTemplate5="{StaticResource feedArticle2}" DataTemplate6="{StaticResource question2}"
                                            DataTemplate7="{StaticResource textLink}" DataTemplate8="{StaticResource user2}"
-                                           DataTemplate9="{StaticResource imageSquare}" DataTemplate10="{StaticResource textImage}"/>
+                                           DataTemplate9="{StaticResource coolPicture}"/>
             <!--#region 一级-->
             <DataTemplate x:Key="null">
                 <TextBlock Foreground="Gray">很抱歉，该版本暂不支持显示此类型内容。</TextBlock>
@@ -54,8 +55,8 @@
                     </ListView>
                 </ListViewItem>
             </DataTemplate>
-         <!--#endregion-->
-            
+            <!--#endregion-->
+
             <!--#region  二级-->
             <DataTemplate x:Key="emptyCard">
                 <ListViewItem Height="0"/>
@@ -159,21 +160,27 @@
                     </Pivot>
                 </ListViewItem>
             </DataTemplate>
-            <!--#endregion-->
-            
-            <!--region 三级-->
-            <DataTemplate x:Key="imageSquare" x:DataType="viewmodel:IndexPageViewModel">
-                <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Margin="0,5,0,15" MaxWidth="40" Template="{StaticResource ListViewItemTemplate1}" Tapped="Grid_Tapped" Tag="{x:Bind url}">
-                    <xp:Shadow Z_Depth="2">
-                        <Grid MaxHeight="40" MaxWidth="40">
-                            <Grid.Background>
-                                <ImageBrush ImageSource="{x:Bind pic,Mode=OneWay}" Stretch="Uniform"/>
-                            </Grid.Background>
-                            <TextBlock Text="{x:Bind title}" TextWrapping="Wrap"/>
-                        </Grid>
-                    </xp:Shadow>
-                </ListViewItem>
+            <DataTemplate x:Key="feedCoolPictureGridCard" x:DataType="viewmodel:IndexPageViewModel">
+                <StackPanel>
+                    <ListViewItem Style="{StaticResource NoAnimationListViewItem}" HorizontalContentAlignment="Stretch">
+                        <ListView ScrollViewer.VerticalScrollMode="Disabled" Style="{StaticResource ListViewStyle}" ItemsSource="{x:Bind entities}" ItemTemplateSelector="{StaticResource ThTemplateSelector}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="150"/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                        </ListView>
+                    </ListViewItem>
+                </StackPanel>
             </DataTemplate>
+            <!--#endregion-->
+
+            <!--region 三级-->
             <DataTemplate x:Key="user2" x:DataType="viewmodel:UserViewModel">
                 <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Margin="0,4,0,12" MaxWidth="48" Template="{StaticResource ListViewItemTemplate1}" Tapped="Grid_Tapped" Tag="{x:Bind url}" >
                     <xp:Shadow Z_Depth="2">
@@ -235,46 +242,59 @@
                     </xp:Shadow>
                 </ListViewItem>
             </DataTemplate>
-            <DataTemplate x:Key="textImage" x:DataType="viewmodel:IndexPageViewModel">
-                <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind url}" Tapped="FeedListViewItem_Tapped">
-                    <xp:Shadow Z_Depth="3">
-                        <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Height="118" Width="260">
-                            <Image Source="{x:Bind pic,Mode=OneWay}"  Stretch="Uniform"/>
-                            <Grid VerticalAlignment="Bottom" Background="#70000000">
-                                <TextBlock Foreground="White" Margin="3,3,3,8" Text="{x:Bind title}" TextWrapping="Wrap" FontWeight="Black" FontSize="18"/>
-                            </Grid>
-                        </Grid>
-                    </xp:Shadow>
-                </ListViewItem>
-            </DataTemplate>
             <DataTemplate x:Key="question2" x:DataType="viewmodel:FeedViewModel">
-                <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Tag="{x:Bind url}" Tapped="FeedListViewItem_Tapped" Template="{StaticResource ListViewItemTemplate1}">
+                <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Template="{StaticResource ListViewItemTemplate1}">
                     <xp:Shadow Z_Depth="3">
                         <Grid Height="250" Width="200" Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Padding="8,4">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <StackPanel Grid.Row="0" Orientation="Horizontal">
-                                <Button Click="Button_Click" VerticalAlignment="Top" Style="{StaticResource ButtonStyle1}" Tag="{x:Bind url}" Background="{x:Null}">
+                            <Button Tapped="Grid_Tapped" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonStyle1}" Tag="{x:Bind uurl}" Background="{x:Null}">
+                                <StackPanel Orientation="Horizontal">
                                     <Ellipse Width="32" Height="32" HorizontalAlignment="Left" >
                                         <Ellipse.Fill>
                                             <ImageBrush ImageSource="{x:Bind userSmallAvatar,Mode=OneWay}"/>
                                         </Ellipse.Fill>
                                     </Ellipse>
-                                </Button>
-                                <StackPanel>
-                                    <TextBlock Text="{x:Bind username}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{x:Bind dateline}" Foreground="Gray"/>
-                                        <TextBlock Text="{x:Bind info}" Foreground="Gray" Margin="3,0,0,0"/>
+                                    <StackPanel Margin="8,0">
+                                        <TextBlock Text="{x:Bind username}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{x:Bind dateline}" Foreground="Gray"/>
+                                            <TextBlock Text="{x:Bind info}" Foreground="Gray" Margin="3,0,0,0"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{x:Bind device_title}" Foreground="Gray"/>
                                     </StackPanel>
-                                    <TextBlock Text="{x:Bind device_title}" Foreground="Gray"/>
                                 </StackPanel>
-                            </StackPanel>
-                            <StackPanel Grid.Row="1">
+                            </Button>
+                            <StackPanel Grid.Row="1" Tag="{x:Bind url}" Tapped="FeedListViewItem_Tapped">
                                 <TextBlock TextWrapping="Wrap" FontWeight="Black" FontSize="16" Margin="0,4" Text="{x:Bind message_title}"/>
                                 <control:MTextBlock MessageText="{x:Bind message}"/>
+                            </StackPanel>
+                        </Grid>
+                    </xp:Shadow>
+                </ListViewItem>
+            </DataTemplate>
+            <DataTemplate x:Key="coolPicture" x:DataType="viewmodel:FeedViewModel">
+                <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Template="{StaticResource ListViewItemTemplate1}">
+                    <xp:Shadow Z_Depth="3">
+                        <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                            <Image Tag="{x:Bind url}" Tapped="Grid_Tapped" VerticalAlignment="Top" Source="{x:Bind pic,Mode=OneWay}" Stretch="Uniform"/>
+                            <Border Tag="{x:Bind url}" Tapped="Grid_Tapped" x:Name="picsIcon" x:Load="{x:Bind isMoreThanOnePic,Mode=OneWay}" Background="#70000000" VerticalAlignment="Top" HorizontalAlignment="Right" Padding="8">
+                                <SymbolIcon Symbol="Pictures" Foreground="White"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Bottom" Background="#70000000" Padding="0,4" Margin="0,32,0,0">
+                                <control:MTextBlock Tag="{x:Bind url}" Tapped="Grid_Tapped" Foreground="White" Margin="8" MessageText="{x:Bind message}"/>
+                                <Button Tapped="Grid_Tapped" VerticalAlignment="Top" Style="{StaticResource ButtonStyle1}" Tag="{x:Bind uurl}" Background="{x:Null}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Width="24" Height="24" HorizontalAlignment="Left" >
+                                            <Ellipse.Fill>
+                                                <ImageBrush ImageSource="{x:Bind userSmallAvatar,Mode=OneWay}"/>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <TextBlock Margin="8,0" Text="{x:Bind username}" Foreground="White" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
                         </Grid>
                     </xp:Shadow>

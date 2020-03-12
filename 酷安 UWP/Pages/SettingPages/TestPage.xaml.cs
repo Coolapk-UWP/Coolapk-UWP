@@ -23,6 +23,7 @@ namespace CoolapkUWP.Pages.SettingPages
         public TestPage()
         {
             this.InitializeComponent();
+            mtbt.MessageText = "    \"    '    <    >    &#38;";
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)

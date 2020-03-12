@@ -11,9 +11,12 @@ namespace CoolapkUWP.Control
         public DataTemplate DataTemplate3 { get; set; }
         public DataTemplate DataTemplate4 { get; set; }
         public DataTemplate DataTemplate5 { get; set; }
+        public DataTemplate DataTemplate6 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            if (item is FeedViewModel) return DataTemplate1;
+            if (item is FeedViewModel f)
+                if (f.isCoolPictuers) return DataTemplate6;
+                else return DataTemplate1;
             else if (item is UserViewModel) return DataTemplate3;
             else if (item is TopicViewModel) return DataTemplate4;
             else if (item is DyhViewModel) return DataTemplate5;
@@ -34,6 +37,7 @@ namespace CoolapkUWP.Control
         public DataTemplate DataTemplate9 { get; set; }
         public DataTemplate DataTemplate10 { get; set; }
         public DataTemplate DataTemplate11 { get; set; }
+        public DataTemplate DataTemplate12 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             switch ((item as IndexPageViewModel).entityTemplate)
@@ -57,6 +61,7 @@ namespace CoolapkUWP.Control
                 case "imageCard": return DataTemplate9;
                 case "unLoginCard": return DataTemplate10;
                 case "titleCard": return DataTemplate11;
+                case "feedCoolPictureGridCard": return DataTemplate12;
                 default: return DataTemplate1;
             }
         }
@@ -81,11 +86,14 @@ namespace CoolapkUWP.Control
             {
                 if (f.isQuestionFeed) return DataTemplate6;
                 else if (f.showMessage_title) return DataTemplate5;
+                else if (f.isCoolPictuers) return DataTemplate9;
             }
             else if (item is UserViewModel) return DataTemplate8;
             else switch ((item as IndexPageViewModel).entityType)
                 {
                     case "image_1": return DataTemplate1;
+                    case "picCategory":
+                    case "imageSquare":
                     case "product":
                     case "icon":
                     case "iconMiniLink":
@@ -93,8 +101,6 @@ namespace CoolapkUWP.Control
                     case "dyh": return DataTemplate3;
                     case "topic": return DataTemplate4;
                     case "textLink": return DataTemplate7;
-                    case "imageSquare": return DataTemplate9;
-                    case "imageText": return DataTemplate10;
                 }
             return DataTemplate0;
         }

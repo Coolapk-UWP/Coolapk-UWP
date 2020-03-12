@@ -136,7 +136,7 @@
     <Compile Include="Data\Emojis.cs" />
     <Compile Include="Data\ImageCache.cs" />
     <Compile Include="Data\NotificationsNum.cs" />
-    <Compile Include="Control\DatatemplatesDictionary.xaml.cs" />
+    <Compile Include="Control\DataTemplatesDictionary.xaml.cs" />
     <Compile Include="Control\ViewModels\FeedViewModel.cs" />
     <Compile Include="Control\ViewModels\SearchPageViewModel.cs" />
     <Compile Include="Control\ViewModels\TopicViewModel.cs" />
@@ -773,7 +773,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\DatatemplatesDictionary.xaml">
+    <Page Include="Control\DataTemplatesDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

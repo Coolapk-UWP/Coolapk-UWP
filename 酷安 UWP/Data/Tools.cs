@@ -4,19 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
-using Windows.System;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Media;
+using Windows.Web.Http;
 
 namespace CoolapkUWP.Data
 {
@@ -41,7 +37,6 @@ namespace CoolapkUWP.Data
             mClient.DefaultRequestHeaders.Add("X-Api-Version", "9");
             string s = Guid.NewGuid().ToString();
             mClient.DefaultRequestHeaders.Add("X-App-Device", GetMD5(s + s + s) + "ady6r8"); //随便弄的
-            mClient.DefaultRequestHeaders.Add("Cookie", Settings.cookie);
             Popup popup = new Popup { RequestedTheme = Settings.Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
             StatusGrid statusGrid2 = new StatusGrid();
             popup.Child = statusGrid2;
@@ -124,7 +119,7 @@ namespace CoolapkUWP.Data
             }
         }
 
-        public static void ShowHttpExceptionMessage(HttpRequestException e)
+        public static void ShowHttpExceptionMessage(System.Net.Http.HttpRequestException e)
         {
             if (e.Message.IndexOfAny(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }) != -1)
                 ShowMessage($"服务器错误： {e.Message.Replace("Response status code does not indicate success: ", string.Empty)}");
@@ -169,39 +164,42 @@ namespace CoolapkUWP.Data
                 if (int.TryParse(u, out int uu))
                     Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, u });
                 else Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, await GetUserIDByName(u) });
-                return;
             }
             else if (str.IndexOf("/feed/") == 0)
             {
                 string u = str.Replace("/feed/", string.Empty);
                 Navigate(typeof(FeedDetailPage), u);
-                return;
+            }
+            else if (str.IndexOf("/picture/") == 0)
+            {
+                string u = str.Replace("/picture/", string.Empty);
+                Navigate(typeof(FeedDetailPage), u);
             }
             else if (str.IndexOf("/t/") == 0)
             {
                 string u = str.Replace("/t/", string.Empty);
                 Navigate(typeof(FeedListPage), new object[] { FeedListType.TagPageList, u });
-                return;
             }
             else if (str.IndexOf("/dyh/") == 0)
             {
                 string u = str.Replace("/dyh/", string.Empty);
                 Navigate(typeof(FeedListPage), new object[] { FeedListType.DYHPageList, u });
-                return;
             }
             else if (str.IndexOf("https") == 0)
             {
-                if (str.Contains("coolapk.com"))
-                    OpenLink(str.Replace("https://www.coolapk.com", string.Empty));
+                if (str.Contains("coolapk.com")) OpenLink(str.Replace("https://www.coolapk.com", string.Empty));
                 else Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
-                return;
             }
             else if (str.IndexOf("http") == 0)
             {
-                if (str.Contains("coolapk.com"))
-                    OpenLink(str.Replace("http://www.coolapk.com", string.Empty));
+                if (str.Contains("coolapk.com")) OpenLink(str.Replace("http://www.coolapk.com", string.Empty));
                 else Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
-                return;
+            }
+            else
+            {
+                string u = str.Substring(1);
+                u = u.Substring(u.IndexOf('/') + 1);
+                Navigate(typeof(FeedDetailPage), u);
             }
         }
         #endregion
@@ -230,48 +228,16 @@ namespace CoolapkUWP.Data
             return token;
         }
 
-        public static async Task<string> GetJson(string url, bool isBackground = false)
+        public static async Task<string> GetJson(string url)
         {
             try
             {
                 if (url != "/notification/checkCount") notifications?.RefreshNotificationsNum();
                 mClient.DefaultRequestHeaders.Remove("X-App-Token");
                 mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
-                mClient.DefaultRequestHeaders.Remove("Cookie");
-                mClient.DefaultRequestHeaders.Add("Cookie", Settings.cookie);
                 return await mClient.GetStringAsync(new Uri("https://api.coolapk.com/v6" + url));
             }
-            catch (HttpRequestException e)
-            {
-                if (!isBackground) ShowHttpExceptionMessage(e);
-                return string.Empty;
-            }
-            catch
-            {
-                if (isBackground) return string.Empty;
-                else throw;
-            }
-        }
-
-        public static async Task<bool> Post(string url, HttpContent content)
-        {
-            try
-            {
-                if (url != "/notification/checkCount") notifications?.RefreshNotificationsNum();
-                mClient.DefaultRequestHeaders.Remove("X-App-Token");
-                mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
-                mClient.DefaultRequestHeaders.Remove("Cookie");
-                mClient.DefaultRequestHeaders.Add("Cookie", Settings.cookie);
-                var a = await mClient.PostAsync(new Uri("https://api.coolapk.com/v6" + url), content);
-                return !(GetJSonObject(await a.Content.ReadAsStringAsync()) is null);
-            }
-            catch (HttpRequestException e)
-            {
-                ShowHttpExceptionMessage(e);
-                return false;
-            }
             catch { throw; }
-
         }
 
         public static JsonObject GetJSonObject(string json)
@@ -319,7 +285,6 @@ namespace CoolapkUWP.Data
             }
         }
 
-
         public static string ConvertTime(double timestr)
         {
             DateTime time = new DateTime(1970, 1, 1).ToLocalTime().Add(new TimeSpan(Convert.ToInt64(timestr) * 10000000));
@@ -338,48 +303,22 @@ namespace CoolapkUWP.Data
                 ShowMessage("请输入用户名");
                 return "0";
             }
-
             try
             {
-                string uid = await new HttpClient().GetStringAsync("https://www.coolapk.com/n/" + name);
+                string uid = await mClient.GetStringAsync(new Uri("https://www.coolapk.com/n/" + name));
                 uid = uid.Split(new string[] { "coolmarket://www.coolapk.com/u/" }, StringSplitOptions.RemoveEmptyEntries)[1];
                 uid = uid.Split(new string[] { @"""" }, StringSplitOptions.RemoveEmptyEntries)[0];
                 return uid;
             }
-            catch (HttpRequestException e)
+            catch (Exception e)
             {
-                if (e.Message.Contains("404")) ShowMessage("用户不存在");
-                else ShowHttpExceptionMessage(e);
-                return "0";
-            }
-        }
-
-        public static string GetSizeString(double size)
-        {
-            int index = 0;
-            while (true)
-            {
-                index++;
-                size /= 1024;
-                if (size > 0.7 && size < 716.8) break;
-                else if (size >= 716.8) continue;
-                else if (size <= 0.7)
+                if (e.Message.Contains("404"))
                 {
-                    size *= 1024;
-                    index--;
-                    break;
+                    ShowMessage("未找到该用户。");
+                    return "0";
                 }
+                else throw;
             }
-            string str = string.Empty;
-            switch (index)
-            {
-                case 0: str = "B"; break;
-                case 1: str = "KB"; break;
-                case 2: str = "MB"; break;
-                case 3: str = "GB"; break;
-                case 4: str = "TB"; break;
-            }
-            return $"{size.ToString("N2")} {str}";
         }
     }
 }

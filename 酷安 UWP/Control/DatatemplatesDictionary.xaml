@@ -1,5 +1,5 @@
 ﻿<ResourceDictionary
-    x:Class="CoolapkUWP.Control.DatatemplatesDictionary"
+    x:Class="CoolapkUWP.Control.DataTemplatesDictionary"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:control="using:CoolapkUWP.Control"

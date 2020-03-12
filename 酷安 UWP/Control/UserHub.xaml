@@ -57,12 +57,25 @@
                 </Button>
             </Grid>
         </Grid>
-        <Button Height="160" x:Name="LoginButton" Visibility="Collapsed" Click="LoginButton_Click" HorizontalAlignment="Stretch">
+        <Button Margin="4" Height="160" x:Name="LoginButton" Visibility="Collapsed" Click="LoginButton_Click" HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <SymbolIcon Symbol="AddFriend"/>
                 <TextBlock VerticalAlignment="Center" Margin="4,0">登录</TextBlock>
             </StackPanel>
         </Button>
-        <AppBarButton Icon="Setting" Label="设置" Click="Button_Click" Tag="settings"/>
+        <StackPanel Orientation="Horizontal" Margin="4">
+            <Button Margin="4" Click="Button_Click" Tag="settings">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Symbol="Setting"/>
+                    <TextBlock Margin="4,0">设置</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Margin="4" Click="Button_Click" Tag="logout" x:Name="LogoutButton">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Symbol="Clear"/>
+                    <TextBlock Margin="4,0">退出登录</TextBlock>
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </StackPanel>
 </UserControl>

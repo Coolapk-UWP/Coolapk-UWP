@@ -35,11 +35,11 @@ namespace CoolapkUWP.Data
             timer = new Timer(async (s) => ChangeNumber(Tools.GetJSonObject(await Tools.GetJson("/notification/checkCount"))), string.Empty, 30000, 30000);
         }
 
-        public async Task RefreshNotificationsNum(bool isBackground = false)
+        public async Task RefreshNotificationsNum()
         {
-            if (!isBackground && timer != null) timer.Dispose();
-            ChangeNumber(Tools.GetJSonObject(await Tools.GetJson("/notification/checkCount", isBackground)));
-            if (!isBackground) timer = new Timer(async (s) => ChangeNumber(Tools.GetJSonObject(await Tools.GetJson("/notification/checkCount"))), string.Empty, 30000, 30000);
+            if (timer != null) timer.Dispose();
+            ChangeNumber(Tools.GetJSonObject(await Tools.GetJson("/notification/checkCount")));
+            timer = new Timer(async (s) => ChangeNumber(Tools.GetJSonObject(await Tools.GetJson("/notification/checkCount"))), string.Empty, 30000, 30000);
         }
 
         void ChangeNumber(JsonObject o)

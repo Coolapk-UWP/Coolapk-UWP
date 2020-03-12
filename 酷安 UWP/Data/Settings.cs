@@ -12,7 +12,6 @@ namespace CoolapkUWP.Data
 {
     static class Settings
     {
-        public static string cookie = string.Empty;
         static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public static UISettings uISettings => new UISettings();
         public static bool HasStatusBar => Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
@@ -120,34 +119,37 @@ namespace CoolapkUWP.Data
 
         public static async Task<bool> CheckLoginInfo()
         {
-            using (var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
+            try
             {
-                var cookieManager = filter.CookieManager;
-                string uid = string.Empty, token = string.Empty, userName = string.Empty;
-                foreach (var item in cookieManager.GetCookies(new Uri("http://coolapk.com")))
-                    switch (item.Name)
-                    {
-                        case "uid":
-                            uid = item.Value;
-                            break;
-                        case "username":
-                            userName = item.Value;
-                            break;
-                        case "token":
-                            token = item.Value;
-                            break;
-                    }
-                if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(userName))
+                using (var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
                 {
-                    cookie = $"uid={uid}; username={userName}; token={token}";
-                    Set("Uid", uid);
-                    var o = Tools.GetJSonObject(await Tools.GetJson("/account/checkLoginInfo"));
-                    Tools.notifications.Initial(o["notifyCount"].GetObject());
-                    Tools.mainPage.UserAvatar = await ImageCache.GetImage(ImageType.BigAvatar, o["userAvatar"].GetString());
-                    return true;
+                    var cookieManager = filter.CookieManager;
+                    string uid = string.Empty, token = string.Empty, userName = string.Empty;
+                    foreach (var item in cookieManager.GetCookies(new Uri("http://coolapk.com")))
+                        switch (item.Name)
+                        {
+                            case "uid":
+                                uid = item.Value;
+                                break;
+                            case "username":
+                                userName = item.Value;
+                                break;
+                            case "token":
+                                token = item.Value;
+                                break;
+                        }
+                    if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(userName))
+                    {
+                        Set("Uid", uid);
+                        var o = Tools.GetJSonObject(await Tools.GetJson("/account/checkLoginInfo"));
+                        Tools.notifications.Initial(o["notifyCount"].GetObject());
+                        Tools.mainPage.UserAvatar = await ImageCache.GetImage(ImageType.BigAvatar, o["userAvatar"].GetString());
+                        return true;
+                    }
+                    else return false;
                 }
-                else return false;
             }
+            catch { throw; }
         }
 
         public static void Logout()
@@ -155,7 +157,6 @@ namespace CoolapkUWP.Data
             var cookieManager = new Windows.Web.Http.Filters.HttpBaseProtocolFilter().CookieManager;
             foreach (var item in cookieManager.GetCookies(new Uri("http://coolapk.com")))
                 cookieManager.DeleteCookie(item);
-            cookie = string.Empty;
             Set("Uid", string.Empty);
             Tools.mainPage.UserAvatar = null;
         }

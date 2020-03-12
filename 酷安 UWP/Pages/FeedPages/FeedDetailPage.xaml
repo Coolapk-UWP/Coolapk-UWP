@@ -14,7 +14,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <control:DatatemplatesDictionary/>
+                <control:DataTemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -130,6 +130,25 @@
                                     </DataTemplate>
                                 </GridView.ItemTemplate>
                             </GridView>
+                            <ListView ScrollViewer.VerticalScrollMode="Disabled" x:Name="picB" x:Load="{x:Bind FeedDetail.isCoolPictuers,Mode=OneWay}" Grid.Row="1" MinHeight="0" Padding="0" Margin="0,5,0,0" HorizontalContentAlignment="Left" SelectionChanged="GridView_SelectionChanged" Tag="{x:Bind FeedDetail.pics,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.picArr,Mode=OneWay}">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <control:GridPanel DesiredColumnWidth="192" CubeInSameHeight="False"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="viewModel:ImageData">
+                                        <Grid Margin="0,8">
+                                            <Image Source="{x:Bind Pic}" Stretch="Uniform"/>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                                                <Border x:Name="gif" x:Load="{x:Bind IsGif}" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                                    <TextBlock>GIF</TextBlock>
+                                                </Border>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
                         </Grid>
                         <Grid Grid.Row="5" Padding="12,0" Margin="4" x:Name="sourceF" x:Load="{x:Bind FeedDetail.showSourceFeedGrid,Mode=OneWay}" Background="{ThemeResource SystemControlBackgroundListLowBrush}">
                             <TextBlock x:Name="sourceF2" x:Load="{x:Bind FeedDetail.showSourceFeed2,Mode=OneWay}" Margin="15">抱歉，该转发已被删除。</TextBlock>

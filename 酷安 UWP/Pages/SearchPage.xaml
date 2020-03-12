@@ -14,7 +14,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <control:DatatemplatesDictionary/>
+                <control:DataTemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>

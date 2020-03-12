@@ -147,15 +147,8 @@ namespace CoolapkUWP.Pages.FeedPages
         }
 
         public void RefreshPage() => GetUrlPage(1);
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-            => Tools.Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, (sender as FrameworkElement).Tag as string });
+        private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => GetUrlPage(1);
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
-
-        private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            GetUrlPage(1);
-        }
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {

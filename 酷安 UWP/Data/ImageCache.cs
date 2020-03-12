@@ -101,27 +101,6 @@ namespace CoolapkUWP.Data
                 finally { if (showMessage) Tools.HideProgressBar(); }
         }
 
-        public static async Task<double> GetCacheSize(ImageType type, System.Threading.CancellationToken token)
-        {
-            ulong size = 0;
-            StorageFolder folder = await GetFolder(type);
-            int index = 0;
-            var query = folder.CreateFileQuery();
-            while (true)
-            {
-                var array = await query.GetFilesAsync((uint)index, 100);
-                index += array.Count;
-                if (array.Count > 0)
-                    foreach (var item in array)
-                    {
-                        token.ThrowIfCancellationRequested();
-                        size += (await item.GetBasicPropertiesAsync()).Size;
-                    }
-                else break;
-            }
-            return size;
-        }
-
         public static async Task CleanCache(ImageType type)
         {
             Tools.ShowProgressBar();

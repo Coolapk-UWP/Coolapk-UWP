@@ -90,6 +90,8 @@ namespace CoolapkUWP.Pages.FeedPages
                         feedArticleTitle.Height = feedArticleTitle.Width * 0.44;
                         Page_SizeChanged(null, null);
                     }
+                    else if (FeedDetail.isCoolPictuers)
+                        Page_SizeChanged(null, null);
                     RefreshHotFeed();
                     RefreshFeedReply();
                     TitleBar.ComboBoxVisibility = Visibility.Visible;
@@ -463,14 +465,18 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            GridView view = sender as GridView;
-            if (view.SelectedIndex > -1)
+            if (sender is GridView view && view.SelectedIndex > -1)
             {
                 if (view.Tag is List<string> ss) Tools.ShowImages(ss.ToArray(), view.SelectedIndex);
                 else if (view.Tag is string s && !string.IsNullOrWhiteSpace(s))
                     Tools.ShowImage(s, ImageType.SmallImage);
+                view.SelectedIndex = -1;
             }
-            view.SelectedIndex = -1;
+            else if (sender is ListView viewb && viewb.SelectedIndex > -1)
+            {
+                if (viewb.Tag is List<string> ss) Tools.ShowImages(ss.ToArray(), viewb.SelectedIndex);
+                viewb.SelectedIndex = -1;
+            }
         }
         #region 界面模式切换
         private double _detailListHeight;
@@ -505,13 +511,13 @@ namespace CoolapkUWP.Pages.FeedPages
                 RightSideListView.InvalidateArrange();
                 RefreshAll = false;
             }
-            if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 768 && !(FeedDetail?.isFeedArticle ?? false))
+            if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 768 && !((FeedDetail?.isFeedArticle ?? false) || (FeedDetail?.isCoolPictuers ?? false)))
             {
                 LeftColumnDefinition.Width = new GridLength(384);
                 set();
                 PivotItemPanel.Margin = new Thickness(0, 0, Window.Current.Bounds.Width - 384, 0);
             }
-            else if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 1024 && (FeedDetail?.isFeedArticle ?? false))
+            else if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 1024 && ((FeedDetail?.isFeedArticle ?? false) || (FeedDetail?.isCoolPictuers ?? false)))
             {
                 LeftColumnDefinition.Width = new GridLength(640);
                 set();

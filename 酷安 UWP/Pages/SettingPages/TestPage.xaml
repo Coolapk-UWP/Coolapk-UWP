@@ -10,7 +10,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <control:DatatemplatesDictionary/>
+                <control:DataTemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -26,7 +26,7 @@
                 <Button Click="Button_Click_1">to login page</Button>
                 <RichTextBlock TextWrapping="Wrap">
                     <Paragraph>
-                        <Run>6666666666666</Run>
+                        <Run>666666            6666666</Run>
                         <InlineUIContainer>
                             <Image Source="/Assets/Emoji/(斗鸡眼滑稽.png" Height="20" Width="20" ToolTipService.ToolTip=""/>
                         </InlineUIContainer>
@@ -35,6 +35,7 @@
                         </Hyperlink>
                     </Paragraph>
                 </RichTextBlock>
+                <control:MTextBlock x:Name="mtbt"/>
             </StackPanel>
         </ScrollViewer>
         <control:TitleBar BackButtonClick="Button_Click_3"/>

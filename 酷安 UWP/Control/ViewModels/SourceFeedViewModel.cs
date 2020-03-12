@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Data;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Windows.Data.Json;
 using Windows.UI.Xaml.Media;
 
@@ -28,19 +29,22 @@ namespace CoolapkUWP.Control.ViewModels
             }
             showMessage_title = !string.IsNullOrEmpty(message_title);
             showPicArr = token.TryGetValue("picArr", out IJsonValue value) && value.GetArray().Count > 0 && !string.IsNullOrEmpty(value.GetArray()[0].GetString());
+            if (token["feedTypeName"].GetString() == "酷图" && !((Windows.UI.Xaml.Window.Current.Content as Windows.UI.Xaml.Controls.Frame).Content is Pages.FeedPages.FeedListPage))
+            {
+                isCoolPictuers = true;
+                showPicArr = false;
+            }
+            pics = token["picArr"].GetArray().Select(i => i.GetString()).ToList();
             GetPic(token);
         }
 
         async void GetPic(JsonObject token)
         {
-            if (showPicArr)
+            if (showPicArr || isCoolPictuers)
             {
                 picArr = new ObservableCollection<ImageData>();
                 foreach (var item in token["picArr"].GetArray())
-                {
-                    pics.Add(item.GetString());
                     picArr.Add(new ImageData { Pic = await ImageCache.GetImage(ImageType.SmallImage, item.GetString()), url = item.GetString() });
-                }
             }
             if (token.TryGetValue("pic", out IJsonValue value1) && !string.IsNullOrEmpty(value1.GetString()))
                 pic = await ImageCache.GetImage(ImageType.SmallImage, value1.GetString());
@@ -53,7 +57,9 @@ namespace CoolapkUWP.Control.ViewModels
         public string message_title { get; private set; }
         public string message { get; private set; }
         public bool showPicArr { get; private set; }
-        public List<string> pics { get; private set; } = new List<string>();
+        public bool isCoolPictuers { get; private set; }
+        public bool isMoreThanOnePic { get => pics.Count > 1; }
+        public List<string> pics { get; private set; }
         public ObservableCollection<ImageData> picArr { get; private set; }
         private ImageSource pic1;
         public ImageSource pic

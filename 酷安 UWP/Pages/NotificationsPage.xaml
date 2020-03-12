@@ -13,7 +13,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <control:DatatemplatesDictionary/>
+                <control:DataTemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate x:Key="Reply" x:DataType="local:SimpleNotificationViewModel">
                 <Grid Padding="4,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" BorderThickness="2" 
