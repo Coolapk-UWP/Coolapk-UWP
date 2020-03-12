@@ -5,7 +5,7 @@
 
 基于[@一块小板子](http://www.coolapk.com/u/695942)的源码([Github](https://github.com/oboard/CoolApk-UWP))
 
-欢迎感兴趣的伙伴继续完善这个程序 - [未完成的内容](#未完成的内容)
+
 
 <a href="https://github.com/Tangent-90/Coolapk-UWP/blob/master/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/Tangent-90/Coolapk-UWP.svg?label=License&style=flat-square"></a>
 <a href="https://github.com/Tangent-90/Coolapk-UWP/issues"><img alt="GitHub" src="https://img.shields.io/github/issues/Tangent-90/Coolapk-UWP.svg?label=Issues&style=flat-square"></a>
@@ -16,7 +16,6 @@
 
 ## 目录
 - [现有功能](#现有功能)
-- [支持的语言](#支持的语言)
 - [如何安装应用](#如何安装应用)
   - [最低需求](#最低需求)
   - [使用应用安装脚本安装应用](#使用应用安装脚本安装应用)
@@ -24,19 +23,13 @@
   - [更新应用](#更新应用)
 - [屏幕截图](#屏幕截图)
 - [鸣谢](#鸣谢)
-- [未完成的内容](#未完成的内容)
+- [使用到的开源模块](#使用到的开源模块)
 
 ## 现有功能
-1. 动态磁贴
 2. 夜间模式
-3. 主题跟随系统
-4. 应用内检查更新
-5. 登录/发帖/回复/点赞
-6. 浏览应用/动态/图文/问答/通知
+5. 登录/点赞
+6. 浏览动态/图文/问答/通知
 7. 更多内容请自行发掘<img alt="流汗滑稽" src="./酷安 UWP/Assets/Emoji/(流汗滑稽.png" width="20px" />
-
-## 支持的语言
-中文
 
 ## 如何安装应用
 ### 最低需求
@@ -82,10 +75,6 @@
 - 搜索
 ![搜索栏](Screenshots/批注-2019-11-30-182039.jpg)
 ![搜索页面](Screenshots/批注-2019-11-30-182138.jpg)
-- 应用游戏
-![应用游戏](Screenshots/批注-2019-11-30-182900.jpg)
-- 应用详情
-![应用详情](Screenshots/批注-2019-11-30-182933.jpg)
 - 动态
 ![个人动态](Screenshots/批注-2019-11-30-183116.jpg)
 ![动态详情](Screenshots/批注-2019-11-30-191108.jpg)
@@ -102,5 +91,6 @@
 - 以及所有为酷安UWP项目做出贡献的同志们
 - **铺路尚未成功，同志仍需努力！**
 
-## 未完成的内容
-- 动态内容显示器的内容解析模块(/Control/MTextBlock.xaml.cs)
+## 使用到的开源模块
+- [XPShadow](https://github.com/brookshi/XPShadow/)
+- [UWP Community Toolkit](https://github.com/Microsoft/UWPCommunityToolkit/)
