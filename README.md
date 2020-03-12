@@ -1,11 +1,9 @@
 <img alt="Coolapk LOGO" src="./logo2.svg" width="200px" />
 
 # Coolapk UWP
-一个基于UWP平台的酷安客户端
+一个基于UWP平台的第三方酷安客户端
 
 基于[@一块小板子](http://www.coolapk.com/u/695942)的源码([Github](https://github.com/oboard/CoolApk-UWP))
-
-
 
 <a href="https://github.com/Tangent-90/Coolapk-UWP/blob/master/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/Tangent-90/Coolapk-UWP.svg?label=License&style=flat-square"></a>
 <a href="https://github.com/Tangent-90/Coolapk-UWP/issues"><img alt="GitHub" src="https://img.shields.io/github/issues/Tangent-90/Coolapk-UWP.svg?label=Issues&style=flat-square"></a>
@@ -22,14 +20,14 @@
   - [使用应用安装程序安装应用](#使用应用安装程序安装应用)
   - [更新应用](#更新应用)
 - [屏幕截图](#屏幕截图)
-- [鸣谢](#鸣谢)
 - [使用到的开源模块](#使用到的开源模块)
+- [鸣谢](#鸣谢)
 
 ## 现有功能
-2. 夜间模式
-5. 登录/点赞
-6. 浏览动态/图文/问答/通知
-7. 更多内容请自行发掘<img alt="流汗滑稽" src="./酷安 UWP/Assets/Emoji/(流汗滑稽.png" width="20px" />
+1. 夜间模式
+2. 登录/点赞
+3. 浏览动态/图文/问答/通知
+4. 更多内容请自行发掘<img alt="流汗滑稽" src="./酷安 UWP/Assets/Emoji/(流汗滑稽.png" width="20px" />
 
 ## 如何安装应用
 ### 最低需求
@@ -83,6 +81,10 @@
 - 问答
 ![问答](Screenshots/批注-2019-11-30-184130.jpg)
 
+## 使用到的开源模块
+- [XPShadow](https://github.com/brookshi/XPShadow/)
+- [UWP Community Toolkit](https://github.com/Microsoft/UWPCommunityToolkit/)
+
 ## 鸣谢
 - 酷安UWP原作者[@一块小板子](http://www.coolapk.com/u/695942)([Github](https://github.com/oboard))
 - OpenCoolapk作者[@roykio](http://www.coolapk.com/u/703542)([Github](https://github.com/roykio))
@@ -90,7 +92,3 @@
 - Coolapk-kotlin作者[@bjzhou](http://www.coolapk.com/u/528097)([Github](https://github.com/bjzhou))
 - 以及所有为酷安UWP项目做出贡献的同志们
 - **铺路尚未成功，同志仍需努力！**
-
-## 使用到的开源模块
-- [XPShadow](https://github.com/brookshi/XPShadow/)
-- [UWP Community Toolkit](https://github.com/Microsoft/UWPCommunityToolkit/)
