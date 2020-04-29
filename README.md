@@ -8,6 +8,7 @@
 <a href="https://github.com/Tangent-90/Coolapk-UWP/blob/master/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/Tangent-90/Coolapk-UWP.svg?label=License&style=flat-square"></a>
 <a href="https://github.com/Tangent-90/Coolapk-UWP/issues"><img alt="GitHub" src="https://img.shields.io/github/issues/Tangent-90/Coolapk-UWP.svg?label=Issues&style=flat-square"></a>
 <a href="https://github.com/Tangent-90/Coolapk-UWP/stargazers"><img alt="GitHub" src="https://img.shields.io/github/stars/Tangent-90/Coolapk-UWP.svg?label=Stars&style=flat-square"></a>
+<a href="https://github.com/Tangent-90/Coolapk-UWP/network/members"><img alt="GitHub" src="https://img.shields.io/github/forks/Tangent-90/Coolapk-UWP.svg?label=Forks&style=flat-square"></a>
 
 <a href="https://github.com/Tangent-90/Coolapk-UWP/releases/latest"><img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/Tangent-90/Coolapk-UWP/total.svg?label=DOWNLOAD&logo=github&style=for-the-badge"></a>
 <a href=""><img alt="Baidu Netdisk" src="https://img.shields.io/badge/download-%e5%af%86%e7%a0%81%ef%bc%9alIIl-magenta.svg?label=%e4%b8%8b%e8%bd%bd&logo=baidu&style=for-the-badge"></a>
@@ -32,7 +33,7 @@
 ## 如何安装应用
 ### 最低需求
 - Windows 10 Build 15063及以上
-- 设备需支持ARM/ARM64/x86/x64
+- 设备需支持ARM/x86/x64
 - Feature2分支支持Windows 10 Build 15035及以上
 - 至少100MB的空余储存空间(用于储存安装包与安装应用)
 
