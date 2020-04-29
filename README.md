@@ -64,7 +64,7 @@
 
 ## 屏幕截图
 - 启动图
-![启动图](Screenshots/2019-10-23-127642.png)
+![启动图](Screenshots/Snipaste_2020-04-29_14-53-51.png)
 - 首页
 ![头条](Screenshots/批注-2019-11-30-184431.jpg)
 ![关注](Screenshots/批注-2019-11-30-183949.jpg)
