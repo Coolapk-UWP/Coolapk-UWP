@@ -74,10 +74,11 @@ namespace CoolapkUWP.Control
                             }
                             else
                             {
-                                if (!uris.ContainsKey(content)) uris.Add(content, href);
+                                string n = $"uri{uris.Count}";
+                                uris.Add(n, href);
                                 xamlContent += $@"
     <Hyperlink Click='Hyperlink_Click' ToolTipService.ToolTip='{GetStringInXML(href)}'>
-        <Run Text='{GetStringInXML(content)}'/>
+        <Run Text='{GetStringInXML(content)}' Name='{n}'/>
     </Hyperlink>";
                             }
                             break;
@@ -123,8 +124,8 @@ namespace CoolapkUWP.Control
                             if (i is Hyperlink hyperlink)
                                 hyperlink.Click += (sender, e) =>
                                 {
-                                    string s = (sender.Inlines[0] as Run).Text;
-                                    if (s == "查看图片" && uris[s].IndexOf("http://image.coolapk.com") == 0)
+                                    string s = (sender.Inlines[0] as Run).Name;
+                                    if (s == "查看图片" && (uris[s].IndexOf("http://image.coolapk.com") == 0 || uris[s].IndexOf("https://image.coolapk.com") == 0))
                                         Tools.ShowImage(uris[s], ImageType.SmallImage);
                                     else
                                         Tools.OpenLink(uris[s]);
@@ -151,7 +152,7 @@ namespace CoolapkUWP.Control
 
         List<string> GetStringList()
         {
-            Regex linkRegex = new Regex("<a[^>]*?>[^(</a>)]*?</a>"), emojiRegex1 = new Regex(@"\[\S*?\]"), emojiRegex2 = new Regex(@"#\(\S*?\)");
+            Regex linkRegex = new Regex("<a[^>]*?>.*?</a>"), emojiRegex1 = new Regex(@"\[\S*?\]"), emojiRegex2 = new Regex(@"#\(\S*?\)");
             List<string> result = new List<string>();
             for (int i = 0; i < MessageText.Length;)
             {

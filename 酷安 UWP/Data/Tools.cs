@@ -306,9 +306,7 @@ namespace CoolapkUWP.Data
             try
             {
                 string uid = await mClient.GetStringAsync(new Uri("https://www.coolapk.com/n/" + name));
-                uid = uid.Split(new string[] { "coolmarket://www.coolapk.com/u/" }, StringSplitOptions.RemoveEmptyEntries)[1];
-                uid = uid.Split(new string[] { @"""" }, StringSplitOptions.RemoveEmptyEntries)[0];
-                return uid;
+                return JsonObject.Parse(uid)["dataRow"].GetObject()["uid"].GetNumber().ToString();
             }
             catch (Exception e)
             {

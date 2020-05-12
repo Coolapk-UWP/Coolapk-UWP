@@ -41,7 +41,9 @@ namespace CoolapkUWP.Control
                     Tools.Navigate(typeof(Pages.SettingPages.SettingPage));
                     break;
                 case "logout":
-                    Settings.Logout(); 
+                    Settings.Logout();
+                    LoginButton.Visibility = Visibility.Visible;
+                    LogoutButton.Visibility = UserDetailGrid.Visibility = Visibility.Collapsed;
                     break;
             }
         }
