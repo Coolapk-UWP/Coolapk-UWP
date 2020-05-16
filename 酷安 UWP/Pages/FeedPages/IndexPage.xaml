@@ -4,11 +4,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:control="using:CoolapkUWP.Control"
-    xmlns:viewmodel="using:CoolapkUWP.Control.ViewModels"
+    xmlns:control="using:CoolapkUWP.Controls"
+    xmlns:viewmodel="using:CoolapkUWP.Controls.ViewModels"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:xp="using:XP"
-    xmlns:data="using:CoolapkUWP.Data"
+    xmlns:data="using:CoolapkUWP.Helpers"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -306,7 +306,7 @@
 
     <Grid>
         <controls:PullToRefreshListView x:Name="listView" ItemsSource="{x:Bind Collection}" RefreshRequested="{x:Bind RefreshPage}" PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新"
-                                        Padding="{x:Bind data:Settings.stackPanelMargin}" ItemTemplateSelector="{StaticResource FTemplateSelector}" SelectionMode="None">
+                                        Padding="{x:Bind data:SettingsHelper.stackPanelMargin}" ItemTemplateSelector="{StaticResource FTemplateSelector}" SelectionMode="None">
             <controls:PullToRefreshListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384"/>

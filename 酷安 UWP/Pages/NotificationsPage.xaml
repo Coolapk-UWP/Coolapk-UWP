@@ -6,8 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:control="using:CoolapkUWP.Control"
-    xmlns:data="using:CoolapkUWP.Data"
+    xmlns:control="using:CoolapkUWP.Controls"
+    xmlns:data="using:CoolapkUWP.Helpers"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
@@ -98,7 +98,7 @@
     </Page.Resources>
 
     <Grid>
-        <controls:PullToRefreshListView Padding="{x:Bind data:Settings.stackPanelMargin}" x:Name="MainListView" SelectionMode="None" RefreshRequested="MainListView_RefreshRequested"
+        <controls:PullToRefreshListView Padding="{x:Bind data:SettingsHelper.stackPanelMargin}" x:Name="MainListView" SelectionMode="None" RefreshRequested="MainListView_RefreshRequested"
                                         PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新">
             <controls:PullToRefreshListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -122,27 +122,27 @@
                     <StackPanel Orientation="Horizontal" Margin="8,0" Tag="atMe">
                         <SymbolIcon Symbol="Account"/>
                         <TextBlock VerticalAlignment="Center" Margin="8,0">@我的动态</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:Tools.notifications.atMeNum,Mode=OneWay}"/>
+                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.atMeNum,Mode=OneWay}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="8,0" Tag="atCommentMe">
                         <SymbolIcon Symbol="Account"/>
                         <TextBlock VerticalAlignment="Center" Margin="8,0">@我的评论</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:Tools.notifications.atCommentMeNum,Mode=OneWay}"/>
+                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.atCommentMeNum,Mode=OneWay}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="8,0" Tag="like">
                         <SymbolIcon Symbol="Like"/>
                         <TextBlock VerticalAlignment="Center" Margin="8,0">我收到的赞</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:Tools.notifications.feedLikeNum,Mode=OneWay}"/>
+                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.feedLikeNum,Mode=OneWay}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="8,0" Tag="follow">
                         <SymbolIcon Symbol="AddFriend"/>
                         <TextBlock VerticalAlignment="Center" Margin="8,0">好友关注</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:Tools.notifications.followNum,Mode=OneWay}"/>
+                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.followNum,Mode=OneWay}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="8,0" Tag="message">
                         <SymbolIcon Symbol="Comment"/>
                         <TextBlock VerticalAlignment="Center" Margin="8,0">私信</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:Tools.notifications.messageNum,Mode=OneWay}"/>
+                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.messageNum,Mode=OneWay}"/>
                     </StackPanel>
                 </ListView>
             </ListViewItem>

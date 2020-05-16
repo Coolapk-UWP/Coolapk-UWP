@@ -1,21 +1,15 @@
-﻿using CoolapkUWP.Control.ViewModels;
-using CoolapkUWP.Data;
+﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Background;
 using Windows.Data.Json;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-
-// https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
 namespace CoolapkUWP.Pages
 {
@@ -38,16 +32,16 @@ namespace CoolapkUWP.Pages
             this.InitializeComponent();
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
                 Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            if (Settings.Get<bool>("CheckUpdateWhenLuanching")) Settings.CheckUpdate();
+            if (SettingsHelper.Get<bool>("CheckUpdateWhenLuanching")) SettingsHelper.CheckUpdate();
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
             {
-                int i = Settings.HasStatusBar ? Tools.popups.Count - 1 : Tools.popups.Count - 2;
+                int i = SettingsHelper.HasStatusBar ? UIHelper.popups.Count - 1 : UIHelper.popups.Count - 2;
                 if (i >= 0)
                 {
                     ee.Handled = true;
-                    Windows.UI.Xaml.Controls.Primitives.Popup popup = Tools.popups[i];
+                    Windows.UI.Xaml.Controls.Primitives.Popup popup = UIHelper.popups[i];
                     popup.IsOpen = false;
-                    Tools.popups.Remove(popup);
+                    UIHelper.popups.Remove(popup);
                 }
                 else if (Frame.CanGoBack)
                 {
@@ -55,8 +49,9 @@ namespace CoolapkUWP.Pages
                     Frame.GoBack();
                 }
             };
+            var a = new WeakReference<ImageSource>(new Windows.UI.Xaml.Media.Imaging.BitmapImage());
             Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForApplication().Clear();
-            Tools.mainPage = this;
+            UIHelper.MainPage = this;
             GetIndexPageItems();
         }
         /* 搜索框相关
@@ -119,19 +114,19 @@ namespace CoolapkUWP.Pages
         #endregion
        */
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e) => Tools.Navigate(typeof(SearchPage), new object[] { 0, null });
-        private void NotificationCenterButton_Click(object sender, RoutedEventArgs e) => Tools.Navigate(typeof(NotificationsPage), NotificationPageType.Comment);
+        private void SearchButton_Click(object sender, RoutedEventArgs e) => UIHelper.Navigate(typeof(SearchPage), new object[] { 0, null });
+        private void NotificationCenterButton_Click(object sender, RoutedEventArgs e) => UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.Comment);
 
         #region toIndexPage
         string[] followUrls;
         int followIndex;
         async void GetIndexPageItems()
         {
-            await Settings.CheckLoginInfo();
-            Tools.notifications.BadgeNumberChanged += (sender, e) => { if (sender is NotificationsNum num) ChangeBadgeNum(num.BadgeNum); };
-            ChangeBadgeNum(Tools.notifications.BadgeNum);
+            await SettingsHelper.CheckLoginInfo();
+            UIHelper.notifications.BadgeNumberChanged += (sender, e) => { if (sender is NotificationsNum num) ChangeBadgeNum(num.BadgeNum); };
+            ChangeBadgeNum(UIHelper.notifications.BadgeNum);
 
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson("/main/init"));
+            JsonArray array = (JsonArray)await DataHelper.GetData(true, DataType.GetIndexPageNames);
             if (array != null && array.Count > 0)
             {
                 string[] excludedTabs = new[] { "酷品", "看看号", "直播", "视频" };
@@ -163,8 +158,8 @@ namespace CoolapkUWP.Pages
                 followUrls = FollowList.Select(a => a.GetObject()["url"].GetString()).ToArray();
                 followIndex = MainPivot.Items.IndexOf(j);
                 PivotItemsComboBox.ItemsSource = FollowList.Select(a => a.GetObject()["title"].GetString());
-                if (Settings.Get<int>("DefaultFollowPageIndex") > followUrls.Count()) Settings.Set("DefaultFollowPageIndex", 0);
-                PivotItemsComboBox.SelectedIndex = Settings.Get<int>("DefaultFollowPageIndex");
+                if (SettingsHelper.Get<int>("DefaultFollowPageIndex") > followUrls.Count()) SettingsHelper.Set("DefaultFollowPageIndex", 0);
+                PivotItemsComboBox.SelectedIndex = SettingsHelper.Get<int>("DefaultFollowPageIndex");
             }
         }
 
@@ -182,7 +177,7 @@ namespace CoolapkUWP.Pages
             if (PivotItemsComboBox.SelectedIndex != -1 && MainPivot.SelectedIndex == 0 && (MainPivot.SelectedItem as PivotItem).Content is Frame f)
             {
                 f.Navigate(typeof(IndexPage), new object[] { followUrls[PivotItemsComboBox.SelectedIndex], true });
-                Settings.Set("DefaultFollowPageIndex", PivotItemsComboBox.SelectedIndex);
+                SettingsHelper.Set("DefaultFollowPageIndex", PivotItemsComboBox.SelectedIndex);
                 Task.Run(async () =>
                 {
                     await Task.Delay(1000);

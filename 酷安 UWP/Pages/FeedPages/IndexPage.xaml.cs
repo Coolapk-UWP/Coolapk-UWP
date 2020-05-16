@@ -1,5 +1,5 @@
-﻿using CoolapkUWP.Control.ViewModels;
-using CoolapkUWP.Data;
+﻿using CoolapkUWP.Controls.ViewModels;
+using CoolapkUWP.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Collections.Generic;
@@ -11,16 +11,10 @@ using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
-// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
 namespace CoolapkUWP.Pages.FeedPages
 {
-    /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
-    /// </summary>
     public sealed partial class IndexPage : Page
     {
         int page = 0;
@@ -71,17 +65,16 @@ namespace CoolapkUWP.Pages.FeedPages
 
         async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
         {
-            Tools.ShowProgressBar();
-            string s = await Tools.GetJson($"{url}{(url == "/main/indexV8" ? "?" : "&")}page={page}");
-            JsonArray Root = Tools.GetDataArray(s);
-            if (Root != null && Root.Count > 0)
+            UIHelper.ShowProgressBar();
+            JsonArray array = (JsonArray)await DataHelper.GetData(true, DataType.GetIndexPage, url, url == "/main/indexV8" ? "?" : "&", page);
+            if (array != null && array.Count > 0)
                 if (page == 1)
                 {
                     int n = 0;
                     if (FeedsCollection.Count > 0)
                     {
                         var needDeleteItems = (from b in FeedsCollection
-                                               from c in Root
+                                               from c in array
                                                where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
                                                select b).ToArray();
                         foreach (var item in needDeleteItems)
@@ -91,9 +84,9 @@ namespace CoolapkUWP.Pages.FeedPages
                              select b).Count();
                     }
                     int k = 0;
-                    for (int i = 0; i < Root.Count; i++)
+                    for (int i = 0; i < array.Count; i++)
                     {
-                        JsonObject jo = Root[i].GetObject();
+                        JsonObject jo = array[i].GetObject();
                         if (index == -1 && jo.TryGetValue("entityTemplate", out IJsonValue t) && t?.GetString() == "configCard")
                         {
                             JsonObject j = JsonObject.Parse(jo["extraData"].GetString());
@@ -104,20 +97,20 @@ namespace CoolapkUWP.Pages.FeedPages
                         FeedsCollection.Insert(n + k, GetEntity(jo));
                         k++;
                     }
-                    Tools.HideProgressBar();
+                    UIHelper.HideProgressBar();
                     return true;
                 }
                 else
                 {
-                    if (Root.Count != 0)
+                    if (array.Count != 0)
                     {
-                        foreach (var i in Root) FeedsCollection.Add(GetEntity(i.GetObject()));
-                        Tools.HideProgressBar();
+                        foreach (var i in array) FeedsCollection.Add(GetEntity(i.GetObject()));
+                        UIHelper.HideProgressBar();
                         return true;
                     }
                     else
                     {
-                        Tools.HideProgressBar();
+                        UIHelper.HideProgressBar();
                         return false;
                     }
                 }
@@ -137,7 +130,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => Tools.OpenLink((sender as FrameworkElement).Tag as string);
+        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.OpenLink((sender as FrameworkElement).Tag as string);
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
@@ -153,7 +146,7 @@ namespace CoolapkUWP.Pages.FeedPages
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
             FrameworkElement element = sender as FrameworkElement;
-            if (element.Tag is string s) Tools.OpenLink(s);
+            if (element.Tag is string s) UIHelper.OpenLink(s);
             else if (element.Tag is IndexPageViewModel m)
             {
                 if (string.IsNullOrEmpty(m.url)) return;
@@ -162,10 +155,10 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     str = str.Replace("/page", "/page/dataList");
                     str += $"&title={m.title}";
-                    Tools.Navigate(typeof(IndexPage), new object[] { str, false });
+                    UIHelper.Navigate(typeof(IndexPage), new object[] { str, false });
                 }
-                else if (str.IndexOf('#') == 0) Tools.Navigate(typeof(IndexPage), new object[] { $"{str}&title={m.title}", false });
-                else Tools.OpenLink(str);
+                else if (str.IndexOf('#') == 0) UIHelper.Navigate(typeof(IndexPage), new object[] { $"{str}&title={m.title}", false });
+                else UIHelper.OpenLink(str);
             }
         }
 
@@ -261,6 +254,6 @@ namespace CoolapkUWP.Pages.FeedPages
             _ = GetUrlPage(1, u, feeds);
         }
 
-        private void loginCard_Tapped(object sender, TappedRoutedEventArgs e) => Tools.Navigate(typeof(BrowserPage), new object[] { true, null });
+        private void loginCard_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.Navigate(typeof(BrowserPage), new object[] { true, null });
     }
 }

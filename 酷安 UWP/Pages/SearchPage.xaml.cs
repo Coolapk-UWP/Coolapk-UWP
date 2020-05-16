@@ -1,5 +1,5 @@
-﻿using CoolapkUWP.Control.ViewModels;
-using CoolapkUWP.Data;
+﻿using CoolapkUWP.Controls.ViewModels;
+using CoolapkUWP.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -39,7 +39,7 @@ namespace CoolapkUWP.Pages
 
         async void SearchFeeds(string keyWord)
         {
-            Tools.ShowProgressBar();
+            UIHelper.ShowProgressBar();
             string feedType = string.Empty;
             string sortType = string.Empty;
             switch (SearchFeedTypeComboBox.SelectedIndex)
@@ -87,26 +87,30 @@ namespace CoolapkUWP.Pages
                     sortType = "reply";
                     break;
             }
-            string r = await Tools.GetJson($"/search?type=feed&feedType={feedType}&sort={sortType}&searchValue={keyWord}&page={++pages[0]}{(pages[0] > 1 ? "&lastItem=" + lastItems[0] : string.Empty)}&showAnonymous=-1");
-            JsonArray Root = Tools.GetDataArray(r);
+            JsonArray array = (JsonArray)await DataHelper.GetData(true,
+                                                                  DataType.SearchFeeds,
+                                                                  feedType,
+                                                                  sortType,
+                                                                  keyWord,
+                                                                  (++pages[0]).ToString(),
+                                                                  pages[0] > 1 ? "&lastItem=" + lastItems[0] : string.Empty);
             ObservableCollection<FeedViewModel> FeedsCollection = FeedList.ItemsSource as ObservableCollection<FeedViewModel>;
             if (pages[0] == 1) FeedsCollection.Clear();
-            if (Root.Count != 0)
+            if (array.Count != 0)
             {
-                lastItems[0] = Root.Last().GetObject()["id"].GetString();
-                foreach (var i in Root)
+                lastItems[0] = array.Last().GetObject()["id"].GetString();
+                foreach (var i in array)
                     FeedsCollection.Add(new FeedViewModel(i.GetObject()));
             }
             else pages[0]--;
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
 
         async void SearchUsers(string keyWord)
         {
-            Tools.ShowProgressBar();
+            UIHelper.ShowProgressBar();
             ObservableCollection<UserViewModel> infos = UserList.ItemsSource as ObservableCollection<UserViewModel>;
-            string r = await Tools.GetJson($"/search?type=user&searchValue={keyWord}&page={++pages[1]}{(pages[1] > 1 ? "&lastItem=" + lastItems[1] : string.Empty)}&showAnonymous=-1");
-            JsonArray array = Tools.GetDataArray(r);
+            JsonArray array = (JsonArray)await DataHelper.GetData(true, DataType.SearchUsers, keyWord, ++pages[1], pages[1] > 1 ? "&lastItem=" + lastItems[1] : string.Empty);
             if (array.Count > 0)
             {
                 lastItems[1] = array.Last().GetObject()["uid"].GetString();
@@ -126,23 +130,23 @@ namespace CoolapkUWP.Pages
                 }
             }
             else pages[1]--;
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
 
         async void SearchTopic(string keyWord)
         {
-            Tools.ShowProgressBar();
-            JsonArray Root = Tools.GetDataArray(await Tools.GetJson($"/search?type=feedTopic&searchValue={keyWord}&page={++pages[2]}{(pages[2] > 1 ? "&lastItem=" + lastItems[2] : string.Empty)}&showAnonymous=-1"));
+            UIHelper.ShowProgressBar();
+            JsonArray array = (JsonArray)await DataHelper.GetData(true, DataType.SearchTags, keyWord, ++pages[2], pages[2] > 1 ? "&lastItem=" + lastItems[2] : string.Empty);
             ObservableCollection<TopicViewModel> FeedsCollection = TopicList.ItemsSource as ObservableCollection<TopicViewModel>;
             if (pages[2] == 1) FeedsCollection.Clear();
-            if (Root.Count != 0)
+            if (array.Count != 0)
             {
-                lastItems[2] = Root.Last().GetObject()["id"].GetString();
-                foreach (var i in Root)
+                lastItems[2] = array.Last().GetObject()["id"].GetString();
+                foreach (var i in array)
                     FeedsCollection.Add(new TopicViewModel(i));
             }
             else pages[2]--;
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
 
         void StartSearch()
@@ -167,7 +171,7 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private void Grid_Tapped(object sender, TappedRoutedEventArgs e) => Tools.OpenLink((sender as FrameworkElement).Tag as string);
+        private void Grid_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.OpenLink((sender as FrameworkElement).Tag as string);
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
 
@@ -192,7 +196,7 @@ namespace CoolapkUWP.Pages
             lastItems[0] = string.Empty;
             StartSearch();
         }
-        
+
         #region 搜索框相关
         private void SearchTextBox_KeyUp(object sender, KeyRoutedEventArgs e)
         {
@@ -212,7 +216,7 @@ namespace CoolapkUWP.Pages
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/search/suggestSearchWordsNew?searchValue={sender.Text}&type=app"));
+                JsonArray array = (JsonArray)await DataHelper.GetData(true, DataType.GetSearchWords, sender.Text);
                 if (array != null && array.Count > 0)
                     sender.ItemsSource = array.Select(i => new SearchWord(i.GetObject()));
                 else

@@ -6,8 +6,8 @@
     xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:control="using:CoolapkUWP.Control"
-    xmlns:data="using:CoolapkUWP.Data"
+    xmlns:control="using:CoolapkUWP.Controls"
+    xmlns:data="using:CoolapkUWP.Helpers"
     mc:Ignorable="d"
     NavigationCacheMode="Required"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -28,7 +28,7 @@
             </Pivot.ItemContainerStyle>
             <PivotItem>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
-                    <StackPanel Padding="{x:Bind data:Settings.stackPanelMargin}">
+                    <StackPanel Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
                         <StackPanel Padding="2,4" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Orientation="Horizontal">
                             <ComboBox x:Name="SearchFeedTypeComboBox" Header="搜索类型" SelectedIndex="0" SelectionChanged="SearchFeedTypeComboBox_SelectionChanged">
                                 <ComboBoxItem>全部</ComboBoxItem>
@@ -66,7 +66,7 @@
             </PivotItem>
             <PivotItem>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
-                    <ListView x:Name="UserList" ItemTemplate="{StaticResource User}" Padding="{x:Bind data:Settings.stackPanelMargin}"
+                    <ListView x:Name="UserList" ItemTemplate="{StaticResource User}" Padding="{x:Bind data:SettingsHelper.stackPanelMargin}"
                           ScrollViewer.VerticalScrollMode="Disabled">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
@@ -83,7 +83,7 @@
             </PivotItem>
             <PivotItem>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
-                    <ListView x:Name="TopicList" ItemTemplate="{StaticResource Topic}" Padding="{x:Bind data:Settings.stackPanelMargin}"
+                    <ListView x:Name="TopicList" ItemTemplate="{StaticResource Topic}" Padding="{x:Bind data:SettingsHelper.stackPanelMargin}"
                           ScrollViewer.VerticalScrollMode="Disabled">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
@@ -99,17 +99,17 @@
                 </ScrollViewer>
             </PivotItem>
         </Pivot>
-        <Grid Height="{x:Bind data:Settings.PageTitleHeight}" VerticalAlignment="Top" cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" fcu:Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
+        <Grid Height="{x:Bind data:SettingsHelper.PageTitleHeight}" VerticalAlignment="Top" cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" fcu:Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="48"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="BackButton" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" Click="BackButton_Click" Width="48" 
+            <Button x:Name="BackButton" VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}" Click="BackButton_Click" Width="48" 
                     Height="48" Style="{ThemeResource NavigationBackButtonNormalStyle}"/>
-            <AutoSuggestBox Grid.Column="1" KeyUp="SearchTextBox_KeyUp" x:Name="SearchText" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" Margin="0,0,0,8"
+            <AutoSuggestBox Grid.Column="1" KeyUp="SearchTextBox_KeyUp" x:Name="SearchText" VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}" Margin="0,0,0,8"
                             QueryIcon="Find" QuerySubmitted="SearchText_QuerySubmitted" TextChanged="SearchText_TextChanged" ItemTemplate="{StaticResource searchWord}" SuggestionChosen="AutoSuggestBox_SuggestionChosen"/>
-            <ComboBox Grid.Column="2" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" SelectedIndex="0" x:Name="SearchTypeComboBox" SelectionChanged="SearchTypeComboBox_SelectionChanged" Margin="0,0,10,8">
+            <ComboBox Grid.Column="2" VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}" SelectedIndex="0" x:Name="SearchTypeComboBox" SelectionChanged="SearchTypeComboBox_SelectionChanged" Margin="0,0,10,8">
                 <ComboBoxItem>动态</ComboBoxItem>
                 <ComboBoxItem>用户</ComboBoxItem>
                 <ComboBoxItem>话题</ComboBoxItem>

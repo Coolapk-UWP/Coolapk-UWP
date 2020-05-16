@@ -1,26 +1,18 @@
-﻿using CoolapkUWP.Control.ViewModels;
-using CoolapkUWP.Data;
+﻿using CoolapkUWP.Controls.ViewModels;
+using CoolapkUWP.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
 using Windows.Data.Json;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
-// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
 namespace CoolapkUWP.Pages
 {
@@ -54,7 +46,7 @@ namespace CoolapkUWP.Pages
             id = token["id"].GetNumber();
             FromUserName = token["fromusername"].GetString();
             FromUserUri = token["url"].GetString();
-            Dateline = Tools.ConvertTime(token["dateline"].GetNumber());
+            Dateline = DataHelper.ConvertTime(token["dateline"].GetNumber());
             GetPic(token["fromUserInfo"].GetObject()["userSmallAvatar"].GetString());
             Regex regex = new Regex("<a.*?>.*?</a>"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
             string s = token["note"].GetString();
@@ -74,7 +66,7 @@ namespace CoolapkUWP.Pages
         {
             if (!string.IsNullOrEmpty(u))
             {
-                FromUserAvatar = await ImageCache.GetImage(ImageType.SmallAvatar, u);
+                FromUserAvatar = await ImageCacheHelper.GetImage(ImageType.SmallAvatar, u);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FromUserAvatar)));
             }
         }
@@ -98,7 +90,7 @@ namespace CoolapkUWP.Pages
 
             LikeUserName = token["likeUsername"].GetString();
             LikeUserUri = "/u/" + token["likeUid"].GetNumber();
-            Dateline = Tools.ConvertTime(token["likeTime"].GetNumber());
+            Dateline = DataHelper.ConvertTime(token["likeTime"].GetNumber());
             Uri = token["url"].GetString();
             GetPic(token["likeAvatar"].GetString());
             Title = "赞了你的" + (token.TryGetValue("feedTypeName", out IJsonValue value) ? value.GetString() : token["infoHtml"].GetString());
@@ -108,7 +100,7 @@ namespace CoolapkUWP.Pages
         {
             if (!string.IsNullOrEmpty(u))
             {
-                LikeUserAvatar = await ImageCache.GetImage(ImageType.BigAvatar, u);
+                LikeUserAvatar = await ImageCacheHelper.GetImage(ImageType.BigAvatar, u);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LikeUserAvatar)));
             }
         }
@@ -132,7 +124,7 @@ namespace CoolapkUWP.Pages
 
             UserName = token["username"].GetString();
             UserUri = "/u/" + token["uid"].GetNumber();
-            Dateline = Tools.ConvertTime(token["dateline"].GetNumber());
+            Dateline = DataHelper.ConvertTime(token["dateline"].GetNumber());
             Uri = token["url"].GetString();
             GetPic(token["userAvatar"].GetString());
             Message = (string.IsNullOrEmpty(token["rusername"].GetString()) ? string.Empty : $"回复<a href=\"/u/{token["ruid"].GetNumber()}\">{token["rusername"].GetString()}</a>: ") + token["message"].GetString();
@@ -142,15 +134,12 @@ namespace CoolapkUWP.Pages
         {
             if (!string.IsNullOrEmpty(u))
             {
-                UserAvatar = await ImageCache.GetImage(ImageType.BigAvatar, u);
+                UserAvatar = await ImageCacheHelper.GetImage(ImageType.BigAvatar, u);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserAvatar)));
             }
         }
     }
 
-    /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
-    /// </summary>
     public sealed partial class NotificationsPage : Page
     {
         ObservableCollection<object> itemCollection = new ObservableCollection<object>();
@@ -172,24 +161,25 @@ namespace CoolapkUWP.Pages
                     break;
                 case NotificationPageType.AtMe:
                     titleBar.Title = ("@我的动态");
-                    MainListView.Padding = Settings.stackPanelMargin;
+                    MainListView.Padding = SettingsHelper.stackPanelMargin;
+                    uri = "atMeList";
                     Load();
                     break;
                 case NotificationPageType.AtCommentMe:
                     titleBar.Title = ("@我的评论");
-                    MainListView.Padding = Settings.stackPanelMargin;
+                    MainListView.Padding = SettingsHelper.stackPanelMargin;
                     uri = "atCommentMeList";
                     Load<AtCommentMeNotificationViewModel>();
                     break;
                 case NotificationPageType.Like:
                     titleBar.Title = ("我收到的赞");
-                    MainListView.Padding = Settings.stackPanelMargin;
+                    MainListView.Padding = SettingsHelper.stackPanelMargin;
                     uri = "feedLikeList";
                     Load<LikeNotificationViewModel>();
                     break;
                 case NotificationPageType.Follow:
                     titleBar.Title = ("好友关注");
-                    MainListView.Padding = Settings.stackPanelMargin;
+                    MainListView.Padding = SettingsHelper.stackPanelMargin;
                     uri = "contactsFollowList";
                     Load<SimpleNotificationViewModel>();
                     break;
@@ -220,16 +210,16 @@ namespace CoolapkUWP.Pages
             switch (item.Tag as string)
             {
                 case "atMe":
-                    Tools.Navigate(typeof(NotificationsPage), NotificationPageType.AtMe);
+                    UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.AtMe);
                     break;
                 case "atCommentMe":
-                    Tools.Navigate(typeof(NotificationsPage), NotificationPageType.AtCommentMe);
+                    UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.AtCommentMe);
                     break;
                 case "like":
-                    Tools.Navigate(typeof(NotificationsPage), NotificationPageType.Like);
+                    UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.Like);
                     break;
                 case "follow":
-                    Tools.Navigate(typeof(NotificationsPage), NotificationPageType.Follow);
+                    UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.Follow);
                     break;
             }
         }
@@ -238,7 +228,7 @@ namespace CoolapkUWP.Pages
         {
             if (e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse
                 || (sender is Grid && !(e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse)))
-                Tools.OpenLink((sender as FrameworkElement).Tag as string);
+                UIHelper.OpenLink((sender as FrameworkElement).Tag as string);
         }
 
         double firstItem, lastItem;
@@ -247,8 +237,13 @@ namespace CoolapkUWP.Pages
 
         async void Load<T>(int p = -1) where T : INotificationViewModel, new()
         {
-            Tools.ShowProgressBar();
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/notification/{uri}?page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}"));
+            UIHelper.ShowProgressBar();
+            JsonArray array = (JsonArray)await DataHelper.GetData(true,
+                                                                  DataType.GetNotifications,
+                                                                  uri,
+                                                                  p == -1 ? ++page : p,
+                                                                  firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
+                                                                  lastItem == 0 ? string.Empty : $"&lastItem={lastItem}");
             if (array != null && array.Count > 0)
             {
                 if (p == 1 || page == 1)
@@ -275,17 +270,22 @@ namespace CoolapkUWP.Pages
                 if (p == -1)
                 {
                     page--;
-                    Tools.ShowMessage("没有更多了");
+                    UIHelper.ShowMessage("没有更多了");
                 }
-                else Tools.ShowMessage("没有新的了");
+                else UIHelper.ShowMessage("没有新的了");
             }
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
 
         async void Load(int p = -1)
         {
-            Tools.ShowProgressBar();
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/notification/atMeList?page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}"));
+            UIHelper.ShowProgressBar();
+            JsonArray array = (JsonArray)await DataHelper.GetData(true,
+                                                                  DataType.GetNotifications,
+                                                                  uri,
+                                                                  p == -1 ? ++page : p,
+                                                                  firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
+                                                                  lastItem == 0 ? string.Empty : $"&lastItem={lastItem}");
             if (array != null && array.Count > 0)
             {
                 if (p == 1 || page == 1)
@@ -310,11 +310,11 @@ namespace CoolapkUWP.Pages
                 if (p == -1)
                 {
                     page--;
-                    Tools.ShowMessage("没有更多了");
+                    UIHelper.ShowMessage("没有更多了");
                 }
-                else Tools.ShowMessage("没有新的了");
+                else UIHelper.ShowMessage("没有新的了");
             }
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
 
         private void MainListView_RefreshRequested(object sender, EventArgs e)

@@ -1,5 +1,5 @@
-﻿using CoolapkUWP.Control.ViewModels;
-using CoolapkUWP.Data;
+﻿using CoolapkUWP.Controls.ViewModels;
+using CoolapkUWP.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Collections.ObjectModel;
@@ -9,16 +9,10 @@ using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
-// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
 namespace CoolapkUWP.Pages.FeedPages
 {
-    /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
-    /// </summary>
     public sealed partial class UserListPage : Page
     {
         bool isFollowList;
@@ -61,8 +55,14 @@ namespace CoolapkUWP.Pages.FeedPages
 
         async void LoadList(int p = -1)
         {
-            Tools.ShowProgressBar();
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/user/{(isFollowList ? "followList" : "fansList")}?uid={uid}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}"));
+            UIHelper.ShowProgressBar();
+            JsonArray array = (JsonArray)await DataHelper.GetData(true,
+                                                                  DataType.GetUserList,
+                                                                  isFollowList ? "followList" : "fansList",
+                                                                  uid,
+                                                                  p == -1 ? ++page : p,
+                                                                  firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
+                                                                  lastItem == 0 ? string.Empty : $"&lastItem={lastItem}");
             if (array != null && array.Count > 0)
             {
                 if (p == 1 || page == 1)
@@ -82,7 +82,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         infos.Insert(i, new UserViewModel(isFollowList ? array[i].GetObject()["fUserInfo"] : array[i].GetObject()["userInfo"]));
             }
             else if (p == -1) page--;
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)

@@ -4,14 +4,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:data="using:CoolapkUWP.Data"
+    xmlns:data="using:CoolapkUWP.Helpers"
     xmlns:local="using:CoolapkUWP.Pages.SettingPages"
-    xmlns:control="using:CoolapkUWP.Control"
+    xmlns:control="using:CoolapkUWP.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Grid Padding="{x:Bind data:Settings.stackPanelMargin}">
+        <Grid Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
             <ScrollViewer>
                 <StackPanel>
                     <ToggleSwitch Margin="4" x:Name="IsUseOldEmojiMode" Header="使用旧式表情" Toggled="ToggleSwitch_Toggled"/>

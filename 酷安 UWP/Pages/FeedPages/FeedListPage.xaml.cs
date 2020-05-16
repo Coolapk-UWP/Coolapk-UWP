@@ -1,25 +1,17 @@
-﻿using CoolapkUWP.Control.ViewModels;
-using CoolapkUWP.Data;
+﻿using CoolapkUWP.Controls.ViewModels;
+using CoolapkUWP.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Data.Json;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
-// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
 namespace CoolapkUWP.Pages.FeedPages
 {
@@ -29,9 +21,7 @@ namespace CoolapkUWP.Pages.FeedPages
         TagPageList,
         DYHPageList
     }
-    /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
-    /// </summary>
+
     public sealed partial class FeedListPage : Page
     {
         interface IFeedListDataProvider
@@ -57,13 +47,12 @@ namespace CoolapkUWP.Pages.FeedPages
 
             public async Task<object> GetDetail()
             {
-                JsonObject detail = Tools.GetJSonObject(await Tools.GetJson("/user/space?uid=" + Id));
+                JsonObject detail = (JsonObject)await DataHelper.GetData(false, DataType.GetUserSpace, Id);
                 if (detail != null)
                 {
                     return new UserDetail
                     {
-                        FollowStatus = detail["uid"].GetNumber().ToString() == Settings.Get<string>("uid") ? string.Empty
-                                                                                                           : detail["isFollow"].GetNumber() == 0 ? "关注" : "取消关注",
+                        FollowStatus = detail["uid"].GetNumber().ToString() == SettingsHelper.Get<string>("uid") ? string.Empty : detail["isFollow"].GetNumber() == 0 ? "关注" : "取消关注",
                         UserFaceUrl = detail["userAvatar"].GetString(),
                         UserName = detail["username"].GetString(),
                         FollowNum = detail["follow"].GetNumber(),
@@ -75,10 +64,10 @@ namespace CoolapkUWP.Pages.FeedPages
                         Gender = detail["gender"].GetNumber() == 1 ? "♂" : (detail["gender"].GetNumber() == 0 ? "♀" : string.Empty),
                         City = $"{detail["province"].GetString()} {detail["city"].GetString()}",
                         Astro = detail["astro"].GetString(),
-                        Logintime = $"{Tools.ConvertTime(detail["logintime"].GetNumber())}活跃",
+                        Logintime = $"{DataHelper.ConvertTime(detail["logintime"].GetNumber())}活跃",
                         FeedNum = detail["feed"].GetNumber(),
-                        UserFace = await ImageCache.GetImage(ImageType.SmallAvatar, detail["userSmallAvatar"].GetString()),
-                        Background = new ImageBrush { ImageSource = await ImageCache.GetImage(ImageType.OriginImage, detail["cover"].GetString()), Stretch = Stretch.UniformToFill }
+                        UserFace = await ImageCacheHelper.GetImage(ImageType.SmallAvatar, detail["userSmallAvatar"].GetString()),
+                        Background = new ImageBrush { ImageSource = await ImageCacheHelper.GetImage(ImageType.OriginImage, detail["cover"].GetString()), Stretch = Stretch.UniformToFill }
                     };
                 }
                 else return null;
@@ -87,14 +76,19 @@ namespace CoolapkUWP.Pages.FeedPages
             public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
             {
                 if (p == 1 && page == 0) page = 1;
-                JsonArray Root = Tools.GetDataArray(await Tools.GetJson($"/user/feedList?uid={Id}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}"));
-                if (!(Root is null) && Root.Count != 0)
+                JsonArray array = (JsonArray)await DataHelper.GetData(true,
+                                                                      DataType.GetUserFeeds,
+                                                                      Id,
+                                                                      p == -1 ? ++page : p,
+                                                                      firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
+                                                                      lastItem == 0 ? string.Empty : $"&lastItem={lastItem}");
+                if (!(array is null) && array.Count != 0)
                 {
                     if (page == 1 || p == 1)
-                        firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem;
-                    lastItem = Root.Last().GetObject()["id"].GetNumber();
+                        firstItem = array.First()?.GetObject()["id"].GetNumber() ?? firstItem;
+                    lastItem = array.Last().GetObject()["id"].GetNumber();
                     List<FeedViewModel> FeedsCollection = new List<FeedViewModel>();
-                    foreach (var i in Root) FeedsCollection.Add(new FeedViewModel(i));
+                    foreach (var i in array) FeedsCollection.Add(new FeedViewModel(i));
                     return FeedsCollection;
                 }
                 else
@@ -127,12 +121,12 @@ namespace CoolapkUWP.Pages.FeedPages
 
             public async Task<object> GetDetail()
             {
-                JsonObject detail = Tools.GetJSonObject(await Tools.GetJson("/topic/newTagDetail?tag=" + Id));
+                JsonObject detail = (JsonObject)await DataHelper.GetData(false, DataType.GetTagDetail, Id);
                 if (detail != null)
                 {
                     return new TopicDetail
                     {
-                        Logo = await ImageCache.GetImage(ImageType.Icon, detail["logo"].GetString()),
+                        Logo = await ImageCacheHelper.GetImage(ImageType.Icon, detail["logo"].GetString()),
                         Title = detail["title"].GetString(),
                         FollowNum = detail.TryGetValue("follownum", out IJsonValue t) ? t.GetNumber() : detail["follow_num"].GetNumber(),
                         CommentNum = detail.TryGetValue("commentnum", out IJsonValue tt) ? tt.GetNumber() : detail["rating_total_num"].GetNumber(),
@@ -159,14 +153,20 @@ namespace CoolapkUWP.Pages.FeedPages
                         break;
                 }
                 if (p == 1 && page == 0) page = 1;
-                JsonArray Root = Tools.GetDataArray(await Tools.GetJson($"/topic/tagFeedList?tag={Id}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}&listType={sortType}&blockStatus=0"));
-                if (!(Root is null) && Root.Count != 0)
+                JsonArray array = (JsonArray)await DataHelper.GetData(true,
+                                                                      DataType.GetTagFeeds,
+                                                                      Id,
+                                                                      p == -1 ? ++page : p,
+                                                                      firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
+                                                                      lastItem == 0 ? string.Empty : $"&lastItem={lastItem}",
+                                                                      sortType);
+                if (!(array is null) && array.Count != 0)
                 {
                     if (page == 1 || p == 1)
-                        firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem;
-                    lastItem = Root.Last()?.GetObject()["id"].GetNumber() ?? lastItem;
+                        firstItem = array.First()?.GetObject()["id"].GetNumber() ?? firstItem;
+                    lastItem = array.Last()?.GetObject()["id"].GetNumber() ?? lastItem;
                     List<FeedViewModel> FeedsCollection = new List<FeedViewModel>();
-                    foreach (var i in Root) FeedsCollection.Add(new FeedViewModel(i));
+                    foreach (var i in array) FeedsCollection.Add(new FeedViewModel(i));
                     return FeedsCollection;
                 }
                 else
@@ -199,20 +199,20 @@ namespace CoolapkUWP.Pages.FeedPages
 
             public async Task<object> GetDetail()
             {
-                JsonObject detail = Tools.GetJSonObject(await Tools.GetJson("/dyh/detail?dyhId=" + Id));
+                JsonObject detail = (JsonObject)await DataHelper.GetData(false, DataType.GetDyhDetail, Id);
                 if (detail != null)
                 {
                     bool showUserButton = detail["uid"].GetNumber() != 0;
                     return new DYHDetail
                     {
-                        Logo = await ImageCache.GetImage(ImageType.Icon, detail["logo"].GetString()),
+                        Logo = await ImageCacheHelper.GetImage(ImageType.Icon, detail["logo"].GetString()),
                         Title = detail["title"].GetString(),
                         Description = detail["description"].GetString(),
                         FollowNum = detail["follownum"].GetNumber(),
                         ShowUserButton = showUserButton,
                         Url = showUserButton ? detail["userInfo"].GetObject()["url"].GetString() : string.Empty,
                         UserName = showUserButton ? detail["userInfo"].GetObject()["username"].GetString() : string.Empty,
-                        UserAvatar = showUserButton ? await ImageCache.GetImage(ImageType.SmallAvatar, detail["userInfo"].GetObject()["userSmallAvatar"].ToString().Replace("\"", string.Empty)) : null,
+                        UserAvatar = showUserButton ? await ImageCacheHelper.GetImage(ImageType.SmallAvatar, detail["userInfo"].GetObject()["userSmallAvatar"].ToString().Replace("\"", string.Empty)) : null,
                         SelectedIndex = SelectedIndex,
                         ShowComboBox = detail["is_open_discuss"].GetNumber() == 1
                     };
@@ -223,14 +223,20 @@ namespace CoolapkUWP.Pages.FeedPages
             public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
             {
                 if (p == 1 && page == 0) page = 1;
-                JsonArray Root = Tools.GetDataArray(await Tools.GetJson($"/dyhArticle/list?dyhId={Id}&type={(SelectedIndex == 0 ? "all" : "square")}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{((lastItem == 0) ? string.Empty : $"&lastItem={lastItem}")}"));
-                if (!(Root is null) && Root.Count != 0)
+                JsonArray array = (JsonArray)await DataHelper.GetData(true,
+                                                                      DataType.GetDyhFeeds,
+                                                                      Id,
+                                                                      SelectedIndex == 0 ? "all" : "square",
+                                                                      p == -1 ? ++page : p,
+                                                                      firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
+                                                                      (lastItem == 0) ? string.Empty : $"&lastItem={lastItem}");
+                if (!(array is null) && array.Count != 0)
                 {
                     if (page == 1 || p == 1)
-                        firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem;
-                    lastItem = Root.Last()?.GetObject()["id"].GetNumber() ?? lastItem;
+                        firstItem = array.First()?.GetObject()["id"].GetNumber() ?? firstItem;
+                    lastItem = array.Last()?.GetObject()["id"].GetNumber() ?? lastItem;
                     List<FeedViewModel> FeedsCollection = new List<FeedViewModel>();
-                    foreach (var i in Root) FeedsCollection.Add(new FeedViewModel(i));
+                    foreach (var i in array) FeedsCollection.Add(new FeedViewModel(i));
                     return FeedsCollection;
                 }
                 else
@@ -294,12 +300,12 @@ namespace CoolapkUWP.Pages.FeedPages
                         {
                             if (!ee.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
                             {
-                                Tools.ShowProgressBar();
+                                UIHelper.ShowProgressBar();
                                 List<FeedViewModel> feeds = await provider.GetFeeds();
                                 if (feeds != null)
                                     foreach (var item in feeds)
                                         itemCollection.Add(item);
-                                Tools.HideProgressBar();
+                                UIHelper.HideProgressBar();
                             }
                         };
                     });
@@ -308,7 +314,7 @@ namespace CoolapkUWP.Pages.FeedPages
         }
         async void Refresh()
         {
-            Tools.ShowProgressBar();
+            UIHelper.ShowProgressBar();
             if (itemCollection.Count > 0) itemCollection.RemoveAt(0);
             itemCollection.Insert(0, await provider.GetDetail());
             if (itemCollection[0] is DYHDetail detail)
@@ -322,7 +328,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 for (int i = 0; i < feeds.Count; i++)
                     itemCollection.Insert(i + 1, feeds[i]);
             titleBar.Title = provider.GetTitleBarText(itemCollection[0]);
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
@@ -333,8 +339,8 @@ namespace CoolapkUWP.Pages.FeedPages
                 if (fe != e.OriginalSource) return;
                 if (fe.Tag is string s)
                     if (s == (itemCollection[0] as UserDetail).BackgroundUrl)
-                        Tools.ShowImage(s, ImageType.OriginImage);
-                    else Tools.ShowImage(s, ImageType.SmallAvatar);
+                        UIHelper.ShowImage(s, ImageType.OriginImage);
+                    else UIHelper.ShowImage(s, ImageType.SmallAvatar);
             }
         }
 
@@ -344,35 +350,26 @@ namespace CoolapkUWP.Pages.FeedPages
             switch (button.Tag as string)
             {
                 case "follow":
-                    Tools.Navigate(typeof(UserListPage), new object[] { provider.Id, true, titleBar.Title });
+                    UIHelper.Navigate(typeof(UserListPage), new object[] { provider.Id, true, titleBar.Title });
                     break;
                 case "fans":
-                    Tools.Navigate(typeof(UserListPage), new object[] { provider.Id, false, titleBar.Title });
+                    UIHelper.Navigate(typeof(UserListPage), new object[] { provider.Id, false, titleBar.Title });
                     break;
                 case "FollowUser":
-                    JsonObject o = null;
                     switch ((itemCollection[0] as UserDetail).FollowStatus)
                     {
                         case "关注":
-                            o = JsonObject.Parse(await Tools.GetJson($"/user/follow?uid={provider.Id}"));
+                            await DataHelper.GetData(false, DataType.OperateFollow, provider.Id);
                             break;
                         case "取消关注":
-                            o = JsonObject.Parse(await Tools.GetJson($"/user/unfollow?uid={provider.Id}"));
+                            await DataHelper.GetData(false, DataType.OperateUnfollow, provider.Id);
                             break;
                     }
-                    if (o != null)
-                    {
-                        if (o.TryGetValue("message", out IJsonValue value))
-                            Tools.ShowMessage($"{value.GetString()}");
-                        else
-                        {
-                            itemCollection.RemoveAt(0);
-                            itemCollection.Insert(0, await provider.GetDetail());
-                        }
-                    }
+                    itemCollection.RemoveAt(0);
+                    itemCollection.Insert(0, await provider.GetDetail());
                     break;
                 default:
-                    Tools.OpenLink(button.Tag as string);
+                    UIHelper.OpenLink(button.Tag as string);
                     break;
             }
         }

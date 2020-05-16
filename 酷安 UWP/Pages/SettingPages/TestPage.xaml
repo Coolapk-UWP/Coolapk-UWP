@@ -3,8 +3,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:control="using:CoolapkUWP.Control"
-      xmlns:data="using:CoolapkUWP.Data"
+      xmlns:control="using:CoolapkUWP.Controls"
+      xmlns:data="using:CoolapkUWP.Helpers"
       mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
@@ -16,7 +16,7 @@
     </Page.Resources>
     <Grid>
         <ScrollViewer>
-            <StackPanel Margin="{x:Bind data:Settings.stackPanelMargin}">
+            <StackPanel Margin="{x:Bind data:SettingsHelper.stackPanelMargin}">
                 <TextBox Header="uid" x:Name="uid"/>
                 <Button Click="Button_Click">go</Button>
                 <TextBox Header="url" x:Name="url"></TextBox>

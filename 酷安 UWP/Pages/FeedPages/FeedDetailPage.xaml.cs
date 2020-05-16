@@ -1,6 +1,6 @@
-﻿using CoolapkUWP.Control;
-using CoolapkUWP.Control.ViewModels;
-using CoolapkUWP.Data;
+﻿using CoolapkUWP.Controls;
+using CoolapkUWP.Controls.ViewModels;
+using CoolapkUWP.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Collections.Generic;
@@ -14,13 +14,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
-// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
-
 namespace CoolapkUWP.Pages.FeedPages
 {
-    /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
-    /// </summary>
     public sealed partial class FeedDetailPage : Page, INotifyPropertyChanged
     {
         string feedId;
@@ -68,9 +63,9 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public async void LoadFeedDetail()
         {
-            Tools.ShowProgressBar();
+            UIHelper.ShowProgressBar();
             if (string.IsNullOrEmpty(feedId)) return;
-            JsonObject detail = Tools.GetJSonObject(await Tools.GetJson("/feed/detail?id=" + feedId));
+            JsonObject detail = (JsonObject)await DataHelper.GetData(false, DataType.GetFeedDetail, feedId);
             if (detail != null)
             {
                 FeedDetail = new FeedDetailViewModel(detail);
@@ -92,13 +87,13 @@ namespace CoolapkUWP.Pages.FeedPages
                     }
                     else if (FeedDetail.isCoolPictuers)
                         Page_SizeChanged(null, null);
-                    RefreshHotFeed();
-                    RefreshFeedReply();
+                    RefreshHotReplies();
+                    RefreshFeedReplies();
                     TitleBar.ComboBoxVisibility = Visibility.Visible;
                     TitleBar.ComboBoxSelectedIndex = 0;
                 }
             }
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -127,7 +122,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 case "MakeLike":
                     if (FeedDetail.liked)
                     {
-                        JsonObject o = Tools.GetJSonObject(await Tools.GetJson($"/feed/unlike?id={feedId}&detail=0"));
+                        JsonObject o = (JsonObject)await DataHelper.GetData(false, DataType.OperateUnlike, string.Empty, feedId);
                         if (o != null)
                         {
                             FeedDetail.likenum = o["count"].GetNumber().ToString();
@@ -137,7 +132,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     }
                     else
                     {
-                        JsonObject o = Tools.GetJSonObject(await Tools.GetJson($"/feed/like?id={feedId}&detail=0"));
+                        JsonObject o = (JsonObject)await DataHelper.GetData(false, DataType.OperateLike, string.Empty, feedId);
                         if (o != null)
                         {
                             FeedDetail.likenum = o["count"].GetNumber().ToString();
@@ -147,7 +142,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     }
                     break;
                 default:
-                    Tools.OpenLink(tag);
+                    UIHelper.OpenLink(tag);
                     break;
             }
         }
@@ -156,18 +151,18 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if ((sender as FrameworkElement).Tag is string s) Tools.OpenLink(s);
+            if ((sender as FrameworkElement).Tag is string s) UIHelper.OpenLink(s);
         }
 
         async void Refresh()
         {
-            Tools.ShowProgressBar();
+            UIHelper.ShowProgressBar();
             if (FeedDetailPivot != null)
             {
                 switch (FeedDetailPivot.SelectedIndex)
                 {
                     case 0:
-                        RefreshFeedReply(1);
+                        RefreshFeedReplies(1);
                         break;
                     case 1:
                         RefreshLikes(1);
@@ -185,20 +180,24 @@ namespace CoolapkUWP.Pages.FeedPages
             else
             {
                 LoadFeedDetail();
-                Tools.HideProgressBar();
+                UIHelper.HideProgressBar();
                 return;
             }
-            if (RefreshAll) await RefreshFeed();
-            Tools.HideProgressBar();
+            if (RefreshAll) await RefreshFeedDetail();
+            UIHelper.HideProgressBar();
         }
-        async Task RefreshFeed()
+        async Task RefreshFeedDetail()
         {
-            JsonObject detail = Tools.GetJSonObject(await Tools.GetJson("/feed/detail?id=" + feedId));
+            JsonObject detail = (JsonObject)await DataHelper.GetData(false, DataType.GetFeedDetail, feedId);
             if (detail != null) FeedDetail = new FeedDetailViewModel(detail);
         }
-        async void RefreshHotFeed(int p = -1)
+        async void RefreshHotReplies(int p = -1)
         {
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/feed/hotReplyList?id={feedId}&page={(p == -1 ? ++hotRepliesPage : p)}{(hotRepliesPage > 1 ? $"&firstItem={hotReplyFirstItem}&lastItem={hotReplyLastItem}" : string.Empty)}&discussMode=1"));
+            JsonArray array = (JsonArray)await DataHelper.GetData(true,
+                                                                  DataType.GetHotReplies,
+                                                                  feedId,
+                                                                  p == -1 ? ++hotRepliesPage : p,
+                                                                  hotRepliesPage > 1 ? $"&firstItem={hotReplyFirstItem}&lastItem={hotReplyLastItem}" : string.Empty);
             if (array != null && array.Count > 0)
             {
                 if (p == -1 || hotRepliesPage == 1)
@@ -225,10 +224,10 @@ namespace CoolapkUWP.Pages.FeedPages
             else if (p == -1)
             {
                 hotRepliesPage--;
-                Tools.ShowMessage("没有更多热门回复了");
+                UIHelper.ShowMessage("没有更多热门回复了");
             }
         }
-        async void RefreshFeedReply(int p = -1)
+        async void RefreshFeedReplies(int p = -1)
         {
             string listType = string.Empty, isFromAuthor = string.Empty;
             switch (TitleBar.ComboBoxSelectedIndex)
@@ -251,7 +250,14 @@ namespace CoolapkUWP.Pages.FeedPages
                     isFromAuthor = "1";
                     break;
             }
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/feed/replyList?id={feedId}&listType={listType}&page={(p == -1 ? ++repliesPage : p)}{(replyFirstItem == 0 ? string.Empty : $"&firstItem={replyFirstItem}")}{(replyLastItem == 0 ? string.Empty : $"&lastItem={replyLastItem}")}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}"));
+            JsonArray array = (JsonArray)await DataHelper.GetData(true,
+                                                                  DataType.GetFeedReplies,
+                                                                  feedId,
+                                                                  listType,
+                                                                  p == -1 ? ++repliesPage : p,
+                                                                  replyFirstItem == 0 ? string.Empty : $"&firstItem={replyFirstItem}",
+                                                                  replyLastItem == 0 ? string.Empty : $"&lastItem={replyLastItem}",
+                                                                  isFromAuthor);
             if (array != null && array.Count != 0)
             {
                 if (p == 1 || repliesPage == 1)
@@ -278,12 +284,18 @@ namespace CoolapkUWP.Pages.FeedPages
             else if (p == -1)
             {
                 repliesPage--;
-                Tools.ShowMessage("没有更多回复了");
+                UIHelper.ShowMessage("没有更多回复了");
             }
         }
         async void RefreshAnswers(int p = -1)
         {
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/question/answerList?id={feedId}&sort={answerSortType}&page={(p == -1 ? ++answersPage : p)}{(answerFirstItem == 0 ? string.Empty : $"&firstItem={answerFirstItem}")}{(answerLastItem == 0 ? string.Empty : $"&lastItem={answerLastItem}")}"));
+            JsonArray array = (JsonArray)await DataHelper.GetData(true,
+                                                                  DataType.GetAnswers,
+                                                                  feedId,
+                                                                  answerSortType,
+                                                                  p == -1 ? ++answersPage : p,
+                                                                  answerFirstItem == 0 ? string.Empty : $"&firstItem={answerFirstItem}",
+                                                                  answerLastItem == 0 ? string.Empty : $"&lastItem={answerLastItem}");
             if (array != null && array.Count != 0)
             {
                 if (p == 1 || answersPage == 1)
@@ -310,12 +322,17 @@ namespace CoolapkUWP.Pages.FeedPages
             else if (p == -1)
             {
                 answersPage--;
-                Tools.ShowMessage("没有更多回答了");
+                UIHelper.ShowMessage("没有更多回答了");
             }
         }
         async void RefreshLikes(int p = -1)
         {
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/feed/likeList?id={feedId}&listType=lastupdate_desc&page={(p == -1 ? ++likesPage : p)}{(likeFirstItem == 0 ? string.Empty : $"&firstItem={likeFirstItem}")}{(likeLastItem == 0 ? string.Empty : $"&lastItem={likeLastItem}")}"));
+            JsonArray array = (JsonArray)await DataHelper.GetData(true,
+                                                                  DataType.GetLikeList,
+                                                                  feedId,
+                                                                  p == -1 ? ++likesPage : p,
+                                                                  likeFirstItem == 0 ? string.Empty : $"&firstItem={likeFirstItem}",
+                                                                  likeLastItem == 0 ? string.Empty : $"&lastItem={likeLastItem}");
             if (array != null && array.Count != 0)
             {
                 if (p == 1 || likesPage == 1)
@@ -342,13 +359,12 @@ namespace CoolapkUWP.Pages.FeedPages
             else if (p == -1)
             {
                 likesPage--;
-                Tools.ShowMessage("没有更多点赞用户了");
+                UIHelper.ShowMessage("没有更多点赞用户了");
             }
         }
         async void RefreshShares()
         {
-            string r = await Tools.GetJson($"/feed/forwardList?id={feedId}&type=feed&page={++sharesPage}");
-            JsonArray array = Tools.GetDataArray(r);
+            JsonArray array = (JsonArray)await DataHelper.GetData(true, DataType.GetShareList, feedId, ++sharesPage);
             if (array != null && array.Count != 0)
             {
                 if (sharesPage == 1)
@@ -363,7 +379,7 @@ namespace CoolapkUWP.Pages.FeedPages
             else
             {
                 sharesPage--;
-                Tools.ShowMessage("没有更多转发了");
+                UIHelper.ShowMessage("没有更多转发了");
             }
         }
 
@@ -389,13 +405,13 @@ namespace CoolapkUWP.Pages.FeedPages
                 double a = scrollViewer.VerticalOffset;
                 if (a == scrollViewer.ScrollableHeight)
                 {
-                    Tools.ShowProgressBar();
+                    UIHelper.ShowProgressBar();
                     scrollViewer.ChangeView(null, a, null);
                     if (FeedDetailPivot != null)
                         switch (FeedDetailPivot.SelectedIndex)
                         {
                             case 0:
-                                RefreshFeedReply();
+                                RefreshFeedReplies();
                                 break;
                             case 1:
                                 RefreshLikes();
@@ -405,7 +421,7 @@ namespace CoolapkUWP.Pages.FeedPages
                                 break;
                         }
                     else if (AnswersListView != null) RefreshAnswers();
-                    Tools.HideProgressBar();
+                    UIHelper.HideProgressBar();
                 }
             }
         }
@@ -421,11 +437,11 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e) => Tools.OpenLink((sender as FrameworkElement).Tag as string);
-        
-        private void Image_Tapped(object sender, TappedRoutedEventArgs e) => Tools.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
+        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.OpenLink((sender as FrameworkElement).Tag as string);
 
-        private void GetMoreHotReplyListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => RefreshHotFeed();
+        private void Image_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
+
+        private void GetMoreHotReplyListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => RefreshHotReplies();
 
         private void FeedDetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -467,14 +483,14 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             if (sender is GridView view && view.SelectedIndex > -1)
             {
-                if (view.Tag is List<string> ss) Tools.ShowImages(ss.ToArray(), view.SelectedIndex);
+                if (view.Tag is List<string> ss) UIHelper.ShowImages(ss.ToArray(), view.SelectedIndex);
                 else if (view.Tag is string s && !string.IsNullOrWhiteSpace(s))
-                    Tools.ShowImage(s, ImageType.SmallImage);
+                    UIHelper.ShowImage(s, ImageType.SmallImage);
                 view.SelectedIndex = -1;
             }
             else if (sender is ListView viewb && viewb.SelectedIndex > -1)
             {
-                if (viewb.Tag is List<string> ss) Tools.ShowImages(ss.ToArray(), viewb.SelectedIndex);
+                if (viewb.Tag is List<string> ss) UIHelper.ShowImages(ss.ToArray(), viewb.SelectedIndex);
                 viewb.SelectedIndex = -1;
             }
         }
@@ -496,8 +512,8 @@ namespace CoolapkUWP.Pages.FeedPages
                 feedArticleTitle.Height = feedArticleTitle.Width * 0.44;
             void set()
             {
-                RightSideListView.Padding = Settings.stackPanelMargin;
-                detailList.Padding = new Thickness(0, Settings.PageTitleHeight, 0, PivotItemPanel.ActualHeight + 16);
+                RightSideListView.Padding = SettingsHelper.stackPanelMargin;
+                detailList.Padding = new Thickness(0, SettingsHelper.PageTitleHeight, 0, PivotItemPanel.ActualHeight + 16);
                 detailListHeight = e?.NewSize.Height ?? Window.Current.Bounds.Height;
                 RightColumnDefinition.Width = new GridLength(1, GridUnitType.Star);
                 MainListView.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Disabled);
@@ -526,7 +542,7 @@ namespace CoolapkUWP.Pages.FeedPages
             else
             {
                 MainListView.Margin = new Thickness(0, 0, 0, PivotItemPanel.ActualHeight + 16);
-                MainListView.Padding = Settings.stackPanelMargin;
+                MainListView.Padding = SettingsHelper.stackPanelMargin;
                 PivotItemPanel.Margin = new Thickness(0);
                 detailList.Padding = RightSideListView.Padding = new Thickness(0, 0, 0, 12);
                 detailListHeight = double.NaN;

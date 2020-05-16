@@ -1,8 +1,5 @@
-﻿using CoolapkUWP.Data;
+﻿using CoolapkUWP.Helpers;
 using System;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -60,15 +57,15 @@ namespace CoolapkUWP.Pages
 
         async void CheckLogin()
         {
-            if (await Settings.CheckLoginInfo())
+            if (await SettingsHelper.CheckLoginInfo())
             {
                 Frame.GoBack();
-                Tools.ShowMessage("登录成功");
+                UIHelper.ShowMessage("登录成功");
             }
             else
             {
                 webView.Navigate(new Uri("https://account.coolapk.com/auth/loginByCoolapk"));
-                Tools.ShowMessage("没有获取到token，请尝试重新登录");
+                UIHelper.ShowMessage("没有获取到token，请尝试重新登录");
             }
         }
 

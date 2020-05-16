@@ -4,9 +4,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:local="using:CoolapkUWP.Pages.FeedPages"
-      xmlns:control="using:CoolapkUWP.Control"
+      xmlns:control="using:CoolapkUWP.Controls"
       xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-      xmlns:viewModel="using:CoolapkUWP.Control.ViewModels"
+      xmlns:viewModel="using:CoolapkUWP.Controls.ViewModels"
       xmlns:xp="using:XP"
       mc:Ignorable="d"
       SizeChanged="Page_SizeChanged"
@@ -37,7 +37,7 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <controls:PullToRefreshListView x:Name="detailList" SelectionMode="None" ScrollViewer.VerticalScrollMode="Disabled"
-                                        PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新" Height="{x:Bind detailListHeight,Mode=OneWay}" RefreshRequested="{x:Bind RefreshFeed}">
+                                        PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新" Height="{x:Bind detailListHeight,Mode=OneWay}" RefreshRequested="{x:Bind RefreshFeedDetail}">
                     <controls:PullToRefreshListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Padding" Value="0"/>

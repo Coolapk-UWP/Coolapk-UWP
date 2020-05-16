@@ -5,7 +5,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using CoolapkUWP.Data;
+using CoolapkUWP.Helpers;
 using System.Threading.Tasks;
 
 namespace CoolapkUWP
@@ -70,7 +70,7 @@ namespace CoolapkUWP
                 if (Window.Current.Content != null)
                 {
                     await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
-                    Tools.HideProgressBar();
+                    UIHelper.HideProgressBar();
                 }
             }
         }
@@ -99,8 +99,13 @@ namespace CoolapkUWP
             {
                 if (Window.Current.Content != null)
                 {
-                    await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
-                    Tools.HideProgressBar();
+                    if (e.Exception.HResult == -2147012889) UIHelper.ShowMessage($"网络异常(0x{Convert.ToString(e.Exception.HResult, 16)})");
+                    else await new MessageDialog($"{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})" 
+#if DEBUG
+                        + "\n{e.Exception.StackTrace}"
+#endif
+                        ,"程序出现了错误……").ShowAsync();
+                    UIHelper.HideProgressBar();
                 }
             }
         }
