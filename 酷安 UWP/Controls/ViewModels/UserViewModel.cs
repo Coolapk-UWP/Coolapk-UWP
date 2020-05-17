@@ -1,27 +1,27 @@
 ﻿using CoolapkUWP.Helpers;
-using Windows.Data.Json;
+using Newtonsoft.Json.Linq;
 
 namespace CoolapkUWP.Controls.ViewModels
 {
     class UserViewModel : Entity
     {
-        public UserViewModel(IJsonValue t) : base(t)
+        public UserViewModel(JToken t) : base(t)
         {
-            JsonObject token = t.GetObject();
-            url = token["url"].GetString();
-            UserName = token["username"].GetString();
-            if (token.TryGetValue("fans", out IJsonValue a))
+            JObject token = t as JObject;
+            url = token.Value<string>("url");
+            UserName = token.Value<string>("username");
+            if (token.TryGetValue("fans", out JToken a))
             {
                 FansNum = a.ToString().Replace("\"", string.Empty);
                 FollowNum = token["follow"].ToString().Replace("\"", string.Empty);
-                if (token.TryGetValue("bio", out IJsonValue b))
-                    Bio = b.GetString();
+                if (token.TryGetValue("bio", out JToken b))
+                    Bio = b.ToString();
                 LoginTime = DataHelper.ConvertTime(double.Parse(token["logintime"].ToString().Replace("\"", string.Empty))) + "活跃";
             }
             GetPic(token);
         }
 
-        async void GetPic(JsonObject token) => UserAvatar = await ImageCacheHelper.GetImage(ImageType.SmallAvatar, token["userSmallAvatar"].GetString());
+        async void GetPic(JObject token) => UserAvatar = await ImageCacheHelper.GetImage(ImageType.SmallAvatar, token.Value<string>("userSmallAvatar"));
         public string url { get; private set; }
         public string UserName { get; private set; }
         public string FollowNum { get; private set; }

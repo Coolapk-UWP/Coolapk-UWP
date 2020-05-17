@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
-using Windows.Data.Json;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.ViewManagement;
@@ -58,14 +58,13 @@ namespace CoolapkUWP.Helpers
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0;)");
-                    var keys = JsonObject.Parse(await client.GetStringAsync("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest"));
-                    var ver = keys["tag_name"].GetString().Replace("v", string.Empty).Split('.');
+                    var keys = JObject.Parse(await client.GetStringAsync("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest"));
+                    var ver = keys.Value<string>("tag_name").Replace("v", string.Empty).Split('.');
                     if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major
                         || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
                         || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
                     {
-                        var dialog = new Controls.GetUpdateContentDialog(keys["html_url"].GetString(), keys["body"].GetString()) { RequestedTheme = theme };
-                        await dialog.ShowAsync();
+                        var dialog = new Controls.GetUpdateContentDialog(keys.Value<string>("html_url"), keys.Value<string>("body")) { RequestedTheme = theme }; await dialog.ShowAsync();
                     }
                     else UIHelper.ShowMessage("当前无可用更新。");
                 }
@@ -144,9 +143,9 @@ namespace CoolapkUWP.Helpers
                     if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(userName))
                     {
                         Set("Uid", uid);
-                        var o = (JsonObject)await DataHelper.GetData(false, DataType.CheckLoginInfo);
-                        UIHelper.notifications.Initial(o["notifyCount"].GetObject());
-                        UIHelper.MainPageUserAvatar = await ImageCacheHelper.GetImage(ImageType.BigAvatar, o["userAvatar"].GetString());
+                        var o = (JObject)await DataHelper.GetData(DataType.CheckLoginInfo);
+                        UIHelper.notifications.Initial((JObject)o["notifyCount"]);
+                        UIHelper.MainPageUserAvatar = await ImageCacheHelper.GetImage(ImageType.BigAvatar, o.Value<string>("userAvatar"));
                         return true;
                     }
                     else return false;

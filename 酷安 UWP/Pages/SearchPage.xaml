@@ -27,7 +27,7 @@
                 </Style>
             </Pivot.ItemContainerStyle>
             <PivotItem>
-                <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
+                <ScrollViewer x:Name="FeedScrollViewer" ViewChanged="ScrollViewer_ViewChanged">
                     <StackPanel Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
                         <StackPanel Padding="2,4" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Orientation="Horizontal">
                             <ComboBox x:Name="SearchFeedTypeComboBox" Header="搜索类型" SelectedIndex="0" SelectionChanged="SearchFeedTypeComboBox_SelectionChanged">
@@ -65,7 +65,7 @@
                 </ScrollViewer>
             </PivotItem>
             <PivotItem>
-                <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
+                <ScrollViewer x:Name="UserScrollViewer" ViewChanged="ScrollViewer_ViewChanged">
                     <ListView x:Name="UserList" ItemTemplate="{StaticResource User}" Padding="{x:Bind data:SettingsHelper.stackPanelMargin}"
                           ScrollViewer.VerticalScrollMode="Disabled">
                         <ListView.ItemContainerStyle>
@@ -82,7 +82,7 @@
                 </ScrollViewer>
             </PivotItem>
             <PivotItem>
-                <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
+                <ScrollViewer x:Name="TagScrollViewer" ViewChanged="ScrollViewer_ViewChanged">
                     <ListView x:Name="TopicList" ItemTemplate="{StaticResource Topic}" Padding="{x:Bind data:SettingsHelper.stackPanelMargin}"
                           ScrollViewer.VerticalScrollMode="Disabled">
                         <ListView.ItemContainerStyle>

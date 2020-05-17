@@ -1,12 +1,12 @@
 ﻿using CoolapkUWP.Controls.ViewModels;
 using CoolapkUWP.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -60,14 +60,14 @@ namespace CoolapkUWP.Controls
         {
             UIHelper.ShowProgressBar();
             int page = isRefresh ? 1 : ++this.page;
-            JsonArray array = (JsonArray)await DataHelper.GetData(true, DataType.GetReplyReplies, page, page > 1 ? $"&lastItem={lastItem}" : string.Empty);
+            JArray array = (JArray)await DataHelper.GetData(DataType.GetReplyReplies, id, page, page > 1 ? $"&lastItem={lastItem}" : string.Empty);
             if (array != null && array.Count > 0)
                 if (isRefresh)
                 {
                     VScrollViewer?.ChangeView(null, 0, null);
                     var d = (from a in replys
                              from b in array
-                             where a.id == b.GetObject()["id"].GetNumber()
+                             where a.id == b.Value<int>("id")
                              select a).ToArray();
                     foreach (var item in d)
                         replys.Remove(item);
@@ -78,7 +78,7 @@ namespace CoolapkUWP.Controls
                 {
                     foreach (var item in array)
                         replys.Add(new FeedReplyViewModel(item, false));
-                    lastItem = array.Last().GetObject()["id"].GetNumber();
+                    lastItem = array.Last.Value<int>("id");
                 }
             else if (!isRefresh) this.page--;
             UIHelper.HideProgressBar();

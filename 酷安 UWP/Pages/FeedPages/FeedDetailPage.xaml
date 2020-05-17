@@ -117,7 +117,7 @@
                                 <GridView.ItemTemplate>
                                     <DataTemplate x:DataType="viewModel:ImageData">
                                         <Grid>
-                                            <Image MaxHeight="70" MaxWidth="70"  MinHeight="0" MinWidth="0" Source="{x:Bind Pic}" Stretch="UniformToFill"/>
+                                            <Image MinHeight="100" MaxHeight="100" MinWidth="100" MaxWidth="100" Source="{x:Bind Pic}" Stretch="UniformToFill"/>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                                                 <Border x:Name="longPic" x:Load="{x:Bind IsLongPic}" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                                                     <TextBlock>长图</TextBlock>
@@ -173,7 +173,7 @@
                                         <GridView.ItemTemplate>
                                             <DataTemplate x:DataType="viewModel:ImageData">
                                                 <Grid>
-                                                    <Image MaxHeight="70" MaxWidth="70"  MinHeight="0" MinWidth="0" Source="{x:Bind Pic}" Stretch="UniformToFill"/>
+                                                    <Image Height="70" Width="70" Source="{x:Bind Pic}" Stretch="UniformToFill"/>
                                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                                                         <Border x:Name="longPic" x:Load="{x:Bind IsLongPic}" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                                                             <TextBlock>长图</TextBlock>
@@ -195,10 +195,10 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Border Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                                <Image Width="50" Height="50" Source="{x:Bind FeedDetail.extra_pic,Mode=OneWay}" />
+                                <Image Width="56" Height="56" Source="{x:Bind FeedDetail.extra_pic,Mode=OneWay}" />
                             </Border>
                             <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5">
-                                <TextBlock Text="{x:Bind FeedDetail.extra_title,Mode=OneWay}" TextWrapping="Wrap"/>
+                                <TextBlock MaxHeight="32" Text="{x:Bind FeedDetail.extra_title,Mode=OneWay}" TextWrapping="Wrap"/>
                                 <TextBlock Text="{x:Bind FeedDetail.extra_url2,Mode=OneWay}" Foreground="Gray" TextWrapping="Wrap"/>
                             </StackPanel>
                         </Grid>
@@ -259,7 +259,7 @@
                                     </ListView.ItemContainerStyle>
                                     <ListView.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <control:GridPanel DesiredColumnWidth="384.0"/>
+                                            <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384.0"/>
                                         </ItemsPanelTemplate>
                                     </ListView.ItemsPanel>
                                 </ListView>

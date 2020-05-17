@@ -104,7 +104,7 @@
                         <Image x:Name="Logo" Width="80" Height="80" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Source="{x:Bind Logo,Mode=OneWay}"/>
                         <StackPanel Grid.Column="1" Margin="0,18">
                             <TextBlock FontSize="20" FontWeight="Black" Text="{x:Bind Title}"/>
-                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="{x:Bind Description}"/>
+                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,12,0" TextWrapping="Wrap" Text="{x:Bind Description}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,5">
                                 <TextBlock Margin="0,0,0,2" Text="{x:Bind FollowNum}" VerticalAlignment="Center"/>
                                 <TextBlock Margin="0,0,10,2" VerticalAlignment="Center">订阅</TextBlock>

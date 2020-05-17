@@ -1,14 +1,14 @@
 ﻿using CoolapkUWP.Helpers;
-using Windows.Data.Json;
+using Newtonsoft.Json.Linq;
 using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Controls.ViewModels
 {
     class TopicViewModel : DyhViewModel
     {
-        public TopicViewModel(IJsonValue t) : base(t)
+        public TopicViewModel(JToken t) : base(t)
         {
-            JsonObject token = t.GetObject();
+            JObject token = t as JObject;
             commentnum = token["commentnum"].ToString().Replace("\"", string.Empty);
         }
         public string commentnum { get; private set; }
@@ -16,15 +16,15 @@ namespace CoolapkUWP.Controls.ViewModels
 
     class DyhViewModel : Entity
     {
-        public DyhViewModel(IJsonValue t) : base(t)
+        public DyhViewModel(JToken t) : base(t)
         {
-            JsonObject token = t.GetObject();
-            url = token["url"].GetString();
-            title = token["title"].GetString();
+            JObject token = t as JObject;
+            url = token.Value<string>("url");
+            title = token.Value<string>("title");
             follownum = token["follownum"].ToString().Replace("\"", string.Empty);
             GetPic(token);
         }
-        async void GetPic(JsonObject token) => logo = await ImageCacheHelper.GetImage(ImageType.Icon, token["logo"].GetString());
+        async void GetPic(JObject token) => logo = await ImageCacheHelper.GetImage(ImageType.Icon, token.Value<string>("logo"));
         public string url { get; private set; }
         public string title { get; private set; }
         public string follownum { get; private set; }

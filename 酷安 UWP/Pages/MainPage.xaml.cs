@@ -1,11 +1,11 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Data.Json;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -126,55 +126,56 @@ namespace CoolapkUWP.Pages
             UIHelper.notifications.BadgeNumberChanged += (sender, e) => { if (sender is NotificationsNum num) ChangeBadgeNum(num.BadgeNum); };
             ChangeBadgeNum(UIHelper.notifications.BadgeNum);
 
-            JsonArray array = (JsonArray)await DataHelper.GetData(true, DataType.GetIndexPageNames);
+            JArray array = (JArray)await DataHelper.GetData( DataType.GetIndexPageNames);
             if (array != null && array.Count > 0)
             {
-                string[] excludedTabs = new[] { "酷品", "看看号", "直播", "视频" };
-                var TabList = from a in array
-                              where a.GetObject()["entityTemplate"].GetString() == "configCard"
-                              from b in a.GetObject()["entities"].GetArray()
-                              where !excludedTabs.Contains(b.GetObject()["title"].GetString())
-                              select b;
+                string[] excludedTabs = new[] { "酷品", "看看号", "直播", "视频", "头条" };
+                var tempTabList = (from a in array
+                              where a.Value<string>("entityTemplate") == "configCard"
+                              from b in a["entities"] as JArray
+                              where !excludedTabs.Contains(b.Value<string>("title"))
+                              select b).ToArray();
                 var FollowList = from a in array
-                                 where a.GetObject()["entityTemplate"].GetString() == "configCard"
-                                 from b in a.GetObject()["entities"].GetArray()
-                                 where b.GetObject()["title"].GetString() == "关注"
-                                 from c in b.GetObject()["entities"].GetArray()
-                                 where c.GetObject()["entityType"].GetString() == "page"
+                                 where a.Value<string>("entityTemplate") == "configCard"
+                                 from b in a["entities"] as JArray
+                                 where b.Value<string>("title") == "关注"
+                                 from c in b["entities"] as JArray
+                                 where c.Value<string>("entityType") == "page"
                                  select c;
-                PivotItem i, j;
-                i = j = new PivotItem();
+                var TabList = new JToken[tempTabList.Length + 1];
+                TabList[0] = JObject.Parse("{title : \"头条\"}");
+                for (int i = 1; i < TabList.Length; i++)
+                    TabList[i] = tempTabList[i - 1];
+                PivotItem j = new PivotItem();
                 MainPivot.ItemsSource = TabList.Select(a =>
                 {
-                    var b = a.GetObject();
-                    string title = b["title"].GetString();
+                    var b = a as JObject;
+                    string title = b.Value<string>("title");
                     var p = new PivotItem { Header = title };
-                    p.Content = new Frame { Tag = title == "头条" ? "/main/indexV8" : $"{b["url"].GetString()}&title={title}" };
-                    if (title == "头条") i = p;
-                    else if (title == "关注") j = p;
+                    p.Content = new Frame { Tag = title == "头条" ? "/main/indexV8" : $"{b.Value<string>("url")}&title={title}" };
+                    if (title == "关注") j = p;
                     return p;
                 });
-                MainPivot.SelectedIndex = MainPivot.Items.IndexOf(i);
-                followUrls = FollowList.Select(a => a.GetObject()["url"].GetString()).ToArray();
+                followUrls = FollowList.Select(a => a.Value<string>("url")).ToArray();
                 followIndex = MainPivot.Items.IndexOf(j);
-                PivotItemsComboBox.ItemsSource = FollowList.Select(a => a.GetObject()["title"].GetString());
+                PivotItemsComboBox.ItemsSource = FollowList.Select(a => a.Value<string>("title"));
                 if (SettingsHelper.Get<int>("DefaultFollowPageIndex") > followUrls.Count()) SettingsHelper.Set("DefaultFollowPageIndex", 0);
                 PivotItemsComboBox.SelectedIndex = SettingsHelper.Get<int>("DefaultFollowPageIndex");
             }
         }
 
-        private async void ChangeBadgeNum(double num)
-         => await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => NotificationCenterButton.Icon = new FontIcon
-         {
-             FontFamily = new FontFamily("Segoe MDL2 Assets"),
-             Glyph = num > 0 ? "" //"&#xED0C;" 
-                             : "" //"&#xED0D;" 
-         });
+        private async void ChangeBadgeNum(double num) =>
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => NotificationCenterButton.Icon = new FontIcon
+            {
+                FontFamily = new FontFamily("Segoe MDL2 Assets"),
+                Glyph = num > 0 ? "" //"&#xED0C;" 
+                                : "" //"&#xED0D;" 
+            });
         #endregion
 
         private void PivotItemsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (PivotItemsComboBox.SelectedIndex != -1 && MainPivot.SelectedIndex == 0 && (MainPivot.SelectedItem as PivotItem).Content is Frame f)
+            if (PivotItemsComboBox.SelectedIndex != -1 && MainPivot.SelectedIndex == followIndex && (MainPivot.SelectedItem as PivotItem).Content is Frame f)
             {
                 f.Navigate(typeof(IndexPage), new object[] { followUrls[PivotItemsComboBox.SelectedIndex], true });
                 SettingsHelper.Set("DefaultFollowPageIndex", PivotItemsComboBox.SelectedIndex);
@@ -188,7 +189,6 @@ namespace CoolapkUWP.Pages
                             IndexPage page = f.Content as IndexPage;
                             if (!ee.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight && page.CanLoadMore)
                                 page.GetUrlPage();
-
                         });
                 });
             }
@@ -212,7 +212,6 @@ namespace CoolapkUWP.Pages
                                 IndexPage page = f.Content as IndexPage;
                                 if (!ee.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight && page.CanLoadMore)
                                     page.GetUrlPage();
-
                             });
                     });
                 }
@@ -233,16 +232,10 @@ namespace CoolapkUWP.Pages
                                 IndexPage page = f.Content as IndexPage;
                                 if (!ee.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight && page.CanLoadMore)
                                     page.GetUrlPage();
-
                             });
                     });
                 }
             }
-        }
-
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-
         }
     }
 }

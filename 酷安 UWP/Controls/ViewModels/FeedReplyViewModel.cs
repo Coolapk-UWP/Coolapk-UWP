@@ -1,33 +1,33 @@
 ﻿using CoolapkUWP.Helpers;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Windows.Data.Json;
 using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Controls.ViewModels
 {
     class FeedReplyViewModel : SimpleFeedReplyViewModel, INotifyPropertyChanged, ILike
     {
-        public FeedReplyViewModel(IJsonValue t, bool showReplyRow = true) : base(t)
+        public FeedReplyViewModel(JToken t, bool showReplyRow = true) : base(t)
         {
-            JsonObject token = t.GetObject();
+            JObject token = t as JObject;
             dateline = DataHelper.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
-            message = token["message"].GetString();
-            userSmallAvatarUrl = token["userInfo"].GetObject()["userSmallAvatar"].GetString();
+            message = token.Value<string>("message");
+            userSmallAvatarUrl = token["userInfo"].Value<string>("userSmallAvatar");
             likenum = token["likenum"].ToString().Replace("\"", string.Empty);
             replynum = token["replynum"].ToString().Replace("\"", string.Empty);
-            token.TryGetValue("replyRowsCount", out IJsonValue value1);
-            replyRowsCount = value1?.GetNumber() ?? 0;
+            token.TryGetValue("replyRowsCount", out JToken value1);
+            replyRowsCount = int.Parse(value1?.ToString() ?? "0");
             showreplyRows = showReplyRow && replyRowsCount > 0;
             if (showreplyRows)
             {
                 List<SimpleFeedReplyViewModel> models = new List<SimpleFeedReplyViewModel>();
-                foreach (var item in token["replyRows"].GetArray())
+                foreach (var item in token["replyRows"] as JArray)
                     models.Add(new SimpleFeedReplyViewModel(item));
                 replyRows = models.ToArray();
-                replyRowsMore = token["replyRowsMore"].GetNumber();
+                replyRowsMore = token.Value<int>("replyRowsMore");
             }
-            liked = token.TryGetValue("userAction", out IJsonValue v) ? v.GetObject()["like"].GetNumber() == 1 : false;
+            liked = token.TryGetValue("userAction", out JToken v) ? v.Value<int>("like") == 1 : false;
             GetPic();
         }
 

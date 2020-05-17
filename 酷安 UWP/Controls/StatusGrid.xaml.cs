@@ -20,14 +20,12 @@ namespace CoolapkUWP.Controls
         public void ShowProgressBar()
         {
             statusBar.Visibility = Visibility.Visible;
-            statusBar.IsIndeterminate = true;
         }
 
         public void HideProgressBar()
         {
             if (!string.IsNullOrEmpty(messageTextBlock.Text)) return;
             statusBar.Visibility = Visibility.Collapsed;
-            statusBar.IsIndeterminate = false;
         }
 
         public void ShowMessage(string message) => messageTextBlock.Text = message;

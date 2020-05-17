@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Windows.Data.Json;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 
@@ -47,7 +47,7 @@ namespace CoolapkUWP.Helpers
             uris.Add(DataType.CheckLoginInfo.ToString(), "/account/checkLoginInfo");
             uris.Add(DataType.GetAnswers.ToString(), "/question/answerList?id={0}&sort={1}&page={2}{3}{4}");
             uris.Add(DataType.GetDyhDetail.ToString(), "/dyh/detail?dyhId={0}");
-            uris.Add(DataType.GetDyhFeeds.ToString(), "/dyhArticle/list?dyhId={0}&type={1}&page={2}{3)}{4}");
+            uris.Add(DataType.GetDyhFeeds.ToString(), "/dyhArticle/list?dyhId={0}&type={1}&page={2}{3}{4}");
             uris.Add(DataType.GetFeedDetail.ToString(), "/feed/detail?id={0}");
             uris.Add(DataType.GetFeedReplies.ToString(), "/feed/replyList?id={0}&listType={1}&page={2}{3}{4}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={5}");
             uris.Add(DataType.GetHotReplies.ToString(), "/feed/hotReplyList?id={0}&page={1}{2}&discussMode=1");
@@ -83,21 +83,16 @@ namespace CoolapkUWP.Helpers
             return CryptographicBuffer.EncodeToHexString(buffHash1);
         }
 
-        public static async Task<object> GetData(bool returnArray, DataType dataType, params object[] args)
+        public static async Task<JToken> GetData(DataType dataType, params object[] args)
         {
             var json = await NetworkHelper.GetJson(string.Format(uris[dataType.ToString()], args));
-            try
-            {
-                if (string.IsNullOrEmpty(json)) return null;
-                if (returnArray) return JsonObject.Parse(json)["data"].GetArray();
-                else return JsonObject.Parse(json)["data"].GetObject();
-            }
-            catch
-            {
-                if (JsonObject.Parse(json).TryGetValue("message", out IJsonValue value))
-                    UIHelper.ShowMessage($"{value.GetString()}");
-                return null;
-            }
+            JToken token = null;
+            var o = JObject.Parse(json);
+            if (!string.IsNullOrEmpty(json) &&
+                !o.TryGetValue("data", out token) &&
+                o.TryGetValue("message", out JToken value))
+                throw new Exceptions.ServerException($"{value}");
+            return token;
         }
 
         public static string ConvertTime(double timestr)

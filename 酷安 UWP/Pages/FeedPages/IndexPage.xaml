@@ -34,7 +34,7 @@
                                            DataTemplate9="{StaticResource coolPicture}"/>
             <!--#region 一级-->
             <DataTemplate x:Key="null">
-                <TextBlock Foreground="Gray">很抱歉，该版本暂不支持显示此类型内容。</TextBlock>
+                
             </DataTemplate>
             <DataTemplate x:Key="Card" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem Margin="8" Padding="4" HorizontalContentAlignment="Stretch" Style="{StaticResource NoAnimationListViewItem}">
@@ -211,10 +211,10 @@
                 </xp:Shadow>
             </DataTemplate>
             <DataTemplate x:Key="iconLink" x:DataType="viewmodel:IndexPageViewModel">
-                <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Margin="0,4,0,12" Template="{StaticResource ListViewItemTemplate1}" Tapped="Grid_Tapped" Tag="{x:Bind}">
+                <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Margin="0,4" Template="{StaticResource ListViewItemTemplate1}" Tapped="Grid_Tapped" Tag="{x:Bind}">
                     <xp:Shadow Z_Depth="2">
-                        <StackPanel Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Padding="4">
-                            <Image Source="{x:Bind pic,Mode=OneWay}" Height="36" Width="36"/>
+                        <StackPanel MaxWidth="40" Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Padding="4">
+                            <Image Source="{x:Bind pic,Mode=OneWay}" Height="28" Width="28"/>
                             <TextBlock HorizontalAlignment="Center" Text="{x:Bind title}" TextWrapping="Wrap"/>
                         </StackPanel>
                     </xp:Shadow>

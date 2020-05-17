@@ -1,13 +1,13 @@
 ﻿using CoolapkUWP.Controls.ViewModels;
 using CoolapkUWP.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -66,7 +66,7 @@ namespace CoolapkUWP.Pages.FeedPages
         async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
         {
             UIHelper.ShowProgressBar();
-            JsonArray array = (JsonArray)await DataHelper.GetData(true, DataType.GetIndexPage, url, url == "/main/indexV8" ? "?" : "&", page);
+            JArray array = (JArray)await DataHelper.GetData( DataType.GetIndexPage, url, url == "/main/indexV8" ? "?" : "&", page);
             if (array != null && array.Count > 0)
                 if (page == 1)
                 {
@@ -75,7 +75,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     {
                         var needDeleteItems = (from b in FeedsCollection
                                                from c in array
-                                               where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
+                                               where b.entityId == c.Value<string>("entityId").Replace("\"", string.Empty)
                                                select b).ToArray();
                         foreach (var item in needDeleteItems)
                             Collection.Remove(item);
@@ -86,14 +86,14 @@ namespace CoolapkUWP.Pages.FeedPages
                     int k = 0;
                     for (int i = 0; i < array.Count; i++)
                     {
-                        JsonObject jo = array[i].GetObject();
-                        if (index == -1 && jo.TryGetValue("entityTemplate", out IJsonValue t) && t?.GetString() == "configCard")
+                        JObject jo = array[i] as JObject;
+                        if (index == -1 && jo.TryGetValue("entityTemplate", out JToken t) && t?.ToString() == "configCard")
                         {
-                            JsonObject j = JsonObject.Parse(jo["extraData"].GetString());
-                            TitleBar.Title = j["pageTitle"].GetString();
+                            JObject j = JObject.Parse(jo.Value<string>("extraData"));
+                            TitleBar.Title = j.Value<string>("pageTitle");
                             continue;
                         }
-                        if (jo.TryGetValue("entityTemplate", out IJsonValue tt) && tt.GetString() == "fabCard") continue;
+                        if (jo.TryGetValue("entityTemplate", out JToken tt) && tt.ToString() == "fabCard") continue;
                         FeedsCollection.Insert(n + k, GetEntity(jo));
                         k++;
                     }
@@ -104,7 +104,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     if (array.Count != 0)
                     {
-                        foreach (var i in array) FeedsCollection.Add(GetEntity(i.GetObject()));
+                        foreach (var i in array) FeedsCollection.Add(GetEntity(i as JObject));
                         UIHelper.HideProgressBar();
                         return true;
                     }
@@ -117,9 +117,9 @@ namespace CoolapkUWP.Pages.FeedPages
             return false;
         }
 
-        Entity GetEntity(JsonObject token)
+        Entity GetEntity(JObject token)
         {
-            switch (token["entityType"].GetString())
+            switch (token.Value<string>("entityType"))
             {
                 case "feed": return new FeedViewModel(token, pageUrl == "/main/indexV8" ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
                 case "user": return new UserViewModel(token);
@@ -220,7 +220,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         ItemContainerStyle = style,
                         ItemTemplateSelector = Resources["FTemplateSelector"] as DataTemplateSelector,
                         ItemsSource = ff,
-                        ItemsPanel = Windows.UI.Xaml.Markup.XamlReader.Load("<ItemsPanelTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:c=\"using:CoolapkUWP.Control\"><c:GridPanel DesiredColumnWidth=\"384\" CubeInSameHeight=\"False\"/></ItemsPanelTemplate>") as ItemsPanelTemplate,
+                        ItemsPanel = Windows.UI.Xaml.Markup.XamlReader.Load("<ItemsPanelTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:c=\"using:CoolapkUWP.Controls\"><c:GridPanel DesiredColumnWidth=\"384\" CubeInSameHeight=\"False\"/></ItemsPanelTemplate>") as ItemsPanelTemplate,
                         SelectionMode = ListViewSelectionMode.None
                     };
                     l.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Disabled);

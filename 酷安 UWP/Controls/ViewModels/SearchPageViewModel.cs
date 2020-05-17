@@ -1,4 +1,4 @@
-﻿using Windows.Data.Json;
+﻿using Newtonsoft.Json.Linq;
 using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Controls.ViewModels
@@ -8,11 +8,11 @@ namespace CoolapkUWP.Controls.ViewModels
         public Symbol Symbol { get; set; } = Symbol.Find;
         public string Title { get; set; }
 
-        public SearchWord(JsonObject keys)
+        public SearchWord(JObject keys)
         {
-            if (keys["logo"].GetString().Contains("cube")) Symbol = Symbol.Shop;
-            else if (keys["logo"].GetString().Contains("xitongguanli")) Symbol = Symbol.AllApps;
-            Title = keys["title"].GetString();        
+            if (keys.Value<string>("logo").Contains("cube")) Symbol = Symbol.Shop;
+            else if (keys.Value<string>("logo").Contains("xitongguanli")) Symbol = Symbol.AllApps;
+            Title = keys.Value<string>("title");
         }
 
         public string GetTitle()

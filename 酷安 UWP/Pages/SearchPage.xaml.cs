@@ -1,9 +1,9 @@
 ﻿using CoolapkUWP.Controls.ViewModels;
 using CoolapkUWP.Helpers;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -87,20 +87,19 @@ namespace CoolapkUWP.Pages
                     sortType = "reply";
                     break;
             }
-            JsonArray array = (JsonArray)await DataHelper.GetData(true,
-                                                                  DataType.SearchFeeds,
-                                                                  feedType,
-                                                                  sortType,
-                                                                  keyWord,
-                                                                  (++pages[0]).ToString(),
-                                                                  pages[0] > 1 ? "&lastItem=" + lastItems[0] : string.Empty);
+            JArray array = (JArray)await DataHelper.GetData(DataType.SearchFeeds,
+                                                            feedType,
+                                                            sortType,
+                                                            keyWord,
+                                                            (++pages[0]).ToString(),
+                                                            pages[0] > 1 ? "&lastItem=" + lastItems[0] : string.Empty);
             ObservableCollection<FeedViewModel> FeedsCollection = FeedList.ItemsSource as ObservableCollection<FeedViewModel>;
             if (pages[0] == 1) FeedsCollection.Clear();
             if (array.Count != 0)
             {
-                lastItems[0] = array.Last().GetObject()["id"].GetString();
+                lastItems[0] = array.Last.Value<string>("id");
                 foreach (var i in array)
-                    FeedsCollection.Add(new FeedViewModel(i.GetObject()));
+                    FeedsCollection.Add(new FeedViewModel(i as JObject));
             }
             else pages[0]--;
             UIHelper.HideProgressBar();
@@ -110,22 +109,22 @@ namespace CoolapkUWP.Pages
         {
             UIHelper.ShowProgressBar();
             ObservableCollection<UserViewModel> infos = UserList.ItemsSource as ObservableCollection<UserViewModel>;
-            JsonArray array = (JsonArray)await DataHelper.GetData(true, DataType.SearchUsers, keyWord, ++pages[1], pages[1] > 1 ? "&lastItem=" + lastItems[1] : string.Empty);
+            JArray array = (JArray)await DataHelper.GetData(DataType.SearchUsers, keyWord, ++pages[1], pages[1] > 1 ? "&lastItem=" + lastItems[1] : string.Empty);
             if (array.Count > 0)
             {
-                lastItems[1] = array.Last().GetObject()["uid"].GetString();
+                lastItems[1] = array.Last.Value<string>("uid");
                 if (infos.Count > 0)
                 {
                     var d = (from a in infos
                              from b in array
-                             where a.UserName == b.GetObject()["username"].ToString()
+                             where a.UserName == b.Value<string>("username")
                              select a).ToArray();
                     foreach (var item in d)
                         infos.Remove(item);
                 }
                 for (int i = 0; i < array.Count; i++)
                 {
-                    IJsonValue t = array[i];
+                    JToken t = array[i];
                     infos.Add(new UserViewModel(t));
                 }
             }
@@ -136,12 +135,12 @@ namespace CoolapkUWP.Pages
         async void SearchTopic(string keyWord)
         {
             UIHelper.ShowProgressBar();
-            JsonArray array = (JsonArray)await DataHelper.GetData(true, DataType.SearchTags, keyWord, ++pages[2], pages[2] > 1 ? "&lastItem=" + lastItems[2] : string.Empty);
+            JArray array = (JArray)await DataHelper.GetData(DataType.SearchTags, keyWord, ++pages[2], pages[2] > 1 ? "&lastItem=" + lastItems[2] : string.Empty);
             ObservableCollection<TopicViewModel> FeedsCollection = TopicList.ItemsSource as ObservableCollection<TopicViewModel>;
             if (pages[2] == 1) FeedsCollection.Clear();
             if (array.Count != 0)
             {
-                lastItems[2] = array.Last().GetObject()["id"].GetString();
+                lastItems[2] = array.Last.Value<string>("id");
                 foreach (var i in array)
                     FeedsCollection.Add(new TopicViewModel(i));
             }
@@ -216,9 +215,9 @@ namespace CoolapkUWP.Pages
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                JsonArray array = (JsonArray)await DataHelper.GetData(true, DataType.GetSearchWords, sender.Text);
+                JArray array = (JArray)await DataHelper.GetData(DataType.GetSearchWords, sender.Text);
                 if (array != null && array.Count > 0)
-                    sender.ItemsSource = array.Select(i => new SearchWord(i.GetObject()));
+                    sender.ItemsSource = array.Select(i => new SearchWord(i as JObject));
                 else
                     sender.ItemsSource = null;
             }

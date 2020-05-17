@@ -122,27 +122,27 @@
                     <StackPanel Orientation="Horizontal" Margin="8,0" Tag="atMe">
                         <SymbolIcon Symbol="Account"/>
                         <TextBlock VerticalAlignment="Center" Margin="8,0">@我的动态</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.atMeNum,Mode=OneWay}"/>
+                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.AtMeNum,Mode=OneWay}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="8,0" Tag="atCommentMe">
                         <SymbolIcon Symbol="Account"/>
                         <TextBlock VerticalAlignment="Center" Margin="8,0">@我的评论</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.atCommentMeNum,Mode=OneWay}"/>
+                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.AtCommentMeNum,Mode=OneWay}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="8,0" Tag="like">
                         <SymbolIcon Symbol="Like"/>
                         <TextBlock VerticalAlignment="Center" Margin="8,0">我收到的赞</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.feedLikeNum,Mode=OneWay}"/>
+                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.FeedLikeNum,Mode=OneWay}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="8,0" Tag="follow">
                         <SymbolIcon Symbol="AddFriend"/>
                         <TextBlock VerticalAlignment="Center" Margin="8,0">好友关注</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.followNum,Mode=OneWay}"/>
+                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.FollowNum,Mode=OneWay}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="8,0" Tag="message">
                         <SymbolIcon Symbol="Comment"/>
                         <TextBlock VerticalAlignment="Center" Margin="8,0">私信</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.messageNum,Mode=OneWay}"/>
+                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:UIHelper.notifications.MessageNum,Mode=OneWay}"/>
                     </StackPanel>
                 </ListView>
             </ListViewItem>

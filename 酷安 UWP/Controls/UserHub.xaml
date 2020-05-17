@@ -12,8 +12,11 @@
     Loaded="UserControl_Loaded">
 
     <StackPanel>
-        <Grid x:Name="UserDetailGrid" Height="160">
+        <Grid x:Name="UserDetailGrid" Height="220">
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
@@ -23,12 +26,15 @@
                     <ImageBrush ImageSource="{x:Bind userAvatar,Mode=OneWay}"/>
                 </Ellipse.Fill>
             </Ellipse>
-            <StackPanel Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal">
-                <TextBlock Text="{x:Bind userName,Mode=OneWay}" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"/>
-                <TextBlock Margin="12,0,4,0" Text="Lv." VerticalAlignment="Center"/>
-                <TextBlock Text="{x:Bind levelNum,Mode=OneWay}" FontWeight="Bold" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="1" HorizontalAlignment="Center" Text="{x:Bind userName,Mode=OneWay}" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"/>
+            <ProgressBar Grid.Row="2" Margin="4" Width="108" Value="{x:Bind nextLevelPercentage,Mode=OneWay}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="3">
+                <TextBlock Margin="2,0" Text="Lv." VerticalAlignment="Center"/>
+                <TextBlock Margin="2,0" Text="{x:Bind levelNum,Mode=OneWay}" FontWeight="Bold" VerticalAlignment="Center"/>
+                <TextBlock Margin="4,0" Text="{x:Bind nextLevelNowExperience,Mode=OneWay}"/>
             </StackPanel>
-            <Grid Grid.Row="2" Padding="4">
+            <TextBlock Grid.Row="4" HorizontalAlignment="Center" Text="{x:Bind levelTodayMessage,Mode=OneWay}"/>
+            <Grid Grid.Row="5" Padding="4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -57,25 +63,10 @@
                 </Button>
             </Grid>
         </Grid>
-        <Button Margin="4" Height="160" x:Name="LoginButton" Visibility="Collapsed" Click="LoginButton_Click" HorizontalAlignment="Stretch">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <SymbolIcon Symbol="AddFriend"/>
-                <TextBlock VerticalAlignment="Center" Margin="4,0">登录</TextBlock>
-            </StackPanel>
-        </Button>
+        <Button Margin="4" Height="160" x:Name="LoginButton" Visibility="Collapsed" Click="LoginButton_Click" HorizontalAlignment="Stretch" Content="登录"/>
         <StackPanel Orientation="Horizontal" Margin="4">
-            <Button Margin="4" Click="Button_Click" Tag="settings">
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Symbol="Setting"/>
-                    <TextBlock Margin="4,0">设置</TextBlock>
-                </StackPanel>
-            </Button>
-            <Button Margin="4" Click="Button_Click" Tag="logout" x:Name="LogoutButton">
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Symbol="Clear"/>
-                    <TextBlock Margin="4,0">退出登录</TextBlock>
-                </StackPanel>
-            </Button>
+            <Button Margin="4" Click="Button_Click" Tag="settings" Content="设置"/>
+            <Button Margin="4" Click="Button_Click" Tag="logout" x:Name="LogoutButton" Content="退出登录"/>
         </StackPanel>
     </StackPanel>
 </UserControl>

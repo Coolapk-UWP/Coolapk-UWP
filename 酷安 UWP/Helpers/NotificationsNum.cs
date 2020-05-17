@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.ComponentModel;
-using System.Threading;
-using System.Threading.Tasks;
-using Windows.Data.Json;
+using Windows.System.Threading;
 
 namespace CoolapkUWP.Helpers
 {
@@ -11,7 +10,7 @@ namespace CoolapkUWP.Helpers
         public event EventHandler BadgeNumberChanged;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private double badgeNum;
+        private double badgeNum, followNum, messageNum, atMeNum, atCommentMeNum, commentMeNum, feedLikeNum;
         public double BadgeNum
         {
             get => badgeNum;
@@ -24,59 +23,96 @@ namespace CoolapkUWP.Helpers
                 }
             }
         }
+        public double FollowNum
+        {
+            get => followNum;
+            private set
+            {
+                if (value != followNum)
+                {
+                    followNum = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FollowNum)));
+                }
+            }
+        }
+        public double MessageNum
+        {
+            get => messageNum;
+            private set
+            {
+                if (value != messageNum)
+                {
+                    messageNum = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(messageNum)));
+                }
+            }
+        }
+        public double AtMeNum
+        {
+            get => atMeNum;
+            private set
+            {
+                if (value != atMeNum)
+                {
+                    atMeNum = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(atMeNum)));
+                }
+            }
+        }
+        public double AtCommentMeNum
+        {
+            get => atCommentMeNum;
+            private set
+            {
+                if (value != atCommentMeNum)
+                {
+                    atCommentMeNum = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(atCommentMeNum)));
+                }
+            }
+        }
+        public double CommentMeNum
+        {
+            get => commentMeNum;
+            private set
+            {
+                if (value != commentMeNum)
+                {
+                    commentMeNum = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(commentMeNum)));
+                }
+            }
+        }
+        public double FeedLikeNum
+        {
+            get => feedLikeNum;
+            private set
+            {
+                if (value != feedLikeNum)
+                {
+                    feedLikeNum = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(feedLikeNum)));
+                }
+            }
+        }
 
-        public double followNum, messageNum, atMeNum, atCommentMeNum, commentMeNum, feedLikeNum;
-
-        Timer timer;
-
-        public void Initial(JsonObject jo)
+        public void Initial(JObject jo)
         {
             ChangeNumber(jo);
-            timer = new Timer(async (s) => ChangeNumber((JsonObject)await DataHelper.GetData(false, DataType.GetNotificationNumbers)), string.Empty, 30000, 30000);
+            ThreadPoolTimer PeriodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (source) => ChangeNumber((JObject)await DataHelper.GetData(DataType.GetNotificationNumbers)), new TimeSpan(0, 0, 30));
         }
 
-        public async Task RefreshNotificationsNum()
-        {
-            if (timer != null) timer.Dispose();
-            ChangeNumber((JsonObject)await DataHelper.GetData(false, DataType.GetNotificationNumbers));
-            timer = new Timer(async (s) => ChangeNumber((JsonObject)await DataHelper.GetData(false, DataType.GetNotificationNumbers)), string.Empty, 30000, 30000);
-        }
-
-        void ChangeNumber(JsonObject o)
+        void ChangeNumber(JObject o)
         {
             if (o != null)
             {
-                BadgeNum = o["badge"].GetNumber();
-                if (o["contacts_follow"].GetNumber() != followNum)
-                {
-                    followNum = o["contacts_follow"].GetNumber();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(followNum)));
-                }
-                if (o["message"].GetNumber() != messageNum)
-                {
-                    messageNum = o["message"].GetNumber();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(messageNum)));
-                }
-                if (o["atme"].GetNumber() != atMeNum)
-                {
-                    atMeNum = o["atme"].GetNumber();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(atMeNum)));
-                }
-                if (o["atcommentme"].GetNumber() != atCommentMeNum)
-                {
-                    atCommentMeNum = o["atcommentme"].GetNumber();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(atCommentMeNum)));
-                }
-                if (o["commentme"].GetNumber() != commentMeNum)
-                {
-                    commentMeNum = o["commentme"].GetNumber();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(commentMeNum)));
-                }
-                if (o["feedlike"].GetNumber() != feedLikeNum)
-                {
-                    feedLikeNum = o["feedlike"].GetNumber();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(feedLikeNum)));
-                }
+                BadgeNum = o.Value<int>("badge");
+                FollowNum = o.Value<int>("contacts_follow");
+                MessageNum = o.Value<int>("message");
+                AtMeNum = o.Value<int>("atme");
+                AtCommentMeNum = o.Value<int>("atcommentme");
+                CommentMeNum = o.Value<int>("commentme");
+                FeedLikeNum = o.Value<int>("feedlike");
             }
         }
     }

@@ -1,12 +1,12 @@
 ﻿using CoolapkUWP.Controls.ViewModels;
 using CoolapkUWP.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -56,30 +56,29 @@ namespace CoolapkUWP.Pages.FeedPages
         async void LoadList(int p = -1)
         {
             UIHelper.ShowProgressBar();
-            JsonArray array = (JsonArray)await DataHelper.GetData(true,
-                                                                  DataType.GetUserList,
-                                                                  isFollowList ? "followList" : "fansList",
-                                                                  uid,
-                                                                  p == -1 ? ++page : p,
-                                                                  firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
-                                                                  lastItem == 0 ? string.Empty : $"&lastItem={lastItem}");
+            JArray array = (JArray)await DataHelper.GetData(DataType.GetUserList,
+                                                            isFollowList ? "followList" : "fansList",
+                                                            uid,
+                                                            p == -1 ? ++page : p,
+                                                            firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
+                                                            lastItem == 0 ? string.Empty : $"&lastItem={lastItem}");
             if (array != null && array.Count > 0)
             {
                 if (p == 1 || page == 1)
-                    firstItem = array.First().GetObject()["fuid"].GetNumber();
-                lastItem = array.Last().GetObject()["fuid"].GetNumber();
+                    firstItem = array.First.Value<int>("fuid");
+                lastItem = array.Last.Value<int>("fuid");
                 var d = (from a in infos
                          from b in array
-                         where a.UserName == b.GetObject()[isFollowList ? "fusername" : "username"].GetString()
+                         where a.UserName == b.Value<string>(isFollowList ? "fusername" : "username")
                          select a).ToArray();
                 foreach (var item in d)
                     infos.Remove(item);
                 if (p == -1)
                     for (int i = 0; i < array.Count; i++)
-                        infos.Add(new UserViewModel(isFollowList ? array[i].GetObject()["fUserInfo"] : array[i].GetObject()["userInfo"]));
+                        infos.Add(new UserViewModel(isFollowList ? array[i]["fUserInfo"] : array[i]["userInfo"]));
                 else
                     for (int i = 0; i < array.Count; i++)
-                        infos.Insert(i, new UserViewModel(isFollowList ? array[i].GetObject()["fUserInfo"] : array[i].GetObject()["userInfo"]));
+                        infos.Insert(i, new UserViewModel(isFollowList ? array[i]["fUserInfo"] : array[i]["userInfo"]));
             }
             else if (p == -1) page--;
             UIHelper.HideProgressBar();

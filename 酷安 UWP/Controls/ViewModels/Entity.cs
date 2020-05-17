@@ -1,16 +1,16 @@
-﻿using System.ComponentModel;
-using Windows.Data.Json;
+﻿using Newtonsoft.Json.Linq;
+using System.ComponentModel;
 
 namespace CoolapkUWP.Controls.ViewModels
 {
     class Entity : INotifyPropertyChanged
     {
-        public Entity(IJsonValue t)
+        public Entity(JToken t)
         {
-            JsonObject token = t.GetObject();
-            if (token.TryGetValue("entityId", out IJsonValue value1)) entityId = value1.ToString().Replace("\"", string.Empty);
-            if (token.TryGetValue("entityType", out IJsonValue value2)) entityType = value2.GetString();
-            if (token.TryGetValue("entityFixed", out IJsonValue value) && value.GetNumber() == 1) entityFixed = true;
+            JObject token = t as JObject;
+            if (token.TryGetValue("entityId", out JToken value1)) entityId = value1.ToString().Replace("\"", string.Empty);
+            if (token.TryGetValue("entityType", out JToken value2)) entityType = value2.ToString();
+            if (token.TryGetValue("entityFixed", out JToken value) && int.Parse(value.ToString()) == 1) entityFixed = true;
         }
         public string entityId { get; private set; }
         public bool entityFixed { get; private set; }

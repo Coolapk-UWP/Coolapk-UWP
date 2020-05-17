@@ -56,16 +56,18 @@ namespace CoolapkUWP.Helpers
                 UIHelper.ShowMessage("请输入用户名");
                 return "0";
             }
+            string str = string.Empty;
             try
             {
-                string str = await mClient.GetStringAsync(new Uri("https://www.coolapk.com/n/" + name));
+                str = await mClient.GetStringAsync(new Uri("https://www.coolapk.com/n/" + name));
                 return Windows.Data.Json.JsonObject.Parse(str)["dataRow"].GetObject()["uid"].GetNumber().ToString();
             }
-            catch (Exception e)
+            catch
             {
-                if (e.Message.Contains("404"))
+                var o = Windows.Data.Json.JsonObject.Parse(str).GetObject();
+                if(o != null)
                 {
-                    UIHelper.ShowMessage("未找到该用户。");
+                    UIHelper.ShowMessage(o["message"].GetString());
                     return "0";
                 }
                 else throw;

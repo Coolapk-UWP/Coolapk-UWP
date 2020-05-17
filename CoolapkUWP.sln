@@ -35,12 +35,12 @@ Global
 		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|ARM.Build.0 = Release|ARM
 		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|ARM.Deploy.0 = Release|ARM
 		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|ARM64.ActiveCfg = Release|x86
-		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x64.ActiveCfg = Release|x64
-		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x64.Build.0 = Release|x64
-		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x64.Deploy.0 = Release|x64
-		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x86.ActiveCfg = Release|x86
-		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x86.Build.0 = Release|x86
-		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x86.Deploy.0 = Release|x86
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x64.ActiveCfg = Release|ARM
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x64.Build.0 = Release|ARM
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x64.Deploy.0 = Release|ARM
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x86.ActiveCfg = Release|ARM
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x86.Build.0 = Release|ARM
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x86.Deploy.0 = Release|ARM
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,26 +1,25 @@
-﻿using CoolapkUWP.Helpers;
-using Windows.Data.Json;
+﻿using Newtonsoft.Json.Linq;
 
 namespace CoolapkUWP.Controls.ViewModels
 {
     class SimpleFeedReplyViewModel
     {
-        public SimpleFeedReplyViewModel(IJsonValue t)
+        public SimpleFeedReplyViewModel(JToken t)
         {
-            JsonObject token = t.GetObject();
-            id = token["id"].GetNumber();
-            uurl = $"/u/{token["uid"].GetNumber()}";
-            username = token["username"].GetString();
-            isFeedAuthor = token["isFeedAuthor"].GetNumber() == 1;
-            rurl = $"/u/{token["ruid"].GetNumber()}";
-            rusername = token["rusername"].GetString();
+            JObject token = t as JObject;
+            id = token.Value<int>("id");
+            uurl = $"/u/{token.Value<int>("uid")}";
+            username = token.Value<string>("username");
+            isFeedAuthor = token.Value<int>("isFeedAuthor") == 1;
+            rurl = $"/u/{token.Value<int>("ruid")}";
+            rusername = token.Value<string>("rusername");
             if (showRuser)
-                message = $"<a href=\"{uurl}\">{username}{(isFeedAuthor ? "(楼主)" : string.Empty)}</a>@<a href=\"{rurl}\">{rusername}</a>: {token["message"].GetString()}";
-            else message = $"<a href=\"{uurl}\">{username}{(isFeedAuthor ? "(楼主)" : string.Empty)}</a>: {token["message"].GetString()}";
-            showPic = token.TryGetValue("pic", out IJsonValue value) && !string.IsNullOrEmpty(value.GetString());
+                message = $"<a href=\"{uurl}\" type=\"user-detail\">{username}{(isFeedAuthor ? "[楼主]" : string.Empty)}</a>@<a href=\"{rurl}\" type=\"user-detail\">{rusername}</a>: {token.Value<string>("message")}";
+            else message = $"<a href=\"{uurl}\" type=\"user-detail\">{username}{(isFeedAuthor ? "[楼主]" : string.Empty)}</a>: {token.Value<string>("message")}";
+            showPic = token.TryGetValue("pic", out JToken value) && !string.IsNullOrEmpty(value.ToString());
             if (showPic)
             {
-                picUrl = value.GetString();
+                picUrl = value.ToString();
                 message += $" <a href=\"{picUrl}\">查看图片</a>";
             }
         }

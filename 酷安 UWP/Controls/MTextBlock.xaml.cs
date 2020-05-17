@@ -1,12 +1,13 @@
 ﻿using CoolapkUWP.Helpers;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Markup;
-
-
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Controls
 {
@@ -29,18 +30,30 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        Dictionary<string, string> uris = new Dictionary<string, string>();
+        readonly Dictionary<Hyperlink, string> uris = new Dictionary<Hyperlink, string>();
         public MTextBlock() => this.InitializeComponent();
         async void GetTextBlock()
         {
             Regex hrefRegex = new Regex("href=\".+?\"");
-            string xamlContent = "<Paragraph>";
+            //string xamlContent = "<Paragraph>";
             List<string> list = GetStringList();
+            RichTextBlock richTextBlock = new RichTextBlock
+            {
+                TextWrapping = TextWrapping.Wrap,
+                IsTextSelectionEnabled = false,
+            };
+            Paragraph paragraph = new Paragraph();
             foreach (var item in list)
             {
                 if (string.IsNullOrEmpty(item))
-                    xamlContent += "\n</Paragraph>\n<Paragraph>";
-                else switch (item[0])
+                {
+                    richTextBlock.Blocks.Add(paragraph);
+                    paragraph = new Paragraph();
+                    //xamlContent += "\n</Paragraph>\n<Paragraph>";
+                }
+                else
+                {
+                    switch (item[0])
                     {
                         case '<':
                             string content = item.Substring(item.IndexOf('>') + 1, item.LastIndexOf('<') - item.IndexOf('>') - 1);
@@ -50,96 +63,237 @@ namespace CoolapkUWP.Controls
                                 href = match.Value.Substring(match.Value.IndexOf('"') + 1, match.Value.LastIndexOf('"') - match.Value.IndexOf('"') - 1);
                             if (item.Contains("t=\"image\""))
                             {
+                                richTextBlock.Blocks.Add(paragraph);
+                                paragraph = new Paragraph();
+
                                 bool isGif = href.Substring(href.LastIndexOf('.')).ToLower().Contains("gif");
-                                xamlContent += $@"
-</Paragraph>
-<Paragraph TextAlignment='Center' Foreground='Gray'>
-    <InlineUIContainer>
-        <Grid>
-            <Image Source='{await ImageCacheHelper.GetImagePath(ImageType.SmallImage, href)}' Tag='{href}' ToolTipService.ToolTip='{content}'/>";
-                                if (isGif)
-                                    xamlContent += @"
-            <Border Background='{ThemeResource SystemControlBackgroundAccentBrush}' VerticalAlignment='Bottom' HorizontalAlignment='Right'>
-                <TextBlock>GIF</TextBlock>
-            </Border>
-        </Grid>
-    </InlineUIContainer>";
-                                else xamlContent += @"
-        </Grid>
-    </InlineUIContainer>";
-                                xamlContent += $@"
-    <Run Text='{content}'/>
-</Paragraph>
-<Paragraph>";
+                                var source = await ImageCacheHelper.GetImage(ImageType.SmallImage, href);
+                                bool isLongPic = false;
+                                if (source.PixelHeight > 0 && source.PixelWidth > 0)
+                                    isLongPic = source.PixelHeight / source.PixelWidth > 2;
+
+                                InlineUIContainer container = new InlineUIContainer();
+                                Image image = new Image
+                                {
+                                    Source = source,
+                                    Tag = href,
+                                    MaxHeight = MaxWidth = 400,
+                                    MinHeight = MinWidth = 56,
+                                    Stretch = Stretch.UniformToFill
+                                };
+                                if (!string.IsNullOrEmpty(content))
+                                    ToolTipService.SetToolTip(image, new ToolTip { Content = content });
+                                UIElement element = null;
+                                image.Tapped += (sender, e) => UIHelper.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
+
+                                if (isGif && isLongPic)
+                                {
+                                    Grid grid = new Grid();
+                                    StackPanel panel = new StackPanel
+                                    {
+                                        Orientation = Orientation.Horizontal,
+                                        VerticalAlignment = VerticalAlignment.Top,
+                                        HorizontalAlignment = HorizontalAlignment.Right,
+                                        Margin = new Thickness(4)
+                                    };
+                                    Border border1 = new Border
+                                    {
+                                        Child = new TextBlock { Text = "GIF" },
+                                        Background = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0))
+                                    };
+                                    Border border2 = new Border
+                                    {
+                                        Child = new TextBlock { Text = "长图" },
+                                        Background = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0))
+                                    };
+                                    panel.Children.Add(border1);
+                                    panel.Children.Add(border1);
+                                    grid.Children.Add(image);
+                                    grid.Children.Add(panel);
+                                    element = grid;
+                                }
+                                else if (isGif || isLongPic)
+                                {
+                                    Grid grid = new Grid();
+                                    Border border = new Border
+                                    {
+                                        Child = new TextBlock { Text = isGif ? "GIF" : "长图" },
+                                        Background = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0))
+                                    };
+                                    grid.Children.Add(image);
+                                    grid.Children.Add(border);
+                                    element = grid;
+                                }
+                                else element = image;
+                                container.Child = element;
+                                Paragraph paragraph2 = new Paragraph
+                                {
+                                    TextAlignment = TextAlignment.Center,
+                                    Foreground = new SolidColorBrush(Colors.Gray)
+                                };
+                                Run run = new Run { Text = content };
+                                paragraph2.Inlines.Add(container);
+                                paragraph2.Inlines.Add(run);
+                                richTextBlock.Blocks.Add(paragraph2);
+                                //                                    xamlContent += $@"
+                                //</Paragraph>
+                                //<Paragraph TextAlignment='Center' Foreground='Gray'>
+                                //    <InlineUIContainer>
+                                //        <Grid>
+                                //            <Image Source='{await ImageCacheHelper.GetImagePath(ImageType.SmallImage, href)}' Tag='{href}' ToolTipService.ToolTip='{content}'/>";
+                                //                                    if (isGif)
+                                //                                        xamlContent += @"
+                                //            <Border Background='{ThemeResource SystemControlBackgroundAccentBrush}' VerticalAlignment='Bottom' HorizontalAlignment='Right'>
+                                //                <TextBlock>GIF</TextBlock>
+                                //            </Border>
+                                //        </Grid>
+                                //    </InlineUIContainer>";
+                                //                                    else xamlContent += @"
+                                //        </Grid>
+                                //    </InlineUIContainer>";
+                                //                                    xamlContent += $@"
+                                //    <Run Text='{content}'/>
+                                //</Paragraph>
+                                //<Paragraph>";
                             }
                             else
                             {
                                 string n = $"uri{uris.Count}";
-                                uris.Add(n, href);
-                                xamlContent += $@"
-    <Hyperlink Click='Hyperlink_Click' ToolTipService.ToolTip='{GetStringInXML(href)}'>
-        <Run Text='{GetStringInXML(content)}' Name='{n}'/>
-    </Hyperlink>";
+                                Hyperlink hyperlink = new Hyperlink { UnderlineStyle = UnderlineStyle.None };
+                                uris.Add(hyperlink, href);
+                                if (!string.IsNullOrEmpty(href))
+                                    ToolTipService.SetToolTip(hyperlink, new ToolTip { Content = href });
+                                if (content.IndexOf('@') != 0 && content.IndexOf('#') != 0 && !item.Contains("type=\"user-detail\""))
+                                {
+                                    Run run2 = new Run { Text = "", FontFamily = new FontFamily("Segoe MDL2 Assets") }; //U+E167
+                                    hyperlink.Inlines.Add(run2);
+                                }
+                                Run run = new Run { Text = content };
+                                hyperlink.Inlines.Add(run);
+                                hyperlink.Click += (sender, e) =>
+                                {
+                                    if (uris.TryGetValue(sender, out string uri))
+                                        if ((sender.Inlines.Last() as Run).Name == "查看图片" && (uri.IndexOf("http://image.coolapk.com") == 0 || uri.IndexOf("https://image.coolapk.com") == 0))
+                                            UIHelper.ShowImage(uri, ImageType.SmallImage);
+                                        else
+                                            UIHelper.OpenLink(uri);
+                                };
+
+                                paragraph.Inlines.Add(hyperlink);
+                                //                                xamlContent += $@"
+                                //<Hyperlink Click='Hyperlink_Click' ToolTipService.ToolTip='{GetStringInXML(href)}'>
+                                //    <Run Text='{GetStringInXML(content)}' Name='{n}'/>
+                                //</Hyperlink>";
                             }
                             break;
                         case '#':
                             string s = item.Substring(1, item.Length - 2);
                             if (EmojiHelper.Contains(s))
-                                xamlContent += $@"
-    <InlineUIContainer>
-        <Image Source='{$"/Assets/Emoji/{s}.png"}' Height='20' Width='20' ToolTipService.ToolTip='{item}'/>
-    </InlineUIContainer>";
-                            else xamlContent += $@"<Run Text='{item}'/>";
+                            {
+                                InlineUIContainer container = new InlineUIContainer();
+                                Image image = new Image
+                                {
+                                    Height = Width = 20,
+                                    Source = new BitmapImage(new System.Uri($"ms-appx:///Assets/Emoji/{s}.png"))
+                                };
+                                ToolTipService.SetToolTip(image, new ToolTip { Content = item });
+                                container.Child = image;
+                                paragraph.Inlines.Add(container);
+                                //                                xamlContent += $@"
+                                //<InlineUIContainer>
+                                //    <Image Source='{$"/Assets/Emoji/{s}.png"}' Height='20' Width='20' ToolTipService.ToolTip='{item}'/>
+                                //</InlineUIContainer>";
+                            }
+                            else
+                            {
+                                paragraph.Inlines.Add(new Run { Text = item });
+                                //xamlContent += $@"<Run Text='{item}'/>";
+                            }
                             break;
                         case '[':
                             if (SettingsHelper.Get<bool>("IsUseOldEmojiMode") && EmojiHelper.Contains(item, true))
-                                xamlContent += $@"
-    <InlineUIContainer>
-        <Image Source='{$"/Assets/Emoji/{item}2.png"}' Height='20' Width='20' ToolTipService.ToolTip='{item}'/>
-    </InlineUIContainer>";
+                            {
+                                InlineUIContainer container = new InlineUIContainer();
+                                Image image = new Image
+                                {
+                                    Height = Width = 20,
+                                    Source = new BitmapImage(new System.Uri($"ms-appx:///Assets/Emoji/{item}2.png"))
+                                };
+                                ToolTipService.SetToolTip(image, new ToolTip { Content = item });
+                                container.Child = image;
+                                paragraph.Inlines.Add(container);
+
+                                //                                xamlContent += $@"
+                                //<InlineUIContainer>
+                                //    <Image Source='{$"/Assets/Emoji/{item}2.png"}' Height='20' Width='20' ToolTipService.ToolTip='{item}'/>
+                                //</InlineUIContainer>";
+                            }
                             else if (EmojiHelper.Contains(item))
-                                xamlContent += $@"
-    <InlineUIContainer>
-        <Image Source='{$"/Assets/Emoji/{item}.png"}' Height='20' Width='20' ToolTipService.ToolTip='{item}'/>
-    </InlineUIContainer>";
-                            else xamlContent += $@"
-    <Run Text='{item}'/>";
+                            {
+                                InlineUIContainer container = new InlineUIContainer();
+                                Image image = new Image
+                                {
+                                    Height = Width = 20,
+                                    Source = new BitmapImage(new System.Uri($"ms-appx:///Assets/Emoji/{item}.png"))
+                                };
+                                ToolTipService.SetToolTip(image, new ToolTip { Content = item });
+                                container.Child = image;
+                                paragraph.Inlines.Add(container);
+                                //                                xamlContent += $@"
+                                //<InlineUIContainer>
+                                //    <Image Source='{$"/Assets/Emoji/{item}.png"}' Height='20' Width='20' ToolTipService.ToolTip='{item}'/>
+                                //</InlineUIContainer>";
+                            }
+                            else
+                            {
+                                paragraph.Inlines.Add(new Run { Text = item });
+                                //                                xamlContent += $@"
+                                //<Run Text='{item}'/>";
+                            }
+
                             break;
                         default:
-                            xamlContent += $@"
-    <Run Text='{GetStringInXML(item)}'/>";
+                            paragraph.Inlines.Add(new Run { Text = item });
+
+                            //                xamlContent += $@"
+                            //<Run Text='{GetStringInXML(item)}'/>";
                             break;
                     }
+                }
             }
-            xamlContent += "\n</Paragraph>";
-            try
-            {
-                var box = XamlReader.Load($@"
-<RichTextBlock xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml\' TextWrapping='Wrap' IsTextSelectionEnabled='False' >
-    {xamlContent}
-</RichTextBlock>") as RichTextBlock;
-                foreach (var item in box.Blocks)
-                    if (item is Paragraph paragraph)
-                        foreach (var i in paragraph.Inlines)
-                            if (i is Hyperlink hyperlink)
-                                hyperlink.Click += (sender, e) =>
-                                {
-                                    string s = (sender.Inlines[0] as Run).Name;
-                                    if (s == "查看图片" && (uris[s].IndexOf("http://image.coolapk.com") == 0 || uris[s].IndexOf("https://image.coolapk.com") == 0))
-                                        UIHelper.ShowImage(uris[s], ImageType.SmallImage);
-                                    else
-                                        UIHelper.OpenLink(uris[s]);
-                                };
-                            else if (i is InlineUIContainer container)
-                                if (container.Child is Grid grid)
-                                    if (grid.Children[0] is Image image && !string.IsNullOrEmpty(image.Tag as string))
-                                        image.Tapped += (s, e) => UIHelper.ShowImage((s as FrameworkElement).Tag as string, ImageType.SmallImage);
-                MainBorder.Child = box;
-            }
-            catch (System.Exception e)
-            {
-                throw new System.Exception($"文本内容显示失败。\n\n{e.Message}\n\nXAML：\n{xamlContent}\n\n", e);
-            }
+            richTextBlock.Blocks.Add(paragraph);
+            richTextBlock.Height = richTextBlock.Width = Height = Width = double.NaN;
+            richTextBlock.MaxHeight = richTextBlock.MaxWidth = MaxHeight = MaxWidth = double.PositiveInfinity;
+            Content = richTextBlock;
+            //xamlContent += "\n</Paragraph>";
+            //                try
+            //                {
+            //                    var box = XamlReader.Load($@"
+            //<RichTextBlock xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml\' TextWrapping='Wrap' IsTextSelectionEnabled='False' >
+            //                                {xamlContent}
+            //</RichTextBlock>") as RichTextBlock;
+            //                    foreach (var item in box.Blocks)
+            //                        if (item is Paragraph paragraph)
+            //                            foreach (var i in paragraph.Inlines)
+            //                                if (i is Hyperlink hyperlink)
+            //                                    hyperlink.Click += (sender, e) =>
+            //                                    {
+            //                                        string s = (sender.Inlines[0] as Run).Name;
+            //                                        if (s == "查看图片" && (uris[s].IndexOf("http://image.coolapk.com") == 0 || uris[s].IndexOf("https://image.coolapk.com") == 0))
+            //                                            UIHelper.ShowImage(uris[s], ImageType.SmallImage);
+            //                                        else
+            //                                            UIHelper.OpenLink(uris[s]);
+            //                                    };
+            //                                else if (i is InlineUIContainer container)
+            //                                    if (container.Child is Grid grid)
+            //                                        if (grid.Children[0] is Image image && !string.IsNullOrEmpty(image.Tag as string))
+            //                                            image.Tapped += (s, e) => UIHelper.ShowImage((s as FrameworkElement).Tag as string, ImageType.SmallImage);
+            //                    MainBorder.Child = box;
+            //                }
+            //                catch (System.Exception e)
+            //                {
+            //                    throw new System.Exception($"文本显示失败。\n\n{e.Message}\n\nXAML：\n{xamlContent}\n\n", e);
+            //                }
         }
 
         string GetStringInXML(string originString) => originString.Replace("&amp;", "&#38;").Replace("&#038;", "&#38;")
@@ -152,7 +306,7 @@ namespace CoolapkUWP.Controls
 
         List<string> GetStringList()
         {
-            Regex linkRegex = new Regex("<a[^>]*?>.*?</a>"), emojiRegex1 = new Regex(@"\[\S*?\]"), emojiRegex2 = new Regex(@"#\(\S*?\)");
+            Regex linkRegex = new Regex("<a[^>]*?>[^(</>)]*?</a>"), emojiRegex1 = new Regex(@"\[\S*?\]"), emojiRegex2 = new Regex(@"#\(\S*?\)");
             List<string> result = new List<string>();
 
             //处理超链接或图文中的图片

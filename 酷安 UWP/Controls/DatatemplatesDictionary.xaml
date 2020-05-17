@@ -122,7 +122,7 @@
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="models:ImageData">
                             <Grid>
-                                <Image MaxHeight="70" MaxWidth="70" MinHeight="0" MinWidth="0" Source="{x:Bind Pic}" Stretch="UniformToFill"/>
+                                <Image MinHeight="100" MaxHeight="100" MinWidth="100" MaxWidth="100" Source="{x:Bind Pic}" Stretch="UniformToFill"/>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                                     <Border x:Name="longPic" x:Load="{x:Bind IsLongPic}" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                                         <TextBlock>长图</TextBlock>
@@ -154,7 +154,7 @@
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="models:ImageData">
                                     <Grid>
-                                        <Image MaxHeight="70" MaxWidth="70" MinHeight="0" MinWidth="0" Source="{x:Bind Pic}" Stretch="UniformToFill"/>
+                                        <Image MinHeight="100" MaxHeight="100" MinWidth="100" MaxWidth="100" Source="{x:Bind Pic}" Stretch="UniformToFill"/>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                                             <Border x:Name="longPic" x:Load="{x:Bind IsLongPic}" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                                                 <TextBlock>长图</TextBlock>
@@ -175,10 +175,10 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Border Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                        <Image Width="50" Height="50" Source="{x:Bind extra_pic,Mode=OneWay}"/>
+                        <Image Width="56" Height="56" Source="{x:Bind extra_pic,Mode=OneWay}"/>
                     </Border>
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="4">
-                        <TextBlock Text="{x:Bind extra_title}" TextWrapping="Wrap"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="4,0">
+                        <TextBlock MaxHeight="36" Text="{x:Bind extra_title}" TextWrapping="Wrap"/>
                         <TextBlock Text="{x:Bind extra_url2}" Foreground="Gray" TextWrapping="Wrap"/>
                     </StackPanel>
                 </Grid>
@@ -194,7 +194,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
                 <ListView ScrollViewer.VerticalScrollMode="Disabled" Background="{ThemeResource SystemControlBackgroundListLowBrush}" 
-                      Grid.Row="9" ItemsSource="{x:Bind replyRows}" x:Name="repRL" 
+                      Grid.Row="9" ItemsSource="{x:Bind replyRows}" x:Name="repRL"
                       ItemClick="repRL_ItemClick" IsItemClickEnabled="True" x:Load="{x:Bind showReplyRows}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
@@ -206,7 +206,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="models:ReplyRowsItem">
                             <StackPanel Tag="{x:Bind id}">
-                                <Border Padding="2" Background="{ThemeResource SystemControlHighlightListAccentHighBrush}" HorizontalAlignment="Left">
+                                <Border Padding="2" Background="{ThemeResource SystemControlHighlightListAccentLowBrush}" HorizontalAlignment="Left">
                                     <TextBlock Text="{x:Bind extraFlag}" />
                                 </Border>
                                 <control:MTextBlock Margin="8" MessageText="{x:Bind message}"/>
@@ -289,8 +289,8 @@
                     </Grid.RowDefinitions>
                     <control:MTextBlock MessageText="{x:Bind message}"/>
                     <Grid x:Name="pic" x:Load="{x:Bind showPic}" Grid.Row="1" Margin="0,4" HorizontalAlignment="Left">
-                        <Image MaxHeight="70" MaxWidth="70" Stretch="UniformToFill" Source="{x:Bind pic.Pic,Mode=OneWay}" 
-                               Tapped="Image_Tapped" Tag="{x:Bind picUrl}" MinHeight="0" MinWidth="0"/>
+                        <Image MinHeight="100" MaxHeight="100" MinWidth="100" MaxWidth="100" Stretch="UniformToFill" Source="{x:Bind pic.Pic,Mode=OneWay}" 
+                               Tapped="Image_Tapped" Tag="{x:Bind picUrl}"/>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                             <Border x:Name="longPic" x:Load="{x:Bind pic.IsLongPic}" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                                 <TextBlock>长图</TextBlock>
@@ -335,7 +335,7 @@
                     </ListView.Footer>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="models:SimpleFeedReplyViewModel">
-                            <control:MTextBlock VerticalAlignment="Center" Margin="4,0" MessageText="{x:Bind message}"/>
+                            <control:MTextBlock VerticalAlignment="Center" Margin="4" MessageText="{x:Bind message}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

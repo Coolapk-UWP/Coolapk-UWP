@@ -1,80 +1,80 @@
 ﻿using CoolapkUWP.Helpers;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Text;
-using Windows.Data.Json;
 using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Controls.ViewModels
 {
     class FeedDetailViewModel : FeedViewModelBase
     {
-        public FeedDetailViewModel(IJsonValue t) : base(t)
+        public FeedDetailViewModel(JToken t) : base(t)
         {
-            JsonObject token = t.GetObject();
-            title = token["title"].GetString();
-            if (token["entityType"].GetString() != "article")
+            JObject token = t as JObject;
+            title = token.Value<string>("title");
+            if (token.Value<string>("entityType") != "article")
             {
-                if (token.TryGetValue("share_num", out IJsonValue s))
+                if (token.TryGetValue("share_num", out JToken s))
                     share_num = s.ToString().Replace("\"", string.Empty);
-                if (token["feedType"].GetString() == "feedArticle")
+                if (token.Value<string>("feedType") == "feedArticle")
                     isFeedArticle = true;
                 if (isFeedArticle)
                 {
-                    has_message_cover = token.TryGetValue("message_cover", out IJsonValue value) && !string.IsNullOrEmpty(value.GetString());
+                    has_message_cover = token.TryGetValue("message_cover", out JToken value) && !string.IsNullOrEmpty(value.ToString());
                     if (has_message_cover)
-                        message_cover_url = value.GetString();
-                    JsonArray array = JsonArray.Parse(token["message_raw_output"].GetString());
+                        message_cover_url = value.ToString();
+                    JArray array = JArray.Parse(token.Value<string>("message_raw_output"));
                     message_raw_output = string.Empty;
                     StringBuilder builder = new StringBuilder();
                     foreach (var i in array)
                     {
-                        JsonObject item = i.GetObject();
-                        if (item["type"].GetString() == "text")
-                            builder.Append(item["message"].GetString());
-                        else if (item["type"].GetString() == "image")
+                        JObject item = i as JObject;
+                        if (item.Value<string>("type") == "text")
+                            builder.Append(item.Value<string>("message"));
+                        else if (item.Value<string>("type") == "image")
                         {
-                            string description = string.IsNullOrEmpty(item["description"].GetString()) ? string.Empty : item["description"].GetString();
-                            string uri = item["url"].GetString();
+                            string description = string.IsNullOrEmpty(item.Value<string>("description")) ? string.Empty : item.Value<string>("description");
+                            string uri = item.Value<string>("url");
                             builder.Append($"\n<a t=\"image\" href=\"{uri}\">{description}</a>\n");
                             feedArticlePics.Add(uri);
                         }
                     }
                     message_raw_output = builder.ToString();
                 }
-                if (token["feedType"].GetString() == "answer")
+                if (token.Value<string>("feedType") == "answer")
                     isAnswerFeed = true;
                 if (isAnswerFeed)
                 {
-                    JsonObject j = JsonObject.Parse(token["extraData"].GetString());
-                    questionAnswerNum = j["questionAnswerNum"].GetNumber().ToString();
-                    questionUrl = j["questionUrl"].GetString();
+                    JObject j = JObject.Parse(token.Value<string>("extraData"));
+                    questionAnswerNum = j.Value<int>("questionAnswerNum").ToString();
+                    questionUrl = j.Value<string>("questionUrl");
                 }
             }
-            showTtitle = token.TryGetValue("ttitle", out IJsonValue valuettitle) && !string.IsNullOrEmpty(valuettitle.GetString());
+            showTtitle = token.TryGetValue("ttitle", out JToken valuettitle) && !string.IsNullOrEmpty(valuettitle.ToString());
             if (showTtitle)
             {
-                ttitle = valuettitle.GetString();
-                turl = token["turl"].GetString();
-                tpicUrl = token["tpic"].GetString();
+                ttitle = valuettitle.ToString();
+                turl = token.Value<string>("turl");
+                tpicUrl = token.Value<string>("tpic");
             }
-            show_dyh_name = token.TryGetValue("dyh_name", out IJsonValue valuedyh) && !string.IsNullOrEmpty(valuedyh.GetString());
+            show_dyh_name = token.TryGetValue("dyh_name", out JToken valuedyh) && !string.IsNullOrEmpty(valuedyh.ToString());
             if (show_dyh_name)
             {
-                dyh_name = valuedyh.GetString();
-                dyhUrl = $"/dyh/{token["dyh_id"].GetNumber()}";
+                dyh_name = valuedyh.ToString();
+                dyhUrl = $"/dyh/{token.Value<int>("dyh_id")}";
             }
-            showRelationRows = (token.TryGetValue("location", out IJsonValue valuelocation) && !string.IsNullOrEmpty(valuelocation.GetString()))
-                               | (token.TryGetValue("relationRows", out IJsonValue valuerelationRows) && (valuerelationRows.GetArray() ?? new JsonArray()).Count > 0);
+            showRelationRows = (token.TryGetValue("location", out JToken valuelocation) && !string.IsNullOrEmpty(valuelocation.ToString()))
+                               | (token.TryGetValue("relationRows", out JToken valuerelationRows) && (valuerelationRows as JArray ?? new JArray()).Count > 0);
             if (showRelationRows)
             {
                 List<RelationRowsItem> vs = new List<RelationRowsItem>();
-                if (valuelocation != null && !string.IsNullOrEmpty(valuelocation.GetString()))
-                    vs.Add(new RelationRowsItem { title = valuelocation.GetString() });
+                if (valuelocation != null && !string.IsNullOrEmpty(valuelocation.ToString()))
+                    vs.Add(new RelationRowsItem { title = valuelocation.ToString() });
                 if (valuerelationRows != null)
-                    foreach (var i in valuerelationRows.GetArray())
+                    foreach (var i in valuerelationRows as JArray)
                     {
-                        JsonObject item = i.GetObject();
-                        vs.Add(new RelationRowsItem { title = item["title"].GetString(), url = item["url"].GetString(), logoUrl = item["logo"].GetString() });
+                        JObject item = i as JObject;
+                        vs.Add(new RelationRowsItem { title = item.Value<string>("title"), url = item.Value<string>("url"), logoUrl = item.Value<string>("logo") });
                     }
                 if (vs.Count == 0) showRelationRows = false;
                 relationRows = vs.ToArray();

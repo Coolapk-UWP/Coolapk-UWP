@@ -21,14 +21,8 @@ namespace CoolapkUWP.Helpers
         static bool isShowingMessage;
         public static bool isShowingProgressBar;
 
-        public static Pages.MainPage MainPage
-        {
-            set => mainPage = value;
-        }
-        public static ImageSource MainPageUserAvatar
-        {
-            set => mainPage.UserAvatar = value;
-        }
+        public static Pages.MainPage MainPage { set => mainPage = value; }
+        public static ImageSource MainPageUserAvatar { set => mainPage.UserAvatar = value; }
 
         static UIHelper()
         {
@@ -164,6 +158,11 @@ namespace CoolapkUWP.Helpers
             else if (str.IndexOf("/t/") == 0)
             {
                 string u = str.Replace("/t/", string.Empty);
+                Navigate(typeof(FeedListPage), new object[] { FeedListType.TagPageList, u });
+            }
+            else if (str.IndexOf("/product/") == 0)
+            {
+                string u = str.Replace("/product/", string.Empty);
                 Navigate(typeof(FeedListPage), new object[] { FeedListType.TagPageList, u });
             }
             else if (str.IndexOf("/dyh/") == 0)

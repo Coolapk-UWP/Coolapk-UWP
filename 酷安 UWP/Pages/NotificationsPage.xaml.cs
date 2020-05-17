@@ -1,13 +1,13 @@
 ﻿using CoolapkUWP.Controls.ViewModels;
 using CoolapkUWP.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
-using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -27,7 +27,7 @@ namespace CoolapkUWP.Pages
     interface INotificationViewModel
     {
         double id { get; }
-        void Initial(IJsonValue o);
+        void Initial(JToken o);
     }
     class SimpleNotificationViewModel : INotifyPropertyChanged, INotificationViewModel
     {
@@ -40,16 +40,16 @@ namespace CoolapkUWP.Pages
         public double id { get; private set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void Initial(IJsonValue o)
+        public void Initial(JToken o)
         {
-            JsonObject token = o.GetObject();
-            id = token["id"].GetNumber();
-            FromUserName = token["fromusername"].GetString();
-            FromUserUri = token["url"].GetString();
-            Dateline = DataHelper.ConvertTime(token["dateline"].GetNumber());
-            GetPic(token["fromUserInfo"].GetObject()["userSmallAvatar"].GetString());
+            JObject token = o as JObject;
+            id = token.Value<int>("id");
+            FromUserName = token.Value<string>("fromusername");
+            FromUserUri = token.Value<string>("url");
+            Dateline = DataHelper.ConvertTime(token.Value<int>("dateline"));
+            GetPic(token["fromUserInfo"].Value<string>("userSmallAvatar"));
+            string s = token.Value<string>("note");
             Regex regex = new Regex("<a.*?>.*?</a>"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
-            string s = token["note"].GetString();
             while (regex.IsMatch(s))
             {
                 var h = regex.Match(s);
@@ -83,18 +83,17 @@ namespace CoolapkUWP.Pages
         public double id { get; private set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void Initial(IJsonValue o)
+        public void Initial(JToken o)
         {
-            JsonObject token = o.GetObject();
-            id = token["id"].GetNumber();
-
-            LikeUserName = token["likeUsername"].GetString();
-            LikeUserUri = "/u/" + token["likeUid"].GetNumber();
-            Dateline = DataHelper.ConvertTime(token["likeTime"].GetNumber());
-            Uri = token["url"].GetString();
-            GetPic(token["likeAvatar"].GetString());
-            Title = "赞了你的" + (token.TryGetValue("feedTypeName", out IJsonValue value) ? value.GetString() : token["infoHtml"].GetString());
-            FeedMessage = token["message"].GetString();
+            JObject token = o as JObject;
+            id = token.Value<int>("id");
+            LikeUserUri = "/u/" + token.Value<int>("likeUid");
+            Dateline = DataHelper.ConvertTime(token.Value<int>("likeTime"));
+            LikeUserName = token.Value<string>("likeUsername");
+            Uri = token.Value<string>("url");
+            GetPic(token.Value<string>("likeAvatar"));
+            Title = "赞了你的" + (token.TryGetValue("feedTypeName", out JToken value) ? value.ToString() : token.Value<string>("infoHtml"));
+            FeedMessage = token.Value<string>("message");
         }
         async void GetPic(string u)
         {
@@ -117,18 +116,17 @@ namespace CoolapkUWP.Pages
         public double id { get; private set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void Initial(IJsonValue o)
+        public void Initial(JToken o)
         {
-            JsonObject token = o.GetObject();
-            id = token["id"].GetNumber();
-
-            UserName = token["username"].GetString();
-            UserUri = "/u/" + token["uid"].GetNumber();
-            Dateline = DataHelper.ConvertTime(token["dateline"].GetNumber());
-            Uri = token["url"].GetString();
-            GetPic(token["userAvatar"].GetString());
-            Message = (string.IsNullOrEmpty(token["rusername"].GetString()) ? string.Empty : $"回复<a href=\"/u/{token["ruid"].GetNumber()}\">{token["rusername"].GetString()}</a>: ") + token["message"].GetString();
-            FeedMessage = (token["extra_title"].GetString());
+            JObject token = o as JObject;
+            id = token.Value<int>("id");
+            UserUri = "/u/" + token.Value<int>("uid");
+            Dateline = DataHelper.ConvertTime(token.Value<int>("dateline"));
+            UserName = token.Value<string>("username");
+            Uri = token.Value<string>("url");
+            GetPic(token.Value<string>("userAvatar"));
+            FeedMessage = (token.Value<string>("extra_title"));
+            Message = (string.IsNullOrEmpty(token.Value<string>("rusername")) ? string.Empty : $"回复<a href=\"/u/{token.Value<string>("ruid")}\">{token.Value<string>("rusername")}</a>: ") + token.Value<string>("message");
         }
         async void GetPic(string u)
         {
@@ -238,27 +236,26 @@ namespace CoolapkUWP.Pages
         async void Load<T>(int p = -1) where T : INotificationViewModel, new()
         {
             UIHelper.ShowProgressBar();
-            JsonArray array = (JsonArray)await DataHelper.GetData(true,
-                                                                  DataType.GetNotifications,
-                                                                  uri,
-                                                                  p == -1 ? ++page : p,
-                                                                  firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
-                                                                  lastItem == 0 ? string.Empty : $"&lastItem={lastItem}");
+            JArray array = (JArray)await DataHelper.GetData(DataType.GetNotifications,
+                                                            uri,
+                                                            p == -1 ? ++page : p,
+                                                            firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
+                                                            lastItem == 0 ? string.Empty : $"&lastItem={lastItem}");
             if (array != null && array.Count > 0)
             {
                 if (p == 1 || page == 1)
-                    firstItem = array.First().GetObject()["id"].GetNumber();
-                lastItem = array.Last().GetObject()["id"].GetNumber();
+                    firstItem = array.First.Value<int>("id");
+                lastItem = array.Last.Value<int>("id");
                 var d = (from a in itemCollection
                          from b in array
-                         where (a as INotificationViewModel).id == b.GetObject()["id"].GetNumber()
+                         where (a as INotificationViewModel).id == b.Value<int>("id")
                          select a).ToArray();
                 foreach (var item in d)
                     itemCollection.Remove(item);
                 for (int i = 0; i < array.Count; i++)
                 {
                     T t = new T();
-                    t.Initial(array[i].GetObject());
+                    t.Initial(array[i]);
                     if (p == -1)
                         itemCollection.Add(t);
                     else
@@ -280,20 +277,19 @@ namespace CoolapkUWP.Pages
         async void Load(int p = -1)
         {
             UIHelper.ShowProgressBar();
-            JsonArray array = (JsonArray)await DataHelper.GetData(true,
-                                                                  DataType.GetNotifications,
-                                                                  uri,
-                                                                  p == -1 ? ++page : p,
-                                                                  firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
-                                                                  lastItem == 0 ? string.Empty : $"&lastItem={lastItem}");
+            JArray array = (JArray)await DataHelper.GetData(DataType.GetNotifications,
+                                                            uri,
+                                                            p == -1 ? ++page : p,
+                                                            firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
+                                                            lastItem == 0 ? string.Empty : $"&lastItem={lastItem}");
             if (array != null && array.Count > 0)
             {
                 if (p == 1 || page == 1)
-                    firstItem = array.First().GetObject()["id"].GetNumber();
-                lastItem = array.Last().GetObject()["id"].GetNumber();
+                    firstItem = array.First.Value<int>("id");
+                lastItem = array.Last.Value<int>("id");
                 var d = (from a in itemCollection
                          from b in array
-                         where (a as FeedViewModel).entityId == b.GetObject()["id"].GetNumber().ToString()
+                         where (a as FeedViewModel).entityId == b.Value<int>("id").ToString()
                          select a).ToArray();
                 foreach (var item in d)
                     itemCollection.Remove(item);

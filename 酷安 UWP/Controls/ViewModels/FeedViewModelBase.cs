@@ -1,6 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
+using Newtonsoft.Json.Linq;
 using System;
-using Windows.Data.Json;
 using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Controls.ViewModels
@@ -14,49 +14,50 @@ namespace CoolapkUWP.Controls.ViewModels
 
     class FeedViewModelBase : SourceFeedViewModel, ILike
     {
-        public FeedViewModelBase(IJsonValue t) : base(t)
+        public FeedViewModelBase(JToken t) : base(t)
         {
-            JsonObject token = t.GetObject();
-            if (token.TryGetValue("info", out IJsonValue value1))
-                info = value1.GetString();
+            JObject token = t as JObject;
+            if (token.TryGetValue("info", out JToken value1))
+                info = value1.ToString();
             likenum = token["likenum"].ToString().Replace("\"", string.Empty);
             replynum = token["replynum"].ToString().Replace("\"", string.Empty);
             share_num = token["forwardnum"].ToString().Replace("\"", string.Empty);
-            if (token["entityType"].GetString() != "article")
+            if (token.Value<string>("entityType") != "article")
             {
-                if (token["feedType"].GetString() == "question")
+                if (token.Value<string>("feedType") == "question")
                 {
                     isQuestionFeed = true;
                     question_answer_num = token["question_answer_num"].ToString().Replace("\"", string.Empty);
                     question_follow_num = token["question_follow_num"].ToString().Replace("\"", string.Empty);
                 }
-                showSourceFeedGrid = !isQuestionFeed && !string.IsNullOrEmpty(token["source_id"]?.GetString());
+                showSourceFeedGrid = !isQuestionFeed && !string.IsNullOrEmpty(token["source_id"]?.ToString());
                 if (showSourceFeedGrid)
                 {
-                    showSourceFeed = token.TryGetValue("forwardSourceFeed", out IJsonValue jsonValue)
+                    showSourceFeed = token.TryGetValue("forwardSourceFeed", out JToken jsonValue)
                                      && jsonValue != null
-                                     && jsonValue.ToString() != "null";
+                                     && jsonValue.ToString() != "null"
+                                     && jsonValue.ToString() != string.Empty;
                     if (showSourceFeed)
-                        sourceFeed = new SourceFeedViewModel(jsonValue.GetObject());
+                        sourceFeed = new SourceFeedViewModel(jsonValue as JObject);
                 }
                 //if (token["entityTemplate"].GetString() == "feedByDyhHeader") showUser = false;
-                if (showUser) userSmallAvatarUrl = token["userInfo"].GetObject()["userSmallAvatar"].GetString();
-                showExtra_url = token.TryGetValue("extra_title", out IJsonValue valueextra_title) && !string.IsNullOrEmpty(valueextra_title.GetString());
+                if (showUser) userSmallAvatarUrl = token["userInfo"]["userSmallAvatar"].ToString();
+                showExtra_url = token.TryGetValue("extra_title", out JToken valueextra_title) && !string.IsNullOrEmpty(valueextra_title.ToString());
                 if (showExtra_url)
                 {
-                    extra_title = valueextra_title.GetString();
-                    extra_url = token["extra_url"].GetString();
+                    extra_title = valueextra_title.ToString();
+                    extra_url = token.Value<string>("extra_url");
                     if (!string.IsNullOrEmpty(extra_url))
                         if (extra_url.IndexOf("http") == 0)
                             extra_url2 = new Uri(extra_url).Host;
                         else extra_url2 = string.Empty;
                     else extra_url2 = string.Empty;
-                    extraPicUrl = token["extra_pic"].GetString();
+                    extraPicUrl = token.Value<string>("extra_pic");
                 }
-                device_title = token["device_title"].GetString();
+                device_title = token.Value<string>("device_title");
             }
             //else showUser = false;
-            liked = token.TryGetValue("userAction", out IJsonValue v) ? v.GetObject()["like"].GetNumber() == 1 : false;
+            liked = token.TryGetValue("userAction", out JToken v) ? int.Parse(v["like"].ToString()) == 1 : false;
             GetPic();
         }
 

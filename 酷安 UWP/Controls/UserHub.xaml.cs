@@ -1,8 +1,8 @@
-﻿using CoolapkUWP.Helpers;
+﻿using Newtonsoft.Json.Linq;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.FeedPages;
 using System.ComponentModel;
-using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -20,6 +20,10 @@ namespace CoolapkUWP.Controls
         double fansNum;
         double feedNum;
         double levelNum;
+        double nextLevelExperience;
+        double nextLevelPercentage;
+        string nextLevelNowExperience;
+        string levelTodayMessage;
 
         public UserHub() => this.InitializeComponent();
 
@@ -61,19 +65,26 @@ namespace CoolapkUWP.Controls
             {
                 LoginButton.Visibility = Visibility.Collapsed;
                 UserDetailGrid.Visibility = Visibility.Visible;
-                var o = (JsonObject)await DataHelper.GetData(false, DataType.GetUserProfile, uid);
-                UIHelper.MainPageUserAvatar = userAvatar = await ImageCacheHelper.GetImage(ImageType.BigAvatar, o["userAvatar"].GetString());
-                userName = o["username"].GetString();
-                feedNum = o["feed"].GetNumber();
-                followNum = o["follow"].GetNumber();
-                fansNum = o["fans"].GetNumber();
-                levelNum = o["level"].GetNumber();
+                var o = (JObject)await DataHelper.GetData(DataType.GetUserProfile, uid);
+                UIHelper.MainPageUserAvatar = userAvatar = await ImageCacheHelper.GetImage(ImageType.BigAvatar, o.Value<string>("userAvatar"));
+                userName = o.Value<string>("username");
+                feedNum = o.Value<int>("feed");
+                followNum = o.Value<int>("follow");
+                fansNum = o.Value<int>("fans");
+                levelNum = o.Value<int>("level");
+                nextLevelExperience = o.Value<int>("next_level_experience");
+                nextLevelPercentage = o.Value<double>("next_level_percentage");
+                levelTodayMessage = o.Value<string>("level_today_message");
+                nextLevelNowExperience = $"{(nextLevelPercentage / 100 * nextLevelExperience).ToString("F0")}/{nextLevelExperience}";
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(userAvatar)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(userName)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(fansNum)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(feedNum)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(followNum)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(levelNum)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(nextLevelPercentage)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(levelTodayMessage)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(nextLevelNowExperience)));
             }
 
         }

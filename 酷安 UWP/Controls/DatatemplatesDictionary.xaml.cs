@@ -1,5 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
-using Windows.Data.Json;
+using Newtonsoft.Json.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -54,19 +54,19 @@ namespace CoolapkUWP.Controls
                     var f = element.Tag as ViewModels.ILike;
                     bool isReply = f is ViewModels.FeedReplyViewModel;
                     bool b = false;
-                    JsonObject o;
+                    JObject o;
                     if (f.liked)
-                        o = (JsonObject)await DataHelper.GetData(false, DataType.OperateUnlike, isReply ? "Reply" : string.Empty, f.id);
+                        o = (JObject)await DataHelper.GetData(DataType.OperateUnlike, isReply ? "Reply" : string.Empty, f.id);
                     else
                     {
-                        o = (JsonObject)await DataHelper.GetData(false, DataType.OperateLike, isReply ? "Reply" : string.Empty, f.id);
+                        o = (JObject)await DataHelper.GetData(DataType.OperateLike, isReply ? "Reply" : string.Empty, f.id);
                         b = true;
                     }
 
                     if (isReply)
                         f.likenum = o.ToString().Replace("\"", string.Empty);
                     else if (o != null)
-                        f.likenum = o["count"].GetNumber().ToString();
+                        f.likenum = o.Value<int>("count").ToString();
                     ChangeLikeStatus(f, element, b);
                     break;
             }

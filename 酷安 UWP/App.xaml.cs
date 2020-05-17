@@ -99,12 +99,16 @@ namespace CoolapkUWP
             {
                 if (Window.Current.Content != null)
                 {
-                    if (e.Exception.HResult == -2147012889) UIHelper.ShowMessage($"网络异常(0x{Convert.ToString(e.Exception.HResult, 16)})");
-                    else await new MessageDialog($"{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})" 
+                    if (e.Exception.HResult <= -2147012721 && e.Exception.HResult >= -2147012895)
+                        UIHelper.ShowMessage($"网络异常(0x{Convert.ToString(e.Exception.HResult, 16)})");
+                    else if (e.Exception.GetType() == typeof(Helpers.Exceptions.ServerException))
+                        UIHelper.ShowMessage(e.Exception.Message);
+                    else
+                        await new MessageDialog($"{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})"
 #if DEBUG
-                        + "\n{e.Exception.StackTrace}"
+                        + $"\n{e.Exception.StackTrace}"
 #endif
-                        ,"程序出现了错误……").ShowAsync();
+                        , "程序出现了错误……").ShowAsync();
                     UIHelper.HideProgressBar();
                 }
             }
