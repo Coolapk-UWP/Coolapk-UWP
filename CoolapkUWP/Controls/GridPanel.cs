@@ -116,8 +116,7 @@ namespace CoolapkUWP.Controls
                     }
                     else
                     {
-                        int minIndex = 0;
-                        minIndex = offsetY.IndexOf(offsetY.Min());
+                        int minIndex = offsetY.IndexOf(offsetY.Min());
                         item.Arrange(new Rect(offsetX[minIndex], offsetY[minIndex], DesiredSize.Width / StackCount, item.DesiredSize.Height));
                         offsetY[minIndex] += item.DesiredSize.Height;
                     }
