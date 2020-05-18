@@ -13,15 +13,15 @@ namespace CoolapkUWP.Helpers
 {
     static class SettingsHelper
     {
-        static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-        public static UISettings uISettings => new UISettings();
+        static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+        public static UISettings UISettings => new UISettings();
         public static bool HasStatusBar => Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
         public static double PageTitleHeight => HasStatusBar ? 48 : 80;
         public static SolidColorBrush SystemAccentColorBrush => Application.Current.Resources.ThemeDictionaries["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
-        public static Thickness titleTextMargin => new Thickness(5, 12, 5, 12);
-        public static Thickness stackPanelMargin => new Thickness(0, PageTitleHeight, 0, 0);
-        public static VerticalAlignment titleContentVerticalAlignment => VerticalAlignment.Bottom;
-        public static ElementTheme theme => Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
+        public static Thickness TitleTextMargin => new Thickness(5, 12, 5, 12);
+        public static Thickness StackPanelMargin => new Thickness(0, PageTitleHeight, 0, 0);
+        public static VerticalAlignment TitleContentVerticalAlignment => VerticalAlignment.Bottom;
+        public static ElementTheme Theme => Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
         public static T Get<T>(string key) => (T)localSettings.Values[key];
         public static void Set(string key, object value) => localSettings.Values[key] = value;
 
@@ -64,7 +64,7 @@ namespace CoolapkUWP.Helpers
                         || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
                         || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
                     {
-                        var dialog = new Controls.GetUpdateContentDialog(keys.Value<string>("html_url"), keys.Value<string>("body")) { RequestedTheme = theme }; await dialog.ShowAsync();
+                        var dialog = new Controls.GetUpdateContentDialog(keys.Value<string>("html_url"), keys.Value<string>("body")) { RequestedTheme = Theme }; await dialog.ShowAsync();
                     }
                     else UIHelper.ShowMessage("当前无可用更新。");
                 }
@@ -79,13 +79,13 @@ namespace CoolapkUWP.Helpers
                 await Task.Delay(100);
             if (Window.Current.Content is FrameworkElement frameworkElement)
             {
-                frameworkElement.RequestedTheme = theme;
+                frameworkElement.RequestedTheme = Theme;
                 foreach (var item in UIHelper.popups)
-                    item.RequestedTheme = theme;
+                    item.RequestedTheme = Theme;
 
                 Color? BackColor, ForeColor, ButtonForeInactiveColor, ButtonBackPressedColor;
                 BackColor = ForeColor = ButtonBackPressedColor = ButtonForeInactiveColor = null;
-                switch (theme)
+                switch (Theme)
                 {
                     case ElementTheme.Light:
                         BackColor = Color.FromArgb(255, 242, 242, 242);

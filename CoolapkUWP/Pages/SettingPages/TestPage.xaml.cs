@@ -1,15 +1,8 @@
-﻿using CoolapkUWP.Controls.ViewModels;
-using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Helpers;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages.SettingPages
 {
@@ -48,11 +41,6 @@ namespace CoolapkUWP.Pages.SettingPages
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
-
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
 
         }
 

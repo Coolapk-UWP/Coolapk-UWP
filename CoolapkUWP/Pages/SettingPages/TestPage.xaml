@@ -16,7 +16,7 @@
     </Page.Resources>
     <Grid>
         <ScrollViewer>
-            <StackPanel Margin="{x:Bind data:SettingsHelper.stackPanelMargin}">
+            <StackPanel Margin="{x:Bind data:SettingsHelper.StackPanelMargin}">
                 <TextBox Header="uid" x:Name="uid"/>
                 <Button Click="Button_Click">go</Button>
                 <TextBox Header="url" x:Name="url"></TextBox>

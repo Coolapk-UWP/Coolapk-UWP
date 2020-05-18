@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -116,8 +114,7 @@ namespace CoolapkUWP.Controls
                     }
                     else
                     {
-                        int minIndex = 0;
-                        minIndex = offsetY.IndexOf(offsetY.Min());
+                        int minIndex = offsetY.IndexOf(offsetY.Min());
                         item.Arrange(new Rect(offsetX[minIndex], offsetY[minIndex], DesiredSize.Width / StackCount, item.DesiredSize.Height));
                         offsetY[minIndex] += item.DesiredSize.Height;
                     }

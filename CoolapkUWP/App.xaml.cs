@@ -1,12 +1,12 @@
-﻿using System;
+﻿using CoolapkUWP.Helpers;
+using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using CoolapkUWP.Helpers;
-using System.Threading.Tasks;
 
 namespace CoolapkUWP
 {
@@ -35,8 +35,7 @@ namespace CoolapkUWP
             RegisterExceptionHandlingSynchronizationContext();
             this.UnhandledException += Application_UnhandledException;
 
-            Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame == null)
+            if (!(Window.Current.Content is Frame rootFrame))
             {
                 rootFrame = new Frame();
                 rootFrame.NavigationFailed += OnNavigationFailed;

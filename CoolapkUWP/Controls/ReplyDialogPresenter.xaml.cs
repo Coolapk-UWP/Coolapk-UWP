@@ -15,10 +15,10 @@ namespace CoolapkUWP.Controls
 {
     public sealed partial class ReplyDialogPresenter : Page
     {
-        double id;
+        readonly double id;
         int page;
         double lastItem;
-        ObservableCollection<FeedReplyViewModel> replys = new ObservableCollection<FeedReplyViewModel>();
+        readonly ObservableCollection<FeedReplyViewModel> replys = new ObservableCollection<FeedReplyViewModel>();
         ScrollViewer VScrollViewer;
         public ReplyDialogPresenter(object o, Popup popup)
         {
@@ -31,11 +31,11 @@ namespace CoolapkUWP.Controls
             TitleBar.BackButtonClick += (s, e) => popup.Hide();
             popup.Closed += (s, e) => Window.Current.SizeChanged -= WindowSizeChanged;
             FeedReplyViewModel reply = o as FeedReplyViewModel;
-            TitleBar.Title = $"回复({reply.replynum})";
+            TitleBar.Title = $"回复({reply.Replynum})";
             TitleBar.RefreshEvent += (s, e) => GetReplys(true);
             id = reply.id;
             FeedReplyList.ItemsSource = replys;
-            reply.showreplyRows = false;
+            reply.ShowreplyRows = false;
             replys.Add(reply);
             GetReplys(false);
             UIHelper.HideProgressBar();

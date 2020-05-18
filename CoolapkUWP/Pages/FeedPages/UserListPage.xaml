@@ -17,7 +17,7 @@
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
-        <controls:PullToRefreshListView ItemTemplate="{StaticResource User}" SelectionMode="None" Padding="{x:Bind data:SettingsHelper.stackPanelMargin,Mode=OneWay}"
+        <controls:PullToRefreshListView ItemTemplate="{StaticResource User}" SelectionMode="None" Padding="{x:Bind data:SettingsHelper.StackPanelMargin,Mode=OneWay}"
                                         PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新" RefreshRequested="UserList_RefreshRequested" x:Name="UserList">
             <controls:PullToRefreshListView.ItemsPanel>
                 <ItemsPanelTemplate>

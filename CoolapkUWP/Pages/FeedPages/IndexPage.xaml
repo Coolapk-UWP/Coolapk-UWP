@@ -62,7 +62,7 @@
                 <ListViewItem Height="0"/>
             </DataTemplate>
             <DataTemplate x:Key="loginCard">
-                <ListViewItem HorizontalContentAlignment="Center" x:Name="loginCard" Tapped="loginCard_Tapped">
+                <ListViewItem HorizontalContentAlignment="Center" x:Name="loginCard" Tapped="LoginCard_Tapped">
                     <StackPanel Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Orientation="Horizontal">
                         <SymbolIcon Symbol="AddFriend"/>
                         <TextBlock VerticalAlignment="Center" Margin="4,0">登录</TextBlock>
@@ -254,16 +254,16 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Ellipse Width="32" Height="32" HorizontalAlignment="Left" >
                                         <Ellipse.Fill>
-                                            <ImageBrush ImageSource="{x:Bind userSmallAvatar,Mode=OneWay}"/>
+                                            <ImageBrush ImageSource="{x:Bind UserSmallAvatar,Mode=OneWay}"/>
                                         </Ellipse.Fill>
                                     </Ellipse>
                                     <StackPanel Margin="8,0">
                                         <TextBlock Text="{x:Bind username}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="{x:Bind dateline}" Foreground="Gray"/>
-                                            <TextBlock Text="{x:Bind info}" Foreground="Gray" Margin="3,0,0,0"/>
+                                            <TextBlock Text="{x:Bind Info}" Foreground="Gray" Margin="3,0,0,0"/>
                                         </StackPanel>
-                                        <TextBlock Text="{x:Bind device_title}" Foreground="Gray"/>
+                                        <TextBlock Text="{x:Bind Device_title}" Foreground="Gray"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Button>
@@ -289,7 +289,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <Ellipse Width="24" Height="24" HorizontalAlignment="Left" >
                                             <Ellipse.Fill>
-                                                <ImageBrush ImageSource="{x:Bind userSmallAvatar,Mode=OneWay}"/>
+                                                <ImageBrush ImageSource="{x:Bind UserSmallAvatar,Mode=OneWay}"/>
                                             </Ellipse.Fill>
                                         </Ellipse>
                                         <TextBlock Margin="8,0" Text="{x:Bind username}" Foreground="White" VerticalAlignment="Center"/>
@@ -306,7 +306,7 @@
 
     <Grid>
         <controls:PullToRefreshListView x:Name="listView" ItemsSource="{x:Bind Collection}" RefreshRequested="{x:Bind RefreshPage}" PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新"
-                                        Padding="{x:Bind data:SettingsHelper.stackPanelMargin}" ItemTemplateSelector="{StaticResource FTemplateSelector}" SelectionMode="None">
+                                        Padding="{x:Bind data:SettingsHelper.StackPanelMargin}" ItemTemplateSelector="{StaticResource FTemplateSelector}" SelectionMode="None">
             <controls:PullToRefreshListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384"/>

@@ -9,9 +9,9 @@ namespace CoolapkUWP.Controls.ViewModels
         public TopicViewModel(JToken t) : base(t)
         {
             JObject token = t as JObject;
-            commentnum = token["commentnum"].ToString().Replace("\"", string.Empty);
+            Commentnum = token["commentnum"].ToString().Replace("\"", string.Empty);
         }
-        public string commentnum { get; private set; }
+        public string Commentnum { get; private set; }
     }
 
     class DyhViewModel : Entity
@@ -19,23 +19,23 @@ namespace CoolapkUWP.Controls.ViewModels
         public DyhViewModel(JToken t) : base(t)
         {
             JObject token = t as JObject;
-            url = token.Value<string>("url");
-            title = token.Value<string>("title");
-            follownum = token["follownum"].ToString().Replace("\"", string.Empty);
+            Url = token.Value<string>("url");
+            Title = token.Value<string>("title");
+            Follownum = token["follownum"].ToString().Replace("\"", string.Empty);
             GetPic(token);
         }
-        async void GetPic(JObject token) => logo = await ImageCacheHelper.GetImage(ImageType.Icon, token.Value<string>("logo"));
-        public string url { get; private set; }
-        public string title { get; private set; }
-        public string follownum { get; private set; }
+        async void GetPic(JObject token) => Logo = await ImageCacheHelper.GetImage(ImageType.Icon, token.Value<string>("logo"));
+        public string Url { get; private set; }
+        public string Title { get; private set; }
+        public string Follownum { get; private set; }
         private ImageSource logo1;
-        public ImageSource logo
+        public ImageSource Logo
         {
-            get => logo1; 
+            get => logo1;
             private set
             {
                 logo1 = value;
-                Changed(this, nameof(logo));
+                Changed(this, nameof(Logo));
             }
         }
     }

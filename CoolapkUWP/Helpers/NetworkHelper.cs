@@ -65,7 +65,7 @@ namespace CoolapkUWP.Helpers
             catch
             {
                 var o = Windows.Data.Json.JsonObject.Parse(str).GetObject();
-                if(o != null)
+                if (o != null)
                 {
                     UIHelper.ShowMessage(o["message"].GetString());
                     return "0";

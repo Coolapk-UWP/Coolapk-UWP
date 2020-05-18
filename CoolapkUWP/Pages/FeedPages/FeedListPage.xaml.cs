@@ -247,7 +247,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         IFeedListDataProvider provider;
         ScrollViewer VScrollViewer;
-        ObservableCollection<object> itemCollection = new ObservableCollection<object>();
+        readonly ObservableCollection<object> itemCollection = new ObservableCollection<object>();
 
         public FeedListPage() => this.InitializeComponent();
         protected override void OnNavigatedTo(NavigationEventArgs e)

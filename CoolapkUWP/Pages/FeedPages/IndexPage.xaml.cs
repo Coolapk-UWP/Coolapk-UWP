@@ -18,12 +18,12 @@ namespace CoolapkUWP.Pages.FeedPages
     public sealed partial class IndexPage : Page
     {
         int page = 0;
-        List<int> pages = new List<int>();
+        readonly List<int> pages = new List<int>();
         string pageUrl;
-        ObservableCollection<Entity> Collection = new ObservableCollection<Entity>();
+        readonly ObservableCollection<Entity> Collection = new ObservableCollection<Entity>();
         int index;
-        List<string> urls = new List<string>();
-        ObservableCollection<ObservableCollection<Entity>> Feeds2 = new ObservableCollection<ObservableCollection<Entity>>();
+        readonly List<string> urls = new List<string>();
+        readonly ObservableCollection<ObservableCollection<Entity>> Feeds2 = new ObservableCollection<ObservableCollection<Entity>>();
 
         public bool CanLoadMore { get => Collection.Count != 0; }
         public IndexPage() => this.InitializeComponent();
@@ -66,7 +66,7 @@ namespace CoolapkUWP.Pages.FeedPages
         async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
         {
             UIHelper.ShowProgressBar();
-            JArray array = (JArray)await DataHelper.GetData( DataType.GetIndexPage, url, url == "/main/indexV8" ? "?" : "&", page);
+            JArray array = (JArray)await DataHelper.GetData(DataType.GetIndexPage, url, url == "/main/indexV8" ? "?" : "&", page);
             if (array != null && array.Count > 0)
                 if (page == 1)
                 {
@@ -234,15 +234,15 @@ namespace CoolapkUWP.Pages.FeedPages
                     pages.Add(1);
                     Feeds2.Add(ff);
                     urls.Add("/page/dataList?url=" + model.url.Replace("#", "%23") + $"&title={model.title}");
-                    if (j == 0) load(element, i);
+                    if (j == 0) Load(element, i);
                 }
                 return;
             }
         }
 
-        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e) => load(sender as Pivot);
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e) => Load(sender as Pivot);
 
-        void load(Pivot element, PivotItem i = null)
+        void Load(Pivot element, PivotItem i = null)
         {
             PivotItem item = i is null ? element.SelectedItem as PivotItem : i;
             IndexPageViewModel model = item.Tag as IndexPageViewModel;
@@ -254,6 +254,6 @@ namespace CoolapkUWP.Pages.FeedPages
             _ = GetUrlPage(1, u, feeds);
         }
 
-        private void loginCard_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.Navigate(typeof(BrowserPage), new object[] { true, null });
+        private void LoginCard_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.Navigate(typeof(BrowserPage), new object[] { true, null });
     }
 }

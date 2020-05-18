@@ -84,8 +84,8 @@ namespace CoolapkUWP.Controls
         {
             if (item is FeedViewModel f)
             {
-                if (f.isQuestionFeed) return DataTemplate6;
-                else if (f.showMessage_title) return DataTemplate5;
+                if (f.IsQuestionFeed) return DataTemplate6;
+                else if (f.ShowMessage_title) return DataTemplate5;
                 else if (f.isCoolPictuers) return DataTemplate9;
             }
             else if (item is UserViewModel) return DataTemplate8;

@@ -11,82 +11,83 @@ namespace CoolapkUWP.Controls.ViewModels
         public FeedReplyViewModel(JToken t, bool showReplyRow = true) : base(t)
         {
             JObject token = t as JObject;
-            dateline = DataHelper.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
-            message = token.Value<string>("message");
+            Dateline = DataHelper.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
+            Message = token.Value<string>("message");
             userSmallAvatarUrl = token["userInfo"].Value<string>("userSmallAvatar");
-            likenum = token["likenum"].ToString().Replace("\"", string.Empty);
-            replynum = token["replynum"].ToString().Replace("\"", string.Empty);
+            Likenum = token["likenum"].ToString().Replace("\"", string.Empty);
+            Replynum = token["replynum"].ToString().Replace("\"", string.Empty);
             token.TryGetValue("replyRowsCount", out JToken value1);
-            replyRowsCount = int.Parse(value1?.ToString() ?? "0");
-            showreplyRows = showReplyRow && replyRowsCount > 0;
-            if (showreplyRows)
+            ReplyRowsCount = int.Parse(value1?.ToString() ?? "0");
+            ShowreplyRows = showReplyRow && ReplyRowsCount > 0;
+            if (ShowreplyRows)
             {
                 List<SimpleFeedReplyViewModel> models = new List<SimpleFeedReplyViewModel>();
                 foreach (var item in token["replyRows"] as JArray)
                     models.Add(new SimpleFeedReplyViewModel(item));
-                replyRows = models.ToArray();
-                replyRowsMore = token.Value<int>("replyRowsMore");
+                ReplyRows = models.ToArray();
+                ReplyRowsMore = token.Value<int>("replyRowsMore");
             }
-            liked = token.TryGetValue("userAction", out JToken v) ? v.Value<int>("like") == 1 : false;
+            Liked = token.TryGetValue("userAction", out JToken v) ? v.Value<int>("like") == 1 : false;
             GetPic();
         }
 
         private async void GetPic()
         {
             if (showPic)
-                pic = new ImageData
+                Pic = new ImageData
                 {
                     Pic = await ImageCacheHelper.GetImage(ImageType.SmallImage, picUrl),
                     url = picUrl
                 };
             if (!string.IsNullOrEmpty(userSmallAvatarUrl))
-                userSmallAvatar = await ImageCacheHelper.GetImage(ImageType.SmallAvatar, userSmallAvatarUrl);
+                UserSmallAvatar = await ImageCacheHelper.GetImage(ImageType.SmallAvatar, userSmallAvatarUrl);
         }
-        string userSmallAvatarUrl;
+
+        readonly string userSmallAvatarUrl;
         private ImageSource userSmallAvatar1;
         private ImageData pic1;
         private string likenum1;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string likenum
+        public string Likenum
         {
             get => likenum1;
             set
             {
                 likenum1 = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(likenum)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Likenum)));
             }
         }
-        public string replynum { get; private set; }
-        public ImageSource userSmallAvatar
+        public string Replynum { get; private set; }
+        public ImageSource UserSmallAvatar
         {
             get => userSmallAvatar1;
             private set
             {
                 userSmallAvatar1 = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(userSmallAvatar)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserSmallAvatar)));
             }
         }
-        public new string message { get; private set; }
-        public ImageData pic
+        public string Message { get; private set; }
+        public ImageData Pic
         {
             get => pic1;
             private set
             {
                 pic1 = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(pic)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Pic)));
             }
         }
-        public string dateline { get; private set; }
-        public bool showreplyRows { get; set; }
-        public SimpleFeedReplyViewModel[] replyRows { get; private set; }
-        public bool showreplyRowsMore { get => replyRowsMore > 0; }
-        public double replyRowsMore { get; private set; }
-        public double replyRowsCount { get; private set; }
-        public bool liked { get; set; }
-        public bool liked2 { get => !liked; }
+        public string Dateline { get; private set; }
+        public bool ShowreplyRows { get; set; }
+        public SimpleFeedReplyViewModel[] ReplyRows { get; private set; }
+        public bool ShowreplyRowsMore { get => ReplyRowsMore > 0; }
+        public double ReplyRowsMore { get; private set; }
+        public double ReplyRowsCount { get; private set; }
+        public bool Liked { get; set; }
+        public bool Liked2 { get => !Liked; }
 
-        string ILike.id => id.ToString();
+        string ILike.Id => id.ToString();
     }
 }

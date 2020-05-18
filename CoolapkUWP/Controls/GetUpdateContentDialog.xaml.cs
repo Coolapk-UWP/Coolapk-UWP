@@ -10,7 +10,7 @@ namespace CoolapkUWP.Controls
 {
     public sealed partial class GetUpdateContentDialog : ContentDialog
     {
-        string url;
+        readonly string url;
         string Body { get; set; }
         public GetUpdateContentDialog(string url, string body)
         {
