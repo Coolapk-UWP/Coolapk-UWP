@@ -40,7 +40,7 @@ namespace CoolapkUWP.Controls
         public DataTemplate DataTemplate12 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            switch ((item as IndexPageViewModel).entityTemplate)
+            switch ((item as IndexPageViewModel).EntityTemplate)
             {
                 case "imageTextGridCard":
                 case "imageCarouselCard_1":
