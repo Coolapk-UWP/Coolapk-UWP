@@ -71,8 +71,5 @@ namespace CoolapkUWP.Controls
                     break;
             }
         }
-
-        private void repRL_ItemClick(object sender, ItemClickEventArgs e)
-            => UIHelper.Navigate(typeof(Pages.FeedPages.FeedDetailPage), (e.ClickedItem as FrameworkElement).Tag.ToString());
     }
 }

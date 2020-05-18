@@ -194,8 +194,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
                 <ListView ScrollViewer.VerticalScrollMode="Disabled" Background="{ThemeResource SystemControlBackgroundListLowBrush}" 
-                      Grid.Row="9" ItemsSource="{x:Bind replyRows}" x:Name="repRL"
-                      ItemClick="repRL_ItemClick" IsItemClickEnabled="True" x:Load="{x:Bind showReplyRows}">
+                      Grid.Row="9" ItemsSource="{x:Bind replyRows}" x:Name="repRL" IsItemClickEnabled="True" x:Load="{x:Bind showReplyRows}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
