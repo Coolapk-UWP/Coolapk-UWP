@@ -35,8 +35,7 @@ namespace CoolapkUWP
             RegisterExceptionHandlingSynchronizationContext();
             this.UnhandledException += Application_UnhandledException;
 
-            Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame == null)
+            if (!(Window.Current.Content is Frame rootFrame))
             {
                 rootFrame = new Frame();
                 rootFrame.NavigationFailed += OnNavigationFailed;
