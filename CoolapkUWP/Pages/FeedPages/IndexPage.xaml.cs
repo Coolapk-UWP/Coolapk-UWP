@@ -18,12 +18,12 @@ namespace CoolapkUWP.Pages.FeedPages
     public sealed partial class IndexPage : Page
     {
         int page = 0;
-        List<int> pages = new List<int>();
+        readonly List<int> pages = new List<int>();
         string pageUrl;
-        ObservableCollection<Entity> Collection = new ObservableCollection<Entity>();
+        readonly ObservableCollection<Entity> Collection = new ObservableCollection<Entity>();
         int index;
-        List<string> urls = new List<string>();
-        ObservableCollection<ObservableCollection<Entity>> Feeds2 = new ObservableCollection<ObservableCollection<Entity>>();
+        readonly List<string> urls = new List<string>();
+        readonly ObservableCollection<ObservableCollection<Entity>> Feeds2 = new ObservableCollection<ObservableCollection<Entity>>();
 
         public bool CanLoadMore { get => Collection.Count != 0; }
         public IndexPage() => this.InitializeComponent();
