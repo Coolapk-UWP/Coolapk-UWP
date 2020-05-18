@@ -140,7 +140,7 @@ namespace CoolapkUWP.Pages
 
     public sealed partial class NotificationsPage : Page
     {
-        ObservableCollection<object> itemCollection = new ObservableCollection<object>();
+        readonly ObservableCollection<object> itemCollection = new ObservableCollection<object>();
         NotificationPageType type;
         public NotificationsPage() => this.InitializeComponent();
         string uri;

@@ -94,7 +94,7 @@ namespace CoolapkUWP.Controls.ViewModels
                         item.logo = await ImageCacheHelper.GetImage(ImageType.Icon, item.logoUrl);
         }
 
-        string tpicUrl;
+        readonly string tpicUrl;
         private ImageSource tpic1;
         private ImageSource message_cover1;
         public List<string> feedArticlePics { get; private set; } = new List<string>();

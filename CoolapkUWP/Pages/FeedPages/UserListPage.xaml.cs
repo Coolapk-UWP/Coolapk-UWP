@@ -19,7 +19,7 @@ namespace CoolapkUWP.Pages.FeedPages
         string uid;
         int page = 1;
         double firstItem, lastItem;
-        ObservableCollection<UserViewModel> infos = new ObservableCollection<UserViewModel>();
+        readonly ObservableCollection<UserViewModel> infos = new ObservableCollection<UserViewModel>();
         ScrollViewer VScrollViewer = null;
 
         public UserListPage()

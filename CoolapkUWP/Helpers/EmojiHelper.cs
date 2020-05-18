@@ -3,7 +3,7 @@ namespace CoolapkUWP.Helpers
 {
     static class EmojiHelper
     {
-        static string[] oldEmojis = new string[]
+        static readonly string[] oldEmojis = new string[]
 {
 "[doge]",
 "[doge原谅ta]",
@@ -71,7 +71,7 @@ namespace CoolapkUWP.Helpers
 "[酷币]",
 "[阴险]",
 "[难过]"       };
-        static string[] emojis = new string[] {"(cos滑稽",
+        static readonly string[] emojis = new string[] {"(cos滑稽",
 "(haha",
 "(OK",
 "(sofa",

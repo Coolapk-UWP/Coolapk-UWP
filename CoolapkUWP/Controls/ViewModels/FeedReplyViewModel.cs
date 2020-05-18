@@ -42,7 +42,8 @@ namespace CoolapkUWP.Controls.ViewModels
             if (!string.IsNullOrEmpty(userSmallAvatarUrl))
                 userSmallAvatar = await ImageCacheHelper.GetImage(ImageType.SmallAvatar, userSmallAvatarUrl);
         }
-        string userSmallAvatarUrl;
+
+        readonly string userSmallAvatarUrl;
         private ImageSource userSmallAvatar1;
         private ImageData pic1;
         private string likenum1;

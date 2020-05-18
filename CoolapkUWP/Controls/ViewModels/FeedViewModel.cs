@@ -97,7 +97,7 @@ namespace CoolapkUWP.Controls.ViewModels
                         item.logo = await ImageCacheHelper.GetImage(ImageType.Icon, item.logoUrl);
         }
 
-        string dyhlogoUrl;
+        private readonly string dyhlogoUrl;
         private ImageSource dyhlogo1;
 
         public new string uurl { get; private set; }

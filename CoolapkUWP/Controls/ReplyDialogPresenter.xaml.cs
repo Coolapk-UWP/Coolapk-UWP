@@ -15,10 +15,10 @@ namespace CoolapkUWP.Controls
 {
     public sealed partial class ReplyDialogPresenter : Page
     {
-        double id;
+        readonly double id;
         int page;
         double lastItem;
-        ObservableCollection<FeedReplyViewModel> replys = new ObservableCollection<FeedReplyViewModel>();
+        readonly ObservableCollection<FeedReplyViewModel> replys = new ObservableCollection<FeedReplyViewModel>();
         ScrollViewer VScrollViewer;
         public ReplyDialogPresenter(object o, Popup popup)
         {

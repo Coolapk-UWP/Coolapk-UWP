@@ -36,9 +36,10 @@ namespace CoolapkUWP.Controls
             public ImageType Type { get; private set; }
             public string Url { get; set; }
         }
-        Popup popup;
-        List<ImageData> datas = new List<ImageData>();
-        ObservableCollection<ImageSource> Images = new ObservableCollection<ImageSource>();
+
+        readonly Popup popup;
+        readonly List<ImageData> datas = new List<ImageData>();
+        readonly ObservableCollection<ImageSource> Images = new ObservableCollection<ImageSource>();
         public ShowImageControl(Popup popup)
         {
             this.InitializeComponent();

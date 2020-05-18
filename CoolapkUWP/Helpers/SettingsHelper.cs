@@ -13,7 +13,7 @@ namespace CoolapkUWP.Helpers
 {
     static class SettingsHelper
     {
-        static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+        static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public static UISettings uISettings => new UISettings();
         public static bool HasStatusBar => Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
         public static double PageTitleHeight => HasStatusBar ? 48 : 80;

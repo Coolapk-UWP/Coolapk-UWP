@@ -29,15 +29,16 @@ namespace CoolapkUWP.Pages.FeedPages
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FeedDetail)));
             }
         }
-        ObservableCollection<FeedReplyViewModel> hotReplies = new ObservableCollection<FeedReplyViewModel>();
-        ObservableCollection<FeedReplyViewModel> replies = new ObservableCollection<FeedReplyViewModel>();
-        ObservableCollection<FeedViewModel> answers = new ObservableCollection<FeedViewModel>();
-        ObservableCollection<UserViewModel> likes = new ObservableCollection<UserViewModel>();
-        ObservableCollection<SourceFeedViewModel> shares = new ObservableCollection<SourceFeedViewModel>();
+
+        readonly ObservableCollection<FeedReplyViewModel> hotReplies = new ObservableCollection<FeedReplyViewModel>();
+        readonly ObservableCollection<FeedReplyViewModel> replies = new ObservableCollection<FeedReplyViewModel>();
+        readonly ObservableCollection<FeedViewModel> answers = new ObservableCollection<FeedViewModel>();
+        readonly ObservableCollection<UserViewModel> likes = new ObservableCollection<UserViewModel>();
+        readonly ObservableCollection<SourceFeedViewModel> shares = new ObservableCollection<SourceFeedViewModel>();
         int repliesPage, likesPage, sharesPage, answersPage, hotRepliesPage;
         double replyFirstItem, replyLastItem, likeFirstItem, likeLastItem, answerFirstItem, answerLastItem, hotReplyFirstItem, hotReplyLastItem;
         string answerSortType = "reply";
-        string[] comboBoxItems = new string[] { "最近回复", "按时间排序", "按热度排序", "只看楼主" };
+        readonly string[] comboBoxItems = new string[] { "最近回复", "按时间排序", "按热度排序", "只看楼主" };
 
         public event PropertyChangedEventHandler PropertyChanged;
         public FeedDetailPage()
