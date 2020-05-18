@@ -8,7 +8,7 @@ namespace CoolapkUWP.Controls.ViewModels
         public UserViewModel(JToken t) : base(t)
         {
             JObject token = t as JObject;
-            url = token.Value<string>("url");
+            Url = token.Value<string>("url");
             UserName = token.Value<string>("username");
             if (token.TryGetValue("fans", out JToken a))
             {
@@ -22,7 +22,7 @@ namespace CoolapkUWP.Controls.ViewModels
         }
 
         async void GetPic(JObject token) => UserAvatar = await ImageCacheHelper.GetImage(ImageType.SmallAvatar, token.Value<string>("userSmallAvatar"));
-        public string url { get; private set; }
+        public string Url { get; private set; }
         public string UserName { get; private set; }
         public string FollowNum { get; private set; }
         public string FansNum { get; private set; }

@@ -86,7 +86,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         feedArticleTitle.Height = feedArticleTitle.Width * 0.44;
                         Page_SizeChanged(null, null);
                     }
-                    else if (FeedDetail.isCoolPictuers)
+                    else if (FeedDetail.IsCoolPictuers)
                         Page_SizeChanged(null, null);
                     RefreshHotReplies();
                     RefreshFeedReplies();
@@ -94,7 +94,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     TitleBar.ComboBoxSelectedIndex = 0;
                 }
             }
-            if (feedDetail.SourceFeed?.showPicArr ?? false)
+            if (feedDetail.SourceFeed?.ShowPicArr ?? false)
                 FindName("sourcePic");
             UIHelper.HideProgressBar();
         }
@@ -206,7 +206,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     var d = (from a in hotReplies
                              from b in array
-                             where a.id == b.Value<int>("id")
+                             where a.Id == b.Value<int>("id")
                              select a).ToArray();
                     foreach (var item in d)
                         hotReplies.Remove(item);
@@ -265,7 +265,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     var d = (from a in replies
                              from b in array
-                             where a.id == b.Value<int>("id")
+                             where a.Id == b.Value<int>("id")
                              select a).ToArray();
                     foreach (var item in d)
                         replies.Remove(item);
@@ -302,7 +302,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     var d = (from a in answers
                              from b in array
-                             where a.url == b.Value<string>("url")
+                             where a.Url == b.Value<string>("url")
                              select a).ToArray();
                     foreach (var item in d)
                         answers.Remove(item);
@@ -341,7 +341,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         likeLastItem = array.Last.Value<int>("uid");
                     var d = (from a in likes
                              from b in array
-                             where a.url == b.Value<string>("url")
+                             where a.Url == b.Value<string>("url")
                              select a).ToArray();
                     foreach (var item in d)
                         likes.Remove(item);
@@ -371,7 +371,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         shares.Add(new SourceFeedViewModel(item));
                 else for (int i = 0; i < array.Count; i++)
                     {
-                        if (shares.First()?.url == array[i].Value<string>("url")) return;
+                        if (shares.First()?.Url == array[i].Value<string>("url")) return;
                         shares.Insert(i, new SourceFeedViewModel(array[i]));
                     }
             }
@@ -526,13 +526,13 @@ namespace CoolapkUWP.Pages.FeedPages
                 RightSideListView.InvalidateArrange();
                 RefreshAll = false;
             }
-            if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 768 && !((FeedDetail?.IsFeedArticle ?? false) || (FeedDetail?.isCoolPictuers ?? false)))
+            if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 768 && !((FeedDetail?.IsFeedArticle ?? false) || (FeedDetail?.IsCoolPictuers ?? false)))
             {
                 LeftColumnDefinition.Width = new GridLength(384);
                 set();
                 PivotItemPanel.Margin = new Thickness(0, 0, Window.Current.Bounds.Width - 384, 0);
             }
-            else if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 1024 && ((FeedDetail?.IsFeedArticle ?? false) || (FeedDetail?.isCoolPictuers ?? false)))
+            else if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 1024 && ((FeedDetail?.IsFeedArticle ?? false) || (FeedDetail?.IsCoolPictuers ?? false)))
             {
                 LeftColumnDefinition.Width = new GridLength(640);
                 set();

@@ -15,7 +15,7 @@ namespace CoolapkUWP.Controls
         protected override DataTemplate SelectTemplateCore(object item)
         {
             if (item is FeedViewModel f)
-                if (f.isCoolPictuers) return DataTemplate6;
+                if (f.IsCoolPictuers) return DataTemplate6;
                 else return DataTemplate1;
             else if (item is UserViewModel) return DataTemplate3;
             else if (item is TopicViewModel) return DataTemplate4;
@@ -86,7 +86,7 @@ namespace CoolapkUWP.Controls
             {
                 if (f.IsQuestionFeed) return DataTemplate6;
                 else if (f.ShowMessage_title) return DataTemplate5;
-                else if (f.isCoolPictuers) return DataTemplate9;
+                else if (f.IsCoolPictuers) return DataTemplate9;
             }
             else if (item is UserViewModel) return DataTemplate8;
             else switch ((item as IndexPageViewModel).EntityType)
