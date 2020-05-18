@@ -75,7 +75,7 @@ namespace CoolapkUWP.Controls
                 nextLevelExperience = o.Value<int>("next_level_experience");
                 nextLevelPercentage = o.Value<double>("next_level_percentage");
                 levelTodayMessage = o.Value<string>("level_today_message");
-                nextLevelNowExperience = $"{(nextLevelPercentage / 100 * nextLevelExperience).ToString("F0")}/{nextLevelExperience}";
+                nextLevelNowExperience = $"{nextLevelPercentage / 100 * nextLevelExperience:F0}/{nextLevelExperience}";
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(userAvatar)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(userName)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(fansNum)));
