@@ -75,12 +75,12 @@ namespace CoolapkUWP.Pages.FeedPages
                     {
                         var needDeleteItems = (from b in FeedsCollection
                                                from c in array
-                                               where b.entityId == c.Value<string>("entityId").Replace("\"", string.Empty)
+                                               where b.EntityId == c.Value<string>("entityId").Replace("\"", string.Empty)
                                                select b).ToArray();
                         foreach (var item in needDeleteItems)
                             Collection.Remove(item);
                         n = (from b in FeedsCollection
-                             where b.entityFixed
+                             where b.EntityFixed
                              select b).Count();
                     }
                     int k = 0;
@@ -169,7 +169,7 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 ObservableCollection<Entity> feeds = Feeds2[0];
                 var needDeleteItems = (from b in feeds
-                                       where b.entityType == "feed"
+                                       where b.EntityType == "feed"
                                        select b).ToArray();
                 foreach (var item in needDeleteItems)
                     feeds.Remove(item);
@@ -182,7 +182,7 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 ObservableCollection<Entity> feeds = Collection;
                 var needDeleteItems = (from b in feeds
-                                       where b.entityType == "topic"
+                                       where b.EntityType == "topic"
                                        select b).ToArray();
                 foreach (var item in needDeleteItems)
                     feeds.Remove(item);

@@ -89,7 +89,7 @@ namespace CoolapkUWP.Controls
                 else if (f.isCoolPictuers) return DataTemplate9;
             }
             else if (item is UserViewModel) return DataTemplate8;
-            else switch ((item as IndexPageViewModel).entityType)
+            else switch ((item as IndexPageViewModel).EntityType)
                 {
                     case "image_1": return DataTemplate1;
                     case "picCategory":
