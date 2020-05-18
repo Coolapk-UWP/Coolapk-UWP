@@ -26,7 +26,7 @@ namespace CoolapkUWP.Controls
         private void Image_Tapped(object sender, TappedRoutedEventArgs e)
             => UIHelper.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
 
-        private void replyRowsItem_Tapped(object sender, TappedRoutedEventArgs e)
+        private void ReplyRowsItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (sender is FrameworkElement frameworkElement)
             {
@@ -40,7 +40,7 @@ namespace CoolapkUWP.Controls
         {
             void ChangeLikeStatus(ViewModels.ILike f, FrameworkElement button, bool isLike)
             {
-                f.liked = isLike;
+                f.Liked = isLike;
                 if (button.FindName("like1") is SymbolIcon symbolIcon1)
                     symbolIcon1.Visibility = isLike ? Visibility.Visible : Visibility.Collapsed;
                 if (button.FindName("like2") is SymbolIcon symbolIcon2)
@@ -55,18 +55,18 @@ namespace CoolapkUWP.Controls
                     bool isReply = f is ViewModels.FeedReplyViewModel;
                     bool b = false;
                     JObject o;
-                    if (f.liked)
-                        o = (JObject)await DataHelper.GetData(DataType.OperateUnlike, isReply ? "Reply" : string.Empty, f.id);
+                    if (f.Liked)
+                        o = (JObject)await DataHelper.GetData(DataType.OperateUnlike, isReply ? "Reply" : string.Empty, f.Id);
                     else
                     {
-                        o = (JObject)await DataHelper.GetData(DataType.OperateLike, isReply ? "Reply" : string.Empty, f.id);
+                        o = (JObject)await DataHelper.GetData(DataType.OperateLike, isReply ? "Reply" : string.Empty, f.Id);
                         b = true;
                     }
 
                     if (isReply)
-                        f.likenum = o.ToString().Replace("\"", string.Empty);
+                        f.Likenum = o.ToString().Replace("\"", string.Empty);
                     else if (o != null)
-                        f.likenum = o.Value<int>("count").ToString();
+                        f.Likenum = o.Value<int>("count").ToString();
                     ChangeLikeStatus(f, element, b);
                     break;
             }

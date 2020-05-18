@@ -26,7 +26,7 @@ namespace CoolapkUWP.Pages
     }
     interface INotificationViewModel
     {
-        double id { get; }
+        double Id { get; }
         void Initial(JToken o);
     }
     class SimpleNotificationViewModel : INotifyPropertyChanged, INotificationViewModel
@@ -37,13 +37,13 @@ namespace CoolapkUWP.Pages
         public string Dateline { get; private set; }
         public string Uri { get; private set; }
         public string Note { get; private set; }
-        public double id { get; private set; }
+        public double Id { get; private set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void Initial(JToken o)
         {
             JObject token = o as JObject;
-            id = token.Value<int>("id");
+            Id = token.Value<int>("id");
             FromUserName = token.Value<string>("fromusername");
             FromUserUri = token.Value<string>("url");
             Dateline = DataHelper.ConvertTime(token.Value<int>("dateline"));
@@ -80,13 +80,13 @@ namespace CoolapkUWP.Pages
         public string Uri { get; private set; }
         public string FeedMessage { get; private set; }
         public string Title { get; private set; }
-        public double id { get; private set; }
+        public double Id { get; private set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void Initial(JToken o)
         {
             JObject token = o as JObject;
-            id = token.Value<int>("id");
+            Id = token.Value<int>("id");
             LikeUserUri = "/u/" + token.Value<int>("likeUid");
             Dateline = DataHelper.ConvertTime(token.Value<int>("likeTime"));
             LikeUserName = token.Value<string>("likeUsername");
@@ -113,13 +113,13 @@ namespace CoolapkUWP.Pages
         public string Uri { get; private set; }
         public string Message { get; private set; }
         public string FeedMessage { get; private set; }
-        public double id { get; private set; }
+        public double Id { get; private set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void Initial(JToken o)
         {
             JObject token = o as JObject;
-            id = token.Value<int>("id");
+            Id = token.Value<int>("id");
             UserUri = "/u/" + token.Value<int>("uid");
             Dateline = DataHelper.ConvertTime(token.Value<int>("dateline"));
             UserName = token.Value<string>("username");
@@ -159,25 +159,25 @@ namespace CoolapkUWP.Pages
                     break;
                 case NotificationPageType.AtMe:
                     titleBar.Title = ("@我的动态");
-                    MainListView.Padding = SettingsHelper.stackPanelMargin;
+                    MainListView.Padding = SettingsHelper.StackPanelMargin;
                     uri = "atMeList";
                     Load();
                     break;
                 case NotificationPageType.AtCommentMe:
                     titleBar.Title = ("@我的评论");
-                    MainListView.Padding = SettingsHelper.stackPanelMargin;
+                    MainListView.Padding = SettingsHelper.StackPanelMargin;
                     uri = "atCommentMeList";
                     Load<AtCommentMeNotificationViewModel>();
                     break;
                 case NotificationPageType.Like:
                     titleBar.Title = ("我收到的赞");
-                    MainListView.Padding = SettingsHelper.stackPanelMargin;
+                    MainListView.Padding = SettingsHelper.StackPanelMargin;
                     uri = "feedLikeList";
                     Load<LikeNotificationViewModel>();
                     break;
                 case NotificationPageType.Follow:
                     titleBar.Title = ("好友关注");
-                    MainListView.Padding = SettingsHelper.stackPanelMargin;
+                    MainListView.Padding = SettingsHelper.StackPanelMargin;
                     uri = "contactsFollowList";
                     Load<SimpleNotificationViewModel>();
                     break;
@@ -248,7 +248,7 @@ namespace CoolapkUWP.Pages
                 lastItem = array.Last.Value<int>("id");
                 var d = (from a in itemCollection
                          from b in array
-                         where (a as INotificationViewModel).id == b.Value<int>("id")
+                         where (a as INotificationViewModel).Id == b.Value<int>("id")
                          select a).ToArray();
                 foreach (var item in d)
                     itemCollection.Remove(item);

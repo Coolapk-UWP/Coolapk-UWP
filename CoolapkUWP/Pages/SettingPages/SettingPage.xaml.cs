@@ -41,7 +41,7 @@ namespace CoolapkUWP.Pages.SettingPages
                     SettingsHelper.CheckTheme();
                     break;
                 case "IsBackgroundColorFollowSystem":
-                    SettingsHelper.Set("IsDarkMode", SettingsHelper.uISettings.GetColorValue(UIColorType.Background).Equals(Colors.Black));
+                    SettingsHelper.Set("IsDarkMode", SettingsHelper.UISettings.GetColorValue(UIColorType.Background).Equals(Colors.Black));
                     SettingsHelper.CheckTheme();
                     IsDarkMode.IsOn = SettingsHelper.Get<bool>("IsDarkMode");
                     IsDarkMode.Visibility = toggle.IsOn ? Visibility.Collapsed : Visibility.Visible;

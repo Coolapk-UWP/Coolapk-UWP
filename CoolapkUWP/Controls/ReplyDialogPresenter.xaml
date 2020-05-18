@@ -20,7 +20,7 @@
     </UserControl.Resources>
     <Grid cu:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" fcu:Background="{ThemeResource SystemControlAcrylicElementBrush}">
         <controls:PullToRefreshListView x:Name="FeedReplyList" ItemTemplate="{StaticResource feed_reply}" SelectionMode="None" RefreshRequested="FeedReplyList_RefreshRequested"
-                                        Padding="{x:Bind data:SettingsHelper.stackPanelMargin}" PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新">
+                                        Padding="{x:Bind data:SettingsHelper.StackPanelMargin}" PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新">
             <controls:PullToRefreshListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <control:GridPanel DesiredColumnWidth="384"/>

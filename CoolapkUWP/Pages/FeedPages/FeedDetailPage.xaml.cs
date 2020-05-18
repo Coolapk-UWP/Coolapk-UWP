@@ -70,8 +70,8 @@ namespace CoolapkUWP.Pages.FeedPages
             if (detail != null)
             {
                 FeedDetail = new FeedDetailViewModel(detail);
-                TitleBar.Title = FeedDetail.title;
-                if (FeedDetail.isQuestionFeed)
+                TitleBar.Title = FeedDetail.Title;
+                if (FeedDetail.IsQuestionFeed)
                 {
                     if (answersPage != 0 || answerLastItem != 0) return;
                     FindName(nameof(AnswersListView));
@@ -94,7 +94,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     TitleBar.ComboBoxSelectedIndex = 0;
                 }
             }
-            if (feedDetail.sourceFeed?.showPicArr ?? false)
+            if (feedDetail.SourceFeed?.showPicArr ?? false)
                 FindName("sourcePic");
             UIHelper.HideProgressBar();
         }
@@ -123,14 +123,14 @@ namespace CoolapkUWP.Pages.FeedPages
                     TitleBar.ComboBoxVisibility = Visibility.Collapsed;
                     break;
                 case "MakeLike":
-                    if (FeedDetail.liked)
+                    if (FeedDetail.Liked)
                     {
                         JObject o = (JObject)await DataHelper.GetData(DataType.OperateUnlike, string.Empty, feedId);
                         if (o != null)
                         {
-                            FeedDetail.likenum = $"{o.Value<int>("count")}";
+                            FeedDetail.Likenum = $"{o.Value<int>("count")}";
                             (sender as Button).Content = "点赞";
-                            FeedDetail.liked = false;
+                            FeedDetail.Liked = false;
                         }
                     }
                     else
@@ -138,9 +138,9 @@ namespace CoolapkUWP.Pages.FeedPages
                         JObject o = (JObject)await DataHelper.GetData(DataType.OperateLike, string.Empty, feedId);
                         if (o != null)
                         {
-                            FeedDetail.likenum = $"{o.Value<int>("count")}";
+                            FeedDetail.Likenum = $"{o.Value<int>("count")}";
                             (sender as Button).Content = "已点赞";
-                            FeedDetail.liked = true;
+                            FeedDetail.Liked = true;
                         }
                     }
                     break;
@@ -427,7 +427,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void ChangeFeedSortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!FeedDetail.isQuestionFeed && TitleBar.ComboBoxSelectedIndex != -1)
+            if (!FeedDetail.IsQuestionFeed && TitleBar.ComboBoxSelectedIndex != -1)
             {
                 repliesPage = 1;
                 replyFirstItem = replyLastItem = 0;
@@ -495,13 +495,13 @@ namespace CoolapkUWP.Pages.FeedPages
         }
         #region 界面模式切换
         private double _detailListHeight;
-        double detailListHeight
+        double DetailListHeight
         {
             get => _detailListHeight;
             set
             {
                 _detailListHeight = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(detailListHeight)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DetailListHeight)));
             }
         }
         bool RefreshAll;
@@ -511,9 +511,9 @@ namespace CoolapkUWP.Pages.FeedPages
                 feedArticleTitle.Height = feedArticleTitle.Width * 0.44;
             void set()
             {
-                RightSideListView.Padding = SettingsHelper.stackPanelMargin;
+                RightSideListView.Padding = SettingsHelper.StackPanelMargin;
                 detailList.Padding = new Thickness(0, SettingsHelper.PageTitleHeight, 0, PivotItemPanel.ActualHeight + 16);
-                detailListHeight = e?.NewSize.Height ?? Window.Current.Bounds.Height;
+                DetailListHeight = e?.NewSize.Height ?? Window.Current.Bounds.Height;
                 RightColumnDefinition.Width = new GridLength(1, GridUnitType.Star);
                 MainListView.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Disabled);
                 MainListView.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
@@ -526,13 +526,13 @@ namespace CoolapkUWP.Pages.FeedPages
                 RightSideListView.InvalidateArrange();
                 RefreshAll = false;
             }
-            if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 768 && !((FeedDetail?.isFeedArticle ?? false) || (FeedDetail?.isCoolPictuers ?? false)))
+            if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 768 && !((FeedDetail?.IsFeedArticle ?? false) || (FeedDetail?.isCoolPictuers ?? false)))
             {
                 LeftColumnDefinition.Width = new GridLength(384);
                 set();
                 PivotItemPanel.Margin = new Thickness(0, 0, Window.Current.Bounds.Width - 384, 0);
             }
-            else if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 1024 && ((FeedDetail?.isFeedArticle ?? false) || (FeedDetail?.isCoolPictuers ?? false)))
+            else if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 1024 && ((FeedDetail?.IsFeedArticle ?? false) || (FeedDetail?.isCoolPictuers ?? false)))
             {
                 LeftColumnDefinition.Width = new GridLength(640);
                 set();
@@ -541,10 +541,10 @@ namespace CoolapkUWP.Pages.FeedPages
             else
             {
                 MainListView.Margin = new Thickness(0, 0, 0, PivotItemPanel.ActualHeight + 16);
-                MainListView.Padding = SettingsHelper.stackPanelMargin;
+                MainListView.Padding = SettingsHelper.StackPanelMargin;
                 PivotItemPanel.Margin = new Thickness(0);
                 detailList.Padding = RightSideListView.Padding = new Thickness(0, 0, 0, 12);
-                detailListHeight = double.NaN;
+                DetailListHeight = double.NaN;
                 LeftColumnDefinition.Width = new GridLength(1, GridUnitType.Star);
                 RightColumnDefinition.Width = new GridLength(0);
                 MainListView.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Auto);
