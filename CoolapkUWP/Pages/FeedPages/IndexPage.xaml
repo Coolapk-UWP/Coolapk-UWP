@@ -62,7 +62,7 @@
                 <ListViewItem Height="0"/>
             </DataTemplate>
             <DataTemplate x:Key="loginCard">
-                <ListViewItem HorizontalContentAlignment="Center" x:Name="loginCard" Tapped="loginCard_Tapped">
+                <ListViewItem HorizontalContentAlignment="Center" x:Name="loginCard" Tapped="LoginCard_Tapped">
                     <StackPanel Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Orientation="Horizontal">
                         <SymbolIcon Symbol="AddFriend"/>
                         <TextBlock VerticalAlignment="Center" Margin="4,0">登录</TextBlock>

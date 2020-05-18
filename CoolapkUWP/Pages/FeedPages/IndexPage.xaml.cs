@@ -234,15 +234,15 @@ namespace CoolapkUWP.Pages.FeedPages
                     pages.Add(1);
                     Feeds2.Add(ff);
                     urls.Add("/page/dataList?url=" + model.url.Replace("#", "%23") + $"&title={model.title}");
-                    if (j == 0) load(element, i);
+                    if (j == 0) Load(element, i);
                 }
                 return;
             }
         }
 
-        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e) => load(sender as Pivot);
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e) => Load(sender as Pivot);
 
-        void load(Pivot element, PivotItem i = null)
+        void Load(Pivot element, PivotItem i = null)
         {
             PivotItem item = i is null ? element.SelectedItem as PivotItem : i;
             IndexPageViewModel model = item.Tag as IndexPageViewModel;
@@ -254,6 +254,6 @@ namespace CoolapkUWP.Pages.FeedPages
             _ = GetUrlPage(1, u, feeds);
         }
 
-        private void loginCard_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.Navigate(typeof(BrowserPage), new object[] { true, null });
+        private void LoginCard_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.Navigate(typeof(BrowserPage), new object[] { true, null });
     }
 }

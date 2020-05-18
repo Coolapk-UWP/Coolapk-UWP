@@ -7,7 +7,7 @@
     xmlns:xp="using:XP">
 
     <DataTemplate x:Key="Topic" x:DataType="models:TopicViewModel">
-        <ListViewItem Tag="{x:Bind url}" HorizontalContentAlignment="Stretch" Tapped="OnTapped">
+        <ListViewItem Tag="{x:Bind Url}" HorizontalContentAlignment="Stretch" Tapped="OnTapped">
             <xp:Shadow Z_Depth="2">
                 <Grid Padding="8" Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
                     <Grid.ColumnDefinitions>
@@ -20,14 +20,14 @@
                     </Grid.RowDefinitions>
                     <Ellipse Width="40" Height="40" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Ellipse.Fill>
-                            <ImageBrush ImageSource="{x:Bind logo,Mode=OneWay}"/>
+                            <ImageBrush ImageSource="{x:Bind Logo,Mode=OneWay}"/>
                         </Ellipse.Fill>
                     </Ellipse>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind title}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind Title}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind follownum}" Foreground="Gray"/>
+                        <TextBlock Text="{x:Bind Follownum}" Foreground="Gray"/>
                         <TextBlock Text="关注" Foreground="Gray" Margin="0,0,5,0"/>
-                        <TextBlock Text="{x:Bind commentnum}" Foreground="Gray"/>
+                        <TextBlock Text="{x:Bind Commentnum}" Foreground="Gray"/>
                         <TextBlock Text="讨论" Foreground="Gray" Margin="0,0,5,0"/>
                     </StackPanel>
                 </Grid>
@@ -36,7 +36,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="DYH" x:DataType="models:DyhViewModel">
-        <ListViewItem Tag="{x:Bind url}" Tapped="OnTapped" HorizontalContentAlignment="Stretch">
+        <ListViewItem Tag="{x:Bind Url}" Tapped="OnTapped" HorizontalContentAlignment="Stretch">
             <xp:Shadow Z_Depth="2">
                 <Grid Padding="8" Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
                     <Grid.ColumnDefinitions>
@@ -49,12 +49,12 @@
                     </Grid.RowDefinitions>
                     <Ellipse Width="40" Height="40" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Ellipse.Fill>
-                            <ImageBrush ImageSource="{x:Bind logo,Mode=OneWay}"/>
+                            <ImageBrush ImageSource="{x:Bind Logo,Mode=OneWay}"/>
                         </Ellipse.Fill>
                     </Ellipse>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind title}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind Title}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind follownum}" Foreground="Gray"/>
+                        <TextBlock Text="{x:Bind Follownum}" Foreground="Gray"/>
                         <TextBlock Text="订阅" Foreground="Gray" Margin="0,0,5,0"/>
                     </StackPanel>
                 </Grid>
