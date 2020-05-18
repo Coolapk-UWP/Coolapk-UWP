@@ -126,15 +126,15 @@ namespace CoolapkUWP.Pages
             UIHelper.notifications.BadgeNumberChanged += (sender, e) => { if (sender is NotificationsNum num) ChangeBadgeNum(num.BadgeNum); };
             ChangeBadgeNum(UIHelper.notifications.BadgeNum);
 
-            JArray array = (JArray)await DataHelper.GetData( DataType.GetIndexPageNames);
+            JArray array = (JArray)await DataHelper.GetData(DataType.GetIndexPageNames);
             if (array != null && array.Count > 0)
             {
                 string[] excludedTabs = new[] { "酷品", "看看号", "直播", "视频", "头条" };
                 var tempTabList = (from a in array
-                              where a.Value<string>("entityTemplate") == "configCard"
-                              from b in a["entities"] as JArray
-                              where !excludedTabs.Contains(b.Value<string>("title"))
-                              select b).ToArray();
+                                   where a.Value<string>("entityTemplate") == "configCard"
+                                   from b in a["entities"] as JArray
+                                   where !excludedTabs.Contains(b.Value<string>("title"))
+                                   select b).ToArray();
                 var FollowList = from a in array
                                  where a.Value<string>("entityTemplate") == "configCard"
                                  from b in a["entities"] as JArray
