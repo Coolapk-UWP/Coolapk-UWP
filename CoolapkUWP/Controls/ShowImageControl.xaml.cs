@@ -140,7 +140,7 @@ namespace CoolapkUWP.Controls
                     StorageFile file = await fileSavePicker.PickSaveFileAsync();
                     if (file != null)
                     {
-                        HttpClient httpClient = new HttpClient();
+                        _ = new HttpClient();
                         using (Stream fs = await file.OpenStreamForWriteAsync())
                         using (Stream s = (await (await (await ApplicationData.Current.LocalCacheFolder.GetFolderAsync(datas[SFlipView.SelectedIndex].Type.ToString())).GetFileAsync(DataHelper.GetMD5(u))).OpenReadAsync()).AsStreamForRead())
                             await s.CopyToAsync(fs);
