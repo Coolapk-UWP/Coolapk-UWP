@@ -122,6 +122,6 @@ namespace CoolapkUWP.Controls.ViewModels
             }
         }
 
-        public string Id => entityId;
+        public string Id => EntityId;
     }
 }

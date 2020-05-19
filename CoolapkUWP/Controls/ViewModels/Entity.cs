@@ -8,13 +8,13 @@ namespace CoolapkUWP.Controls.ViewModels
         public Entity(JToken t)
         {
             JObject token = t as JObject;
-            if (token.TryGetValue("entityId", out JToken value1)) entityId = value1.ToString().Replace("\"", string.Empty);
-            if (token.TryGetValue("entityType", out JToken value2)) entityType = value2.ToString();
-            if (token.TryGetValue("entityFixed", out JToken value) && int.Parse(value.ToString()) == 1) entityFixed = true;
+            if (token.TryGetValue("entityId", out JToken value1)) EntityId = value1.ToString().Replace("\"", string.Empty);
+            if (token.TryGetValue("entityType", out JToken value2)) EntityType = value2.ToString();
+            if (token.TryGetValue("entityFixed", out JToken value) && int.Parse(value.ToString()) == 1) EntityFixed = true;
         }
-        public string entityId { get; private set; }
-        public bool entityFixed { get; private set; }
-        public string entityType { get; private set; }
+        public string EntityId { get; private set; }
+        public bool EntityFixed { get; private set; }
+        public string EntityType { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

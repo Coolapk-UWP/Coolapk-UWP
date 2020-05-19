@@ -38,12 +38,12 @@
             </DataTemplate>
             <DataTemplate x:Key="Card" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem Margin="8" Padding="4" HorizontalContentAlignment="Stretch" Style="{StaticResource NoAnimationListViewItem}">
-                    <ListView SelectionMode="None" ScrollViewer.VerticalScrollMode="Disabled" ItemTemplateSelector="{StaticResource STemplateSelector}" ItemsSource="{x:Bind self}">
+                    <ListView SelectionMode="None" ScrollViewer.VerticalScrollMode="Disabled" ItemTemplateSelector="{StaticResource STemplateSelector}" ItemsSource="{x:Bind Self}">
                         <ListView.Header>
                             <ListViewItem Tapped="Grid_Tapped" Tag="{x:Bind}" Template="{StaticResource ListViewItemTemplate1}" HorizontalContentAlignment="Stretch">
                                 <Grid Padding="8,0">
-                                    <TextBlock Text="{x:Bind title}" FontSize="18" VerticalAlignment="Center" x:Name="titleText" x:Load="{x:Bind hasTitle}"/>
-                                    <SymbolIcon HorizontalAlignment="Right" x:Name="forwardSymbol" x:Load="{x:Bind hasUrl}" Symbol="Forward"/>
+                                    <TextBlock Text="{x:Bind Title}" FontSize="18" VerticalAlignment="Center" x:Name="titleText" x:Load="{x:Bind HasTitle}"/>
+                                    <SymbolIcon HorizontalAlignment="Right" x:Name="forwardSymbol" x:Load="{x:Bind HasUrl}" Symbol="Forward"/>
                                 </Grid>
                             </ListViewItem>
                         </ListView.Header>
@@ -72,11 +72,11 @@
             <DataTemplate x:Key="selectorLinkCard" x:DataType="viewmodel:IndexPageViewModel">
                 <StackPanel>
                     <ListViewItem HorizontalContentAlignment="Stretch">
-                        <ListView ScrollViewer.VerticalScrollMode="Disabled" ItemsSource="{x:Bind entities}" SelectedIndex="0" SelectionMode="Single" x:Name="tabListv" Style="{StaticResource ListViewStyle1}">
+                        <ListView ScrollViewer.VerticalScrollMode="Disabled" ItemsSource="{x:Bind Entities}" SelectedIndex="0" SelectionMode="Single" x:Name="tabListv" Style="{StaticResource ListViewStyle1}">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="viewmodel:IndexPageViewModel">
                                     <ListViewItem Style="{StaticResource NoPaddingListViewItem}" HorizontalContentAlignment="Center" Tapped="ListViewItem_Tapped_1">
-                                        <TextBlock Text="{x:Bind title}"/>
+                                        <TextBlock Text="{x:Bind Title}"/>
                                     </ListViewItem>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -88,10 +88,10 @@
                 <xp:Shadow Z_Depth="2">
                     <StackPanel>
                         <ListViewItem Style="{StaticResource NoAnimationListViewItem}" HorizontalContentAlignment="Stretch">
-                            <ListView Style="{StaticResource ListViewStyle1}" ScrollViewer.VerticalScrollMode="Disabled" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" MaxHeight="200" ItemsSource="{x:Bind entities}">
+                            <ListView Style="{StaticResource ListViewStyle1}" ScrollViewer.VerticalScrollMode="Disabled" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" MaxHeight="200" ItemsSource="{x:Bind Entities}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="viewmodel:IndexPageViewModel">
-                                        <Image MaxHeight="180" Tapped="Grid_Tapped" Tag="{x:Bind}" Source="{x:Bind pic,Mode=OneWay}"/>
+                                        <Image MaxHeight="180" Tapped="Grid_Tapped" Tag="{x:Bind}" Source="{x:Bind Pic,Mode=OneWay}"/>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
@@ -102,7 +102,7 @@
             <DataTemplate x:Key="textLinkListCard" x:DataType="viewmodel:IndexPageViewModel">
                 <StackPanel>
                     <ListViewItem Style="{StaticResource NoAnimationListViewItem}" HorizontalContentAlignment="Stretch">
-                        <ListView ScrollViewer.VerticalScrollMode="Disabled" Style="{StaticResource ListViewStyle}" ItemsSource="{x:Bind entities}" ItemTemplateSelector="{StaticResource ThTemplateSelector}">
+                        <ListView ScrollViewer.VerticalScrollMode="Disabled" Style="{StaticResource ListViewStyle}" ItemsSource="{x:Bind Entities}" ItemTemplateSelector="{StaticResource ThTemplateSelector}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -110,8 +110,8 @@
                             </ListView.ItemContainerStyle>
                         </ListView>
                     </ListViewItem>
-                    <Button Tag="{x:Bind}" Tapped="Grid_Tapped" HorizontalAlignment="Stretch" x:Name="des" x:Load="{x:Bind hasDescription}" HorizontalContentAlignment="Left" Background="{x:Null}" Style="{StaticResource ButtonStyle1}" >
-                        <TextBlock FontSize="18" Text="{x:Bind description}" Margin="16,0"/>
+                    <Button Tag="{x:Bind}" Tapped="Grid_Tapped" HorizontalAlignment="Stretch" x:Name="des" x:Load="{x:Bind HasDescription}" HorizontalContentAlignment="Left" Background="{x:Null}" Style="{StaticResource ButtonStyle1}" >
+                        <TextBlock FontSize="18" Text="{x:Bind Description}" Margin="16,0"/>
                     </Button>
                 </StackPanel>
             </DataTemplate>
@@ -126,7 +126,7 @@
             <DataTemplate x:Key="iconLinkGridCard" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem HorizontalAlignment="Center">
                     <ListView ScrollViewer.VerticalScrollMode="Disabled" SelectionMode="None"
-                              ItemTemplateSelector="{StaticResource ThTemplateSelector}" ItemsSource="{x:Bind entities}">
+                              ItemTemplateSelector="{StaticResource ThTemplateSelector}" ItemsSource="{x:Bind Entities}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <control:GridPanel DesiredColumnWidth="88" CubeInSameHeight="False"/>
@@ -137,21 +137,21 @@
             </DataTemplate>
             <DataTemplate x:Key="imageTextScrollCard" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem Style="{StaticResource NoAnimationListViewItem}">
-                    <ListView ScrollViewer.VerticalScrollMode="Disabled" Style="{StaticResource ListViewStyle1}" ItemTemplateSelector="{StaticResource ThTemplateSelector}" ItemsSource="{x:Bind entities}"/>
+                    <ListView ScrollViewer.VerticalScrollMode="Disabled" Style="{StaticResource ListViewStyle1}" ItemTemplateSelector="{StaticResource ThTemplateSelector}" ItemsSource="{x:Bind Entities}"/>
                 </ListViewItem>
             </DataTemplate>
             <DataTemplate x:Key="messageCard" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem Style="{StaticResource NoAnimationListViewItem}" Margin="24,8">
                     <xp:Shadow Z_Depth="4">
                         <Border Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
-                            <TextBlock Margin="4" TextWrapping="Wrap" Text="{x:Bind description}"/>
+                            <TextBlock Margin="4" TextWrapping="Wrap" Text="{x:Bind Description}"/>
                         </Border>
                     </xp:Shadow>
                 </ListViewItem>
             </DataTemplate>
             <DataTemplate x:Key="iconTabLinkGridCard" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem Style="{StaticResource NoAnimationListViewItem}">
-                    <Pivot Tag="{x:Bind entities}" SelectionChanged="Pivot_SelectionChanged" Loaded="Pivot_Loaded">
+                    <Pivot Tag="{x:Bind Entities}" SelectionChanged="Pivot_SelectionChanged" Loaded="Pivot_Loaded">
                         <Pivot.ItemContainerStyle>
                             <Style TargetType="PivotItem">
                                 <Setter Property="Margin" Value="0"/>
@@ -163,7 +163,7 @@
             <DataTemplate x:Key="feedCoolPictureGridCard" x:DataType="viewmodel:IndexPageViewModel">
                 <StackPanel>
                     <ListViewItem Style="{StaticResource NoAnimationListViewItem}" HorizontalContentAlignment="Stretch">
-                        <ListView ScrollViewer.VerticalScrollMode="Disabled" Style="{StaticResource ListViewStyle}" ItemsSource="{x:Bind entities}" ItemTemplateSelector="{StaticResource ThTemplateSelector}">
+                        <ListView ScrollViewer.VerticalScrollMode="Disabled" Style="{StaticResource ListViewStyle}" ItemsSource="{x:Bind Entities}" ItemTemplateSelector="{StaticResource ThTemplateSelector}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -182,7 +182,7 @@
 
             <!--region 三级-->
             <DataTemplate x:Key="user2" x:DataType="viewmodel:UserViewModel">
-                <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Margin="0,4,0,12" MaxWidth="48" Template="{StaticResource ListViewItemTemplate1}" Tapped="Grid_Tapped" Tag="{x:Bind url}" >
+                <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Margin="0,4,0,12" MaxWidth="48" Template="{StaticResource ListViewItemTemplate1}" Tapped="Grid_Tapped" Tag="{x:Bind Url}" >
                     <xp:Shadow Z_Depth="2">
                         <StackPanel Background="{ThemeResource SystemControlBackgroundAltHighBrush}" VerticalAlignment="Top" Padding="4">
                             <Ellipse HorizontalAlignment="Center" Width="36" Height="36">
@@ -199,23 +199,23 @@
                 <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind}" Tapped="Grid_Tapped" HorizontalContentAlignment="Stretch">
                     <xp:Shadow Z_Depth="1">
                         <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10" Orientation="Horizontal">
-                            <Image Height="20" Width="20"  Source="{x:Bind pic,Mode=OneWay}"/>
-                            <TextBlock Text="{x:Bind title}" TextWrapping="Wrap" Margin="8,0"/>
+                            <Image Height="20" Width="20"  Source="{x:Bind Pic,Mode=OneWay}"/>
+                            <TextBlock Text="{x:Bind Title}" TextWrapping="Wrap" Margin="8,0"/>
                         </StackPanel>
                     </xp:Shadow>
                 </ListViewItem>
             </DataTemplate>
             <DataTemplate x:Key="image_1" x:DataType="viewmodel:IndexPageViewModel">
                 <xp:Shadow Z_Depth="2">
-                    <Image Tapped="Grid_Tapped" Source="{x:Bind pic,Mode=OneWay}" MaxHeight="150" Tag="{x:Bind}"/>
+                    <Image Tapped="Grid_Tapped" Source="{x:Bind Pic,Mode=OneWay}" MaxHeight="150" Tag="{x:Bind}"/>
                 </xp:Shadow>
             </DataTemplate>
             <DataTemplate x:Key="iconLink" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Margin="0,4" Template="{StaticResource ListViewItemTemplate1}" Tapped="Grid_Tapped" Tag="{x:Bind}">
                     <xp:Shadow Z_Depth="2">
                         <StackPanel MaxWidth="40" Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Padding="4">
-                            <Image Source="{x:Bind pic,Mode=OneWay}" Height="28" Width="28"/>
-                            <TextBlock HorizontalAlignment="Center" Text="{x:Bind title}" TextWrapping="Wrap"/>
+                            <Image Source="{x:Bind Pic,Mode=OneWay}" Height="28" Width="28"/>
+                            <TextBlock HorizontalAlignment="Center" Text="{x:Bind Title}" TextWrapping="Wrap"/>
                         </StackPanel>
                     </xp:Shadow>
                 </ListViewItem>
@@ -223,20 +223,20 @@
             <DataTemplate x:Key="dyh" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem Style="{StaticResource NoPaddingListViewItem}" VerticalContentAlignment="Top" Template="{StaticResource ListViewItemTemplate1}">
                     <xp:Shadow Z_Depth="2">
-                        <StackPanel Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Tag="{x:Bind url}" Tapped="Grid_Tapped" Padding="4">
-                            <Image Source="{x:Bind pic,Mode=OneWay}" Height="24" Width="24" Margin="4"/>
-                            <TextBlock HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Text="{x:Bind title}"/>
+                        <StackPanel Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Tag="{x:Bind Url}" Tapped="Grid_Tapped" Padding="4">
+                            <Image Source="{x:Bind Pic,Mode=OneWay}" Height="24" Width="24" Margin="4"/>
+                            <TextBlock HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Text="{x:Bind Title}"/>
                         </StackPanel>
                     </xp:Shadow>
                 </ListViewItem>
             </DataTemplate>
             <DataTemplate x:Key="feedArticle2" x:DataType="viewmodel:FeedViewModel">
-                <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind url}" Tapped="FeedListViewItem_Tapped">
+                <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind Url}" Tapped="FeedListViewItem_Tapped">
                     <xp:Shadow Z_Depth="3">
                         <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Margin="4,0" Height="118" Width="260">
-                            <Image Source="{x:Bind pic,Mode=OneWay}"  Stretch="Uniform"/>
+                            <Image Source="{x:Bind Pic,Mode=OneWay}"  Stretch="Uniform"/>
                             <Grid VerticalAlignment="Bottom" Background="#70000000">
-                                <TextBlock Foreground="White" Margin="3,3,3,8" Text="{x:Bind message_title}" TextWrapping="Wrap" FontWeight="Black" FontSize="18"/>
+                                <TextBlock Foreground="White" Margin="3,3,3,8" Text="{x:Bind Message_title}" TextWrapping="Wrap" FontWeight="Black" FontSize="18"/>
                             </Grid>
                         </Grid>
                     </xp:Shadow>
@@ -250,7 +250,7 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Button Tapped="Grid_Tapped" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonStyle1}" Tag="{x:Bind uurl}" Background="{x:Null}">
+                            <Button Tapped="Grid_Tapped" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonStyle1}" Tag="{x:Bind Uurl}" Background="{x:Null}">
                                 <StackPanel Orientation="Horizontal">
                                     <Ellipse Width="32" Height="32" HorizontalAlignment="Left" >
                                         <Ellipse.Fill>
@@ -258,18 +258,18 @@
                                         </Ellipse.Fill>
                                     </Ellipse>
                                     <StackPanel Margin="8,0">
-                                        <TextBlock Text="{x:Bind username}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                        <TextBlock Text="{x:Bind Username}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{x:Bind dateline}" Foreground="Gray"/>
+                                            <TextBlock Text="{x:Bind Dateline}" Foreground="Gray"/>
                                             <TextBlock Text="{x:Bind Info}" Foreground="Gray" Margin="3,0,0,0"/>
                                         </StackPanel>
                                         <TextBlock Text="{x:Bind Device_title}" Foreground="Gray"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Button>
-                            <StackPanel Grid.Row="1" Tag="{x:Bind url}" Tapped="FeedListViewItem_Tapped">
-                                <TextBlock TextWrapping="Wrap" FontWeight="Black" FontSize="16" Margin="0,4" Text="{x:Bind message_title}"/>
-                                <control:MTextBlock MessageText="{x:Bind message}"/>
+                            <StackPanel Grid.Row="1" Tag="{x:Bind Url}" Tapped="FeedListViewItem_Tapped">
+                                <TextBlock TextWrapping="Wrap" FontWeight="Black" FontSize="16" Margin="0,4" Text="{x:Bind Message_title}"/>
+                                <control:MTextBlock MessageText="{x:Bind Message}"/>
                             </StackPanel>
                         </Grid>
                     </xp:Shadow>
@@ -279,20 +279,20 @@
                 <ListViewItem Style="{StaticResource NoPaddingListViewItem}" Template="{StaticResource ListViewItemTemplate1}">
                     <xp:Shadow Z_Depth="3">
                         <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
-                            <Image Tag="{x:Bind url}" Tapped="Grid_Tapped" VerticalAlignment="Top" Source="{x:Bind pic,Mode=OneWay}" Stretch="Uniform"/>
-                            <Border Tag="{x:Bind url}" Tapped="Grid_Tapped" x:Name="picsIcon" x:Load="{x:Bind isMoreThanOnePic,Mode=OneWay}" Background="#70000000" VerticalAlignment="Top" HorizontalAlignment="Right" Padding="8">
+                            <Image Tag="{x:Bind Url}" Tapped="Grid_Tapped" VerticalAlignment="Top" Source="{x:Bind Pic,Mode=OneWay}" Stretch="Uniform"/>
+                            <Border Tag="{x:Bind Url}" Tapped="Grid_Tapped" x:Name="picsIcon" x:Load="{x:Bind IsMoreThanOnePic,Mode=OneWay}" Background="#70000000" VerticalAlignment="Top" HorizontalAlignment="Right" Padding="8">
                                 <SymbolIcon Symbol="Pictures" Foreground="White"/>
                             </Border>
                             <StackPanel VerticalAlignment="Bottom" Background="#70000000" Padding="0,4" Margin="0,32,0,0">
-                                <control:MTextBlock Tag="{x:Bind url}" Tapped="Grid_Tapped" Foreground="White" Margin="8" MessageText="{x:Bind message}"/>
-                                <Button Tapped="Grid_Tapped" VerticalAlignment="Top" Style="{StaticResource ButtonStyle1}" Tag="{x:Bind uurl}" Background="{x:Null}">
+                                <control:MTextBlock Tag="{x:Bind Url}" Tapped="Grid_Tapped" Foreground="White" Margin="8" MessageText="{x:Bind Message}"/>
+                                <Button Tapped="Grid_Tapped" VerticalAlignment="Top" Style="{StaticResource ButtonStyle1}" Tag="{x:Bind Uurl}" Background="{x:Null}">
                                     <StackPanel Orientation="Horizontal">
                                         <Ellipse Width="24" Height="24" HorizontalAlignment="Left" >
                                             <Ellipse.Fill>
                                                 <ImageBrush ImageSource="{x:Bind UserSmallAvatar,Mode=OneWay}"/>
                                             </Ellipse.Fill>
                                         </Ellipse>
-                                        <TextBlock Margin="8,0" Text="{x:Bind username}" Foreground="White" VerticalAlignment="Center"/>
+                                        <TextBlock Margin="8,0" Text="{x:Bind Username}" Foreground="White" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
                             </StackPanel>

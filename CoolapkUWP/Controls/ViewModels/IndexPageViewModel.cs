@@ -13,29 +13,29 @@ namespace CoolapkUWP.Controls.ViewModels
         {
             JObject token = t as JObject;
             if (token.TryGetValue("entityTemplate", out JToken v1))
-                entityTemplate = v1.ToString();
+                EntityTemplate = v1.ToString();
             if (token.TryGetValue("title", out JToken v2))
             {
-                hasTitle = !string.IsNullOrEmpty(v2.ToString());
-                if (hasTitle)
-                    title = v2.ToString();
+                HasTitle = !string.IsNullOrEmpty(v2.ToString());
+                if (HasTitle)
+                    Title = v2.ToString();
             }
             if (token.TryGetValue("url", out JToken v3))
             {
-                hasUrl = !string.IsNullOrEmpty(v3.ToString());
-                if (hasUrl)
-                    url = v3.ToString();
+                HasUrl = !string.IsNullOrEmpty(v3.ToString());
+                if (HasUrl)
+                    Url = v3.ToString();
             }
             if (token.TryGetValue("description", out JToken v4))
             {
-                hasDescription = !string.IsNullOrEmpty(v4.ToString());
-                if (hasDescription)
-                    description = v4.ToString();
+                HasDescription = !string.IsNullOrEmpty(v4.ToString());
+                if (HasDescription)
+                    Description = v4.ToString();
             }
             if (token.TryGetValue("entities", out JToken v7))
             {
-                hasEntities = (v7 as JArray).Count > 0;
-                if (hasEntities)
+                HasEntities = (v7 as JArray).Count > 0;
+                if (HasEntities)
                 {
                     List<Entity> models = new List<Entity>();
                     foreach (var item in v7 as JArray)
@@ -48,7 +48,7 @@ namespace CoolapkUWP.Controls.ViewModels
                         else
                             models.Add(new IndexPageViewModel(item));
                     }
-                    entities = models.ToArray();
+                    Entities = models.ToArray();
                 }
             }
             GetPic(token);
@@ -58,37 +58,37 @@ namespace CoolapkUWP.Controls.ViewModels
         {
             if (token.TryGetValue("pic", out JToken v5))
             {
-                hasPic = !string.IsNullOrEmpty(v5.ToString());
-                if (hasPic)
-                    pic = await ImageCacheHelper.GetImage(ImageType.Icon, v5.ToString());
+                HasPic = !string.IsNullOrEmpty(v5.ToString());
+                if (HasPic)
+                    Pic = await ImageCacheHelper.GetImage(ImageType.Icon, v5.ToString());
             }
             else if (token.TryGetValue("logo", out JToken v6))
             {
-                hasPic = !string.IsNullOrEmpty(v6.ToString());
-                if (hasPic)
-                    pic = await ImageCacheHelper.GetImage(ImageType.Icon, v6.ToString());
+                HasPic = !string.IsNullOrEmpty(v6.ToString());
+                if (HasPic)
+                    Pic = await ImageCacheHelper.GetImage(ImageType.Icon, v6.ToString());
             }
         }
 
-        public string entityTemplate { get; private set; }
-        public bool hasTitle { get; private set; }
-        public string title { get; private set; }
-        public bool hasUrl { get; private set; }
-        public string url { get; private set; }
-        public bool hasDescription { get; private set; }
-        public string description { get; private set; }
-        public bool hasPic { get; private set; }
-        public ImageSource pic
+        public string EntityTemplate { get; private set; }
+        public bool HasTitle { get; private set; }
+        public string Title { get; private set; }
+        public bool HasUrl { get; private set; }
+        public string Url { get; private set; }
+        public bool HasDescription { get; private set; }
+        public string Description { get; private set; }
+        public bool HasPic { get; private set; }
+        public ImageSource Pic
         {
             get => pic1;
             private set
             {
                 pic1 = value;
-                Changed(this, nameof(pic));
+                Changed(this, nameof(Pic));
             }
         }
-        public bool hasEntities { get; private set; }
-        public Entity[] entities { get; private set; }
-        public IndexPageViewModel[] self { get => new IndexPageViewModel[] { this }; }
+        public bool HasEntities { get; private set; }
+        public Entity[] Entities { get; private set; }
+        public IndexPageViewModel[] Self { get => new IndexPageViewModel[] { this }; }
     }
 }

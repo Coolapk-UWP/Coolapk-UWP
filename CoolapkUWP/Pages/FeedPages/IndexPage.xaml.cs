@@ -75,12 +75,12 @@ namespace CoolapkUWP.Pages.FeedPages
                     {
                         var needDeleteItems = (from b in FeedsCollection
                                                from c in array
-                                               where b.entityId == c.Value<string>("entityId").Replace("\"", string.Empty)
+                                               where b.EntityId == c.Value<string>("entityId").Replace("\"", string.Empty)
                                                select b).ToArray();
                         foreach (var item in needDeleteItems)
                             Collection.Remove(item);
                         n = (from b in FeedsCollection
-                             where b.entityFixed
+                             where b.EntityFixed
                              select b).Count();
                     }
                     int k = 0;
@@ -149,15 +149,15 @@ namespace CoolapkUWP.Pages.FeedPages
             if (element.Tag is string s) UIHelper.OpenLink(s);
             else if (element.Tag is IndexPageViewModel m)
             {
-                if (string.IsNullOrEmpty(m.url)) return;
-                string str = m.url;
+                if (string.IsNullOrEmpty(m.Url)) return;
+                string str = m.Url;
                 if (str.IndexOf("/page") == 0)
                 {
                     str = str.Replace("/page", "/page/dataList");
-                    str += $"&title={m.title}";
+                    str += $"&title={m.Title}";
                     UIHelper.Navigate(typeof(IndexPage), new object[] { str, false });
                 }
-                else if (str.IndexOf('#') == 0) UIHelper.Navigate(typeof(IndexPage), new object[] { $"{str}&title={m.title}", false });
+                else if (str.IndexOf('#') == 0) UIHelper.Navigate(typeof(IndexPage), new object[] { $"{str}&title={m.Title}", false });
                 else UIHelper.OpenLink(str);
             }
         }
@@ -169,11 +169,11 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 ObservableCollection<Entity> feeds = Feeds2[0];
                 var needDeleteItems = (from b in feeds
-                                       where b.entityType == "feed"
+                                       where b.EntityType == "feed"
                                        select b).ToArray();
                 foreach (var item in needDeleteItems)
                     feeds.Remove(item);
-                urls[0] = $"/page/dataList?url={model.url}&title={model.title}";
+                urls[0] = $"/page/dataList?url={model.Url}&title={model.Title}";
                 urls[0] = urls[0].Replace("#", "%23");
                 pages[0] = 0;
 
@@ -182,11 +182,11 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 ObservableCollection<Entity> feeds = Collection;
                 var needDeleteItems = (from b in feeds
-                                       where b.entityType == "topic"
+                                       where b.EntityType == "topic"
                                        select b).ToArray();
                 foreach (var item in needDeleteItems)
                     feeds.Remove(item);
-                pageUrl = $"/page/dataList?url={model.url}&title={model.title}";
+                pageUrl = $"/page/dataList?url={model.Url}&title={model.Title}";
                 pageUrl = pageUrl.Replace("#", "%23");
                 page = 0;
             }
@@ -228,12 +228,12 @@ namespace CoolapkUWP.Pages.FeedPages
                     {
                         Tag = f[j],
                         Content = l,
-                        Header = model.title
+                        Header = model.Title
                     };
                     element.Items.Add(i);
                     pages.Add(1);
                     Feeds2.Add(ff);
-                    urls.Add("/page/dataList?url=" + model.url.Replace("#", "%23") + $"&title={model.title}");
+                    urls.Add("/page/dataList?url=" + model.Url.Replace("#", "%23") + $"&title={model.Title}");
                     if (j == 0) Load(element, i);
                 }
                 return;
@@ -248,9 +248,9 @@ namespace CoolapkUWP.Pages.FeedPages
             IndexPageViewModel model = item.Tag as IndexPageViewModel;
             ListView view = item.Content as ListView;
             ObservableCollection<Entity> feeds = view.ItemsSource as ObservableCollection<Entity>;
-            string u = model.url;
+            string u = model.Url;
             u = u.Replace("#", "%23");
-            u = "/page/dataList?url=" + u + $"&title={model.title}";
+            u = "/page/dataList?url=" + u + $"&title={model.Title}";
             _ = GetUrlPage(1, u, feeds);
         }
 

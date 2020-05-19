@@ -33,11 +33,11 @@ namespace CoolapkUWP.Controls.ViewModels
 
         private async void GetPic()
         {
-            if (showPic)
+            if (ShowPic)
                 Pic = new ImageData
                 {
-                    Pic = await ImageCacheHelper.GetImage(ImageType.SmallImage, picUrl),
-                    url = picUrl
+                    Pic = await ImageCacheHelper.GetImage(ImageType.SmallImage, PicUrl),
+                    url = PicUrl
                 };
             if (!string.IsNullOrEmpty(userSmallAvatarUrl))
                 UserSmallAvatar = await ImageCacheHelper.GetImage(ImageType.SmallAvatar, userSmallAvatarUrl);
@@ -88,6 +88,6 @@ namespace CoolapkUWP.Controls.ViewModels
         public bool Liked { get; set; }
         public bool Liked2 { get => !Liked; }
 
-        string ILike.Id => id.ToString();
+        string ILike.Id => Id.ToString();
     }
 }

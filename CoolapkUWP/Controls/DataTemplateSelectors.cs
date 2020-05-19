@@ -15,7 +15,7 @@ namespace CoolapkUWP.Controls
         protected override DataTemplate SelectTemplateCore(object item)
         {
             if (item is FeedViewModel f)
-                if (f.isCoolPictuers) return DataTemplate6;
+                if (f.IsCoolPictuers) return DataTemplate6;
                 else return DataTemplate1;
             else if (item is UserViewModel) return DataTemplate3;
             else if (item is TopicViewModel) return DataTemplate4;
@@ -40,7 +40,7 @@ namespace CoolapkUWP.Controls
         public DataTemplate DataTemplate12 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            switch ((item as IndexPageViewModel).entityTemplate)
+            switch ((item as IndexPageViewModel).EntityTemplate)
             {
                 case "imageTextGridCard":
                 case "imageCarouselCard_1":
@@ -86,10 +86,10 @@ namespace CoolapkUWP.Controls
             {
                 if (f.IsQuestionFeed) return DataTemplate6;
                 else if (f.ShowMessage_title) return DataTemplate5;
-                else if (f.isCoolPictuers) return DataTemplate9;
+                else if (f.IsCoolPictuers) return DataTemplate9;
             }
             else if (item is UserViewModel) return DataTemplate8;
-            else switch ((item as IndexPageViewModel).entityType)
+            else switch ((item as IndexPageViewModel).EntityType)
                 {
                     case "image_1": return DataTemplate1;
                     case "picCategory":

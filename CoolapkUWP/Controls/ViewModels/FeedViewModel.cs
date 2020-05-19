@@ -20,7 +20,7 @@ namespace CoolapkUWP.Controls.ViewModels
         public FeedViewModel(JToken t, FeedDisplayMode mode = FeedDisplayMode.normal) : base(t)
         {
             JObject token = t as JObject;
-            if (!string.IsNullOrEmpty(message_title) && !mode.HasFlag(FeedDisplayMode.notShowMessageTitle)) ShowMessage_title = true;
+            if (!string.IsNullOrEmpty(Message_title) && !mode.HasFlag(FeedDisplayMode.notShowMessageTitle)) ShowMessage_title = true;
             if (mode.HasFlag(FeedDisplayMode.isFirstPageFeed))
             {
                 Info = token.Value<string>("infoHtml").Replace("&nbsp;", string.Empty);

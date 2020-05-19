@@ -33,7 +33,7 @@ namespace CoolapkUWP.Controls
             FeedReplyViewModel reply = o as FeedReplyViewModel;
             TitleBar.Title = $"回复({reply.Replynum})";
             TitleBar.RefreshEvent += (s, e) => GetReplys(true);
-            id = reply.id;
+            id = reply.Id;
             FeedReplyList.ItemsSource = replys;
             reply.ShowreplyRows = false;
             replys.Add(reply);
@@ -67,7 +67,7 @@ namespace CoolapkUWP.Controls
                     VScrollViewer?.ChangeView(null, 0, null);
                     var d = (from a in replys
                              from b in array
-                             where a.id == b.Value<int>("id")
+                             where a.Id == b.Value<int>("id")
                              select a).ToArray();
                     foreach (var item in d)
                         replys.Remove(item);

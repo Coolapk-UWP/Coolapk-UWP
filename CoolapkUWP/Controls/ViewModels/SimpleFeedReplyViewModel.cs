@@ -7,31 +7,31 @@ namespace CoolapkUWP.Controls.ViewModels
         public SimpleFeedReplyViewModel(JToken t)
         {
             JObject token = t as JObject;
-            id = token.Value<int>("id");
-            uurl = $"/u/{token.Value<int>("uid")}";
-            username = token.Value<string>("username");
-            isFeedAuthor = token.Value<int>("isFeedAuthor") == 1;
-            rurl = $"/u/{token.Value<int>("ruid")}";
-            rusername = token.Value<string>("rusername");
-            if (showRuser)
-                message = $"<a href=\"{uurl}\" type=\"user-detail\">{username}{(isFeedAuthor ? "[楼主]" : string.Empty)}</a>@<a href=\"{rurl}\" type=\"user-detail\">{rusername}</a>: {token.Value<string>("message")}";
-            else message = $"<a href=\"{uurl}\" type=\"user-detail\">{username}{(isFeedAuthor ? "[楼主]" : string.Empty)}</a>: {token.Value<string>("message")}";
-            showPic = token.TryGetValue("pic", out JToken value) && !string.IsNullOrEmpty(value.ToString());
-            if (showPic)
+            Id = token.Value<int>("id");
+            Uurl = $"/u/{token.Value<int>("uid")}";
+            Username = token.Value<string>("username");
+            IsFeedAuthor = token.Value<int>("isFeedAuthor") == 1;
+            Rurl = $"/u/{token.Value<int>("ruid")}";
+            Rusername = token.Value<string>("rusername");
+            if (ShowRuser)
+                Message = $"<a href=\"{Uurl}\" type=\"user-detail\">{Username}{(IsFeedAuthor ? "[楼主]" : string.Empty)}</a>@<a href=\"{Rurl}\" type=\"user-detail\">{Rusername}</a>: {token.Value<string>("message")}";
+            else Message = $"<a href=\"{Uurl}\" type=\"user-detail\">{Username}{(IsFeedAuthor ? "[楼主]" : string.Empty)}</a>: {token.Value<string>("message")}";
+            ShowPic = token.TryGetValue("pic", out JToken value) && !string.IsNullOrEmpty(value.ToString());
+            if (ShowPic)
             {
-                picUrl = value.ToString();
-                message += $" <a href=\"{picUrl}\">查看图片</a>";
+                PicUrl = value.ToString();
+                Message += $" <a href=\"{PicUrl}\">查看图片</a>";
             }
         }
-        public bool showRuser { get => !string.IsNullOrEmpty(rusername); }
-        public string rusername { get; private set; }
-        public string rurl { get; private set; }
-        public double id { get; private set; }
-        public string uurl { get; private set; }
-        public string username { get; private set; }
-        public string message { get; private set; }
-        public bool isFeedAuthor { get; private set; }
-        public bool showPic { get; private set; }
-        public string picUrl { get; private set; }
+        public bool ShowRuser { get => !string.IsNullOrEmpty(Rusername); }
+        public string Rusername { get; private set; }
+        public string Rurl { get; private set; }
+        public double Id { get; private set; }
+        public string Uurl { get; private set; }
+        public string Username { get; private set; }
+        public string Message { get; private set; }
+        public bool IsFeedAuthor { get; private set; }
+        public bool ShowPic { get; private set; }
+        public string PicUrl { get; private set; }
     }
 }

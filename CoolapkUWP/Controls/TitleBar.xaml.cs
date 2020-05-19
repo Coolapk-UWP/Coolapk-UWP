@@ -21,7 +21,7 @@ namespace CoolapkUWP.Controls
         public TitleBar() => this.InitializeComponent();
         private void BackButton_Click(object sender, RoutedEventArgs e) => BackButtonClick?.Invoke(sender, e);
         private void ChangeModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => ComboBoxSelectionChange?.Invoke(sender, e);
-        private void titleGrid_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private void TitleGrid_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             if (e.OriginalSource is Grid || (e.OriginalSource is TextBlock a && a == title))
                 RefreshEvent?.Invoke(sender, e);

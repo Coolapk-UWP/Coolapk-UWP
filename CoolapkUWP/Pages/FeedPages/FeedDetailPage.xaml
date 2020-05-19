@@ -74,7 +74,7 @@
                         <Grid Margin="0,3" Grid.Row="2" x:Name="feedArticleTitle" x:Load="{x:Bind FeedDetail.IsFeedArticle,Mode=OneWay}">
                             <Image x:Name="messageCover" x:Load="{x:Bind FeedDetail.Has_message_cover,Mode=OneWay}" Tapped="Image_Tapped" Tag="{x:Bind FeedDetail.Message_cover_url,Mode=OneWay}" Source="{x:Bind FeedDetail.Message_cover,Mode=OneWay}" Stretch="UniformToFill" />
                             <Border VerticalAlignment="Bottom" Background="#55000000">
-                                <TextBlock Margin="5" Text="{x:Bind FeedDetail.message_title,Mode=OneWay}" Foreground="White" FontWeight="Black" TextWrapping="Wrap" FontSize="20"/>
+                                <TextBlock Margin="5" Text="{x:Bind FeedDetail.Message_title,Mode=OneWay}" Foreground="White" FontWeight="Black" TextWrapping="Wrap" FontSize="20"/>
                             </Border>
                         </Grid>
                         <ListViewItem Background="{ThemeResource SystemControlBackgroundListLowBrush}" Grid.Row="2" x:Name="gotoQues" x:Load="{x:Bind FeedDetail.IsAnswerFeed,Mode=OneWay}"
@@ -89,7 +89,7 @@
                             </Grid>
                         </ListViewItem>
                         <StackPanel Grid.Row="3" Orientation="Horizontal">
-                            <Button Click="Button_Click" Style="{StaticResource ButtonStyle1}" Tag="{x:Bind FeedDetail.uurl,Mode=OneWay}" 
+                            <Button Click="Button_Click" Style="{StaticResource ButtonStyle1}" Tag="{x:Bind FeedDetail.Uurl,Mode=OneWay}" 
                                     Background="{x:Null}" Padding="0" Margin="8">
                                 <Ellipse Width="36" Height="36" HorizontalAlignment="Left">
                                     <Ellipse.Fill>
@@ -98,9 +98,9 @@
                                 </Ellipse>
                             </Button>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="{x:Bind FeedDetail.username,Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <TextBlock Text="{x:Bind FeedDetail.Username,Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{x:Bind FeedDetail.dateline,Mode=OneWay}" Foreground="Gray"/>
+                                    <TextBlock Text="{x:Bind FeedDetail.Dateline,Mode=OneWay}" Foreground="Gray"/>
                                     <TextBlock Text="{x:Bind FeedDetail.Info,Mode=OneWay}" Foreground="Gray" Margin="5,0,0,0"/>
                                     <TextBlock Text="{x:Bind FeedDetail.Device_title,Mode=OneWay}" Foreground="Gray" Margin="5,0,0,0"/>
                                 </StackPanel>
@@ -112,8 +112,8 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
-                            <control:MTextBlock MessageText="{x:Bind FeedDetail.message,Mode=OneWay}"/>
-                            <GridView ScrollViewer.VerticalScrollMode="Disabled" x:Name="picA" x:Load="{x:Bind FeedDetail.showPicArr,Mode=OneWay}" Grid.Row="1" MinHeight="0" Padding="0" Margin="0,5,0,0" HorizontalContentAlignment="Left" SelectionChanged="GridView_SelectionChanged" Tag="{x:Bind FeedDetail.pics,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.picArr,Mode=OneWay}">
+                            <control:MTextBlock MessageText="{x:Bind FeedDetail.Message,Mode=OneWay}"/>
+                            <GridView ScrollViewer.VerticalScrollMode="Disabled" x:Name="picA" x:Load="{x:Bind FeedDetail.ShowPicArr,Mode=OneWay}" Grid.Row="1" MinHeight="0" Padding="0" Margin="0,5,0,0" HorizontalContentAlignment="Left" SelectionChanged="GridView_SelectionChanged" Tag="{x:Bind FeedDetail.Pics,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.PicArr,Mode=OneWay}">
                                 <GridView.ItemTemplate>
                                     <DataTemplate x:DataType="viewModel:ImageData">
                                         <Grid>
@@ -130,7 +130,7 @@
                                     </DataTemplate>
                                 </GridView.ItemTemplate>
                             </GridView>
-                            <ListView ScrollViewer.VerticalScrollMode="Disabled" x:Name="picB" x:Load="{x:Bind FeedDetail.isCoolPictuers,Mode=OneWay}" Grid.Row="1" MinHeight="0" Padding="0" Margin="0,5,0,0" HorizontalContentAlignment="Left" SelectionChanged="GridView_SelectionChanged" Tag="{x:Bind FeedDetail.pics,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.picArr,Mode=OneWay}">
+                            <ListView ScrollViewer.VerticalScrollMode="Disabled" x:Name="picB" x:Load="{x:Bind FeedDetail.IsCoolPictuers,Mode=OneWay}" Grid.Row="1" MinHeight="0" Padding="0" Margin="0,5,0,0" HorizontalContentAlignment="Left" SelectionChanged="GridView_SelectionChanged" Tag="{x:Bind FeedDetail.Pics,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.PicArr,Mode=OneWay}">
                                 <ListView.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <control:GridPanel DesiredColumnWidth="192" CubeInSameHeight="False"/>
@@ -158,18 +158,18 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Padding="2" Margin="0,0,5,0" Style="{StaticResource ButtonStyle1}" Content="{x:Bind FeedDetail.SourceFeed.username,Mode=OneWay}" Click="Button_Click" Tag="{x:Bind FeedDetail.SourceFeed.uurl,Mode=OneWay}" Background="{x:Null}"/>
-                                    <TextBlock Margin="5,0" Text="{x:Bind FeedDetail.SourceFeed.dateline,Mode=OneWay}" Foreground="Gray" VerticalAlignment="Center"/>
+                                    <Button Padding="2" Margin="0,0,5,0" Style="{StaticResource ButtonStyle1}" Content="{x:Bind FeedDetail.SourceFeed.Username,Mode=OneWay}" Click="Button_Click" Tag="{x:Bind FeedDetail.SourceFeed.Uurl,Mode=OneWay}" Background="{x:Null}"/>
+                                    <TextBlock Margin="5,0" Text="{x:Bind FeedDetail.SourceFeed.Dateline,Mode=OneWay}" Foreground="Gray" VerticalAlignment="Center"/>
                                 </StackPanel>
-                                <Grid Grid.Row="1" Tag="{x:Bind FeedDetail.SourceFeed.url,Mode=OneWay}" Tapped="Grid_Tapped" Margin="3">
+                                <Grid Grid.Row="1" Tag="{x:Bind FeedDetail.SourceFeed.Url,Mode=OneWay}" Tapped="Grid_Tapped" Margin="3">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock FontSize="16" x:Name="sourceMT" x:Load="{x:Bind FeedDetail.SourceFeed.showMessage_title,Mode=OneWay}" FontWeight="Black" TextWrapping="Wrap" Text="{x:Bind FeedDetail.SourceFeed.message_title,Mode=OneWay}"/>
-                                    <control:MTextBlock Grid.Row="1" MessageText="{x:Bind FeedDetail.SourceFeed.message,Mode=OneWay}"/>
-                                    <GridView ScrollViewer.VerticalScrollMode="Disabled" x:Name="sourcePic" Grid.Row="2" HorizontalContentAlignment="Left" MinHeight="0" Padding="0" Margin="0,5,0,0" x:Load="{x:Bind FeedDetail.showPicArr,Mode=OneWay}" Tag="{x:Bind FeedDetail.SourceFeed.pics,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.SourceFeed.picArr,Mode=OneWay}">
+                                    <TextBlock FontSize="16" x:Name="sourceMT" x:Load="{x:Bind FeedDetail.SourceFeed.ShowMessage_title,Mode=OneWay}" FontWeight="Black" TextWrapping="Wrap" Text="{x:Bind FeedDetail.SourceFeed.Message_title,Mode=OneWay}"/>
+                                    <control:MTextBlock Grid.Row="1" MessageText="{x:Bind FeedDetail.SourceFeed.Message,Mode=OneWay}"/>
+                                    <GridView ScrollViewer.VerticalScrollMode="Disabled" x:Name="sourcePic" Grid.Row="2" HorizontalContentAlignment="Left" MinHeight="0" Padding="0" Margin="0,5,0,0" x:Load="{x:Bind FeedDetail.ShowPicArr,Mode=OneWay}" Tag="{x:Bind FeedDetail.SourceFeed.Pics,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.SourceFeed.PicArr,Mode=OneWay}">
                                         <GridView.ItemTemplate>
                                             <DataTemplate x:DataType="viewModel:ImageData">
                                                 <Grid>
@@ -296,7 +296,7 @@
                                 </ListView.ItemContainerStyle>
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="viewModel:UserViewModel">
-                                        <ListViewItem Style="{StaticResource NoPaddingListViewItem}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Tapped="StackPanel_Tapped" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind url}">
+                                        <ListViewItem Style="{StaticResource NoPaddingListViewItem}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Tapped="StackPanel_Tapped" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind Url}">
                                             <xp:Shadow Z_Depth="2">
                                                 <StackPanel Orientation="Horizontal" Padding="3" VerticalAlignment="Center"  Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
                                                     <Ellipse Width="30" Height="30" HorizontalAlignment="Left">
@@ -335,10 +335,10 @@
                                                         <RowDefinition Height="auto"/>
                                                     </Grid.RowDefinitions>
                                                     <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                                        <Button Style="{StaticResource ButtonStyle1}" Padding="2" Tag="{x:Bind uurl}" Margin="4,0" Content="{x:Bind username}" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="{x:Bind dateline}" Foreground="Gray" VerticalAlignment="Center"/>
+                                                        <Button Style="{StaticResource ButtonStyle1}" Padding="2" Tag="{x:Bind Uurl}" Margin="4,0" Content="{x:Bind Username}" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{x:Bind Dateline}" Foreground="Gray" VerticalAlignment="Center"/>
                                                     </StackPanel>
-                                                    <control:MTextBlock Tag="{x:Bind url}" Tapped="Grid_Tapped" Grid.Row="1" MessageText="{x:Bind message}" Margin="8,0,10,10"/>
+                                                    <control:MTextBlock Tag="{x:Bind Url}" Tapped="Grid_Tapped" Grid.Row="1" MessageText="{x:Bind Message}" Margin="8,0,10,10"/>
                                                 </Grid>
                                             </xp:Shadow>
                                         </ListViewItem>
