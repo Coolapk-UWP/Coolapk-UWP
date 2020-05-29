@@ -179,12 +179,20 @@
                     </StackPanel>
                 </Grid>
                 <Border Grid.Row="7"/>
-                <ListView Grid.Row="8" Margin="0,2,0,0" ScrollViewer.VerticalScrollMode="Disabled" HorizontalContentAlignment="Stretch" Style="{StaticResource ListViewStyle1}" x:Name="relaRLis" x:Load="{x:Bind ShowRelationRows}" ItemsSource="{x:Bind RelationRows}">
+                <ListView Grid.Row="8" ScrollViewer.VerticalScrollMode="Disabled" HorizontalContentAlignment="Stretch" Style="{StaticResource ListViewStyle1}" x:Name="relaRLis" x:Load="{x:Bind ShowRelationRows}" ItemsSource="{x:Bind RelationRows}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="models:RelationRowsItem">
-                            <StackPanel Tapped="OnTapped" Tag="{x:Bind Url}" Padding="6" Orientation="Horizontal" Background="{ThemeResource SystemControlBackgroundListLowBrush}">
+                            <StackPanel Tapped="OnTapped" Tag="{x:Bind Url}" Margin="2" Padding="4" VerticalAlignment="Center"
+                                        Orientation="Horizontal" Background="{ThemeResource SystemControlBackgroundListLowBrush}">
                                 <Image Width="20" Height="20" Source="{x:Bind Logo,Mode=OneWay}"/>
-                                <TextBlock Text="{x:Bind Title}" Margin="3,0,0,0"/>
+                                <TextBlock Text="{x:Bind Title}" Margin="4,0,0,0"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

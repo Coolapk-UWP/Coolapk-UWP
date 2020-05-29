@@ -194,7 +194,7 @@ namespace CoolapkUWP.Controls
                                 Image image = new Image
                                 {
                                     Height = Width = 20,
-                                    Source = new BitmapImage(new System.Uri($"ms-appx:///Assets/Emoji/{s}.png"))
+                                    Source = new BitmapImage(EmojiHelper.Get(s))
                                 };
                                 ToolTipService.SetToolTip(image, new ToolTip { Content = item });
                                 container.Child = image;
@@ -217,7 +217,7 @@ namespace CoolapkUWP.Controls
                                 Image image = new Image
                                 {
                                     Height = Width = 20,
-                                    Source = new BitmapImage(new System.Uri($"ms-appx:///Assets/Emoji/{item}2.png"))
+                                    Source = new BitmapImage(EmojiHelper.Get(item, true))
                                 };
                                 ToolTipService.SetToolTip(image, new ToolTip { Content = item });
                                 container.Child = image;
@@ -234,7 +234,7 @@ namespace CoolapkUWP.Controls
                                 Image image = new Image
                                 {
                                     Height = Width = 20,
-                                    Source = new BitmapImage(new System.Uri($"ms-appx:///Assets/Emoji/{item}.png"))
+                                    Source = new BitmapImage(EmojiHelper.Get(item))
                                 };
                                 ToolTipService.SetToolTip(image, new ToolTip { Content = item });
                                 container.Child = image;

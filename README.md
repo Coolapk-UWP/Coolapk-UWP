@@ -27,7 +27,7 @@
 1. 夜间模式
 2. 登录/点赞
 3. 浏览动态/图文/问答/通知
-4. 更多内容请自行发掘<img alt="流汗滑稽" src="./酷安 UWP/Assets/Emoji/(流汗滑稽.png" width="20px" />
+4. 更多内容请自行发掘<img alt="流汗滑稽" src="./CoolapkUWP/Assets/Emoji/0057.png" width="20px" />
 
 ## 如何安装应用
 ### 最低需求
@@ -81,9 +81,10 @@
 - 问答
 ![问答](Screenshots/批注-2019-11-30-184130.jpg)
 
-## 使用到的开源模块
+## 使用到的模块
 - [XPShadow](https://github.com/brookshi/XPShadow/)
 - [UWP Community Toolkit](https://github.com/Microsoft/UWPCommunityToolkit/)
+- [Json.NET](https://www.newtonsoft.com/json)
 
 ## 鸣谢
 - 酷安UWP原作者[@一块小板子](http://www.coolapk.com/u/695942)([Github](https://github.com/oboard))

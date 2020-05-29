@@ -61,16 +61,16 @@
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <ListViewItem Tag="{x:Bind FeedDetail.Turl,Mode=OneWay}" Tapped="StackPanel_Tapped" Background="{ThemeResource SystemControlBackgroundListLowBrush}"
-                                          x:Name="TTitle" x:Load="{x:Bind FeedDetail.ShowTtitle,Mode=OneWay}" HorizontalContentAlignment="Stretch">
-                            <Grid HorizontalAlignment="Stretch">
+                                          x:Name="TTitle" x:Load="{x:Bind FeedDetail.ShowTtitle,Mode=OneWay}" HorizontalContentAlignment="Stretch" Template="{StaticResource ListViewItemTemplate1}">
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8">
                                 <Image HorizontalAlignment="Left" Width="20" Height="20" Source="{x:Bind FeedDetail.Tpic,Mode=OneWay}" />
                                 <TextBlock HorizontalAlignment="Left" Text="{x:Bind FeedDetail.Ttitle,Mode=OneWay}" Margin="23,0,0,0"/>
                                 <SymbolIcon Symbol="Forward" HorizontalAlignment="Right"/>
                             </Grid>
                         </ListViewItem>
                         <ListViewItem Grid.Row="1" Tag="{x:Bind FeedDetail.DyhUrl,Mode=OneWay}" Tapped="StackPanel_Tapped" Background="{ThemeResource SystemControlBackgroundListLowBrush}"
-                                          x:Name="dyhN" x:Load="{x:Bind FeedDetail.Show_dyh_name,Mode=OneWay}" HorizontalContentAlignment="Stretch">
-                            <Grid HorizontalAlignment="Stretch">
+                                          x:Name="dyhN" x:Load="{x:Bind FeedDetail.Show_dyh_name,Mode=OneWay}" HorizontalContentAlignment="Stretch" Template="{StaticResource ListViewItemTemplate1}">
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8">
                                 <TextBlock HorizontalAlignment="Left" Text="{x:Bind FeedDetail.Dyh_name,Mode=OneWay}" Margin="23,0,0,0"/>
                                 <SymbolIcon Symbol="Forward" HorizontalAlignment="Right"/>
                             </Grid>
@@ -207,11 +207,19 @@
                             </StackPanel>
                         </Grid>
                         <ListView Grid.Row="7" ScrollViewer.VerticalScrollMode="Disabled" HorizontalContentAlignment="Stretch" Style="{StaticResource ListViewStyle1}" x:Name="relaRLis" x:Load="{x:Bind FeedDetail.ShowRelationRows,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.RelationRows,Mode=OneWay}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="viewModel:RelationRowsItem">
-                                    <StackPanel Padding="6" Tag="{x:Bind Url}" Tapped="StackPanel_Tapped" Orientation="Horizontal" Background="{ThemeResource SystemControlBackgroundListLowBrush}">
+                                    <StackPanel Padding="4" Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="{x:Bind Url}" Tapped="StackPanel_Tapped" Orientation="Horizontal" Background="{ThemeResource SystemControlBackgroundListLowBrush}">
                                         <Image Width="20" Height="20" Source="{x:Bind Logo,Mode=OneWay}"/>
-                                        <TextBlock Text="{x:Bind Title}" Margin="3,0,0,0"/>
+                                        <TextBlock Text="{x:Bind Title}" Margin="4,0,0,0"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
