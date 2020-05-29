@@ -102,8 +102,10 @@
                                         PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新">
             <controls:PullToRefreshListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
-                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Padding" Value="0"/>
                 </Style>
             </controls:PullToRefreshListView.ItemContainerStyle>
             <ListViewItem x:Name="NavigateItems" x:Load="False">
@@ -115,8 +117,10 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="Padding" Value="0"/>
                             <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
                         </Style>
                     </ListView.ItemContainerStyle>
                     <StackPanel Orientation="Horizontal" Margin="8,0" Tag="atMe">
@@ -155,9 +159,10 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                             <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>

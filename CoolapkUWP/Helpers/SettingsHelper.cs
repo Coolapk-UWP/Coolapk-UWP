@@ -20,6 +20,7 @@ namespace CoolapkUWP.Helpers
         public static SolidColorBrush SystemAccentColorBrush => Application.Current.Resources.ThemeDictionaries["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
         public static Thickness TitleTextMargin => new Thickness(5, 12, 5, 12);
         public static Thickness StackPanelMargin => new Thickness(0, PageTitleHeight, 0, 0);
+        public static Thickness IndexPageStackPanelMargin => new Thickness(0, HasStatusBar ? 0 : 48, 0, 0);
         public static VerticalAlignment TitleContentVerticalAlignment => VerticalAlignment.Bottom;
         public static ElementTheme Theme => Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
         public static T Get<T>(string key) => (T)localSettings.Values[key];

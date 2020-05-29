@@ -22,7 +22,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Pivot x:Name="MainPivot" Margin="{x:Bind data:SettingsHelper.StackPanelMargin}" SelectionChanged="MainPivot_SelectionChanged"/>
+        <Pivot x:Name="MainPivot" Margin="{x:Bind data:SettingsHelper.IndexPageStackPanelMargin}" SelectionChanged="MainPivot_SelectionChanged"/>
         <!--
             <Pivot.RightHeader>
                 <StackPanel Orientation="Horizontal">

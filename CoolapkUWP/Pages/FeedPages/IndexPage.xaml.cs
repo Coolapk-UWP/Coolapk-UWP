@@ -32,20 +32,29 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             base.OnNavigatedTo(e);
             object[] vs = e.Parameter as object[];
-            if ((bool)vs[1]) TitleBar.Visibility = Visibility.Collapsed;
+
             pageUrl = vs[0] as string;
             if (pageUrl.Contains("&title=")) TitleBar.Title = pageUrl.Substring(pageUrl.LastIndexOf("&title=") + 7);
             if (pageUrl.IndexOf("/page") == -1 && pageUrl != "/main/indexV8") pageUrl = "/page/dataList?url=" + pageUrl;
             else if (pageUrl.IndexOf("/page") == 0 && !pageUrl.Contains("/page/dataList")) pageUrl = pageUrl.Replace("/page", "/page/dataList");
             pageUrl = pageUrl.Replace("#", "%23");
             index = -1;
+            if ((bool)vs[1])
+            {
+                TitleBar.Visibility = Visibility.Collapsed;
+            }
             GetUrlPage();
             Task.Run(async () =>
             {
                 await Task.Delay(1000);
                 await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    (VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged
-                );
+                {
+                    if ((bool)vs[1])
+                    {
+                        listView.Padding = new Thickness(0);
+                    }
+                    (VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
+                });
             });
         }
 
@@ -93,9 +102,28 @@ namespace CoolapkUWP.Pages.FeedPages
                             TitleBar.Title = j.Value<string>("pageTitle");
                             continue;
                         }
-                        if (jo.TryGetValue("entityTemplate", out JToken tt) && tt.ToString() == "fabCard") continue;
-                        FeedsCollection.Insert(n + k, GetEntity(jo));
-                        k++;
+                        if (jo.TryGetValue("entityTemplate", out JToken tt) && tt?.ToString() == "fabCard") continue;
+                        else if (tt?.ToString() == "feedCoolPictureGridCard")
+                        {
+                            foreach (JObject item in jo.Value<JArray>("entities"))
+                            {
+                                var entity = GetEntity(item);
+                                if (entity != null)
+                                {
+                                    FeedsCollection.Insert(n + k, entity);
+                                    k++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var entity = GetEntity(jo);
+                            if (entity != null)
+                            {
+                                FeedsCollection.Insert(n + k, entity);
+                                k++;
+                            }
+                        }
                     }
                     UIHelper.HideProgressBar();
                     return true;
@@ -104,7 +132,23 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     if (array.Count != 0)
                     {
-                        foreach (var i in array) FeedsCollection.Add(GetEntity(i as JObject));
+                        foreach (JObject i in array)
+                        {
+                            if (i.TryGetValue("entityTemplate", out JToken tt) && tt?.ToString() == "feedCoolPictureGridCard")
+                            {
+                                foreach (JObject item in i.Value<JArray>("entities"))
+                                {
+                                    var entity = GetEntity(item);
+                                    if (entity != null) FeedsCollection.Add(entity);
+                                }
+                            }
+                            else
+                            {
+                                var entity = GetEntity(i);
+                                if (entity != null)
+                                    FeedsCollection.Add(entity);
+                            }
+                        }
                         UIHelper.HideProgressBar();
                         return true;
                     }
@@ -117,16 +161,44 @@ namespace CoolapkUWP.Pages.FeedPages
             return false;
         }
 
-        Entity GetEntity(JObject token)
+        Entity GetEntity(JObject jo)
         {
-            switch (token.Value<string>("entityType"))
+            switch (jo.Value<string>("entityType"))
             {
-                case "feed": return new FeedViewModel(token, pageUrl == "/main/indexV8" ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
-                case "user": return new UserViewModel(token);
-                case "topic": return new TopicViewModel(token);
-                case "dyh": return new DyhViewModel(token);
+                case "feed": return new FeedViewModel(jo, pageUrl == "/main/indexV8" ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
+                case "user": return new UserViewModel(jo);
+                case "topic": return new TopicViewModel(jo);
+                case "dyh": return new DyhViewModel(jo);
                 case "card":
-                default: return new IndexPageViewModel(token);
+                default:
+                    if (jo.TryGetValue("entityTemplate", out JToken v1))
+                    {
+                        switch (v1.Value<string>())
+                        {
+                            case "imageTextGridCard":
+                            case "imageSquareScrollCard":
+                            case "iconScrollCard":
+                            case "iconGridCard":
+                            case "feedScrollCard":
+                            case "imageTextScrollCard":
+                            case "iconMiniLinkGridCard":
+                            case "iconMiniGridCard": return new IndexPageHasEntitiesViewModel(jo, EntitiesType.Others);
+                            case "imageCarouselCard_1": //return new IndexPageHasEntitiesViewModel(jo, EntitiesType.Image_1);
+                            case "imageCard": return new IndexPageHasEntitiesViewModel(jo, EntitiesType.Image);
+                            case "iconLinkGridCard": return new IndexPageHasEntitiesViewModel(jo, EntitiesType.IconLink);
+                            case "feedGroupListCard":
+                            case "textLinkListCard": return new IndexPageHasEntitiesViewModel(jo, EntitiesType.TextLink);
+                            case "textCard":
+                            case "messageCard": return new IndexPageMessageCardViewModel(jo);
+                            case "refreshCard": return new IndexPageOperationCardViewModel(jo, OperationType.Refresh);
+                            case "unLoginCard": return new IndexPageOperationCardViewModel(jo, OperationType.Login);
+                            case "titleCard": return new IndexPageOperationCardViewModel(jo, OperationType.ShowTitle);
+                            case "iconTabLinkGridCard": return new IndexPageHasEntitiesViewModel(jo, EntitiesType.TabLink);
+                            case "selectorLinkCard": return new IndexPageHasEntitiesViewModel(jo, EntitiesType.SelectorLink);
+                            default: return null;
+                        }
+                    }
+                    else return null;
             }
         }
 
@@ -146,25 +218,29 @@ namespace CoolapkUWP.Pages.FeedPages
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
             FrameworkElement element = sender as FrameworkElement;
-            if (element.Tag is string s) UIHelper.OpenLink(s);
-            else if (element.Tag is IndexPageViewModel m)
+            if (element.Tag is string s)
             {
-                if (string.IsNullOrEmpty(m.Url)) return;
-                string str = m.Url;
+                if (!string.IsNullOrEmpty(s))
+                    UIHelper.OpenLink(s);
+            }
+            else if (element.Tag is IHasUriAndTitle k)
+            {
+                if (!k.HasUrl || string.IsNullOrEmpty(k.Url) || k.Url == "/topic/quickList?quickType=list") return;
+                string str = k.Url;
                 if (str.IndexOf("/page") == 0)
                 {
                     str = str.Replace("/page", "/page/dataList");
-                    str += $"&title={m.Title}";
+                    str += $"&title={k.Title}";
                     UIHelper.Navigate(typeof(IndexPage), new object[] { str, false });
                 }
-                else if (str.IndexOf('#') == 0) UIHelper.Navigate(typeof(IndexPage), new object[] { $"{str}&title={m.Title}", false });
+                else if (str.IndexOf('#') == 0) UIHelper.Navigate(typeof(IndexPage), new object[] { $"{str}&title={k.Title}", false });
                 else UIHelper.OpenLink(str);
             }
         }
 
         private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
         {
-            IndexPageViewModel model = (sender as ListViewItem).DataContext as IndexPageViewModel;
+            IndexPageViewModel model = (sender as FrameworkElement).DataContext as IndexPageViewModel;
             if (Feeds2.Count > 0)
             {
                 ObservableCollection<Entity> feeds = Feeds2[0];
@@ -210,6 +286,9 @@ namespace CoolapkUWP.Pages.FeedPages
                 Entity[] f = element.Tag as Entity[];
                 Style style = new Style(typeof(ListViewItem));
                 style.Setters.Add(new Setter(TemplateProperty, Application.Current.Resources["ListViewItemTemplate1"] as ControlTemplate));
+                style.Setters.Add(new Setter(HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
+                style.Setters.Add(new Setter(MarginProperty, new Thickness(0)));
+                style.Setters.Add(new Setter(PaddingProperty, new Thickness(0)));
                 for (int j = 0; j < f.Length; j++)
                 {
                     IndexPageViewModel model = f[j] as IndexPageViewModel;
@@ -249,8 +328,11 @@ namespace CoolapkUWP.Pages.FeedPages
             ListView view = item.Content as ListView;
             ObservableCollection<Entity> feeds = view.ItemsSource as ObservableCollection<Entity>;
             string u = model.Url;
-            u = u.Replace("#", "%23");
-            u = "/page/dataList?url=" + u + $"&title={model.Title}";
+            if (model.Url.IndexOf("/page") != 0)
+            {
+                u = u.Replace("#", "%23");
+                u = "/page/dataList?url=" + u + $"&title={model.Title}";
+            }
             _ = GetUrlPage(1, u, feeds);
         }
 

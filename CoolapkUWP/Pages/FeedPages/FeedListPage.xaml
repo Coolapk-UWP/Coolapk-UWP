@@ -19,7 +19,7 @@
             <DataTemplate x:Key="UserDetail" x:DataType="local:UserDetail">
                 <xp:Shadow Z_Depth="3" Margin="4,0">
                     <Border x:Name="UserDetailBorder" MinHeight="200"
-                        Background="{x:Bind Background,Mode=OneWay}" Tag="{x:Bind BackgroundUrl}" Tapped="UserDetailBorder_Tapped">
+                        Background="{x:Bind Background}" Tag="{x:Bind BackgroundUrl}" Tapped="UserDetailBorder_Tapped">
                         <Grid Background="#99000000" VerticalAlignment="Bottom" x:Name="UserDetailGrid" Padding="0,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
@@ -27,7 +27,7 @@
                             </Grid.ColumnDefinitions>
                             <Ellipse Width="56" Height="56" Margin="10,8" VerticalAlignment="Top" HorizontalAlignment="Left" Tapped="UserDetailBorder_Tapped" Tag="{x:Bind UserFaceUrl}">
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{x:Bind UserFace,Mode=OneWay}"/>
+                                    <ImageBrush ImageSource="{x:Bind UserFace}"/>
                                 </Ellipse.Fill>
                             </Ellipse>
                             <StackPanel Margin="0,0,5,3" Grid.Column="1">
@@ -80,7 +80,7 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <Image x:Name="Logo" Width="80" Height="80" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,10" Source="{x:Bind Logo,Mode=OneWay}"/>
+                        <Image x:Name="LogoImage" Width="80" Height="80" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,10" Source="{x:Bind Logo}"/>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                             <TextBlock FontSize="20" FontWeight="Black" Text="{x:Bind Title}"/>
                             <TextBlock TextWrapping="Wrap" Text="{x:Bind Description}"/>
@@ -101,7 +101,7 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Image x:Name="Logo" Width="80" Height="80" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Source="{x:Bind Logo,Mode=OneWay}"/>
+                        <Image x:Name="LogoImage" Width="80" Height="80" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Source="{x:Bind Logo}"/>
                         <StackPanel Grid.Column="1" Margin="0,18">
                             <TextBlock FontSize="20" FontWeight="Black" Text="{x:Bind Title}"/>
                             <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,12,0" TextWrapping="Wrap" Text="{x:Bind Description}"/>
@@ -112,7 +112,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <Ellipse Width="20" Height="20">
                                             <Ellipse.Fill>
-                                                <ImageBrush ImageSource="{x:Bind UserAvatar,Mode=OneWay}"/>
+                                                <ImageBrush ImageSource="{x:Bind UserAvatar}"/>
                                             </Ellipse.Fill>
                                         </Ellipse>
                                         <TextBlock Margin="5,0" Text="{x:Bind UserName}" VerticalAlignment="Top"/>
@@ -138,6 +138,9 @@
             <controls:PullToRefreshListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Padding" Value="0"/>
                 </Style>
             </controls:PullToRefreshListView.ItemContainerStyle>
         </controls:PullToRefreshListView>

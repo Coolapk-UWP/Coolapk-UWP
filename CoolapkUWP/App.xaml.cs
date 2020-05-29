@@ -66,9 +66,13 @@ namespace CoolapkUWP
             e.Handled = true;
             if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
             {
-                if (Window.Current.Content != null)
+                if (Window.Current?.Content != null)
                 {
-                    await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
+                    await new MessageDialog($"{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})"
+#if DEBUG
+                        + $"\n{e.Exception.StackTrace}"
+#endif
+                        , "程序出现了错误……").ShowAsync();
                     UIHelper.HideProgressBar();
                 }
             }
@@ -96,7 +100,7 @@ namespace CoolapkUWP
             e.Handled = true;
             if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
             {
-                if (Window.Current.Content != null)
+                if (Window.Current?.Content != null)
                 {
                     if (e.Exception.HResult <= -2147012721 && e.Exception.HResult >= -2147012895)
                         UIHelper.ShowMessage($"网络异常(0x{Convert.ToString(e.Exception.HResult, 16)})");

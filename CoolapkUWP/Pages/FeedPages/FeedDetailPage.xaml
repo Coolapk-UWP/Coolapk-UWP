@@ -23,8 +23,10 @@
         <controls:PullToRefreshListView x:Name="MainListView" SelectionMode="None" PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新" RefreshRequested="{x:Bind Refresh}">
             <controls:PullToRefreshListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
-                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Padding" Value="0"/>
                 </Style>
             </controls:PullToRefreshListView.ItemContainerStyle>
             <Grid>
@@ -40,8 +42,10 @@
                                         PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新" Height="{x:Bind DetailListHeight,Mode=OneWay}" RefreshRequested="{x:Bind RefreshFeedDetail}">
                     <controls:PullToRefreshListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
                         </Style>
                     </controls:PullToRefreshListView.ItemContainerStyle>
                     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -231,8 +235,10 @@
                                                 PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新" Height="{x:Bind DetailListHeight,Mode=OneWay}" RefreshRequested="{x:Bind Refresh}">
                     <controls:PullToRefreshListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
                         </Style>
                     </controls:PullToRefreshListView.ItemContainerStyle>
                     <Pivot x:Load="False" Padding="0,-48,0,0" IsLocked="True" x:Name="FeedDetailPivot" SelectionChanged="FeedDetailPivot_SelectionChanged">
@@ -243,18 +249,20 @@
                         </Pivot.ItemContainerStyle>
                         <PivotItem>
                             <StackPanel>
-                                <ListViewItem Style="{StaticResource NoPaddingListViewItem}" x:Name="ChangeHotReplysDisplayModeListViewItem" Template="{StaticResource ListViewItemTemplate1}"
+                                <ListViewItem x:Name="ChangeHotReplysDisplayModeListViewItem" Template="{StaticResource ListViewItemTemplate1}"
                                               Tapped="ChangeHotReplysDisplayModeListViewItem_Tapped">
                                     <StackPanel Orientation="Horizontal" Margin="12,0">
                                         <TextBlock x:Name="iconText" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text=""/>
                                         <TextBlock Margin="12,0" VerticalAlignment="Center">热门回复</TextBlock>
                                     </StackPanel>
                                 </ListViewItem>
-                                <ListView SelectionMode="None" ItemsSource="{x:Bind hotReplies}" 
-                                          ItemTemplate="{StaticResource feed_reply}" ScrollViewer.VerticalScrollMode="Disabled" x:Name="hotReplyListView">
+                                <ListView ItemsSource="{x:Bind hotReplies}" ItemTemplate="{StaticResource feed_reply}" ScrollViewer.VerticalScrollMode="Disabled" x:Name="hotReplyListView">
                                     <ListView.ItemContainerStyle>
                                         <Style TargetType="ListViewItem">
                                             <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            <Setter Property="Margin" Value="0"/>
+                                            <Setter Property="Padding" Value="0"/>
                                         </Style>
                                     </ListView.ItemContainerStyle>
                                     <ListView.ItemsPanel>
@@ -277,13 +285,16 @@
                                     <ListView.ItemContainerStyle>
                                         <Style TargetType="ListViewItem">
                                             <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            <Setter Property="Margin" Value="0"/>
+                                            <Setter Property="Padding" Value="0"/>
                                         </Style>
                                     </ListView.ItemContainerStyle>
                                 </ListView>
                             </StackPanel>
                         </PivotItem>
                         <PivotItem>
-                            <ListView SelectionMode="None" ScrollViewer.VerticalScrollMode="Disabled" ItemsSource="{x:Bind likes}">
+                            <ListView ScrollViewer.VerticalScrollMode="Disabled" ItemsSource="{x:Bind likes}">
                                 <ListView.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="200"/>
@@ -292,28 +303,30 @@
                                 <ListView.ItemContainerStyle>
                                     <Style TargetType="ListViewItem">
                                         <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Margin" Value="0"/>
+                                        <Setter Property="Padding" Value="0"/>
                                     </Style>
                                 </ListView.ItemContainerStyle>
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="viewModel:UserViewModel">
-                                        <ListViewItem Style="{StaticResource NoPaddingListViewItem}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Tapped="StackPanel_Tapped" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind Url}">
-                                            <xp:Shadow Z_Depth="2">
-                                                <StackPanel Orientation="Horizontal" Padding="3" VerticalAlignment="Center"  Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
-                                                    <Ellipse Width="30" Height="30" HorizontalAlignment="Left">
-                                                        <Ellipse.Fill>
-                                                            <ImageBrush ImageSource="{x:Bind UserAvatar}"/>
-                                                        </Ellipse.Fill>
-                                                    </Ellipse>
-                                                    <TextBlock Margin="5,0" Text="{x:Bind UserName}" VerticalAlignment="Center"/>
-                                                </StackPanel>
-                                            </xp:Shadow>
-                                        </ListViewItem>
+                                        <xp:Shadow Z_Depth="2">
+                                            <StackPanel Orientation="Horizontal" Padding="3" VerticalAlignment="Center" Tapped="StackPanel_Tapped" Tag="{x:Bind Url}" Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                                                <Ellipse Width="30" Height="30" HorizontalAlignment="Left">
+                                                    <Ellipse.Fill>
+                                                        <ImageBrush ImageSource="{x:Bind UserAvatar}"/>
+                                                    </Ellipse.Fill>
+                                                </Ellipse>
+                                                <TextBlock Margin="5,0" Text="{x:Bind UserName}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </xp:Shadow>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
                         </PivotItem>
                         <PivotItem>
-                            <ListView SelectionMode="None" ScrollViewer.VerticalScrollMode="Disabled" ItemsSource="{x:Bind shares}">
+                            <ListView ScrollViewer.VerticalScrollMode="Disabled" ItemsSource="{x:Bind shares}">
                                 <ListView.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <control:GridPanel DesiredColumnWidth="384.0"/>
@@ -322,26 +335,27 @@
                                 <ListView.ItemContainerStyle>
                                     <Style TargetType="ListViewItem">
                                         <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Margin" Value="0"/>
+                                        <Setter Property="Padding" Value="0"/>
                                     </Style>
                                 </ListView.ItemContainerStyle>
-
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="viewModel:SourceFeedViewModel">
-                                        <ListViewItem Style="{StaticResource NoPaddingListViewItem}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Template="{StaticResource ListViewItemTemplate1}">
-                                            <xp:Shadow Z_Depth="3">
-                                                <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="*"/>
-                                                        <RowDefinition Height="auto"/>
-                                                    </Grid.RowDefinitions>
-                                                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                                        <Button Style="{StaticResource ButtonStyle1}" Padding="2" Tag="{x:Bind Uurl}" Margin="4,0" Content="{x:Bind Username}" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="{x:Bind Dateline}" Foreground="Gray" VerticalAlignment="Center"/>
-                                                    </StackPanel>
-                                                    <control:MTextBlock Tag="{x:Bind Url}" Tapped="Grid_Tapped" Grid.Row="1" MessageText="{x:Bind Message}" Margin="8,0,10,10"/>
-                                                </Grid>
-                                            </xp:Shadow>
-                                        </ListViewItem>
+                                        <xp:Shadow Z_Depth="3">
+                                            <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="auto"/>
+                                                </Grid.RowDefinitions>
+                                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                    <Button Style="{StaticResource ButtonStyle1}" Padding="2" Tag="{x:Bind Uurl}" Margin="4,0" Content="{x:Bind Username}" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{x:Bind Dateline}" Foreground="Gray" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                                <control:MTextBlock Tag="{x:Bind Url}" Tapped="Grid_Tapped" Grid.Row="1" MessageText="{x:Bind Message}" Margin="8,0,10,10"/>
+                                            </Grid>
+                                        </xp:Shadow>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
@@ -357,6 +371,9 @@
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="Padding" Value="0"/>
                             </Style>
                         </ListView.ItemContainerStyle>
                     </ListView>

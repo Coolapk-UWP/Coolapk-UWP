@@ -58,7 +58,9 @@ namespace CoolapkUWP.Controls
             {
                 foreach (var item in Children)
                 {
-                    if (item is ListViewItem l && l.Content is ViewModels.IndexPageViewModel m && m.EntityTemplate == "iconTabLinkGridCard")
+                    if (item is ListViewItem l &&
+                        l.Content is ViewModels.IndexPageHasEntitiesViewModel m &&
+                        (m.EntitiesType == ViewModels.EntitiesType.TabLink || m.EntitiesType == ViewModels.EntitiesType.SelectorLink))
                     {
                         int maxIndex = offsetY.IndexOf(offsetY.Max());
                         item.Measure(new Size(availableSize.Width, double.PositiveInfinity));
@@ -104,7 +106,9 @@ namespace CoolapkUWP.Controls
                     }
             }
             else foreach (var item in Children)
-                    if (item is ListViewItem l && l.Content is ViewModels.IndexPageViewModel m && m.EntityTemplate == "iconTabLinkGridCard")
+                    if (item is ListViewItem l &&
+                        l.Content is ViewModels.IndexPageHasEntitiesViewModel m &&
+                        (m.EntitiesType == ViewModels.EntitiesType.TabLink || m.EntitiesType == ViewModels.EntitiesType.SelectorLink))
                     {
                         int maxIndex = offsetY.IndexOf(offsetY.Max());
                         item.Arrange(new Rect(0, offsetY[maxIndex], DesiredSize.Width, item.DesiredSize.Height));

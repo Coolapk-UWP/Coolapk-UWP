@@ -24,18 +24,9 @@
                 <TextBox Header="message" x:Name="message"/>
                 <Button Click="Button_Click_4">show</Button>
                 <Button Click="Button_Click_1">to login page</Button>
-                <RichTextBlock TextWrapping="Wrap">
-                    <Paragraph>
-                        <Run>666666            6666666</Run>
-                        <InlineUIContainer>
-                            <Image Source="/Assets/Emoji/(斗鸡眼滑稽.png" Height="20" Width="20" ToolTipService.ToolTip=""/>
-                        </InlineUIContainer>
-                        <Hyperlink Click="Hyperlink_Click">
-                            <Run Text="sduighuyg"/>
-                        </Hyperlink>
-                    </Paragraph>
-                </RichTextBlock>
-                <control:MTextBlock x:Name="mtbt"/>
+                <TextBox x:Name="picUri"/>
+                <Button Click="Button_Click_2">get pic</Button>
+                <Image x:Name="pic"/>
             </StackPanel>
         </ScrollViewer>
         <control:TitleBar BackButtonClick="Button_Click_3"/>

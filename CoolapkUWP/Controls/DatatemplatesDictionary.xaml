@@ -7,59 +7,55 @@
     xmlns:xp="using:XP">
 
     <DataTemplate x:Key="Topic" x:DataType="models:TopicViewModel">
-        <ListViewItem Tag="{x:Bind Url}" HorizontalContentAlignment="Stretch" Tapped="OnTapped">
-            <xp:Shadow Z_Depth="2">
-                <Grid Padding="8" Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="56"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-                    <Ellipse Width="40" Height="40" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{x:Bind Logo,Mode=OneWay}"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind Title}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind Follownum}" Foreground="Gray"/>
-                        <TextBlock Text="关注" Foreground="Gray" Margin="0,0,5,0"/>
-                        <TextBlock Text="{x:Bind Commentnum}" Foreground="Gray"/>
-                        <TextBlock Text="讨论" Foreground="Gray" Margin="0,0,5,0"/>
-                    </StackPanel>
-                </Grid>
-            </xp:Shadow>
-        </ListViewItem>
+        <xp:Shadow Z_Depth="2">
+            <Grid Padding="8" Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Tag="{x:Bind Url}" HorizontalAlignment="Stretch" Tapped="OnTapped">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="56"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Ellipse Width="40" Height="40" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind Logo,Mode=OneWay}"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind Title}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock Text="{x:Bind Follownum}" Foreground="Gray"/>
+                    <TextBlock Text="关注" Foreground="Gray" Margin="0,0,5,0"/>
+                    <TextBlock Text="{x:Bind Commentnum}" Foreground="Gray"/>
+                    <TextBlock Text="讨论" Foreground="Gray" Margin="0,0,5,0"/>
+                </StackPanel>
+            </Grid>
+        </xp:Shadow>
     </DataTemplate>
 
     <DataTemplate x:Key="DYH" x:DataType="models:DyhViewModel">
-        <ListViewItem Tag="{x:Bind Url}" Tapped="OnTapped" HorizontalContentAlignment="Stretch">
-            <xp:Shadow Z_Depth="2">
-                <Grid Padding="8" Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="56"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Ellipse Width="40" Height="40" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{x:Bind Logo,Mode=OneWay}"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind Title}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind Follownum}" Foreground="Gray"/>
-                        <TextBlock Text="订阅" Foreground="Gray" Margin="0,0,5,0"/>
-                    </StackPanel>
-                </Grid>
-            </xp:Shadow>
-        </ListViewItem>
+        <xp:Shadow Z_Depth="2">
+            <Grid Padding="8" Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Tag="{x:Bind Url}" Tapped="OnTapped" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="56"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Ellipse Width="40" Height="40" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind Logo,Mode=OneWay}"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind Title}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock Text="{x:Bind Follownum}" Foreground="Gray"/>
+                    <TextBlock Text="订阅" Foreground="Gray" Margin="0,0,5,0"/>
+                </StackPanel>
+            </Grid>
+        </xp:Shadow>
     </DataTemplate>
 
     <DataTemplate x:DataType="models:FeedViewModel" x:Key="feed">
@@ -197,9 +193,10 @@
                       Grid.Row="9" ItemsSource="{x:Bind ReplyRows}" x:Name="repRL" IsItemClickEnabled="True" x:Load="{x:Bind ShowReplyRows}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="Style" Value="{StaticResource NoPaddingListViewItem}"/>
                             <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
@@ -318,9 +315,10 @@
                 <ListView Grid.Column="1" Margin="0,0,8,8" Background="{ThemeResource SystemControlBackgroundListLowBrush}" ScrollViewer.VerticalScrollMode="Disabled" x:Name="replyRows" x:Load="{x:Bind ShowreplyRows}" Grid.Row="3" Style="{StaticResource ListViewStyle}" ItemsSource="{x:Bind ReplyRows}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="Style" Value="{StaticResource NoPaddingListViewItem}"/>
                             <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.Footer>
@@ -350,12 +348,10 @@
         </StackPanel>
     </DataTemplate>
     <!--#endregion-->
+    
     <DataTemplate x:Key="User" x:DataType="models:UserViewModel">
-        <ListViewItem Style="{StaticResource NoPaddingListViewItem}" HorizontalContentAlignment="Stretch"
-                      Template="{StaticResource ListViewItemTemplate1}" 
-                      Tapped="OnTapped" Tag="{x:Bind Url}">
-            <xp:Shadow Z_Depth="2">
-                <Grid Padding="4" Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+        <xp:Shadow Z_Depth="2">
+                <Grid Padding="4" Background="{ThemeResource SystemControlBackgroundAltHighBrush}" HorizontalAlignment="Stretch" Tapped="OnTapped" Tag="{x:Bind Url}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="56"/>
                         <ColumnDefinition/>
@@ -381,6 +377,5 @@
                     <TextBlock TextWrapping="Wrap" Grid.Row="2" Grid.Column="1" Foreground="Gray" Text="{x:Bind Bio}"/>
                 </Grid>
             </xp:Shadow>
-        </ListViewItem>
     </DataTemplate>
 </ResourceDictionary>

@@ -100,7 +100,7 @@ namespace CoolapkUWP.Controls.ViewModels
         private readonly string dyhlogoUrl;
         private ImageSource dyhlogo1;
 
-        public string Uurl { get; private set; }
+        public new string Uurl { get; private set; }
         public new string Info { get; private set; }
         public bool IsStickTop { get; private set; }
         public bool ShowDyh { get; private set; }
@@ -123,7 +123,7 @@ namespace CoolapkUWP.Controls.ViewModels
         public bool ShowLikes { get; private set; } = true;
         public ReplyRowsItem[] ReplyRows { get; private set; }
         public RelationRowsItem[] RelationRows { get; private set; }
-        public bool ShowMessage_title { get; private set; }
+        public new bool ShowMessage_title { get; private set; }
     }
     class RelationRowsItem : INotifyPropertyChanged
     {

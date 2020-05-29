@@ -11,7 +11,6 @@ namespace CoolapkUWP.Pages.SettingPages
         public TestPage()
         {
             this.InitializeComponent();
-            mtbt.MessageText = "    \"    '    <    >    &#38;";
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -47,6 +46,11 @@ namespace CoolapkUWP.Pages.SettingPages
         private void Hyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
         {
             Application.Current.Exit();
+        }
+
+        private async void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            pic.Source = await ImageCacheHelper.GetImage(ImageType.OriginImage, picUri.Text, true);
         }
     }
 }

@@ -69,7 +69,7 @@ namespace CoolapkUWP.Controls.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserSmallAvatar)));
             }
         }
-        public string Message { get; private set; }
+        public new string Message { get; private set; }
         public ImageData Pic
         {
             get => pic1;

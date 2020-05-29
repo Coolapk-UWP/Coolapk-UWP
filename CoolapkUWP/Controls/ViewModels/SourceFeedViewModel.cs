@@ -34,7 +34,9 @@ namespace CoolapkUWP.Controls.ViewModels
                 IsCoolPictuers = true;
                 ShowPicArr = false;
             }
-            Pics = (token["picArr"] as JArray).Select(i => i.ToString()).ToList();
+            token.TryGetValue("picArr", out JToken token1);
+            if (token1 != null)
+                Pics = (token1 as JArray).Select(i => i.ToString()).ToList();
             GetPic(token);
         }
 

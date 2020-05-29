@@ -6,64 +6,57 @@ namespace CoolapkUWP.Controls
 {
     public class FirstTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate DataTemplate1 { get; set; }
+        public DataTemplate Feed { get; set; }
+        public DataTemplate Others { get; set; }
+        public DataTemplate User { get; set; }
+        public DataTemplate Topic { get; set; }
+        public DataTemplate Dyh { get; set; }
+        public DataTemplate CoolPic { get; set; }
+        public DataTemplate MessageCard { get; set; }
+        public DataTemplate Images { get; set; }
+        public DataTemplate TitleCard { get; set; }
+        public DataTemplate LoginCard { get; set; }
+        public DataTemplate RefreshCard { get; set; }
+        public DataTemplate TextLinkList { get; set; }
+        public DataTemplate IconLinks { get; set; }
         public DataTemplate DataTemplate2 { get; set; }
-        public DataTemplate DataTemplate3 { get; set; }
-        public DataTemplate DataTemplate4 { get; set; }
-        public DataTemplate DataTemplate5 { get; set; }
-        public DataTemplate DataTemplate6 { get; set; }
+        public DataTemplate TabLinkCard { get; set; }
+        public DataTemplate SelectorLinkCard { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             if (item is FeedViewModel f)
-                if (f.IsCoolPictuers) return DataTemplate6;
-                else return DataTemplate1;
-            else if (item is UserViewModel) return DataTemplate3;
-            else if (item is TopicViewModel) return DataTemplate4;
-            else if (item is DyhViewModel) return DataTemplate5;
-            return DataTemplate2;
-        }
-        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
-    }
-    public class SecondTemplateSelector : DataTemplateSelector
-    {
-        public DataTemplate DataTemplate1 { get; set; }
-        public DataTemplate DataTemplate2 { get; set; }
-        public DataTemplate DataTemplate3 { get; set; }
-        public DataTemplate DataTemplate4 { get; set; }
-        public DataTemplate DataTemplate5 { get; set; }
-        public DataTemplate DataTemplate6 { get; set; }
-        public DataTemplate DataTemplate7 { get; set; }
-        public DataTemplate DataTemplate8 { get; set; }
-        public DataTemplate DataTemplate9 { get; set; }
-        public DataTemplate DataTemplate10 { get; set; }
-        public DataTemplate DataTemplate11 { get; set; }
-        public DataTemplate DataTemplate12 { get; set; }
-        protected override DataTemplate SelectTemplateCore(object item)
-        {
-            switch ((item as IndexPageViewModel).EntityTemplate)
             {
-                case "imageTextGridCard":
-                case "imageCarouselCard_1":
-                case "imageSquareScrollCard":
-                case "iconScrollCard":
-                case "imageTextScrollCard":
-                case "feedScrollCard":
-                case "iconGridCard":
-                case "iconMiniGridCard":
-                case "iconMiniLinkGridCard":
-                case "iconLinkGridCard": return DataTemplate2;
-                case "textCard":
-                case "messageCard": return DataTemplate3;
-                case "refreshCard": return DataTemplate4;
-                case "textLinkListCard": return DataTemplate5;
-                case "iconTabLinkGridCard": return DataTemplate7;
-                case "selectorLinkCard": return DataTemplate8;
-                case "imageCard": return DataTemplate9;
-                case "unLoginCard": return DataTemplate10;
-                case "titleCard": return DataTemplate11;
-                case "feedCoolPictureGridCard": return DataTemplate12;
-                default: return DataTemplate1;
+                if (f.IsCoolPictuers) return CoolPic;
+                else return Feed;
             }
+            else if (item is UserViewModel) return User;
+            else if (item is TopicViewModel) return Topic;
+            else if (item is DyhViewModel) return Dyh;
+            else if (item is IndexPageMessageCardViewModel) return MessageCard;
+            else if (item is IndexPageHasEntitiesViewModel m)
+            {
+                switch (m.EntitiesType)
+                {
+                    case EntitiesType.TabLink: return TabLinkCard;
+                    case EntitiesType.SelectorLink: return SelectorLinkCard;
+                    case EntitiesType.Image: return Images;
+                    case EntitiesType.IconLink: return IconLinks;
+                    case EntitiesType.TextLink: return TextLinkList;
+                    case EntitiesType.Others:
+                    default: return DataTemplate2;
+                }
+            }
+            else if (item is IndexPageOperationCardViewModel o)
+            {
+                switch (o.OperationType)
+                {
+                    case OperationType.Refresh: return RefreshCard;
+                    case OperationType.Login: return LoginCard;
+                    case OperationType.ShowTitle: return TitleCard;
+                    default: return Others;
+                }
+            }
+            else return Others;
         }
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
@@ -72,33 +65,32 @@ namespace CoolapkUWP.Controls
         public DataTemplate DataTemplate0 { get; set; }
         public DataTemplate DataTemplate1 { get; set; }
         public DataTemplate DataTemplate2 { get; set; }
-        public DataTemplate DataTemplate3 { get; set; }
         public DataTemplate DataTemplate4 { get; set; }
         public DataTemplate DataTemplate5 { get; set; }
-        public DataTemplate DataTemplate6 { get; set; }
+        public DataTemplate QuestionFeed { get; set; }
         public DataTemplate DataTemplate7 { get; set; }
-        public DataTemplate DataTemplate8 { get; set; }
-        public DataTemplate DataTemplate9 { get; set; }
-        public DataTemplate DataTemplate10 { get; set; }
+        public DataTemplate Feed { get; set; }
+        public DataTemplate User { get; set; }
+        public DataTemplate CoolPic { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             if (item is FeedViewModel f)
             {
-                if (f.IsQuestionFeed) return DataTemplate6;
+                if (f.IsQuestionFeed) return QuestionFeed;
                 else if (f.ShowMessage_title) return DataTemplate5;
-                else if (f.IsCoolPictuers) return DataTemplate9;
+                else if (f.IsCoolPictuers) return CoolPic;
+                else return Feed;
             }
-            else if (item is UserViewModel) return DataTemplate8;
+            else if (item is UserViewModel) return User;
             else switch ((item as IndexPageViewModel).EntityType)
                 {
-                    case "image_1": return DataTemplate1;
                     case "picCategory":
                     case "imageSquare":
                     case "product":
                     case "icon":
                     case "iconMiniLink":
                     case "iconLink": return DataTemplate2;
-                    case "dyh": return DataTemplate3;
+                    case "dyh":
                     case "topic": return DataTemplate4;
                     case "textLink": return DataTemplate7;
                 }
