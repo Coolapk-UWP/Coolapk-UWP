@@ -14,9 +14,8 @@ namespace CoolapkUWP.Controls.ViewModels
 
     class FeedViewModelBase : SourceFeedViewModel, ILike
     {
-        public FeedViewModelBase(JToken t) : base(t)
+        public FeedViewModelBase(JObject token) : base(token)
         {
-            JObject token = t as JObject;
             if (token.TryGetValue("info", out JToken value1))
                 Info = value1.ToString();
             Likenum = token["likenum"].ToString().Replace("\"", string.Empty);

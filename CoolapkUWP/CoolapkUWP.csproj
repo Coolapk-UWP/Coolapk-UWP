@@ -145,6 +145,7 @@
     <Compile Include="Controls\ViewModels\SearchPageViewModel.cs" />
     <Compile Include="Controls\ViewModels\TopicViewModel.cs" />
     <Compile Include="Controls\ViewModels\UserViewModel.cs" />
+    <Compile Include="Helpers\PageHelper.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Helpers\ExceptionCatcher.cs" />
     <Compile Include="Controls\GetUpdateContentDialog.xaml.cs">
@@ -152,13 +153,14 @@
     </Compile>
     <Compile Include="Controls\DataTemplateSelectors.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
+    <Compile Include="Pages\FeedPages\ViewModels\FeedListPageViewModel.cs" />
     <Compile Include="Pages\FeedPages\FeedListPage.xaml.cs">
       <DependentUpon>FeedListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ShowImageControl.xaml.cs">
       <DependentUpon>ShowImageControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\NotificationsPage.xaml.cs">
+    <Compile Include="Pages\FeedPages\NotificationsPage.xaml.cs">
       <DependentUpon>NotificationsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SettingPages\TestPage.xaml.cs">
@@ -173,8 +175,8 @@
     <Compile Include="Pages\BrowserPage.xaml.cs">
       <DependentUpon>BrowserPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SearchPage.xaml.cs">
-      <DependentUpon>SearchPage.xaml</DependentUpon>
+    <Compile Include="Pages\FeedPages\SearchingPage.xaml.cs">
+      <DependentUpon>SearchingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Pages\MainPage.xaml.cs">
@@ -794,7 +796,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\NotificationsPage.xaml">
+    <Page Include="Pages\FeedPages\NotificationsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -814,7 +816,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\SearchPage.xaml">
+    <Page Include="Pages\FeedPages\SearchingPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

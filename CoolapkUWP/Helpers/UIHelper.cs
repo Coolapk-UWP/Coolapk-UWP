@@ -1,5 +1,7 @@
 ﻿using CoolapkUWP.Controls;
 using CoolapkUWP.Pages.FeedPages;
+using CoolapkUWP.Pages.FeedPages.ViewModels;
+//using CoolapkUWP.Pages.FeedPages.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +16,10 @@ namespace CoolapkUWP.Helpers
 {
     static class UIHelper
     {
-        public static NotificationsNum notifications = new NotificationsNum();
+        /// <summary>
+        /// 用于记录各种通知的数量。
+        /// </summary>
+        public static NotificationNums NotificationNums { get; } = new NotificationNums();
         static Pages.MainPage mainPage = null;
         public static List<Popup> popups = new List<Popup>();
         static readonly ObservableCollection<string> messageList = new ObservableCollection<string>();
@@ -141,9 +146,21 @@ namespace CoolapkUWP.Helpers
             if (str.IndexOf("/u/") == 0)
             {
                 string u = str.Replace("/u/", string.Empty);
+                //if (int.TryParse(u, out _))
+                //    Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, u });
+                //else Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, await NetworkHelper.GetUserIDByName(u) });
                 if (int.TryParse(u, out _))
-                    Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, u });
-                else Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, await NetworkHelper.GetUserIDByName(u) });
+                {
+                    var f = FeedListDataProvider.GetProvider(FeedListType.UserPageList, u);
+                    if (f != null)
+                        Navigate(typeof(FeedListPage), f);
+                }
+                else
+                {
+                    var f = FeedListDataProvider.GetProvider(FeedListType.UserPageList, await NetworkHelper.GetUserIDByName(u));
+                    if (f != null)
+                        Navigate(typeof(FeedListPage), f);
+                }
             }
             else if (str.IndexOf("/feed/") == 0)
             {
@@ -158,17 +175,33 @@ namespace CoolapkUWP.Helpers
             else if (str.IndexOf("/t/") == 0)
             {
                 string u = str.Replace("/t/", string.Empty);
-                Navigate(typeof(FeedListPage), new object[] { FeedListType.TagPageList, u });
+                var f = FeedListDataProvider.GetProvider(FeedListType.TagPageList, u);
+                if (f != null)
+                    Navigate(typeof(FeedListPage), f);
             }
-            else if (str.IndexOf("/product/") == 0)
+            else if (str.IndexOf("t/") == 0)
             {
-                string u = str.Replace("/product/", string.Empty);
-                Navigate(typeof(FeedListPage), new object[] { FeedListType.TagPageList, u });
+                string u = str.Replace("t/", string.Empty);
+                var f = FeedListDataProvider.GetProvider(FeedListType.TagPageList, u);
+                if (f != null)
+                    Navigate(typeof(FeedListPage), f);
             }
+            //else if (str.IndexOf("/product/") == 0)
+            //{
+            //    string u = str.Replace("/product/", string.Empty);
+            //    Navigate(typeof(FeedListPage), new object[] { FeedListType.TagPageList, u });
+            //}
             else if (str.IndexOf("/dyh/") == 0)
             {
                 string u = str.Replace("/dyh/", string.Empty);
-                Navigate(typeof(FeedListPage), new object[] { FeedListType.DYHPageList, u });
+                //Navigate(typeof(FeedListPage), new object[] { FeedListType.DyhPageList, u });
+                var f = FeedListDataProvider.GetProvider(FeedListType.DyhPageList, u);
+                if (f != null)
+                    Navigate(typeof(FeedListPage), f);
+            }
+            else if (str.IndexOf("http://image.coolapk.com/") == 0)
+            {
+                UIHelper.ShowImage(str, ImageType.SmallImage);
             }
             else if (str.IndexOf("https") == 0)
             {

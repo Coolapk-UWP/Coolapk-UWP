@@ -94,7 +94,7 @@
                     </Grid>
                 </xp:Shadow>
             </DataTemplate>
-            <DataTemplate x:Key="DYHDetail" x:DataType="local:DYHDetail">
+            <DataTemplate x:Key="DYHDetail" x:DataType="local:DyhDetail">
                 <xp:Shadow Z_Depth="3">
                     <Grid x:Name="DetailGrid" Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
                         <Grid.ColumnDefinitions>
@@ -123,12 +123,12 @@
                     </Grid>
                 </xp:Shadow>
             </DataTemplate>
-            <local:TemplateSelector x:Key="tempse" DataTemplate1="{StaticResource UserDetail}" DataTemplate2="{StaticResource feed}"
-                                    DataTemplate3="{StaticResource TopicDetail}" DataTemplate4="{StaticResource DYHDetail}"/>
+            <local:FeedListPageTemplateSelector x:Key="tempse" UserHeader="{StaticResource UserDetail}" Feed="{StaticResource feed}"
+                                                TopicHeader="{StaticResource TopicDetail}" DyhHeader="{StaticResource DYHDetail}"/>
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
-        <controls:PullToRefreshListView ItemsSource="{x:Bind itemCollection}" x:Name="listView" Padding="{x:Bind data:SettingsHelper.StackPanelMargin}" ItemTemplateSelector="{StaticResource tempse}"
+        <controls:PullToRefreshListView x:Name="listView" Padding="{x:Bind data:SettingsHelper.StackPanelMargin}" ItemTemplateSelector="{StaticResource tempse}"
                                         SelectionMode="None" PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新" RefreshRequested="{x:Bind Refresh}">
             <controls:PullToRefreshListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -144,6 +144,6 @@
                 </Style>
             </controls:PullToRefreshListView.ItemContainerStyle>
         </controls:PullToRefreshListView>
-        <control:TitleBar x:Name="titleBar" BackButtonClick="TitleBar_BackButtonClick" RefreshEvent="{x:Bind Refresh}" ComboBoxSelectionChange="FeedTypeComboBox_SelectionChanged"/>
+        <control:TitleBar x:Name="titleBar" BackButtonClick="TitleBar_BackButtonClick" RefreshEvent="{x:Bind Refresh}"/>
     </Grid>
 </Page>

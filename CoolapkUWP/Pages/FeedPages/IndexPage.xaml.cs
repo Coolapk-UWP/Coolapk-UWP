@@ -75,7 +75,7 @@ namespace CoolapkUWP.Pages.FeedPages
         async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
         {
             UIHelper.ShowProgressBar();
-            JArray array = (JArray)await DataHelper.GetData(DataType.GetIndexPage, url, url == "/main/indexV8" ? "?" : "&", page);
+            JArray array = (JArray)await DataHelper.GetData(DataUriType.GetIndexPage, url, url == "/main/indexV8" ? "?" : "&", page);
             if (array != null && array.Count > 0)
                 if (page == 1)
                 {

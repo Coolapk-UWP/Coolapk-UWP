@@ -4,9 +4,8 @@ namespace CoolapkUWP.Controls.ViewModels
 {
     class SimpleFeedReplyViewModel
     {
-        public SimpleFeedReplyViewModel(JToken t)
+        public SimpleFeedReplyViewModel(JObject token)
         {
-            JObject token = t as JObject;
             Id = token.Value<int>("id");
             Uurl = $"/u/{token.Value<int>("uid")}";
             Username = token.Value<string>("username");

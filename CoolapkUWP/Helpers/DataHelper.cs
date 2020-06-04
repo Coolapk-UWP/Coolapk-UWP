@@ -1,13 +1,15 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 
 namespace CoolapkUWP.Helpers
 {
-    enum DataType
+    /// <summary>
+    /// 程序支持的能从服务器中获取的数据的类型。
+    /// </summary>
+    enum DataUriType
     {
         CheckLoginInfo,
         GetAnswers,
@@ -38,43 +40,17 @@ namespace CoolapkUWP.Helpers
         SearchTags,
         SearchUsers,
     }
+
+    /// <summary>
+    /// 提供数据处理的方法。
+    /// </summary>
     static class DataHelper
     {
-        static readonly Dictionary<string, string> uris = new Dictionary<string, string>();
-
-        static DataHelper()
-        {
-            uris.Add(DataType.CheckLoginInfo.ToString(), "/account/checkLoginInfo");
-            uris.Add(DataType.GetAnswers.ToString(), "/question/answerList?id={0}&sort={1}&page={2}{3}{4}");
-            uris.Add(DataType.GetDyhDetail.ToString(), "/dyh/detail?dyhId={0}");
-            uris.Add(DataType.GetDyhFeeds.ToString(), "/dyhArticle/list?dyhId={0}&type={1}&page={2}{3}{4}");
-            uris.Add(DataType.GetFeedDetail.ToString(), "/feed/detail?id={0}");
-            uris.Add(DataType.GetFeedReplies.ToString(), "/feed/replyList?id={0}&listType={1}&page={2}{3}{4}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={5}");
-            uris.Add(DataType.GetHotReplies.ToString(), "/feed/hotReplyList?id={0}&page={1}{2}&discussMode=1");
-            uris.Add(DataType.GetLikeList.ToString(), "/feed/likeList?id={0}&listType=lastupdate_desc&page={1}{2}{3}");
-            uris.Add(DataType.GetIndexPage.ToString(), "{0}{1}page={2}");
-            uris.Add(DataType.GetIndexPageNames.ToString(), "/main/init");
-            uris.Add(DataType.GetNotifications.ToString(), "/notification/{0}?page={1}{2}{3}");
-            uris.Add(DataType.GetNotificationNumbers.ToString(), "/notification/checkCount");
-            uris.Add(DataType.GetReplyReplies.ToString(), "/feed/replyList?id={0}&listType=&page={1}{2}&discussMode=0&feedType=feed_reply&blockStatus=0&fromFeedAuthor=0");
-            uris.Add(DataType.GetSearchWords.ToString(), "/search/suggestSearchWordsNew?searchValue={0}&type=app");
-            uris.Add(DataType.GetShareList.ToString(), "/feed/forwardList?id={0}&type=feed&page={1}");
-            uris.Add(DataType.GetTagDetail.ToString(), "/topic/newTagDetail?tag={0}");
-            uris.Add(DataType.GetTagFeeds.ToString(), "/topic/tagFeedList?tag={0}&page={1}{2}{3}&listType={4}&blockStatus=0");
-            uris.Add(DataType.GetUserFeeds.ToString(), "/user/feedList?uid={0}&page={1}{2}{3}");
-            uris.Add(DataType.GetUserList.ToString(), "/user/{0}?uid={1}&page={2}{3}{4}");
-            uris.Add(DataType.GetUserSpace.ToString(), "/user/space?uid={0}");
-            uris.Add(DataType.GetUserProfile.ToString(), "/user/profile?uid={0}");
-            uris.Add(DataType.OperateFollow.ToString(), "/user/follow?uid={0}");
-            uris.Add(DataType.OperateLike.ToString(), "/feed/like{0}?id={1}&detail=0");
-            uris.Add(DataType.OperateUnfollow.ToString(), "/user/follow?uid={0}");
-            uris.Add(DataType.OperateUnlike.ToString(), "/feed/unlike{0}?id={1}&detail=0");
-            uris.Add(DataType.SearchFeeds.ToString(), "/search?type=feed&feedType={0}&sort={1}&searchValue={2}&page={3}{4}&showAnonymous=-1");
-            uris.Add(DataType.SearchTags.ToString(), "/search?type=feedTopic&searchValue={0}&page={1}{2}&showAnonymous=-1");
-            uris.Add(DataType.SearchUsers.ToString(), "/search?type=user&searchValue={0}&page={1}{2}&showAnonymous=-1");
-        }
-
-        //来源：https://blog.csdn.net/lindexi_gd/article/details/48951849
+        /// <summary>
+        /// 获取指定字符串的MD5。
+        /// </summary>
+        /// <param name="inputString">要获取MD5的字符串。</param>
+        // 来源 ：https://blog.csdn.net/lindexi_gd/article/details/48951849
         public static string GetMD5(string inputString)
         {
             CryptographicHash objHash = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5).CreateHash();
@@ -83,9 +59,50 @@ namespace CoolapkUWP.Helpers
             return CryptographicBuffer.EncodeToHexString(buffHash1);
         }
 
-        public static async Task<JToken> GetData(DataType dataType, params object[] args)
+        static string GetUriStringTemplate(DataUriType type)
         {
-            var json = await NetworkHelper.GetJson(string.Format(uris[dataType.ToString()], args));
+            switch (type)
+            {
+                case DataUriType.CheckLoginInfo: return "/account/checkLoginInfo";
+                case DataUriType.GetAnswers: return "/question/answerList?id={0}&sort={1}&page={2}{3}{4}";
+                case DataUriType.GetDyhDetail: return "/dyh/detail?dyhId={0}";
+                case DataUriType.GetDyhFeeds: return "/dyhArticle/list?dyhId={0}&type={1}&page={2}{3}{4}";
+                case DataUriType.GetFeedDetail: return "/feed/detail?id={0}";
+                case DataUriType.GetFeedReplies: return "/feed/replyList?id={0}&listType={1}&page={2}{3}{4}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={5}";
+                case DataUriType.GetHotReplies: return "/feed/hotReplyList?id={0}&page={1}{2}&discussMode=1";
+                case DataUriType.GetLikeList: return "/feed/likeList?id={0}&listType=lastupdate_desc&page={1}{2}{3}";
+                case DataUriType.GetIndexPage: return "{0}{1}page={2}";
+                case DataUriType.GetIndexPageNames: return "/main/init";
+                case DataUriType.GetNotifications: return "/notification/{0}?page={1}{2}{3}";
+                case DataUriType.GetNotificationNumbers: return "/notification/checkCount";
+                case DataUriType.GetReplyReplies: return "/feed/replyList?id={0}&listType=&page={1}{2}&discussMode=0&feedType=feed_reply&blockStatus=0&fromFeedAuthor=0";
+                case DataUriType.GetSearchWords: return "/search/suggestSearchWordsNew?searchValue={0}&type=app";
+                case DataUriType.GetShareList: return "/feed/forwardList?id={0}&type=feed&page={1}";
+                case DataUriType.GetTagDetail: return "/topic/newTagDetail?tag={0}";
+                case DataUriType.GetTagFeeds: return "/topic/tagFeedList?tag={0}&page={1}{2}{3}&listType={4}&blockStatus=0";
+                case DataUriType.GetUserFeeds: return "/user/feedList?uid={0}&page={1}{2}{3}";
+                case DataUriType.GetUserList: return "/user/{0}?uid={1}&page={2}{3}{4}";
+                case DataUriType.GetUserSpace: return "/user/space?uid={0}";
+                case DataUriType.GetUserProfile: return "/user/profile?uid={0}";
+                case DataUriType.OperateFollow: return "/user/follow?uid={0}";
+                case DataUriType.OperateLike: return "/feed/like{0}?id={1}&detail=0";
+                case DataUriType.OperateUnfollow: return "/user/follow?uid={0}";
+                case DataUriType.OperateUnlike: return "/feed/unlike{0}?id={1}&detail=0";
+                case DataUriType.SearchFeeds: return "/search?type=feed&feedType={0}&sort={1}&searchValue={2}&page={3}{4}&showAnonymous=-1";
+                case DataUriType.SearchTags: return "/search?type=feedTopic&searchValue={0}&page={1}{2}&showAnonymous=-1";
+                case DataUriType.SearchUsers: return "/search?type=user&searchValue={0}&page={1}{2}&showAnonymous=-1";
+                default: return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// 从服务器中获取数据。
+        /// </summary>
+        /// <param name="dataUriType">要获取的数据的类型。</param>
+        /// <param name="args">一个参数数组，其中的内容用于替换格式符号。</param>
+        public static async Task<JToken> GetData(DataUriType dataUriType, params object[] args)
+        {
+            var json = await NetworkHelper.GetJson(string.Format(GetUriStringTemplate(dataUriType), args));
             JToken token = null;
             var o = JObject.Parse(json);
             if (!string.IsNullOrEmpty(json) &&
@@ -95,6 +112,10 @@ namespace CoolapkUWP.Helpers
             return token;
         }
 
+        /// <summary>
+        /// 转换Unix时间戳至可读时间。
+        /// </summary>
+        /// <param name="timestr">Unix时间戳。</param>
         public static string ConvertTime(double timestr)
         {
             DateTime time = new DateTime(1970, 1, 1).ToLocalTime().Add(new TimeSpan(Convert.ToInt64(timestr) * 10000000));

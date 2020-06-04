@@ -17,9 +17,8 @@ namespace CoolapkUWP.Controls.ViewModels
     }
     class FeedViewModel : FeedViewModelBase
     {
-        public FeedViewModel(JToken t, FeedDisplayMode mode = FeedDisplayMode.normal) : base(t)
+        public FeedViewModel(JObject token, FeedDisplayMode mode = FeedDisplayMode.normal) : base(token)
         {
-            JObject token = t as JObject;
             if (!string.IsNullOrEmpty(Message_title) && !mode.HasFlag(FeedDisplayMode.notShowMessageTitle)) ShowMessage_title = true;
             if (mode.HasFlag(FeedDisplayMode.isFirstPageFeed))
             {
@@ -148,16 +147,12 @@ namespace CoolapkUWP.Controls.ViewModels
     {
         public ReplyRowsItem(JObject token)
         {
-            string getMessage(JObject jObject)
-            {
-                if (string.IsNullOrEmpty(jObject.Value<string>("pic")))
-                    return $"<a href=\"/u/{jObject.Value<int>("uid")}\" type=\"user-detail\">{jObject.Value<string>("username")}</a>：{jObject.Value<string>("message")}";
-                else
-                    return $"<a href=\"/u/{jObject.Value<int>("uid")}\" type=\"user-detail\">{jObject.Value<string>("username")}</a>：{jObject.Value<string>("message")} <a href=\"{jObject.Value<string>("pic")}\">查看图片</a>";
-            }
             ExtraFlag = token.Value<string>("extraFlag");
             Id = token.Value<int>("id");
-            Message = getMessage(token);
+            if (string.IsNullOrEmpty(token.Value<string>("pic")))
+                Message = $"<a href=\"/u/{token.Value<int>("uid")}\" type=\"user-detail\">{token.Value<string>("username")}</a>：{token.Value<string>("message")}";
+            else
+                Message = $"<a href=\"/u/{token.Value<int>("uid")}\" type=\"user-detail\">{token.Value<string>("username")}</a>：{token.Value<string>("message")} <a href=\"{token.Value<string>("pic")}\">查看图片</a>";
         }
         public string ExtraFlag { get; private set; }
         public double Id { get; private set; }

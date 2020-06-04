@@ -131,7 +131,7 @@ namespace CoolapkUWP.Controls
                                     TextAlignment = TextAlignment.Center,
                                     Foreground = new SolidColorBrush(Colors.Gray)
                                 };
-                                Run run = new Run { Text = content };
+                                Run run = new Run { Text = content.Replace("&amp;", "&") };
                                 paragraph2.Inlines.Add(container);
                                 paragraph2.Inlines.Add(run);
                                 richTextBlock.Blocks.Add(paragraph2);
@@ -168,7 +168,7 @@ namespace CoolapkUWP.Controls
                                     Run run2 = new Run { Text = "", FontFamily = new FontFamily("Segoe MDL2 Assets") }; //U+E167
                                     hyperlink.Inlines.Add(run2);
                                 }
-                                Run run = new Run { Text = content };
+                                Run run = new Run { Text = content.Replace("&amp;", "&") };
                                 hyperlink.Inlines.Add(run);
                                 hyperlink.Click += (sender, e) =>
                                 {
@@ -206,7 +206,7 @@ namespace CoolapkUWP.Controls
                             }
                             else
                             {
-                                paragraph.Inlines.Add(new Run { Text = item });
+                                paragraph.Inlines.Add(new Run { Text = item.Replace("&amp;", "&") });
                                 //xamlContent += $@"<Run Text='{item}'/>";
                             }
                             break;
@@ -246,14 +246,14 @@ namespace CoolapkUWP.Controls
                             }
                             else
                             {
-                                paragraph.Inlines.Add(new Run { Text = item });
+                                paragraph.Inlines.Add(new Run { Text = item.Replace("&amp;", "&") });
                                 //                                xamlContent += $@"
                                 //<Run Text='{item}'/>";
                             }
 
                             break;
                         default:
-                            paragraph.Inlines.Add(new Run { Text = item });
+                            paragraph.Inlines.Add(new Run { Text = item.Replace("&amp;", "&") });
 
                             //                xamlContent += $@"
                             //<Run Text='{GetStringInXML(item)}'/>";

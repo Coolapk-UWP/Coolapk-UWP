@@ -6,9 +6,9 @@ using Windows.UI.Xaml.Input;
 
 namespace CoolapkUWP.Controls
 {
-    public partial class DataTemplatesDictionary
+    public partial class DataTemplatesDictionary : ResourceDictionary
     {
-        public DataTemplatesDictionary() => InitializeComponent();
+        public DataTemplatesDictionary() => this.InitializeComponent();
 
         private void OnTapped(object sender, TappedRoutedEventArgs e)
             => UIHelper.OpenLink((sender as FrameworkElement).Tag as string);
@@ -56,10 +56,10 @@ namespace CoolapkUWP.Controls
                     bool b = false;
                     JObject o;
                     if (f.Liked)
-                        o = (JObject)await DataHelper.GetData(DataType.OperateUnlike, isReply ? "Reply" : string.Empty, f.Id);
+                        o = (JObject)await DataHelper.GetData(DataUriType.OperateUnlike, isReply ? "Reply" : string.Empty, f.Id);
                     else
                     {
-                        o = (JObject)await DataHelper.GetData(DataType.OperateLike, isReply ? "Reply" : string.Empty, f.Id);
+                        o = (JObject)await DataHelper.GetData(DataUriType.OperateLike, isReply ? "Reply" : string.Empty, f.Id);
                         b = true;
                     }
 

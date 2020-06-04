@@ -144,8 +144,8 @@ namespace CoolapkUWP.Helpers
                     if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(userName))
                     {
                         Set("Uid", uid);
-                        var o = (JObject)await DataHelper.GetData(DataType.CheckLoginInfo);
-                        UIHelper.notifications.Initial((JObject)o["notifyCount"]);
+                        var o = (JObject)await DataHelper.GetData(DataUriType.CheckLoginInfo);
+                        UIHelper.NotificationNums.Initial((JObject)o["notifyCount"]);
                         UIHelper.MainPageUserAvatar = await ImageCacheHelper.GetImage(ImageType.BigAvatar, o.Value<string>("userAvatar"));
                         return true;
                     }
@@ -162,6 +162,7 @@ namespace CoolapkUWP.Helpers
                 cookieManager.DeleteCookie(item);
             Set("Uid", string.Empty);
             UIHelper.MainPageUserAvatar = null;
+            UIHelper.NotificationNums.ClearNums();
         }
     }
 }

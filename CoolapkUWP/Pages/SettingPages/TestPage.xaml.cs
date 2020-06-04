@@ -1,4 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Pages.FeedPages;
+using CoolapkUWP.Pages.FeedPages.ViewModels;
 using System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -15,7 +17,9 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            UIHelper.Navigate(typeof(FeedPages.FeedListPage), new object[] { FeedPages.FeedListType.UserPageList, await NetworkHelper.GetUserIDByName(uid.Text) });
+            var f = FeedListDataProvider.GetProvider(FeedListType.UserPageList, await NetworkHelper.GetUserIDByName(uid.Text));
+            if (f != null)
+                UIHelper.Navigate(typeof(FeedListPage), f);
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)

@@ -8,9 +8,8 @@ namespace CoolapkUWP.Controls.ViewModels
 {
     class FeedReplyViewModel : SimpleFeedReplyViewModel, INotifyPropertyChanged, ILike
     {
-        public FeedReplyViewModel(JToken t, bool showReplyRow = true) : base(t)
+        public FeedReplyViewModel(JObject token, bool showReplyRow = true) : base(token)
         {
-            JObject token = t as JObject;
             Dateline = DataHelper.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
             Message = token.Value<string>("message");
             userSmallAvatarUrl = token["userInfo"].Value<string>("userSmallAvatar");
@@ -22,7 +21,7 @@ namespace CoolapkUWP.Controls.ViewModels
             if (ShowreplyRows)
             {
                 List<SimpleFeedReplyViewModel> models = new List<SimpleFeedReplyViewModel>();
-                foreach (var item in token["replyRows"] as JArray)
+                foreach (JObject item in token["replyRows"] as JArray)
                     models.Add(new SimpleFeedReplyViewModel(item));
                 ReplyRows = models.ToArray();
                 ReplyRowsMore = token.Value<int>("replyRowsMore");

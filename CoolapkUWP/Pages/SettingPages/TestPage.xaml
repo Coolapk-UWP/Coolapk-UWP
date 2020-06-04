@@ -5,8 +5,9 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:control="using:CoolapkUWP.Controls"
       xmlns:data="using:CoolapkUWP.Helpers"
+      xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
       mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -14,21 +15,28 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
-    <Grid>
-        <ScrollViewer>
-            <StackPanel Margin="{x:Bind data:SettingsHelper.StackPanelMargin}">
-                <TextBox Header="uid" x:Name="uid"/>
-                <Button Click="Button_Click">go</Button>
-                <TextBox Header="url" x:Name="url"></TextBox>
-                <Button Click="Button_Click_5">get</Button>
-                <TextBox Header="message" x:Name="message"/>
-                <Button Click="Button_Click_4">show</Button>
-                <Button Click="Button_Click_1">to login page</Button>
-                <TextBox x:Name="picUri"/>
-                <Button Click="Button_Click_2">get pic</Button>
-                <Image x:Name="pic"/>
-            </StackPanel>
-        </ScrollViewer>
-        <control:TitleBar BackButtonClick="Button_Click_3"/>
-    </Grid>
+    <ListView IsItemClickEnabled="False" SelectionMode="None">
+        <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+                <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+            </Style>
+        </ListView.ItemContainerStyle>
+        <ListView.Header>
+            <controls:ScrollHeader Mode="QuickReturn">
+                <control:TitleBar BackButtonClick="Button_Click_3" Title="TestPage"/>
+            </controls:ScrollHeader>
+        </ListView.Header>
+        <StackPanel>
+            <TextBox Header="uid" x:Name="uid"/>
+            <Button Click="Button_Click">go</Button>
+            <TextBox Header="url" x:Name="url"></TextBox>
+            <Button Click="Button_Click_5">get</Button>
+            <TextBox Header="message" x:Name="message"/>
+            <Button Click="Button_Click_4">show</Button>
+            <Button Click="Button_Click_1">to login page</Button>
+            <TextBox x:Name="picUri"/>
+            <Button Click="Button_Click_2">get pic</Button>
+            <Image x:Name="pic"/>
+        </StackPanel>
+    </ListView>
 </Page>

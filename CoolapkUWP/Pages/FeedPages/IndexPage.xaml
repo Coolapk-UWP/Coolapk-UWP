@@ -23,7 +23,7 @@
                                            LoginCard="{StaticResource loginCard}" RefreshCard="{StaticResource refreshCard}" DataTemplate2="{StaticResource imageTextScrollCard}"
                                            TextLinkList="{StaticResource textLinkListCard}" IconLinks="{StaticResource iconLinks}"
                                            TabLinkCard="{StaticResource iconTabLinkGridCard}" SelectorLinkCard="{StaticResource selectorLinkCard}"/>
-            <control:ThirdTemplateSelector x:Key="ThTemplateSelector" DataTemplate0="{StaticResource null}" DataTemplate2="{StaticResource iconLink}"
+            <control:ThirdTemplateSelector x:Key="ThTemplateSelector" DataTemplate0="{StaticResource null}" DataTemplate2="{StaticResource dyh}"
                                            DataTemplate4="{StaticResource dyh}" Feed="{StaticResource feed}"
                                            DataTemplate5="{StaticResource feedArticle2}" QuestionFeed="{StaticResource question2}"
                                            DataTemplate7="{StaticResource textLink}" User="{StaticResource user2}"
@@ -32,7 +32,7 @@
 
             <DataTemplate x:Key="titleCard" x:DataType="viewmodel:IndexPageOperationCardViewModel">
                 <Grid Margin="8" Padding="4" HorizontalAlignment="Stretch" Tapped="Grid_Tapped" Tag="{x:Bind}">
-                    <TextBlock Text="{x:Bind Title}" FontSize="18" VerticalAlignment="Center" x:Name="titleText" x:Load="{x:Bind HasTitle}"/>
+                    <TextBlock Text="{x:Bind Title}" FontSize="16" VerticalAlignment="Center" x:Name="titleText" x:Load="{x:Bind HasTitle}"/>
                     <SymbolIcon HorizontalAlignment="Right" x:Name="forwardSymbol" x:Load="{x:Bind HasUrl}" Symbol="Forward"/>
                 </Grid>
             </DataTemplate>
@@ -40,7 +40,7 @@
             <DataTemplate x:Key="loginCard" x:DataType="viewmodel:IndexPageOperationCardViewModel">
                 <StackPanel Margin="4" Orientation="Horizontal" HorizontalAlignment="Center" x:Name="loginCard" Tapped="LoginCard_Tapped">
                     <SymbolIcon Symbol="AddFriend"/>
-                    <TextBlock Padding="8,0" Text="{x:Bind Title}" FontSize="18" VerticalAlignment="Center" x:Name="titleText" x:Load="{x:Bind HasTitle}"/>
+                    <TextBlock Padding="8,0" Text="{x:Bind Title}" FontSize="16" VerticalAlignment="Center" x:Name="titleText" x:Load="{x:Bind HasTitle}"/>
                 </StackPanel>
             </DataTemplate>
 
@@ -50,7 +50,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Padding="8,0" Text="{x:Bind Title}" FontSize="18" VerticalAlignment="Center" x:Name="titleText" x:Load="{x:Bind HasTitle}"/>
+                    <TextBlock Padding="8,0" Text="{x:Bind Title}" FontSize="16" VerticalAlignment="Center" x:Name="titleText" x:Load="{x:Bind HasTitle}"/>
                     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="8">
                         <SymbolIcon Symbol="Refresh"/>
                         <TextBlock VerticalAlignment="Center" Margin="4,0">点我刷新</TextBlock>
@@ -77,13 +77,21 @@
             </DataTemplate>
 
             <DataTemplate x:Key="imageCard" x:DataType="viewmodel:IndexPageHasEntitiesViewModel">
-                <FlipView MaxHeight="180" ItemsSource="{x:Bind Entities}" Background="{x:Null}">
-                    <FlipView.ItemTemplate>
-                        <DataTemplate x:DataType="viewmodel:IndexPageViewModel">
-                            <Image Tapped="Grid_Tapped" Tag="{x:Bind}" Source="{x:Bind Pic,Mode=OneWay}"/>
-                        </DataTemplate>
-                    </FlipView.ItemTemplate>
-                </FlipView>
+                <StackPanel>
+                    <ListViewItem x:Name="a" x:Load="{x:Bind HasTitle}" HorizontalContentAlignment="Stretch" Template="{StaticResource ListViewItemTemplate1}" Tapped="Grid_Tapped" Tag="{x:Bind}">
+                        <Grid Padding="8,0" HorizontalAlignment="Stretch">
+                            <TextBlock Text="{x:Bind Title}" FontSize="16" VerticalAlignment="Center" x:Name="titleText" x:Load="{x:Bind HasTitle}"/>
+                            <SymbolIcon HorizontalAlignment="Right" x:Name="forwardSymbol" x:Load="{x:Bind HasUrl}" Symbol="Forward"/>
+                        </Grid>
+                    </ListViewItem>
+                    <FlipView Margin="16,0" MaxHeight="180" ItemsSource="{x:Bind Entities}" Background="{x:Null}">
+                        <FlipView.ItemTemplate>
+                            <DataTemplate x:DataType="viewmodel:IndexPageViewModel">
+                                <Image MaxHeight="180" Tapped="Grid_Tapped" Tag="{x:Bind}" Source="{x:Bind Pic,Mode=OneWay}"/>
+                            </DataTemplate>
+                        </FlipView.ItemTemplate>
+                    </FlipView>
+                </StackPanel>
             </DataTemplate>
 
             <DataTemplate x:Key="iconLinks" x:DataType="viewmodel:IndexPageHasEntitiesViewModel">
@@ -96,7 +104,7 @@
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="viewmodel:IndexPageViewModel">
                             <xp:Shadow Z_Depth="2">
-                                <StackPanel Tapped="Grid_Tapped" Tag="{x:Bind}"  MinWidth="64" Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Padding="4">
+                                <StackPanel Tapped="Grid_Tapped" Tag="{x:Bind}" MinWidth="64" Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Padding="4">
                                     <Image Source="{x:Bind Pic,Mode=OneWay}" Height="40" Width="40"/>
                                     <TextBlock HorizontalAlignment="Center" Text="{x:Bind Title}" TextWrapping="Wrap"/>
                                 </StackPanel>
@@ -111,7 +119,7 @@
                     <ListView.Header>
                         <ListViewItem HorizontalContentAlignment="Stretch" Template="{StaticResource ListViewItemTemplate1}" Tapped="Grid_Tapped" Tag="{x:Bind}">
                             <Grid Padding="8,0" HorizontalAlignment="Stretch">
-                                <TextBlock Text="{x:Bind Title}" FontSize="18" VerticalAlignment="Center" x:Name="titleText" x:Load="{x:Bind HasTitle}"/>
+                                <TextBlock Text="{x:Bind Title}" FontSize="16" VerticalAlignment="Center" x:Name="titleText" x:Load="{x:Bind HasTitle}"/>
                                 <SymbolIcon HorizontalAlignment="Right" x:Name="forwardSymbol" x:Load="{x:Bind HasUrl}" Symbol="Forward"/>
                             </Grid>
                         </ListViewItem>
@@ -126,30 +134,17 @@
                     </ListView.ItemContainerStyle>
                     <ListView.Footer>
                         <ListViewItem HorizontalContentAlignment="Stretch" x:Name="des" x:Load="{x:Bind HasDescription}" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind}" Tapped="Grid_Tapped">
-                            <TextBlock FontSize="18" Text="{x:Bind Description}" Margin="16,0"/>
+                            <TextBlock FontSize="16" Text="{x:Bind Description}" Margin="16,0"/>
                         </ListViewItem>
                     </ListView.Footer>
                 </ListView>
-            </DataTemplate>
-
-            <DataTemplate x:Key="iconLinkGridCard" x:DataType="viewmodel:IndexPageViewModel">
-                <ListViewItem HorizontalAlignment="Center">
-                    <ListView ScrollViewer.VerticalScrollMode="Disabled" SelectionMode="None"
-                              ItemTemplateSelector="{StaticResource ThTemplateSelector}" ItemsSource="{x:Bind Entities}">
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <control:GridPanel DesiredColumnWidth="88" CubeInSameHeight="False"/>
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                    </ListView>
-                </ListViewItem>
             </DataTemplate>
 
             <DataTemplate x:Key="imageTextScrollCard" x:DataType="viewmodel:IndexPageHasEntitiesViewModel">
                 <StackPanel>
                     <ListViewItem HorizontalContentAlignment="Stretch" Template="{StaticResource ListViewItemTemplate1}" Tapped="Grid_Tapped" Tag="{x:Bind}">
                         <Grid Padding="8,0" HorizontalAlignment="Stretch">
-                            <TextBlock Text="{x:Bind Title}" FontSize="18" VerticalAlignment="Center" x:Name="titleText" x:Load="{x:Bind HasTitle}"/>
+                            <TextBlock Text="{x:Bind Title}" FontSize="16" VerticalAlignment="Center" x:Name="titleText" x:Load="{x:Bind HasTitle}"/>
                             <SymbolIcon HorizontalAlignment="Right" x:Name="forwardSymbol" x:Load="{x:Bind HasUrl}" Symbol="Forward"/>
                         </Grid>
                     </ListViewItem>
@@ -166,9 +161,9 @@
             </DataTemplate>
 
             <DataTemplate x:Key="messageCard" x:DataType="viewmodel:IndexPageMessageCardViewModel">
-                <xp:Shadow Z_Depth="4">
-                    <Border Background="{ThemeResource SystemControlBackgroundAltHighBrush}" VerticalAlignment="Stretch">
-                        <TextBlock Margin="4" TextWrapping="Wrap" Text="{x:Bind Description}"/>
+                <xp:Shadow Z_Depth="3">
+                    <Border Padding="8" Background="{ThemeResource SystemControlBackgroundAltHighBrush}" VerticalAlignment="Stretch">
+                        <control:MTextBlock MessageText="{x:Bind Description}"/>
                     </Border>
                 </xp:Shadow>
             </DataTemplate>
@@ -209,7 +204,7 @@
 
             <DataTemplate x:Key="user2" x:DataType="viewmodel:UserViewModel">
                 <xp:Shadow Z_Depth="2">
-                    <StackPanel Background="{ThemeResource SystemControlBackgroundAltHighBrush}" VerticalAlignment="Top" Padding="4" Margin="0,4,0,12" MaxWidth="48" Tapped="Grid_Tapped" Tag="{x:Bind Url}">
+                    <StackPanel Background="{ThemeResource SystemControlBackgroundAltHighBrush}" VerticalAlignment="Top" Padding="4" Tapped="Grid_Tapped" Tag="{x:Bind Url}" MaxWidth="72">
                         <Ellipse HorizontalAlignment="Center" Width="36" Height="36">
                             <Ellipse.Fill>
                                 <ImageBrush ImageSource="{x:Bind UserAvatar}"/>
@@ -221,7 +216,7 @@
             </DataTemplate>
 
             <DataTemplate x:Key="textLink" x:DataType="viewmodel:IndexPageViewModel">
-                <xp:Shadow Z_Depth="1">
+                <xp:Shadow Z_Depth="1" Margin="6,0">
                     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10" Orientation="Horizontal" Tag="{x:Bind}" Tapped="Grid_Tapped">
                         <Image Height="20" Width="20"  Source="{x:Bind Pic,Mode=OneWay}"/>
                         <TextBlock Text="{x:Bind Title}" TextWrapping="Wrap" Margin="8,0"/>
@@ -243,18 +238,9 @@
                 </ListViewItem>
             </DataTemplate>-->
 
-            <DataTemplate x:Key="iconLink" x:DataType="viewmodel:IndexPageViewModel">
-                <xp:Shadow Z_Depth="2">
-                    <StackPanel MaxWidth="40" Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Padding="4" Margin="0,4" Tapped="Grid_Tapped" Tag="{x:Bind}">
-                        <Image Source="{x:Bind Pic,Mode=OneWay}" Height="28" Width="28"/>
-                        <TextBlock HorizontalAlignment="Center" Text="{x:Bind Title}" TextWrapping="Wrap"/>
-                    </StackPanel>
-                </xp:Shadow>
-            </DataTemplate>
-
             <DataTemplate x:Key="dyh" x:DataType="viewmodel:IndexPageViewModel">
                 <xp:Shadow Z_Depth="2">
-                    <StackPanel Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Tag="{x:Bind Url}" Tapped="Grid_Tapped" Padding="4" VerticalAlignment="Top">
+                    <StackPanel Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Tag="{x:Bind Url}" Tapped="Grid_Tapped" Padding="4" MaxWidth="72" VerticalAlignment="Top">
                         <Image Source="{x:Bind Pic,Mode=OneWay}" Height="24" Width="24" Margin="4"/>
                         <TextBlock HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Text="{x:Bind Title}"/>
                     </StackPanel>
@@ -263,10 +249,10 @@
 
             <DataTemplate x:Key="feedArticle2" x:DataType="viewmodel:FeedViewModel">
                 <xp:Shadow Z_Depth="3">
-                    <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Margin="4,0" Height="118" Width="260" Tag="{x:Bind Url}" Tapped="FeedListViewItem_Tapped">
+                    <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Height="118" Width="260" Tag="{x:Bind Url}" Tapped="FeedListViewItem_Tapped">
                         <Image Source="{x:Bind Pic,Mode=OneWay}"  Stretch="Uniform"/>
                         <Border VerticalAlignment="Bottom" Background="#70000000">
-                            <TextBlock Foreground="White" Margin="3,3,3,8" Text="{x:Bind Message_title}" TextWrapping="Wrap" FontWeight="Black" FontSize="18"/>
+                            <TextBlock Foreground="White" Margin="3,3,3,8" Text="{x:Bind Message_title}" TextWrapping="Wrap" FontSize="16"/>
                         </Border>
                     </Grid>
                 </xp:Shadow>
@@ -274,19 +260,19 @@
 
             <DataTemplate x:Key="question2" x:DataType="viewmodel:FeedViewModel">
                 <xp:Shadow Z_Depth="3">
-                    <Grid Height="250" Width="200" Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Padding="8,4">
+                    <Grid Height="220" Width="200" Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Padding="8,4">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Button Tapped="Grid_Tapped" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonStyle1}" Tag="{x:Bind Uurl}" Background="{x:Null}">
+                        <Button Tapped="Grid_Tapped" VerticalAlignment="Top" Padding="0" Tag="{x:Bind Uurl}" Background="{x:Null}">
                             <StackPanel Orientation="Horizontal">
-                                <Ellipse Width="32" Height="32" HorizontalAlignment="Left" >
+                                <Ellipse Width="32" Height="32" HorizontalAlignment="Left" Margin="4,0">
                                     <Ellipse.Fill>
                                         <ImageBrush ImageSource="{x:Bind UserSmallAvatar,Mode=OneWay}"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
-                                <StackPanel Margin="8,0">
+                                <StackPanel Margin="4,0">
                                     <TextBlock Text="{x:Bind Username}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{x:Bind Dateline}" Foreground="Gray"/>
@@ -297,7 +283,7 @@
                             </StackPanel>
                         </Button>
                         <StackPanel Grid.Row="1" Tag="{x:Bind Url}" Tapped="FeedListViewItem_Tapped">
-                            <TextBlock TextWrapping="Wrap" FontWeight="Black" FontSize="16" Margin="0,4" Text="{x:Bind Message_title}"/>
+                            <TextBlock TextWrapping="Wrap" FontSize="16" Margin="0,0,0,8" FontWeight="Black" Text="{x:Bind Message_title}"/>
                             <control:MTextBlock MessageText="{x:Bind Message}"/>
                         </StackPanel>
                     </Grid>

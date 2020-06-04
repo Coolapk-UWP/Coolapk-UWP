@@ -114,7 +114,7 @@ namespace CoolapkUWP.Pages
         #endregion
        */
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e) => UIHelper.Navigate(typeof(SearchPage), new object[] { 0, null });
+        private void SearchButton_Click(object sender, RoutedEventArgs e) => UIHelper.Navigate(typeof(SearchingPage), new object[] { 0, null });
         private void NotificationCenterButton_Click(object sender, RoutedEventArgs e) => UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.Comment);
 
         #region toIndexPage
@@ -123,10 +123,10 @@ namespace CoolapkUWP.Pages
         async void GetIndexPageItems()
         {
             await SettingsHelper.CheckLoginInfo();
-            UIHelper.notifications.BadgeNumberChanged += (sender, e) => { if (sender is NotificationsNum num) ChangeBadgeNum(num.BadgeNum); };
-            ChangeBadgeNum(UIHelper.notifications.BadgeNum);
+            UIHelper.NotificationNums.BadgeNumberChanged += (sender, e) => { if (sender is NotificationNums num) ChangeBadgeNum(num.BadgeNum); };
+            ChangeBadgeNum(UIHelper.NotificationNums.BadgeNum);
 
-            JArray array = (JArray)await DataHelper.GetData(DataType.GetIndexPageNames);
+            JArray array = (JArray)await DataHelper.GetData(DataUriType.GetIndexPageNames);
             if (array != null && array.Count > 0)
             {
                 string[] excludedTabs = new[] { "酷品", "看看号", "直播", "视频", "头条" };

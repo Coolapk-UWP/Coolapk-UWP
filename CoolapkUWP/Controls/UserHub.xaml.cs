@@ -34,7 +34,9 @@ namespace CoolapkUWP.Controls
             switch ((sender as FrameworkElement).Tag as string)
             {
                 case "feed":
-                    UIHelper.Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, SettingsHelper.Get<string>("Uid") });
+                    var f = Pages.FeedPages.ViewModels.FeedListDataProvider.GetProvider(Pages.FeedPages.ViewModels.FeedListType.UserPageList, SettingsHelper.Get<string>("Uid"));
+                    if (f != null)
+                        UIHelper.Navigate(typeof(FeedListPage), f);
                     break;
                 case "follow":
                     UIHelper.Navigate(typeof(UserListPage), new object[] { SettingsHelper.Get<string>("Uid"), true, userName });
@@ -65,7 +67,7 @@ namespace CoolapkUWP.Controls
             {
                 LoginButton.Visibility = Visibility.Collapsed;
                 UserDetailGrid.Visibility = Visibility.Visible;
-                var o = (JObject)await DataHelper.GetData(DataType.GetUserProfile, uid);
+                var o = (JObject)await DataHelper.GetData(DataUriType.GetUserProfile, uid);
                 UIHelper.MainPageUserAvatar = userAvatar = await ImageCacheHelper.GetImage(ImageType.BigAvatar, o.Value<string>("userAvatar"));
                 userName = o.Value<string>("username");
                 feedNum = o.Value<int>("feed");

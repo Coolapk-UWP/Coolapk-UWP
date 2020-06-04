@@ -60,7 +60,7 @@ namespace CoolapkUWP.Controls
         {
             UIHelper.ShowProgressBar();
             int page = isRefresh ? 1 : ++this.page;
-            JArray array = (JArray)await DataHelper.GetData(DataType.GetReplyReplies, id, page, page > 1 ? $"&lastItem={lastItem}" : string.Empty);
+            JArray array = (JArray)await DataHelper.GetData(DataUriType.GetReplyReplies, id, page, page > 1 ? $"&lastItem={lastItem}" : string.Empty);
             if (array != null && array.Count > 0)
                 if (isRefresh)
                 {
@@ -72,11 +72,11 @@ namespace CoolapkUWP.Controls
                     foreach (var item in d)
                         replys.Remove(item);
                     for (int i = 0; i < array.Count; i++)
-                        replys.Insert(i + 1, new FeedReplyViewModel(array[i]));
+                        replys.Insert(i + 1, new FeedReplyViewModel((JObject)array[i]));
                 }
                 else
                 {
-                    foreach (var item in array)
+                    foreach (JObject item in array)
                         replys.Add(new FeedReplyViewModel(item, false));
                     lastItem = array.Last.Value<int>("id");
                 }

@@ -16,9 +16,8 @@ namespace CoolapkUWP.Controls.ViewModels
     {
         private ImageSource pic1;
 
-        public IndexPageViewModel(JToken t) : base(t)
+        public IndexPageViewModel(JObject token) : base(token)
         {
-            JObject token = t as JObject;
             if (token.TryGetValue("entityTemplate", out JToken v1))
                 EntityTemplate = v1.ToString();
             if (token.TryGetValue("title", out JToken v2))
@@ -39,25 +38,6 @@ namespace CoolapkUWP.Controls.ViewModels
                 if (HasDescription)
                     Description = v4.ToString();
             }
-            if (token.TryGetValue("entities", out JToken v7))
-            {
-                HasEntities = (v7 as JArray).Count > 0;
-                if (HasEntities)
-                {
-                    List<Entity> models = new List<Entity>();
-                    foreach (var item in v7 as JArray)
-                    {
-                        JObject o = item as JObject;
-                        if (o.Value<string>("entityType") == "feed")
-                            models.Add(new FeedViewModel(item));
-                        else if (o.Value<string>("entityType") == "user")
-                            models.Add(new UserViewModel(item));
-                        else
-                            models.Add(new IndexPageViewModel(item));
-                    }
-                    Entities = models.ToArray();
-                }
-            }
             GetPic(token);
         }
 
@@ -67,7 +47,7 @@ namespace CoolapkUWP.Controls.ViewModels
             {
                 HasPic = !string.IsNullOrEmpty(v5.ToString());
                 if (HasPic)
-                    Pic = await ImageCacheHelper.GetImage(ImageType.Icon, v5.ToString());
+                    Pic = await ImageCacheHelper.GetImage(ImageType.OriginImage, v5.ToString());
             }
             else if (token.TryGetValue("logo", out JToken v6))
             {
@@ -94,16 +74,12 @@ namespace CoolapkUWP.Controls.ViewModels
                 Changed(this, nameof(Pic));
             }
         }
-        public bool HasEntities { get; private set; }
-        public Entity[] Entities { get; private set; }
-        public IndexPageViewModel[] Self { get => new IndexPageViewModel[] { this }; }
     }
 
     class IndexPageMessageCardViewModel : Entity
     {
-        public IndexPageMessageCardViewModel(JToken t) : base(t)
+        public IndexPageMessageCardViewModel(JObject token) : base(token)
         {
-            JObject token = t as JObject;
             if (token.TryGetValue("description", out JToken v4))
                 Description = v4.ToString();
         }
@@ -122,9 +98,8 @@ namespace CoolapkUWP.Controls.ViewModels
 
     class IndexPageHasEntitiesViewModel : Entity, IHasUriAndTitle
     {
-        public IndexPageHasEntitiesViewModel(JToken t, EntitiesType type) : base(t)
+        public IndexPageHasEntitiesViewModel(JObject token, EntitiesType type) : base(token)
         {
-            JObject token = t as JObject;
             EntitiesType = type;
             if (token.TryGetValue("title", out JToken v2))
             {
@@ -150,12 +125,11 @@ namespace CoolapkUWP.Controls.ViewModels
                 if (HasEntities)
                 {
                     List<Entity> models = new List<Entity>();
-                    foreach (var item in v7 as JArray)
+                    foreach (JObject item in v7 as JArray)
                     {
-                        JObject o = item as JObject;
-                        if (o.Value<string>("entityType") == "feed")
+                        if (item.Value<string>("entityType") == "feed")
                             models.Add(new FeedViewModel(item));
-                        else if (o.Value<string>("entityType") == "user")
+                        else if (item.Value<string>("entityType") == "user")
                             models.Add(new UserViewModel(item));
                         else models.Add(new IndexPageViewModel(item));
                     }
@@ -183,9 +157,8 @@ namespace CoolapkUWP.Controls.ViewModels
     }
     class IndexPageOperationCardViewModel : Entity, IHasUriAndTitle
     {
-        public IndexPageOperationCardViewModel(JToken t, OperationType type) : base(t)
+        public IndexPageOperationCardViewModel(JObject token, OperationType type) : base(token)
         {
-            JObject token = t as JObject;
             OperationType = type;
             if (token.TryGetValue("title", out JToken v2))
             {

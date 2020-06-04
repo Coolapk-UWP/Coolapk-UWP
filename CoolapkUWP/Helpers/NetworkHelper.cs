@@ -5,6 +5,9 @@ using Windows.Web.Http;
 
 namespace CoolapkUWP.Helpers
 {
+    /// <summary>
+    /// 提供与网络相关的方法。
+    /// </summary>
     static class NetworkHelper
     {
         static readonly HttpClient mClient;
@@ -37,6 +40,10 @@ namespace CoolapkUWP.Helpers
             return token;
         }
 
+        /// <summary>
+        /// 从指定URI中获取Json文本。
+        /// </summary>
+        /// <param name="url">数据在酷安服务器中的位置。</param>
         public static async Task<string> GetJson(string url)
         {
             try
@@ -49,6 +56,10 @@ namespace CoolapkUWP.Helpers
             catch { throw; }
         }
 
+        /// <summary>
+        /// 通过用户名获取UID。
+        /// </summary>
+        /// <param name="name">要获取UID的用户名。</param>
         public static async Task<string> GetUserIDByName(string name)
         {
             if (string.IsNullOrEmpty(name))

@@ -9,9 +9,8 @@ namespace CoolapkUWP.Controls.ViewModels
 {
     class SourceFeedViewModel : Entity
     {
-        public SourceFeedViewModel(JToken t) : base(t)
+        public SourceFeedViewModel(JObject token) : base(token)
         {
-            JObject token = t as JObject;
             Url = token.TryGetValue("url", out JToken json) ? json.ToString() : $"/feed/{token["id"].ToString().Replace("\"", string.Empty)}";
             if (token.Value<string>("entityType") != "article")
             {

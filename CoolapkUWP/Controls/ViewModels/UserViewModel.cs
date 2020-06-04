@@ -5,9 +5,8 @@ namespace CoolapkUWP.Controls.ViewModels
 {
     class UserViewModel : Entity
     {
-        public UserViewModel(JToken t) : base(t)
+        public UserViewModel(JObject token) : base(token)
         {
-            JObject token = t as JObject;
             Url = token.Value<string>("url");
             UserName = token.Value<string>("username");
             if (token.TryGetValue("fans", out JToken a))

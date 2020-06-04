@@ -59,7 +59,7 @@ namespace CoolapkUWP.Pages
         {
             if (await SettingsHelper.CheckLoginInfo())
             {
-                Frame.GoBack();
+                if (Frame.CanGoBack) Frame.GoBack();
                 UIHelper.ShowMessage("登录成功");
             }
             else

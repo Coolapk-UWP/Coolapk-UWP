@@ -66,7 +66,7 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             UIHelper.ShowProgressBar();
             if (string.IsNullOrEmpty(feedId)) return;
-            JObject detail = (JObject)await DataHelper.GetData(DataType.GetFeedDetail, feedId);
+            JObject detail = (JObject)await DataHelper.GetData(DataUriType.GetFeedDetail, feedId);
             if (detail != null)
             {
                 FeedDetail = new FeedDetailViewModel(detail);
@@ -125,7 +125,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 case "MakeLike":
                     if (FeedDetail.Liked)
                     {
-                        JObject o = (JObject)await DataHelper.GetData(DataType.OperateUnlike, string.Empty, feedId);
+                        JObject o = (JObject)await DataHelper.GetData(DataUriType.OperateUnlike, string.Empty, feedId);
                         if (o != null)
                         {
                             FeedDetail.Likenum = $"{o.Value<int>("count")}";
@@ -135,7 +135,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     }
                     else
                     {
-                        JObject o = (JObject)await DataHelper.GetData(DataType.OperateLike, string.Empty, feedId);
+                        JObject o = (JObject)await DataHelper.GetData(DataUriType.OperateLike, string.Empty, feedId);
                         if (o != null)
                         {
                             FeedDetail.Likenum = $"{o.Value<int>("count")}";
@@ -191,12 +191,12 @@ namespace CoolapkUWP.Pages.FeedPages
         }
         async Task RefreshFeedDetail()
         {
-            JObject detail = (JObject)await DataHelper.GetData(DataType.GetFeedDetail, feedId);
+            JObject detail = (JObject)await DataHelper.GetData(DataUriType.GetFeedDetail, feedId);
             if (detail != null) FeedDetail = new FeedDetailViewModel(detail);
         }
         async void RefreshHotReplies(int p = -1)
         {
-            JArray array = (JArray)await DataHelper.GetData(DataType.GetHotReplies,
+            JArray array = (JArray)await DataHelper.GetData(DataUriType.GetHotReplies,
                                                             feedId,
                                                             p == -1 ? ++hotRepliesPage : p,
                                                             hotRepliesPage > 1 ? $"&firstItem={hotReplyFirstItem}&lastItem={hotReplyLastItem}" : string.Empty);
@@ -211,7 +211,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     foreach (var item in d)
                         hotReplies.Remove(item);
                     for (int i = 0; i < array.Count; i++)
-                        hotReplies.Insert(i, new FeedReplyViewModel(array[i]));
+                        hotReplies.Insert(i, new FeedReplyViewModel((JObject)array[i]));
                     hotReplyFirstItem = array.First.Value<int>("id");
                     if (hotRepliesPage == 1)
                         hotReplyLastItem = array.Last.Value<int>("id");
@@ -219,7 +219,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 else
                 {
                     hotReplyLastItem = array.Last.Value<int>("id");
-                    foreach (var item in array)
+                    foreach (JObject item in array)
                         hotReplies.Add(new FeedReplyViewModel(item));
                 }
             }
@@ -252,7 +252,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     isFromAuthor = "1";
                     break;
             }
-            JArray array = (JArray)await DataHelper.GetData(DataType.GetFeedReplies,
+            JArray array = (JArray)await DataHelper.GetData(DataUriType.GetFeedReplies,
                                                             feedId,
                                                             listType,
                                                             p == -1 ? ++repliesPage : p,
@@ -273,12 +273,12 @@ namespace CoolapkUWP.Pages.FeedPages
                     if (repliesPage == 1)
                         replyLastItem = array.Last.Value<int>("id");
                     for (int i = 0; i < array.Count; i++)
-                        replies.Insert(i, new FeedReplyViewModel(array[i]));
+                        replies.Insert(i, new FeedReplyViewModel((JObject)array[i]));
                 }
                 else
                 {
                     replyLastItem = array.Last.Value<int>("id");
-                    foreach (var item in array)
+                    foreach (JObject item in array)
                         replies.Add(new FeedReplyViewModel(item));
                 }
             }
@@ -290,7 +290,7 @@ namespace CoolapkUWP.Pages.FeedPages
         }
         async void RefreshAnswers(int p = -1)
         {
-            JArray array = (JArray)await DataHelper.GetData(DataType.GetAnswers,
+            JArray array = (JArray)await DataHelper.GetData(DataUriType.GetAnswers,
                                                             feedId,
                                                             answerSortType,
                                                             p == -1 ? ++answersPage : p,
@@ -307,7 +307,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     foreach (var item in d)
                         answers.Remove(item);
                     for (int i = 0; i < array.Count; i++)
-                        answers.Insert(i, new FeedViewModel(array[i], FeedDisplayMode.notShowMessageTitle));
+                        answers.Insert(i, new FeedViewModel((JObject)array[i], FeedDisplayMode.notShowMessageTitle));
                     answerFirstItem = array.First.Value<int>("id");
                     if (answersPage == 1)
                         answerLastItem = array.Last.Value<int>("id");
@@ -315,7 +315,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 else
                 {
                     answerLastItem = array.Last.Value<int>("id");
-                    foreach (var item in array)
+                    foreach (JObject item in array)
                         answers.Add(new FeedViewModel(item, FeedDisplayMode.notShowMessageTitle));
                 }
             }
@@ -327,7 +327,7 @@ namespace CoolapkUWP.Pages.FeedPages
         }
         async void RefreshLikes(int p = -1)
         {
-            JArray array = (JArray)await DataHelper.GetData(DataType.GetLikeList,
+            JArray array = (JArray)await DataHelper.GetData(DataUriType.GetLikeList,
                                                             feedId,
                                                             p == -1 ? ++likesPage : p,
                                                             likeFirstItem == 0 ? string.Empty : $"&firstItem={likeFirstItem}",
@@ -346,12 +346,12 @@ namespace CoolapkUWP.Pages.FeedPages
                     foreach (var item in d)
                         likes.Remove(item);
                     for (int i = 0; i < array.Count; i++)
-                        likes.Insert(i, new UserViewModel(array[i]));
+                        likes.Insert(i, new UserViewModel((JObject)array[i]));
                 }
                 else
                 {
                     likeLastItem = array.Last.Value<int>("uid");
-                    foreach (var item in array)
+                    foreach (JObject item in array)
                         likes.Add(new UserViewModel(item));
                 }
             }
@@ -363,16 +363,16 @@ namespace CoolapkUWP.Pages.FeedPages
         }
         async void RefreshShares()
         {
-            JArray array = (JArray)await DataHelper.GetData(DataType.GetShareList, feedId, ++sharesPage);
+            JArray array = (JArray)await DataHelper.GetData(DataUriType.GetShareList, feedId, ++sharesPage);
             if (array != null && array.Count != 0)
             {
                 if (sharesPage == 1)
-                    foreach (var item in array)
+                    foreach (JObject item in array)
                         shares.Add(new SourceFeedViewModel(item));
                 else for (int i = 0; i < array.Count; i++)
                     {
                         if (shares.First()?.Url == array[i].Value<string>("url")) return;
-                        shares.Insert(i, new SourceFeedViewModel(array[i]));
+                        shares.Insert(i, new SourceFeedViewModel((JObject)array[i]));
                     }
             }
             else
@@ -540,7 +540,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             else
             {
-                MainListView.Margin = new Thickness(0, 0, 0, PivotItemPanel.ActualHeight + 16);
+                MainListView.Margin = new Thickness(0, 0, 0, PivotItemPanel.ActualHeight);
                 MainListView.Padding = SettingsHelper.StackPanelMargin;
                 PivotItemPanel.Margin = new Thickness(0);
                 detailList.Padding = RightSideListView.Padding = new Thickness(0, 0, 0, 12);

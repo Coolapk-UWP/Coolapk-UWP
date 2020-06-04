@@ -8,9 +8,8 @@ namespace CoolapkUWP.Controls.ViewModels
 {
     class FeedDetailViewModel : FeedViewModelBase
     {
-        public FeedDetailViewModel(JToken t) : base(t)
+        public FeedDetailViewModel(JObject token) : base(token)
         {
-            JObject token = t as JObject;
             Title = token.Value<string>("title");
             if (token.Value<string>("entityType") != "article")
             {

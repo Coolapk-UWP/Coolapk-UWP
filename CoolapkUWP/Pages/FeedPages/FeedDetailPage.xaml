@@ -75,10 +75,10 @@
                                 <SymbolIcon Symbol="Forward" HorizontalAlignment="Right"/>
                             </Grid>
                         </ListViewItem>
-                        <Grid Margin="0,3" Grid.Row="2" x:Name="feedArticleTitle" x:Load="{x:Bind FeedDetail.IsFeedArticle,Mode=OneWay}">
+                        <Grid Grid.Row="2" x:Name="feedArticleTitle" x:Load="{x:Bind FeedDetail.IsFeedArticle,Mode=OneWay}">
                             <Image x:Name="messageCover" x:Load="{x:Bind FeedDetail.Has_message_cover,Mode=OneWay}" Tapped="Image_Tapped" Tag="{x:Bind FeedDetail.Message_cover_url,Mode=OneWay}" Source="{x:Bind FeedDetail.Message_cover,Mode=OneWay}" Stretch="UniformToFill" />
-                            <Border VerticalAlignment="Bottom" Background="#55000000">
-                                <TextBlock Margin="5" Text="{x:Bind FeedDetail.Message_title,Mode=OneWay}" Foreground="White" FontWeight="Black" TextWrapping="Wrap" FontSize="20"/>
+                            <Border VerticalAlignment="Bottom" Background="#77000000">
+                                <TextBlock Margin="4" Text="{x:Bind FeedDetail.Message_title,Mode=OneWay}" Foreground="White" TextWrapping="Wrap" FontSize="20"/>
                             </Border>
                         </Grid>
                         <ListViewItem Background="{ThemeResource SystemControlBackgroundListLowBrush}" Grid.Row="2" x:Name="gotoQues" x:Load="{x:Bind FeedDetail.IsAnswerFeed,Mode=OneWay}"
@@ -206,7 +206,7 @@
                                 <TextBlock Text="{x:Bind FeedDetail.Extra_url2,Mode=OneWay}" Foreground="Gray" TextWrapping="Wrap"/>
                             </StackPanel>
                         </Grid>
-                        <ListView Grid.Row="7" ScrollViewer.VerticalScrollMode="Disabled" HorizontalContentAlignment="Stretch" Style="{StaticResource ListViewStyle1}" x:Name="relaRLis" x:Load="{x:Bind FeedDetail.ShowRelationRows,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.RelationRows,Mode=OneWay}">
+                        <ListView Grid.Row="7" Margin="4,0" ScrollViewer.VerticalScrollMode="Disabled" HorizontalContentAlignment="Stretch" Style="{StaticResource ListViewStyle1}" x:Name="relaRLis" x:Load="{x:Bind FeedDetail.ShowRelationRows,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.RelationRows,Mode=OneWay}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -389,7 +389,7 @@
             </Grid>
         </controls:PullToRefreshListView>
         <StackPanel x:Name="PivotItemPanel" Orientation="Horizontal" VerticalAlignment="Bottom" 
-                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="8,0">
+                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Padding="8,0">
             <Button Style="{StaticResource ButtonStyle1}" Click="Button_Click" Tag="MakeLike">点赞</Button>
             <AppBarSeparator />
             <Button BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}" Style="{StaticResource ButtonStyle1}" 

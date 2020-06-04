@@ -6,19 +6,14 @@ namespace CoolapkUWP.Controls.ViewModels
 {
     class TopicViewModel : DyhViewModel
     {
-        public TopicViewModel(JToken t) : base(t)
-        {
-            JObject token = t as JObject;
-            Commentnum = token["commentnum"].ToString().Replace("\"", string.Empty);
-        }
+        public TopicViewModel(JObject token) : base(token) => Commentnum = token["commentnum"].ToString().Replace("\"", string.Empty);
         public string Commentnum { get; private set; }
     }
 
     class DyhViewModel : Entity
     {
-        public DyhViewModel(JToken t) : base(t)
+        public DyhViewModel(JObject token) : base(token)
         {
-            JObject token = t as JObject;
             Url = token.Value<string>("url");
             Title = token.Value<string>("title");
             Follownum = token["follownum"].ToString().Replace("\"", string.Empty);

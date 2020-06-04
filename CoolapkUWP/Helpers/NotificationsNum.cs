@@ -5,12 +5,22 @@ using Windows.System.Threading;
 
 namespace CoolapkUWP.Helpers
 {
-    class NotificationsNum : INotifyPropertyChanged
+    /// <summary>
+    /// 用于记录各种通知的数量，并可定时（每1min）向服务器获取新的数据。
+    /// </summary>
+    class NotificationNums : INotifyPropertyChanged
     {
+        /// <summary>
+        /// BadgeNum更改时触发的事件。
+        /// </summary>
         public event EventHandler BadgeNumberChanged;
         public event PropertyChangedEventHandler PropertyChanged;
 
         private double badgeNum, followNum, messageNum, atMeNum, atCommentMeNum, commentMeNum, feedLikeNum;
+
+        /// <summary>
+        /// 新的消息总数。
+        /// </summary>
         public double BadgeNum
         {
             get => badgeNum;
@@ -23,6 +33,9 @@ namespace CoolapkUWP.Helpers
                 }
             }
         }
+        /// <summary>
+        /// 新增粉丝数。
+        /// </summary>
         public double FollowNum
         {
             get => followNum;
@@ -35,6 +48,9 @@ namespace CoolapkUWP.Helpers
                 }
             }
         }
+        /// <summary>
+        /// 新私信数。
+        /// </summary>
         public double MessageNum
         {
             get => messageNum;
@@ -47,6 +63,9 @@ namespace CoolapkUWP.Helpers
                 }
             }
         }
+        /// <summary>
+        /// 新“@我的动态”数。
+        /// </summary>
         public double AtMeNum
         {
             get => atMeNum;
@@ -59,6 +78,9 @@ namespace CoolapkUWP.Helpers
                 }
             }
         }
+        /// <summary>
+        /// 新“@我的回复”数。
+        /// </summary>
         public double AtCommentMeNum
         {
             get => atCommentMeNum;
@@ -71,6 +93,9 @@ namespace CoolapkUWP.Helpers
                 }
             }
         }
+        /// <summary>
+        /// 新回复数。
+        /// </summary>
         public double CommentMeNum
         {
             get => commentMeNum;
@@ -83,6 +108,9 @@ namespace CoolapkUWP.Helpers
                 }
             }
         }
+        /// <summary>
+        /// 新“收到的赞”数。
+        /// </summary>
         public double FeedLikeNum
         {
             get => feedLikeNum;
@@ -95,11 +123,27 @@ namespace CoolapkUWP.Helpers
                 }
             }
         }
+        ThreadPoolTimer timer;
 
+        /// <summary>
+        /// 初始化数值并初始化计时器。
+        /// </summary>
+        /// <param name="jo">用于初始化数值的、包含“NotifyCount”的<c>JObject</c>。</param>
         public void Initial(JObject jo)
         {
             ChangeNumber(jo);
-            ThreadPoolTimer PeriodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (source) => ChangeNumber((JObject)await DataHelper.GetData(DataType.GetNotificationNumbers)), new TimeSpan(0, 0, 30));
+            if (timer == null)
+                timer = ThreadPoolTimer.CreatePeriodicTimer(async (source) => ChangeNumber((JObject)await DataHelper.GetData(DataUriType.GetNotificationNumbers)), new TimeSpan(0, 1, 0));
+        }
+
+        /// <summary>
+        /// 将数字归零并取消计时器。
+        /// </summary>
+        public void ClearNums()
+        {
+            BadgeNum = FollowNum = MessageNum = AtMeNum = AtCommentMeNum = CommentMeNum = FeedLikeNum = 0;
+            timer?.Cancel();
+            timer = null;
         }
 
         void ChangeNumber(JObject o)

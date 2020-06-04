@@ -286,7 +286,7 @@
                         <Button x:Name="Ruser" x:Load="{x:Bind ShowRuser}" Style="{StaticResource ButtonStyle1}" Tapped="OnTapped" Padding="4" Tag="{x:Bind Rurl}" Background="Transparent" Content="{x:Bind Rusername}"/>
                     </StackPanel>
                 </StackPanel>
-                <Grid Grid.Column="1" Grid.Row="1" Margin="0,4,8,12">
+                <Grid Grid.Column="1" Grid.Row="1" Margin="0,4,8,8">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>

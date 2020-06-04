@@ -56,7 +56,7 @@ namespace CoolapkUWP.Pages.FeedPages
         async void LoadList(int p = -1)
         {
             UIHelper.ShowProgressBar();
-            JArray array = (JArray)await DataHelper.GetData(DataType.GetUserList,
+            JArray array = (JArray)await DataHelper.GetData(DataUriType.GetUserList,
                                                             isFollowList ? "followList" : "fansList",
                                                             uid,
                                                             p == -1 ? ++page : p,
@@ -75,10 +75,10 @@ namespace CoolapkUWP.Pages.FeedPages
                     infos.Remove(item);
                 if (p == -1)
                     for (int i = 0; i < array.Count; i++)
-                        infos.Add(new UserViewModel(isFollowList ? array[i]["fUserInfo"] : array[i]["userInfo"]));
+                        infos.Add(new UserViewModel((JObject)(isFollowList ? array[i]["fUserInfo"] : array[i]["userInfo"])));
                 else
                     for (int i = 0; i < array.Count; i++)
-                        infos.Insert(i, new UserViewModel(isFollowList ? array[i]["fUserInfo"] : array[i]["userInfo"]));
+                        infos.Insert(i, new UserViewModel((JObject)(isFollowList ? array[i]["fUserInfo"] : array[i]["userInfo"])));
             }
             else if (p == -1) page--;
             UIHelper.HideProgressBar();
