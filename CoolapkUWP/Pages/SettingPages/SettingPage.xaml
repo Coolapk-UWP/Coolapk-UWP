@@ -1,53 +1,89 @@
 ﻿<Page
     x:Class="CoolapkUWP.Pages.SettingPages.SettingPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:data="using:CoolapkUWP.Helpers"
-    xmlns:local="using:CoolapkUWP.Pages.SettingPages"
     xmlns:control="using:CoolapkUWP.Controls"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:CoolapkUWP.Pages.SettingPages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <converter:TrueToFalseConverter x:Key="TrueToFalseConverter" />
+    </Page.Resources>
 
     <Grid>
-        <Grid Padding="{x:Bind data:SettingsHelper.StackPanelMargin}">
+        <Grid Margin="4,0" Padding="{StaticResource StackPanelMargin}">
             <ScrollViewer>
                 <StackPanel>
-                    <ToggleSwitch Margin="4" x:Name="IsUseOldEmojiMode" Header="使用旧式表情" Toggled="ToggleSwitch_Toggled"/>
-                    <ToggleSwitch Margin="4" x:Name="IsBackgroundColorFollowSystem" Header="背景色跟随系统" Toggled="ToggleSwitch_Toggled"/>
-                    <ToggleSwitch Margin="4" x:Name="IsDarkMode" Header="背景色" Toggled="ToggleSwitch_Toggled"
-                              OnContent="黑色" OffContent="白色"/>
-                    <ToggleSwitch Margin="4" x:Name="IsNoPicsMode" Header="无图模式" Toggled="ToggleSwitch_Toggled"/>
-                    <Button Margin="4">
-                        清除图像缓存
-                        <Button.Flyout>
-                            <Flyout>
-                                <StackPanel>
-                                    <ListView x:Name="CacheContentListView" SelectionMode="Multiple" SelectionChanged="CacheSizeListView_SelectionChanged" ScrollViewer.VerticalScrollMode="Disabled">
-                                        <ListViewItem>缩略图</ListViewItem>
-                                        <ListViewItem>原图</ListViewItem>
-                                        <ListViewItem>缩略图（头像）</ListViewItem>
-                                        <ListViewItem>原图（头像）</ListViewItem>
-                                        <ListViewItem>图标</ListViewItem>
-                                    </ListView>
-                                    <Button x:Name="CleanCacheButton" IsEnabled="False" Click="Button_Click" Tag="CleanCache">清除</Button>
-                                </StackPanel>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
-                    <ToggleSwitch Margin="4" x:Name="CheckUpdateWhenLuanching" Header="启动时检查更新" Toggled="ToggleSwitch_Toggled"/>
-                    <Button Margin="4" Tag="checkUpdate" Click="Button_Click">检查更新</Button>
-                    <Button Margin="4" Click="Button_Click" Tag="reset">恢复默认设置</Button>
-                    <Button Margin="4" Tag="gotoTestPage" Click="Button_Click" Visibility="Collapsed" x:Name="gotoTestPage" Content="go to test page"/>
-                    <StackPanel Orientation="Horizontal" Margin="4">
-                        <TextBlock>版本：</TextBlock>
-                        <TextBlock x:Name="VersionTextBlock"/>
+                    <TextBlock
+                        x:Uid="SettingPageUiSettingsHeader"
+                        Margin="0,8"
+                        FontSize="20" />
+                    <ToggleSwitch x:Uid="SettingPageBackgroundFollowSystemSwitch" IsOn="{x:Bind IsBackgroundColorFollowSystem, Mode=TwoWay}" />
+                    <ToggleSwitch
+                        x:Uid="SettingPageDarkModeSwitch"
+                        IsOn="{x:Bind IsDarkMode, Mode=TwoWay}"
+                        Visibility="{x:Bind IsDarkModeSwitchVisibility, Mode=OneWay}" />
+
+                    <TextBlock
+                        x:Uid="SettingPageContentSettingsHeader"
+                        Margin="0,8"
+                        FontSize="20" />
+                    <CheckBox x:Uid="SettingPageUseOldEmojiModeCheckBox" IsChecked="{x:Bind IsUseOldEmojiMode, Mode=TwoWay}" />
+                    <CheckBox x:Uid="SettingPageDisplayOriginPictureCheckBox" IsChecked="{x:Bind IsDisplayOriginPicture, Mode=TwoWay}" />
+                    <CheckBox x:Uid="SettingPageNoPicsModeCheckBox" IsChecked="{x:Bind IsNoPicsMode, Mode=TwoWay}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            x:Uid="SettingPageCleanCacheButton"
+                            Click="Button_Click"
+                            IsEnabled="{x:Bind IsCleanCacheButtonEnabled, Mode=OneWay}"
+                            Tag="CleanCache" />
+                        <winui:ProgressRing Margin="8,0" IsActive="{x:Bind IsCleanCacheButtonEnabled, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}" />
                     </StackPanel>
-                    <HyperlinkButton Tag="feedback" Click="Button_Click" Margin="4">在GitHub上反馈</HyperlinkButton>
+
+                    <TextBlock
+                        x:Uid="SettingPageOthersSettingsHeader"
+                        Margin="0,8"
+                        FontSize="20" />
+                    <CheckBox x:Uid="SettingPageCheckUpdateWhenLuanchingCheckBox" IsChecked="{x:Bind CheckUpdateWhenLuanching, Mode=TwoWay}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            x:Uid="SettingPageCheckUpdate"
+                            Click="Button_Click"
+                            IsEnabled="{x:Bind IsCheckUpdateButtonEnabled, Mode=OneWay}"
+                            Tag="checkUpdate" />
+                        <winui:ProgressRing Margin="8,0" IsActive="{x:Bind IsCheckUpdateButtonEnabled, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}" />
+                    </StackPanel>
+
+                    <Button
+                        x:Uid="SettingPageResetSettings"
+                        Click="Button_Click"
+                        Tag="reset" />
+                    <Button
+                        x:Name="gotoTestPage"
+                        Click="Button_Click"
+                        Content="go to test page"
+                        Tag="gotoTestPage"
+                        Visibility="Collapsed" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Uid="SettingPageAppVersionText" />
+                        <TextBlock Text="{x:Bind versionTextBlockText}" />
+                    </StackPanel>
+                    <HyperlinkButton
+                        x:Uid="SettingPageFeedbackLink"
+                        Click="Button_Click"
+                        Tag="feedback" />
+                    <HyperlinkButton
+                        x:Uid="SettingPageLogFolderLink"
+                        Click="Button_Click"
+                        Tag="logFolder" />
                 </StackPanel>
             </ScrollViewer>
         </Grid>
-        <control:TitleBar Title="设置" BackButtonClick="TitleBar_BackButtonClick"/>
+        <control:TitleBar x:Uid="SettingPageTitle" BackButtonClick="TitleBar_BackButtonClick" />
     </Grid>
 </Page>

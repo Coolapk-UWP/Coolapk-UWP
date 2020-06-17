@@ -1,42 +1,36 @@
-﻿<Page x:Class="CoolapkUWP.Pages.SettingPages.TestPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:control="using:CoolapkUWP.Controls"
-      xmlns:data="using:CoolapkUWP.Helpers"
-      xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-      mc:Ignorable="d"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <control:DataTemplatesDictionary/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Page.Resources>
+﻿<Page
+    x:Class="CoolapkUWP.Pages.SettingPages.TestPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:control="using:CoolapkUWP.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
     <ListView IsItemClickEnabled="False" SelectionMode="None">
         <ListView.ItemContainerStyle>
             <Style TargetType="ListViewItem">
-                <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                <Setter Property="Template" Value="{StaticResource AppListViewItemTemplate}" />
             </Style>
         </ListView.ItemContainerStyle>
         <ListView.Header>
             <controls:ScrollHeader Mode="QuickReturn">
-                <control:TitleBar BackButtonClick="Button_Click_3" Title="TestPage"/>
+                <control:TitleBar Title="TestPage" BackButtonClick="Button_Click_3" />
             </controls:ScrollHeader>
         </ListView.Header>
         <StackPanel>
-            <TextBox Header="uid" x:Name="uid"/>
+            <TextBox x:Name="uid" Header="uid" />
             <Button Click="Button_Click">go</Button>
-            <TextBox Header="url" x:Name="url"></TextBox>
+            <TextBox x:Name="url" Header="url" />
             <Button Click="Button_Click_5">get</Button>
-            <TextBox Header="message" x:Name="message"/>
+            <TextBox x:Name="message" Header="message" />
             <Button Click="Button_Click_4">show</Button>
             <Button Click="Button_Click_1">to login page</Button>
-            <TextBox x:Name="picUri"/>
+            <TextBox x:Name="picUri" />
             <Button Click="Button_Click_2">get pic</Button>
-            <Image x:Name="pic"/>
+            <Image x:Name="pic" />
         </StackPanel>
     </ListView>
 </Page>

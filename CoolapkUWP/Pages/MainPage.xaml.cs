@@ -1,6 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
@@ -9,53 +9,109 @@ using System.Threading.Tasks;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
+using ImageSource = Windows.UI.Xaml.Media.ImageSource;
+using MenuItem = CoolapkUWP.Models.Json.IndexPageHeaderItemModel.Item;
 
 namespace CoolapkUWP.Pages
 {
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        ImageSource userAvatar;
+        private MenuItem[] allMenuItems;
+        private ImageSource userAvatar;
+        private double badgeNum;
+        private string badgeIconGlyph = ""; //"&#xED0D;"
+        private MenuItem[] menuItems;
+
         public ImageSource UserAvatar
         {
             get => userAvatar;
             set
             {
                 userAvatar = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserAvatar)));
+                RaisePropertyChangedEvent();
             }
+        }
+
+        public double BadgeNum
+        {
+            get => badgeNum;
+            private set
+            {
+                badgeNum = value;
+                RaisePropertyChangedEvent();
+            }
+        }
+
+        public string BadgeIconGlyph
+        {
+            get => badgeIconGlyph;
+            private set
+            {
+                badgeIconGlyph = value;
+                RaisePropertyChangedEvent();
+            }
+        }
+
+        public MenuItem[] MenuItems
+        {
+            get => menuItems;
+            private set
+            {
+                menuItems = value;
+                RaisePropertyChangedEvent();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        {
+            if (name != null)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         public MainPage()
         {
             this.InitializeComponent();
-            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
-                Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            if (SettingsHelper.Get<bool>("CheckUpdateWhenLuanching")) SettingsHelper.CheckUpdate();
-            SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
-            {
-                int i = SettingsHelper.HasStatusBar ? UIHelper.popups.Count - 1 : UIHelper.popups.Count - 2;
-                if (i >= 0)
-                {
-                    ee.Handled = true;
-                    Windows.UI.Xaml.Controls.Primitives.Popup popup = UIHelper.popups[i];
-                    popup.IsOpen = false;
-                    UIHelper.popups.Remove(popup);
-                }
-                else if (Frame.CanGoBack)
-                {
-                    ee.Handled = true;
-                    Frame.GoBack();
-                }
-            };
-            var a = new WeakReference<ImageSource>(new Windows.UI.Xaml.Media.Imaging.BitmapImage());
-            Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForApplication().Clear();
-            UIHelper.MainPage = this;
             GetIndexPageItems();
         }
-        /* 搜索框相关
+
+        protected override async void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            UserAvatar = await ImageCacheHelper.GetImageAsync(ImageType.BigAvatar, SettingsHelper.Get<string>(SettingsHelper.UserAvatar));
+            await SettingsHelper.CheckLoginInfo();
+            UIHelper.NotificationNums.BadgeNumberChanged += NotificationNums_BadgeNumberChanged;
+            UIHelper.UserAvatarChanged += UIHelper_UserAvatarChanged;
+            ChangeBadgeNum(UIHelper.NotificationNums.BadgeNum);
+        }
+
+        protected override void OnNavigatedFrom(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
+        {
+            UIHelper.NotificationNums.BadgeNumberChanged -= NotificationNums_BadgeNumberChanged;
+            UIHelper.UserAvatarChanged -= UIHelper_UserAvatarChanged;
+            base.OnNavigatedFrom(e);
+        }
+
+        private void UIHelper_UserAvatarChanged(object sender, ImageSource e) => UserAvatar = e;
+
+        private void NotificationNums_BadgeNumberChanged(object sender, EventArgs e)
+        {
+            if (sender is NotificationNums num)
+                ChangeBadgeNum(num.BadgeNum);
+        }
+
+        private async void ChangeBadgeNum(double num) =>
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                BadgeNum = num;
+                BadgeIconGlyph = num > 0 ? "" /*"&#xED0C;"*/ : ""; //"&#xED0D;"
+            });
+
+        private void NotificationCenterButton_Click(object sender, RoutedEventArgs e) => UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.Comment);
+
         #region 搜索框相关
+
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (e.NewSize.Width >= 768)
@@ -69,40 +125,44 @@ namespace CoolapkUWP.Pages
                 SearchButton.Visibility = Visibility.Visible;
             }
         }
+
         private async void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/search/suggestSearchWordsNew?searchValue={sender.Text}&type=app"));
-                if (array != null && array.Count > 0)
-                    sender.ItemsSource = from i in array select new SearchWord(i.GetObject());
+                if (await DataHelper.GetDataAsync(DataUriType.SearchWords, args: sender.Text) is JArray array && array.Count > 0)
+                    sender.ItemsSource = from i in array select new SearchWord(i as JObject);
                 else
                     sender.ItemsSource = null;
             }
         }
+
         private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             if (args.ChosenSuggestion is SearchWord word)
             {
                 if (word.Symbol == Symbol.Contact)
-                    Tools.Navigate(typeof(SearchPage), new object[] { 1, word.GetTitle() });
+                    UIHelper.Navigate(typeof(SearchingPage), new object[] { 1, word.GetTitle() });
                 else
-                    Tools.Navigate(typeof(SearchPage), new object[] { 0, word.Title });
+                    UIHelper.Navigate(typeof(SearchingPage), new object[] { 0, word.Title });
             }
             else if (args.ChosenSuggestion is null)
-                Tools.Navigate(typeof(SearchPage), new object[] { 0, sender.Text });
+                UIHelper.Navigate(typeof(SearchingPage), new object[] { 0, sender.Text });
         }
+
         private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             if (args.SelectedItem is SearchWord m)
                 sender.Text = m.GetTitle();
         }
+
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             SearchBox.Visibility = Visibility.Visible;
             SearchButton.Visibility = Visibility.Collapsed;
             SearchBox.Focus(FocusState.Keyboard);
         }
+
         private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
         {
             if (Window.Current.Bounds.Width < 768)
@@ -111,131 +171,40 @@ namespace CoolapkUWP.Pages
                 SearchButton.Visibility = Visibility.Visible;
             }
         }
-        #endregion
-       */
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e) => UIHelper.Navigate(typeof(SearchingPage), new object[] { 0, null });
-        private void NotificationCenterButton_Click(object sender, RoutedEventArgs e) => UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.Comment);
+        #endregion 搜索框相关
 
-        #region toIndexPage
-        string[] followUrls;
-        int followIndex;
-        async void GetIndexPageItems()
+        private async void GetIndexPageItems()
         {
-            await SettingsHelper.CheckLoginInfo();
-            UIHelper.NotificationNums.BadgeNumberChanged += (sender, e) => { if (sender is NotificationNums num) ChangeBadgeNum(num.BadgeNum); };
-            ChangeBadgeNum(UIHelper.NotificationNums.BadgeNum);
-
-            JArray array = (JArray)await DataHelper.GetData(DataUriType.GetIndexPageNames);
-            if (array != null && array.Count > 0)
-            {
-                string[] excludedTabs = new[] { "酷品", "看看号", "直播", "视频", "头条" };
-                var tempTabList = (from a in array
-                                   where a.Value<string>("entityTemplate") == "configCard"
-                                   from b in a["entities"] as JArray
-                                   where !excludedTabs.Contains(b.Value<string>("title"))
-                                   select b).ToArray();
-                var FollowList = from a in array
-                                 where a.Value<string>("entityTemplate") == "configCard"
-                                 from b in a["entities"] as JArray
-                                 where b.Value<string>("title") == "关注"
-                                 from c in b["entities"] as JArray
-                                 where c.Value<string>("entityType") == "page"
-                                 select c;
-                var TabList = new JToken[tempTabList.Length + 1];
-                TabList[0] = JObject.Parse("{title : \"头条\"}");
-                for (int i = 1; i < TabList.Length; i++)
-                    TabList[i] = tempTabList[i - 1];
-                PivotItem j = new PivotItem();
-                MainPivot.ItemsSource = TabList.Select(a =>
-                {
-                    var b = a as JObject;
-                    string title = b.Value<string>("title");
-                    var p = new PivotItem { Header = title };
-                    p.Content = new Frame { Tag = title == "头条" ? "/main/indexV8" : $"{b.Value<string>("url")}&title={title}" };
-                    if (title == "关注") j = p;
-                    return p;
-                });
-                followUrls = FollowList.Select(a => a.Value<string>("url")).ToArray();
-                followIndex = MainPivot.Items.IndexOf(j);
-                PivotItemsComboBox.ItemsSource = FollowList.Select(a => a.Value<string>("title"));
-                if (SettingsHelper.Get<int>("DefaultFollowPageIndex") > followUrls.Count()) SettingsHelper.Set("DefaultFollowPageIndex", 0);
-                PivotItemsComboBox.SelectedIndex = SettingsHelper.Get<int>("DefaultFollowPageIndex");
-            }
+            var temp = await DataHelper.GetDataAsync<Models.Json.IndexPageHeaderItemModel.Rootobject>(DataUriType.GetIndexPageNames);
+            MenuItems = await Task.Run(() =>
+                (from t in temp.Data
+                 where t.EntityTemplate == "configCard"
+                 from ta in t.Entities
+                 where ta.Title != "酷品"
+                 where ta.Title != "看看号"
+                 where ta.Title != "直播"
+                 where ta.Title != "视频"
+                 select new MenuItem(ta)).ToArray()
+            );
+            await Task.Run(() =>
+                allMenuItems = menuItems.Concat(from i in menuItems
+                                                where i.Entities != null
+                                                from j in i.Entities
+                                                select j).ToArray()
+            );
+            await Task.Delay(200);
+            navigationView.SelectedItem = menuItems.First(i => i.Title == "头条");
+            navigationViewFrame.Navigate(typeof(IndexPage), new object[] { "/main/indexV8", true });
         }
 
-        private async void ChangeBadgeNum(double num) =>
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => NotificationCenterButton.Icon = new FontIcon
-            {
-                FontFamily = new FontFamily("Segoe MDL2 Assets"),
-                Glyph = num > 0 ? "" //"&#xED0C;" 
-                                : "" //"&#xED0D;" 
-            });
-        #endregion
-
-        private void PivotItemsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void NavigationView_ItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
         {
-            if (PivotItemsComboBox.SelectedIndex != -1 && MainPivot.SelectedIndex == followIndex && (MainPivot.SelectedItem as PivotItem).Content is Frame f)
-            {
-                f.Navigate(typeof(IndexPage), new object[] { followUrls[PivotItemsComboBox.SelectedIndex], true });
-                SettingsHelper.Set("DefaultFollowPageIndex", PivotItemsComboBox.SelectedIndex);
-                Task.Run(async () =>
-                {
-                    await Task.Delay(1000);
-                    await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                        (VisualTree.FindDescendantByName(MainPivot.SelectedItem as PivotItem, "ScrollViewer") as ScrollViewer).ViewChanged += (s, ee) =>
-                        {
-                            ScrollViewer VScrollViewer = s as ScrollViewer;
-                            IndexPage page = f.Content as IndexPage;
-                            if (!ee.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight && page.CanLoadMore)
-                                page.GetUrlPage();
-                        });
-                });
-            }
-        }
-
-        private void MainPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (MainPivot.SelectedIndex == followIndex && PivotItemsComboBox.SelectedIndex > -1)
-            {
-                PivotItemsComboBox.Visibility = Visibility.Visible;
-                if ((MainPivot.SelectedItem as PivotItem).Content is Frame f && f.Content is null)
-                {
-                    f.Navigate(typeof(IndexPage), new object[] { followUrls[PivotItemsComboBox.SelectedIndex], true });
-                    Task.Run(async () =>
-                    {
-                        await Task.Delay(1000);
-                        await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                            (VisualTree.FindDescendantByName(MainPivot.SelectedItem as PivotItem, "ScrollViewer") as ScrollViewer).ViewChanged += (s, ee) =>
-                            {
-                                ScrollViewer VScrollViewer = s as ScrollViewer;
-                                IndexPage page = f.Content as IndexPage;
-                                if (!ee.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight && page.CanLoadMore)
-                                    page.GetUrlPage();
-                            });
-                    });
-                }
-            }
-            else
-            {
-                PivotItemsComboBox.Visibility = Visibility.Collapsed;
-                if ((MainPivot.SelectedItem as PivotItem).Content is Frame f && f.Content is null)
-                {
-                    f.Navigate(typeof(IndexPage), new object[] { f.Tag as string, true });
-                    Task.Run(async () =>
-                    {
-                        await Task.Delay(1000);
-                        await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                            (VisualTree.FindDescendantByName(MainPivot.SelectedItem as PivotItem, "ScrollViewer") as ScrollViewer).ViewChanged += (s, ee) =>
-                            {
-                                ScrollViewer VScrollViewer = s as ScrollViewer;
-                                IndexPage page = f.Content as IndexPage;
-                                if (!ee.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight && page.CanLoadMore)
-                                    page.GetUrlPage();
-                            });
-                    });
-                }
-            }
+            var title = args.InvokedItem as string;
+            if (title == "关注") return;
+            var item = allMenuItems.First(i => i.Title == title);
+            var uri = title == "头条" ? "/main/indexV8" : $"{item.Uri}&title={title}";
+            navigationViewFrame.Navigate(typeof(IndexPage), new object[] { uri, true }, args.RecommendedNavigationTransitionInfo);
         }
     }
 }

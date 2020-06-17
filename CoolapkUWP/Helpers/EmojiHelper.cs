@@ -3,18 +3,9 @@ using System.Linq;
 
 namespace CoolapkUWP.Helpers
 {
-    /// <summary>
-    /// 用于检测是否支持某表情及获取其路径。
-    /// </summary>
-    static class EmojiHelper
+    internal static class EmojiHelper
     {
-        /// <summary>
-        /// 获取程序中是否包含某个字符串所表示的表情。
-        /// </summary>
-        /// <param name="key">表示该表情的字符串。</param>
-        /// <param name="useOldEmoji">是否获取旧版表情，默认为 <c>false</c>。<br/></param>
-        public static bool Contains(string key, bool useOldEmoji = false) => useOldEmoji ? oldEmojis.Contains(key) : emojis.Contains(key);
-        static readonly string[] oldEmojis = new string[]
+        private static readonly string[] oldEmojis = new string[]
 {
 "[doge]",
 "[doge原谅ta]",
@@ -82,7 +73,8 @@ namespace CoolapkUWP.Helpers
 "[酷币]",
 "[阴险]",
 "[难过]"       };
-        static readonly string[] emojis = new string[] {"(cos滑稽",
+
+        private static readonly string[] emojis = new string[] {"(cos滑稽",
 "(haha",
 "(OK",
 "(sofa",
@@ -521,21 +513,16 @@ namespace CoolapkUWP.Helpers
 "[Google滑稽]",
 "[SegoeUI滑稽]" };
 
-        /// <summary>
-        /// 获取某个字符串所表示的表情的文件路径。
-        /// </summary>
-        /// <param name="key">表示该表情的字符串。</param>
-        /// <param name="useOldEmoji">
-        ///     是否获取旧版表情，默认为 <c>false</c>。<br/>
-        ///     请在传入 <c>true</c> 前确保该 <c>key</c> 所表示的表情有旧版。
-        /// </param>
+        public static bool Contains(string key, bool useOldEmoji = false) => useOldEmoji ? oldEmojis.Contains(key) : emojis.Contains(key);
+
         public static Uri Get(string key, bool useOldEmoji = false)
         {
             short id = useOldEmoji ? GetOldEmojiId(key) : GetEmojiID(key);
-            if (id == -1) return new Uri($"ms-appx:///Assets/{(SettingsHelper.Get<bool>("IsDarkMode") ? "img_placeholder_night" : "img_placeholder")}.png");
-            else return new Uri($"ms-appx:///Assets/Emoji/{ id }.png");
+            if (id == -1) return new Uri($"ms-appx:///Assets/{(SettingsHelper.Get<bool>(SettingsHelper.IsDarkMode) ? "img_placeholder_night" : "img_placeholder")}.png");
+            else          return new Uri($"ms-appx:///Assets/Emoji/{ id }.png");
         }
-        static short GetOldEmojiId(string key)
+
+        private static short GetOldEmojiId(string key)
         {
             switch (key)
             {
@@ -608,7 +595,8 @@ namespace CoolapkUWP.Helpers
                 default: return -1;
             }
         }
-        static short GetEmojiID(string key)
+
+        private static short GetEmojiID(string key)
         {
             switch (key)
             {

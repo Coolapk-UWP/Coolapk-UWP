@@ -20,26 +20,30 @@ namespace CoolapkUWP.Controls
     //https://www.cnblogs.com/arcsinw/p/8638526.html
     public sealed partial class ShowImageControl : UserControl
     {
-        class ImageData
+        private class ImageData
         {
             public ImageData(ImageType type, string url)
             {
                 Type = type;
                 Url = url;
             }
+
             public void ChangeType()
             {
                 if (Type == ImageType.SmallAvatar) Type = ImageType.BigAvatar;
                 else if (Type == ImageType.SmallImage) Type = ImageType.OriginImage;
             }
-            public async Task<ImageSource> GetImage() => await ImageCacheHelper.GetImage(Type, Url, true);
+
+            public async Task<ImageSource> GetImage() => await ImageCacheHelper.GetImageAsync(Type, Url, true);
+
             public ImageType Type { get; private set; }
             public string Url { get; set; }
         }
 
-        readonly Popup popup;
-        readonly List<ImageData> datas = new List<ImageData>();
-        readonly ObservableCollection<ImageSource> Images = new ObservableCollection<ImageSource>();
+        private readonly Popup popup;
+        private readonly List<ImageData> datas = new List<ImageData>();
+        private readonly ObservableCollection<ImageSource> Images = new ObservableCollection<ImageSource>();
+
         public ShowImageControl(Popup popup)
         {
             this.InitializeComponent();
@@ -53,11 +57,27 @@ namespace CoolapkUWP.Controls
         public void ShowImage(string url, ImageType type)
         {
             if (url.Substring(url.LastIndexOf('.')).ToLower().Contains("gif"))
+            {
                 if (type == ImageType.SmallImage)
+                {
                     datas.Add(new ImageData(ImageType.OriginImage, url));
+                }
                 else
+                {
                     datas.Add(new ImageData(ImageType.BigAvatar, url));
-            else datas.Add(new ImageData(type, url));
+                }
+            }
+            else if(SettingsHelper.Get<bool>(SettingsHelper.IsDisplayOriginPicture))
+            {
+                var d = new ImageData(type, url);
+                d.ChangeType();
+                datas.Add(d);
+            }
+            else
+            {
+                datas.Add(new ImageData(type, url));
+            }
+
             Images.Add(null);
         }
 
@@ -66,10 +86,27 @@ namespace CoolapkUWP.Controls
             for (int i = 0; i < urls.Length; i++)
             {
                 if (urls[i].Substring(urls[i].LastIndexOf('.')).ToLower().Contains("gif"))
+                {
                     if (type == ImageType.SmallImage)
+                    {
                         datas.Add(new ImageData(ImageType.OriginImage, urls[i]));
-                    else datas.Add(new ImageData(ImageType.BigAvatar, urls[i]));
-                else datas.Add(new ImageData(type, urls[i]));
+                    }
+                    else
+                    {
+                        datas.Add(new ImageData(ImageType.BigAvatar, urls[i]));
+                    }
+                }
+                else if (SettingsHelper.Get<bool>(SettingsHelper.IsDisplayOriginPicture))
+                {
+                    var d = new ImageData(type, urls[i]);
+                    d.ChangeType();
+                    datas.Add(d);
+                }
+                else
+                {
+                    datas.Add(new ImageData(type, urls[i]));
+                }
+
                 Images.Add(null);
             }
             Task.Run(async () =>
@@ -149,7 +186,8 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        bool a = false;
+        private bool a = false;
+
         private async void SFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int i = SFlipView.SelectedIndex;

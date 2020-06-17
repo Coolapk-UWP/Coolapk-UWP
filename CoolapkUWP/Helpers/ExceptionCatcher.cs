@@ -8,9 +8,10 @@ namespace CoolapkUWP.Helpers
     internal class ExceptionHandlingSynchronizationContext : SynchronizationContext
     {
         /// <summary>
-        /// 注册事件.  需要在OnLaunched和OnActivated事件中调用
+        ///     注册事件. 需要在OnLaunched和OnActivated事件中调用
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// </returns>
         public static ExceptionHandlingSynchronizationContext Register()
         {
             var syncContext = Current;
@@ -25,10 +26,12 @@ namespace CoolapkUWP.Helpers
         }
 
         /// <summary>
-        /// 将线程的上下文绑定到特定的Frame上面
+        ///     将线程的上下文绑定到特定的Frame上面
         /// </summary>
-        /// <param name="rootFrame"></param>
-        /// <returns></returns>
+        /// <param name="rootFrame">
+        /// </param>
+        /// <returns>
+        /// </returns>
         public static ExceptionHandlingSynchronizationContext RegisterForFrame(Frame rootFrame)
         {
             if (rootFrame == null)

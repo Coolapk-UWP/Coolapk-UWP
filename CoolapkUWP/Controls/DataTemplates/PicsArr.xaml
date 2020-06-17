@@ -1,0 +1,39 @@
+﻿<ResourceDictionary
+    x:Class="CoolapkUWP.Controls.DataTemplates.PicsArr"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
+    xmlns:models="using:CoolapkUWP.Models">
+
+    <DataTemplate x:Key="PicsArr" x:DataType="models:ImageModel">
+        <Grid BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}" BorderThickness="1">
+            <Image
+                MinWidth="100"
+                MinHeight="100"
+                MaxWidth="100"
+                MaxHeight="100"
+                Source="{x:Bind Pic, Mode=OneWay}"
+                Stretch="UniformToFill"
+                Tag="{x:Bind Uri}"
+                Tapped="Image_Tapped" />
+            <StackPanel
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Orientation="Horizontal">
+                <Border
+                    x:Name="longPic"
+                    x:Load="{x:Bind IsLongPic, Mode=OneWay}"
+                    Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                    <TextBlock>长图</TextBlock>
+                </Border>
+                <Border
+                    x:Name="gif"
+                    x:Load="{x:Bind IsGif}"
+                    Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                    <TextBlock>GIF</TextBlock>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>
