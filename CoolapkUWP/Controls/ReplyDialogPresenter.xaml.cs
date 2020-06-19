@@ -1,5 +1,5 @@
-﻿using CoolapkUWP.Controls.ViewModels;
-using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Models;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Newtonsoft.Json.Linq;
 using System;
@@ -15,22 +15,23 @@ namespace CoolapkUWP.Controls
 {
     public sealed partial class ReplyDialogPresenter : Page
     {
-        readonly double id;
-        int page;
-        double lastItem;
-        readonly ObservableCollection<FeedReplyViewModel> replys = new ObservableCollection<FeedReplyViewModel>();
-        ScrollViewer VScrollViewer;
+        private readonly double id;
+        private int page;
+        private double lastItem;
+        private readonly ObservableCollection<FeedReplyModel> replys = new ObservableCollection<FeedReplyModel>();
+        private ScrollViewer VScrollViewer;
+
         public ReplyDialogPresenter(object o, Popup popup)
         {
             this.InitializeComponent();
-            UIHelper.ShowProgressBar();
+            UIHelper.ShowProgressRing();
             Height = Window.Current.Bounds.Height;
             Width = Window.Current.Bounds.Width;
             HorizontalAlignment = HorizontalAlignment.Center;
             Window.Current.SizeChanged += WindowSizeChanged;
             TitleBar.BackButtonClick += (s, e) => popup.Hide();
             popup.Closed += (s, e) => Window.Current.SizeChanged -= WindowSizeChanged;
-            FeedReplyViewModel reply = o as FeedReplyViewModel;
+            FeedReplyModel reply = o as FeedReplyModel;
             TitleBar.Title = $"回复({reply.Replynum})";
             TitleBar.RefreshEvent += (s, e) => GetReplys(true);
             id = reply.Id;
@@ -38,7 +39,7 @@ namespace CoolapkUWP.Controls
             reply.ShowreplyRows = false;
             replys.Add(reply);
             GetReplys(false);
-            UIHelper.HideProgressBar();
+            UIHelper.HideProgressRing();
             Task.Run(async () =>
             {
                 await Task.Delay(200);
@@ -56,11 +57,11 @@ namespace CoolapkUWP.Controls
             Width = e.Size.Width;
         }
 
-        async void GetReplys(bool isRefresh)
+        private async void GetReplys(bool isRefresh)
         {
-            UIHelper.ShowProgressBar();
+            UIHelper.ShowProgressRing();
             int page = isRefresh ? 1 : ++this.page;
-            JArray array = (JArray)await DataHelper.GetData(DataUriType.GetReplyReplies, id, page, page > 1 ? $"&lastItem={lastItem}" : string.Empty);
+            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetReplyReplies, id, page, page > 1 ? $"&lastItem={lastItem}" : string.Empty);
             if (array != null && array.Count > 0)
                 if (isRefresh)
                 {
@@ -72,16 +73,16 @@ namespace CoolapkUWP.Controls
                     foreach (var item in d)
                         replys.Remove(item);
                     for (int i = 0; i < array.Count; i++)
-                        replys.Insert(i + 1, new FeedReplyViewModel((JObject)array[i]));
+                        replys.Insert(i + 1, new FeedReplyModel((JObject)array[i]));
                 }
                 else
                 {
                     foreach (JObject item in array)
-                        replys.Add(new FeedReplyViewModel(item, false));
+                        replys.Add(new FeedReplyModel(item, false));
                     lastItem = array.Last.Value<int>("id");
                 }
             else if (!isRefresh) this.page--;
-            UIHelper.HideProgressBar();
+            UIHelper.HideProgressRing();
         }
 
         private void VScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)

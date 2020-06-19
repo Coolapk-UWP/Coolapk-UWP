@@ -1,5 +1,5 @@
-﻿using CoolapkUWP.Controls.ViewModels;
-using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Models;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Newtonsoft.Json.Linq;
 using System;
@@ -15,12 +15,12 @@ namespace CoolapkUWP.Pages.FeedPages
 {
     public sealed partial class UserListPage : Page
     {
-        bool isFollowList;
-        string uid;
-        int page = 1;
-        double firstItem, lastItem;
-        readonly ObservableCollection<UserViewModel> infos = new ObservableCollection<UserViewModel>();
-        ScrollViewer VScrollViewer = null;
+        private bool isFollowList;
+        private string uid;
+        private int page = 1;
+        private double firstItem, lastItem;
+        private readonly ObservableCollection<UserModel> infos = new ObservableCollection<UserModel>();
+        private ScrollViewer VScrollViewer = null;
 
         public UserListPage()
         {
@@ -53,10 +53,10 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        async void LoadList(int p = -1)
+        private async void LoadList(int p = -1)
         {
-            UIHelper.ShowProgressBar();
-            JArray array = (JArray)await DataHelper.GetData(DataUriType.GetUserList,
+            UIHelper.ShowProgressRing();
+            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetUserList,
                                                             isFollowList ? "followList" : "fansList",
                                                             uid,
                                                             p == -1 ? ++page : p,
@@ -75,13 +75,13 @@ namespace CoolapkUWP.Pages.FeedPages
                     infos.Remove(item);
                 if (p == -1)
                     for (int i = 0; i < array.Count; i++)
-                        infos.Add(new UserViewModel((JObject)(isFollowList ? array[i]["fUserInfo"] : array[i]["userInfo"])));
+                        infos.Add(new UserModel((JObject)(isFollowList ? array[i]["fUserInfo"] : array[i]["userInfo"])));
                 else
                     for (int i = 0; i < array.Count; i++)
-                        infos.Insert(i, new UserViewModel((JObject)(isFollowList ? array[i]["fUserInfo"] : array[i]["userInfo"])));
+                        infos.Insert(i, new UserModel((JObject)(isFollowList ? array[i]["fUserInfo"] : array[i]["userInfo"])));
             }
             else if (p == -1) page--;
-            UIHelper.HideProgressBar();
+            UIHelper.HideProgressRing();
         }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)

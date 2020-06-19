@@ -82,9 +82,10 @@
 ![问答](Screenshots/批注-2019-11-30-184130.jpg)
 
 ## 使用到的模块
-- [XPShadow](https://github.com/brookshi/XPShadow/)
 - [UWP Community Toolkit](https://github.com/Microsoft/UWPCommunityToolkit/)
+- [Win UI](https://github.com/microsoft/microsoft-ui-xaml)
 - [Json.NET](https://www.newtonsoft.com/json)
+- [Metro Log](https://github.com/novotnyllc/MetroLog)
 
 ## 鸣谢
 - 酷安UWP原作者[@一块小板子](http://www.coolapk.com/u/695942)([Github](https://github.com/oboard))

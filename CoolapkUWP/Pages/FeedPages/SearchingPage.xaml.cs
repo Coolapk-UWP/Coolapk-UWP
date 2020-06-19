@@ -1,5 +1,5 @@
-﻿using CoolapkUWP.Controls.ViewModels;
-using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
@@ -13,14 +13,15 @@ namespace CoolapkUWP.Pages.FeedPages
 {
     public sealed partial class SearchingPage : Page
     {
-        int[] pages = new int[3];
-        string[] lastItems = new string[3];
+        private int[] pages = new int[3];
+        private string[] lastItems = new string[3];
+
         public SearchingPage()
         {
             this.InitializeComponent();
-            FeedList.ItemsSource = new ObservableCollection<FeedViewModel>();
-            UserList.ItemsSource = new ObservableCollection<UserViewModel>();
-            TopicList.ItemsSource = new ObservableCollection<TopicViewModel>();
+            FeedList.ItemsSource = new ObservableCollection<FeedModel>();
+            UserList.ItemsSource = new ObservableCollection<UserModel>();
+            TopicList.ItemsSource = new ObservableCollection<TopicModel>();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -37,9 +38,9 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        async void SearchFeeds(string keyWord)
+        private async void SearchFeeds(string keyWord)
         {
-            UIHelper.ShowProgressBar();
+            UIHelper.ShowProgressRing();
             string feedType = string.Empty;
             string sortType = string.Empty;
             switch (SearchFeedTypeComboBox.SelectedIndex)
@@ -61,29 +62,29 @@ namespace CoolapkUWP.Pages.FeedPages
                 case 1: sortType = "hot"; break;
                 case 2: sortType = "reply"; break;
             }
-            JArray array = (JArray)await DataHelper.GetData(DataUriType.SearchFeeds,
+            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.SearchFeeds,
                                                             feedType,
                                                             sortType,
                                                             keyWord,
                                                             (++pages[0]).ToString(),
                                                             pages[0] > 1 ? "&lastItem=" + lastItems[0] : string.Empty);
-            ObservableCollection<FeedViewModel> FeedsCollection = FeedList.ItemsSource as ObservableCollection<FeedViewModel>;
+            ObservableCollection<FeedModel> FeedsCollection = FeedList.ItemsSource as ObservableCollection<FeedModel>;
             if (pages[0] == 1) FeedsCollection.Clear();
             if (array.Count != 0)
             {
                 lastItems[0] = array.Last.Value<string>("id");
                 foreach (var i in array)
-                    FeedsCollection.Add(new FeedViewModel(i as JObject));
+                    FeedsCollection.Add(new FeedModel(i as JObject));
             }
             else pages[0]--;
-            UIHelper.HideProgressBar();
+            UIHelper.HideProgressRing();
         }
 
-        async void SearchUsers(string keyWord)
+        private async void SearchUsers(string keyWord)
         {
-            UIHelper.ShowProgressBar();
-            ObservableCollection<UserViewModel> infos = UserList.ItemsSource as ObservableCollection<UserViewModel>;
-            JArray array = (JArray)await DataHelper.GetData(DataUriType.SearchUsers, keyWord, ++pages[1], pages[1] > 1 ? "&lastItem=" + lastItems[1] : string.Empty);
+            UIHelper.ShowProgressRing();
+            ObservableCollection<UserModel> infos = UserList.ItemsSource as ObservableCollection<UserModel>;
+            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.SearchUsers, keyWord, ++pages[1], pages[1] > 1 ? "&lastItem=" + lastItems[1] : string.Empty);
             if (array.Count > 0)
             {
                 lastItems[1] = array.Last.Value<string>("uid");
@@ -99,30 +100,30 @@ namespace CoolapkUWP.Pages.FeedPages
                 for (int i = 0; i < array.Count; i++)
                 {
                     JToken t = array[i];
-                    infos.Add(new UserViewModel((JObject)t));
+                    infos.Add(new UserModel((JObject)t));
                 }
             }
             else pages[1]--;
-            UIHelper.HideProgressBar();
+            UIHelper.HideProgressRing();
         }
 
-        async void SearchTopic(string keyWord)
+        private async void SearchTopic(string keyWord)
         {
-            UIHelper.ShowProgressBar();
-            JArray array = (JArray)await DataHelper.GetData(DataUriType.SearchTags, keyWord, ++pages[2], pages[2] > 1 ? "&lastItem=" + lastItems[2] : string.Empty);
-            ObservableCollection<TopicViewModel> FeedsCollection = TopicList.ItemsSource as ObservableCollection<TopicViewModel>;
+            UIHelper.ShowProgressRing();
+            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.SearchTags, keyWord, ++pages[2], pages[2] > 1 ? "&lastItem=" + lastItems[2] : string.Empty);
+            ObservableCollection<TopicModel> FeedsCollection = TopicList.ItemsSource as ObservableCollection<TopicModel>;
             if (pages[2] == 1) FeedsCollection.Clear();
             if (array.Count != 0)
             {
                 lastItems[2] = array.Last.Value<string>("id");
                 foreach (JObject i in array)
-                    FeedsCollection.Add(new TopicViewModel(i));
+                    FeedsCollection.Add(new TopicModel(i));
             }
             else pages[2]--;
-            UIHelper.HideProgressBar();
+            UIHelper.HideProgressRing();
         }
 
-        void StartSearch()
+        private void StartSearch()
         {
             if (string.IsNullOrEmpty(SearchText?.Text))
                 DetailPivot.Visibility = Visibility.Collapsed;
@@ -133,9 +134,11 @@ namespace CoolapkUWP.Pages.FeedPages
                     case 0:
                         SearchFeeds(SearchText.Text);
                         break;
+
                     case 1:
                         SearchUsers(SearchText.Text);
                         break;
+
                     case 2:
                         SearchTopic(SearchText.Text);
                         break;
@@ -144,7 +147,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void Grid_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.OpenLink((sender as FrameworkElement).Tag as string);
+        private void Grid_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
 
@@ -171,37 +174,42 @@ namespace CoolapkUWP.Pages.FeedPages
         }
 
         #region 搜索框相关
+
         private void SearchTextBox_KeyUp(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
                 SearchText_QuerySubmitted(null, null);
         }
+
         private void SearchText_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             pages = new int[3];
             lastItems = new string[3];
-            (FeedList.ItemsSource as ObservableCollection<FeedViewModel>).Clear();
-            (UserList.ItemsSource as ObservableCollection<UserViewModel>).Clear();
-            (TopicList.ItemsSource as ObservableCollection<TopicViewModel>).Clear();
+            (FeedList.ItemsSource as ObservableCollection<FeedModel>).Clear();
+            (UserList.ItemsSource as ObservableCollection<UserModel>).Clear();
+            (TopicList.ItemsSource as ObservableCollection<TopicModel>).Clear();
             StartSearch();
         }
+
         private async void SearchText_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                JArray array = (JArray)await DataHelper.GetData(DataUriType.GetSearchWords, sender.Text);
+                JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetSearchWords, sender.Text);
                 if (array != null && array.Count > 0)
                     sender.ItemsSource = array.Select(i => new SearchWord(i as JObject));
                 else
                     sender.ItemsSource = null;
             }
         }
+
         private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             if (args.SelectedItem is SearchWord m)
                 sender.Text = m.GetTitle();
         }
-        #endregion
+
+        #endregion 搜索框相关
 
         private void DetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

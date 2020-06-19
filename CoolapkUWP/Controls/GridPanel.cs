@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoolapkUWP.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.Foundation;
@@ -7,13 +8,14 @@ using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Controls
 {
-    class GridPanel : Panel
+    internal class GridPanel : Panel
     {
         public double DesiredColumnWidth
         {
             get => (double)GetValue(DesiredColumnWidthProperty);
             set => SetValue(DesiredColumnWidthProperty, value);
         }
+
         public static readonly DependencyProperty DesiredColumnWidthProperty = DependencyProperty.Register("DesiredColumnWidth", typeof(double), typeof(GridPanel), new PropertyMetadata(384.0, RequestArrange));
 
         public bool CubeInSameHeight
@@ -21,6 +23,7 @@ namespace CoolapkUWP.Controls
             get => (bool)GetValue(CubeInSameHeightProperty);
             set => SetValue(CubeInSameHeightProperty, value);
         }
+
         public static readonly DependencyProperty CubeInSameHeightProperty = DependencyProperty.Register("InSameHeight", typeof(bool), typeof(GridPanel), new PropertyMetadata(true, RequestArrange));
 
         private static void RequestArrange(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -29,7 +32,8 @@ namespace CoolapkUWP.Controls
             (d as GridPanel).InvalidateArrange();
         }
 
-        int StackCount = 1;
+        private int StackCount = 1;
+
         protected override Size MeasureOverride(Size availableSize)
         {
             StackCount = (int)(availableSize.Width / DesiredColumnWidth);
@@ -59,8 +63,8 @@ namespace CoolapkUWP.Controls
                 foreach (var item in Children)
                 {
                     if (item is ListViewItem l &&
-                        l.Content is ViewModels.IndexPageHasEntitiesViewModel m &&
-                        (m.EntitiesType == ViewModels.EntitiesType.TabLink || m.EntitiesType == ViewModels.EntitiesType.SelectorLink))
+                        l.Content is IndexPageHasEntitiesModel m &&
+                        (m.EntitiesType == EntitiesType.TabLink || m.EntitiesType == EntitiesType.SelectorLink))
                     {
                         int maxIndex = offsetY.IndexOf(offsetY.Max());
                         item.Measure(new Size(availableSize.Width, double.PositiveInfinity));
@@ -107,8 +111,8 @@ namespace CoolapkUWP.Controls
             }
             else foreach (var item in Children)
                     if (item is ListViewItem l &&
-                        l.Content is ViewModels.IndexPageHasEntitiesViewModel m &&
-                        (m.EntitiesType == ViewModels.EntitiesType.TabLink || m.EntitiesType == ViewModels.EntitiesType.SelectorLink))
+                        l.Content is IndexPageHasEntitiesModel m &&
+                        (m.EntitiesType == EntitiesType.TabLink || m.EntitiesType == EntitiesType.SelectorLink))
                     {
                         int maxIndex = offsetY.IndexOf(offsetY.Max());
                         item.Arrange(new Rect(0, offsetY[maxIndex], DesiredSize.Width, item.DesiredSize.Height));

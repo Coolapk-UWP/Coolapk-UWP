@@ -1,53 +1,39 @@
 ﻿using CoolapkUWP.Controls;
 using CoolapkUWP.Pages.FeedPages;
-using CoolapkUWP.Pages.FeedPages.ViewModels;
-//using CoolapkUWP.Pages.FeedPages.ViewModels;
+using CoolapkUWP.ViewModels.FeedListDataProvider;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
+using InAppNotification = Microsoft.Toolkit.Uwp.UI.Controls.InAppNotification;
 
 namespace CoolapkUWP.Helpers
 {
-    static class UIHelper
+    internal static class UIHelper
     {
-        /// <summary>
-        /// 用于记录各种通知的数量。
-        /// </summary>
-        public static NotificationNums NotificationNums { get; } = new NotificationNums();
-        static Pages.MainPage mainPage = null;
+        private const int duration = 4000;
         public static List<Popup> popups = new List<Popup>();
-        static readonly ObservableCollection<string> messageList = new ObservableCollection<string>();
-        static bool isShowingMessage;
-        public static bool isShowingProgressBar;
 
-        public static Pages.MainPage MainPage { set => mainPage = value; }
-        public static ImageSource MainPageUserAvatar { set => mainPage.UserAvatar = value; }
+        /// <summary> 用于记录各种通知的数量。 </summary>
+        public static NotificationNums NotificationNums { get; } = new NotificationNums();
 
-        static UIHelper()
-        {
-            Popup popup = new Popup { RequestedTheme = SettingsHelper.Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
-            StatusGrid statusGrid2 = new StatusGrid();
-            popup.Child = statusGrid2;
-            popups.Add(popup);
-            popup.IsOpen = true;
-        }
+        public static Frame MainFrame { get; set; }
+        public static InAppNotification InAppNotification { get; set; }
+
+        public static event EventHandler<ImageSource> UserAvatarChanged;
+
+        public static event EventHandler<bool> ProgressRingIsActiveChanged;
+
+        public static void RaiseUserAvatarChangedEvent(object sender, ImageSource source) => UserAvatarChanged?.Invoke(sender, source);
 
         public static void ShowPopup(Popup popup)
         {
-            popup.RequestedTheme = SettingsHelper.Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
-            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
-                popups.Insert(popups.Count - 1, popup);
-            else
-                popups.Add(popup);
+            popup.RequestedTheme = SettingsHelper.Get<bool>(SettingsHelper.IsDarkMode) ? ElementTheme.Dark : ElementTheme.Light;
+            popups.Add(popup);
             popup.IsOpen = true;
-            popups.Last().IsOpen = false;
-            popups.Last().IsOpen = true;
         }
 
         public static void Hide(this Popup popup)
@@ -56,61 +42,11 @@ namespace CoolapkUWP.Helpers
             if (popups.Contains(popup)) popups.Remove(popup);
         }
 
-        public static async void ShowProgressBar()
-        {
-            isShowingProgressBar = true;
-            if (SettingsHelper.HasStatusBar)
-            {
-                StatusBar.GetForCurrentView().ProgressIndicator.ProgressValue = null;
-                await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
-            }
-            else if (popups.Last().Child is StatusGrid statusGrid)
-                await statusGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar());
-        }
+        public static void ShowProgressRing() => ProgressRingIsActiveChanged?.Invoke(null, true);
 
-        public static async void HideProgressBar()
-        {
-            isShowingProgressBar = false;
-            if (SettingsHelper.HasStatusBar && !isShowingMessage) await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
-            else if (popups.Last().Child is StatusGrid statusGrid) statusGrid.HideProgressBar();
-        }
+        public static void HideProgressRing() => ProgressRingIsActiveChanged?.Invoke(null, false);
 
-        public static async void ShowMessage(string message)
-        {
-            messageList.Add(message);
-            if (!isShowingMessage)
-            {
-                isShowingMessage = true;
-                while (messageList.Count > 0)
-                {
-                    string s = $"[1/{messageList.Count}]{messageList[0]}";
-                    if (SettingsHelper.HasStatusBar)
-                    {
-                        StatusBar statusBar = StatusBar.GetForCurrentView();
-                        statusBar.ProgressIndicator.Text = s;
-                        if (isShowingProgressBar) statusBar.ProgressIndicator.ProgressValue = null;
-                        else statusBar.ProgressIndicator.ProgressValue = 0;
-                        await statusBar.ProgressIndicator.ShowAsync();
-                        await Task.Delay(3000);
-                        if (messageList.Count == 0 && !isShowingProgressBar) await statusBar.ProgressIndicator.HideAsync();
-                        statusBar.ProgressIndicator.Text = string.Empty;
-                        messageList.RemoveAt(0);
-                    }
-                    else if (popups.Last().Child is StatusGrid statusGrid)
-                    {
-                        await statusGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => statusGrid.ShowMessage(s));
-                        await Task.Delay(3000);
-                        messageList.RemoveAt(0);
-                        await statusGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                        {
-                            if (messageList.Count == 0) statusGrid.ShowMessage(string.Empty);
-                            if (!isShowingProgressBar) HideProgressBar();
-                        });
-                    }
-                }
-                isShowingMessage = false;
-            }
-        }
+        public static void ShowMessage(string message) => InAppNotification?.Show(message, duration);
 
         public static void ShowImage(string url, ImageType type)
         {
@@ -130,14 +66,14 @@ namespace CoolapkUWP.Helpers
             ShowPopup(popup);
         }
 
-        public static void Navigate(Type pageType, object e = null) => mainPage?.Frame.Navigate(pageType, e);
+        public static void Navigate(Type pageType, object e = null) => MainFrame?.Navigate(pageType, e);
 
-        public static async void OpenLink(string str)
+        public static async void OpenLinkAsync(string str)
         {
             if (string.IsNullOrWhiteSpace(str)) return;
             if (str == "/contacts/fans")
             {
-                Navigate(typeof(UserListPage), new object[] { SettingsHelper.Get<string>("Uid"), false, "我" });
+                Navigate(typeof(UserListPage), new object[] { SettingsHelper.Get<string>(SettingsHelper.Uid), false, "我" });
                 return;
             }
             if (str.Contains('?')) str = str.Substring(0, str.IndexOf('?'));
@@ -205,12 +141,12 @@ namespace CoolapkUWP.Helpers
             }
             else if (str.IndexOf("https") == 0)
             {
-                if (str.Contains("coolapk.com")) OpenLink(str.Replace("https://www.coolapk.com", string.Empty));
+                if (str.Contains("coolapk.com")) OpenLinkAsync(str.Replace("https://www.coolapk.com", string.Empty));
                 else Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
             }
             else if (str.IndexOf("http") == 0)
             {
-                if (str.Contains("coolapk.com")) OpenLink(str.Replace("http://www.coolapk.com", string.Empty));
+                if (str.Contains("coolapk.com")) OpenLinkAsync(str.Replace("http://www.coolapk.com", string.Empty));
                 else Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
             }
             else

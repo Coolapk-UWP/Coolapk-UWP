@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using System;
+using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -8,8 +9,11 @@ namespace CoolapkUWP.Pages
 {
     public sealed partial class BrowserPage : Page
     {
-        bool isLoginPage;
-        string url;
+        private bool isLoginPage;
+        private string uri;
+
+        private const string loginUri = "https://account.coolapk.com/auth/loginByCoolapk";
+
         public bool IsLoginPage
         {
             get => isLoginPage;
@@ -37,39 +41,41 @@ namespace CoolapkUWP.Pages
             object[] vs = e.Parameter as object[];
             IsLoginPage = (bool)vs[0];
             if (IsLoginPage)
-                webView.Source = new Uri("https://account.coolapk.com/auth/loginByCoolapk");
+                webView.Source = new Uri(loginUri);
             else if (!string.IsNullOrEmpty(vs[1] as string))
             {
-                url = vs[1] as string;
-                webView.Source = new Uri(url);
+                uri = vs[1] as string;
+                webView.Source = new Uri(uri);
             }
         }
 
         private void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
             if (IsLoginPage && args.Uri.AbsoluteUri == "https://www.coolapk.com/") CheckLogin();
-            else if (args.Uri.AbsoluteUri == "https://account.coolapk.com/auth/loginByCoolapk")
+            else if (args.Uri.AbsoluteUri == loginUri)
                 IsLoginPage = true;
             titleBar.Title = sender.DocumentTitle;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
 
-        async void CheckLogin()
+        private async void CheckLogin()
         {
+            var loader = ResourceLoader.GetForCurrentView();
             if (await SettingsHelper.CheckLoginInfo())
             {
-                if (Frame.CanGoBack) Frame.GoBack();
-                UIHelper.ShowMessage("登录成功");
+                if (Frame.CanGoBack)
+                    Frame.GoBack();
+                UIHelper.ShowMessage(loader.GetString("LoginSuccessfully"));
             }
             else
             {
-                webView.Navigate(new Uri("https://account.coolapk.com/auth/loginByCoolapk"));
-                UIHelper.ShowMessage("没有获取到token，请尝试重新登录");
+                webView.Navigate(new Uri(loginUri));
+                UIHelper.ShowMessage(loader.GetString("CannotGetToken"));
             }
         }
 
         private async void GotoSystemBrowserButton_Click(object sender, RoutedEventArgs e)
-            => await Windows.System.Launcher.LaunchUriAsync(new Uri(url));
+            => await Windows.System.Launcher.LaunchUriAsync(new Uri(uri));
     }
 }

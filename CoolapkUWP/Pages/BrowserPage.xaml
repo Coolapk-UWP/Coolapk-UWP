@@ -1,29 +1,40 @@
 ﻿<Page
     x:Class="CoolapkUWP.Pages.BrowserPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Controls"
-    xmlns:data="using:CoolapkUWP.Helpers"
-    mc:Ignorable="d" 
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
 
     <Grid>
-        <WebView Margin="{x:Bind data:SettingsHelper.StackPanelMargin}" NavigationCompleted="WebView_NavigationCompleted" x:Name="webView"/>
-        <control:TitleBar x:Name="titleBar" BackButtonClick="BackButton_Click"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Height="{x:Bind data:SettingsHelper.PageTitleHeight}">
-            <Button Background="Transparent" Style="{StaticResource ButtonStyle1}" Height="48" Click="{x:Bind CheckLogin}" 
-                    VerticalAlignment="{x:Bind data:SettingsHelper.TitleContentVerticalAlignment}" x:Name="TryLoginButton">
-                尝试获取token
-                <ToolTipService.ToolTip>
-                    <ToolTip Content="如果登录成功而没有自动返回上一页，请点这里"/>
-                </ToolTipService.ToolTip>
-            </Button>
-            <Button Background="Transparent" Style="{StaticResource ButtonStyle1}" Height="48" Click="GotoSystemBrowserButton_Click" 
-                    VerticalAlignment="{x:Bind data:SettingsHelper.TitleContentVerticalAlignment}" x:Name="GotoSystemBrowserButton">
-                在浏览器中打开
-            </Button>
+        <WebView
+            x:Name="webView"
+            Margin="{StaticResource StackPanelMargin}"
+            NavigationCompleted="WebView_NavigationCompleted" />
+        <control:TitleBar x:Name="titleBar" BackButtonClick="BackButton_Click" />
+        <StackPanel
+            Height="{StaticResource PageTitleHeight}"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Orientation="Horizontal">
+            <Button
+                x:Name="TryLoginButton"
+                x:Uid="BrowserPageBackButton"
+                Height="48"
+                VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
+                Background="Transparent"
+                Click="{x:Bind CheckLogin}"
+                Style="{StaticResource ButtonStyle1}" />
+            <Button
+                x:Name="GotoSystemBrowserButton"
+                x:Uid="BrowserPageOpenInBrowserButton"
+                Height="48"
+                VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
+                Background="Transparent"
+                Click="GotoSystemBrowserButton_Click"
+                Style="{StaticResource ButtonStyle1}" />
         </StackPanel>
     </Grid>
 </Page>

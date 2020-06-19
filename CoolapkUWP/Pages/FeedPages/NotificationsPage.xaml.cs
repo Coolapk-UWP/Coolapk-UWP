@@ -1,27 +1,27 @@
-﻿using CoolapkUWP.Controls.ViewModels;
-using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Models;
+using CoolapkUWP.Models.Pages.NotificationsPageModels;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text.RegularExpressions;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages.FeedPages
 {
     public sealed partial class NotificationsPage : Page
     {
-        readonly ObservableCollection<object> itemCollection = new ObservableCollection<object>();
-        NotificationPageType type;
+        private readonly ObservableCollection<object> itemCollection = new ObservableCollection<object>();
+        private NotificationPageType type;
+
         public NotificationsPage() => this.InitializeComponent();
-        string uri;
+
+        private string uri;
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -30,34 +30,38 @@ namespace CoolapkUWP.Pages.FeedPages
             switch (type)
             {
                 case NotificationPageType.Comment:
-                    FindName(nameof(NavigateItems));
                     titleBar.Title = ("通知");
                     uri = "list";
-                    Load<SimpleNotificationViewModel>();
+                    FindName(nameof(NavigateItems));
+                    Load<SimpleNotificationModel>();
                     break;
+
                 case NotificationPageType.AtMe:
                     titleBar.Title = ("@我的动态");
-                    MainListView.Padding = SettingsHelper.StackPanelMargin;
                     uri = "atMeList";
+                    MainListView.Padding = (Thickness)Windows.UI.Xaml.Application.Current.Resources["StackPanelMargin"];
                     Load();
                     break;
+
                 case NotificationPageType.AtCommentMe:
                     titleBar.Title = ("@我的评论");
-                    MainListView.Padding = SettingsHelper.StackPanelMargin;
                     uri = "atCommentMeList";
-                    Load<AtCommentMeNotificationViewModel>();
+                    MainListView.Padding = (Thickness)Windows.UI.Xaml.Application.Current.Resources["StackPanelMargin"];
+                    Load<AtCommentMeNotificationModel>();
                     break;
+
                 case NotificationPageType.Like:
                     titleBar.Title = ("我收到的赞");
-                    MainListView.Padding = SettingsHelper.StackPanelMargin;
                     uri = "feedLikeList";
-                    Load<LikeNotificationViewModel>();
+                    MainListView.Padding = (Thickness)Windows.UI.Xaml.Application.Current.Resources["StackPanelMargin"];
+                    Load<LikeNotificationModel>();
                     break;
+
                 case NotificationPageType.Follow:
                     titleBar.Title = ("好友关注");
-                    MainListView.Padding = SettingsHelper.StackPanelMargin;
                     uri = "contactsFollowList";
-                    Load<SimpleNotificationViewModel>();
+                    MainListView.Padding = (Thickness)Windows.UI.Xaml.Application.Current.Resources["StackPanelMargin"];
+                    Load<SimpleNotificationModel>();
                     break;
             }
             await System.Threading.Tasks.Task.Delay(2000);
@@ -70,11 +74,11 @@ namespace CoolapkUWP.Pages.FeedPages
                     if (a == scrollViewer.ScrollableHeight)
                         switch (type)
                         {
-                            case NotificationPageType.Comment: Load<SimpleNotificationViewModel>(); break;
-                            case NotificationPageType.AtMe: Load(); break;
-                            case NotificationPageType.AtCommentMe: Load<AtCommentMeNotificationViewModel>(); break;
-                            case NotificationPageType.Like: Load<LikeNotificationViewModel>(); break;
-                            case NotificationPageType.Follow: Load<SimpleNotificationViewModel>(); break;
+                            case NotificationPageType.Comment    : Load<SimpleNotificationModel>(); break;
+                            case NotificationPageType.AtMe       : Load(); break;
+                            case NotificationPageType.AtCommentMe: Load<AtCommentMeNotificationModel>(); break;
+                            case NotificationPageType.Like       : Load<LikeNotificationModel>(); break;
+                            case NotificationPageType.Follow     : Load<SimpleNotificationModel>(); break;
                         }
                 }
             };
@@ -88,12 +92,15 @@ namespace CoolapkUWP.Pages.FeedPages
                 case "atMe":
                     UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.AtMe);
                     break;
+
                 case "atCommentMe":
                     UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.AtCommentMe);
                     break;
+
                 case "like":
                     UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.Like);
                     break;
+
                 case "follow":
                     UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.Follow);
                     break;
@@ -104,17 +111,18 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             if (e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse
                 || (sender is Grid && !(e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse)))
-                UIHelper.OpenLink((sender as FrameworkElement).Tag as string);
+                UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
         }
 
-        double firstItem, lastItem;
-        int page;
+        private double firstItem, lastItem;
+        private int page;
+
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
-        async void Load<T>(int p = -1) where T : INotificationViewModel, new()
+        private async void Load<T>(int p = -1) where T : IFeedModel, new()
         {
-            UIHelper.ShowProgressBar();
-            JArray array = (JArray)await DataHelper.GetData(DataUriType.GetNotifications,
+            UIHelper.ShowProgressRing();
+            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetNotifications,
                                                             uri,
                                                             p == -1 ? ++page : p,
                                                             firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
@@ -126,14 +134,14 @@ namespace CoolapkUWP.Pages.FeedPages
                 lastItem = array.Last.Value<int>("id");
                 var d = (from a in itemCollection
                          from b in array
-                         where (a as INotificationViewModel).Id == b.Value<int>("id")
+                         where (a as NotificationModel).Id == b.Value<int>("id")
                          select a).ToArray();
                 foreach (var item in d)
                     itemCollection.Remove(item);
                 for (int i = 0; i < array.Count; i++)
                 {
                     T t = new T();
-                    t.Initial(array[i]);
+                    t.Initial((JObject)array[i]);
                     if (p == -1)
                         itemCollection.Add(t);
                     else
@@ -149,13 +157,13 @@ namespace CoolapkUWP.Pages.FeedPages
                 }
                 else UIHelper.ShowMessage("没有新的了");
             }
-            UIHelper.HideProgressBar();
+            UIHelper.HideProgressRing();
         }
 
-        async void Load(int p = -1)
+        private async void Load(int p = -1)
         {
-            UIHelper.ShowProgressBar();
-            JArray array = (JArray)await DataHelper.GetData(DataUriType.GetNotifications,
+            UIHelper.ShowProgressRing();
+            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetNotifications,
                                                             uri,
                                                             p == -1 ? ++page : p,
                                                             firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
@@ -167,16 +175,17 @@ namespace CoolapkUWP.Pages.FeedPages
                 lastItem = array.Last.Value<int>("id");
                 var d = (from a in itemCollection
                          from b in array
-                         where (a as FeedViewModel).EntityId == b.Value<int>("id").ToString()
+                         where (a as FeedModel).EntityId == b.Value<int>("id").ToString()
                          select a).ToArray();
                 foreach (var item in d)
                     itemCollection.Remove(item);
                 for (int i = 0; i < array.Count; i++)
                 {
+                    FeedModel item = new FeedModel((JObject)array[i]);
                     if (p == -1)
-                        itemCollection.Add(new FeedViewModel((JObject)array[i]));
+                        itemCollection.Add(item);
                     else
-                        itemCollection.Insert(i, new FeedViewModel((JObject)array[i]));
+                        itemCollection.Insert(i, item);
                 }
             }
             else
@@ -188,23 +197,23 @@ namespace CoolapkUWP.Pages.FeedPages
                 }
                 else UIHelper.ShowMessage("没有新的了");
             }
-            UIHelper.HideProgressBar();
+            UIHelper.HideProgressRing();
         }
 
         private void MainListView_RefreshRequested(object sender, EventArgs e)
         {
             switch (type)
             {
-                case NotificationPageType.Comment: Load<SimpleNotificationViewModel>(1); break;
-                case NotificationPageType.AtMe: Load(1); break;
-                case NotificationPageType.AtCommentMe: Load<AtCommentMeNotificationViewModel>(1); break;
-                case NotificationPageType.Like: Load<LikeNotificationViewModel>(1); break;
-                case NotificationPageType.Follow: Load<SimpleNotificationViewModel>(1); break;
+                case NotificationPageType.Comment    : Load<SimpleNotificationModel>(1); break;
+                case NotificationPageType.AtMe       : Load(1); break;
+                case NotificationPageType.AtCommentMe: Load<AtCommentMeNotificationModel>(1); break;
+                case NotificationPageType.Like       : Load<LikeNotificationModel>(1); break;
+                case NotificationPageType.Follow     : Load<SimpleNotificationModel>(1); break;
             }
         }
     }
 
-    enum NotificationPageType
+    internal enum NotificationPageType
     {
         Comment,
         AtMe,
@@ -212,137 +221,25 @@ namespace CoolapkUWP.Pages.FeedPages
         Like,
         Follow,
     }
-    
-    interface INotificationViewModel
-    {
-        double Id { get; }
-        void Initial(JToken o);
-    }
-    
-    class SimpleNotificationViewModel : INotifyPropertyChanged, INotificationViewModel
-    {
-        public ImageSource FromUserAvatar { get; private set; }
-        public string FromUserName { get; private set; }
-        public string FromUserUri { get; private set; }
-        public string Dateline { get; private set; }
-        public string Uri { get; private set; }
-        public string Note { get; private set; }
-        public double Id { get; private set; }
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        public void Initial(JToken o)
-        {
-            JObject token = o as JObject;
-            Id = token.Value<int>("id");
-            FromUserName = token.Value<string>("fromusername");
-            FromUserUri = token.Value<string>("url");
-            Dateline = DataHelper.ConvertTime(token.Value<int>("dateline"));
-            GetPic(token["fromUserInfo"].Value<string>("userSmallAvatar"));
-            string s = token.Value<string>("note");
-            Regex regex = new Regex("<a.*?>.*?</a>"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
-            while (regex.IsMatch(s))
-            {
-                var h = regex.Match(s);
-                string t = regex3.Match(h.Value).Value.Replace(">", string.Empty);
-                t = t.Replace("<", string.Empty);
-                string tt = regex2.Match(h.Value).Value.Replace("href=\"", string.Empty);
-                if (tt.IndexOf("\"") > 0) tt = tt.Substring(0, tt.IndexOf("\""));
-                Uri = tt;
-                s = s.Replace(h.Value, t);
-            }
-            Note = s;
-        }
-        async void GetPic(string u)
-        {
-            if (!string.IsNullOrEmpty(u))
-            {
-                FromUserAvatar = await ImageCacheHelper.GetImage(ImageType.SmallAvatar, u);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FromUserAvatar)));
-            }
-        }
-    }
-
-    class LikeNotificationViewModel : INotifyPropertyChanged, INotificationViewModel
-    {
-        public ImageSource LikeUserAvatar { get; private set; }
-        public string LikeUserName { get; private set; }
-        public string LikeUserUri { get; private set; }
-        public string Dateline { get; private set; }
-        public string Uri { get; private set; }
-        public string FeedMessage { get; private set; }
-        public string Title { get; private set; }
-        public double Id { get; private set; }
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void Initial(JToken o)
-        {
-            JObject token = o as JObject;
-            Id = token.Value<int>("id");
-            LikeUserUri = "/u/" + token.Value<int>("likeUid");
-            Dateline = DataHelper.ConvertTime(token.Value<int>("likeTime"));
-            LikeUserName = token.Value<string>("likeUsername");
-            Uri = token.Value<string>("url");
-            GetPic(token.Value<string>("likeAvatar"));
-            Title = "赞了你的" + (token.TryGetValue("feedTypeName", out JToken value) ? value.ToString() : token.Value<string>("infoHtml"));
-            FeedMessage = token.Value<string>("message");
-        }
-        async void GetPic(string u)
-        {
-            if (!string.IsNullOrEmpty(u))
-            {
-                LikeUserAvatar = await ImageCacheHelper.GetImage(ImageType.BigAvatar, u);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LikeUserAvatar)));
-            }
-        }
-    }
-
-    class AtCommentMeNotificationViewModel : INotifyPropertyChanged, INotificationViewModel
-    {
-        public ImageSource UserAvatar { get; private set; }
-        public string UserName { get; private set; }
-        public string UserUri { get; private set; }
-        public string Dateline { get; private set; }
-        public string Uri { get; private set; }
-        public string Message { get; private set; }
-        public string FeedMessage { get; private set; }
-        public double Id { get; private set; }
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void Initial(JToken o)
-        {
-            JObject token = o as JObject;
-            Id = token.Value<int>("id");
-            UserUri = "/u/" + token.Value<int>("uid");
-            Dateline = DataHelper.ConvertTime(token.Value<int>("dateline"));
-            UserName = token.Value<string>("username");
-            Uri = token.Value<string>("url");
-            GetPic(token.Value<string>("userAvatar"));
-            FeedMessage = (token.Value<string>("extra_title"));
-            Message = (string.IsNullOrEmpty(token.Value<string>("rusername")) ? string.Empty : $"回复<a href=\"/u/{token.Value<string>("ruid")}\">{token.Value<string>("rusername")}</a>: ") + token.Value<string>("message");
-        }
-        async void GetPic(string u)
-        {
-            if (!string.IsNullOrEmpty(u))
-            {
-                UserAvatar = await ImageCacheHelper.GetImage(ImageType.BigAvatar, u);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserAvatar)));
-            }
-        }
-    }
-
-    class NotificationsPageTemplateSelector : DataTemplateSelector
+    internal class NotificationsPageTemplateSelector : DataTemplateSelector
     {
         public DataTemplate Feed { get; set; }
         public DataTemplate Reply { get; set; }
         public DataTemplate Like { get; set; }
         public DataTemplate AtCommentMe { get; set; }
+
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            if (item is FeedViewModel) return Feed;
-            if (item is LikeNotificationViewModel) return Like;
-            if (item is AtCommentMeNotificationViewModel) return AtCommentMe;
-            else return Reply;
+            switch (item)
+            {
+                default                            : return Reply;
+                case FeedModel _                   : return Feed;
+                case LikeNotificationModel _       : return Like;
+                case AtCommentMeNotificationModel _: return AtCommentMe;
+            }
         }
+
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
 }

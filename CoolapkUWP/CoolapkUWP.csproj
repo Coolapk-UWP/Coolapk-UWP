@@ -8,11 +8,11 @@
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CoolapkUWP</RootNamespace>
-    <AssemblyName>酷安 UWP</AssemblyName>
-    <DefaultLanguage>zh-cn</DefaultLanguage>
+    <AssemblyName>CoolapkUWP</AssemblyName>
+    <DefaultLanguage>zh-Hans</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -111,14 +111,16 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\MTextBlock.xaml.cs">
-      <DependentUpon>MTextBlock.xaml</DependentUpon>
+    <Compile Include="Controls\DataTemplates\Feed.xaml.cs" />
+    <Compile Include="Controls\DataTemplates\FeedReply.xaml.cs" />
+    <Compile Include="Controls\DataTemplates\PicsArr.xaml.cs" />
+    <Compile Include="Controls\DataTemplates\RelationRowsItem.xaml.cs" />
+    <Compile Include="Controls\DataTemplates\SearchWord.xaml.cs" />
+    <Compile Include="Controls\TextBlockEx.xaml.cs">
+      <DependentUpon>TextBlockEx.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ReplyDialogPresenter.xaml.cs">
       <DependentUpon>ReplyDialogPresenter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\StatusGrid.xaml.cs">
-      <DependentUpon>StatusGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TitleBar.xaml.cs">
       <DependentUpon>TitleBar.xaml</DependentUpon>
@@ -126,34 +128,41 @@
     <Compile Include="Controls\UserHub.xaml.cs">
       <DependentUpon>UserHub.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ViewModels\Entity.cs" />
-    <Compile Include="Controls\ViewModels\FeedReplyViewModel.cs" />
-    <Compile Include="Controls\ViewModels\FeedViewModelBase.cs" />
-    <Compile Include="Controls\ViewModels\FeedDetailViewModel.cs" />
-    <Compile Include="Controls\ViewModels\ImageData.cs" />
-    <Compile Include="Controls\ViewModels\IndexPageViewModel.cs" />
-    <Compile Include="Controls\ViewModels\SimpleFeedReplyViewModel.cs" />
-    <Compile Include="Controls\ViewModels\SourceFeedViewModel.cs" />
+    <Compile Include="Controls\WaterFallLayout.cs" />
+    <Compile Include="Helpers\ValueConverters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Helpers\ValueConverters\HasValueConverter.cs" />
+    <Compile Include="Helpers\ValueConverters\TrueToFalseConverter.cs" />
+    <Compile Include="Helpers\ValueConverters\VisibleToCollapseConverter.cs" />
+    <Compile Include="Models\Controls\UserHubModel.cs" />
+    <Compile Include="Models\Entity.cs" />
+    <Compile Include="Models\FeedReplyModel.cs" />
+    <Compile Include="Models\FeedModelBase.cs" />
+    <Compile Include="Models\FeedDetailModel.cs" />
+    <Compile Include="Models\IFeedModel.cs" />
+    <Compile Include="Models\ImageModel.cs" />
+    <Compile Include="Models\IndexPageModel.cs" />
+    <Compile Include="Models\Pages\FeedListPageModels.cs" />
+    <Compile Include="Models\Pages\NotificationsPageModels.cs" />
+    <Compile Include="Models\SimpleFeedReplyModel.cs" />
+    <Compile Include="Models\SourceFeedModel.cs" />
     <Compile Include="Controls\GridPanel.cs" />
     <Compile Include="Helpers\EmojiHelper.cs" />
-    <Compile Include="Helpers\Exceptions\ServerException.cs" />
     <Compile Include="Helpers\ImageCacheHelper.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
     <Compile Include="Helpers\NotificationsNum.cs" />
-    <Compile Include="Controls\DataTemplatesDictionary.xaml.cs" />
-    <Compile Include="Controls\ViewModels\FeedViewModel.cs" />
-    <Compile Include="Controls\ViewModels\SearchPageViewModel.cs" />
-    <Compile Include="Controls\ViewModels\TopicViewModel.cs" />
-    <Compile Include="Controls\ViewModels\UserViewModel.cs" />
+    <Compile Include="Controls\DataTemplates\DataTemplates.xaml.cs" />
+    <Compile Include="Models\FeedModel.cs" />
+    <Compile Include="Models\SearchPageModel.cs" />
+    <Compile Include="Models\TopicModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Helpers\PageHelper.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Helpers\ExceptionCatcher.cs" />
-    <Compile Include="Controls\GetUpdateContentDialog.xaml.cs">
-      <DependentUpon>GetUpdateContentDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\DataTemplateSelectors.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
-    <Compile Include="Pages\FeedPages\ViewModels\FeedListPageViewModel.cs" />
+    <Compile Include="Models\Json\IndexPageHeaderItemModel.cs" />
+    <Compile Include="Models\Json\MessageModel.cs" />
+    <Compile Include="ViewModels\FeedListPageViewModel.cs" />
     <Compile Include="Pages\FeedPages\FeedListPage.xaml.cs">
       <DependentUpon>FeedListPage.xaml</DependentUpon>
     </Compile>
@@ -182,6 +191,9 @@
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ShellPage.xaml.cs">
+      <DependentUpon>ShellPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pages\SettingPages\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
@@ -196,11 +208,6 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\BadgeLogo.scale-100.png" />
-    <Content Include="Assets\BadgeLogo.scale-125.png" />
-    <Content Include="Assets\BadgeLogo.scale-150.png" />
-    <Content Include="Assets\BadgeLogo.scale-200.png" />
-    <Content Include="Assets\BadgeLogo.scale-400.png" />
     <Content Include="Assets\Emoji\0000.png" />
     <Content Include="Assets\Emoji\0001.png" />
     <Content Include="Assets\Emoji\0002.png" />
@@ -748,7 +755,6 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="Properties\Default.rd.xml" />
-    <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
@@ -760,7 +766,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\MTextBlock.xaml">
+    <Page Include="Controls\DataTemplates\Feed.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DataTemplates\FeedReply.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DataTemplates\PicsArr.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DataTemplates\RelationRowsItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DataTemplates\SearchWord.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TextBlockEx.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -768,19 +794,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\StatusGrid.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\TitleBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\GetUpdateContentDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\DataTemplatesDictionary.xaml">
+    <Page Include="Controls\DataTemplates\DataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -832,13 +850,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\ShellPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="MetroLog">
+      <Version>1.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>4.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.4.2</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
@@ -847,19 +875,12 @@
       <Version>4.3.0</Version>
     </PackageReference>
     <PackageReference Include="Win2D.uwp">
-      <Version>1.7.0</Version>
+      <Version>1.25.0</Version>
     </PackageReference>
-    <PackageReference Include="XPShadow">
-      <Version>0.1.2</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <SDKReference Include="WindowsMobile, Version=10.0.18362.0">
-      <Name>Windows Mobile Extensions for the UWP</Name>
-    </SDKReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="CoolapkUWP_TemporaryKey.pfx" />
+    <PRIResource Include="Strings\zh-Hans\Resources.resw" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

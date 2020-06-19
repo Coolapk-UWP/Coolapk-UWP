@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 using Windows.Security.Cryptography;
@@ -7,9 +8,9 @@ using Windows.Security.Cryptography.Core;
 namespace CoolapkUWP.Helpers
 {
     /// <summary>
-    /// 程序支持的能从服务器中获取的数据的类型。
+    ///     程序支持的能从服务器中获取的数据的类型。
     /// </summary>
-    enum DataUriType
+    internal enum DataUriType
     {
         CheckLoginInfo,
         GetAnswers,
@@ -39,17 +40,16 @@ namespace CoolapkUWP.Helpers
         SearchFeeds,
         SearchTags,
         SearchUsers,
+        SearchWords,
     }
 
     /// <summary>
-    /// 提供数据处理的方法。
+    ///     提供数据处理的方法。
     /// </summary>
-    static class DataHelper
+    internal static class DataHelper
     {
-        /// <summary>
-        /// 获取指定字符串的MD5。
-        /// </summary>
-        /// <param name="inputString">要获取MD5的字符串。</param>
+        private static readonly System.Collections.Generic.Dictionary<string, object> responseCache = new System.Collections.Generic.Dictionary<string, object>();
+
         // 来源 ：https://blog.csdn.net/lindexi_gd/article/details/48951849
         public static string GetMD5(string inputString)
         {
@@ -59,7 +59,7 @@ namespace CoolapkUWP.Helpers
             return CryptographicBuffer.EncodeToHexString(buffHash1);
         }
 
-        static string GetUriStringTemplate(DataUriType type)
+        private static string GetUriStringTemplate(DataUriType type)
         {
             switch (type)
             {
@@ -91,31 +91,96 @@ namespace CoolapkUWP.Helpers
                 case DataUriType.SearchFeeds: return "/search?type=feed&feedType={0}&sort={1}&searchValue={2}&page={3}{4}&showAnonymous=-1";
                 case DataUriType.SearchTags: return "/search?type=feedTopic&searchValue={0}&page={1}{2}&showAnonymous=-1";
                 case DataUriType.SearchUsers: return "/search?type=user&searchValue={0}&page={1}{2}&showAnonymous=-1";
-                default: return string.Empty;
+                case DataUriType.SearchWords: return "/search/suggestSearchWordsNew?searchValue={0}&type=app";
+                default: throw new Exception("Coolapk message:DataUriType的值错误。");
             }
         }
 
         /// <summary>
-        /// 从服务器中获取数据。
+        ///     从服务器中获取数据。
         /// </summary>
-        /// <param name="dataUriType">要获取的数据的类型。</param>
-        /// <param name="args">一个参数数组，其中的内容用于替换格式符号。</param>
-        public static async Task<JToken> GetData(DataUriType dataUriType, params object[] args)
+        /// <param name="dataUriType">
+        ///     要获取的数据的类型。
+        /// </param>
+        /// <param name="args">
+        ///     一个参数数组，其中的内容用于替换格式符号。
+        /// </param>
+        public static async Task<JToken> GetDataAsync(DataUriType dataUriType, params object[] args)
         {
-            var json = await NetworkHelper.GetJson(string.Format(GetUriStringTemplate(dataUriType), args));
+            bool forceRefresh = false;
+            string uri = string.Format(GetUriStringTemplate(dataUriType), args);
+            string json = string.Empty;
             JToken token = null;
+
+            if (forceRefresh || !responseCache.ContainsKey(uri))
+            {
+                json = await NetworkHelper.GetJson(uri);
+                if (responseCache.ContainsKey(uri))
+                {
+                    responseCache[uri] = json;
+                }
+                else
+                {
+                    responseCache.Add(uri, json);
+                }
+            }
+            else
+            {
+                json = responseCache[uri] as string;
+            }
             var o = JObject.Parse(json);
             if (!string.IsNullOrEmpty(json) &&
                 !o.TryGetValue("data", out token) &&
                 o.TryGetValue("message", out JToken value))
-                throw new Exceptions.ServerException($"{value}");
-            return token;
+                throw new Exception($"Coolapk message:\n{value}");
+            else return token;
+        }
+
+        public static async Task<T> GetDataAsync<T>(DataUriType dataUriType, bool forceRefresh = false, params object[] args)
+        {
+            string uri = string.Format(GetUriStringTemplate(dataUriType), args);
+            string json = string.Empty;
+            T result = default;
+
+            if (forceRefresh || !responseCache.ContainsKey(uri))
+            {
+                json = await NetworkHelper.GetJson(uri);
+                result = await Task.Run(() => JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings
+                {
+                    Error = (_, e) =>
+                    {
+                        if (!string.IsNullOrEmpty(json))
+                        {
+                            var o = JsonConvert.DeserializeObject<Models.Json.MessageModel.Rootobject>(json, new JsonSerializerSettings { Error = (__, ee) => ee.ErrorContext.Handled = true });
+                            if (o != null)
+                                throw new Exception($"Coolapk message:\n{o.Message}");
+                        }
+                        e.ErrorContext.Handled = true;
+                    }
+                }));
+                if (responseCache.ContainsKey(uri))
+                {
+                    responseCache[uri] = result;
+                }
+                else
+                {
+                    responseCache.Add(uri, result);
+                }
+            }
+            else
+            {
+                result = (T)responseCache[uri];
+            }
+
+            return result;
         }
 
         /// <summary>
-        /// 转换Unix时间戳至可读时间。
+        ///     转换Unix时间戳至可读时间。
         /// </summary>
-        /// <param name="timestr">Unix时间戳。</param>
+        /// <param name="timestr">
+        ///     Unix时间戳。
+        /// </param>
         public static string ConvertTime(double timestr)
         {
             DateTime time = new DateTime(1970, 1, 1).ToLocalTime().Add(new TimeSpan(Convert.ToInt64(timestr) * 10000000));

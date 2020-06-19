@@ -1,78 +1,94 @@
 ﻿<Page
     x:Class="CoolapkUWP.Pages.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cctrl="using:CoolapkUWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:control="using:CoolapkUWP.Controls"
-    xmlns:data="using:CoolapkUWP.Helpers"
-    NavigationCacheMode="Required"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    xmlns:menuitem="using:CoolapkUWP.Models.Json.IndexPageHeaderItemModel"
+    xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    SizeChanged="Page_SizeChanged"
+    mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <control:DataTemplatesDictionary/>
+                <templates:SearchWord />
             </ResourceDictionary.MergedDictionaries>
+            <Style
+                x:Key="IconButtonStyle"
+                BasedOn="{StaticResource ButtonRevealStyle}"
+                TargetType="Button">
+                <Setter Property="Width" Value="40" />
+                <Setter Property="Height" Value="40" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <Pivot x:Name="MainPivot" Margin="{x:Bind data:SettingsHelper.IndexPageStackPanelMargin}" SelectionChanged="MainPivot_SelectionChanged"/>
-        <!--
-            <Pivot.RightHeader>
-                <StackPanel Orientation="Horizontal">
-                    <Button Background="Transparent" Padding="2" Click="SearchButton_Click" x:Name="SearchButton">
-                        <SymbolIcon Symbol="Find"/>
-                    </Button>
-                <AutoSuggestBox Visibility="Collapsed" LostFocus="SearchBox_LostFocus" x:Name="SearchBox" Margin="4,0,0,8" Height="32" Grid.Column="1" VerticalAlignment="Bottom" QueryIcon="Find" ItemTemplate="{StaticResource searchWord}" MinWidth="180"
-                                TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" SuggestionChosen="AutoSuggestBox_SuggestionChosen"/>
-                        <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
-                        VerticalAlignment="Bottom" Height="48" Width="48" Click="Button_Click" x:Name="NotifiesCenterButton" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="" x:Name="NotifyStatus"/>
-                                <TextBlock x:Name="NotifyNumber" VerticalAlignment="Bottom" Margin="2,0"/>
-                            </StackPanel>
-                        </Button>
-                    <Button Background="Transparent" Padding="2" x:Name="UserButton">
-                        <Grid>
-                            <SymbolIcon Symbol="Contact"/>
-                            <Ellipse Width="20" Height="20">
-                                <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{x:Bind UserAvatar,Mode=OneWay}"/>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                        </Grid>
-                        <Button.Flyout>
-                            <Flyout>
-                                <control:UserHub/>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
-                </StackPanel>
-            </Pivot.RightHeader>    
-                        -->
-        <CommandBar VerticalAlignment="Bottom" Grid.Row="1">
-            <CommandBar.Content>
-                <ComboBox Margin="4,4,0,0" x:Name="PivotItemsComboBox" SelectionChanged="PivotItemsComboBox_SelectionChanged"/>
-            </CommandBar.Content>
-            <AppBarButton Click="SearchButton_Click" x:Name="SearchButton" Label="搜索" Icon="Find"/>
-            <AppBarButton Click="NotificationCenterButton_Click" x:Name="NotificationCenterButton" Label="通知">
-                <AppBarButton.Icon>
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED0D;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton x:Name="UserButton" Label="我" Icon="Contact">
-                <AppBarButton.Flyout>
-                    <Flyout>
-                        <control:UserHub/>
-                    </Flyout>
-                </AppBarButton.Flyout>
-            </AppBarButton>
-        </CommandBar>
-    </Grid>
+    <winui:NavigationView
+        x:Name="navigationView"
+        IsBackButtonVisible="Collapsed"
+        IsSettingsVisible="False"
+        ItemInvoked="NavigationView_ItemInvoked"
+        MenuItemsSource="{x:Bind MenuItems, Mode=OneWay}"
+        PaneDisplayMode="Top">
+        <winui:NavigationView.MenuItemTemplate>
+            <DataTemplate x:DataType="menuitem:Item">
+                <winui:NavigationViewItem Content="{x:Bind Title}" MenuItemsSource="{x:Bind Entities}" />
+            </DataTemplate>
+        </winui:NavigationView.MenuItemTemplate>
+        <winui:NavigationView.PaneFooter>
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    x:Name="SearchButton"
+                    Click="SearchButton_Click"
+                    Style="{ThemeResource IconButtonStyle}">
+                    <SymbolIcon Symbol="Find" />
+                </Button>
+                <AutoSuggestBox
+                    x:Name="SearchBox"
+                    MinWidth="160"
+                    MaxWidth="320"
+                    VerticalAlignment="Center"
+                    ItemTemplate="{StaticResource searchWord}"
+                    LostFocus="SearchBox_LostFocus"
+                    QueryIcon="Find"
+                    QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                    SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                    TextChanged="AutoSuggestBox_TextChanged"
+                    Visibility="Collapsed" />
+                <Button Style="{ThemeResource IconButtonStyle}">
+                    <Grid>
+                        <SymbolIcon Symbol="Contact" />
+                        <Ellipse Width="28" Height="28">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{x:Bind UserAvatar, Mode=OneWay}" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </Grid>
+                    <Button.Flyout>
+                        <Flyout>
+                            <cctrl:UserHub />
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+                <Button Click="NotificationCenterButton_Click" Style="{ThemeResource IconButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="20"
+                            Glyph="{x:Bind BadgeIconGlyph, Mode=OneWay}" />
+                        <TextBlock
+                            Margin="4,0,0,0"
+                            VerticalAlignment="Bottom"
+                            Text="{x:Bind BadgeNum.ToString(), Mode=OneWay}" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </winui:NavigationView.PaneFooter>
+        <Frame x:Name="navigationViewFrame" HorizontalAlignment="Center" />
+    </winui:NavigationView>
 </Page>

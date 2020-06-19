@@ -2,31 +2,55 @@
     x:Class="CoolapkUWP.Controls.TitleBar"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:CoolapkUWP.Controls"
-    xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
-    xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:CoolapkUWP.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:data="using:CoolapkUWP.Helpers"
-    mc:Ignorable="d"
-    d:DesignHeight="300"
+    d:DesignHeight="72"
     d:DesignWidth="400"
-    Tapped="TitleGrid_Tapped">
+    Tapped="TitleGrid_Tapped"
+    mc:Ignorable="d">
 
-    <Grid x:Name="titleGrid" Height="{x:Bind data:SettingsHelper.PageTitleHeight}" VerticalAlignment="Top"
-          cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" fcu:Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
+    <Grid
+        x:Name="titleGrid"
+        Height="{StaticResource PageTitleHeight}"
+        VerticalAlignment="Top"
+        Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="48"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="0" x:Name="BackButton" Click="BackButton_Click" Style="{StaticResource ButtonStyle1}" Width="48" Height="48" VerticalAlignment="{x:Bind data:SettingsHelper.TitleContentVerticalAlignment}">
-            <SymbolIcon x:Name="BackButtonIcon" Symbol="Back"/>
+        <Button
+            x:Name="BackButton"
+            Grid.Column="0"
+            Width="40"
+            Height="40"
+            VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
+            HorizontalContentAlignment="Center"
+            Background="Transparent"
+            Click="BackButton_Click"
+            Style="{StaticResource ButtonRevealStyle}">
+            <SymbolIcon
+                x:Name="BackButtonIcon"
+                HorizontalAlignment="Center"
+                Symbol="Back" />
         </Button>
-        <TextBlock Grid.Column="1" Margin="{x:Bind data:SettingsHelper.TitleTextMargin}" x:Name="title" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="{x:Bind data:SettingsHelper.TitleContentVerticalAlignment}"/>
+        <TextBlock
+            x:Name="title"
+            Grid.Column="1"
+            Margin="5,10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
+            FontSize="20" />
         <!--<Button Grid.Column="2" Visibility="Collapsed" x:Name="MoreButton" Style="{StaticResource ButtonStyle1}" Width="48" Height="48" VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}">
-            <SymbolIcon Symbol="More"/>
+            <SymbolIcon Symbol="More" />
         </Button>-->
-        <ComboBox x:Name="ChangeModeComboBox" Margin="8" SelectionChanged="ChangeModeComboBox_SelectionChanged" Grid.Column="2" Visibility="Collapsed" VerticalAlignment="{x:Bind data:SettingsHelper.TitleContentVerticalAlignment}"/>
+        <ComboBox
+            x:Name="ChangeModeComboBox"
+            Grid.Column="2"
+            Margin="8"
+            VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
+            SelectionChanged="ChangeModeComboBox_SelectionChanged"
+            Visibility="Collapsed" />
     </Grid>
 </UserControl>
