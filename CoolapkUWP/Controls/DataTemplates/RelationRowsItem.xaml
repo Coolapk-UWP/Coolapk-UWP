@@ -39,9 +39,9 @@
             <Border
                 Padding="2"
                 HorizontalAlignment="Left"
-                Background="{ThemeResource SystemControlHighlightListAccentLowBrush}"
-                CornerRadius="8">
-                <TextBlock Text="{x:Bind ExtraFlag}" />
+                Background="#0F9D58"
+                CornerRadius="8,0,8,0">
+                <TextBlock Foreground="White" Text="{x:Bind ExtraFlag}" />
             </Border>
             <control:TextBlockEx Margin="8" MessageText="{x:Bind Message}" />
         </StackPanel>

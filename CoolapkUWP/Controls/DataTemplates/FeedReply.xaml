@@ -122,18 +122,20 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Orientation="Horizontal">
-                        <Border
+                        <Grid
                             x:Name="longPic"
                             x:Load="{x:Bind Pic.IsLongPic, Mode=OneWay}"
-                            Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                            <TextBlock>长图</TextBlock>
-                        </Border>
-                        <Border
+                            Background="#0F9D58"
+                            CornerRadius="4,0,0,0">
+                            <TextBlock Foreground="White" Text="长图" />
+                        </Grid>
+                        <Grid
                             x:Name="gif"
                             x:Load="{x:Bind Pic.IsGif}"
-                            Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                            <TextBlock>GIF</TextBlock>
-                        </Border>
+                            Background="#0F9D58"
+                            CornerRadius="4,0,0,0">
+                            <TextBlock Foreground="White" Text="GIF" />
+                        </Grid>
                     </StackPanel>
                 </Grid>
             </Grid>
