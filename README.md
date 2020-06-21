@@ -31,7 +31,7 @@
 
 ## 如何安装应用
 ### 最低需求
-- Windows 10 Build 15063及以上
+- Windows 10 Build ~~15063~~ 17134及以上
 - 设备需支持ARM/x86/x64
 - Feature2分支支持Windows 10 Build 15035及以上
 - 至少100MB的空余储存空间(用于储存安装包与安装应用)
@@ -66,20 +66,21 @@
 - 启动图
 ![启动图](Screenshots/Snipaste_2020-04-29_14-53-51.png)
 - 首页
-![头条](Screenshots/批注-2019-11-30-184431.jpg)
-![关注](Screenshots/批注-2019-11-30-183949.jpg)
+![头条](Screenshots/Snipaste_2020-06-21_16-48-24.png)
+![酷图](Screenshots/Snipaste_2020-06-21_17-13-25.png)
+![关注](Screenshots/Snipaste_2020-06-21_17-12-39.png)
 - 通知
-![通知](Screenshots/批注-2019-11-30-184511.jpg)
+![通知](Screenshots/Snipaste_2020-06-21_17-07-55.png)
 - 搜索
-![搜索栏](Screenshots/批注-2019-11-30-182039.jpg)
-![搜索页面](Screenshots/批注-2019-11-30-182138.jpg)
+![搜索栏](Screenshots/Snipaste_2020-06-21_17-09-11.png)
+![搜索页面](Screenshots/Snipaste_2020-06-21_17-09-49.png)
 - 动态
 ![个人动态](Screenshots/批注-2019-11-30-183116.jpg)
 ![动态详情](Screenshots/批注-2019-11-30-191108.jpg)
 - 图文
-![图文](Screenshots/批注-2019-11-30-183241.jpg)
+![图文](Screenshots/Snipaste_2020-06-21_16-52-01.png)
 - 问答
-![问答](Screenshots/批注-2019-11-30-184130.jpg)
+![问答](Screenshots/Snipaste_2020-06-21_17-11-33.png)
 
 ## 使用到的模块
 - [UWP Community Toolkit](https://github.com/Microsoft/UWPCommunityToolkit/)
