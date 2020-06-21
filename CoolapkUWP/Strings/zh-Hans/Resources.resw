@@ -121,7 +121,7 @@
     <value>酷安第三方UWP应用</value>
   </data>
   <data name="AppName" xml:space="preserve">
-    <value>酷安</value>
+    <value>酷安 UWP</value>
   </data>
   <data name="BrowserPageBackButton.Content" xml:space="preserve">
     <value>尝试获取token</value>
@@ -147,9 +147,6 @@
   <data name="No" xml:space="preserve">
     <value>否</value>
   </data>
-  <data name="SettingPageAppVersionText.Text" xml:space="preserve">
-    <value>版本：</value>
-  </data>
   <data name="SettingPageBackgroundFollowSystemSwitch.Header" xml:space="preserve">
     <value>背景色跟随系统</value>
   </data>
@@ -162,7 +159,7 @@
   <data name="SettingPageCleanCacheButton.Content" xml:space="preserve">
     <value>清除图像缓存</value>
   </data>
-  <data name="SettingPageContentSettingsHeader.Text" xml:space="preserve">
+  <data name="SettingPageContentSettingsHeader.Header" xml:space="preserve">
     <value>内容</value>
   </data>
   <data name="SettingPageDarkModeSwitch.Header" xml:space="preserve">
@@ -192,7 +189,7 @@
   <data name="SettingPageNoPicsModeCheckBox.Content" xml:space="preserve">
     <value>无图模式</value>
   </data>
-  <data name="SettingPageOthersSettingsHeader.Text" xml:space="preserve">
+  <data name="SettingPageOthersSettingsHeader.Header" xml:space="preserve">
     <value>其他</value>
   </data>
   <data name="SettingPageResetSettings.Content" xml:space="preserve">
@@ -201,8 +198,11 @@
   <data name="SettingPageTitle.Title" xml:space="preserve">
     <value>设置</value>
   </data>
-  <data name="SettingPageUiSettingsHeader.Text" xml:space="preserve">
+  <data name="SettingPageUiSettingsHeader.Header" xml:space="preserve">
     <value>界面</value>
+  </data>
+  <data name="SettingPageUpdateSettingsHeader.Header" xml:space="preserve">
+    <value>更新</value>
   </data>
   <data name="SettingPageUseOldEmojiModeCheckBox.Content" xml:space="preserve">
     <value>使用旧表情</value>

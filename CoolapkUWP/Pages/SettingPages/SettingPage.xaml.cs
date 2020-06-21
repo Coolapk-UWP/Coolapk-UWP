@@ -27,11 +27,20 @@ namespace CoolapkUWP.Pages.SettingPages
         private bool isDarkMode = SettingsHelper.Get<bool>(SettingsHelper.IsDarkMode);
         private bool checkUpdateWhenLuanching = SettingsHelper.Get<bool>(SettingsHelper.CheckUpdateWhenLuanching);
         private bool isBackgroundColorFollowSystem = SettingsHelper.Get<bool>(SettingsHelper.IsBackgroundColorFollowSystem);
-        private Visibility isDarkModeSwitchVisibility = SettingsHelper.Get<bool>(SettingsHelper.IsBackgroundColorFollowSystem) ? Visibility.Collapsed : Visibility.Visible;
-        private readonly string versionTextBlockText = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
         private const string issuePath = "https://github.com/Tangent-90/Coolapk-UWP/issues";
         private bool isCleanCacheButtonEnabled = true;
         private bool isCheckUpdateButtonEnabled = true;
+
+        public string VersionTextBlockText
+        {
+            get
+            {
+                var ver = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
+                var loader = Windows.UI.Core.CoreWindow.GetForCurrentThread() == null ? null : ResourceLoader.GetForCurrentView();
+                string name = loader?.GetString("AppName") ?? "CoolapkUWP";
+                return $"{name} V{ver}";
+            }
+        }
 
         public bool IsNoPicsMode
         {
@@ -97,18 +106,7 @@ namespace CoolapkUWP.Pages.SettingPages
                 SettingsHelper.Set(SettingsHelper.IsBackgroundColorFollowSystem, value);
                 isBackgroundColorFollowSystem = SettingsHelper.Get<bool>(SettingsHelper.IsBackgroundColorFollowSystem);
                 RaisePropertyChangedEvent();
-                IsDarkModeSwitchVisibility = isBackgroundColorFollowSystem ? Visibility.Collapsed : Visibility.Visible;
                 IsDarkMode = SettingsHelper.uiSettings.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background).Equals(Windows.UI.Colors.Black);
-            }
-        }
-
-        public Visibility IsDarkModeSwitchVisibility
-        {
-            get => isDarkModeSwitchVisibility;
-            set
-            {
-                isDarkModeSwitchVisibility = value;
-                RaisePropertyChangedEvent();
             }
         }
 
