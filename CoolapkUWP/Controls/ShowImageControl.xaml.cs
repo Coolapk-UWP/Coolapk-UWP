@@ -13,8 +13,6 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 
-//https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
-
 namespace CoolapkUWP.Controls
 {
     //https://www.cnblogs.com/arcsinw/p/8638526.html

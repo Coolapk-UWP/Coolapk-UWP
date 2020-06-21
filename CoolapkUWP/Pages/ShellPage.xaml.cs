@@ -1,8 +1,9 @@
-﻿using CoolapkUWP.Helpers;
-using System;
+﻿using CoolapkUWP.Controls;
+using CoolapkUWP.Helpers;
 using System.ComponentModel;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -11,17 +12,7 @@ namespace CoolapkUWP.Pages
 {
     public sealed partial class ShellPage : Page, INotifyPropertyChanged
     {
-        private bool progressRingActived;
-
-        public bool ProgressRingActived
-        {
-            get => progressRingActived;
-            private set
-            {
-                progressRingActived = value;
-                RaisePropertyChangedEvent();
-            }
-        }
+        private Symbol paneOpenSymbolIcon = Symbol.ClosePane;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -29,6 +20,16 @@ namespace CoolapkUWP.Pages
         {
             if (name != null)
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public Symbol PaneOpenSymbolIcon
+        {
+            get => paneOpenSymbolIcon;
+            private set
+            {
+                paneOpenSymbolIcon = value;
+                RaisePropertyChangedEvent();
+            }
         }
 
         public ShellPage()
@@ -39,13 +40,13 @@ namespace CoolapkUWP.Pages
                 SettingsHelper.CheckUpdate();
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
             {
-                int i = UIHelper.popups.Count - 1;
-                if (i >= 0)
+                int i = UIHelper.Popups.Count - 1;
+                if (i > 0)
                 {
                     ee.Handled = true;
-                    var popup = UIHelper.popups[i];
+                    var popup = UIHelper.Popups[i];
                     popup.IsOpen = false;
-                    UIHelper.popups.Remove(popup);
+                    UIHelper.Popups.Remove(popup);
                 }
                 else if (Frame.CanGoBack)
                 {
@@ -54,9 +55,11 @@ namespace CoolapkUWP.Pages
                 }
             };
             Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForApplication().Clear();
-            UIHelper.ProgressRingIsActiveChanged += async (s, b) =>
+            UIHelper.ShowPopup(new Popup { Child = new NotifyPopup() });
+            UIHelper.IsSplitViewPaneOpenedChanged += (s, e) =>
             {
-                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRingActived = b);
+                splitView.IsPaneOpen = e;
+                PaneOpenSymbolIcon = e ? Symbol.OpenPane : Symbol.ClosePane;
             };
         }
 
@@ -65,7 +68,13 @@ namespace CoolapkUWP.Pages
             base.OnNavigatedTo(e);
             shellFrame.Navigate(typeof(MainPage));
             UIHelper.MainFrame = shellFrame;
-            UIHelper.InAppNotification = AppNotification;
+            UIHelper.PaneFrame = paneFrame;
+        }
+
+        private void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            splitView.IsPaneOpen = !splitView.IsPaneOpen;
+            PaneOpenSymbolIcon = splitView.IsPaneOpen ? Symbol.OpenPane : Symbol.ClosePane;
         }
     }
 }

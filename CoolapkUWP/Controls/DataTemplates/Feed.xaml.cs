@@ -10,9 +10,14 @@ namespace CoolapkUWP.Controls.DataTemplates
     public partial class Feed : ResourceDictionary
     {
         public Feed() => InitializeComponent();
-        
+
         private void OnTapped(object sender, TappedRoutedEventArgs e)
-            => UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+        {
+            if (sender == e.OriginalSource || sender.GetType() == typeof(TextBlockEx))
+            {
+                UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+            }
+        }
 
         private async void FeedButton_Click(object sender, RoutedEventArgs e)
         {

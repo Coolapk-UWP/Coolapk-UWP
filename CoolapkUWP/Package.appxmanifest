@@ -4,7 +4,7 @@
   <mp:PhoneIdentity PhoneProductId="4e59c59e-ae78-4038-adad-d6ec7bb47191" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>ms-resource:AppName</DisplayName>
-    <PublisherDisplayName>L</PublisherDisplayName>
+    <PublisherDisplayName>Tangent-90</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>

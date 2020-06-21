@@ -12,14 +12,9 @@ namespace CoolapkUWP.Models
             IsFeedAuthor = token.Value<int>("isFeedAuthor") == 1;
             Rurl = $"/u/{token.Value<int>("ruid")}";
             Rusername = token.Value<string>("rusername");
-            if (ShowRuser)
-            {
-                Message = $"<a href=\"{Uurl}\" type=\"user-detail\">{Username}{(IsFeedAuthor ? "[楼主]" : string.Empty)}</a>@<a href=\"{Rurl}\" type=\"user-detail\">{Rusername}</a>: {token.Value<string>("message")}";
-            }
-            else
-            {
-                Message = $"<a href=\"{Uurl}\" type=\"user-detail\">{Username}{(IsFeedAuthor ? "[楼主]" : string.Empty)}</a>: {token.Value<string>("message")}";
-            }
+            Message = string.IsNullOrEmpty(Rusername)
+                ? $"<a href=\"{Uurl}\" type=\"user-detail\">{Username}{(IsFeedAuthor ? "[楼主]" : string.Empty)}</a>: {token.Value<string>("message")}"
+                : $"<a href=\"{Uurl}\" type=\"user-detail\">{Username}{(IsFeedAuthor ? "[楼主]" : string.Empty)}</a>@<a href=\"{Rurl}\" type=\"user-detail\">{Rusername}</a>: {token.Value<string>("message")}";
 
             ShowPic = token.TryGetValue("pic", out JToken value) && !string.IsNullOrEmpty(value.ToString());
             if (ShowPic)
@@ -29,7 +24,6 @@ namespace CoolapkUWP.Models
             }
         }
 
-        public bool ShowRuser { get => !string.IsNullOrEmpty(Rusername); }
         public string Rusername { get; private set; }
         public string Rurl { get; private set; }
         public double Id { get; private set; }
@@ -37,7 +31,7 @@ namespace CoolapkUWP.Models
         public string Username { get; private set; }
         public string Message { get; private set; }
         public bool IsFeedAuthor { get; private set; }
-        public bool ShowPic { get; private set; }
+        public bool ShowPic { get; protected set; }
         public string PicUri { get; private set; }
     }
 }

@@ -90,19 +90,19 @@ namespace CoolapkUWP.Pages.FeedPages
             switch (item.Tag as string)
             {
                 case "atMe":
-                    UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.AtMe);
+                    Frame.Navigate(typeof(NotificationsPage), NotificationPageType.AtMe);
                     break;
 
                 case "atCommentMe":
-                    UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.AtCommentMe);
+                    Frame.Navigate(typeof(NotificationsPage), NotificationPageType.AtCommentMe);
                     break;
 
                 case "like":
-                    UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.Like);
+                    Frame.Navigate(typeof(NotificationsPage), NotificationPageType.Like);
                     break;
 
                 case "follow":
-                    UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.Follow);
+                    Frame.Navigate(typeof(NotificationsPage), NotificationPageType.Follow);
                     break;
             }
         }
@@ -121,7 +121,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private async void Load<T>(int p = -1) where T : IFeedModel, new()
         {
-            UIHelper.ShowProgressRing();
+            titleBar.ShowProgressRing();
             JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetNotifications,
                                                             uri,
                                                             p == -1 ? ++page : p,
@@ -157,12 +157,12 @@ namespace CoolapkUWP.Pages.FeedPages
                 }
                 else UIHelper.ShowMessage("没有新的了");
             }
-            UIHelper.HideProgressRing();
+            titleBar.HideProgressRing();
         }
 
         private async void Load(int p = -1)
         {
-            UIHelper.ShowProgressRing();
+            titleBar.ShowProgressRing();
             JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetNotifications,
                                                             uri,
                                                             p == -1 ? ++page : p,
@@ -197,7 +197,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 }
                 else UIHelper.ShowMessage("没有新的了");
             }
-            UIHelper.HideProgressRing();
+            titleBar.HideProgressRing();
         }
 
         private void MainListView_RefreshRequested(object sender, EventArgs e)

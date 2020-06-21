@@ -5,17 +5,31 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:CoolapkUWP.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mtctrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
-    <Grid>
-        <Frame x:Name="shellFrame" />
-        <mtctrl:InAppNotification x:Name="AppNotification" StackMode="StackInFront" />
-        <winui:ProgressRing
-            Width="60"
-            Height="60"
-            IsActive="{x:Bind ProgressRingActived, Mode=OneWay}" />
-    </Grid>
+    <SplitView
+        x:Name="splitView"
+        DisplayMode="Inline"
+        OpenPaneLength="384"
+        PaneBackground="{ThemeResource SystemControlBackgroundListLowBrush}"
+        PanePlacement="Right">
+        <SplitView.Pane>
+            <Frame x:Name="paneFrame" />
+        </SplitView.Pane>
+        <Grid>
+            <Frame x:Name="shellFrame" />
+            <Button
+                Width="40"
+                Height="40"
+                Margin="0,32,0,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Background="Transparent"
+                Click="Button_Click"
+                Style="{ThemeResource ButtonRevealStyle}">
+                <SymbolIcon Symbol="{x:Bind PaneOpenSymbolIcon, Mode=OneWay}" />
+            </Button>
+        </Grid>
+    </SplitView>
 </Page>

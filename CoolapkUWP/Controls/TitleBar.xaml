@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:CoolapkUWP.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     d:DesignHeight="72"
     d:DesignWidth="400"
     Tapped="TitleGrid_Tapped"
@@ -18,7 +19,9 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="40" />
             <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="40" />
         </Grid.ColumnDefinitions>
         <Button
             x:Name="BackButton"
@@ -45,9 +48,16 @@
         <!--<Button Grid.Column="2" Visibility="Collapsed" x:Name="MoreButton" Style="{StaticResource ButtonStyle1}" Width="48" Height="48" VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}">
             <SymbolIcon Symbol="More" />
         </Button>-->
+        <winui:ProgressRing
+            x:Name="progressRing"
+            Grid.Column="2"
+            Width="24"
+            Height="24"
+            Margin="0,32,0,0"
+            IsActive="False" />
         <ComboBox
             x:Name="ChangeModeComboBox"
-            Grid.Column="2"
+            Grid.Column="3"
             Margin="8"
             VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
             SelectionChanged="ChangeModeComboBox_SelectionChanged"

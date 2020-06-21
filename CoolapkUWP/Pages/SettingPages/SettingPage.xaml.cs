@@ -144,12 +144,14 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             switch ((sender as FrameworkElement).Tag as string)
             {
-                case "gotoTestPage": UIHelper.Navigate(typeof(TestPage)); break;
+                case "gotoTestPage": Frame.Navigate(typeof(TestPage)); break;
+
                 case "checkUpdate":
                     IsCheckUpdateButtonEnabled = false;
                     await SettingsHelper.CheckUpdate();
                     IsCheckUpdateButtonEnabled = true;
                     break;
+
                 case "reset":
                     bool b = true;
                     if (!string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid)))
@@ -179,6 +181,7 @@ namespace CoolapkUWP.Pages.SettingPages
                 case "feedback":
                     UIHelper.OpenLinkAsync(issuePath);
                     break;
+
                 case "logFolder":
                     await Windows.System.Launcher.LaunchFolderAsync(await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists));
                     break;

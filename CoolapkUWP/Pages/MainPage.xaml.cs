@@ -80,9 +80,9 @@ namespace CoolapkUWP.Pages
         {
             base.OnNavigatedTo(e);
             UserAvatar = await ImageCacheHelper.GetImageAsync(ImageType.BigAvatar, SettingsHelper.Get<string>(SettingsHelper.UserAvatar));
-            await SettingsHelper.CheckLoginInfo();
             UIHelper.NotificationNums.BadgeNumberChanged += NotificationNums_BadgeNumberChanged;
             UIHelper.UserAvatarChanged += UIHelper_UserAvatarChanged;
+            await SettingsHelper.CheckLoginInfo();
             ChangeBadgeNum(UIHelper.NotificationNums.BadgeNum);
         }
 
@@ -107,8 +107,6 @@ namespace CoolapkUWP.Pages
                 BadgeNum = num;
                 BadgeIconGlyph = num > 0 ? "" /*"&#xED0C;"*/ : ""; //"&#xED0D;"
             });
-
-        private void NotificationCenterButton_Click(object sender, RoutedEventArgs e) => UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.Comment);
 
         #region 搜索框相关
 
@@ -156,13 +154,6 @@ namespace CoolapkUWP.Pages
                 sender.Text = m.GetTitle();
         }
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            SearchBox.Visibility = Visibility.Visible;
-            SearchButton.Visibility = Visibility.Collapsed;
-            SearchBox.Focus(FocusState.Keyboard);
-        }
-
         private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
         {
             if (Window.Current.Bounds.Width < 768)
@@ -205,6 +196,24 @@ namespace CoolapkUWP.Pages
             var item = allMenuItems.First(i => i.Title == title);
             var uri = title == "头条" ? "/main/indexV8" : $"{item.Uri}&title={title}";
             navigationViewFrame.Navigate(typeof(IndexPage), new object[] { uri, true }, args.RecommendedNavigationTransitionInfo);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            switch (((FrameworkElement)sender).Tag as string)
+            {
+                case "UserPage":
+                    UIHelper.NavigateInSplitPane(typeof(UserPage));
+                    break;
+                case "ShowSearchBar":
+                    SearchBox.Visibility = Visibility.Visible;
+                    SearchButton.Visibility = Visibility.Collapsed;
+                    SearchBox.Focus(FocusState.Keyboard);
+                    break;
+                case "Notifications":
+                    UIHelper.NavigateInSplitPane(typeof(NotificationsPage), new object[] { NotificationPageType.Comment });
+                    break;
+            }
         }
     }
 }

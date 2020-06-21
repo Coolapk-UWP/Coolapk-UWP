@@ -57,7 +57,6 @@ namespace CoolapkUWP
             {
                 var loader = Windows.UI.Core.CoreWindow.GetForCurrentThread() == null ? null : ResourceLoader.GetForCurrentView();
                 var s = "ExceptionThrown";
-                UIHelper.HideProgressRing();
                 UIHelper.ShowMessage($"{loader?.GetString(s) ?? s}\n{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})"
 #if DEBUG
                     + $"\n{e.Exception.StackTrace}"
@@ -88,7 +87,6 @@ namespace CoolapkUWP
                 var loader = Windows.UI.Core.CoreWindow.GetForCurrentThread() == null ? null : ResourceLoader.GetForCurrentView();
                 var s = "ExceptionThrown";
                 var s2 = "NetworkError";
-                UIHelper.HideProgressRing();
                 if (e.Exception.HResult <= -2147012721 && e.Exception.HResult >= -2147012895)
                     UIHelper.ShowMessage($"{loader?.GetString(s2) ?? s2}(0x{Convert.ToString(e.Exception.HResult, 16)})");
                 else if (e.Exception.Message.IndexOf("Coolapk message:") == 0)

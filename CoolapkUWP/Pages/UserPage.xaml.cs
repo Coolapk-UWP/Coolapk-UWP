@@ -1,5 +1,4 @@
 ﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListDataProvider;
 using Newtonsoft.Json.Linq;
@@ -7,9 +6,9 @@ using System.ComponentModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace CoolapkUWP.Controls
+namespace CoolapkUWP.Pages
 {
-    public sealed partial class UserHub : UserControl, INotifyPropertyChanged
+    public sealed partial class UserPage : Page, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -33,7 +32,7 @@ namespace CoolapkUWP.Controls
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public UserHub()
+        public UserPage()
         {
             this.InitializeComponent();
             Loaded += async (s, e) =>
@@ -53,7 +52,7 @@ namespace CoolapkUWP.Controls
                     if (url != SettingsHelper.Get<string>(SettingsHelper.UserAvatar))
                     {
                         SettingsHelper.Set(SettingsHelper.UserAvatar, url);
-                        UIHelper.RaiseUserAvatarChangedEvent(this, bitmapImage);
+                        UIHelper.RaiseUserAvatarChangedEvent(bitmapImage);
                     }
                 }
             };
@@ -70,15 +69,15 @@ namespace CoolapkUWP.Controls
                     break;
 
                 case "follow":
-                    UIHelper.Navigate(typeof(UserListPage), new object[] { SettingsHelper.Get<string>(SettingsHelper.Uid), true, model?.UserName ?? string.Empty });
+                    Frame.Navigate(typeof(UserListPage), new object[] { SettingsHelper.Get<string>(SettingsHelper.Uid), true, model?.UserName ?? string.Empty });
                     break;
 
                 case "fans":
-                    UIHelper.Navigate(typeof(UserListPage), new object[] { SettingsHelper.Get<string>(SettingsHelper.Uid), false, model?.UserName ?? string.Empty });
+                    Frame.Navigate(typeof(UserListPage), new object[] { SettingsHelper.Get<string>(SettingsHelper.Uid), false, model?.UserName ?? string.Empty });
                     break;
 
                 case "settings":
-                    UIHelper.Navigate(typeof(Pages.SettingPages.SettingPage));
+                    Frame.Navigate(typeof(SettingPages.SettingPage));
                     break;
 
                 case "login":

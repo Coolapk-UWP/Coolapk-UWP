@@ -9,7 +9,7 @@
     xmlns:local="using:CoolapkUWP.Pages.SettingPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="Transparent"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -21,7 +21,7 @@
     </Page.Resources>
 
     <Grid>
-        <ScrollViewer Margin="4,0" Padding="{StaticResource StackPanelMargin}">
+        <ScrollViewer Margin="12,0" Padding="{StaticResource StackPanelMargin}">
             <StackPanel>
                 <controls:HeaderedContentControl x:Uid="SettingPageUiSettingsHeader" Style="{StaticResource HeaderStyle}">
                     <StackPanel>
@@ -134,6 +134,9 @@
                 </controls:HeaderedContentControl>
             </StackPanel>
         </ScrollViewer>
-        <control:TitleBar x:Uid="SettingPageTitle" BackButtonClick="TitleBar_BackButtonClick" />
+        <control:TitleBar
+            x:Uid="SettingPageTitle"
+            BackButtonClick="TitleBar_BackButtonClick"
+            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" />
     </Grid>
 </Page>

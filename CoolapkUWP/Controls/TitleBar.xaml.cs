@@ -7,6 +7,8 @@ namespace CoolapkUWP.Controls
 {
     public sealed partial class TitleBar : UserControl
     {
+        public bool IsBackButtonEnabled { get => BackButton.IsEnabled; set => BackButton.IsEnabled = value; }
+
         public string Title { get => title.Text; set => title.Text = value; }
 
         public event RoutedEventHandler RefreshEvent;
@@ -33,5 +35,9 @@ namespace CoolapkUWP.Controls
             if (e.OriginalSource is Grid || (e.OriginalSource is TextBlock a && a == title))
                 RefreshEvent?.Invoke(sender, e);
         }
+
+        public void ShowProgressRing() => progressRing.IsActive = true;
+
+        public void HideProgressRing() => progressRing.IsActive = false;
     }
 }
