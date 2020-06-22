@@ -39,7 +39,7 @@
 ### 使用应用安装脚本安装应用
 - 下载并解压最新的[安装包`(UWP_x.x.x.0_Debug_Test.rar)`](https://github.com/Tangent-90/Coolapk-UWP/releases/latest)
 - 如果没有应用安装脚本，下载[`Install.ps1`](Install.ps1)到目标目录
-![Install.ps1](Screenshots/Snipaste_2019-10-12_22-49-11.png)
+![Install.ps1](Images/Guides/Snipaste_2019-10-12_22-49-11.png)
 - 右击`Install.ps1`，选择“使用PowerShell运行”
 - 应用安装脚本将会引导您完成此过程的剩余部分
 
@@ -48,39 +48,39 @@
 - [开启旁加载模式](https://www.windowscentral.com/how-enable-windows-10-sideload-apps-outside-store)
   - 如果您想开发UWP应用，您可以开启[开发人员模式](https://docs.microsoft.com/zh-cn/windows/uwp/get-started/enable-your-device-for-development)，**对于大多数不需要做UWP开发的用户来说，开发人员模式是没有必要的**
 - 安装`Dependencies`文件夹下的适用于您的设备的所有依赖包
-![Dependencies](Screenshots/Snipaste_2019-10-13_15-51-33.png)
+![Dependencies](Images/Guides/Snipaste_2019-10-13_15-51-33.png)
 - 安装`*.cer`证书到`本地计算机`→`受信任的根证书颁发机构`
   - 这项操作需要用到管理员权限，如果您安装证书时没有用到该权限，则可能是因为您将证书安装到了错误的位置或者您使用的是超级管理员账户
-  ![安装证书](Screenshots/Snipaste_2019-10-12_22-46-37.png)
-  ![导入本地计算机](Screenshots/Snipaste_2019-10-19_15-28-58.png)
-  ![储存到受信任的根证书颁发机构](Screenshots/Snipaste_2019-10-20_23-36-44.png)
+  ![安装证书](Images/Guides/Snipaste_2019-10-12_22-46-37.png)
+  ![导入本地计算机](Images/Guides/Snipaste_2019-10-19_15-28-58.png)
+  ![储存到受信任的根证书颁发机构](Images/Guides/Snipaste_2019-10-20_23-36-44.png)
 - 双击`*.appxbundle`，单击安装，坐和放宽
-![安装](Screenshots/Snipaste_2019-10-13_12-42-40.png)
+![安装](Images/Guides/Snipaste_2019-10-13_12-42-40.png)
 
 ### 更新应用
 - 下载并解压最新的[安装包`(UWP_x.x.x.0_x86_x64_arm_Debug.appxbundle)`](https://github.com/Tangent-90/Coolapk-UWP/releases/latest)
 - 双击`*.appxbundle`，单击安装，坐和放宽
-![安装](Screenshots/Snipaste_2019-10-13_16-01-09.png)
+![安装](Images/Guides/Snipaste_2019-10-13_16-01-09.png)
 
 ## 屏幕截图
 - 启动图
-![启动图](Screenshots/Snipaste_2020-04-29_14-53-51.png)
+![启动图](Images/Screenshots/Snipaste_2020-04-29_14-53-51.png)
 - 首页
-![头条](Screenshots/Snipaste_2020-06-21_16-48-24.png)
-![酷图](Screenshots/Snipaste_2020-06-21_17-13-25.png)
-![关注](Screenshots/Snipaste_2020-06-21_17-12-39.png)
+![头条](Images/Screenshots/Snipaste_2020-06-21_16-48-24.png)
+![酷图](Images/Screenshots/Snipaste_2020-06-21_17-13-25.png)
+![关注](Images/Screenshots/Snipaste_2020-06-21_17-12-39.png)
 - 通知
-![通知](Screenshots/Snipaste_2020-06-21_17-07-55.png)
+![通知](Images/Screenshots/Snipaste_2020-06-21_17-07-55.png)
 - 搜索
-![搜索栏](Screenshots/Snipaste_2020-06-21_17-09-11.png)
-![搜索页面](Screenshots/Snipaste_2020-06-21_17-09-49.png)
+![搜索栏](Images/Screenshots/Snipaste_2020-06-21_17-09-11.png)
+![搜索页面](Images/Screenshots/Snipaste_2020-06-21_17-09-49.png)
 - 动态
-![个人动态](Screenshots/批注-2019-11-30-183116.jpg)
-![动态详情](Screenshots/批注-2019-11-30-191108.jpg)
+![个人动态](Images/Screenshots/批注-2019-11-30-183116.jpg)
+![动态详情](Images/Screenshots/批注-2019-11-30-191108.jpg)
 - 图文
-![图文](Screenshots/Snipaste_2020-06-21_16-52-01.png)
+![图文](Images/Screenshots/Snipaste_2020-06-21_16-52-01.png)
 - 问答
-![问答](Screenshots/Snipaste_2020-06-21_17-11-33.png)
+![问答](Images/Screenshots/Snipaste_2020-06-21_17-11-33.png)
 
 ## 使用到的模块
 - [UWP Community Toolkit](https://github.com/Microsoft/UWPCommunityToolkit/)
