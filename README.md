@@ -66,17 +66,17 @@
 - 启动图
 ![启动图](Images/Screenshots/Snipaste_2020-04-29_14-53-51.png)
 - 首页
-![头条](Images/Screenshots/Snipaste_2020-06-21_16-48-24.png)
+![头条](Images/Screenshots/Snipaste_2020-06-22_17-11-05.png)
 ![酷图](Images/Screenshots/Snipaste_2020-06-21_17-13-25.png)
-![关注](Images/Screenshots/Snipaste_2020-06-21_17-12-39.png)
+![关注](Images/Screenshots/Snipaste_2020-06-22_17-48-43.png)
 - 通知
-![通知](Images/Screenshots/Snipaste_2020-06-21_17-07-55.png)
+![通知](Images/Screenshots/Snipaste_2020-06-22_17-14-10.png)
 - 搜索
-![搜索栏](Images/Screenshots/Snipaste_2020-06-21_17-09-11.png)
+![搜索栏](Images/Screenshots/Snipaste_2020-06-22_17-15-10.png)
 ![搜索页面](Images/Screenshots/Snipaste_2020-06-21_17-09-49.png)
 - 动态
-![个人动态](Images/Screenshots/批注-2019-11-30-183116.jpg)
-![动态详情](Images/Screenshots/批注-2019-11-30-191108.jpg)
+![个人动态](Images/Screenshots/Snipaste_2020-06-22_17-16-03.png)
+![动态详情](Images/Screenshots/Snipaste_2020-06-22_17-16-37.png)
 - 图文
 ![图文](Images/Screenshots/Snipaste_2020-06-21_16-52-01.png)
 - 问答
