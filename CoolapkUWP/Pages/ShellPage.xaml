@@ -5,31 +5,45 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:CoolapkUWP.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mtctrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
-    <SplitView
-        x:Name="splitView"
-        DisplayMode="Inline"
-        OpenPaneLength="384"
-        PaneBackground="{ThemeResource SystemControlBackgroundListLowBrush}"
-        PanePlacement="Right">
-        <SplitView.Pane>
-            <Frame x:Name="paneFrame" />
-        </SplitView.Pane>
-        <Grid>
-            <Frame x:Name="shellFrame" />
-            <Button
-                Width="40"
-                Height="40"
-                Margin="0,32,0,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Background="Transparent"
-                Click="Button_Click"
-                Style="{ThemeResource ButtonRevealStyle}">
-                <SymbolIcon Symbol="{x:Bind PaneOpenSymbolIcon, Mode=OneWay}" />
-            </Button>
-        </Grid>
-    </SplitView>
+    <Grid>
+        <SplitView
+            x:Name="splitView"
+            DisplayMode="Inline"
+            IsPaneOpen="True"
+            OpenPaneLength="400"
+            PanePlacement="Right">
+            <SplitView.Pane>
+                <Grid>
+                    <Frame x:Name="paneFrame" Navigated="paneFrame_Navigated" />
+                    <Button
+                        x:Name="goHomeButton"
+                        Margin="0,32,8,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Click="Button_Click"
+                        Style="{StaticResource IconButtonStyle}"
+                        Tag="home">
+                        <SymbolIcon Symbol="Home" />
+                    </Button>
+                </Grid>
+            </SplitView.Pane>
+            <Grid>
+                <Frame x:Name="shellFrame" />
+                <Button
+                    Margin="0,32,8,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Click="Button_Click"
+                    Style="{StaticResource IconButtonStyle}"
+                    Tag="panel">
+                    <SymbolIcon Symbol="{x:Bind PaneOpenSymbolIcon, Mode=OneWay}" />
+                </Button>
+            </Grid>
+        </SplitView>
+        <mtctrl:InAppNotification x:Name="AppNotification" StackMode="StackInFront" />
+    </Grid>
 </Page>

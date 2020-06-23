@@ -1,11 +1,11 @@
 ﻿using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel;
 
 namespace CoolapkUWP.Models
 {
-    internal class FeedReplyModel : SimpleFeedReplyModel, INotifyPropertyChanged, ILike
+    internal class FeedReplyModel : SimpleFeedReplyModel, INotifyPropertyChanged, ILike, ICanChangeReplyNum
     {
         public FeedReplyModel(JObject token, bool showReplyRow = true) : base(token)
         {
@@ -13,7 +13,9 @@ namespace CoolapkUWP.Models
             Message = token.Value<string>("message");
             var userSmallAvatarUrl = token["userInfo"].Value<string>("userSmallAvatar");
             if (!string.IsNullOrEmpty(userSmallAvatarUrl))
+            {
                 UserSmallAvatar = new ImageModel(userSmallAvatarUrl, ImageType.BigAvatar);
+            }
             Likenum = token["likenum"].ToString().Replace("\"", string.Empty);
             Replynum = token["replynum"].ToString().Replace("\"", string.Empty);
             token.TryGetValue("replyRowsCount", out JToken value1);
@@ -21,18 +23,24 @@ namespace CoolapkUWP.Models
             ShowreplyRows = showReplyRow && ReplyRowsCount > 0;
             if (ShowreplyRows)
             {
-                List<SimpleFeedReplyModel> models = new List<SimpleFeedReplyModel>();
+                var buider = ImmutableArray.CreateBuilder<SimpleFeedReplyModel>();
                 foreach (JObject item in token["replyRows"] as JArray)
-                    models.Add(new SimpleFeedReplyModel(item));
-                ReplyRows = models.ToArray();
+                {
+                    buider.Add(new SimpleFeedReplyModel(item));
+                }
+
+                ReplyRows = buider.ToImmutable();
                 ReplyRowsMore = token.Value<int>("replyRowsMore");
             }
             Liked = token.TryGetValue("userAction", out JToken v) ? v.Value<int>("like") == 1 : false;
             if (ShowPic)
+            {
                 Pic = new ImageModel(PicUri, ImageType.SmallImage);
+            }
         }
 
         private string likenum1;
+        private string replynum;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -46,13 +54,21 @@ namespace CoolapkUWP.Models
             }
         }
 
-        public string Replynum { get; private set; }
+        public string Replynum
+        {
+            get => replynum;
+            set
+            {
+                replynum = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Replynum)));
+            }
+        }
         public new string Message { get; private set; }
         public ImageModel UserSmallAvatar { get; private set; }
         public ImageModel Pic { get; private set; }
         public string Dateline { get; private set; }
         public bool ShowreplyRows { get; set; }
-        public SimpleFeedReplyModel[] ReplyRows { get; private set; }
+        public ImmutableArray<SimpleFeedReplyModel> ReplyRows { get; private set; } = ImmutableArray<SimpleFeedReplyModel>.Empty;
         public bool ShowreplyRowsMore { get => ReplyRowsMore > 0; }
         public double ReplyRowsMore { get; private set; }
         public double ReplyRowsCount { get; private set; }

@@ -15,29 +15,26 @@
             NavigationCompleted="WebView_NavigationCompleted" />
         <control:TitleBar
             x:Name="titleBar"
-            BackButtonClick="BackButton_Click"
-            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" />
-        <StackPanel
-            Height="{StaticResource PageTitleHeight}"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Orientation="Horizontal">
-            <Button
-                x:Name="TryLoginButton"
-                x:Uid="BrowserPageBackButton"
-                Height="48"
-                VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
-                Background="Transparent"
-                Click="{x:Bind CheckLogin}"
-                Style="{StaticResource ButtonStyle1}" />
-            <Button
-                x:Name="GotoSystemBrowserButton"
-                x:Uid="BrowserPageOpenInBrowserButton"
-                Height="48"
-                VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
-                Background="Transparent"
-                Click="GotoSystemBrowserButton_Click"
-                Style="{StaticResource ButtonStyle1}" />
-        </StackPanel>
+            BackButtonClicked="BackButton_Click"
+            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}">
+            <control:TitleBar.RightAreaContent>
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        x:Name="TryLoginButton"
+                        x:Uid="BrowserPageBackButton"
+                        Height="40"
+                        Background="Transparent"
+                        Click="{x:Bind CheckLogin}"
+                        Style="{StaticResource ButtonRevealStyle}" />
+                    <Button
+                        x:Name="GotoSystemBrowserButton"
+                        x:Uid="BrowserPageOpenInBrowserButton"
+                        Height="40"
+                        Background="Transparent"
+                        Click="GotoSystemBrowserButton_Click"
+                        Style="{StaticResource ButtonRevealStyle}" />
+                </StackPanel>
+            </control:TitleBar.RightAreaContent>
+        </control:TitleBar>
     </Grid>
 </Page>

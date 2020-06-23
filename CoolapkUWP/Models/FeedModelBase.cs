@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
-using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Models
 {
@@ -13,7 +12,12 @@ namespace CoolapkUWP.Models
         string Id { get; }
     }
 
-    internal class FeedModelBase : SourceFeedModel, ILike, INotifyPropertyChanged
+    internal interface ICanChangeReplyNum
+    {
+        string Replynum { get; set; }
+    }
+
+    public class FeedModelBase : SourceFeedModel, ILike, INotifyPropertyChanged, ICanChangeReplyNum
     {
         public FeedModelBase(JObject token) : base(token)
         {
@@ -69,6 +73,7 @@ namespace CoolapkUWP.Models
         }
 
         private string likenum1;
+        private string replynum;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -95,11 +100,19 @@ namespace CoolapkUWP.Models
             set
             {
                 likenum1 = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("likenum"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Likenum)));
             }
         }
 
-        public string Replynum { get; private set; }
+        public string Replynum
+        {
+            get => replynum;
+            set
+            {
+                replynum = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Replynum)));
+            }
+        }
         public bool Liked { get; set; }
         public bool Liked2 { get => !Liked; }
         public string Id => EntityId;

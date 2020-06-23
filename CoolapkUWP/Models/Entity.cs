@@ -2,7 +2,7 @@
 
 namespace CoolapkUWP.Models
 {
-    internal class Entity
+    public class Entity
     {
         public Entity(JObject o)
         {

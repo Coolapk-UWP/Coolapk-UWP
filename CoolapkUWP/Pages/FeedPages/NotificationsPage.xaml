@@ -10,7 +10,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:CoolapkUWP.Models.Pages.NotificationsPageModels"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
-    Background="Transparent"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
@@ -55,14 +56,14 @@
                         <TextBlock Text="{x:Bind UserName}" />
                         <TextBlock
                             Margin="8,0,0,0"
-                            Foreground="Gray"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                             Text="{x:Bind Dateline}" />
                     </StackPanel>
                     <control:TextBlockEx
                         Grid.Row="2"
                         Grid.Column="1"
                         Padding="0,0,0,4"
-                        Foreground="Gray"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                         MessageText="{x:Bind Note}" />
                 </Grid>
             </DataTemplate>
@@ -102,14 +103,14 @@
                         <TextBlock
                             Margin="8,0"
                             VerticalAlignment="Center"
-                            Foreground="Gray"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                             IsTextSelectionEnabled="False"
                             Text="{x:Bind Dateline}" />
                     </StackPanel>
                     <StackPanel Grid.Row="1" Margin="4,0,4,8">
                         <TextBlock Text="{x:Bind Title}" />
                         <control:TextBlockEx
-                            Foreground="Gray"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                             MaxLine="3"
                             MessageText="{x:Bind FeedMessage}" />
                     </StackPanel>
@@ -149,12 +150,12 @@
                         </Button>
                         <TextBlock
                             Margin="8,4"
-                            Foreground="Gray"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                             Text="{x:Bind Dateline}" />
                     </StackPanel>
                     <StackPanel Grid.Row="1" Padding="6,0,6,8">
                         <control:TextBlockEx MessageText="{x:Bind Message}" />
-                        <control:TextBlockEx Foreground="Gray" MessageText="{x:Bind FeedMessage}" />
+                        <control:TextBlockEx Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" MessageText="{x:Bind FeedMessage}" />
                     </StackPanel>
                 </Grid>
             </DataTemplate>
@@ -168,117 +169,97 @@
     </Page.Resources>
 
     <Grid>
-        <controls:PullToRefreshListView
-            x:Name="MainListView"
-            Padding="{StaticResource StackPanelMargin}"
-            PullToRefreshLabel="下拉刷新"
-            RefreshRequested="MainListView_RefreshRequested"
-            ReleaseToRefreshLabel="松手刷新"
-            SelectionMode="None">
-            <controls:PullToRefreshListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="Template" Value="{StaticResource AppListViewItemTemplate}" />
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="Margin" Value="0" />
-                    <Setter Property="Padding" Value="0" />
-                </Style>
-            </controls:PullToRefreshListView.ItemContainerStyle>
-            <ListViewItem x:Name="NavigateItems" x:Load="False">
-                <ListView
-                    IsItemClickEnabled="True"
-                    ItemClick="ListView_ItemClick"
-                    ScrollViewer.VerticalScrollMode="Disabled">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="Template" Value="{StaticResource AppListViewItemTemplate}" />
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="Margin" Value="4,0" />
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}" />
-                            <Setter Property="BorderThickness" Value="1" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <StackPanel
-                        Margin="8,0"
-                        Orientation="Horizontal"
-                        Tag="atMe">
-                        <SymbolIcon Symbol="Account" />
-                        <TextBlock
+        <winui:ItemsRepeaterScrollHost>
+            <ScrollViewer x:Name="scrollViewer" ViewChanged="scrollViewer_ViewChanged">
+                <StackPanel
+                    x:Name="listPanel"
+                    MinWidth="320"
+                    MaxWidth="768"
+                    Padding="{StaticResource StackPanelMargin}"
+                    HorizontalAlignment="Center">
+                    <ListView
+                        x:Name="NavigateItems"
+                        x:Load="False"
+                        IsItemClickEnabled="True"
+                        ItemClick="ListView_ItemClick"
+                        ScrollViewer.VerticalScrollMode="Disabled">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Template" Value="{StaticResource AppListViewItemTemplate}" />
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="Margin" Value="4,0" />
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}" />
+                                <Setter Property="BorderThickness" Value="1" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <StackPanel
                             Margin="8,0"
-                            VerticalAlignment="Center"
-                            Text="{x:Bind data:UIHelper.NotificationNums.AtMeNum, Mode=OneWay}" />
-                        <TextBlock VerticalAlignment="Center">@我的动态</TextBlock>
-                    </StackPanel>
-                    <StackPanel
-                        Margin="8,0"
-                        Orientation="Horizontal"
-                        Tag="atCommentMe">
-                        <SymbolIcon Symbol="Account" />
-                        <TextBlock
+                            Orientation="Horizontal"
+                            Tag="atMe">
+                            <SymbolIcon Symbol="Account" />
+                            <TextBlock
+                                Margin="8,0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind data:UIHelper.NotificationNums.AtMeNum, Mode=OneWay}" />
+                            <TextBlock VerticalAlignment="Center">@我的动态</TextBlock>
+                        </StackPanel>
+                        <StackPanel
                             Margin="8,0"
-                            VerticalAlignment="Center"
-                            Text="{x:Bind data:UIHelper.NotificationNums.AtCommentMeNum, Mode=OneWay}" />
-                        <TextBlock VerticalAlignment="Center">@我的评论</TextBlock>
-                    </StackPanel>
-                    <StackPanel
-                        Margin="8,0"
-                        Orientation="Horizontal"
-                        Tag="like">
-                        <SymbolIcon Symbol="Like" />
-                        <TextBlock
+                            Orientation="Horizontal"
+                            Tag="atCommentMe">
+                            <SymbolIcon Symbol="Account" />
+                            <TextBlock
+                                Margin="8,0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind data:UIHelper.NotificationNums.AtCommentMeNum, Mode=OneWay}" />
+                            <TextBlock VerticalAlignment="Center">@我的评论</TextBlock>
+                        </StackPanel>
+                        <StackPanel
                             Margin="8,0"
-                            VerticalAlignment="Center"
-                            Text="{x:Bind data:UIHelper.NotificationNums.FeedLikeNum, Mode=OneWay}" />
-                        <TextBlock VerticalAlignment="Center">我收到的赞</TextBlock>
-                    </StackPanel>
-                    <StackPanel
-                        Margin="8,0"
-                        Orientation="Horizontal"
-                        Tag="follow">
-                        <SymbolIcon Symbol="AddFriend" />
-                        <TextBlock
+                            Orientation="Horizontal"
+                            Tag="like">
+                            <SymbolIcon Symbol="Like" />
+                            <TextBlock
+                                Margin="8,0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind data:UIHelper.NotificationNums.FeedLikeNum, Mode=OneWay}" />
+                            <TextBlock VerticalAlignment="Center">我收到的赞</TextBlock>
+                        </StackPanel>
+                        <StackPanel
                             Margin="8,0"
-                            VerticalAlignment="Center"
-                            Text="{x:Bind data:UIHelper.NotificationNums.FollowNum, Mode=OneWay}" />
-                        <TextBlock VerticalAlignment="Center">好友关注</TextBlock>
-                    </StackPanel>
-                    <StackPanel
-                        Margin="8,0"
-                        Orientation="Horizontal"
-                        Tag="message">
-                        <SymbolIcon Symbol="Comment" />
-                        <TextBlock
+                            Orientation="Horizontal"
+                            Tag="follow">
+                            <SymbolIcon Symbol="AddFriend" />
+                            <TextBlock
+                                Margin="8,0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind data:UIHelper.NotificationNums.FollowNum, Mode=OneWay}" />
+                            <TextBlock VerticalAlignment="Center">好友关注</TextBlock>
+                        </StackPanel>
+                        <StackPanel
                             Margin="8,0"
-                            VerticalAlignment="Center"
-                            Text="{x:Bind data:UIHelper.NotificationNums.MessageNum, Mode=OneWay}" />
-                        <TextBlock VerticalAlignment="Center">私信</TextBlock>
-                    </StackPanel>
-                </ListView>
-            </ListViewItem>
-            <ListViewItem>
-                <ListView
-                    ItemTemplateSelector="{StaticResource temse}"
-                    ItemsSource="{x:Bind itemCollection}"
-                    ScrollViewer.VerticalScrollMode="Disabled">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <control:GridPanel DesiredColumnWidth="384.0" />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="Template" Value="{StaticResource AppListViewItemTemplate}" />
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="Margin" Value="0" />
-                            <Setter Property="Padding" Value="0" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                </ListView>
-            </ListViewItem>
-        </controls:PullToRefreshListView>
+                            Orientation="Horizontal"
+                            Tag="message">
+                            <SymbolIcon Symbol="Comment" />
+                            <TextBlock
+                                Margin="8,0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind data:UIHelper.NotificationNums.MessageNum, Mode=OneWay}" />
+                            <TextBlock VerticalAlignment="Center">私信</TextBlock>
+                        </StackPanel>
+                    </ListView>
+                    <winui:ItemsRepeater
+                        x:Name="FeedReplyList"
+                        ItemTemplate="{StaticResource temse}"
+                        ItemsSource="{x:Bind itemCollection}" />
+                </StackPanel>
+            </ScrollViewer>
+        </winui:ItemsRepeaterScrollHost>
+
         <control:TitleBar
             x:Name="titleBar"
-            BackButtonClick="TitleBar_BackButtonClick"
+            BackButtonClicked="TitleBar_BackButtonClick"
             IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" />
     </Grid>
 </Page>

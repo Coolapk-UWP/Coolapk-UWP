@@ -13,6 +13,9 @@ namespace CoolapkUWP.Helpers
     internal enum DataUriType
     {
         CheckLoginInfo,
+        CreateFeed,
+        CreateFeedReply,
+        CreateReplyReply,
         GetAnswers,
         GetDyhDetail,
         GetDyhFeeds,
@@ -64,6 +67,9 @@ namespace CoolapkUWP.Helpers
             switch (type)
             {
                 case DataUriType.CheckLoginInfo: return "/account/checkLoginInfo";
+                case DataUriType.CreateFeed: return "/feed/createFeed";
+                case DataUriType.CreateFeedReply: return "/feed/reply?id={0}&type=feed";
+                case DataUriType.CreateReplyReply: return "/feed/reply?id={0}&type=reply";
                 case DataUriType.GetAnswers: return "/question/answerList?id={0}&sort={1}&page={2}{3}{4}";
                 case DataUriType.GetDyhDetail: return "/dyh/detail?dyhId={0}";
                 case DataUriType.GetDyhFeeds: return "/dyhArticle/list?dyhId={0}&type={1}&page={2}{3}{4}";
@@ -92,26 +98,37 @@ namespace CoolapkUWP.Helpers
                 case DataUriType.SearchTags: return "/search?type=feedTopic&searchValue={0}&page={1}{2}&showAnonymous=-1";
                 case DataUriType.SearchUsers: return "/search?type=user&searchValue={0}&page={1}{2}&showAnonymous=-1";
                 case DataUriType.SearchWords: return "/search/suggestSearchWordsNew?searchValue={0}&type=app";
-                default: throw new Exception("Coolapk message:DataUriType的值错误。");
+                default: throw new Exception("DataUriType的值错误。");
             }
+        }
+
+        public static async Task<JToken> PostDataAsync(DataUriType type, Windows.Web.Http.IHttpContent content, params object[] args)
+        {
+            var uri = string.Format(GetUriStringTemplate(type), args);
+            var json = await NetworkHelper.PostAsync(uri, content);
+            var o = JObject.Parse(json);
+            JToken token = null;
+            if (!string.IsNullOrEmpty(json) &&
+                !o.TryGetValue("data", out token) &&
+                o.TryGetValue("message", out JToken value))
+                throw new Exception($"Coolapk message:\n{value}");
+            else return token;
         }
 
         /// <summary>
         ///     从服务器中获取数据。
         /// </summary>
-        /// <param name="dataUriType">
+        /// <param name="type">
         ///     要获取的数据的类型。
         /// </param>
         /// <param name="args">
         ///     一个参数数组，其中的内容用于替换格式符号。
         /// </param>
-        public static async Task<JToken> GetDataAsync(DataUriType dataUriType, params object[] args)
+        public static async Task<JToken> GetDataAsync(DataUriType type, params object[] args)
         {
             bool forceRefresh = false;
-            string uri = string.Format(GetUriStringTemplate(dataUriType), args);
-            string json = string.Empty;
-            JToken token = null;
-
+            string uri = string.Format(GetUriStringTemplate(type), args);
+            string json;
             if (forceRefresh || !responseCache.ContainsKey(uri))
             {
                 json = await NetworkHelper.GetJson(uri);
@@ -129,6 +146,7 @@ namespace CoolapkUWP.Helpers
                 json = responseCache[uri] as string;
             }
             var o = JObject.Parse(json);
+            JToken token = null;
             if (!string.IsNullOrEmpty(json) &&
                 !o.TryGetValue("data", out token) &&
                 o.TryGetValue("message", out JToken value))

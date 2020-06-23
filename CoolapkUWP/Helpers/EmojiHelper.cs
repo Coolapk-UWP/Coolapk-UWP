@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace CoolapkUWP.Helpers
 {
     internal static class EmojiHelper
     {
-        private static readonly string[] oldEmojis = new string[]
+        public static readonly ImmutableArray<string> oldEmojis = new string[]
 {
 "[doge]",
 "[doge原谅ta]",
@@ -72,9 +73,10 @@ namespace CoolapkUWP.Helpers
 "[酷币5毛]",
 "[酷币]",
 "[阴险]",
-"[难过]"       };
+"[难过]"       }.ToImmutableArray();
 
-        private static readonly string[] emojis = new string[] {"(cos滑稽",
+
+        public static readonly ImmutableArray<string> emojis = new string[] {"(cos滑稽",
 "(haha",
 "(OK",
 "(sofa",
@@ -511,15 +513,21 @@ namespace CoolapkUWP.Helpers
 "[左哼哼]",
 "[Blob滑稽]",
 "[Google滑稽]",
-"[SegoeUI滑稽]" };
+"[SegoeUI滑稽]" }.ToImmutableArray();
 
         public static bool Contains(string key, bool useOldEmoji = false) => useOldEmoji ? oldEmojis.Contains(key) : emojis.Contains(key);
 
         public static Uri Get(string key, bool useOldEmoji = false)
         {
             short id = useOldEmoji ? GetOldEmojiId(key) : GetEmojiID(key);
-            if (id == -1) return new Uri($"ms-appx:///Assets/{(SettingsHelper.Get<bool>(SettingsHelper.IsDarkMode) ? "img_placeholder_night" : "img_placeholder")}.png");
-            else          return new Uri($"ms-appx:///Assets/Emoji/{ id }.png");
+            if (id == -1)
+            {
+                return ImageCacheHelper.NoPic.UriSource;
+            }
+            else
+            {
+                return new Uri($"ms-appx:///Assets/Emoji/{id:D4}.png");
+            }
         }
 
         private static short GetOldEmojiId(string key)

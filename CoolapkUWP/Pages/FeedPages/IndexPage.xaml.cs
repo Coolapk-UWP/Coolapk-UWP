@@ -1,6 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -35,28 +34,26 @@ namespace CoolapkUWP.Pages.FeedPages
             object[] vs = e.Parameter as object[];
 
             pageUrl = vs[0] as string;
-            if (pageUrl.Contains("&title=")) TitleBar.Title = pageUrl.Substring(pageUrl.LastIndexOf("&title=") + 7);
-            if (pageUrl.IndexOf("/page") == -1 && pageUrl != "/main/indexV8") pageUrl = "/page/dataList?url=" + pageUrl;
-            else if (pageUrl.IndexOf("/page") == 0 && !pageUrl.Contains("/page/dataList")) pageUrl = pageUrl.Replace("/page", "/page/dataList");
-            pageUrl = pageUrl.Replace("#", "%23");
+            if (pageUrl.Contains("&title=", StringComparison.Ordinal))
+            {
+                TitleBar.Title = pageUrl.Substring(pageUrl.LastIndexOf("&title=", StringComparison.Ordinal) + 7);
+            }
+            if (pageUrl.IndexOf("/page", StringComparison.Ordinal) == -1 && pageUrl != "/main/indexV8")
+            {
+                pageUrl = "/page/dataList?url=" + pageUrl;
+            }
+            else if (pageUrl.IndexOf("/page", StringComparison.Ordinal) == 0 && !pageUrl.Contains("/page/dataList", StringComparison.Ordinal))
+            {
+                pageUrl = pageUrl.Replace("/page", "/page/dataList", StringComparison.Ordinal);
+            }
+            pageUrl = pageUrl.Replace("#", "%23", StringComparison.Ordinal);
             index = -1;
             if ((bool)vs[1])
             {
                 TitleBar.Visibility = Visibility.Collapsed;
+                listBorder.Padding = new Thickness(0);
             }
             GetUrlPage();
-            Task.Run(async () =>
-            {
-                await Task.Delay(1000);
-                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
-                    if ((bool)vs[1])
-                    {
-                        listView.Padding = new Thickness(0);
-                    }
-                    (VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
-                });
-            });
         }
 
         public async void GetUrlPage(int p = -1)
@@ -76,7 +73,8 @@ namespace CoolapkUWP.Pages.FeedPages
         private async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
         {
             TitleBar.ShowProgressRing();
-            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetIndexPage, url, url == "/main/indexV8" ? "?" : "&", page);
+            var array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetIndexPage, url, url == "/main/indexV8" ? "?" : "&", page);
+            bool result = false;
             if (array != null && array.Count > 0)
                 if (page == 1)
                 {
@@ -85,7 +83,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     {
                         var needDeleteItems = (from b in FeedsCollection
                                                from c in array
-                                               where b.EntityId == c.Value<string>("entityId").Replace("\"", string.Empty)
+                                               where b.EntityId == c.Value<string>("entityId").Replace("\"", string.Empty, StringComparison.Ordinal)
                                                select b).ToArray();
                         foreach (var item in needDeleteItems)
                             Collection.Remove(item);
@@ -127,7 +125,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         }
                     }
                     TitleBar.HideProgressRing();
-                    return true;
+                    result = true;
                 }
                 else
                 {
@@ -151,15 +149,14 @@ namespace CoolapkUWP.Pages.FeedPages
                             }
                         }
                         TitleBar.HideProgressRing();
-                        return true;
+                        result = true;
                     }
                     else
                     {
                         TitleBar.HideProgressRing();
-                        return false;
                     }
                 }
-            return false;
+            return result;
         }
 
         private Entity GetEntity(JObject jo)
@@ -184,6 +181,7 @@ namespace CoolapkUWP.Pages.FeedPages
                             case "imageTextScrollCard":
                             case "iconMiniLinkGridCard":
                             case "iconMiniGridCard": return new IndexPageHasEntitiesModel(jo, EntitiesType.Others);
+                            case "headCard":
                             case "imageCarouselCard_1": //return new IndexPageHasEntitiesViewModel(jo, EntitiesType.Image_1);
                             case "imageCard": return new IndexPageHasEntitiesModel(jo, EntitiesType.Image);
                             case "iconLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntitiesType.IconLink);
@@ -203,41 +201,57 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
-
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
-            ScrollViewer VScrollViewer = sender as ScrollViewer;
-            if (!e.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight && CanLoadMore)
+            if (!e.IsIntermediate && scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight && CanLoadMore)
+            {
                 GetUrlPage();
+            }
         }
 
         public void RefreshPage() => GetUrlPage(1);
-
-        private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => GetUrlPage(1);
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            if (!UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
+
             FrameworkElement element = sender as FrameworkElement;
             if (element.Tag is string s)
             {
                 if (!string.IsNullOrEmpty(s))
-                    UIHelper.OpenLinkAsync(s);
-            }
-            else if (element.Tag is IHasUriAndTitle k)
-            {
-                if (string.IsNullOrEmpty(k.Url) || k.Url == "/topic/quickList?quickType=list") return;
-                string str = k.Url;
-                if (str.IndexOf("/page") == 0)
                 {
-                    str = str.Replace("/page", "/page/dataList");
-                    str += $"&title={k.Title}";
+                    UIHelper.OpenLinkAsync(s);
+                }
+            }
+            else if (element.Tag is IHasUriAndTitle u)
+            {
+                if (string.IsNullOrEmpty(u.Url) || u.Url == "/topic/quickList?quickType=list") { return; }
+                string str = u.Url;
+                if (str == "Refresh") { RefreshPage(); }
+                else if (str == "Login")
+                {
+                    UIHelper.Navigate(typeof(BrowserPage), new object[] { true, null });
+                }
+                else if (str.IndexOf("/page", StringComparison.Ordinal) == 0)
+                {
+                    str = str.Replace("/page", "/page/dataList", StringComparison.Ordinal);
+                    str += $"&title={u.Title}";
                     UIHelper.Navigate(typeof(IndexPage), new object[] { str, false });
                 }
-                else if (str.IndexOf('#') == 0) UIHelper.Navigate(typeof(IndexPage), new object[] { $"{str}&title={k.Title}", false });
-                else UIHelper.OpenLinkAsync(str);
+                else if (str.IndexOf('#') == 0)
+                {
+                    UIHelper.Navigate(typeof(IndexPage), new object[] { $"{str}&title={u.Title}", false });
+                }
+                else { UIHelper.OpenLinkAsync(str); }
+            }
+            else if (element.Tag is IndexPageModel i)
+            {
+                if (!string.IsNullOrEmpty(i.Url))
+                {
+                    UIHelper.OpenLinkAsync(i.Url);
+                }
             }
         }
 
@@ -253,7 +267,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 foreach (var item in needDeleteItems)
                     feeds.Remove(item);
                 urls[0] = $"/page/dataList?url={model.Url}&title={model.Title}";
-                urls[0] = urls[0].Replace("#", "%23");
+                urls[0] = urls[0].Replace("#", "%23", StringComparison.Ordinal);
                 pages[0] = 0;
             }
             else
@@ -265,7 +279,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 foreach (var item in needDeleteItems)
                     feeds.Remove(item);
                 pageUrl = $"/page/dataList?url={model.Url}&title={model.Title}";
-                pageUrl = pageUrl.Replace("#", "%23");
+                pageUrl = pageUrl.Replace("#", "%23", StringComparison.Ordinal);
                 page = 0;
             }
             GetUrlPage();
@@ -281,30 +295,22 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void Pivot_Loaded(object sender, RoutedEventArgs e)
         {
-            Pivot element = sender as Pivot;
+            var element = sender as Pivot;
             index = element.SelectedIndex;
             if (element.Items.Count == 0)
             {
-                Entity[] f = element.Tag as Entity[];
-                Style style = new Style(typeof(ListViewItem));
-                style.Setters.Add(new Setter(TemplateProperty, Application.Current.Resources["AppListViewItemTemplate"] as ControlTemplate));
-                style.Setters.Add(new Setter(HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
-                style.Setters.Add(new Setter(MarginProperty, new Thickness(0)));
-                style.Setters.Add(new Setter(PaddingProperty, new Thickness(0)));
+                var f = element.Tag as Entity[];
                 for (int j = 0; j < f.Length; j++)
                 {
-                    IndexPageModel model = f[j] as IndexPageModel;
                     var ff = new ObservableCollection<Entity>();
-                    var l = new ListView
+
+                    var l = new Microsoft.UI.Xaml.Controls.ItemsRepeater
                     {
-                        Style = Application.Current.Resources["VerticalListViewStyle"] as Style,
-                        ItemContainerStyle = style,
-                        ItemTemplateSelector = Resources["FTemplateSelector"] as DataTemplateSelector,
+                        ItemTemplate = Resources["FTemplateSelector"] as DataTemplateSelector,
                         ItemsSource = ff,
-                        ItemsPanel = Windows.UI.Xaml.Markup.XamlReader.Load("<ItemsPanelTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:c=\"using:CoolapkUWP.Controls\"><c:GridPanel DesiredColumnWidth=\"384\" CubeInSameHeight=\"False\"/></ItemsPanelTemplate>") as ItemsPanelTemplate,
-                        SelectionMode = ListViewSelectionMode.None
                     };
-                    l.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Disabled);
+
+                    var model = f[j] as IndexPageModel;
                     var i = new PivotItem
                     {
                         Tag = f[j],
@@ -314,7 +320,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     element.Items.Add(i);
                     pages.Add(1);
                     Feeds2.Add(ff);
-                    urls.Add("/page/dataList?url=" + model.Url.Replace("#", "%23") + $"&title={model.Title}");
+                    urls.Add("/page/dataList?url=" + model.Url.Replace("#", "%23", StringComparison.Ordinal) + $"&title={model.Title}");
                     if (j == 0) Load(element, i);
                 }
                 return;
@@ -325,19 +331,53 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void Load(Pivot element, PivotItem i = null)
         {
-            PivotItem item = i is null ? element.SelectedItem as PivotItem : i;
-            IndexPageModel model = item.Tag as IndexPageModel;
-            ListView view = item.Content as ListView;
-            ObservableCollection<Entity> feeds = view.ItemsSource as ObservableCollection<Entity>;
-            string u = model.Url;
-            if (model.Url.IndexOf("/page") != 0)
+            var item = i is null ? element.SelectedItem as PivotItem : i;
+            var view = item.Content as Microsoft.UI.Xaml.Controls.ItemsRepeater;
+            var feeds = view.ItemsSource as ObservableCollection<Entity>;
+            if (feeds.Count < 1)
             {
-                u = u.Replace("#", "%23");
-                u = "/page/dataList?url=" + u + $"&title={model.Title}";
+                var model = item.Tag as IndexPageModel;
+                string u = model.Url;
+                if (model.Url.IndexOf("/page", StringComparison.Ordinal) != 0)
+                {
+                    u = u.Replace("#", "%23", StringComparison.Ordinal);
+                    u = "/page/dataList?url=" + u + $"&title={model.Title}";
+                }
+                _ = GetUrlPage(1, u, feeds);
             }
-            _ = GetUrlPage(1, u, feeds);
         }
 
-        private void LoginCard_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.Navigate(typeof(BrowserPage), new object[] { true, null });
+        private void FlipView_Loaded(object sender, RoutedEventArgs e)
+        {
+            var view = sender as FlipView;
+            var timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(4)
+            };
+            timer.Tick += (o, a) =>
+            {
+                if (view.SelectedIndex + 1 >= view.Items.Count())
+                {
+                    while (view.SelectedIndex > 0)
+                    {
+                        view.SelectedIndex -= 1;
+                    }
+                }
+                else
+                {
+                    view.SelectedIndex += 1;
+                }
+            };
+
+            timer.Start();
+        }
+
+        private void ListViewItem_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
+            {
+                Grid_Tapped(sender, null);
+            }
+        }
     }
 }

@@ -5,16 +5,13 @@ using Windows.Web.Http;
 
 namespace CoolapkUWP.Helpers
 {
-    /// <summary>
-    ///     提供与网络相关的方法。
-    /// </summary>
+    /// <summary> 提供与网络相关的方法。 </summary>
     internal static class NetworkHelper
     {
-        private static readonly HttpClient mClient;
+        private static readonly HttpClient mClient = new HttpClient();
 
         static NetworkHelper()
         {
-            mClient = new HttpClient();
             mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "28");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
@@ -41,12 +38,20 @@ namespace CoolapkUWP.Helpers
             return token;
         }
 
-        /// <summary>
-        ///     从指定URI中获取Json文本。
-        /// </summary>
-        /// <param name="uri">
-        ///     数据在酷安服务器中的位置。
-        /// </param>
+        public static async Task<string> PostAsync(string url, IHttpContent content)
+        {
+            try
+            {
+                mClient.DefaultRequestHeaders.Remove("X-App-Token");
+                mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
+                var a = await mClient.PostAsync(new Uri("https://api.coolapk.com/v6" + url), content);
+                return await a.Content.ReadAsStringAsync();
+            }
+            catch { throw; }
+        }
+
+        /// <summary> 从指定URI中获取Json文本。 </summary>
+        /// <param name="uri"> 数据在酷安服务器中的位置。 </param>
         public static async Task<string> GetJson(string uri)
         {
             try
@@ -59,13 +64,9 @@ namespace CoolapkUWP.Helpers
             catch { throw; }
         }
 
-        /// <summary>
-        ///     通过用户名获取UID。
-        /// </summary>
-        /// <param name="name">
-        ///     要获取UID的用户名。
-        /// </param>
-        public static async Task<string> GetUserIDByName(string name)
+        /// <summary> 通过用户名获取UID。 </summary>
+        /// <param name="name"> 要获取UID的用户名。 </param>
+        public static async Task<string> GetUserIDByNameAsync(string name)
         {
             if (string.IsNullOrEmpty(name))
             {

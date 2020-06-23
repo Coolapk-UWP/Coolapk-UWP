@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoolapkUWP.Models;
+using System;
 using Windows.UI.Xaml.Data;
 
 namespace CoolapkUWP.Helpers.ValueConverters
@@ -10,6 +11,7 @@ namespace CoolapkUWP.Helpers.ValueConverters
             switch ((string)parameter)
             {
                 case "string": return !string.IsNullOrEmpty((string)value);
+                case "entity array": return ((System.Collections.Immutable.ImmutableArray<Entity>)value).Length > 0;
                 default: return false;
             }
         }

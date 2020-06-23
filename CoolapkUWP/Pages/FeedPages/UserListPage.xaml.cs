@@ -1,12 +1,10 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -20,22 +18,8 @@ namespace CoolapkUWP.Pages.FeedPages
         private int page = 1;
         private double firstItem, lastItem;
         private readonly ObservableCollection<UserModel> infos = new ObservableCollection<UserModel>();
-        private ScrollViewer VScrollViewer = null;
 
-        public UserListPage()
-        {
-            this.InitializeComponent();
-            UserList.ItemsSource = infos;
-            Task.Run(async () =>
-            {
-                await Task.Delay(300);
-                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
-                    VScrollViewer = VisualTree.FindDescendantByName(UserList, "ScrollViewer") as ScrollViewer;
-                    VScrollViewer.ViewChanged += ScrollViewer_ViewChanged;
-                });
-            });
-        }
+        public UserListPage() => this.InitializeComponent();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -80,24 +64,27 @@ namespace CoolapkUWP.Pages.FeedPages
                     for (int i = 0; i < array.Count; i++)
                         infos.Insert(i, new UserModel((JObject)(isFollowList ? array[i]["fUserInfo"] : array[i]["userInfo"])));
             }
-            else if (p == -1) page--;
+            else if (p == -1)
+            {
+                page--;
+            }
+
             titleBar.HideProgressRing();
         }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
-            if (!e.IsIntermediate)
-                if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
-                    LoadList();
+            if (!e.IsIntermediate && scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
+            {
+                LoadList();
+            }
         }
 
         private void TitleBar_RefreshButtonClick(object sender, RoutedEventArgs e)
         {
             LoadList(1);
-            VScrollViewer.ChangeView(null, 0, null);
+            scrollViewer.ChangeView(null, 0, null);
         }
-
-        private void UserList_RefreshRequested(object sender, EventArgs e) => LoadList(1);
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
     }

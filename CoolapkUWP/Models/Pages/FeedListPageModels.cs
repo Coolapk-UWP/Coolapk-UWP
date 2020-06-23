@@ -17,7 +17,6 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
         public double FeedNum { get; private set; }
         public double Level { get; private set; }
         public string Bio { get; private set; }
-        public string BackgroundUrl { get; private set; }
         public ImageModel Background { get; private set; }
         public string Verify_title { get; private set; }
         public string Gender { get; private set; }
@@ -37,7 +36,6 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             FeedNum = o.Value<int>("feed");
             UserName = o.Value<string>("username");
             Bio = o.Value<string>("bio");
-            BackgroundUrl = o.Value<string>("cover");
             Verify_title = o.Value<string>("verify_title");
             City = $"{o.Value<string>("province")} {o.Value<string>("city")}";
             Astro = o.Value<string>("astro");

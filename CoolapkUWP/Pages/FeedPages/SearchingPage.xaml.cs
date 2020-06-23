@@ -62,12 +62,13 @@ namespace CoolapkUWP.Pages.FeedPages
                 case 1: sortType = "hot"; break;
                 case 2: sortType = "reply"; break;
             }
-            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.SearchFeeds,
-                                                            feedType,
-                                                            sortType,
-                                                            keyWord,
-                                                            (++pages[0]).ToString(),
-                                                            pages[0] > 1 ? "&lastItem=" + lastItems[0] : string.Empty);
+            JArray array = (JArray)await DataHelper.GetDataAsync(
+                                        DataUriType.SearchFeeds,
+                                        feedType,
+                                        sortType,
+                                        keyWord,
+                                        ++pages[0],
+                                        pages[0] > 1 ? "&lastItem=" + lastItems[0] : string.Empty);
             ObservableCollection<FeedModel> FeedsCollection = FeedList.ItemsSource as ObservableCollection<FeedModel>;
             if (pages[0] == 1) FeedsCollection.Clear();
             if (array.Count != 0)

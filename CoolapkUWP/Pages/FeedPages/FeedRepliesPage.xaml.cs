@@ -19,7 +19,6 @@ namespace CoolapkUWP.Pages.FeedPages
         private int page;
         private double lastItem;
         private readonly ObservableCollection<FeedReplyModel> replys = new ObservableCollection<FeedReplyModel>();
-        private ScrollViewer VScrollViewer;
 
         public FeedRepliesPage()
         {
@@ -40,27 +39,15 @@ namespace CoolapkUWP.Pages.FeedPages
             replys.Add(reply);
             GetReplys(false);
             TitleBar.HideProgressRing();
-
-            Task.Run(async () =>
-            {
-                await Task.Delay(200);
-                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
-                    VScrollViewer = VisualTree.FindDescendantByName(FeedReplyList, "ScrollViewer") as ScrollViewer;
-                    VScrollViewer.ViewChanged += VScrollViewer_ViewChanged;
-                });
-            });
         }
 
         private void VScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
-            if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
+            if (!e.IsIntermediate && scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
             {
                 GetReplys(false);
             }
         }
-
-        private void FeedReplyList_RefreshRequested(object sender, EventArgs e) => GetReplys(true);
 
         private async void GetReplys(bool isRefresh)
         {
@@ -68,9 +55,10 @@ namespace CoolapkUWP.Pages.FeedPages
             int page = isRefresh ? 1 : ++this.page;
             var array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetReplyReplies, id, page, page > 1 ? $"&lastItem={lastItem}" : string.Empty);
             if (array != null && array.Count > 0)
+            {
                 if (isRefresh)
                 {
-                    VScrollViewer?.ChangeView(null, 0, null);
+                    scrollViewer?.ChangeView(null, 0, null);
                     var d = (from a in replys
                              from b in array
                              where a.Id == b.Value<int>("id")
@@ -86,6 +74,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         replys.Add(new FeedReplyModel(item, false));
                     lastItem = array.Last.Value<int>("id");
                 }
+            }
             else if (!isRefresh) this.page--;
             TitleBar.HideProgressRing();
         }

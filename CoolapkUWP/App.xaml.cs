@@ -53,7 +53,7 @@ namespace CoolapkUWP
         private void Application_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-            if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
+            if (!(!SettingsHelper.Get<bool>(SettingsHelper.ShowOtherException) || e.Exception is TaskCanceledException || e.Exception is OperationCanceledException))
             {
                 var loader = Windows.UI.Core.CoreWindow.GetForCurrentThread() == null ? null : ResourceLoader.GetForCurrentView();
                 var s = "ExceptionThrown";
@@ -88,10 +88,14 @@ namespace CoolapkUWP
                 var s = "ExceptionThrown";
                 var s2 = "NetworkError";
                 if (e.Exception.HResult <= -2147012721 && e.Exception.HResult >= -2147012895)
+                {
                     UIHelper.ShowMessage($"{loader?.GetString(s2) ?? s2}(0x{Convert.ToString(e.Exception.HResult, 16)})");
+                }
                 else if (e.Exception.Message.IndexOf("Coolapk message:") == 0)
+                {
                     UIHelper.ShowMessage(e.Exception.Message.Split('\n')[1]);
-                else
+                }
+                else if(SettingsHelper.Get<bool>(SettingsHelper.ShowOtherException))
                 {
                     UIHelper.ShowMessage($"{loader?.GetString(s) ?? s}\n{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})"
 #if DEBUG

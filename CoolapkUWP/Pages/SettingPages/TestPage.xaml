@@ -5,7 +5,9 @@
     xmlns:control="using:CoolapkUWP.Controls"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helper="using:CoolapkUWP.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:CoolapkUWP.Models.Controls.MakeFeedControlModel"
     Background="Transparent"
     mc:Ignorable="d">
 
@@ -19,7 +21,7 @@
             <controls:ScrollHeader Mode="QuickReturn">
                 <control:TitleBar
                     Title="TestPage"
-                    BackButtonClick="Button_Click_3"
+                    BackButtonClicked="Button_Click_3"
                     IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" />
             </controls:ScrollHeader>
         </ListView.Header>
@@ -27,7 +29,7 @@
             <TextBox x:Name="uid" Header="uid" />
             <Button Click="Button_Click">go</Button>
             <TextBox x:Name="url" Header="url" />
-            <Button Click="Button_Click_5">get</Button>
+            <Button Click="Button_Click_5">go</Button>
             <TextBox x:Name="message" Header="message" />
             <Button Click="Button_Click_4">show</Button>
             <Button Click="Button_Click_1">to login page</Button>

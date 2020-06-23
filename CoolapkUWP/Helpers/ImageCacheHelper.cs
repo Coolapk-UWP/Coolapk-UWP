@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
+using InAppNotify = Microsoft.Toolkit.Uwp.UI.Controls.InAppNotification;
 
 namespace CoolapkUWP.Helpers
 {
@@ -46,7 +47,7 @@ namespace CoolapkUWP.Helpers
             return folder;
         }
 
-        public static async Task<BitmapImage> GetImageAsync(ImageType type, string url, bool showMessage = false)
+        public static async Task<BitmapImage> GetImageAsync(ImageType type, string url, Pages.ImageModel model = null, InAppNotify notify = null)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -55,6 +56,10 @@ namespace CoolapkUWP.Helpers
             else if (url.IndexOf("ms-appx") == 0)
             {
                 return new BitmapImage(new Uri(url));
+            }
+            else if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
+            {
+                return NoPic;
             }
             else
             {
@@ -69,7 +74,7 @@ namespace CoolapkUWP.Helpers
                 if (item is null)
                 {
                     StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
-                    try { await DownloadImageAsync(file, url, showMessage); }
+                    try { await DownloadImageAsync(file, url, model, notify); }
                     catch (FileLoadException) { return GetLocalImageAsync(file.Path); }
                     return GetLocalImageAsync(file.Path);
                 }
@@ -80,7 +85,7 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        public static async Task<string> GetImagePathAsync(ImageType type, string url, bool showMessage = false)
+        public static async Task<string> GetImagePathAsync(ImageType type, string url)
         {
             if (url.IndexOf("ms-appx") == 0)
             {
@@ -89,6 +94,10 @@ namespace CoolapkUWP.Helpers
             else if (string.IsNullOrEmpty(url) || SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
             {
                 return SettingsHelper.Get<bool>(SettingsHelper.IsDarkMode) ? "ms-appx:/Assets/img_placeholder_night.png" : "ms-appx:/Assets/img_placeholder.png";
+            }
+            else if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
+            {
+                return NoPic.UriSource.AbsolutePath;
             }
             else
             {
@@ -103,7 +112,7 @@ namespace CoolapkUWP.Helpers
                 if (item is null)
                 {
                     StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
-                    try { await DownloadImageAsync(file, url, showMessage); }
+                    try { await DownloadImageAsync(file, url, null, UIHelper.InAppNotification); }
                     catch (FileLoadException) { return file.Path; }
                     return file.Path;
                 }
@@ -114,24 +123,42 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        private static BitmapImage GetLocalImageAsync(string filename) =>
-            (filename is null || SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode)) ? NoPic : new BitmapImage(new Uri(filename));
-
-        private static async Task DownloadImageAsync(StorageFile file, string url, bool showMessage)
+        private static BitmapImage GetLocalImageAsync(string filename)
         {
-            if (!SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
+            return (filename is null || SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode)) ? NoPic : new BitmapImage(new Uri(filename));
+        }
+
+        private static async Task DownloadImageAsync(StorageFile file, string url, Pages.ImageModel model, InAppNotify notify)
+        {
+            try
             {
-                try
+                if (model != null)
                 {
-                    //if (showMessage) UIHelper.ShowProgressRing();
-                    using (Stream stream = await new HttpClient().GetStreamAsync(url))
-                    using (Stream fs = await file.OpenStreamForWriteAsync())
-                    {
-                        await stream.CopyToAsync(fs);
-                    }
+                    model.IsProgressRingActived = true;
                 }
-                catch (HttpRequestException) { UIHelper.ShowMessage("图片加载失败"); }
-                //finally { if (showMessage) UIHelper.HideProgressRing(); }
+                using (Stream stream = await new HttpClient().GetStreamAsync(url))
+                using (Stream fs = await file.OpenStreamForWriteAsync())
+                {
+                    await stream.CopyToAsync(fs);
+                }
+            }
+            catch (HttpRequestException)
+            {
+                if (notify == null)
+                {
+                    UIHelper.ShowMessage("图片加载失败");
+                }
+                else
+                {
+                    notify.Show("图片加载失败", UIHelper.duration);
+                }
+            }
+            finally
+            {
+                if (model != null)
+                {
+                    model.IsProgressRingActived = false;
+                }
             }
         }
 

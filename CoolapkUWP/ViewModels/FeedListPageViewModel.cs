@@ -39,7 +39,6 @@ namespace CoolapkUWP.ViewModels.FeedListDataProvider
 
         public async Task<IDetail> GetDetail()
         {
-            JObject o;
             IDetail d;
             DataUriType type;
             switch (ListType)
@@ -59,7 +58,7 @@ namespace CoolapkUWP.ViewModels.FeedListDataProvider
                 default:
                     throw new System.Exception("ListType值错误");
             }
-            o = (JObject)await DataHelper.GetDataAsync(type, Id);
+            JObject o = (JObject)await DataHelper.GetDataAsync(type, Id);
             if (o != null)
             {
                 d.Initialize(o);

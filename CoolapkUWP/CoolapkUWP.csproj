@@ -113,11 +113,17 @@
     </Compile>
     <Compile Include="Controls\DataTemplates\Feed.xaml.cs" />
     <Compile Include="Controls\DataTemplates\FeedReply.xaml.cs" />
-    <Compile Include="Controls\DataTemplates\PicsArr.xaml.cs" />
+    <Compile Include="Controls\DataTemplates\Pic.xaml.cs" />
     <Compile Include="Controls\DataTemplates\RelationRowsItem.xaml.cs" />
     <Compile Include="Controls\DataTemplates\SearchWord.xaml.cs" />
-    <Compile Include="Controls\NotifyPopup.xaml.cs">
-      <DependentUpon>NotifyPopup.xaml</DependentUpon>
+    <Compile Include="Controls\FeedShellDetailControl.xaml.cs">
+      <DependentUpon>FeedShellDetailControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FeedShellListControl.xaml.cs">
+      <DependentUpon>FeedShellListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MakeFeedControl.xaml.cs">
+      <DependentUpon>MakeFeedControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TextBlockEx.xaml.cs">
       <DependentUpon>TextBlockEx.xaml</DependentUpon>
@@ -126,10 +132,11 @@
       <DependentUpon>TitleBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WaterFallLayout.cs" />
+    <Compile Include="Helpers\EmojiTypeHelper.cs" />
     <Compile Include="Helpers\ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\HasValueConverter.cs" />
     <Compile Include="Helpers\ValueConverters\TrueToFalseConverter.cs" />
-    <Compile Include="Helpers\ValueConverters\VisibleToCollapseConverter.cs" />
+    <Compile Include="Models\Controls\MakeFeedControlModel.cs" />
     <Compile Include="Models\Controls\UserHubModel.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\FeedReplyModel.cs" />
@@ -161,15 +168,15 @@
     <Compile Include="Pages\FeedPages\FeedRepliesPage.xaml.cs">
       <DependentUpon>FeedRepliesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\UserPage.xaml.cs">
-      <DependentUpon>UserPage.xaml</DependentUpon>
+    <Compile Include="Pages\ShowImagePage.xaml.cs">
+      <DependentUpon>ShowImagePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MyPage.xaml.cs">
+      <DependentUpon>MyPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\FeedListPageViewModel.cs" />
     <Compile Include="Pages\FeedPages\FeedListPage.xaml.cs">
       <DependentUpon>FeedListPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ShowImageControl.xaml.cs">
-      <DependentUpon>ShowImageControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\FeedPages\NotificationsPage.xaml.cs">
       <DependentUpon>NotificationsPage.xaml</DependentUpon>
@@ -177,8 +184,8 @@
     <Compile Include="Pages\SettingPages\TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\FeedPages\FeedDetailPage.xaml.cs">
-      <DependentUpon>FeedDetailPage.xaml</DependentUpon>
+    <Compile Include="Pages\FeedPages\FeedShellPage.xaml.cs">
+      <DependentUpon>FeedShellPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\FeedPages\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
@@ -776,7 +783,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\DataTemplates\PicsArr.xaml">
+    <Page Include="Controls\DataTemplates\Pic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -788,7 +795,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\NotifyPopup.xaml">
+    <Page Include="Controls\FeedShellDetailControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\FeedShellListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MakeFeedControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -808,10 +823,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ShowImageControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\FeedPages\FeedRepliesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -824,7 +835,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\FeedPages\FeedDetailPage.xaml">
+    <Page Include="Pages\FeedPages\FeedShellPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -856,7 +867,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\UserPage.xaml">
+    <Page Include="Pages\ShowImagePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MyPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -865,17 +880,25 @@
     <PackageReference Include="MetroLog">
       <Version>1.0.1</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
+      <Version>3.0.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
-      <Version>4.0.0</Version>
+      <Version>6.1.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.4.2</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Collections.Immutable">
+      <Version>1.7.1</Version>
     </PackageReference>
     <PackageReference Include="System.ObjectModel">
       <Version>4.3.0</Version>
@@ -885,6 +908,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="CoolapkUWP_TemporaryKey.pfx" />
     <PRIResource Include="Strings\zh-Hans\Resources.resw" />
   </ItemGroup>

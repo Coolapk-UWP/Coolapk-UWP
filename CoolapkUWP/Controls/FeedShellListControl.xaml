@@ -1,0 +1,134 @@
+﻿<UserControl
+    x:Class="CoolapkUWP.Controls.FeedShellListControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:CoolapkUWP.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:CoolapkUWP.Models"
+    xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <templates:FeedReply />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid x:Name="rightGrid">
+        <Pivot
+            x:Name="FeedDetailPivot"
+            Padding="0,-48,0,0"
+            IsLocked="True"
+            SelectionChanged="FeedDetailPivot_SelectionChanged">
+            <Pivot.ItemContainerStyle>
+                <Style TargetType="PivotItem">
+                    <Setter Property="Padding" Value="0" />
+                </Style>
+            </Pivot.ItemContainerStyle>
+            <PivotItem>
+                <StackPanel>
+                    <ListViewItem
+                        x:Name="ChangeHotReplysDisplayModeListViewItem"
+                        Tapped="ChangeHotReplysDisplayModeListViewItem_Tapped"
+                        Template="{StaticResource AppListViewItemTemplate}">
+                        <StackPanel Margin="12,0" Orientation="Horizontal">
+                            <TextBlock
+                                x:Name="iconText"
+                                VerticalAlignment="Center"
+                                FontFamily="Segoe MDL2 Assets"
+                                Text="" />
+                            <TextBlock Margin="12,0" VerticalAlignment="Center">热门回复</TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                    <winui:ItemsRepeater
+                        x:Name="hotReplyListView"
+                        ItemTemplate="{StaticResource feed_reply}"
+                        ItemsSource="{x:Bind hotReplies}" />
+                    <ListViewItem
+                        x:Name="GetMoreHotReplyListViewItem"
+                        Tapped="GetMoreHotReplyListViewItem_Tapped"
+                        Template="{StaticResource AppListViewItemTemplate}">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">加载更多热门回复</TextBlock>
+                    </ListViewItem>
+
+                    <Border
+                        Margin="0,8"
+                        BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
+                        BorderThickness="0,2,0,0">
+                        <winui:ItemsRepeater ItemTemplate="{StaticResource feed_reply}" ItemsSource="{x:Bind replies}" />
+                    </Border>
+                </StackPanel>
+            </PivotItem>
+            <PivotItem>
+                <winui:ItemsRepeater ItemsSource="{x:Bind likes}">
+                    <winui:ItemsRepeater.ItemTemplate>
+                        <DataTemplate x:DataType="model:UserModel">
+                            <ListViewItem
+                                KeyDown="ListViewItem_KeyDown"
+                                Style="{StaticResource AppListViewItemStyle}"
+                                Tag="{x:Bind Url}"
+                                Tapped="StackPanel_Tapped">
+                                <StackPanel
+                                    Padding="4"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <Ellipse
+                                        Width="30"
+                                        Height="30"
+                                        HorizontalAlignment="Left">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource="{x:Bind UserAvatar.Pic}" />
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <TextBlock
+                                        Margin="5,0"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Bind UserName}" />
+                                </StackPanel>
+                            </ListViewItem>
+                        </DataTemplate>
+                    </winui:ItemsRepeater.ItemTemplate>
+                </winui:ItemsRepeater>
+            </PivotItem>
+            <PivotItem>
+                <winui:ItemsRepeater ItemsSource="{x:Bind shares}">
+                    <winui:ItemsRepeater.ItemTemplate>
+                        <DataTemplate x:DataType="model:SourceFeedModel">
+                            <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <Button
+                                        Margin="4,0"
+                                        Padding="2"
+                                        VerticalAlignment="Center"
+                                        Content="{x:Bind Username}"
+                                        Style="{StaticResource ButtonStyle1}"
+                                        Tag="{x:Bind Uurl}" />
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                        Text="{x:Bind Dateline}" />
+                                </StackPanel>
+                                <local:TextBlockEx
+                                    Grid.Row="1"
+                                    Margin="8,0,10,10"
+                                    MessageText="{x:Bind Message}"
+                                    Tag="{x:Bind Url}"
+                                    Tapped="Grid_Tapped" />
+                            </Grid>
+                        </DataTemplate>
+                    </winui:ItemsRepeater.ItemTemplate>
+                </winui:ItemsRepeater>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</UserControl>

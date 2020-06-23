@@ -1,7 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Helpers.ValueConverters;
 using CoolapkUWP.Models;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.UI;
@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Media.Imaging;
 namespace CoolapkUWP.Controls
 {
     /// <summary> 用于显示带表情和超链接的控件。使用MessageText指定要显示的内容。 </summary>
-    public sealed partial class TextBlockEx : Page
+    public sealed partial class TextBlockEx : UserControl
     {
         private string _messageText;
         public string MessageText
@@ -23,9 +23,10 @@ namespace CoolapkUWP.Controls
             get => _messageText;
             set
             {
-                if (value != _messageText)
+                var str = value.Replace("<!--break-->", string.Empty, System.StringComparison.OrdinalIgnoreCase);
+                if (str != _messageText)
                 {
-                    _messageText = value;
+                    _messageText = str;
                     GetTextBlock();
                 }
             }
@@ -37,7 +38,7 @@ namespace CoolapkUWP.Controls
 
         private async void GetTextBlock()
         {
-            RichTextBlock richTextBlock = new RichTextBlock
+            var richTextBlock = new RichTextBlock
             {
                 TextWrapping = TextWrapping.Wrap,
                 IsTextSelectionEnabled = false,
@@ -47,9 +48,7 @@ namespace CoolapkUWP.Controls
                 richTextBlock.MaxLines = MaxLine;
                 richTextBlock.TextTrimming = TextTrimming.WordEllipsis;
             }
-            Regex hrefRegex = new Regex("href=\"(\\S|\\s)+?\"");
-            List<string> list = await GetStringList(_messageText);
-            Paragraph paragraph = new Paragraph();
+            var paragraph = new Paragraph();
 
             void AddEmoji(string name, bool useOldEmoji = false)
             {
@@ -70,6 +69,8 @@ namespace CoolapkUWP.Controls
             }
             void AddText(string item) => paragraph.Inlines.Add(new Run { Text = item.Replace("&amp;", "&").Replace("&quot;", "\"") });
 
+            var imageArrayBuider = ImmutableArray.CreateBuilder<ImageModel>();
+            var list = await GetStringList(_messageText);
             foreach (var item in list)
             {
                 if (string.IsNullOrEmpty(item)) { NewLine(); }
@@ -80,22 +81,23 @@ namespace CoolapkUWP.Controls
                         case '<':
                             string content = item.Substring(item.IndexOf('>') + 1, item.LastIndexOf('<') - item.IndexOf('>') - 1);
                             string href = string.Empty;
+                            var hrefRegex = new Regex("href=\"(\\S|\\s)+?\"");
                             if (hrefRegex.IsMatch(item))
                             {
                                 var match = hrefRegex.Match(item);
                                 href = match.Value.Substring(match.Value.IndexOf('"') + 1, match.Value.LastIndexOf('"') - match.Value.IndexOf('"') - 1);
                             }
 
-                            if (item.Contains("t=\"image\""))
+                            if (item.Contains("t=\"image\"", System.StringComparison.Ordinal))
                             {
                                 NewLine();
 
                                 var imageModel = new ImageModel(href, ImageType.SmallImage);
+                                imageArrayBuider.Add(imageModel);
 
                                 InlineUIContainer container = new InlineUIContainer();
                                 Image image = new Image
                                 {
-                                    Tag = href,
                                     MaxHeight = MaxWidth = 400,
                                     MinHeight = MinWidth = 56,
                                     Stretch = Stretch.Uniform
@@ -109,7 +111,7 @@ namespace CoolapkUWP.Controls
 
                                 if (!string.IsNullOrEmpty(content))
                                     ToolTipService.SetToolTip(image, new ToolTip { Content = content });
-                                image.Tapped += (sender, e) => UIHelper.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
+                                image.Tapped += (sender, e) => UIHelper.ShowImage(imageModel);
 
                                 Grid grid = new Grid();
                                 if (imageModel.IsGif)
@@ -170,7 +172,7 @@ namespace CoolapkUWP.Controls
                                 Paragraph paragraph2 = new Paragraph
                                 {
                                     TextAlignment = TextAlignment.Center,
-                                    Foreground = new SolidColorBrush(Colors.Gray)
+                                    Foreground = Windows.UI.Xaml.Application.Current.Resources["GrayText"] as SolidColorBrush
                                 };
                                 Run run = new Run { Text = content.Replace("&amp;", "&").Replace("<br/>", "\n") };
                                 paragraph2.Inlines.Add(run);
@@ -199,9 +201,13 @@ namespace CoolapkUWP.Controls
                                 hyperlink.Click += (sender, e) =>
                                 {
                                     if (content == "查看图片" && (href.IndexOf("http://image.coolapk.com") == 0 || href.IndexOf("https://image.coolapk.com") == 0))
+                                    {
                                         UIHelper.ShowImage(href, ImageType.SmallImage);
+                                    }
                                     else
+                                    {
                                         UIHelper.OpenLinkAsync(href);
+                                    }
                                 };
 
                                 paragraph.Inlines.Add(hyperlink);
@@ -227,18 +233,25 @@ namespace CoolapkUWP.Controls
                     }
                 }
             }
+
+            var array = imageArrayBuider.ToImmutable();
+            foreach (var item in array)
+            {
+                item.ContextArray = array;
+            }
+
             richTextBlock.Blocks.Add(paragraph);
             richTextBlock.Height = richTextBlock.Width = Height = Width = double.NaN;
             richTextBlock.MaxHeight = richTextBlock.MaxWidth = MaxHeight = MaxWidth = double.PositiveInfinity;
             Content = richTextBlock;
         }
 
-        private Task<List<string>> GetStringList(string text)
+        private Task<ImmutableArray<string>> GetStringList(string text)
         {
             return Task.Run(() =>
             {
                 Regex linkRegex = new Regex("<a(\\S|\\s)*?>(\\S|\\s)*?</a>"), emojiRegex1 = new Regex(@"\[\S*?\]"), emojiRegex2 = new Regex(@"#\(\S*?\)");
-                var result = new List<string>();
+                var buider = ImmutableArray.CreateBuilder<string>();
 
                 //处理超链接或图文中的图片
                 for (int i = 0; i < text.Length;)
@@ -247,38 +260,38 @@ namespace CoolapkUWP.Controls
                     int index = (string.IsNullOrEmpty(matchedValue.Value) ? text.Length : text.IndexOf(matchedValue.Value, i)) - i;
                     if (index == 0)
                     {
-                        result.Add(matchedValue.Value.Replace("\n", "<br/>"));
+                        buider.Add(matchedValue.Value.Replace("\n", "<br/>"));
                         i += matchedValue.Length;
                     }
                     else if (index > 0)
                     {
-                        result.Add(text.Substring(i, index));
+                        buider.Add(text.Substring(i, index));
                         i += index;
                     }
                 }
 
                 //处理[..]样式的表情
-                for (int j = 0; j < result.Count; j++)
+                for (int j = 0; j < buider.Count; j++)
                 {
-                    for (int i = 0; i < result[j].Length;)
+                    for (int i = 0; i < buider[j].Length;)
                     {
-                        var v = emojiRegex1.Match(result[j], i);
-                        int a = string.IsNullOrEmpty(v.Value) ? -1 : result[j].IndexOf(v.Value, i) - i;
+                        var v = emojiRegex1.Match(buider[j], i);
+                        int a = string.IsNullOrEmpty(v.Value) ? -1 : buider[j].IndexOf(v.Value, i) - i;
                         if (a == 0)
                         {
-                            if (EmojiHelper.Contains(result[j].Substring(0, v.Length)) && (emojiRegex1.IsMatch(result[j], i + v.Length) || result[j].Length > v.Length))
+                            if (EmojiHelper.Contains(buider[j].Substring(0, v.Length)) && (emojiRegex1.IsMatch(buider[j], i + v.Length) || buider[j].Length > v.Length))
                             {
-                                result.Insert(j + 1, result[j].Substring(v.Length));
-                                result[j] = result[j].Substring(0, v.Length);
+                                buider.Insert(j + 1, buider[j].Substring(v.Length));
+                                buider[j] = buider[j].Substring(0, v.Length);
                             }
                             i += v.Length;
                         }
                         else if (a > 0)
                         {
-                            if (EmojiHelper.Contains(result[j].Substring(a, v.Length)))
+                            if (EmojiHelper.Contains(buider[j].Substring(a, v.Length)))
                             {
-                                result.Insert(j + 1, result[j].Substring(a));
-                                result[j] = result[j].Substring(0, a);
+                                buider.Insert(j + 1, buider[j].Substring(a));
+                                buider[j] = buider[j].Substring(0, a);
                             }
                             i += a;
                         }
@@ -287,27 +300,27 @@ namespace CoolapkUWP.Controls
                 }
 
                 //处理#(..)样式的表情
-                for (int j = 0; j < result.Count; j++)
+                for (int j = 0; j < buider.Count; j++)
                 {
-                    for (int i = 0; i < result[j].Length;)
+                    for (int i = 0; i < buider[j].Length;)
                     {
-                        var v = emojiRegex2.Match(result[j], i);
-                        int a = string.IsNullOrEmpty(v.Value) ? -1 : result[j].IndexOf(v.Value, i) - i;
+                        var v = emojiRegex2.Match(buider[j], i);
+                        int a = string.IsNullOrEmpty(v.Value) ? -1 : buider[j].IndexOf(v.Value, i) - i;
                         if (a == 0)
                         {
-                            if (EmojiHelper.Contains(result[j].Substring(1, v.Length - 2)) && emojiRegex2.IsMatch(result[j], i + v.Length) || result[j].Length > v.Length)
+                            if (EmojiHelper.Contains(buider[j].Substring(1, v.Length - 2)) && emojiRegex2.IsMatch(buider[j], i + v.Length) || buider[j].Length > v.Length)
                             {
-                                result.Insert(j + 1, result[j].Substring(v.Length));
-                                result[j] = result[j].Substring(0, v.Length);
+                                buider.Insert(j + 1, buider[j].Substring(v.Length));
+                                buider[j] = buider[j].Substring(0, v.Length);
                             }
                             i += v.Length;
                         }
                         else if (a > 0)
                         {
-                            if (EmojiHelper.Contains(result[j].Substring(a + 1, v.Length - 2)))
+                            if (EmojiHelper.Contains(buider[j].Substring(a + 1, v.Length - 2)))
                             {
-                                result.Insert(j + 1, result[j].Substring(a));
-                                result[j] = result[j].Substring(0, a);
+                                buider.Insert(j + 1, buider[j].Substring(a));
+                                buider[j] = buider[j].Substring(0, a);
                             }
                             i += a;
                         }
@@ -316,26 +329,26 @@ namespace CoolapkUWP.Controls
                 }
 
                 ////处理 \n
-                for (int j = 0; j < result.Count; j++)
+                for (int j = 0; j < buider.Count; j++)
                 {
-                    for (int i = 0; i < result[j].Length;)
+                    for (int i = 0; i < buider[j].Length;)
                     {
-                        int a = result[j].IndexOf("\n", i) == -1 ? -1 : result[j].IndexOf("\n", i) - i;
+                        int a = buider[j].IndexOf("\n", i) == -1 ? -1 : buider[j].IndexOf("\n", i) - i;
                         if (a == 0)
                         {
-                            if (!linkRegex.IsMatch(result[j]) && result[j].Length > 1)
+                            if (!linkRegex.IsMatch(buider[j]) && buider[j].Length > 1)
                             {
-                                result.Insert(j + 1, result[j].Substring(1));
-                                result[j] = string.Empty;
+                                buider.Insert(j + 1, buider[j].Substring(1));
+                                buider[j] = string.Empty;
                             }
                             i += 1;
                         }
                         else if (a > 0)
                         {
-                            if (!linkRegex.IsMatch(result[j]))
+                            if (!linkRegex.IsMatch(buider[j]))
                             {
-                                result.Insert(j + 1, result[j].Substring(a));
-                                result[j] = result[j].Substring(0, a);
+                                buider.Insert(j + 1, buider[j].Substring(a));
+                                buider[j] = buider[j].Substring(0, a);
                             }
                             i += a;
                         }
@@ -343,7 +356,7 @@ namespace CoolapkUWP.Controls
                     }
                 }
 
-                return result;
+                return buider.ToImmutableArray();
             });
         }
     }

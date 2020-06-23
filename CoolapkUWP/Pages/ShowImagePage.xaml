@@ -1,0 +1,149 @@
+﻿<Page
+    x:Class="CoolapkUWP.Pages.ShowImagePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Windows10version1809="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:CoolapkUWP.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    KeyUp="Page_KeyUp"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <Style
+            x:Key="IconButtonStyle2"
+            BasedOn="{StaticResource ButtonRevealStyle}"
+            TargetType="Button">
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Width" Value="32" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <FlipView
+            x:Name="SFlipView"
+            Background="Transparent"
+            ItemsSource="{x:Bind imageModels}"
+            RightTapped="SFlipView_RightTapped"
+            ScrollViewer.BringIntoViewOnFocusChange="False"
+            ScrollViewer.IsZoomChainingEnabled="True"
+            SelectionChanged="SFlipView_SelectionChanged">
+            <FlipView.ContextFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem
+                        Click="Button_Click"
+                        Icon="Pictures"
+                        Tag="origin"
+                        Visibility="{x:Bind IsOriginButtonEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                        查看原图
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem
+                        Click="Button_Click"
+                        Icon="Save"
+                        Tag="save">
+                        保存原图
+                    </MenuFlyoutItem>
+                </MenuFlyout>
+            </FlipView.ContextFlyout>
+            <FlipView.ItemTemplate>
+                <DataTemplate x:DataType="local:ImageModel">
+                    <Grid>
+                        <ScrollViewer
+                            x:Name="ScrollViewerMain"
+                            DoubleTapped="ScrollViewerMain_DoubleTapped"
+                            HorizontalScrollBarVisibility="Hidden"
+                            MaxZoomFactor="3"
+                            MinZoomFactor="0.5"
+                            VerticalScrollBarVisibility="Hidden"
+                            ZoomMode="Enabled">
+                            <Image
+                                MaxWidth="{Binding Path=ViewportWidth, ElementName=ScrollViewerMain}"
+                                MaxHeight="{Binding Path=ViewportHeight, ElementName=ScrollViewerMain}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                ManipulationDelta="ScrollViewerMain_ManipulationDelta"
+                                ManipulationMode="TranslateX,TranslateY"
+                                Source="{x:Bind Pic, Mode=OneWay}" />
+                        </ScrollViewer>
+                        <winui:ProgressRing
+                            Width="60"
+                            Height="60"
+                            IsActive="{x:Bind IsProgressRingActived, Mode=OneWay}" />
+                    </Grid>
+                </DataTemplate>
+            </FlipView.ItemTemplate>
+        </FlipView>
+        <Border
+            x:Name="titleBorder"
+            Height="32"
+            VerticalAlignment="Top"
+            Background="{ThemeResource SystemControlBaseHighAcrylicElementBrush}" />
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Orientation="Horizontal">
+            <Button
+                Click="Button_Click"
+                IsEnabled="{x:Bind IsBackButtonEnabled, Mode=OneWay}"
+                Style="{StaticResource IconButtonStyle2}"
+                Tag="back"
+                ToolTipService.ToolTip="上一张">
+                <SymbolIcon Symbol="Back" />
+            </Button>
+            <Button
+                Click="Button_Click"
+                Style="{StaticResource IconButtonStyle2}"
+                Tag="zoomIn"
+                ToolTipService.ToolTip="放大">
+                <SymbolIcon Symbol="ZoomIn" />
+            </Button>
+            <Button
+                Click="Button_Click"
+                Style="{StaticResource IconButtonStyle2}"
+                Tag="zoomOut"
+                ToolTipService.ToolTip="缩小">
+                <SymbolIcon Symbol="ZoomOut" />
+            </Button>
+            <TextBlock
+                Margin="8,0,0,0"
+                VerticalAlignment="Center"
+                Text="{x:Bind SelectedIndex, Mode=OneWay}" />
+            <TextBlock VerticalAlignment="Center" Text="/" />
+            <TextBlock
+                Margin="0,0,8,0"
+                VerticalAlignment="Center"
+                Text="{x:Bind imageModels.Count, Mode=OneWay}" />
+            <Button
+                Click="Button_Click"
+                Style="{StaticResource IconButtonStyle2}"
+                Tag="save"
+                ToolTipService.ToolTip="保存原图">
+                <SymbolIcon Symbol="Save" />
+            </Button>
+            <Button
+                Click="Button_Click"
+                IsEnabled="{x:Bind IsOriginButtonEnabled, Mode=OneWay}"
+                Style="{StaticResource IconButtonStyle2}"
+                Tag="origin"
+                ToolTipService.ToolTip="查看原图">
+                <SymbolIcon Symbol="Pictures" />
+            </Button>
+            <Button
+                Click="Button_Click"
+                IsEnabled="{x:Bind IsForwardButtonEnabled, Mode=OneWay}"
+                Style="{StaticResource IconButtonStyle2}"
+                Tag="forward"
+                ToolTipService.ToolTip="下一张">
+                <SymbolIcon Symbol="Forward" />
+            </Button>
+        </StackPanel>
+        <controls:InAppNotification x:Name="notify" />
+    </Grid>
+</Page>

@@ -23,7 +23,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private string uri;
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             type = (NotificationPageType)e.Parameter;
@@ -39,49 +39,27 @@ namespace CoolapkUWP.Pages.FeedPages
                 case NotificationPageType.AtMe:
                     titleBar.Title = ("@我的动态");
                     uri = "atMeList";
-                    MainListView.Padding = (Thickness)Windows.UI.Xaml.Application.Current.Resources["StackPanelMargin"];
                     Load();
                     break;
 
                 case NotificationPageType.AtCommentMe:
                     titleBar.Title = ("@我的评论");
                     uri = "atCommentMeList";
-                    MainListView.Padding = (Thickness)Windows.UI.Xaml.Application.Current.Resources["StackPanelMargin"];
                     Load<AtCommentMeNotificationModel>();
                     break;
 
                 case NotificationPageType.Like:
                     titleBar.Title = ("我收到的赞");
                     uri = "feedLikeList";
-                    MainListView.Padding = (Thickness)Windows.UI.Xaml.Application.Current.Resources["StackPanelMargin"];
                     Load<LikeNotificationModel>();
                     break;
 
                 case NotificationPageType.Follow:
                     titleBar.Title = ("好友关注");
                     uri = "contactsFollowList";
-                    MainListView.Padding = (Thickness)Windows.UI.Xaml.Application.Current.Resources["StackPanelMargin"];
                     Load<SimpleNotificationModel>();
                     break;
             }
-            await System.Threading.Tasks.Task.Delay(2000);
-            (VisualTree.FindDescendantByName(MainListView, "ScrollViewer") as ScrollViewer).ViewChanged += (s, ee) =>
-            {
-                ScrollViewer scrollViewer = s as ScrollViewer;
-                if (!ee.IsIntermediate)
-                {
-                    double a = scrollViewer.VerticalOffset;
-                    if (a == scrollViewer.ScrollableHeight)
-                        switch (type)
-                        {
-                            case NotificationPageType.Comment    : Load<SimpleNotificationModel>(); break;
-                            case NotificationPageType.AtMe       : Load(); break;
-                            case NotificationPageType.AtCommentMe: Load<AtCommentMeNotificationModel>(); break;
-                            case NotificationPageType.Like       : Load<LikeNotificationModel>(); break;
-                            case NotificationPageType.Follow     : Load<SimpleNotificationModel>(); break;
-                        }
-                }
-            };
         }
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -163,11 +141,12 @@ namespace CoolapkUWP.Pages.FeedPages
         private async void Load(int p = -1)
         {
             titleBar.ShowProgressRing();
-            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetNotifications,
-                                                            uri,
-                                                            p == -1 ? ++page : p,
-                                                            firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
-                                                            lastItem == 0 ? string.Empty : $"&lastItem={lastItem}");
+            JArray array = (JArray)await DataHelper.GetDataAsync(
+                                        DataUriType.GetNotifications,
+                                        uri,
+                                        p == -1 ? ++page : p,
+                                        firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
+                                        lastItem == 0 ? string.Empty : $"&lastItem={lastItem}");
             if (array != null && array.Count > 0)
             {
                 if (p == 1 || page == 1)
@@ -175,7 +154,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 lastItem = array.Last.Value<int>("id");
                 var d = (from a in itemCollection
                          from b in array
-                         where (a as FeedModel).EntityId == b.Value<int>("id").ToString()
+                         where (a as FeedModel).EntityId == $"{b.Value<int>("id")}"
                          select a).ToArray();
                 foreach (var item in d)
                     itemCollection.Remove(item);
@@ -198,6 +177,21 @@ namespace CoolapkUWP.Pages.FeedPages
                 else UIHelper.ShowMessage("没有新的了");
             }
             titleBar.HideProgressRing();
+        }
+
+        private void scrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+            if (!e.IsIntermediate && scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
+            {
+                switch (type)
+                {
+                    case NotificationPageType.Comment: Load<SimpleNotificationModel>(); break;
+                    case NotificationPageType.AtMe: Load(); break;
+                    case NotificationPageType.AtCommentMe: Load<AtCommentMeNotificationModel>(); break;
+                    case NotificationPageType.Like: Load<LikeNotificationModel>(); break;
+                    case NotificationPageType.Follow: Load<SimpleNotificationModel>(); break;
+                }
+            }
         }
 
         private void MainListView_RefreshRequested(object sender, EventArgs e)

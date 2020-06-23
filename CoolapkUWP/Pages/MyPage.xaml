@@ -1,19 +1,61 @@
 ﻿<Page
-    x:Class="CoolapkUWP.Pages.UserPage"
+    x:Class="CoolapkUWP.Pages.MyPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
+    xmlns:ctrl="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:CoolapkUWP.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    Background="Transparent"
+    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d">
     <Page.Resources>
-        <converter:VisibleToCollapseConverter x:Key="VisibleToCollapseConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <templates:SearchWord />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:TrueToFalseConverter x:Key="TrueToFalseConverter" />
+            <Style
+                x:Key="NaviItemStyle"
+                BasedOn="{StaticResource AppListViewItemStyle}"
+                TargetType="ListViewItem">
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+        </ResourceDictionary>
     </Page.Resources>
 
     <StackPanel Padding="0,32,0,0">
+        <Grid Height="40">
+            <AutoSuggestBox
+                x:Name="SearchBox"
+                Margin="8,0,56,0"
+                VerticalAlignment="Center"
+                ItemTemplate="{StaticResource searchWord}"
+                QueryIcon="Find"
+                QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                TextChanged="AutoSuggestBox_TextChanged" />
+            <Button
+                Margin="8,0"
+                HorizontalAlignment="Right"
+                Click="Button_Click"
+                Style="{ThemeResource IconButtonStyle}"
+                Tag="Notifications">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="20"
+                        Glyph="{x:Bind BadgeIconGlyph, Mode=OneWay}" />
+                    <TextBlock
+                        Margin="4,0,0,0"
+                        VerticalAlignment="Bottom"
+                        Text="{x:Bind BadgeNum.ToString(), Mode=OneWay}" />
+                </StackPanel>
+            </Button>
+        </Grid>
         <Grid Margin="0,8,0,0" Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -22,6 +64,7 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="72px" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Ellipse
                 Grid.RowSpan="3"
@@ -117,27 +160,42 @@
                     </StackPanel>
                 </Button>
             </Grid>
+            <ctrl:MakeFeedControl
+                Grid.Row="6"
+                MakeFeedMode="Feed"
+                MakedFeedSuccessful="MakeFeedControl_MakedFeedSuccessful" />
         </Grid>
-        <Button
-            x:Uid="UserHubLoginButton"
-            Height="160"
-            Margin="4"
-            HorizontalAlignment="Stretch"
-            Click="Button_Click"
+        <ListViewItem
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource NaviItemStyle}"
             Tag="login"
-            Visibility="{x:Bind LogoutButtonVisibility, Converter={StaticResource VisibleToCollapseConverter}, Mode=OneWay}" />
-        <StackPanel Margin="4" Orientation="Horizontal">
-            <Button
-                x:Uid="UserHubSettingButton"
-                Margin="4"
-                Click="Button_Click"
-                Tag="settings" />
-            <Button
-                x:Uid="UserHubLogoutButton"
-                Margin="4"
-                Click="Button_Click"
-                Tag="logout"
-                Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}" />
-        </StackPanel>
+            Tapped="ListViewItem_Tapped"
+            Visibility="{x:Bind LogoutButtonVisibility, Converter={StaticResource TrueToFalseConverter}, ConverterParameter='Visibility', Mode=OneWay}">
+            <StackPanel Padding="16,0" Orientation="Horizontal">
+                <SymbolIcon Symbol="AddFriend" />
+                <TextBlock x:Uid="UserHubLogin" Margin="8,0" />
+            </StackPanel>
+        </ListViewItem>
+        <ListViewItem
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource NaviItemStyle}"
+            Tag="settings"
+            Tapped="ListViewItem_Tapped">
+            <StackPanel Padding="16,0" Orientation="Horizontal">
+                <SymbolIcon Symbol="Setting" />
+                <TextBlock x:Uid="UserHubSetting" Margin="8,0" />
+            </StackPanel>
+        </ListViewItem>
+        <ListViewItem
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource NaviItemStyle}"
+            Tag="logout"
+            Tapped="ListViewItem_Tapped"
+            Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}">
+            <StackPanel Padding="16,0" Orientation="Horizontal">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF3B1;" />
+                <TextBlock x:Uid="UserHubLogout" Margin="8,0" />
+            </StackPanel>
+        </ListViewItem>
     </StackPanel>
 </Page>

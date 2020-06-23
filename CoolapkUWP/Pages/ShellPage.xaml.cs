@@ -1,18 +1,15 @@
-﻿using CoolapkUWP.Controls;
-using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Helpers;
 using System.ComponentModel;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Navigation;
-
-// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
 namespace CoolapkUWP.Pages
 {
     public sealed partial class ShellPage : Page, INotifyPropertyChanged
     {
-        private Symbol paneOpenSymbolIcon = Symbol.ClosePane;
+        private Symbol paneOpenSymbolIcon = Symbol.OpenPane;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -37,25 +34,21 @@ namespace CoolapkUWP.Pages
             this.InitializeComponent();
             Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             if (SettingsHelper.Get<bool>(SettingsHelper.CheckUpdateWhenLuanching))
-                SettingsHelper.CheckUpdate();
+            {
+                _ = SettingsHelper.CheckUpdateAsync();
+            }
+
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
             {
-                int i = UIHelper.Popups.Count - 1;
-                if (i > 0)
+                if (shellFrame.CanGoBack)
                 {
                     ee.Handled = true;
-                    var popup = UIHelper.Popups[i];
-                    popup.IsOpen = false;
-                    UIHelper.Popups.Remove(popup);
-                }
-                else if (Frame.CanGoBack)
-                {
-                    ee.Handled = true;
-                    Frame.GoBack();
+                    shellFrame.GoBack();
                 }
             };
+
+
             Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForApplication().Clear();
-            UIHelper.ShowPopup(new Popup { Child = new NotifyPopup() });
             UIHelper.IsSplitViewPaneOpenedChanged += (s, e) =>
             {
                 splitView.IsPaneOpen = e;
@@ -67,14 +60,30 @@ namespace CoolapkUWP.Pages
         {
             base.OnNavigatedTo(e);
             shellFrame.Navigate(typeof(MainPage));
+            paneFrame.Navigate(typeof(MyPage));
             UIHelper.MainFrame = shellFrame;
             UIHelper.PaneFrame = paneFrame;
+            UIHelper.InAppNotification = AppNotification;
         }
 
-        private void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            splitView.IsPaneOpen = !splitView.IsPaneOpen;
-            PaneOpenSymbolIcon = splitView.IsPaneOpen ? Symbol.OpenPane : Symbol.ClosePane;
+            switch (((Button)sender).Tag as string)
+            {
+                case "panel":
+                    splitView.IsPaneOpen = !splitView.IsPaneOpen;
+                    PaneOpenSymbolIcon = splitView.IsPaneOpen ? Symbol.OpenPane : Symbol.ClosePane;
+                    break;
+
+                case "home":
+                    paneFrame.Navigate(typeof(MyPage));
+                    break;
+            }
+        }
+
+        private void paneFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            goHomeButton.Visibility = e.SourcePageType == typeof(MyPage) ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 }

@@ -69,7 +69,8 @@ namespace CoolapkUWP.Controls
         public DataTemplate DataTemplate1 { get; set; }
         public DataTemplate DataTemplate2 { get; set; }
         public DataTemplate DataTemplate4 { get; set; }
-        public DataTemplate DataTemplate5 { get; set; }
+        public DataTemplate FeedImageText { get; set; }
+        public DataTemplate ImageText { get; set; }
         public DataTemplate QuestionFeed { get; set; }
         public DataTemplate DataTemplate7 { get; set; }
         public DataTemplate Feed { get; set; }
@@ -80,13 +81,14 @@ namespace CoolapkUWP.Controls
         {
             if (item is FeedModel f)
             {
-                if (f.IsQuestionFeed) return QuestionFeed;
-                else if (f.ShowMessage_title) return DataTemplate5;
-                else if (f.IsCoolPictuers) return CoolPic;
-                else return Feed;
+                if (f.IsQuestionFeed) { return QuestionFeed; }
+                else if (f.ShowMessage_title) { return FeedImageText; }
+                else return f.IsCoolPictuers ? CoolPic : Feed;
             }
-            else if (item is UserModel) return User;
-            else switch ((item as IndexPageModel).EntityType)
+            else if (item is UserModel) { return User; }
+            else
+            {
+                switch ((item as IndexPageModel)?.EntityType ?? string.Empty)
                 {
                     case "picCategory":
                     case "imageSquare":
@@ -97,7 +99,10 @@ namespace CoolapkUWP.Controls
                     case "dyh":
                     case "topic": return DataTemplate4;
                     case "textLink": return DataTemplate7;
+                    case "imageText": return ImageText;
                 }
+            }
+
             return DataTemplate0;
         }
 

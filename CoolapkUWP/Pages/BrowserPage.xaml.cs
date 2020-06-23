@@ -66,6 +66,7 @@ namespace CoolapkUWP.Pages
             {
                 if (Frame.CanGoBack)
                     Frame.GoBack();
+                UIHelper.NavigateInSplitPane(typeof(MyPage));
                 UIHelper.ShowMessage(loader.GetString("LoginSuccessfully"));
             }
             else

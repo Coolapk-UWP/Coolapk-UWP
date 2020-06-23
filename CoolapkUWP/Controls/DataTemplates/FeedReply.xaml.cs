@@ -12,21 +12,26 @@ namespace CoolapkUWP.Controls.DataTemplates
         public FeedReply() => InitializeComponent();
 
         private void OnTapped(object sender, TappedRoutedEventArgs e)
-            => UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+        {
+            if (!UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
+
+            UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+        }
 
         private void ReplyRowsItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (sender == e.OriginalSource || sender.GetType() == typeof(TextBlockEx))
+            if (e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
+
+            if (sender is FrameworkElement frameworkElement)
             {
-                if (sender is FrameworkElement frameworkElement)
-                {
-                    UIHelper.NavigateInSplitPane(typeof(Pages.FeedPages.FeedRepliesPage), frameworkElement.Tag);
-                }
+                UIHelper.NavigateInSplitPane(typeof(Pages.FeedPages.FeedRepliesPage), frameworkElement.Tag);
             }
         }
 
         private void Image_Tapped(object sender, TappedRoutedEventArgs e)
-            => UIHelper.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
+        {
+            UIHelper.ShowImage((sender as FrameworkElement).Tag as ImageModel);
+        }
 
         private async void FeedButton_Click(object sender, RoutedEventArgs e)
         {
@@ -42,6 +47,12 @@ namespace CoolapkUWP.Controls.DataTemplates
             FrameworkElement element = sender as FrameworkElement;
             switch (element.Name)
             {
+                case "makeReplyButton":
+                    var item = Microsoft.Toolkit.Uwp.UI.Extensions.VisualTree.FindAscendant<ListViewItem>(element);
+                    var ctrl = item.FindName("makeFeed") as MakeFeedControl;
+                    ctrl.Visibility = ctrl.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+                    break;
+
                 case "likeButton":
                     var f = element.Tag as ILike;
                     bool isReply = f is FeedReplyModel;
@@ -61,6 +72,28 @@ namespace CoolapkUWP.Controls.DataTemplates
                         f.Likenum = o.Value<int>("count").ToString();
                     ChangeLikeStatus(f, element, b);
                     break;
+                default:
+                    UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+                    break;
+            }
+        }
+
+        private void ListViewItem_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (UIHelper.IsOriginSource(sender, e.OriginalSource))
+            {
+                if (e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
+                {
+                    ReplyRowsItem_Tapped(sender, null);
+                }
+            }
+        }
+
+        private void makeFeed_MakedFeedSuccessful(object sender, System.EventArgs e)
+        {
+            if (((FrameworkElement)sender).Tag is ICanChangeReplyNum m)
+            {
+                m.Replynum = (int.Parse(m.Replynum) + 1).ToString();
             }
         }
     }
