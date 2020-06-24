@@ -15,6 +15,10 @@ namespace CoolapkUWP.Pages.SettingPages
         public TestPage()
         {
             this.InitializeComponent();
+            //var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView("EmojiId");
+            //System.Diagnostics.Debug.WriteLine(
+            //loader.GetString("?")
+            //    );
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)

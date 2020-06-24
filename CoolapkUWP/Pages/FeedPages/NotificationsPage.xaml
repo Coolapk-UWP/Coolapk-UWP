@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:control="using:CoolapkUWP.Controls"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:data="using:CoolapkUWP.Helpers"
     xmlns:local="using:CoolapkUWP.Pages.FeedPages"
@@ -202,7 +201,7 @@
                                 Margin="8,0"
                                 VerticalAlignment="Center"
                                 Text="{x:Bind data:UIHelper.NotificationNums.AtMeNum, Mode=OneWay}" />
-                            <TextBlock VerticalAlignment="Center">@我的动态</TextBlock>
+                            <TextBlock x:Uid="/NotificationsPage/AtMe" VerticalAlignment="Center" />
                         </StackPanel>
                         <StackPanel
                             Margin="8,0"
@@ -213,7 +212,7 @@
                                 Margin="8,0"
                                 VerticalAlignment="Center"
                                 Text="{x:Bind data:UIHelper.NotificationNums.AtCommentMeNum, Mode=OneWay}" />
-                            <TextBlock VerticalAlignment="Center">@我的评论</TextBlock>
+                            <TextBlock x:Uid="/NotificationsPage/AtMeComment" VerticalAlignment="Center" />
                         </StackPanel>
                         <StackPanel
                             Margin="8,0"
@@ -224,7 +223,7 @@
                                 Margin="8,0"
                                 VerticalAlignment="Center"
                                 Text="{x:Bind data:UIHelper.NotificationNums.FeedLikeNum, Mode=OneWay}" />
-                            <TextBlock VerticalAlignment="Center">我收到的赞</TextBlock>
+                            <TextBlock x:Uid="/NotificationsPage/Liked" VerticalAlignment="Center" />
                         </StackPanel>
                         <StackPanel
                             Margin="8,0"
@@ -235,7 +234,7 @@
                                 Margin="8,0"
                                 VerticalAlignment="Center"
                                 Text="{x:Bind data:UIHelper.NotificationNums.FollowNum, Mode=OneWay}" />
-                            <TextBlock VerticalAlignment="Center">好友关注</TextBlock>
+                            <TextBlock x:Uid="/NotificationsPage/Followed" VerticalAlignment="Center" />
                         </StackPanel>
                         <StackPanel
                             Margin="8,0"
@@ -246,7 +245,7 @@
                                 Margin="8,0"
                                 VerticalAlignment="Center"
                                 Text="{x:Bind data:UIHelper.NotificationNums.MessageNum, Mode=OneWay}" />
-                            <TextBlock VerticalAlignment="Center">私信</TextBlock>
+                            <TextBlock x:Uid="/NotificationsPage/Message" VerticalAlignment="Center" />
                         </StackPanel>
                     </ListView>
                     <winui:ItemsRepeater

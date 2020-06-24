@@ -84,7 +84,8 @@ namespace CoolapkUWP.Helpers
                 frame.Navigate(typeof(Pages.ShowImagePage), args);
                 Window.Current.Content = frame;
                 Window.Current.Activate();
-                ApplicationView.GetForCurrentView().Title = "查看图片";
+                var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
+                ApplicationView.GetForCurrentView().Title = loader.GetString("seePic");
 
                 viewId = ApplicationView.GetForCurrentView().Id;
             });

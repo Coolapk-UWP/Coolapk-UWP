@@ -27,7 +27,7 @@
                         x:Load="{x:Bind IsLongPic, Mode=OneWay}"
                         Background="#0F9D58"
                         CornerRadius="8,0,0,0">
-                        <TextBlock Foreground="White" Text="长图" />
+                        <TextBlock x:Uid="/Feed/longPic" Foreground="White" />
                     </Border>
                     <Border
                         x:Name="gif"

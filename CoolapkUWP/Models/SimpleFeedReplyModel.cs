@@ -12,15 +12,18 @@ namespace CoolapkUWP.Models
             IsFeedAuthor = token.Value<int>("isFeedAuthor") == 1;
             Rurl = $"/u/{token.Value<int>("ruid")}";
             Rusername = token.Value<string>("rusername");
+            
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
+
             Message = string.IsNullOrEmpty(Rusername)
-                ? $"<a href=\"{Uurl}\" type=\"user-detail\">{Username}{(IsFeedAuthor ? "[楼主]" : string.Empty)}</a>: {token.Value<string>("message")}"
-                : $"<a href=\"{Uurl}\" type=\"user-detail\">{Username}{(IsFeedAuthor ? "[楼主]" : string.Empty)}</a>@<a href=\"{Rurl}\" type=\"user-detail\">{Rusername}</a>: {token.Value<string>("message")}";
+                ? $"<a href=\"{Uurl}\" type=\"user-detail\">{Username}{(IsFeedAuthor ? $"[{loader.GetString("feedAuthorText")}]" : string.Empty)}</a>: {token.Value<string>("message")}"
+                : $"<a href=\"{Uurl}\" type=\"user-detail\">{Username}{(IsFeedAuthor ? $"[{loader.GetString("feedAuthorText")}]" : string.Empty)}</a>@<a href=\"{Rurl}\" type=\"user-detail\">{Rusername}</a>: {token.Value<string>("message")}";
 
             ShowPic = token.TryGetValue("pic", out JToken value) && !string.IsNullOrEmpty(value.ToString());
             if (ShowPic)
             {
                 PicUri = value.ToString();
-                Message += $" <a href=\"{PicUri}\">查看图片</a>";
+                Message += $" <a href=\"{PicUri}\">{loader.GetString("seePic")}</a>";
             }
         }
 

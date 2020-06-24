@@ -17,7 +17,10 @@ namespace CoolapkUWP.Controls
     /// <summary> 用于显示带表情和超链接的控件。使用MessageText指定要显示的内容。 </summary>
     public sealed partial class TextBlockEx : UserControl
     {
+        RichTextBlock MainContent;
+
         private string _messageText;
+
         public string MessageText
         {
             get => _messageText;
@@ -27,26 +30,65 @@ namespace CoolapkUWP.Controls
                 if (str != _messageText)
                 {
                     _messageText = str;
-                    GetTextBlock();
+                    _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        GetTextBlock();
+                    });
                 }
             }
         }
 
-        public int MaxLine { get; set; }
+        public int MaxLine
+        {
+            get => MainContent?.MaxLines ?? 0;
+            set
+            {
+                if (value >= 0)
+                {
+                    _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        if (MainContent != null)
+                        {
+                            MainContent.MaxLines = value;
+                            if (value > 0)
+                            {
+                                MainContent.TextTrimming = TextTrimming.WordEllipsis;
+                            }
+                            else
+                            {
+                                MainContent.TextTrimming = TextTrimming.None;
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        public bool IsTextSelectionEnabled
+        {
+            get => MainContent?.IsTextSelectionEnabled ?? false;
+            set => _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                if (MainContent != null)
+                {
+                    MainContent.IsTextSelectionEnabled = value;
+                }
+            });
+        }
 
         public TextBlockEx() => this.InitializeComponent();
 
         private async void GetTextBlock()
         {
-            var richTextBlock = new RichTextBlock
+            var block = new RichTextBlock
             {
+                IsTextSelectionEnabled = IsTextSelectionEnabled,
                 TextWrapping = TextWrapping.Wrap,
-                IsTextSelectionEnabled = false,
             };
             if (MaxLine > 0)
             {
-                richTextBlock.MaxLines = MaxLine;
-                richTextBlock.TextTrimming = TextTrimming.WordEllipsis;
+                block.MaxLines = MaxLine;
+                block.TextTrimming = TextTrimming.WordEllipsis;
             }
             var paragraph = new Paragraph();
 
@@ -64,11 +106,12 @@ namespace CoolapkUWP.Controls
             }
             void NewLine()
             {
-                richTextBlock.Blocks.Add(paragraph);
+                block.Blocks.Add(paragraph);
                 paragraph = new Paragraph();
             }
             void AddText(string item) => paragraph.Inlines.Add(new Run { Text = item.Replace("&amp;", "&").Replace("&quot;", "\"") });
 
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
             var imageArrayBuider = ImmutableArray.CreateBuilder<ImageModel>();
             var list = await GetStringList(_messageText);
             foreach (var item in list)
@@ -79,154 +122,155 @@ namespace CoolapkUWP.Controls
                     switch (item[0])
                     {
                         case '<':
-                            string content = item.Substring(item.IndexOf('>') + 1, item.LastIndexOf('<') - item.IndexOf('>') - 1);
-                            string href = string.Empty;
-                            var hrefRegex = new Regex("href=\"(\\S|\\s)+?\"");
-                            if (hrefRegex.IsMatch(item))
                             {
-                                var match = hrefRegex.Match(item);
-                                href = match.Value.Substring(match.Value.IndexOf('"') + 1, match.Value.LastIndexOf('"') - match.Value.IndexOf('"') - 1);
-                            }
-
-                            if (item.Contains("t=\"image\"", System.StringComparison.Ordinal))
-                            {
-                                NewLine();
-
-                                var imageModel = new ImageModel(href, ImageType.SmallImage);
-                                imageArrayBuider.Add(imageModel);
-
-                                InlineUIContainer container = new InlineUIContainer();
-                                Image image = new Image
+                                string content = item.Substring(item.IndexOf('>') + 1, item.LastIndexOf('<') - item.IndexOf('>') - 1);
+                                string href = string.Empty;
+                                var hrefRegex = new Regex("href=\"(\\S|\\s)+?\"");
+                                if (hrefRegex.IsMatch(item))
                                 {
-                                    MaxHeight = MaxWidth = 400,
-                                    MinHeight = MinWidth = 56,
-                                    Stretch = Stretch.Uniform
-                                };
-                                image.SetBinding(Image.SourceProperty, new Binding
+                                    var match = hrefRegex.Match(item);
+                                    href = match.Value.Substring(match.Value.IndexOf('"') + 1, match.Value.LastIndexOf('"') - match.Value.IndexOf('"') - 1);
+                                }
+
+                                if (item.Contains("t=\"image\"", System.StringComparison.Ordinal))
                                 {
-                                    Source = imageModel,
-                                    Path = new PropertyPath(nameof(imageModel.Pic)),
-                                    Mode = BindingMode.OneWay
-                                });
+                                    NewLine();
 
-                                if (!string.IsNullOrEmpty(content))
-                                    ToolTipService.SetToolTip(image, new ToolTip { Content = content });
-                                image.Tapped += (sender, e) => UIHelper.ShowImage(imageModel);
+                                    var imageModel = new ImageModel(href, ImageType.SmallImage);
+                                    imageArrayBuider.Add(imageModel);
+                                    
+                                    InlineUIContainer container = new InlineUIContainer();
 
-                                Grid grid = new Grid();
-                                if (imageModel.IsGif)
-                                {
-                                    StackPanel panel = new StackPanel
+                                    Image image = new Image
                                     {
-                                        Orientation = Orientation.Horizontal,
-                                        VerticalAlignment = VerticalAlignment.Top,
-                                        HorizontalAlignment = HorizontalAlignment.Right,
-                                        Margin = new Thickness(4)
+                                        MaxHeight = MaxWidth = 400,
+                                        MinHeight = MinWidth = 56,
+                                        Stretch = Stretch.Uniform
                                     };
-                                    Border border1 = new Border
-                                    {
-                                        Child = new TextBlock { Text = "GIF" },
-                                        Background = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0))
-                                    };
-
-                                    Border border2 = new Border
-                                    {
-                                        Child = new TextBlock { Text = "长图" },
-                                        Background = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0))
-                                    };
-                                    border2.SetBinding(VisibilityProperty, new Binding
+                                    image.SetBinding(Image.SourceProperty, new Binding
                                     {
                                         Source = imageModel,
-                                        Path = new PropertyPath(nameof(imageModel.IsLongPic)),
-                                        Mode = BindingMode.OneWay,
-                                        Converter = new BoolToVisibilityConverter()
+                                        Path = new PropertyPath(nameof(imageModel.Pic)),
+                                        Mode = BindingMode.OneWay
                                     });
 
-                                    panel.Children.Add(border1);
-                                    grid.Children.Add(image);
-                                    grid.Children.Add(panel);
-                                }
-                                else
-                                {
-                                    Border border = new Border
-                                    {
-                                        Child = new TextBlock { Text = "长图" },
-                                        Background = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0))
-                                    };
-                                    border.SetBinding(VisibilityProperty, new Binding
-                                    {
-                                        Source = imageModel,
-                                        Path = new PropertyPath(nameof(imageModel.IsLongPic)),
-                                        Mode = BindingMode.OneWay,
-                                        Converter = new BoolToVisibilityConverter()
-                                    });
+                                    if (!string.IsNullOrEmpty(content))
+                                        ToolTipService.SetToolTip(image, new ToolTip { Content = content });
+                                    image.Tapped += (sender, e) => UIHelper.ShowImage(imageModel);
 
-                                    grid.Children.Add(image);
-                                    grid.Children.Add(border);
-                                }
-                                container.Child = grid;
-                                Paragraph paragraph1 = new Paragraph { TextAlignment = TextAlignment.Center };
-                                paragraph1.Inlines.Add(container);
-                                richTextBlock.Blocks.Add(paragraph1);
-
-                                Paragraph paragraph2 = new Paragraph
-                                {
-                                    TextAlignment = TextAlignment.Center,
-                                    Foreground = Windows.UI.Xaml.Application.Current.Resources["GrayText"] as SolidColorBrush
-                                };
-                                Run run = new Run { Text = content.Replace("&amp;", "&").Replace("<br/>", "\n") };
-                                paragraph2.Inlines.Add(run);
-                                richTextBlock.Blocks.Add(paragraph2);
-                            }
-                            else
-                            {
-                                Hyperlink hyperlink = new Hyperlink { UnderlineStyle = UnderlineStyle.None };
-                                if (!string.IsNullOrEmpty(href))
-                                {
-                                    ToolTipService.SetToolTip(hyperlink, new ToolTip { Content = href });
-                                }
-
-                                if (content.IndexOf('@') != 0 && content.IndexOf('#') != 0 && !item.Contains("type=\"user-detail\""))
-                                {
-                                    Run run2 = new Run { Text = "", FontFamily = new FontFamily("Segoe MDL2 Assets") }; //U+E167
-                                    hyperlink.Inlines.Add(run2);
-                                }
-                                else if (content == "查看图片" && (href.IndexOf("http://image.coolapk.com") == 0 || href.IndexOf("https://image.coolapk.com") == 0))
-                                {
-                                    Run run2 = new Run { Text = "", FontFamily = new FontFamily("Segoe MDL2 Assets") }; //U+E158
-                                    hyperlink.Inlines.Add(run2);
-                                }
-                                Run run = new Run { Text = content.Replace("&amp;", "&") };
-                                hyperlink.Inlines.Add(run);
-                                hyperlink.Click += (sender, e) =>
-                                {
-                                    if (content == "查看图片" && (href.IndexOf("http://image.coolapk.com") == 0 || href.IndexOf("https://image.coolapk.com") == 0))
+                                    Grid grid = new Grid();
+                                    if (imageModel.IsGif)
                                     {
-                                        UIHelper.ShowImage(href, ImageType.SmallImage);
+                                        StackPanel panel = new StackPanel
+                                        {
+                                            Orientation = Orientation.Horizontal,
+                                            VerticalAlignment = VerticalAlignment.Top,
+                                            HorizontalAlignment = HorizontalAlignment.Right,
+                                            Margin = new Thickness(4)
+                                        };
+                                        Border border1 = new Border
+                                        {
+                                            Child = new TextBlock { Text = loader.GetString("GIF") },
+                                            Background = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0))
+                                        };
+
+                                        Border border2 = new Border
+                                        {
+                                            Child = new TextBlock { Text = loader.GetString("longPicText") },
+                                            Background = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0))
+                                        };
+                                        border2.SetBinding(VisibilityProperty, new Binding
+                                        {
+                                            Source = imageModel,
+                                            Path = new PropertyPath(nameof(imageModel.IsLongPic)),
+                                            Mode = BindingMode.OneWay,
+                                            Converter = new BoolToVisibilityConverter()
+                                        });
+
+                                        panel.Children.Add(border1);
+                                        grid.Children.Add(image);
+                                        grid.Children.Add(panel);
                                     }
                                     else
                                     {
-                                        UIHelper.OpenLinkAsync(href);
-                                    }
-                                };
+                                        Border border = new Border
+                                        {
+                                            Child = new TextBlock { Text = loader.GetString("longPicText") },
+                                            Background = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0))
+                                        };
+                                        border.SetBinding(VisibilityProperty, new Binding
+                                        {
+                                            Source = imageModel,
+                                            Path = new PropertyPath(nameof(imageModel.IsLongPic)),
+                                            Mode = BindingMode.OneWay,
+                                            Converter = new BoolToVisibilityConverter()
+                                        });
 
-                                paragraph.Inlines.Add(hyperlink);
+                                        grid.Children.Add(image);
+                                        grid.Children.Add(border);
+                                    }
+                                    container.Child = grid;
+                                    Paragraph paragraph1 = new Paragraph { TextAlignment = TextAlignment.Center };
+                                    paragraph1.Inlines.Add(container);
+                                    block.Blocks.Add(paragraph1);
+
+                                    Paragraph paragraph2 = new Paragraph
+                                    {
+                                        TextAlignment = TextAlignment.Center,
+                                        Foreground = Windows.UI.Xaml.Application.Current.Resources["GrayText"] as SolidColorBrush
+                                    };
+                                    Run run = new Run { Text = content.Replace("&amp;", "&").Replace("<br/>", "\n") };
+                                    paragraph2.Inlines.Add(run);
+                                    block.Blocks.Add(paragraph2);
+                                }
+                                else
+                                {
+                                    Hyperlink hyperlink = new Hyperlink { UnderlineStyle = UnderlineStyle.None };
+                                    if (!string.IsNullOrEmpty(href))
+                                    {
+                                        ToolTipService.SetToolTip(hyperlink, new ToolTip { Content = href });
+                                    }
+
+                                    if (content.IndexOf('@') != 0 && content.IndexOf('#') != 0 && !item.Contains("type=\"user-detail\""))
+                                    {
+                                        Run run2 = new Run { Text = "", FontFamily = new FontFamily("Segoe MDL2 Assets") }; //U+E167
+                                        hyperlink.Inlines.Add(run2);
+                                    }
+                                    else if (content == "查看图片" && (href.IndexOf("http://image.coolapk.com") == 0 || href.IndexOf("https://image.coolapk.com") == 0))
+                                    {
+                                        content = loader.GetString("seePic");
+                                        Run run2 = new Run { Text = "", FontFamily = new FontFamily("Segoe MDL2 Assets") }; //U+E158
+                                        hyperlink.Inlines.Add(run2);
+                                    }
+                                    Run run = new Run { Text = content.Replace("&amp;", "&") };
+                                    hyperlink.Inlines.Add(run);
+                                    hyperlink.Click += (sender, e) =>
+                                    {
+                                        if (content == loader.GetString("seePic") && (href.IndexOf("http://image.coolapk.com") == 0 || href.IndexOf("https://image.coolapk.com") == 0))
+                                        {
+                                            UIHelper.ShowImage(href, ImageType.SmallImage);
+                                        }
+                                        else
+                                        {
+                                            UIHelper.OpenLinkAsync(href);
+                                        }
+                                    };
+
+                                    paragraph.Inlines.Add(hyperlink);
+                                }
                             }
                             break;
 
                         case '#':
-                            string s = item.Substring(1, item.Length - 2);
-                            if (EmojiHelper.Contains(s)) { AddEmoji(s); }
-                            else { AddText(item); }
-                            break;
-
                         case '[':
-                            if (EmojiHelper.Contains(item))
                             {
-                                var useOld = SettingsHelper.Get<bool>(SettingsHelper.IsUseOldEmojiMode) && EmojiHelper.Contains(item, true);
-                                AddEmoji(item, useOld);
+                                if (EmojiHelper.Contains(item))
+                                {
+                                    var useOld = item[0] != '#' && SettingsHelper.Get<bool>(SettingsHelper.IsUseOldEmojiMode) && EmojiHelper.Contains(item, true);
+                                    AddEmoji(item, useOld);
+                                }
+                                else { AddText(item); }
                             }
-                            else { AddText(item); }
                             break;
 
                         default: AddText(item); break;
@@ -240,23 +284,25 @@ namespace CoolapkUWP.Controls
                 item.ContextArray = array;
             }
 
-            richTextBlock.Blocks.Add(paragraph);
-            richTextBlock.Height = richTextBlock.Width = Height = Width = double.NaN;
-            richTextBlock.MaxHeight = richTextBlock.MaxWidth = MaxHeight = MaxWidth = double.PositiveInfinity;
-            Content = richTextBlock;
+            block.Blocks.Add(paragraph);
+            block.Height = block.Width = Height = Width = double.NaN;
+            block.MaxHeight = block.MaxWidth = MaxHeight = MaxWidth = double.PositiveInfinity;
+
+            Content = MainContent = block;
         }
 
         private Task<ImmutableArray<string>> GetStringList(string text)
         {
             return Task.Run(() =>
             {
-                Regex linkRegex = new Regex("<a(\\S|\\s)*?>(\\S|\\s)*?</a>"), emojiRegex1 = new Regex(@"\[\S*?\]"), emojiRegex2 = new Regex(@"#\(\S*?\)");
+                var link = new Regex("<a(\\S|\\s)*?>(\\S|\\s)*?</a>");
+                var emojis = new Regex[] { new Regex(@"\[\S*?\]"), new Regex(@"#\(\S*?\)") };
                 var buider = ImmutableArray.CreateBuilder<string>();
 
                 //处理超链接或图文中的图片
                 for (int i = 0; i < text.Length;)
                 {
-                    var matchedValue = linkRegex.Match(text, i);
+                    var matchedValue = link.Match(text, i);
                     int index = (string.IsNullOrEmpty(matchedValue.Value) ? text.Length : text.IndexOf(matchedValue.Value, i)) - i;
                     if (index == 0)
                     {
@@ -270,61 +316,35 @@ namespace CoolapkUWP.Controls
                     }
                 }
 
-                //处理[..]样式的表情
-                for (int j = 0; j < buider.Count; j++)
+                //处理表情
+                for (int k = 0; k < emojis.Length; k++)
                 {
-                    for (int i = 0; i < buider[j].Length;)
+                    for (int j = 0; j < buider.Count; j++)
                     {
-                        var v = emojiRegex1.Match(buider[j], i);
-                        int a = string.IsNullOrEmpty(v.Value) ? -1 : buider[j].IndexOf(v.Value, i) - i;
-                        if (a == 0)
+                        for (int i = 0; i < buider[j].Length;)
                         {
-                            if (EmojiHelper.Contains(buider[j].Substring(0, v.Length)) && (emojiRegex1.IsMatch(buider[j], i + v.Length) || buider[j].Length > v.Length))
+                            var v = emojis[k].Match(buider[j], i);
+                            int a = string.IsNullOrEmpty(v.Value) ? -1 : buider[j].IndexOf(v.Value, i) - i;
+                            if (a == 0)
                             {
-                                buider.Insert(j + 1, buider[j].Substring(v.Length));
-                                buider[j] = buider[j].Substring(0, v.Length);
+                                if (EmojiHelper.Contains(buider[j].Substring(0, v.Length)) && (emojis[k].IsMatch(buider[j], i + v.Length) || buider[j].Length > v.Length))
+                                {
+                                    buider.Insert(j + 1, buider[j].Substring(v.Length));
+                                    buider[j] = buider[j].Substring(0, v.Length);
+                                }
+                                i += v.Length;
                             }
-                            i += v.Length;
-                        }
-                        else if (a > 0)
-                        {
-                            if (EmojiHelper.Contains(buider[j].Substring(a, v.Length)))
+                            else if (a > 0)
                             {
-                                buider.Insert(j + 1, buider[j].Substring(a));
-                                buider[j] = buider[j].Substring(0, a);
+                                if (EmojiHelper.Contains(buider[j].Substring(a, v.Length)))
+                                {
+                                    buider.Insert(j + 1, buider[j].Substring(a));
+                                    buider[j] = buider[j].Substring(0, a);
+                                }
+                                i += a;
                             }
-                            i += a;
+                            else if (a == -1) break;
                         }
-                        else if (a == -1) break;
-                    }
-                }
-
-                //处理#(..)样式的表情
-                for (int j = 0; j < buider.Count; j++)
-                {
-                    for (int i = 0; i < buider[j].Length;)
-                    {
-                        var v = emojiRegex2.Match(buider[j], i);
-                        int a = string.IsNullOrEmpty(v.Value) ? -1 : buider[j].IndexOf(v.Value, i) - i;
-                        if (a == 0)
-                        {
-                            if (EmojiHelper.Contains(buider[j].Substring(1, v.Length - 2)) && emojiRegex2.IsMatch(buider[j], i + v.Length) || buider[j].Length > v.Length)
-                            {
-                                buider.Insert(j + 1, buider[j].Substring(v.Length));
-                                buider[j] = buider[j].Substring(0, v.Length);
-                            }
-                            i += v.Length;
-                        }
-                        else if (a > 0)
-                        {
-                            if (EmojiHelper.Contains(buider[j].Substring(a + 1, v.Length - 2)))
-                            {
-                                buider.Insert(j + 1, buider[j].Substring(a));
-                                buider[j] = buider[j].Substring(0, a);
-                            }
-                            i += a;
-                        }
-                        else if (a == -1) break;
                     }
                 }
 
@@ -336,7 +356,7 @@ namespace CoolapkUWP.Controls
                         int a = buider[j].IndexOf("\n", i) == -1 ? -1 : buider[j].IndexOf("\n", i) - i;
                         if (a == 0)
                         {
-                            if (!linkRegex.IsMatch(buider[j]) && buider[j].Length > 1)
+                            if (!link.IsMatch(buider[j]) && buider[j].Length > 1)
                             {
                                 buider.Insert(j + 1, buider[j].Substring(1));
                                 buider[j] = string.Empty;
@@ -345,7 +365,7 @@ namespace CoolapkUWP.Controls
                         }
                         else if (a > 0)
                         {
-                            if (!linkRegex.IsMatch(buider[j]))
+                            if (!link.IsMatch(buider[j]))
                             {
                                 buider.Insert(j + 1, buider[j].Substring(a));
                                 buider[j] = buider[j].Substring(0, a);

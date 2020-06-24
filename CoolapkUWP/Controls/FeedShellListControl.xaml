@@ -43,7 +43,10 @@
                                 VerticalAlignment="Center"
                                 FontFamily="Segoe MDL2 Assets"
                                 Text="" />
-                            <TextBlock Margin="12,0" VerticalAlignment="Center">热门回复</TextBlock>
+                            <TextBlock
+                                x:Uid="/FeedShellListControl/hotReply"
+                                Margin="12,0"
+                                VerticalAlignment="Center" />
                         </StackPanel>
                     </ListViewItem>
                     <winui:ItemsRepeater
@@ -54,7 +57,10 @@
                         x:Name="GetMoreHotReplyListViewItem"
                         Tapped="GetMoreHotReplyListViewItem_Tapped"
                         Template="{StaticResource AppListViewItemTemplate}">
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">加载更多热门回复</TextBlock>
+                        <TextBlock
+                            x:Uid="/FeedShellListControl/getHotReply"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" />
                     </ListViewItem>
 
                     <Border

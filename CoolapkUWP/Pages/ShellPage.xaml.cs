@@ -47,6 +47,12 @@ namespace CoolapkUWP.Pages
                 }
             };
 
+            var userLanguages = Windows.System.UserProfile.GlobalizationPreferences.Languages;
+
+            foreach (var item in userLanguages)
+            {
+                System.Diagnostics.Debug.WriteLine(item);
+            }
 
             Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForApplication().Clear();
             UIHelper.IsSplitViewPaneOpenedChanged += (s, e) =>

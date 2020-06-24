@@ -25,7 +25,9 @@
     <DataTemplate x:Key="feed" x:DataType="models:FeedModel">
         <ListViewItem
             Margin="8"
+            DataContext="{x:Bind}"
             KeyDown="ListViewItem_KeyDown"
+            RightTapped="ListViewItem_RightTapped"
             Style="{StaticResource FixedListViewItemStyle}"
             Tag="{x:Bind Url}"
             Tapped="OnTapped">
@@ -61,7 +63,10 @@
                     x:Load="{x:Bind IsStickTop}"
                     Orientation="Horizontal">
                     <SymbolIcon Foreground="Red" Symbol="Upload" />
-                    <TextBlock Margin="10" Foreground="Red">置顶</TextBlock>
+                    <TextBlock
+                        x:Uid="/Feed/stickUp"
+                        Margin="10"
+                        Foreground="Red" />
                 </StackPanel>
 
                 <StackPanel
@@ -87,6 +92,7 @@
                         <TextBlock
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
+                            IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                             Text="{x:Bind Username}" />
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
@@ -147,6 +153,29 @@
                     </StackPanel>
                 </StackPanel>
 
+                <Button
+                    x:Name="moreButton"
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    Height="32"
+                    HorizontalAlignment="Right"
+                    Style="{StaticResource IconButtonStyle}">
+                    <SymbolIcon Symbol="More" />
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem
+                                x:Name="reportButton"
+                                x:Uid="/Feed/report"
+                                Click="FeedButton_Click"
+                                Tag="{x:Bind Id}" />
+                            <ToggleMenuFlyoutItem
+                                x:Name="copyButton"
+                                x:Uid="/Feed/Copy"
+                                IsChecked="{x:Bind IsCopyEnabled, Mode=TwoWay}" />
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+
                 <TextBlock
                     x:Name="mTitleT"
                     Grid.Row="2"
@@ -155,6 +184,7 @@
                     x:Load="{x:Bind ShowMessage_title}"
                     FontSize="16"
                     FontWeight="Black"
+                    IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                     Text="{x:Bind Message_title}"
                     TextWrapping="Wrap" />
 
@@ -162,6 +192,7 @@
                     Grid.Row="3"
                     Grid.ColumnSpan="3"
                     Margin="4"
+                    IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                     MessageText="{x:Bind Message}" />
 
                 <GridView
@@ -188,12 +219,13 @@
                     BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8">
+
                     <TextBlock
                         x:Name="sourceF2"
+                        x:Uid="/Feed/sourceFeedNotFount"
                         Margin="15"
-                        x:Load="{x:Bind ShowSourceFeed2}">
-                        抱歉，该转发已被删除。
-                    </TextBlock>
+                        x:Load="{x:Bind ShowSourceFeed2}" />
+
                     <Grid x:Name="sourceFG" x:Load="{x:Bind ShowSourceFeed}">
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -201,6 +233,7 @@
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
+
                         <StackPanel Grid.Row="0" Orientation="Horizontal">
                             <Button
                                 Margin="4"
@@ -210,12 +243,14 @@
                                 Content="{x:Bind SourceFeed.Username}"
                                 Style="{StaticResource ButtonRevealStyle}"
                                 Tag="{x:Bind SourceFeed.Uurl}" />
+
                             <TextBlock
                                 Margin="4"
                                 VerticalAlignment="Center"
                                 Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                                 Text="{x:Bind SourceFeed.Dateline}" />
                         </StackPanel>
+
                         <TextBlock
                             x:Name="sourceMT"
                             Grid.Row="1"
@@ -223,16 +258,20 @@
                             x:Load="{x:Bind SourceFeed.ShowMessage_title}"
                             FontSize="16"
                             FontWeight="Black"
+                            IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                             Tag="{x:Bind SourceFeed.Url}"
                             Tapped="OnTapped"
                             Text="{x:Bind SourceFeed.Message_title}"
                             TextWrapping="Wrap" />
+
                         <ctrl:TextBlockEx
                             Grid.Row="2"
                             Margin="4"
+                            IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                             MessageText="{x:Bind SourceFeed.Message}"
                             Tag="{x:Bind SourceFeed.Url}"
                             Tapped="OnTapped" />
+
                         <winui:ItemsRepeater
                             x:Name="sourcePic"
                             Grid.Row="3"

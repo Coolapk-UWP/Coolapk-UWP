@@ -1,12 +1,10 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -33,7 +31,9 @@ namespace CoolapkUWP.Pages.FeedPages
             FeedReplyList.ItemsSource = replys;
 
             var reply = e.Parameter as FeedReplyModel;
-            TitleBar.Title = $"回复({reply.Replynum})";
+            TitleBar.Title = string.Format(
+                Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedRepliesPage").GetString("title"),
+                reply.Replynum);
             id = reply.Id;
             reply.ShowreplyRows = false;
             replys.Add(reply);

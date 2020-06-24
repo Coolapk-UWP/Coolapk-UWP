@@ -1,16 +1,13 @@
-﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Models;
+﻿//#define LOAD_MAIN_PAGE
+
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.UI.Core;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using ImageSource = Windows.UI.Xaml.Media.ImageSource;
 using MenuItem = CoolapkUWP.Models.Json.IndexPageHeaderItemModel.Item;
 
 namespace CoolapkUWP.Pages
@@ -41,7 +38,9 @@ namespace CoolapkUWP.Pages
         public MainPage()
         {
             this.InitializeComponent();
+#if LOAD_MAIN_PAGE
             GetIndexPageItems();
+#endif
         }
 
         private async void GetIndexPageItems()

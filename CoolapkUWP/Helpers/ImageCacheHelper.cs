@@ -144,13 +144,14 @@ namespace CoolapkUWP.Helpers
             }
             catch (HttpRequestException)
             {
+                var str = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
                 if (notify == null)
                 {
-                    UIHelper.ShowMessage("图片加载失败");
+                    UIHelper.ShowMessage(str);
                 }
                 else
                 {
-                    notify.Show("图片加载失败", UIHelper.duration);
+                    notify.Show(str, UIHelper.duration);
                 }
             }
             finally

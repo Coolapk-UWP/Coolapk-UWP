@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace CoolapkUWP.Models
 {
-    internal class FeedReplyModel : SimpleFeedReplyModel, INotifyPropertyChanged, ICanChangeLike, ICanChangeReplyNum
+    internal class FeedReplyModel : SimpleFeedReplyModel, INotifyPropertyChanged, ICanChangeLike, ICanChangeReplyNum, ICanCopy
     {
         public FeedReplyModel(JObject token, bool showReplyRow = true) : base(token)
         {
@@ -75,6 +75,17 @@ namespace CoolapkUWP.Models
         public bool Liked { get; set; }
         public bool Liked2 { get => !Liked; }
 
+        private bool isCopyEnabled;
+
+        public bool IsCopyEnabled
+        {
+            get => isCopyEnabled;
+            set
+            {
+                isCopyEnabled = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCopyEnabled)));
+            }
+        }
         string ICanChangeLike.Id => Id.ToString();
     }
 }

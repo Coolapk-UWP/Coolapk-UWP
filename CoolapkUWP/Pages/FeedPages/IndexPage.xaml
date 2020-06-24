@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Windows10version1809="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:control="using:CoolapkUWP.Controls"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -127,7 +126,10 @@
                             HorizontalAlignment="Center"
                             Orientation="Horizontal">
                             <SymbolIcon Symbol="Refresh" />
-                            <TextBlock Margin="4,0" VerticalAlignment="Center">点我刷新</TextBlock>
+                            <TextBlock
+                                x:Uid="/IndexPage/clickMeToRefresh"
+                                Margin="4,0"
+                                VerticalAlignment="Center" />
                         </StackPanel>
                     </Grid>
                 </ListViewItem>
@@ -431,12 +433,12 @@
 
             <DataTemplate x:Key="user2" x:DataType="model:UserModel">
                 <ListViewItem
+                    MaxWidth="72"
                     KeyDown="ListViewItem_KeyDown"
                     Style="{StaticResource FixedListViewItemStyle}"
                     Tag="{x:Bind Url}"
                     Tapped="Grid_Tapped">
                     <StackPanel
-                        MaxWidth="72"
                         Padding="4"
                         Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
                         BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
@@ -595,8 +597,14 @@
                         CornerRadius="8">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="44" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
                         <Button
                             Padding="0"
@@ -605,44 +613,52 @@
                             Click="Button_Click"
                             Style="{ThemeResource ButtonRevealStyle}"
                             Tag="{x:Bind Uurl}">
-                            <StackPanel Orientation="Horizontal">
-                                <Ellipse
-                                    Width="32"
-                                    Height="32"
-                                    Margin="4,0"
-                                    HorizontalAlignment="Left">
-                                    <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{x:Bind UserSmallAvatar.Pic, Mode=OneWay}" />
-                                    </Ellipse.Fill>
-                                </Ellipse>
-                                <StackPanel Margin="4,0">
-                                    <TextBlock
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Text="{x:Bind Username}" />
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Dateline}" />
-                                        <TextBlock
-                                            Margin="3,0,0,0"
-                                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                            Text="{x:Bind Info}" />
-                                    </StackPanel>
-                                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Device_title}" />
-                                </StackPanel>
-                            </StackPanel>
+                            <Ellipse
+                                Width="32"
+                                Height="32"
+                                Margin="4,0"
+                                HorizontalAlignment="Left">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{x:Bind UserSmallAvatar.Pic, Mode=OneWay}" />
+                                </Ellipse.Fill>
+                            </Ellipse>
                         </Button>
-                        <StackPanel Grid.Row="1">
+
+                        <StackPanel
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="4,0">
                             <TextBlock
-                                Height="44"
-                                Margin="0,0,0,4"
-                                FontSize="16"
-                                FontWeight="Black"
-                                MaxLines="2"
-                                Text="{x:Bind Message_title}"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="Wrap" />
-                            <control:TextBlockEx MaxLine="4" MessageText="{x:Bind Message}" />
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Text="{x:Bind Username}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Dateline}" />
+                                <TextBlock
+                                    Margin="3,0,0,0"
+                                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                    Text="{x:Bind Info}" />
+                            </StackPanel>
+                            <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Device_title}" />
                         </StackPanel>
+
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            Height="44"
+                            Margin="0,0,0,4"
+                            FontSize="16"
+                            FontWeight="Black"
+                            MaxLines="2"
+                            Text="{x:Bind Message_title}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="Wrap" />
+
+                        <control:TextBlockEx
+                            Grid.Row="3"
+                            Grid.ColumnSpan="2"
+                            MaxLine="4"
+                            MessageText="{x:Bind Message}" />
                     </Grid>
                 </ListViewItem>
             </DataTemplate>

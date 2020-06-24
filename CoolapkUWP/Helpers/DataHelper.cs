@@ -101,7 +101,7 @@ namespace CoolapkUWP.Helpers
                 case DataUriType.SearchTags: return "/search?type=feedTopic&searchValue={0}&page={1}{2}&showAnonymous=-1";
                 case DataUriType.SearchUsers: return "/search?type=user&searchValue={0}&page={1}{2}&showAnonymous=-1";
                 case DataUriType.SearchWords: return "/search/suggestSearchWordsNew?searchValue={0}&type=app";
-                default: throw new Exception("DataUriType的值错误。");
+                default: throw new Exception($"{typeof(DataUriType).FullName}值错误");
             }
         }
 

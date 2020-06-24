@@ -1,14 +1,34 @@
 ﻿using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel;
 
 namespace CoolapkUWP.Models.Pages.FeedListPageModels
 {
-    internal interface IDetail
+    internal abstract class Detail: INotifyPropertyChanged
     {
-        void Initialize(JObject o);
+        private bool isCopyEnabled;
+
+        public bool IsCopyEnabled
+        {
+            get => isCopyEnabled;
+            set
+            {
+                isCopyEnabled = value;
+                RaisePropertyChangedEvent();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        {
+            if (name != null)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public abstract void Initialize(JObject o);
     }
 
-    internal class UserDetail : IDetail
+    internal class UserDetail : Detail
     {
         public ImageModel UserFace { get; private set; }
         public string UserName { get; private set; }
@@ -25,9 +45,12 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
         public string Logintime { get; private set; }
         public string FollowStatus { get; private set; }
 
-        public void Initialize(JObject o)
+        public override void Initialize(JObject o)
         {
-            FollowStatus = o.Value<int>("uid").ToString() == SettingsHelper.Get<string>(SettingsHelper.Uid) ? string.Empty : o.Value<int>("isFollow") == 0 ? "关注" : "取消关注";
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
+            FollowStatus = o.Value<int>("uid").ToString() == SettingsHelper.Get<string>(SettingsHelper.Uid) ? string.Empty : o.Value<int>("isFollow") == 0 
+                ? loader.GetString("follow")
+                : loader.GetString("unFollow");
             FollowNum = o.Value<int>("follow");
             FansNum = o.Value<int>("fans");
             Level = o.Value<int>("level");
@@ -44,7 +67,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
         }
     }
 
-    internal class TopicDetail : IDetail
+    internal class TopicDetail : Detail
     {
         public ImageModel Logo { get; private set; }
         public string Title { get; private set; }
@@ -53,18 +76,17 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
         public string Description { get; private set; }
         public int SelectedIndex { get; private set; }
 
-        public void Initialize(JObject o)
+        public override void Initialize(JObject o)
         {
             Logo = new ImageModel(o.Value<string>("logo"), ImageType.Icon);
             Title = o.Value<string>("title");
             Description = o.Value<string>("description");
             FollowNum = o.TryGetValue("follownum", out JToken t) ? int.Parse(t.ToString()) : o.Value<int>("follow_num");
             CommentNum = o.TryGetValue("commentnum", out JToken tt) ? int.Parse(tt.ToString()) : o.Value<int>("rating_total_num");
-            SelectedIndex = SelectedIndex;
         }
     }
 
-    internal class DyhDetail : IDetail
+    internal class DyhDetail : Detail
     {
         public ImageModel Logo { get; private set; }
         public string Title { get; private set; }
@@ -77,7 +99,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
         public int SelectedIndex { get; private set; }
         public bool ShowComboBox { get; private set; }
 
-        public void Initialize(JObject detail)
+        public override void Initialize(JObject detail)
         {
             bool showUserButton = detail.Value<int>("uid") != 0;
             FollowNum = detail.Value<int>("follownum");
@@ -89,8 +111,6 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             Url = showUserButton ? detail["userInfo"].Value<string>("url") : string.Empty;
             UserName = showUserButton ? detail["userInfo"].Value<string>("username") : string.Empty;
             UserAvatar = showUserButton ? new ImageModel(detail["userInfo"].Value<string>("userSmallAvatar").Replace("\"", string.Empty), ImageType.BigAvatar) : null;
-            SelectedIndex = SelectedIndex;
-
         }
     }
 }

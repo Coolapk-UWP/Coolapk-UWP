@@ -7,6 +7,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -27,35 +28,36 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             base.OnNavigatedTo(e);
             type = (NotificationPageType)e.Parameter;
+            var loader = ResourceLoader.GetForViewIndependentUse("NotificationsPage");
             switch (type)
             {
                 case NotificationPageType.Comment:
-                    titleBar.Title = ("通知");
+                    titleBar.Title = loader.GetString("notification");
                     uri = "list";
                     FindName(nameof(NavigateItems));
                     Load<SimpleNotificationModel>();
                     break;
 
                 case NotificationPageType.AtMe:
-                    titleBar.Title = ("@我的动态");
+                    titleBar.Title = loader.GetString("AtMeText");
                     uri = "atMeList";
                     Load();
                     break;
 
                 case NotificationPageType.AtCommentMe:
-                    titleBar.Title = ("@我的评论");
+                    titleBar.Title = loader.GetString("AtMeCommentText");
                     uri = "atCommentMeList";
                     Load<AtCommentMeNotificationModel>();
                     break;
 
                 case NotificationPageType.Like:
-                    titleBar.Title = ("我收到的赞");
+                    titleBar.Title = loader.GetString("LikedText");
                     uri = "feedLikeList";
                     Load<LikeNotificationModel>();
                     break;
 
                 case NotificationPageType.Follow:
-                    titleBar.Title = ("好友关注");
+                    titleBar.Title = loader.GetString("FollowedText");
                     uri = "contactsFollowList";
                     Load<SimpleNotificationModel>();
                     break;
@@ -128,12 +130,16 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             else
             {
+                var loader = ResourceLoader.GetForViewIndependentUse("NotificationsPage");
                 if (p == -1)
                 {
                     page--;
-                    UIHelper.ShowMessage("没有更多了");
+                    UIHelper.ShowMessage(loader.GetString("noMore"));
                 }
-                else UIHelper.ShowMessage("没有新的了");
+                else
+                {
+                    UIHelper.ShowMessage(loader.GetString("noNew"));
+                }
             }
             titleBar.HideProgressRing();
         }
@@ -169,12 +175,16 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             else
             {
+                var loader = ResourceLoader.GetForViewIndependentUse("NotificationsPage");
                 if (p == -1)
                 {
                     page--;
-                    UIHelper.ShowMessage("没有更多了");
+                    UIHelper.ShowMessage(loader.GetString("noMore"));
                 }
-                else UIHelper.ShowMessage("没有新的了");
+                else
+                {
+                    UIHelper.ShowMessage(loader.GetString("noNew"));
+                }
             }
             titleBar.HideProgressRing();
         }
@@ -198,11 +208,11 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             switch (type)
             {
-                case NotificationPageType.Comment    : Load<SimpleNotificationModel>(1); break;
-                case NotificationPageType.AtMe       : Load(1); break;
+                case NotificationPageType.Comment: Load<SimpleNotificationModel>(1); break;
+                case NotificationPageType.AtMe: Load(1); break;
                 case NotificationPageType.AtCommentMe: Load<AtCommentMeNotificationModel>(1); break;
-                case NotificationPageType.Like       : Load<LikeNotificationModel>(1); break;
-                case NotificationPageType.Follow     : Load<SimpleNotificationModel>(1); break;
+                case NotificationPageType.Like: Load<LikeNotificationModel>(1); break;
+                case NotificationPageType.Follow: Load<SimpleNotificationModel>(1); break;
             }
         }
     }
@@ -227,9 +237,9 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             switch (item)
             {
-                default                            : return Reply;
-                case FeedModel _                   : return Feed;
-                case LikeNotificationModel _       : return Like;
+                default: return Reply;
+                case FeedModel _: return Feed;
+                case LikeNotificationModel _: return Like;
                 case AtCommentMeNotificationModel _: return AtCommentMe;
             }
         }

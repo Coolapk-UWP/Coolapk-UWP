@@ -16,17 +16,15 @@
         VerticalAlignment="Top"
         Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="40" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="40" />
         </Grid.ColumnDefinitions>
         <Button
             x:Name="BackButton"
             Grid.Column="0"
-            Margin="8,0,0,0"
             VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
             Click="BackButton_Click"
             Style="{StaticResource IconButtonStyle}">
@@ -35,25 +33,26 @@
         <TextBlock
             x:Name="title"
             Grid.Column="1"
-            Margin="5,10"
+            Margin="2,9"
             HorizontalAlignment="Left"
             VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
-            FontSize="20" />
-        <winui:ProgressRing
-            x:Name="progressRing"
-            Grid.Column="2"
-            Width="24"
-            Height="24"
-            Margin="8,32,8,0"
-            IsActive="False" />
+            FontSize="18" />
         <ContentPresenter
             x:Name="userContentPresenter"
-            Grid.Column="3"
+            Grid.Column="2"
             Height="40"
             VerticalAlignment="{StaticResource TitleContentVerticalAlignment}" />
+        <winui:ProgressRing
+            x:Name="progressRing"
+            Grid.Column="3"
+            Width="28"
+            Height="28"
+            Margin="6,32,6,0"
+            IsActive="False"
+            Visibility="Collapsed" />
         <Button
             x:Name="RefreshButton"
-            Grid.Column="4"
+            Grid.Column="3"
             VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
             Click="RefreshButton_Click"
             Style="{StaticResource IconButtonStyle}"
@@ -62,7 +61,7 @@
         </Button>
         <Border
             x:Name="RightEmpty"
-            Grid.Column="5"
-            Width="48" />
+            Grid.Column="4"
+            Width="40" />
     </Grid>
 </UserControl>

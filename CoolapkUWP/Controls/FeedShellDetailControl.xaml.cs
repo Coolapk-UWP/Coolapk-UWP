@@ -54,7 +54,15 @@ namespace CoolapkUWP.Controls
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            UIHelper.OpenLinkAsync((sender as Button).Tag as string);
+            if (sender == reportButton)
+            {
+                FeedDetail.IsCopyEnabled = false;
+                UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, $"https://m.coolapk.com/mp/do?c=feed&m=report&type=feed&id={FeedDetail.Id}" });
+            }
+            else
+            {
+                UIHelper.OpenLinkAsync((sender as Button).Tag as string);
+            }
         }
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
@@ -65,6 +73,19 @@ namespace CoolapkUWP.Controls
         private void makeFeed_MakedFeedSuccessful(object sender, EventArgs e)
         {
             RequireRefresh?.Invoke(this, new EventArgs());
+        }
+
+        private void Grid_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            moreButton.Flyout.ShowAt(this);
+        }
+
+        private void Grid_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if(e.Key == Windows.System.VirtualKey.Menu)
+            {
+                moreButton.Flyout.ShowAt(this);
+            }
         }
     }
 }

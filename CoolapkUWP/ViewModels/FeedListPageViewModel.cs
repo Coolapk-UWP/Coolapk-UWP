@@ -37,9 +37,18 @@ namespace CoolapkUWP.ViewModels.FeedListDataProvider
         public readonly ObservableCollection<object> itemCollection = new ObservableCollection<object>();
         public string Title { get; protected set; }
 
-        public async Task<IDetail> GetDetail()
+        public void ChangeCopyMode(bool mode)
         {
-            IDetail d;
+            if (itemCollection.Count == 0) { return; }
+            if (itemCollection[0] is Detail detail)
+            {
+                detail.IsCopyEnabled = mode;
+            }
+        }
+
+        public async Task<Detail> GetDetail()
+        {
+            Detail d;
             DataUriType type;
             switch (ListType)
             {
@@ -56,7 +65,7 @@ namespace CoolapkUWP.ViewModels.FeedListDataProvider
                     d = new DyhDetail();
                     break;
                 default:
-                    throw new System.Exception("ListType值错误");
+                    throw new System.Exception($"{typeof(FeedListType).FullName}值错误");
             }
             JObject o = (JObject)await DataHelper.GetDataAsync(type, Id);
             if (o != null)
@@ -70,12 +79,23 @@ namespace CoolapkUWP.ViewModels.FeedListDataProvider
 
         public abstract Task<List<FeedModel>> GetFeeds(int p = -1);
 
-        internal abstract string GetTitleBarText(IDetail detail);
+        internal abstract string GetTitleBarText(Detail detail);
 
         public async Task Refresh()
         {
-            if (itemCollection.Count > 0) itemCollection.RemoveAt(0);
-            itemCollection.Insert(0, await GetDetail());
+            ICanChangeSelectedIndex it = null;
+            if (itemCollection.Count > 0)
+            {
+                it = itemCollection[0] as ICanChangeSelectedIndex;
+                itemCollection.RemoveAt(0);
+            }
+
+            Detail item = await GetDetail();
+            if (it != null)
+            {
+                (item as ICanChangeSelectedIndex).SelectedIndex = it.SelectedIndex;
+            }
+            itemCollection.Insert(0, item);
             List<FeedModel> feeds = await GetFeeds(1);
             if (feeds != null)
                 for (int i = 0; i < feeds.Count; i++)
@@ -124,7 +144,12 @@ namespace CoolapkUWP.ViewModels.FeedListDataProvider
             }
         }
 
-        internal override string GetTitleBarText(IDetail detail) => (detail as UserDetail).UserName;
+        public void Report()
+        {
+            UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, $"https://m.coolapk.com/mp/do?c=user&m=report&id={Id}" });
+        }
+
+        internal override string GetTitleBarText(Detail detail) => (detail as UserDetail).UserName;
     }
 
     internal class TagPageDataProvider : FeedListDataProvider, ICanChangeSelectedIndex
@@ -189,7 +214,7 @@ namespace CoolapkUWP.ViewModels.FeedListDataProvider
             }
         }
 
-        internal override string GetTitleBarText(IDetail detail) => (detail as TopicDetail).Title;
+        internal override string GetTitleBarText(Detail detail) => (detail as TopicDetail).Title;
     }
 
     internal class DyhPageDataProvider : FeedListDataProvider, ICanChangeSelectedIndex
@@ -239,6 +264,6 @@ namespace CoolapkUWP.ViewModels.FeedListDataProvider
             }
         }
 
-        internal override string GetTitleBarText(IDetail detail) => (detail as DyhDetail).Title;
+        internal override string GetTitleBarText(Detail detail) => (detail as DyhDetail).Title;
     }
 }

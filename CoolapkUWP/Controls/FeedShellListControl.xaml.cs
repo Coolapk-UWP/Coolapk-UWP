@@ -22,6 +22,8 @@ namespace CoolapkUWP.Controls
         private int repliesPage, likesPage, sharesPage, hotRepliesPage;
         private double replyFirstItem, replyLastItem, likeFirstItem, likeLastItem, hotReplyFirstItem, hotReplyLastItem;
         private readonly string[] icons = new string[] { "" /*0xE70D;*/, ""/*0xE70E*/};
+        private readonly Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedShellListControl");
+
 
         public string FeedId { get; set; }
 
@@ -180,7 +182,7 @@ namespace CoolapkUWP.Controls
             else if (p == -1)
             {
                 hotRepliesPage--;
-                UIHelper.ShowMessage("没有更多热门回复了");
+                UIHelper.ShowMessage(loader.GetString("noMoreHotReply"));
             }
         }
 
@@ -220,7 +222,7 @@ namespace CoolapkUWP.Controls
             else if (p == -1)
             {
                 repliesPage--;
-                UIHelper.ShowMessage("没有更多回复了");
+                UIHelper.ShowMessage(loader.GetString("noMoreReply"));
             }
         }
 
@@ -258,7 +260,7 @@ namespace CoolapkUWP.Controls
             else if (p == -1)
             {
                 likesPage--;
-                UIHelper.ShowMessage("没有更多点赞用户了");
+                UIHelper.ShowMessage(loader.GetString("noMoreLikeUser"));
             }
         }
 
@@ -279,7 +281,7 @@ namespace CoolapkUWP.Controls
             else
             {
                 sharesPage--;
-                UIHelper.ShowMessage("没有更多转发了");
+                UIHelper.ShowMessage(loader.GetString("noMoreShare"));
             }
         }
     }

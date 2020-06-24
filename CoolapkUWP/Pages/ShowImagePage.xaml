@@ -2,7 +2,6 @@
     x:Class="CoolapkUWP.Pages.ShowImagePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Windows10version1809="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -39,18 +38,16 @@
             <FlipView.ContextFlyout>
                 <MenuFlyout>
                     <MenuFlyoutItem
+                        x:Uid="/ShowImagePage/SaveMenuItem"
                         Click="Button_Click"
                         Icon="Pictures"
                         Tag="origin"
-                        Visibility="{x:Bind IsOriginButtonEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                        查看原图
-                    </MenuFlyoutItem>
+                        Visibility="{x:Bind IsOriginButtonEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                     <MenuFlyoutItem
+                        x:Uid="/ShowImagePage/GetOriginMenuItem"
                         Click="Button_Click"
                         Icon="Save"
-                        Tag="save">
-                        保存原图
-                    </MenuFlyoutItem>
+                        Tag="save" />
                 </MenuFlyout>
             </FlipView.ContextFlyout>
             <FlipView.ItemTemplate>
@@ -91,28 +88,28 @@
             VerticalAlignment="Top"
             Orientation="Horizontal">
             <Button
+                x:Uid="/ShowImagePage/BackButton"
                 Margin="4,0"
                 Click="Button_Click"
                 IsEnabled="{x:Bind IsBackButtonEnabled, Mode=OneWay}"
                 Style="{StaticResource IconButtonStyle2}"
-                Tag="back"
-                ToolTipService.ToolTip="上一张">
+                Tag="back">
                 <SymbolIcon Symbol="Back" />
             </Button>
             <Button
+                x:Uid="/ShowImagePage/ZoomInButton"
                 Margin="4,0"
                 Click="Button_Click"
                 Style="{StaticResource IconButtonStyle2}"
-                Tag="zoomIn"
-                ToolTipService.ToolTip="放大">
+                Tag="zoomIn">
                 <SymbolIcon Symbol="ZoomIn" />
             </Button>
             <Button
+                x:Uid="/ShowImagePage/ZoomOutButton"
                 Margin="4,0"
                 Click="Button_Click"
                 Style="{StaticResource IconButtonStyle2}"
-                Tag="zoomOut"
-                ToolTipService.ToolTip="缩小">
+                Tag="zoomOut">
                 <SymbolIcon Symbol="ZoomOut" />
             </Button>
             <TextBlock
@@ -125,28 +122,28 @@
                 VerticalAlignment="Center"
                 Text="{x:Bind imageModels.Count, Mode=OneWay}" />
             <Button
+                x:Uid="/ShowImagePage/SaveButton"
                 Margin="4,0"
                 Click="Button_Click"
                 Style="{StaticResource IconButtonStyle2}"
-                Tag="save"
-                ToolTipService.ToolTip="保存原图">
+                Tag="save">
                 <SymbolIcon Symbol="Save" />
             </Button>
             <Button
+                x:Uid="/ShowImagePage/GetOriginButton"
                 Margin="4,0"
                 Click="Button_Click"
                 IsEnabled="{x:Bind IsOriginButtonEnabled, Mode=OneWay}"
                 Style="{StaticResource IconButtonStyle2}"
-                Tag="origin"
-                ToolTipService.ToolTip="查看原图">
+                Tag="origin">
                 <SymbolIcon Symbol="Pictures" />
             </Button>
             <Button
+                x:Uid="/ShowImagePage/ForwardButton"
                 Click="Button_Click"
                 IsEnabled="{x:Bind IsForwardButtonEnabled, Mode=OneWay}"
                 Style="{StaticResource IconButtonStyle2}"
-                Tag="forward"
-                ToolTipService.ToolTip="下一张">
+                Tag="forward">
                 <SymbolIcon Symbol="Forward" />
             </Button>
         </StackPanel>

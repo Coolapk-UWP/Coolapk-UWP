@@ -28,13 +28,13 @@
         </Grid.RowDefinitions>
         <RichEditBox
             x:Name="InputBox"
+            x:Uid="/MakeFeedControl/editBox"
             Margin="8,8,8,0"
             AcceptsReturn="True"
             ContextMenuOpening="InputBox_ContextMenuOpening"
-            PlaceholderText="分享你的想法……"
             TextWrapping="Wrap" />
         <CommandBar Grid.Row="1">
-            <AppBarButton Icon="Emoji2" Label="插入表情">
+            <AppBarButton x:Uid="/MakeFeedControl/emojiButton" Icon="Emoji2">
                 <Button.Flyout>
                     <Flyout>
                         <Flyout.FlyoutPresenterStyle>
@@ -84,9 +84,9 @@
                 </Button.Flyout>
             </AppBarButton>
             <AppBarButton
+                x:Uid="/MakeFeedControl/sendButton"
                 Click="Button_Click"
-                Icon="Send"
-                Label="发送" />
+                Icon="Send" />
         </CommandBar>
     </Grid>
 </UserControl>

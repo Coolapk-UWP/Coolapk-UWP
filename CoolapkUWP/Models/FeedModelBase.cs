@@ -17,7 +17,13 @@ namespace CoolapkUWP.Models
         string Replynum { get; set; }
     }
 
-    public class FeedModelBase : SourceFeedModel, ICanChangeLike, INotifyPropertyChanged, ICanChangeReplyNum
+    internal interface ICanCopy
+    {
+        bool IsCopyEnabled { get; set; }
+    }
+
+
+    public class FeedModelBase : SourceFeedModel, ICanChangeLike, INotifyPropertyChanged, ICanChangeReplyNum, ICanCopy
     {
         public FeedModelBase(JObject token) : base(token)
         {
@@ -76,6 +82,11 @@ namespace CoolapkUWP.Models
         private string replynum;
 
         public event PropertyChangedEventHandler PropertyChanged;
+        internal void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        {
+            if (name != null)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
 
         public string Info { get; private set; }
         public string Share_num { get; private set; }
@@ -100,7 +111,7 @@ namespace CoolapkUWP.Models
             set
             {
                 likenum1 = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Likenum)));
+                RaisePropertyChangedEvent();
             }
         }
 
@@ -110,7 +121,7 @@ namespace CoolapkUWP.Models
             set
             {
                 replynum = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Replynum)));
+                RaisePropertyChangedEvent();
             }
         }
         public bool Liked { get; set; }
@@ -118,5 +129,17 @@ namespace CoolapkUWP.Models
         public string Id => EntityId;
         public ImageModel Extra_pic { get; private set; }
         public ImageModel UserSmallAvatar { get; private set; }
+
+        private bool isCopyEnabled;
+
+        public bool IsCopyEnabled
+        {
+            get => isCopyEnabled;
+            set
+            {
+                isCopyEnabled = value;
+                RaisePropertyChangedEvent();
+            }
+        }
     }
 }

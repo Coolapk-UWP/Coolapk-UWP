@@ -24,6 +24,7 @@
         <ListViewItem
             Margin="8,4"
             KeyDown="ListViewItem_KeyDown"
+            RightTapped="ListViewItem_RightTapped"
             Style="{StaticResource FixedListViewItemStyle}"
             Tag="{x:Bind}"
             Tapped="ReplyRowsItem_Tapped">
@@ -84,9 +85,9 @@
                             Background="{ThemeResource SystemControlDisabledChromeMediumLowBrush}"
                             CornerRadius="4">
                             <TextBlock
+                                x:Uid="/Feed/feedAuthor"
                                 Margin="1"
-                                FontSize="12"
-                                Text="楼主" />
+                                FontSize="12" />
                         </Border>
                     </StackPanel>
                     <StackPanel Padding="0,-4,0,0" Orientation="Horizontal">
@@ -98,9 +99,8 @@
                             x:Name="At"
                             VerticalAlignment="Center"
                             x:Load="{x:Bind Rusername, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
-                            @
-                        </TextBlock>
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Text="@" />
                         <Button
                             x:Name="Ruser"
                             Padding="4"
@@ -113,6 +113,29 @@
                     </StackPanel>
                 </StackPanel>
 
+                <Button
+                    x:Name="moreButton"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Height="32"
+                    HorizontalAlignment="Right"
+                    Style="{StaticResource IconButtonStyle}">
+                    <SymbolIcon Symbol="More" />
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem
+                                x:Name="reportButton"
+                                x:Uid="/Feed/report"
+                                Click="FeedButton_Click"
+                                Tag="{x:Bind Id}" />
+                            <ToggleMenuFlyoutItem
+                                x:Name="copyButton"
+                                x:Uid="/Feed/Copy"
+                                IsChecked="{x:Bind IsCopyEnabled, Mode=TwoWay}" />
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+
                 <Grid
                     Grid.Row="1"
                     Grid.Column="1"
@@ -124,9 +147,8 @@
 
                     <ctrl:TextBlockEx
                         Margin="0,4"
-                        MessageText="{x:Bind Message}"
-                        Tag="{x:Bind}"
-                        Tapped="ReplyRowsItem_Tapped" />
+                        IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                        MessageText="{x:Bind Message}" />
 
                     <Grid
                         x:Name="pic"
@@ -155,7 +177,7 @@
                                 x:Load="{x:Bind Pic.IsLongPic, Mode=OneWay}"
                                 Background="#0F9D58"
                                 CornerRadius="4,0,0,0">
-                                <TextBlock Foreground="White" Text="长图" />
+                                <TextBlock x:Uid="/Feed/longPic" Foreground="White" />
                             </Grid>
                             <Grid
                                 x:Name="gif"
@@ -240,16 +262,15 @@
                     <ListViewItem
                         x:Name="replyRowsMore"
                         x:Load="{x:Bind ShowreplyRowsMore}"
-                        Tag="{x:Bind}"
-                        Tapped="ReplyRowsItem_Tapped"
                         Template="{StaticResource AppListViewItemTemplate}">
                         <StackPanel
                             Margin="4,0"
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
-                            <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">查看全部回复(</TextBlock>
+                            <TextBlock x:Uid="/Feed/seeAll" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                            <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="(" />
                             <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Replynum}" />
-                            <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">)</TextBlock>
+                            <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text=")" />
                         </StackPanel>
                     </ListViewItem>
                 </StackPanel>

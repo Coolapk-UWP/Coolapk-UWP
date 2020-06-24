@@ -123,23 +123,18 @@
   <data name="AppName" xml:space="preserve">
     <value>酷安 UWP</value>
   </data>
-  <data name="BrowserPageBackButton.Content" xml:space="preserve">
-    <value>尝试获取token</value>
-  </data>
-  <data name="BrowserPageBackButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>如果登录成功后没有自动返回上一页，请点这里</value>
-  </data>
-  <data name="BrowserPageOpenInBrowserButton.Content" xml:space="preserve">
-    <value>在浏览器中打开</value>
-  </data>
-  <data name="CannotGetToken" xml:space="preserve">
-    <value>没有获取到token，请尝试重新登录</value>
-  </data>
   <data name="ExceptionThrown" xml:space="preserve">
     <value>程序出现了错误……</value>
   </data>
-  <data name="LoginSuccessfully" xml:space="preserve">
-    <value>登录成功</value>
+  <data name="GotoGithub" xml:space="preserve">
+    <value>前往Github</value>
+  </data>
+  <data name="HasUpdate" xml:space="preserve">
+    <value>程序更新了v({0}.{1}.{2} -&gt; {3})。</value>
+    <comment>{0}.{1}.{2}和{3} 表示版本号</comment>
+  </data>
+  <data name="ImageLoadError" xml:space="preserve">
+    <value>图片加载失败</value>
   </data>
   <data name="NetworkError" xml:space="preserve">
     <value>网络异常</value>
@@ -147,86 +142,11 @@
   <data name="No" xml:space="preserve">
     <value>否</value>
   </data>
-  <data name="SettingPageBackgroundFollowSystemSwitch.Header" xml:space="preserve">
-    <value>背景色跟随系统</value>
+  <data name="NoUpdate" xml:space="preserve">
+    <value>当前无可用更新。</value>
   </data>
-  <data name="SettingPageCheckUpdate.Content" xml:space="preserve">
-    <value>检查更新</value>
-  </data>
-  <data name="SettingPageCheckUpdateWhenLuanchingCheckBox.Content" xml:space="preserve">
-    <value>启动时检查更新</value>
-  </data>
-  <data name="SettingPageCleanCacheButton.Content" xml:space="preserve">
-    <value>清除图像缓存</value>
-  </data>
-  <data name="SettingPageContentSettingsHeader.Header" xml:space="preserve">
-    <value>内容</value>
-  </data>
-  <data name="SettingPageDarkModeSwitch.Header" xml:space="preserve">
-    <value>背景色</value>
-  </data>
-  <data name="SettingPageDarkModeSwitch.OffContent" xml:space="preserve">
-    <value>白色</value>
-  </data>
-  <data name="SettingPageDarkModeSwitch.OnContent" xml:space="preserve">
-    <value>黑色</value>
-  </data>
-  <data name="SettingPageDisplayOriginPictureCheckBox.Content" xml:space="preserve">
-    <value>显示大图时默认加载原图</value>
-  </data>
-  <data name="SettingPageFeedbackLink.Content" xml:space="preserve">
-    <value>在GitHub上反馈</value>
-  </data>
-  <data name="SettingPageLogFolderLink.Content" xml:space="preserve">
-    <value>打开日志文件夹</value>
-  </data>
-  <data name="SettingPageMessageDialogContent" xml:space="preserve">
-    <value>进行此操作会同时退出登录，你确定吗？</value>
-  </data>
-  <data name="SettingPageMessageDialogTitle" xml:space="preserve">
-    <value>提示</value>
-  </data>
-  <data name="SettingPageNoPicsModeCheckBox.Content" xml:space="preserve">
-    <value>无图模式</value>
-  </data>
-  <data name="SettingPageOthersSettingsHeader.Header" xml:space="preserve">
-    <value>其他</value>
-  </data>
-  <data name="SettingPageResetSettings.Content" xml:space="preserve">
-    <value>恢复默认设置</value>
-  </data>
-  <data name="SettingPageShowOtherExceptionCheckBox.Content" xml:space="preserve">
-    <value>显示运行过程中出现的未知错误</value>
-  </data>
-  <data name="SettingPageTitle.Title" xml:space="preserve">
-    <value>设置</value>
-  </data>
-  <data name="SettingPageUiSettingsHeader.Header" xml:space="preserve">
-    <value>界面</value>
-  </data>
-  <data name="SettingPageUpdateSettingsHeader.Header" xml:space="preserve">
-    <value>更新</value>
-  </data>
-  <data name="SettingPageUseOldEmojiModeCheckBox.Content" xml:space="preserve">
-    <value>使用旧表情</value>
-  </data>
-  <data name="UserHubFeedText.Text" xml:space="preserve">
-    <value>动态</value>
-  </data>
-  <data name="UserHubFollowerText.Text" xml:space="preserve">
-    <value>粉丝</value>
-  </data>
-  <data name="UserHubFollowText.Text" xml:space="preserve">
-    <value>关注</value>
-  </data>
-  <data name="UserHubLogin.Text" xml:space="preserve">
-    <value>登录</value>
-  </data>
-  <data name="UserHubLogout.Text" xml:space="preserve">
-    <value>退出登录</value>
-  </data>
-  <data name="UserHubSetting.Text" xml:space="preserve">
-    <value>设置</value>
+  <data name="UserNameError" xml:space="preserve">
+    <value>请输入用户名</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>是</value>

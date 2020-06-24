@@ -20,32 +20,47 @@ namespace CoolapkUWP.Pages.FeedPages
             base.OnNavigatedTo(e);
             provider = e.Parameter as FeedListDataProvider;
             listView.ItemsSource = provider.itemCollection;
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
             switch (provider.ListType)
             {
                 case FeedListType.UserPageList:
                     rightComboBox.Visibility = Visibility.Collapsed;
+                    FindName(nameof(reportButton));
                     break;
 
                 case FeedListType.TagPageList:
                     rightComboBox.Visibility = Visibility.Visible;
-                    rightComboBox.ItemsSource = new string[] { "最近回复", "按时间排序", "按热度排序" };
+                    rightComboBox.ItemsSource = new string[]
+                    {
+                        loader.GetString("lastupdate_desc"),
+                        loader.GetString("dateline_desc"),
+                        loader.GetString("popular"),
+                    };
                     rightComboBox.SelectedIndex = (provider as ICanChangeSelectedIndex).SelectedIndex;
                     break;
 
                 case FeedListType.DyhPageList:
                     rightComboBox.Visibility = Visibility.Collapsed;
-                    rightComboBox.ItemsSource = new string[] { "精选", "广场" };
+                    rightComboBox.ItemsSource = new string[]
+                    {
+                        loader.GetString("all"),
+                        loader.GetString("square"),
+                    };
                     break;
             }
             Refresh();
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             if (!isLoading)
+            {
                 rightComboBox.SelectionChanged -= FeedTypeComboBox_SelectionChanged;
+            }
 
-            base.OnNavigatedFrom(e);
+            provider.ChangeCopyMode(false);
+
+            base.OnNavigatingFrom(e);
         }
 
         private async void Refresh()
@@ -57,7 +72,6 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 if (provider.itemCollection[0] is DyhDetail detail)
                 {
-                    rightComboBox.SelectedIndex = detail.SelectedIndex;
                     rightComboBox.Visibility = detail.ShowComboBox ? Visibility.Visible : Visibility.Collapsed;
                 }
                 titleBar.Title = provider.Title;
@@ -76,13 +90,13 @@ namespace CoolapkUWP.Pages.FeedPages
         private void UserDetailBorder_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (!(e == null || UIHelper.IsOriginSource(sender, e.OriginalSource))) { return; }
-            if(e.OriginalSource.GetType() == typeof(Windows.UI.Xaml.Shapes.Ellipse) && sender.GetType() == typeof(ListViewItem)) { return; }
+            if (e.OriginalSource.GetType() == typeof(Windows.UI.Xaml.Shapes.Ellipse) && sender.GetType() == typeof(ListViewItem)) { return; }
             UIHelper.ShowImage((sender as FrameworkElement)?.Tag as Models.ImageModel);
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            string str = (sender as Button).Tag as string;
+            string str = (sender as FrameworkElement).Tag as string;
             switch (str)
             {
                 case "follow":
@@ -94,17 +108,21 @@ namespace CoolapkUWP.Pages.FeedPages
                     break;
 
                 case "FollowUser":
-                    switch ((provider.itemCollection[0] as UserDetail).FollowStatus)
-                    {
-                        case "关注":
-                            await DataHelper.GetDataAsync(DataUriType.OperateFollow, provider.Id);
-                            break;
-
-                        case "取消关注":
-                            await DataHelper.GetDataAsync(DataUriType.OperateUnfollow, provider.Id);
-                            break;
-                    }
+                    await DataHelper.GetDataAsync(
+                        (provider.itemCollection[0] as UserDetail).FollowStatus == Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage").GetString("follow")
+                            ? DataUriType.OperateUnfollow
+                            : DataUriType.OperateFollow,
+                        provider.Id);
                     Refresh();
+                    break;
+
+                case "copy":
+                    var b = sender as ToggleMenuFlyoutItem;
+                    provider.ChangeCopyMode(b.IsChecked);
+                    break;
+
+                case "report":
+                    (provider as UserPageDataProvider).Report();
                     break;
 
                 default:

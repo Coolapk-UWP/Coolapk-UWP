@@ -5,7 +5,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
@@ -21,8 +20,6 @@ namespace CoolapkUWP.Pages.FeedPages
         private readonly ObservableCollection<FeedModel> answers = new ObservableCollection<FeedModel>();
         private int answersPage;
         private double answerFirstItem, answerLastItem;
-        private readonly ImmutableArray<string> comboBoxItems1 = new string[] { "最近回复", "按时间排序", "按热度排序", "只看楼主" }.ToImmutableArray();
-        private readonly ImmutableArray<string> comboBoxItems2 = new string[] { "热度排序", "点赞排序", "时间排序" }.ToImmutableArray();
 
         private FeedDetailModel FeedDetail
         {
@@ -44,6 +41,12 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public FeedShellPage() => this.InitializeComponent();
 
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            FeedDetail.IsCopyEnabled = false;
+            base.OnNavigatingFrom(e);
+        }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -54,8 +57,10 @@ namespace CoolapkUWP.Pages.FeedPages
         public async void LoadFeedDetail()
         {
             TitleBar.ShowProgressRing();
-            if (string.IsNullOrEmpty(feedId)) return;
-            JObject detail = (JObject)await DataHelper.GetDataAsync(DataUriType.GetFeedDetail, feedId);
+            if (string.IsNullOrEmpty(feedId)) { return; }
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedShellPage");
+
+            var detail = (JObject)await DataHelper.GetDataAsync(DataUriType.GetFeedDetail, feedId);
             if (detail != null)
             {
                 FeedDetail = new FeedDetailModel(detail);
@@ -65,7 +70,13 @@ namespace CoolapkUWP.Pages.FeedPages
                     if (answersPage != 0 || answerLastItem != 0) return;
                     FindName(nameof(AnswersListView));
                     PivotItemPanel.Visibility = Visibility.Collapsed;
-                    rightComboBox.ItemsSource = comboBoxItems2;
+                    rightComboBox.ItemsSource = new string[]
+                    {
+                        loader.GetString("popular"),
+                        loader.GetString("like"),
+                        loader.GetString("dateline_desc"),
+                    };
+
                     rightComboBox.Visibility = Visibility.Visible;
                     rightComboBox.SelectedIndex = 0;
                 }
@@ -84,7 +95,13 @@ namespace CoolapkUWP.Pages.FeedPages
                     }
 
                     listCtrl.RefreshHotReplies();
-                    rightComboBox.ItemsSource = comboBoxItems1;
+                    rightComboBox.ItemsSource = new string[]
+                    {
+                        loader.GetString("lastupdate_desc"),
+                        loader.GetString("dateline_desc"),
+                        loader.GetString("popular"),
+                        loader.GetString("isFromAuthor"),
+                    };
                     rightComboBox.Visibility = Visibility.Visible;
                     rightComboBox.SelectedIndex = 0;
                 }
@@ -268,7 +285,7 @@ namespace CoolapkUWP.Pages.FeedPages
             else if (p == -1)
             {
                 answersPage--;
-                UIHelper.ShowMessage("没有更多回答了");
+                UIHelper.ShowMessage(Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage").GetString("noMoreAnswer"));
             }
         }
 

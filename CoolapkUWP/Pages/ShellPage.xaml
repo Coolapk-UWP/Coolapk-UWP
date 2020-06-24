@@ -21,7 +21,7 @@
                     <Frame x:Name="paneFrame" Navigated="paneFrame_Navigated" />
                     <Button
                         x:Name="goHomeButton"
-                        Margin="0,32,8,0"
+                        Margin="0,32,0,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Click="Button_Click"
@@ -34,7 +34,7 @@
             <Grid>
                 <Frame x:Name="shellFrame" />
                 <Button
-                    Margin="0,32,8,0"
+                    Margin="0,32,0,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Click="Button_Click"

@@ -1,6 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
-using Newtonsoft.Json.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -13,13 +12,23 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         private void OnTapped(object sender, TappedRoutedEventArgs e)
         {
+            var s = sender as FrameworkElement;
             if (e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
+            if ((s.DataContext as ICanCopy)?.IsCopyEnabled ?? false) { return; }
 
-            UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+            UIHelper.OpenLinkAsync(s.Tag as string);
         }
 
         private async void FeedButton_Click(object sender, RoutedEventArgs e)
         {
+            void DisabledCopy()
+            {
+                if ((sender as FrameworkElement).DataContext is ICanCopy i)
+                {
+                    i.IsCopyEnabled = false;
+                }
+            }
+
             FrameworkElement element = sender as FrameworkElement;
             switch (element.Name)
             {
@@ -27,6 +36,7 @@ namespace CoolapkUWP.Controls.DataTemplates
                     var item = Microsoft.Toolkit.Uwp.UI.Extensions.VisualTree.FindAscendant<ListViewItem>(element);
                     var ctrl = item.FindName("makeFeed") as MakeFeedControl;
                     ctrl.Visibility = ctrl.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+                    DisabledCopy();
                     break;
 
                 case "likeButton":
@@ -34,8 +44,16 @@ namespace CoolapkUWP.Controls.DataTemplates
                                                     element.Dispatcher,
                                                     (SymbolIcon)element.FindName("like1"),
                                                     (SymbolIcon)element.FindName("like2"));
+                    DisabledCopy();
                     break;
+
+                case "reportButton":
+                    DisabledCopy();
+                    UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, $"https://m.coolapk.com/mp/do?c=feed&m=report&type=feed&id={element.Tag}" });
+                    break;
+
                 default:
+                    DisabledCopy();
                     UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
                     break;
             }
@@ -49,6 +67,10 @@ namespace CoolapkUWP.Controls.DataTemplates
                 {
                     OnTapped(sender, null);
                 }
+                else if (e.Key == Windows.System.VirtualKey.Menu)
+                {
+                    ListViewItem_RightTapped(sender, null);
+                }
             }
         }
 
@@ -58,6 +80,13 @@ namespace CoolapkUWP.Controls.DataTemplates
             {
                 m.Replynum = (int.Parse(m.Replynum) + 1).ToString();
             }
+        }
+
+        private void ListViewItem_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            FrameworkElement s = (FrameworkElement)sender;
+            var b = s.FindName("moreButton") as Button;
+            b.Flyout.ShowAt(s);
         }
     }
 }

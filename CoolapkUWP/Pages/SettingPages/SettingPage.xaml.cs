@@ -21,93 +21,93 @@ namespace CoolapkUWP.Pages.SettingPages
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        private bool isNoPicsMode = Get<bool>(SettingsHelper.IsNoPicsMode);
-        private bool isUseOldEmojiMode = Get<bool>(SettingsHelper.IsUseOldEmojiMode);
-        private bool isDisplayOriginPicture = Get<bool>(SettingsHelper.IsDisplayOriginPicture);
-        private bool isDarkMode = Get<bool>(SettingsHelper.IsDarkMode);
-        private bool checkUpdateWhenLuanching = Get<bool>(SettingsHelper.CheckUpdateWhenLuanching);
-        private bool isBackgroundColorFollowSystem = Get<bool>(SettingsHelper.IsBackgroundColorFollowSystem);
+        private bool isNoPicsMode = Get<bool>(IsNoPicsMode);
+        private bool isUseOldEmojiMode = Get<bool>(IsUseOldEmojiMode);
+        private bool isDisplayOriginPicture = Get<bool>(IsDisplayOriginPicture);
+        private bool isDarkMode = Get<bool>(IsDarkMode);
+        private bool checkUpdateWhenLuanching = Get<bool>(CheckUpdateWhenLuanching);
+        private bool isBackgroundColorFollowSystem = Get<bool>(IsBackgroundColorFollowSystem);
         private const string issuePath = "https://github.com/Tangent-90/Coolapk-UWP/issues";
         private bool isCleanCacheButtonEnabled = true;
         private bool isCheckUpdateButtonEnabled = true;
-        private bool showOtherException = Get<bool>(SettingsHelper.ShowOtherException);
+        private bool showOtherException = Get<bool>(ShowOtherException);
 
         private string VersionTextBlockText
         {
             get
             {
                 var ver = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
-                var loader = Windows.UI.Core.CoreWindow.GetForCurrentThread() == null ? null : ResourceLoader.GetForCurrentView();
+                var loader = ResourceLoader.GetForViewIndependentUse();
                 string name = loader?.GetString("AppName") ?? "CoolapkUWP";
-                return $"{name} V{ver}";
+                return $"{name} v{ver}";
             }
         }
 
-        private bool IsNoPicsMode
+        private bool IsNoPicsMode2
         {
             get => isNoPicsMode;
             set
             {
-                Set(SettingsHelper.IsNoPicsMode, value);
-                isNoPicsMode = Get<bool>(SettingsHelper.IsNoPicsMode);
+                Set(IsNoPicsMode, value);
+                isNoPicsMode = Get<bool>(IsNoPicsMode);
                 RaisePropertyChangedEvent();
             }
         }
 
-        private bool IsUseOldEmojiMode
+        private bool IsUseOldEmojiMode2
         {
             get => isUseOldEmojiMode;
             set
             {
-                Set(SettingsHelper.IsUseOldEmojiMode, value);
-                isUseOldEmojiMode = Get<bool>(SettingsHelper.IsUseOldEmojiMode);
+                Set(IsUseOldEmojiMode, value);
+                isUseOldEmojiMode = Get<bool>(IsUseOldEmojiMode);
                 RaisePropertyChangedEvent();
             }
         }
 
-        private bool IsDisplayOriginPicture
+        private bool IsDisplayOriginPicture2
         {
             get => isDisplayOriginPicture;
             set
             {
-                Set(SettingsHelper.IsDisplayOriginPicture, value);
-                isDisplayOriginPicture = Get<bool>(SettingsHelper.IsDisplayOriginPicture);
+                Set(IsDisplayOriginPicture, value);
+                isDisplayOriginPicture = Get<bool>(IsDisplayOriginPicture);
                 RaisePropertyChangedEvent();
             }
         }
 
-        private bool IsDarkMode
+        private bool IsDarkMode2
         {
             get => isDarkMode;
             set
             {
-                Set(SettingsHelper.IsDarkMode, value);
-                isDarkMode = Get<bool>(SettingsHelper.IsDarkMode);
+                Set(IsDarkMode, value);
+                isDarkMode = Get<bool>(IsDarkMode);
                 UIHelper.CheckTheme();
                 RaisePropertyChangedEvent();
             }
         }
 
-        private bool CheckUpdateWhenLuanching
+        private bool CheckUpdateWhenLuanching2
         {
             get => checkUpdateWhenLuanching;
             set
             {
-                Set(SettingsHelper.CheckUpdateWhenLuanching, value);
-                checkUpdateWhenLuanching = Get<bool>(SettingsHelper.CheckUpdateWhenLuanching);
+                Set(CheckUpdateWhenLuanching, value);
+                checkUpdateWhenLuanching = Get<bool>(CheckUpdateWhenLuanching);
                 RaisePropertyChangedEvent();
             }
         }
 
-        private bool IsBackgroundColorFollowSystem
+        private bool IsBackgroundColorFollowSystem2
         {
             get => isBackgroundColorFollowSystem;
             set
             {
-                Set(SettingsHelper.IsBackgroundColorFollowSystem, value);
-                isBackgroundColorFollowSystem = Get<bool>(SettingsHelper.IsBackgroundColorFollowSystem);
+                Set(IsBackgroundColorFollowSystem, value);
+                isBackgroundColorFollowSystem = Get<bool>(IsBackgroundColorFollowSystem);
                 RaisePropertyChangedEvent();
-                IsDarkMode = SettingsHelper.uiSettings.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background).Equals(Windows.UI.Colors.Black);
+                IsDarkMode2 = uiSettings.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background).Equals(Windows.UI.Colors.Black);
             }
         }
 
@@ -131,13 +131,13 @@ namespace CoolapkUWP.Pages.SettingPages
             }
         }
 
-        private bool ShowOtherException
+        private bool ShowOtherException2
         {
             get => showOtherException;
             set
             {
-                Set(SettingsHelper.ShowOtherException, value);
-                showOtherException = Get<bool>(SettingsHelper.ShowOtherException);
+                Set(ShowOtherException, value);
+                showOtherException = Get<bool>(ShowOtherException);
                 RaisePropertyChangedEvent();
             }
         }
@@ -160,20 +160,20 @@ namespace CoolapkUWP.Pages.SettingPages
 
                 case "checkUpdate":
                     IsCheckUpdateButtonEnabled = false;
-                    await SettingsHelper.CheckUpdateAsync();
+                    await CheckUpdateAsync();
                     IsCheckUpdateButtonEnabled = true;
                     break;
 
                 case "reset":
                     bool b = true;
-                    if (!string.IsNullOrEmpty(Get<string>(SettingsHelper.Uid)))
+                    //if (!string.IsNullOrEmpty(Get<string>(Uid)))
                     {
-                        var loader = ResourceLoader.GetForCurrentView();
-                        MessageDialog dialog = new MessageDialog(loader.GetString("SettingPageMessageDialogContent"), loader.GetString("SettingPageMessageDialogTitle"));
-                        dialog.Commands.Add(new UICommand(loader.GetString("Yes")));
-                        dialog.Commands.Add(new UICommand(loader.GetString("No")));
-                        if ((await dialog.ShowAsync()).Label == loader.GetString("Yes"))
-                            SettingsHelper.Logout();
+                        var loader = ResourceLoader.GetForCurrentView("SettingPage");
+                        MessageDialog dialog = new MessageDialog(loader.GetString("MessageDialogContent"), loader.GetString("MessageDialogTitle"));
+                        dialog.Commands.Add(new UICommand(ResourceLoader.GetForCurrentView().GetString("Yes")));
+                        dialog.Commands.Add(new UICommand(ResourceLoader.GetForCurrentView().GetString("No")));
+                        if ((await dialog.ShowAsync()).Label == ResourceLoader.GetForCurrentView().GetString("Yes"))
+                            Logout();
                         else
                             b = false;
                     }

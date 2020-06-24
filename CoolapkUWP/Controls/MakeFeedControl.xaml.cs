@@ -71,7 +71,7 @@ namespace CoolapkUWP.Controls
 
         private void SendSuccessful()
         {
-            UIHelper.ShowMessage("发送成功");
+            UIHelper.ShowMessage(Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("MakeFeedControl").GetString("sendSuccessed"));
             InputBox.Document.SetText(TextSetOptions.None, string.Empty);
             MakedFeedSuccessful?.Invoke(this, new EventArgs());
         }

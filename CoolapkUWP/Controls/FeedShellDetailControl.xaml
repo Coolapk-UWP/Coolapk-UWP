@@ -18,7 +18,10 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Margin="8,0">
+    <Grid
+        Margin="8,0"
+        KeyDown="Grid_KeyDown"
+        RightTapped="Grid_RightTapped">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -114,9 +117,10 @@
             Tapped="StackPanel_Tapped">
             <Grid VerticalAlignment="Stretch">
                 <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                    <TextBlock>查看全部</TextBlock>
+                    <TextBlock x:Uid="/FeedShellDetailControl/seeAll" />
+                    <TextBlock Text="(" />
                     <TextBlock Text="{x:Bind FeedDetail.QuestionAnswerNum, Mode=OneWay}" />
-                    <TextBlock>个回答</TextBlock>
+                    <TextBlock Text=")" />
                 </StackPanel>
                 <SymbolIcon HorizontalAlignment="Right" Symbol="Forward" />
             </Grid>
@@ -158,11 +162,33 @@
             </StackPanel>
         </StackPanel>
 
+        <Button
+            x:Name="moreButton"
+            Grid.Row="3"
+            Height="32"
+            HorizontalAlignment="Right"
+            Style="{StaticResource IconButtonStyle}">
+            <SymbolIcon Symbol="More" />
+            <Button.Flyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem
+                        x:Name="reportButton"
+                        x:Uid="/Feed/report"
+                        Click="Button_Click" />
+                    <ToggleMenuFlyoutItem
+                        x:Name="copyButton"
+                        x:Uid="/Feed/Copy"
+                        IsChecked="{x:Bind FeedDetail.IsCopyEnabled, Mode=TwoWay}" />
+                </MenuFlyout>
+            </Button.Flyout>
+        </Button>
+
         <local:TextBlockEx
             x:Name="feedArticlePresenter"
             Grid.Row="4"
             Margin="10,2"
             x:Load="{x:Bind FeedDetail.IsFeedArticle, Mode=OneWay}"
+            IsTextSelectionEnabled="{x:Bind FeedDetail.IsCopyEnabled, Mode=OneWay}"
             MessageText="{x:Bind FeedDetail.Message_raw_output, Mode=OneWay}" />
 
         <Grid
@@ -174,7 +200,7 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <local:TextBlockEx MessageText="{x:Bind FeedDetail.Message, Mode=OneWay}" />
+            <local:TextBlockEx IsTextSelectionEnabled="{x:Bind FeedDetail.IsCopyEnabled, Mode=OneWay}" MessageText="{x:Bind FeedDetail.Message, Mode=OneWay}" />
             <GridView
                 x:Name="picA"
                 Grid.Row="1"
@@ -197,10 +223,9 @@
             Background="{ThemeResource SystemControlBackgroundListLowBrush}">
             <TextBlock
                 x:Name="sourceF2"
+                x:Uid="/Feed/sourceFeedNotFount"
                 Margin="15"
-                x:Load="{x:Bind FeedDetail.ShowSourceFeed2, Mode=OneWay}">
-                抱歉，该转发已被删除。
-            </TextBlock>
+                x:Load="{x:Bind FeedDetail.ShowSourceFeed2, Mode=OneWay}" />
             <Grid x:Name="sourceFG" x:Load="{x:Bind FeedDetail.ShowSourceFeed, Mode=OneWay}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -238,7 +263,10 @@
                         FontWeight="Black"
                         Text="{x:Bind FeedDetail.SourceFeed.Message_title, Mode=OneWay}"
                         TextWrapping="Wrap" />
-                    <local:TextBlockEx Grid.Row="1" MessageText="{x:Bind FeedDetail.SourceFeed.Message, Mode=OneWay}" />
+                    <local:TextBlockEx
+                        Grid.Row="1"
+                        IsTextSelectionEnabled="{x:Bind FeedDetail.IsCopyEnabled, Mode=OneWay}"
+                        MessageText="{x:Bind FeedDetail.SourceFeed.Message, Mode=OneWay}" />
                     <GridView
                         x:Name="sourcePic"
                         Grid.Row="2"
@@ -308,9 +336,9 @@
             x:Load="{x:Bind FeedDetail.IsQuestionFeed, Mode=OneWay}"
             Orientation="Horizontal">
             <TextBlock Text="{x:Bind FeedDetail.Question_answer_num, Mode=OneWay}" />
-            <TextBlock>人回答·</TextBlock>
+            <TextBlock x:Uid="/FeedShellDetailControl/answerNum" />
             <TextBlock Text="{x:Bind FeedDetail.Question_follow_num, Mode=OneWay}" />
-            <TextBlock Margin="0,0,5,0">人关注</TextBlock>
+            <TextBlock x:Uid="/FeedShellDetailControl/followerNum" Margin="0,0,5,0" />
         </StackPanel>
 
         <local:MakeFeedControl

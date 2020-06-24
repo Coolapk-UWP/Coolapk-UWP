@@ -41,14 +41,14 @@
                     Orientation="Horizontal">
                     <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Follownum}" />
                     <TextBlock
+                        x:Uid="/FeedListPage/FollowNum"
                         Margin="0,0,5,0"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        Text="关注" />
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
                     <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Commentnum}" />
                     <TextBlock
+                        x:Uid="/FeedListPage/Comment"
                         Margin="0,0,5,0"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        Text="讨论" />
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
                 </StackPanel>
             </Grid>
         </ListViewItem>
@@ -96,9 +96,9 @@
                     Orientation="Horizontal">
                     <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Follownum}" />
                     <TextBlock
+                        x:Uid="/FeedListPage/Subscribed"
                         Margin="0,0,5,0"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        Text="订阅" />
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
                 </StackPanel>
             </Grid>
         </ListViewItem>
@@ -143,14 +143,14 @@
                     Orientation="Horizontal">
                     <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind FollowNum}" />
                     <TextBlock
+                        x:Uid="/FeedListPage/FollowNum"
                         Margin="0,0,5,0"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        Text="关注" />
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
                     <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind FansNum}" />
                     <TextBlock
+                        x:Uid="/FeedListPage/Fans"
                         Margin="0,0,5,0"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        Text="粉丝" />
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
                     <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind LoginTime}" />
                 </StackPanel>
                 <TextBlock

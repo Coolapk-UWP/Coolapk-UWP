@@ -121,6 +121,11 @@
             RefreshButtonVisibility="Visible">
             <control:TitleBar.RightAreaContent>
                 <StackPanel Orientation="Horizontal">
+                    <ComboBox
+                        x:Name="rightComboBox"
+                        VerticalAlignment="Center"
+                        SelectionChanged="rightComboBox_SelectionChanged"
+                        Visibility="Collapsed" />
                     <Button
                         x:Name="opLikeButton"
                         x:Load="{x:Bind FeedDetail.IsQuestionFeed, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}"
@@ -136,11 +141,6 @@
                             <SymbolIcon x:Name="like2" Symbol="Like" />
                         </StackPanel>
                     </Button>
-                    <ComboBox
-                        x:Name="rightComboBox"
-                        VerticalAlignment="Center"
-                        SelectionChanged="rightComboBox_SelectionChanged"
-                        Visibility="Collapsed" />
                 </StackPanel>
             </control:TitleBar.RightAreaContent>
         </control:TitleBar>

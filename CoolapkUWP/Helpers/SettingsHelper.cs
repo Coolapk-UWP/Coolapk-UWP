@@ -50,6 +50,97 @@ namespace CoolapkUWP.Helpers
             UIHelper.CheckTheme();
         }
 
+        public static async Task CheckUpdateAsync()
+        {
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0;)");
+                    var keys = JObject.Parse(await client.GetStringAsync("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest"));
+                    var ver = keys.Value<string>("tag_name").Replace("v", string.Empty).Split('.');
+                    if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major
+                        || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
+                        || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
+                    {
+                        var grid = new Grid();
+                        var textBlock = new TextBlock
+                        {
+                            Text = string.Format(
+                                        loader.GetString("HasUpdate"),
+                                        Package.Current.Id.Version.Major,
+                                        Package.Current.Id.Version.Minor,
+                                        Package.Current.Id.Version.Build,
+                                        keys.Value<string>("tag_name")),
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            VerticalAlignment = VerticalAlignment.Center
+                        };
+                        var button = new Button
+                        {
+                            Content = loader.GetString("GotoGithub"),
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Center
+                        };
+                        button.Click += async (_, __) =>
+                        {
+                            await Windows.System.Launcher.LaunchUriAsync(new Uri(keys.Value<string>("html_url")));
+                        };
+                        grid.Children.Add(textBlock);
+                        grid.Children.Add(button);
+                        UIHelper.InAppNotification.Show(grid, 6000);
+                    }
+                    else UIHelper.ShowMessage(loader.GetString("NoUpdate"));
+                }
+            }
+            catch (HttpRequestException) { UIHelper.ShowMessage(loader.GetString("NetworkError")); }
+        }
+
+        public static async Task<bool> CheckLoginInfo()
+        {
+            try
+            {
+                using (var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
+                {
+                    var cookieManager = filter.CookieManager;
+                    string uid = string.Empty, token = string.Empty, userName = string.Empty;
+                    foreach (var item in cookieManager.GetCookies(new Uri("http://coolapk.com")))
+                        switch (item.Name)
+                        {
+                            case "uid":
+                                uid = item.Value;
+                                break;
+
+                            case "username":
+                                userName = item.Value;
+                                break;
+
+                            case "token":
+                                token = item.Value;
+                                break;
+                        }
+                    if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(userName))
+                    {
+                        Set(Uid, uid);
+                        var o = (JObject)await DataHelper.GetDataAsync(DataUriType.CheckLoginInfo);
+                        UIHelper.NotificationNums.Initial((JObject)o["notifyCount"]);
+                        return true;
+                    }
+                    else return false;
+                }
+            }
+            catch { throw; }
+        }
+
+        public static void Logout()
+        {
+            var cookieManager = new Windows.Web.Http.Filters.HttpBaseProtocolFilter().CookieManager;
+            foreach (var item in cookieManager.GetCookies(new Uri("http://coolapk.com")))
+                cookieManager.DeleteCookie(item);
+            Set(Uid, string.Empty);
+            UIHelper.NotificationNums.ClearNums();
+        }
+
         public static void SetDefaultSettings()
         {
 #pragma warning disable CS0612 // 类型或成员已过时
@@ -99,91 +190,6 @@ namespace CoolapkUWP.Helpers
             {
                 localSettings.Values.Add(Uid, string.Empty);
             }
-        }
-
-        public static async Task CheckUpdateAsync()
-        {
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0;)");
-                    var keys = JObject.Parse(await client.GetStringAsync("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest"));
-                    var ver = keys.Value<string>("tag_name").Replace("v", string.Empty).Split('.');
-                    if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major
-                        || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
-                        || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
-                    {
-                        var grid = new Grid();
-                        var textBlock = new TextBlock
-                        {
-                            Text = $"程序更新了({Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build} -> {keys.Value<string>("tag_name")})。",
-                            HorizontalAlignment = HorizontalAlignment.Left,
-                            VerticalAlignment = VerticalAlignment.Center
-                        };
-                        var button = new Button
-                        {
-                            Content = "前往Github",
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            VerticalAlignment = VerticalAlignment.Center
-                        };
-                        button.Click += async (_, __) =>
-                        {
-                            await Windows.System.Launcher.LaunchUriAsync(new Uri(keys.Value<string>("html_url")));
-                        };
-                        grid.Children.Add(textBlock);
-                        grid.Children.Add(button);
-                        UIHelper.InAppNotification.Show(grid, 6000);
-                    }
-                    else UIHelper.ShowMessage("当前无可用更新。");
-                }
-            }
-            catch (HttpRequestException) { UIHelper.ShowMessage("网络异常"); }
-        }
-
-        public static async Task<bool> CheckLoginInfo()
-        {
-            try
-            {
-                using (var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
-                {
-                    var cookieManager = filter.CookieManager;
-                    string uid = string.Empty, token = string.Empty, userName = string.Empty;
-                    foreach (var item in cookieManager.GetCookies(new Uri("http://coolapk.com")))
-                        switch (item.Name)
-                        {
-                            case "uid":
-                                uid = item.Value;
-                                break;
-
-                            case "username":
-                                userName = item.Value;
-                                break;
-
-                            case "token":
-                                token = item.Value;
-                                break;
-                        }
-                    if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(userName))
-                    {
-                        Set(Uid, uid);
-                        var o = (JObject)await DataHelper.GetDataAsync(DataUriType.CheckLoginInfo);
-                        UIHelper.NotificationNums.Initial((JObject)o["notifyCount"]);
-                        return true;
-                    }
-                    else return false;
-                }
-            }
-            catch { throw; }
-        }
-
-        public static void Logout()
-        {
-            var cookieManager = new Windows.Web.Http.Filters.HttpBaseProtocolFilter().CookieManager;
-            foreach (var item in cookieManager.GetCookies(new Uri("http://coolapk.com")))
-                cookieManager.DeleteCookie(item);
-            Set(Uid, string.Empty);
-            UIHelper.NotificationNums.ClearNums();
         }
     }
 }

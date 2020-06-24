@@ -127,7 +127,7 @@
                     Style="{StaticResource ButtonRevealStyle}"
                     Tag="feed">
                     <StackPanel>
-                        <TextBlock x:Uid="UserHubFeedText" HorizontalAlignment="Center" />
+                        <TextBlock x:Uid="/Mypage/FeedText" HorizontalAlignment="Center" />
                         <TextBlock HorizontalAlignment="Center" Text="{x:Bind model.FeedNum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
@@ -141,7 +141,7 @@
                     Style="{StaticResource ButtonRevealStyle}"
                     Tag="follow">
                     <StackPanel>
-                        <TextBlock x:Uid="UserHubFollowText" HorizontalAlignment="Center" />
+                        <TextBlock x:Uid="/Mypage/FollowText" HorizontalAlignment="Center" />
                         <TextBlock HorizontalAlignment="Center" Text="{x:Bind model.FollowNum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
@@ -155,7 +155,7 @@
                     Style="{StaticResource ButtonRevealStyle}"
                     Tag="fans">
                     <StackPanel>
-                        <TextBlock x:Uid="UserHubFollowerText" HorizontalAlignment="Center" />
+                        <TextBlock x:Uid="/Mypage/FollowerText" HorizontalAlignment="Center" />
                         <TextBlock HorizontalAlignment="Center" Text="{x:Bind model.FansNum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
@@ -173,7 +173,7 @@
             Visibility="{x:Bind LogoutButtonVisibility, Converter={StaticResource TrueToFalseConverter}, ConverterParameter='Visibility', Mode=OneWay}">
             <StackPanel Padding="16,0" Orientation="Horizontal">
                 <SymbolIcon Symbol="AddFriend" />
-                <TextBlock x:Uid="UserHubLogin" Margin="8,0" />
+                <TextBlock x:Uid="/Mypage/Login" Margin="8,0" />
             </StackPanel>
         </ListViewItem>
         <ListViewItem
@@ -183,7 +183,7 @@
             Tapped="ListViewItem_Tapped">
             <StackPanel Padding="16,0" Orientation="Horizontal">
                 <SymbolIcon Symbol="Setting" />
-                <TextBlock x:Uid="UserHubSetting" Margin="8,0" />
+                <TextBlock x:Uid="/Mypage/Setting" Margin="8,0" />
             </StackPanel>
         </ListViewItem>
         <ListViewItem
@@ -194,7 +194,7 @@
             Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}">
             <StackPanel Padding="16,0" Orientation="Horizontal">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF3B1;" />
-                <TextBlock x:Uid="UserHubLogout" Margin="8,0" />
+                <TextBlock x:Uid="/Mypage/Logout" Margin="8,0" />
             </StackPanel>
         </ListViewItem>
     </StackPanel>

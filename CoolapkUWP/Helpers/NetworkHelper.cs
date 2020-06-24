@@ -70,7 +70,8 @@ namespace CoolapkUWP.Helpers
         {
             if (string.IsNullOrEmpty(name))
             {
-                UIHelper.ShowMessage("请输入用户名");
+                var s = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString("UserNameError");
+                UIHelper.ShowMessage(s);
                 return "0";
             }
             string str = string.Empty;

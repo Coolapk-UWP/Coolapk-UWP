@@ -21,14 +21,14 @@
                 <StackPanel Orientation="Horizontal">
                     <Button
                         x:Name="TryLoginButton"
-                        x:Uid="BrowserPageBackButton"
+                        x:Uid="/BrowserPage/BackButton"
                         Height="40"
                         Background="Transparent"
                         Click="{x:Bind CheckLogin}"
                         Style="{StaticResource ButtonRevealStyle}" />
                     <Button
                         x:Name="GotoSystemBrowserButton"
-                        x:Uid="BrowserPageOpenInBrowserButton"
+                        x:Uid="/BrowserPage/OpenInBrowserButton"
                         Height="40"
                         Background="Transparent"
                         Click="GotoSystemBrowserButton_Click"

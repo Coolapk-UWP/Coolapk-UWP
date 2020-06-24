@@ -16,6 +16,7 @@ namespace CoolapkUWP.Models
 
     internal class FeedModel : FeedModelBase
     {
+
         public FeedModel(JObject token, FeedDisplayMode mode = FeedDisplayMode.normal) : base(token)
         {
             if (!string.IsNullOrEmpty(Message_title) && !mode.HasFlag(FeedDisplayMode.notShowMessageTitle)) ShowMessage_title = true;
