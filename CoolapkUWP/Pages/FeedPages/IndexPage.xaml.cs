@@ -213,19 +213,16 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
-        private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
+        private void OnTapped(object tag)
         {
-            if (!UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
-
-            FrameworkElement element = sender as FrameworkElement;
-            if (element.Tag is string s)
+            if (tag is string s)
             {
                 if (!string.IsNullOrEmpty(s))
                 {
                     UIHelper.OpenLinkAsync(s);
                 }
             }
-            else if (element.Tag is IHasUriAndTitle u)
+            else if (tag is IHasUriAndTitle u)
             {
                 if (string.IsNullOrEmpty(u.Url) || u.Url == "/topic/quickList?quickType=list") { return; }
                 string str = u.Url;
@@ -246,13 +243,33 @@ namespace CoolapkUWP.Pages.FeedPages
                 }
                 else { UIHelper.OpenLinkAsync(str); }
             }
-            else if (element.Tag is IndexPageModel i)
+            else if (tag is IndexPageModel i)
             {
                 if (!string.IsNullOrEmpty(i.Url))
                 {
                     UIHelper.OpenLinkAsync(i.Url);
                 }
             }
+        }
+
+        private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
+
+            OnTapped((sender as FrameworkElement).Tag);
+        }
+
+        private void ListViewItem_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
+            {
+                OnTapped((sender as FrameworkElement).Tag);
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            OnTapped((sender as FrameworkElement).Tag);
         }
 
         private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
@@ -283,6 +300,31 @@ namespace CoolapkUWP.Pages.FeedPages
                 page = 0;
             }
             GetUrlPage();
+        }
+
+        private void FlipView_Loaded(object sender, RoutedEventArgs e)
+        {
+            var view = sender as FlipView;
+            var timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(4)
+            };
+            timer.Tick += (o, a) =>
+            {
+                if (view.SelectedIndex + 1 >= view.Items.Count())
+                {
+                    while (view.SelectedIndex > 0)
+                    {
+                        view.SelectedIndex -= 1;
+                    }
+                }
+                else
+                {
+                    view.SelectedIndex += 1;
+                }
+            };
+
+            timer.Start();
         }
 
         public void ChangeTabView(string u)
@@ -321,15 +363,18 @@ namespace CoolapkUWP.Pages.FeedPages
                     pages.Add(1);
                     Feeds2.Add(ff);
                     urls.Add("/page/dataList?url=" + model.Url.Replace("#", "%23", StringComparison.Ordinal) + $"&title={model.Title}");
-                    if (j == 0) Load(element, i);
+                    if (j == 0) LoadPivotItem(element, i);
                 }
                 return;
             }
         }
 
-        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e) => Load(sender as Pivot);
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadPivotItem(sender as Pivot);
+        }
 
-        private void Load(Pivot element, PivotItem i = null)
+        private void LoadPivotItem(Pivot element, PivotItem i = null)
         {
             var item = i is null ? element.SelectedItem as PivotItem : i;
             var view = item.Content as Microsoft.UI.Xaml.Controls.ItemsRepeater;
@@ -344,39 +389,6 @@ namespace CoolapkUWP.Pages.FeedPages
                     u = "/page/dataList?url=" + u + $"&title={model.Title}";
                 }
                 _ = GetUrlPage(1, u, feeds);
-            }
-        }
-
-        private void FlipView_Loaded(object sender, RoutedEventArgs e)
-        {
-            var view = sender as FlipView;
-            var timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(4)
-            };
-            timer.Tick += (o, a) =>
-            {
-                if (view.SelectedIndex + 1 >= view.Items.Count())
-                {
-                    while (view.SelectedIndex > 0)
-                    {
-                        view.SelectedIndex -= 1;
-                    }
-                }
-                else
-                {
-                    view.SelectedIndex += 1;
-                }
-            };
-
-            timer.Start();
-        }
-
-        private void ListViewItem_KeyDown(object sender, KeyRoutedEventArgs e)
-        {
-            if (e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
-            {
-                Grid_Tapped(sender, null);
             }
         }
     }

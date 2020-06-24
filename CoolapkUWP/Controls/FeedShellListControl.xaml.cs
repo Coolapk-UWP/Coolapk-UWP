@@ -32,12 +32,12 @@ namespace CoolapkUWP.Controls
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if ((sender as FrameworkElement).Tag is string s) UIHelper.OpenLinkAsync(s);
-        }
+            if (e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
 
-        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+            if ((sender as FrameworkElement).Tag is string s)
+            {
+                UIHelper.OpenLinkAsync(s);
+            }
         }
 
         private void ChangeHotReplysDisplayModeListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
@@ -81,9 +81,9 @@ namespace CoolapkUWP.Controls
 
         private void ListViewItem_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            if(e.Key==Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
+            if (e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
             {
-                StackPanel_Tapped(sender, null);
+                Grid_Tapped(sender, null);
             }
         }
 
@@ -184,9 +184,9 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        internal async void RefreshFeedReplies(int p = -1)
+        private async void RefreshFeedReplies(int p = -1)
         {
-            JArray array = (JArray)await DataHelper.GetDataAsync(
+            var array = (JArray)await DataHelper.GetDataAsync(
                                 DataUriType.GetFeedReplies,
                                 FeedId,
                                 listType,
@@ -224,7 +224,7 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        internal async void RefreshLikes(int p = -1)
+        private async void RefreshLikes(int p = -1)
         {
             JArray array = (JArray)await DataHelper.GetDataAsync(
                                             DataUriType.GetLikeList,
@@ -262,7 +262,7 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        internal async void RefreshShares()
+        private async void RefreshShares()
         {
             var array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetShareList, FeedId, ++sharesPage);
             if (array != null && array.Count != 0)

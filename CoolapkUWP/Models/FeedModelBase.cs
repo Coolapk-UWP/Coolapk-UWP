@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace CoolapkUWP.Models
 {
-    internal interface ILike
+    internal interface ICanChangeLike
     {
         string Likenum { get; set; }
         bool Liked { get; set; }
@@ -17,7 +17,7 @@ namespace CoolapkUWP.Models
         string Replynum { get; set; }
     }
 
-    public class FeedModelBase : SourceFeedModel, ILike, INotifyPropertyChanged, ICanChangeReplyNum
+    public class FeedModelBase : SourceFeedModel, ICanChangeLike, INotifyPropertyChanged, ICanChangeReplyNum
     {
         public FeedModelBase(JObject token) : base(token)
         {

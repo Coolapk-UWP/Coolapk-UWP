@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
@@ -20,8 +21,8 @@ namespace CoolapkUWP.Pages.FeedPages
         private readonly ObservableCollection<FeedModel> answers = new ObservableCollection<FeedModel>();
         private int answersPage;
         private double answerFirstItem, answerLastItem;
-        private string answerSortType = "reply";
-        private readonly string[] comboBoxItems = new string[] { "最近回复", "按时间排序", "按热度排序", "只看楼主" };
+        private readonly ImmutableArray<string> comboBoxItems1 = new string[] { "最近回复", "按时间排序", "按热度排序", "只看楼主" }.ToImmutableArray();
+        private readonly ImmutableArray<string> comboBoxItems2 = new string[] { "热度排序", "点赞排序", "时间排序" }.ToImmutableArray();
 
         private FeedDetailModel FeedDetail
         {
@@ -64,7 +65,9 @@ namespace CoolapkUWP.Pages.FeedPages
                     if (answersPage != 0 || answerLastItem != 0) return;
                     FindName(nameof(AnswersListView));
                     PivotItemPanel.Visibility = Visibility.Collapsed;
-                    RefreshAnswers();
+                    rightComboBox.ItemsSource = comboBoxItems2;
+                    rightComboBox.Visibility = Visibility.Visible;
+                    rightComboBox.SelectedIndex = 0;
                 }
                 else
                 {
@@ -81,7 +84,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     }
 
                     listCtrl.RefreshHotReplies();
-                    listCtrl.RefreshFeedReplies();
+                    rightComboBox.ItemsSource = comboBoxItems1;
                     rightComboBox.Visibility = Visibility.Visible;
                     rightComboBox.SelectedIndex = 0;
                 }
@@ -121,28 +124,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     break;
 
                 case "MakeLike":
-                    if (FeedDetail.Liked)
-                    {
-                        JObject o = (JObject)await DataHelper.GetDataAsync(DataUriType.OperateUnlike, string.Empty, feedId);
-                        if (o != null)
-                        {
-                            FeedDetail.Likenum = $"{o.Value<int>("count")}";
-                            like1.Visibility = Visibility.Collapsed;
-                            like2.Visibility = Visibility.Visible;
-                            FeedDetail.Liked = false;
-                        }
-                    }
-                    else
-                    {
-                        JObject o = (JObject)await DataHelper.GetDataAsync(DataUriType.OperateLike, string.Empty, feedId);
-                        if (o != null)
-                        {
-                            FeedDetail.Likenum = $"{o.Value<int>("count")}";
-                            like1.Visibility = Visibility.Visible;
-                            like2.Visibility = Visibility.Collapsed;
-                            FeedDetail.Liked = true;
-                        }
-                    }
+                    await DataHelper.MakeLikeAsync(FeedDetail, Dispatcher, like1, like2);
                     break;
 
                 default:
@@ -171,23 +153,21 @@ namespace CoolapkUWP.Pages.FeedPages
                 TitleBar.HideProgressRing();
                 return;
             }
-            if (RefreshAll) await RefreshFeedDetail();
+            if (RefreshAll)
+            {
+                await RefreshFeedDetail();
+            }
+
             TitleBar.HideProgressRing();
         }
 
         private async Task RefreshFeedDetail()
         {
-            JObject detail = (JObject)await DataHelper.GetDataAsync(DataUriType.GetFeedDetail, feedId);
-            if (detail != null) FeedDetail = new FeedDetailModel(detail);
-        }
-
-        private void detailControl_ComboBoxSelectionChanged(object sender, string e)
-        {
-            answerSortType = e;
-            answers.Clear();
-            answerFirstItem = answerLastItem = 0;
-            answersPage = 0;
-            Refresh();
+            var detail = (JObject)await DataHelper.GetDataAsync(DataUriType.GetFeedDetail, feedId);
+            if (detail != null)
+            {
+                FeedDetail = new FeedDetailModel(detail);
+            }
         }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
@@ -214,11 +194,20 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void ChangeFeedSortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void rightComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!FeedDetail.IsQuestionFeed && rightComboBox.SelectedIndex != -1)
+            if (rightComboBox.SelectedIndex != -1)
             {
-                listCtrl.ChangeFeedSorting(rightComboBox.SelectedIndex);
+                if (FeedDetail.IsQuestionFeed)
+                {
+                    answers.Clear();
+                    answerFirstItem = answerLastItem = answersPage = 0;
+                    Refresh();
+                }
+                else
+                {
+                    listCtrl.ChangeFeedSorting(rightComboBox.SelectedIndex);
+                }
             }
         }
 
@@ -229,7 +218,24 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private async void RefreshAnswers(int p = -1)
         {
-            JArray array = (JArray)await DataHelper.GetDataAsync(
+            string answerSortType = string.Empty;
+            switch (rightComboBox.SelectedIndex)
+            {
+                case -1: return;
+                case 0:
+                    answerSortType = "reply";
+                    break;
+
+                case 1:
+                    answerSortType = "like";
+                    break;
+
+                case 2:
+                    answerSortType = "dateline";
+                    break;
+            }
+
+            var array = (JArray)await DataHelper.GetDataAsync(
                                         DataUriType.GetAnswers,
                                         feedId,
                                         answerSortType,
@@ -319,18 +325,18 @@ namespace CoolapkUWP.Pages.FeedPages
                 RefreshAll = false;
             }
 
-            if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 768 && !((FeedDetail?.IsFeedArticle ?? false) || (FeedDetail?.IsCoolPictuers ?? false)))
+            if ((e?.NewSize.Width ?? Width) >= 804 && !((FeedDetail?.IsFeedArticle ?? false) || (FeedDetail?.IsCoolPictuers ?? false)))
             {
-                LeftColumnDefinition.Width = new GridLength(384);
+                LeftColumnDefinition.Width = new GridLength(420);
                 SetDualPanelMode();
-                PivotItemPanel.Width = 384;
+                PivotItemPanel.Width = 420;
                 PivotItemPanel.HorizontalAlignment = HorizontalAlignment.Left;
             }
-            else if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 832 && ((FeedDetail?.IsFeedArticle ?? false) || (FeedDetail?.IsCoolPictuers ?? false)))
+            else if ((e?.NewSize.Width ?? Width) >= 876 && ((FeedDetail?.IsFeedArticle ?? false) || (FeedDetail?.IsCoolPictuers ?? false)))
             {
-                LeftColumnDefinition.Width = new GridLength(480);
+                LeftColumnDefinition.Width = new GridLength(520);
                 SetDualPanelMode();
-                PivotItemPanel.Width = 480;
+                PivotItemPanel.Width = 520;
                 PivotItemPanel.HorizontalAlignment = HorizontalAlignment.Left;
             }
             else

@@ -41,7 +41,7 @@ namespace CoolapkUWP.Pages
         public MainPage()
         {
             this.InitializeComponent();
-            //GetIndexPageItems();
+            GetIndexPageItems();
         }
 
         private async void GetIndexPageItems()

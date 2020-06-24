@@ -73,7 +73,7 @@
                                 KeyDown="ListViewItem_KeyDown"
                                 Style="{StaticResource AppListViewItemStyle}"
                                 Tag="{x:Bind Url}"
-                                Tapped="StackPanel_Tapped">
+                                Tapped="Grid_Tapped">
                                 <StackPanel
                                     Padding="4"
                                     VerticalAlignment="Center"
@@ -100,31 +100,37 @@
                 <winui:ItemsRepeater ItemsSource="{x:Bind shares}">
                     <winui:ItemsRepeater.ItemTemplate>
                         <DataTemplate x:DataType="model:SourceFeedModel">
-                            <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="auto" />
-                                </Grid.RowDefinitions>
-                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <Button
-                                        Margin="4,0"
-                                        Padding="2"
-                                        VerticalAlignment="Center"
-                                        Content="{x:Bind Username}"
-                                        Style="{StaticResource ButtonStyle1}"
-                                        Tag="{x:Bind Uurl}" />
-                                    <TextBlock
-                                        VerticalAlignment="Center"
-                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                        Text="{x:Bind Dateline}" />
-                                </StackPanel>
-                                <local:TextBlockEx
-                                    Grid.Row="1"
-                                    Margin="8,0,10,10"
-                                    MessageText="{x:Bind Message}"
-                                    Tag="{x:Bind Url}"
-                                    Tapped="Grid_Tapped" />
-                            </Grid>
+                            <ListViewItem
+                                KeyDown="ListViewItem_KeyDown"
+                                Style="{StaticResource AppListViewItemStyle}"
+                                Tag="{x:Bind Url}"
+                                Tapped="Grid_Tapped">
+                                <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="auto" />
+                                    </Grid.RowDefinitions>
+                                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                        <Button
+                                            Margin="4,0"
+                                            Padding="2"
+                                            VerticalAlignment="Center"
+                                            Content="{x:Bind Username}"
+                                            Style="{StaticResource ButtonStyle1}"
+                                            Tag="{x:Bind Uurl}" />
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                            Text="{x:Bind Dateline}" />
+                                    </StackPanel>
+                                    <local:TextBlockEx
+                                        Grid.Row="1"
+                                        Margin="8,0,10,10"
+                                        MessageText="{x:Bind Message}"
+                                        Tag="{x:Bind Url}"
+                                        Tapped="Grid_Tapped" />
+                                </Grid>
+                            </ListViewItem>
                         </DataTemplate>
                     </winui:ItemsRepeater.ItemTemplate>
                 </winui:ItemsRepeater>

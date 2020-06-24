@@ -211,9 +211,9 @@
                                     Padding="4"
                                     HorizontalAlignment="Stretch"
                                     Background="Transparent"
+                                    Click="Button_Click"
                                     Style="{ThemeResource ButtonRevealStyle}"
-                                    Tag="{x:Bind}"
-                                    Tapped="Grid_Tapped">
+                                    Tag="{x:Bind}">
                                     <StackPanel HorizontalAlignment="Stretch">
                                         <Image
                                             Width="40"
@@ -372,10 +372,10 @@
                             <Button
                                 VerticalAlignment="Top"
                                 Background="Transparent"
+                                Click="Button_Click"
                                 KeyDown="ListViewItem_KeyDown"
                                 Style="{StaticResource ButtonRevealStyle}"
-                                Tag="{x:Bind Uurl}"
-                                Tapped="Grid_Tapped">
+                                Tag="{x:Bind Uurl}">
                                 <StackPanel Orientation="Horizontal">
                                     <Ellipse
                                         Width="24"
@@ -484,12 +484,13 @@
 
             <DataTemplate x:Key="dyh" x:DataType="model:IndexPageModel">
                 <ListViewItem
+                    MaxWidth="72"
+                    Margin="4,0"
                     KeyDown="ListViewItem_KeyDown"
                     Style="{StaticResource FixedListViewItemStyle}"
                     Tag="{x:Bind Url}"
                     Tapped="Grid_Tapped">
                     <StackPanel
-                        MaxWidth="72"
                         Padding="4"
                         Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
                         BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
@@ -502,8 +503,10 @@
                             Source="{x:Bind Pic.Pic, Mode=OneWay}" />
                         <TextBlock
                             HorizontalAlignment="Center"
+                            MaxLines="2"
                             Text="{x:Bind Title}"
                             TextAlignment="Center"
+                            TextTrimming="CharacterEllipsis"
                             TextWrapping="Wrap" />
                     </StackPanel>
                 </ListViewItem>
@@ -594,13 +597,14 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
+
                         <Button
                             Padding="0"
                             VerticalAlignment="Top"
                             Background="{x:Null}"
+                            Click="Button_Click"
                             Style="{ThemeResource ButtonRevealStyle}"
-                            Tag="{x:Bind Uurl}"
-                            Tapped="Grid_Tapped">
+                            Tag="{x:Bind Uurl}">
                             <StackPanel Orientation="Horizontal">
                                 <Ellipse
                                     Width="32"

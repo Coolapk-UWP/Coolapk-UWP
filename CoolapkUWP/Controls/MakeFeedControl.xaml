@@ -7,8 +7,7 @@
     xmlns:local="using:CoolapkUWP.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:CoolapkUWP.Models.Controls.MakeFeedControlModel"
-    MinHeight="240"
-    MaxHeight="240"
+    Height="200"
     d:DesignHeight="200"
     d:DesignWidth="300"
     mc:Ignorable="d">
@@ -20,7 +19,7 @@
     </UserControl.Resources>
 
     <Grid
-        Margin="0,8"
+        Margin="0,4"
         Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
         CornerRadius="8">
         <Grid.RowDefinitions>

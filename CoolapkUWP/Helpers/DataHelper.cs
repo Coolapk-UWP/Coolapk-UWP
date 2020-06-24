@@ -1,9 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using CoolapkUWP.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
+using SymbolIcon = Windows.UI.Xaml.Controls.SymbolIcon;
+using Visibility = Windows.UI.Xaml.Visibility;
 
 namespace CoolapkUWP.Helpers
 {
@@ -208,6 +211,45 @@ namespace CoolapkUWP.Helpers
             else if (temptime.Hours > 0) return $"{temptime.Hours}小时前";
             else if (temptime.Minutes > 0) return $"{temptime.Minutes}分钟前";
             else return "刚刚";
+        }
+
+        public static async Task MakeLikeAsync(ICanChangeLike like, Windows.UI.Core.CoreDispatcher dispatcher, SymbolIcon like1, SymbolIcon like2)
+        {
+            if (like == null) { return; }
+            bool isReply = like is FeedReplyModel;
+            bool isLike = false;
+            JObject o;
+            if (like.Liked)
+            {
+                o = (JObject)await GetDataAsync(DataUriType.OperateUnlike, isReply ? "Reply" : string.Empty, like.Id);
+            }
+            else
+            {
+                o = (JObject)await GetDataAsync(DataUriType.OperateLike, isReply ? "Reply" : string.Empty, like.Id);
+                isLike = true;
+            }
+
+            await dispatcher?.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                like.Liked = isLike;
+                if (isReply)
+                {
+                    like.Likenum = o.ToString().Replace("\"", string.Empty);
+                }
+                else if (o != null)
+                {
+                    like.Likenum = o.Value<int>("count").ToString();
+                }
+
+                if (like1 != null)
+                {
+                    like1.Visibility = isLike ? Visibility.Visible : Visibility.Collapsed;
+                }
+                if (like1 != null)
+                {
+                    like2.Visibility = isLike ? Visibility.Collapsed : Visibility.Visible;
+                }
+            });
         }
     }
 }

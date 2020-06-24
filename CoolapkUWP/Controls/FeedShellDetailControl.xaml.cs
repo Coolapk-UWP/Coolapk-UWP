@@ -41,30 +41,11 @@ namespace CoolapkUWP.Controls
             this.InitializeComponent();
         }
 
-        public event EventHandler<string> ComboBoxSelectionChanged;
-
         public event EventHandler RequireRefresh;
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox box = sender as ComboBox;
-            string answerSortType = string.Empty;
-            switch (box.SelectedIndex)
-            {
-                case -1: return;
-                case 0:
-                    answerSortType = "reply";
-                    break;
-
-                case 1:
-                    answerSortType = "like";
-                    break;
-
-                case 2:
-                    answerSortType = "dateline";
-                    break;
-            }
-            ComboBoxSelectionChanged?.Invoke(this, answerSortType);
         }
 
         private void Image_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.ShowImage((sender as FrameworkElement).Tag as Models.ImageModel);

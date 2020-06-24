@@ -22,96 +22,97 @@
     </Page.Resources>
 
     <Grid>
-        <ScrollViewer
-            x:Name="mainScrollViewer"
-            VerticalScrollMode="{x:Bind MainScrollMode, Mode=OneWay}"
-            ViewChanged="ScrollViewer_ViewChanged">
-            <Grid
-                x:Name="mainGrid"
-                MaxWidth="960"
-                HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition x:Name="LeftColumnDefinition" Width="*" />
-                    <ColumnDefinition x:Name="RightColumnDefinition" Width="0" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <ScrollViewer
-                    x:Name="detailScrollViewer"
-                    Height="{x:Bind DetailListHeight, Mode=OneWay}"
-                    VerticalAlignment="Top"
-                    VerticalScrollMode="{x:Bind MainScrollMode, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}, ConverterParameter='ScrollMode'}">
-                    <Border x:Name="detailBorder">
-                        <control:FeedShellDetailControl
-                            x:Name="detailControl"
-                            ComboBoxSelectionChanged="detailControl_ComboBoxSelectionChanged"
-                            FeedDetail="{x:Bind FeedDetail, Mode=OneWay}"
-                            RequireRefresh="detailControl_RequireRefresh" />
-                    </Border>
-                </ScrollViewer>
-                <ScrollViewer
-                    x:Name="rightScrollViewer"
-                    Grid.Row="1"
-                    Height="{x:Bind DetailListHeight, Mode=OneWay}"
-                    VerticalAlignment="Top"
-                    VerticalScrollMode="{x:Bind MainScrollMode, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}, ConverterParameter='ScrollMode'}"
-                    ViewChanged="ScrollViewer_ViewChanged">
-                    <Grid x:Name="rightGrid">
-                        <control:FeedShellListControl x:Name="listCtrl" x:Load="False" />
-                        <winui:ItemsRepeater
-                            x:Name="AnswersListView"
-                            x:Load="False"
-                            ItemTemplate="{StaticResource feed}"
-                            ItemsSource="{x:Bind answers}" />
-                    </Grid>
-                </ScrollViewer>
-            </Grid>
-        </ScrollViewer>
-        <StackPanel
-            x:Name="PivotItemPanel"
-            Padding="8,0"
-            VerticalAlignment="Bottom"
-            Background="{ThemeResource SystemControlDisabledChromeMediumLowBrush}"
-            Orientation="Horizontal">
-            <Button
-                x:Name="ToReplyPivotItemButton"
-                BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
-                BorderThickness="0,0,0,2"
-                Click="Button_Click"
-                Style="{StaticResource ButtonStyle1}"
-                Tag="reply">
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Symbol="Comment" />
-                    <TextBlock Margin="3,0" Text="{x:Bind FeedDetail.Replynum, Mode=OneWay}" />
-                </StackPanel>
-            </Button>
-            <Button
-                x:Name="ToLikePivotItemButton"
-                BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
-                BorderThickness="0"
-                Click="Button_Click"
-                Style="{StaticResource ButtonStyle1}"
-                Tag="like">
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Symbol="Like" />
-                    <TextBlock Margin="3,0" Text="{x:Bind FeedDetail.Likenum, Mode=OneWay}" />
-                </StackPanel>
-            </Button>
-            <Button
-                x:Name="ToSharePivotItemButton"
-                BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
-                BorderThickness="0"
-                Click="Button_Click"
-                Style="{StaticResource ButtonStyle1}"
-                Tag="share">
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Symbol="Link" />
-                    <TextBlock Margin="3,0" Text="{x:Bind FeedDetail.Share_num, Mode=OneWay}" />
-                </StackPanel>
-            </Button>
-        </StackPanel>
+        <Grid MaxWidth="960" HorizontalAlignment="Center">
+            <ScrollViewer
+                x:Name="mainScrollViewer"
+                VerticalScrollMode="{x:Bind MainScrollMode, Mode=OneWay}"
+                ViewChanged="ScrollViewer_ViewChanged">
+                <Grid x:Name="mainGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition x:Name="LeftColumnDefinition" Width="*" />
+                        <ColumnDefinition x:Name="RightColumnDefinition" Width="0" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <ScrollViewer
+                        x:Name="detailScrollViewer"
+                        Height="{x:Bind DetailListHeight, Mode=OneWay}"
+                        VerticalAlignment="Top"
+                        VerticalScrollMode="{x:Bind MainScrollMode, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}, ConverterParameter='ScrollMode'}">
+                        <Border x:Name="detailBorder">
+                            <control:FeedShellDetailControl
+                                x:Name="detailControl"
+                                FeedDetail="{x:Bind FeedDetail, Mode=OneWay}"
+                                RequireRefresh="detailControl_RequireRefresh" />
+                        </Border>
+                    </ScrollViewer>
+
+                    <ScrollViewer
+                        x:Name="rightScrollViewer"
+                        Grid.Row="1"
+                        Height="{x:Bind DetailListHeight, Mode=OneWay}"
+                        VerticalAlignment="Top"
+                        VerticalScrollMode="{x:Bind MainScrollMode, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}, ConverterParameter='ScrollMode'}"
+                        ViewChanged="ScrollViewer_ViewChanged">
+                        <Grid x:Name="rightGrid">
+                            <control:FeedShellListControl x:Name="listCtrl" x:Load="False" />
+                            <winui:ItemsRepeater
+                                x:Name="AnswersListView"
+                                x:Load="False"
+                                ItemTemplate="{StaticResource feed}"
+                                ItemsSource="{x:Bind answers}" />
+                        </Grid>
+                    </ScrollViewer>
+                </Grid>
+            </ScrollViewer>
+
+            <StackPanel
+                x:Name="PivotItemPanel"
+                Padding="8,0"
+                VerticalAlignment="Bottom"
+                Background="{ThemeResource SystemControlDisabledChromeMediumLowBrush}"
+                Orientation="Horizontal">
+                <Button
+                    x:Name="ToReplyPivotItemButton"
+                    BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
+                    BorderThickness="0,0,0,2"
+                    Click="Button_Click"
+                    Style="{StaticResource ButtonStyle1}"
+                    Tag="reply">
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Comment" />
+                        <TextBlock Margin="3,0" Text="{x:Bind FeedDetail.Replynum, Mode=OneWay}" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    x:Name="ToLikePivotItemButton"
+                    BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
+                    BorderThickness="0"
+                    Click="Button_Click"
+                    Style="{StaticResource ButtonStyle1}"
+                    Tag="like">
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Like" />
+                        <TextBlock Margin="3,0" Text="{x:Bind FeedDetail.Likenum, Mode=OneWay}" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    x:Name="ToSharePivotItemButton"
+                    BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
+                    BorderThickness="0"
+                    Click="Button_Click"
+                    Style="{StaticResource ButtonStyle1}"
+                    Tag="share">
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Link" />
+                        <TextBlock Margin="3,0" Text="{x:Bind FeedDetail.Share_num, Mode=OneWay}" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
         <control:TitleBar
             x:Name="TitleBar"
             BackButtonClicked="BackButton_Click"
@@ -121,10 +122,10 @@
             <control:TitleBar.RightAreaContent>
                 <StackPanel Orientation="Horizontal">
                     <Button
-                        Height="40"
-                        Background="Transparent"
+                        x:Name="opLikeButton"
+                        x:Load="{x:Bind FeedDetail.IsQuestionFeed, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}"
                         Click="Button_Click"
-                        Style="{StaticResource ButtonRevealStyle}"
+                        Style="{StaticResource IconButtonStyle}"
                         Tag="MakeLike">
                         <StackPanel>
                             <SymbolIcon
@@ -138,8 +139,7 @@
                     <ComboBox
                         x:Name="rightComboBox"
                         VerticalAlignment="Center"
-                        ItemsSource="{x:Bind comboBoxItems}"
-                        SelectionChanged="ChangeFeedSortingComboBox_SelectionChanged"
+                        SelectionChanged="rightComboBox_SelectionChanged"
                         Visibility="Collapsed" />
                 </StackPanel>
             </control:TitleBar.RightAreaContent>

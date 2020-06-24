@@ -29,6 +29,7 @@
     <Grid>
         <FlipView
             x:Name="SFlipView"
+            Margin="0,32,0,0"
             Background="Transparent"
             ItemsSource="{x:Bind imageModels}"
             RightTapped="SFlipView_RightTapped"
@@ -58,10 +59,10 @@
                         <ScrollViewer
                             x:Name="ScrollViewerMain"
                             DoubleTapped="ScrollViewerMain_DoubleTapped"
-                            HorizontalScrollBarVisibility="Hidden"
+                            HorizontalScrollBarVisibility="Auto"
                             MaxZoomFactor="3"
                             MinZoomFactor="0.5"
-                            VerticalScrollBarVisibility="Hidden"
+                            VerticalScrollBarVisibility="Auto"
                             ZoomMode="Enabled">
                             <Image
                                 MaxWidth="{Binding Path=ViewportWidth, ElementName=ScrollViewerMain}"
@@ -84,12 +85,13 @@
             x:Name="titleBorder"
             Height="32"
             VerticalAlignment="Top"
-            Background="{ThemeResource SystemControlBaseHighAcrylicElementBrush}" />
+            Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}" />
         <StackPanel
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Orientation="Horizontal">
             <Button
+                Margin="4,0"
                 Click="Button_Click"
                 IsEnabled="{x:Bind IsBackButtonEnabled, Mode=OneWay}"
                 Style="{StaticResource IconButtonStyle2}"
@@ -98,6 +100,7 @@
                 <SymbolIcon Symbol="Back" />
             </Button>
             <Button
+                Margin="4,0"
                 Click="Button_Click"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="zoomIn"
@@ -105,6 +108,7 @@
                 <SymbolIcon Symbol="ZoomIn" />
             </Button>
             <Button
+                Margin="4,0"
                 Click="Button_Click"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="zoomOut"
@@ -112,15 +116,16 @@
                 <SymbolIcon Symbol="ZoomOut" />
             </Button>
             <TextBlock
-                Margin="8,0,0,0"
+                Margin="12,0,0,0"
                 VerticalAlignment="Center"
                 Text="{x:Bind SelectedIndex, Mode=OneWay}" />
             <TextBlock VerticalAlignment="Center" Text="/" />
             <TextBlock
-                Margin="0,0,8,0"
+                Margin="0,0,12,0"
                 VerticalAlignment="Center"
                 Text="{x:Bind imageModels.Count, Mode=OneWay}" />
             <Button
+                Margin="4,0"
                 Click="Button_Click"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="save"
@@ -128,6 +133,7 @@
                 <SymbolIcon Symbol="Save" />
             </Button>
             <Button
+                Margin="4,0"
                 Click="Button_Click"
                 IsEnabled="{x:Bind IsOriginButtonEnabled, Mode=OneWay}"
                 Style="{StaticResource IconButtonStyle2}"
