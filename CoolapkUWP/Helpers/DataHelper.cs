@@ -77,9 +77,9 @@ namespace CoolapkUWP.Helpers
                 case DataUriType.GetDyhDetail: return "/dyh/detail?dyhId={0}";
                 case DataUriType.GetDyhFeeds: return "/dyhArticle/list?dyhId={0}&type={1}&page={2}{3}{4}";
                 case DataUriType.GetFeedDetail: return "/feed/detail?id={0}";
-                case DataUriType.GetFeedReplies: return "/feed/replyList?id={0}&listType={1}&page={2}{3}{4}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={5}";
+                case DataUriType.GetFeedReplies: return "/feed/replyList?id={0}&listType={1}&page={2}{3}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={4}";
                 case DataUriType.GetHotReplies: return "/feed/hotReplyList?id={0}&page={1}{2}&discussMode=1";
-                case DataUriType.GetLikeList: return "/feed/likeList?id={0}&listType=lastupdate_desc&page={1}{2}{3}";
+                case DataUriType.GetLikeList: return "/feed/likeList?id={0}&listType=lastupdate_desc&page={1}{2}";
                 case DataUriType.GetIndexPage: return "{0}{1}page={2}";
                 case DataUriType.GetIndexPageNames: return "/main/init";
                 case DataUriType.GetNotifications: return "/notification/{0}?page={1}{2}{3}";
@@ -101,7 +101,7 @@ namespace CoolapkUWP.Helpers
                 case DataUriType.SearchTags: return "/search?type=feedTopic&searchValue={0}&page={1}{2}&showAnonymous=-1";
                 case DataUriType.SearchUsers: return "/search?type=user&searchValue={0}&page={1}{2}&showAnonymous=-1";
                 case DataUriType.SearchWords: return "/search/suggestSearchWordsNew?searchValue={0}&type=app";
-                default: throw new Exception($"{typeof(DataUriType).FullName}值错误");
+                default: throw new ArgumentException($"{typeof(DataUriType).FullName}值错误");
             }
         }
 
@@ -114,7 +114,7 @@ namespace CoolapkUWP.Helpers
             if (!string.IsNullOrEmpty(json) &&
                 !o.TryGetValue("data", out token) &&
                 o.TryGetValue("message", out JToken value))
-                throw new Exception($"Coolapk message:\n{value}");
+                throw new CoolapkMessageException(value);
             else return token;
         }
 
@@ -153,7 +153,7 @@ namespace CoolapkUWP.Helpers
             if (!string.IsNullOrEmpty(json) &&
                 !o.TryGetValue("data", out token) &&
                 o.TryGetValue("message", out JToken value))
-                throw new Exception($"Coolapk message:\n{value}");
+                throw new CoolapkMessageException(value);
             else return token;
         }
 
@@ -174,7 +174,7 @@ namespace CoolapkUWP.Helpers
                         {
                             var o = JsonConvert.DeserializeObject<Models.Json.MessageModel.Rootobject>(json, new JsonSerializerSettings { Error = (__, ee) => ee.ErrorContext.Handled = true });
                             if (o != null)
-                                throw new Exception($"Coolapk message:\n{o.Message}");
+                                throw new CoolapkMessageException(o.Message);
                         }
                         e.ErrorContext.Handled = true;
                     }

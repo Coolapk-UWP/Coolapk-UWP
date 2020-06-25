@@ -17,7 +17,9 @@ namespace CoolapkUWP.Controls
     /// <summary> 用于显示带表情和超链接的控件。使用MessageText指定要显示的内容。 </summary>
     public sealed partial class TextBlockEx : UserControl
     {
-        RichTextBlock MainContent;
+        public const string AuthorBorder = "<div class=\"author-border\"></div>";
+
+        RichTextBlock mainContent;
 
         private string _messageText;
 
@@ -40,23 +42,23 @@ namespace CoolapkUWP.Controls
 
         public int MaxLine
         {
-            get => MainContent?.MaxLines ?? 0;
+            get => mainContent?.MaxLines ?? 0;
             set
             {
                 if (value >= 0)
                 {
                     _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                     {
-                        if (MainContent != null)
+                        if (mainContent != null)
                         {
-                            MainContent.MaxLines = value;
+                            mainContent.MaxLines = value;
                             if (value > 0)
                             {
-                                MainContent.TextTrimming = TextTrimming.WordEllipsis;
+                                mainContent.TextTrimming = TextTrimming.WordEllipsis;
                             }
                             else
                             {
-                                MainContent.TextTrimming = TextTrimming.None;
+                                mainContent.TextTrimming = TextTrimming.None;
                             }
                         }
                     });
@@ -66,12 +68,12 @@ namespace CoolapkUWP.Controls
 
         public bool IsTextSelectionEnabled
         {
-            get => MainContent?.IsTextSelectionEnabled ?? false;
+            get => mainContent?.IsTextSelectionEnabled ?? false;
             set => _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                if (MainContent != null)
+                if (mainContent != null)
                 {
-                    MainContent.IsTextSelectionEnabled = value;
+                    mainContent.IsTextSelectionEnabled = value;
                 }
             });
         }
@@ -92,18 +94,6 @@ namespace CoolapkUWP.Controls
             }
             var paragraph = new Paragraph();
 
-            void AddEmoji(string name, bool useOldEmoji = false)
-            {
-                InlineUIContainer container = new InlineUIContainer();
-                Image image = new Image
-                {
-                    Height = Width = 20,
-                    Source = new BitmapImage(EmojiHelper.Get(name, useOldEmoji))
-                };
-                ToolTipService.SetToolTip(image, new ToolTip { Content = name });
-                container.Child = image;
-                paragraph.Inlines.Add(container);
-            }
             void NewLine()
             {
                 block.Blocks.Add(paragraph);
@@ -138,7 +128,7 @@ namespace CoolapkUWP.Controls
 
                                     var imageModel = new ImageModel(href, ImageType.SmallImage);
                                     imageArrayBuider.Add(imageModel);
-                                    
+
                                     InlineUIContainer container = new InlineUIContainer();
 
                                     Image image = new Image
@@ -223,6 +213,28 @@ namespace CoolapkUWP.Controls
                                     paragraph2.Inlines.Add(run);
                                     block.Blocks.Add(paragraph2);
                                 }
+                                else if (item == AuthorBorder)
+                                {
+                                    InlineUIContainer container = new InlineUIContainer();
+                                    Border border = new Border
+                                    {
+                                        Margin = new Thickness(4, 0, 4, -4),
+                                        VerticalAlignment = VerticalAlignment.Center,
+                                        BorderBrush = (SolidColorBrush)Windows.UI.Xaml.Application.Current.Resources["GrayText"],
+                                        BorderThickness = new Thickness(1),
+                                        CornerRadius = new CornerRadius(4),
+                                    };
+                                    TextBlock textBlock = new TextBlock
+                                    {
+                                        Margin = new Thickness(1),
+                                        FontSize = 12,
+                                        Text = loader.GetString("feedAuthorText"),
+                                    };
+
+                                    border.Child = textBlock;
+                                    container.Child = border;
+                                    paragraph.Inlines.Add(container);
+                                }
                                 else
                                 {
                                     Hyperlink hyperlink = new Hyperlink { UnderlineStyle = UnderlineStyle.None };
@@ -266,8 +278,19 @@ namespace CoolapkUWP.Controls
                             {
                                 if (EmojiHelper.Contains(item))
                                 {
+                                    InlineUIContainer container = new InlineUIContainer();
+
                                     var useOld = item[0] != '#' && SettingsHelper.Get<bool>(SettingsHelper.IsUseOldEmojiMode) && EmojiHelper.Contains(item, true);
-                                    AddEmoji(item, useOld);
+                                    Image image = new Image
+                                    {
+                                        Height = Width = 20,
+                                        Margin = new Thickness(0, 0, 0, -4),
+                                        Source = new BitmapImage(EmojiHelper.Get(item, useOld))
+                                    };
+                                    ToolTipService.SetToolTip(image, new ToolTip { Content = item });
+                                    container.Child = image;
+                                    paragraph.Inlines.Add(container);
+
                                 }
                                 else { AddText(item); }
                             }
@@ -288,7 +311,7 @@ namespace CoolapkUWP.Controls
             block.Height = block.Width = Height = Width = double.NaN;
             block.MaxHeight = block.MaxWidth = MaxHeight = MaxWidth = double.PositiveInfinity;
 
-            Content = MainContent = block;
+            Content = mainContent = block;
         }
 
         private Task<ImmutableArray<string>> GetStringList(string text)
@@ -313,6 +336,31 @@ namespace CoolapkUWP.Controls
                     {
                         buider.Add(text.Substring(i, index));
                         i += index;
+                    }
+                }
+                //(IsFeedAuthor ? $"[{loader.GetString("feedAuthorText")}
+                var length = AuthorBorder.Length;
+                for (int j = 0; j < buider.Count; j++)
+                {
+                    for (int i = 0; i < buider[j].Length;)
+                    {
+                        int a = buider[j].IndexOf(AuthorBorder, i) == -1 ? -1 : buider[j].IndexOf(AuthorBorder, i) - i;
+                        if (a == 0)
+                        {
+                            if (buider[j].Length > length)
+                            {
+                                buider.Insert(j + 1, buider[j].Substring(length));
+                                buider[j] = AuthorBorder;
+                            }
+                            i += length;
+                        }
+                        else if (a > 0)
+                        {
+                            buider.Insert(j + 1, buider[j].Substring(a));
+                            buider[j] = buider[j].Substring(0, a);
+                            i += a;
+                        }
+                        else if (a == -1) { break; }
                     }
                 }
 
@@ -343,7 +391,7 @@ namespace CoolapkUWP.Controls
                                 }
                                 i += a;
                             }
-                            else if (a == -1) break;
+                            else if (a == -1) { break; }
                         }
                     }
                 }
@@ -372,7 +420,7 @@ namespace CoolapkUWP.Controls
                             }
                             i += a;
                         }
-                        else if (a == -1) break;
+                        else if (a == -1) { break; }
                     }
                 }
 

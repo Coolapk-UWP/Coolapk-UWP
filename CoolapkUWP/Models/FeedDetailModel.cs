@@ -12,8 +12,6 @@ namespace CoolapkUWP.Models
             Title = token.Value<string>("title");
             if (token.Value<string>("entityType") != "article")
             {
-                if (token.TryGetValue("share_num", out JToken s))
-                    Share_num = s.ToString().Replace("\"", string.Empty);
                 if (token.Value<string>("feedType") == "feedArticle")
                     IsFeedArticle = true;
                 if (IsFeedArticle)
@@ -82,7 +80,6 @@ namespace CoolapkUWP.Models
             }
         }
 
-        public new string Share_num { get; private set; }
         public bool IsFeedArticle { get; private set; }
         public bool IsFeedArticle2 { get => !IsFeedArticle; }
         public bool Has_message_cover { get; private set; }

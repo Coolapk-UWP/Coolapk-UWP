@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Diagnostics;
 using Windows.ApplicationModel.Resources;
 
 namespace CoolapkUWP.Helpers
 {
+    [System.Diagnostics.DebuggerNonUserCode]
     internal static class EmojiHelper
     {
         private static readonly ResourceLoader emojiIdLoader = ResourceLoader.GetForViewIndependentUse("EmojiId");
         private static readonly ResourceLoader oldEmojiIdLoader = ResourceLoader.GetForViewIndependentUse("OldEmojiId");
 
-        [DebuggerNonUserCode]
         public static bool Contains(string key, bool useOldEmoji = false)
         {
             try
@@ -29,7 +28,6 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        [DebuggerNonUserCode]
         public static Uri Get(string key, bool useOldEmoji = false)
         {
             try

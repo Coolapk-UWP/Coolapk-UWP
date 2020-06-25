@@ -1,11 +1,10 @@
 ﻿using CoolapkUWP.Controls;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.ViewModels;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -17,10 +16,8 @@ namespace CoolapkUWP.Pages.FeedPages
     {
         private string feedId;
         private FeedDetailModel feedDetail;
-        private readonly ObservableCollection<FeedModel> answers = new ObservableCollection<FeedModel>();
-        private int answersPage;
-        private double answerFirstItem, answerLastItem;
-
+        private FeedListProvider answerProvider;
+        private string answerSortType = "reply";
         private FeedDetailModel FeedDetail
         {
             get => feedDetail;
@@ -39,11 +36,18 @@ namespace CoolapkUWP.Pages.FeedPages
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public FeedShellPage() => this.InitializeComponent();
+        public FeedShellPage()
+        {
+            this.InitializeComponent();
+        }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            FeedDetail.IsCopyEnabled = false;
+            if(FeedDetail != null)
+            {
+                FeedDetail.IsCopyEnabled = false;
+            }
+
             base.OnNavigatingFrom(e);
         }
 
@@ -54,7 +58,26 @@ namespace CoolapkUWP.Pages.FeedPages
             LoadFeedDetail();
         }
 
-        public async void LoadFeedDetail()
+        private void MoveToTop()
+        {
+            if (MainScrollMode == ScrollMode.Disabled)
+            {
+                rightScrollViewer.ChangeView(null, 0, null);
+            }
+            else
+            {
+                var point = rightScrollViewer.TransformToVisual(mainScrollViewer).TransformPoint(new Windows.Foundation.Point(0, 0));
+                System.Diagnostics.Debug.WriteLine(point.Y);
+                mainScrollViewer.ChangeView(null, point.Y, null);
+            }
+        }
+
+        private void listCtrl_NeedMoveToTop(object sender, EventArgs e)
+        {
+            MoveToTop();
+        }
+
+        public async Task LoadFeedDetail()
         {
             TitleBar.ShowProgressRing();
             if (string.IsNullOrEmpty(feedId)) { return; }
@@ -67,8 +90,27 @@ namespace CoolapkUWP.Pages.FeedPages
                 TitleBar.Title = FeedDetail.Title;
                 if (FeedDetail.IsQuestionFeed)
                 {
-                    if (answersPage != 0 || answerLastItem != 0) return;
-                    FindName(nameof(AnswersListView));
+                    if (answerProvider != null) { return; }
+
+                    answerProvider =
+                        new FeedListProvider(
+                            async (p, page, firstItem, lastItem) =>
+                                (JArray)await DataHelper.GetDataAsync(
+                                    DataUriType.GetAnswers,
+                                    feedId,
+                                    answerSortType,
+                                    p == -1 ? ++page : p,
+                                    firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
+                                    lastItem == 0 ? string.Empty : $"&lastItem={lastItem}"),
+                            (a, b) => ((FeedModel)a).Url == b.Value<string>("url"),
+                            (o) => new FeedModel(o, FeedDisplayMode.notShowMessageTitle),
+                            () => Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("noMore"),
+                            () => MoveToTop(),
+                            "id");
+
+                    FindName(nameof(answersList));
+
+                    answersList.ItemsSource = answerProvider.Models;
                     PivotItemPanel.Visibility = Visibility.Collapsed;
                     rightComboBox.ItemsSource = new string[]
                     {
@@ -94,7 +136,6 @@ namespace CoolapkUWP.Pages.FeedPages
                         Page_SizeChanged(null, null);
                     }
 
-                    listCtrl.RefreshHotReplies();
                     rightComboBox.ItemsSource = new string[]
                     {
                         loader.GetString("lastupdate_desc"),
@@ -150,29 +191,39 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.GoBack();
+        }
+
+        private void listCtrl_NeedProgressRing(object sender, bool e)
+        {
+            if (e)
+            {
+                TitleBar.ShowProgressRing();
+            }
+            else
+            {
+                TitleBar.HideProgressRing();
+            }
+        }
 
         private async void Refresh()
         {
             TitleBar.ShowProgressRing();
+
+            await RefreshFeedDetail();
             if (listCtrl != null)
             {
-                listCtrl.Refresh();
+                await listCtrl.Refresh();
             }
-            else if (AnswersListView != null)
+            else if (answersList != null)
             {
-                if (answerLastItem != 0) { return; }
-                RefreshAnswers(1);
+                await answerProvider.Refresh(1);
             }
             else
             {
-                LoadFeedDetail();
-                TitleBar.HideProgressRing();
-                return;
-            }
-            if (RefreshAll)
-            {
-                await RefreshFeedDetail();
+                await LoadFeedDetail();
             }
 
             TitleBar.HideProgressRing();
@@ -187,7 +238,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             ScrollViewer scrollViewer = sender as ScrollViewer;
             if (!e.IsIntermediate)
@@ -199,11 +250,11 @@ namespace CoolapkUWP.Pages.FeedPages
                     scrollViewer.ChangeView(null, a, null);
                     if (listCtrl != null)
                     {
-                        listCtrl.Refresh();
+                        await listCtrl.Refresh(false);
                     }
-                    else if (AnswersListView != null)
+                    else if (answersList != null)
                     {
-                        RefreshAnswers();
+                        await answerProvider.Refresh();
                     }
 
                     TitleBar.HideProgressRing();
@@ -217,8 +268,23 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 if (FeedDetail.IsQuestionFeed)
                 {
-                    answers.Clear();
-                    answerFirstItem = answerLastItem = answersPage = 0;
+                    switch (rightComboBox.SelectedIndex)
+                    {
+                        case -1: return;
+                        case 0:
+                            answerSortType = "reply";
+                            break;
+
+                        case 1:
+                            answerSortType = "like";
+                            break;
+
+                        case 2:
+                            answerSortType = "dateline";
+                            break;
+                    }
+
+                    answerProvider?.Reset();
                     Refresh();
                 }
                 else
@@ -233,65 +299,8 @@ namespace CoolapkUWP.Pages.FeedPages
             rightComboBox.SelectedIndex = 1;
         }
 
-        private async void RefreshAnswers(int p = -1)
-        {
-            string answerSortType = string.Empty;
-            switch (rightComboBox.SelectedIndex)
-            {
-                case -1: return;
-                case 0:
-                    answerSortType = "reply";
-                    break;
-
-                case 1:
-                    answerSortType = "like";
-                    break;
-
-                case 2:
-                    answerSortType = "dateline";
-                    break;
-            }
-
-            var array = (JArray)await DataHelper.GetDataAsync(
-                                        DataUriType.GetAnswers,
-                                        feedId,
-                                        answerSortType,
-                                        p == -1 ? ++answersPage : p,
-                                        answerFirstItem == 0 ? string.Empty : $"&firstItem={answerFirstItem}",
-                                        answerLastItem == 0 ? string.Empty : $"&lastItem={answerLastItem}");
-            if (array != null && array.Count != 0)
-            {
-                if (p == 1 || answersPage == 1)
-                {
-                    var d = (from a in answers
-                             from b in array
-                             where a.Url == b.Value<string>("url")
-                             select a).ToArray();
-                    foreach (var item in d)
-                        answers.Remove(item);
-                    for (int i = 0; i < array.Count; i++)
-                        answers.Insert(i, new FeedModel((JObject)array[i], FeedDisplayMode.notShowMessageTitle));
-                    answerFirstItem = array.First.Value<int>("id");
-                    if (answersPage == 1)
-                        answerLastItem = array.Last.Value<int>("id");
-                }
-                else
-                {
-                    answerLastItem = array.Last.Value<int>("id");
-                    foreach (JObject item in array)
-                        answers.Add(new FeedModel(item, FeedDisplayMode.notShowMessageTitle));
-                }
-            }
-            else if (p == -1)
-            {
-                answersPage--;
-                UIHelper.ShowMessage(Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage").GetString("noMoreAnswer"));
-            }
-        }
-
         #region 界面模式切换
 
-        private bool RefreshAll;
         private double detailListHeight;
         private ScrollMode mainScrollMode = ScrollMode.Auto;
 
@@ -339,7 +348,6 @@ namespace CoolapkUWP.Pages.FeedPages
                 rightGrid.Padding = (Thickness)Windows.UI.Xaml.Application.Current.Resources["StackPanelMargin"];
                 rightGrid.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Auto);
                 rightGrid.InvalidateArrange();
-                RefreshAll = false;
             }
 
             if ((e?.NewSize.Width ?? Width) >= 804 && !((FeedDetail?.IsFeedArticle ?? false) || (FeedDetail?.IsCoolPictuers ?? false)))
@@ -374,7 +382,6 @@ namespace CoolapkUWP.Pages.FeedPages
                 rightScrollViewer.SetValue(Grid.ColumnProperty, 0);
                 rightScrollViewer.SetValue(Grid.RowProperty, 1);
                 rightGrid.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Disabled);
-                RefreshAll = true;
             }
         }
 

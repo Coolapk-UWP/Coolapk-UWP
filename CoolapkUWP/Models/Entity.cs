@@ -13,7 +13,7 @@ namespace CoolapkUWP.Models
         }
 
         public string EntityId { get; private set; }
-        public bool EntityFixed { get; private set; }
+        public bool EntityFixed { get; internal set; }
         public string EntityType { get; private set; }
 
         //public JObject EntityJsonObject { get; private set; }

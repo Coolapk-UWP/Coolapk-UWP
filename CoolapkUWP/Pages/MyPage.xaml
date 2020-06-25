@@ -29,17 +29,23 @@
 
     <StackPanel Padding="0,32,0,0">
         <Grid Height="40">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="40" />
+            </Grid.ColumnDefinitions>
+
             <AutoSuggestBox
                 x:Name="SearchBox"
-                Margin="8,0,56,0"
+                Margin="8,0"
                 VerticalAlignment="Center"
                 ItemTemplate="{StaticResource searchWord}"
                 QueryIcon="Find"
                 QuerySubmitted="AutoSuggestBox_QuerySubmitted"
                 SuggestionChosen="AutoSuggestBox_SuggestionChosen"
                 TextChanged="AutoSuggestBox_TextChanged" />
+
             <Button
-                Margin="8,0"
+                Grid.Column="1"
                 HorizontalAlignment="Right"
                 Click="Button_Click"
                 Style="{ThemeResource IconButtonStyle}"

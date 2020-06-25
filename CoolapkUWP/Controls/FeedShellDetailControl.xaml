@@ -214,107 +214,121 @@
                 ScrollViewer.VerticalScrollMode="Disabled" />
         </Grid>
 
-        <Grid
+        <ListViewItem
             x:Name="sourceF"
             Grid.Row="5"
             Margin="4"
-            Padding="12,0"
             x:Load="{x:Bind FeedDetail.ShowSourceFeedGrid, Mode=OneWay}"
-            Background="{ThemeResource SystemControlBackgroundListLowBrush}">
-            <TextBlock
-                x:Name="sourceF2"
-                x:Uid="/Feed/sourceFeedNotFount"
-                Margin="15"
-                x:Load="{x:Bind FeedDetail.ShowSourceFeed2, Mode=OneWay}" />
-            <Grid x:Name="sourceFG" x:Load="{x:Bind FeedDetail.ShowSourceFeed, Mode=OneWay}">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal">
-                    <Button
-                        Margin="0,0,5,0"
-                        Padding="2"
-                        Background="{x:Null}"
-                        Click="Button_Click"
-                        Content="{x:Bind FeedDetail.SourceFeed.Username, Mode=OneWay}"
-                        Style="{StaticResource ButtonStyle1}"
-                        Tag="{x:Bind FeedDetail.SourceFeed.Uurl, Mode=OneWay}" />
-                    <TextBlock
-                        Margin="5,0"
-                        VerticalAlignment="Center"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        Text="{x:Bind FeedDetail.SourceFeed.Dateline, Mode=OneWay}" />
-                </StackPanel>
-                <Grid
-                    Grid.Row="1"
-                    Margin="3"
-                    Tag="{x:Bind FeedDetail.SourceFeed.Url, Mode=OneWay}"
-                    Tapped="Grid_Tapped">
+            KeyDown="Grid_KeyDown"
+            Style="{StaticResource FixedListViewItemStyle}"
+            Tag="{x:Bind FeedDetail.SourceFeed.Url, Mode=OneWay}"
+            Tapped="Grid_Tapped">
+            <Grid
+                Padding="12,4"
+                Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
+                <TextBlock
+                    x:Name="sourceF2"
+                    x:Uid="/Feed/sourceFeedNotFount"
+                    Margin="15"
+                    x:Load="{x:Bind FeedDetail.ShowSourceFeed2, Mode=OneWay}" />
+
+                <Grid x:Name="sourceFG" x:Load="{x:Bind FeedDetail.ShowSourceFeed, Mode=OneWay}">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
-                        <RowDefinition />
                     </Grid.RowDefinitions>
-                    <TextBlock
-                        x:Name="sourceMT"
-                        x:Load="{x:Bind FeedDetail.SourceFeed.ShowMessage_title, Mode=OneWay}"
-                        FontSize="16"
-                        FontWeight="Black"
-                        Text="{x:Bind FeedDetail.SourceFeed.Message_title, Mode=OneWay}"
-                        TextWrapping="Wrap" />
-                    <local:TextBlockEx
-                        Grid.Row="1"
-                        IsTextSelectionEnabled="{x:Bind FeedDetail.IsCopyEnabled, Mode=OneWay}"
-                        MessageText="{x:Bind FeedDetail.SourceFeed.Message, Mode=OneWay}" />
-                    <GridView
-                        x:Name="sourcePic"
-                        Grid.Row="2"
-                        MinHeight="0"
-                        Margin="0,5,0,0"
-                        Padding="0"
-                        HorizontalContentAlignment="Left"
-                        x:Load="{x:Bind FeedDetail.ShowPicArr, Mode=OneWay}"
-                        ItemTemplate="{StaticResource Pic}"
-                        ItemsSource="{x:Bind FeedDetail.SourceFeed.PicArr, Mode=OneWay}"
-                        ScrollViewer.VerticalScrollMode="Disabled" />
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            Margin="0,0,5,0"
+                            Padding="2"
+                            Background="{x:Null}"
+                            Click="Button_Click"
+                            Content="{x:Bind FeedDetail.SourceFeed.Username, Mode=OneWay}"
+                            Style="{StaticResource ButtonStyle1}"
+                            Tag="{x:Bind FeedDetail.SourceFeed.Uurl, Mode=OneWay}" />
+                        <TextBlock
+                            Margin="5,0"
+                            VerticalAlignment="Center"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Text="{x:Bind FeedDetail.SourceFeed.Dateline, Mode=OneWay}" />
+                    </StackPanel>
+                    <Grid Grid.Row="1" Margin="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            x:Name="sourceMT"
+                            x:Load="{x:Bind FeedDetail.SourceFeed.ShowMessage_title, Mode=OneWay}"
+                            FontSize="16"
+                            FontWeight="Black"
+                            Text="{x:Bind FeedDetail.SourceFeed.Message_title, Mode=OneWay}"
+                            TextWrapping="Wrap" />
+                        <local:TextBlockEx
+                            Grid.Row="1"
+                            IsTextSelectionEnabled="{x:Bind FeedDetail.IsCopyEnabled, Mode=OneWay}"
+                            MessageText="{x:Bind FeedDetail.SourceFeed.Message, Mode=OneWay}" />
+                        <GridView
+                            x:Name="sourcePic"
+                            Grid.Row="2"
+                            MinHeight="0"
+                            Margin="0,5,0,0"
+                            Padding="0"
+                            HorizontalContentAlignment="Left"
+                            x:Load="{x:Bind FeedDetail.ShowPicArr, Mode=OneWay}"
+                            ItemTemplate="{StaticResource Pic}"
+                            ItemsSource="{x:Bind FeedDetail.SourceFeed.PicArr, Mode=OneWay}"
+                            ScrollViewer.VerticalScrollMode="Disabled" />
+                    </Grid>
                 </Grid>
             </Grid>
-        </Grid>
+        </ListViewItem>
 
-        <Grid
+        <ListViewItem
             x:Name="extraT"
             Grid.Row="6"
             Margin="0,5,0,0"
             x:Load="{x:Bind FeedDetail.ShowExtra_url, Mode=OneWay}"
-            Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+            KeyDown="Grid_KeyDown"
+            Style="{StaticResource FixedListViewItemStyle}"
             Tag="{x:Bind FeedDetail.Extra_url, Mode=OneWay}"
             Tapped="StackPanel_Tapped">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Border Background="{ThemeResource SystemControlBackgroundListLowBrush}">
-                <Image
-                    Width="56"
-                    Height="56"
-                    Source="{x:Bind FeedDetail.Extra_pic.Pic, Mode=OneWay}" />
-            </Border>
-            <StackPanel
-                Grid.Column="1"
-                Margin="5"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Center">
-                <TextBlock
-                    MaxHeight="32"
-                    Text="{x:Bind FeedDetail.Extra_title, Mode=OneWay}"
-                    TextWrapping="Wrap" />
-                <TextBlock
-                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                    Text="{x:Bind FeedDetail.Extra_url2, Mode=OneWay}"
-                    TextWrapping="Wrap" />
-            </StackPanel>
-        </Grid>
+            <Grid
+                Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Background="{ThemeResource SystemControlBackgroundListLowBrush}">
+                    <Image
+                        Width="56"
+                        Height="56"
+                        Source="{x:Bind FeedDetail.Extra_pic.Pic, Mode=OneWay}" />
+                </Border>
+                <StackPanel
+                    Grid.Column="1"
+                    Margin="5"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center">
+                    <TextBlock
+                        MaxHeight="32"
+                        Text="{x:Bind FeedDetail.Extra_title, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Text="{x:Bind FeedDetail.Extra_url2, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+        </ListViewItem>
 
         <ListView
             x:Name="relaRLis"
@@ -331,13 +345,13 @@
         <StackPanel
             x:Name="questionDetail"
             Grid.Row="8"
-            Margin="8,0"
+            Margin="12,0"
             VerticalAlignment="Center"
             x:Load="{x:Bind FeedDetail.IsQuestionFeed, Mode=OneWay}"
             Orientation="Horizontal">
-            <TextBlock Text="{x:Bind FeedDetail.Question_answer_num, Mode=OneWay}" />
-            <TextBlock x:Uid="/FeedShellDetailControl/answerNum" />
-            <TextBlock Text="{x:Bind FeedDetail.Question_follow_num, Mode=OneWay}" />
+            <TextBlock FontWeight="Bold" Text="{x:Bind FeedDetail.Question_answer_num, Mode=OneWay}" />
+            <TextBlock x:Uid="/FeedShellDetailControl/answerNum" Margin="0,0,12,0" />
+            <TextBlock FontWeight="Bold" Text="{x:Bind FeedDetail.Question_follow_num, Mode=OneWay}" />
             <TextBlock x:Uid="/FeedShellDetailControl/followerNum" Margin="0,0,5,0" />
         </StackPanel>
 

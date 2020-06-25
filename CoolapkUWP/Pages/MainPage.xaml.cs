@@ -1,4 +1,4 @@
-﻿//#define LOAD_MAIN_PAGE
+﻿#define LOAD_MAIN_PAGE
 
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;

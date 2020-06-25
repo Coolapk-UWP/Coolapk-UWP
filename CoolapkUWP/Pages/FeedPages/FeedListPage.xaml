@@ -90,7 +90,7 @@
                                                 FontWeight="Bold"
                                                 Foreground="White"
                                                 Text="{x:Bind FollowNum}" />
-                                            <TextBlock x:Uid="/FeedListPage/Follow/Num" Foreground="White" />
+                                            <TextBlock x:Uid="/FeedListPage/FollowNum" Foreground="White" />
                                         </StackPanel>
                                     </Button>
 
@@ -238,7 +238,7 @@
 
                         <StackPanel Margin="0,5" Orientation="Horizontal">
                             <TextBlock Text="{x:Bind FollowNum}" />
-                            <TextBlock x:Uid="/FeedListPage/Follow/Num" />
+                            <TextBlock x:Uid="/FeedListPage/FollowNum" />
                             <TextBlock Margin="5,0,0,0" Text="{x:Bind CommentNum}" />
                             <TextBlock x:Uid="/FeedListPage/Comment" />
                         </StackPanel>

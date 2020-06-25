@@ -1,10 +1,11 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.ViewModels;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -13,23 +14,144 @@ namespace CoolapkUWP.Controls
 {
     public sealed partial class FeedShellListControl : UserControl
     {
-        private string listType = "lastupdate_desc";
+        private string replyListType = "lastupdate_desc";
         private string isFromAuthor = "0";
-        private readonly ObservableCollection<FeedReplyModel> hotReplies = new ObservableCollection<FeedReplyModel>();
-        private readonly ObservableCollection<FeedReplyModel> replies = new ObservableCollection<FeedReplyModel>();
-        private readonly ObservableCollection<UserModel> likes = new ObservableCollection<UserModel>();
-        private readonly ObservableCollection<SourceFeedModel> shares = new ObservableCollection<SourceFeedModel>();
-        private int repliesPage, likesPage, sharesPage, hotRepliesPage;
-        private double replyFirstItem, replyLastItem, likeFirstItem, likeLastItem, hotReplyFirstItem, hotReplyLastItem;
         private readonly string[] icons = new string[] { "" /*0xE70D;*/, ""/*0xE70E*/};
         private readonly Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedShellListControl");
 
+        private readonly FeedListProvider hotReplyProvider;
+        private readonly FeedListProvider replyProvider;
+        private readonly FeedListProvider likeProvider;
+        private readonly FeedListProvider shareProvider;
 
         public string FeedId { get; set; }
+
+        public event EventHandler NeedMoveToTop;
+        public event EventHandler<bool> NeedProgressRing;
 
         public FeedShellListControl()
         {
             this.InitializeComponent();
+
+            hotReplyProvider =
+                new FeedListProvider(
+                    async (p, page, firstItem, lastItem) =>
+                        (JArray)await DataHelper.GetDataAsync(
+                            DataUriType.GetHotReplies,
+                            FeedId,
+                            p == -1 ? ++page : p,
+                            page > 1 ? $"&firstItem={firstItem}&lastItem={lastItem}" : string.Empty),
+                    (a, b) => ((FeedReplyModel)a).Id == b.Value<int>("id"),
+                    (o) => new FeedReplyModel(o),
+                    () => loader.GetString("noMoreHotReply"),
+                    () => NeedMoveToTop?.Invoke(this, null),
+                    "id");
+            hotReplyList.ItemsSource = hotReplyProvider.Models;
+
+            replyProvider =
+                new FeedListProvider(
+                    async (p, page, firstItem, lastItem) =>
+                        (JArray)await DataHelper.GetDataAsync(
+                            DataUriType.GetFeedReplies,
+                            FeedId,
+                            replyListType,
+                            p == -1 ? ++page : p,
+                            page > 1 ? $"&firstItem={firstItem}&lastItem={lastItem}" : string.Empty,
+                            isFromAuthor),
+                    (a, b) => ((FeedReplyModel)a).Id == b.Value<int>("id"),
+                    (o) => new FeedReplyModel(o),
+                    () => loader.GetString("noMoreReply"),
+                    () => NeedMoveToTop?.Invoke(this, null),
+                    "id");
+            replyList.ItemsSource = replyProvider.Models;
+
+            likeProvider =
+                new FeedListProvider(
+                    async (p, page, firstItem, lastItem) =>
+                        (JArray)await DataHelper.GetDataAsync(
+                            DataUriType.GetLikeList,
+                            FeedId,
+                            p == -1 ? ++page : p,
+                            page > 1 ? $"&firstItem={firstItem}&lastItem={lastItem}" : string.Empty),
+                    (a, b) => ((UserModel)a).Url == b.Value<string>("url"),
+                    (o) => new UserModel(o),
+                    () => loader.GetString("noMoreLikeUser"),
+                    () => NeedMoveToTop?.Invoke(this, null),
+                    "uid");
+            likeList.ItemsSource = likeProvider.Models;
+
+            shareProvider =
+                new FeedListProvider(
+                    async (p, page, firstItem, lastItem) => (JArray)await DataHelper.GetDataAsync(DataUriType.GetShareList, FeedId, p == -1 ? ++page : p),
+                    (a, b) => ((SourceFeedModel)a).Url == b.Value<string>("url"),
+                    (o) => new SourceFeedModel(o),
+                    () => loader.GetString("noMoreShare"),
+                    () => NeedMoveToTop?.Invoke(this, null),
+                    "id");
+            shareList.ItemsSource = shareProvider.Models;
+        }
+
+        internal void ChangeSelection(int i)
+        {
+            FeedDetailPivot.SelectedIndex = i;
+        }
+
+        internal void ChangeFeedSorting(int i)
+        {
+            switch (i)
+            {
+                case -1: return;
+                case 0:
+                    replyListType = "lastupdate_desc";
+                    isFromAuthor = "0";
+                    break;
+
+                case 1:
+                    replyListType = "dateline_desc";
+                    isFromAuthor = "0";
+                    break;
+
+                case 2:
+                    replyListType = "popular";
+                    isFromAuthor = "0";
+                    break;
+
+                case 3:
+                    replyListType = string.Empty;
+                    isFromAuthor = "1";
+                    break;
+            }
+
+            replyProvider.Reset();
+            Refresh();
+        }
+
+        internal async Task Refresh(bool isRefresh = true)
+        {
+            var n = isRefresh ? 1 : -1;
+            NeedProgressRing?.Invoke(this, true);
+            switch (FeedDetailPivot?.SelectedIndex)
+            {
+                case 0:
+                    await replyProvider.Refresh(n);
+                    break;
+
+                case 1:
+                    await likeProvider.Refresh(n);
+                    break;
+
+                case 2:
+                    await shareProvider.Refresh(n);
+                    break;
+            }
+            NeedProgressRing?.Invoke(this, false);
+        }
+
+        internal async void RefreshHotReply()
+        {
+            NeedProgressRing?.Invoke(this, true);
+            await hotReplyProvider.Refresh();
+            NeedProgressRing?.Invoke(this, false);
         }
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
@@ -46,38 +168,40 @@ namespace CoolapkUWP.Controls
         {
             if (iconText.Text == icons[1])
             {
-                GetMoreHotReplyListViewItem.Visibility = hotReplyListView.Visibility = Visibility.Collapsed;
+                GetMoreHotReplyListViewItem.Visibility = hotReplyList.Visibility = Visibility.Collapsed;
                 iconText.Text = icons[0];
             }
             else
             {
-                GetMoreHotReplyListViewItem.Visibility = hotReplyListView.Visibility = Visibility.Visible;
+                GetMoreHotReplyListViewItem.Visibility = hotReplyList.Visibility = Visibility.Visible;
                 iconText.Text = icons[1];
             }
         }
 
-        private void FeedDetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void FeedDetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (FeedDetailPivot != null)
             {
+                NeedProgressRing?.Invoke(this, true);
                 switch (FeedDetailPivot.SelectedIndex)
                 {
                     case 1:
-                        if (likes.Count == 0)
+                        if (likeProvider.Models.Count == 0)
                         {
-                            RefreshLikes();
+                            await likeProvider.Refresh();
                         }
 
                         break;
 
                     case 2:
-                        if (shares.Count == 0)
+                        if (shareProvider.Models.Count == 0)
                         {
-                            RefreshShares();
+                            await shareProvider.Refresh();
                         }
 
                         break;
                 }
+                NeedProgressRing?.Invoke(this, false);
             }
         }
 
@@ -89,200 +213,11 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        internal void ChangeSelection(int i)
+        private async void GetMoreHotReplyListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            FeedDetailPivot.SelectedIndex = i;
-        }
-
-        private void GetMoreHotReplyListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            RefreshHotReplies();
-        }
-
-        internal void ChangeFeedSorting(int i)
-        {
-            switch (i)
-            {
-                case -1: return;
-                case 0:
-                    listType = "lastupdate_desc";
-                    isFromAuthor = "0";
-                    break;
-
-                case 1:
-                    listType = "dateline_desc";
-                    isFromAuthor = "0";
-                    break;
-
-                case 2:
-                    listType = "popular";
-                    isFromAuthor = "0";
-                    break;
-
-                case 3:
-                    listType = string.Empty;
-                    isFromAuthor = "1";
-                    break;
-            }
-
-            repliesPage = 1;
-            replyFirstItem = replyLastItem = 0;
-            replies.Clear();
-            Refresh();
-        }
-
-        internal void Refresh()
-        {
-            switch (FeedDetailPivot?.SelectedIndex)
-            {
-                case 0:
-                    RefreshFeedReplies(1);
-                    break;
-
-                case 1:
-                    RefreshLikes(1);
-                    break;
-
-                case 2:
-                    RefreshShares();
-                    break;
-            }
-        }
-
-        internal async void RefreshHotReplies(int p = -1)
-        {
-            JArray array = (JArray)await DataHelper.GetDataAsync(
-                                DataUriType.GetHotReplies,
-                                FeedId,
-                                p == -1 ? ++hotRepliesPage : p,
-                                hotRepliesPage > 1 ? $"&firstItem={hotReplyFirstItem}&lastItem={hotReplyLastItem}" : string.Empty);
-            if (array != null && array.Count > 0)
-            {
-                if (p == -1 || hotRepliesPage == 1)
-                {
-                    var d = (from a in hotReplies
-                             from b in array
-                             where a.Id == b.Value<int>("id")
-                             select a).ToArray();
-                    foreach (var item in d)
-                        hotReplies.Remove(item);
-                    for (int i = 0; i < array.Count; i++)
-                        hotReplies.Insert(i, new FeedReplyModel((JObject)array[i]));
-                    hotReplyFirstItem = array.First.Value<int>("id");
-                    if (hotRepliesPage == 1)
-                        hotReplyLastItem = array.Last.Value<int>("id");
-                }
-                else
-                {
-                    hotReplyLastItem = array.Last.Value<int>("id");
-                    foreach (JObject item in array)
-                        hotReplies.Add(new FeedReplyModel(item));
-                }
-            }
-            else if (p == -1)
-            {
-                hotRepliesPage--;
-                UIHelper.ShowMessage(loader.GetString("noMoreHotReply"));
-            }
-        }
-
-        private async void RefreshFeedReplies(int p = -1)
-        {
-            var array = (JArray)await DataHelper.GetDataAsync(
-                                DataUriType.GetFeedReplies,
-                                FeedId,
-                                listType,
-                                p == -1 ? ++repliesPage : p,
-                                replyFirstItem == 0 ? string.Empty : $"&firstItem={replyFirstItem}",
-                                replyLastItem == 0 ? string.Empty : $"&lastItem={replyLastItem}",
-                                isFromAuthor);
-            if (array != null && array.Count != 0)
-            {
-                if (p == 1 || repliesPage == 1)
-                {
-                    var d = (from a in replies
-                             from b in array
-                             where a.Id == b.Value<int>("id")
-                             select a).ToArray();
-                    foreach (var item in d)
-                        replies.Remove(item);
-                    replyFirstItem = array.First.Value<int>("id");
-                    if (repliesPage == 1)
-                        replyLastItem = array.Last.Value<int>("id");
-                    for (int i = 0; i < array.Count; i++)
-                        replies.Insert(i, new FeedReplyModel((JObject)array[i]));
-                }
-                else
-                {
-                    replyLastItem = array.Last.Value<int>("id");
-                    foreach (JObject item in array)
-                        replies.Add(new FeedReplyModel(item));
-                }
-            }
-            else if (p == -1)
-            {
-                repliesPage--;
-                UIHelper.ShowMessage(loader.GetString("noMoreReply"));
-            }
-        }
-
-        private async void RefreshLikes(int p = -1)
-        {
-            JArray array = (JArray)await DataHelper.GetDataAsync(
-                                            DataUriType.GetLikeList,
-                                            FeedId,
-                                            p == -1 ? ++likesPage : p,
-                                            likeFirstItem == 0 ? string.Empty : $"&firstItem={likeFirstItem}",
-                                            likeLastItem == 0 ? string.Empty : $"&lastItem={likeLastItem}");
-            if (array != null && array.Count != 0)
-            {
-                if (p == 1 || likesPage == 1)
-                {
-                    likeFirstItem = array.First.Value<int>("uid");
-                    if (likesPage == 1)
-                        likeLastItem = array.Last.Value<int>("uid");
-                    var d = (from a in likes
-                             from b in array
-                             where a.Url == b.Value<string>("url")
-                             select a).ToArray();
-                    foreach (var item in d)
-                        likes.Remove(item);
-                    for (int i = 0; i < array.Count; i++)
-                        likes.Insert(i, new UserModel((JObject)array[i]));
-                }
-                else
-                {
-                    likeLastItem = array.Last.Value<int>("uid");
-                    foreach (JObject item in array)
-                        likes.Add(new UserModel(item));
-                }
-            }
-            else if (p == -1)
-            {
-                likesPage--;
-                UIHelper.ShowMessage(loader.GetString("noMoreLikeUser"));
-            }
-        }
-
-        private async void RefreshShares()
-        {
-            var array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetShareList, FeedId, ++sharesPage);
-            if (array != null && array.Count != 0)
-            {
-                if (sharesPage == 1)
-                    foreach (JObject item in array)
-                        shares.Add(new SourceFeedModel(item));
-                else for (int i = 0; i < array.Count; i++)
-                    {
-                        if (shares.First()?.Url == array[i].Value<string>("url")) return;
-                        shares.Insert(i, new SourceFeedModel((JObject)array[i]));
-                    }
-            }
-            else
-            {
-                sharesPage--;
-                UIHelper.ShowMessage(loader.GetString("noMoreShare"));
-            }
+            NeedProgressRing?.Invoke(this, true);
+            await hotReplyProvider.Refresh();
+            NeedProgressRing?.Invoke(this, false);
         }
     }
 }

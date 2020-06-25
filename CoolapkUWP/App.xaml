@@ -28,7 +28,7 @@
             </ControlTemplate>
 
             <Style x:Key="AppListViewItemStyle" TargetType="ListViewItem">
-                <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAltMediumLowBrush}" />
+                <Setter Property="Background" Value="Transparent" />
                 <Setter Property="Margin" Value="12,0" />
                 <Setter Property="Padding" Value="0" />
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />

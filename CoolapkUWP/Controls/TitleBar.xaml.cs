@@ -3,6 +3,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Controls
 {
+    [System.Diagnostics.DebuggerNonUserCode]
     public sealed partial class TitleBar : UserControl
     {
         public bool IsBackButtonEnabled { get => BackButton.IsEnabled; set => BackButton.IsEnabled = value; }
@@ -25,19 +26,14 @@ namespace CoolapkUWP.Controls
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e) => RefreshButtonClicked?.Invoke(sender, e);
 
-        Visibility _visibility;
-
         public void ShowProgressRing()
         {
-            _visibility = RefreshButton.Visibility;
-            RefreshButton.Visibility = Visibility.Collapsed;
-            progressRing.Visibility = Visibility.Visible;
             progressRing.IsActive = true;
+            progressRing.Visibility = Visibility.Visible;
         }
 
         public void HideProgressRing()
         {
-            RefreshButton.Visibility = _visibility;
             progressRing.Visibility = Visibility.Collapsed;
             progressRing.IsActive = false;
         }

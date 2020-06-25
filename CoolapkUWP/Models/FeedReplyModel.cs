@@ -7,32 +7,32 @@ namespace CoolapkUWP.Models
 {
     internal class FeedReplyModel : SimpleFeedReplyModel, INotifyPropertyChanged, ICanChangeLike, ICanChangeReplyNum, ICanCopy
     {
-        public FeedReplyModel(JObject token, bool showReplyRow = true) : base(token)
+        public FeedReplyModel(JObject o, bool showReplyRow = true) : base(o)
         {
-            Dateline = DataHelper.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
-            Message = token.Value<string>("message");
-            var userSmallAvatarUrl = token["userInfo"].Value<string>("userSmallAvatar");
+            Dateline = DataHelper.ConvertTime(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty)));
+            Message = o.Value<string>("message");
+            var userSmallAvatarUrl = o["userInfo"].Value<string>("userSmallAvatar");
             if (!string.IsNullOrEmpty(userSmallAvatarUrl))
             {
                 UserSmallAvatar = new ImageModel(userSmallAvatarUrl, ImageType.BigAvatar);
             }
-            Likenum = token["likenum"].ToString().Replace("\"", string.Empty);
-            Replynum = token["replynum"].ToString().Replace("\"", string.Empty);
-            token.TryGetValue("replyRowsCount", out JToken value1);
+            Likenum = o["likenum"].ToString().Replace("\"", string.Empty);
+            Replynum = o["replynum"].ToString().Replace("\"", string.Empty);
+            o.TryGetValue("replyRowsCount", out JToken value1);
             ReplyRowsCount = int.Parse(value1?.ToString() ?? "0");
             ShowreplyRows = showReplyRow && ReplyRowsCount > 0;
             if (ShowreplyRows)
             {
                 var buider = ImmutableArray.CreateBuilder<SimpleFeedReplyModel>();
-                foreach (JObject item in token["replyRows"] as JArray)
+                foreach (JObject item in o["replyRows"] as JArray)
                 {
                     buider.Add(new SimpleFeedReplyModel(item));
                 }
 
                 ReplyRows = buider.ToImmutable();
-                ReplyRowsMore = token.Value<int>("replyRowsMore");
+                ReplyRowsMore = o.Value<int>("replyRowsMore");
             }
-            Liked = token.TryGetValue("userAction", out JToken v) ? v.Value<int>("like") == 1 : false;
+            Liked = o.TryGetValue("userAction", out JToken v) ? v.Value<int>("like") == 1 : false;
             if (ShowPic)
             {
                 Pic = new ImageModel(PicUri, ImageType.SmallImage);

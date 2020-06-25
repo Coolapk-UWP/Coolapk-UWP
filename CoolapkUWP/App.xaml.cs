@@ -91,9 +91,9 @@ namespace CoolapkUWP
                 {
                     UIHelper.ShowMessage($"{loader?.GetString(s2) ?? s2}(0x{Convert.ToString(e.Exception.HResult, 16)})");
                 }
-                else if (e.Exception.Message.IndexOf("Coolapk message:") == 0)
+                else if (e.Exception is CoolapkMessageException)
                 {
-                    UIHelper.ShowMessage(e.Exception.Message.Split('\n')[1]);
+                    UIHelper.ShowMessage(e.Exception.Message);
                 }
                 else if(SettingsHelper.Get<bool>(SettingsHelper.ShowOtherException))
                 {

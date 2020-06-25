@@ -82,7 +82,8 @@
                             Margin="6,2"
                             VerticalAlignment="Center"
                             x:Load="{x:Bind IsFeedAuthor}"
-                            Background="{ThemeResource SystemControlDisabledChromeMediumLowBrush}"
+                            BorderBrush="{StaticResource GrayText}"
+                            BorderThickness="1"
                             CornerRadius="4">
                             <TextBlock
                                 x:Uid="/Feed/feedAuthor"

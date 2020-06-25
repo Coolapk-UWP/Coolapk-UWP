@@ -58,12 +58,15 @@
                         VerticalScrollMode="{x:Bind MainScrollMode, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}, ConverterParameter='ScrollMode'}"
                         ViewChanged="ScrollViewer_ViewChanged">
                         <Grid x:Name="rightGrid">
-                            <control:FeedShellListControl x:Name="listCtrl" x:Load="False" />
-                            <winui:ItemsRepeater
-                                x:Name="AnswersListView"
+                            <control:FeedShellListControl
+                                x:Name="listCtrl"
                                 x:Load="False"
-                                ItemTemplate="{StaticResource feed}"
-                                ItemsSource="{x:Bind answers}" />
+                                NeedMoveToTop="listCtrl_NeedMoveToTop"
+                                NeedProgressRing="listCtrl_NeedProgressRing" />
+                            <winui:ItemsRepeater
+                                x:Name="answersList"
+                                x:Load="False"
+                                ItemTemplate="{StaticResource feed}" />
                         </Grid>
                     </ScrollViewer>
                 </Grid>
@@ -126,6 +129,7 @@
                         VerticalAlignment="Center"
                         SelectionChanged="rightComboBox_SelectionChanged"
                         Visibility="Collapsed" />
+
                     <Button
                         x:Name="opLikeButton"
                         x:Load="{x:Bind FeedDetail.IsQuestionFeed, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}"

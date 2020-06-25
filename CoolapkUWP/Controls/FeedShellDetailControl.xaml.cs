@@ -43,14 +43,14 @@ namespace CoolapkUWP.Controls
 
         public event EventHandler RequireRefresh;
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboBox box = sender as ComboBox;
-        }
-
         private void Image_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.ShowImage((sender as FrameworkElement).Tag as Models.ImageModel);
 
-        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (FeedDetail.IsCopyEnabled || e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
+
+            UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -82,7 +82,11 @@ namespace CoolapkUWP.Controls
 
         private void Grid_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            if(e.Key == Windows.System.VirtualKey.Menu)
+            if (e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
+            {
+                StackPanel_Tapped(sender, null);
+            }
+            else if (e.Key == Windows.System.VirtualKey.Menu)
             {
                 moreButton.Flyout.ShowAt(this);
             }

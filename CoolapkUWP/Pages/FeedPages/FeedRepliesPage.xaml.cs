@@ -1,10 +1,8 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.ViewModels;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -14,9 +12,7 @@ namespace CoolapkUWP.Pages.FeedPages
     public sealed partial class FeedRepliesPage : Page
     {
         private double id;
-        private int page;
-        private double lastItem;
-        private readonly ObservableCollection<FeedReplyModel> replys = new ObservableCollection<FeedReplyModel>();
+        private FeedListProvider provider;
 
         public FeedRepliesPage()
         {
@@ -28,7 +24,25 @@ namespace CoolapkUWP.Pages.FeedPages
             base.OnNavigatedTo(e);
 
             TitleBar.ShowProgressRing();
-            FeedReplyList.ItemsSource = replys;
+
+            provider =
+                new FeedListProvider(
+                    async (p, _page, _, lastItem) =>
+                    {
+                        var page = p == -1 ? ++_page : p;
+                        return (JArray)await DataHelper.GetDataAsync(
+                            DataUriType.GetReplyReplies,
+                            id,
+                            page,
+                            page > 1 ? $"&lastItem={lastItem}" : string.Empty);
+                    },
+                    (a, b) => ((FeedReplyModel)a).Id == b.Value<int>("id"),
+                    (o) => new FeedReplyModel(o, false),
+                    () => Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("noMore"),
+                    () => scrollViewer?.ChangeView(null, 0, null),
+                    "id");
+
+            FeedReplyList.ItemsSource = provider.Models;
 
             var reply = e.Parameter as FeedReplyModel;
             TitleBar.Title = string.Format(
@@ -36,7 +50,8 @@ namespace CoolapkUWP.Pages.FeedPages
                 reply.Replynum);
             id = reply.Id;
             reply.ShowreplyRows = false;
-            replys.Add(reply);
+            reply.EntityFixed = true;
+            provider.Models.Add(reply);
             GetReplys(false);
             TitleBar.HideProgressRing();
         }
@@ -52,30 +67,7 @@ namespace CoolapkUWP.Pages.FeedPages
         private async void GetReplys(bool isRefresh)
         {
             TitleBar.ShowProgressRing();
-            int page = isRefresh ? 1 : ++this.page;
-            var array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetReplyReplies, id, page, page > 1 ? $"&lastItem={lastItem}" : string.Empty);
-            if (array != null && array.Count > 0)
-            {
-                if (isRefresh)
-                {
-                    scrollViewer?.ChangeView(null, 0, null);
-                    var d = (from a in replys
-                             from b in array
-                             where a.Id == b.Value<int>("id")
-                             select a).ToArray();
-                    foreach (var item in d)
-                        replys.Remove(item);
-                    for (int i = 0; i < array.Count; i++)
-                        replys.Insert(i + 1, new FeedReplyModel((JObject)array[i]));
-                }
-                else
-                {
-                    foreach (JObject item in array)
-                        replys.Add(new FeedReplyModel(item, false));
-                    lastItem = array.Last.Value<int>("id");
-                }
-            }
-            else if (!isRefresh) this.page--;
+            await provider.Refresh(isRefresh ? 1 : -1);
             TitleBar.HideProgressRing();
         }
 
@@ -87,6 +79,9 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void TitleBar_RefreshEvent(object sender, RoutedEventArgs e) => GetReplys(true);
+        private void TitleBar_RefreshEvent(object sender, RoutedEventArgs e)
+        {
+            GetReplys(true);
+        }
     }
 }

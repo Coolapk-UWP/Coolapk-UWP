@@ -19,7 +19,8 @@
             <ColumnDefinition Width="40" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="40" />
         </Grid.ColumnDefinitions>
         <Button
@@ -52,7 +53,7 @@
             Visibility="Collapsed" />
         <Button
             x:Name="RefreshButton"
-            Grid.Column="3"
+            Grid.Column="4"
             VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
             Click="RefreshButton_Click"
             Style="{StaticResource IconButtonStyle}"

@@ -132,6 +132,7 @@
       <DependentUpon>TitleBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WaterFallLayout.cs" />
+    <Compile Include="Helpers\CoolapkMessageException.cs" />
     <Compile Include="Helpers\EmojiTypeHelper.cs" />
     <Compile Include="Helpers\ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\HasValueConverter.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Pages\FeedPages\UserListPage.xaml.cs">
       <DependentUpon>UserListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\FeedShellListProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

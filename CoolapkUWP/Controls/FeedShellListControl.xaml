@@ -49,10 +49,7 @@
                                 VerticalAlignment="Center" />
                         </StackPanel>
                     </ListViewItem>
-                    <winui:ItemsRepeater
-                        x:Name="hotReplyListView"
-                        ItemTemplate="{StaticResource feed_reply}"
-                        ItemsSource="{x:Bind hotReplies}" />
+                    <winui:ItemsRepeater x:Name="hotReplyList" ItemTemplate="{StaticResource feed_reply}" />
                     <ListViewItem
                         x:Name="GetMoreHotReplyListViewItem"
                         Tapped="GetMoreHotReplyListViewItem_Tapped"
@@ -67,12 +64,12 @@
                         Margin="0,8"
                         BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
                         BorderThickness="0,2,0,0">
-                        <winui:ItemsRepeater ItemTemplate="{StaticResource feed_reply}" ItemsSource="{x:Bind replies}" />
+                        <winui:ItemsRepeater x:Name="replyList" ItemTemplate="{StaticResource feed_reply}" />
                     </Border>
                 </StackPanel>
             </PivotItem>
             <PivotItem>
-                <winui:ItemsRepeater ItemsSource="{x:Bind likes}">
+                <winui:ItemsRepeater x:Name="likeList">
                     <winui:ItemsRepeater.ItemTemplate>
                         <DataTemplate x:DataType="model:UserModel">
                             <ListViewItem
@@ -81,7 +78,7 @@
                                 Tag="{x:Bind Url}"
                                 Tapped="Grid_Tapped">
                                 <StackPanel
-                                    Padding="4"
+                                    Padding="8,4"
                                     VerticalAlignment="Center"
                                     Orientation="Horizontal">
                                     <Ellipse
@@ -103,15 +100,21 @@
                 </winui:ItemsRepeater>
             </PivotItem>
             <PivotItem>
-                <winui:ItemsRepeater ItemsSource="{x:Bind shares}">
+                <winui:ItemsRepeater x:Name="shareList">
                     <winui:ItemsRepeater.ItemTemplate>
                         <DataTemplate x:DataType="model:SourceFeedModel">
                             <ListViewItem
+                                Margin="8,4"
                                 KeyDown="ListViewItem_KeyDown"
-                                Style="{StaticResource AppListViewItemStyle}"
+                                Style="{StaticResource FixedListViewItemStyle}"
                                 Tag="{x:Bind Url}"
                                 Tapped="Grid_Tapped">
-                                <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                                <Grid
+                                    Padding="4"
+                                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                                    BorderBrush="{ThemeResource SystemControlBackgroundListMediumBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="8">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="auto" />
@@ -121,8 +124,9 @@
                                             Margin="4,0"
                                             Padding="2"
                                             VerticalAlignment="Center"
+                                            Background="Transparent"
                                             Content="{x:Bind Username}"
-                                            Style="{StaticResource ButtonStyle1}"
+                                            Style="{StaticResource ButtonRevealStyle}"
                                             Tag="{x:Bind Uurl}" />
                                         <TextBlock
                                             VerticalAlignment="Center"
@@ -131,10 +135,8 @@
                                     </StackPanel>
                                     <local:TextBlockEx
                                         Grid.Row="1"
-                                        Margin="8,0,10,10"
-                                        MessageText="{x:Bind Message}"
-                                        Tag="{x:Bind Url}"
-                                        Tapped="Grid_Tapped" />
+                                        Margin="8,4"
+                                        MessageText="{x:Bind Message}" />
                                 </Grid>
                             </ListViewItem>
                         </DataTemplate>
