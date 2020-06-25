@@ -15,36 +15,76 @@ namespace CoolapkUWP.Helpers
     internal static class UIHelper
     {
         private const int duration = 4000;
-        public static List<Popup> popups = new List<Popup>();
+        private static Frame mainFrame;
+        private static Frame paneFrame;
+        private static InAppNotification inAppNotification;
+
+        public static List<Popup> Popups { get; } = new List<Popup>();
 
         /// <summary> 用于记录各种通知的数量。 </summary>
         public static NotificationNums NotificationNums { get; } = new NotificationNums();
 
-        public static Frame MainFrame { get; set; }
-        public static InAppNotification InAppNotification { get; set; }
+        public static Frame MainFrame
+        {
+            get => mainFrame;
+            set
+            {
+                if (mainFrame == null)
+                {
+                    mainFrame = value;
+                }
+            }
+        }
+
+        public static Frame PaneFrame
+        {
+            get => paneFrame;
+            set
+            {
+                if (paneFrame == null)
+                {
+                    paneFrame = value;
+                }
+            }
+        }
+
+        public static InAppNotification InAppNotification
+        {
+            get => inAppNotification;
+            set
+            {
+                if (inAppNotification == null)
+                {
+                    inAppNotification = value;
+                }
+            }
+        }
 
         public static event EventHandler<ImageSource> UserAvatarChanged;
 
-        public static event EventHandler<bool> ProgressRingIsActiveChanged;
+        public static event EventHandler<bool> IsSplitViewPaneOpenedChanged;
 
-        public static void RaiseUserAvatarChangedEvent(object sender, ImageSource source) => UserAvatarChanged?.Invoke(sender, source);
+        public static void RaiseUserAvatarChangedEvent(ImageSource source) => UserAvatarChanged?.Invoke(null, source);
+
+        public static void ShowSplitView() => IsSplitViewPaneOpenedChanged?.Invoke(null, true);
+        
+        public static void HideSplitView() => IsSplitViewPaneOpenedChanged?.Invoke(null, false);
 
         public static void ShowPopup(Popup popup)
         {
             popup.RequestedTheme = SettingsHelper.Get<bool>(SettingsHelper.IsDarkMode) ? ElementTheme.Dark : ElementTheme.Light;
-            popups.Add(popup);
+            Popups.Add(popup);
             popup.IsOpen = true;
         }
 
         public static void Hide(this Popup popup)
         {
             popup.IsOpen = false;
-            if (popups.Contains(popup)) popups.Remove(popup);
+            if (Popups.Contains(popup))
+            {
+                Popups.Remove(popup);
+            }
         }
-
-        public static void ShowProgressRing() => ProgressRingIsActiveChanged?.Invoke(null, true);
-
-        public static void HideProgressRing() => ProgressRingIsActiveChanged?.Invoke(null, false);
 
         public static void ShowMessage(string message) => InAppNotification?.Show(message, duration);
 
@@ -66,14 +106,20 @@ namespace CoolapkUWP.Helpers
             ShowPopup(popup);
         }
 
-        public static void Navigate(Type pageType, object e = null) => MainFrame?.Navigate(pageType, e);
+        public static void Navigate(Type pageType, object e = null) => mainFrame?.Navigate(pageType, e);
+
+        public static void NavigateInSplitPane(Type pageType, object e = null)
+        {
+            IsSplitViewPaneOpenedChanged?.Invoke(null, true);
+            paneFrame?.Navigate(pageType, e);
+        }
 
         public static async void OpenLinkAsync(string str)
         {
             if (string.IsNullOrWhiteSpace(str)) return;
             if (str == "/contacts/fans")
             {
-                Navigate(typeof(UserListPage), new object[] { SettingsHelper.Get<string>(SettingsHelper.Uid), false, "我" });
+                NavigateInSplitPane(typeof(UserListPage), new object[] { SettingsHelper.Get<string>(SettingsHelper.Uid), false, "我" });
                 return;
             }
             if (str.Contains('?')) str = str.Substring(0, str.IndexOf('?'));
@@ -149,12 +195,12 @@ namespace CoolapkUWP.Helpers
                 if (str.Contains("coolapk.com")) OpenLinkAsync(str.Replace("http://www.coolapk.com", string.Empty));
                 else Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
             }
-            else
-            {
-                string u = str.Substring(1);
-                u = u.Substring(u.IndexOf('/') + 1);
-                Navigate(typeof(FeedDetailPage), u);
-            }
+            //else
+            //{
+            //    string u = str.Substring(1);
+            //    u = u.Substring(u.IndexOf('/') + 1);
+            //    Navigate(typeof(FeedDetailPage), u);
+            //}
         }
     }
 }

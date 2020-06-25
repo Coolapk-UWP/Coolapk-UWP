@@ -18,16 +18,14 @@ namespace CoolapkUWP.Controls
     public sealed partial class TextBlockEx : Page
     {
         private string _messageText;
-
         public string MessageText
         {
             get => _messageText;
             set
             {
-                string str = value.Replace("<!--break-->", string.Empty);
-                if (str != _messageText)
+                if (value != _messageText)
                 {
-                    _messageText = str;
+                    _messageText = value;
                     GetTextBlock();
                 }
             }
@@ -50,7 +48,7 @@ namespace CoolapkUWP.Controls
                 richTextBlock.TextTrimming = TextTrimming.WordEllipsis;
             }
             Regex hrefRegex = new Regex("href=\"(\\S|\\s)+?\"");
-            List<string> list = await GetStringList();
+            List<string> list = await GetStringList(_messageText);
             Paragraph paragraph = new Paragraph();
 
             void AddEmoji(string name, bool useOldEmoji = false)
@@ -235,26 +233,26 @@ namespace CoolapkUWP.Controls
             Content = richTextBlock;
         }
 
-        private Task<List<string>> GetStringList()
+        private Task<List<string>> GetStringList(string text)
         {
             return Task.Run(() =>
             {
                 Regex linkRegex = new Regex("<a(\\S|\\s)*?>(\\S|\\s)*?</a>"), emojiRegex1 = new Regex(@"\[\S*?\]"), emojiRegex2 = new Regex(@"#\(\S*?\)");
-                List<string> result = new List<string>();
+                var result = new List<string>();
 
                 //处理超链接或图文中的图片
-                for (int i = 0; i < MessageText.Length;)
+                for (int i = 0; i < text.Length;)
                 {
-                    var matchedValue = linkRegex.Match(MessageText, i);
-                    int index = (string.IsNullOrEmpty(matchedValue.Value) ? MessageText.Length : MessageText.IndexOf(matchedValue.Value, i)) - i;
+                    var matchedValue = linkRegex.Match(text, i);
+                    int index = (string.IsNullOrEmpty(matchedValue.Value) ? text.Length : text.IndexOf(matchedValue.Value, i)) - i;
                     if (index == 0)
                     {
-                        result.Add(matchedValue.Value.Replace("\n","<br/>"));
+                        result.Add(matchedValue.Value.Replace("\n", "<br/>"));
                         i += matchedValue.Length;
                     }
                     else if (index > 0)
                     {
-                        result.Add(MessageText.Substring(i, index));
+                        result.Add(text.Substring(i, index));
                         i += index;
                     }
                 }

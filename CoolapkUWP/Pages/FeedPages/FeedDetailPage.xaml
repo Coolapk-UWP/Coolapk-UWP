@@ -429,8 +429,7 @@
                                     BorderThickness="0,2,0,0"
                                     ItemTemplate="{StaticResource feed_reply}"
                                     ItemsSource="{x:Bind replies}"
-                                    ScrollViewer.VerticalScrollMode="Disabled"
-                                    SelectionMode="None">
+                                    ScrollViewer.VerticalScrollMode="Disabled">
                                     <ListView.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <control:GridPanel DesiredColumnWidth="384.0" />
@@ -570,7 +569,6 @@
             Padding="8,0"
             VerticalAlignment="Bottom"
             Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
-            CornerRadius="8"
             Orientation="Horizontal">
             <Button
                 Click="Button_Click"
@@ -621,6 +619,7 @@
             BackButtonClick="BackButton_Click"
             ComboBoxItemsSource="{x:Bind comboBoxItems}"
             ComboBoxSelectionChange="ChangeFeedSortingComboBox_SelectionChanged"
+            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}"
             RefreshEvent="{x:Bind Refresh}" />
     </Grid>
 </Page>

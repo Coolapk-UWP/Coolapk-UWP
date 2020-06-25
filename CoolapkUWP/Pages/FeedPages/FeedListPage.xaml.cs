@@ -55,9 +55,9 @@ namespace CoolapkUWP.Pages.FeedPages
                         {
                             if (!ee.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
                             {
-                                UIHelper.ShowProgressRing();
+                                titleBar.ShowProgressRing();
                                 await provider.LoadNextPage();
-                                UIHelper.HideProgressRing();
+                                titleBar.HideProgressRing();
                             }
                         };
                     });
@@ -75,7 +75,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private async void Refresh()
         {
-            UIHelper.ShowProgressRing();
+            titleBar.ShowProgressRing();
             await provider.Refresh();
             if (provider.itemCollection.Count > 0)
             {
@@ -92,7 +92,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 }
             }
 
-            UIHelper.HideProgressRing();
+            titleBar.HideProgressRing();
         }
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
@@ -115,11 +115,11 @@ namespace CoolapkUWP.Pages.FeedPages
             switch (str)
             {
                 case "follow":
-                    UIHelper.Navigate(typeof(UserListPage), new object[] { provider.Id, true, titleBar.Title });
+                    UIHelper.NavigateInSplitPane(typeof(UserListPage), new object[] { provider.Id, true, titleBar.Title });
                     break;
 
                 case "fans":
-                    UIHelper.Navigate(typeof(UserListPage), new object[] { provider.Id, false, titleBar.Title });
+                    UIHelper.NavigateInSplitPane(typeof(UserListPage), new object[] { provider.Id, false, titleBar.Title });
                     break;
 
                 case "FollowUser":

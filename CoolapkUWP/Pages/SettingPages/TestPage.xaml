@@ -6,7 +6,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="Transparent"
     mc:Ignorable="d">
 
     <ListView IsItemClickEnabled="False" SelectionMode="None">
@@ -17,7 +17,10 @@
         </ListView.ItemContainerStyle>
         <ListView.Header>
             <controls:ScrollHeader Mode="QuickReturn">
-                <control:TitleBar Title="TestPage" BackButtonClick="Button_Click_3" />
+                <control:TitleBar
+                    Title="TestPage"
+                    BackButtonClick="Button_Click_3"
+                    IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" />
             </controls:ScrollHeader>
         </ListView.Header>
         <StackPanel>

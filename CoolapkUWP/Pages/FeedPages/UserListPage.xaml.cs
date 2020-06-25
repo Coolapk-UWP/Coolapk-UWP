@@ -55,7 +55,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private async void LoadList(int p = -1)
         {
-            UIHelper.ShowProgressRing();
+            titleBar.ShowProgressRing();
             JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetUserList,
                                                             isFollowList ? "followList" : "fansList",
                                                             uid,
@@ -81,7 +81,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         infos.Insert(i, new UserModel((JObject)(isFollowList ? array[i]["fUserInfo"] : array[i]["userInfo"])));
             }
             else if (p == -1) page--;
-            UIHelper.HideProgressRing();
+            titleBar.HideProgressRing();
         }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)

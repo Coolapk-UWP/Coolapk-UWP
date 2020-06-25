@@ -16,11 +16,12 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         private void ReplyRowsItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (sender is FrameworkElement frameworkElement)
+            if (sender == e.OriginalSource || sender.GetType() == typeof(TextBlockEx))
             {
-                var popup = new Windows.UI.Xaml.Controls.Primitives.Popup();
-                popup.Child = new ReplyDialogPresenter(frameworkElement.Tag, popup);
-                UIHelper.ShowPopup(popup);
+                if (sender is FrameworkElement frameworkElement)
+                {
+                    UIHelper.NavigateInSplitPane(typeof(Pages.FeedPages.FeedRepliesPage), frameworkElement.Tag);
+                }
             }
         }
 

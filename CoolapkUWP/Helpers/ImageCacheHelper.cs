@@ -123,7 +123,7 @@ namespace CoolapkUWP.Helpers
             {
                 try
                 {
-                    if (showMessage) UIHelper.ShowProgressRing();
+                    //if (showMessage) UIHelper.ShowProgressRing();
                     using (Stream stream = await new HttpClient().GetStreamAsync(url))
                     using (Stream fs = await file.OpenStreamForWriteAsync())
                     {
@@ -131,7 +131,7 @@ namespace CoolapkUWP.Helpers
                     }
                 }
                 catch (HttpRequestException) { UIHelper.ShowMessage("图片加载失败"); }
-                finally { if (showMessage) UIHelper.HideProgressRing(); }
+                //finally { if (showMessage) UIHelper.HideProgressRing(); }
             }
         }
 

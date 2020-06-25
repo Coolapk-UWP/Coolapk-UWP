@@ -617,6 +617,7 @@
             x:Name="TitleBar"
             BackButtonClick="TitleBar_BackButtonClick"
             BackButtonVisibility="Visible"
+            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}"
             RefreshEvent="{x:Bind RefreshPage}" />
     </Grid>
 </Page>

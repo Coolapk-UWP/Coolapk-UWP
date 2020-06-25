@@ -10,7 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:CoolapkUWP.Models.Pages.NotificationsPageModels"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="Transparent"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
@@ -20,23 +20,26 @@
             <DataTemplate x:Key="Reply" x:DataType="model:SimpleNotificationModel">
                 <Grid
                     Margin="4"
-                    Padding="4"
-                    Background="Transparent"
+                    Padding="8"
+                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
                     Tag="{x:Bind Uri}"
                     Tapped="Ellipse_Tapped">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="56" />
+                        <ColumnDefinition Width="48" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <Ellipse
                         Grid.RowSpan="2"
-                        Width="40"
-                        Height="40"
-                        Margin="8"
+                        Width="32"
+                        Height="32"
+                        Margin="4"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Tag="{x:Bind UserUri}"
@@ -48,7 +51,6 @@
                     <StackPanel
                         Grid.Row="0"
                         Grid.Column="1"
-                        Padding="0,4,0,0"
                         Orientation="Horizontal">
                         <TextBlock Text="{x:Bind UserName}" />
                         <TextBlock
@@ -68,7 +70,10 @@
                 <Grid
                     Margin="4"
                     Padding="4"
-                    Background="Transparent"
+                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
                     Tag="{x:Bind Uri}"
                     Tapped="Ellipse_Tapped">
                     <Grid.RowDefinitions>
@@ -78,11 +83,11 @@
                     <StackPanel Orientation="Horizontal">
                         <Button
                             Margin="4"
-                            Padding="0"
+                            Padding="2"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Top"
                             Background="Transparent"
-                            Style="{StaticResource ButtonStyle1}"
+                            Style="{StaticResource ButtonRevealStyle}"
                             Tag="{x:Bind UserUri}"
                             Tapped="Ellipse_Tapped">
                             <StackPanel Orientation="Horizontal">
@@ -95,15 +100,15 @@
                             </StackPanel>
                         </Button>
                         <TextBlock
-                            Margin="8,4"
+                            Margin="8,0"
+                            VerticalAlignment="Center"
                             Foreground="Gray"
                             IsTextSelectionEnabled="False"
                             Text="{x:Bind Dateline}" />
                     </StackPanel>
-                    <StackPanel Grid.Row="1" Margin="6,0">
+                    <StackPanel Grid.Row="1" Margin="4,0,4,8">
                         <TextBlock Text="{x:Bind Title}" />
                         <control:TextBlockEx
-                            Padding="0,0,0,4"
                             Foreground="Gray"
                             MaxLine="3"
                             MessageText="{x:Bind FeedMessage}" />
@@ -113,9 +118,10 @@
             <DataTemplate x:Key="AtCommentMe" x:DataType="model:AtCommentMeNotificationModel">
                 <Grid
                     Padding="4,0"
-                    Background="Transparent"
-                    BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-                    BorderThickness="2"
+                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
                     Tag="{x:Bind Uri}"
                     Tapped="Ellipse_Tapped">
                     <Grid.RowDefinitions>
@@ -182,17 +188,14 @@
                     IsItemClickEnabled="True"
                     ItemClick="ListView_ItemClick"
                     ScrollViewer.VerticalScrollMode="Disabled">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <control:GridPanel DesiredColumnWidth="180.0" />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Template" Value="{StaticResource AppListViewItemTemplate}" />
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="Margin" Value="4,0" />
                             <Setter Property="Padding" Value="0" />
+                            <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}" />
+                            <Setter Property="BorderThickness" Value="1" />
                         </Style>
                     </ListView.ItemContainerStyle>
                     <StackPanel
@@ -200,55 +203,55 @@
                         Orientation="Horizontal"
                         Tag="atMe">
                         <SymbolIcon Symbol="Account" />
-                        <TextBlock Margin="8,0" VerticalAlignment="Center">@我的动态</TextBlock>
                         <TextBlock
                             Margin="8,0"
                             VerticalAlignment="Center"
                             Text="{x:Bind data:UIHelper.NotificationNums.AtMeNum, Mode=OneWay}" />
+                        <TextBlock VerticalAlignment="Center">@我的动态</TextBlock>
                     </StackPanel>
                     <StackPanel
                         Margin="8,0"
                         Orientation="Horizontal"
                         Tag="atCommentMe">
                         <SymbolIcon Symbol="Account" />
-                        <TextBlock Margin="8,0" VerticalAlignment="Center">@我的评论</TextBlock>
                         <TextBlock
                             Margin="8,0"
                             VerticalAlignment="Center"
                             Text="{x:Bind data:UIHelper.NotificationNums.AtCommentMeNum, Mode=OneWay}" />
+                        <TextBlock VerticalAlignment="Center">@我的评论</TextBlock>
                     </StackPanel>
                     <StackPanel
                         Margin="8,0"
                         Orientation="Horizontal"
                         Tag="like">
                         <SymbolIcon Symbol="Like" />
-                        <TextBlock Margin="8,0" VerticalAlignment="Center">我收到的赞</TextBlock>
                         <TextBlock
                             Margin="8,0"
                             VerticalAlignment="Center"
                             Text="{x:Bind data:UIHelper.NotificationNums.FeedLikeNum, Mode=OneWay}" />
+                        <TextBlock VerticalAlignment="Center">我收到的赞</TextBlock>
                     </StackPanel>
                     <StackPanel
                         Margin="8,0"
                         Orientation="Horizontal"
                         Tag="follow">
                         <SymbolIcon Symbol="AddFriend" />
-                        <TextBlock Margin="8,0" VerticalAlignment="Center">好友关注</TextBlock>
                         <TextBlock
                             Margin="8,0"
                             VerticalAlignment="Center"
                             Text="{x:Bind data:UIHelper.NotificationNums.FollowNum, Mode=OneWay}" />
+                        <TextBlock VerticalAlignment="Center">好友关注</TextBlock>
                     </StackPanel>
                     <StackPanel
                         Margin="8,0"
                         Orientation="Horizontal"
                         Tag="message">
                         <SymbolIcon Symbol="Comment" />
-                        <TextBlock Margin="8,0" VerticalAlignment="Center">私信</TextBlock>
                         <TextBlock
                             Margin="8,0"
                             VerticalAlignment="Center"
                             Text="{x:Bind data:UIHelper.NotificationNums.MessageNum, Mode=OneWay}" />
+                        <TextBlock VerticalAlignment="Center">私信</TextBlock>
                     </StackPanel>
                 </ListView>
             </ListViewItem>
@@ -273,6 +276,9 @@
                 </ListView>
             </ListViewItem>
         </controls:PullToRefreshListView>
-        <control:TitleBar x:Name="titleBar" BackButtonClick="TitleBar_BackButtonClick" />
+        <control:TitleBar
+            x:Name="titleBar"
+            BackButtonClick="TitleBar_BackButtonClick"
+            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" />
     </Grid>
 </Page>

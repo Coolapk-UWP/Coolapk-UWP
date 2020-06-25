@@ -13,7 +13,10 @@
             x:Name="webView"
             Margin="{StaticResource StackPanelMargin}"
             NavigationCompleted="WebView_NavigationCompleted" />
-        <control:TitleBar x:Name="titleBar" BackButtonClick="BackButton_Click" />
+        <control:TitleBar
+            x:Name="titleBar"
+            BackButtonClick="BackButton_Click"
+            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" />
         <StackPanel
             Height="{StaticResource PageTitleHeight}"
             HorizontalAlignment="Right"

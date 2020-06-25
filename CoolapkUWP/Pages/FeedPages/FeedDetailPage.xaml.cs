@@ -66,7 +66,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public async void LoadFeedDetail()
         {
-            UIHelper.ShowProgressRing();
+            TitleBar.ShowProgressRing();
             if (string.IsNullOrEmpty(feedId)) return;
             JObject detail = (JObject)await DataHelper.GetDataAsync(DataUriType.GetFeedDetail, feedId);
             if (detail != null)
@@ -98,7 +98,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             if (feedDetail.SourceFeed?.ShowPicArr ?? false)
                 FindName("sourcePic");
-            UIHelper.HideProgressRing();
+            TitleBar.HideProgressRing();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -165,7 +165,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private async void Refresh()
         {
-            UIHelper.ShowProgressRing();
+            TitleBar.ShowProgressRing();
             if (FeedDetailPivot != null)
             {
                 switch (FeedDetailPivot.SelectedIndex)
@@ -191,11 +191,11 @@ namespace CoolapkUWP.Pages.FeedPages
             else
             {
                 LoadFeedDetail();
-                UIHelper.HideProgressRing();
+                TitleBar.HideProgressRing();
                 return;
             }
             if (RefreshAll) await RefreshFeedDetail();
-            UIHelper.HideProgressRing();
+            TitleBar.HideProgressRing();
         }
 
         private async Task RefreshFeedDetail()
@@ -421,7 +421,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 double a = scrollViewer.VerticalOffset;
                 if (a == scrollViewer.ScrollableHeight)
                 {
-                    UIHelper.ShowProgressRing();
+                    TitleBar.ShowProgressRing();
                     scrollViewer.ChangeView(null, a, null);
                     if (FeedDetailPivot != null)
                         switch (FeedDetailPivot.SelectedIndex)
@@ -439,7 +439,7 @@ namespace CoolapkUWP.Pages.FeedPages
                                 break;
                         }
                     else if (AnswersListView != null) RefreshAnswers();
-                    UIHelper.HideProgressRing();
+                    TitleBar.HideProgressRing();
                 }
             }
         }

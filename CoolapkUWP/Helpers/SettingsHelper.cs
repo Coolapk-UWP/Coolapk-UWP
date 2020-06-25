@@ -118,8 +118,13 @@ namespace CoolapkUWP.Helpers
             if (Window.Current.Content is FrameworkElement frameworkElement)
             {
                 frameworkElement.RequestedTheme = Theme;
-                foreach (var item in UIHelper.popups)
-                    item.RequestedTheme = Theme;
+                foreach (var item in UIHelper.Popups)
+                {
+                    if(item.Child is FrameworkElement element)
+                    {
+                        element.RequestedTheme = Theme;
+                    }
+                }
 
                 Color? BackColor, ForeColor, ButtonForeInactiveColor, ButtonBackPressedColor;
                 BackColor = ForeColor = ButtonBackPressedColor = ButtonForeInactiveColor = null;
@@ -178,8 +183,10 @@ namespace CoolapkUWP.Helpers
                         Set(UserName, userName);
                         var o = (JObject)await DataHelper.GetDataAsync(DataUriType.CheckLoginInfo);
                         UIHelper.NotificationNums.Initial((JObject)o["notifyCount"]);
-                        UIHelper.RaiseUserAvatarChangedEvent(null, await ImageCacheHelper.GetImageAsync(ImageType.BigAvatar, o.Value<string>("userAvatar")));
-                        Set(UserAvatar, (JObject)(await DataHelper.GetDataAsync(DataUriType.GetUserSpace, uid)).Value<string>("userAvatar"));
+                        UIHelper.RaiseUserAvatarChangedEvent(await ImageCacheHelper.GetImageAsync(ImageType.BigAvatar, o.Value<string>("userAvatar")));
+                        var uri = ((JObject)await DataHelper.GetDataAsync(DataUriType.GetUserProfile, uid)).Value<string>("userAvatar");
+                        Set(UserAvatar, uri);
+                        UIHelper.RaiseUserAvatarChangedEvent(await ImageCacheHelper.GetImageAsync(ImageType.BigAvatar, uri));
                         return true;
                     }
                     else return false;
@@ -196,7 +203,7 @@ namespace CoolapkUWP.Helpers
             Set(Uid, string.Empty);
             Set(UserName, string.Empty);
             Set(UserAvatar, string.Empty);
-            UIHelper.RaiseUserAvatarChangedEvent(null, null);
+            UIHelper.RaiseUserAvatarChangedEvent(null);
             UIHelper.NotificationNums.ClearNums();
         }
     }

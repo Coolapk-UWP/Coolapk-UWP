@@ -19,7 +19,9 @@
             Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
             BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
             BorderThickness="1"
-            CornerRadius="8">
+            CornerRadius="8"
+            Tag="{x:Bind Url}"
+            Tapped="OnTapped">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />

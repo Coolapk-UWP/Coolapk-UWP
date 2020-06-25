@@ -116,17 +116,14 @@
     <Compile Include="Controls\DataTemplates\PicsArr.xaml.cs" />
     <Compile Include="Controls\DataTemplates\RelationRowsItem.xaml.cs" />
     <Compile Include="Controls\DataTemplates\SearchWord.xaml.cs" />
+    <Compile Include="Controls\NotifyPopup.xaml.cs">
+      <DependentUpon>NotifyPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TextBlockEx.xaml.cs">
       <DependentUpon>TextBlockEx.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ReplyDialogPresenter.xaml.cs">
-      <DependentUpon>ReplyDialogPresenter.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\TitleBar.xaml.cs">
       <DependentUpon>TitleBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\UserHub.xaml.cs">
-      <DependentUpon>UserHub.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WaterFallLayout.cs" />
     <Compile Include="Helpers\ValueConverters\BoolToVisibilityConverter.cs" />
@@ -155,13 +152,18 @@
     <Compile Include="Models\SearchPageModel.cs" />
     <Compile Include="Models\TopicModel.cs" />
     <Compile Include="Models\UserModel.cs" />
-    <Compile Include="Helpers\PageHelper.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Helpers\ExceptionCatcher.cs" />
     <Compile Include="Controls\DataTemplateSelectors.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Models\Json\IndexPageHeaderItemModel.cs" />
     <Compile Include="Models\Json\MessageModel.cs" />
+    <Compile Include="Pages\FeedPages\FeedRepliesPage.xaml.cs">
+      <DependentUpon>FeedRepliesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\UserPage.xaml.cs">
+      <DependentUpon>UserPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\FeedListPageViewModel.cs" />
     <Compile Include="Pages\FeedPages\FeedListPage.xaml.cs">
       <DependentUpon>FeedListPage.xaml</DependentUpon>
@@ -786,11 +788,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TextBlockEx.xaml">
+    <Page Include="Controls\NotifyPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ReplyDialogPresenter.xaml">
+    <Page Include="Controls\TextBlockEx.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -802,15 +804,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\UserHub.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\FeedPages\FeedListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ShowImageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\FeedPages\FeedRepliesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -851,6 +853,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ShellPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\UserPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

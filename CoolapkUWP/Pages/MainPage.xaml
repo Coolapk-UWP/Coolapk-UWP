@@ -41,11 +41,12 @@
             </DataTemplate>
         </winui:NavigationView.MenuItemTemplate>
         <winui:NavigationView.PaneFooter>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Margin="0,0,40,0" Orientation="Horizontal">
                 <Button
                     x:Name="SearchButton"
-                    Click="SearchButton_Click"
-                    Style="{ThemeResource IconButtonStyle}">
+                    Click="Button_Click"
+                    Style="{ThemeResource IconButtonStyle}"
+                    Tag="ShowSearchBar">
                     <SymbolIcon Symbol="Find" />
                 </Button>
                 <AutoSuggestBox
@@ -60,7 +61,10 @@
                     SuggestionChosen="AutoSuggestBox_SuggestionChosen"
                     TextChanged="AutoSuggestBox_TextChanged"
                     Visibility="Collapsed" />
-                <Button Style="{ThemeResource IconButtonStyle}">
+                <Button
+                    Click="Button_Click"
+                    Style="{ThemeResource IconButtonStyle}"
+                    Tag="UserPage">
                     <Grid>
                         <SymbolIcon Symbol="Contact" />
                         <Ellipse Width="28" Height="28">
@@ -69,13 +73,11 @@
                             </Ellipse.Fill>
                         </Ellipse>
                     </Grid>
-                    <Button.Flyout>
-                        <Flyout>
-                            <cctrl:UserHub />
-                        </Flyout>
-                    </Button.Flyout>
                 </Button>
-                <Button Click="NotificationCenterButton_Click" Style="{ThemeResource IconButtonStyle}">
+                <Button
+                    Click="Button_Click"
+                    Style="{ThemeResource IconButtonStyle}"
+                    Tag="Notifications">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon
                             FontFamily="Segoe MDL2 Assets"

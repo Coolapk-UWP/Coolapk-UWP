@@ -284,8 +284,7 @@
             ItemTemplateSelector="{StaticResource tempse}"
             PullToRefreshLabel="下拉刷新"
             RefreshRequested="{x:Bind Refresh}"
-            ReleaseToRefreshLabel="松手刷新"
-            SelectionMode="None">
+            ReleaseToRefreshLabel="松手刷新">
             <controls:PullToRefreshListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="420" />

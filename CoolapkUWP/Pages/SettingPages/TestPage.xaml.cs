@@ -33,7 +33,6 @@ namespace CoolapkUWP.Pages.SettingPages
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             UIHelper.ShowMessage(message.Text);
-            UIHelper.ShowProgressRing();
         }
 
         private async void Button_Click_5(object sender, RoutedEventArgs e)

@@ -4,8 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Windows10version1809="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:control="using:CoolapkUWP.Controls"
+    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:models="using:CoolapkUWP.Models">
+
+    <converter:HasValueConverter x:Key="HasValueConverter" />
+
     <DataTemplate x:Key="feed_reply" x:DataType="models:FeedReplyModel">
         <Grid
             Margin="8"
@@ -15,7 +19,9 @@
             Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
             BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
             BorderThickness="1"
-            CornerRadius="8">
+            CornerRadius="8"
+            Tag="{x:Bind}"
+            Tapped="ReplyRowsItem_Tapped">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
@@ -54,14 +60,11 @@
                         Tapped="OnTapped" />
                     <Border
                         x:Name="isAu"
+                        Margin="6,2"
                         VerticalAlignment="Center"
                         x:Load="{x:Bind IsFeedAuthor}"
-                        Background="{ThemeResource SystemControlHighlightListAccentHighBrush}">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Margin" Value="5,1" />
-                            </Style>
-                        </Border.Style>
+                        Background="{ThemeResource SystemControlBackgroundBaseLowBrush}"
+                        CornerRadius="4">
                         <TextBlock
                             Margin="1"
                             FontSize="12"
@@ -76,14 +79,14 @@
                     <TextBlock
                         x:Name="At"
                         VerticalAlignment="Center"
-                        x:Load="{x:Bind ShowRuser}"
+                        x:Load="{x:Bind Rusername, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
                         Foreground="Gray">
                         @
                     </TextBlock>
                     <Button
                         x:Name="Ruser"
                         Padding="4"
-                        x:Load="{x:Bind ShowRuser}"
+                        x:Load="{x:Bind Rusername, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
                         Background="Transparent"
                         Content="{x:Bind Rusername}"
                         Style="{StaticResource ButtonStyle1}"
@@ -99,7 +102,10 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <control:TextBlockEx MessageText="{x:Bind Message}" />
+                <control:TextBlockEx
+                    MessageText="{x:Bind Message}"
+                    Tag="{x:Bind}"
+                    Tapped="ReplyRowsItem_Tapped" />
                 <Grid
                     x:Name="pic"
                     Grid.Row="1"
@@ -203,6 +209,8 @@
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                         <Setter Property="Margin" Value="0" />
                         <Setter Property="Padding" Value="0" />
+                        <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}" />
+                        <Setter Property="BorderThickness" Value="1" />
                     </Style>
                 </ListView.ItemContainerStyle>
                 <ListView.Footer>
@@ -224,12 +232,10 @@
                 </ListView.Footer>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:SimpleFeedReplyModel">
-                        <Border BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}" BorderThickness="1">
-                            <control:TextBlockEx
-                                Margin="4"
-                                VerticalAlignment="Center"
-                                MessageText="{x:Bind Message}" />
-                        </Border>
+                        <control:TextBlockEx
+                            Margin="4"
+                            VerticalAlignment="Center"
+                            MessageText="{x:Bind Message}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

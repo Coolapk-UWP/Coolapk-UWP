@@ -75,7 +75,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
         {
-            UIHelper.ShowProgressRing();
+            TitleBar.ShowProgressRing();
             JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetIndexPage, url, url == "/main/indexV8" ? "?" : "&", page);
             if (array != null && array.Count > 0)
                 if (page == 1)
@@ -126,7 +126,7 @@ namespace CoolapkUWP.Pages.FeedPages
                             }
                         }
                     }
-                    UIHelper.HideProgressRing();
+                    TitleBar.HideProgressRing();
                     return true;
                 }
                 else
@@ -150,12 +150,12 @@ namespace CoolapkUWP.Pages.FeedPages
                                     FeedsCollection.Add(entity);
                             }
                         }
-                        UIHelper.HideProgressRing();
+                        TitleBar.HideProgressRing();
                         return true;
                     }
                     else
                     {
-                        UIHelper.HideProgressRing();
+                        TitleBar.HideProgressRing();
                         return false;
                     }
                 }

@@ -40,7 +40,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private async void SearchFeeds(string keyWord)
         {
-            UIHelper.ShowProgressRing();
+            progressRing.IsActive = true;
             string feedType = string.Empty;
             string sortType = string.Empty;
             switch (SearchFeedTypeComboBox.SelectedIndex)
@@ -77,12 +77,12 @@ namespace CoolapkUWP.Pages.FeedPages
                     FeedsCollection.Add(new FeedModel(i as JObject));
             }
             else pages[0]--;
-            UIHelper.HideProgressRing();
+            progressRing.IsActive = false;
         }
 
         private async void SearchUsers(string keyWord)
         {
-            UIHelper.ShowProgressRing();
+            progressRing.IsActive = true;
             ObservableCollection<UserModel> infos = UserList.ItemsSource as ObservableCollection<UserModel>;
             JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.SearchUsers, keyWord, ++pages[1], pages[1] > 1 ? "&lastItem=" + lastItems[1] : string.Empty);
             if (array.Count > 0)
@@ -104,12 +104,12 @@ namespace CoolapkUWP.Pages.FeedPages
                 }
             }
             else pages[1]--;
-            UIHelper.HideProgressRing();
+            progressRing.IsActive = false;
         }
 
         private async void SearchTopic(string keyWord)
         {
-            UIHelper.ShowProgressRing();
+            progressRing.IsActive = true;
             JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.SearchTags, keyWord, ++pages[2], pages[2] > 1 ? "&lastItem=" + lastItems[2] : string.Empty);
             ObservableCollection<TopicModel> FeedsCollection = TopicList.ItemsSource as ObservableCollection<TopicModel>;
             if (pages[2] == 1) FeedsCollection.Clear();
@@ -120,7 +120,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     FeedsCollection.Add(new TopicModel(i));
             }
             else pages[2]--;
-            UIHelper.HideProgressRing();
+            progressRing.IsActive = false;
         }
 
         private void StartSearch()
