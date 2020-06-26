@@ -6,27 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:menuitem="using:CoolapkUWP.Models.Json.IndexPageHeaderItemModel"
-    xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    SizeChanged="Page_SizeChanged"
+    NavigationCacheMode="Required"
     mc:Ignorable="d">
-    <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <templates:SearchWord />
-            </ResourceDictionary.MergedDictionaries>
-            <Style
-                x:Key="IconButtonStyle"
-                BasedOn="{StaticResource ButtonRevealStyle}"
-                TargetType="Button">
-                <Setter Property="Width" Value="40" />
-                <Setter Property="Height" Value="40" />
-                <Setter Property="Padding" Value="0" />
-                <Setter Property="Background" Value="Transparent" />
-            </Style>
-        </ResourceDictionary>
-    </Page.Resources>
 
     <winui:NavigationView
         x:Name="navigationView"
@@ -41,56 +24,15 @@
             </DataTemplate>
         </winui:NavigationView.MenuItemTemplate>
         <winui:NavigationView.PaneFooter>
-            <StackPanel Margin="0,0,40,0" Orientation="Horizontal">
-                <Button
-                    x:Name="SearchButton"
-                    Click="Button_Click"
-                    Style="{ThemeResource IconButtonStyle}"
-                    Tag="ShowSearchBar">
-                    <SymbolIcon Symbol="Find" />
-                </Button>
-                <AutoSuggestBox
-                    x:Name="SearchBox"
-                    MinWidth="160"
-                    MaxWidth="320"
-                    VerticalAlignment="Center"
-                    ItemTemplate="{StaticResource searchWord}"
-                    LostFocus="SearchBox_LostFocus"
-                    QueryIcon="Find"
-                    QuerySubmitted="AutoSuggestBox_QuerySubmitted"
-                    SuggestionChosen="AutoSuggestBox_SuggestionChosen"
-                    TextChanged="AutoSuggestBox_TextChanged"
-                    Visibility="Collapsed" />
-                <Button
-                    Click="Button_Click"
-                    Style="{ThemeResource IconButtonStyle}"
-                    Tag="UserPage">
-                    <Grid>
-                        <SymbolIcon Symbol="Contact" />
-                        <Ellipse Width="28" Height="28">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="{x:Bind UserAvatar, Mode=OneWay}" />
-                            </Ellipse.Fill>
-                        </Ellipse>
-                    </Grid>
-                </Button>
-                <Button
-                    Click="Button_Click"
-                    Style="{ThemeResource IconButtonStyle}"
-                    Tag="Notifications">
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon
-                            FontFamily="Segoe MDL2 Assets"
-                            FontSize="20"
-                            Glyph="{x:Bind BadgeIconGlyph, Mode=OneWay}" />
-                        <TextBlock
-                            Margin="4,0,0,0"
-                            VerticalAlignment="Bottom"
-                            Text="{x:Bind BadgeNum.ToString(), Mode=OneWay}" />
-                    </StackPanel>
-                </Button>
-            </StackPanel>
+            <Border Margin="0,0,40,0">
+                <winui:ProgressRing
+                    x:Name="progressRing"
+                    Width="24"
+                    Height="24"
+                    Margin="8,0"
+                    IsActive="True" />
+            </Border>
         </winui:NavigationView.PaneFooter>
-        <Frame x:Name="navigationViewFrame" HorizontalAlignment="Center" />
+        <Frame x:Name="navigationViewFrame" />
     </winui:NavigationView>
 </Page>

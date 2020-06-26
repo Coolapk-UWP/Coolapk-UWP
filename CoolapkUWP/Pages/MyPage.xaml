@@ -1,19 +1,68 @@
 ﻿<Page
-    x:Class="CoolapkUWP.Pages.UserPage"
+    x:Class="CoolapkUWP.Pages.MyPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
+    xmlns:ctrl="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:CoolapkUWP.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    Background="Transparent"
+    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d">
     <Page.Resources>
-        <converter:VisibleToCollapseConverter x:Key="VisibleToCollapseConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <templates:SearchWord />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:TrueToFalseConverter x:Key="TrueToFalseConverter" />
+            <Style
+                x:Key="NaviItemStyle"
+                BasedOn="{StaticResource AppListViewItemStyle}"
+                TargetType="ListViewItem">
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+        </ResourceDictionary>
     </Page.Resources>
 
     <StackPanel Padding="0,32,0,0">
+        <Grid Height="40">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="44" />
+            </Grid.ColumnDefinitions>
+
+            <AutoSuggestBox
+                x:Name="SearchBox"
+                Margin="8,0"
+                VerticalAlignment="Center"
+                ItemTemplate="{StaticResource searchWord}"
+                QueryIcon="Find"
+                QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                TextChanged="AutoSuggestBox_TextChanged" />
+
+            <Button
+                Grid.Column="1"
+                Width="44"
+                HorizontalAlignment="Right"
+                Click="Button_Click"
+                Style="{ThemeResource IconButtonStyle}"
+                Tag="Notifications">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="20"
+                        Glyph="{x:Bind BadgeIconGlyph, Mode=OneWay}" />
+                    <TextBlock
+                        Margin="4,0,0,0"
+                        VerticalAlignment="Bottom"
+                        Text="{x:Bind BadgeNum.ToString(), Mode=OneWay}" />
+                </StackPanel>
+            </Button>
+        </Grid>
         <Grid Margin="0,8,0,0" Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -22,7 +71,9 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="72px" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
+
             <Ellipse
                 Grid.RowSpan="3"
                 Width="56"
@@ -34,18 +85,21 @@
                     <ImageBrush ImageSource="{x:Bind model.UserAvatar, Mode=OneWay}" />
                 </Ellipse.Fill>
             </Ellipse>
+
             <TextBlock
                 Grid.Row="0"
                 Margin="104,0,0,0"
                 FontSize="20"
                 FontWeight="Bold"
                 Text="{x:Bind model.UserName, Mode=OneWay}" />
+
             <winui:ProgressBar
                 Grid.Row="1"
                 Width="240"
                 Margin="100,0,0,0"
                 HorizontalAlignment="Left"
                 Value="{x:Bind model.NextLevelPercentage, Mode=OneWay}" />
+
             <StackPanel
                 Grid.Row="2"
                 Margin="104,0,0,0"
@@ -64,16 +118,19 @@
                     VerticalAlignment="Center"
                     Text="{x:Bind model.NextLevelNowExperience, Mode=OneWay}" />
             </StackPanel>
+
             <TextBlock
                 Grid.Row="3"
                 Margin="104,0,0,0"
                 Text="{x:Bind model.LevelTodayMessage, Mode=OneWay}" />
+
             <Grid Grid.Row="5" Padding="4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+
                 <Button
                     Grid.Column="0"
                     Padding="0"
@@ -84,10 +141,11 @@
                     Style="{StaticResource ButtonRevealStyle}"
                     Tag="feed">
                     <StackPanel>
-                        <TextBlock x:Uid="UserHubFeedText" HorizontalAlignment="Center" />
+                        <TextBlock x:Uid="/Mypage/FeedText" HorizontalAlignment="Center" />
                         <TextBlock HorizontalAlignment="Center" Text="{x:Bind model.FeedNum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
+
                 <Button
                     Grid.Column="1"
                     Padding="0"
@@ -98,10 +156,11 @@
                     Style="{StaticResource ButtonRevealStyle}"
                     Tag="follow">
                     <StackPanel>
-                        <TextBlock x:Uid="UserHubFollowText" HorizontalAlignment="Center" />
+                        <TextBlock x:Uid="/Mypage/FollowText" HorizontalAlignment="Center" />
                         <TextBlock HorizontalAlignment="Center" Text="{x:Bind model.FollowNum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
+
                 <Button
                     Grid.Column="2"
                     Padding="0"
@@ -112,32 +171,50 @@
                     Style="{StaticResource ButtonRevealStyle}"
                     Tag="fans">
                     <StackPanel>
-                        <TextBlock x:Uid="UserHubFollowerText" HorizontalAlignment="Center" />
+                        <TextBlock x:Uid="/Mypage/FollowerText" HorizontalAlignment="Center" />
                         <TextBlock HorizontalAlignment="Center" Text="{x:Bind model.FansNum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
             </Grid>
+            <ctrl:MakeFeedControl
+                Grid.Row="6"
+                MakeFeedMode="Feed"
+                MakedFeedSuccessful="MakeFeedControl_MakedFeedSuccessful" />
         </Grid>
-        <Button
-            x:Uid="UserHubLoginButton"
-            Height="160"
-            Margin="4"
-            HorizontalAlignment="Stretch"
-            Click="Button_Click"
+
+        <ListViewItem
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource NaviItemStyle}"
             Tag="login"
-            Visibility="{x:Bind LogoutButtonVisibility, Converter={StaticResource VisibleToCollapseConverter}, Mode=OneWay}" />
-        <StackPanel Margin="4" Orientation="Horizontal">
-            <Button
-                x:Uid="UserHubSettingButton"
-                Margin="4"
-                Click="Button_Click"
-                Tag="settings" />
-            <Button
-                x:Uid="UserHubLogoutButton"
-                Margin="4"
-                Click="Button_Click"
-                Tag="logout"
-                Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}" />
-        </StackPanel>
+            Tapped="ListViewItem_Tapped"
+            Visibility="{x:Bind LogoutButtonVisibility, Converter={StaticResource TrueToFalseConverter}, ConverterParameter='Visibility', Mode=OneWay}">
+            <StackPanel Padding="16,0" Orientation="Horizontal">
+                <SymbolIcon Symbol="AddFriend" />
+                <TextBlock x:Uid="/Mypage/Login" Margin="8,0" />
+            </StackPanel>
+        </ListViewItem>
+
+        <ListViewItem
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource NaviItemStyle}"
+            Tag="settings"
+            Tapped="ListViewItem_Tapped">
+            <StackPanel Padding="16,0" Orientation="Horizontal">
+                <SymbolIcon Symbol="Setting" />
+                <TextBlock x:Uid="/Mypage/Setting" Margin="8,0" />
+            </StackPanel>
+        </ListViewItem>
+
+        <ListViewItem
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource NaviItemStyle}"
+            Tag="logout"
+            Tapped="ListViewItem_Tapped"
+            Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}">
+            <StackPanel Padding="16,0" Orientation="Horizontal">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF3B1;" />
+                <TextBlock x:Uid="/Mypage/Logout" Margin="8,0" />
+            </StackPanel>
+        </ListViewItem>
     </StackPanel>
 </Page>

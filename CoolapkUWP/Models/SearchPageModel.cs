@@ -5,13 +5,23 @@ namespace CoolapkUWP.Models
 {
     internal class SearchWord
     {
-        public Symbol Symbol { get; set; } = Symbol.Find;
+        public Symbol Symbol { get; set; }
         public string Title { get; set; }
 
         public SearchWord(JObject keys)
         {
-            if (keys.Value<string>("logo").Contains("cube")) Symbol = Symbol.Shop;
-            else if (keys.Value<string>("logo").Contains("xitongguanli")) Symbol = Symbol.AllApps;
+            if (keys.Value<string>("logo").Contains("cube"))
+            {
+                Symbol = Symbol.Shop;
+            }
+            else if (keys.Value<string>("logo").Contains("xitongguanli"))
+            {
+                Symbol = Symbol.Contact;
+            }
+            else
+            {
+                Symbol = Symbol.Find;
+            }
             Title = keys.Value<string>("title");
         }
 
@@ -20,8 +30,6 @@ namespace CoolapkUWP.Models
             switch (Symbol)
             {
                 case Symbol.Shop:
-                    return Title.Substring(5);
-
                 case Symbol.Contact:
                     return Title.Substring(5);
 

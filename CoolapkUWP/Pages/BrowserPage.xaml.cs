@@ -51,9 +51,15 @@ namespace CoolapkUWP.Pages
 
         private void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
-            if (IsLoginPage && args.Uri.AbsoluteUri == "https://www.coolapk.com/") CheckLogin();
+            if (IsLoginPage && args.Uri.AbsoluteUri == "https://www.coolapk.com/")
+            {
+                CheckLogin();
+            }
             else if (args.Uri.AbsoluteUri == loginUri)
+            {
                 IsLoginPage = true;
+            }
+
             titleBar.Title = sender.DocumentTitle;
         }
 
@@ -61,11 +67,12 @@ namespace CoolapkUWP.Pages
 
         private async void CheckLogin()
         {
-            var loader = ResourceLoader.GetForCurrentView();
+            var loader = ResourceLoader.GetForCurrentView("BrowserPage");
             if (await SettingsHelper.CheckLoginInfo())
             {
                 if (Frame.CanGoBack)
                     Frame.GoBack();
+                UIHelper.NavigateInSplitPane(typeof(MyPage));
                 UIHelper.ShowMessage(loader.GetString("LoginSuccessfully"));
             }
             else

@@ -1,6 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
-using Newtonsoft.Json.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -11,57 +10,91 @@ namespace CoolapkUWP.Controls.DataTemplates
     {
         public FeedReply() => InitializeComponent();
 
-        private void OnTapped(object sender, TappedRoutedEventArgs e)
-            => UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
-
         private void ReplyRowsItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (sender == e.OriginalSource || sender.GetType() == typeof(TextBlockEx))
+            if (e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
+
+            if (sender is FrameworkElement frameworkElement)
             {
-                if (sender is FrameworkElement frameworkElement)
-                {
-                    UIHelper.NavigateInSplitPane(typeof(Pages.FeedPages.FeedRepliesPage), frameworkElement.Tag);
-                }
+                if ((frameworkElement.Tag as ICanCopy)?.IsCopyEnabled ?? false) { return; }
+                UIHelper.NavigateInSplitPane(typeof(Pages.FeedPages.FeedRepliesPage), new ViewModels.FeedRepliesPage.ViewModel((FeedReplyModel)frameworkElement.Tag));
             }
         }
 
         private void Image_Tapped(object sender, TappedRoutedEventArgs e)
-            => UIHelper.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
+        {
+            e.Handled = true;
+            UIHelper.ShowImage((sender as FrameworkElement).Tag as ImageModel);
+        }
 
         private async void FeedButton_Click(object sender, RoutedEventArgs e)
         {
-            void ChangeLikeStatus(ILike f, FrameworkElement button, bool isLike)
+            void DisabledCopy()
             {
-                f.Liked = isLike;
-                if (button.FindName("like1") is SymbolIcon symbolIcon1)
-                    symbolIcon1.Visibility = isLike ? Visibility.Visible : Visibility.Collapsed;
-                if (button.FindName("like2") is SymbolIcon symbolIcon2)
-                    symbolIcon2.Visibility = isLike ? Visibility.Collapsed : Visibility.Visible;
+                if ((sender as FrameworkElement).DataContext is ICanCopy i)
+                {
+                    i.IsCopyEnabled = false;
+                }
             }
 
             FrameworkElement element = sender as FrameworkElement;
             switch (element.Name)
             {
-                case "likeButton":
-                    var f = element.Tag as ILike;
-                    bool isReply = f is FeedReplyModel;
-                    bool b = false;
-                    JObject o;
-                    if (f.Liked)
-                        o = (JObject)await DataHelper.GetDataAsync(DataUriType.OperateUnlike, isReply ? "Reply" : string.Empty, f.Id);
-                    else
-                    {
-                        o = (JObject)await DataHelper.GetDataAsync(DataUriType.OperateLike, isReply ? "Reply" : string.Empty, f.Id);
-                        b = true;
-                    }
+                case "makeReplyButton":
+                    var item = Microsoft.Toolkit.Uwp.UI.Extensions.VisualTree.FindAscendant<ListViewItem>(element);
+                    var ctrl = item.FindName("makeFeed") as MakeFeedControl;
+                    ctrl.Visibility = ctrl.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+                    DisabledCopy();
+                    break;
 
-                    if (isReply)
-                        f.Likenum = o.ToString().Replace("\"", string.Empty);
-                    else if (o != null)
-                        f.Likenum = o.Value<int>("count").ToString();
-                    ChangeLikeStatus(f, element, b);
+                case "likeButton":
+                    await DataHelper.MakeLikeAsync(element.Tag as ICanChangeLike,
+                                        element.Dispatcher,
+                                        (SymbolIcon)element.FindName("like1"),
+                                        (SymbolIcon)element.FindName("like2"));
+                    DisabledCopy();
+                    break;
+
+                case "reportButton":
+                    DisabledCopy();
+                    UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, $"https://m.coolapk.com/mp/do?c=feed&m=report&type=feed_reply&id={element.Tag}" });
+                    break;
+
+                default:
+                    DisabledCopy();
+                    UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
                     break;
             }
+        }
+
+        private void ListViewItem_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (UIHelper.IsOriginSource(sender, e.OriginalSource))
+            {
+                if (e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
+                {
+                    ReplyRowsItem_Tapped(sender, null);
+                }
+                else if (e.Key == Windows.System.VirtualKey.Menu)
+                {
+                    ListViewItem_RightTapped(sender, null);
+                }
+            }
+        }
+
+        private void makeFeed_MakedFeedSuccessful(object sender, System.EventArgs e)
+        {
+            if (((FrameworkElement)sender).Tag is ICanChangeReplyNum m)
+            {
+                m.Replynum = (int.Parse(m.Replynum) + 1).ToString();
+            }
+        }
+
+        private void ListViewItem_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            FrameworkElement s = (FrameworkElement)sender;
+            var b = s.FindName("moreButton") as Button;
+            b.Flyout.ShowAt(s);
         }
     }
 }

@@ -1,0 +1,44 @@
+﻿<ResourceDictionary
+    x:Class="CoolapkUWP.Controls.DataTemplates.Pic"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
+    xmlns:models="using:CoolapkUWP.Models">
+
+    <DataTemplate x:Key="Pic" x:DataType="models:ImageModel">
+        <ListViewItem
+            Width="102"
+            Height="102"
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource FixedListViewItemStyle}"
+            Tag="{x:Bind}"
+            Tapped="Image_Tapped">
+            <Grid
+                BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
+                <Image Source="{x:Bind Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                <StackPanel
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+                    <Border
+                        x:Name="longPic"
+                        x:Load="{x:Bind IsLongPic, Mode=OneWay}"
+                        Background="#0F9D58"
+                        CornerRadius="8,0,0,0">
+                        <TextBlock x:Uid="/Feed/longPic" Foreground="White" />
+                    </Border>
+                    <Border
+                        x:Name="gif"
+                        x:Load="{x:Bind IsGif}"
+                        Background="#0F9D58"
+                        CornerRadius="8,0,0,0">
+                        <TextBlock Foreground="White" Text="GIF" />
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </ListViewItem>
+    </DataTemplate>
+
+</ResourceDictionary>

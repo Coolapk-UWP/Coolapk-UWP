@@ -13,11 +13,9 @@
             VerticalAlignment="Center"
             Background="{ThemeResource SystemControlBackgroundListLowBrush}"
             BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-            BorderThickness="2"
+            BorderThickness="1"
             CornerRadius="8"
-            Orientation="Horizontal"
-            Tag="{x:Bind Url}"
-            Tapped="OnTapped">
+            Orientation="Horizontal">
             <Image
                 Width="20"
                 Height="20"
@@ -29,10 +27,9 @@
 
     <DataTemplate x:Key="ReplyRowsItem" x:DataType="models:ReplyRowsItem">
         <StackPanel
-            Padding="-2"
             Background="{ThemeResource SystemControlBackgroundListLowBrush}"
             BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-            BorderThickness="2"
+            BorderThickness="1"
             CornerRadius="8"
             Tag="{x:Bind Id}"
             Tapped="OnTapped">

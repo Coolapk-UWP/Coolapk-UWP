@@ -1,9 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Pages.FeedListPageModels;
-using CoolapkUWP.ViewModels.FeedListDataProvider;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
-using System;
-using System.Threading.Tasks;
+using CoolapkUWP.ViewModels;
+using CoolapkUWP.ViewModels.FeedListPage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -13,84 +11,80 @@ namespace CoolapkUWP.Pages.FeedPages
 {
     public sealed partial class FeedListPage : Page
     {
-        private FeedListDataProvider provider;
-        private ScrollViewer VScrollViewer;
-        private bool isLoading = true;
+        private ViewModelBase provider;
 
         public FeedListPage() => this.InitializeComponent();
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            provider = e.Parameter as FeedListDataProvider;
-            listView.ItemsSource = provider.itemCollection;
+            titleBar.ShowProgressRing();
+
+            provider = e.Parameter as ViewModelBase;
+            listView.ItemsSource = provider.Models;
+
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
             switch (provider.ListType)
             {
                 case FeedListType.UserPageList:
-                    titleBar.ComboBoxVisibility = Visibility.Collapsed;
+                    rightComboBox.Visibility = Visibility.Collapsed;
+                    FindName(nameof(reportButton));
                     break;
 
                 case FeedListType.TagPageList:
-                    titleBar.ComboBoxVisibility = Visibility.Visible;
-                    titleBar.ComboBoxItemsSource = new string[] { "最近回复", "按时间排序", "按热度排序" };
-                    titleBar.ComboBoxSelectedIndex = (provider as ICanChangeSelectedIndex).SelectedIndex;
+                    rightComboBox.Visibility = Visibility.Visible;
+                    rightComboBox.ItemsSource = new string[]
+                    {
+                        loader.GetString("lastupdate_desc"),
+                        loader.GetString("dateline_desc"),
+                        loader.GetString("popular"),
+                    };
+                    rightComboBox.SelectedIndex = (provider as ICanComboBoxChangeSelectedIndex).ComboBoxSelectedIndex;
                     break;
 
                 case FeedListType.DyhPageList:
-                    titleBar.ComboBoxVisibility = Visibility.Collapsed;
-                    titleBar.ComboBoxItemsSource = new string[] { "精选", "广场" };
+                    rightComboBox.Visibility = Visibility.Collapsed;
+                    rightComboBox.ItemsSource = new string[]
+                    {
+                        loader.GetString("all"),
+                        loader.GetString("square"),
+                    };
+                    rightComboBox.SelectedIndex = (provider as ICanComboBoxChangeSelectedIndex).ComboBoxSelectedIndex;
                     break;
             }
-            Refresh();
+            await provider.LoadNextPage();
+            await System.Threading.Tasks.Task.Delay(30);
 
-            if (VScrollViewer is null)
+            titleBar.Title = provider.Title;
+            scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
+            if (provider.Models.Count > 0)
             {
-                Task.Run(async () =>
+                if (provider.Models[0] is DyhDetail detail)
                 {
-                    await Task.Delay(300);
-                    await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    {
-                        VScrollViewer = VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer;
-                        VScrollViewer.ViewChanged += async (s, ee) =>
-                        {
-                            if (!ee.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
-                            {
-                                titleBar.ShowProgressRing();
-                                await provider.LoadNextPage();
-                                titleBar.HideProgressRing();
-                            }
-                        };
-                    });
-                });
+                    rightComboBox.Visibility = detail.ShowComboBox ? Visibility.Visible : Visibility.Collapsed;
+                }
             }
+            rightComboBox.SelectionChanged += FeedTypeComboBox_SelectionChanged;
+
+            titleBar.HideProgressRing();
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            if (!isLoading)
-                titleBar.ComboBoxSelectionChange -= FeedTypeComboBox_SelectionChanged;
+            provider.VerticalOffsets[0] = scrollViewer.VerticalOffset;
+            provider?.ChangeCopyMode(false);
+            rightComboBox.SelectionChanged -= FeedTypeComboBox_SelectionChanged;
+            titleBar.Title = string.Empty;
 
-            base.OnNavigatedFrom(e);
+            base.OnNavigatingFrom(e);
         }
 
         private async void Refresh()
         {
             titleBar.ShowProgressRing();
+            scrollViewer.ChangeView(null, 0, null);
+            titleBar.Title = provider.Title;
             await provider.Refresh();
-            if (provider.itemCollection.Count > 0)
-            {
-                if (provider.itemCollection[0] is DyhDetail detail)
-                {
-                    titleBar.ComboBoxSelectedIndex = detail.SelectedIndex;
-                    titleBar.ComboBoxVisibility = detail.ShowComboBox ? Visibility.Visible : Visibility.Collapsed;
-                }
-                titleBar.Title = provider.Title;
-                if (isLoading)
-                {
-                    titleBar.ComboBoxSelectionChange += FeedTypeComboBox_SelectionChanged;
-                    isLoading = false;
-                }
-            }
 
             titleBar.HideProgressRing();
         }
@@ -99,41 +93,40 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void UserDetailBorder_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (sender is FrameworkElement fe)
-            {
-                if (fe != e.OriginalSource) return;
-                if (fe.Tag is string s)
-                    if (s == (provider.itemCollection[0] as UserDetail).BackgroundUrl)
-                        UIHelper.ShowImage(s, ImageType.OriginImage);
-                    else UIHelper.ShowImage(s, ImageType.BigAvatar);
-            }
+            if (!(e == null || UIHelper.IsOriginSource(sender, e.OriginalSource))) { return; }
+            if (e.OriginalSource.GetType() == typeof(Windows.UI.Xaml.Shapes.Ellipse) && sender.GetType() == typeof(ListViewItem)) { return; }
+
+            UIHelper.ShowImage((sender as FrameworkElement)?.Tag as Models.ImageModel);
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            string str = (sender as Button).Tag as string;
+            string str = (sender as FrameworkElement).Tag as string;
             switch (str)
             {
                 case "follow":
-                    UIHelper.NavigateInSplitPane(typeof(UserListPage), new object[] { provider.Id, true, titleBar.Title });
+                    UIHelper.NavigateInSplitPane(typeof(UserListPage), new ViewModels.UserListPage.ViewModel(provider.Id, true, provider.Title));
                     break;
 
                 case "fans":
-                    UIHelper.NavigateInSplitPane(typeof(UserListPage), new object[] { provider.Id, false, titleBar.Title });
+                    UIHelper.NavigateInSplitPane(typeof(UserListPage), new ViewModels.UserListPage.ViewModel(provider.Id, false, provider.Title));
                     break;
 
                 case "FollowUser":
-                    switch ((provider.itemCollection[0] as UserDetail).FollowStatus)
-                    {
-                        case "关注":
-                            await DataHelper.GetDataAsync(DataUriType.OperateFollow, provider.Id);
-                            break;
-
-                        case "取消关注":
-                            await DataHelper.GetDataAsync(DataUriType.OperateUnfollow, provider.Id);
-                            break;
-                    }
+                    await DataHelper.GetDataAsync(
+                        (provider.Models[0] as UserDetail).FollowStatus == Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage").GetString("follow")
+                            ? DataUriType.OperateUnfollow
+                            : DataUriType.OperateFollow,
+                        provider.Id);
                     Refresh();
+                    break;
+
+                case "copy":
+                    provider.ChangeCopyMode((sender as ToggleMenuFlyoutItem).IsChecked);
+                    break;
+
+                case "report":
+                    (provider as UserViewModel).Report();
                     break;
 
                 default:
@@ -142,17 +135,35 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void FeedTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void FeedTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (string.IsNullOrEmpty(provider.Id)) return;
-            ICanChangeSelectedIndex dataProvider = provider as ICanChangeSelectedIndex;
-            dataProvider.SelectedIndex = (sender as ComboBox).SelectedIndex;
-            dataProvider.Reset();
-            if (provider.itemCollection.Count > 1)
+            if (string.IsNullOrEmpty(provider.Id)) { return; }
+            var dataProvider = provider as ICanComboBoxChangeSelectedIndex;
+
+            titleBar.ShowProgressRing();
+            await dataProvider.SetComboBoxSelectedIndex((sender as ComboBox).SelectedIndex);
+
+            if (provider.Models.Count == 1)
             {
-                for (int i = provider.itemCollection.Count - 1; i > 0; i--)
-                    provider.itemCollection.RemoveAt(i);
                 Refresh();
+            }
+        }
+
+        private async void scrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+            if (!e.IsIntermediate && scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
+            {
+                titleBar.ShowProgressRing();
+                await provider.LoadNextPage();
+                titleBar.HideProgressRing();
+            }
+        }
+
+        private void ListViewItem_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
+            {
+                UserDetailBorder_Tapped(sender, null);
             }
         }
     }

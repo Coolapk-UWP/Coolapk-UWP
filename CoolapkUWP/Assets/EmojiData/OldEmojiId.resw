@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>	
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+  <data name="[doge]" xml:space="preserve">
+    <value>2002</value>
+  </data>
+
+  <data name="[doge原谅ta]" xml:space="preserve">
+    <value>2004</value>
+  </data>
+
+  <data name="[doge呵斥]" xml:space="preserve">
+    <value>2009</value>
+  </data>
+
+  <data name="[doge笑哭]" xml:space="preserve">
+    <value>2014</value>
+  </data>
+
+  <data name="[ok]" xml:space="preserve">
+    <value>2022</value>
+  </data>
+
+  <data name="[qqdoge]" xml:space="preserve">
+    <value>2024</value>
+  </data>
+
+  <data name="[二哈]" xml:space="preserve">
+    <value>2121</value>
+  </data>
+
+  <data name="[亲亲]" xml:space="preserve">
+    <value>2123</value>
+  </data>
+
+  <data name="[傲慢]" xml:space="preserve">
+    <value>2127</value>
+  </data>
+
+  <data name="[再见]" xml:space="preserve">
+    <value>2128</value>
+  </data>
+
+  <data name="[凋谢]" xml:space="preserve">
+    <value>2130</value>
+  </data>
+
+  <data name="[发呆]" xml:space="preserve">
+    <value>2134</value>
+  </data>
+
+  <data name="[发怒]" xml:space="preserve">
+    <value>2135</value>
+  </data>
+
+  <data name="[可怜]" xml:space="preserve">
+    <value>2138</value>
+  </data>
+
+  <data name="[可爱]" xml:space="preserve">
+    <value>2139</value>
+  </data>
+
+  <data name="[呵呵]" xml:space="preserve">
+    <value>2146</value>
+  </data>
+
+  <data name="[喵喵]" xml:space="preserve">
+    <value>2157</value>
+  </data>
+
+  <data name="[喷血]" xml:space="preserve">
+    <value>2177</value>
+  </data>
+
+  <data name="[嘿哈]" xml:space="preserve">
+    <value>2179</value>
+  </data>
+
+  <data name="[坏笑]" xml:space="preserve">
+    <value>2183</value>
+  </data>
+
+  <data name="[委屈]" xml:space="preserve">
+    <value>2190</value>
+  </data>
+
+  <data name="[害羞]" xml:space="preserve">
+    <value>2192</value>
+  </data>
+
+  <data name="[弱]" xml:space="preserve">
+    <value>2198</value>
+  </data>
+
+  <data name="[强]" xml:space="preserve">
+    <value>2199</value>
+  </data>
+
+  <data name="[心碎]" xml:space="preserve">
+    <value>2203</value>
+  </data>
+
+  <data name="[惊讶]" xml:space="preserve">
+    <value>2208</value>
+  </data>
+
+  <data name="[我最美]" xml:space="preserve">
+    <value>2211</value>
+  </data>
+
+  <data name="[托腮]" xml:space="preserve">
+    <value>2212</value>
+  </data>
+
+  <data name="[抠鼻]" xml:space="preserve">
+    <value>2215</value>
+  </data>
+
+  <data name="[抱拳]" xml:space="preserve">
+    <value>2216</value>
+  </data>
+
+  <data name="[捂脸]" xml:space="preserve">
+    <value>2222</value>
+  </data>
+
+  <data name="[撇嘴]" xml:space="preserve">
+    <value>2225</value>
+  </data>
+
+  <data name="[无奈]" xml:space="preserve">
+    <value>2250</value>
+  </data>
+
+  <data name="[机智]" xml:space="preserve">
+    <value>2254</value>
+  </data>
+
+  <data name="[流泪]" xml:space="preserve">
+    <value>2260</value>
+  </data>
+
+  <data name="[爱心]" xml:space="preserve">
+    <value>2267</value>
+  </data>
+
+  <data name="[玫瑰]" xml:space="preserve">
+    <value>2271</value>
+  </data>
+
+  <data name="[疑问]" xml:space="preserve">
+    <value>2273</value>
+  </data>
+
+  <data name="[白眼]" xml:space="preserve">
+    <value>2274</value>
+  </data>
+
+  <data name="[皱眉]" xml:space="preserve">
+    <value>2276</value>
+  </data>
+
+  <data name="[睡]" xml:space="preserve">
+    <value>2277</value>
+  </data>
+
+  <data name="[笑哭]" xml:space="preserve">
+    <value>2280</value>
+  </data>
+
+  <data name="[耶]" xml:space="preserve">
+    <value>2290</value>
+  </data>
+
+  <data name="[色]" xml:space="preserve">
+    <value>2294</value>
+  </data>
+
+  <data name="[菜刀]" xml:space="preserve">
+    <value>2295</value>
+  </data>
+
+  <data name="[鄙视]" xml:space="preserve">
+    <value>2305</value>
+  </data>
+
+  <data name="[酷]" xml:space="preserve">
+    <value>2306</value>
+  </data>
+
+  <data name="[酷币100块]" xml:space="preserve">
+    <value>2311</value>
+  </data>
+
+  <data name="[酷币10块]" xml:space="preserve">
+    <value>2312</value>
+  </data>
+
+  <data name="[酷币1€]" xml:space="preserve">
+    <value>2314</value>
+  </data>
+
+  <data name="[酷币1分]" xml:space="preserve">
+    <value>2315</value>
+  </data>
+
+  <data name="[酷币1块]" xml:space="preserve">
+    <value>2316</value>
+  </data>
+
+  <data name="[酷币1毛]" xml:space="preserve">
+    <value>2317</value>
+  </data>
+
+  <data name="[酷币20块]" xml:space="preserve">
+    <value>2319</value>
+  </data>
+
+  <data name="[酷币2€]" xml:space="preserve">
+    <value>2321</value>
+  </data>
+
+  <data name="[酷币2分]" xml:space="preserve">
+    <value>2322</value>
+  </data>
+
+  <data name="[酷币2块]" xml:space="preserve">
+    <value>2323</value>
+  </data>
+
+  <data name="[酷币2毛]" xml:space="preserve">
+    <value>2324</value>
+  </data>
+
+  <data name="[酷币50块]" xml:space="preserve">
+    <value>2326</value>
+  </data>
+
+  <data name="[酷币5€]" xml:space="preserve">
+    <value>2328</value>
+  </data>
+
+  <data name="[酷币5分]" xml:space="preserve">
+    <value>2329</value>
+  </data>
+
+  <data name="[酷币5块]" xml:space="preserve">
+    <value>2330</value>
+  </data>
+
+  <data name="[酷币5毛]" xml:space="preserve">
+    <value>2331</value>
+  </data>
+
+  <data name="[酷币]" xml:space="preserve">
+    <value>2332</value>
+  </data>
+
+  <data name="[阴险]" xml:space="preserve">
+    <value>2336</value>
+  </data>
+
+  <data name="[难过]" xml:space="preserve">
+    <value>2337</value>
+  </data>
+</root>

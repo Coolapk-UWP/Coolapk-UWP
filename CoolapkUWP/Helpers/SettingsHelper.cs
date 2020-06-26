@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage;
-using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -14,22 +13,24 @@ namespace CoolapkUWP.Helpers
     internal static class SettingsHelper
     {
         [Obsolete]
-        public const string DefaultFollowPageIndex        = "DefaultFollowPageIndex";
-        public const string IsNoPicsMode                  = "IsNoPicsMode";
-        public const string IsUseOldEmojiMode             = "IsUseOldEmojiMode";
-        public const string IsDarkMode                    = "IsDarkMode";
-        public const string CheckUpdateWhenLuanching      = "CheckUpdateWhenLuanching";
+        public const string DefaultFollowPageIndex = "DefaultFollowPageIndex";
+        [Obsolete]
+        public const string UserAvatar = "UserAvatar";
+        [Obsolete]
+        public const string UserName = "UserName";
+        public const string IsNoPicsMode = "IsNoPicsMode";
+        public const string IsUseOldEmojiMode = "IsUseOldEmojiMode";
+        public const string IsDarkMode = "IsDarkMode";
+        public const string CheckUpdateWhenLuanching = "CheckUpdateWhenLuanching";
         public const string IsBackgroundColorFollowSystem = "IsBackgroundColorFollowSystem";
-        public const string UserName                      = "UserName";
-        public const string Uid                           = "Uid";
-        public const string UserAvatar                    = "UserAvatar";
-        public const string IsDisplayOriginPicture        = "IsDisplayOriginPicture";
+        public const string Uid = "Uid";
+        public const string IsDisplayOriginPicture = "IsDisplayOriginPicture";
+        public const string ShowOtherException = "ShowOtherException";
 
         private static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-        public static readonly MetroLog.ILogManager logManager         = MetroLog.LogManagerFactory.CreateLogManager();
-        public static readonly UISettings uiSettings                   = new UISettings();
-        public static ElementTheme Theme                               => Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
-
+        public static readonly MetroLog.ILogManager logManager = MetroLog.LogManagerFactory.CreateLogManager();
+        public static readonly UISettings uiSettings = new UISettings();
+        public static ElementTheme Theme => Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
 
         public static T Get<T>(string key) => (T)localSettings.Values[key];
 
@@ -38,41 +39,20 @@ namespace CoolapkUWP.Helpers
         static SettingsHelper()
         {
             SetDefaultSettings();
-            CheckTheme();
-        }
-
-        public static void SetDefaultSettings()
-        {
-#pragma warning disable CS0612 // 类型或成员已过时
-            if (localSettings.Values.ContainsKey(DefaultFollowPageIndex))
-                localSettings.Values.Remove(DefaultFollowPageIndex);
-#pragma warning restore CS0612
-
-            if (!localSettings.Values.ContainsKey(IsNoPicsMode))
-                localSettings.Values.Add(IsNoPicsMode, false);
-            if (!localSettings.Values.ContainsKey(IsUseOldEmojiMode))
-                localSettings.Values.Add(IsUseOldEmojiMode, false);
-            if (!localSettings.Values.ContainsKey(IsDarkMode))
-                localSettings.Values.Add(IsDarkMode, false);
-            if (!localSettings.Values.ContainsKey(CheckUpdateWhenLuanching))
-                localSettings.Values.Add(CheckUpdateWhenLuanching, true);
-            if (!localSettings.Values.ContainsKey(IsBackgroundColorFollowSystem))
-                localSettings.Values.Add(IsBackgroundColorFollowSystem, true);
-            if (!localSettings.Values.ContainsKey(IsDisplayOriginPicture))
-                localSettings.Values.Add(IsDisplayOriginPicture, false);
-            if (localSettings.Values.ContainsKey(UserName))
+            Set(IsDarkMode, uiSettings.GetColorValue(UIColorType.Background) == Windows.UI.Colors.Black);
+            uiSettings.ColorValuesChanged += (o, e) =>
             {
-                localSettings.Values.Remove(Uid);
-                localSettings.Values.Remove(UserName);
-                localSettings.Values.Remove(UserAvatar);
-            }
-            if (!localSettings.Values.ContainsKey(Uid))
-                localSettings.Values.Add(Uid, string.Empty);
-
+                if (Get<bool>(IsBackgroundColorFollowSystem))
+                {
+                    Set(IsDarkMode, o.GetColorValue(UIColorType.Background) == Windows.UI.Colors.Black);
+                }
+            };
+            UIHelper.CheckTheme();
         }
 
-        public static async Task CheckUpdate()
+        public static async Task CheckUpdateAsync()
         {
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -85,15 +65,20 @@ namespace CoolapkUWP.Helpers
                         || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
                     {
                         var grid = new Grid();
-                        var textBlock = new TextBlock 
-                        { 
-                            Text = $"程序更新了({Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build} -> {keys.Value<string>("tag_name")})。" ,
+                        var textBlock = new TextBlock
+                        {
+                            Text = string.Format(
+                                        loader.GetString("HasUpdate"),
+                                        Package.Current.Id.Version.Major,
+                                        Package.Current.Id.Version.Minor,
+                                        Package.Current.Id.Version.Build,
+                                        keys.Value<string>("tag_name")),
                             HorizontalAlignment = HorizontalAlignment.Left,
                             VerticalAlignment = VerticalAlignment.Center
                         };
                         var button = new Button
                         {
-                            Content = "前往Github",
+                            Content = loader.GetString("GotoGithub"),
                             HorizontalAlignment = HorizontalAlignment.Right,
                             VerticalAlignment = VerticalAlignment.Center
                         };
@@ -103,55 +88,12 @@ namespace CoolapkUWP.Helpers
                         };
                         grid.Children.Add(textBlock);
                         grid.Children.Add(button);
-                        UIHelper.InAppNotification.Show(grid, 12000);
+                        UIHelper.InAppNotification.Show(grid, 6000);
                     }
-                    else UIHelper.ShowMessage("当前无可用更新。");
+                    else UIHelper.ShowMessage(loader.GetString("NoUpdate"));
                 }
             }
-            catch (HttpRequestException) { UIHelper.ShowMessage("网络异常"); }
-        }
-
-        public static async void CheckTheme()
-        {
-            while (Window.Current?.Content is null)
-                await Task.Delay(100);
-            if (Window.Current.Content is FrameworkElement frameworkElement)
-            {
-                frameworkElement.RequestedTheme = Theme;
-                foreach (var item in UIHelper.Popups)
-                {
-                    if(item.Child is FrameworkElement element)
-                    {
-                        element.RequestedTheme = Theme;
-                    }
-                }
-
-                Color? BackColor, ForeColor, ButtonForeInactiveColor, ButtonBackPressedColor;
-                BackColor = ForeColor = ButtonBackPressedColor = ButtonForeInactiveColor = null;
-                switch (Theme)
-                {
-                    case ElementTheme.Light:
-                        BackColor = Color.FromArgb(255, 242, 242, 242);
-                        ForeColor = Colors.Black;
-                        ButtonForeInactiveColor = Color.FromArgb(255, 50, 50, 50);
-                        ButtonBackPressedColor = Color.FromArgb(255, 200, 200, 200);
-                        break;
-
-                    case ElementTheme.Dark:
-                        BackColor = Color.FromArgb(255, 23, 23, 23);
-                        ForeColor = Colors.White;
-                        ButtonForeInactiveColor = Color.FromArgb(255, 200, 200, 200);
-                        ButtonBackPressedColor = Color.FromArgb(255, 50, 50, 50);
-                        break;
-                }
-
-                var view = ApplicationView.GetForCurrentView().TitleBar;
-                view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
-                view.ForegroundColor = view.ButtonForegroundColor = view.ButtonHoverForegroundColor = view.ButtonPressedForegroundColor = ForeColor;
-                view.InactiveForegroundColor = view.ButtonInactiveForegroundColor = ButtonForeInactiveColor;
-                view.ButtonHoverBackgroundColor = BackColor;
-                view.ButtonPressedBackgroundColor = ButtonBackPressedColor;
-            }
+            catch (HttpRequestException) { UIHelper.ShowMessage(loader.GetString("NetworkError")); }
         }
 
         public static async Task<bool> CheckLoginInfo()
@@ -180,13 +122,8 @@ namespace CoolapkUWP.Helpers
                     if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(userName))
                     {
                         Set(Uid, uid);
-                        Set(UserName, userName);
                         var o = (JObject)await DataHelper.GetDataAsync(DataUriType.CheckLoginInfo);
                         UIHelper.NotificationNums.Initial((JObject)o["notifyCount"]);
-                        UIHelper.RaiseUserAvatarChangedEvent(await ImageCacheHelper.GetImageAsync(ImageType.BigAvatar, o.Value<string>("userAvatar")));
-                        var uri = ((JObject)await DataHelper.GetDataAsync(DataUriType.GetUserProfile, uid)).Value<string>("userAvatar");
-                        Set(UserAvatar, uri);
-                        UIHelper.RaiseUserAvatarChangedEvent(await ImageCacheHelper.GetImageAsync(ImageType.BigAvatar, uri));
                         return true;
                     }
                     else return false;
@@ -201,10 +138,58 @@ namespace CoolapkUWP.Helpers
             foreach (var item in cookieManager.GetCookies(new Uri("http://coolapk.com")))
                 cookieManager.DeleteCookie(item);
             Set(Uid, string.Empty);
-            Set(UserName, string.Empty);
-            Set(UserAvatar, string.Empty);
-            UIHelper.RaiseUserAvatarChangedEvent(null);
             UIHelper.NotificationNums.ClearNums();
+        }
+
+        public static void SetDefaultSettings()
+        {
+#pragma warning disable CS0612 // 类型或成员已过时
+            if (localSettings.Values.ContainsKey(DefaultFollowPageIndex))
+            {
+                localSettings.Values.Remove(DefaultFollowPageIndex);
+            }
+            if (localSettings.Values.ContainsKey(UserName))
+            {
+                localSettings.Values.Remove(UserName);
+            }
+            if (localSettings.Values.ContainsKey(UserAvatar))
+            {
+                localSettings.Values.Remove(UserAvatar);
+            }
+#pragma warning restore CS0612
+
+            if (!localSettings.Values.ContainsKey(ShowOtherException))
+            {
+                localSettings.Values.Add(ShowOtherException, true);
+            }
+            if (!localSettings.Values.ContainsKey(IsNoPicsMode))
+            {
+                localSettings.Values.Add(IsNoPicsMode, false);
+            }
+            if (!localSettings.Values.ContainsKey(IsUseOldEmojiMode))
+            {
+                localSettings.Values.Add(IsUseOldEmojiMode, false);
+            }
+            if (!localSettings.Values.ContainsKey(IsDarkMode))
+            {
+                localSettings.Values.Add(IsDarkMode, false);
+            }
+            if (!localSettings.Values.ContainsKey(CheckUpdateWhenLuanching))
+            {
+                localSettings.Values.Add(CheckUpdateWhenLuanching, true);
+            }
+            if (!localSettings.Values.ContainsKey(IsBackgroundColorFollowSystem))
+            {
+                localSettings.Values.Add(IsBackgroundColorFollowSystem, true);
+            }
+            if (!localSettings.Values.ContainsKey(IsDisplayOriginPicture))
+            {
+                localSettings.Values.Add(IsDisplayOriginPicture, false);
+            }
+            if (!localSettings.Values.ContainsKey(Uid))
+            {
+                localSettings.Values.Add(Uid, string.Empty);
+            }
         }
     }
 }
