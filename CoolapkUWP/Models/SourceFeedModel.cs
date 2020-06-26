@@ -10,19 +10,24 @@ namespace CoolapkUWP.Models
         public SourceFeedModel(JObject o) : base(o)
         {
             Url = o.TryGetValue("url", out JToken json) ? json.ToString() : $"/feed/{o["id"].ToString().Replace("\"", string.Empty)}";
-            if (o.Value<string>("entityType") != "article")
+            if (o.Value<string>("entityType") == "article")
             {
+                Dateline = DataHelper.ConvertTime(o.Value<int>("digest_time"));
+                Message = o.Value<string>("message").Substring(0, 120) + "……<a href=\"\">查看更多</a>";
+                MessageTitle = o.Value<string>("title");
+            }
+            else
+            {
+                if (o.Value<string>("feedType") == "question")
+                {
+                    IsQuestionFeed = true;
+                    Url = Url.Replace("/feed/", "/question/", System.StringComparison.Ordinal);
+                }
                 Uurl = o["userInfo"].Value<string>("url");
                 Username = o["userInfo"].Value<string>("username");
                 Dateline = DataHelper.ConvertTime(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty)));
                 Message = o.Value<string>("message");
                 MessageTitle = o.TryGetValue("message_title", out JToken j) ? j.ToString() : string.Empty;
-            }
-            else
-            {
-                Dateline = DataHelper.ConvertTime(o.Value<int>("digest_time"));
-                Message = o.Value<string>("message").Substring(0, 120) + "……<a href=\"\">查看更多</a>";
-                MessageTitle = o.Value<string>("title");
             }
             ShowPicArr = o.TryGetValue("picArr", out JToken picArr) && (picArr as JArray).Count > 0 && !string.IsNullOrEmpty((picArr as JArray)[0].ToString());
             if (o.Value<string>("feedTypeName") == "酷图")
@@ -32,8 +37,8 @@ namespace CoolapkUWP.Models
             if (picArr != null)
             {
                 IsMoreThanOnePic = picArr.Count() > 1;
-                if (ShowPicArr || IsCoolPictuers) 
-                { 
+                if (ShowPicArr || IsCoolPictuers)
+                {
                     var builder = ImmutableArray.CreateBuilder<ImageModel>();
                     foreach (var item in picArr as JArray)
                     {
@@ -65,5 +70,6 @@ namespace CoolapkUWP.Models
         public bool IsMoreThanOnePic { get; private set; }
         public ImageModel Pic { get; private set; }
         public ImmutableArray<ImageModel> PicArr { get; private set; } = ImmutableArray<ImageModel>.Empty;
+        public bool IsQuestionFeed { get; private set; }
     }
 }

@@ -187,6 +187,7 @@ namespace CoolapkUWP.Helpers
             "/u/",
             "/feed/",
             "/picture/",
+            "/question/",
             "/t/",
             "t/",
             "/dyh/",
@@ -248,7 +249,11 @@ namespace CoolapkUWP.Helpers
             }
             else if (str.IsFirst(i++) || str.IsFirst(i++))
             {
-                Navigate(typeof(FeedShellPage), await ViewModels.FeedDetailPage.ViewModel.GetViewModelAsync(str.Replace(i - 1)));
+                Navigate(typeof(FeedShellPage), new ViewModels.FeedDetailPage.FeedViewModel(str.Replace(i - 1)));
+            }
+            else if (str.IsFirst(i++))
+            {
+                Navigate(typeof(FeedShellPage), new ViewModels.FeedDetailPage.QuestionViewModel(str.Replace(i - 1)));
             }
             else if (str.IsFirst(i++) || str.IsFirst(i++))
             {

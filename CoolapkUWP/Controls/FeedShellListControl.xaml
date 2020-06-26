@@ -45,21 +45,18 @@
                                 Margin="12"
                                 VerticalAlignment="Center" />
                         </ListView.Header>
-
-                        <ListView.Footer>
-                            <ListViewItem
-                                BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-                                BorderThickness="0,0,0,2"
-                                Tapped="GetMoreHotReplyListViewItem_Tapped"
-                                Template="{StaticResource AppListViewItemTemplate}">
-                                <TextBlock
-                                    x:Uid="/FeedShellListControl/getHotReply"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center" />
-                            </ListViewItem>
-
-                        </ListView.Footer>
                     </ListView>
+
+                    <ListViewItem
+                        BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
+                        BorderThickness="0,0,0,2"
+                        Tapped="GetMoreHotReplyListViewItem_Tapped"
+                        Template="{StaticResource AppListViewItemTemplate}">
+                        <TextBlock
+                            x:Uid="/FeedShellListControl/getHotReply"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" />
+                    </ListViewItem>
 
                     <Border Margin="0,8">
                         <winui:ItemsRepeater x:Name="replyList" ItemTemplate="{StaticResource feed_reply}" />

@@ -26,7 +26,14 @@ namespace CoolapkUWP.Controls
             set
             {
                 feedDetail = value;
-                if (!(value?.IsQuestionFeed ?? true))
+                if (value?.IsQuestionFeed ?? true)
+                {
+                    if(makeFeed != null)
+                    {
+                        UnloadObject(makeFeed);
+                    }
+                }
+                else
                 {
                     FindName(nameof(makeFeed));
                 }
@@ -67,7 +74,10 @@ namespace CoolapkUWP.Controls
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if ((sender as FrameworkElement).Tag is string s) UIHelper.OpenLinkAsync(s);
+            if ((sender as FrameworkElement).Tag is string s)
+            {
+                UIHelper.OpenLinkAsync(s);
+            }
         }
 
         private void makeFeed_MakedFeedSuccessful(object sender, EventArgs e)

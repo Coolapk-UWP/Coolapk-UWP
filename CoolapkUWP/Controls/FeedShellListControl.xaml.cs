@@ -41,7 +41,7 @@ namespace CoolapkUWP.Controls
 
         internal async void ChangeFeedSorting(int i)
         {
-            if (i > 0)
+            if (i > 0 && hotReplyList != null)
             {
                 hotReplyList.Visibility = Visibility.Collapsed;
             }

@@ -221,7 +221,10 @@
                                             Width="40"
                                             Height="40"
                                             Source="{x:Bind Pic.Pic, Mode=OneWay}" />
-                                        <TextBlock HorizontalAlignment="Center" Text="{x:Bind Title}" />
+                                        <TextBlock
+                                            Margin="0,2"
+                                            HorizontalAlignment="Center"
+                                            Text="{x:Bind Title}" />
                                     </StackPanel>
                                 </Button>
                             </DataTemplate>
@@ -616,7 +619,7 @@
                             <Ellipse
                                 Width="32"
                                 Height="32"
-                                Margin="4,0"
+                                Margin="4"
                                 HorizontalAlignment="Left">
                                 <Ellipse.Fill>
                                     <ImageBrush ImageSource="{x:Bind UserSmallAvatar.Pic, Mode=OneWay}" />

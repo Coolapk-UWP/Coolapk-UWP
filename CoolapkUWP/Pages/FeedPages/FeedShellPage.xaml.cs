@@ -89,6 +89,10 @@ namespace CoolapkUWP.Pages.FeedPages
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedShellPage");
             if (provider.FeedDetail.IsQuestionFeed)
             {
+                if(listCtrl != null)
+                {
+                    UnloadObject(listCtrl);
+                }
                 FindName(nameof(answersList));
                 answersList.ItemsSource = ((QuestionViewModel)provider).Models;
 
@@ -103,8 +107,14 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             else
             {
+                if (answersList != null)
+                {
+                    UnloadObject(answersList);
+                }
                 FindName(nameof(listCtrl));
                 listCtrl.SetProvider((provider as FeedViewModel).ReplyListVM);
+                PivotItemPanel.DataContext = provider.FeedDetail;
+                PivotItemPanel.Visibility = Visibility.Visible;
 
                 if (detailControl.FeedArticleTitle != null)
                 {
@@ -299,14 +309,14 @@ namespace CoolapkUWP.Pages.FeedPages
                 rightGrid.InvalidateArrange();
             }
 
-            if ((e?.NewSize.Width ?? Width) >= 804 && !((provider?.FeedDetail?.IsFeedArticle ?? false) || (provider.FeedDetail?.IsCoolPictuers ?? false)))
+            if ((e?.NewSize.Width ?? ActualWidth) >= 804 && !((provider?.FeedDetail?.IsFeedArticle ?? false) || (provider.FeedDetail?.IsCoolPictuers ?? false)))
             {
                 LeftColumnDefinition.Width = new GridLength(420);
                 SetDualPanelMode();
                 PivotItemPanel.Width = 420;
                 PivotItemPanel.HorizontalAlignment = HorizontalAlignment.Left;
             }
-            else if ((e?.NewSize.Width ?? Width) >= 876 && ((provider.FeedDetail?.IsFeedArticle ?? false) || (provider.FeedDetail?.IsCoolPictuers ?? false)))
+            else if ((e?.NewSize.Width ?? ActualWidth) >= 876 && ((provider.FeedDetail?.IsFeedArticle ?? false) || (provider.FeedDetail?.IsCoolPictuers ?? false)))
             {
                 LeftColumnDefinition.Width = new GridLength(520);
                 SetDualPanelMode();

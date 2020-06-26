@@ -16,9 +16,8 @@ namespace CoolapkUWP.Models
             ShareNum = token["forwardnum"].ToString().Replace("\"", string.Empty);
             if (token.Value<string>("entityType") != "article")
             {
-                if (token.Value<string>("feedType") == "question")
+                if (IsQuestionFeed)
                 {
-                    IsQuestionFeed = true;
                     QuestionAnswerNum = token["question_answer_num"].ToString().Replace("\"", string.Empty);
                     QuestionFollowNum = token["question_follow_num"].ToString().Replace("\"", string.Empty);
                 }
@@ -81,7 +80,6 @@ namespace CoolapkUWP.Models
         public string ExtraTitle { get; private set; }
         public string ExtraUrl { get; private set; }
         public string ExtraUrl2 { get; private set; }
-        public bool IsQuestionFeed { get; private set; }
         public string QuestionAnswerNum { get; private set; }
         public string QuestionFollowNum { get; private set; }
         public bool ShowUser { get; private set; } = true;

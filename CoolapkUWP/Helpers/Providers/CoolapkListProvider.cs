@@ -40,17 +40,17 @@ namespace CoolapkUWP.Helpers.Providers
             Func<string> getString,
             string idName)
         {
-            this.getData      = getData     ?? throw new ArgumentNullException(nameof(getData));
-            this.checkEqual   = checkEqual  ?? throw new ArgumentNullException(nameof(checkEqual));
-            this.getEntities  = getEntities ?? throw new ArgumentNullException(nameof(getEntities));
-            this.getString    = getString   ?? throw new ArgumentNullException(nameof(getString));
-            this.idName       = string.IsNullOrEmpty(idName) ? throw new ArgumentException($"{nameof(idName)}不能为空")
+            this.getData = getData ?? throw new ArgumentNullException(nameof(getData));
+            this.checkEqual = checkEqual ?? throw new ArgumentNullException(nameof(checkEqual));
+            this.getEntities = getEntities ?? throw new ArgumentNullException(nameof(getEntities));
+            this.getString = getString ?? throw new ArgumentNullException(nameof(getString));
+            this.idName = string.IsNullOrEmpty(idName) ? throw new ArgumentException($"{nameof(idName)}不能为空")
                                                              : idName;
         }
 
         public void ChangeGetDataFunc(
             Func<int, int, double, double, Task<JArray>> getData,
-            Func<Entity,bool> needDeleteJudger)
+            Func<Entity, bool> needDeleteJudger)
         {
             this.getData = getData ?? throw new ArgumentNullException(nameof(getData));
             var needDeleteItems = (from entity in Models
@@ -118,6 +118,7 @@ namespace CoolapkUWP.Helpers.Providers
 
                         foreach (var item in entities)
                         {
+                            if (item == null) { continue; }
                             Models.Insert(modelIndex + fixedNum, item);
                             modelIndex++;
                         }
@@ -137,6 +138,7 @@ namespace CoolapkUWP.Helpers.Providers
                         if (entities == null) { continue; }
                         foreach (var i in entities)
                         {
+                            if (i == null) { continue; }
                             Models.Add(i);
                         }
                     }

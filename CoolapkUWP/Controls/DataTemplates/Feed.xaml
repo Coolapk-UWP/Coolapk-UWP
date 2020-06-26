@@ -222,7 +222,9 @@
                     Background="{ThemeResource SystemControlBackgroundListLowBrush}"
                     BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                     BorderThickness="1"
-                    CornerRadius="8">
+                    CornerRadius="8"
+                    Tag="{x:Bind SourceFeed.Url}"
+                    Tapped="OnTapped">
 
                     <TextBlock
                         x:Name="sourceF2"
@@ -230,7 +232,11 @@
                         Margin="15"
                         x:Load="{x:Bind ShowSourceFeed, Converter={StaticResource TrueToFalseConverter}}" />
 
-                    <Grid x:Name="sourceFG" x:Load="{x:Bind ShowSourceFeed}">
+                    <Grid
+                        x:Name="sourceFG"
+                        x:Load="{x:Bind ShowSourceFeed}"
+                        Tag="{x:Bind SourceFeed.Url}"
+                        Tapped="OnTapped">
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />

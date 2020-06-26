@@ -166,13 +166,13 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 provider.tabProviders[provider.ComboBoxSelectedIndex].ChangeGetDataFunc(
                     ViewModels.IndexPage.ViewModel.GetData(u, false),
-                    (a) => a.EntityType == "feed");
+                    (a) => a?.EntityType == "feed");
             }
             else
             {
                 provider.mainProvider.ChangeGetDataFunc(
                     ViewModels.IndexPage.ViewModel.GetData(u, false),
-                    (a) => a.EntityType == "feed");
+                    (a) => a?.EntityType == "topic");
             }
             _ = Refresh();
         }

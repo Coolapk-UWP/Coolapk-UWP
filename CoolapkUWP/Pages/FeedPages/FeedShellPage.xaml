@@ -85,7 +85,7 @@
                     Tag="reply">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Comment" />
-                        <TextBlock Margin="3,0" Text="{x:Bind provider.FeedDetail.Replynum, Mode=OneWay}" />
+                        <TextBlock Margin="3,0" Text="{Binding Replynum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
                 <Button
@@ -97,7 +97,7 @@
                     Tag="like">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Like" />
-                        <TextBlock Margin="3,0" Text="{x:Bind provider.FeedDetail.Likenum, Mode=OneWay}" />
+                        <TextBlock Margin="3,0" Text="{Binding Likenum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
                 <Button
@@ -109,11 +109,12 @@
                     Tag="share">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Link" />
-                        <TextBlock Margin="3,0" Text="{x:Bind provider.FeedDetail.ShareNum, Mode=OneWay}" />
+                        <TextBlock Margin="3,0" Text="{Binding ShareNum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
             </StackPanel>
         </Grid>
+
         <control:TitleBar
             x:Name="titleBar"
             BackButtonClicked="BackButton_Click"

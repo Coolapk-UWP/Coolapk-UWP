@@ -79,7 +79,7 @@ namespace CoolapkUWP.Controls
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            if (item is FeedModel f)
+            if (item is SourceFeedModel f)
             {
                 if (f.IsQuestionFeed) { return QuestionFeed; }
                 else if (f.ShowMessageTitle) { return FeedImageText; }
