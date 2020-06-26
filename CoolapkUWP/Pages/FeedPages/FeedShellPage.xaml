@@ -44,10 +44,7 @@
                         VerticalAlignment="Top"
                         VerticalScrollMode="{x:Bind MainScrollMode, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}, ConverterParameter='ScrollMode'}">
                         <Border x:Name="detailBorder">
-                            <control:FeedShellDetailControl
-                                x:Name="detailControl"
-                                FeedDetail="{x:Bind provider.FeedDetail, Mode=OneWay}"
-                                RequireRefresh="detailControl_RequireRefresh" />
+                            <control:FeedShellDetailControl x:Name="detailControl" RequireRefresh="detailControl_RequireRefresh" />
                         </Border>
                     </ScrollViewer>
 

@@ -28,7 +28,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
             ShowTitleBar = showTitleBar;
             mainUri = GetUri(uri);
 
-            mainProvider = GetProvider(uri);
+            mainProvider = GetProvider(mainUri);
             mainModels = mainProvider.Models;
         }
 

@@ -83,6 +83,9 @@ namespace CoolapkUWP.Pages.FeedPages
         private void SetLayout()
         {
             titleBar.ShowProgressRing();
+
+            detailControl.FeedDetail = provider.FeedDetail;
+
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedShellPage");
             if (provider.FeedDetail.IsQuestionFeed)
             {

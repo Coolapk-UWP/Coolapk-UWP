@@ -2,6 +2,7 @@
 using CoolapkUWP.ViewModels.FeedListPage;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
@@ -181,7 +182,7 @@ namespace CoolapkUWP.Helpers
             return source == originalSource || r;
         }
 
-        private static readonly string[] routes = new string[]
+        private static readonly ImmutableArray<string> routes = new string[]
         {
             "/u/",
             "/feed/",
@@ -192,7 +193,7 @@ namespace CoolapkUWP.Helpers
             "http://image.coolapk.com/",
             "https",
             "http",
-        };
+        }.ToImmutableArray();
 
         private static bool IsFirst(this string str, int i) => str.IndexOf(routes[i], StringComparison.Ordinal) == 0;
 
@@ -241,7 +242,9 @@ namespace CoolapkUWP.Helpers
                 var uid = int.TryParse(u, out _) ? u : await NetworkHelper.GetUserIDByNameAsync(u);
                 var f = ViewModelBase.GetProvider(FeedListType.UserPageList, uid);
                 if (f != null)
+                {
                     NavigateInSplitPane(typeof(FeedListPage), f);
+                }
             }
             else if (str.IsFirst(i++) || str.IsFirst(i++))
             {
@@ -252,7 +255,9 @@ namespace CoolapkUWP.Helpers
                 string u = str.Replace(i - 1);
                 var f = ViewModelBase.GetProvider(FeedListType.TagPageList, u);
                 if (f != null)
+                {
                     NavigateInSplitPane(typeof(FeedListPage), f);
+                }
             }
             //else if (str.IndexOf("/product/") == 0)
             //{
@@ -264,7 +269,9 @@ namespace CoolapkUWP.Helpers
                 string u = str.Replace(i - 1);
                 var f = ViewModelBase.GetProvider(FeedListType.DyhPageList, u);
                 if (f != null)
+                {
                     NavigateInSplitPane(typeof(FeedListPage), f);
+                }
             }
             else if (str.IsFirst(i++))
             {
