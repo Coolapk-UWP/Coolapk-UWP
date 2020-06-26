@@ -8,7 +8,14 @@ namespace CoolapkUWP.Controls
     {
         public bool IsBackButtonEnabled { get => BackButton.IsEnabled; set => BackButton.IsEnabled = value; }
 
-        public string Title { get => title.Text; set => title.Text = value; }
+        public string Title
+        {
+            get => title.Text;
+            set
+            {
+                title.Text = value ?? string.Empty;
+            }
+        }
 
         public event RoutedEventHandler RefreshButtonClicked;
 

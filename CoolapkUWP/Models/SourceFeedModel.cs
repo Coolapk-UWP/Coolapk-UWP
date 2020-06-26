@@ -7,26 +7,25 @@ namespace CoolapkUWP.Models
 {
     public class SourceFeedModel : Entity
     {
-        public SourceFeedModel(JObject token) : base(token)
+        public SourceFeedModel(JObject o) : base(o)
         {
-            Url = token.TryGetValue("url", out JToken json) ? json.ToString() : $"/feed/{token["id"].ToString().Replace("\"", string.Empty)}";
-            if (token.Value<string>("entityType") != "article")
+            Url = o.TryGetValue("url", out JToken json) ? json.ToString() : $"/feed/{o["id"].ToString().Replace("\"", string.Empty)}";
+            if (o.Value<string>("entityType") != "article")
             {
-                Uurl = token["userInfo"].Value<string>("url");
-                Username = token["userInfo"].Value<string>("username");
-                Dateline = DataHelper.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
-                Message = token.Value<string>("message");
-                Message_title = token.TryGetValue("message_title", out JToken j) ? j.ToString() : string.Empty;
+                Uurl = o["userInfo"].Value<string>("url");
+                Username = o["userInfo"].Value<string>("username");
+                Dateline = DataHelper.ConvertTime(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty)));
+                Message = o.Value<string>("message");
+                MessageTitle = o.TryGetValue("message_title", out JToken j) ? j.ToString() : string.Empty;
             }
             else
             {
-                Dateline = DataHelper.ConvertTime(token.Value<int>("digest_time"));
-                Message = token.Value<string>("message").Substring(0, 120) + "……<a href=\"\">查看更多</a>";
-                Message_title = token.Value<string>("title");
+                Dateline = DataHelper.ConvertTime(o.Value<int>("digest_time"));
+                Message = o.Value<string>("message").Substring(0, 120) + "……<a href=\"\">查看更多</a>";
+                MessageTitle = o.Value<string>("title");
             }
-            ShowMessage_title = !string.IsNullOrEmpty(Message_title);
-            ShowPicArr = token.TryGetValue("picArr", out JToken picArr) && (picArr as JArray).Count > 0 && !string.IsNullOrEmpty((picArr as JArray)[0].ToString());
-            if (token.Value<string>("feedTypeName") == "酷图")
+            ShowPicArr = o.TryGetValue("picArr", out JToken picArr) && (picArr as JArray).Count > 0 && !string.IsNullOrEmpty((picArr as JArray)[0].ToString());
+            if (o.Value<string>("feedTypeName") == "酷图")
             {
                 ShowPicArr = IsCoolPictuers = true;
             }
@@ -48,7 +47,7 @@ namespace CoolapkUWP.Models
                     }
                 }
             }
-            if (token.TryGetValue("pic", out JToken value1) && !string.IsNullOrEmpty(value1.ToString()))
+            if (o.TryGetValue("pic", out JToken value1) && !string.IsNullOrEmpty(value1.ToString()))
             {
                 Pic = new ImageModel(value1.ToString(), ImageType.SmallImage);
             }
@@ -58,9 +57,9 @@ namespace CoolapkUWP.Models
         public string Uurl { get; private set; }
         public string Username { get; private set; }
         public string Dateline { get; private set; }
-        public bool ShowMessage_title { get; private set; }
-        public string Message_title { get; private set; }
+        public string MessageTitle { get; private set; }
         public string Message { get; private set; }
+        public bool ShowMessageTitle { get => !string.IsNullOrEmpty(MessageTitle); }
         public bool ShowPicArr { get; private set; }
         public bool IsCoolPictuers { get; private set; }
         public bool IsMoreThanOnePic { get; private set; }

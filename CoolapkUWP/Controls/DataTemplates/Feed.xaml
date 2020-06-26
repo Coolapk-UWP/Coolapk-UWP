@@ -2,15 +2,19 @@
     x:Class="CoolapkUWP.Controls.DataTemplates.Feed"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Windows10version1809="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:ctrl="using:CoolapkUWP.Controls"
     xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:models="using:CoolapkUWP.Models"
+    xmlns:valueconverters="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls">
 
     <ResourceDictionary.MergedDictionaries>
         <local:Pic />
         <local:RelationRowsItem />
     </ResourceDictionary.MergedDictionaries>
+
+    <valueconverters:TrueToFalseConverter x:Key="TrueToFalseConverter" />
 
     <Style
         x:Key="FeedOpButtonStyle"
@@ -105,7 +109,7 @@
                             <TextBlock
                                 Margin="5,0,0,0"
                                 Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                Text="{x:Bind Device_title}" />
+                                Text="{x:Bind DeviceTitle}" />
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -181,11 +185,11 @@
                     Grid.Row="2"
                     Grid.ColumnSpan="3"
                     Margin="4"
-                    x:Load="{x:Bind ShowMessage_title}"
+                    x:Load="{x:Bind ShowMessageTitle}"
                     FontSize="16"
                     FontWeight="Black"
                     IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                    Text="{x:Bind Message_title}"
+                    Text="{x:Bind MessageTitle}"
                     TextWrapping="Wrap" />
 
                 <ctrl:TextBlockEx
@@ -224,7 +228,7 @@
                         x:Name="sourceF2"
                         x:Uid="/Feed/sourceFeedNotFount"
                         Margin="15"
-                        x:Load="{x:Bind ShowSourceFeed2}" />
+                        x:Load="{x:Bind ShowSourceFeed, Converter={StaticResource TrueToFalseConverter}}" />
 
                     <Grid x:Name="sourceFG" x:Load="{x:Bind ShowSourceFeed}">
                         <Grid.RowDefinitions>
@@ -255,13 +259,13 @@
                             x:Name="sourceMT"
                             Grid.Row="1"
                             Margin="4"
-                            x:Load="{x:Bind SourceFeed.ShowMessage_title}"
+                            x:Load="{x:Bind SourceFeed.ShowMessageTitle}"
                             FontSize="16"
                             FontWeight="Black"
                             IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                             Tag="{x:Bind SourceFeed.Url}"
                             Tapped="OnTapped"
-                            Text="{x:Bind SourceFeed.Message_title}"
+                            Text="{x:Bind SourceFeed.MessageTitle}"
                             TextWrapping="Wrap" />
 
                         <ctrl:TextBlockEx
@@ -272,18 +276,18 @@
                             Tag="{x:Bind SourceFeed.Url}"
                             Tapped="OnTapped" />
 
-                        <winui:ItemsRepeater
-                            x:Name="sourcePic"
+                        <GridView
+                            Name="sourcePic"
                             Grid.Row="3"
+                            MinHeight="0"
                             MaxWidth="420"
                             Margin="4,8,4,4"
+                            Padding="0"
+                            HorizontalContentAlignment="Left"
                             x:Load="{x:Bind SourceFeed.ShowPicArr}"
                             ItemTemplate="{StaticResource Pic}"
-                            ItemsSource="{x:Bind SourceFeed.PicArr}">
-                            <winui:ItemsRepeater.Layout>
-                                <winui:UniformGridLayout MinColumnSpacing="4" MinRowSpacing="4" />
-                            </winui:ItemsRepeater.Layout>
-                        </winui:ItemsRepeater>
+                            ItemsSource="{x:Bind SourceFeed.PicArr}"
+                            ScrollViewer.VerticalScrollMode="Disabled" />
                     </Grid>
                 </Grid>
 
@@ -292,12 +296,12 @@
                     Grid.Row="6"
                     Grid.ColumnSpan="3"
                     Margin="0,4,0,0"
-                    x:Load="{x:Bind ShowExtra_url}"
+                    x:Load="{x:Bind ShowExtraUrl}"
                     Background="{ThemeResource SystemControlBackgroundListLowBrush}"
                     BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8"
-                    Tag="{x:Bind Extra_url}"
+                    Tag="{x:Bind ExtraUrl}"
                     Tapped="OnTapped">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
@@ -307,7 +311,7 @@
                         <Image
                             Width="56"
                             Height="56"
-                            Source="{x:Bind Extra_pic.Pic, Mode=OneWay}" />
+                            Source="{x:Bind ExtraPic.Pic, Mode=OneWay}" />
                     </Border>
                     <StackPanel
                         Grid.Column="1"
@@ -316,43 +320,40 @@
                         VerticalAlignment="Center">
                         <TextBlock
                             MaxLines="2"
-                            Text="{x:Bind Extra_title}"
+                            Text="{x:Bind ExtraTitle}"
                             TextTrimming="WordEllipsis"
                             TextWrapping="Wrap" />
                         <TextBlock
                             Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            Text="{x:Bind Extra_url2}"
+                            Text="{x:Bind ExtraUrl2}"
                             TextWrapping="Wrap" />
                     </StackPanel>
                 </Grid>
 
                 <Border Grid.Row="7" Grid.ColumnSpan="3" />
 
-                <winui:ItemsRepeaterScrollHost
+                <ListView
                     x:Name="relaRLis"
                     Grid.Row="8"
                     Grid.ColumnSpan="3"
-                    x:Load="{x:Bind ShowRelationRows}">
-                    <ScrollViewer
-                        HorizontalScrollBarVisibility="Auto"
-                        HorizontalScrollMode="Auto"
-                        VerticalScrollBarVisibility="Disabled">
-                        <winui:ItemsRepeater ItemTemplate="{StaticResource RelationRowsItem}" ItemsSource="{x:Bind RelationRows}">
-                            <winui:ItemsRepeater.Layout>
-                                <winui:StackLayout Orientation="Horizontal" />
-                            </winui:ItemsRepeater.Layout>
-                        </winui:ItemsRepeater>
-                    </ScrollViewer>
-                </winui:ItemsRepeaterScrollHost>
+                    x:Load="{x:Bind ShowRelationRows}"
+                    IsItemClickEnabled="True"
+                    ItemClick="relaRLis_ItemClick"
+                    ItemContainerStyle="{StaticResource FixedListViewItemStyle}"
+                    ItemTemplate="{StaticResource RelationRowsItem}"
+                    ItemsSource="{x:Bind RelationRows}"
+                    Style="{StaticResource HorizontalListViewStyle}" />
 
-                <Border
+                <ListView
                     x:Name="repRL"
                     Grid.Row="9"
                     Grid.ColumnSpan="3"
+                    Windows10version1809:CornerRadius="12"
                     x:Load="{x:Bind ShowReplyRows}"
-                    CornerRadius="12">
-                    <winui:ItemsRepeater ItemTemplate="{StaticResource ReplyRowsItem}" ItemsSource="{x:Bind ReplyRows}" />
-                </Border>
+                    ItemContainerStyle="{StaticResource FixedListViewItemStyle}"
+                    ItemTemplate="{StaticResource ReplyRowsItem}"
+                    ItemsSource="{x:Bind ReplyRows}"
+                    Style="{StaticResource VerticalListViewStyle}" />
 
                 <Button
                     x:Name="likeButton"
@@ -401,7 +402,7 @@
                     <TextBlock
                         Margin="3,0"
                         VerticalAlignment="Center"
-                        Text="{x:Bind Share_num}" />
+                        Text="{x:Bind ShareNum}" />
                 </StackPanel>
 
                 <StackPanel
@@ -412,9 +413,9 @@
                     HorizontalAlignment="Left"
                     x:Load="{x:Bind IsQuestionFeed}"
                     Orientation="Horizontal">
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Question_answer_num}" />
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind QuestionAnswerNum}" />
                     <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">人回答·</TextBlock>
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Question_follow_num}" />
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind QuestionFollowNum}" />
                     <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">人关注</TextBlock>
                 </StackPanel>
                 <ctrl:MakeFeedControl

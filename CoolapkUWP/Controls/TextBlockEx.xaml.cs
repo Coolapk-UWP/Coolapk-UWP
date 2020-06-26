@@ -146,7 +146,11 @@ namespace CoolapkUWP.Controls
 
                                     if (!string.IsNullOrEmpty(content))
                                         ToolTipService.SetToolTip(image, new ToolTip { Content = content });
-                                    image.Tapped += (sender, e) => UIHelper.ShowImage(imageModel);
+                                    image.Tapped += (sender, e) =>
+                                    {
+                                        e.Handled = true;
+                                        UIHelper.ShowImage(imageModel);
+                                    };
 
                                     Grid grid = new Grid();
                                     if (imageModel.IsGif)
@@ -245,13 +249,13 @@ namespace CoolapkUWP.Controls
 
                                     if (content.IndexOf('@') != 0 && content.IndexOf('#') != 0 && !item.Contains("type=\"user-detail\""))
                                     {
-                                        Run run2 = new Run { Text = "", FontFamily = new FontFamily("Segoe MDL2 Assets") }; //U+E167
+                                        Run run2 = new Run { Text = "\uE167", FontFamily = new FontFamily("Segoe MDL2 Assets") };
                                         hyperlink.Inlines.Add(run2);
                                     }
                                     else if (content == "查看图片" && (href.IndexOf("http://image.coolapk.com") == 0 || href.IndexOf("https://image.coolapk.com") == 0))
                                     {
                                         content = loader.GetString("seePic");
-                                        Run run2 = new Run { Text = "", FontFamily = new FontFamily("Segoe MDL2 Assets") }; //U+E158
+                                        Run run2 = new Run { Text = "\uE158", FontFamily = new FontFamily("Segoe MDL2 Assets") };
                                         hyperlink.Inlines.Add(run2);
                                     }
                                     Run run = new Run { Text = content.Replace("&amp;", "&") };

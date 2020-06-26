@@ -8,6 +8,7 @@
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
@@ -24,10 +25,7 @@
                     MaxWidth="768"
                     Padding="{StaticResource StackPanelMargin}"
                     HorizontalAlignment="Center">
-                    <winui:ItemsRepeater
-                        x:Name="UserList"
-                        ItemTemplate="{StaticResource User}"
-                        ItemsSource="{x:Bind infos}" />
+                    <winui:ItemsRepeater x:Name="UserList" ItemTemplate="{StaticResource User}" />
                 </Border>
             </ScrollViewer>
         </winui:ItemsRepeaterScrollHost>

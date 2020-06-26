@@ -229,7 +229,7 @@ namespace CoolapkUWP.Helpers
             dataBuider.Add(new EmojiData("[doge问号]"));
             dataBuider.Add(new EmojiData("[doge飞吻]"));
 
-            buider.Add(new EmojiTypeHeader("doge", dataBuider.ToImmutable()));
+            buider.Add(new EmojiTypeHeader("微博", dataBuider.ToImmutable()));
             dataBuider.Clear();
 
             #endregion doge
@@ -329,7 +329,7 @@ namespace CoolapkUWP.Helpers
             dataBuider.Add(new EmojiData("[w黑线]"));
             dataBuider.Add(new EmojiData("[w鼓掌]"));
 
-            buider.Add(new EmojiTypeHeader("w", dataBuider.ToImmutable()));
+            buider.Add(new EmojiTypeHeader("微信", dataBuider.ToImmutable()));
             dataBuider.Clear();
 
             #endregion w

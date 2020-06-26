@@ -16,7 +16,7 @@ namespace CoolapkUWP.Models
             }
             else if (keys.Value<string>("logo").Contains("xitongguanli"))
             {
-                Symbol = Symbol.AllApps;
+                Symbol = Symbol.Contact;
             }
             else
             {

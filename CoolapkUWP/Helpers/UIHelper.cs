@@ -1,5 +1,5 @@
 ﻿using CoolapkUWP.Pages.FeedPages;
-using CoolapkUWP.ViewModels.FeedListDataProvider;
+using CoolapkUWP.ViewModels.FeedListPage;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Linq;
@@ -62,9 +62,15 @@ namespace CoolapkUWP.Helpers
 
         public static event EventHandler<bool> IsSplitViewPaneOpenedChanged;
 
+        public static event EventHandler<bool> NeedMainPageProgressRing;
+
         public static void ShowSplitView() => IsSplitViewPaneOpenedChanged?.Invoke(null, true);
 
         public static void HideSplitView() => IsSplitViewPaneOpenedChanged?.Invoke(null, false);
+
+        public static void ShowMainPageProgressRing() => NeedMainPageProgressRing?.Invoke(null, true);
+
+        public static void HideMainPageProgressRing() => NeedMainPageProgressRing?.Invoke(null, false);
 
         public static void ShowMessage(string message)
         {
@@ -168,7 +174,7 @@ namespace CoolapkUWP.Helpers
         public static bool IsOriginSource(object source, object originalSource)
         {
             var r = false;
-            if(VisualTree.FindAscendant(originalSource as DependencyObject, typeof(Button)) == null && VisualTree.FindAscendant(originalSource as DependencyObject, typeof(AppBarButton)) == null && originalSource.GetType() != typeof(Button) && originalSource.GetType() != typeof(AppBarButton) && originalSource.GetType() != typeof(RichEditBox))
+            if (VisualTree.FindAscendant(originalSource as DependencyObject, typeof(Button)) == null && VisualTree.FindAscendant(originalSource as DependencyObject, typeof(AppBarButton)) == null && originalSource.GetType() != typeof(Button) && originalSource.GetType() != typeof(AppBarButton) && originalSource.GetType() != typeof(RichEditBox))
             {
                 r = source == VisualTree.FindAscendant(originalSource as DependencyObject, source.GetType());
             }
@@ -216,12 +222,12 @@ namespace CoolapkUWP.Helpers
 
             if (str == "/contacts/fans")
             {
-                NavigateInSplitPane(typeof(UserListPage), new object[] { SettingsHelper.Get<string>(SettingsHelper.Uid), false, "我" });
+                NavigateInSplitPane(typeof(UserListPage), new ViewModels.UserListPage.ViewModel(SettingsHelper.Get<string>(SettingsHelper.Uid), false, "我"));
                 return;
             }
             else if (str == "/user/myFollowList")
             {
-                NavigateInSplitPane(typeof(UserListPage), new object[] { SettingsHelper.Get<string>(SettingsHelper.Uid), true, "我" });
+                NavigateInSplitPane(typeof(UserListPage), new ViewModels.UserListPage.ViewModel(SettingsHelper.Get<string>(SettingsHelper.Uid), true, "我"));
                 return;
             }
 
@@ -233,18 +239,18 @@ namespace CoolapkUWP.Helpers
             {
                 var u = str.Replace(i - 1);
                 var uid = int.TryParse(u, out _) ? u : await NetworkHelper.GetUserIDByNameAsync(u);
-                var f = FeedListDataProvider.GetProvider(FeedListType.UserPageList, uid);
+                var f = ViewModelBase.GetProvider(FeedListType.UserPageList, uid);
                 if (f != null)
                     NavigateInSplitPane(typeof(FeedListPage), f);
             }
             else if (str.IsFirst(i++) || str.IsFirst(i++))
             {
-                Navigate(typeof(FeedShellPage), str.Replace(i - 1));
+                Navigate(typeof(FeedShellPage), await ViewModels.FeedDetailPage.ViewModel.GetViewModelAsync(str.Replace(i - 1)));
             }
             else if (str.IsFirst(i++) || str.IsFirst(i++))
             {
                 string u = str.Replace(i - 1);
-                var f = FeedListDataProvider.GetProvider(FeedListType.TagPageList, u);
+                var f = ViewModelBase.GetProvider(FeedListType.TagPageList, u);
                 if (f != null)
                     NavigateInSplitPane(typeof(FeedListPage), f);
             }
@@ -256,7 +262,7 @@ namespace CoolapkUWP.Helpers
             else if (str.IsFirst(i++))
             {
                 string u = str.Replace(i - 1);
-                var f = FeedListDataProvider.GetProvider(FeedListType.DyhPageList, u);
+                var f = ViewModelBase.GetProvider(FeedListType.DyhPageList, u);
                 if (f != null)
                     NavigateInSplitPane(typeof(FeedListPage), f);
             }

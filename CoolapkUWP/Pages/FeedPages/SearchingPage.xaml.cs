@@ -1,9 +1,8 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -13,182 +12,109 @@ namespace CoolapkUWP.Pages.FeedPages
 {
     public sealed partial class SearchingPage : Page
     {
-        private int[] pages = new int[3];
-        private string[] lastItems = new string[3];
+        private ViewModels.SearchPage.ViewModel provider;
 
         public SearchingPage()
         {
             this.InitializeComponent();
-            FeedList.ItemsSource = new ObservableCollection<FeedModel>();
-            UserList.ItemsSource = new ObservableCollection<UserModel>();
-            TopicList.ItemsSource = new ObservableCollection<TopicModel>();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.Parameter is object[] vs)
+            provider = e.Parameter as ViewModels.SearchPage.ViewModel;
+
+            SearchText.Text = provider.KeyWord;
+
+            FeedList.ItemsSource = provider.providers[0].Models;
+            UserList.ItemsSource = provider.providers[1].Models;
+            TopicList.ItemsSource = provider.providers[2].Models;
+
+            SearchTypeComboBox.SelectedIndex = provider.TypeComboBoxSelectedIndex;
+
+            await StartSearch();
+
+            await Task.Delay(30);
+            if (SearchTypeComboBox.SelectedIndex > -1)
             {
-                if (!string.IsNullOrEmpty(vs[1] as string))
-                {
-                    SearchText.Text = vs[1] as string;
-                    SearchTypeComboBox.SelectedIndex = Convert.ToInt32(vs[0]);
-                    StartSearch();
-                }
+                (FindName($"scrollViewer{SearchTypeComboBox.SelectedIndex}") as ScrollViewer).ChangeView(null, provider.VerticalOffsets[0], null, true);
             }
         }
 
-        private async void SearchFeeds(string keyWord)
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            progressRing.IsActive = true;
-            string feedType = string.Empty;
-            string sortType = string.Empty;
-            switch (SearchFeedTypeComboBox.SelectedIndex)
+            if (SearchTypeComboBox.SelectedIndex > -1)
             {
-                case 0: feedType = "all"; break;
-                case 1: feedType = "feed"; break;
-                case 2: feedType = "feedArticle"; break;
-                case 3: feedType = "rating"; break;
-                case 4: feedType = "picture"; break;
-                case 5: feedType = "question"; break;
-                case 6: feedType = "answer"; break;
-                case 7: feedType = "video"; break;
-                case 8: feedType = "ershou"; break;
-                case 9: feedType = "vote"; break;
+                provider.VerticalOffsets[0] =(FindName($"scrollViewer{SearchTypeComboBox.SelectedIndex}") as ScrollViewer).VerticalOffset;
             }
-            switch (SearchFeedSortTypeComboBox.SelectedIndex)
-            {
-                case 0: sortType = "default"; break;
-                case 1: sortType = "hot"; break;
-                case 2: sortType = "reply"; break;
-            }
-            JArray array = (JArray)await DataHelper.GetDataAsync(
-                                        DataUriType.SearchFeeds,
-                                        feedType,
-                                        sortType,
-                                        keyWord,
-                                        ++pages[0],
-                                        pages[0] > 1 ? "&lastItem=" + lastItems[0] : string.Empty);
-            ObservableCollection<FeedModel> FeedsCollection = FeedList.ItemsSource as ObservableCollection<FeedModel>;
-            if (pages[0] == 1) FeedsCollection.Clear();
-            if (array.Count != 0)
-            {
-                lastItems[0] = array.Last.Value<string>("id");
-                foreach (var i in array)
-                    FeedsCollection.Add(new FeedModel(i as JObject));
-            }
-            else pages[0]--;
-            progressRing.IsActive = false;
-        }
-
-        private async void SearchUsers(string keyWord)
-        {
-            progressRing.IsActive = true;
-            ObservableCollection<UserModel> infos = UserList.ItemsSource as ObservableCollection<UserModel>;
-            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.SearchUsers, keyWord, ++pages[1], pages[1] > 1 ? "&lastItem=" + lastItems[1] : string.Empty);
-            if (array.Count > 0)
-            {
-                lastItems[1] = array.Last.Value<string>("uid");
-                if (infos.Count > 0)
-                {
-                    var d = (from a in infos
-                             from b in array
-                             where a.UserName == b.Value<string>("username")
-                             select a).ToArray();
-                    foreach (var item in d)
-                        infos.Remove(item);
-                }
-                for (int i = 0; i < array.Count; i++)
-                {
-                    JToken t = array[i];
-                    infos.Add(new UserModel((JObject)t));
-                }
-            }
-            else pages[1]--;
-            progressRing.IsActive = false;
-        }
-
-        private async void SearchTopic(string keyWord)
-        {
-            progressRing.IsActive = true;
-            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.SearchTags, keyWord, ++pages[2], pages[2] > 1 ? "&lastItem=" + lastItems[2] : string.Empty);
-            ObservableCollection<TopicModel> FeedsCollection = TopicList.ItemsSource as ObservableCollection<TopicModel>;
-            if (pages[2] == 1) FeedsCollection.Clear();
-            if (array.Count != 0)
-            {
-                lastItems[2] = array.Last.Value<string>("id");
-                foreach (JObject i in array)
-                    FeedsCollection.Add(new TopicModel(i));
-            }
-            else pages[2]--;
-            progressRing.IsActive = false;
-        }
-
-        private void StartSearch()
-        {
-            if (string.IsNullOrEmpty(SearchText?.Text))
-                DetailPivot.Visibility = Visibility.Collapsed;
             else
             {
-                switch (DetailPivot.SelectedIndex)
-                {
-                    case 0:
-                        SearchFeeds(SearchText.Text);
-                        break;
-
-                    case 1:
-                        SearchUsers(SearchText.Text);
-                        break;
-
-                    case 2:
-                        SearchTopic(SearchText.Text);
-                        break;
-                }
-                DetailPivot.Visibility = Visibility.Visible;
+                provider.VerticalOffsets[0] = 0;
             }
+
+            base.OnNavigatingFrom(e);
         }
 
-        private void Grid_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+        private async Task StartSearch()
+        {
+            if (string.IsNullOrEmpty(SearchText?.Text))
+            {
+                detailPivot.Visibility = Visibility.Collapsed;
+            }
+            else if (detailPivot.SelectedIndex < provider.providers.Length)
+            {
+                progressRing.IsActive = true;
+                progressRing.Visibility = Visibility.Visible;
+
+                ViewModels.SearchPage.Base.SearchFeedTypeComboBoxSelectedIndex = SearchFeedTypeComboBox.SelectedIndex;
+                ViewModels.SearchPage.Base.SearchFeedSortTypeComboBoxSelectedIndex = SearchFeedSortTypeComboBox.SelectedIndex;
+
+                await provider.ChangeWordAndSearch(SearchText.Text, detailPivot.SelectedIndex);
+                detailPivot.Visibility = Visibility.Visible;
+                
+                progressRing.Visibility = Visibility.Collapsed;
+                progressRing.IsActive = false;
+            }
+        }
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
 
         private void SearchTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SearchTypeComboBox.SelectedIndex != -1 && DetailPivot != null)
-                DetailPivot.SelectedIndex = SearchTypeComboBox.SelectedIndex;
-            if (SearchTypeComboBox.SelectedIndex + 1 == SearchTypeComboBox.Items.Count || pages[SearchTypeComboBox.SelectedIndex] == 0)
-                StartSearch();
+            if(provider == null) { return; }
+            if (SearchTypeComboBox.SelectedIndex != -1 && detailPivot != null)
+            {
+                detailPivot.SelectedIndex = SearchTypeComboBox.SelectedIndex;
+            }
+
+            if (SearchTypeComboBox.SelectedIndex + 1 == SearchTypeComboBox.Items.Count || provider.providers[SearchTypeComboBox.SelectedIndex].Page == 0)
+            {
+                _ = StartSearch();
+            }
         }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             ScrollViewer viewer = sender as ScrollViewer;
             if (!e.IsIntermediate && viewer.VerticalOffset == viewer.ScrollableHeight)
-                StartSearch();
+                _ = StartSearch();
         }
 
         private void SearchFeedTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            pages[0] = 0;
-            lastItems[0] = string.Empty;
-            StartSearch();
+            if(provider == null) { return; }
+            provider.providers[0].Reset();
+            _ = StartSearch();
         }
 
         #region 搜索框相关
 
-        private void SearchTextBox_KeyUp(object sender, KeyRoutedEventArgs e)
-        {
-            if (e.Key == Windows.System.VirtualKey.Enter)
-                SearchText_QuerySubmitted(null, null);
-        }
-
         private void SearchText_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            pages = new int[3];
-            lastItems = new string[3];
-            (FeedList.ItemsSource as ObservableCollection<FeedModel>).Clear();
-            (UserList.ItemsSource as ObservableCollection<UserModel>).Clear();
-            (TopicList.ItemsSource as ObservableCollection<TopicModel>).Clear();
+            foreach (var item in provider.providers)
+            {
+                item.Reset();
+            }
             StartSearch();
         }
 
@@ -197,10 +123,7 @@ namespace CoolapkUWP.Pages.FeedPages
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
                 JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetSearchWords, sender.Text);
-                if (array != null && array.Count > 0)
-                    sender.ItemsSource = array.Select(i => new SearchWord(i as JObject));
-                else
-                    sender.ItemsSource = null;
+                sender.ItemsSource = array != null && array.Count > 0 ? array.Select(i => new SearchWord(i as JObject)) : null;
             }
         }
 
@@ -214,10 +137,10 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void DetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SearchTypeComboBox.SelectedIndex != DetailPivot.SelectedIndex)
+            if (SearchTypeComboBox.SelectedIndex != detailPivot.SelectedIndex)
             {
-                SearchTypeComboBox.SelectedIndex = DetailPivot.SelectedIndex;
-                if (SearchTypeComboBox.SelectedIndex + 1 == SearchTypeComboBox.Items.Count || pages[SearchTypeComboBox.SelectedIndex] == 0)
+                SearchTypeComboBox.SelectedIndex = detailPivot.SelectedIndex;
+                if (SearchTypeComboBox.SelectedIndex + 1 == SearchTypeComboBox.Items.Count || provider.providers[SearchTypeComboBox.SelectedIndex].Page == 0)
                     StartSearch();
             }
         }

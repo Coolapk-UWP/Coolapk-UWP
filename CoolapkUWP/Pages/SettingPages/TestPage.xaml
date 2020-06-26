@@ -33,9 +33,7 @@
             <TextBox x:Name="message" Header="message" />
             <Button Click="Button_Click_4">show</Button>
             <Button Click="Button_Click_1">to login page</Button>
-            <TextBox x:Name="picUri" />
-            <Button Click="Button_Click_2">get pic</Button>
-            <Image x:Name="pic" />
+            <control:MakeFeedControl />
         </StackPanel>
     </ListView>
 </Page>

@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -19,6 +20,7 @@ namespace CoolapkUWP.Pages
         private bool isProgressRingActived;
         private WeakReference<BitmapImage> pic;
         private readonly InAppNotify inAppNotify;
+        private readonly CoreDispatcher dispatcher;
 
         public string Uri { get; }
         public ImageType Type { get; private set; }
@@ -67,17 +69,23 @@ namespace CoolapkUWP.Pages
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
             if (name != null)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            {
+                _ = dispatcher?.RunAsync(CoreDispatcherPriority.Normal, () =>
+                   {
+                       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+                   });
+            }
         }
 
-        public ImageModel(string uri, ImageType type, InAppNotify notify)
+        public ImageModel(string uri, ImageType type, InAppNotify notify, CoreDispatcher dispatcher)
         {
             Uri = uri;
             Type = IsGif || SettingsHelper.Get<bool>(SettingsHelper.IsDisplayOriginPicture) ? ChangeType(type) : type;
             inAppNotify = notify;
+            this.dispatcher = dispatcher;
         }
 
-        public ImageModel(Models.ImageModel model, InAppNotify notify) : this(model.Uri, model.Type, notify)
+        public ImageModel(Models.ImageModel model, InAppNotify notify, CoreDispatcher dispatcher) : this(model.Uri, model.Type, notify, dispatcher)
         {
         }
 
@@ -183,13 +191,13 @@ namespace CoolapkUWP.Pages
             {
                 if (model.ContextArray.Length == 0)
                 {
-                    imageModels.Add(new ImageModel(model, notify));
+                    imageModels.Add(new ImageModel(model, notify, Dispatcher));
                 }
                 else
                 {
                     foreach (var item in model.ContextArray)
                     {
-                        imageModels.Add(new ImageModel(item, notify));
+                        imageModels.Add(new ImageModel(item, notify, Dispatcher));
                     }
                     Task.Run(async () =>
                     {
@@ -200,7 +208,7 @@ namespace CoolapkUWP.Pages
             }
             else if (e.Parameter is object[] param)
             {
-                imageModels.Add(new ImageModel((string)param[0], (ImageType)param[1], notify));
+                imageModels.Add(new ImageModel((string)param[0], (ImageType)param[1], notify, Dispatcher));
             }
         }
 
@@ -316,7 +324,7 @@ namespace CoolapkUWP.Pages
                         if (n1 != 0 && n1 == selectedIndex)
                         {
                             var factor = item.ZoomFactor;
-                            if(factor + 0.25 < 3)
+                            if (factor + 0.25 < 3)
                             {
                                 item.ChangeView(item.HorizontalOffset / factor * (factor + 0.25), item.VerticalOffset / factor * (factor + 0.25), factor + 0.25F);
                             }

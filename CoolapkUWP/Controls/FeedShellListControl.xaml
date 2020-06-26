@@ -31,43 +31,42 @@
                     <Setter Property="Padding" Value="0" />
                 </Style>
             </Pivot.ItemContainerStyle>
+
             <PivotItem>
                 <StackPanel>
-                    <ListViewItem
-                        x:Name="ChangeHotReplysDisplayModeListViewItem"
-                        Tapped="ChangeHotReplysDisplayModeListViewItem_Tapped"
-                        Template="{StaticResource AppListViewItemTemplate}">
-                        <StackPanel Margin="12,0" Orientation="Horizontal">
-                            <TextBlock
-                                x:Name="iconText"
-                                VerticalAlignment="Center"
-                                FontFamily="Segoe MDL2 Assets"
-                                Text="" />
+                    <ListView
+                        x:Name="hotReplyList"
+                        x:Load="False"
+                        ItemContainerStyle="{StaticResource FixedListViewItemStyle}"
+                        ItemTemplate="{StaticResource feed_reply}">
+                        <ListView.Header>
                             <TextBlock
                                 x:Uid="/FeedShellListControl/hotReply"
-                                Margin="12,0"
+                                Margin="12"
                                 VerticalAlignment="Center" />
-                        </StackPanel>
-                    </ListViewItem>
-                    <winui:ItemsRepeater x:Name="hotReplyList" ItemTemplate="{StaticResource feed_reply}" />
-                    <ListViewItem
-                        x:Name="GetMoreHotReplyListViewItem"
-                        Tapped="GetMoreHotReplyListViewItem_Tapped"
-                        Template="{StaticResource AppListViewItemTemplate}">
-                        <TextBlock
-                            x:Uid="/FeedShellListControl/getHotReply"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center" />
-                    </ListViewItem>
+                        </ListView.Header>
 
-                    <Border
-                        Margin="0,8"
-                        BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-                        BorderThickness="0,2,0,0">
+                        <ListView.Footer>
+                            <ListViewItem
+                                BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
+                                BorderThickness="0,0,0,2"
+                                Tapped="GetMoreHotReplyListViewItem_Tapped"
+                                Template="{StaticResource AppListViewItemTemplate}">
+                                <TextBlock
+                                    x:Uid="/FeedShellListControl/getHotReply"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center" />
+                            </ListViewItem>
+
+                        </ListView.Footer>
+                    </ListView>
+
+                    <Border Margin="0,8">
                         <winui:ItemsRepeater x:Name="replyList" ItemTemplate="{StaticResource feed_reply}" />
                     </Border>
                 </StackPanel>
             </PivotItem>
+
             <PivotItem>
                 <winui:ItemsRepeater x:Name="likeList">
                     <winui:ItemsRepeater.ItemTemplate>
@@ -77,10 +76,12 @@
                                 Style="{StaticResource AppListViewItemStyle}"
                                 Tag="{x:Bind Url}"
                                 Tapped="Grid_Tapped">
+
                                 <StackPanel
                                     Padding="8,4"
                                     VerticalAlignment="Center"
                                     Orientation="Horizontal">
+
                                     <Ellipse
                                         Width="30"
                                         Height="30"
@@ -89,6 +90,7 @@
                                             <ImageBrush ImageSource="{x:Bind UserAvatar.Pic}" />
                                         </Ellipse.Fill>
                                     </Ellipse>
+
                                     <TextBlock
                                         Margin="5,0"
                                         VerticalAlignment="Center"
@@ -99,6 +101,7 @@
                     </winui:ItemsRepeater.ItemTemplate>
                 </winui:ItemsRepeater>
             </PivotItem>
+
             <PivotItem>
                 <winui:ItemsRepeater x:Name="shareList">
                     <winui:ItemsRepeater.ItemTemplate>
@@ -119,22 +122,29 @@
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
-                                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                        <Button
-                                            Margin="4,0"
-                                            Padding="2"
-                                            VerticalAlignment="Center"
-                                            Background="Transparent"
-                                            Content="{x:Bind Username}"
-                                            Style="{StaticResource ButtonRevealStyle}"
-                                            Tag="{x:Bind Uurl}" />
-                                        <TextBlock
-                                            VerticalAlignment="Center"
-                                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                            Text="{x:Bind Dateline}" />
-                                    </StackPanel>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Button
+                                        Margin="4,0"
+                                        Padding="2"
+                                        VerticalAlignment="Center"
+                                        Background="Transparent"
+                                        Content="{x:Bind Username}"
+                                        Style="{StaticResource ButtonRevealStyle}"
+                                        Tag="{x:Bind Uurl}" />
+
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                        Text="{x:Bind Dateline}" />
+
                                     <local:TextBlockEx
                                         Grid.Row="1"
+                                        Grid.ColumnSpan="2"
                                         Margin="8,4"
                                         MessageText="{x:Bind Message}" />
                                 </Grid>

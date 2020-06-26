@@ -57,7 +57,7 @@ namespace CoolapkUWP.Helpers
             {
                 return new BitmapImage(new Uri(url));
             }
-            else if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
+            else if (model == null && SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
             {
                 return NoPic;
             }
@@ -70,62 +70,24 @@ namespace CoolapkUWP.Helpers
                 {
                     url += ".s.jpg";
                 }
-
+                var forceGetPic = model != null;
                 if (item is null)
                 {
                     StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
                     try { await DownloadImageAsync(file, url, model, notify); }
-                    catch (FileLoadException) { return GetLocalImageAsync(file.Path); }
-                    return GetLocalImageAsync(file.Path);
+                    catch (FileLoadException) { return GetLocalImageAsync(file.Path, forceGetPic); }
+                    return GetLocalImageAsync(file.Path, forceGetPic);
                 }
                 else
                 {
-                    return item is StorageFile file ? GetLocalImageAsync(file.Path) : null;
+                    return item is StorageFile file ? GetLocalImageAsync(file.Path, forceGetPic) : null;
                 }
             }
         }
 
-        public static async Task<string> GetImagePathAsync(ImageType type, string url)
+        private static BitmapImage GetLocalImageAsync(string filename, bool forceGetPic)
         {
-            if (url.IndexOf("ms-appx") == 0)
-            {
-                return url;
-            }
-            else if (string.IsNullOrEmpty(url) || SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
-            {
-                return SettingsHelper.Get<bool>(SettingsHelper.IsDarkMode) ? "ms-appx:/Assets/img_placeholder_night.png" : "ms-appx:/Assets/img_placeholder.png";
-            }
-            else if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
-            {
-                return NoPic.UriSource.AbsolutePath;
-            }
-            else
-            {
-                string fileName = DataHelper.GetMD5(url);
-                StorageFolder folder = await GetFolderAsync(type);
-                var item = await folder.TryGetItemAsync(fileName);
-                if (type == ImageType.SmallImage)
-                {
-                    url += ".s.jpg";
-                }
-
-                if (item is null)
-                {
-                    StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
-                    try { await DownloadImageAsync(file, url, null, UIHelper.InAppNotification); }
-                    catch (FileLoadException) { return file.Path; }
-                    return file.Path;
-                }
-                else
-                {
-                    return item is StorageFile file ? file.Path : null;
-                }
-            }
-        }
-
-        private static BitmapImage GetLocalImageAsync(string filename)
-        {
-            return (filename is null || SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode)) ? NoPic : new BitmapImage(new Uri(filename));
+            return (filename is null || (!forceGetPic && SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))) ? NoPic : new BitmapImage(new Uri(filename));
         }
 
         private static async Task DownloadImageAsync(StorageFile file, string url, Pages.ImageModel model, InAppNotify notify)

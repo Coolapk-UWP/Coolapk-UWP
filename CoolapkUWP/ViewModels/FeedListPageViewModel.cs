@@ -1,147 +1,155 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Pages.FeedListPageModels;
 using CoolapkUWP.Pages.FeedPages;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace CoolapkUWP.ViewModels.FeedListDataProvider
+namespace CoolapkUWP.ViewModels.FeedListPage
 {
-    internal interface ICanChangeSelectedIndex
+    internal abstract class ViewModelBase : IViewModel
     {
-        int SelectedIndex { get; set; }
+        public string Id { get; }
+        public FeedListType ListType { get; }
+        protected abstract CoolapkListProvider Provider { get; }
+        public ObservableCollection<Entity> Models { get => Provider?.Models ?? null; }
+        public double[] VerticalOffsets { get; set; } = new double[1];
 
-        void Reset();
-    }
+        public string Title { get; protected set; }
 
-    internal abstract class FeedListDataProvider
-    {
-        public static FeedListDataProvider GetProvider(FeedListType type, string id)
+        protected const string idName = "id";
+        protected static readonly Func<JObject, Entity[]> getEntity = (o) => new Entity[] { new FeedModel(o) };
+        protected static readonly Func<Entity, JToken, bool> isEqual = (a, b) => a is FeedListDetailBase ? false : ((FeedModel)a).Id == b.Value<int>("id").ToString();
+
+        protected ViewModelBase(string id, FeedListType type)
+        {
+            Id = string.IsNullOrEmpty(id) ? throw new ArgumentException(nameof(id))
+                                          : id;
+            ListType = type;
+            _ = InitialDetail();
+        }
+
+        internal async Task InitialDetail()
+        {
+            while (Provider?.Models == null)
+            {
+                await Task.Delay(20);
+            }
+            FeedListDetailBase item = await GetDetail();
+            Models.Insert(0, item);
+            Title = GetTitleBarText(item);
+        }
+
+        public static ViewModelBase GetProvider(FeedListType type, string id)
         {
             if (string.IsNullOrEmpty(id) || id == "0") return null;
             switch (type)
             {
-                case FeedListType.UserPageList: return new UserPageDataProvider(id);
-                case FeedListType.TagPageList: return new TagPageDataProvider(id);
-                case FeedListType.DyhPageList: return new DyhPageDataProvider(id);
+                case FeedListType.UserPageList: return new UserViewModel(id);
+                case FeedListType.TagPageList: return new TagViewModel(id);
+                case FeedListType.DyhPageList: return new DyhViewModel(id);
                 default: return null;
             }
         }
 
-        protected FeedListDataProvider() { }
-
-        public string Id { get; protected set; }
-        public FeedListType ListType { get; protected set; }
-        public readonly ObservableCollection<object> itemCollection = new ObservableCollection<object>();
-        public string Title { get; protected set; }
-
         public void ChangeCopyMode(bool mode)
         {
-            if (itemCollection.Count == 0) { return; }
-            if (itemCollection[0] is Detail detail)
+            if (Models.Count == 0) { return; }
+            if (Models[0] is FeedListDetailBase detail)
             {
                 detail.IsCopyEnabled = mode;
             }
         }
 
-        public async Task<Detail> GetDetail()
+        private async Task<FeedListDetailBase> GetDetail()
         {
-            Detail d;
             DataUriType type;
             switch (ListType)
             {
                 case FeedListType.UserPageList:
                     type = DataUriType.GetUserSpace;
-                    d = new UserDetail();
                     break;
+
                 case FeedListType.TagPageList:
                     type = DataUriType.GetTagDetail;
-                    d = new TopicDetail();
                     break;
+
                 case FeedListType.DyhPageList:
                     type = DataUriType.GetDyhDetail;
-                    d = new DyhDetail();
                     break;
+
                 default:
-                    throw new System.Exception($"{typeof(FeedListType).FullName}值错误");
+                    throw new ArgumentException($"{typeof(FeedListType).FullName}值错误");
             }
             JObject o = (JObject)await DataHelper.GetDataAsync(type, Id);
+            FeedListDetailBase d = null;
             if (o != null)
             {
-                d.Initialize(o);
-            }
-            Title = GetTitleBarText(d);
-            return d;
+                switch (ListType)
+                {
+                    case FeedListType.UserPageList:
+                        d = new UserDetail(o);
+                        break;
 
+                    case FeedListType.TagPageList:
+                        d = new TopicDetail(o);
+                        break;
+
+                    case FeedListType.DyhPageList:
+                        d = new DyhDetail(o);
+                        break;
+                }
+            }
+            return d;
         }
 
-        public abstract Task<List<FeedModel>> GetFeeds(int p = -1);
-
-        internal abstract string GetTitleBarText(Detail detail);
+        protected abstract string GetTitleBarText(FeedListDetailBase detail);
 
         public async Task Refresh()
         {
-            ICanChangeSelectedIndex it = null;
-            if (itemCollection.Count > 0)
+            ICanComboBoxChangeSelectedIndex it = null;
+            if (Models.Count > 0)
             {
-                it = itemCollection[0] as ICanChangeSelectedIndex;
-                itemCollection.RemoveAt(0);
+                it = Models[0] as ICanComboBoxChangeSelectedIndex;
+                Models.RemoveAt(0);
             }
 
-            Detail item = await GetDetail();
+            var item = await GetDetail();
             if (it != null)
             {
-                (item as ICanChangeSelectedIndex).SelectedIndex = it.SelectedIndex;
+                await (item as ICanComboBoxChangeSelectedIndex).SetComboBoxSelectedIndex(it.ComboBoxSelectedIndex);
             }
-            itemCollection.Insert(0, item);
-            List<FeedModel> feeds = await GetFeeds(1);
-            if (feeds != null)
-                for (int i = 0; i < feeds.Count; i++)
-                    itemCollection.Insert(i + 1, feeds[i]);
+            Models.Insert(0, item);
+            Title = GetTitleBarText(item);
+
+            await Provider?.Refresh(1);
         }
 
-        public async Task LoadNextPage()
-        {
-            List<FeedModel> feeds = await GetFeeds();
-            if (feeds != null)
-                foreach (var item in feeds)
-                    itemCollection.Add(item);
-        }
+        public async Task LoadNextPage() => await Provider?.Refresh();
+
+        [Obsolete]
+        public async Task Refresh(int p) => await Provider?.Refresh(p);
     }
 
-    internal class UserPageDataProvider : FeedListDataProvider
+    internal class UserViewModel : ViewModelBase
     {
-        private int page;
-        private int firstItem, lastItem;
+        protected override CoolapkListProvider Provider { get; }
 
-        private UserPageDataProvider() => ListType = FeedListType.UserPageList;
-
-        internal UserPageDataProvider(string uid) : this() => Id = uid;
-
-        public override async Task<List<FeedModel>> GetFeeds(int p = -1)
+        internal UserViewModel(string uid) : base(uid, FeedListType.UserPageList)
         {
-            if (p == 1 && page == 0) page = 1;
-            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetUserFeeds,
-                                                            Id,
-                                                            p == -1 ? ++page : p,
-                                                            firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
-                                                            lastItem == 0 ? string.Empty : $"&lastItem={lastItem}");
-            if (!(array is null) && array.Count != 0)
-            {
-                if (page == 1 || p == 1)
-                    firstItem = array.First.Value<int>("id");
-                lastItem = array.Last.Value<int>("id");
-                List<FeedModel> FeedsCollection = new List<FeedModel>();
-                foreach (JObject i in array) FeedsCollection.Add(new FeedModel(i));
-                return FeedsCollection;
-            }
-            else
-            {
-                page--;
-                return null;
-            }
+            Provider =
+                new CoolapkListProvider(
+                    async (p, page, firstItem, lastItem) =>
+                        (JArray)await DataHelper.GetDataAsync(
+                            DataUriType.GetUserFeeds,
+                            Id,
+                            p == -1 ? ++page : p,
+                            firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
+                            lastItem == 0 ? string.Empty : $"&lastItem={lastItem}"),
+                    isEqual, getEntity, idName);
         }
 
         public void Report()
@@ -149,36 +157,39 @@ namespace CoolapkUWP.ViewModels.FeedListDataProvider
             UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, $"https://m.coolapk.com/mp/do?c=user&m=report&id={Id}" });
         }
 
-        internal override string GetTitleBarText(Detail detail) => (detail as UserDetail).UserName;
+        protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as UserDetail).UserName;
     }
 
-    internal class TagPageDataProvider : FeedListDataProvider, ICanChangeSelectedIndex
+    internal class TagViewModel : ViewModelBase, ICanComboBoxChangeSelectedIndex
     {
-        private int page, _selectedIndex;
+        public int ComboBoxSelectedIndex { get; private set; }
 
-        public int SelectedIndex
+        private string sortType = "lastupdate_desc";
+
+        protected override CoolapkListProvider Provider { get; }
+
+        internal TagViewModel(string tag) : base(tag, FeedListType.TagPageList)
         {
-            get => _selectedIndex;
-            set
-            {
-                if (value > -1)
-                    _selectedIndex = value;
-            }
+            Provider =
+                new CoolapkListProvider(
+                    async (p, page, firstItem, lastItem) =>
+                         (JArray)await DataHelper.GetDataAsync(
+                             DataUriType.GetTagFeeds,
+                             Id,
+                             p == -1 ? ++page : p,
+                             firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
+                             lastItem == 0 ? string.Empty : $"&lastItem={lastItem}",
+                             sortType),
+                    isEqual, getEntity, idName);
         }
 
-        private double firstItem, lastItem;
+        protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as TopicDetail).Title;
 
-        private TagPageDataProvider() => ListType = FeedListType.TagPageList;
-
-        internal TagPageDataProvider(string tag) : this() => Id = tag;
-
-        public void Reset() => firstItem = lastItem = page = 0;
-
-        public override async Task<List<FeedModel>> GetFeeds(int p = -1)
+        public async Task SetComboBoxSelectedIndex(int value)
         {
-            string sortType = string.Empty;
-            switch (SelectedIndex)
+            switch (value)
             {
+                case -1: return;
                 case 0:
                     sortType = "lastupdate_desc";
                     break;
@@ -191,79 +202,48 @@ namespace CoolapkUWP.ViewModels.FeedListDataProvider
                     sortType = "popular";
                     break;
             }
-            if (p == 1 && page == 0) page = 1;
-            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetTagFeeds,
-                                                            Id,
-                                                            p == -1 ? ++page : p,
-                                                            firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
-                                                            lastItem == 0 ? string.Empty : $"&lastItem={lastItem}",
-                                                            sortType);
-            if (!(array is null) && array.Count != 0)
+            ComboBoxSelectedIndex = value;
+            if (Provider != null)
             {
-                if (page == 1 || p == 1)
-                    firstItem = array.First.Value<int>("id");
-                lastItem = array.Last.Value<int>("id");
-                List<FeedModel> FeedsCollection = new List<FeedModel>();
-                foreach (JObject i in array) FeedsCollection.Add(new FeedModel(i));
-                return FeedsCollection;
-            }
-            else
-            {
-                page--;
-                return null;
+                Provider.Reset();
+                await InitialDetail();
             }
         }
-
-        internal override string GetTitleBarText(Detail detail) => (detail as TopicDetail).Title;
     }
 
-    internal class DyhPageDataProvider : FeedListDataProvider, ICanChangeSelectedIndex
+    internal class DyhViewModel : ViewModelBase, ICanComboBoxChangeSelectedIndex
     {
-        private int page, _selectedIndex;
+        public int ComboBoxSelectedIndex { get; private set; }
 
-        public int SelectedIndex
+        public async Task SetComboBoxSelectedIndex(int value)
         {
-            get => _selectedIndex;
-            set
+            if (value > -1)
             {
-                if (value > -1)
-                    _selectedIndex = value;
+                ComboBoxSelectedIndex = value;
+                if (Provider != null)
+                {
+                    Provider.Reset();
+                    await InitialDetail();
+                }
             }
         }
 
-        private double firstItem, lastItem;
+        protected override CoolapkListProvider Provider { get; }
 
-        private DyhPageDataProvider() => ListType = FeedListType.DyhPageList;
-
-        internal DyhPageDataProvider(string id) : this() => Id = id;
-
-        public void Reset() => firstItem = lastItem = page = 0;
-
-        public override async Task<List<FeedModel>> GetFeeds(int p = -1)
+        internal DyhViewModel(string id) : base(id, FeedListType.DyhPageList)
         {
-            if (p == 1 && page == 0) page = 1;
-            JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetDyhFeeds,
-                                                            Id,
-                                                            SelectedIndex == 0 ? "all" : "square",
-                                                            p == -1 ? ++page : p,
-                                                            firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
-                                                            lastItem == 0 ? string.Empty : $"&lastItem={lastItem}");
-            if (!(array is null) && array.Count != 0)
-            {
-                if (page == 1 || p == 1)
-                    firstItem = array.First.Value<int>("id");
-                lastItem = array.Last.Value<int>("id");
-                List<FeedModel> FeedsCollection = new List<FeedModel>();
-                foreach (JObject i in array) FeedsCollection.Add(new FeedModel(i));
-                return FeedsCollection;
-            }
-            else
-            {
-                page--;
-                return null;
-            }
+            Provider =
+                new CoolapkListProvider(
+                    async (p, page, firstItem, lastItem) =>
+                        (JArray)await DataHelper.GetDataAsync(DataUriType.GetDyhFeeds,
+                            Id,
+                            ComboBoxSelectedIndex == 0 ? "all" : "square",
+                            p == -1 ? ++page : p,
+                            firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
+                            lastItem == 0 ? string.Empty : $"&lastItem={lastItem}"),
+                    isEqual, getEntity, idName);
         }
 
-        internal override string GetTitleBarText(Detail detail) => (detail as DyhDetail).Title;
+        protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as DyhDetail).Title;
     }
 }

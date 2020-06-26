@@ -1,6 +1,8 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Controls.MakeFeedControlModel;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
@@ -92,14 +94,41 @@ namespace CoolapkUWP.Controls
 
         private async void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            EmojiData c = e.ClickedItem as EmojiData;
-            InputBox.Document.Selection.InsertImage(
-                20, 20, 0, VerticalCharacterAlignment.Baseline, c.Name,
-                await (await StorageFile.GetFileFromApplicationUriAsync(c.Uri)).OpenReadAsync());
+            await InsertEmoji(e.ClickedItem as EmojiData);
+        }
+
+        private async Task InsertEmoji(EmojiData data)
+        {
+            InputBox.Document.Selection.InsertImage(20,
+                                                    20,
+                                                    0,
+                                                    VerticalCharacterAlignment.Baseline,
+                                                    data.Name,
+                                                    await (await StorageFile.GetFileFromApplicationUriAsync(data.Uri)).OpenReadAsync());
             InputBox.Document.Selection.MoveRight(TextRangeUnit.Character, 1, false);
         }
 
         private void InputBox_ContextMenuOpening(object sender, ContextMenuEventArgs e) => e.Handled = true;
 
+        private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (string.IsNullOrEmpty(sender.Text) || args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) { return; }
+
+            sender.ItemsSource = (from s in EmojiTypeHelper.TypeHeaders
+                                  from emoji in s.Emojis
+                                  where emoji.Name.Contains(sender.Text, StringComparison.OrdinalIgnoreCase)
+                                  select emoji);
+        }
+
+        private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            sender.Text = (args.SelectedItem as EmojiData).Name;
+        }
+
+        private async void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            if (args.ChosenSuggestion == null) { return; }
+            await InsertEmoji(args.ChosenSuggestion as EmojiData);
+        }
     }
 }

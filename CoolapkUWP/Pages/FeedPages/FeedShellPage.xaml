@@ -10,6 +10,7 @@
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+    NavigationCacheMode="Enabled"
     SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
     <Page.Resources>
@@ -22,7 +23,7 @@
     </Page.Resources>
 
     <Grid>
-        <Grid MaxWidth="960" HorizontalAlignment="Center">
+        <Grid>
             <ScrollViewer
                 x:Name="mainScrollViewer"
                 VerticalScrollMode="{x:Bind MainScrollMode, Mode=OneWay}"
@@ -45,7 +46,7 @@
                         <Border x:Name="detailBorder">
                             <control:FeedShellDetailControl
                                 x:Name="detailControl"
-                                FeedDetail="{x:Bind FeedDetail, Mode=OneWay}"
+                                FeedDetail="{x:Bind provider.FeedDetail, Mode=OneWay}"
                                 RequireRefresh="detailControl_RequireRefresh" />
                         </Border>
                     </ScrollViewer>
@@ -61,8 +62,8 @@
                             <control:FeedShellListControl
                                 x:Name="listCtrl"
                                 x:Load="False"
-                                NeedMoveToTop="listCtrl_NeedMoveToTop"
                                 NeedProgressRing="listCtrl_NeedProgressRing" />
+
                             <winui:ItemsRepeater
                                 x:Name="answersList"
                                 x:Load="False"
@@ -87,7 +88,7 @@
                     Tag="reply">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Comment" />
-                        <TextBlock Margin="3,0" Text="{x:Bind FeedDetail.Replynum, Mode=OneWay}" />
+                        <TextBlock Margin="3,0" Text="{x:Bind provider.FeedDetail.Replynum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
                 <Button
@@ -99,7 +100,7 @@
                     Tag="like">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Like" />
-                        <TextBlock Margin="3,0" Text="{x:Bind FeedDetail.Likenum, Mode=OneWay}" />
+                        <TextBlock Margin="3,0" Text="{x:Bind provider.FeedDetail.Likenum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
                 <Button
@@ -111,16 +112,16 @@
                     Tag="share">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Link" />
-                        <TextBlock Margin="3,0" Text="{x:Bind FeedDetail.Share_num, Mode=OneWay}" />
+                        <TextBlock Margin="3,0" Text="{x:Bind provider.FeedDetail.ShareNum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
             </StackPanel>
         </Grid>
         <control:TitleBar
-            x:Name="TitleBar"
+            x:Name="titleBar"
             BackButtonClicked="BackButton_Click"
             IsBackButtonEnabled="{x:Bind Frame.CanGoBack}"
-            RefreshButtonClicked="{x:Bind Refresh}"
+            RefreshButtonClicked="titleBar_RefreshButtonClicked"
             RefreshButtonVisibility="Visible">
             <control:TitleBar.RightAreaContent>
                 <StackPanel Orientation="Horizontal">
@@ -132,7 +133,7 @@
 
                     <Button
                         x:Name="opLikeButton"
-                        x:Load="{x:Bind FeedDetail.IsQuestionFeed, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}"
+                        x:Load="{x:Bind provider.FeedDetail.IsQuestionFeed, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}"
                         Click="Button_Click"
                         Style="{StaticResource IconButtonStyle}"
                         Tag="MakeLike">

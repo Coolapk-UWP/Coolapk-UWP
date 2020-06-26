@@ -15,7 +15,7 @@ namespace CoolapkUWP.Controls.DataTemplates
             var s = sender as FrameworkElement;
             if (e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
             if ((s.DataContext as ICanCopy)?.IsCopyEnabled ?? false) { return; }
-
+            e.Handled = true;
             UIHelper.OpenLinkAsync(s.Tag as string);
         }
 
@@ -40,7 +40,7 @@ namespace CoolapkUWP.Controls.DataTemplates
                     break;
 
                 case "likeButton":
-                    await DataHelper.MakeLikeAsync( element.Tag as ICanChangeLike,
+                    await DataHelper.MakeLikeAsync(element.Tag as ICanChangeLike,
                                                     element.Dispatcher,
                                                     (SymbolIcon)element.FindName("like1"),
                                                     (SymbolIcon)element.FindName("like2"));
@@ -87,6 +87,11 @@ namespace CoolapkUWP.Controls.DataTemplates
             FrameworkElement s = (FrameworkElement)sender;
             var b = s.FindName("moreButton") as Button;
             b.Flyout.ShowAt(s);
+        }
+
+        private void relaRLis_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UIHelper.OpenLinkAsync(((Models.RelationRowsItem)e.ClickedItem).Url);
         }
     }
 }

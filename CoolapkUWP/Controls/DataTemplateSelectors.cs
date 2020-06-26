@@ -82,8 +82,8 @@ namespace CoolapkUWP.Controls
             if (item is FeedModel f)
             {
                 if (f.IsQuestionFeed) { return QuestionFeed; }
-                else if (f.ShowMessage_title) { return FeedImageText; }
-                else return f.IsCoolPictuers ? CoolPic : Feed;
+                else if (f.ShowMessageTitle) { return FeedImageText; }
+                else { return f.IsCoolPictuers ? CoolPic : Feed; }
             }
             else if (item is UserModel) { return User; }
             else

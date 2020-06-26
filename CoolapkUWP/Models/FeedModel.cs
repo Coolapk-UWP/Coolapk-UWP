@@ -16,10 +16,9 @@ namespace CoolapkUWP.Models
 
     internal class FeedModel : FeedModelBase
     {
-
         public FeedModel(JObject token, FeedDisplayMode mode = FeedDisplayMode.normal) : base(token)
         {
-            if (!string.IsNullOrEmpty(Message_title) && !mode.HasFlag(FeedDisplayMode.notShowMessageTitle)) ShowMessage_title = true;
+            if (!string.IsNullOrEmpty(MessageTitle) && !mode.HasFlag(FeedDisplayMode.notShowMessageTitle)) ShowMessageTitle = true;
             if (mode.HasFlag(FeedDisplayMode.isFirstPageFeed))
             {
                 Info = token.Value<string>("infoHtml").Replace("&nbsp;", string.Empty);
@@ -102,6 +101,7 @@ namespace CoolapkUWP.Models
             IsStickTop = token.TryGetValue("isStickTop", out JToken j) && int.Parse(j.ToString()) == 1;
         }
 
+        public new bool ShowMessageTitle { get; private set; }
         public new string Uurl { get; private set; }
         public new string Info { get; private set; }
         public bool IsStickTop { get; private set; }
@@ -117,7 +117,6 @@ namespace CoolapkUWP.Models
         public bool ShowLikes { get; private set; } = true;
         public ImmutableArray<ReplyRowsItem> ReplyRows { get; private set; } = ImmutableArray<ReplyRowsItem>.Empty;
         public ImmutableArray<RelationRowsItem> RelationRows { get; private set; } = ImmutableArray<RelationRowsItem>.Empty;
-        public new bool ShowMessage_title { get; private set; }
     }
 
     public class RelationRowsItem

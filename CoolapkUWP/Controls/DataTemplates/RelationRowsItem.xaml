@@ -7,27 +7,21 @@
     xmlns:models="using:CoolapkUWP.Models">
 
     <DataTemplate x:Key="RelationRowsItem" x:DataType="models:RelationRowsItem">
-        <ListViewItem
+        <StackPanel
             Margin="2"
-            KeyDown="ListViewItem_KeyDown"
-            Style="{StaticResource FixedListViewItemStyle}"
-            Tag="{x:Bind Url}"
-            Tapped="OnTapped">
-            <StackPanel
-                Padding="4"
-                VerticalAlignment="Center"
-                Background="{ThemeResource SystemControlBackgroundListLowBrush}"
-                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                BorderThickness="1"
-                CornerRadius="8"
-                Orientation="Horizontal">
-                <Image
-                    Width="20"
-                    Height="20"
-                    Source="{x:Bind Logo.Pic, Mode=OneWay}" />
-                <TextBlock Margin="4,0,0,0" Text="{x:Bind Title}" />
-            </StackPanel>
-        </ListViewItem>
+            Padding="4"
+            VerticalAlignment="Center"
+            Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="8"
+            Orientation="Horizontal">
+            <Image
+                Width="20"
+                Height="20"
+                Source="{x:Bind Logo.Pic, Mode=OneWay}" />
+            <TextBlock Margin="4,0,0,0" Text="{x:Bind Title}" />
+        </StackPanel>
     </DataTemplate>
 
 

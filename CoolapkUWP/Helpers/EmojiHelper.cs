@@ -11,15 +11,16 @@ namespace CoolapkUWP.Helpers
 
         public static bool Contains(string key, bool useOldEmoji = false)
         {
+            var _key = key[0] == '#' ? key.Substring(1) : key;
             try
             {
                 if (useOldEmoji)
                 {
-                    return !string.IsNullOrEmpty(oldEmojiIdLoader.GetString(key));
+                    return !string.IsNullOrEmpty(oldEmojiIdLoader.GetString(_key));
                 }
                 else
                 {
-                    return !string.IsNullOrEmpty(emojiIdLoader.GetString(key));
+                    return !string.IsNullOrEmpty(emojiIdLoader.GetString(_key));
                 }
             }
             catch (ArgumentException)
@@ -30,9 +31,10 @@ namespace CoolapkUWP.Helpers
 
         public static Uri Get(string key, bool useOldEmoji = false)
         {
+            var _key = key[0] == '#' ? key.Substring(1) : key;
             try
             {
-                string id = useOldEmoji ? oldEmojiIdLoader.GetString(key) : emojiIdLoader.GetString(key);
+                string id = useOldEmoji ? oldEmojiIdLoader.GetString(_key) : emojiIdLoader.GetString(_key);
                 if (string.IsNullOrEmpty(id))
                 {
                     return ImageCacheHelper.NoPic.UriSource;

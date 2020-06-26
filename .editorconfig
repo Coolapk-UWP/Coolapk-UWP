@@ -8,3 +8,6 @@ dotnet_diagnostic.CA2007.severity = suggestion
 
 # CA1032: 实现标准异常构造函数
 dotnet_diagnostic.CA1032.severity = suggestion
+
+# CA1056: URI属性不应该是字符串
+dotnet_diagnostic.CA1056.severity = suggestion

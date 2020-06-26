@@ -31,7 +31,7 @@
         <Grid Height="40">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="44" />
             </Grid.ColumnDefinitions>
 
             <AutoSuggestBox
@@ -46,6 +46,7 @@
 
             <Button
                 Grid.Column="1"
+                Width="44"
                 HorizontalAlignment="Right"
                 Click="Button_Click"
                 Style="{ThemeResource IconButtonStyle}"
@@ -72,6 +73,7 @@
                 <RowDefinition Height="72px" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
+
             <Ellipse
                 Grid.RowSpan="3"
                 Width="56"
@@ -83,18 +85,21 @@
                     <ImageBrush ImageSource="{x:Bind model.UserAvatar, Mode=OneWay}" />
                 </Ellipse.Fill>
             </Ellipse>
+
             <TextBlock
                 Grid.Row="0"
                 Margin="104,0,0,0"
                 FontSize="20"
                 FontWeight="Bold"
                 Text="{x:Bind model.UserName, Mode=OneWay}" />
+
             <winui:ProgressBar
                 Grid.Row="1"
                 Width="240"
                 Margin="100,0,0,0"
                 HorizontalAlignment="Left"
                 Value="{x:Bind model.NextLevelPercentage, Mode=OneWay}" />
+
             <StackPanel
                 Grid.Row="2"
                 Margin="104,0,0,0"
@@ -113,16 +118,19 @@
                     VerticalAlignment="Center"
                     Text="{x:Bind model.NextLevelNowExperience, Mode=OneWay}" />
             </StackPanel>
+
             <TextBlock
                 Grid.Row="3"
                 Margin="104,0,0,0"
                 Text="{x:Bind model.LevelTodayMessage, Mode=OneWay}" />
+
             <Grid Grid.Row="5" Padding="4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+
                 <Button
                     Grid.Column="0"
                     Padding="0"
@@ -137,6 +145,7 @@
                         <TextBlock HorizontalAlignment="Center" Text="{x:Bind model.FeedNum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
+
                 <Button
                     Grid.Column="1"
                     Padding="0"
@@ -151,6 +160,7 @@
                         <TextBlock HorizontalAlignment="Center" Text="{x:Bind model.FollowNum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
+
                 <Button
                     Grid.Column="2"
                     Padding="0"
@@ -171,6 +181,7 @@
                 MakeFeedMode="Feed"
                 MakedFeedSuccessful="MakeFeedControl_MakedFeedSuccessful" />
         </Grid>
+
         <ListViewItem
             KeyDown="ListViewItem_KeyDown"
             Style="{StaticResource NaviItemStyle}"
@@ -182,6 +193,7 @@
                 <TextBlock x:Uid="/Mypage/Login" Margin="8,0" />
             </StackPanel>
         </ListViewItem>
+
         <ListViewItem
             KeyDown="ListViewItem_KeyDown"
             Style="{StaticResource NaviItemStyle}"
@@ -192,6 +204,7 @@
                 <TextBlock x:Uid="/Mypage/Setting" Margin="8,0" />
             </StackPanel>
         </ListViewItem>
+
         <ListViewItem
             KeyDown="ListViewItem_KeyDown"
             Style="{StaticResource NaviItemStyle}"

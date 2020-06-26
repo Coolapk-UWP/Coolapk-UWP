@@ -2,6 +2,7 @@
     x:Class="CoolapkUWP.Controls.DataTemplates.FeedReply"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Windows10version1809="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:ctrl="using:CoolapkUWP.Controls"
     xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
@@ -237,35 +238,30 @@
                     Tag="{x:Bind}"
                     Visibility="Collapsed" />
 
-                <StackPanel
+                <ListView
                     x:Name="replyRows"
                     Grid.Row="4"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
-                    Margin="0,0,0,8"
+                    Margin="4,0,4,8"
+                    Windows10version1809:CornerRadius="8"
                     x:Load="{x:Bind ShowreplyRows}"
                     Background="{ThemeResource SystemControlBackgroundListLowBrush}"
-                    CornerRadius="8">
-                    <winui:ItemsRepeater
-                        x:Name="repRL"
-                        Grid.Row="9"
-                        Margin="4,0"
-                        ItemsSource="{x:Bind ReplyRows}">
-                        <winui:ItemsRepeater.ItemTemplate>
-                            <DataTemplate x:DataType="models:SimpleFeedReplyModel">
-                                <ctrl:TextBlockEx
-                                    Margin="4"
-                                    VerticalAlignment="Center"
-                                    MessageText="{x:Bind Message}" />
-                            </DataTemplate>
-                        </winui:ItemsRepeater.ItemTemplate>
-                    </winui:ItemsRepeater>
-                    <ListViewItem
-                        x:Name="replyRowsMore"
-                        x:Load="{x:Bind ShowreplyRowsMore}"
-                        Template="{StaticResource AppListViewItemTemplate}">
+                    ItemContainerStyle="{StaticResource FixedListViewItemStyle}"
+                    ItemsSource="{x:Bind ReplyRows}"
+                    Style="{StaticResource VerticalListViewStyle}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:SimpleFeedReplyModel">
+                            <ctrl:TextBlockEx
+                                Margin="4"
+                                VerticalAlignment="Center"
+                                MessageText="{x:Bind Message}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                    <ListView.Footer>
                         <StackPanel
-                            Margin="4,0"
+                            Margin="4,8"
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
                             <TextBlock x:Uid="/Feed/seeAll" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
@@ -273,8 +269,8 @@
                             <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Replynum}" />
                             <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text=")" />
                         </StackPanel>
-                    </ListViewItem>
-                </StackPanel>
+                    </ListView.Footer>
+                </ListView>
             </Grid>
         </ListViewItem>
     </DataTemplate>

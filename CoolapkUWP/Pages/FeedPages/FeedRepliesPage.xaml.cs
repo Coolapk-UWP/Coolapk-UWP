@@ -1,8 +1,5 @@
-﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Models;
-using CoolapkUWP.ViewModels;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using CoolapkUWP.ViewModels.FeedRepliesPage;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -11,64 +8,55 @@ namespace CoolapkUWP.Pages.FeedPages
 {
     public sealed partial class FeedRepliesPage : Page
     {
-        private double id;
-        private FeedListProvider provider;
+        private ViewModel provider;
 
         public FeedRepliesPage()
         {
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            TitleBar.ShowProgressRing();
-
-            provider =
-                new FeedListProvider(
-                    async (p, _page, _, lastItem) =>
-                    {
-                        var page = p == -1 ? ++_page : p;
-                        return (JArray)await DataHelper.GetDataAsync(
-                            DataUriType.GetReplyReplies,
-                            id,
-                            page,
-                            page > 1 ? $"&lastItem={lastItem}" : string.Empty);
-                    },
-                    (a, b) => ((FeedReplyModel)a).Id == b.Value<int>("id"),
-                    (o) => new FeedReplyModel(o, false),
-                    () => Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("noMore"),
-                    () => scrollViewer?.ChangeView(null, 0, null),
-                    "id");
+            titleBar.ShowProgressRing();
+            provider = e.Parameter as ViewModel;
 
             FeedReplyList.ItemsSource = provider.Models;
+            await GetReplys(false);
 
-            var reply = e.Parameter as FeedReplyModel;
-            TitleBar.Title = string.Format(
-                Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedRepliesPage").GetString("title"),
-                reply.Replynum);
-            id = reply.Id;
-            reply.ShowreplyRows = false;
-            reply.EntityFixed = true;
-            provider.Models.Add(reply);
-            GetReplys(false);
-            TitleBar.HideProgressRing();
+            await Task.Delay(30);
+            titleBar.Title = provider.Title;
+            scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
+            titleBar.HideProgressRing();
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            provider.VerticalOffsets[0] = scrollViewer.VerticalOffset;
+            titleBar.Title = string.Empty;
+
+            base.OnNavigatingFrom(e);
         }
 
         private void VScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             if (!e.IsIntermediate && scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
             {
-                GetReplys(false);
+                _ = GetReplys(false);
             }
         }
 
-        private async void GetReplys(bool isRefresh)
+        private async Task GetReplys(bool isRefresh)
         {
-            TitleBar.ShowProgressRing();
+            titleBar.ShowProgressRing();
+            if (isRefresh)
+            {
+                scrollViewer?.ChangeView(null, 0, null);
+                titleBar.Title = provider.Title;
+            }
             await provider.Refresh(isRefresh ? 1 : -1);
-            TitleBar.HideProgressRing();
+            titleBar.HideProgressRing();
         }
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e)
@@ -79,9 +67,6 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void TitleBar_RefreshEvent(object sender, RoutedEventArgs e)
-        {
-            GetReplys(true);
-        }
+        private void TitleBar_RefreshEvent(object sender, RoutedEventArgs e) => _ = GetReplys(true);
     }
 }

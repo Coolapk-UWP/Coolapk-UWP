@@ -123,6 +123,9 @@
   <data name="hotReply.Text" xml:space="preserve">
     <value>热门回复</value>
   </data>
+  <data name="hotReplyText" xml:space="preserve">
+    <value>热门回复</value>
+  </data>
   <data name="noMoreHotReply" xml:space="preserve">
     <value>没有更多热门回复了</value>
   </data>

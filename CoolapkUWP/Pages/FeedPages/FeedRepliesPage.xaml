@@ -9,6 +9,7 @@
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
@@ -31,7 +32,7 @@
         </winui:ItemsRepeaterScrollHost>
 
         <ctrl:TitleBar
-            x:Name="TitleBar"
+            x:Name="titleBar"
             BackButtonClicked="TitleBar_BackButtonClick"
             IsBackButtonEnabled="{x:Bind Frame.CanGoBack}"
             RefreshButtonClicked="TitleBar_RefreshEvent"

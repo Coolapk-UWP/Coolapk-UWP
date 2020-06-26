@@ -8,6 +8,7 @@
     xmlns:menuitem="using:CoolapkUWP.Models.Json.IndexPageHeaderItemModel"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    NavigationCacheMode="Required"
     mc:Ignorable="d">
 
     <winui:NavigationView
@@ -23,7 +24,14 @@
             </DataTemplate>
         </winui:NavigationView.MenuItemTemplate>
         <winui:NavigationView.PaneFooter>
-            <Border Width="48" />
+            <Border Margin="0,0,40,0">
+                <winui:ProgressRing
+                    x:Name="progressRing"
+                    Width="24"
+                    Height="24"
+                    Margin="8,0"
+                    IsActive="True" />
+            </Border>
         </winui:NavigationView.PaneFooter>
         <Frame x:Name="navigationViewFrame" />
     </winui:NavigationView>

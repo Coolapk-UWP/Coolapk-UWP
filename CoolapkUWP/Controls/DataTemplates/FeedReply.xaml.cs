@@ -17,7 +17,7 @@ namespace CoolapkUWP.Controls.DataTemplates
             if (sender is FrameworkElement frameworkElement)
             {
                 if ((frameworkElement.Tag as ICanCopy)?.IsCopyEnabled ?? false) { return; }
-                UIHelper.NavigateInSplitPane(typeof(Pages.FeedPages.FeedRepliesPage), frameworkElement.Tag);
+                UIHelper.NavigateInSplitPane(typeof(Pages.FeedPages.FeedRepliesPage), new ViewModels.FeedRepliesPage.ViewModel((FeedReplyModel)frameworkElement.Tag));
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
-using CoolapkUWP.ViewModels.FeedListDataProvider;
+using CoolapkUWP.ViewModels.FeedListPage;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,7 +23,7 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            var f = FeedListDataProvider.GetProvider(FeedListType.UserPageList, await NetworkHelper.GetUserIDByNameAsync(uid.Text));
+            var f = ViewModelBase.GetProvider(FeedListType.UserPageList, await NetworkHelper.GetUserIDByNameAsync(uid.Text));
             if (f != null)
                 UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
         }
@@ -39,7 +39,7 @@ namespace CoolapkUWP.Pages.SettingPages
             UIHelper.ShowMessage(message.Text);
         }
 
-        private async void Button_Click_5(object sender, RoutedEventArgs e)
+        private void Button_Click_5(object sender, RoutedEventArgs e)
         {
             UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "http://baidu.com" });
         }
@@ -47,16 +47,6 @@ namespace CoolapkUWP.Pages.SettingPages
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
-        }
-
-        private void Hyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
-        {
-            Windows.UI.Xaml.Application.Current.Exit();
-        }
-
-        private async void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            pic.Source = await ImageCacheHelper.GetImageAsync(ImageType.OriginImage, picUri.Text);
         }
     }
 }

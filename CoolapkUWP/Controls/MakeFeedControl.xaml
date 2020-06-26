@@ -34,7 +34,10 @@
             ContextMenuOpening="InputBox_ContextMenuOpening"
             TextWrapping="Wrap" />
         <CommandBar Grid.Row="1">
-            <AppBarButton x:Uid="/MakeFeedControl/emojiButton" Icon="Emoji2">
+            <AppBarButton
+                x:Uid="/MakeFeedControl/emojiButton"
+                AllowFocusOnInteraction="True"
+                Icon="Emoji2">
                 <Button.Flyout>
                     <Flyout>
                         <Flyout.FlyoutPresenterStyle>
@@ -47,39 +50,69 @@
                                 <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
-                        <Pivot ItemsSource="{x:Bind helper:EmojiTypeHelper.TypeHeaders}">
-                            <Pivot.ItemContainerStyle>
-                                <Style TargetType="PivotItem">
-                                    <Setter Property="Padding" Value="0" />
-                                    <Setter Property="Margin" Value="0" />
-                                </Style>
-                            </Pivot.ItemContainerStyle>
-                            <Pivot.HeaderTemplate>
-                                <DataTemplate x:DataType="model:EmojiTypeHeader">
-                                    <PivotHeaderItem Height="32" Padding="8,0">
-                                        <TextBlock FontSize="16" Text="{x:Bind Name}" />
-                                    </PivotHeaderItem>
-                                </DataTemplate>
-                            </Pivot.HeaderTemplate>
-                            <Pivot.ItemTemplate>
-                                <DataTemplate x:DataType="model:EmojiTypeHeader">
-                                    <GridView
-                                        IsItemClickEnabled="True"
-                                        ItemClick="GridView_ItemClick"
-                                        ItemsSource="{x:Bind Emojis}">
-                                        <GridView.ItemTemplate>
-                                            <DataTemplate x:DataType="model:EmojiData">
-                                                <Image
-                                                    Width="36"
-                                                    Height="36"
-                                                    Source="{x:Bind Emoji, Mode=OneWay}"
-                                                    ToolTipService.ToolTip="{x:Bind Name}" />
-                                            </DataTemplate>
-                                        </GridView.ItemTemplate>
-                                    </GridView>
-                                </DataTemplate>
-                            </Pivot.ItemTemplate>
-                        </Pivot>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <AutoSuggestBox
+                                Margin="8,8,8,-4"
+                                PlaceholderText="搜索表情……"
+                                QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                                SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                                TextChanged="AutoSuggestBox_TextChanged">
+                                <AutoSuggestBox.ItemTemplate>
+                                    <DataTemplate x:DataType="model:EmojiData">
+                                        <StackPanel Padding="8,4" Orientation="Horizontal">
+                                            <Image
+                                                Width="24"
+                                                Height="24"
+                                                Source="{x:Bind Emoji, Mode=OneWay}" />
+
+                                            <TextBlock Margin="4,0" Text="{x:Bind Name}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </AutoSuggestBox.ItemTemplate>
+                            </AutoSuggestBox>
+
+                            <Pivot Grid.Row="1" ItemsSource="{x:Bind helper:EmojiTypeHelper.TypeHeaders}">
+                                <Pivot.ItemContainerStyle>
+                                    <Style TargetType="PivotItem">
+                                        <Setter Property="Padding" Value="0" />
+                                        <Setter Property="Margin" Value="0" />
+                                    </Style>
+                                </Pivot.ItemContainerStyle>
+
+                                <Pivot.HeaderTemplate>
+                                    <DataTemplate x:DataType="model:EmojiTypeHeader">
+                                        <PivotHeaderItem Height="32" Padding="8,0">
+                                            <TextBlock FontSize="16" Text="{x:Bind Name}" />
+                                        </PivotHeaderItem>
+                                    </DataTemplate>
+                                </Pivot.HeaderTemplate>
+
+                                <Pivot.ItemTemplate>
+                                    <DataTemplate x:DataType="model:EmojiTypeHeader">
+
+                                        <GridView
+                                            IsItemClickEnabled="True"
+                                            ItemClick="GridView_ItemClick"
+                                            ItemsSource="{x:Bind Emojis}">
+                                            <GridView.ItemTemplate>
+                                                <DataTemplate x:DataType="model:EmojiData">
+                                                    <Image
+                                                        Width="36"
+                                                        Height="36"
+                                                        Source="{x:Bind Emoji, Mode=OneWay}"
+                                                        ToolTipService.ToolTip="{x:Bind Name}" />
+                                                </DataTemplate>
+                                            </GridView.ItemTemplate>
+                                        </GridView>
+                                    </DataTemplate>
+                                </Pivot.ItemTemplate>
+                            </Pivot>
+                        </Grid>
                     </Flyout>
                 </Button.Flyout>
             </AppBarButton>

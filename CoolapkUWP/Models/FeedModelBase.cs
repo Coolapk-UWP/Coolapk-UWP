@@ -5,24 +5,6 @@ using System.ComponentModel;
 
 namespace CoolapkUWP.Models
 {
-    internal interface ICanChangeLike
-    {
-        string Likenum { get; set; }
-        bool Liked { get; set; }
-        string Id { get; }
-    }
-
-    internal interface ICanChangeReplyNum
-    {
-        string Replynum { get; set; }
-    }
-
-    internal interface ICanCopy
-    {
-        bool IsCopyEnabled { get; set; }
-    }
-
-
     public class FeedModelBase : SourceFeedModel, ICanChangeLike, INotifyPropertyChanged, ICanChangeReplyNum, ICanCopy
     {
         public FeedModelBase(JObject token) : base(token)
@@ -31,14 +13,14 @@ namespace CoolapkUWP.Models
                 Info = value1.ToString();
             Likenum = token["likenum"].ToString().Replace("\"", string.Empty);
             Replynum = token["replynum"].ToString().Replace("\"", string.Empty);
-            Share_num = token["forwardnum"].ToString().Replace("\"", string.Empty);
+            ShareNum = token["forwardnum"].ToString().Replace("\"", string.Empty);
             if (token.Value<string>("entityType") != "article")
             {
                 if (token.Value<string>("feedType") == "question")
                 {
                     IsQuestionFeed = true;
-                    Question_answer_num = token["question_answer_num"].ToString().Replace("\"", string.Empty);
-                    Question_follow_num = token["question_follow_num"].ToString().Replace("\"", string.Empty);
+                    QuestionAnswerNum = token["question_answer_num"].ToString().Replace("\"", string.Empty);
+                    QuestionFollowNum = token["question_follow_num"].ToString().Replace("\"", string.Empty);
                 }
                 ShowSourceFeedGrid = !IsQuestionFeed && !string.IsNullOrEmpty(token["source_id"]?.ToString());
                 if (ShowSourceFeedGrid)
@@ -58,21 +40,21 @@ namespace CoolapkUWP.Models
                         UserSmallAvatar = new ImageModel(userSmallAvatarUrl, ImageType.BigAvatar);
                 }
 
-                ShowExtra_url = token.TryGetValue("extra_title", out JToken valueextra_title) && !string.IsNullOrEmpty(valueextra_title.ToString());
-                if (ShowExtra_url)
+                ShowExtraUrl = token.TryGetValue("extra_title", out JToken valueextra_title) && !string.IsNullOrEmpty(valueextra_title.ToString());
+                if (ShowExtraUrl)
                 {
-                    Extra_title = valueextra_title.ToString();
-                    Extra_url = token.Value<string>("extra_url");
-                    if (!string.IsNullOrEmpty(Extra_url))
-                        if (Extra_url.IndexOf("http") == 0)
-                            Extra_url2 = new Uri(Extra_url).Host;
-                        else Extra_url2 = string.Empty;
-                    else Extra_url2 = string.Empty;
+                    ExtraTitle = valueextra_title.ToString();
+                    ExtraUrl = token.Value<string>("extra_url");
+                    if (!string.IsNullOrEmpty(ExtraUrl))
+                        if (ExtraUrl.IndexOf("http") == 0)
+                            ExtraUrl2 = new Uri(ExtraUrl).Host;
+                        else ExtraUrl2 = string.Empty;
+                    else ExtraUrl2 = string.Empty;
                     var extraPicUrl = token.Value<string>("extra_pic");
                     if (!string.IsNullOrEmpty(extraPicUrl))
-                        Extra_pic = new ImageModel(extraPicUrl, ImageType.Icon);
+                        ExtraPic = new ImageModel(extraPicUrl, ImageType.Icon);
                 }
-                Device_title = token.Value<string>("device_title");
+                DeviceTitle = token.Value<string>("device_title");
             }
             //else showUser = false;
             Liked = token.TryGetValue("userAction", out JToken v) ? int.Parse(v["like"].ToString()) == 1 : false;
@@ -89,19 +71,19 @@ namespace CoolapkUWP.Models
         }
 
         public string Info { get; private set; }
-        public string Share_num { get; private set; }
-        public string Device_title { get; private set; }
+        public string ShareNum { get; private set; }
+        public string DeviceTitle { get; private set; }
         public bool ShowSourceFeed { get; private set; }
-        public bool ShowSourceFeed2 { get => !ShowSourceFeed; }
+        //public bool ShowSourceFeed2 { get => !ShowSourceFeed; }
         public bool ShowSourceFeedGrid { get; private set; }
         public SourceFeedModel SourceFeed { get; private set; }
-        public bool ShowExtra_url { get; private set; }
-        public string Extra_title { get; private set; }
-        public string Extra_url { get; private set; }
-        public string Extra_url2 { get; private set; }
+        public bool ShowExtraUrl { get; private set; }
+        public string ExtraTitle { get; private set; }
+        public string ExtraUrl { get; private set; }
+        public string ExtraUrl2 { get; private set; }
         public bool IsQuestionFeed { get; private set; }
-        public string Question_answer_num { get; private set; }
-        public string Question_follow_num { get; private set; }
+        public string QuestionAnswerNum { get; private set; }
+        public string QuestionFollowNum { get; private set; }
         public bool ShowUser { get; private set; } = true;
         public bool ShowUser2 { get => !ShowUser; }
 
@@ -127,7 +109,7 @@ namespace CoolapkUWP.Models
         public bool Liked { get; set; }
         public bool Liked2 { get => !Liked; }
         public string Id => EntityId;
-        public ImageModel Extra_pic { get; private set; }
+        public ImageModel ExtraPic { get; private set; }
         public ImageModel UserSmallAvatar { get; private set; }
 
         private bool isCopyEnabled;

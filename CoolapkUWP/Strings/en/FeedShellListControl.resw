@@ -123,6 +123,9 @@
   <data name="hotReply.Text" xml:space="preserve">
     <value>Hot reply</value>
   </data>
+  <data name="hotReplyText" xml:space="preserve">
+    <value>Hot reply</value>
+  </data>
   <data name="noMoreHotReply" xml:space="preserve">
     <value>No more hot replies</value>
   </data>

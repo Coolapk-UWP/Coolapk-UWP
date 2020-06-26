@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 using MenuItem = CoolapkUWP.Models.Json.IndexPageHeaderItemModel.Item;
 
 namespace CoolapkUWP.Pages
@@ -33,6 +34,23 @@ namespace CoolapkUWP.Pages
         {
             if (name != null)
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        private void UIHelper_NeedMainPageProgressRing(object sender, bool e)
+        {
+            progressRing.IsActive = e;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            UIHelper.NeedMainPageProgressRing += UIHelper_NeedMainPageProgressRing;
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            UIHelper.NeedMainPageProgressRing -= UIHelper_NeedMainPageProgressRing;
+            base.OnNavigatingFrom(e);
         }
 
         public MainPage()
@@ -65,7 +83,7 @@ namespace CoolapkUWP.Pages
             );
             await Task.Delay(200);
             navigationView.SelectedItem = menuItems.First(i => i.Title == "头条");
-            navigationViewFrame.Navigate(typeof(IndexPage), new object[] { "/main/indexV8", true });
+            navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false));
         }
 
         private void NavigationView_ItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
@@ -75,11 +93,11 @@ namespace CoolapkUWP.Pages
                 if (title == "关注") { return; }
                 var item = allMenuItems.First(i => i.Title == title);
                 var uri = title == "头条" ? "/main/indexV8" : $"{item.Uri}&title={title}";
-                navigationViewFrame.Navigate(typeof(IndexPage), new object[] { uri, true }, args.RecommendedNavigationTransitionInfo);
+                navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(uri, false), args.RecommendedNavigationTransitionInfo);
             }
             else if (args.InvokedItem is MenuItem item1)
             {
-                navigationViewFrame.Navigate(typeof(IndexPage), new object[] { item1.Uri, true }, args.RecommendedNavigationTransitionInfo);
+                navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(item1.Uri, false), args.RecommendedNavigationTransitionInfo);
             }
         }
     }

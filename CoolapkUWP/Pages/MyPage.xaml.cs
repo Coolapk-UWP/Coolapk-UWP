@@ -1,7 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
-using CoolapkUWP.ViewModels.FeedListDataProvider;
+using CoolapkUWP.ViewModels.FeedListPage;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Linq;
@@ -23,7 +23,7 @@ namespace CoolapkUWP.Pages
 
         private readonly Models.Controls.UserHubModel model = new Models.Controls.UserHubModel();
         private double badgeNum;
-        private string badgeIconGlyph = ""; //"&#xED0D;"
+        private string badgeIconGlyph = "\uED0D";
         private Visibility logoutButtonVisibility;
 
         private Visibility LogoutButtonVisibility
@@ -59,18 +59,18 @@ namespace CoolapkUWP.Pages
         public MyPage()
         {
             this.InitializeComponent();
-            Loaded += async (s, e) =>
-            {
-                if (string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid)))
-                {
-                    LogoutButtonVisibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    LogoutButtonVisibility = Visibility.Visible;
-                    Refresh();
-                }
-            };
+            Loaded += (s, e) =>
+           {
+               if (string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid)))
+               {
+                   LogoutButtonVisibility = Visibility.Collapsed;
+               }
+               else
+               {
+                   LogoutButtonVisibility = Visibility.Visible;
+                   Refresh();
+               }
+           };
         }
 
         private async void Refresh()
@@ -106,20 +106,17 @@ namespace CoolapkUWP.Pages
         {
             if (args.ChosenSuggestion is SearchWord word)
             {
-                UIHelper.Navigate(typeof(SearchingPage), new object[] { word.Symbol == Symbol.Contact ? 1 : 0, word.GetTitle() });
+                UIHelper.NavigateInSplitPane(typeof(SearchingPage), new ViewModels.SearchPage.ViewModel(word.Symbol == Symbol.Contact ? 1 : 0, word.GetTitle()));
             }
             else if (args.ChosenSuggestion is null)
             {
-                UIHelper.Navigate(typeof(SearchingPage), new object[] { 0, sender.Text });
+                UIHelper.NavigateInSplitPane(typeof(SearchingPage), new ViewModels.SearchPage.ViewModel(0, sender.Text));
             }
         }
 
         private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            if (args.SelectedItem is SearchWord m)
-            {
-                sender.Text = m.GetTitle();
-            }
+            sender.Text = ((SearchWord)args.SelectedItem).GetTitle();
         }
 
         #endregion 搜索框相关
@@ -135,7 +132,7 @@ namespace CoolapkUWP.Pages
             _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 BadgeNum = num;
-                BadgeIconGlyph = num > 0 ? "" /*"&#xED0C;"*/ : ""; //"&#xED0D;"
+                BadgeIconGlyph = num > 0 ? "\uED0C" : "\uED0D";
             });
 
         protected override void OnNavigatedFrom(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
@@ -149,21 +146,21 @@ namespace CoolapkUWP.Pages
             switch ((sender as FrameworkElement)?.Tag as string)
             {
                 case "Notifications":
-                    UIHelper.NavigateInSplitPane(typeof(NotificationsPage), NotificationPageType.Comment);
+                    UIHelper.NavigateInSplitPane(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.Comment));
                     break;
 
                 case "feed":
-                    var f = FeedListDataProvider.GetProvider(FeedListType.UserPageList, SettingsHelper.Get<string>(SettingsHelper.Uid));
+                    var f = ViewModelBase.GetProvider(FeedListType.UserPageList, SettingsHelper.Get<string>(SettingsHelper.Uid));
                     if (f != null)
                         UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
                     break;
 
                 case "follow":
-                    Frame.Navigate(typeof(UserListPage), new object[] { SettingsHelper.Get<string>(SettingsHelper.Uid), true, model?.UserName ?? string.Empty });
+                    Frame.Navigate(typeof(UserListPage), new ViewModels.UserListPage.ViewModel(SettingsHelper.Get<string>(SettingsHelper.Uid), true, "我"));
                     break;
 
                 case "fans":
-                    Frame.Navigate(typeof(UserListPage), new object[] { SettingsHelper.Get<string>(SettingsHelper.Uid), false, model?.UserName ?? string.Empty });
+                    Frame.Navigate(typeof(UserListPage), new ViewModels.UserListPage.ViewModel(SettingsHelper.Get<string>(SettingsHelper.Uid), false, "我"));
                     break;
             }
         }

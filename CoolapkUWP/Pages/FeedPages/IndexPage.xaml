@@ -539,7 +539,7 @@
                                 FontSize="16"
                                 Foreground="White"
                                 MaxLines="2"
-                                Text="{x:Bind Message_title}"
+                                Text="{x:Bind MessageTitle}"
                                 TextTrimming="WordEllipsis"
                                 TextWrapping="Wrap" />
                         </Border>
@@ -639,7 +639,7 @@
                                     Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                                     Text="{x:Bind Info}" />
                             </StackPanel>
-                            <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Device_title}" />
+                            <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind DeviceTitle}" />
                         </StackPanel>
 
                         <TextBlock
@@ -650,7 +650,7 @@
                             FontSize="16"
                             FontWeight="Black"
                             MaxLines="2"
-                            Text="{x:Bind Message_title}"
+                            Text="{x:Bind MessageTitle}"
                             TextTrimming="CharacterEllipsis"
                             TextWrapping="Wrap" />
 
@@ -674,16 +674,13 @@
                     MaxWidth="768"
                     Padding="{StaticResource StackPanelMargin}"
                     HorizontalAlignment="Center">
-                    <winui:ItemsRepeater
-                        x:Name="listView"
-                        ItemTemplate="{StaticResource FTemplateSelector}"
-                        ItemsSource="{x:Bind Collection}" />
+                    <winui:ItemsRepeater x:Name="listView" ItemTemplate="{StaticResource FTemplateSelector}" />
                 </Border>
             </ScrollViewer>
         </winui:ItemsRepeaterScrollHost>
 
         <control:TitleBar
-            x:Name="TitleBar"
+            x:Name="titleBar"
             BackButtonClicked="TitleBar_BackButtonClick"
             BackButtonVisibility="Visible"
             IsBackButtonEnabled="{x:Bind Frame.CanGoBack}"

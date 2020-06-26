@@ -139,11 +139,12 @@
     <Compile Include="Helpers\ValueConverters\TrueToFalseConverter.cs" />
     <Compile Include="Models\Controls\MakeFeedControlModel.cs" />
     <Compile Include="Models\Controls\UserHubModel.cs" />
+    <Compile Include="Models\DyhModel.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\FeedReplyModel.cs" />
     <Compile Include="Models\FeedModelBase.cs" />
     <Compile Include="Models\FeedDetailModel.cs" />
-    <Compile Include="Models\IFeedModel.cs" />
+    <Compile Include="Models\Interfaces.cs" />
     <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\IndexPageModel.cs" />
     <Compile Include="Models\Pages\FeedListPageModels.cs" />
@@ -175,6 +176,8 @@
     <Compile Include="Pages\MyPage.xaml.cs">
       <DependentUpon>MyPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\FeedDetailListViewModel.cs" />
+    <Compile Include="ViewModels\FeedDetailPageViewModel.cs" />
     <Compile Include="ViewModels\FeedListPageViewModel.cs" />
     <Compile Include="Pages\FeedPages\FeedListPage.xaml.cs">
       <DependentUpon>FeedListPage.xaml</DependentUpon>
@@ -211,7 +214,14 @@
     <Compile Include="Pages\FeedPages\UserListPage.xaml.cs">
       <DependentUpon>UserListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\FeedShellListProvider.cs" />
+    <Compile Include="Helpers\Providers\CoolapkListProvider.cs" />
+    <Compile Include="Helpers\Providers\SearchListProvider.cs" />
+    <Compile Include="ViewModels\FeedRepliesPageViewModel.cs" />
+    <Compile Include="ViewModels\IndexPageViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces.cs" />
+    <Compile Include="ViewModels\NotificationsPageViewModel.cs" />
+    <Compile Include="ViewModels\SearchPageViewModel.cs" />
+    <Compile Include="ViewModels\UserListPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

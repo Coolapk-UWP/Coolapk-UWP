@@ -11,6 +11,7 @@
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
@@ -19,6 +20,64 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converter:HasValueConverter x:Key="HasValueConverter" />
+
+            <ControlTemplate x:Key="ButtonTemplate1" TargetType="Button">
+                <Grid
+                    x:Name="RootGrid"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="{TemplateBinding CornerRadius}">
+                    <ContentPresenter
+                        x:Name="ContentPresenter"
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        AutomationProperties.AccessibilityView="Raw"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        ContentTransitions="{TemplateBinding ContentTransitions}"
+                        CornerRadius="{TemplateBinding CornerRadius}" />
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <Storyboard>
+                                    <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
+                                </Storyboard>
+                            </VisualState>
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter Target="RootGrid.(RevealBrush.State)" Value="PointerOver" />
+                                    <Setter Target="RootGrid.Background" Value="{ThemeResource ButtonRevealBackgroundPointerOver}" />
+                                    <Setter Target="ContentPresenter.BorderBrush" Value="{ThemeResource ButtonRevealBorderBrushPointerOver}" />
+                                    <Setter Target="ContentPresenter.Foreground" Value="White" />
+                                </VisualState.Setters>
+                                <Storyboard>
+                                    <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
+                                </Storyboard>
+                            </VisualState>
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Target="RootGrid.(RevealBrush.State)" Value="Pressed" />
+                                    <Setter Target="RootGrid.Background" Value="{ThemeResource ButtonRevealBackgroundPressed}" />
+                                    <Setter Target="ContentPresenter.BorderBrush" Value="{ThemeResource ButtonRevealBorderBrushPressed}" />
+                                    <Setter Target="ContentPresenter.Foreground" Value="White" />
+                                </VisualState.Setters>
+                                <Storyboard>
+                                    <PointerDownThemeAnimation Storyboard.TargetName="RootGrid" />
+                                </Storyboard>
+                            </VisualState>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Target="RootGrid.Background" Value="{ThemeResource ButtonRevealBackgroundDisabled}" />
+                                    <Setter Target="ContentPresenter.BorderBrush" Value="{ThemeResource ButtonRevealBorderBrushDisabled}" />
+                                    <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource ButtonForegroundDisabled}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                </Grid>
+            </ControlTemplate>
 
             <DataTemplate x:Key="UserDetail" x:DataType="model:UserDetail">
                 <ListViewItem
@@ -79,11 +138,13 @@
 
                                 <StackPanel Orientation="Horizontal">
                                     <Button
-                                        Padding="0"
-                                        Background="{x:Null}"
+                                        Padding="2"
+                                        Background="Transparent"
                                         Click="Button_Click"
-                                        Style="{StaticResource ButtonStyle1}"
-                                        Tag="follow">
+                                        Foreground="White"
+                                        Style="{ThemeResource ButtonRevealStyle}"
+                                        Tag="follow"
+                                        Template="{StaticResource ButtonTemplate1}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock
                                                 Margin="0,0,3,0"
@@ -95,12 +156,14 @@
                                     </Button>
 
                                     <Button
-                                        Margin="5,0,0,0"
-                                        Padding="0"
-                                        Background="{x:Null}"
+                                        Margin="4,0,0,0"
+                                        Padding="2"
+                                        Background="Transparent"
                                         Click="Button_Click"
-                                        Style="{StaticResource ButtonStyle1}"
-                                        Tag="fans">
+                                        Foreground="White"
+                                        Style="{ThemeResource ButtonRevealStyle}"
+                                        Tag="fans"
+                                        Template="{StaticResource ButtonTemplate1}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock
                                                 Margin="0,0,3,0"
@@ -111,9 +174,9 @@
                                         </StackPanel>
                                     </Button>
 
-                                    <StackPanel Orientation="Horizontal">
+                                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                                         <TextBlock
-                                            Margin="3,0"
+                                            Margin="4,0,3,0"
                                             FontWeight="Bold"
                                             Foreground="White"
                                             Text="{x:Bind FeedNum}" />
@@ -121,7 +184,7 @@
                                     </StackPanel>
 
                                     <TextBlock
-                                        Margin="6,0,3,0"
+                                        Margin="8,0,3,0"
                                         VerticalAlignment="Center"
                                         Foreground="White"
                                         Text="Lv." />
@@ -194,8 +257,9 @@
                                 Click="Button_Click"
                                 Content="{x:Bind FollowStatus}"
                                 Foreground="White"
-                                Style="{StaticResource ButtonRevealStyle}"
-                                Tag="FollowUser" />
+                                Style="{ThemeResource ButtonRevealStyle}"
+                                Tag="FollowUser"
+                                Template="{StaticResource ButtonTemplate1}" />
                         </Grid>
                     </Border>
                 </ListViewItem>
@@ -296,7 +360,7 @@
                                 x:Load="{x:Bind ShowUserButton}"
                                 Background="Transparent"
                                 Click="Button_Click"
-                                Style="{StaticResource ButtonRevealStyle}"
+                                Style="{ThemeResource ButtonRevealStyle}"
                                 Tag="{x:Bind Url}">
 
                                 <StackPanel Orientation="Horizontal">

@@ -1,11 +1,7 @@
-﻿using CoolapkUWP.Controls;
-using CoolapkUWP.Helpers;
-using CoolapkUWP.Models;
-using CoolapkUWP.ViewModels;
-using Newtonsoft.Json.Linq;
+﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.ViewModels.FeedDetailPage;
 using System;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -14,19 +10,7 @@ namespace CoolapkUWP.Pages.FeedPages
 {
     public sealed partial class FeedShellPage : Page, INotifyPropertyChanged
     {
-        private string feedId;
-        private FeedDetailModel feedDetail;
-        private FeedListProvider answerProvider;
-        private string answerSortType = "reply";
-        private FeedDetailModel FeedDetail
-        {
-            get => feedDetail;
-            set
-            {
-                feedDetail = value;
-                RaisePropertyChangedEvent();
-            }
-        }
+        private ViewModel provider;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -41,21 +25,106 @@ namespace CoolapkUWP.Pages.FeedPages
             this.InitializeComponent();
         }
 
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            provider = e.Parameter as ViewModel;
+            provider.PropertyChanged += Provider_PropertyChanged;
+            Refresh();
+            if (provider.FeedDetail != null)
+            {
+                SetLayout();
+            }
+
+            await System.Threading.Tasks.Task.Delay(30);
+
+            titleBar.Title = provider.Title;
+            if (MainScrollMode == ScrollMode.Disabled)
+            {
+                detailScrollViewer.ChangeView(null, provider.VerticalOffsets[1], null, true);
+                rightScrollViewer.ChangeView(null, provider.VerticalOffsets[2], null, true);
+            }
+            else
+            {
+                mainScrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
+            }
+        }
+
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            if(FeedDetail != null)
+            if (provider.FeedDetail != null)
             {
-                FeedDetail.IsCopyEnabled = false;
+                provider.FeedDetail.IsCopyEnabled = false;
             }
+            provider.PropertyChanged -= Provider_PropertyChanged;
+            if (MainScrollMode == ScrollMode.Disabled)
+            {
+                provider.VerticalOffsets[1] = detailScrollViewer.VerticalOffset;
+                provider.VerticalOffsets[2] = rightScrollViewer.VerticalOffset;
+            }
+            else
+            {
+                provider.VerticalOffsets[0] = mainScrollViewer.VerticalOffset;
+            }
+            titleBar.Title = string.Empty;
 
             base.OnNavigatingFrom(e);
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        private void Provider_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            base.OnNavigatedTo(e);
-            feedId = e.Parameter as string;
-            LoadFeedDetail();
+            if (e.PropertyName == nameof(provider.FeedDetail) && provider.FeedDetail != null)
+            {
+                SetLayout();
+            }
+        }
+
+        private void SetLayout()
+        {
+            titleBar.ShowProgressRing();
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedShellPage");
+            if (provider.FeedDetail.IsQuestionFeed)
+            {
+                FindName(nameof(answersList));
+                answersList.ItemsSource = ((QuestionViewModel)provider).Models;
+
+                PivotItemPanel.Visibility = Visibility.Collapsed;
+                rightComboBox.ItemsSource = new string[]
+                {
+                        loader.GetString("popular"),
+                        loader.GetString("like"),
+                        loader.GetString("dateline_desc"),
+                };
+                rightComboBox.SelectedIndex = ((QuestionViewModel)provider).ComboBoxSelectedIndex;
+            }
+            else
+            {
+                FindName(nameof(listCtrl));
+                listCtrl.SetProvider((provider as FeedViewModel).ReplyListVM);
+
+                if (detailControl.FeedArticleTitle != null)
+                {
+                    detailControl.FeedArticleTitle.Height = detailControl.FeedArticleTitle.Width * 0.44;
+                }
+
+                rightComboBox.ItemsSource = new string[]
+                {
+                        loader.GetString("lastupdate_desc"),
+                        loader.GetString("dateline_desc"),
+                        loader.GetString("popular"),
+                        loader.GetString("isFromAuthor"),
+                };
+                rightComboBox.SelectedIndex = ((FeedViewModel)provider).ReplyListVM?.ComboBoxSelectedIndex ?? 0;
+            }
+            rightComboBox.Visibility = Visibility.Visible;
+
+            if (provider.FeedDetail.SourceFeed?.ShowPicArr ?? false)
+            {
+                FindName("sourcePic");
+            }
+            Page_SizeChanged(null, null);
+            titleBar.Title = provider.Title;
         }
 
         private void MoveToTop()
@@ -70,89 +139,6 @@ namespace CoolapkUWP.Pages.FeedPages
                 System.Diagnostics.Debug.WriteLine(point.Y);
                 mainScrollViewer.ChangeView(null, point.Y, null);
             }
-        }
-
-        private void listCtrl_NeedMoveToTop(object sender, EventArgs e)
-        {
-            MoveToTop();
-        }
-
-        public async Task LoadFeedDetail()
-        {
-            TitleBar.ShowProgressRing();
-            if (string.IsNullOrEmpty(feedId)) { return; }
-            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedShellPage");
-
-            var detail = (JObject)await DataHelper.GetDataAsync(DataUriType.GetFeedDetail, feedId);
-            if (detail != null)
-            {
-                FeedDetail = new FeedDetailModel(detail);
-                TitleBar.Title = FeedDetail.Title;
-                if (FeedDetail.IsQuestionFeed)
-                {
-                    if (answerProvider != null) { return; }
-
-                    answerProvider =
-                        new FeedListProvider(
-                            async (p, page, firstItem, lastItem) =>
-                                (JArray)await DataHelper.GetDataAsync(
-                                    DataUriType.GetAnswers,
-                                    feedId,
-                                    answerSortType,
-                                    p == -1 ? ++page : p,
-                                    firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
-                                    lastItem == 0 ? string.Empty : $"&lastItem={lastItem}"),
-                            (a, b) => ((FeedModel)a).Url == b.Value<string>("url"),
-                            (o) => new FeedModel(o, FeedDisplayMode.notShowMessageTitle),
-                            () => Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("noMore"),
-                            () => MoveToTop(),
-                            "id");
-
-                    FindName(nameof(answersList));
-
-                    answersList.ItemsSource = answerProvider.Models;
-                    PivotItemPanel.Visibility = Visibility.Collapsed;
-                    rightComboBox.ItemsSource = new string[]
-                    {
-                        loader.GetString("popular"),
-                        loader.GetString("like"),
-                        loader.GetString("dateline_desc"),
-                    };
-
-                    rightComboBox.Visibility = Visibility.Visible;
-                    rightComboBox.SelectedIndex = 0;
-                }
-                else
-                {
-                    FindName(nameof(listCtrl));
-                    listCtrl.FeedId = feedId;
-                    if (detailControl.FeedArticleTitle != null)
-                    {
-                        detailControl.FeedArticleTitle.Height = detailControl.FeedArticleTitle.Width * 0.44;
-                        Page_SizeChanged(null, null);
-                    }
-                    else if (FeedDetail.IsCoolPictuers)
-                    {
-                        Page_SizeChanged(null, null);
-                    }
-
-                    rightComboBox.ItemsSource = new string[]
-                    {
-                        loader.GetString("lastupdate_desc"),
-                        loader.GetString("dateline_desc"),
-                        loader.GetString("popular"),
-                        loader.GetString("isFromAuthor"),
-                    };
-                    rightComboBox.Visibility = Visibility.Visible;
-                    rightComboBox.SelectedIndex = 0;
-                }
-            }
-            if (feedDetail.SourceFeed?.ShowPicArr ?? false)
-            {
-                FindName("sourcePic");
-            }
-
-            TitleBar.HideProgressRing();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -182,7 +168,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     break;
 
                 case "MakeLike":
-                    await DataHelper.MakeLikeAsync(FeedDetail, Dispatcher, like1, like2);
+                    await DataHelper.MakeLikeAsync(provider.FeedDetail, Dispatcher, like1, like2);
                     break;
 
                 default:
@@ -193,99 +179,59 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.GoBack();
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
         }
 
         private void listCtrl_NeedProgressRing(object sender, bool e)
         {
             if (e)
             {
-                TitleBar.ShowProgressRing();
+                titleBar.ShowProgressRing();
             }
             else
             {
-                TitleBar.HideProgressRing();
+                titleBar.HideProgressRing();
             }
         }
 
-        private async void Refresh()
+        private async void Refresh(int p = -1)
         {
-            TitleBar.ShowProgressRing();
+            titleBar.ShowProgressRing();
 
-            await RefreshFeedDetail();
-            if (listCtrl != null)
+            if (p == 1)
             {
-                await listCtrl.Refresh();
+                MoveToTop();
             }
-            else if (answersList != null)
-            {
-                await answerProvider.Refresh(1);
-            }
-            else
-            {
-                await LoadFeedDetail();
-            }
+            await provider.Refresh(p);
 
-            TitleBar.HideProgressRing();
+            titleBar.Title = provider.Title;
+            titleBar.HideProgressRing();
         }
 
-        private async Task RefreshFeedDetail()
-        {
-            var detail = (JObject)await DataHelper.GetDataAsync(DataUriType.GetFeedDetail, feedId);
-            if (detail != null)
-            {
-                FeedDetail = new FeedDetailModel(detail);
-            }
-        }
-
-        private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             ScrollViewer scrollViewer = sender as ScrollViewer;
-            if (!e.IsIntermediate)
+            if (!e.IsIntermediate && scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
             {
-                double a = scrollViewer.VerticalOffset;
-                if (a == scrollViewer.ScrollableHeight)
-                {
-                    TitleBar.ShowProgressRing();
-                    scrollViewer.ChangeView(null, a, null);
-                    if (listCtrl != null)
-                    {
-                        await listCtrl.Refresh(false);
-                    }
-                    else if (answersList != null)
-                    {
-                        await answerProvider.Refresh();
-                    }
-
-                    TitleBar.HideProgressRing();
-                }
+                Refresh();
             }
+        }
+
+        private void titleBar_RefreshButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Refresh(1);
         }
 
         private void rightComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (rightComboBox.SelectedIndex != -1)
             {
-                if (FeedDetail.IsQuestionFeed)
+                if (provider is QuestionViewModel)
                 {
-                    switch (rightComboBox.SelectedIndex)
-                    {
-                        case -1: return;
-                        case 0:
-                            answerSortType = "reply";
-                            break;
-
-                        case 1:
-                            answerSortType = "like";
-                            break;
-
-                        case 2:
-                            answerSortType = "dateline";
-                            break;
-                    }
-
-                    answerProvider?.Reset();
-                    Refresh();
+                    ((ViewModels.ICanComboBoxChangeSelectedIndex)provider).SetComboBoxSelectedIndex(rightComboBox.SelectedIndex);
                 }
                 else
                 {
@@ -350,14 +296,14 @@ namespace CoolapkUWP.Pages.FeedPages
                 rightGrid.InvalidateArrange();
             }
 
-            if ((e?.NewSize.Width ?? Width) >= 804 && !((FeedDetail?.IsFeedArticle ?? false) || (FeedDetail?.IsCoolPictuers ?? false)))
+            if ((e?.NewSize.Width ?? Width) >= 804 && !((provider?.FeedDetail?.IsFeedArticle ?? false) || (provider.FeedDetail?.IsCoolPictuers ?? false)))
             {
                 LeftColumnDefinition.Width = new GridLength(420);
                 SetDualPanelMode();
                 PivotItemPanel.Width = 420;
                 PivotItemPanel.HorizontalAlignment = HorizontalAlignment.Left;
             }
-            else if ((e?.NewSize.Width ?? Width) >= 876 && ((FeedDetail?.IsFeedArticle ?? false) || (FeedDetail?.IsCoolPictuers ?? false)))
+            else if ((e?.NewSize.Width ?? Width) >= 876 && ((provider.FeedDetail?.IsFeedArticle ?? false) || (provider.FeedDetail?.IsCoolPictuers ?? false)))
             {
                 LeftColumnDefinition.Width = new GridLength(520);
                 SetDualPanelMode();

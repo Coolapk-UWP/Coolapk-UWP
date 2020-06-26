@@ -248,10 +248,7 @@
                             <TextBlock x:Uid="/NotificationsPage/Message" VerticalAlignment="Center" />
                         </StackPanel>
                     </ListView>
-                    <winui:ItemsRepeater
-                        x:Name="FeedReplyList"
-                        ItemTemplate="{StaticResource temse}"
-                        ItemsSource="{x:Bind itemCollection}" />
+                    <winui:ItemsRepeater x:Name="list" ItemTemplate="{StaticResource temse}" />
                 </StackPanel>
             </ScrollViewer>
         </winui:ItemsRepeaterScrollHost>
@@ -259,6 +256,8 @@
         <control:TitleBar
             x:Name="titleBar"
             BackButtonClicked="TitleBar_BackButtonClick"
-            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" />
+            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}"
+            RefreshButtonClicked="titleBar_RefreshButtonClicked"
+            RefreshButtonVisibility="Visible" />
     </Grid>
 </Page>
