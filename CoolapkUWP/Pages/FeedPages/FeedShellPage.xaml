@@ -57,7 +57,7 @@
                         ViewChanged="ScrollViewer_ViewChanged">
                         <Grid x:Name="rightGrid">
                             <control:FeedShellListControl
-                                x:Name="listCtrl"
+                                x:Name="listControl"
                                 x:Load="False"
                                 NeedProgressRing="listCtrl_NeedProgressRing" />
 
@@ -77,7 +77,7 @@
                 Background="{ThemeResource SystemControlDisabledChromeMediumLowBrush}"
                 Orientation="Horizontal">
                 <Button
-                    x:Name="ToReplyPivotItemButton"
+                    x:Name="toReplyPivotItemButton"
                     BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
                     BorderThickness="0,0,0,2"
                     Click="Button_Click"
@@ -89,7 +89,7 @@
                     </StackPanel>
                 </Button>
                 <Button
-                    x:Name="ToLikePivotItemButton"
+                    x:Name="toLikePivotItemButton"
                     BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
                     BorderThickness="0"
                     Click="Button_Click"
@@ -101,7 +101,7 @@
                     </StackPanel>
                 </Button>
                 <Button
-                    x:Name="ToSharePivotItemButton"
+                    x:Name="toSharePivotItemButton"
                     BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
                     BorderThickness="0"
                     Click="Button_Click"

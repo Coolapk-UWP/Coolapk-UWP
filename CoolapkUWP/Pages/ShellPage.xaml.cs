@@ -40,6 +40,13 @@ namespace CoolapkUWP.Pages
 
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
             {
+                if (splitView.IsPaneOpen)
+                {
+                    ee.Handled = true;
+                    splitView.IsPaneOpen = false;
+                    PaneOpenSymbolIcon = Symbol.ClosePane;
+                }
+
                 if (shellFrame.CanGoBack)
                 {
                     ee.Handled = true;
@@ -64,6 +71,7 @@ namespace CoolapkUWP.Pages
             UIHelper.MainFrame = shellFrame;
             UIHelper.PaneFrame = paneFrame;
             UIHelper.InAppNotification = AppNotification;
+            Page_SizeChanged(this, null);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -84,6 +92,14 @@ namespace CoolapkUWP.Pages
         private void paneFrame_Navigated(object sender, NavigationEventArgs e)
         {
             goHomeButton.Visibility = e.SourcePageType == typeof(MyPage) ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var canOpen = (e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 720;
+
+            splitView.IsPaneOpen = canOpen;
+            PaneOpenSymbolIcon = canOpen ? Symbol.OpenPane : Symbol.ClosePane;
         }
     }
 }
