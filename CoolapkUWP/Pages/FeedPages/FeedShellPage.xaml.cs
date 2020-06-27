@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.ViewModels.FeedDetailPage;
 using System;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -89,9 +90,9 @@ namespace CoolapkUWP.Pages.FeedPages
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedShellPage");
             if (provider.FeedDetail.IsQuestionFeed)
             {
-                if(listCtrl != null)
+                if (listControl != null)
                 {
-                    UnloadObject(listCtrl);
+                    UnloadObject(listControl);
                 }
                 FindName(nameof(answersList));
                 answersList.ItemsSource = ((QuestionViewModel)provider).Models;
@@ -104,6 +105,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         loader.GetString("dateline_desc"),
                 };
                 rightComboBox.SelectedIndex = ((QuestionViewModel)provider).ComboBoxSelectedIndex;
+                rightComboBox.Visibility = Visibility.Visible;
             }
             else
             {
@@ -111,8 +113,10 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     UnloadObject(answersList);
                 }
-                FindName(nameof(listCtrl));
-                listCtrl.SetProvider((provider as FeedViewModel).ReplyListVM);
+                FindName(nameof(listControl));
+                FeedViewModel feedViewModel = provider as FeedViewModel;
+                listControl.SetProvider(feedViewModel.ReplyListVM);
+
                 PivotItemPanel.DataContext = provider.FeedDetail;
                 PivotItemPanel.Visibility = Visibility.Visible;
 
@@ -128,9 +132,10 @@ namespace CoolapkUWP.Pages.FeedPages
                         loader.GetString("popular"),
                         loader.GetString("isFromAuthor"),
                 };
-                rightComboBox.SelectedIndex = ((FeedViewModel)provider).ReplyListVM?.ComboBoxSelectedIndex ?? 0;
+                rightComboBox.SelectedIndex = feedViewModel.ReplyListVM?.ComboBoxSelectedIndex ?? 0;
+
+                ChangeListControlSelection(feedViewModel.ReplyListVM.SelectedIndex);
             }
-            rightComboBox.Visibility = Visibility.Visible;
 
             if (provider.FeedDetail.SourceFeed?.ShowPicArr ?? false)
             {
@@ -154,30 +159,46 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
+        private ImmutableArray<Button> pivotButtons;
+
+        private void ChangeListControlSelection(int n)
+        {
+            if (n < 0 || n > 2) { return; }
+
+            if (pivotButtons == null)
+            {
+                pivotButtons = new Button[]
+                {
+                    toReplyPivotItemButton,
+                    toLikePivotItemButton,
+                    toSharePivotItemButton,
+                }.ToImmutableArray();
+            }
+
+            listControl.ChangeSelection(n);
+
+            rightComboBox.Visibility = n == 0 ? Visibility.Visible : Visibility.Collapsed;
+            for (int i = 0; i < 3; i++)
+            {
+                pivotButtons[i].BorderThickness = i == n ? new Thickness(0, 0, 0, 2) : new Thickness(0);
+            }
+        }
+
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             string tag = (sender as Button).Tag as string;
             switch (tag)
             {
                 case "reply":
-                    listCtrl.ChangeSelection(0);
-                    ToReplyPivotItemButton.BorderThickness = new Thickness(0, 0, 0, 2);
-                    ToLikePivotItemButton.BorderThickness = ToSharePivotItemButton.BorderThickness = new Thickness(0);
-                    rightComboBox.Visibility = Visibility.Visible;
+                    ChangeListControlSelection(0);
                     break;
 
                 case "like":
-                    listCtrl.ChangeSelection(1);
-                    ToLikePivotItemButton.BorderThickness = new Thickness(0, 0, 0, 2);
-                    ToReplyPivotItemButton.BorderThickness = ToSharePivotItemButton.BorderThickness = new Thickness(0);
-                    rightComboBox.Visibility = Visibility.Collapsed;
+                    ChangeListControlSelection(1);
                     break;
 
                 case "share":
-                    listCtrl.ChangeSelection(2);
-                    ToSharePivotItemButton.BorderThickness = new Thickness(0, 0, 0, 2);
-                    ToReplyPivotItemButton.BorderThickness = ToLikePivotItemButton.BorderThickness = new Thickness(0);
-                    rightComboBox.Visibility = Visibility.Collapsed;
+                    ChangeListControlSelection(2);
                     break;
 
                 case "MakeLike":
@@ -248,7 +269,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 }
                 else
                 {
-                    listCtrl.ChangeFeedSorting(rightComboBox.SelectedIndex);
+                    listControl.ChangeFeedSorting(rightComboBox.SelectedIndex);
                 }
             }
         }

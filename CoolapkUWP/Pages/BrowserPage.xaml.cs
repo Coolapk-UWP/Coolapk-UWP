@@ -22,13 +22,19 @@ namespace CoolapkUWP.Pages
                 isLoginPage = value;
                 if (value)
                 {
-                    TryLoginButton.Visibility = Visibility.Visible;
-                    GotoSystemBrowserButton.Visibility = Visibility.Collapsed;
+                    FindName(nameof(tryLoginButton));
+                    if(openInSystemBrowserButton != null)
+                    {
+                        UnloadObject(openInSystemBrowserButton);
+                    }
                 }
                 else
                 {
-                    TryLoginButton.Visibility = Visibility.Collapsed;
-                    GotoSystemBrowserButton.Visibility = Visibility.Visible;
+                    FindName(nameof(openInSystemBrowserButton));
+                    if (tryLoginButton != null)
+                    {
+                        UnloadObject(tryLoginButton);
+                    }
                 }
             }
         }

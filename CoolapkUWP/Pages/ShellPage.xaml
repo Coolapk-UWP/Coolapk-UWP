@@ -7,13 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mtctrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
 
     <Grid>
         <SplitView
             x:Name="splitView"
             DisplayMode="Inline"
-            IsPaneOpen="True"
+            IsPaneOpen="False"
             OpenPaneLength="400"
             PanePlacement="Right">
             <SplitView.Pane>
@@ -31,6 +32,7 @@
                     </Button>
                 </Grid>
             </SplitView.Pane>
+
             <Grid>
                 <Frame x:Name="shellFrame" />
                 <Button
@@ -44,6 +46,7 @@
                 </Button>
             </Grid>
         </SplitView>
+
         <mtctrl:InAppNotification x:Name="AppNotification" StackMode="StackInFront" />
     </Grid>
 </Page>

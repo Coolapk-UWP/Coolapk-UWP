@@ -11,8 +11,8 @@ namespace CoolapkUWP.Helpers.Providers
     internal class CoolapkListProvider
     {
         private int page;
-        private double firstItem, lastItem;
-        private Func<int, int, double, double, Task<JArray>> getData;
+        private string firstItem, lastItem;
+        private Func<int, int, string, string, Task<JArray>> getData;
         private readonly Func<Entity, JToken, bool> checkEqual;
         private readonly Func<JObject, IEnumerable<Entity>> getEntities;
         private readonly Func<string> getString;
@@ -21,7 +21,7 @@ namespace CoolapkUWP.Helpers.Providers
 
         /// <param name="getData"> 获取Jarray的方法。参数顺序是 page, firstItem, lastItem。 </param>
         public CoolapkListProvider(
-            Func<int, int, double, double, Task<JArray>> getData,
+            Func<int, int, string, string, Task<JArray>> getData,
             Func<Entity, JToken, bool> checkEqual,
             Func<JObject, IEnumerable<Entity>> getEntities,
             string idName)
@@ -34,7 +34,7 @@ namespace CoolapkUWP.Helpers.Providers
 
         /// <param name="getData"> 获取Jarray的方法。参数顺序是 page, firstItem, lastItem。 </param>
         public CoolapkListProvider(
-            Func<int, int, double, double, Task<JArray>> getData,
+            Func<int, int, string, string, Task<JArray>> getData,
             Func<Entity, JToken, bool> checkEqual,
             Func<JObject, IEnumerable<Entity>> getEntities,
             Func<string> getString,
@@ -49,7 +49,7 @@ namespace CoolapkUWP.Helpers.Providers
         }
 
         public void ChangeGetDataFunc(
-            Func<int, int, double, double, Task<JArray>> getData,
+            Func<int, int, string, string, Task<JArray>> getData,
             Func<Entity, bool> needDeleteJudger)
         {
             this.getData = getData ?? throw new ArgumentNullException(nameof(getData));
@@ -66,8 +66,21 @@ namespace CoolapkUWP.Helpers.Providers
         public void Reset()
         {
             page = 1;
-            lastItem = firstItem = 0;
+            lastItem = firstItem = string.Empty;
             Models.Clear();
+        }
+
+        private int GetId(JToken token)
+        {
+            if (token == null) { return 0; }
+            else if ((token as JObject).TryGetValue(idName, out JToken jToken))
+            {
+                return jToken.Type == JTokenType.Integer ? jToken.ToObject<int>() : int.Parse(jToken.ToString().Replace("\"", string.Empty));
+            }
+            else
+            {
+                throw new ArgumentException(nameof(idName));
+            }
         }
 
         public async Task Refresh(int p = -1)
@@ -103,10 +116,10 @@ namespace CoolapkUWP.Helpers.Providers
 
                 if (p == 1)
                 {
-                    firstItem = array.First.Value<int>(idName);
+                    firstItem = array.First.ToString();
                     if (page == 1)
                     {
-                        lastItem = array.Last.Value<int>(idName);
+                        lastItem = array.Last.ToString();
                     }
 
                     int modelIndex = 0;
@@ -126,11 +139,11 @@ namespace CoolapkUWP.Helpers.Providers
                 }
                 else
                 {
-                    if (firstItem == 0)
+                    if (string.IsNullOrEmpty(firstItem))
                     {
-                        firstItem = array.First.Value<int>(idName);
+                        firstItem = array.First.ToString();
                     }
-                    lastItem = array.Last.Value<int>(idName);
+                    lastItem = array.Last.ToString();
 
                     foreach (JObject item in array)
                     {

@@ -29,8 +29,8 @@ namespace CoolapkUWP.ViewModels.UserListPage
                         isFollowList ? "followList" : "fansList",
                         uid,
                         p == -1 ? ++page : p,
-                        firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
-                        lastItem == 0 ? string.Empty : $"&lastItem={lastItem}"),
+                        string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                        string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                     (a, b) => ((UserModel)a).UserName == b.Value<string>(isFollowList ? "fusername" : "username"),
                     (o) => new Entity[] { new UserModel((JObject)(isFollowList ? o["fUserInfo"] : o["userInfo"])) },
                     "fuid");

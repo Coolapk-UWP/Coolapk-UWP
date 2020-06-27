@@ -13,27 +13,30 @@
             x:Name="webView"
             Margin="{StaticResource StackPanelMargin}"
             NavigationCompleted="WebView_NavigationCompleted" />
+
         <control:TitleBar
             x:Name="titleBar"
             BackButtonClicked="BackButton_Click"
             IsBackButtonEnabled="{x:Bind Frame.CanGoBack}">
             <control:TitleBar.RightAreaContent>
-                <StackPanel Orientation="Horizontal">
+                <Grid>
                     <Button
-                        x:Name="TryLoginButton"
+                        x:Name="tryLoginButton"
                         x:Uid="/BrowserPage/BackButton"
                         Height="40"
+                        x:Load="False"
                         Background="Transparent"
                         Click="{x:Bind CheckLogin}"
                         Style="{StaticResource ButtonRevealStyle}" />
                     <Button
-                        x:Name="GotoSystemBrowserButton"
+                        x:Name="openInSystemBrowserButton"
                         x:Uid="/BrowserPage/OpenInBrowserButton"
                         Height="40"
+                        x:Load="False"
                         Background="Transparent"
                         Click="GotoSystemBrowserButton_Click"
                         Style="{StaticResource ButtonRevealStyle}" />
-                </StackPanel>
+                </Grid>
             </control:TitleBar.RightAreaContent>
         </control:TitleBar>
     </Grid>

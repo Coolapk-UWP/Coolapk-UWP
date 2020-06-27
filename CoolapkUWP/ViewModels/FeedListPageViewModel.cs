@@ -147,8 +147,8 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                             DataUriType.GetUserFeeds,
                             Id,
                             p == -1 ? ++page : p,
-                            firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
-                            lastItem == 0 ? string.Empty : $"&lastItem={lastItem}"),
+                            string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                     isEqual, getEntity, idName);
         }
 
@@ -177,8 +177,8 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                              DataUriType.GetTagFeeds,
                              Id,
                              p == -1 ? ++page : p,
-                             firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
-                             lastItem == 0 ? string.Empty : $"&lastItem={lastItem}",
+                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                             string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}",
                              sortType),
                     isEqual, getEntity, idName);
         }
@@ -239,8 +239,8 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                             Id,
                             ComboBoxSelectedIndex == 0 ? "all" : "square",
                             p == -1 ? ++page : p,
-                            firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
-                            lastItem == 0 ? string.Empty : $"&lastItem={lastItem}"),
+                            string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                     isEqual, getEntity, idName);
         }
 
