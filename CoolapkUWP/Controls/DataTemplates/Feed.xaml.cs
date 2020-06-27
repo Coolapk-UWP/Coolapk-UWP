@@ -15,7 +15,8 @@ namespace CoolapkUWP.Controls.DataTemplates
             var s = sender as FrameworkElement;
             if (e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
             if ((s.DataContext as ICanCopy)?.IsCopyEnabled ?? false) { return; }
-            e.Handled = true;
+
+            if (e != null) { e.Handled = true; }
 
             UIHelper.OpenLinkAsync(s.Tag as string);
         }

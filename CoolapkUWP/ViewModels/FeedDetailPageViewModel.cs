@@ -115,8 +115,8 @@ namespace CoolapkUWP.ViewModels.FeedDetailPage
                             id,
                             answerSortType,
                             p == -1 ? ++page : p,
-                            firstItem == 0 ? string.Empty : $"&firstItem={firstItem}",
-                            lastItem == 0 ? string.Empty : $"&lastItem={lastItem}"),
+                            string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                     (a, b) => ((FeedModel)a).Url == b.Value<string>("url"),
                     (o) => new Entity[] { new FeedModel(o, FeedDisplayMode.notShowMessageTitle) },
                     "id");

@@ -141,7 +141,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
                     "entityId");
         }
 
-        internal static Func<int, int, int, int, Task<JArray>> GetData(string uri, bool isHotFeedPage)
+        internal static Func<int, int, string, string, Task<JArray>> GetData(string uri, bool isHotFeedPage)
         {
             return async (p, page, _, __) =>
                 (JArray)await DataHelper.GetDataAsync(
