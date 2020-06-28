@@ -28,6 +28,7 @@
                     </Grid.RowDefinitions>
                     <Border
                         Grid.RowSpan="2"
+                        Margin="8,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         CornerRadius="8">

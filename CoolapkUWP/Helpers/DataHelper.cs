@@ -63,7 +63,6 @@ namespace CoolapkUWP.Helpers
     {
         private static readonly System.Collections.Generic.Dictionary<string, object> responseCache = new System.Collections.Generic.Dictionary<string, object>();
 
-        // 来源 ：https://blog.csdn.net/lindexi_gd/article/details/48951849
         public static string GetMD5(string inputString)
         {
             CryptographicHash objHash = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5).CreateHash();

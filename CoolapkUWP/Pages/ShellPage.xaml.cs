@@ -1,5 +1,7 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Controls;
+using CoolapkUWP.Helpers;
 using System.ComponentModel;
+using System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -63,7 +65,7 @@ namespace CoolapkUWP.Pages
             };
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             shellFrame.Navigate(typeof(MainPage));
@@ -71,6 +73,12 @@ namespace CoolapkUWP.Pages
             UIHelper.MainFrame = shellFrame;
             UIHelper.PaneFrame = paneFrame;
             UIHelper.InAppNotification = AppNotification;
+            if (SettingsHelper.Get<bool>(SettingsHelper.IsFirstRun))
+            {
+                AboutDialog dialog = new AboutDialog();
+                await dialog.ShowAsync();
+                SettingsHelper.Set(SettingsHelper.IsFirstRun, false);
+            }
             Page_SizeChanged(this, null);
         }
 

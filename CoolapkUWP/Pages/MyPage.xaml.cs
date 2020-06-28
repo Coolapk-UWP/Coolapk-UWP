@@ -70,6 +70,8 @@ namespace CoolapkUWP.Pages
 
         private async Task Refresh()
         {
+            if (string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid))) { return; }
+
             ring.IsActive = true;
             ring.Visibility = Visibility.Visible;
 
@@ -97,7 +99,10 @@ namespace CoolapkUWP.Pages
         protected override void OnNavigatingFrom(Windows.UI.Xaml.Navigation.NavigatingCancelEventArgs e)
         {
             UIHelper.NotificationNums.BadgeNumberChanged -= NotificationNums_BadgeNumberChanged;
-            provider.VerticalOffsets[0] = scrollViewer.VerticalOffset;
+            if (provider != null)
+            {
+                provider.VerticalOffsets[0] = scrollViewer.VerticalOffset;
+            }
 
             base.OnNavigatingFrom(e);
         }
@@ -174,24 +179,6 @@ namespace CoolapkUWP.Pages
         private void ListViewItem_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             var tag = (sender as FrameworkElement)?.Tag;
-            if (tag is string s)
-            {
-                if (s.Contains("我的常去", System.StringComparison.Ordinal))
-                {
-                    UIHelper.NavigateInSplitPane(typeof(HistoryPage), new ViewModels.HistoryPage.ViewModel("我的常去"));
-                    return;
-                }
-                else if (s.Contains("浏览历史", System.StringComparison.Ordinal))
-                {
-                    UIHelper.NavigateInSplitPane(typeof(HistoryPage), new ViewModels.HistoryPage.ViewModel("浏览历史"));
-                    return;
-                }
-                else if (s.Contains("我关注的话题", System.StringComparison.Ordinal))
-                {
-                    UIHelper.NavigateInSplitPane(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("#/topic/userFollowTagList&title=我关注的话题", true));
-                    return;
-                }
-            }
 
             switch (tag as string)
             {
@@ -209,7 +196,22 @@ namespace CoolapkUWP.Pages
                     break;
 
                 default:
-                    UIHelper.OpenLinkAsync(tag as string);
+                    if (tag is string s)
+                    {
+                        if (s.Contains("我的常去", System.StringComparison.Ordinal))
+                        {
+                            UIHelper.NavigateInSplitPane(typeof(HistoryPage), new ViewModels.HistoryPage.ViewModel("我的常去"));
+                        }
+                        else if (s.Contains("浏览历史", System.StringComparison.Ordinal))
+                        {
+                            UIHelper.NavigateInSplitPane(typeof(HistoryPage), new ViewModels.HistoryPage.ViewModel("浏览历史"));
+                        }
+                        else if (s.Contains("我关注的话题", System.StringComparison.Ordinal))
+                        {
+                            UIHelper.NavigateInSplitPane(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("#/topic/userFollowTagList&title=我关注的话题", true));
+                        }
+                        else { UIHelper.OpenLinkAsync(tag as string); }
+                    }
                     break;
             }
         }
