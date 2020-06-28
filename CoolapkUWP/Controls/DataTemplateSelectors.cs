@@ -38,12 +38,12 @@ namespace CoolapkUWP.Controls
             {
                 switch (m.EntitiesType)
                 {
-                    case EntitiesType.TabLink: return TabLinkCard;
-                    case EntitiesType.SelectorLink: return SelectorLinkCard;
-                    case EntitiesType.Image: return Images;
-                    case EntitiesType.IconLink: return IconLinks;
-                    case EntitiesType.TextLink: return TextLinkList;
-                    case EntitiesType.Others:
+                    case EntityType.TabLink: return TabLinkCard;
+                    case EntityType.SelectorLink: return SelectorLinkCard;
+                    case EntityType.Image: return Images;
+                    case EntityType.IconLink: return IconLinks;
+                    case EntityType.TextLinks: return TextLinkList;
+                    case EntityType.Others:
                     default: return DataTemplate2;
                 }
             }

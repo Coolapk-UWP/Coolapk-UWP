@@ -15,7 +15,8 @@ namespace CoolapkUWP.Helpers
         OriginImage,
         SmallAvatar,
         BigAvatar,
-        Icon
+        Icon,
+        Captcha,
     }
 
     internal static class ImageCacheHelper
@@ -23,9 +24,9 @@ namespace CoolapkUWP.Helpers
         private static readonly BitmapImage whiteNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
         private static readonly BitmapImage darkNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
         private static readonly Dictionary<ImageType, StorageFolder> folders = new Dictionary<ImageType, StorageFolder>();
-        public static BitmapImage NoPic { get => SettingsHelper.Get<bool>(SettingsHelper.IsDarkMode) ? darkNoPicMode : whiteNoPicMode; }
+        internal static BitmapImage NoPic { get => SettingsHelper.Get<bool>(SettingsHelper.IsDarkMode) ? darkNoPicMode : whiteNoPicMode; }
 
-        private static async Task<StorageFolder> GetFolderAsync(ImageType type)
+        internal static async Task<StorageFolder> GetFolderAsync(ImageType type)
         {
             StorageFolder folder;
             if (folders.ContainsKey(type))
@@ -47,7 +48,7 @@ namespace CoolapkUWP.Helpers
             return folder;
         }
 
-        public static async Task<BitmapImage> GetImageAsync(ImageType type, string url, Pages.ImageModel model = null, InAppNotify notify = null)
+        internal static async Task<BitmapImage> GetImageAsync(ImageType type, string url, Pages.ImageModel model = null, InAppNotify notify = null)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -74,9 +75,7 @@ namespace CoolapkUWP.Helpers
                 if (item is null)
                 {
                     StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
-                    try { await DownloadImageAsync(file, url, model, notify); }
-                    catch (FileLoadException) { return GetLocalImageAsync(file.Path, forceGetPic); }
-                    return GetLocalImageAsync(file.Path, forceGetPic);
+                    return await DownloadImageAsync(file, url, model, notify);
                 }
                 else
                 {
@@ -87,10 +86,17 @@ namespace CoolapkUWP.Helpers
 
         private static BitmapImage GetLocalImageAsync(string filename, bool forceGetPic)
         {
-            return (filename is null || (!forceGetPic && SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))) ? NoPic : new BitmapImage(new Uri(filename));
+            try
+            {
+                return (filename is null || (!forceGetPic && SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))) ? NoPic : new BitmapImage(new Uri(filename));
+            }
+            catch
+            {
+                return NoPic;
+            }
         }
 
-        private static async Task DownloadImageAsync(StorageFile file, string url, Pages.ImageModel model, InAppNotify notify)
+        private static async Task<BitmapImage> DownloadImageAsync(StorageFile file, string url, Pages.ImageModel model, InAppNotify notify)
         {
             try
             {
@@ -98,12 +104,15 @@ namespace CoolapkUWP.Helpers
                 {
                     model.IsProgressRingActived = true;
                 }
-                using (Stream stream = await new HttpClient().GetStreamAsync(url))
-                using (Stream fs = await file.OpenStreamForWriteAsync())
+                using (var hc = new HttpClient())
+                using (var stream = await hc.GetStreamAsync(new Uri(url)))
+                using (var fs = await file.OpenStreamForWriteAsync())
                 {
                     await stream.CopyToAsync(fs);
                 }
+                return new BitmapImage(new Uri(file.Path));
             }
+            catch (FileLoadException) { return NoPic; }
             catch (HttpRequestException)
             {
                 var str = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
@@ -115,6 +124,7 @@ namespace CoolapkUWP.Helpers
                 {
                     notify.Show(str, UIHelper.duration);
                 }
+                return NoPic;
             }
             finally
             {
@@ -125,9 +135,9 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        public static async Task CleanCacheAsync()
+        internal static async Task CleanCacheAsync()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 6; i++)
             {
                 var type = (ImageType)i;
                 await (await GetFolderAsync(type)).DeleteAsync();

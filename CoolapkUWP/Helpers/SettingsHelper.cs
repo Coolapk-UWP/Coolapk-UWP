@@ -39,15 +39,17 @@ namespace CoolapkUWP.Helpers
         static SettingsHelper()
         {
             SetDefaultSettings();
-            Set(IsDarkMode, uiSettings.GetColorValue(UIColorType.Background) == Windows.UI.Colors.Black);
-            uiSettings.ColorValuesChanged += (o, e) =>
-            {
-                if (Get<bool>(IsBackgroundColorFollowSystem))
-                {
-                    Set(IsDarkMode, o.GetColorValue(UIColorType.Background) == Windows.UI.Colors.Black);
-                }
-            };
+            SetBackgroundTheme(uiSettings, null);
+            uiSettings.ColorValuesChanged += SetBackgroundTheme;
             UIHelper.CheckTheme();
+        }
+
+        private static void SetBackgroundTheme(UISettings o,object _)
+        {
+            if (Get<bool>(IsBackgroundColorFollowSystem))
+            {
+                Set(IsDarkMode, o.GetColorValue(UIColorType.Background) == Windows.UI.Colors.Black);
+            }
         }
 
         public static async Task CheckUpdateAsync()
@@ -122,7 +124,7 @@ namespace CoolapkUWP.Helpers
                     if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(userName))
                     {
                         Set(Uid, uid);
-                        var o = (JObject)await DataHelper.GetDataAsync(DataUriType.CheckLoginInfo);
+                        var o = (JObject)await DataHelper.GetDataAsync(DataUriType.CheckLoginInfo, true);
                         UIHelper.NotificationNums.Initial((JObject)o["notifyCount"]);
                         return true;
                     }

@@ -30,22 +30,22 @@ namespace CoolapkUWP.Pages.FeedPages
             UserList.ItemsSource = provider.providers[1].Models;
             TopicList.ItemsSource = provider.providers[2].Models;
 
-            SearchTypeComboBox.SelectedIndex = provider.TypeComboBoxSelectedIndex;
+            searchTypeComboBox.SelectedIndex = provider.TypeComboBoxSelectedIndex;
 
             await StartSearch();
 
             await Task.Delay(30);
-            if (SearchTypeComboBox.SelectedIndex > -1)
+            if (searchTypeComboBox.SelectedIndex > -1)
             {
-                (FindName($"scrollViewer{SearchTypeComboBox.SelectedIndex}") as ScrollViewer).ChangeView(null, provider.VerticalOffsets[0], null, true);
+                (FindName($"scrollViewer{searchTypeComboBox.SelectedIndex}") as ScrollViewer).ChangeView(null, provider.VerticalOffsets[0], null, true);
             }
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            if (SearchTypeComboBox.SelectedIndex > -1)
+            if (searchTypeComboBox.SelectedIndex > -1)
             {
-                provider.VerticalOffsets[0] =(FindName($"scrollViewer{SearchTypeComboBox.SelectedIndex}") as ScrollViewer).VerticalOffset;
+                provider.VerticalOffsets[0] = (FindName($"scrollViewer{searchTypeComboBox.SelectedIndex}") as ScrollViewer).VerticalOffset;
             }
             else
             {
@@ -71,7 +71,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
                 await provider.ChangeWordAndSearch(SearchText.Text, detailPivot.SelectedIndex);
                 detailPivot.Visibility = Visibility.Visible;
-                
+
                 progressRing.Visibility = Visibility.Collapsed;
                 progressRing.IsActive = false;
             }
@@ -81,13 +81,13 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void SearchTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(provider == null) { return; }
-            if (SearchTypeComboBox.SelectedIndex != -1 && detailPivot != null)
+            if (provider == null) { return; }
+            if (searchTypeComboBox.SelectedIndex != -1 && detailPivot != null)
             {
-                detailPivot.SelectedIndex = SearchTypeComboBox.SelectedIndex;
+                detailPivot.SelectedIndex = searchTypeComboBox.SelectedIndex;
             }
 
-            if (SearchTypeComboBox.SelectedIndex + 1 == SearchTypeComboBox.Items.Count || provider.providers[SearchTypeComboBox.SelectedIndex].Page == 0)
+            if (searchTypeComboBox.SelectedIndex + 1 == searchTypeComboBox.Items.Count || provider.providers[searchTypeComboBox.SelectedIndex].Page == 0)
             {
                 _ = StartSearch();
             }
@@ -97,12 +97,14 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             ScrollViewer viewer = sender as ScrollViewer;
             if (!e.IsIntermediate && viewer.VerticalOffset == viewer.ScrollableHeight)
+            {
                 _ = StartSearch();
+            }
         }
 
         private void SearchFeedTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(provider == null) { return; }
+            if (provider == null) { return; }
             provider.providers[0].Reset();
             _ = StartSearch();
         }
@@ -122,7 +124,7 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetSearchWords, sender.Text);
+                JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetSearchWords, true, sender.Text);
                 sender.ItemsSource = array != null && array.Count > 0 ? array.Select(i => new SearchWord(i as JObject)) : null;
             }
         }
@@ -137,10 +139,10 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void DetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SearchTypeComboBox.SelectedIndex != detailPivot.SelectedIndex)
+            if (searchTypeComboBox.SelectedIndex != detailPivot.SelectedIndex)
             {
-                SearchTypeComboBox.SelectedIndex = detailPivot.SelectedIndex;
-                if (SearchTypeComboBox.SelectedIndex + 1 == SearchTypeComboBox.Items.Count || provider.providers[SearchTypeComboBox.SelectedIndex].Page == 0)
+                searchTypeComboBox.SelectedIndex = detailPivot.SelectedIndex;
+                if (searchTypeComboBox.SelectedIndex + 1 == searchTypeComboBox.Items.Count || provider.providers[searchTypeComboBox.SelectedIndex].Page == 0)
                     StartSearch();
             }
         }

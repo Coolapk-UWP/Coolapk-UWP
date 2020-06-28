@@ -40,37 +40,54 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
+
                         <CheckBox
                             x:Uid="/SettingPage/UseOldEmojiModeCheckBox"
                             Grid.Row="0"
                             Grid.ColumnSpan="2"
                             IsChecked="{x:Bind IsUseOldEmojiMode2, Mode=TwoWay}" />
+
                         <CheckBox
                             x:Uid="/SettingPage/DisplayOriginPictureCheckBox"
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
                             IsChecked="{x:Bind IsDisplayOriginPicture2, Mode=TwoWay}" />
+
                         <CheckBox
                             x:Uid="/SettingPage/NoPicsModeCheckBox"
                             Grid.Row="2"
                             Grid.ColumnSpan="2"
                             IsChecked="{x:Bind IsNoPicsMode2, Mode=TwoWay}" />
+
                         <Button
                             x:Uid="/SettingPage/CleanCacheButton"
                             Grid.Row="3"
                             Grid.Column="0"
+                            Margin="0,2"
                             Click="Button_Click"
                             IsEnabled="{x:Bind IsCleanCacheButtonEnabled, Mode=OneWay}"
                             Tag="CleanCache" />
+
                         <winui:ProgressRing
                             Grid.Row="3"
                             Grid.Column="1"
+                            Margin="8,0"
+                            HorizontalAlignment="Left"
                             IsActive="{x:Bind IsCleanCacheButtonEnabled, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}" />
+
+                        <Button
+                            x:Uid="/SettingPage/AccountSetting"
+                            Grid.Row="4"
+                            Grid.ColumnSpan="2"
+                            Margin="0,2"
+                            Click="Button_Click"
+                            Tag="AccountSetting" />
                     </Grid>
                 </controls:HeaderedContentControl>
 
@@ -91,11 +108,13 @@
                             Grid.ColumnSpan="2"
                             FontSize="{ThemeResource ContentControlFontSize}"
                             Text="{x:Bind VersionTextBlockText}" />
+
                         <CheckBox
                             x:Uid="/SettingPage/CheckUpdateWhenLuanchingCheckBox"
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
                             IsChecked="{x:Bind CheckUpdateWhenLuanching2, Mode=TwoWay}" />
+
                         <Button
                             x:Uid="/SettingPage/CheckUpdate"
                             Grid.Row="2"
@@ -103,9 +122,12 @@
                             Click="Button_Click"
                             IsEnabled="{x:Bind IsCheckUpdateButtonEnabled, Mode=OneWay}"
                             Tag="checkUpdate" />
+
                         <winui:ProgressRing
                             Grid.Row="2"
                             Grid.Column="1"
+                            Margin="8,0"
+                            HorizontalAlignment="Left"
                             IsActive="{x:Bind IsCheckUpdateButtonEnabled, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}" />
                     </Grid>
                 </controls:HeaderedContentControl>
@@ -115,8 +137,10 @@
                         <CheckBox x:Uid="/SettingPage/ShowOtherExceptionCheckBox" IsChecked="{x:Bind ShowOtherException2, Mode=TwoWay}" />
                         <Button
                             x:Uid="/SettingPage/ResetSettings"
+                            Margin="0,2"
                             Click="Button_Click"
                             Tag="reset" />
+
                         <HyperlinkButton
                             x:Uid="/SettingPage/FeedbackLink"
                             Click="Button_Click"

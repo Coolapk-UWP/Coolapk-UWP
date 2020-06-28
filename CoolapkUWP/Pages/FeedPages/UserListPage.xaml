@@ -17,6 +17,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
+
     <Grid>
         <winui:ItemsRepeaterScrollHost>
             <ScrollViewer x:Name="scrollViewer" ViewChanged="ScrollViewer_ViewChanged">

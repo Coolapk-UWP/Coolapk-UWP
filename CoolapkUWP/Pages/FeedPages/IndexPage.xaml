@@ -506,10 +506,20 @@
                             Height="24"
                             Margin="4"
                             Source="{x:Bind Pic.Pic, Mode=OneWay}" />
+
                         <TextBlock
                             HorizontalAlignment="Center"
                             MaxLines="2"
                             Text="{x:Bind Title}"
+                            TextAlignment="Center"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            MaxLines="1"
+                            Text="{x:Bind SubTitle}"
                             TextAlignment="Center"
                             TextTrimming="CharacterEllipsis"
                             TextWrapping="Wrap" />

@@ -282,6 +282,10 @@ namespace CoolapkUWP.Helpers
             {
                 ShowImage(str, ImageType.SmallImage);
             }
+            else if(str == "https://m.coolapk.com/mp/user/communitySpecification")
+            {
+                Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
+            }
             else if (str.IsFirst(i++))
             {
                 if (str.Contains("coolapk.com", StringComparison.Ordinal))

@@ -61,7 +61,7 @@ namespace CoolapkUWP.ViewModels.FeedDetailPage
 
         protected static async Task<FeedDetailModel> GetFeedDetailAsync(string id)
         {
-            var detail = (JObject)await DataHelper.GetDataAsync(DataUriType.GetFeedDetail, id);
+            var detail = (JObject)await DataHelper.GetDataAsync(DataUriType.GetFeedDetail, true, id);
             if (detail != null)
             {
                 return new FeedDetailModel(detail);
@@ -112,9 +112,10 @@ namespace CoolapkUWP.ViewModels.FeedDetailPage
                     async (p, page, firstItem, lastItem) =>
                         (JArray)await DataHelper.GetDataAsync(
                             DataUriType.GetAnswers,
+                            p == -2 ? true : false, 
                             id,
                             answerSortType,
-                            p == -1 ? ++page : p,
+                            p < 0 ? ++page : p,
                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                             string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                     (a, b) => ((FeedModel)a).Url == b.Value<string>("url"),

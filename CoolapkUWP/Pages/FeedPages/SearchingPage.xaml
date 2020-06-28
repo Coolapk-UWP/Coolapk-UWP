@@ -120,7 +120,7 @@
                 SuggestionChosen="AutoSuggestBox_SuggestionChosen"
                 TextChanged="SearchText_TextChanged" />
             <ComboBox
-                x:Name="SearchTypeComboBox"
+                x:Name="searchTypeComboBox"
                 Grid.Column="3"
                 Margin="4,0,4,4"
                 VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"

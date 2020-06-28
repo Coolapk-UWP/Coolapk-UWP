@@ -79,12 +79,12 @@ namespace CoolapkUWP.Pages.FeedPages
             base.OnNavigatingFrom(e);
         }
 
-        private async void Refresh()
+        private async void Refresh(int p = -1)
         {
             titleBar.ShowProgressRing();
             scrollViewer.ChangeView(null, 0, null);
             titleBar.Title = provider.Title;
-            await provider.Refresh();
+            await provider.Refresh(p);
 
             titleBar.HideProgressRing();
         }
@@ -117,6 +117,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         (provider.Models[0] as UserDetail).FollowStatus == Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage").GetString("follow")
                             ? DataUriType.OperateUnfollow
                             : DataUriType.OperateFollow,
+                        true,
                         provider.Id);
                     Refresh();
                     break;
@@ -165,6 +166,11 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 UserDetailBorder_Tapped(sender, null);
             }
+        }
+
+        private void titleBar_RefreshButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Refresh(-2);
         }
     }
 

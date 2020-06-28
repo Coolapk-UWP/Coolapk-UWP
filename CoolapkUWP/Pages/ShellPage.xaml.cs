@@ -67,7 +67,7 @@ namespace CoolapkUWP.Pages
         {
             base.OnNavigatedTo(e);
             shellFrame.Navigate(typeof(MainPage));
-            paneFrame.Navigate(typeof(MyPage));
+            paneFrame.Navigate(typeof(MyPage), new ViewModels.MyPage.ViewMode());
             UIHelper.MainFrame = shellFrame;
             UIHelper.PaneFrame = paneFrame;
             UIHelper.InAppNotification = AppNotification;
@@ -84,7 +84,7 @@ namespace CoolapkUWP.Pages
                     break;
 
                 case "home":
-                    paneFrame.Navigate(typeof(MyPage));
+                    paneFrame.Navigate(typeof(MyPage), new ViewModels.MyPage.ViewMode());
                     break;
             }
         }

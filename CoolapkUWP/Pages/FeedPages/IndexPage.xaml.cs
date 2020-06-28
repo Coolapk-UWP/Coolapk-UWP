@@ -29,7 +29,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
             ShowProgressRing();
             listView.ItemsSource = provider.mainModels;
-            await Refresh();
+            await Refresh(-2);
 
             await Task.Delay(30);
             titleBar.Title = provider.Title;
@@ -73,7 +73,7 @@ namespace CoolapkUWP.Pages.FeedPages
         private async Task Refresh(int p = -1)
         {
             ShowProgressRing();
-            if (p == 1)
+            if (p == -2)
             {
                 scrollViewer.ChangeView(null, 0, null);
             }
@@ -91,7 +91,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public void RefreshPage()
         {
-            _ = Refresh(1);
+            _ = Refresh(-2);
         }
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e)
@@ -174,7 +174,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     ViewModels.IndexPage.ViewModel.GetData(u, false),
                     (a) => a?.EntityType == "topic");
             }
-            _ = Refresh();
+            _ = Refresh(-2);
         }
 
         private void FlipView_Loaded(object sender, RoutedEventArgs e)

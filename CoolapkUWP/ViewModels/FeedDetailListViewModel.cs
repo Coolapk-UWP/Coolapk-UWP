@@ -35,9 +35,10 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
                     async (p, page, firstItem, lastItem) =>
                         (JArray)await DataHelper.GetDataAsync(
                             DataUriType.GetFeedReplies,
+                            p == -2 ? true : false,
                             id,
                             replyListType,
-                            p == -1 ? ++page : p,
+                            p < 0 ? ++page : p,
                             page > 1 ? $"&firstItem={firstItem}&lastItem={lastItem}" : string.Empty,
                             isFromAuthor),
                     (a, b) => ((FeedReplyModel)a).Id == b.Value<int>("id"),
@@ -50,8 +51,9 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
                     async (p, page, firstItem, lastItem) =>
                         (JArray)await DataHelper.GetDataAsync(
                             DataUriType.GetLikeList,
+                            p == -2 ? true : false,
                             id,
-                            p == -1 ? ++page : p,
+                            p < 0 ? ++page : p,
                             page > 1 ? $"&firstItem={firstItem}&lastItem={lastItem}" : string.Empty),
                     (a, b) => ((UserModel)a).Url == b.Value<string>("url"),
                     (o) => new Entity[] { new UserModel(o) },
@@ -59,7 +61,7 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
                     "uid");
             ShareProvider =
                 new CoolapkListProvider(
-                    async (p, page, firstItem, lastItem) => (JArray)await DataHelper.GetDataAsync(DataUriType.GetShareList, id, p == -1 ? ++page : p),
+                    async (p, page, firstItem, lastItem) => (JArray)await DataHelper.GetDataAsync(DataUriType.GetShareList, p == -2 ? true : false, id, p < 0 ? ++page : p),
                 (a, b) => ((SourceFeedModel)a).Url == b.Value<string>("url"),
                 (o) => new Entity[] { new SourceFeedModel(o) },
                 () => loader.GetString("noMoreShare"),

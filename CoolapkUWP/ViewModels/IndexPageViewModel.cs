@@ -71,7 +71,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
                 case "user": return new UserModel(jo);
                 case "topic": return new TopicModel(jo);
                 case "dyh": return new DyhModel(jo);
-                case "card":
+                case "entity_type_user_card_manager": return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);
                 default:
                     if (jo.TryGetValue("entityTemplate", out JToken v1))
                     {
@@ -84,20 +84,20 @@ namespace CoolapkUWP.ViewModels.IndexPage
                             case "feedScrollCard":
                             case "imageTextScrollCard":
                             case "iconMiniLinkGridCard":
-                            case "iconMiniGridCard": return new IndexPageHasEntitiesModel(jo, EntitiesType.Others);
+                            case "iconMiniGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
                             case "headCard":
                             case "imageCarouselCard_1": //return new IndexPageHasEntitiesViewModel(jo, EntitiesType.Image_1);
-                            case "imageCard": return new IndexPageHasEntitiesModel(jo, EntitiesType.Image);
-                            case "iconLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntitiesType.IconLink);
+                            case "imageCard": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
+                            case "iconLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.IconLink);
                             case "feedGroupListCard":
-                            case "textLinkListCard": return new IndexPageHasEntitiesModel(jo, EntitiesType.TextLink);
+                            case "textLinkListCard": return new IndexPageHasEntitiesModel(jo, EntityType.TextLinks);
                             case "textCard":
                             case "messageCard": return new IndexPageMessageCardModel(jo);
                             case "refreshCard": return new IndexPageOperationCardModel(jo, OperationType.Refresh);
                             case "unLoginCard": return new IndexPageOperationCardModel(jo, OperationType.Login);
                             case "titleCard": return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);
-                            case "iconTabLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntitiesType.TabLink);
-                            case "selectorLinkCard": return new IndexPageHasEntitiesModel(jo, EntitiesType.SelectorLink);
+                            case "iconTabLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.TabLink);
+                            case "selectorLinkCard": return new IndexPageHasEntitiesModel(jo, EntityType.SelectorLink);
                             default: return null;
                         }
                     }
@@ -146,9 +146,10 @@ namespace CoolapkUWP.ViewModels.IndexPage
             return async (p, page, _, __) =>
                 (JArray)await DataHelper.GetDataAsync(
                     DataUriType.GetIndexPage,
+                    p == -2 ? true : false,
                     uri,
                     isHotFeedPage ? "?" : "&",
-                    p == -1 ? ++page : p);
+                    p < 0? ++page : p);
         }
 
         internal void AddTab(string uri) => tabProviders = tabProviders.Add(GetProvider(uri));

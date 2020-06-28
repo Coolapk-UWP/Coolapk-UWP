@@ -3,11 +3,7 @@ using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CoolapkUWP.ViewModels.SearchPage
@@ -45,6 +41,7 @@ namespace CoolapkUWP.ViewModels.SearchPage
                         }
                         return (JArray)await DataHelper.GetDataAsync(
                             DataUriType.SearchFeeds,
+                            true,
                             feedType,
                             sortType,
                             keyWord,
@@ -58,6 +55,7 @@ namespace CoolapkUWP.ViewModels.SearchPage
                     async (keyWord, page, lastItem) =>
                         (JArray)await DataHelper.GetDataAsync(
                             DataUriType.SearchUsers,
+                            true,
                             keyWord,
                             page,
                             page > 1 ? "&lastItem=" + lastItem : string.Empty),
@@ -68,14 +66,14 @@ namespace CoolapkUWP.ViewModels.SearchPage
                     async (keyWord, page, lastItem) =>
                         (JArray)await DataHelper.GetDataAsync(
                             DataUriType.SearchTags,
+                            true,
                             keyWord,
                             page,
                             page > 1 ? "&lastItem=" + lastItem : string.Empty),
                     (o) => new TopicModel(o),
                     "id")
     }.ToImmutableArray();
-
-}
+    }
 
     internal class ViewModel : IViewModel
     {
@@ -89,7 +87,7 @@ namespace CoolapkUWP.ViewModels.SearchPage
 
         internal ViewModel(int selectedIndex, string keyWord)
         {
-            if(selectedIndex < -1 && selectedIndex >= providers.Length)
+            if (selectedIndex < -1 && selectedIndex >= providers.Length)
             {
                 throw new ArgumentException(nameof(selectedIndex));
             }
@@ -103,7 +101,14 @@ namespace CoolapkUWP.ViewModels.SearchPage
 
         internal async Task ChangeWordAndSearch(string keyWord, int index)
         {
-            KeyWord = keyWord;
+            if (KeyWord != keyWord)
+            {
+                KeyWord = keyWord;
+                foreach (var item in providers)
+                {
+                    item.Reset();
+                }
+            }
             TypeComboBoxSelectedIndex = index;
             await providers[TypeComboBoxSelectedIndex].Search(KeyWord);
         }
