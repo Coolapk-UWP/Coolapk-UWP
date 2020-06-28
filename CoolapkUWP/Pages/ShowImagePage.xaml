@@ -60,6 +60,7 @@
                             MinZoomFactor="0.5"
                             VerticalScrollBarVisibility="Auto"
                             ZoomMode="Enabled">
+
                             <Border
                                 MaxWidth="{Binding Path=ViewportWidth, ElementName=ScrollViewerMain}"
                                 MaxHeight="{Binding Path=ViewportHeight, ElementName=ScrollViewerMain}"
@@ -68,9 +69,12 @@
                                 VerticalAlignment="Center"
                                 ManipulationDelta="ScrollViewerMain_ManipulationDelta"
                                 ManipulationMode="TranslateX,TranslateY">
-                                <Image Source="{x:Bind Pic, Mode=OneWay}" />
+
+                                <Image x:Name="image" Source="{x:Bind Pic, Mode=OneWay}" />
+
                             </Border>
                         </ScrollViewer>
+
                         <winui:ProgressRing
                             Width="60"
                             Height="60"
@@ -79,11 +83,13 @@
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
+
         <Border
             x:Name="titleBorder"
             Height="32"
             VerticalAlignment="Top"
             Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}" />
+
         <StackPanel
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
@@ -97,6 +103,7 @@
                 Tag="back">
                 <SymbolIcon Symbol="Back" />
             </Button>
+
             <Button
                 x:Uid="/ShowImagePage/ZoomInButton"
                 Margin="4,0"
@@ -105,6 +112,7 @@
                 Tag="zoomIn">
                 <SymbolIcon Symbol="ZoomIn" />
             </Button>
+
             <Button
                 x:Uid="/ShowImagePage/ZoomOutButton"
                 Margin="4,0"
@@ -113,15 +121,19 @@
                 Tag="zoomOut">
                 <SymbolIcon Symbol="ZoomOut" />
             </Button>
+
             <TextBlock
                 Margin="12,0,0,0"
                 VerticalAlignment="Center"
                 Text="{x:Bind SelectedIndex, Mode=OneWay}" />
+
             <TextBlock VerticalAlignment="Center" Text="/" />
+
             <TextBlock
                 Margin="0,0,12,0"
                 VerticalAlignment="Center"
                 Text="{x:Bind imageModels.Count, Mode=OneWay}" />
+
             <Button
                 x:Uid="/ShowImagePage/SaveButton"
                 Margin="4,0"
@@ -130,6 +142,7 @@
                 Tag="save">
                 <SymbolIcon Symbol="Save" />
             </Button>
+
             <Button
                 x:Uid="/ShowImagePage/GetOriginButton"
                 Margin="4,0"
@@ -139,6 +152,7 @@
                 Tag="origin">
                 <SymbolIcon Symbol="Pictures" />
             </Button>
+
             <Button
                 x:Uid="/ShowImagePage/ForwardButton"
                 Click="Button_Click"
@@ -148,6 +162,7 @@
                 <SymbolIcon Symbol="Forward" />
             </Button>
         </StackPanel>
+
         <controls:InAppNotification x:Name="notify" />
     </Grid>
 </Page>

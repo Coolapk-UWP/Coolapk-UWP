@@ -5,7 +5,7 @@ namespace CoolapkUWP.Models.Controls
 {
     public class UserHubModel : INotifyPropertyChanged
     {
-        public void Initialize(Newtonsoft.Json.Linq.JObject o, ImageSource image)
+        public UserHubModel(Newtonsoft.Json.Linq.JObject o, ImageSource image)
         {
             UserAvatar = image;
             UserName = o.Value<string>("username");

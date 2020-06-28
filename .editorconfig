@@ -11,3 +11,6 @@ dotnet_diagnostic.CA1032.severity = suggestion
 
 # CA1056: URI属性不应该是字符串
 dotnet_diagnostic.CA1056.severity = suggestion
+
+# CA1819: 属性不应返回数组
+dotnet_diagnostic.CA1819.severity = suggestion

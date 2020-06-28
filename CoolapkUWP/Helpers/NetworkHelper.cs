@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.Web.Http;
 
 namespace CoolapkUWP.Helpers
@@ -48,6 +51,20 @@ namespace CoolapkUWP.Helpers
                 return await a.Content.ReadAsStringAsync();
             }
             catch { throw; }
+        }
+
+        public static async Task<BitmapImage> DownloadImageAsync(Uri uri, StorageFile file)
+        {
+            mClient.DefaultRequestHeaders.Remove("X-App-Token");
+            mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
+
+            var s = await mClient.GetInputStreamAsync(uri);
+            using (var ss = await file.OpenStreamForWriteAsync())
+            {
+                await s.AsStreamForRead().CopyToAsync(ss);
+            }
+
+            return new BitmapImage(new Uri(file.Path));
         }
 
         /// <summary> 从指定URI中获取Json文本。 </summary>

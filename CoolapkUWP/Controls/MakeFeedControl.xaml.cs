@@ -1,6 +1,8 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Models;
 using CoolapkUWP.Models.Controls.MakeFeedControlModel;
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -33,7 +35,7 @@ namespace CoolapkUWP.Controls
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            InputBox.Document.GetText(TextGetOptions.UseObjectText, out string contentText);
+            inputBox.Document.GetText(TextGetOptions.UseObjectText, out string contentText);
             contentText = contentText.Replace("\r", "\r\n");
             if (string.IsNullOrWhiteSpace(contentText)) return;
             using (var content = new HttpMultipartFormDataContent(GetBoundary()))
@@ -48,10 +50,7 @@ namespace CoolapkUWP.Controls
                             content.Add(a, "message");
                             content.Add(b, "type");
                             content.Add(c, "is_html_article");
-                            if (await DataHelper.PostDataAsync(DataUriType.CreateFeed, content) != null)
-                            {
-                                SendSuccessful();
-                            }
+                            await MakeFeed(DataUriType.CreateFeed, content);
                         }
                         break;
 
@@ -61,12 +60,39 @@ namespace CoolapkUWP.Controls
                         using (var d = new HttpStringContent(contentText))
                         {
                             content.Add(d, "message");
-                            if (await DataHelper.PostDataAsync(type, content, FeedId) != null)
-                            {
-                                SendSuccessful();
-                            }
+                            await MakeFeed(type, content);
                         }
                         break;
+                }
+            }
+        }
+
+        private async Task MakeFeed(DataUriType type, HttpMultipartFormDataContent content)
+        {
+            try
+            {
+                if (type == DataUriType.CreateFeed)
+                {
+                    if (await DataHelper.PostDataAsync(type, content) != null)
+                    {
+                        SendSuccessful();
+                    }
+                }
+                else
+                {
+                    if (await DataHelper.PostDataAsync(type, content, FeedId) != null)
+                    {
+                        SendSuccessful();
+                    }
+                }
+            }
+            catch (CoolapkMessageException cex)
+            {
+                UIHelper.ShowMessage(cex.Message);
+                if (cex.MessageStatus == CoolapkMessageException.RequestCaptcha)
+                {
+                    var dialog = new CaptchaDialog();
+                    await dialog.ShowAsync();
                 }
             }
         }
@@ -74,7 +100,7 @@ namespace CoolapkUWP.Controls
         private void SendSuccessful()
         {
             UIHelper.ShowMessage(Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("MakeFeedControl").GetString("sendSuccessed"));
-            InputBox.Document.SetText(TextSetOptions.None, string.Empty);
+            inputBox.Document.SetText(TextSetOptions.None, string.Empty);
             MakedFeedSuccessful?.Invoke(this, new EventArgs());
         }
 
@@ -99,13 +125,13 @@ namespace CoolapkUWP.Controls
 
         private async Task InsertEmoji(EmojiData data)
         {
-            InputBox.Document.Selection.InsertImage(20,
+            inputBox.Document.Selection.InsertImage(20,
                                                     20,
                                                     0,
                                                     VerticalCharacterAlignment.Baseline,
                                                     data.Name,
                                                     await (await StorageFile.GetFileFromApplicationUriAsync(data.Uri)).OpenReadAsync());
-            InputBox.Document.Selection.MoveRight(TextRangeUnit.Character, 1, false);
+            inputBox.Document.Selection.MoveRight(TextRangeUnit.Character, 1, false);
         }
 
         private void InputBox_ContextMenuOpening(object sender, ContextMenuEventArgs e) => e.Handled = true;
@@ -129,6 +155,67 @@ namespace CoolapkUWP.Controls
         {
             if (args.ChosenSuggestion == null) { return; }
             await InsertEmoji(args.ChosenSuggestion as EmojiData);
+        }
+
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (sender == userList)
+            {
+                inputBox.Document.Selection.TypeText($" @{((UserModel)e.ClickedItem).UserName} ");
+            }
+            else if (sender == topicList)
+            {
+                inputBox.Document.Selection.TypeText($" #{((TopicModel)e.ClickedItem).Title}# ");
+            }
+        }
+
+        ViewModels.SearchPage.ViewModel viewModel = new ViewModels.SearchPage.ViewModel(1, string.Empty);
+
+        ImmutableArray<AutoSuggestBox> boxes;
+        ImmutableArray<Microsoft.UI.Xaml.Controls.ProgressRing> rings;
+
+        private async void AutoSuggestBox_QuerySubmitted_1(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            for (int i = 0; i < boxes.Length; i++)
+            {
+                if (sender == boxes[i])
+                {
+                    rings[i].IsActive = true;
+                    await viewModel.ChangeWordAndSearch(sender.Text, i + 1);
+                    rings[i].IsActive = false;
+                }
+            }
+        }
+
+        private void Flyout_Opened(object sender, object e)
+        {
+            if (boxes == null)
+            {
+                boxes = new AutoSuggestBox[]
+                {
+                    autoSuggestBox0,
+                    autoSuggestBox1,
+                }.ToImmutableArray();
+                rings = new Microsoft.UI.Xaml.Controls.ProgressRing[]
+                {
+                    ring0,
+                    ring1,
+                }.ToImmutableArray();
+                userList.ItemsSource = viewModel.providers[1].Models;
+                topicList.ItemsSource = viewModel.providers[2].Models;
+            }
+        }
+
+        private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+            var s = (ScrollViewer)sender;
+            if (e.IsIntermediate && s.VerticalOffset == s.ScrollableHeight)
+            {
+                var i = searchPivot.SelectedIndex;
+                rings[i].IsActive = true;
+                await viewModel.ChangeWordAndSearch(boxes[i].Text, i + 1);
+                rings[i].IsActive = false;
+            }
         }
     }
 }

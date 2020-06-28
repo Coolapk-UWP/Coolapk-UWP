@@ -111,6 +111,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CaptureDialog.xaml.cs">
+      <DependentUpon>CaptureDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DataTemplates\Feed.xaml.cs" />
     <Compile Include="Controls\DataTemplates\FeedReply.xaml.cs" />
     <Compile Include="Controls\DataTemplates\Pic.xaml.cs" />
@@ -144,6 +147,7 @@
     <Compile Include="Models\FeedReplyModel.cs" />
     <Compile Include="Models\FeedModelBase.cs" />
     <Compile Include="Models\FeedDetailModel.cs" />
+    <Compile Include="Models\HistoryModel.cs" />
     <Compile Include="Models\Interfaces.cs" />
     <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\IndexPageModel.cs" />
@@ -169,6 +173,9 @@
     <Compile Include="Models\Json\MessageModel.cs" />
     <Compile Include="Pages\FeedPages\FeedRepliesPage.xaml.cs">
       <DependentUpon>FeedRepliesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\FeedPages\HistoryPage.xaml.cs">
+      <DependentUpon>HistoryPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ShowImagePage.xaml.cs">
       <DependentUpon>ShowImagePage.xaml</DependentUpon>
@@ -219,8 +226,10 @@
     <Compile Include="ViewModels\FeedRepliesPageViewModel.cs" />
     <Compile Include="ViewModels\IndexPageViewModel.cs" />
     <Compile Include="ViewModels\Interfaces.cs" />
+    <Compile Include="ViewModels\MyPageViewMode.cs" />
     <Compile Include="ViewModels\NotificationsPageViewModel.cs" />
     <Compile Include="ViewModels\SearchPageViewModel.cs" />
+    <Compile Include="ViewModels\HistoryPageViewModel.cs" />
     <Compile Include="ViewModels\UserListPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -787,6 +796,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\CaptureDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\DataTemplates\Feed.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -836,6 +849,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\FeedPages\FeedRepliesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\FeedPages\HistoryPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

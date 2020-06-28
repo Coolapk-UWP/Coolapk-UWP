@@ -87,11 +87,6 @@ namespace CoolapkUWP.Controls
                 IsTextSelectionEnabled = IsTextSelectionEnabled,
                 TextWrapping = TextWrapping.Wrap,
             };
-            if (MaxLine > 0)
-            {
-                block.MaxLines = MaxLine;
-                block.TextTrimming = TextTrimming.WordEllipsis;
-            }
             var paragraph = new Paragraph();
 
             void NewLine()
@@ -316,6 +311,13 @@ namespace CoolapkUWP.Controls
             block.MaxHeight = block.MaxWidth = MaxHeight = MaxWidth = double.PositiveInfinity;
 
             Content = mainContent = block;
+
+            await Task.Delay(20);
+            if (MaxLine > 0)
+            {
+                block.MaxLines = MaxLine;
+                block.TextTrimming = TextTrimming.WordEllipsis;
+            }
         }
 
         private Task<ImmutableArray<string>> GetStringList(string text)

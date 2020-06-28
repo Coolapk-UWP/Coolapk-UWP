@@ -64,7 +64,7 @@ namespace CoolapkUWP.Controls
                 {
                     if (item is ListViewItem l &&
                         l.Content is IndexPageHasEntitiesModel m &&
-                        (m.EntitiesType == EntitiesType.TabLink || m.EntitiesType == EntitiesType.SelectorLink))
+                        (m.EntitiesType == EntityType.TabLink || m.EntitiesType == EntityType.SelectorLink))
                     {
                         int maxIndex = offsetY.IndexOf(offsetY.Max());
                         item.Measure(new Size(availableSize.Width, double.PositiveInfinity));
@@ -112,7 +112,7 @@ namespace CoolapkUWP.Controls
             else foreach (var item in Children)
                     if (item is ListViewItem l &&
                         l.Content is IndexPageHasEntitiesModel m &&
-                        (m.EntitiesType == EntitiesType.TabLink || m.EntitiesType == EntitiesType.SelectorLink))
+                        (m.EntitiesType == EntityType.TabLink || m.EntitiesType == EntityType.SelectorLink))
                     {
                         int maxIndex = offsetY.IndexOf(offsetY.Max());
                         item.Arrange(new Rect(0, offsetY[maxIndex], DesiredSize.Width, item.DesiredSize.Height));

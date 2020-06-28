@@ -28,7 +28,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 FindName(nameof(NavigateItems));
             }
             list.ItemsSource = provider.Models;
-            await Load();
+            await Load(-2);
 
             await Task.Delay(30);
             titleBar.Title = provider.Title;
@@ -47,7 +47,7 @@ namespace CoolapkUWP.Pages.FeedPages
         private async Task Load(int p = -1)
         {
             titleBar.ShowProgressRing();
-            if (p == 1)
+            if (p == -2)
             {
                 scrollViewer.ChangeView(null, 0, null);
                 titleBar.Title = provider.Title;
@@ -85,7 +85,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
         }
 
-        private void titleBar_RefreshButtonClicked(object sender, RoutedEventArgs e) => _ = Load(1);
+        private void titleBar_RefreshButtonClicked(object sender, RoutedEventArgs e) => _ = Load(-2);
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e)
         {

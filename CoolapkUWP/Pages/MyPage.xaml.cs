@@ -21,7 +21,8 @@ namespace CoolapkUWP.Pages
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        private readonly Models.Controls.UserHubModel model = new Models.Controls.UserHubModel();
+        private ViewModels.MyPage.ViewMode provider;
+
         private double badgeNum;
         private string badgeIconGlyph = "\uED0D";
         private Visibility logoutButtonVisibility;
@@ -61,24 +62,23 @@ namespace CoolapkUWP.Pages
             this.InitializeComponent();
             Loaded += (s, e) =>
            {
-               if (string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid)))
-               {
-                   LogoutButtonVisibility = Visibility.Collapsed;
-               }
-               else
-               {
-                   LogoutButtonVisibility = Visibility.Visible;
-                   Refresh();
-               }
+               LogoutButtonVisibility = string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid))
+                                                ? Visibility.Collapsed
+                                                : Visibility.Visible;
            };
         }
 
-        private async void Refresh()
+        private async Task Refresh()
         {
-            var o = (JObject)await DataHelper.GetDataAsync(DataUriType.GetUserProfile, SettingsHelper.Get<string>(SettingsHelper.Uid));
-            string url = o.Value<string>("userAvatar");
-            var bitmapImage = await ImageCacheHelper.GetImageAsync(ImageType.BigAvatar, url);
-            model.Initialize(o, bitmapImage);
+            ring.IsActive = true;
+            ring.Visibility = Visibility.Visible;
+
+            await provider?.Refresh();
+            mainGrid.DataContext = provider?.UserModel;
+            repeater.ItemsSource = provider?.provider.Models;
+
+            ring.IsActive = false;
+            ring.Visibility = Visibility.Collapsed;
         }
 
         protected override async void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
@@ -87,6 +87,19 @@ namespace CoolapkUWP.Pages
             UIHelper.NotificationNums.BadgeNumberChanged += NotificationNums_BadgeNumberChanged;
             await SettingsHelper.CheckLoginInfo();
             ChangeBadgeNum(UIHelper.NotificationNums.BadgeNum);
+
+            provider = (ViewModels.MyPage.ViewMode)e.Parameter;
+            await Refresh();
+            await Task.Delay(30);
+            scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
+        }
+
+        protected override void OnNavigatingFrom(Windows.UI.Xaml.Navigation.NavigatingCancelEventArgs e)
+        {
+            UIHelper.NotificationNums.BadgeNumberChanged -= NotificationNums_BadgeNumberChanged;
+            provider.VerticalOffsets[0] = scrollViewer.VerticalOffset;
+
+            base.OnNavigatingFrom(e);
         }
 
         #region 搜索框相关
@@ -95,10 +108,9 @@ namespace CoolapkUWP.Pages
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                if (await DataHelper.GetDataAsync(DataUriType.SearchWords, sender.Text) is JArray array && array.Count > 0)
-                    sender.ItemsSource = from i in array select new SearchWord(i as JObject);
-                else
-                    sender.ItemsSource = null;
+                sender.ItemsSource = await DataHelper.GetDataAsync(DataUriType.SearchWords, true, sender.Text) is JArray array && array.Count > 0
+                    ? (from i in array select new SearchWord(i as JObject))
+                    : null;
             }
         }
 
@@ -135,12 +147,6 @@ namespace CoolapkUWP.Pages
                 BadgeIconGlyph = num > 0 ? "\uED0C" : "\uED0D";
             });
 
-        protected override void OnNavigatedFrom(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
-        {
-            UIHelper.NotificationNums.BadgeNumberChanged -= NotificationNums_BadgeNumberChanged;
-            base.OnNavigatedFrom(e);
-        }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             switch ((sender as FrameworkElement)?.Tag as string)
@@ -167,7 +173,27 @@ namespace CoolapkUWP.Pages
 
         private void ListViewItem_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            switch ((sender as FrameworkElement)?.Tag as string)
+            var tag = (sender as FrameworkElement)?.Tag;
+            if (tag is string s)
+            {
+                if (s.Contains("我的常去", System.StringComparison.Ordinal))
+                {
+                    UIHelper.NavigateInSplitPane(typeof(HistoryPage), new ViewModels.HistoryPage.ViewModel("我的常去"));
+                    return;
+                }
+                else if (s.Contains("浏览历史", System.StringComparison.Ordinal))
+                {
+                    UIHelper.NavigateInSplitPane(typeof(HistoryPage), new ViewModels.HistoryPage.ViewModel("浏览历史"));
+                    return;
+                }
+                else if (s.Contains("我关注的话题", System.StringComparison.Ordinal))
+                {
+                    UIHelper.NavigateInSplitPane(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("#/topic/userFollowTagList&title=我关注的话题", true));
+                    return;
+                }
+            }
+
+            switch (tag as string)
             {
                 case "settings":
                     Frame.Navigate(typeof(SettingPages.SettingPage));
@@ -180,6 +206,10 @@ namespace CoolapkUWP.Pages
                 case "logout":
                     SettingsHelper.Logout();
                     LogoutButtonVisibility = Visibility.Collapsed;
+                    break;
+
+                default:
+                    UIHelper.OpenLinkAsync(tag as string);
                     break;
             }
         }
@@ -196,5 +226,59 @@ namespace CoolapkUWP.Pages
         {
             Refresh();
         }
+    }
+
+    public class FirstTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate Others { get; set; }
+        public DataTemplate TitleCard { get; set; }
+        public DataTemplate TextLinkList { get; set; }
+        public DataTemplate DataTemplate2 { get; set; }
+
+        protected override DataTemplate SelectTemplateCore(object item)
+        {
+            if (item is IndexPageHasEntitiesModel m)
+            {
+                switch (m.EntitiesType)
+                {
+                    case EntityType.TextLinks: return TextLinkList;
+                    default: return DataTemplate2;
+                }
+            }
+            else if (item is IndexPageOperationCardModel o)
+            {
+                switch (o.OperationType)
+                {
+                    case OperationType.ShowTitle: return TitleCard;
+                    default: return Others;
+                }
+            }
+            else return Others;
+        }
+
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
+    }
+
+    public class SecondaryTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate Null { get; set; }
+        public DataTemplate Histroy { get; set; }
+        public DataTemplate HistroyIcon { get; set; }
+        public DataTemplate TextLink { get; set; }
+
+        protected override DataTemplate SelectTemplateCore(object item)
+        {
+            switch ((item as IndexPageModel)?.EntityType)
+            {
+                case "topic":
+                case "recentHistory": return HistroyIcon;
+                case "textLink": return TextLink;
+                case "collection":
+                case "history": return Histroy;
+                default: return null;
+            }
+        }
+
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
 }

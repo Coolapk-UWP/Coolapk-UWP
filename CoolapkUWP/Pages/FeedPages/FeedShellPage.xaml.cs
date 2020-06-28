@@ -32,7 +32,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
             provider = e.Parameter as ViewModel;
             provider.PropertyChanged += Provider_PropertyChanged;
-            Refresh();
+            Refresh(-2);
             if (provider.FeedDetail != null)
             {
                 SetLayout();
@@ -235,7 +235,7 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             titleBar.ShowProgressRing();
 
-            if (p == 1)
+            if (p == -2)
             {
                 MoveToTop();
             }
@@ -256,7 +256,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void titleBar_RefreshButtonClicked(object sender, RoutedEventArgs e)
         {
-            Refresh(1);
+            Refresh(-2);
         }
 
         private void rightComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

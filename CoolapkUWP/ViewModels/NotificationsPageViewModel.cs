@@ -38,9 +38,10 @@ namespace CoolapkUWP.ViewModels.NotificationsPage
                         new CoolapkListProvider(
                             async (p, page, firstItem, lastItem) =>
                                 (JArray)await DataHelper.GetDataAsync(
-                                    DataUriType.GetNotifications,
+                                    DataUriType.GetNotifications, 
+                                    p == -2 ? true : false,
                                     "list",
-                                    p == -1 ? ++page : p,
+                                    p < 0 ? ++page : p,
                                     string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                                     string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                             (a, b) => (a as NotificationModel).Id == b.Value<int>("id"),
@@ -55,8 +56,9 @@ namespace CoolapkUWP.ViewModels.NotificationsPage
                             async (p, page, firstItem, lastItem) =>
                                 (JArray)await DataHelper.GetDataAsync(
                                     DataUriType.GetNotifications,
+                                    p == -2 ? true : false,
                                     "atMeList",
-                                    p == -1 ? ++page : p,
+                                    p < 0 ? ++page : p,
                                     string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                                     string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                             (a, b) => (a as FeedModel).EntityId == $"{b.Value<int>("id")}",
@@ -71,8 +73,9 @@ namespace CoolapkUWP.ViewModels.NotificationsPage
                             async (p, page, firstItem, lastItem) =>
                                 (JArray)await DataHelper.GetDataAsync(
                                     DataUriType.GetNotifications,
+                                    p == -2 ? true : false,
                                     "atCommentMeList",
-                                    p == -1 ? ++page : p,
+                                    p < 0 ? ++page : p,
                                     string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                                     string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                             (a, b) => (a as NotificationModel).Id == b.Value<int>("id"),
@@ -88,8 +91,9 @@ namespace CoolapkUWP.ViewModels.NotificationsPage
                             async (p, page, firstItem, lastItem) =>
                                 (JArray)await DataHelper.GetDataAsync(
                                     DataUriType.GetNotifications,
+                                    p == -2 ? true : false,
                                     "feedLikeList",
-                                    p == -1 ? ++page : p,
+                                    p < 0 ? ++page : p,
                                     string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                                     string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                             (a, b) => (a as NotificationModel).Id == b.Value<int>("id"),
@@ -105,8 +109,9 @@ namespace CoolapkUWP.ViewModels.NotificationsPage
                             async (p, page, firstItem, lastItem) =>
                                 (JArray)await DataHelper.GetDataAsync(
                                     DataUriType.GetNotifications,
+                                    p == -2 ? true : false,
                                     "contactsFollowList",
-                                    p == -1 ? ++page : p,
+                                    p < 0 ? ++page : p,
                                     string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                                     string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                             (a, b) => (a as NotificationModel).Id == b.Value<int>("id"),

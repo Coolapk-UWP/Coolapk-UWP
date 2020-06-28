@@ -63,19 +63,19 @@ namespace CoolapkUWP.Helpers.Providers
             page = 0;
         }
 
-        public void Reset()
+        public void Reset(int p = 1)
         {
-            page = 1;
+            page = p;
             lastItem = firstItem = string.Empty;
             Models.Clear();
         }
 
-        private int GetId(JToken token)
+        private string GetId(JToken token)
         {
-            if (token == null) { return 0; }
+            if (token == null) { return string.Empty; }
             else if ((token as JObject).TryGetValue(idName, out JToken jToken))
             {
-                return jToken.Type == JTokenType.Integer ? jToken.ToObject<int>() : int.Parse(jToken.ToString().Replace("\"", string.Empty));
+                return jToken.ToString();
             }
             else
             {
@@ -85,9 +85,14 @@ namespace CoolapkUWP.Helpers.Providers
 
         public async Task Refresh(int p = -1)
         {
+            if (p == -2) 
+            { 
+                Reset(0);
+            }
+
             var array = await getData(p, page, firstItem, lastItem);
 
-            if (p == -1) { page++; }
+            if (p < 0) { page++; }
 
             if (array != null && array.Count > 0)
             {
@@ -116,10 +121,10 @@ namespace CoolapkUWP.Helpers.Providers
 
                 if (p == 1)
                 {
-                    firstItem = array.First.ToString();
+                    firstItem = GetId(array.First);
                     if (page == 1)
                     {
-                        lastItem = array.Last.ToString();
+                        lastItem = GetId(array.Last);
                     }
 
                     int modelIndex = 0;
@@ -141,9 +146,9 @@ namespace CoolapkUWP.Helpers.Providers
                 {
                     if (string.IsNullOrEmpty(firstItem))
                     {
-                        firstItem = array.First.ToString();
+                        firstItem = GetId(array.First);
                     }
-                    lastItem = array.Last.ToString();
+                    lastItem = GetId(array.Last);
 
                     foreach (JObject item in array)
                     {

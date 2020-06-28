@@ -197,6 +197,10 @@ namespace CoolapkUWP.Pages.SettingPages
                 case "logFolder":
                     await Windows.System.Launcher.LaunchFolderAsync(await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists));
                     break;
+
+                case "AccountSetting":
+                    UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "https://account.coolapk.com/account/settings" });
+                    break;
             }
         }
 

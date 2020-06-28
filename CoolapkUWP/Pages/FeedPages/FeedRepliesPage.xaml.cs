@@ -23,7 +23,7 @@ namespace CoolapkUWP.Pages.FeedPages
             provider = e.Parameter as ViewModel;
 
             FeedReplyList.ItemsSource = provider.Models;
-            await GetReplys(false);
+            await GetReplys(-2);
 
             await Task.Delay(30);
             titleBar.Title = provider.Title;
@@ -43,19 +43,19 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             if (!e.IsIntermediate && scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
             {
-                _ = GetReplys(false);
+                _ = GetReplys();
             }
         }
 
-        private async Task GetReplys(bool isRefresh)
+        private async Task GetReplys(int p = -1)
         {
             titleBar.ShowProgressRing();
-            if (isRefresh)
+            if (p == -2)
             {
                 scrollViewer?.ChangeView(null, 0, null);
                 titleBar.Title = provider.Title;
             }
-            await provider.Refresh(isRefresh ? 1 : -1);
+            await provider.Refresh(p);
             titleBar.HideProgressRing();
         }
 
@@ -67,6 +67,6 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void TitleBar_RefreshEvent(object sender, RoutedEventArgs e) => _ = GetReplys(true);
+        private void TitleBar_RefreshEvent(object sender, RoutedEventArgs e) => _ = GetReplys(-2);
     }
 }

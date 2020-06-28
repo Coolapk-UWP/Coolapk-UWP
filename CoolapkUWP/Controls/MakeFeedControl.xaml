@@ -7,15 +7,18 @@
     xmlns:local="using:CoolapkUWP.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:CoolapkUWP.Models.Controls.MakeFeedControlModel"
+    xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Height="200"
     d:DesignHeight="200"
     d:DesignWidth="300"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <Style TargetType="PivotHeaderItem">
-            <Setter Property="Padding" Value="8,0" />
-            <Setter Property="Height" Value="32" />
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <templates:DataTemplates />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid
@@ -26,14 +29,125 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
+
         <RichEditBox
-            x:Name="InputBox"
+            x:Name="inputBox"
             x:Uid="/MakeFeedControl/editBox"
             Margin="8,8,8,0"
             AcceptsReturn="True"
             ContextMenuOpening="InputBox_ContextMenuOpening"
             TextWrapping="Wrap" />
+
         <CommandBar Grid.Row="1">
+            <AppBarButton
+                AllowFocusOnInteraction="True"
+                Icon="Link"
+                Label="搜索用户和话题">
+                <Button.Flyout>
+                    <Flyout Opened="Flyout_Opened">
+                        <Flyout.FlyoutPresenterStyle>
+                            <Style TargetType="FlyoutPresenter">
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="MaxHeight" Value="320" />
+                                <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+                                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                            </Style>
+                        </Flyout.FlyoutPresenterStyle>
+
+                        <Pivot x:Name="searchPivot">
+                            <Pivot.ItemContainerStyle>
+                                <Style TargetType="PivotItem">
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Margin" Value="0" />
+                                </Style>
+                            </Pivot.ItemContainerStyle>
+
+                            <PivotItem>
+                                <PivotItem.Header>
+                                    <PivotHeaderItem Height="32" Padding="8,0">
+                                        <TextBlock Text="用户" />
+                                    </PivotHeaderItem>
+                                </PivotItem.Header>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <AutoSuggestBox
+                                        x:Name="autoSuggestBox0"
+                                        Margin="8,8,8,-4"
+                                        PlaceholderText="搜索用户……"
+                                        QueryIcon="Find"
+                                        QuerySubmitted="AutoSuggestBox_QuerySubmitted_1" />
+
+                                    <ScrollViewer Grid.Row="1" ViewChanged="ScrollViewer_ViewChanged">
+                                        <ListView
+                                            x:Name="userList"
+                                            IsItemClickEnabled="True"
+                                            ItemClick="ListView_ItemClick"
+                                            ItemTemplate="{StaticResource User}"
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                                    </ScrollViewer>
+
+                                    <winui:ProgressRing
+                                        x:Name="ring0"
+                                        Grid.RowSpan="2"
+                                        Width="40"
+                                        Height="40"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        IsActive="False" />
+                                </Grid>
+                            </PivotItem>
+
+                            <PivotItem>
+                                <PivotItem.Header>
+                                    <PivotHeaderItem Height="32" Padding="8,0">
+                                        <TextBlock Text="话题" />
+                                    </PivotHeaderItem>
+                                </PivotItem.Header>
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <AutoSuggestBox
+                                        x:Name="autoSuggestBox1"
+                                        Margin="8,8,8,-4"
+                                        PlaceholderText="搜索话题……"
+                                        QueryIcon="Find"
+                                        QuerySubmitted="AutoSuggestBox_QuerySubmitted_1" />
+
+                                    <ScrollViewer Grid.Row="1" ViewChanged="ScrollViewer_ViewChanged">
+                                        <ListView
+                                            x:Name="topicList"
+                                            IsItemClickEnabled="True"
+                                            ItemClick="ListView_ItemClick"
+                                            ItemTemplate="{StaticResource User}"
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                                    </ScrollViewer>
+
+                                    <winui:ProgressRing
+                                        x:Name="ring1"
+                                        Grid.RowSpan="2"
+                                        Width="40"
+                                        Height="40"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        IsActive="False" />
+                                </Grid>
+                            </PivotItem>
+                        </Pivot>
+                    </Flyout>
+
+                </Button.Flyout>
+            </AppBarButton>
+
             <AppBarButton
                 x:Uid="/MakeFeedControl/emojiButton"
                 AllowFocusOnInteraction="True"
@@ -50,6 +164,7 @@
                                 <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
+
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
@@ -116,6 +231,7 @@
                     </Flyout>
                 </Button.Flyout>
             </AppBarButton>
+
             <AppBarButton
                 x:Uid="/MakeFeedControl/sendButton"
                 Click="Button_Click"

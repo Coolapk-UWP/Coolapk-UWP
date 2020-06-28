@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -10,6 +11,8 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using InAppNotify = Microsoft.Toolkit.Uwp.UI.Controls.InAppNotification;
 
@@ -288,6 +291,23 @@ namespace CoolapkUWP.Pages
             }
         }
 
+        private void OperateWithScrollViewers(Action<ScrollViewer> action)
+        {
+            var views = VisualTree.FindDescendants<ScrollViewer>(SFlipView);
+            int n = 0;
+            foreach (var item in views)
+            {
+                if (n != 0 && n == selectedIndex)
+                {
+                    action(item);
+                    break;
+                }
+                n++;
+            }
+        }
+
+        private Storyboard[] storyboards;
+
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             switch (((FrameworkElement)sender).Tag as string)
@@ -317,39 +337,25 @@ namespace CoolapkUWP.Pages
                     break;
 
                 case "zoomIn":
-                    var views = Microsoft.Toolkit.Uwp.UI.Extensions.VisualTree.FindDescendants<ScrollViewer>(SFlipView);
-                    int n1 = 0;
-                    foreach (var item in views)
+                    OperateWithScrollViewers((item) =>
                     {
-                        if (n1 != 0 && n1 == selectedIndex)
+                        var factor = item.ZoomFactor;
+                        if (factor + 0.25 < 3)
                         {
-                            var factor = item.ZoomFactor;
-                            if (factor + 0.25 < 3)
-                            {
-                                item.ChangeView(item.HorizontalOffset / factor * (factor + 0.25), item.VerticalOffset / factor * (factor + 0.25), factor + 0.25F);
-                            }
-                            break;
+                            item.ChangeView(item.HorizontalOffset / factor * (factor + 0.25), item.VerticalOffset / factor * (factor + 0.25), factor + 0.25F);
                         }
-                        n1++;
-                    }
+                    });
                     break;
 
                 case "zoomOut":
-                    var viewers = Microsoft.Toolkit.Uwp.UI.Extensions.VisualTree.FindDescendants<ScrollViewer>(SFlipView);
-                    int n2 = 0;
-                    foreach (var item in viewers)
+                    OperateWithScrollViewers((item) =>
                     {
-                        if (n2 != 0 && n2 == selectedIndex)
+                        var factor = item.ZoomFactor;
+                        if (factor - 0.25 > 0.5)
                         {
-                            var factor = item.ZoomFactor;
-                            if (factor - 0.25 > 0.5)
-                            {
-                                item.ChangeView(item.HorizontalOffset / factor * (factor - 0.25), item.VerticalOffset / factor * (factor - 0.25), factor - 0.25F);
-                            }
-                            break;
+                            item.ChangeView(item.HorizontalOffset / factor * (factor - 0.25), item.VerticalOffset / factor * (factor - 0.25), factor - 0.25F);
                         }
-                        n2++;
-                    }
+                    });
                     break;
 
                 case "origin":

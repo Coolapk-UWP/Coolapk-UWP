@@ -6,7 +6,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace CoolapkUWP.ViewModels.UserListPage
+namespace CoolapkUWP.ViewModels.HistoryPage
 {
     internal class ViewModel : IViewModel
     {
@@ -16,25 +16,37 @@ namespace CoolapkUWP.ViewModels.UserListPage
         public double[] VerticalOffsets { get; set; } = new double[1];
         public string Title { get; }
 
-        internal ViewModel(string uid, bool isFollowList, string name)
+        internal ViewModel(string title)
         {
-            if (string.IsNullOrEmpty(uid)) { throw new ArgumentException(nameof(uid)); }
+            if (string.IsNullOrEmpty(title)) { throw new ArgumentException(nameof(title)); }
 
-            Title = $"{name}的{(isFollowList ? "关注" : "粉丝")}";
+            Title = title;
+
+            DataUriType type = DataUriType.CheckLoginInfo;
+
+            switch (title)
+            {
+                case "我的常去":
+                    type = DataUriType.GetUserRecentHistory;
+                    break;
+                case "浏览历史":
+                    type = DataUriType.GetUserHistory;
+                    break;
+                default: throw new ArgumentException(nameof(title));
+            }
+
             provider =
                 new CoolapkListProvider(
                     async (p, page, firstItem, lastItem) =>
                     (JArray)await DataHelper.GetDataAsync(
-                        DataUriType.GetUserList,
+                        type,
                         p == -2 ? true : false,
-                        isFollowList ? "followList" : "fansList",
-                        uid,
                         p < 0 ? ++page : p,
                         string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                         string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
-                    (a, b) => ((UserModel)a).UserName == b.Value<string>(isFollowList ? "fusername" : "username"),
-                    (o) => new Entity[] { new UserModel((JObject)(isFollowList ? o["fUserInfo"] : o["userInfo"])) },
-                    "fuid");
+                    (a, b) => ((HistoryModel)a).Id == b.Value<string>("id"),
+                    (o) => new Entity[] { new HistoryModel(o) },
+                    "id");
         }
 
         public async Task Refresh(int p = -1) => await provider?.Refresh(p);

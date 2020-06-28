@@ -84,7 +84,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                 default:
                     throw new ArgumentException($"{typeof(FeedListType).FullName}值错误");
             }
-            JObject o = (JObject)await DataHelper.GetDataAsync(type, Id);
+            JObject o = (JObject)await DataHelper.GetDataAsync(type, true, Id);
             FeedListDetailBase d = null;
             if (o != null)
             {
@@ -145,8 +145,9 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                     async (p, page, firstItem, lastItem) =>
                         (JArray)await DataHelper.GetDataAsync(
                             DataUriType.GetUserFeeds,
+                            p == -2 ? true : false,
                             Id,
-                            p == -1 ? ++page : p,
+                            p < 0 ? ++page : p,
                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                             string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                     isEqual, getEntity, idName);
@@ -174,12 +175,13 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                 new CoolapkListProvider(
                     async (p, page, firstItem, lastItem) =>
                          (JArray)await DataHelper.GetDataAsync(
-                             DataUriType.GetTagFeeds,
-                             Id,
-                             p == -1 ? ++page : p,
-                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
-                             string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}",
-                             sortType),
+                            DataUriType.GetTagFeeds, 
+                            p == -2 ? true : false,
+                            Id,
+                            p < 0 ? ++page : p,
+                            string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}",
+                            sortType),
                     isEqual, getEntity, idName);
         }
 
@@ -236,9 +238,10 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                 new CoolapkListProvider(
                     async (p, page, firstItem, lastItem) =>
                         (JArray)await DataHelper.GetDataAsync(DataUriType.GetDyhFeeds,
+                            p == -2 ? true : false,
                             Id,
                             ComboBoxSelectedIndex == 0 ? "all" : "square",
-                            p == -1 ? ++page : p,
+                            p < 0 ? ++page : p,
                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                             string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                     isEqual, getEntity, idName);
