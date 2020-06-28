@@ -45,6 +45,8 @@ namespace CoolapkUWP.ViewModels.MyPage
 
         internal ViewMode()
         {
+            if (string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid))) { return; }
+
             provider =
                 new Helpers.Providers.CoolapkListProvider(
                     async (_, __, ___, ____) => (JArray)await DataHelper.GetDataAsync(DataUriType.GetMyPageCard, true),
@@ -55,13 +57,15 @@ namespace CoolapkUWP.ViewModels.MyPage
 
         public async Task Refresh(int p = -1)
         {
+            if (string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid))) { return; }
+
             var o = (JObject)await DataHelper.GetDataAsync(DataUriType.GetUserProfile, true, SettingsHelper.Get<string>(SettingsHelper.Uid));
             string url = o.Value<string>("userAvatar");
             var bitmapImage = await ImageCacheHelper.GetImageAsync(ImageType.BigAvatar, url);
             UserModel = new Models.Controls.UserHubModel(o, bitmapImage);
 
-            provider.Reset();
-            await provider.Refresh();
+            provider?.Reset();
+            await provider?.Refresh();
         }
     }
 }

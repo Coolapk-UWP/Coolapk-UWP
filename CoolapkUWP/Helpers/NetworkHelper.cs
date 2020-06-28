@@ -26,7 +26,6 @@ namespace CoolapkUWP.Helpers
             mClient.DefaultRequestHeaders.Add("X-App-Device", DataHelper.GetMD5(s + s + s) + "ady6r8"); //随便弄的
         }
 
-        //https://github.com/ZCKun/CoolapkTokenCrack
         private static string GetCoolapkAppToken()
         {
             string DEVICE_ID = Guid.NewGuid().ToString();

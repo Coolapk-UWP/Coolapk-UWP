@@ -4,7 +4,6 @@ using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Helpers
 {
-    //https://www.cnblogs.com/youngytj/p/4749004.html
     internal class ExceptionHandlingSynchronizationContext : SynchronizationContext
     {
         /// <summary>

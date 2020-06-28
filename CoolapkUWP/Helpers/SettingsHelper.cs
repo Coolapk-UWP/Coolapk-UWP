@@ -26,6 +26,7 @@ namespace CoolapkUWP.Helpers
         public const string Uid = "Uid";
         public const string IsDisplayOriginPicture = "IsDisplayOriginPicture";
         public const string ShowOtherException = "ShowOtherException";
+        public const string IsFirstRun = "IsFirstRun";
 
         private static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public static readonly MetroLog.ILogManager logManager = MetroLog.LogManagerFactory.CreateLogManager();
@@ -187,6 +188,10 @@ namespace CoolapkUWP.Helpers
             if (!localSettings.Values.ContainsKey(IsDisplayOriginPicture))
             {
                 localSettings.Values.Add(IsDisplayOriginPicture, false);
+            }
+            if (!localSettings.Values.ContainsKey(IsFirstRun))
+            {
+                localSettings.Values.Add(IsFirstRun, true);
             }
             if (!localSettings.Values.ContainsKey(Uid))
             {

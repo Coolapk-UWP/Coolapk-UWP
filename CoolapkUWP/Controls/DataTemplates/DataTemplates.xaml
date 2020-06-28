@@ -23,6 +23,7 @@
                     Grid.RowSpan="2"
                     Width="40"
                     Height="40"
+                    Margin="8,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
                     <Ellipse.Fill>
@@ -78,6 +79,7 @@
                     Grid.RowSpan="2"
                     Width="40"
                     Height="40"
+                    Margin="8,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
                     <Ellipse.Fill>
