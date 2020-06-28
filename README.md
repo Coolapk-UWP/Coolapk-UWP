@@ -13,6 +13,7 @@
 <a href=""><img alt="Baidu Netdisk" src="https://img.shields.io/badge/download-%e5%af%86%e7%a0%81%ef%bc%9alIIl-magenta.svg?label=%e4%b8%8b%e8%bd%bd&logo=baidu&style=for-the-badge"></a>
 
 ## 目录
+- [声明](#声明)
 - [现有功能](#现有功能)
 - [如何安装应用](#如何安装应用)
   - [最低需求](#最低需求)
@@ -22,6 +23,12 @@
 - [屏幕截图](#屏幕截图)
 - [使用到的开源模块](#使用到的开源模块)
 - [鸣谢](#鸣谢)
+
+## 声明
+1. 本程序是[酷安](https://coolapk.com)的第三方客户端，仅用作学习交流使用，禁止用于商业用途。
+2. 本程序是开源软件，因此，在使用时请确保程序是来自[本Github仓库](https://github.com/Tangent-90/Coolapk-UWP)，以确保您的数据安全。
+3. 若程序来源无异常，程序运行过程中您的所有数据都仅用于与酷安的服务器交流或储存于本地，开发者不会窃取您的任何数据。但即便如此，也请注意使用环境的安全性。
+4. 若您对[酷安](https://coolapk.com)如何处理您的数据存在疑虑，请访问[酷安用户服务协议](https://m.coolapk.com/mp/user/agreement)、[酷安隐私保护政策](https://coolapk.com/about/privacy.html)。
 
 ## 现有功能
 1. 夜间模式
