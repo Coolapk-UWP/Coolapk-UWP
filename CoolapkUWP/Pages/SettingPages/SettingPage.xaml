@@ -9,33 +9,34 @@
     xmlns:local="using:CoolapkUWP.Pages.SettingPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    Background="Transparent"
+    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d">
 
     <Page.Resources>
         <converter:TrueToFalseConverter x:Key="TrueToFalseConverter" />
         <Style x:Key="HeaderStyle" TargetType="controls:HeaderedContentControl">
             <Setter Property="Margin" Value="0,8" />
-            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontSize" Value="18" />
         </Style>
     </Page.Resources>
 
     <Grid>
-        <ScrollViewer Margin="12,0" Padding="{StaticResource StackPanelMargin}">
-            <StackPanel>
-                <controls:HeaderedContentControl x:Uid="SettingPageUiSettingsHeader" Style="{StaticResource HeaderStyle}">
+        <ScrollViewer Padding="{StaticResource StackPanelMargin}">
+            <StackPanel Margin="16,0">
+                <controls:HeaderedContentControl x:Uid="/SettingPage/UiSettingsHeader" Style="{StaticResource HeaderStyle}">
                     <StackPanel>
-                        <ToggleSwitch x:Uid="SettingPageBackgroundFollowSystemSwitch" IsOn="{x:Bind IsBackgroundColorFollowSystem, Mode=TwoWay}" />
+                        <ToggleSwitch x:Uid="/SettingPage/BackgroundFollowSystemSwitch" IsOn="{x:Bind IsBackgroundColorFollowSystem2, Mode=TwoWay}" />
                         <ToggleSwitch
-                            x:Uid="SettingPageDarkModeSwitch"
-                            IsEnabled="{x:Bind IsBackgroundColorFollowSystem, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}}"
-                            IsOn="{x:Bind IsDarkMode, Mode=TwoWay}" />
+                            x:Uid="/SettingPage/DarkModeSwitch"
+                            IsEnabled="{x:Bind IsBackgroundColorFollowSystem2, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}}"
+                            IsOn="{x:Bind IsDarkMode2, Mode=TwoWay}" />
                     </StackPanel>
                 </controls:HeaderedContentControl>
 
-                <controls:HeaderedContentControl x:Uid="SettingPageContentSettingsHeader" Style="{StaticResource HeaderStyle}">
+                <controls:HeaderedContentControl x:Uid="/SettingPage/ContentSettingsHeader" Style="{StaticResource HeaderStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
@@ -45,36 +46,52 @@
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
+
                         <CheckBox
-                            x:Uid="SettingPageUseOldEmojiModeCheckBox"
+                            x:Uid="/SettingPage/UseOldEmojiModeCheckBox"
                             Grid.Row="0"
                             Grid.ColumnSpan="2"
-                            IsChecked="{x:Bind IsUseOldEmojiMode, Mode=TwoWay}" />
+                            IsChecked="{x:Bind IsUseOldEmojiMode2, Mode=TwoWay}" />
+
                         <CheckBox
-                            x:Uid="SettingPageDisplayOriginPictureCheckBox"
+                            x:Uid="/SettingPage/DisplayOriginPictureCheckBox"
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
-                            IsChecked="{x:Bind IsDisplayOriginPicture, Mode=TwoWay}" />
+                            IsChecked="{x:Bind IsDisplayOriginPicture2, Mode=TwoWay}" />
+
                         <CheckBox
-                            x:Uid="SettingPageNoPicsModeCheckBox"
+                            x:Uid="/SettingPage/NoPicsModeCheckBox"
                             Grid.Row="2"
                             Grid.ColumnSpan="2"
-                            IsChecked="{x:Bind IsNoPicsMode, Mode=TwoWay}" />
+                            IsChecked="{x:Bind IsNoPicsMode2, Mode=TwoWay}" />
+
                         <Button
-                            x:Uid="SettingPageCleanCacheButton"
+                            x:Uid="/SettingPage/CleanCacheButton"
                             Grid.Row="3"
                             Grid.Column="0"
+                            Margin="0,2"
                             Click="Button_Click"
                             IsEnabled="{x:Bind IsCleanCacheButtonEnabled, Mode=OneWay}"
                             Tag="CleanCache" />
+
                         <winui:ProgressRing
                             Grid.Row="3"
                             Grid.Column="1"
+                            Margin="8,0"
+                            HorizontalAlignment="Left"
                             IsActive="{x:Bind IsCleanCacheButtonEnabled, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}" />
+
+                        <Button
+                            x:Uid="/SettingPage/AccountSetting"
+                            Grid.Row="4"
+                            Grid.ColumnSpan="2"
+                            Margin="0,2"
+                            Click="Button_Click"
+                            Tag="AccountSetting" />
                     </Grid>
                 </controls:HeaderedContentControl>
 
-                <controls:HeaderedContentControl x:Uid="SettingPageUpdateSettingsHeader" Style="{StaticResource HeaderStyle}">
+                <controls:HeaderedContentControl x:Uid="/SettingPage/UpdateSettingsHeader" Style="{StaticResource HeaderStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
@@ -91,37 +108,45 @@
                             Grid.ColumnSpan="2"
                             FontSize="{ThemeResource ContentControlFontSize}"
                             Text="{x:Bind VersionTextBlockText}" />
+
                         <CheckBox
-                            x:Uid="SettingPageCheckUpdateWhenLuanchingCheckBox"
+                            x:Uid="/SettingPage/CheckUpdateWhenLuanchingCheckBox"
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
-                            IsChecked="{x:Bind CheckUpdateWhenLuanching, Mode=TwoWay}" />
+                            IsChecked="{x:Bind CheckUpdateWhenLuanching2, Mode=TwoWay}" />
+
                         <Button
-                            x:Uid="SettingPageCheckUpdate"
+                            x:Uid="/SettingPage/CheckUpdate"
                             Grid.Row="2"
                             Grid.Column="0"
                             Click="Button_Click"
                             IsEnabled="{x:Bind IsCheckUpdateButtonEnabled, Mode=OneWay}"
                             Tag="checkUpdate" />
+
                         <winui:ProgressRing
                             Grid.Row="2"
                             Grid.Column="1"
+                            Margin="8,0"
+                            HorizontalAlignment="Left"
                             IsActive="{x:Bind IsCheckUpdateButtonEnabled, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}" />
                     </Grid>
                 </controls:HeaderedContentControl>
 
-                <controls:HeaderedContentControl x:Uid="SettingPageOthersSettingsHeader" Style="{StaticResource HeaderStyle}">
+                <controls:HeaderedContentControl x:Uid="/SettingPage/OthersSettingsHeader" Style="{StaticResource HeaderStyle}">
                     <StackPanel>
+                        <CheckBox x:Uid="/SettingPage/ShowOtherExceptionCheckBox" IsChecked="{x:Bind ShowOtherException2, Mode=TwoWay}" />
                         <Button
-                            x:Uid="SettingPageResetSettings"
+                            x:Uid="/SettingPage/ResetSettings"
+                            Margin="0,2"
                             Click="Button_Click"
                             Tag="reset" />
+
                         <HyperlinkButton
-                            x:Uid="SettingPageFeedbackLink"
+                            x:Uid="/SettingPage/FeedbackLink"
                             Click="Button_Click"
                             Tag="feedback" />
                         <HyperlinkButton
-                            x:Uid="SettingPageLogFolderLink"
+                            x:Uid="/SettingPage/LogFolderLink"
                             Click="Button_Click"
                             Tag="logFolder" />
                         <Button
@@ -132,11 +157,14 @@
                             Visibility="Collapsed" />
                     </StackPanel>
                 </controls:HeaderedContentControl>
+
+                <TextBlock FontSize="18" Text="关于" />
+                <control:AboutControl HorizontalAlignment="Left" />
             </StackPanel>
         </ScrollViewer>
         <control:TitleBar
-            x:Uid="SettingPageTitle"
-            BackButtonClick="TitleBar_BackButtonClick"
+            x:Uid="/SettingPage/Title"
+            BackButtonClicked="TitleBar_BackButtonClick"
             IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" />
     </Grid>
 </Page>

@@ -22,13 +22,19 @@ namespace CoolapkUWP.Pages
                 isLoginPage = value;
                 if (value)
                 {
-                    TryLoginButton.Visibility = Visibility.Visible;
-                    GotoSystemBrowserButton.Visibility = Visibility.Collapsed;
+                    FindName(nameof(tryLoginButton));
+                    if(openInSystemBrowserButton != null)
+                    {
+                        UnloadObject(openInSystemBrowserButton);
+                    }
                 }
                 else
                 {
-                    TryLoginButton.Visibility = Visibility.Collapsed;
-                    GotoSystemBrowserButton.Visibility = Visibility.Visible;
+                    FindName(nameof(openInSystemBrowserButton));
+                    if (tryLoginButton != null)
+                    {
+                        UnloadObject(tryLoginButton);
+                    }
                 }
             }
         }
@@ -51,9 +57,15 @@ namespace CoolapkUWP.Pages
 
         private void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
-            if (IsLoginPage && args.Uri.AbsoluteUri == "https://www.coolapk.com/") CheckLogin();
+            if (IsLoginPage && args.Uri.AbsoluteUri == "https://www.coolapk.com/")
+            {
+                CheckLogin();
+            }
             else if (args.Uri.AbsoluteUri == loginUri)
+            {
                 IsLoginPage = true;
+            }
+
             titleBar.Title = sender.DocumentTitle;
         }
 
@@ -61,11 +73,12 @@ namespace CoolapkUWP.Pages
 
         private async void CheckLogin()
         {
-            var loader = ResourceLoader.GetForCurrentView();
+            var loader = ResourceLoader.GetForCurrentView("BrowserPage");
             if (await SettingsHelper.CheckLoginInfo())
             {
                 if (Frame.CanGoBack)
                     Frame.GoBack();
+                UIHelper.NavigateInSplitPane(typeof(MyPage), new ViewModels.MyPage.ViewMode());
                 UIHelper.ShowMessage(loader.GetString("LoginSuccessfully"));
             }
             else

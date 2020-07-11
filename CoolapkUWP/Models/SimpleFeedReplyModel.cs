@@ -1,27 +1,41 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CoolapkUWP.Controls;
+using Newtonsoft.Json.Linq;
 
 namespace CoolapkUWP.Models
 {
-    internal class SimpleFeedReplyModel
+    internal class SimpleFeedReplyModel : Entity
     {
-        public SimpleFeedReplyModel(JObject token)
+        public SimpleFeedReplyModel(JObject o) : base(o)
         {
-            Id = token.Value<int>("id");
-            Uurl = $"/u/{token.Value<int>("uid")}";
-            Username = token.Value<string>("username");
-            IsFeedAuthor = token.Value<int>("isFeedAuthor") == 1;
-            Rurl = $"/u/{token.Value<int>("ruid")}";
-            Rusername = token.Value<string>("rusername");
-            Message = string.IsNullOrEmpty(Rusername)
-                ? $"<a href=\"{Uurl}\" type=\"user-detail\">{Username}{(IsFeedAuthor ? "[楼主]" : string.Empty)}</a>: {token.Value<string>("message")}"
-                : $"<a href=\"{Uurl}\" type=\"user-detail\">{Username}{(IsFeedAuthor ? "[楼主]" : string.Empty)}</a>@<a href=\"{Rurl}\" type=\"user-detail\">{Rusername}</a>: {token.Value<string>("message")}";
+            Id = o.Value<int>("id");
+            Uurl = $"/u/{o.Value<int>("uid")}";
+            Username = o.Value<string>("username");
+            IsFeedAuthor = o.Value<int>("isFeedAuthor") == 1;
+            Rurl = $"/u/{o.Value<int>("ruid")}";
+            Rusername = o.Value<string>("rusername");
+            
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
 
-            ShowPic = token.TryGetValue("pic", out JToken value) && !string.IsNullOrEmpty(value.ToString());
+            Message = string.IsNullOrEmpty(Rusername)
+                ? $"{GetUserLink(Uurl, Username) + GetAuthorString()}: {o.Value<string>("message")}"
+                : $"{GetUserLink(Uurl, Username) + GetAuthorString()}@{GetUserLink(Rurl, Rusername)}: {o.Value<string>("message")}";
+
+            ShowPic = o.TryGetValue("pic", out JToken value) && !string.IsNullOrEmpty(value.ToString());
             if (ShowPic)
             {
                 PicUri = value.ToString();
-                Message += $" <a href=\"{PicUri}\">查看图片</a>";
+                Message += $" <a href=\"{PicUri}\">{loader.GetString("seePic")}</a>";
             }
+        }
+
+        private string GetAuthorString()
+        {
+            return IsFeedAuthor ? TextBlockEx.AuthorBorder : string.Empty;
+        }
+
+        private string GetUserLink(string url, string name)
+        {
+            return $"<a href=\"{url}\" type=\"user-detail\">{name}</a>";
         }
 
         public string Rusername { get; private set; }

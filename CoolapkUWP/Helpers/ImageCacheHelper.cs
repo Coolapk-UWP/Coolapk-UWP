@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
+using InAppNotify = Microsoft.Toolkit.Uwp.UI.Controls.InAppNotification;
 
 namespace CoolapkUWP.Helpers
 {
@@ -14,7 +15,8 @@ namespace CoolapkUWP.Helpers
         OriginImage,
         SmallAvatar,
         BigAvatar,
-        Icon
+        Icon,
+        Captcha,
     }
 
     internal static class ImageCacheHelper
@@ -22,9 +24,9 @@ namespace CoolapkUWP.Helpers
         private static readonly BitmapImage whiteNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
         private static readonly BitmapImage darkNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
         private static readonly Dictionary<ImageType, StorageFolder> folders = new Dictionary<ImageType, StorageFolder>();
-        public static BitmapImage NoPic { get => SettingsHelper.Get<bool>(SettingsHelper.IsDarkMode) ? darkNoPicMode : whiteNoPicMode; }
+        internal static BitmapImage NoPic { get => SettingsHelper.Get<bool>(SettingsHelper.IsDarkMode) ? darkNoPicMode : whiteNoPicMode; }
 
-        private static async Task<StorageFolder> GetFolderAsync(ImageType type)
+        internal static async Task<StorageFolder> GetFolderAsync(ImageType type)
         {
             StorageFolder folder;
             if (folders.ContainsKey(type))
@@ -46,7 +48,7 @@ namespace CoolapkUWP.Helpers
             return folder;
         }
 
-        public static async Task<BitmapImage> GetImageAsync(ImageType type, string url, bool showMessage = false)
+        internal static async Task<BitmapImage> GetImageAsync(ImageType type, string url, Pages.ImageModel model = null, InAppNotify notify = null)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -55,6 +57,10 @@ namespace CoolapkUWP.Helpers
             else if (url.IndexOf("ms-appx") == 0)
             {
                 return new BitmapImage(new Uri(url));
+            }
+            else if (model == null && SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
+            {
+                return NoPic;
             }
             else
             {
@@ -65,79 +71,73 @@ namespace CoolapkUWP.Helpers
                 {
                     url += ".s.jpg";
                 }
-
+                var forceGetPic = model != null;
                 if (item is null)
                 {
                     StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
-                    try { await DownloadImageAsync(file, url, showMessage); }
-                    catch (FileLoadException) { return GetLocalImageAsync(file.Path); }
-                    return GetLocalImageAsync(file.Path);
+                    return await DownloadImageAsync(file, url, model, notify);
                 }
                 else
                 {
-                    return item is StorageFile file ? GetLocalImageAsync(file.Path) : null;
+                    return item is StorageFile file ? GetLocalImageAsync(file.Path, forceGetPic) : null;
                 }
             }
         }
 
-        public static async Task<string> GetImagePathAsync(ImageType type, string url, bool showMessage = false)
+        private static BitmapImage GetLocalImageAsync(string filename, bool forceGetPic)
         {
-            if (url.IndexOf("ms-appx") == 0)
+            try
             {
-                return url;
+                return (filename is null || (!forceGetPic && SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))) ? NoPic : new BitmapImage(new Uri(filename));
             }
-            else if (string.IsNullOrEmpty(url) || SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
+            catch
             {
-                return SettingsHelper.Get<bool>(SettingsHelper.IsDarkMode) ? "ms-appx:/Assets/img_placeholder_night.png" : "ms-appx:/Assets/img_placeholder.png";
+                return NoPic;
             }
-            else
-            {
-                string fileName = DataHelper.GetMD5(url);
-                StorageFolder folder = await GetFolderAsync(type);
-                var item = await folder.TryGetItemAsync(fileName);
-                if (type == ImageType.SmallImage)
-                {
-                    url += ".s.jpg";
-                }
+        }
 
-                if (item is null)
+        private static async Task<BitmapImage> DownloadImageAsync(StorageFile file, string url, Pages.ImageModel model, InAppNotify notify)
+        {
+            try
+            {
+                if (model != null)
                 {
-                    StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
-                    try { await DownloadImageAsync(file, url, showMessage); }
-                    catch (FileLoadException) { return file.Path; }
-                    return file.Path;
+                    model.IsProgressRingActived = true;
+                }
+                using (var hc = new HttpClient())
+                using (var stream = await hc.GetStreamAsync(new Uri(url)))
+                using (var fs = await file.OpenStreamForWriteAsync())
+                {
+                    await stream.CopyToAsync(fs);
+                }
+                return new BitmapImage(new Uri(file.Path));
+            }
+            catch (FileLoadException) { return NoPic; }
+            catch (HttpRequestException)
+            {
+                var str = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
+                if (notify == null)
+                {
+                    UIHelper.ShowMessage(str);
                 }
                 else
                 {
-                    return item is StorageFile file ? file.Path : null;
+                    notify.Show(str, UIHelper.duration);
                 }
+                return NoPic;
             }
-        }
-
-        private static BitmapImage GetLocalImageAsync(string filename) =>
-            (filename is null || SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode)) ? NoPic : new BitmapImage(new Uri(filename));
-
-        private static async Task DownloadImageAsync(StorageFile file, string url, bool showMessage)
-        {
-            if (!SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
+            finally
             {
-                try
+                if (model != null)
                 {
-                    //if (showMessage) UIHelper.ShowProgressRing();
-                    using (Stream stream = await new HttpClient().GetStreamAsync(url))
-                    using (Stream fs = await file.OpenStreamForWriteAsync())
-                    {
-                        await stream.CopyToAsync(fs);
-                    }
+                    model.IsProgressRingActived = false;
                 }
-                catch (HttpRequestException) { UIHelper.ShowMessage("图片加载失败"); }
-                //finally { if (showMessage) UIHelper.HideProgressRing(); }
             }
         }
 
-        public static async Task CleanCacheAsync()
+        internal static async Task CleanCacheAsync()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 6; i++)
             {
                 var type = (ImageType)i;
                 await (await GetFolderAsync(type)).DeleteAsync();

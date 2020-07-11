@@ -8,7 +8,6 @@
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     d:DesignHeight="72"
     d:DesignWidth="400"
-    Tapped="TitleGrid_Tapped"
     mc:Ignorable="d">
 
     <Grid
@@ -19,48 +18,51 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="40" />
         </Grid.ColumnDefinitions>
         <Button
             x:Name="BackButton"
             Grid.Column="0"
-            Width="40"
-            Height="40"
             VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
-            HorizontalContentAlignment="Center"
-            Background="Transparent"
             Click="BackButton_Click"
-            Style="{StaticResource ButtonRevealStyle}">
-            <SymbolIcon
-                x:Name="BackButtonIcon"
-                HorizontalAlignment="Center"
-                Symbol="Back" />
+            Style="{StaticResource IconButtonStyle}">
+            <SymbolIcon Symbol="Back" />
         </Button>
         <TextBlock
             x:Name="title"
             Grid.Column="1"
-            Margin="5,10"
+            Margin="2,9"
             HorizontalAlignment="Left"
             VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
-            FontSize="20" />
-        <!--<Button Grid.Column="2" Visibility="Collapsed" x:Name="MoreButton" Style="{StaticResource ButtonStyle1}" Width="48" Height="48" VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}">
-            <SymbolIcon Symbol="More" />
-        </Button>-->
+            FontSize="18" />
+        <ContentPresenter
+            x:Name="userContentPresenter"
+            Grid.Column="2"
+            Height="40"
+            VerticalAlignment="{StaticResource TitleContentVerticalAlignment}" />
         <winui:ProgressRing
             x:Name="progressRing"
-            Grid.Column="2"
-            Width="24"
-            Height="24"
-            Margin="0,32,0,0"
-            IsActive="False" />
-        <ComboBox
-            x:Name="ChangeModeComboBox"
             Grid.Column="3"
-            Margin="8"
-            VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
-            SelectionChanged="ChangeModeComboBox_SelectionChanged"
+            Width="28"
+            Height="28"
+            Margin="6,32,6,0"
+            IsActive="False"
             Visibility="Collapsed" />
+        <Button
+            x:Name="RefreshButton"
+            Grid.Column="4"
+            VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
+            Click="RefreshButton_Click"
+            Style="{StaticResource IconButtonStyle}"
+            Visibility="Collapsed">
+            <SymbolIcon Symbol="Refresh" />
+        </Button>
+        <Border
+            x:Name="RightEmpty"
+            Grid.Column="4"
+            Width="40" />
     </Grid>
 </UserControl>

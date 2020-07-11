@@ -1,7 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using Windows.UI.Xaml.Media;
+using System.Collections.Immutable;
 
 namespace CoolapkUWP.Models
 {
@@ -23,6 +22,10 @@ namespace CoolapkUWP.Models
             {
                 Title = v2.ToString();
             }
+            if (token.TryGetValue("subTitle", out JToken v7) && !string.IsNullOrEmpty(v7.ToString()))
+            {
+                SubTitle = v7.ToString();
+            }
             if (token.TryGetValue("url", out JToken v3) && !string.IsNullOrEmpty(v3.ToString()))
             {
                 Url = v3.ToString();
@@ -31,7 +34,15 @@ namespace CoolapkUWP.Models
             {
                 Description = v4.ToString();
             }
-            if (token.TryGetValue("pic", out JToken v5) && !string.IsNullOrEmpty(v5.ToString()))
+            else if(token.TryGetValue("subTitle", out JToken v9) && !string.IsNullOrEmpty(v9.ToString()))
+            {
+                Description = v9.ToString();
+            }
+            if (token.TryGetValue("cover_pic", out JToken v8) && !string.IsNullOrEmpty(v8.ToString()))
+            {
+                Pic = new ImageModel(v8.ToString(), ImageType.OriginImage);
+            }
+            else if (token.TryGetValue("pic", out JToken v5) && !string.IsNullOrEmpty(v5.ToString()))
             {
                 Pic = new ImageModel(v5.ToString(), ImageType.OriginImage);
             }
@@ -43,6 +54,7 @@ namespace CoolapkUWP.Models
 
         public string EntityTemplate { get; private set; }
         public string Title { get; private set; }
+        public string SubTitle { get; private set; }
         public string Url { get; private set; }
         public string Description { get; private set; }
         public ImageModel Pic { get; private set; }
@@ -52,26 +64,33 @@ namespace CoolapkUWP.Models
     {
         public IndexPageMessageCardModel(JObject token) : base(token)
         {
+            if (token.TryGetValue("title", out JToken v))
+            {
+                Title = v.ToString();
+            }
             if (token.TryGetValue("description", out JToken v4))
+            {
                 Description = v4.ToString();
+            }
         }
 
         public string Description { get; private set; }
+        public string Title { get; private set; }
     }
 
-    internal enum EntitiesType
+    internal enum EntityType
     {
         Image,
         TabLink,
         SelectorLink,
         IconLink,
-        TextLink,
+        TextLinks,
         Others,
     }
 
     internal class IndexPageHasEntitiesModel : Entity, IHasUriAndTitle
     {
-        public IndexPageHasEntitiesModel(JObject token, EntitiesType type) : base(token)
+        public IndexPageHasEntitiesModel(JObject token, EntityType type) : base(token)
         {
             EntitiesType = type;
             if (token.TryGetValue("title", out JToken v2) && !string.IsNullOrEmpty(v2.ToString()))
@@ -88,25 +107,31 @@ namespace CoolapkUWP.Models
             }
             if (token.TryGetValue("entities", out JToken v7) && (v7 as JArray).Count > 0)
             {
-                List<Entity> models = new List<Entity>();
+                var buider = ImmutableArray.CreateBuilder<Entity>();
                 foreach (JObject item in v7 as JArray)
                 {
-                    if (item.Value<string>("entityType") == "feed")
-                        models.Add(new FeedModel(item));
-                    else if (item.Value<string>("entityType") == "user")
-                        models.Add(new UserModel(item));
-                    else
-                        models.Add(new IndexPageModel(item));
+                    switch (item.Value<string>("entityType"))
+                    {
+                        case "feed":
+                            buider.Add(new FeedModel(item));
+                            break;
+                        case "user":
+                            buider.Add(new UserModel(item));
+                            break;
+                        default:
+                            buider.Add(new IndexPageModel(item));
+                            break;
+                    }
                 }
-                Entities = models.ToArray();
+                Entities = buider.ToImmutable();
             }
         }
 
-        public EntitiesType EntitiesType { get; private set; }
+        public EntityType EntitiesType { get; private set; }
         public string Title { get; private set; }
         public string Url { get; private set; }
         public string Description { get; private set; }
-        public Entity[] Entities { get; private set; }
+        public ImmutableArray<Entity> Entities { get; private set; } = ImmutableArray<Entity>.Empty;
     }
 
     internal enum OperationType
@@ -125,9 +150,17 @@ namespace CoolapkUWP.Models
             {
                 Title = v2.ToString();
             }
-            if (token.TryGetValue("url", out JToken v3) && !string.IsNullOrEmpty(v3.ToString()))
+            switch (type)
             {
-                Url = v3.ToString();
+                case OperationType.ShowTitle when token.TryGetValue("url", out JToken v3) && !string.IsNullOrEmpty(v3.ToString()):
+                    Url = v3.ToString();
+                    break;
+                case OperationType.Refresh:
+                    Url = "Refresh";
+                    break;
+                case OperationType.Login:
+                    Url = "Login";
+                    break;
             }
         }
 

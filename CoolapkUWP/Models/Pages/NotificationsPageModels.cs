@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace CoolapkUWP.Models.Pages.NotificationsPageModels
 {
-    internal abstract class NotificationModel : IFeedModel
+    internal abstract class NotificationModel : Entity
     {
         public ImageModel UserAvatar { get; protected set; }
         public string UserName { get; protected set; }
@@ -13,16 +13,14 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
         public string Uri { get; protected set; }
         public double Id { get; protected set; }
 
-        protected NotificationModel() { }
-
-        public abstract void Initial(JObject o);
+        protected NotificationModel(JObject o) : base(o) { }
     }
 
     internal class SimpleNotificationModel : NotificationModel
     {
         public string Note { get; private set; }
 
-        public override void Initial(JObject o)
+        public SimpleNotificationModel(JObject o) : base(o)
         {
             Id = o.Value<int>("id");
             UserName = o.Value<string>("fromusername");
@@ -54,7 +52,7 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
         public string Title { get; private set; }
         public string FeedMessage { get; private set; }
 
-        public override void Initial(JObject o)
+        public LikeNotificationModel(JObject o) : base(o)
         {
             Id = o.Value<int>("id");
             UserUri = "/u/" + o.Value<int>("likeUid");
@@ -76,7 +74,7 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
         public string Message { get; private set; }
         public string FeedMessage { get; private set; }
 
-        public override void Initial(JObject o)
+        public AtCommentMeNotificationModel(JObject o) : base(o)
         {
             Id = o.Value<int>("id");
             UserUri = "/u/" + o.Value<int>("uid");

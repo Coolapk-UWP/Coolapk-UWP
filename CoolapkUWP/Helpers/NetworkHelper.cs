@@ -1,20 +1,20 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.Web.Http;
 
 namespace CoolapkUWP.Helpers
 {
-    /// <summary>
-    ///     提供与网络相关的方法。
-    /// </summary>
+    /// <summary> 提供与网络相关的方法。 </summary>
     internal static class NetworkHelper
     {
-        private static readonly HttpClient mClient;
+        private static readonly HttpClient mClient = new HttpClient();
 
         static NetworkHelper()
         {
-            mClient = new HttpClient();
             mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "28");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
@@ -26,7 +26,6 @@ namespace CoolapkUWP.Helpers
             mClient.DefaultRequestHeaders.Add("X-App-Device", DataHelper.GetMD5(s + s + s) + "ady6r8"); //随便弄的
         }
 
-        //https://github.com/ZCKun/CoolapkTokenCrack
         private static string GetCoolapkAppToken()
         {
             string DEVICE_ID = Guid.NewGuid().ToString();
@@ -41,12 +40,34 @@ namespace CoolapkUWP.Helpers
             return token;
         }
 
-        /// <summary>
-        ///     从指定URI中获取Json文本。
-        /// </summary>
-        /// <param name="uri">
-        ///     数据在酷安服务器中的位置。
-        /// </param>
+        public static async Task<string> PostAsync(string url, IHttpContent content)
+        {
+            try
+            {
+                mClient.DefaultRequestHeaders.Remove("X-App-Token");
+                mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
+                var a = await mClient.PostAsync(new Uri("https://api.coolapk.com/v6" + url), content);
+                return await a.Content.ReadAsStringAsync();
+            }
+            catch { throw; }
+        }
+
+        public static async Task<BitmapImage> DownloadImageAsync(Uri uri, StorageFile file)
+        {
+            mClient.DefaultRequestHeaders.Remove("X-App-Token");
+            mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
+
+            var s = await mClient.GetInputStreamAsync(uri);
+            using (var ss = await file.OpenStreamForWriteAsync())
+            {
+                await s.AsStreamForRead().CopyToAsync(ss);
+            }
+
+            return new BitmapImage(new Uri(file.Path));
+        }
+
+        /// <summary> 从指定URI中获取Json文本。 </summary>
+        /// <param name="uri"> 数据在酷安服务器中的位置。 </param>
         public static async Task<string> GetJson(string uri)
         {
             try
@@ -59,17 +80,14 @@ namespace CoolapkUWP.Helpers
             catch { throw; }
         }
 
-        /// <summary>
-        ///     通过用户名获取UID。
-        /// </summary>
-        /// <param name="name">
-        ///     要获取UID的用户名。
-        /// </param>
-        public static async Task<string> GetUserIDByName(string name)
+        /// <summary> 通过用户名获取UID。 </summary>
+        /// <param name="name"> 要获取UID的用户名。 </param>
+        public static async Task<string> GetUserIDByNameAsync(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
-                UIHelper.ShowMessage("请输入用户名");
+                var s = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString("UserNameError");
+                UIHelper.ShowMessage(s);
                 return "0";
             }
             string str = string.Empty;

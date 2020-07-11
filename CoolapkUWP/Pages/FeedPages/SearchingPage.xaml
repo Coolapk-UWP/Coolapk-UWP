@@ -24,8 +24,9 @@
 
     <Grid>
         <Pivot
-            x:Name="DetailPivot"
+            x:Name="detailPivot"
             Margin="0,-48,0,0"
+            Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
             SelectionChanged="DetailPivot_SelectionChanged">
             <Pivot.ItemContainerStyle>
                 <Style TargetType="PivotItem">
@@ -33,12 +34,9 @@
                 </Style>
             </Pivot.ItemContainerStyle>
             <PivotItem>
-                <ScrollViewer x:Name="FeedScrollViewer" ViewChanged="ScrollViewer_ViewChanged">
+                <ScrollViewer x:Name="scrollViewer0" ViewChanged="ScrollViewer_ViewChanged">
                     <StackPanel Padding="{StaticResource StackPanelMargin}">
-                        <StackPanel
-                            Padding="2,4"
-                            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                            Orientation="Horizontal">
+                        <StackPanel Margin="8" Orientation="Horizontal">
                             <ComboBox
                                 x:Name="SearchFeedTypeComboBox"
                                 Header="搜索类型"
@@ -66,107 +64,65 @@
                                 <ComboBoxItem>评论数</ComboBoxItem>
                             </ComboBox>
                         </StackPanel>
-                        <ListView
-                            x:Name="FeedList"
-                            ItemTemplate="{StaticResource feed}"
-                            ScrollViewer.VerticalScrollMode="Disabled"
-                            Style="{StaticResource VerticalListViewStyle}">
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="Template" Value="{StaticResource AppListViewItemTemplate}" />
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                    <Setter Property="Margin" Value="0" />
-                                    <Setter Property="Padding" Value="0" />
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                            <ListView.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384" />
-                                </ItemsPanelTemplate>
-                            </ListView.ItemsPanel>
-                        </ListView>
+                        <winui:ItemsRepeater x:Name="FeedList" ItemTemplate="{StaticResource feed}" />
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>
             <PivotItem>
-                <ScrollViewer x:Name="UserScrollViewer" ViewChanged="ScrollViewer_ViewChanged">
-                    <ListView
-                        x:Name="UserList"
-                        Padding="{StaticResource StackPanelMargin}"
-                        ItemTemplate="{StaticResource User}"
-                        ScrollViewer.VerticalScrollMode="Disabled">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="Template" Value="{StaticResource AppListViewItemTemplate}" />
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                <Setter Property="Margin" Value="0" />
-                                <Setter Property="Padding" Value="0" />
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384" />
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                    </ListView>
+                <ScrollViewer x:Name="scrollViewer1" ViewChanged="ScrollViewer_ViewChanged">
+                    <Border Padding="{StaticResource StackPanelMargin}">
+                        <winui:ItemsRepeater x:Name="UserList" ItemTemplate="{StaticResource User}" />
+                    </Border>
                 </ScrollViewer>
             </PivotItem>
             <PivotItem>
-                <ScrollViewer x:Name="TagScrollViewer" ViewChanged="ScrollViewer_ViewChanged">
-                    <ListView
-                        x:Name="TopicList"
-                        Padding="{StaticResource StackPanelMargin}"
-                        ItemTemplate="{StaticResource Topic}"
-                        ScrollViewer.VerticalScrollMode="Disabled">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="Template" Value="{StaticResource AppListViewItemTemplate}" />
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                <Setter Property="Margin" Value="0" />
-                                <Setter Property="Padding" Value="0" />
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <control:GridPanel DesiredColumnWidth="384" />
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                    </ListView>
+                <ScrollViewer x:Name="scrollViewer2" ViewChanged="ScrollViewer_ViewChanged">
+                    <Border Padding="{StaticResource StackPanelMargin}">
+                        <winui:ItemsRepeater x:Name="TopicList" ItemTemplate="{StaticResource Topic}" />
+                    </Border>
                 </ScrollViewer>
             </PivotItem>
         </Pivot>
         <Grid
             Height="{StaticResource PageTitleHeight}"
+            Padding="0,0,40,0"
             VerticalAlignment="Top"
-            cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
-            fcu:Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
+            Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="48" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
+            <winui:ProgressRing
+                x:Name="progressRing"
+                Grid.Column="1"
+                Width="24"
+                Height="24"
+                Margin="8,0,4,8"
+                VerticalAlignment="Bottom"
+                Visibility="Collapsed" />
             <Button
                 x:Name="BackButton"
-                Width="48"
-                Height="48"
                 VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
                 Click="BackButton_Click"
-                Style="{ThemeResource NavigationBackButtonNormalStyle}" />
+                Style="{ThemeResource IconButtonStyle}">
+                <SymbolIcon Symbol="Back" />
+            </Button>
             <AutoSuggestBox
                 x:Name="SearchText"
-                Grid.Column="1"
-                Margin="0,0,0,8"
+                Grid.Column="2"
+                Margin="4,0,4,4"
                 VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
                 ItemTemplate="{StaticResource searchWord}"
-                KeyUp="SearchTextBox_KeyUp"
                 QueryIcon="Find"
                 QuerySubmitted="SearchText_QuerySubmitted"
                 SuggestionChosen="AutoSuggestBox_SuggestionChosen"
                 TextChanged="SearchText_TextChanged" />
             <ComboBox
-                x:Name="SearchTypeComboBox"
-                Grid.Column="2"
-                Margin="0,0,10,8"
+                x:Name="searchTypeComboBox"
+                Grid.Column="3"
+                Margin="4,0,4,4"
                 VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
                 SelectedIndex="0"
                 SelectionChanged="SearchTypeComboBox_SelectionChanged">
@@ -175,9 +131,5 @@
                 <ComboBoxItem>话题</ComboBoxItem>
             </ComboBox>
         </Grid>
-        <winui:ProgressRing
-            x:Name="progressRing"
-            Width="48"
-            Height="48" />
     </Grid>
 </Page>

@@ -5,19 +5,22 @@ namespace CoolapkUWP.Models
 {
     internal class UserModel : Entity
     {
-        public UserModel(JObject token) : base(token)
+        public UserModel(JObject o) : base(o)
         {
-            Url = token.Value<string>("url");
-            UserName = token.Value<string>("username");
-            if (token.TryGetValue("fans", out JToken a))
+            Url = o.Value<string>("url");
+            UserName = o.Value<string>("username");
+            if (o.TryGetValue("fans", out JToken a))
             {
                 FansNum = a.ToString().Replace("\"", string.Empty);
-                FollowNum = token["follow"].ToString().Replace("\"", string.Empty);
-                if (token.TryGetValue("bio", out JToken b))
+                FollowNum = o["follow"].ToString().Replace("\"", string.Empty);
+                if (o.TryGetValue("bio", out JToken b))
+                {
                     Bio = b.ToString();
-                LoginTime = DataHelper.ConvertTime(double.Parse(token["logintime"].ToString().Replace("\"", string.Empty))) + "活跃";
+                }
+
+                LoginTime = DataHelper.ConvertTime(double.Parse(o["logintime"].ToString().Replace("\"", string.Empty))) + "活跃";
             }
-            UserAvatar = new ImageModel(token.Value<string>("userSmallAvatar"), ImageType.BigAvatar);
+            UserAvatar = new ImageModel(o.Value<string>("userSmallAvatar"), ImageType.BigAvatar);
         }
 
         public string Url { get; private set; }

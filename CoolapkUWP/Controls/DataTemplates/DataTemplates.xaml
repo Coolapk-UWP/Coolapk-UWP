@@ -5,157 +5,163 @@
     xmlns:models="using:CoolapkUWP.Models">
 
     <DataTemplate x:Key="Topic" x:DataType="models:TopicModel">
-        <Grid
-            Padding="8"
-            HorizontalAlignment="Stretch"
-            Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+        <ListViewItem
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource AppListViewItemStyle}"
             Tag="{x:Bind Url}"
             Tapped="OnTapped">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="56" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-            <Ellipse
-                Grid.RowSpan="2"
-                Width="40"
-                Height="40"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top">
-                <Ellipse.Fill>
-                    <ImageBrush ImageSource="{x:Bind Logo.Pic, Mode=OneWay}" />
-                </Ellipse.Fill>
-            </Ellipse>
-            <TextBlock
-                Grid.Row="0"
-                Grid.Column="1"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Text="{x:Bind Title}" />
-            <StackPanel
-                Grid.Row="1"
-                Grid.Column="1"
-                Orientation="Horizontal">
-                <TextBlock Foreground="Gray" Text="{x:Bind Follownum}" />
+            <Grid Padding="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="56" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Ellipse
+                    Grid.RowSpan="2"
+                    Width="40"
+                    Height="40"
+                    Margin="8,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind Logo.Pic, Mode=OneWay}" />
+                    </Ellipse.Fill>
+                </Ellipse>
                 <TextBlock
-                    Margin="0,0,5,0"
-                    Foreground="Gray"
-                    Text="关注" />
-                <TextBlock Foreground="Gray" Text="{x:Bind Commentnum}" />
-                <TextBlock
-                    Margin="0,0,5,0"
-                    Foreground="Gray"
-                    Text="讨论" />
-            </StackPanel>
-        </Grid>
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Text="{x:Bind Title}" />
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Horizontal">
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Follownum}" />
+                    <TextBlock
+                        x:Uid="/FeedListPage/FollowNum"
+                        Margin="0,0,5,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Commentnum}" />
+                    <TextBlock
+                        x:Uid="/FeedListPage/Comment"
+                        Margin="0,0,5,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                </StackPanel>
+            </Grid>
+        </ListViewItem>
     </DataTemplate>
 
     <DataTemplate x:Key="DYH" x:DataType="models:DyhModel">
-        <Grid
-            Padding="8"
-            HorizontalAlignment="Stretch"
-            Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+        <ListViewItem
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource AppListViewItemStyle}"
             Tag="{x:Bind Url}"
             Tapped="OnTapped">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="56" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Ellipse
-                Grid.RowSpan="2"
-                Width="40"
-                Height="40"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top">
-                <Ellipse.Fill>
-                    <ImageBrush ImageSource="{x:Bind Logo.Pic, Mode=OneWay}" />
-                </Ellipse.Fill>
-            </Ellipse>
-            <TextBlock
-                Grid.Row="0"
-                Grid.Column="1"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Text="{x:Bind Title}" />
-            <StackPanel
-                Grid.Row="1"
-                Grid.Column="1"
-                Orientation="Horizontal">
-                <TextBlock Foreground="Gray" Text="{x:Bind Follownum}" />
+            <Grid
+                Padding="4"
+                Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="56" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Ellipse
+                    Grid.RowSpan="2"
+                    Width="40"
+                    Height="40"
+                    Margin="8,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind Logo.Pic, Mode=OneWay}" />
+                    </Ellipse.Fill>
+                </Ellipse>
                 <TextBlock
-                    Margin="0,0,5,0"
-                    Foreground="Gray"
-                    Text="订阅" />
-            </StackPanel>
-        </Grid>
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Text="{x:Bind Title}" />
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Horizontal">
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Follownum}" />
+                    <TextBlock
+                        x:Uid="/FeedListPage/Subscribed"
+                        Margin="0,0,5,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                </StackPanel>
+            </Grid>
+        </ListViewItem>
     </DataTemplate>
 
     <DataTemplate x:Key="User" x:DataType="models:UserModel">
-        <Grid
-            Margin="8,4"
-            Padding="4"
-            HorizontalAlignment="Stretch"
-            Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
-            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-            BorderThickness="1"
-            CornerRadius="8"
+        <ListViewItem
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource AppListViewItemStyle}"
             Tag="{x:Bind Url}"
             Tapped="OnTapped">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="56" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-            <Ellipse
-                Grid.RowSpan="3"
-                Width="40"
-                Height="40"
-                Margin="8"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top">
-                <Ellipse.Fill>
-                    <ImageBrush ImageSource="{x:Bind UserAvatar.Pic, Mode=OneWay}" />
-                </Ellipse.Fill>
-            </Ellipse>
-            <TextBlock
-                Grid.Row="0"
-                Grid.Column="1"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Text="{x:Bind UserName}" />
-            <StackPanel
-                Grid.Row="1"
-                Grid.Column="1"
-                Orientation="Horizontal">
-                <TextBlock Foreground="Gray" Text="{x:Bind FollowNum}" />
+            <Grid Padding="4,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="56" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Ellipse
+                    Grid.RowSpan="3"
+                    Width="40"
+                    Height="40"
+                    Margin="8"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind UserAvatar.Pic, Mode=OneWay}" />
+                    </Ellipse.Fill>
+                </Ellipse>
                 <TextBlock
-                    Margin="0,0,5,0"
-                    Foreground="Gray"
-                    Text="关注" />
-                <TextBlock Foreground="Gray" Text="{x:Bind FansNum}" />
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Text="{x:Bind UserName}" />
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Horizontal">
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind FollowNum}" />
+                    <TextBlock
+                        x:Uid="/FeedListPage/FollowNum"
+                        Margin="0,0,5,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind FansNum}" />
+                    <TextBlock
+                        x:Uid="/FeedListPage/Fans"
+                        Margin="0,0,5,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind LoginTime}" />
+                </StackPanel>
                 <TextBlock
-                    Margin="0,0,5,0"
-                    Foreground="Gray"
-                    Text="粉丝" />
-                <TextBlock Foreground="Gray" Text="{x:Bind LoginTime}" />
-            </StackPanel>
-            <TextBlock
-                Grid.Row="2"
-                Grid.Column="1"
-                Foreground="Gray"
-                Text="{x:Bind Bio}"
-                TextWrapping="Wrap" />
-        </Grid>
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Text="{x:Bind Bio}"
+                    TextWrapping="Wrap" />
+            </Grid>
+        </ListViewItem>
     </DataTemplate>
 </ResourceDictionary>

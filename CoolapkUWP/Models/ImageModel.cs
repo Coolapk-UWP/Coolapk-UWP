@@ -1,23 +1,36 @@
 ﻿using CoolapkUWP.Helpers;
 using System;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Models
 {
-    internal class ImageModel : INotifyPropertyChanged
+    public class ImageModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ImageModel(string uri, ImageType type)
         {
             Uri = uri;
-            _type = type;
+            Type = type;
         }
 
-        private readonly ImageType _type;
         private WeakReference<BitmapImage> pic;
         private bool isLongPic;
+        private ImmutableArray<ImageModel> contextArray = ImmutableArray<ImageModel>.Empty;
+
+        public ImmutableArray<ImageModel> ContextArray
+        {
+            get => contextArray;
+            set
+            {
+                if (contextArray.Length == 0)
+                {
+                    contextArray = value;
+                }
+            }
+        }
 
         public BitmapImage Pic
         {
@@ -35,7 +48,7 @@ namespace CoolapkUWP.Models
             }
             private set
             {
-                if(pic == null)
+                if (pic == null)
                 {
                     pic = new WeakReference<BitmapImage>(value);
                 }
@@ -57,10 +70,12 @@ namespace CoolapkUWP.Models
             }
         }
 
-        public bool IsGif { get => Uri.Substring(Uri.LastIndexOf('.')).ToLower().Contains("gif"); }
+        public bool IsGif { get => Uri.Substring(Uri.LastIndexOf('.')).ToLower().Contains("gif", StringComparison.Ordinal); }
 
         public string Uri { get; }
-        
+
+        public ImageType Type { get; }
+
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
             if (name != null)
@@ -69,7 +84,7 @@ namespace CoolapkUWP.Models
 
         private async void GetImage()
         {
-            BitmapImage bitmapImage = await ImageCacheHelper.GetImageAsync(_type, Uri);
+            var bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri);
             Pic = bitmapImage;
             IsLongPic = bitmapImage.PixelHeight > bitmapImage.PixelWidth * 2;
         }
