@@ -59,6 +59,7 @@ namespace CoolapkUWP.Models
         }
 
         public string Url { get; private set; }
+        public string QRUrl { get => "https://www.coolapk.com" + Url.Replace("/question/", "/feed/", System.StringComparison.Ordinal); }
         public string Uurl { get; private set; }
         public string Username { get; private set; }
         public string Dateline { get; private set; }

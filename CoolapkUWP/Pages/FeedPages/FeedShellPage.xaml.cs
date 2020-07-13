@@ -143,6 +143,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             Page_SizeChanged(null, null);
             titleBar.Title = provider.Title;
+            showQRCodeControl.QRCodeText = provider.FeedDetail.QRUrl;
         }
 
         private void MoveToTop()

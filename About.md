@@ -20,4 +20,5 @@
 - [UWP Community Toolkit](https://github.com/Microsoft/UWPCommunityToolkit/)
 - [Win UI](https://github.com/microsoft/microsoft-ui-xaml)
 - [Json.NET](https://www.newtonsoft.com/json)
+- [QRCoder](https://github.com/codebude/QRCoder)
 - [Metro Log](https://github.com/novotnyllc/MetroLog)

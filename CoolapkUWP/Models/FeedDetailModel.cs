@@ -15,7 +15,9 @@ namespace CoolapkUWP.Models
             if (o.Value<string>("entityType") != "article")
             {
                 if (o.Value<string>("feedType") == "feedArticle")
+                {
                     IsFeedArticle = true;
+                }
                 if (IsFeedArticle)
                 {
                     HasMessageCover = o.TryGetValue("message_cover", out JToken value) && !string.IsNullOrEmpty(value.ToString());
