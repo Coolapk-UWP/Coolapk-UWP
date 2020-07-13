@@ -3,6 +3,7 @@ using CoolapkUWP.ViewModels.FeedListPage;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
@@ -10,7 +11,6 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 using InAppNotify = Microsoft.Toolkit.Uwp.UI.Controls.InAppNotification;
 
 namespace CoolapkUWP.Helpers
@@ -63,16 +63,26 @@ namespace CoolapkUWP.Helpers
 
         public static event EventHandler<bool> IsSplitViewPaneOpenedChanged;
 
-        public static event EventHandler<bool> NeedMainPageProgressRing;
-
+        [DebuggerStepThrough]
         public static void ShowSplitView() => IsSplitViewPaneOpenedChanged?.Invoke(null, true);
 
+        [DebuggerStepThrough]
         public static void HideSplitView() => IsSplitViewPaneOpenedChanged?.Invoke(null, false);
 
+        public static event EventHandler<bool> NeedMainPageProgressRing;
+
+        [DebuggerStepThrough]
         public static void ShowMainPageProgressRing() => NeedMainPageProgressRing?.Invoke(null, true);
 
+        [DebuggerStepThrough]
         public static void HideMainPageProgressRing() => NeedMainPageProgressRing?.Invoke(null, false);
 
+        public static event EventHandler RequireIndexPageRefresh;
+
+        [DebuggerStepThrough]
+        public static void RefreshIndexPage() => RequireIndexPageRefresh?.Invoke(null, null);
+
+        [DebuggerStepThrough]
         public static void ShowMessage(string message)
         {
             _ = InAppNotification?.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
@@ -100,16 +110,19 @@ namespace CoolapkUWP.Helpers
             var viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(viewId);
         }
 
+        [DebuggerStepThrough]
         public static void ShowImage(string url, ImageType type)
         {
             ShowImageWindow(new object[] { url, type });
         }
 
+        [DebuggerStepThrough]
         public static void ShowImage(Models.ImageModel model)
         {
             ShowImageWindow(model);
         }
 
+        [DebuggerStepThrough]
         public static void Navigate(Type pageType, object e = null)
         {
             mainFrame?.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
@@ -118,6 +131,7 @@ namespace CoolapkUWP.Helpers
             });
         }
 
+        [DebuggerStepThrough]
         public static void NavigateInSplitPane(Type pageType, object e = null)
         {
             paneFrame?.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
@@ -127,6 +141,7 @@ namespace CoolapkUWP.Helpers
             });
         }
 
+        [DebuggerStepThrough]
         public static async void CheckTheme()
         {
             while (Window.Current?.Content is null)
@@ -172,6 +187,7 @@ namespace CoolapkUWP.Helpers
             }
         }
 
+        [DebuggerStepThrough]
         public static bool IsOriginSource(object source, object originalSource)
         {
             var r = false;
@@ -196,8 +212,10 @@ namespace CoolapkUWP.Helpers
             "http",
         }.ToImmutableArray();
 
+        [DebuggerStepThrough]
         private static bool IsFirst(this string str, int i) => str.IndexOf(routes[i], StringComparison.Ordinal) == 0;
 
+        [DebuggerStepThrough]
         private static string Replace(this string str, int oldText)
         {
             if (oldText == -1)
@@ -282,7 +300,7 @@ namespace CoolapkUWP.Helpers
             {
                 ShowImage(str, ImageType.SmallImage);
             }
-            else if(str == "https://m.coolapk.com/mp/user/communitySpecification")
+            else if (str == "https://m.coolapk.com/mp/user/communitySpecification")
             {
                 Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
             }

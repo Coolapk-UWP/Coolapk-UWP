@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using Newtonsoft.Json.Linq;
 using System.Linq;
@@ -124,7 +125,7 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                JArray array = (JArray)await DataHelper.GetDataAsync(DataUriType.GetSearchWords, true, sender.Text);
+                JArray array = (JArray)await DataHelper.GetDataAsync(UriProvider.GetObject(UriType.GetSearchWords).GetUri(sender.Text), true);
                 sender.ItemsSource = array != null && array.Count > 0 ? array.Select(i => new SearchWord(i as JObject)) : null;
             }
         }

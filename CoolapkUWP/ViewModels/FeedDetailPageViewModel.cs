@@ -61,7 +61,7 @@ namespace CoolapkUWP.ViewModels.FeedDetailPage
 
         protected static async Task<FeedDetailModel> GetFeedDetailAsync(string id)
         {
-            var detail = (JObject)await DataHelper.GetDataAsync(DataUriType.GetFeedDetail, true, id);
+            var detail = (JObject)await DataHelper.GetDataAsync(UriProvider.GetObject(UriType.GetFeedDetail).GetUri(id), true);
             if (detail != null)
             {
                 return new FeedDetailModel(detail);
@@ -109,10 +109,8 @@ namespace CoolapkUWP.ViewModels.FeedDetailPage
         {
             provider =
                 new CoolapkListProvider(
-                    async (p, page, firstItem, lastItem) =>
-                        (JArray)await DataHelper.GetDataAsync(
-                            DataUriType.GetAnswers,
-                            p == -2 ? true : false, 
+                    (p, page, firstItem, lastItem) =>
+                        UriProvider.GetObject(UriType.GetAnswers).GetUri(
                             id,
                             answerSortType,
                             p < 0 ? ++page : p,

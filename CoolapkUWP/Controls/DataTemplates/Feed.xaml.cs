@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -35,18 +36,18 @@ namespace CoolapkUWP.Controls.DataTemplates
             switch (element.Name)
             {
                 case "makeReplyButton":
-                    var item = Microsoft.Toolkit.Uwp.UI.Extensions.VisualTree.FindAscendant<ListViewItem>(element);
+                    DisabledCopy();
+                    var item = element.FindAscendant<ListViewItem>();
                     var ctrl = item.FindName("makeFeed") as MakeFeedControl;
                     ctrl.Visibility = ctrl.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
-                    DisabledCopy();
                     break;
 
                 case "likeButton":
-                    await DataHelper.MakeLikeAsync(element.Tag as ICanChangeLike,
+                    DisabledCopy();
+                    await DataHelper.MakeLikeAsync(element.Tag as ICanChangeLikModel,
                                                     element.Dispatcher,
                                                     (SymbolIcon)element.FindName("like1"),
                                                     (SymbolIcon)element.FindName("like2"));
-                    DisabledCopy();
                     break;
 
                 case "reportButton":

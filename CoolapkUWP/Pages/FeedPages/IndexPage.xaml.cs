@@ -16,6 +16,8 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public IndexPage() => this.InitializeComponent();
 
+        private void UIHelper_RequireIndexPageRefresh(object sender, EventArgs e) => RefreshPage();
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -25,6 +27,7 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 titleBar.Visibility = Visibility.Collapsed;
                 listBorder.Padding = new Thickness(0);
+                UIHelper.RequireIndexPageRefresh += UIHelper_RequireIndexPageRefresh;
             }
 
             ShowProgressRing();
@@ -42,6 +45,10 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             provider.VerticalOffsets[0] = scrollViewer.VerticalOffset;
             titleBar.Title = string.Empty;
+            if (!provider.ShowTitleBar)
+            {
+                UIHelper.RequireIndexPageRefresh -= UIHelper_RequireIndexPageRefresh;
+            }
 
             base.OnNavigatingFrom(e);
         }
@@ -81,17 +88,17 @@ namespace CoolapkUWP.Pages.FeedPages
             HideProgressRing();
         }
 
+        public void RefreshPage()
+        {
+            _ = Refresh(-2);
+        }
+
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             if (!e.IsIntermediate && scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
             {
                 _ = Refresh();
             }
-        }
-
-        public void RefreshPage()
-        {
-            _ = Refresh(-2);
         }
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e)
@@ -165,13 +172,13 @@ namespace CoolapkUWP.Pages.FeedPages
             if (provider.tabProviders.Count > 0)
             {
                 provider.tabProviders[provider.ComboBoxSelectedIndex].ChangeGetDataFunc(
-                    ViewModels.IndexPage.ViewModel.GetData(u, false),
+                    ViewModels.IndexPage.ViewModel.GetUri(u, false),
                     (a) => a?.EntityType == "feed");
             }
             else
             {
                 provider.mainProvider.ChangeGetDataFunc(
-                    ViewModels.IndexPage.ViewModel.GetData(u, false),
+                    ViewModels.IndexPage.ViewModel.GetUri(u, false),
                     (a) => a?.EntityType == "topic");
             }
             _ = Refresh(-2);
@@ -209,22 +216,27 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 foreach (IndexPageModel model in pivot.Tag as System.Collections.IEnumerable)
                 {
-                    provider.AddTab($"/page/dataList?url={model.Url.Replace("#", "%23", StringComparison.Ordinal)}&title={model.Title}");
-
-                    var list = new Microsoft.UI.Xaml.Controls.ItemsRepeater
+                    if (provider.tabProviders.Count == 0)
                     {
-                        ItemTemplate = Resources["FTemplateSelector"] as DataTemplateSelector,
-                        ItemsSource = provider.tabProviders.Last().Models,
-                    };
+                        provider.AddTab($"/page/dataList?url={model.Url.Replace("#", "%23", StringComparison.Ordinal)}&title={model.Title}");
+                    }
 
                     var pivotItem = new PivotItem
                     {
-                        Content = list,
                         Header = model.Title
                     };
                     pivot.Items.Add(pivotItem);
                 }
-                return;
+
+                for (int i = 0; i < provider.tabProviders.Count; i++)
+                {
+                    var list = new Microsoft.UI.Xaml.Controls.ItemsRepeater
+                    {
+                        ItemTemplate = Resources["FTemplateSelector"] as DataTemplateSelector,
+                        ItemsSource = provider.tabProviders[i].Models,
+                    };
+                    ((PivotItem)pivot.Items[i]).Content = list;
+                }
             }
         }
 

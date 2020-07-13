@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace CoolapkUWP.Models
 {
-    public class FeedModelBase : SourceFeedModel, ICanChangeLike, INotifyPropertyChanged, ICanChangeReplyNum, ICanCopy
+    public class FeedModelBase : SourceFeedModel, ICanChangeLikModel, INotifyPropertyChanged, ICanChangeReplyNum, ICanCopy
     {
         public FeedModelBase(JObject token) : base(token)
         {

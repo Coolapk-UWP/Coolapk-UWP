@@ -3,10 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Windows10version1809="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
+    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:ctrl="using:CoolapkUWP.Controls"
     xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:models="using:CoolapkUWP.Models"
-    xmlns:valueconverters="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls">
 
     <ResourceDictionary.MergedDictionaries>
@@ -14,7 +14,7 @@
         <local:RelationRowsItem />
     </ResourceDictionary.MergedDictionaries>
 
-    <valueconverters:TrueToFalseConverter x:Key="TrueToFalseConverter" />
+    <converter:TrueToFalseConverter x:Key="TrueToFalseConverter" />
 
     <Style
         x:Key="FeedOpButtonStyle"
@@ -157,28 +157,54 @@
                     </StackPanel>
                 </StackPanel>
 
-                <Button
-                    x:Name="moreButton"
+                <StackPanel
                     Grid.Row="1"
                     Grid.Column="3"
-                    Height="32"
                     HorizontalAlignment="Right"
-                    Style="{StaticResource IconButtonStyle}">
-                    <SymbolIcon Symbol="More" />
-                    <Button.Flyout>
-                        <MenuFlyout>
-                            <MenuFlyoutItem
-                                x:Name="reportButton"
-                                x:Uid="/Feed/report"
-                                Click="FeedButton_Click"
-                                Tag="{x:Bind Id}" />
-                            <ToggleMenuFlyoutItem
-                                x:Name="copyButton"
-                                x:Uid="/Feed/Copy"
-                                IsChecked="{x:Bind IsCopyEnabled, Mode=TwoWay}" />
-                        </MenuFlyout>
-                    </Button.Flyout>
-                </Button>
+                    Orientation="Horizontal">
+                    <Button
+                        Width="32"
+                        Height="32"
+                        Style="{StaticResource IconButtonStyle}"
+                        ToolTipService.ToolTip="在手机上打开">
+                        <Button.Flyout>
+                            <Flyout>
+                                <Flyout.FlyoutPresenterStyle>
+                                    <Style TargetType="FlyoutPresenter">
+                                        <Setter Property="Padding" Value="0" />
+                                        <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
+                                        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+                                        <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
+                                        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                                    </Style>
+                                </Flyout.FlyoutPresenterStyle>
+                                <ctrl:ShowQRCodeControl QRCodeText="{x:Bind QRUrl}" />
+                            </Flyout>
+                        </Button.Flyout>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED14;" />
+                    </Button>
+
+                    <Button
+                        x:Name="moreButton"
+                        Width="32"
+                        Height="32"
+                        Style="{StaticResource IconButtonStyle}">
+                        <SymbolIcon Symbol="More" />
+                        <Button.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem
+                                    x:Name="reportButton"
+                                    x:Uid="/Feed/report"
+                                    Click="FeedButton_Click"
+                                    Tag="{x:Bind Id}" />
+                                <ToggleMenuFlyoutItem
+                                    x:Name="copyButton"
+                                    x:Uid="/Feed/Copy"
+                                    IsChecked="{x:Bind IsCopyEnabled, Mode=TwoWay}" />
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                </StackPanel>
 
                 <TextBlock
                     x:Name="mTitleT"

@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
@@ -113,9 +114,10 @@ namespace CoolapkUWP.Pages
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                sender.ItemsSource = await DataHelper.GetDataAsync(DataUriType.SearchWords, true, sender.Text) is JArray array && array.Count > 0
-                    ? (from i in array select new SearchWord(i as JObject))
-                    : null;
+                sender.ItemsSource = await DataHelper.GetDataAsync(UriProvider.GetObject(UriType.SearchWords).GetUri(sender.Text), true) is JArray array &&
+                                     array.Count > 0
+                                    ? (from i in array select new SearchWord(i as JObject))
+                                    : null;
             }
         }
 

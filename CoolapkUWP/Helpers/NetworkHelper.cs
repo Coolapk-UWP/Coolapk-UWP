@@ -29,9 +29,8 @@ namespace CoolapkUWP.Helpers
         private static string GetCoolapkAppToken()
         {
             string DEVICE_ID = Guid.NewGuid().ToString();
-            long UnixDate = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
-            string t = UnixDate.ToString();
-            string hex_t = "0x" + string.Format("{0:x}", UnixDate);
+            string t = DataHelper.ConvertTimeToUnix(DateTime.Now);
+            string hex_t = "0x" + Convert.ToString(int.Parse(t), 16);
             // 时间戳加密
             string md5_t = DataHelper.GetMD5(t);
             string a = "token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?" + md5_t + "$" + DEVICE_ID + "&com.coolapk.market";
@@ -40,13 +39,13 @@ namespace CoolapkUWP.Helpers
             return token;
         }
 
-        public static async Task<string> PostAsync(string url, IHttpContent content)
+        public static async Task<string> PostAsync(Uri uri, IHttpContent content)
         {
             try
             {
                 mClient.DefaultRequestHeaders.Remove("X-App-Token");
                 mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
-                var a = await mClient.PostAsync(new Uri("https://api.coolapk.com/v6" + url), content);
+                var a = await mClient.PostAsync(uri, content);
                 return await a.Content.ReadAsStringAsync();
             }
             catch { throw; }
@@ -68,14 +67,14 @@ namespace CoolapkUWP.Helpers
 
         /// <summary> 从指定URI中获取Json文本。 </summary>
         /// <param name="uri"> 数据在酷安服务器中的位置。 </param>
-        public static async Task<string> GetJson(string uri)
+        public static async Task<string> GetJson(Uri uri)
         {
             try
             {
                 //if (url != "/notification/checkCount") UIHelper.notifications?.RefreshNotificationsNum();
                 mClient.DefaultRequestHeaders.Remove("X-App-Token");
                 mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
-                return await mClient.GetStringAsync(new Uri("https://api.coolapk.com/v6" + uri));
+                return await mClient.GetStringAsync(uri);
             }
             catch { throw; }
         }

@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models.Pages.FeedListPageModels;
 using CoolapkUWP.ViewModels;
 using CoolapkUWP.ViewModels.FeedListPage;
@@ -113,12 +114,13 @@ namespace CoolapkUWP.Pages.FeedPages
                     break;
 
                 case "FollowUser":
-                    await DataHelper.GetDataAsync(
+                    var type =
                         (provider.Models[0] as UserDetail).FollowStatus == Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage").GetString("follow")
-                            ? DataUriType.OperateUnfollow
-                            : DataUriType.OperateFollow,
-                        true,
-                        provider.Id);
+                            ? UriType.OperateUnfollow
+                            : UriType.OperateFollow;
+                    await DataHelper.GetDataAsync(
+                        UriProvider.GetObject(type).GetUri(provider.Id),
+                        true);
                     Refresh();
                     break;
 

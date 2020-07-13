@@ -1,7 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
@@ -16,63 +15,57 @@ namespace CoolapkUWP.ViewModels.SearchPage
         internal static readonly ImmutableArray<SearchListProvider> providers = new SearchListProvider[]
         {
             new SearchListProvider(
-                    async (keyWord, page, lastItem) =>
+                (keyWord, page, lastItem) =>
+                {
+                    string feedType = string.Empty;
+                    string sortType = string.Empty;
+                    switch (SearchFeedTypeComboBoxSelectedIndex)
                     {
-                        string feedType = string.Empty;
-                        string sortType = string.Empty;
-                        switch (SearchFeedTypeComboBoxSelectedIndex)
-                        {
-                            case 0: feedType = "all"; break;
-                            case 1: feedType = "feed"; break;
-                            case 2: feedType = "feedArticle"; break;
-                            case 3: feedType = "rating"; break;
-                            case 4: feedType = "picture"; break;
-                            case 5: feedType = "question"; break;
-                            case 6: feedType = "answer"; break;
-                            case 7: feedType = "video"; break;
-                            case 8: feedType = "ershou"; break;
-                            case 9: feedType = "vote"; break;
-                        }
-                        switch (SearchFeedSortTypeComboBoxSelectedIndex)
-                        {
-                            case 0: sortType = "default"; break;
-                            case 1: sortType = "hot"; break;
-                            case 2: sortType = "reply"; break;
-                        }
-                        return (JArray)await DataHelper.GetDataAsync(
-                            DataUriType.SearchFeeds,
-                            true,
-                            feedType,
-                            sortType,
-                            keyWord,
-                            page,
-                            page > 1 ? "&lastItem=" + lastItem : string.Empty);
-                    },
-                    (o) => new FeedModel(o),
-                    "id"),
+                        case 0: feedType = "all"; break;
+                        case 1: feedType = "feed"; break;
+                        case 2: feedType = "feedArticle"; break;
+                        case 3: feedType = "rating"; break;
+                        case 4: feedType = "picture"; break;
+                        case 5: feedType = "question"; break;
+                        case 6: feedType = "answer"; break;
+                        case 7: feedType = "video"; break;
+                        case 8: feedType = "ershou"; break;
+                        case 9: feedType = "vote"; break;
+                    }
+                    switch (SearchFeedSortTypeComboBoxSelectedIndex)
+                    {
+                        case 0: sortType = "default"; break;
+                        case 1: sortType = "hot"; break;
+                        case 2: sortType = "reply"; break;
+                    }
+                    return UriProvider.GetObject(UriType.SearchFeeds).GetUri(
+                        feedType,
+                        sortType,
+                        keyWord,
+                        page,
+                        page > 1 ? "&lastItem=" + lastItem : string.Empty);
+                },
+                (o) => new FeedModel(o),
+                "id"),
 
-                new SearchListProvider(
-                    async (keyWord, page, lastItem) =>
-                        (JArray)await DataHelper.GetDataAsync(
-                            DataUriType.SearchUsers,
-                            true,
-                            keyWord,
-                            page,
-                            page > 1 ? "&lastItem=" + lastItem : string.Empty),
-                    (o) => new UserModel(o),
-                    "uid"),
+            new SearchListProvider(
+                (keyWord, page, lastItem) =>
+                    UriProvider.GetObject(UriType.SearchUsers).GetUri(
+                        keyWord,
+                        page,
+                        page > 1 ? "&lastItem=" + lastItem : string.Empty),
+                (o) => new UserModel(o),
+                "uid"),
 
-                new SearchListProvider(
-                    async (keyWord, page, lastItem) =>
-                        (JArray)await DataHelper.GetDataAsync(
-                            DataUriType.SearchTags,
-                            true,
-                            keyWord,
-                            page,
-                            page > 1 ? "&lastItem=" + lastItem : string.Empty),
-                    (o) => new TopicModel(o),
-                    "id")
-    }.ToImmutableArray();
+            new SearchListProvider(
+                (keyWord, page, lastItem) =>
+                    UriProvider.GetObject(UriType.SearchTags).GetUri(
+                        keyWord,
+                        page,
+                        page > 1 ? "&lastItem=" + lastItem : string.Empty),
+                (o) => new TopicModel(o),
+                "id")
+        }.ToImmutableArray();
     }
 
     internal class ViewModel : IViewModel

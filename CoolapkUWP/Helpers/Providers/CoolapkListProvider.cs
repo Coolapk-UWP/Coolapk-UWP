@@ -12,47 +12,47 @@ namespace CoolapkUWP.Helpers.Providers
     {
         private int page;
         private string firstItem, lastItem;
-        private Func<int, int, string, string, Task<JArray>> getData;
-        private readonly Func<Entity, JToken, bool> checkEqual;
-        private readonly Func<JObject, IEnumerable<Entity>> getEntities;
-        private readonly Func<string> getString;
-        private readonly string idName;
+        private Func<int, int, string, string, Uri> _getUri;
+        private readonly Func<Entity, JToken, bool> _checkEqual;
+        private readonly Func<JObject, IEnumerable<Entity>> _getEntities;
+        private readonly Func<string> _getString;
+        private readonly string _idName;
         public ObservableCollection<Entity> Models { get; } = new ObservableCollection<Entity>();
 
-        /// <param name="getData"> 获取Jarray的方法。参数顺序是 page, firstItem, lastItem。 </param>
+        /// <param name="getUri"> 获取Jarray的方法。参数顺序是 page, firstItem, lastItem。 </param>
         public CoolapkListProvider(
-            Func<int, int, string, string, Task<JArray>> getData,
+            Func<int, int, string, string, Uri> getUri,
             Func<Entity, JToken, bool> checkEqual,
             Func<JObject, IEnumerable<Entity>> getEntities,
             string idName)
             : this(
-                  getData, checkEqual, getEntities,
+                  getUri, checkEqual, getEntities,
                   () => Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("noMore"),
                   idName)
         {
         }
 
-        /// <param name="getData"> 获取Jarray的方法。参数顺序是 page, firstItem, lastItem。 </param>
+        /// <param name="getUri"> 获取Jarray的方法。参数顺序是 page, firstItem, lastItem。 </param>
         public CoolapkListProvider(
-            Func<int, int, string, string, Task<JArray>> getData,
+            Func<int, int, string, string, Uri> getUri,
             Func<Entity, JToken, bool> checkEqual,
             Func<JObject, IEnumerable<Entity>> getEntities,
             Func<string> getString,
             string idName)
         {
-            this.getData = getData ?? throw new ArgumentNullException(nameof(getData));
-            this.checkEqual = checkEqual ?? throw new ArgumentNullException(nameof(checkEqual));
-            this.getEntities = getEntities ?? throw new ArgumentNullException(nameof(getEntities));
-            this.getString = getString ?? throw new ArgumentNullException(nameof(getString));
-            this.idName = string.IsNullOrEmpty(idName) ? throw new ArgumentException($"{nameof(idName)}不能为空")
-                                                             : idName;
+            _getUri = getUri ?? throw new ArgumentNullException(nameof(getUri));
+            _checkEqual = checkEqual ?? throw new ArgumentNullException(nameof(checkEqual));
+            _getEntities = getEntities ?? throw new ArgumentNullException(nameof(getEntities));
+            _getString = getString ?? throw new ArgumentNullException(nameof(getString));
+            _idName = string.IsNullOrEmpty(idName) ? throw new ArgumentException($"{nameof(idName)}不能为空")
+                                                       : idName;
         }
 
         public void ChangeGetDataFunc(
-            Func<int, int, string, string, Task<JArray>> getData,
+            Func<int, int, string, string, Uri> getUri,
             Func<Entity, bool> needDeleteJudger)
         {
-            this.getData = getData ?? throw new ArgumentNullException(nameof(getData));
+            _getUri = getUri ?? throw new ArgumentNullException(nameof(getUri));
             var needDeleteItems = (from entity in Models
                                    where needDeleteJudger(entity)
                                    select entity).ToArray();
@@ -67,30 +67,34 @@ namespace CoolapkUWP.Helpers.Providers
         {
             page = p;
             lastItem = firstItem = string.Empty;
-            Models.Clear();
+
+            var temp = Models.Except(from m in Models
+                                     where m.EntityFixed
+                                     select m).ToArray();
+            foreach (var item in temp)
+            {
+                Models.Remove(item);
+            }
         }
 
         private string GetId(JToken token)
         {
             if (token == null) { return string.Empty; }
-            else if ((token as JObject).TryGetValue(idName, out JToken jToken))
+            else if ((token as JObject).TryGetValue(_idName, out JToken jToken))
             {
                 return jToken.ToString();
             }
             else
             {
-                throw new ArgumentException(nameof(idName));
+                throw new ArgumentException(nameof(_idName));
             }
         }
 
         public async Task Refresh(int p = -1)
         {
-            if (p == -2) 
-            { 
-                Reset(0);
-            }
+            if (p == -2) { Reset(0); }
 
-            var array = await getData(p, page, firstItem, lastItem);
+            var array = (JArray)await DataHelper.GetDataAsync(_getUri(p, page, firstItem, lastItem), p == -2);
 
             if (p < 0) { page++; }
 
@@ -107,7 +111,7 @@ namespace CoolapkUWP.Helpers.Providers
 
                 var needDeleteEntites = (from m in Models
                                          from b in array
-                                         where checkEqual(m, b)
+                                         where _checkEqual(m, b)
                                          select m).ToArray();
                 foreach (var item in needDeleteEntites)
                 {
@@ -131,12 +135,13 @@ namespace CoolapkUWP.Helpers.Providers
 
                     for (int i = 0; i < array.Count; i++)
                     {
-                        var entities = getEntities((JObject)array[i]);
+                        var entities = _getEntities((JObject)array[i]);
                         if (entities == null) { continue; }
 
                         foreach (var item in entities)
                         {
                             if (item == null) { continue; }
+
                             Models.Insert(modelIndex + fixedNum, item);
                             modelIndex++;
                         }
@@ -152,11 +157,15 @@ namespace CoolapkUWP.Helpers.Providers
 
                     foreach (JObject item in array)
                     {
-                        var entities = getEntities(item);
+                        var entities = _getEntities(item);
                         if (entities == null) { continue; }
+
                         foreach (var i in entities)
                         {
                             if (i == null) { continue; }
+                            var b = fixedEntities.Any(k => k.EntityId == i.EntityId);
+                            if (b) { continue; }
+
                             Models.Add(i);
                         }
                     }
@@ -165,7 +174,7 @@ namespace CoolapkUWP.Helpers.Providers
             else if (p == -1)
             {
                 page--;
-                UIHelper.ShowMessage(getString());
+                UIHelper.ShowMessage(_getString());
             }
         }
     }

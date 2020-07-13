@@ -1,5 +1,4 @@
-﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Helpers.Providers;
+﻿using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using Newtonsoft.Json.Linq;
 using System;
@@ -36,11 +35,11 @@ namespace CoolapkUWP.ViewModels.IndexPage
         {
             if (tabProviders.Count == 0)
             {
-                await mainProvider?.Refresh();
+                await mainProvider?.Refresh(p);
             }
             else if (p == -1 && ComboBoxSelectedIndex < tabProviders.Count)
             {
-                await tabProviders[ComboBoxSelectedIndex]?.Refresh();
+                await tabProviders[ComboBoxSelectedIndex]?.Refresh(p);
             }
         }
 
@@ -135,21 +134,19 @@ namespace CoolapkUWP.ViewModels.IndexPage
         private CoolapkListProvider GetProvider(string uri)
         {
             return new CoolapkListProvider(
-                    GetData(uri, IsHotFeedPage),
+                    GetUri(uri, IsHotFeedPage),
                     (a, b) => a.EntityId == b.Value<string>("entityId").Replace("\"", string.Empty, StringComparison.Ordinal),
                     GetEntities,
                     "entityId");
         }
 
-        internal static Func<int, int, string, string, Task<JArray>> GetData(string uri, bool isHotFeedPage)
+        internal static Func<int, int, string, string, Uri> GetUri(string uri, bool isHotFeedPage)
         {
-            return async (p, page, _, __) =>
-                (JArray)await DataHelper.GetDataAsync(
-                    DataUriType.GetIndexPage,
-                    p == -2 ? true : false,
+            return (p, page, _, __) =>
+                UriProvider.GetObject(UriType.GetIndexPage).GetUri(
                     uri,
                     isHotFeedPage ? "?" : "&",
-                    p < 0? ++page : p);
+                    p < 0 ? ++page : p);
         }
 
         internal void AddTab(string uri) => tabProviders = tabProviders.Add(GetProvider(uri));

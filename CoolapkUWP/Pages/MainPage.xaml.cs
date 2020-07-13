@@ -1,6 +1,7 @@
 ﻿#define LOAD_MAIN_PAGE
 
 using CoolapkUWP.Helpers;
+using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Pages.FeedPages;
 using System;
 using System.Collections.Immutable;
@@ -38,7 +39,15 @@ namespace CoolapkUWP.Pages
 
         private void UIHelper_NeedMainPageProgressRing(object sender, bool e)
         {
+            if (e)
+            {
+                FindName(nameof(progressRing));
+            }
             progressRing.IsActive = e;
+            if (!e)
+            {
+                UnloadObject(progressRing);
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -63,7 +72,7 @@ namespace CoolapkUWP.Pages
 
         private async void GetIndexPageItems()
         {
-            var temp = await DataHelper.GetDataAsync<Models.Json.IndexPageHeaderItemModel.Rootobject>(DataUriType.GetIndexPageNames);
+            var temp = await DataHelper.GetDataAsync<Models.Json.IndexPageHeaderItemModel.Rootobject>(UriProvider.GetObject(UriType.GetIndexPageNames).GetUri());
 
             MenuItems = await Task.Run(() =>
                 (from t in temp.Data
@@ -99,6 +108,11 @@ namespace CoolapkUWP.Pages
             {
                 navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(item1.Uri, false), args.RecommendedNavigationTransitionInfo);
             }
+        }
+
+        private void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            UIHelper.RefreshIndexPage();
         }
     }
 }

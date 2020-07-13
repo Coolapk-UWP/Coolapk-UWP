@@ -66,25 +66,25 @@ namespace CoolapkUWP.ViewModels.FeedListPage
 
         private async Task<FeedListDetailBase> GetDetail()
         {
-            DataUriType type;
+            UriType type;
             switch (ListType)
             {
                 case FeedListType.UserPageList:
-                    type = DataUriType.GetUserSpace;
+                    type = UriType.GetUserSpace;
                     break;
 
                 case FeedListType.TagPageList:
-                    type = DataUriType.GetTagDetail;
+                    type = UriType.GetTagDetail;
                     break;
 
                 case FeedListType.DyhPageList:
-                    type = DataUriType.GetDyhDetail;
+                    type = UriType.GetDyhDetail;
                     break;
 
                 default:
                     throw new ArgumentException($"{typeof(FeedListType).FullName}值错误");
             }
-            JObject o = (JObject)await DataHelper.GetDataAsync(type, true, Id);
+            JObject o = (JObject)await DataHelper.GetDataAsync(UriProvider.GetObject(type).GetUri(Id), true);
             FeedListDetailBase d = null;
             if (o != null)
             {
@@ -142,10 +142,8 @@ namespace CoolapkUWP.ViewModels.FeedListPage
         {
             Provider =
                 new CoolapkListProvider(
-                    async (p, page, firstItem, lastItem) =>
-                        (JArray)await DataHelper.GetDataAsync(
-                            DataUriType.GetUserFeeds,
-                            p == -2 ? true : false,
+                    (p, page, firstItem, lastItem) =>
+                        UriProvider.GetObject(UriType.GetUserFeeds).GetUri(
                             Id,
                             p < 0 ? ++page : p,
                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
@@ -173,10 +171,8 @@ namespace CoolapkUWP.ViewModels.FeedListPage
         {
             Provider =
                 new CoolapkListProvider(
-                    async (p, page, firstItem, lastItem) =>
-                         (JArray)await DataHelper.GetDataAsync(
-                            DataUriType.GetTagFeeds, 
-                            p == -2 ? true : false,
+                    (p, page, firstItem, lastItem) =>
+                        UriProvider.GetObject(UriType.GetTagFeeds).GetUri(
                             Id,
                             p < 0 ? ++page : p,
                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
@@ -236,9 +232,8 @@ namespace CoolapkUWP.ViewModels.FeedListPage
         {
             Provider =
                 new CoolapkListProvider(
-                    async (p, page, firstItem, lastItem) =>
-                        (JArray)await DataHelper.GetDataAsync(DataUriType.GetDyhFeeds,
-                            p == -2 ? true : false,
+                    (p, page, firstItem, lastItem) =>
+                        UriProvider.GetObject(UriType.GetDyhFeeds).GetUri(
                             Id,
                             ComboBoxSelectedIndex == 0 ? "all" : "square",
                             p < 0 ? ++page : p,

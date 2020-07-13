@@ -134,6 +134,9 @@
     <Compile Include="Controls\MakeFeedControl.xaml.cs">
       <DependentUpon>MakeFeedControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ShowQRCodeControl.xaml.cs">
+      <DependentUpon>ShowQRCodeControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TextBlockEx.xaml.cs">
       <DependentUpon>TextBlockEx.xaml</DependentUpon>
     </Compile>
@@ -143,6 +146,7 @@
     <Compile Include="Controls\WaterFallLayout.cs" />
     <Compile Include="Helpers\CoolapkMessageException.cs" />
     <Compile Include="Helpers\EmojiTypeHelper.cs" />
+    <Compile Include="Helpers\Providers\UriProvider.cs" />
     <Compile Include="Helpers\ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\HasValueConverter.cs" />
     <Compile Include="Helpers\ValueConverters\TrueToFalseConverter.cs" />
@@ -846,6 +850,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ShowQRCodeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\TextBlockEx.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -939,6 +947,9 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="QRCoder">
+      <Version>1.3.9</Version>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable">
       <Version>1.7.1</Version>

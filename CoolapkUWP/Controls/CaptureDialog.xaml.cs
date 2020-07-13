@@ -1,19 +1,8 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Helpers.Providers;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 
 namespace CoolapkUWP.Controls
@@ -42,7 +31,7 @@ namespace CoolapkUWP.Controls
             {
                 content.Add(type, "type");
                 content.Add(code, "code");
-                UIHelper.ShowMessage((await DataHelper.PostDataAsync(DataUriType.RequestValidate, content)).ToString());
+                UIHelper.ShowMessage((await DataHelper.PostDataAsync(UriProvider.GetObject(UriType.RequestValidate).GetUri(), content)).ToString());
             }
         }
 
