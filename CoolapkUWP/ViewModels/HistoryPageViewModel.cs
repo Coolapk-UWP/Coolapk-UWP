@@ -1,7 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -10,7 +9,7 @@ namespace CoolapkUWP.ViewModels.HistoryPage
 {
     internal class ViewModel : IViewModel
     {
-        private CoolapkListProvider provider;
+        private readonly CoolapkListProvider provider;
         public ObservableCollection<Entity> Models { get => provider?.Models ?? null; }
 
         public double[] VerticalOffsets { get; set; } = new double[1];
@@ -21,29 +20,26 @@ namespace CoolapkUWP.ViewModels.HistoryPage
             if (string.IsNullOrEmpty(title)) { throw new ArgumentException(nameof(title)); }
 
             Title = title;
-
-            DataUriType type = DataUriType.CheckLoginInfo;
+            UriType type = UriType.CheckLoginInfo;
 
             switch (title)
             {
                 case "我的常去":
-                    type = DataUriType.GetUserRecentHistory;
+                    type = UriType.GetUserRecentHistory;
                     break;
                 case "浏览历史":
-                    type = DataUriType.GetUserHistory;
+                    type = UriType.GetUserHistory;
                     break;
                 default: throw new ArgumentException(nameof(title));
             }
 
             provider =
                 new CoolapkListProvider(
-                    async (p, page, firstItem, lastItem) =>
-                    (JArray)await DataHelper.GetDataAsync(
-                        type,
-                        p == -2 ? true : false,
-                        p < 0 ? ++page : p,
-                        string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
-                        string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
+                    (p, page, firstItem, lastItem) =>
+                        UriProvider.GetObject(type).GetUri(
+                            p < 0 ? ++page : p,
+                            string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                     (a, b) => ((HistoryModel)a).Id == b.Value<string>("id"),
                     (o) => new Entity[] { new HistoryModel(o) },
                     "id");

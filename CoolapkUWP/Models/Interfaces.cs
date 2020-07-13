@@ -1,6 +1,6 @@
 ﻿namespace CoolapkUWP.Models
 {
-    internal interface ICanChangeLike
+    internal interface ICanChangeLikModel
     {
         string Likenum { get; set; }
         bool Liked { get; set; }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CoolapkUWP.Helpers.Providers;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -125,7 +126,7 @@ namespace CoolapkUWP.Helpers
                     if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(userName))
                     {
                         Set(Uid, uid);
-                        var o = (JObject)await DataHelper.GetDataAsync(DataUriType.CheckLoginInfo, true);
+                        var o = (JObject)await DataHelper.GetDataAsync(UriProvider.GetObject(UriType.CheckLoginInfo).GetUri(), true);
                         UIHelper.NotificationNums.Initial((JObject)o["notifyCount"]);
                         return true;
                     }

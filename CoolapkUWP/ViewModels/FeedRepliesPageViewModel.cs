@@ -1,7 +1,5 @@
-﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Helpers.Providers;
+﻿using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -32,10 +30,8 @@ namespace CoolapkUWP.ViewModels.FeedRepliesPage
                 case ListType.HotReply:
                     provider =
                         new CoolapkListProvider(
-                            async (p, page, firstItem, lastItem) =>
-                                (JArray)await DataHelper.GetDataAsync(
-                                    DataUriType.GetHotReplies,
-                                    p == -2 ? true : false,
+                            (p, page, firstItem, lastItem) =>
+                                UriProvider.GetObject(UriType.GetHotReplies).GetUri(
                                     id,
                                     p < 0 ? ++page : p,
                                     page > 1 ? $"&firstItem={firstItem}&lastItem={lastItem}" : string.Empty),
@@ -48,16 +44,11 @@ namespace CoolapkUWP.ViewModels.FeedRepliesPage
                 case ListType.ReplyReply:
                     provider =
                         new CoolapkListProvider(
-                            async (p, _page, _, lastItem) =>
-                            {
-                                var page = p < 0 ? ++_page : p;
-                                return (JArray)await DataHelper.GetDataAsync(
-                                    DataUriType.GetReplyReplies,
-                                    p == -2 ? true : false,
+                            (p, page, _, lastItem) =>
+                                UriProvider.GetObject(UriType.GetReplyReplies).GetUri(
                                     id,
-                                    page,
-                                    page > 1 ? $"&lastItem={lastItem}" : string.Empty);
-                            },
+                                    p < 0 ? ++page : p,
+                                    page > 1 ? $"&lastItem={lastItem}" : string.Empty),
                             (a, b) => ((FeedReplyModel)a).Id == b.Value<int>("id"),
                             (o) => new Entity[] { new FeedReplyModel(o, false) },
                             "id");
@@ -82,7 +73,7 @@ namespace CoolapkUWP.ViewModels.FeedRepliesPage
         public async Task Refresh(int p = -1)
         {
             await provider?.Refresh(p);
-            if(p == -2)
+            if (p == -2)
             {
                 provider?.Models.Insert(0, replyModel);
             }

@@ -32,10 +32,8 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
 
             ReplyProvider =
                 new CoolapkListProvider(
-                    async (p, page, firstItem, lastItem) =>
-                        (JArray)await DataHelper.GetDataAsync(
-                            DataUriType.GetFeedReplies,
-                            p == -2 ? true : false,
+                    (p, page, firstItem, lastItem) =>
+                        UriProvider.GetObject(UriType.GetFeedReplies).GetUri(
                             id,
                             replyListType,
                             p < 0 ? ++page : p,
@@ -48,10 +46,8 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
 
             LikeProvider =
                 new CoolapkListProvider(
-                    async (p, page, firstItem, lastItem) =>
-                        (JArray)await DataHelper.GetDataAsync(
-                            DataUriType.GetLikeList,
-                            p == -2 ? true : false,
+                    (p, page, firstItem, lastItem) =>
+                        UriProvider.GetObject(UriType.GetLikeList).GetUri(
                             id,
                             p < 0 ? ++page : p,
                             page > 1 ? $"&firstItem={firstItem}&lastItem={lastItem}" : string.Empty),
@@ -61,11 +57,15 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
                     "uid");
             ShareProvider =
                 new CoolapkListProvider(
-                    async (p, page, firstItem, lastItem) => (JArray)await DataHelper.GetDataAsync(DataUriType.GetShareList, p == -2 ? true : false, id, p < 0 ? ++page : p),
-                (a, b) => ((SourceFeedModel)a).Url == b.Value<string>("url"),
-                (o) => new Entity[] { new SourceFeedModel(o) },
-                () => loader.GetString("noMoreShare"),
-                "id");
+                    (p, page, firstItem, lastItem) => 
+                        UriProvider.GetObject(UriType.GetShareList).GetUri(
+                            p == -2 ? true : false, 
+                            id,
+                            p < 0 ? ++page : p),
+                    (a, b) => ((SourceFeedModel)a).Url == b.Value<string>("url"),
+                    (o) => new Entity[] { new SourceFeedModel(o) },
+                    () => loader.GetString("noMoreShare"),
+                    "id");
 
             HotReplys = model.HotReplies;
         }

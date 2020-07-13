@@ -5,11 +5,11 @@ using System.ComponentModel;
 
 namespace CoolapkUWP.Models
 {
-    internal class FeedReplyModel : SimpleFeedReplyModel, INotifyPropertyChanged, ICanChangeLike, ICanChangeReplyNum, ICanCopy
+    internal class FeedReplyModel : SimpleFeedReplyModel, INotifyPropertyChanged, ICanChangeLikModel, ICanChangeReplyNum, ICanCopy
     {
         public FeedReplyModel(JObject o, bool showReplyRow = true) : base(o)
         {
-            Dateline = DataHelper.ConvertTime(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty)));
+            Dateline = DataHelper.ConvertUnixTimeToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty)));
             Message = o.Value<string>("message");
             var userSmallAvatarUrl = o["userInfo"].Value<string>("userSmallAvatar");
             if (!string.IsNullOrEmpty(userSmallAvatarUrl))
@@ -86,6 +86,6 @@ namespace CoolapkUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCopyEnabled)));
             }
         }
-        string ICanChangeLike.Id => Id.ToString();
+        string ICanChangeLikModel.Id => Id.ToString();
     }
 }

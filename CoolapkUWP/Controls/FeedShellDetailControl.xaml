@@ -2,11 +2,11 @@
     x:Class="CoolapkUWP.Controls.FeedShellDetailControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:CoolapkUWP.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
-    xmlns:valueconverters="using:CoolapkUWP.Helpers.ValueConverters"
     d:DesignHeight="300"
     d:DesignWidth="400"
     mc:Ignorable="d">
@@ -16,8 +16,8 @@
                 <templates:Pic />
                 <templates:RelationRowsItem />
             </ResourceDictionary.MergedDictionaries>
-            <valueconverters:TrueToFalseConverter x:Key="TrueToFalseConverter" />
-            <valueconverters:HasValueConverter x:Key="HasValueConverter" />
+            <converter:TrueToFalseConverter x:Key="TrueToFalseConverter" />
+            <converter:HasValueConverter x:Key="HasValueConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 

@@ -10,7 +10,7 @@ namespace CoolapkUWP.ViewModels.UserListPage
 {
     internal class ViewModel : IViewModel
     {
-        private CoolapkListProvider provider;
+        private readonly CoolapkListProvider provider;
         public ObservableCollection<Entity> Models { get => provider?.Models ?? null; }
 
         public double[] VerticalOffsets { get; set; } = new double[1];
@@ -23,15 +23,13 @@ namespace CoolapkUWP.ViewModels.UserListPage
             Title = $"{name}的{(isFollowList ? "关注" : "粉丝")}";
             provider =
                 new CoolapkListProvider(
-                    async (p, page, firstItem, lastItem) =>
-                    (JArray)await DataHelper.GetDataAsync(
-                        DataUriType.GetUserList,
-                        p == -2 ? true : false,
-                        isFollowList ? "followList" : "fansList",
-                        uid,
-                        p < 0 ? ++page : p,
-                        string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
-                        string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
+                    (p, page, firstItem, lastItem) =>
+                        UriProvider.GetObject(UriType.GetUserList).GetUri(
+                            isFollowList ? "followList" : "fansList",
+                            uid,
+                            p < 0 ? ++page : p,
+                            string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                     (a, b) => ((UserModel)a).UserName == b.Value<string>(isFollowList ? "fusername" : "username"),
                     (o) => new Entity[] { new UserModel((JObject)(isFollowList ? o["fUserInfo"] : o["userInfo"])) },
                     "fuid");

@@ -24,14 +24,17 @@
             </DataTemplate>
         </winui:NavigationView.MenuItemTemplate>
         <winui:NavigationView.PaneFooter>
-            <Border Margin="0,0,40,0">
+            <StackPanel Margin="0,0,40,0" Orientation="Horizontal">
                 <winui:ProgressRing
                     x:Name="progressRing"
                     Width="24"
                     Height="24"
                     Margin="8,0"
                     IsActive="True" />
-            </Border>
+                <Button Click="Button_Click" Style="{StaticResource IconButtonStyle}">
+                    <SymbolIcon Symbol="Refresh" />
+                </Button>
+            </StackPanel>
         </winui:NavigationView.PaneFooter>
         <Frame x:Name="navigationViewFrame" />
     </winui:NavigationView>

@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Controls.MakeFeedControlModel;
 using System;
@@ -50,13 +51,13 @@ namespace CoolapkUWP.Controls
                             content.Add(a, "message");
                             content.Add(b, "type");
                             content.Add(c, "is_html_article");
-                            await MakeFeed(DataUriType.CreateFeed, content);
+                            await MakeFeed(UriType.CreateFeed, content);
                         }
                         break;
 
                     case MakeFeedMode.Reply:
                     case MakeFeedMode.ReplyReply:
-                        var type = MakeFeedMode == MakeFeedMode.Reply ? DataUriType.CreateFeedReply : DataUriType.CreateReplyReply;
+                        var type = MakeFeedMode == MakeFeedMode.Reply ? UriType.CreateFeedReply : UriType.CreateReplyReply;
                         using (var d = new HttpStringContent(contentText))
                         {
                             content.Add(d, "message");
@@ -67,20 +68,20 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        private async Task MakeFeed(DataUriType type, HttpMultipartFormDataContent content)
+        private async Task MakeFeed(UriType type, HttpMultipartFormDataContent content)
         {
             try
             {
-                if (type == DataUriType.CreateFeed)
+                if (type == UriType.CreateFeed)
                 {
-                    if (await DataHelper.PostDataAsync(type, content) != null)
+                    if (await DataHelper.PostDataAsync(UriProvider.GetObject(type).GetUri(), content) != null)
                     {
                         SendSuccessful();
                     }
                 }
                 else
                 {
-                    if (await DataHelper.PostDataAsync(type, content, FeedId) != null)
+                    if (await DataHelper.PostDataAsync(UriProvider.GetObject(type).GetUri(FeedId), content) != null)
                     {
                         SendSuccessful();
                     }

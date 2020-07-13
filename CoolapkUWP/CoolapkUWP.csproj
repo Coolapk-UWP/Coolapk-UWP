@@ -143,6 +143,7 @@
     <Compile Include="Controls\WaterFallLayout.cs" />
     <Compile Include="Helpers\CoolapkMessageException.cs" />
     <Compile Include="Helpers\EmojiTypeHelper.cs" />
+    <Compile Include="Helpers\Providers\UriProvider.cs" />
     <Compile Include="Helpers\ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\HasValueConverter.cs" />
     <Compile Include="Helpers\ValueConverters\TrueToFalseConverter.cs" />
