@@ -381,7 +381,7 @@ namespace CoolapkUWP.Pages
                     if (file != null)
                     {
                         using (Stream fs = await file.OpenStreamForWriteAsync())
-                        using (Stream s = (await (await (await ApplicationData.Current.LocalCacheFolder.GetFolderAsync(imageModels[SFlipView.SelectedIndex].Type.ToString())).GetFileAsync(DataHelper.GetMD5(u))).OpenReadAsync()).AsStreamForRead())
+                        using (Stream s = (await (await (await ApplicationData.Current.LocalCacheFolder.GetFolderAsync(imageModels[SFlipView.SelectedIndex].Type.ToString())).GetFileAsync(Core.Helpers.DataHelper.GetMD5(u))).OpenReadAsync()).AsStreamForRead())
                         {
                             await s.CopyToAsync(fs);
                         }

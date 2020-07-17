@@ -1,5 +1,4 @@
-﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Helpers.Providers;
+﻿using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Pages.NotificationsPageModels;
 using Newtonsoft.Json.Linq;
@@ -78,7 +77,8 @@ namespace CoolapkUWP.ViewModels.NotificationsPage
             provider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) =>
-                        UriProvider.GetObject(UriType.GetNotifications).GetUri(
+                        UriProvider.GetUri(
+                            UriType.GetNotifications,
                             listName,
                             p < 0 ? ++page : p,
                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
@@ -88,6 +88,5 @@ namespace CoolapkUWP.ViewModels.NotificationsPage
         }
 
         public async Task Refresh(int p = -1) => await provider?.Refresh(p);
-
     }
 }

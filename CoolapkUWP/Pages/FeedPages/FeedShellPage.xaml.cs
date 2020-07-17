@@ -166,7 +166,7 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             if (n < 0 || n > 2) { return; }
 
-            if (pivotButtons == null)
+            if (pivotButtons.IsDefaultOrEmpty)
             {
                 pivotButtons = new Button[]
                 {

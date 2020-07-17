@@ -23,7 +23,7 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
         internal CoolapkListProvider ReplyProvider { get; }
         internal CoolapkListProvider LikeProvider { get; }
         internal CoolapkListProvider ShareProvider { get; }
-        internal ImmutableArray<FeedReplyModel> HotReplys { get; } = new ImmutableArray<FeedReplyModel>();
+        internal ImmutableArray<FeedReplyModel> HotReplys { get; }
 
         internal ViewModel(string id, FeedDetailModel model)
         {
@@ -33,7 +33,8 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
             ReplyProvider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) =>
-                        UriProvider.GetObject(UriType.GetFeedReplies).GetUri(
+                        UriProvider.GetUri(
+                            UriType.GetFeedReplies,
                             id,
                             replyListType,
                             p < 0 ? ++page : p,
@@ -47,7 +48,8 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
             LikeProvider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) =>
-                        UriProvider.GetObject(UriType.GetLikeList).GetUri(
+                        UriProvider.GetUri(
+                            UriType.GetLikeList,
                             id,
                             p < 0 ? ++page : p,
                             page > 1 ? $"&firstItem={firstItem}&lastItem={lastItem}" : string.Empty),
@@ -58,7 +60,8 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
             ShareProvider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) => 
-                        UriProvider.GetObject(UriType.GetShareList).GetUri(
+                        UriProvider.GetUri(
+                            UriType.GetShareList,
                             p == -2 ? true : false, 
                             id,
                             p < 0 ? ++page : p),

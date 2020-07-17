@@ -12,7 +12,7 @@ namespace CoolapkUWP.Models
             Url = o.TryGetValue("url", out JToken json) ? json.ToString() : $"/feed/{o["id"].ToString().Replace("\"", string.Empty)}";
             if (o.Value<string>("entityType") == "article")
             {
-                Dateline = DataHelper.ConvertUnixTimeToReadable(o.Value<int>("digest_time"));
+                Dateline = Core.Helpers.DataHelper.ConvertUnixTimeToReadable(o.Value<int>("digest_time"));
                 Message = o.Value<string>("message").Substring(0, 120) + "……<a href=\"\">查看更多</a>";
                 MessageTitle = o.Value<string>("title");
             }
@@ -25,7 +25,7 @@ namespace CoolapkUWP.Models
                 }
                 Uurl = o["userInfo"].Value<string>("url");
                 Username = o["userInfo"].Value<string>("username");
-                Dateline = DataHelper.ConvertUnixTimeToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty)));
+                Dateline = Core.Helpers.DataHelper.ConvertUnixTimeToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty)));
                 Message = o.Value<string>("message");
                 MessageTitle = o.TryGetValue("message_title", out JToken j) ? j.ToString() : string.Empty;
             }
@@ -39,13 +39,9 @@ namespace CoolapkUWP.Models
                 IsMoreThanOnePic = picArr.Count() > 1;
                 if (ShowPicArr || IsCoolPictuers)
                 {
-                    var builder = ImmutableArray.CreateBuilder<ImageModel>();
-                    foreach (var item in picArr as JArray)
-                    {
-                        builder.Add(new ImageModel(item.ToString(), ImageType.SmallImage));
-                    }
+                    PicArr = (from item in picArr
+                              select new ImageModel(item.ToString(), ImageType.SmallImage)).ToImmutableArray();
 
-                    PicArr = builder.ToImmutable();
                     foreach (var item in PicArr)
                     {
                         item.ContextArray = PicArr;
@@ -70,7 +66,7 @@ namespace CoolapkUWP.Models
         public bool IsCoolPictuers { get; private set; }
         public bool IsMoreThanOnePic { get; private set; }
         public ImageModel Pic { get; private set; }
-        public ImmutableArray<ImageModel> PicArr { get; private set; } = ImmutableArray<ImageModel>.Empty;
+        public ImmutableArray<ImageModel> PicArr { get; private set; }
         public bool IsQuestionFeed { get; private set; }
     }
 }

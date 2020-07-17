@@ -50,7 +50,7 @@ namespace CoolapkUWP.ViewModels.MyPage
 
             provider =
                 new CoolapkListProvider(
-                    (_, __, ___, ____) => UriProvider.GetObject(UriType.GetMyPageCard).GetUri(),
+                    (_, __, ___, ____) => UriProvider.GetUri(UriType.GetMyPageCard),
                     (_, __) => false,
                     (o) => new Entity[] { GetEntity(o) },
                     "entityType");
@@ -60,7 +60,7 @@ namespace CoolapkUWP.ViewModels.MyPage
         {
             if (string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid))) { return; }
 
-            var o = (JObject)await DataHelper.GetDataAsync(UriProvider.GetObject(UriType.GetUserProfile).GetUri(SettingsHelper.Get<string>(SettingsHelper.Uid)), true);
+            var o = (JObject)await DataHelper.GetDataAsync(UriProvider.GetUri(UriType.GetUserProfile, SettingsHelper.Get<string>(SettingsHelper.Uid)), true);
             string url = o.Value<string>("userAvatar");
             var bitmapImage = await ImageCacheHelper.GetImageAsync(ImageType.BigAvatar, url);
             UserModel = new Models.Controls.UserHubModel(o, bitmapImage);

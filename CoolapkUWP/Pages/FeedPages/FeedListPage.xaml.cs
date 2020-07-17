@@ -119,7 +119,7 @@ namespace CoolapkUWP.Pages.FeedPages
                             ? UriType.OperateUnfollow
                             : UriType.OperateFollow;
                     await DataHelper.GetDataAsync(
-                        UriProvider.GetObject(type).GetUri(provider.Id),
+                        UriProvider.GetUri(type, provider.Id),
                         true);
                     Refresh();
                     break;

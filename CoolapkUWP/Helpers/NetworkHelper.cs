@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ namespace CoolapkUWP.Helpers
     internal static class NetworkHelper
     {
         private static readonly HttpClient mClient = new HttpClient();
+        private static readonly string guid = Guid.NewGuid().ToString();
 
         static NetworkHelper()
         {
@@ -22,23 +25,23 @@ namespace CoolapkUWP.Helpers
             mClient.DefaultRequestHeaders.Add("X-App-Version", "9.2.2");
             mClient.DefaultRequestHeaders.Add("X-App-Code", "1905301");
             mClient.DefaultRequestHeaders.Add("X-Api-Version", "9");
-            string s = Guid.NewGuid().ToString();
-            mClient.DefaultRequestHeaders.Add("X-App-Device", DataHelper.GetMD5(s + s + s) + "ady6r8"); //随便弄的
+            mClient.DefaultRequestHeaders.Add("X-App-Device", Core.Helpers.DataHelper.GetMD5(guid));
         }
 
+        [DebuggerStepThrough]
         private static string GetCoolapkAppToken()
         {
-            string DEVICE_ID = Guid.NewGuid().ToString();
-            string t = DataHelper.ConvertTimeToUnix(DateTime.Now);
-            string hex_t = "0x" + Convert.ToString(int.Parse(t), 16);
+            var t = Core.Helpers.DataHelper.ConvertTimeToUnix(DateTime.Now);
+            var hex_t = "0x" + Convert.ToString((int)t, 16);
             // 时间戳加密
-            string md5_t = DataHelper.GetMD5(t);
-            string a = "token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?" + md5_t + "$" + DEVICE_ID + "&com.coolapk.market";
-            string md5_a = DataHelper.GetMD5(Convert.ToBase64String(Encoding.UTF8.GetBytes(a)));
-            string token = md5_a + DEVICE_ID + hex_t;
+            var md5_t = Core.Helpers.DataHelper.GetMD5($"{t}");
+            var a = $"token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?{md5_t}${guid}&com.coolapk.market";
+            var md5_a = Core.Helpers.DataHelper.GetMD5(Convert.ToBase64String(Encoding.UTF8.GetBytes(a)));
+            var token = md5_a + guid + hex_t;
             return token;
         }
 
+        [DebuggerStepThrough]
         public static async Task<string> PostAsync(Uri uri, IHttpContent content)
         {
             try
@@ -51,6 +54,7 @@ namespace CoolapkUWP.Helpers
             catch { throw; }
         }
 
+        [DebuggerStepThrough]
         public static async Task<BitmapImage> DownloadImageAsync(Uri uri, StorageFile file)
         {
             mClient.DefaultRequestHeaders.Remove("X-App-Token");
@@ -67,6 +71,7 @@ namespace CoolapkUWP.Helpers
 
         /// <summary> 从指定URI中获取Json文本。 </summary>
         /// <param name="uri"> 数据在酷安服务器中的位置。 </param>
+        [DebuggerStepThrough]
         public static async Task<string> GetJson(Uri uri)
         {
             try
@@ -81,29 +86,29 @@ namespace CoolapkUWP.Helpers
 
         /// <summary> 通过用户名获取UID。 </summary>
         /// <param name="name"> 要获取UID的用户名。 </param>
+        [DebuggerStepThrough]
         public static async Task<string> GetUserIDByNameAsync(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
                 var s = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString("UserNameError");
-                UIHelper.ShowMessage(s);
-                return "0";
+                throw new CoolapkMessageException(s);
             }
-            string str = string.Empty;
+
+            var str = string.Empty;
             try
             {
                 str = await mClient.GetStringAsync(new Uri("https://www.coolapk.com/n/" + name));
-                return Windows.Data.Json.JsonObject.Parse(str)["dataRow"].GetObject()["uid"].GetNumber().ToString();
+                return $"{JObject.Parse(str)["dataRow"].Value<int>("uid")}";
             }
             catch
             {
-                var o = Windows.Data.Json.JsonObject.Parse(str).GetObject();
-                if (o != null)
+                var o = JObject.Parse(str);
+                if (o == null) { throw; }
+                else
                 {
-                    UIHelper.ShowMessage(o["message"].GetString());
-                    return "0";
+                    throw new CoolapkMessageException(o);
                 }
-                else throw;
             }
         }
     }

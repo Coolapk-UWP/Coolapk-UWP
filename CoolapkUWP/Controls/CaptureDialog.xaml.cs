@@ -19,7 +19,7 @@ namespace CoolapkUWP.Controls
 
         private async void SetImage()
         {
-            unixTimeSpan = DataHelper.ConvertTimeToUnix(DateTime.Now);
+            unixTimeSpan = $"{Core.Helpers.DataHelper.ConvertTimeToUnix(DateTime.Now)}";
             image.Source = await DataHelper.GetImageAsync($"https://api.coolapk.com/v6/account/captchaImage?time={unixTimeSpan}&w=192&h=80");
         }
 
@@ -31,7 +31,7 @@ namespace CoolapkUWP.Controls
             {
                 content.Add(type, "type");
                 content.Add(code, "code");
-                UIHelper.ShowMessage((await DataHelper.PostDataAsync(UriProvider.GetObject(UriType.RequestValidate).GetUri(), content)).ToString());
+                UIHelper.ShowMessage((await DataHelper.PostDataAsync(UriProvider.GetUri(UriType.RequestValidate), content)).ToString());
             }
         }
 

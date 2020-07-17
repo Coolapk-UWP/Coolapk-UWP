@@ -25,7 +25,7 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
             Id = o.Value<int>("id");
             UserName = o.Value<string>("fromusername");
             UserUri = o.Value<string>("url");
-            Dateline = DataHelper.ConvertUnixTimeToReadable(o.Value<int>("dateline"));
+            Dateline = Core.Helpers.DataHelper.ConvertUnixTimeToReadable(o.Value<int>("dateline"));
             string s = o.Value<string>("note");
             Regex regex = new Regex("<a.*?>.*?</a>"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
             while (regex.IsMatch(s))
@@ -56,7 +56,7 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
         {
             Id = o.Value<int>("id");
             UserUri = "/u/" + o.Value<int>("likeUid");
-            Dateline = DataHelper.ConvertUnixTimeToReadable(o.Value<int>("likeTime"));
+            Dateline = Core.Helpers.DataHelper.ConvertUnixTimeToReadable(o.Value<int>("likeTime"));
             UserName = o.Value<string>("likeUsername");
             Uri = o.Value<string>("url");
             Title = "赞了你的" + (o.TryGetValue("feedTypeName", out JToken value) ? value.ToString() : o.Value<string>("infoHtml"));
@@ -78,7 +78,7 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
         {
             Id = o.Value<int>("id");
             UserUri = "/u/" + o.Value<int>("uid");
-            Dateline = DataHelper.ConvertUnixTimeToReadable(o.Value<int>("dateline"));
+            Dateline = Core.Helpers.DataHelper.ConvertUnixTimeToReadable(o.Value<int>("dateline"));
             UserName = o.Value<string>("username");
             Uri = o.Value<string>("url");
             FeedMessage = (o.Value<string>("extra_title"));

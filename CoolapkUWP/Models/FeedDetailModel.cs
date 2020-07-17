@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 
 namespace CoolapkUWP.Models
@@ -84,20 +85,18 @@ namespace CoolapkUWP.Models
                     }
                 }
 
-                if (builder.Count == 0) { ShowRelationRows = false; }
+                if (builder.Count == 0)
+                {
+                    ShowRelationRows = false;
+                }
                 RelationRows = builder.ToImmutable();
             }
 
             ShowHotReplies = o.TryGetValue("hotReplyRows", out JToken hotReplyRows) && !string.IsNullOrEmpty(hotReplyRows.ToString());
             if (ShowHotReplies)
             {
-                var builder = ImmutableArray.CreateBuilder<FeedReplyModel>();
-                foreach (JObject item in hotReplyRows as JArray)
-                {
-                    builder.Add(new FeedReplyModel(item));
-                }
-
-                HotReplies = builder.ToImmutable();
+                HotReplies = (from item in hotReplyRows
+                              select new FeedReplyModel((JObject)item)).ToImmutableArray();
             }
         }
 
@@ -125,8 +124,8 @@ namespace CoolapkUWP.Models
             private set => questionAnswerNum = value;
         }
         public bool ShowRelationRows { get; private set; }
-        internal ImmutableArray<RelationRowsItem> RelationRows { get; private set; } = ImmutableArray<RelationRowsItem>.Empty;
+        internal ImmutableArray<RelationRowsItem> RelationRows { get; private set; }
         public bool ShowHotReplies { get; private set; }
-        internal ImmutableArray<FeedReplyModel> HotReplies { get; private set; } = ImmutableArray<FeedReplyModel>.Empty;
+        internal ImmutableArray<FeedReplyModel> HotReplies { get; private set; }
     }
 }

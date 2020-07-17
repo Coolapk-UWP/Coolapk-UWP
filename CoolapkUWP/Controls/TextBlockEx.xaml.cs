@@ -320,7 +320,7 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        private Task<ImmutableArray<string>> GetStringList(string text)
+        private static Task<ImmutableArray<string>> GetStringList(string text)
         {
             return Task.Run(() =>
             {

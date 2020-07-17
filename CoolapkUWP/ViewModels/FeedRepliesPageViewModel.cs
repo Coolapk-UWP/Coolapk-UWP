@@ -31,7 +31,8 @@ namespace CoolapkUWP.ViewModels.FeedRepliesPage
                     provider =
                         new CoolapkListProvider(
                             (p, page, firstItem, lastItem) =>
-                                UriProvider.GetObject(UriType.GetHotReplies).GetUri(
+                                UriProvider.GetUri(
+                                    UriType.GetHotReplies,
                                     id,
                                     p < 0 ? ++page : p,
                                     page > 1 ? $"&firstItem={firstItem}&lastItem={lastItem}" : string.Empty),
@@ -41,11 +42,13 @@ namespace CoolapkUWP.ViewModels.FeedRepliesPage
                             "id");
                     Title = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedShellListControl").GetString("hotReplyText");
                     break;
+
                 case ListType.ReplyReply:
                     provider =
                         new CoolapkListProvider(
                             (p, page, _, lastItem) =>
-                                UriProvider.GetObject(UriType.GetReplyReplies).GetUri(
+                                UriProvider.GetUri(
+                                    UriType.GetReplyReplies,
                                     id,
                                     p < 0 ? ++page : p,
                                     page > 1 ? $"&lastItem={lastItem}" : string.Empty),
@@ -53,6 +56,7 @@ namespace CoolapkUWP.ViewModels.FeedRepliesPage
                             (o) => new Entity[] { new FeedReplyModel(o, false) },
                             "id");
                     break;
+
                 default:
                     throw new ArgumentException(nameof(type));
             }

@@ -143,7 +143,8 @@ namespace CoolapkUWP.ViewModels.IndexPage
         internal static Func<int, int, string, string, Uri> GetUri(string uri, bool isHotFeedPage)
         {
             return (p, page, _, __) =>
-                UriProvider.GetObject(UriType.GetIndexPage).GetUri(
+                UriProvider.GetUri(
+                    UriType.GetIndexPage,
                     uri,
                     isHotFeedPage ? "?" : "&",
                     p < 0 ? ++page : p);

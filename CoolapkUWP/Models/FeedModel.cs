@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace CoolapkUWP.Models
 {
@@ -26,13 +27,8 @@ namespace CoolapkUWP.Models
                 ShowReplyRows = token.TryGetValue("replyRows", out JToken value) && (value as JArray ?? new JArray()).Count > 0 ? true : false;
                 if (ShowReplyRows)
                 {
-                    var buider = ImmutableArray.CreateBuilder<ReplyRowsItem>();
-                    foreach (var i in value as JArray)
-                    {
-                        buider.Add(new ReplyRowsItem(i as JObject));
-                    }
-
-                    ReplyRows = buider.ToImmutable();
+                    ReplyRows = (from item in value
+                                 select new ReplyRowsItem((JObject)item)).ToImmutableArray();
                 }
             }
             else if (mode.HasFlag(FeedDisplayMode.normal))
@@ -95,8 +91,11 @@ namespace CoolapkUWP.Models
                     }
                 }
 
+                if (buider.Count == 0)
+                {
+                    ShowRelationRows = false;
+                }
                 RelationRows = buider.ToImmutable();
-                if (buider.Count == 0) { ShowRelationRows = false; }
             }
             IsStickTop = token.TryGetValue("isStickTop", out JToken j) && int.Parse(j.ToString()) == 1;
         }
@@ -115,8 +114,8 @@ namespace CoolapkUWP.Models
         public bool ShowRelationRows { get; private set; }
         public bool ShowReplyRows { get; private set; }
         public bool ShowLikes { get; private set; } = true;
-        public ImmutableArray<ReplyRowsItem> ReplyRows { get; private set; } = ImmutableArray<ReplyRowsItem>.Empty;
-        public ImmutableArray<RelationRowsItem> RelationRows { get; private set; } = ImmutableArray<RelationRowsItem>.Empty;
+        public ImmutableArray<ReplyRowsItem> ReplyRows { get; private set; }
+        public ImmutableArray<RelationRowsItem> RelationRows { get; private set; }
     }
 
     public class RelationRowsItem

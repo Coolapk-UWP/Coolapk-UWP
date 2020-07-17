@@ -114,7 +114,7 @@ namespace CoolapkUWP.Pages
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                sender.ItemsSource = await DataHelper.GetDataAsync(UriProvider.GetObject(UriType.SearchWords).GetUri(sender.Text), true) is JArray array &&
+                sender.ItemsSource = await DataHelper.GetDataAsync(UriProvider.GetUri(UriType.SearchWords, sender.Text), true) is JArray array &&
                                      array.Count > 0
                                     ? (from i in array select new SearchWord(i as JObject))
                                     : null;
