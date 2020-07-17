@@ -108,7 +108,7 @@
                     Style="{StaticResource ButtonStyle1}"
                     Tag="share">
                     <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Link" />
+                        <SymbolIcon Symbol="Share" />
                         <TextBlock Margin="3,0" Text="{Binding ShareNum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>

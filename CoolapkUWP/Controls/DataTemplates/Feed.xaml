@@ -430,7 +430,7 @@
                     HorizontalAlignment="Center"
                     x:Load="{x:Bind ShowLikes}"
                     Orientation="Horizontal">
-                    <SymbolIcon Symbol="Link" />
+                    <SymbolIcon Symbol="Share" />
                     <TextBlock
                         Margin="3,0"
                         VerticalAlignment="Center"
