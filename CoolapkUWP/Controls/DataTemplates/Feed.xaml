@@ -6,8 +6,7 @@
     xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:ctrl="using:CoolapkUWP.Controls"
     xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
-    xmlns:models="using:CoolapkUWP.Models"
-    xmlns:winui="using:Microsoft.UI.Xaml.Controls">
+    xmlns:models="using:CoolapkUWP.Models">
 
     <ResourceDictionary.MergedDictionaries>
         <local:Pic />
@@ -15,6 +14,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <converter:TrueToFalseConverter x:Key="TrueToFalseConverter" />
+    <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
     <Style
         x:Key="FeedOpButtonStyle"
@@ -397,13 +397,13 @@
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon
                             x:Name="like2"
-                            x:Load="{x:Bind Liked2}"
-                            Symbol="Like" />
+                            Symbol="Like"
+                            Visibility="{x:Bind Liked2, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <SymbolIcon
                             x:Name="like1"
-                            x:Load="{x:Bind Liked}"
                             Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"
-                            Symbol="Like" />
+                            Symbol="Like"
+                            Visibility="{x:Bind Liked, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <TextBlock Margin="3,0" Text="{x:Bind Likenum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>
@@ -430,7 +430,7 @@
                     HorizontalAlignment="Center"
                     x:Load="{x:Bind ShowLikes}"
                     Orientation="Horizontal">
-                    <SymbolIcon Symbol="Link" />
+                    <SymbolIcon Symbol="Share" />
                     <TextBlock
                         Margin="3,0"
                         VerticalAlignment="Center"

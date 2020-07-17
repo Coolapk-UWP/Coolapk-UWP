@@ -131,7 +131,7 @@ namespace CoolapkUWP.Models
         public string Title { get; private set; }
         public string Url { get; private set; }
         public string Description { get; private set; }
-        public ImmutableArray<Entity> Entities { get; private set; } = ImmutableArray<Entity>.Empty;
+        public ImmutableArray<Entity> Entities { get; private set; } = default;
     }
 
     internal enum OperationType

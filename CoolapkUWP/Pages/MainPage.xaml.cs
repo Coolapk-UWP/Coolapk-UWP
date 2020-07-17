@@ -2,24 +2,26 @@
 
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Helpers.Providers;
+using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using MenuItem = CoolapkUWP.Models.Json.IndexPageHeaderItemModel.Item;
 
 namespace CoolapkUWP.Pages
 {
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
-        private ImmutableArray<MenuItem> allMenuItems = ImmutableArray<MenuItem>.Empty;
-        private ImmutableArray<MenuItem> menuItems = ImmutableArray<MenuItem>.Empty;
+        private IEnumerable<MenuItem> allMenuItems;
+        private IEnumerable<MenuItem> menuItems;
 
-        private ImmutableArray<MenuItem> MenuItems
+        private IEnumerable<MenuItem> MenuItems
         {
             get => menuItems;
             set
@@ -72,27 +74,26 @@ namespace CoolapkUWP.Pages
 
         private async void GetIndexPageItems()
         {
-            var temp = await DataHelper.GetDataAsync<Models.Json.IndexPageHeaderItemModel.Rootobject>(UriProvider.GetObject(UriType.GetIndexPageNames).GetUri());
+            var temp = (JArray)await DataHelper.GetDataAsync(UriProvider.GetUri(UriType.GetIndexPageNames), true);
 
-            MenuItems = await Task.Run(() =>
-                (from t in temp.Data
-                 where t.EntityTemplate == "configCard"
-                 from ta in t.Entities
-                 where ta.Title != "酷品"
-                 where ta.Title != "看看号"
-                 where ta.Title != "直播"
-                 where ta.Title != "视频"
-                 select new MenuItem(ta)).ToImmutableArray()
-            );
-            await Task.Run(() =>
-                allMenuItems = menuItems.Concat(from i in menuItems
-                                                where i.Entities != null
-                                                from j in i.Entities
-                                                select j).ToImmutableArray()
-            );
-            await Task.Delay(200);
+            MenuItems =
+                from t in temp
+                where t.Value<string>("entityTemplate") == "configCard"
+                from ta in t["entities"]
+                where ta.Value<string>("title") != "酷品"
+                where ta.Value<string>("title") != "看看号"
+                where ta.Value<string>("title") != "直播"
+                where ta.Value<string>("title") != "视频"
+                select new MenuItem(ta);
+
             navigationView.SelectedItem = menuItems.First(i => i.Title == "头条");
             navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false));
+
+            allMenuItems = menuItems.Concat(
+                    from i in menuItems
+                    where i.Entities != null
+                    from j in i.Entities
+                    select j);
         }
 
         private void NavigationView_ItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
@@ -100,6 +101,7 @@ namespace CoolapkUWP.Pages
             if (args.InvokedItem is string title)
             {
                 if (title == "关注") { return; }
+
                 var item = allMenuItems.First(i => i.Title == title);
                 var uri = title == "头条" ? "/main/indexV8" : $"{item.Uri}&title={title}";
                 navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(uri, false), args.RecommendedNavigationTransitionInfo);

@@ -160,13 +160,13 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private ImmutableArray<Button> pivotButtons;
+        private ImmutableArray<Button> pivotButtons = default;
 
         private void ChangeListControlSelection(int n)
         {
             if (n < 0 || n > 2) { return; }
 
-            if (pivotButtons == null)
+            if (pivotButtons.IsDefaultOrEmpty)
             {
                 pivotButtons = new Button[]
                 {

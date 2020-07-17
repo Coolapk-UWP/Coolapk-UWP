@@ -257,7 +257,8 @@
                             VerticalAlignment="Top"
                             Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                             MaxLine="2"
-                            MessageText="{x:Bind Description}" />
+                            MessageText="{x:Bind Description}"
+                            RichTextBlockLoaded="TextBlockEx_RichTextBlockLoaded" />
                     </Grid>
                 </ListViewItem>
             </DataTemplate>

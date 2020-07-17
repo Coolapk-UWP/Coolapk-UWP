@@ -1,5 +1,4 @@
-﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Helpers.Providers;
+﻿using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using System;
 using System.Collections.Immutable;
@@ -38,7 +37,8 @@ namespace CoolapkUWP.ViewModels.SearchPage
                         case 1: sortType = "hot"; break;
                         case 2: sortType = "reply"; break;
                     }
-                    return UriProvider.GetObject(UriType.SearchFeeds).GetUri(
+                    return UriProvider.GetUri(
+                        UriType.SearchFeeds,
                         feedType,
                         sortType,
                         keyWord,
@@ -50,7 +50,8 @@ namespace CoolapkUWP.ViewModels.SearchPage
 
             new SearchListProvider(
                 (keyWord, page, lastItem) =>
-                    UriProvider.GetObject(UriType.SearchUsers).GetUri(
+                    UriProvider.GetUri(
+                        UriType.SearchUsers,
                         keyWord,
                         page,
                         page > 1 ? "&lastItem=" + lastItem : string.Empty),
@@ -59,7 +60,8 @@ namespace CoolapkUWP.ViewModels.SearchPage
 
             new SearchListProvider(
                 (keyWord, page, lastItem) =>
-                    UriProvider.GetObject(UriType.SearchTags).GetUri(
+                    UriProvider.GetUri(
+                        UriType.SearchTags,
                         keyWord,
                         page,
                         page > 1 ? "&lastItem=" + lastItem : string.Empty),

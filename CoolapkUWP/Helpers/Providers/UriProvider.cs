@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace CoolapkUWP.Helpers.Providers
 {
@@ -44,21 +44,17 @@ namespace CoolapkUWP.Helpers.Providers
         SearchWords,
     }
 
-    internal class UriProvider
+    internal static class UriProvider
     {
-        private readonly string uriTemplate;
-
-        private UriProvider(UriType type)
+        [DebuggerStepThrough]
+        public static Uri GetUri(UriType type, params object[] args)
         {
-            uriTemplate = "https://api.coolapk.com/v6" + GetTemplate(type);
+            var s = "https://api.coolapk.com/v6" + GetTemplate(type);
+            var u = string.Format(s, args);
+            return new Uri(u, UriKind.Absolute);
         }
 
-        public Uri GetUri(params object[] args)
-        {
-            string uriString = string.Format(uriTemplate, args);
-            return new Uri(uriString, UriKind.Absolute);
-        }
-
+        [DebuggerStepThrough]
         private static string GetTemplate(UriType type)
         {
             switch (type)
@@ -100,22 +96,6 @@ namespace CoolapkUWP.Helpers.Providers
                 case UriType.SearchUsers: return "/search?type=user&searchValue={0}&page={1}{2}&showAnonymous=-1";
                 case UriType.SearchWords: return "/search/suggestSearchWordsNew?searchValue={0}&type=app";
                 default: throw new ArgumentException($"{typeof(UriType).FullName}值错误");
-            }
-        }
-
-        private static readonly Dictionary<UriType, UriProvider> providers = new Dictionary<UriType, UriProvider>();
-
-        public static UriProvider GetObject(UriType type)
-        {
-            if (providers.ContainsKey(type))
-            {
-                return providers[type];
-            }
-            else
-            {
-                var p = new UriProvider(type);
-                providers.Add(type, p);
-                return p;
             }
         }
     }

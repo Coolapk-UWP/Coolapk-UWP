@@ -84,7 +84,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                 default:
                     throw new ArgumentException($"{typeof(FeedListType).FullName}值错误");
             }
-            JObject o = (JObject)await DataHelper.GetDataAsync(UriProvider.GetObject(type).GetUri(Id), true);
+            JObject o = (JObject)await DataHelper.GetDataAsync(UriProvider.GetUri(type, Id), true);
             FeedListDetailBase d = null;
             if (o != null)
             {
@@ -143,7 +143,8 @@ namespace CoolapkUWP.ViewModels.FeedListPage
             Provider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) =>
-                        UriProvider.GetObject(UriType.GetUserFeeds).GetUri(
+                        UriProvider.GetUri(
+                            UriType.GetUserFeeds,
                             Id,
                             p < 0 ? ++page : p,
                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
@@ -172,7 +173,8 @@ namespace CoolapkUWP.ViewModels.FeedListPage
             Provider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) =>
-                        UriProvider.GetObject(UriType.GetTagFeeds).GetUri(
+                        UriProvider.GetUri(
+                            UriType.GetTagFeeds,
                             Id,
                             p < 0 ? ++page : p,
                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
@@ -233,7 +235,8 @@ namespace CoolapkUWP.ViewModels.FeedListPage
             Provider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) =>
-                        UriProvider.GetObject(UriType.GetDyhFeeds).GetUri(
+                        UriProvider.GetUri(
+                            UriType.GetDyhFeeds,
                             Id,
                             ComboBoxSelectedIndex == 0 ? "all" : "square",
                             p < 0 ? ++page : p,

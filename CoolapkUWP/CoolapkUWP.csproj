@@ -179,8 +179,7 @@
     <Compile Include="Helpers\ExceptionCatcher.cs" />
     <Compile Include="Controls\DataTemplateSelectors.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
-    <Compile Include="Models\Json\IndexPageHeaderItemModel.cs" />
-    <Compile Include="Models\Json\MessageModel.cs" />
+    <Compile Include="Models\MenuItemModel.cs" />
     <Compile Include="Pages\FeedPages\FeedRepliesPage.xaml.cs">
       <DependentUpon>FeedRepliesPage.xaml</DependentUpon>
     </Compile>
@@ -998,6 +997,12 @@
       <SubType>Designer</SubType>
     </PRIResource>
     <PRIResource Include="Strings\zh-Hans\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoolapkUWP.Core\CoolapkUWP.Core.csproj">
+      <Project>{63245854-fce4-4173-bb78-b0890f47851d}</Project>
+      <Name>CoolapkUWP.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

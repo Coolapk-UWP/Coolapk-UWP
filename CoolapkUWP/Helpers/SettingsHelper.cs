@@ -126,7 +126,7 @@ namespace CoolapkUWP.Helpers
                     if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(userName))
                     {
                         Set(Uid, uid);
-                        var o = (JObject)await DataHelper.GetDataAsync(UriProvider.GetObject(UriType.CheckLoginInfo).GetUri(), true);
+                        var o = (JObject)await DataHelper.GetDataAsync(UriProvider.GetUri(UriType.CheckLoginInfo), true);
                         UIHelper.NotificationNums.Initial((JObject)o["notifyCount"]);
                         return true;
                     }

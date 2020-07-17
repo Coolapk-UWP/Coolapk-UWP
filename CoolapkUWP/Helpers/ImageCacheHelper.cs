@@ -64,7 +64,7 @@ namespace CoolapkUWP.Helpers
             }
             else
             {
-                var fileName = DataHelper.GetMD5(url);
+                var fileName = Core.Helpers.DataHelper.GetMD5(url);
                 var folder = await GetFolderAsync(type);
                 var item = await folder.TryGetItemAsync(fileName);
                 if (type == ImageType.SmallImage || type == ImageType.SmallAvatar)

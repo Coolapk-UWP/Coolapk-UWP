@@ -48,10 +48,11 @@ namespace CoolapkUWP.Controls.DataTemplates
                     break;
 
                 case "likeButton":
-                    await DataHelper.MakeLikeAsync(element.Tag as ICanChangeLikModel,
-                                        element.Dispatcher,
-                                        (SymbolIcon)element.FindName("like1"),
-                                        (SymbolIcon)element.FindName("like2"));
+                    await DataHelper.MakeLikeAsync(
+                        element.Tag as ICanChangeLikModel,
+                        element.Dispatcher,
+                        (SymbolIcon)element.FindName("like1"),
+                        (SymbolIcon)element.FindName("like2"));
                     DisabledCopy();
                     break;
 

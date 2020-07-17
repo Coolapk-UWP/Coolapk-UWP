@@ -36,7 +36,8 @@ namespace CoolapkUWP.ViewModels.HistoryPage
             provider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) =>
-                        UriProvider.GetObject(type).GetUri(
+                        UriProvider.GetUri(
+                            type,
                             p < 0 ? ++page : p,
                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                             string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),

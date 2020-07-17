@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Immutable;
 using System.ComponentModel;
+using System.Linq;
 
 namespace CoolapkUWP.Models
 {
@@ -9,7 +10,7 @@ namespace CoolapkUWP.Models
     {
         public FeedReplyModel(JObject o, bool showReplyRow = true) : base(o)
         {
-            Dateline = DataHelper.ConvertUnixTimeToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty)));
+            Dateline = Core.Helpers.DataHelper.ConvertUnixTimeToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty)));
             Message = o.Value<string>("message");
             var userSmallAvatarUrl = o["userInfo"].Value<string>("userSmallAvatar");
             if (!string.IsNullOrEmpty(userSmallAvatarUrl))
@@ -23,13 +24,9 @@ namespace CoolapkUWP.Models
             ShowreplyRows = showReplyRow && ReplyRowsCount > 0;
             if (ShowreplyRows)
             {
-                var buider = ImmutableArray.CreateBuilder<SimpleFeedReplyModel>();
-                foreach (JObject item in o["replyRows"] as JArray)
-                {
-                    buider.Add(new SimpleFeedReplyModel(item));
-                }
+                ReplyRows = (from item in o["replyRows"]
+                             select new SimpleFeedReplyModel((JObject)item)).ToImmutableArray();
 
-                ReplyRows = buider.ToImmutable();
                 ReplyRowsMore = o.Value<int>("replyRowsMore");
             }
             Liked = o.TryGetValue("userAction", out JToken v) ? v.Value<int>("like") == 1 : false;
@@ -68,7 +65,7 @@ namespace CoolapkUWP.Models
         public ImageModel Pic { get; private set; }
         public string Dateline { get; private set; }
         public bool ShowreplyRows { get; set; }
-        public ImmutableArray<SimpleFeedReplyModel> ReplyRows { get; private set; } = ImmutableArray<SimpleFeedReplyModel>.Empty;
+        public ImmutableArray<SimpleFeedReplyModel> ReplyRows { get; private set; } = default;
         public bool ShowreplyRowsMore { get => ReplyRowsMore > 0; }
         public double ReplyRowsMore { get; private set; }
         public double ReplyRowsCount { get; private set; }

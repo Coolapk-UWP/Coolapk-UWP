@@ -5,7 +5,7 @@
     xmlns:cctrl="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:menuitem="using:CoolapkUWP.Models.Json.IndexPageHeaderItemModel"
+    xmlns:model="using:CoolapkUWP.Models"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     NavigationCacheMode="Required"
@@ -19,7 +19,7 @@
         MenuItemsSource="{x:Bind MenuItems, Mode=OneWay}"
         PaneDisplayMode="Top">
         <winui:NavigationView.MenuItemTemplate>
-            <DataTemplate x:DataType="menuitem:Item">
+            <DataTemplate x:DataType="model:MenuItem">
                 <winui:NavigationViewItem Content="{x:Bind Title}" MenuItemsSource="{x:Bind Entities}" />
             </DataTemplate>
         </winui:NavigationView.MenuItemTemplate>

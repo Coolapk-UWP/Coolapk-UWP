@@ -10,6 +10,7 @@
     xmlns:winui="using:Microsoft.UI.Xaml.Controls">
 
     <converter:HasValueConverter x:Key="HasValueConverter" />
+    <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
     <Style
         x:Key="FeedOpButtonStyle2"
@@ -201,13 +202,13 @@
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon
                             x:Name="like2"
-                            x:Load="{x:Bind Liked2}"
-                            Symbol="Like" />
+                            Symbol="Like"
+                            Visibility="{x:Bind Liked2, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <SymbolIcon
                             x:Name="like1"
-                            x:Load="{x:Bind Liked}"
                             Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"
-                            Symbol="Like" />
+                            Symbol="Like"
+                            Visibility="{x:Bind Liked, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <TextBlock Margin="3,0,0,0" Text="{x:Bind Likenum, Mode=OneWay}" />
                     </StackPanel>
                 </Button>

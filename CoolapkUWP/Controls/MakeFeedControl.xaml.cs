@@ -74,14 +74,14 @@ namespace CoolapkUWP.Controls
             {
                 if (type == UriType.CreateFeed)
                 {
-                    if (await DataHelper.PostDataAsync(UriProvider.GetObject(type).GetUri(), content) != null)
+                    if (await DataHelper.PostDataAsync(UriProvider.GetUri(type), content) != null)
                     {
                         SendSuccessful();
                     }
                 }
                 else
                 {
-                    if (await DataHelper.PostDataAsync(UriProvider.GetObject(type).GetUri(FeedId), content) != null)
+                    if (await DataHelper.PostDataAsync(UriProvider.GetUri(type, FeedId), content) != null)
                     {
                         SendSuccessful();
                     }
@@ -172,8 +172,8 @@ namespace CoolapkUWP.Controls
 
         ViewModels.SearchPage.ViewModel viewModel = new ViewModels.SearchPage.ViewModel(1, string.Empty);
 
-        ImmutableArray<AutoSuggestBox> boxes;
-        ImmutableArray<Microsoft.UI.Xaml.Controls.ProgressRing> rings;
+        ImmutableArray<AutoSuggestBox> boxes = default;
+        ImmutableArray<Microsoft.UI.Xaml.Controls.ProgressRing> rings = default;
 
         private async void AutoSuggestBox_QuerySubmitted_1(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
@@ -190,7 +190,7 @@ namespace CoolapkUWP.Controls
 
         private void Flyout_Opened(object sender, object e)
         {
-            if (boxes == null)
+            if (boxes.IsDefaultOrEmpty)
             {
                 boxes = new AutoSuggestBox[]
                 {

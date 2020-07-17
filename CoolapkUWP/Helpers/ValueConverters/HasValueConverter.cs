@@ -11,7 +11,7 @@ namespace CoolapkUWP.Helpers.ValueConverters
             switch ((string)parameter)
             {
                 case "string": return !string.IsNullOrEmpty((string)value);
-                case "entity array": return ((System.Collections.Immutable.ImmutableArray<Entity>)value).Length > 0;
+                case "entity array": return !((System.Collections.Immutable.ImmutableArray<Entity>)value).IsDefaultOrEmpty;
                 default: return false;
             }
         }
