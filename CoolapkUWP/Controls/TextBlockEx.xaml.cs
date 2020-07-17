@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Helpers.ValueConverters;
 using CoolapkUWP.Models;
+using System;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -79,6 +80,8 @@ namespace CoolapkUWP.Controls
         }
 
         public TextBlockEx() => this.InitializeComponent();
+
+        public event EventHandler RichTextBlockLoaded;
 
         private async void GetTextBlock()
         {
@@ -318,6 +321,7 @@ namespace CoolapkUWP.Controls
                 block.MaxLines = MaxLine;
                 block.TextTrimming = TextTrimming.WordEllipsis;
             }
+            RichTextBlockLoaded?.Invoke(this, null);
         }
 
         private static Task<ImmutableArray<string>> GetStringList(string text)

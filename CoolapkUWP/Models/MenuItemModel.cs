@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 
@@ -22,16 +21,15 @@ namespace CoolapkUWP.Models
             var a = (JArray)t["entities"];
             if (a != null && a.Count > 0)
             {
-                Entities = (
-                    from ta in a
-                    where ta.Value<string>("entityType") == "page"
-                    select new MenuItem(ta, true)).ToImmutableArray();
+                Entities = from ta in a
+                           where ta.Value<string>("entityType") == "page"
+                           select new MenuItem(ta, true);
             }
         }
 
         public bool IsInGroup { get; private set; }
         public string Title { get; private set; }
         public string Uri { get; private set; }
-        public ImmutableArray<MenuItem> Entities { get; private set; }
+        public System.Collections.Generic.IEnumerable<MenuItem> Entities { get; private set; }
     }
 }

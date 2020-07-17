@@ -6,6 +6,7 @@ using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
@@ -17,10 +18,10 @@ namespace CoolapkUWP.Pages
 {
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
-        private ImmutableArray<MenuItem> allMenuItems;
-        private ImmutableArray<MenuItem> menuItems;
+        private IEnumerable<MenuItem> allMenuItems;
+        private IEnumerable<MenuItem> menuItems;
 
-        private ImmutableArray<MenuItem> MenuItems
+        private IEnumerable<MenuItem> MenuItems
         {
             get => menuItems;
             set
@@ -75,30 +76,27 @@ namespace CoolapkUWP.Pages
         {
             var temp = (JArray)await DataHelper.GetDataAsync(UriProvider.GetUri(UriType.GetIndexPageNames), true);
 
-            MenuItems = await Task.Run(() =>
-                (from t in temp
-                 where t.Value<string>("entityTemplate") == "configCard"
-                 from ta in t["entities"]
-                 where ta.Value<string>("title") != "酷品"
-                 where ta.Value<string>("title") != "看看号"
-                 where ta.Value<string>("title") != "直播"
-                 where ta.Value<string>("title") != "视频"
-                 select new MenuItem(ta)).ToImmutableArray()
-            );
+            MenuItems =
+                from t in temp
+                where t.Value<string>("entityTemplate") == "configCard"
+                from ta in t["entities"]
+                where ta.Value<string>("title") != "酷品"
+                where ta.Value<string>("title") != "看看号"
+                where ta.Value<string>("title") != "直播"
+                where ta.Value<string>("title") != "视频"
+                select new MenuItem(ta);
 
             navigationView.SelectedItem = menuItems.First(i => i.Title == "头条");
             navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false));
 
-            allMenuItems = await Task.Run(() =>
-                menuItems.Concat(
+            allMenuItems = menuItems.Concat(
                     from i in menuItems
-                    where !i.Entities.IsDefaultOrEmpty
+                    where i.Entities != null
                     from j in i.Entities
-                    select j).ToImmutableArray()
-            );
+                    select j);
         }
 
-        private async void NavigationView_ItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
+        private void NavigationView_ItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
         {
             if (args.InvokedItem is string title)
             {

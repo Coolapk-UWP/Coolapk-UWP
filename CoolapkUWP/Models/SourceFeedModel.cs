@@ -66,7 +66,7 @@ namespace CoolapkUWP.Models
         public bool IsCoolPictuers { get; private set; }
         public bool IsMoreThanOnePic { get; private set; }
         public ImageModel Pic { get; private set; }
-        public ImmutableArray<ImageModel> PicArr { get; private set; }
+        public ImmutableArray<ImageModel> PicArr { get; private set; } = default;
         public bool IsQuestionFeed { get; private set; }
     }
 }

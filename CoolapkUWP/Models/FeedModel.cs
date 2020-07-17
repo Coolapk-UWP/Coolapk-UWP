@@ -114,8 +114,8 @@ namespace CoolapkUWP.Models
         public bool ShowRelationRows { get; private set; }
         public bool ShowReplyRows { get; private set; }
         public bool ShowLikes { get; private set; } = true;
-        public ImmutableArray<ReplyRowsItem> ReplyRows { get; private set; }
-        public ImmutableArray<RelationRowsItem> RelationRows { get; private set; }
+        public ImmutableArray<ReplyRowsItem> ReplyRows { get; private set; } = default;
+        public ImmutableArray<RelationRowsItem> RelationRows { get; private set; } = default;
     }
 
     public class RelationRowsItem

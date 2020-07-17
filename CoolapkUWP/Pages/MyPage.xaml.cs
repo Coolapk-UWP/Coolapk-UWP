@@ -230,6 +230,12 @@ namespace CoolapkUWP.Pages
         {
             Refresh();
         }
+
+        private void TextBlockEx_RichTextBlockLoaded(object sender, System.EventArgs e)
+        {
+            var ele = (Controls.TextBlockEx)sender;
+            ele.MaxLine = 2;
+        }
     }
 
     public class FirstTemplateSelector : DataTemplateSelector

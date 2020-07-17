@@ -113,11 +113,11 @@ namespace CoolapkUWP.Helpers
 
                 if (like != null)
                 {
-                    like.Visibility = model.Liked ? Visibility.Collapsed : Visibility.Visible;
+                    like.Visibility = model.Liked ? Visibility.Visible : Visibility.Collapsed;
                 }
                 if (coloredLike != null)
                 {
-                    coloredLike.Visibility = model.Liked ? Visibility.Visible : Visibility.Collapsed;
+                    coloredLike.Visibility = model.Liked ? Visibility.Collapsed : Visibility.Visible;
                 }
             });
         }

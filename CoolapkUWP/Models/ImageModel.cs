@@ -18,7 +18,7 @@ namespace CoolapkUWP.Models
 
         private WeakReference<BitmapImage> pic;
         private bool isLongPic;
-        private ImmutableArray<ImageModel> contextArray;
+        private ImmutableArray<ImageModel> contextArray = default;
 
         public ImmutableArray<ImageModel> ContextArray
         {

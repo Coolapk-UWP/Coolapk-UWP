@@ -78,7 +78,7 @@
 
                                     <AutoSuggestBox
                                         x:Name="autoSuggestBox0"
-                                        Margin="8,8,8,-4"
+                                        Margin="8,8,8,0"
                                         PlaceholderText="搜索用户……"
                                         QueryIcon="Find"
                                         QuerySubmitted="AutoSuggestBox_QuerySubmitted_1" />
@@ -118,7 +118,7 @@
 
                                     <AutoSuggestBox
                                         x:Name="autoSuggestBox1"
-                                        Margin="8,8,8,-4"
+                                        Margin="8,8,8,0"
                                         PlaceholderText="搜索话题……"
                                         QueryIcon="Find"
                                         QuerySubmitted="AutoSuggestBox_QuerySubmitted_1" />
@@ -128,7 +128,7 @@
                                             x:Name="topicList"
                                             IsItemClickEnabled="True"
                                             ItemClick="ListView_ItemClick"
-                                            ItemTemplate="{StaticResource User}"
+                                            ItemTemplate="{StaticResource Topic}"
                                             ScrollViewer.VerticalScrollBarVisibility="Disabled" />
                                     </ScrollViewer>
 

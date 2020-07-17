@@ -172,8 +172,8 @@ namespace CoolapkUWP.Controls
 
         ViewModels.SearchPage.ViewModel viewModel = new ViewModels.SearchPage.ViewModel(1, string.Empty);
 
-        ImmutableArray<AutoSuggestBox> boxes;
-        ImmutableArray<Microsoft.UI.Xaml.Controls.ProgressRing> rings;
+        ImmutableArray<AutoSuggestBox> boxes = default;
+        ImmutableArray<Microsoft.UI.Xaml.Controls.ProgressRing> rings = default;
 
         private async void AutoSuggestBox_QuerySubmitted_1(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
