@@ -47,6 +47,7 @@ namespace CoolapkUWP.Core.Helpers
     [DebuggerStepThrough]
     public static class UriHelper
     {
+        public static readonly Uri CoolapkUri = new Uri("https://coolapk.com");
         public static readonly Uri BaseUri = new Uri("https://api.coolapk.com");
 
         public static Uri GetUri(UriType type, params object[] args)

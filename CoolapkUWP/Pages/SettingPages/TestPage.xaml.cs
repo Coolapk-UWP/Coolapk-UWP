@@ -41,7 +41,7 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "http://baidu.com" });
+            UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "http://www.all-tool.cn/Tools/ua/" });
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

@@ -19,7 +19,7 @@ namespace CoolapkUWP.Helpers
     {
         private static readonly Dictionary<Uri, string> responseCache = new Dictionary<Uri, string>();
 
-        private static void SetCoolapkCookies(System.Net.CookieCollection collection)
+        private static IEnumerable<(string name, string value)> GetCoolapkCookies()
         {
             using (var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
             {
@@ -30,49 +30,7 @@ namespace CoolapkUWP.Helpers
                         item.Name == "username" ||
                         item.Name == "token")
                     {
-                        cookieManager.DeleteCookie(item);
-                    }
-                }
-
-                foreach (System.Net.Cookie item in collection)
-                {
-                    if (item.Name == "uid" ||
-                        item.Name == "username" ||
-                        item.Name == "token")
-                    {
-                        var vs = item.Value.Split(',');
-                        foreach (var v in vs)
-                        {
-                            cookieManager.SetCookie(
-                                new Windows.Web.Http.HttpCookie(
-                                    item.Name,
-                                    item.Domain,
-                                    item.Path)
-                                {
-                                    Value = v
-                                });
-                        }
-                    }
-                }
-            }
-        }
-
-        private static IEnumerable<System.Net.Cookie> GetCoolapkCookies()
-        {
-            using (var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
-            {
-                var cookieManager = filter.CookieManager;
-                foreach (var item in cookieManager.GetCookies(UriHelper.BaseUri))
-                {
-                    if (item.Name == "uid" ||
-                        item.Name == "username" ||
-                        item.Name == "token")
-                    {
-                        var vs = item.Value.Split(',');
-                        foreach (var v in vs)
-                        {
-                            yield return new System.Net.Cookie(item.Name, v, item.Path, item.Domain);
-                        }
+                        yield return (item.Name, item.Value);
                     }
                 }
             }
@@ -81,10 +39,9 @@ namespace CoolapkUWP.Helpers
         public static async Task<BitmapImage> GetImageAsync(string uri)
         {
             var folder = await ImageCacheHelper.GetFolderAsync(ImageType.Captcha);
-            var file = await folder.CreateFileAsync(Core.Helpers.Utils.GetMD5(uri));
+            var file = await folder.CreateFileAsync(Utils.GetMD5(uri));
 
-            var (s, cookies) = await GetStreamAsync(new Uri(uri), GetCoolapkCookies());
-            SetCoolapkCookies(cookies);
+            var s = await GetStreamAsync(new Uri(uri), GetCoolapkCookies());
 
             using (var ss = await file.OpenStreamForWriteAsync())
             {
@@ -96,8 +53,7 @@ namespace CoolapkUWP.Helpers
 
         public static async Task<JToken> PostDataAsync(Uri uri, System.Net.Http.HttpContent content)
         {
-            var (json, cookies) = await PostAsync(uri, content, GetCoolapkCookies());
-            SetCoolapkCookies(cookies);
+            var json = await PostAsync(uri, content, GetCoolapkCookies());
 
             var o = JObject.Parse(json);
             JToken token = null;
@@ -115,9 +71,7 @@ namespace CoolapkUWP.Helpers
             string json;
             if (forceRefresh || !responseCache.ContainsKey(uri))
             {
-                var (str, cookies) = await GetJsonAsync(uri, GetCoolapkCookies());
-                json = str;
-                SetCoolapkCookies(cookies);
+                json = await GetJsonAsync(uri, GetCoolapkCookies());
 
                 if (responseCache.ContainsKey(uri))
                 {
@@ -159,7 +113,7 @@ namespace CoolapkUWP.Helpers
 
         public static Task<string> GetUserIDByNameAsync(string name)
         {
-            return Core.Helpers.NetworkHelper.GetUserIDByNameAsync(name);
+            return NetworkHelper.GetUserIDByNameAsync(name);
         }
 
         public static string ConvertUnixTimeStampToReadable(double time)
@@ -169,18 +123,18 @@ namespace CoolapkUWP.Helpers
 
         public static string ConvertUnixTimeStampToReadable(double time, DateTime baseTime)
         {
-            var (type, obj) = Core.Helpers.Utils.ConvertUnixTimeStampToReadable(time, DateTime.Now);
+            var (type, obj) = Utils.ConvertUnixTimeStampToReadable(time, DateTime.Now);
             switch (type)
             {
-                case Core.Helpers.Utils.TimeIntervalType.MonthsAgo:
+                case Utils.TimeIntervalType.MonthsAgo:
                     return ((DateTime)obj).ToLongDateString();
-                case Core.Helpers.Utils.TimeIntervalType.DaysAgo:
+                case Utils.TimeIntervalType.DaysAgo:
                     return $"{((TimeSpan)obj).Days}天前";
-                case Core.Helpers.Utils.TimeIntervalType.HoursAgo:
+                case Utils.TimeIntervalType.HoursAgo:
                     return $"{((TimeSpan)obj).Hours}小时前";
-                case Core.Helpers.Utils.TimeIntervalType.MinutesAgo:
+                case Utils.TimeIntervalType.MinutesAgo:
                     return $"{((TimeSpan)obj).Minutes}分钟前";
-                case Core.Helpers.Utils.TimeIntervalType.JustNow:
+                case Utils.TimeIntervalType.JustNow:
                     return "刚刚";
                 default:
                     return string.Empty;

@@ -57,12 +57,17 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private async void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            var b = await SettingsHelper.CheckLoginInfo();
+            _ = SettingsHelper.CheckLoginInfo();
+            base.OnNavigatingFrom(e);
+        }
+
+        private void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        {
             if (IsLoginPage && args.Uri.AbsoluteUri == "https://www.coolapk.com/")
             {
-                CheckLogin(b);
+                CheckLogin();
             }
             else if (args.Uri.AbsoluteUri == loginUri)
             {
@@ -74,10 +79,10 @@ namespace CoolapkUWP.Pages
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
 
-        private void CheckLogin(bool isLogined)
+        private async void CheckLogin()
         {
             var loader = ResourceLoader.GetForCurrentView("BrowserPage");
-            if (isLogined)
+            if (await SettingsHelper.CheckLoginInfo())
             {
                 if (Frame.CanGoBack) { Frame.GoBack(); }
                 UIHelper.NavigateInSplitPane(typeof(MyPage), new ViewModels.MyPage.ViewMode());
@@ -97,7 +102,7 @@ namespace CoolapkUWP.Pages
 
         private async void tryLoginButton_Click(object sender, RoutedEventArgs e)
         {
-            CheckLogin(await SettingsHelper.CheckLoginInfo());
+            CheckLogin();
         }
     }
 }

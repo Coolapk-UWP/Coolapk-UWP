@@ -49,54 +49,50 @@ namespace CoolapkUWP.Core.Helpers
             headers.Add(name, GetCoolapkAppToken());
         }
 
-        private static void ReplaceCoolapkCookie(this CookieContainer container, IEnumerable<Cookie> cookies)
+        private static void ReplaceCoolapkCookie(this CookieContainer container, IEnumerable<(string name, string value)> cookies)
         {
             if (cookies == null) { return; }
 
-            var c = container.GetCookies(UriHelper.BaseUri);
-            foreach (Cookie item in c)
-            {
-                item.Expired = true;
-            }
+            var c = container.GetCookies(UriHelper.CoolapkUri);
             foreach (var item in cookies)
             {
-                container.Add(UriHelper.BaseUri, item);
+                container.SetCookies(UriHelper.BaseUri, $"{item.name}={item.value}");
             }
         }
 
-        private static void BeforeGetOrPost(IEnumerable<Cookie> coolapkCookies)
+        private static void BeforeGetOrPost(IEnumerable<(string name, string value)> coolapkCookies)
         {
             clientHandler.CookieContainer.ReplaceCoolapkCookie(coolapkCookies);
             client.DefaultRequestHeaders.ReplaceAppToken();
         }
 
-        public static async Task<(string result, CookieCollection cookies)> PostAsync(Uri uri, HttpContent content, IEnumerable<Cookie> coolapkCookies)
+        public static async Task<string> PostAsync(Uri uri, HttpContent content, IEnumerable<(string name, string value)> coolapkCookies)
         {
             try
             {
                 BeforeGetOrPost(coolapkCookies);
                 var response = await client.PostAsync(uri, content);
-                return (await response.Content.ReadAsStringAsync(), clientHandler.CookieContainer.GetCookies(UriHelper.BaseUri));
+                return await response.Content.ReadAsStringAsync();
             }
             catch { throw; }
         }
 
-        public static async Task<(Stream result, CookieCollection cookies)> GetStreamAsync(Uri uri, IEnumerable<Cookie> coolapkCookies)
+        public static async Task<Stream> GetStreamAsync(Uri uri, IEnumerable<(string name, string value)> coolapkCookies)
         {
             try
             {
                 BeforeGetOrPost(coolapkCookies);
-                return (await client.GetStreamAsync(uri), clientHandler.CookieContainer.GetCookies(UriHelper.BaseUri));
+                return await client.GetStreamAsync(uri);
             }
             catch { throw; }
         }
 
-        public static async Task<(string result, CookieCollection cookies)> GetJsonAsync(Uri uri, IEnumerable<Cookie> coolapkCookies)
+        public static async Task<string> GetJsonAsync(Uri uri, IEnumerable<(string name, string value)> coolapkCookies)
         {
             try
             {
                 BeforeGetOrPost(coolapkCookies);
-                return (await client.GetStringAsync(uri), clientHandler.CookieContainer.GetCookies(UriHelper.BaseUri));
+                return await client.GetStringAsync(uri);
             }
             catch { throw; }
         }

@@ -65,7 +65,7 @@ namespace CoolapkUWP.Models
         public ImageModel Pic { get; private set; }
         public string Dateline { get; private set; }
         public bool ShowreplyRows { get; set; }
-        public ImmutableArray<SimpleFeedReplyModel> ReplyRows { get; private set; } = default;
+        public ImmutableArray<SimpleFeedReplyModel> ReplyRows { get; private set; }
         public bool ShowreplyRowsMore { get => ReplyRowsMore > 0; }
         public double ReplyRowsMore { get; private set; }
         public double ReplyRowsCount { get; private set; }

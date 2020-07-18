@@ -6,7 +6,7 @@ namespace CoolapkUWP.Models
     {
         public Entity(JObject o)
         {
-            if(o == null)
+            if (o == null)
             {
                 throw new System.ArgumentNullException(nameof(o));
             }
@@ -29,6 +29,6 @@ namespace CoolapkUWP.Models
 
         public string EntityId { get; private set; }
         public string EntityType { get; private set; }
-        public bool EntityFixed { get; internal set; }
+        public bool EntityFixed { get; set; }
     }
 }

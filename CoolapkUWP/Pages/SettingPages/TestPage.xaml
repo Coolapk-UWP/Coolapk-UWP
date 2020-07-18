@@ -7,7 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helper="using:CoolapkUWP.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="using:CoolapkUWP.Models.Controls.MakeFeedControlModel"
+    xmlns:model="using:CoolapkUWP.Models.CoolapkUWP.Core.Models.Controls.MakeFeedControlModel"
     Background="Transparent"
     mc:Ignorable="d">
 
