@@ -120,9 +120,6 @@
   <data name="AccountSetting.Content" xml:space="preserve">
     <value>Account Settings</value>
   </data>
-  <data name="BackgroundFollowSystemSwitch.Header" xml:space="preserve">
-    <value>Use system setting</value>
-  </data>
   <data name="CheckUpdate.Content" xml:space="preserve">
     <value>Check for updates</value>
   </data>
@@ -134,15 +131,6 @@
   </data>
   <data name="ContentSettingsHeader.Header" xml:space="preserve">
     <value>Content</value>
-  </data>
-  <data name="DarkModeSwitch.Header" xml:space="preserve">
-    <value>Theme Mode</value>
-  </data>
-  <data name="DarkModeSwitch.OffContent" xml:space="preserve">
-    <value>Light</value>
-  </data>
-  <data name="DarkModeSwitch.OnContent" xml:space="preserve">
-    <value>Dark</value>
   </data>
   <data name="DisplayOriginPictureCheckBox.Content" xml:space="preserve">
     <value>Load original by default when displaying a large picture</value>
@@ -159,7 +147,7 @@
   <data name="MessageDialogTitle" xml:space="preserve">
     <value>Attention</value>
   </data>
-  <data name="NoPicsModeCheckBox.Content" xml:space="preserve">
+  <data name="NoPicsModeCheckBox.Header" xml:space="preserve">
     <value>No Picture Mode</value>
   </data>
   <data name="OthersSettingsHeader.Header" xml:space="preserve">
@@ -171,11 +159,20 @@
   <data name="ShowOtherExceptionCheckBox.Content" xml:space="preserve">
     <value>Show unknown errors that occurred during operation</value>
   </data>
+  <data name="ThemeMode.Header" xml:space="preserve">
+    <value>Theme Mode</value>
+  </data>
+  <data name="ThemeModeDark.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="ThemeModeDefault.Content" xml:space="preserve">
+    <value>Use system setting</value>
+  </data>
+  <data name="ThemeModeLight.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
   <data name="Title.Title" xml:space="preserve">
     <value>Settings</value>
-  </data>
-  <data name="UiSettingsHeader.Header" xml:space="preserve">
-    <value>User interface</value>
   </data>
   <data name="UpdateSettingsHeader.Header" xml:space="preserve">
     <value>Update</value>

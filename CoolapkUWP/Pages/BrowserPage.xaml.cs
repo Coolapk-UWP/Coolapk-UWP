@@ -23,7 +23,7 @@ namespace CoolapkUWP.Pages
                 if (value)
                 {
                     FindName(nameof(tryLoginButton));
-                    if(openInSystemBrowserButton != null)
+                    if (openInSystemBrowserButton != null)
                     {
                         UnloadObject(openInSystemBrowserButton);
                     }
@@ -47,7 +47,9 @@ namespace CoolapkUWP.Pages
             object[] vs = e.Parameter as object[];
             IsLoginPage = (bool)vs[0];
             if (IsLoginPage)
+            {
                 webView.Source = new Uri(loginUri);
+            }
             else if (!string.IsNullOrEmpty(vs[1] as string))
             {
                 uri = vs[1] as string;
@@ -55,11 +57,12 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        private async void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
+            var b = await SettingsHelper.CheckLoginInfo();
             if (IsLoginPage && args.Uri.AbsoluteUri == "https://www.coolapk.com/")
             {
-                CheckLogin();
+                CheckLogin(b);
             }
             else if (args.Uri.AbsoluteUri == loginUri)
             {
@@ -71,13 +74,12 @@ namespace CoolapkUWP.Pages
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
 
-        private async void CheckLogin()
+        private void CheckLogin(bool isLogined)
         {
             var loader = ResourceLoader.GetForCurrentView("BrowserPage");
-            if (await SettingsHelper.CheckLoginInfo())
+            if (isLogined)
             {
-                if (Frame.CanGoBack)
-                    Frame.GoBack();
+                if (Frame.CanGoBack) { Frame.GoBack(); }
                 UIHelper.NavigateInSplitPane(typeof(MyPage), new ViewModels.MyPage.ViewMode());
                 UIHelper.ShowMessage(loader.GetString("LoginSuccessfully"));
             }
@@ -89,6 +91,13 @@ namespace CoolapkUWP.Pages
         }
 
         private async void GotoSystemBrowserButton_Click(object sender, RoutedEventArgs e)
-            => await Windows.System.Launcher.LaunchUriAsync(new Uri(uri));
+        {
+            await Windows.System.Launcher.LaunchUriAsync(new Uri(uri));
+        }
+
+        private async void tryLoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            CheckLogin(await SettingsHelper.CheckLoginInfo());
+        }
     }
 }

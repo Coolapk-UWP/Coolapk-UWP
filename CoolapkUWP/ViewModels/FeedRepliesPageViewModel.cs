@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers.Providers;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using System;
 using System.Collections.ObjectModel;
@@ -31,7 +32,7 @@ namespace CoolapkUWP.ViewModels.FeedRepliesPage
                     provider =
                         new CoolapkListProvider(
                             (p, page, firstItem, lastItem) =>
-                                UriProvider.GetUri(
+                                UriHelper.GetUri(
                                     UriType.GetHotReplies,
                                     id,
                                     p < 0 ? ++page : p,
@@ -47,7 +48,7 @@ namespace CoolapkUWP.ViewModels.FeedRepliesPage
                     provider =
                         new CoolapkListProvider(
                             (p, page, _, lastItem) =>
-                                UriProvider.GetUri(
+                                UriHelper.GetUri(
                                     UriType.GetReplyReplies,
                                     id,
                                     p < 0 ? ++page : p,

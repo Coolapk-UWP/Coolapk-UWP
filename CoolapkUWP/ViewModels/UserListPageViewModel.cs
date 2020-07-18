@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers.Providers;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using Newtonsoft.Json.Linq;
 using System;
@@ -23,7 +24,7 @@ namespace CoolapkUWP.ViewModels.UserListPage
             provider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) =>
-                        UriProvider.GetUri(
+                        UriHelper.GetUri(
                             UriType.GetUserList,
                             isFollowList ? "followList" : "fansList",
                             uid,

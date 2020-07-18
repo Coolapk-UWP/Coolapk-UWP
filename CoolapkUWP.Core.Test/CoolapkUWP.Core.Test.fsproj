@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="UnitTest1.fs" />
+    <Compile Include="UtilTest.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

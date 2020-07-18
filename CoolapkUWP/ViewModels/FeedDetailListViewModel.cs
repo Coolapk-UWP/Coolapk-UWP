@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using Newtonsoft.Json.Linq;
@@ -33,7 +34,7 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
             ReplyProvider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) =>
-                        UriProvider.GetUri(
+                        UriHelper.GetUri(
                             UriType.GetFeedReplies,
                             id,
                             replyListType,
@@ -48,7 +49,7 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
             LikeProvider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) =>
-                        UriProvider.GetUri(
+                        UriHelper.GetUri(
                             UriType.GetLikeList,
                             id,
                             p < 0 ? ++page : p,
@@ -60,7 +61,7 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
             ShareProvider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) => 
-                        UriProvider.GetUri(
+                        UriHelper.GetUri(
                             UriType.GetShareList,
                             p == -2 ? true : false, 
                             id,

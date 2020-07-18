@@ -12,7 +12,7 @@ namespace CoolapkUWP.Models
             Url = o.TryGetValue("url", out JToken json) ? json.ToString() : $"/feed/{o["id"].ToString().Replace("\"", string.Empty)}";
             if (o.Value<string>("entityType") == "article")
             {
-                Dateline = Core.Helpers.DataHelper.ConvertUnixTimeToReadable(o.Value<int>("digest_time"));
+                Dateline = DataHelper.ConvertUnixTimeStampToReadable(o.Value<int>("digest_time"));
                 Message = o.Value<string>("message").Substring(0, 120) + "……<a href=\"\">查看更多</a>";
                 MessageTitle = o.Value<string>("title");
             }
@@ -25,7 +25,7 @@ namespace CoolapkUWP.Models
                 }
                 Uurl = o["userInfo"].Value<string>("url");
                 Username = o["userInfo"].Value<string>("username");
-                Dateline = Core.Helpers.DataHelper.ConvertUnixTimeToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty)));
+                Dateline = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty)));
                 Message = o.Value<string>("message");
                 MessageTitle = o.TryGetValue("message_title", out JToken j) ? j.ToString() : string.Empty;
             }

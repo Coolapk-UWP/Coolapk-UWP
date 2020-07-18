@@ -1,4 +1,4 @@
-﻿using CoolapkUWP.Helpers.Providers;
+﻿using CoolapkUWP.Core.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
@@ -11,14 +11,11 @@ using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Helpers
 {
-    internal static class SettingsHelper
+    internal static partial class SettingsHelper
     {
-        [Obsolete]
-        public const string DefaultFollowPageIndex = "DefaultFollowPageIndex";
-        [Obsolete]
-        public const string UserAvatar = "UserAvatar";
-        [Obsolete]
-        public const string UserName = "UserName";
+        [Obsolete] public const string DefaultFollowPageIndex = "DefaultFollowPageIndex";
+        [Obsolete] public const string UserAvatar = "UserAvatar";
+        [Obsolete] public const string UserName = "UserName";
         public const string IsNoPicsMode = "IsNoPicsMode";
         public const string IsUseOldEmojiMode = "IsUseOldEmojiMode";
         public const string IsDarkMode = "IsDarkMode";
@@ -29,121 +26,9 @@ namespace CoolapkUWP.Helpers
         public const string ShowOtherException = "ShowOtherException";
         public const string IsFirstRun = "IsFirstRun";
 
-        private static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-        public static readonly MetroLog.ILogManager logManager = MetroLog.LogManagerFactory.CreateLogManager();
-        public static readonly UISettings uiSettings = new UISettings();
-        public static ElementTheme Theme => Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
-
         public static T Get<T>(string key) => (T)localSettings.Values[key];
 
         public static void Set(string key, object value) => localSettings.Values[key] = value;
-
-        static SettingsHelper()
-        {
-            SetDefaultSettings();
-            SetBackgroundTheme(uiSettings, null);
-            uiSettings.ColorValuesChanged += SetBackgroundTheme;
-            UIHelper.CheckTheme();
-        }
-
-        private static void SetBackgroundTheme(UISettings o,object _)
-        {
-            if (Get<bool>(IsBackgroundColorFollowSystem))
-            {
-                Set(IsDarkMode, o.GetColorValue(UIColorType.Background) == Windows.UI.Colors.Black);
-            }
-        }
-
-        public static async Task CheckUpdateAsync()
-        {
-            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0;)");
-                    var keys = JObject.Parse(await client.GetStringAsync("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest"));
-                    var ver = keys.Value<string>("tag_name").Replace("v", string.Empty).Split('.');
-                    if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major
-                        || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
-                        || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
-                    {
-                        var grid = new Grid();
-                        var textBlock = new TextBlock
-                        {
-                            Text = string.Format(
-                                        loader.GetString("HasUpdate"),
-                                        Package.Current.Id.Version.Major,
-                                        Package.Current.Id.Version.Minor,
-                                        Package.Current.Id.Version.Build,
-                                        keys.Value<string>("tag_name")),
-                            HorizontalAlignment = HorizontalAlignment.Left,
-                            VerticalAlignment = VerticalAlignment.Center
-                        };
-                        var button = new Button
-                        {
-                            Content = loader.GetString("GotoGithub"),
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            VerticalAlignment = VerticalAlignment.Center
-                        };
-                        button.Click += async (_, __) =>
-                        {
-                            await Windows.System.Launcher.LaunchUriAsync(new Uri(keys.Value<string>("html_url")));
-                        };
-                        grid.Children.Add(textBlock);
-                        grid.Children.Add(button);
-                        UIHelper.InAppNotification.Show(grid, 6000);
-                    }
-                    else UIHelper.ShowMessage(loader.GetString("NoUpdate"));
-                }
-            }
-            catch (HttpRequestException) { UIHelper.ShowMessage(loader.GetString("NetworkError")); }
-        }
-
-        public static async Task<bool> CheckLoginInfo()
-        {
-            try
-            {
-                using (var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
-                {
-                    var cookieManager = filter.CookieManager;
-                    string uid = string.Empty, token = string.Empty, userName = string.Empty;
-                    foreach (var item in cookieManager.GetCookies(new Uri("http://coolapk.com")))
-                        switch (item.Name)
-                        {
-                            case "uid":
-                                uid = item.Value;
-                                break;
-
-                            case "username":
-                                userName = item.Value;
-                                break;
-
-                            case "token":
-                                token = item.Value;
-                                break;
-                        }
-                    if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(userName))
-                    {
-                        Set(Uid, uid);
-                        var o = (JObject)await DataHelper.GetDataAsync(UriProvider.GetUri(UriType.CheckLoginInfo), true);
-                        UIHelper.NotificationNums.Initial((JObject)o["notifyCount"]);
-                        return true;
-                    }
-                    else return false;
-                }
-            }
-            catch { throw; }
-        }
-
-        public static void Logout()
-        {
-            var cookieManager = new Windows.Web.Http.Filters.HttpBaseProtocolFilter().CookieManager;
-            foreach (var item in cookieManager.GetCookies(new Uri("http://coolapk.com")))
-                cookieManager.DeleteCookie(item);
-            Set(Uid, string.Empty);
-            UIHelper.NotificationNums.ClearNums();
-        }
 
         public static void SetDefaultSettings()
         {
@@ -198,6 +83,137 @@ namespace CoolapkUWP.Helpers
             {
                 localSettings.Values.Add(Uid, string.Empty);
             }
+        }
+    }
+
+    internal static partial class SettingsHelper
+    {
+        private static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+        public static readonly MetroLog.ILogManager logManager = MetroLog.LogManagerFactory.CreateLogManager();
+        public static readonly UISettings uiSettings = new UISettings();
+        public static ElementTheme Theme => Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
+        public static Core.WeakEvent<bool> BackgroundChanged { get; } = new Core.WeakEvent<bool>();
+        public static Core.WeakEvent<bool> NoPicModeChanged { get; } = new Core.WeakEvent<bool>();
+
+        static SettingsHelper()
+        {
+            SetDefaultSettings();
+            SetBackgroundTheme(uiSettings, null);
+            uiSettings.ColorValuesChanged += SetBackgroundTheme;
+            UIHelper.CheckTheme();
+        }
+
+        private static void SetBackgroundTheme(UISettings o, object _)
+        {
+            if (Get<bool>(IsBackgroundColorFollowSystem))
+            {
+                bool value = o.GetColorValue(UIColorType.Background) == Windows.UI.Colors.Black;
+                Set(IsDarkMode, value);
+                BackgroundChanged.Invoke(value);
+            }
+        }
+
+        public static async Task CheckUpdateAsync()
+        {
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0;)");
+                    var keys = JObject.Parse(await client.GetStringAsync("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest"));
+                    var ver = keys.Value<string>("tag_name").Replace("v", string.Empty).Split('.');
+                    if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major ||
+                       (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor) ||
+                       (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
+                    {
+                        var grid = new Grid();
+                        var textBlock = new TextBlock
+                        {
+                            Text = string.Format(
+                                        loader.GetString("HasUpdate"),
+                                        Package.Current.Id.Version.Major,
+                                        Package.Current.Id.Version.Minor,
+                                        Package.Current.Id.Version.Build,
+                                        keys.Value<string>("tag_name")),
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            VerticalAlignment = VerticalAlignment.Center
+                        };
+                        var button = new Button
+                        {
+                            Content = loader.GetString("GotoGithub"),
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Center
+                        };
+                        button.Click += async (_, __) =>
+                        {
+                            await Windows.System.Launcher.LaunchUriAsync(new Uri(keys.Value<string>("html_url")));
+                        };
+                        grid.Children.Add(textBlock);
+                        grid.Children.Add(button);
+                        UIHelper.InAppNotification.Show(grid, 6000);
+                    }
+                    else UIHelper.ShowMessage(loader.GetString("NoUpdate"));
+                }
+            }
+            catch (HttpRequestException) { UIHelper.ShowMessage(loader.GetString("NetworkError")); }
+        }
+
+        public static async Task<bool> CheckLoginInfo()
+        {
+            try
+            {
+                using (var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
+                {
+                    var cookieManager = filter.CookieManager;
+                    string uid = string.Empty, token = string.Empty, userName = string.Empty;
+                    foreach (var item in cookieManager.GetCookies(new Uri("http://coolapk.com")))
+                    {
+                        switch (item.Name)
+                        {
+                            case "uid":
+                                uid = item.Value;
+                                break;
+
+                            case "username":
+                                userName = item.Value;
+                                break;
+
+                            case "token":
+                                token = item.Value;
+                                break;
+                        }
+                    }
+
+                    if (string.IsNullOrEmpty(uid) || string.IsNullOrEmpty(token) || string.IsNullOrEmpty(userName))
+                    {
+                        Logout();
+                        return false;
+                    }
+                    else
+                    {
+                        Set(Uid, uid);
+                        var o = (JObject)await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.CheckLoginInfo), true);
+                        UIHelper.NotificationNums.Initial((JObject)o["notifyCount"]);
+                        return true;
+                    }
+                }
+            }
+            catch { throw; }
+        }
+
+        public static void Logout()
+        {
+            using (var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
+            {
+                var cookieManager = filter.CookieManager;
+                foreach (var item in cookieManager.GetCookies(UriHelper.BaseUri))
+                {
+                    cookieManager.DeleteCookie(item);
+                }
+            }
+            Set(Uid, string.Empty);
+            UIHelper.NotificationNums.ClearNums();
         }
     }
 }

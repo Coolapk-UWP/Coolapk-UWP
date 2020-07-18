@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -21,6 +22,7 @@ namespace CoolapkUWP.Helpers
         private static Frame mainFrame;
         private static Frame paneFrame;
         private static InAppNotify inAppNotification;
+        private static CoreDispatcher shellDispatcher;
 
         /// <summary> 用于记录各种通知的数量。 </summary>
         public static NotificationNums NotificationNums { get; } = new NotificationNums();
@@ -45,6 +47,18 @@ namespace CoolapkUWP.Helpers
                 if (paneFrame == null)
                 {
                     paneFrame = value;
+                }
+            }
+        }
+
+        public static CoreDispatcher ShellDispatcher
+        {
+            get => shellDispatcher;
+            set
+            {
+                if (shellDispatcher == null)
+                {
+                    shellDispatcher = value;
                 }
             }
         }
@@ -168,6 +182,7 @@ namespace CoolapkUWP.Helpers
                         ForeColor = Colors.Black;
                         ButtonForeInactiveColor = Color.FromArgb(255, 50, 50, 50);
                         ButtonBackPressedColor = Color.FromArgb(255, 200, 200, 200);
+                        SettingsHelper.BackgroundChanged.Invoke(false);
                         break;
 
                     case ElementTheme.Dark:
@@ -175,6 +190,7 @@ namespace CoolapkUWP.Helpers
                         ForeColor = Colors.White;
                         ButtonForeInactiveColor = Color.FromArgb(255, 200, 200, 200);
                         ButtonBackPressedColor = Color.FromArgb(255, 50, 50, 50);
+                        SettingsHelper.BackgroundChanged.Invoke(true);
                         break;
                 }
 
@@ -258,7 +274,7 @@ namespace CoolapkUWP.Helpers
             if (str.IsFirst(i++))
             {
                 var u = str.Replace(i - 1);
-                var uid = int.TryParse(u, out _) ? u : await NetworkHelper.GetUserIDByNameAsync(u);
+                var uid = int.TryParse(u, out _) ? u : await DataHelper.GetUserIDByNameAsync(u);
                 var f = ViewModelBase.GetProvider(FeedListType.UserPageList, uid);
                 if (f != null)
                 {

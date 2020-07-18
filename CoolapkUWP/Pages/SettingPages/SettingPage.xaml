@@ -23,15 +23,16 @@
     <Grid>
         <ScrollViewer Padding="{StaticResource StackPanelMargin}">
             <StackPanel Margin="16,0">
-                <controls:HeaderedContentControl x:Uid="/SettingPage/UiSettingsHeader" Style="{StaticResource HeaderStyle}">
-                    <StackPanel>
-                        <ToggleSwitch x:Uid="/SettingPage/BackgroundFollowSystemSwitch" IsOn="{x:Bind IsBackgroundColorFollowSystem2, Mode=TwoWay}" />
-                        <ToggleSwitch
-                            x:Uid="/SettingPage/DarkModeSwitch"
-                            IsEnabled="{x:Bind IsBackgroundColorFollowSystem2, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}}"
-                            IsOn="{x:Bind IsDarkMode2, Mode=TwoWay}" />
-                    </StackPanel>
-                </controls:HeaderedContentControl>
+                <winui:RadioButtons
+                    x:Name="ThemeMode"
+                    x:Uid="/SettingPage/ThemeMode"
+                    Margin="0,8"
+                    FontSize="18"
+                    SelectionChanged="RadioButtons_SelectionChanged">
+                    <RadioButton x:Uid="/SettingPage/ThemeModeLight" />
+                    <RadioButton x:Uid="/SettingPage/ThemeModeDark" />
+                    <RadioButton x:Uid="/SettingPage/ThemeModeDefault" />
+                </winui:RadioButtons>
 
                 <controls:HeaderedContentControl x:Uid="/SettingPage/ContentSettingsHeader" Style="{StaticResource HeaderStyle}">
                     <Grid>
@@ -59,11 +60,11 @@
                             Grid.ColumnSpan="2"
                             IsChecked="{x:Bind IsDisplayOriginPicture2, Mode=TwoWay}" />
 
-                        <CheckBox
+                        <ToggleSwitch
                             x:Uid="/SettingPage/NoPicsModeCheckBox"
                             Grid.Row="2"
                             Grid.ColumnSpan="2"
-                            IsChecked="{x:Bind IsNoPicsMode2, Mode=TwoWay}" />
+                            IsOn="{x:Bind IsNoPicsMode2, Mode=TwoWay}" />
 
                         <Button
                             x:Uid="/SettingPage/CleanCacheButton"
@@ -158,7 +159,10 @@
                     </StackPanel>
                 </controls:HeaderedContentControl>
 
-                <TextBlock FontSize="18" Text="关于" />
+                <TextBlock
+                    Margin="0,16,0,0"
+                    FontSize="18"
+                    Text="关于" />
                 <control:AboutControl HorizontalAlignment="Left" />
             </StackPanel>
         </ScrollViewer>

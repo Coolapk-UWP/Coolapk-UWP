@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 
-namespace CoolapkUWP.Helpers
+namespace CoolapkUWP.Core.Exceptions
 {
     public class CoolapkMessageException : Exception
     {

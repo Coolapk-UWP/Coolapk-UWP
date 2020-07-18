@@ -55,7 +55,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             FansNum = o.Value<int>("fans");
             Level = o.Value<int>("level");
             Gender = o.Value<int>("gender") == 1 ? "♂" : o.Value<int>("gender") == 0 ? "♀" : string.Empty;
-            Logintime = $"{Core.Helpers.DataHelper.ConvertUnixTimeToReadable(o.Value<int>("logintime"))}活跃";
+            Logintime = $"{DataHelper.ConvertUnixTimeStampToReadable(o.Value<int>("logintime"))}活跃";
             FeedNum = o.Value<int>("feed");
             UserName = o.Value<string>("username");
             Bio = o.Value<string>("bio");

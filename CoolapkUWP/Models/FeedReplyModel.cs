@@ -10,7 +10,7 @@ namespace CoolapkUWP.Models
     {
         public FeedReplyModel(JObject o, bool showReplyRow = true) : base(o)
         {
-            Dateline = Core.Helpers.DataHelper.ConvertUnixTimeToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty)));
+            Dateline = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty)));
             Message = o.Value<string>("message");
             var userSmallAvatarUrl = o["userInfo"].Value<string>("userSmallAvatar");
             if (!string.IsNullOrEmpty(userSmallAvatarUrl))
