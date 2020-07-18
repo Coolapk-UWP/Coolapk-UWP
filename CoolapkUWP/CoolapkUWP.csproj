@@ -144,9 +144,7 @@
       <DependentUpon>TitleBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WaterFallLayout.cs" />
-    <Compile Include="Helpers\CoolapkMessageException.cs" />
     <Compile Include="Helpers\EmojiTypeHelper.cs" />
-    <Compile Include="Helpers\Providers\UriProvider.cs" />
     <Compile Include="Helpers\ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\HasValueConverter.cs" />
     <Compile Include="Helpers\ValueConverters\TrueToFalseConverter.cs" />
@@ -168,7 +166,6 @@
     <Compile Include="Controls\GridPanel.cs" />
     <Compile Include="Helpers\EmojiHelper.cs" />
     <Compile Include="Helpers\ImageCacheHelper.cs" />
-    <Compile Include="Helpers\NetworkHelper.cs" />
     <Compile Include="Helpers\NotificationsNum.cs" />
     <Compile Include="Controls\DataTemplates\DataTemplates.xaml.cs" />
     <Compile Include="Models\FeedModel.cs" />

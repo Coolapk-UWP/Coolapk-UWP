@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -94,7 +95,11 @@ namespace CoolapkUWP.Pages
 
         private async void GetImage()
         {
-            var bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri, this, inAppNotify);
+            BitmapImage bitmapImage = null;
+            while (bitmapImage is null)
+            {
+                bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri, this, inAppNotify);
+            }
             await Task.Delay(20);
             Pic = bitmapImage;
         }
@@ -257,6 +262,28 @@ namespace CoolapkUWP.Pages
             }
         }
 
+        private void ResetDegree(int index)
+        {
+            Storyboard storyboard = null;
+            var images = SFlipView.FindDescendants<Image>();
+            foreach (var item in images)
+            {
+                if (item.DataContext != imageModels[index]) { continue; }
+
+                storyboard = (Storyboard)item.Resources["storyboard"];
+                break;
+            }
+
+            if (storyboard == null) { return; }
+
+            var a = (DoubleAnimation)storyboard.Children[0];
+            if (a.From == -90) { return; }
+
+            a.To = 0;
+            storyboard.Begin();
+            a.From = -90;
+        }
+
         private void SFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (imageModels.Count == 0 || SFlipView.SelectedIndex == -1) { return; }
@@ -276,6 +303,15 @@ namespace CoolapkUWP.Pages
             else
             {
                 IsBackButtonEnabled = IsForwardButtonEnabled = true;
+            }
+
+            if (SFlipView.SelectedIndex - 1 > -1)
+            {
+                ResetDegree(SFlipView.SelectedIndex - 1);
+            }
+            if (SFlipView.SelectedIndex + 1 < imageModels.Count)
+            {
+                ResetDegree(SFlipView.SelectedIndex + 1);
             }
 
             switch (imageModels[SFlipView.SelectedIndex].Type)
@@ -305,8 +341,6 @@ namespace CoolapkUWP.Pages
                 n++;
             }
         }
-
-        private Storyboard[] storyboards;
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -358,6 +392,27 @@ namespace CoolapkUWP.Pages
                     });
                     break;
 
+                case "rotate":
+                    if (SFlipView.SelectedIndex == -1 || SFlipView.Items.Count == 0) { return; }
+
+                    Storyboard storyboard = null;
+                    var images = SFlipView.FindDescendants<Image>();
+                    foreach (var item in images)
+                    {
+                        if (item.DataContext != imageModels[SFlipView.SelectedIndex]) { continue; }
+
+                        storyboard = (Storyboard)item.Resources["storyboard"];
+                        break;
+                    }
+
+                    if (storyboard == null) { return; }
+
+                    var a = (DoubleAnimation)storyboard.Children[0];
+                    a.From = a.To;
+                    a.To += 90;
+                    storyboard.Begin();
+                    break;
+
                 case "origin":
                     imageModels[SFlipView.SelectedIndex].ChangeType();
                     IsOriginButtonEnabled = false;
@@ -381,7 +436,7 @@ namespace CoolapkUWP.Pages
                     if (file != null)
                     {
                         using (Stream fs = await file.OpenStreamForWriteAsync())
-                        using (Stream s = (await (await (await ApplicationData.Current.LocalCacheFolder.GetFolderAsync(imageModels[SFlipView.SelectedIndex].Type.ToString())).GetFileAsync(Core.Helpers.DataHelper.GetMD5(u))).OpenReadAsync()).AsStreamForRead())
+                        using (Stream s = (await (await (await ApplicationData.Current.LocalCacheFolder.GetFolderAsync(imageModels[SFlipView.SelectedIndex].Type.ToString())).GetFileAsync(Core.Helpers.Utils.GetMD5(u))).OpenReadAsync()).AsStreamForRead())
                         {
                             await s.CopyToAsync(fs);
                         }

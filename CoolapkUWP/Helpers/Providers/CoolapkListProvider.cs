@@ -25,8 +25,7 @@ namespace CoolapkUWP.Helpers.Providers
             Func<Entity, JToken, bool> checkEqual,
             Func<JObject, IEnumerable<Entity>> getEntities,
             string idName)
-            : this(
-                  getUri, checkEqual, getEntities,
+            : this(getUri, checkEqual, getEntities,
                   () => Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("noMore"),
                   idName)
         {

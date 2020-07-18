@@ -73,6 +73,7 @@ namespace CoolapkUWP.Pages
             UIHelper.MainFrame = shellFrame;
             UIHelper.PaneFrame = paneFrame;
             UIHelper.InAppNotification = AppNotification;
+            UIHelper.ShellDispatcher = Frame.Dispatcher;
             if (SettingsHelper.Get<bool>(SettingsHelper.IsFirstRun))
             {
                 AboutDialog dialog = new AboutDialog();

@@ -1,8 +1,8 @@
 ﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Controls.MakeFeedControlModel;
 using System;
+using System.Net.Http;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +10,7 @@ using Windows.Storage;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.Web.Http;
+using CoolapkUWP.Core.Helpers;
 
 namespace CoolapkUWP.Controls
 {
@@ -39,14 +39,14 @@ namespace CoolapkUWP.Controls
             inputBox.Document.GetText(TextGetOptions.UseObjectText, out string contentText);
             contentText = contentText.Replace("\r", "\r\n");
             if (string.IsNullOrWhiteSpace(contentText)) return;
-            using (var content = new HttpMultipartFormDataContent(GetBoundary()))
+            using (var content = new MultipartFormDataContent(GetBoundary()))
             {
                 switch (MakeFeedMode)
                 {
                     case MakeFeedMode.Feed:
-                        using (var a = new HttpStringContent(contentText))
-                        using (var b = new HttpStringContent("feed"))
-                        using (var c = new HttpStringContent("0"))
+                        using (var a = new StringContent(contentText))
+                        using (var b = new StringContent("feed"))
+                        using (var c = new StringContent("0"))
                         {
                             content.Add(a, "message");
                             content.Add(b, "type");
@@ -58,7 +58,7 @@ namespace CoolapkUWP.Controls
                     case MakeFeedMode.Reply:
                     case MakeFeedMode.ReplyReply:
                         var type = MakeFeedMode == MakeFeedMode.Reply ? UriType.CreateFeedReply : UriType.CreateReplyReply;
-                        using (var d = new HttpStringContent(contentText))
+                        using (var d = new StringContent(contentText))
                         {
                             content.Add(d, "message");
                             await MakeFeed(type, content);
@@ -68,29 +68,29 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        private async Task MakeFeed(UriType type, HttpMultipartFormDataContent content)
+        private async Task MakeFeed(UriType type, HttpContent content)
         {
             try
             {
                 if (type == UriType.CreateFeed)
                 {
-                    if (await DataHelper.PostDataAsync(UriProvider.GetUri(type), content) != null)
+                    if (await DataHelper.PostDataAsync(UriHelper.GetUri(type), content) != null)
                     {
                         SendSuccessful();
                     }
                 }
                 else
                 {
-                    if (await DataHelper.PostDataAsync(UriProvider.GetUri(type, FeedId), content) != null)
+                    if (await DataHelper.PostDataAsync(UriHelper.GetUri(type, FeedId), content) != null)
                     {
                         SendSuccessful();
                     }
                 }
             }
-            catch (CoolapkMessageException cex)
+            catch (Core.Exceptions.CoolapkMessageException cex)
             {
                 UIHelper.ShowMessage(cex.Message);
-                if (cex.MessageStatus == CoolapkMessageException.RequestCaptcha)
+                if (cex.MessageStatus == Core.Exceptions.CoolapkMessageException.RequestCaptcha)
                 {
                     var dialog = new CaptchaDialog();
                     await dialog.ShowAsync();
@@ -172,8 +172,8 @@ namespace CoolapkUWP.Controls
 
         ViewModels.SearchPage.ViewModel viewModel = new ViewModels.SearchPage.ViewModel(1, string.Empty);
 
-        ImmutableArray<AutoSuggestBox> boxes = default;
-        ImmutableArray<Microsoft.UI.Xaml.Controls.ProgressRing> rings = default;
+        ImmutableArray<AutoSuggestBox> boxes;
+        ImmutableArray<Microsoft.UI.Xaml.Controls.ProgressRing> rings;
 
         private async void AutoSuggestBox_QuerySubmitted_1(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {

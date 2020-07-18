@@ -55,9 +55,8 @@ namespace CoolapkUWP
             e.Handled = true;
             if (!(!SettingsHelper.Get<bool>(SettingsHelper.ShowOtherException) || e.Exception is TaskCanceledException || e.Exception is OperationCanceledException))
             {
-                var loader = Windows.UI.Core.CoreWindow.GetForCurrentThread() == null ? null : ResourceLoader.GetForCurrentView();
-                var s = "ExceptionThrown";
-                UIHelper.ShowMessage($"{loader?.GetString(s) ?? s}\n{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})"
+                var loader = ResourceLoader.GetForViewIndependentUse();
+                UIHelper.ShowMessage($"{loader.GetString("ExceptionThrown")}\n{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})"
 #if DEBUG
                     + $"\n{e.Exception.StackTrace}"
 #endif
@@ -84,20 +83,22 @@ namespace CoolapkUWP
             e.Handled = true;
             if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
             {
-                var loader = Windows.UI.Core.CoreWindow.GetForCurrentThread() == null ? null : ResourceLoader.GetForCurrentView();
-                var s = "ExceptionThrown";
-                var s2 = "NetworkError";
-                if (e.Exception.HResult <= -2147012721 && e.Exception.HResult >= -2147012895)
+                var loader = ResourceLoader.GetForViewIndependentUse();
+                if (e.Exception is System.Net.Http.HttpRequestException || e.Exception.HResult <= -2147012721 && e.Exception.HResult >= -2147012895)
                 {
-                    UIHelper.ShowMessage($"{loader?.GetString(s2) ?? s2}(0x{Convert.ToString(e.Exception.HResult, 16)})");
+                    UIHelper.ShowMessage($"{loader.GetString("NetworkError")}(0x{Convert.ToString(e.Exception.HResult, 16)})");
                 }
-                else if (e.Exception is CoolapkMessageException)
+                else if (e.Exception is Core.Exceptions.CoolapkMessageException)
                 {
                     UIHelper.ShowMessage(e.Exception.Message);
                 }
-                else if(SettingsHelper.Get<bool>(SettingsHelper.ShowOtherException))
+                else if (e.Exception is Core.Exceptions.UserNameErrorException)
                 {
-                    UIHelper.ShowMessage($"{loader?.GetString(s) ?? s}\n{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})"
+                    UIHelper.ShowMessage(loader.GetString("UserNameError"));
+                }
+                else if (SettingsHelper.Get<bool>(SettingsHelper.ShowOtherException))
+                {
+                    UIHelper.ShowMessage($"{loader.GetString("ExceptionThrown")}\n{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})"
 #if DEBUG
                         + $"\n{e.Exception.StackTrace}"
 #endif

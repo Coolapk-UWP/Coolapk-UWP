@@ -1,56 +1,78 @@
-﻿using CoolapkUWP.Helpers.Providers;
+﻿using CoolapkUWP.Core.Helpers;
 using CoolapkUWP.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
-using static CoolapkUWP.Helpers.NetworkHelper;
+using static CoolapkUWP.Core.Helpers.NetworkHelper;
 using SymbolIcon = Windows.UI.Xaml.Controls.SymbolIcon;
 using Visibility = Windows.UI.Xaml.Visibility;
 
 namespace CoolapkUWP.Helpers
 {
-    /// <summary> 提供数据处理的方法。 </summary>
+    [DebuggerStepThrough]
     internal static class DataHelper
     {
         private static readonly Dictionary<Uri, string> responseCache = new Dictionary<Uri, string>();
 
-        [DebuggerStepThrough]
+        private static IEnumerable<(string name, string value)> GetCoolapkCookies()
+        {
+            using (var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
+            {
+                var cookieManager = filter.CookieManager;
+                foreach (var item in cookieManager.GetCookies(UriHelper.BaseUri))
+                {
+                    if (item.Name == "uid" ||
+                        item.Name == "username" ||
+                        item.Name == "token")
+                    {
+                        yield return (item.Name, item.Value);
+                    }
+                }
+            }
+        }
+
         public static async Task<BitmapImage> GetImageAsync(string uri)
         {
             var folder = await ImageCacheHelper.GetFolderAsync(ImageType.Captcha);
-            var file = await folder.CreateFileAsync(Core.Helpers.DataHelper.GetMD5(uri));
-            return await DownloadImageAsync(new Uri(uri), file);
+            var file = await folder.CreateFileAsync(Utils.GetMD5(uri));
+
+            var s = await GetStreamAsync(new Uri(uri), GetCoolapkCookies());
+
+            using (var ss = await file.OpenStreamForWriteAsync())
+            {
+                await s.CopyToAsync(ss);
+            }
+
+            return new BitmapImage(new Uri(file.Path));
         }
 
-        [DebuggerStepThrough]
-        public static async Task<JToken> PostDataAsync(Uri uri, Windows.Web.Http.IHttpContent content)
+        public static async Task<JToken> PostDataAsync(Uri uri, System.Net.Http.HttpContent content)
         {
-            var json = await PostAsync(uri, content);
+            var json = await PostAsync(uri, content, GetCoolapkCookies());
+
             var o = JObject.Parse(json);
             JToken token = null;
             if (!string.IsNullOrEmpty(json) &&
                 !o.TryGetValue("data", out token) &&
                 o.TryGetValue("message", out _))
             {
-                throw new CoolapkMessageException(o);
+                throw new Core.Exceptions.CoolapkMessageException(o);
             }
             else return token;
         }
 
-        /// <summary> 从服务器中获取数据。 </summary>
-        /// <param name="type"> 要获取的数据的类型。 </param>
-        /// <param name="args"> 一个参数数组，其中的内容用于替换格式符号。 </param>
-        [DebuggerStepThrough]
         public static async Task<JToken> GetDataAsync(Uri uri, bool forceRefresh)
         {
             string json;
             if (forceRefresh || !responseCache.ContainsKey(uri))
             {
-                json = await GetJson(uri);
+                json = await GetJsonAsync(uri, GetCoolapkCookies());
+
                 if (responseCache.ContainsKey(uri))
                 {
                     responseCache[uri] = json;
@@ -85,8 +107,38 @@ namespace CoolapkUWP.Helpers
             if (!string.IsNullOrEmpty(json) &&
                 !o.TryGetValue("data", out token) &&
                 o.TryGetValue("message", out _))
-                throw new CoolapkMessageException(o);
+                throw new Core.Exceptions.CoolapkMessageException(o);
             else return token;
+        }
+
+        public static Task<string> GetUserIDByNameAsync(string name)
+        {
+            return NetworkHelper.GetUserIDByNameAsync(name);
+        }
+
+        public static string ConvertUnixTimeStampToReadable(double time)
+        {
+            return ConvertUnixTimeStampToReadable(time, DateTime.Now);
+        }
+
+        public static string ConvertUnixTimeStampToReadable(double time, DateTime baseTime)
+        {
+            var (type, obj) = Utils.ConvertUnixTimeStampToReadable(time, DateTime.Now);
+            switch (type)
+            {
+                case Utils.TimeIntervalType.MonthsAgo:
+                    return ((DateTime)obj).ToLongDateString();
+                case Utils.TimeIntervalType.DaysAgo:
+                    return $"{((TimeSpan)obj).Days}天前";
+                case Utils.TimeIntervalType.HoursAgo:
+                    return $"{((TimeSpan)obj).Hours}小时前";
+                case Utils.TimeIntervalType.MinutesAgo:
+                    return $"{((TimeSpan)obj).Minutes}分钟前";
+                case Utils.TimeIntervalType.JustNow:
+                    return "刚刚";
+                default:
+                    return string.Empty;
+            }
         }
 
         public static async Task MakeLikeAsync(ICanChangeLikModel model, Windows.UI.Core.CoreDispatcher dispatcher, SymbolIcon like, SymbolIcon coloredLike)
@@ -94,7 +146,7 @@ namespace CoolapkUWP.Helpers
             if (model == null) { return; }
 
             bool isReply = model is FeedReplyModel;
-            var u = UriProvider.GetUri(
+            var u = UriHelper.GetUri(
                 model.Liked ? UriType.OperateUnlike : UriType.OperateLike,
                 isReply ? "Reply" : string.Empty, model.Id);
             var o = (JObject)await GetDataAsync(u, true);

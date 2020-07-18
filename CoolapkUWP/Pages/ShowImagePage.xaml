@@ -70,7 +70,24 @@
                                 ManipulationDelta="ScrollViewerMain_ManipulationDelta"
                                 ManipulationMode="TranslateX,TranslateY">
 
-                                <Image x:Name="image" Source="{x:Bind Pic, Mode=OneWay}" />
+                                <Image
+                                    x:Name="image"
+                                    RenderTransformOrigin="0.5,0.5"
+                                    Source="{x:Bind Pic, Mode=OneWay}">
+                                    <Image.RenderTransform>
+                                        <CompositeTransform />
+                                    </Image.RenderTransform>
+                                    <Image.Resources>
+                                        <Storyboard x:Name="storyboard">
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="image"
+                                                Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)"
+                                                From="-90"
+                                                To="0"
+                                                Duration="0:0:0.1" />
+                                        </Storyboard>
+                                    </Image.Resources>
+                                </Image>
 
                             </Border>
                         </ScrollViewer>
@@ -120,6 +137,14 @@
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="zoomOut">
                 <SymbolIcon Symbol="ZoomOut" />
+            </Button>
+
+            <Button
+                Margin="4,0"
+                Click="Button_Click"
+                Style="{StaticResource IconButtonStyle2}"
+                Tag="rotate">
+                <SymbolIcon Symbol="Rotate" />
             </Button>
 
             <TextBlock

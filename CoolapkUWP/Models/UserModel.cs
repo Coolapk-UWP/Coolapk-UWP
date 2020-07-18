@@ -18,7 +18,7 @@ namespace CoolapkUWP.Models
                     Bio = b.ToString();
                 }
 
-                LoginTime = Core.Helpers.DataHelper.ConvertUnixTimeToReadable(double.Parse(o["logintime"].ToString().Replace("\"", string.Empty))) + "活跃";
+                LoginTime = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(o["logintime"].ToString().Replace("\"", string.Empty))) + "活跃";
             }
             UserAvatar = new ImageModel(o.Value<string>("userSmallAvatar"), ImageType.BigAvatar);
         }

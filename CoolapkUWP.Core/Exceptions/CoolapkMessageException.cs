@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 
-namespace CoolapkUWP.Helpers
+namespace CoolapkUWP.Core.Exceptions
 {
-    public class CoolapkMessageException : Exception
+    public sealed class CoolapkMessageException : Exception
     {
         public const string RequestCaptcha = "err_request_captcha";
 

@@ -23,7 +23,7 @@ namespace CoolapkUWP.Pages
                 if (value)
                 {
                     FindName(nameof(tryLoginButton));
-                    if(openInSystemBrowserButton != null)
+                    if (openInSystemBrowserButton != null)
                     {
                         UnloadObject(openInSystemBrowserButton);
                     }
@@ -47,12 +47,20 @@ namespace CoolapkUWP.Pages
             object[] vs = e.Parameter as object[];
             IsLoginPage = (bool)vs[0];
             if (IsLoginPage)
+            {
                 webView.Source = new Uri(loginUri);
+            }
             else if (!string.IsNullOrEmpty(vs[1] as string))
             {
                 uri = vs[1] as string;
                 webView.Source = new Uri(uri);
             }
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            _ = SettingsHelper.CheckLoginInfo();
+            base.OnNavigatingFrom(e);
         }
 
         private void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
@@ -76,8 +84,7 @@ namespace CoolapkUWP.Pages
             var loader = ResourceLoader.GetForCurrentView("BrowserPage");
             if (await SettingsHelper.CheckLoginInfo())
             {
-                if (Frame.CanGoBack)
-                    Frame.GoBack();
+                if (Frame.CanGoBack) { Frame.GoBack(); }
                 UIHelper.NavigateInSplitPane(typeof(MyPage), new ViewModels.MyPage.ViewMode());
                 UIHelper.ShowMessage(loader.GetString("LoginSuccessfully"));
             }
@@ -89,6 +96,13 @@ namespace CoolapkUWP.Pages
         }
 
         private async void GotoSystemBrowserButton_Click(object sender, RoutedEventArgs e)
-            => await Windows.System.Launcher.LaunchUriAsync(new Uri(uri));
+        {
+            await Windows.System.Launcher.LaunchUriAsync(new Uri(uri));
+        }
+
+        private async void tryLoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            CheckLogin();
+        }
     }
 }

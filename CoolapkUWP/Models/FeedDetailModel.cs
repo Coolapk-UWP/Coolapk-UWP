@@ -124,8 +124,8 @@ namespace CoolapkUWP.Models
             private set => questionAnswerNum = value;
         }
         public bool ShowRelationRows { get; private set; }
-        internal ImmutableArray<RelationRowsItem> RelationRows { get; private set; } = default;
+        internal ImmutableArray<RelationRowsItem> RelationRows { get; private set; }
         public bool ShowHotReplies { get; private set; }
-        internal ImmutableArray<FeedReplyModel> HotReplies { get; private set; } = default;
+        internal ImmutableArray<FeedReplyModel> HotReplies { get; private set; }
     }
 }

@@ -50,11 +50,9 @@ namespace CoolapkUWP.Helpers
 
         internal static async Task<BitmapImage> GetImageAsync(ImageType type, string url, Pages.ImageModel model = null, InAppNotify notify = null)
         {
-            if (string.IsNullOrEmpty(url))
-            {
-                return null;
-            }
-            else if (url.IndexOf("ms-appx") == 0)
+            if (string.IsNullOrEmpty(url)) { return null; }
+
+            if (url.IndexOf("ms-appx") == 0)
             {
                 return new BitmapImage(new Uri(url));
             }
@@ -64,7 +62,7 @@ namespace CoolapkUWP.Helpers
             }
             else
             {
-                var fileName = Core.Helpers.DataHelper.GetMD5(url);
+                var fileName = Core.Helpers.Utils.GetMD5(url);
                 var folder = await GetFolderAsync(type);
                 var item = await folder.TryGetItemAsync(fileName);
                 if (type == ImageType.SmallImage || type == ImageType.SmallAvatar)

@@ -1,16 +1,14 @@
 ﻿#define LOAD_MAIN_PAGE
 
+using CoolapkUWP.Core.Helpers;
 using CoolapkUWP.Helpers;
-using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -74,7 +72,7 @@ namespace CoolapkUWP.Pages
 
         private async void GetIndexPageItems()
         {
-            var temp = (JArray)await DataHelper.GetDataAsync(UriProvider.GetUri(UriType.GetIndexPageNames), true);
+            var temp = (JArray)await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetIndexPageNames), true);
 
             MenuItems =
                 from t in temp

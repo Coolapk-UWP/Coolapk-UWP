@@ -51,6 +51,7 @@ namespace CoolapkUWP.Pages.SettingPages
                 Set(IsNoPicsMode, value);
                 isNoPicsMode = Get<bool>(IsNoPicsMode);
                 RaisePropertyChangedEvent();
+                NoPicModeChanged?.Invoke(false);
             }
         }
 
@@ -150,6 +151,14 @@ namespace CoolapkUWP.Pages.SettingPages
 #if DEBUG
             gotoTestPage.Visibility = Visibility.Visible;
 #endif
+            if (IsBackgroundColorFollowSystem2)
+            {
+                ThemeMode.SelectedIndex = 2;
+            }
+            else
+            {
+                ThemeMode.SelectedIndex = IsDarkMode2 ? 1 : 0;
+            }
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -205,5 +214,24 @@ namespace CoolapkUWP.Pages.SettingPages
         }
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
+
+        private void RadioButtons_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (((Microsoft.UI.Xaml.Controls.RadioButtons)sender).SelectedIndex)
+            {
+                case 0:
+                    IsBackgroundColorFollowSystem2 = false;
+                    IsDarkMode2 = false;
+                    break;
+                case 1:
+                    IsBackgroundColorFollowSystem2 = false;
+                    IsDarkMode2 = true;
+                    break;
+                case 2:
+                    IsBackgroundColorFollowSystem2 = true;
+                    SettingsHelper.BackgroundChanged?.Invoke(IsDarkMode2);
+                    break;
+            }
+        }
     }
 }

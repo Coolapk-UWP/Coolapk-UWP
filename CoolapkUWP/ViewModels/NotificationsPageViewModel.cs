@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers.Providers;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Pages.NotificationsPageModels;
 using Newtonsoft.Json.Linq;
@@ -77,7 +78,7 @@ namespace CoolapkUWP.ViewModels.NotificationsPage
             provider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) =>
-                        UriProvider.GetUri(
+                        UriHelper.GetUri(
                             UriType.GetNotifications,
                             listName,
                             p < 0 ? ++page : p,

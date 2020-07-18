@@ -14,11 +14,32 @@ namespace CoolapkUWP.Models
         {
             Uri = uri;
             Type = type;
+            SettingsHelper.BackgroundChanged.Add(isDarkMode =>
+                {
+                    _ = UIHelper.ShellDispatcher?.RunAsync(
+                        Windows.UI.Core.CoreDispatcherPriority.Normal,
+                        () =>
+                        {
+                            if (pic == null)
+                            {
+                                GetImage();
+                            }
+                            else
+                            {
+                                if (pic.TryGetTarget(out BitmapImage image) && image.UriSource.Scheme == "ms-appx")
+                                {
+                                    Pic = ImageCacheHelper.NoPic;
+                                }
+                            }
+                        });
+                });
+
+            SettingsHelper.NoPicModeChanged.Add(_ => GetImage());
         }
 
         private WeakReference<BitmapImage> pic;
         private bool isLongPic;
-        private ImmutableArray<ImageModel> contextArray = default;
+        private ImmutableArray<ImageModel> contextArray;
 
         public ImmutableArray<ImageModel> ContextArray
         {

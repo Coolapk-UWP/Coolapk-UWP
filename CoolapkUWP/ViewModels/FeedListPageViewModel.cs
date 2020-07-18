@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Helpers.Providers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Pages.FeedListPageModels;
@@ -84,7 +85,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                 default:
                     throw new ArgumentException($"{typeof(FeedListType).FullName}值错误");
             }
-            JObject o = (JObject)await DataHelper.GetDataAsync(UriProvider.GetUri(type, Id), true);
+            JObject o = (JObject)await DataHelper.GetDataAsync(UriHelper.GetUri(type, Id), true);
             FeedListDetailBase d = null;
             if (o != null)
             {
@@ -143,7 +144,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
             Provider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) =>
-                        UriProvider.GetUri(
+                        UriHelper.GetUri(
                             UriType.GetUserFeeds,
                             Id,
                             p < 0 ? ++page : p,
@@ -173,7 +174,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
             Provider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) =>
-                        UriProvider.GetUri(
+                        UriHelper.GetUri(
                             UriType.GetTagFeeds,
                             Id,
                             p < 0 ? ++page : p,
@@ -235,7 +236,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
             Provider =
                 new CoolapkListProvider(
                     (p, page, firstItem, lastItem) =>
-                        UriProvider.GetUri(
+                        UriHelper.GetUri(
                             UriType.GetDyhFeeds,
                             Id,
                             ComboBoxSelectedIndex == 0 ? "all" : "square",

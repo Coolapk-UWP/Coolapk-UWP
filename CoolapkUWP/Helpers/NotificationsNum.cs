@@ -1,4 +1,4 @@
-﻿using CoolapkUWP.Helpers.Providers;
+﻿using CoolapkUWP.Core.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
@@ -147,7 +147,7 @@ namespace CoolapkUWP.Helpers
             {
                 timer = ThreadPoolTimer.CreatePeriodicTimer(async (source) =>
                 {
-                    ChangeNumber((JObject)await DataHelper.GetDataAsync(UriProvider.GetUri(UriType.GetNotificationNumbers), true));
+                    ChangeNumber((JObject)await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetNotificationNumbers), true));
                 }, new TimeSpan(0, 1, 0));
             }
         }

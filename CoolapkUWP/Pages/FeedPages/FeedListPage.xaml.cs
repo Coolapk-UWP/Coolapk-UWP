@@ -1,5 +1,5 @@
-﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Helpers.Providers;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Pages.FeedListPageModels;
 using CoolapkUWP.ViewModels;
 using CoolapkUWP.ViewModels.FeedListPage;
@@ -119,7 +119,7 @@ namespace CoolapkUWP.Pages.FeedPages
                             ? UriType.OperateUnfollow
                             : UriType.OperateFollow;
                     await DataHelper.GetDataAsync(
-                        UriProvider.GetUri(type, provider.Id),
+                        UriHelper.GetUri(type, provider.Id),
                         true);
                     Refresh();
                     break;
