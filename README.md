@@ -90,9 +90,11 @@
 ![问答](Images/Screenshots/Snipaste_2020-06-21_17-11-33.png)
 
 ## 使用到的模块
+- [Coolapk-kotlin](https://github.com/bjzhou/Coolapk-kotlin)
 - [UWP Community Toolkit](https://github.com/Microsoft/UWPCommunityToolkit/)
 - [Win UI](https://github.com/microsoft/microsoft-ui-xaml)
 - [Json.NET](https://www.newtonsoft.com/json)
+- [QRCoder](https://github.com/codebude/QRCoder)
 - [Metro Log](https://github.com/novotnyllc/MetroLog)
 
 ## 鸣谢

@@ -14,3 +14,12 @@ dotnet_diagnostic.CA1056.severity = suggestion
 
 # CA1819: 属性不应返回数组
 dotnet_diagnostic.CA1819.severity = suggestion
+
+# IDE0008: 使用显式类型
+csharp_style_var_when_type_is_apparent = false:silent
+
+# IDE0008: 使用显式类型
+csharp_style_var_for_built_in_types = false:silent
+
+# IDE0008: 使用显式类型
+csharp_style_var_elsewhere = false:silent

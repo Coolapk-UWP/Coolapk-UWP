@@ -1,4 +1,16 @@
-﻿#### 欢迎使用酷安 UWP！
+﻿using Windows.UI.Xaml.Controls;
+
+namespace CoolapkUWP.Controls
+{
+    public sealed partial class AboutControl : UserControl
+    {
+        public AboutControl()
+        {
+            this.InitializeComponent();
+
+            main.Text =
+@"
+#### 欢迎使用酷安 UWP！
 
 ##### 声明
 
@@ -22,3 +34,7 @@
 - [Json.NET](https://www.newtonsoft.com/json)
 - [QRCoder](https://github.com/codebude/QRCoder)
 - [Metro Log](https://github.com/novotnyllc/MetroLog)
+";
+        }
+    }
+}
