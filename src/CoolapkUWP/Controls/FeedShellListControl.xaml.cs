@@ -23,7 +23,7 @@ namespace CoolapkUWP.Controls
             replyList.ItemsSource = provider.ReplyProvider.Models;
             likeList.ItemsSource = provider.LikeProvider.Models;
             shareList.ItemsSource = provider.ShareProvider.Models;
-            if (provider.HotReplys.Length > 0)
+            if (provider.HotReplys.Count > 0)
             {
                 FindName(nameof(hotReplyList));
                 hotReplyList.ItemsSource = provider.HotReplys;

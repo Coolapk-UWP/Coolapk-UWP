@@ -1,6 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
-using System.Collections.Immutable;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
@@ -24,8 +24,7 @@ namespace CoolapkUWP.Models
             ShowreplyRows = showReplyRow && ReplyRowsCount > 0;
             if (ShowreplyRows)
             {
-                ReplyRows = (from item in o["replyRows"]
-                             select new SimpleFeedReplyModel((JObject)item)).ToImmutableArray();
+                ReplyRows = o["replyRows"].Select(item => new SimpleFeedReplyModel((JObject)item)).ToList();
 
                 ReplyRowsMore = o.Value<int>("replyRowsMore");
             }
@@ -65,7 +64,7 @@ namespace CoolapkUWP.Models
         public ImageModel Pic { get; private set; }
         public string Dateline { get; private set; }
         public bool ShowreplyRows { get; set; }
-        public ImmutableArray<SimpleFeedReplyModel> ReplyRows { get; private set; }
+        public List<SimpleFeedReplyModel> ReplyRows { get; private set; }
         public bool ShowreplyRowsMore { get => ReplyRowsMore > 0; }
         public double ReplyRowsMore { get; private set; }
         public double ReplyRowsCount { get; private set; }

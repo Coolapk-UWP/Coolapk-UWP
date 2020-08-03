@@ -5,7 +5,7 @@ using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Immutable;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CoolapkUWP.ViewModels.FeedDetailList
@@ -24,7 +24,7 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
         internal CoolapkListProvider ReplyProvider { get; }
         internal CoolapkListProvider LikeProvider { get; }
         internal CoolapkListProvider ShareProvider { get; }
-        internal ImmutableArray<FeedReplyModel> HotReplys { get; }
+        internal List<FeedReplyModel> HotReplys { get; }
 
         internal ViewModel(string id, FeedDetailModel model)
         {

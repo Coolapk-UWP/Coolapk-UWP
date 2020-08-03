@@ -210,7 +210,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
             ComboBoxSelectedIndex = value;
             if (Provider != null)
             {
-                Provider.Reset();
+                Provider.Clear();
                 await InitialDetail();
             }
         }

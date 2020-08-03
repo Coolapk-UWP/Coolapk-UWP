@@ -422,7 +422,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:IndexPageModel">
-                            <Border CornerRadius="8">
+                            <Border>
                                 <TextBlock
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
