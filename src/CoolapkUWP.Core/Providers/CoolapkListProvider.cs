@@ -75,6 +75,13 @@ namespace CoolapkUWP.Core.Providers
             }
         }
 
+        public void Clear()
+        {
+            page = 1;
+            lastItem = firstItem = string.Empty;
+            Models.Clear();
+        }
+
         private string GetId(JToken token)
         {
             if (token == null) { return string.Empty; }

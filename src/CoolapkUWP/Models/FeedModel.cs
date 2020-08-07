@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -27,8 +28,7 @@ namespace CoolapkUWP.Models
                 ShowReplyRows = token.TryGetValue("replyRows", out JToken value) && (value as JArray ?? new JArray()).Count > 0 ? true : false;
                 if (ShowReplyRows)
                 {
-                    ReplyRows = (from item in value
-                                 select new ReplyRowsItem((JObject)item)).ToImmutableArray();
+                    ReplyRows = value.Select(item => new ReplyRowsItem((JObject)item)).ToList();
                 }
             }
             else if (mode.HasFlag(FeedDisplayMode.normal))
@@ -66,7 +66,7 @@ namespace CoolapkUWP.Models
                                | (token.TryGetValue("relationRows", out JToken valuerelationRows) && (valuerelationRows as JArray ?? new JArray()).Count > 0);
             if (ShowRelationRows)
             {
-                var buider = ImmutableArray.CreateBuilder<RelationRowsItem>();
+                var buider = new List<RelationRowsItem>();
                 if (!(valuelocation == null || string.IsNullOrEmpty(valuelocation.ToString())))
                 {
                     buider.Add(new RelationRowsItem { Title = valuelocation.ToString() });
@@ -95,7 +95,7 @@ namespace CoolapkUWP.Models
                 {
                     ShowRelationRows = false;
                 }
-                RelationRows = buider.ToImmutable();
+                RelationRows = buider;
             }
             IsStickTop = token.TryGetValue("isStickTop", out JToken j) && int.Parse(j.ToString()) == 1;
         }
@@ -114,8 +114,8 @@ namespace CoolapkUWP.Models
         public bool ShowRelationRows { get; private set; }
         public bool ShowReplyRows { get; private set; }
         public bool ShowLikes { get; private set; } = true;
-        public ImmutableArray<ReplyRowsItem> ReplyRows { get; private set; }
-        public ImmutableArray<RelationRowsItem> RelationRows { get; private set; }
+        public List<ReplyRowsItem> ReplyRows { get; private set; }
+        public List<RelationRowsItem> RelationRows { get; private set; }
     }
 
     public class RelationRowsItem

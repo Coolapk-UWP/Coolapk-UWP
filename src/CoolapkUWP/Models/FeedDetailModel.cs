@@ -1,6 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
-using System.Collections.Immutable;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -71,7 +71,7 @@ namespace CoolapkUWP.Models
                              | (o.TryGetValue("relationRows", out JToken valuerelationRows) && (valuerelationRows as JArray ?? new JArray()).Count > 0);
             if (ShowRelationRows)
             {
-                var builder = ImmutableArray.CreateBuilder<RelationRowsItem>();
+                var builder = new List<RelationRowsItem>();
                 if (valuelocation != null && !string.IsNullOrEmpty(valuelocation.ToString()))
                 {
                     builder.Add(new RelationRowsItem { Title = valuelocation.ToString() });
@@ -89,14 +89,13 @@ namespace CoolapkUWP.Models
                 {
                     ShowRelationRows = false;
                 }
-                RelationRows = builder.ToImmutable();
+                RelationRows = builder;
             }
 
             ShowHotReplies = o.TryGetValue("hotReplyRows", out JToken hotReplyRows) && !string.IsNullOrEmpty(hotReplyRows.ToString());
             if (ShowHotReplies)
             {
-                HotReplies = (from item in hotReplyRows
-                              select new FeedReplyModel((JObject)item)).ToImmutableArray();
+                HotReplies = hotReplyRows.Select(item => new FeedReplyModel((JObject)item)).ToList();
             }
         }
 
@@ -124,8 +123,8 @@ namespace CoolapkUWP.Models
             private set => questionAnswerNum = value;
         }
         public bool ShowRelationRows { get; private set; }
-        internal ImmutableArray<RelationRowsItem> RelationRows { get; private set; }
+        internal List<RelationRowsItem> RelationRows { get; private set; }
         public bool ShowHotReplies { get; private set; }
-        internal ImmutableArray<FeedReplyModel> HotReplies { get; private set; }
+        internal List<FeedReplyModel> HotReplies { get; private set; }
     }
 }
