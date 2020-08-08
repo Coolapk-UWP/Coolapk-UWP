@@ -96,7 +96,7 @@ namespace CoolapkUWP.ViewModels.SearchPage
             }
         }
 
-        internal async Task ChangeWordAndSearch(string keyWord, int index)
+        internal Task ChangeWordAndSearch(string keyWord, int index)
         {
             if (KeyWord != keyWord)
             {
@@ -107,7 +107,7 @@ namespace CoolapkUWP.ViewModels.SearchPage
                 }
             }
             TypeComboBoxSelectedIndex = index;
-            await providers[TypeComboBoxSelectedIndex].Search(KeyWord);
+            return providers[TypeComboBoxSelectedIndex].Search(KeyWord);
         }
 
         [Obsolete("使用ChangeWordAndSearch")]

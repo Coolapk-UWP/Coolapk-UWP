@@ -50,7 +50,7 @@ namespace CoolapkUWP.Controls
 
         public event EventHandler RequireRefresh;
 
-        private void Image_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.ShowImage((sender as FrameworkElement).Tag as Models.ImageModel);
+        private static void Image_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.ShowImage((sender as FrameworkElement).Tag as Models.ImageModel);
 
         private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -72,7 +72,7 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
+        private static void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if ((sender as FrameworkElement).Tag is string s)
             {

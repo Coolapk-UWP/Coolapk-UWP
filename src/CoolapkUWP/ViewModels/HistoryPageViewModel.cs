@@ -48,6 +48,6 @@ namespace CoolapkUWP.ViewModels.HistoryPage
                     "id");
         }
 
-        public async Task Refresh(int p = -1) => await provider?.Refresh(p);
+        public Task Refresh(int p = -1) => provider?.Refresh(p);
     }
 }

@@ -184,7 +184,7 @@ namespace CoolapkUWP.Pages.FeedPages
             _ = Refresh(-2);
         }
 
-        private void FlipView_Loaded(object sender, RoutedEventArgs e)
+        internal static void FlipView_Loaded(object sender, RoutedEventArgs e)
         {
             var view = sender as FlipView;
             var timer = new DispatcherTimer

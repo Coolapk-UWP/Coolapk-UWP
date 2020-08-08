@@ -286,9 +286,9 @@
                 VerticalAlignment="Center"
                 ItemTemplate="{StaticResource searchWord}"
                 QueryIcon="Find"
-                QuerySubmitted="AutoSuggestBox_QuerySubmitted"
-                SuggestionChosen="AutoSuggestBox_SuggestionChosen"
-                TextChanged="AutoSuggestBox_TextChanged" />
+                QuerySubmitted="{x:Bind local:MyPage.AutoSuggestBox_QuerySubmitted}"
+                SuggestionChosen="{x:Bind local:MyPage.AutoSuggestBox_SuggestionChosen}"
+                TextChanged="{x:Bind local:MyPage.AutoSuggestBox_TextChanged}" />
 
             <winui:ProgressRing
                 x:Name="ring"

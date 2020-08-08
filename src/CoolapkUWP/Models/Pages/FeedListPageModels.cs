@@ -19,13 +19,17 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             }
         }
 
-        protected FeedListDetailBase(JObject o) : base(o) => EntityFixed = true;
-
         public event PropertyChangedEventHandler PropertyChanged;
+
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
             if (name != null)
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        protected FeedListDetailBase(JObject o) : base(o)
+        {
+            EntityFixed = true;
         }
     }
 
@@ -46,10 +50,11 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
         public string Logintime { get; private set; }
         public string FollowStatus { get; private set; }
 
-        internal UserDetail(JObject o): base(o)
+        internal UserDetail(JObject o) : base(o)
         {
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
-            FollowStatus = o.Value<int>("uid").ToString() == SettingsHelper.Get<string>(SettingsHelper.Uid) ? string.Empty : o.Value<int>("isFollow") == 0
+            FollowStatus = 
+                o.Value<int>("uid").ToString() == SettingsHelper.Get<string>(SettingsHelper.Uid) ? string.Empty : o.Value<int>("isFollow") == 0
                 ? loader.GetString("follow")
                 : loader.GetString("unFollow");
             FollowNum = o.Value<int>("follow");
@@ -111,7 +116,10 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             ShowUserButton = showUserButton;
             Url = showUserButton ? o["userInfo"].Value<string>("url") : string.Empty;
             UserName = showUserButton ? o["userInfo"].Value<string>("username") : string.Empty;
-            UserAvatar = showUserButton ? new ImageModel(o["userInfo"].Value<string>("userSmallAvatar").Replace("\"", string.Empty), ImageType.BigAvatar) : null;
+            UserAvatar = 
+                showUserButton 
+                ? new ImageModel(o["userInfo"].Value<string>("userSmallAvatar").Replace("\"", string.Empty, System.StringComparison.Ordinal), ImageType.BigAvatar) 
+                : null;
         }
     }
 }

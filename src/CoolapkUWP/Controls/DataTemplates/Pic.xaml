@@ -9,10 +9,10 @@
         <ListViewItem
             Width="102"
             Height="102"
-            KeyDown="ListViewItem_KeyDown"
+            KeyDown="{x:Bind local:Pic.ListViewItem_KeyDown}"
             Style="{StaticResource FixedListViewItemStyle}"
             Tag="{x:Bind}"
-            Tapped="Image_Tapped">
+            Tapped="{x:Bind local:Pic.Image_Tapped}">
             <Grid
                 BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
                 BorderThickness="1"

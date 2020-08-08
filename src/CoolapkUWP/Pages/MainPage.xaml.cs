@@ -113,7 +113,7 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private static void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             UIHelper.RefreshIndexPage();
         }

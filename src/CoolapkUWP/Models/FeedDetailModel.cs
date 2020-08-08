@@ -10,15 +10,42 @@ namespace CoolapkUWP.Models
     {
         private int questionAnswerNum;
 
+        public bool IsFeedArticle { get; private set; }
+        public bool IsFeedArticle2 { get => !IsFeedArticle; }
+        public bool HasMessageCover { get; private set; }
+
+        public ImageModel MessageCover { get; private set; }
+        public ImageModel Tpic { get; private set; }
+
+        public string MessageRawOutput { get; private set; }
+        public bool ShowTtitle { get; private set; }
+        public string Turl { get; private set; }
+        public string Ttitle { get; private set; }
+
+        public bool ShowDyhName { get; private set; }
+        public string DyhUrl { get; private set; }
+        public string DyhName { get; private set; }
+        public bool IsAnswerFeed { get; private set; }
+        public string QuestionUrl { get; private set; }
+        public string Title { get; private set; }
+        public bool ShowRelationRows { get; private set; }
+        internal List<RelationRowsItem> RelationRows { get; private set; }
+        public bool ShowHotReplies { get; private set; }
+        internal List<FeedReplyModel> HotReplies { get; private set; }
+
+        public new int QuestionAnswerNum
+        {
+            get => questionAnswerNum > 0 ? questionAnswerNum : int.Parse(base.QuestionAnswerNum ?? "0");
+            private set => questionAnswerNum = value;
+        }
+
         public FeedDetailModel(JObject o) : base(o)
         {
             Title = o.Value<string>("title");
             if (o.Value<string>("entityType") != "article")
             {
-                if (o.Value<string>("feedType") == "feedArticle")
-                {
-                    IsFeedArticle = true;
-                }
+                IsFeedArticle = o.Value<string>("feedType") == "feedArticle";
+
                 if (IsFeedArticle)
                 {
                     HasMessageCover = o.TryGetValue("message_cover", out JToken value) && !string.IsNullOrEmpty(value.ToString());
@@ -36,6 +63,7 @@ namespace CoolapkUWP.Models
                             case "text":
                                 builder.Append(item.Value<string>("message"));
                                 break;
+
                             case "image":
                                 string description = string.IsNullOrEmpty(item.Value<string>("description")) ? string.Empty : item.Value<string>("description");
                                 string uri = item.Value<string>("url");
@@ -67,28 +95,30 @@ namespace CoolapkUWP.Models
                 DyhName = valuedyh.ToString();
                 DyhUrl = $"/dyh/{o.Value<int>("dyh_id")}";
             }
-            ShowRelationRows = (o.TryGetValue("location", out JToken valuelocation) && !string.IsNullOrEmpty(valuelocation.ToString()))
-                             | (o.TryGetValue("relationRows", out JToken valuerelationRows) && (valuerelationRows as JArray ?? new JArray()).Count > 0);
+            ShowRelationRows = (o.TryGetValue("location", out JToken vLocation) && !string.IsNullOrEmpty(vLocation.ToString())) |
+                               (o.TryGetValue("relationRows", out JToken vRelationRows) && ((vRelationRows as JArray)?.Count ?? 0) > 0);
             if (ShowRelationRows)
             {
                 var builder = new List<RelationRowsItem>();
-                if (valuelocation != null && !string.IsNullOrEmpty(valuelocation.ToString()))
+                if (vLocation != null && !string.IsNullOrEmpty(vLocation.ToString()))
                 {
-                    builder.Add(new RelationRowsItem { Title = valuelocation.ToString() });
+                    builder.Add(new RelationRowsItem { Title = vLocation.ToString() });
                 }
 
-                if (valuerelationRows != null)
+                if (vRelationRows != null)
                 {
-                    foreach (JObject item in valuerelationRows as JArray)
+                    foreach (JObject item in vRelationRows as JArray)
                     {
-                        builder.Add(new RelationRowsItem { Title = item.Value<string>("title"), Url = item.Value<string>("url"), Logo = new ImageModel(item.Value<string>("logo"), ImageType.Icon) });
+                        builder.Add(new RelationRowsItem
+                        {
+                            Title = item.Value<string>("title"),
+                            Url = item.Value<string>("url"),
+                            Logo = new ImageModel(item.Value<string>("logo"), ImageType.Icon)
+                        });
                     }
                 }
 
-                if (builder.Count == 0)
-                {
-                    ShowRelationRows = false;
-                }
+                ShowRelationRows = builder.Count != 0;
                 RelationRows = builder;
             }
 
@@ -98,33 +128,5 @@ namespace CoolapkUWP.Models
                 HotReplies = hotReplyRows.Select(item => new FeedReplyModel((JObject)item)).ToList();
             }
         }
-
-        public bool IsFeedArticle { get; private set; }
-        public bool IsFeedArticle2 { get => !IsFeedArticle; }
-        public bool HasMessageCover { get; private set; }
-
-        public ImageModel MessageCover { get; private set; }
-        public ImageModel Tpic { get; private set; }
-
-        public string MessageRawOutput { get; private set; }
-        public bool ShowTtitle { get; private set; }
-        public string Turl { get; private set; }
-        public string Ttitle { get; private set; }
-
-        public bool ShowDyhName { get; private set; }
-        public string DyhUrl { get; private set; }
-        public string DyhName { get; private set; }
-        public bool IsAnswerFeed { get; private set; }
-        public string QuestionUrl { get; private set; }
-        public string Title { get; private set; }
-        public new int QuestionAnswerNum
-        {
-            get => questionAnswerNum > 0 ? questionAnswerNum : int.Parse(base.QuestionAnswerNum ?? "0");
-            private set => questionAnswerNum = value;
-        }
-        public bool ShowRelationRows { get; private set; }
-        internal List<RelationRowsItem> RelationRows { get; private set; }
-        public bool ShowHotReplies { get; private set; }
-        internal List<FeedReplyModel> HotReplies { get; private set; }
     }
 }

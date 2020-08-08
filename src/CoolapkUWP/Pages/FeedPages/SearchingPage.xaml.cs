@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages.FeedPages
@@ -118,10 +117,10 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 item.Reset();
             }
-            StartSearch();
+            _ = StartSearch();
         }
 
-        private async void SearchText_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        internal static async void SearchText_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
@@ -133,7 +132,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        internal static void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             if (args.SelectedItem is SearchWord m)
                 sender.Text = m.GetTitle();
@@ -147,7 +146,9 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 searchTypeComboBox.SelectedIndex = detailPivot.SelectedIndex;
                 if (searchTypeComboBox.SelectedIndex + 1 == searchTypeComboBox.Items.Count || provider.providers[searchTypeComboBox.SelectedIndex].Page == 0)
-                    StartSearch();
+                {
+                    _ = StartSearch();
+                }
             }
         }
     }

@@ -53,7 +53,8 @@ namespace CoolapkUWP.Pages.FeedPages
                     rightComboBox.SelectedIndex = (provider as ICanComboBoxChangeSelectedIndex).ComboBoxSelectedIndex;
                     break;
             }
-            await provider.LoadNextPage();
+            Refresh();
+            titleBar.ShowProgressRing();
             await System.Threading.Tasks.Task.Delay(30);
 
             titleBar.Title = provider.Title;
@@ -92,7 +93,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
-        private void UserDetailBorder_Tapped(object sender, TappedRoutedEventArgs e)
+        private static void UserDetailBorder_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (!(e == null || UIHelper.IsOriginSource(sender, e.OriginalSource))) { return; }
             if (e.OriginalSource.GetType() == typeof(Windows.UI.Xaml.Shapes.Ellipse) && sender.GetType() == typeof(ListViewItem)) { return; }
@@ -152,13 +153,11 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private async void scrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        private void scrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             if (!e.IsIntermediate && scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
             {
-                titleBar.ShowProgressRing();
-                await provider.LoadNextPage();
-                titleBar.HideProgressRing();
+                Refresh();
             }
         }
 

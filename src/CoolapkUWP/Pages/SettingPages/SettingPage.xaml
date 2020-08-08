@@ -108,7 +108,7 @@
                             Grid.Row="0"
                             Grid.ColumnSpan="2"
                             FontSize="{ThemeResource ContentControlFontSize}"
-                            Text="{x:Bind VersionTextBlockText}" />
+                            Text="{x:Bind local:SettingPage.VersionTextBlockText}" />
 
                         <CheckBox
                             x:Uid="/SettingPage/CheckUpdateWhenLuanchingCheckBox"

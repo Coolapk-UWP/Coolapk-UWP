@@ -23,7 +23,7 @@ namespace CoolapkUWP.Models.Controls.MakeFeedControlModel
     internal class EmojiData : INotifyPropertyChanged
     {
         private WeakReference<ImageSource> emoji;
-        public Uri Uri { get; private set; }
+
         public ImageSource Emoji
         {
             get
@@ -51,7 +51,19 @@ namespace CoolapkUWP.Models.Controls.MakeFeedControlModel
                 RaisePropertyChangedEvent();
             }
         }
+
+        public Uri Uri { get; private set; }
+        public string Name { get; private set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        {
+            if (name != null)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public EmojiData(string name) => Name = name;
 
         private async void GetImage()
         {
@@ -60,14 +72,5 @@ namespace CoolapkUWP.Models.Controls.MakeFeedControlModel
             await Task.Delay(20);
             Emoji = new BitmapImage(uri);
         }
-
-        private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
-        {
-            if (name != null)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
-        public string Name { get; private set; }
-        public EmojiData(string name) => Name = name;
     }
 }

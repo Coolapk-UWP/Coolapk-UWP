@@ -53,6 +53,7 @@ namespace CoolapkUWP.Helpers
             return provider.Search(keyWord, GetCoolapkCookies());
         }
 
+#pragma warning disable 0612
         public static async Task<BitmapImage> GetImageAsync(string uri)
         {
             var folder = await ImageCacheHelper.GetFolderAsync(ImageType.Captcha);
@@ -67,6 +68,7 @@ namespace CoolapkUWP.Helpers
 
             return new BitmapImage(new Uri(file.Path));
         }
+#pragma warning restore 0612
 
         public static string ConvertUnixTimeStampToReadable(double time)
         {

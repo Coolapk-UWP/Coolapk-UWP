@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
+using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Collections.ObjectModel;
@@ -72,13 +73,13 @@ namespace CoolapkUWP.Pages
 
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
-            if (name != null)
+            _ = dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                _ = dispatcher?.RunAsync(CoreDispatcherPriority.Normal, () =>
-                   {
-                       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-                   });
-            }
+                if (name != null)
+                {
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+                }
+            });
         }
 
         public ImageModel(string uri, ImageType type, InAppNotify notify, CoreDispatcher dispatcher)
@@ -95,16 +96,29 @@ namespace CoolapkUWP.Pages
 
         private async void GetImage()
         {
-            BitmapImage bitmapImage = null;
-            while (bitmapImage is null)
+            var url = Type == ImageType.SmallImage || Type == ImageType.SmallAvatar ? Uri + ".s.jpg" : Uri;
+            var uri = new Uri(url);
+            BitmapImage source;
+            try
             {
-                bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri, this, inAppNotify);
+                IsProgressRingActived = true;
+                source = await Microsoft.Toolkit.Uwp.UI.ImageCache.Instance.GetFromCacheAsync(uri, true);
             }
-            await Task.Delay(20);
-            Pic = bitmapImage;
+            catch
+            {
+                _ = inAppNotify.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    var str = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
+                    inAppNotify.Show(str, UIHelper.duration);
+                });
+                source = ImageCacheHelper.NoPic;
+            }
+
+            //IsProgressRingActived = false;
+            //Pic = source;
         }
 
-        private ImageType ChangeType(ImageType type)
+        private static ImageType ChangeType(ImageType type)
         {
             switch (type)
             {
@@ -197,7 +211,7 @@ namespace CoolapkUWP.Pages
 
             if (e.Parameter is Models.ImageModel model)
             {
-                if (model.ContextArray.Length == 0)
+                if (model.ContextArray.IsDefaultOrEmpty)
                 {
                     imageModels.Add(new ImageModel(model, notify, Dispatcher));
                 }
@@ -210,7 +224,7 @@ namespace CoolapkUWP.Pages
                     Task.Run(async () =>
                     {
                         await Task.Delay(20);
-                        await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => SFlipView.SelectedIndex = model.ContextArray.IndexOf(model));
+                        await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => SFlipView.SelectedIndex = model.ContextArray.IndexOf(model));
                     });
                 }
             }
@@ -220,7 +234,7 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private void ScrollViewerMain_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        private static void ScrollViewerMain_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             var view = sender as ScrollViewer;
             if (view.ZoomFactor != 2)
@@ -233,7 +247,7 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private void ScrollViewerMain_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        private static void ScrollViewerMain_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
             var view = (sender as FrameworkElement).Parent as ScrollViewer;
             view.ChangeView(view.HorizontalOffset - e.Delta.Translation.X * view.ZoomFactor, view.VerticalOffset - e.Delta.Translation.Y * view.ZoomFactor, null);
@@ -435,10 +449,13 @@ namespace CoolapkUWP.Pages
                     var file = await fileSavePicker.PickSaveFileAsync();
                     if (file != null)
                     {
-                        using (Stream fs = await file.OpenStreamForWriteAsync())
-                        using (Stream s = (await (await (await ApplicationData.Current.LocalCacheFolder.GetFolderAsync(imageModels[SFlipView.SelectedIndex].Type.ToString())).GetFileAsync(Core.Helpers.Utils.GetMD5(u))).OpenReadAsync()).AsStreamForRead())
+                        using (var fs = await file.OpenStreamForWriteAsync())
                         {
-                            await s.CopyToAsync(fs);
+                            var image = await ImageCache.Instance.GetFileFromCacheAsync(new Uri(imageModels[SFlipView.SelectedIndex].Uri));
+                            using (Stream s = (await image.OpenReadAsync()).AsStreamForRead())
+                            {
+                                await s.CopyToAsync(fs);
+                            }
                         }
                     }
                     break;

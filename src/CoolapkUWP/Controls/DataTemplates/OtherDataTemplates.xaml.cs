@@ -5,14 +5,14 @@ using Microsoft.Toolkit.Uwp.UI.Extensions;
 
 namespace CoolapkUWP.Controls.DataTemplates
 {
-    public partial class DataTemplates : ResourceDictionary
+    public partial class OtherDataTemplates : ResourceDictionary
     {
-        public DataTemplates()
+        public OtherDataTemplates()
         {
             this.InitializeComponent();
         }
 
-        private void OnTapped(object sender, TappedRoutedEventArgs e)
+        internal static void OnTapped(object sender, TappedRoutedEventArgs e)
         {
             if (((FrameworkElement)sender).FindAscendantByName("searchPivot") == null)
             {
@@ -20,7 +20,7 @@ namespace CoolapkUWP.Controls.DataTemplates
             }
         }
 
-        private void ListViewItem_KeyDown(object sender, KeyRoutedEventArgs e)
+        internal static void ListViewItem_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
             {

@@ -1,15 +1,16 @@
 ﻿<ResourceDictionary
-    x:Class="CoolapkUWP.Controls.DataTemplates.DataTemplates"
+    x:Class="CoolapkUWP.Controls.DataTemplates.OtherDataTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:models="using:CoolapkUWP.Models">
 
     <DataTemplate x:Key="Topic" x:DataType="models:TopicModel">
         <ListViewItem
-            KeyDown="ListViewItem_KeyDown"
+            KeyDown="{x:Bind local:OtherDataTemplates.ListViewItem_KeyDown}"
             Style="{StaticResource AppListViewItemStyle}"
             Tag="{x:Bind Url}"
-            Tapped="OnTapped">
+            Tapped="{x:Bind local:OtherDataTemplates.OnTapped}">
             <Grid Padding="4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="56" />
@@ -57,10 +58,10 @@
 
     <DataTemplate x:Key="DYH" x:DataType="models:DyhModel">
         <ListViewItem
-            KeyDown="ListViewItem_KeyDown"
+            KeyDown="{x:Bind local:OtherDataTemplates.ListViewItem_KeyDown}"
             Style="{StaticResource AppListViewItemStyle}"
             Tag="{x:Bind Url}"
-            Tapped="OnTapped">
+            Tapped="{x:Bind local:OtherDataTemplates.OnTapped}">
             <Grid
                 Padding="4"
                 Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
@@ -108,10 +109,10 @@
 
     <DataTemplate x:Key="User" x:DataType="models:UserModel">
         <ListViewItem
-            KeyDown="ListViewItem_KeyDown"
+            KeyDown="{x:Bind local:OtherDataTemplates.ListViewItem_KeyDown}"
             Style="{StaticResource AppListViewItemStyle}"
             Tag="{x:Bind Url}"
-            Tapped="OnTapped">
+            Tapped="{x:Bind local:OtherDataTemplates.OnTapped}">
             <Grid Padding="4,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="56" />

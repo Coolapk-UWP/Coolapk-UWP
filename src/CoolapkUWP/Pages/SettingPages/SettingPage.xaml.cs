@@ -32,7 +32,7 @@ namespace CoolapkUWP.Pages.SettingPages
         private bool isCheckUpdateButtonEnabled = true;
         private bool showOtherException = Get<bool>(ShowOtherException);
 
-        private string VersionTextBlockText
+        private static string VersionTextBlockText
         {
             get
             {
@@ -51,7 +51,7 @@ namespace CoolapkUWP.Pages.SettingPages
                 Set(IsNoPicsMode, value);
                 isNoPicsMode = Get<bool>(IsNoPicsMode);
                 RaisePropertyChangedEvent();
-                NoPicModeChanged?.Invoke(false);
+                UiSettingChanged?.Invoke(UiSettingChangedType.NoPicChanged);
             }
         }
 
@@ -229,7 +229,7 @@ namespace CoolapkUWP.Pages.SettingPages
                     break;
                 case 2:
                     IsBackgroundColorFollowSystem2 = true;
-                    SettingsHelper.BackgroundChanged?.Invoke(IsDarkMode2);
+                    UiSettingChanged?.Invoke(IsDarkMode2 ? UiSettingChangedType.DarkMode : UiSettingChangedType.LightMode);
                     break;
             }
         }

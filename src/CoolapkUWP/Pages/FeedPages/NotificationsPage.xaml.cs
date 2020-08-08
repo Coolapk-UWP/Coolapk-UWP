@@ -12,9 +12,12 @@ namespace CoolapkUWP.Pages.FeedPages
 {
     public sealed partial class NotificationsPage : Page
     {
-        public NotificationsPage() => this.InitializeComponent();
-
         private ViewModels.NotificationsPage.ViewModel provider;
+
+        public NotificationsPage()
+        {
+            this.InitializeComponent();
+        }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -78,10 +81,10 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void Ellipse_Tapped(object sender, TappedRoutedEventArgs e)
+        private static void Ellipse_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse
-                || (sender is Grid && !(e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse)))
+            if ( e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse ||
+                (sender is Grid && !(e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse)))
                 UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
         }
 

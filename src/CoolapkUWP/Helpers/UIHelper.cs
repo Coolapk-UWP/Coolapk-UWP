@@ -37,7 +37,7 @@ namespace CoolapkUWP.Helpers
         public static void RefreshIndexPage() => RequireIndexPageRefresh?.Invoke(null, null);
     }
 
-    internal static partial class UIHelper
+    static partial class UIHelper
     {
         public const int duration = 3500;
         private static InAppNotify inAppNotification;
@@ -133,7 +133,7 @@ namespace CoolapkUWP.Helpers
                         ForeColor = Colors.Black;
                         ButtonForeInactiveColor = Color.FromArgb(255, 50, 50, 50);
                         ButtonBackPressedColor = Color.FromArgb(255, 200, 200, 200);
-                        SettingsHelper.BackgroundChanged.Invoke(false);
+                        SettingsHelper.UiSettingChanged.Invoke(UiSettingChangedType.LightMode);
                         break;
 
                     case ElementTheme.Dark:
@@ -141,7 +141,7 @@ namespace CoolapkUWP.Helpers
                         ForeColor = Colors.White;
                         ButtonForeInactiveColor = Color.FromArgb(255, 200, 200, 200);
                         ButtonBackPressedColor = Color.FromArgb(255, 50, 50, 50);
-                        SettingsHelper.BackgroundChanged.Invoke(true);
+                        SettingsHelper.UiSettingChanged.Invoke(UiSettingChangedType.DarkMode);
                         break;
                 }
 
@@ -188,7 +188,7 @@ namespace CoolapkUWP.Helpers
         }
     }
 
-    internal static partial class UIHelper
+    static partial class UIHelper
     {
         private static Frame mainFrame;
         private static Frame paneFrame;

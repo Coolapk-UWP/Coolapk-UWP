@@ -96,7 +96,7 @@
                 Source="{x:Bind FeedDetail.MessageCover.Pic, Mode=OneWay}"
                 Stretch="UniformToFill"
                 Tag="{x:Bind FeedDetail.MessageCover, Mode=OneWay}"
-                Tapped="Image_Tapped" />
+                Tapped="{x:Bind local:FeedShellDetailControl.Image_Tapped}" />
             <Border
                 VerticalAlignment="Bottom"
                 Background="#A0000000"
@@ -225,7 +225,7 @@
             KeyDown="Grid_KeyDown"
             Style="{StaticResource FixedListViewItemStyle}"
             Tag="{x:Bind FeedDetail.SourceFeed.Url, Mode=OneWay}"
-            Tapped="Grid_Tapped">
+            Tapped="{x:Bind local:FeedShellDetailControl.Grid_Tapped}">
             <Grid
                 Padding="12,4"
                 Background="{ThemeResource SystemControlBackgroundAltHighBrush}"

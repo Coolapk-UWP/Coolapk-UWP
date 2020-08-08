@@ -16,7 +16,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:DataTemplates />
+                <templates:OtherDataTemplates />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -35,7 +35,7 @@
             x:Uid="/MakeFeedControl/editBox"
             Margin="8,8,8,0"
             AcceptsReturn="True"
-            ContextMenuOpening="InputBox_ContextMenuOpening"
+            ContextMenuOpening="{x:Bind local:MakeFeedControl.InputBox_ContextMenuOpening}"
             TextWrapping="Wrap" />
 
         <CommandBar Grid.Row="1">
@@ -175,8 +175,8 @@
                                 Margin="8,8,8,-4"
                                 PlaceholderText="搜索表情……"
                                 QuerySubmitted="AutoSuggestBox_QuerySubmitted"
-                                SuggestionChosen="AutoSuggestBox_SuggestionChosen"
-                                TextChanged="AutoSuggestBox_TextChanged">
+                                SuggestionChosen="{x:Bind local:MakeFeedControl.AutoSuggestBox_SuggestionChosen}"
+                                TextChanged="{x:Bind local:MakeFeedControl.AutoSuggestBox_TextChanged}">
                                 <AutoSuggestBox.ItemTemplate>
                                     <DataTemplate x:DataType="model:EmojiData">
                                         <StackPanel Padding="8,4" Orientation="Horizontal">

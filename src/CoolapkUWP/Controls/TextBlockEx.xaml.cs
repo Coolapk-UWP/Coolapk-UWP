@@ -143,7 +143,9 @@ namespace CoolapkUWP.Controls
                                     });
 
                                     if (!string.IsNullOrEmpty(content))
+                                    {
                                         ToolTipService.SetToolTip(image, new ToolTip { Content = content });
+                                    }
                                     image.Tapped += (sender, e) =>
                                     {
                                         e.Handled = true;

@@ -23,3 +23,15 @@ csharp_style_var_for_built_in_types = false:silent
 
 # IDE0008: 使用显式类型
 csharp_style_var_elsewhere = false:silent
+
+# CA1305: 指定 IFormatProvider
+dotnet_diagnostic.CA1305.severity = suggestion
+
+# CA1031: 不捕获常规异常类型
+dotnet_diagnostic.CA1031.severity = suggestion
+
+# CA5351: 不要使用损坏的加密算法
+dotnet_diagnostic.CA5351.severity = suggestion
+
+# CA1308: 将字符串规范化为大写
+dotnet_diagnostic.CA1308.severity = suggestion

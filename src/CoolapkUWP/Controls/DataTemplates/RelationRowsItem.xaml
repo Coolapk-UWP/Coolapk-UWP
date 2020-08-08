@@ -32,7 +32,7 @@
             BorderThickness="1"
             CornerRadius="8"
             Tag="{x:Bind Id}"
-            Tapped="OnTapped">
+            Tapped="{x:Bind local:RelationRowsItem.OnTapped}">
             <Border
                 Padding="2"
                 HorizontalAlignment="Left"

@@ -165,7 +165,7 @@
     <Compile Include="Controls\GridPanel.cs" />
     <Compile Include="Helpers\EmojiHelper.cs" />
     <Compile Include="Helpers\ImageCacheHelper.cs" />
-    <Compile Include="Controls\DataTemplates\DataTemplates.xaml.cs" />
+    <Compile Include="Controls\DataTemplates\OtherDataTemplates.xaml.cs" />
     <Compile Include="Models\FeedModel.cs" />
     <Compile Include="Models\SearchPageModel.cs" />
     <Compile Include="Models\TopicModel.cs" />
@@ -854,7 +854,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\DataTemplates\DataTemplates.xaml">
+    <Page Include="Controls\DataTemplates\OtherDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

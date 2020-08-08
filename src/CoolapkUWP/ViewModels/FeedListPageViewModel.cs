@@ -28,8 +28,9 @@ namespace CoolapkUWP.ViewModels.FeedListPage
 
         protected ViewModelBase(string id, FeedListType type)
         {
-            Id = string.IsNullOrEmpty(id) ? throw new ArgumentException(nameof(id))
-                                          : id;
+            Id = string.IsNullOrEmpty(id) 
+                ? throw new ArgumentException(nameof(id))
+                : id;
             ListType = type;
             _ = InitialDetail();
         }
@@ -113,15 +114,16 @@ namespace CoolapkUWP.ViewModels.FeedListPage
 
         protected abstract string GetTitleBarText(FeedListDetailBase detail);
 
-        public async Task Refresh()
+        public async Task Refresh(int p)
         {
+            await Provider?.Refresh(p);
+
             ICanComboBoxChangeSelectedIndex it = null;
             if (Models.Count > 0)
             {
                 it = Models[0] as ICanComboBoxChangeSelectedIndex;
                 Models.RemoveAt(0);
             }
-
             var item = await GetDetail();
             if (it != null)
             {
@@ -129,14 +131,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
             }
             Models.Insert(0, item);
             Title = GetTitleBarText(item);
-
-            await Provider?.Refresh(1);
         }
-
-        public async Task LoadNextPage() => await Provider?.Refresh();
-
-        [Obsolete]
-        public async Task Refresh(int p) => await Provider?.Refresh(p);
     }
 
     internal class UserViewModel : ViewModelBase

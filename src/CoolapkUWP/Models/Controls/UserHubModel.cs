@@ -5,19 +5,6 @@ namespace CoolapkUWP.Models.Controls
 {
     public class UserHubModel : INotifyPropertyChanged
     {
-        public UserHubModel(Newtonsoft.Json.Linq.JObject o, ImageSource image)
-        {
-            UserAvatar = image;
-            UserName = o.Value<string>("username");
-            FeedNum = o.Value<int>("feed");
-            FollowNum = o.Value<int>("follow");
-            FansNum = o.Value<int>("fans");
-            LevelNum = o.Value<int>("level");
-            NextLevelExperience = o.Value<int>("next_level_experience");
-            NextLevelPercentage = o.Value<double>("next_level_percentage");
-            LevelTodayMessage = o.Value<string>("level_today_message");
-            NextLevelNowExperience = $"{nextLevelPercentage / 100 * nextLevelExperience:F0}/{nextLevelExperience}";
-        }
 
         private ImageSource userAvatar;
         private string userName;
@@ -136,6 +123,20 @@ namespace CoolapkUWP.Models.Controls
         {
             if (name != null)
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public UserHubModel(Newtonsoft.Json.Linq.JObject o, ImageSource image)
+        {
+            UserAvatar = image;
+            UserName = o.Value<string>("username");
+            FeedNum = o.Value<int>("feed");
+            FollowNum = o.Value<int>("follow");
+            FansNum = o.Value<int>("fans");
+            LevelNum = o.Value<int>("level");
+            NextLevelExperience = o.Value<int>("next_level_experience");
+            NextLevelPercentage = o.Value<double>("next_level_percentage");
+            LevelTodayMessage = o.Value<string>("level_today_message");
+            NextLevelNowExperience = $"{nextLevelPercentage / 100 * nextLevelExperience:F0}/{nextLevelExperience}";
         }
     }
 }

@@ -6,6 +6,7 @@
     xmlns:control="using:CoolapkUWP.Controls"
     xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:CoolapkUWP.Pages.FeedPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:CoolapkUWP.Models"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
@@ -16,7 +17,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:DataTemplates />
+                <templates:OtherDataTemplates />
                 <templates:Feed />
                 <templates:SearchWord />
             </ResourceDictionary.MergedDictionaries>
@@ -165,7 +166,7 @@
                         x:Load="{x:Bind Entities, Converter={StaticResource HasValueConverter}, ConverterParameter='entity array'}"
                         Background="Transparent"
                         ItemsSource="{x:Bind Entities}"
-                        Loaded="FlipView_Loaded">
+                        Loaded="{x:Bind local:IndexPage.FlipView_Loaded}">
                         <FlipView.ItemTemplate>
                             <DataTemplate x:DataType="model:IndexPageModel">
                                 <Border

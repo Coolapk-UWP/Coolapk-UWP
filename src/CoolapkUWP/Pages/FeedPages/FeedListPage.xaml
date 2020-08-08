@@ -84,7 +84,7 @@
                     KeyDown="ListViewItem_KeyDown"
                     Style="{StaticResource FixedListViewItemStyle}"
                     Tag="{x:Bind Background}"
-                    Tapped="UserDetailBorder_Tapped">
+                    Tapped="{x:Bind local:FeedListPage.UserDetailBorder_Tapped}">
 
                     <Border
                         x:Name="UserDetailBorder"
@@ -112,7 +112,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Tag="{x:Bind UserFace}"
-                                Tapped="UserDetailBorder_Tapped">
+                                Tapped="{x:Bind local:FeedListPage.UserDetailBorder_Tapped}">
                                 <Ellipse.Fill>
                                     <ImageBrush ImageSource="{x:Bind UserFace.Pic, Mode=OneWay}" />
                                 </Ellipse.Fill>
