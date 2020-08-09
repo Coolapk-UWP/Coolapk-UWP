@@ -243,6 +243,7 @@ namespace CoolapkUWP.Helpers
             "/t/",
             "t/",
             "/dyh/",
+            "/collection/",
             "http://image.coolapk.com/",
             "https",
             "http",
@@ -293,7 +294,7 @@ namespace CoolapkUWP.Helpers
             {
                 var u = str.Replace(i - 1);
                 var uid = int.TryParse(u, out _) ? u : await Core.Helpers.NetworkHelper.GetUserIDByNameAsync(u);
-                var f = ViewModelBase.GetProvider(FeedListType.UserPageList, uid);
+                var f = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, uid);
                 if (f != null)
                 {
                     NavigateInSplitPane(typeof(FeedListPage), f);
@@ -310,7 +311,7 @@ namespace CoolapkUWP.Helpers
             else if (str.IsFirst(i++) || str.IsFirst(i++))
             {
                 string u = str.Replace(i - 1);
-                var f = ViewModelBase.GetProvider(FeedListType.TagPageList, u);
+                var f = FeedListPageViewModelBase.GetProvider(FeedListType.TagPageList, u);
                 if (f != null)
                 {
                     NavigateInSplitPane(typeof(FeedListPage), f);
@@ -324,7 +325,16 @@ namespace CoolapkUWP.Helpers
             else if (str.IsFirst(i++))
             {
                 string u = str.Replace(i - 1);
-                var f = ViewModelBase.GetProvider(FeedListType.DyhPageList, u);
+                var f = FeedListPageViewModelBase.GetProvider(FeedListType.DyhPageList, u);
+                if (f != null)
+                {
+                    NavigateInSplitPane(typeof(FeedListPage), f);
+                }
+            }
+            else if(str.IsFirst(i++))
+            {
+                string u = str.Replace(i - 1);
+                var f = FeedListPageViewModelBase.GetProvider(FeedListType.CollectionPageList, u);
                 if (f != null)
                 {
                     NavigateInSplitPane(typeof(FeedListPage), f);

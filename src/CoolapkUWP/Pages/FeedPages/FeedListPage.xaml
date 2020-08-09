@@ -8,6 +8,7 @@
     xmlns:local="using:CoolapkUWP.Pages.FeedPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:CoolapkUWP.Models.Pages.FeedListPageModels"
+    xmlns:model1="using:CoolapkUWP.Models"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlBackgroundListLowBrush}"
@@ -90,7 +91,9 @@
                         x:Name="UserDetailBorder"
                         MinHeight="200"
                         Margin="8"
-                        CornerRadius="8">
+                        CornerRadius="8"
+                        Loaded="{x:Bind local:FeedListPage.UserDetailBorder_Loaded}"
+                        SizeChanged="{x:Bind local:FeedListPage.UserDetailBorder_SizeChanged}">
                         <Border.Background>
                             <ImageBrush ImageSource="{x:Bind Background.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                         </Border.Background>
@@ -279,14 +282,15 @@
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
-                    <Image
-                        x:Name="LogoImage"
+                    <Border
                         Width="80"
                         Height="80"
                         Margin="20,10"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Source="{x:Bind Logo.Pic}" />
+                        CornerRadius="8">
+                        <Image Source="{x:Bind Logo.Pic, Mode=OneWay}" />
+                    </Border>
 
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                         <TextBlock
@@ -319,14 +323,15 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Image
-                        x:Name="LogoImage"
-                        Width="80"
-                        Height="80"
+                    <Border
+                        Width="84"
+                        Height="84"
                         Margin="20"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Source="{x:Bind Logo.Pic}" />
+                        CornerRadius="8">
+                        <Image Source="{x:Bind Logo.Pic, Mode=OneWay}" />
+                    </Border>
 
                     <StackPanel Grid.Column="1" Margin="0,18">
                         <TextBlock
@@ -381,8 +386,85 @@
                     </StackPanel>
                 </Grid>
             </DataTemplate>
+            <DataTemplate x:Key="CollectionDetail" x:DataType="model:CollectionDetail">
+                <Grid Margin="0,0,0,8" Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <Image
+                        x:Name="Header"
+                        x:Load="{x:Bind ShowCoverPic}"
+                        Source="{x:Bind CoverPic.Pic, Mode=OneWay}" />
+
+                    <StackPanel Grid.Row="1" Margin="12,8">
+                        <TextBlock
+                            FontSize="20"
+                            FontWeight="Black"
+                            IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                            Text="{x:Bind Title}" />
+
+                        <TextBlock
+                            IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                            Text="{x:Bind Description}"
+                            TextWrapping="Wrap" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind LikeNum}" />
+
+                            <TextBlock
+                                Margin="0,0,8,0"
+                                Foreground="{ThemeResource SystemBaseMediumColor}"
+                                Text="点赞" />
+
+                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind FollowNum}" />
+
+                            <TextBlock
+                                x:Uid="/FeedListPage/FollowNum"
+                                Margin="0,0,8,0"
+                                Foreground="{ThemeResource SystemBaseMediumColor}" />
+
+                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="共" />
+
+                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind ItemsNum}" />
+
+                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="项" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,8,2"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind LastUpdate}" />
+                            <Button
+                                x:Name="showUser"
+                                Padding="2"
+                                Background="Transparent"
+                                Click="Button_Click"
+                                Style="{ThemeResource ButtonRevealStyle}"
+                                Tag="{x:Bind UUrl}">
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse Width="20" Height="20">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource="{x:Bind UserAvatar.Pic}" />
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+
+                                    <TextBlock
+                                        Margin="5,0"
+                                        VerticalAlignment="Top"
+                                        Text="{x:Bind UserName}" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+
             <local:FeedListPageTemplateSelector
                 x:Key="tempse"
+                CollectionHeader="{StaticResource CollectionDetail}"
                 DyhHeader="{StaticResource DYHDetail}"
                 Feed="{StaticResource feed}"
                 TopicHeader="{StaticResource TopicDetail}"

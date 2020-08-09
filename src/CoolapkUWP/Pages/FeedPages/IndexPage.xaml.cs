@@ -184,12 +184,57 @@ namespace CoolapkUWP.Pages.FeedPages
             _ = Refresh(-2);
         }
 
+        private void Pivot_Loaded(object sender, RoutedEventArgs e)
+        {
+            var pivot = sender as Pivot;
+            if (pivot.Items.Count == 0)
+            {
+                var needAddTabs = provider.tabProviders.IsEmpty;
+                var index = provider.ComboBoxSelectedIndex;
+                foreach (IndexPageModel model in pivot.Tag as System.Collections.IEnumerable)
+                {
+                    if (needAddTabs)
+                    {
+                        provider.AddTab($"/page/dataList?url={model.Url.Replace("#", "%23", StringComparison.Ordinal)}&title={model.Title}");
+                    }
+                    
+                    var pivotItem = new PivotItem
+                    {
+                        Header = model.Title
+                    };
+                    pivot.Items.Add(pivotItem);
+                }
+
+                for (int i = 0; i < provider.tabProviders.Count; i++)
+                {
+                    var list = new Microsoft.UI.Xaml.Controls.ItemsRepeater
+                    {
+                        ItemTemplate = Resources["FTemplateSelector"] as DataTemplateSelector,
+                        ItemsSource = provider.tabProviders[i].Models,
+                    };
+                    ((PivotItem)pivot.Items[i]).Content = list;
+                }
+                pivot.SelectedIndex = index;
+            }
+        }
+
+        private async void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Pivot element = sender as Pivot;
+            if (element.SelectedIndex == -1) { return; }
+
+            ShowProgressRing();
+            await provider.SetComboBoxSelectedIndex(element.SelectedIndex);
+            HideProgressRing();
+        }
+
         internal static void FlipView_Loaded(object sender, RoutedEventArgs e)
         {
             var view = sender as FlipView;
+            view.MaxHeight = view.ActualWidth / 3;
             var timer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(4)
+                Interval = TimeSpan.FromSeconds(10)
             };
             timer.Tick += (o, a) =>
             {
@@ -209,45 +254,10 @@ namespace CoolapkUWP.Pages.FeedPages
             timer.Start();
         }
 
-        private void Pivot_Loaded(object sender, RoutedEventArgs e)
+        internal static void flipView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var pivot = sender as Pivot;
-            if (pivot.Items.Count == 0)
-            {
-                foreach (IndexPageModel model in pivot.Tag as System.Collections.IEnumerable)
-                {
-                    if (provider.tabProviders.Count == 0)
-                    {
-                        provider.AddTab($"/page/dataList?url={model.Url.Replace("#", "%23", StringComparison.Ordinal)}&title={model.Title}");
-                    }
-
-                    var pivotItem = new PivotItem
-                    {
-                        Header = model.Title
-                    };
-                    pivot.Items.Add(pivotItem);
-                }
-
-                for (int i = 0; i < provider.tabProviders.Count; i++)
-                {
-                    var list = new Microsoft.UI.Xaml.Controls.ItemsRepeater
-                    {
-                        ItemTemplate = Resources["FTemplateSelector"] as DataTemplateSelector,
-                        ItemsSource = provider.tabProviders[i].Models,
-                    };
-                    ((PivotItem)pivot.Items[i]).Content = list;
-                }
-            }
-        }
-
-        private async void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Pivot element = sender as Pivot;
-            if (element.SelectedIndex == -1) { return; }
-
-            ShowProgressRing();
-            await provider.SetComboBoxSelectedIndex(element.SelectedIndex);
-            HideProgressRing();
+            var view = sender as FlipView;
+            view.MaxHeight = e.NewSize.Width / 3;
         }
     }
 }

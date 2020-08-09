@@ -29,7 +29,7 @@ namespace CoolapkUWP.Pages
 
         public string Uri { get; }
         public ImageType Type { get; private set; }
-        public bool IsGif { get => Uri.Substring(Uri.LastIndexOf('.')).ToLower().Contains("gif", StringComparison.Ordinal); }
+        public bool IsGif { get => Uri.Substring(Uri.LastIndexOf('.')).ToUpperInvariant().Contains("GIF", StringComparison.Ordinal); }
 
         public BitmapImage Pic
         {
@@ -114,8 +114,8 @@ namespace CoolapkUWP.Pages
                 source = ImageCacheHelper.NoPic;
             }
 
-            //IsProgressRingActived = false;
-            //Pic = source;
+            IsProgressRingActived = false;
+            Pic = source;
         }
 
         private static ImageType ChangeType(ImageType type)

@@ -77,7 +77,7 @@ namespace CoolapkUWP.Core.Providers
 
         public void Clear()
         {
-            page = 1;
+            page = 0;
             lastItem = firstItem = string.Empty;
             Models.Clear();
         }

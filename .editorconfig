@@ -32,6 +32,3 @@ dotnet_diagnostic.CA1031.severity = suggestion
 
 # CA5351: 不要使用损坏的加密算法
 dotnet_diagnostic.CA5351.severity = suggestion
-
-# CA1308: 将字符串规范化为大写
-dotnet_diagnostic.CA1308.severity = suggestion

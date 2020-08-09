@@ -137,7 +137,7 @@
             </DataTemplate>
 
             <DataTemplate x:Key="imageCard" x:DataType="model:IndexPageHasEntitiesModel">
-                <StackPanel>
+                <StackPanel Margin="0,8">
                     <ListViewItem
                         x:Name="a"
                         x:Load="{x:Bind Title, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
@@ -160,24 +160,21 @@
                     </ListViewItem>
                     <FlipView
                         x:Name="flipView"
-                        MaxHeight="200"
                         Margin="8,0"
                         Windows10version1809:CornerRadius="8"
                         x:Load="{x:Bind Entities, Converter={StaticResource HasValueConverter}, ConverterParameter='entity array'}"
                         Background="Transparent"
                         ItemsSource="{x:Bind Entities}"
-                        Loaded="{x:Bind local:IndexPage.FlipView_Loaded}">
+                        Loaded="{x:Bind local:IndexPage.FlipView_Loaded}"
+                        SizeChanged="{x:Bind local:IndexPage.flipView_SizeChanged}">
                         <FlipView.ItemTemplate>
                             <DataTemplate x:DataType="model:IndexPageModel">
-                                <Border
+                                <Image
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    CornerRadius="8">
-                                    <Image
-                                        Source="{x:Bind Pic.Pic, Mode=OneWay}"
-                                        Tag="{x:Bind}"
-                                        Tapped="Grid_Tapped" />
-                                </Border>
+                                    Source="{x:Bind Pic.Pic, Mode=OneWay}"
+                                    Tag="{x:Bind}"
+                                    Tapped="Grid_Tapped" />
                             </DataTemplate>
                         </FlipView.ItemTemplate>
                     </FlipView>
@@ -238,6 +235,7 @@
                 <StackPanel Margin="8">
                     <ListViewItem
                         HorizontalContentAlignment="Stretch"
+                        KeyDown="ListViewItem_KeyDown"
                         Style="{StaticResource FixedListViewItemStyle}"
                         Tag="{x:Bind}"
                         Tapped="Grid_Tapped">
@@ -262,6 +260,7 @@
                         x:Name="des"
                         HorizontalContentAlignment="Stretch"
                         x:Load="{x:Bind Description, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
+                        KeyDown="ListViewItem_KeyDown"
                         Style="{StaticResource FixedListViewItemStyle}"
                         Tag="{x:Bind}"
                         Tapped="Grid_Tapped">
@@ -685,7 +684,7 @@
                 <Border
                     x:Name="listBorder"
                     MinWidth="320"
-                    MaxWidth="768"
+                    MaxWidth="820"
                     Padding="{StaticResource StackPanelMargin}"
                     HorizontalAlignment="Center">
                     <winui:ItemsRepeater x:Name="listView" ItemTemplate="{StaticResource FTemplateSelector}" />

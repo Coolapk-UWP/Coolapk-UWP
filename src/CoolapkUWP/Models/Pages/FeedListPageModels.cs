@@ -68,7 +68,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             Verify_title = o.Value<string>("verify_title");
             City = $"{o.Value<string>("province")} {o.Value<string>("city")}";
             Astro = o.Value<string>("astro");
-            UserFace = new ImageModel(o.Value<string>("userSmallAvatar"), ImageType.BigAvatar);
+            UserFace = new ImageModel(o.Value<string>("userAvatar"), ImageType.BigAvatar);
             Background = new ImageModel(o.Value<string>("cover"), ImageType.OriginImage);
         }
     }
@@ -118,8 +118,41 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             UserName = showUserButton ? o["userInfo"].Value<string>("username") : string.Empty;
             UserAvatar = 
                 showUserButton 
-                ? new ImageModel(o["userInfo"].Value<string>("userSmallAvatar").Replace("\"", string.Empty, System.StringComparison.Ordinal), ImageType.BigAvatar) 
+                ? new ImageModel(o["userInfo"].Value<string>("userAvatar").Replace("\"", string.Empty, System.StringComparison.Ordinal), ImageType.BigAvatar) 
                 : null;
+        }
+    }
+
+    internal class CollectionDetail : FeedListDetailBase
+    {
+        public bool ShowCoverPic { get; private set; }
+        public ImageModel CoverPic { get; private set; }
+        public string Title { get; private set; }
+        public string Description { get; private set; }
+        public double FollowNum { get; private set; }
+        public double LikeNum { get; private set; }
+        public int ItemsNum { get; private set; }
+        public string UUrl { get; private set; }
+        public string UserName { get; private set; }
+        public ImageModel UserAvatar { get; private set; }
+        public string LastUpdate { get; private set; }
+
+        internal CollectionDetail(JObject o) : base(o)
+        {
+            ShowCoverPic = !string.IsNullOrEmpty(o.Value<string>("cover_pic"));
+            if (ShowCoverPic)
+            {
+                CoverPic = new ImageModel(o.Value<string>("cover_pic"), ImageType.OriginImage);
+            }
+            FollowNum = o.Value<int>("follow_num");
+            LikeNum = o.Value<int>("like_num");
+            ItemsNum = o.Value<int>("item_num");
+            Title = o.Value<string>("title");
+            Description = o.Value<string>("description");
+            UUrl = o["userInfo"].Value<string>("url");
+            UserName = o["userInfo"].Value<string>("username");
+            UserAvatar = new ImageModel(o["userInfo"].Value<string>("userAvatar").Replace("\"", string.Empty, System.StringComparison.Ordinal), ImageType.BigAvatar);
+            LastUpdate = DataHelper.ConvertUnixTimeStampToReadable(o.Value<int>("lastupdate")) + "更新";
         }
     }
 }

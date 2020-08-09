@@ -166,7 +166,7 @@ namespace CoolapkUWP.Pages
                     break;
 
                 case "feed":
-                    var f = ViewModelBase.GetProvider(FeedListType.UserPageList, SettingsHelper.Get<string>(SettingsHelper.Uid));
+                    var f = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, SettingsHelper.Get<string>(SettingsHelper.Uid));
                     if (f != null)
                         UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
                     break;
