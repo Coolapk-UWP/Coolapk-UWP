@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -10,7 +11,7 @@ namespace CoolapkUWP.Controls.DataTemplates
     {
         public FeedReply() => InitializeComponent();
 
-        private void ReplyRowsItem_Tapped(object sender, TappedRoutedEventArgs e)
+        internal static void ReplyRowsItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
 
@@ -21,13 +22,13 @@ namespace CoolapkUWP.Controls.DataTemplates
             }
         }
 
-        private void Image_Tapped(object sender, TappedRoutedEventArgs e)
+        internal static void Image_Tapped(object sender, TappedRoutedEventArgs e)
         {
             e.Handled = true;
             UIHelper.ShowImage((sender as FrameworkElement).Tag as ImageModel);
         }
 
-        private async void FeedButton_Click(object sender, RoutedEventArgs e)
+        internal static async void FeedButton_Click(object sender, RoutedEventArgs e)
         {
             void DisabledCopy()
             {
@@ -68,7 +69,7 @@ namespace CoolapkUWP.Controls.DataTemplates
             }
         }
 
-        private void ListViewItem_KeyDown(object sender, KeyRoutedEventArgs e)
+        internal static void ListViewItem_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (UIHelper.IsOriginSource(sender, e.OriginalSource))
             {
@@ -83,7 +84,7 @@ namespace CoolapkUWP.Controls.DataTemplates
             }
         }
 
-        private void makeFeed_MakedFeedSuccessful(object sender, System.EventArgs e)
+        internal static void makeFeed_MakedFeedSuccessful(object sender, System.EventArgs e)
         {
             if (((FrameworkElement)sender).Tag is ICanChangeReplyNum m)
             {
@@ -91,11 +92,24 @@ namespace CoolapkUWP.Controls.DataTemplates
             }
         }
 
-        private void ListViewItem_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        internal static void ListViewItem_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
             FrameworkElement s = (FrameworkElement)sender;
             var b = s.FindName("moreButton") as Button;
             b.Flyout.ShowAt(s);
+        }
+
+        internal static void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var uc = sender as UserControl;
+            var bp = uc.FindChildByName("btnsPanel") as StackPanel;
+            var width = e is null ? uc.Width : e.NewSize.Width;
+            bp.SetValue(Grid.RowProperty, width > 524 ? 0 : 4);
+        }
+
+        internal static void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            UserControl_SizeChanged(sender, null);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
+using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Collections.ObjectModel;
@@ -28,7 +29,7 @@ namespace CoolapkUWP.Pages
 
         public string Uri { get; }
         public ImageType Type { get; private set; }
-        public bool IsGif { get => Uri.Substring(Uri.LastIndexOf('.')).ToLower().Contains("gif", StringComparison.Ordinal); }
+        public bool IsGif { get => Uri.Substring(Uri.LastIndexOf('.')).ToUpperInvariant().Contains("GIF", StringComparison.Ordinal); }
 
         public BitmapImage Pic
         {
@@ -72,13 +73,13 @@ namespace CoolapkUWP.Pages
 
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
-            if (name != null)
+            _ = dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                _ = dispatcher?.RunAsync(CoreDispatcherPriority.Normal, () =>
-                   {
-                       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-                   });
-            }
+                if (name != null)
+                {
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+                }
+            });
         }
 
         public ImageModel(string uri, ImageType type, InAppNotify notify, CoreDispatcher dispatcher)
@@ -98,13 +99,15 @@ namespace CoolapkUWP.Pages
             BitmapImage bitmapImage = null;
             while (bitmapImage is null)
             {
-                bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri, this, inAppNotify);
+#pragma warning disable 0612
+                bitmapImage = await ImageCacheHelper.GetImageAsyncOld(Type, Uri, this, inAppNotify);
+#pragma warning restore 0612
             }
             await Task.Delay(20);
             Pic = bitmapImage;
         }
 
-        private ImageType ChangeType(ImageType type)
+        private static ImageType ChangeType(ImageType type)
         {
             switch (type)
             {
@@ -197,7 +200,7 @@ namespace CoolapkUWP.Pages
 
             if (e.Parameter is Models.ImageModel model)
             {
-                if (model.ContextArray.Length == 0)
+                if (model.ContextArray.IsDefaultOrEmpty)
                 {
                     imageModels.Add(new ImageModel(model, notify, Dispatcher));
                 }
@@ -210,7 +213,7 @@ namespace CoolapkUWP.Pages
                     Task.Run(async () =>
                     {
                         await Task.Delay(20);
-                        await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => SFlipView.SelectedIndex = model.ContextArray.IndexOf(model));
+                        await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => SFlipView.SelectedIndex = model.ContextArray.IndexOf(model));
                     });
                 }
             }
@@ -220,7 +223,7 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private void ScrollViewerMain_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        private static void ScrollViewerMain_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             var view = sender as ScrollViewer;
             if (view.ZoomFactor != 2)
@@ -233,7 +236,7 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private void ScrollViewerMain_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        private static void ScrollViewerMain_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
             var view = (sender as FrameworkElement).Parent as ScrollViewer;
             view.ChangeView(view.HorizontalOffset - e.Delta.Translation.X * view.ZoomFactor, view.VerticalOffset - e.Delta.Translation.Y * view.ZoomFactor, null);
@@ -419,15 +422,15 @@ namespace CoolapkUWP.Pages
                     break;
 
                 case "save":
-                    string u = imageModels[SFlipView.SelectedIndex].Uri;
-                    string fileName = u.Substring(u.LastIndexOf('/') + 1);
+                    var u = imageModels[SFlipView.SelectedIndex].Uri;
+                    var fileName = u.Substring(u.LastIndexOf('/') + 1);
                     var fileSavePicker = new FileSavePicker
                     {
                         SuggestedStartLocation = PickerLocationId.PicturesLibrary,
                         SuggestedFileName = fileName.Replace(fileName.Substring(fileName.LastIndexOf('.')), string.Empty, StringComparison.Ordinal)
                     };
 
-                    string uu = fileName.Substring(fileName.LastIndexOf('.') + 1);
+                    var uu = fileName.Substring(fileName.LastIndexOf('.') + 1);
                     int index = uu.IndexOfAny(new char[] { '?', '%', '&' });
                     uu = uu.Substring(0, index == -1 ? uu.Length : index);
                     fileSavePicker.FileTypeChoices.Add($"{uu}文件", new string[] { "." + uu });
@@ -435,10 +438,14 @@ namespace CoolapkUWP.Pages
                     var file = await fileSavePicker.PickSaveFileAsync();
                     if (file != null)
                     {
-                        using (Stream fs = await file.OpenStreamForWriteAsync())
-                        using (Stream s = (await (await (await ApplicationData.Current.LocalCacheFolder.GetFolderAsync(imageModels[SFlipView.SelectedIndex].Type.ToString())).GetFileAsync(Core.Helpers.Utils.GetMD5(u))).OpenReadAsync()).AsStreamForRead())
+                        using (var fs = await file.OpenStreamForWriteAsync())
                         {
-                            await s.CopyToAsync(fs);
+                            var folder = await ApplicationData.Current.LocalCacheFolder.GetFolderAsync(imageModels[SFlipView.SelectedIndex].Type.ToString());
+                            var storageFile = await folder.GetFileAsync(Core.Helpers.Utils.GetMD5(u));
+                            using (var s = (await storageFile.OpenReadAsync()).AsStreamForRead())
+                            {
+                                await s.CopyToAsync(fs);
+                            }
                         }
                     }
                     break;

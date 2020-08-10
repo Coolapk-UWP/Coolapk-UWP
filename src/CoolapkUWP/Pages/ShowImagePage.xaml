@@ -37,13 +37,13 @@
             <FlipView.ContextFlyout>
                 <MenuFlyout>
                     <MenuFlyoutItem
-                        x:Uid="/ShowImagePage/SaveMenuItem"
+                        x:Uid="/ShowImagePage/GetOriginMenuItem"
                         Click="Button_Click"
                         Icon="Pictures"
                         Tag="origin"
                         Visibility="{x:Bind IsOriginButtonEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                     <MenuFlyoutItem
-                        x:Uid="/ShowImagePage/GetOriginMenuItem"
+                        x:Uid="/ShowImagePage/SaveMenuItem"
                         Click="Button_Click"
                         Icon="Save"
                         Tag="save" />
@@ -54,7 +54,7 @@
                     <Grid>
                         <ScrollViewer
                             x:Name="ScrollViewerMain"
-                            DoubleTapped="ScrollViewerMain_DoubleTapped"
+                            DoubleTapped="{x:Bind local:ShowImagePage.ScrollViewerMain_DoubleTapped}"
                             HorizontalScrollBarVisibility="Auto"
                             MaxZoomFactor="3"
                             MinZoomFactor="0.5"
@@ -67,7 +67,7 @@
                                 Padding="0,32,0,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                ManipulationDelta="ScrollViewerMain_ManipulationDelta"
+                                ManipulationDelta="{x:Bind local:ShowImagePage.ScrollViewerMain_ManipulationDelta}"
                                 ManipulationMode="TranslateX,TranslateY">
 
                                 <Image

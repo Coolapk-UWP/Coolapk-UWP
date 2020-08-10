@@ -53,6 +53,7 @@ namespace CoolapkUWP.Helpers
             return provider.Search(keyWord, GetCoolapkCookies());
         }
 
+#pragma warning disable 0612
         public static async Task<BitmapImage> GetImageAsync(string uri)
         {
             var folder = await ImageCacheHelper.GetFolderAsync(ImageType.Captcha);
@@ -67,6 +68,7 @@ namespace CoolapkUWP.Helpers
 
             return new BitmapImage(new Uri(file.Path));
         }
+#pragma warning restore 0612
 
         public static string ConvertUnixTimeStampToReadable(double time)
         {
@@ -105,18 +107,18 @@ namespace CoolapkUWP.Helpers
             bool isReply = model is FeedReplyModel;
             var u = UriHelper.GetUri(
                 model.Liked ? UriType.OperateUnlike : UriType.OperateLike,
-                isReply ? "Reply" : string.Empty, model.Id);
+                isReply ? "Reply" : string.Empty,
+                model.Id);
             var (isSucceed, result) = await GetDataAsync(u, true);
             if (!isSucceed) { return; }
 
-            var o = (JObject)result;
-
+            var o = result as JObject;
             await dispatcher?.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 model.Liked = !model.Liked;
                 if (isReply)
                 {
-                    model.Likenum = o.ToString().Replace("\"", string.Empty);
+                    model.Likenum = o.ToString().Replace("\"", string.Empty, StringComparison.OrdinalIgnoreCase);
                 }
                 else if (o != null)
                 {

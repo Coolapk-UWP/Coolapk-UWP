@@ -1,7 +1,7 @@
 ﻿using CoolapkUWP.Controls;
 using CoolapkUWP.Helpers;
-using System.ComponentModel;
 using System;
+using System.ComponentModel;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -13,14 +13,6 @@ namespace CoolapkUWP.Pages
     {
         private Symbol paneOpenSymbolIcon = Symbol.OpenPane;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
-        {
-            if (name != null)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
         public Symbol PaneOpenSymbolIcon
         {
             get => paneOpenSymbolIcon;
@@ -29,6 +21,14 @@ namespace CoolapkUWP.Pages
                 paneOpenSymbolIcon = value;
                 RaisePropertyChangedEvent();
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        {
+            if (name != null)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         public ShellPage()
@@ -63,6 +63,9 @@ namespace CoolapkUWP.Pages
                 splitView.IsPaneOpen = e;
                 PaneOpenSymbolIcon = e ? Symbol.OpenPane : Symbol.ClosePane;
             };
+#pragma warning disable 0612
+            _ = ImageCacheHelper.CleanOldVersionImageCacheAsync();
+#pragma warning restore 0612
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -80,7 +83,7 @@ namespace CoolapkUWP.Pages
                 await dialog.ShowAsync();
                 SettingsHelper.Set(SettingsHelper.IsFirstRun, false);
             }
-            Page_SizeChanged(this, null);
+            splitView.IsPaneOpen = Window.Current.Bounds.Width >= 960;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -105,7 +108,7 @@ namespace CoolapkUWP.Pages
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var canOpen = (e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 720;
+            var canOpen = splitView.IsPaneOpen && (e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 960;
 
             splitView.IsPaneOpen = canOpen;
             PaneOpenSymbolIcon = canOpen ? Symbol.OpenPane : Symbol.ClosePane;

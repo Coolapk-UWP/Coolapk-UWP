@@ -96,11 +96,16 @@
                 Source="{x:Bind FeedDetail.MessageCover.Pic, Mode=OneWay}"
                 Stretch="UniformToFill"
                 Tag="{x:Bind FeedDetail.MessageCover, Mode=OneWay}"
-                Tapped="Image_Tapped" />
-            <Border
-                VerticalAlignment="Bottom"
-                Background="#A0000000"
-                CornerRadius="8">
+                Tapped="{x:Bind local:FeedShellDetailControl.Image_Tapped}" />
+            <Border VerticalAlignment="Bottom" CornerRadius="8">
+                <Border.Background>
+                    <AcrylicBrush
+                        BackgroundSource="Backdrop"
+                        FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                        TintColor="{x:Bind FeedDetail.Pic.BackgroundColor, Mode=OneWay}"
+                        TintOpacity="0.4" />
+                </Border.Background>
+
                 <TextBlock
                     Margin="8,4"
                     FontSize="20"
@@ -225,7 +230,7 @@
             KeyDown="Grid_KeyDown"
             Style="{StaticResource FixedListViewItemStyle}"
             Tag="{x:Bind FeedDetail.SourceFeed.Url, Mode=OneWay}"
-            Tapped="Grid_Tapped">
+            Tapped="{x:Bind local:FeedShellDetailControl.Grid_Tapped}">
             <Grid
                 Padding="12,4"
                 Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
@@ -301,16 +306,22 @@
             Tag="{x:Bind FeedDetail.ExtraUrl, Mode=OneWay}"
             Tapped="StackPanel_Tapped">
             <Grid
-                Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
                 BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8">
+                <Grid.Background>
+                    <AcrylicBrush
+                        BackgroundSource="Backdrop"
+                        FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                        TintColor="{x:Bind FeedDetail.ExtraPic.BackgroundColor, Mode=OneWay}"
+                        TintOpacity="0.8" />
+                </Grid.Background>
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-
-                <Border Background="{ThemeResource SystemControlBackgroundListLowBrush}">
+                <Border CornerRadius="8">
                     <Image
                         Width="56"
                         Height="56"
@@ -318,15 +329,17 @@
                 </Border>
                 <StackPanel
                     Grid.Column="1"
-                    Margin="5"
+                    Margin="8,0"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Center">
                     <TextBlock
-                        MaxHeight="32"
+                        Foreground="White"
+                        MaxLines="2"
                         Text="{x:Bind FeedDetail.ExtraTitle, Mode=OneWay}"
+                        TextTrimming="WordEllipsis"
                         TextWrapping="Wrap" />
                     <TextBlock
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Foreground="LightGray"
                         Text="{x:Bind FeedDetail.ExtraUrl2, Mode=OneWay}"
                         TextWrapping="Wrap" />
                 </StackPanel>

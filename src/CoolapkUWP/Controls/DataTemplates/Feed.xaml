@@ -30,437 +30,436 @@
         <ListViewItem
             Margin="8"
             DataContext="{x:Bind}"
-            KeyDown="ListViewItem_KeyDown"
-            RightTapped="ListViewItem_RightTapped"
+            KeyDown="{x:Bind local:Feed.ListViewItem_KeyDown}"
+            RightTapped="{x:Bind local:Feed.ListViewItem_RightTapped}"
             Style="{StaticResource FixedListViewItemStyle}"
             Tag="{x:Bind Url}"
-            Tapped="OnTapped">
-            <Grid
-                Padding="8,4"
-                Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
-                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                BorderThickness="1"
-                CornerRadius="8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-
-                <StackPanel
-                    x:Name="StickUp"
-                    Grid.ColumnSpan="3"
-                    x:Load="{x:Bind IsStickTop}"
-                    Orientation="Horizontal">
-                    <SymbolIcon Foreground="Red" Symbol="Upload" />
-                    <TextBlock
-                        x:Uid="/Feed/stickUp"
-                        Margin="10"
-                        Foreground="Red" />
-                </StackPanel>
-
-                <StackPanel
-                    x:Name="userb"
-                    Grid.Row="1"
-                    Grid.ColumnSpan="3"
-                    x:Load="{x:Bind ShowUser}"
-                    Orientation="Horizontal">
-                    <Button
-                        Margin="0,4"
-                        Padding="0"
-                        Background="Transparent"
-                        Click="FeedButton_Click"
-                        Style="{ThemeResource ButtonRevealStyle}"
-                        Tag="{x:Bind Uurl}">
-                        <Ellipse Width="36" Height="36">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="{x:Bind UserSmallAvatar.Pic, Mode=OneWay}" />
-                            </Ellipse.Fill>
-                        </Ellipse>
-                    </Button>
-                    <StackPanel Margin="8,0" VerticalAlignment="Center">
-                        <TextBlock
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                            Text="{x:Bind Username}" />
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                                x:Name="datelineTxb"
-                                Margin="0,0,5,0"
-                                x:Load="{x:Bind ShowDateline}"
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                Text="{x:Bind Dateline}" />
-                            <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Info}" />
-                            <TextBlock
-                                Margin="5,0,0,0"
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                Text="{x:Bind DeviceTitle}" />
-                        </StackPanel>
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel
-                    x:Name="dyhb"
-                    Grid.Row="1"
-                    Grid.ColumnSpan="3"
-                    x:Load="{x:Bind ShowUser2}"
-                    Orientation="Horizontal">
-                    <Button
-                        x:Name="dyhlogo"
-                        x:Load="{x:Bind ShowDyh}"
-                        Background="Transparent"
-                        Click="FeedButton_Click"
-                        Style="{StaticResource ButtonStyle1}"
-                        Tag="{x:Bind Dyhurl}">
-                        <Ellipse
-                            Width="40"
-                            Height="40"
-                            HorizontalAlignment="Left">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="{x:Bind Dyhlogo.Pic, Mode=OneWay}" />
-                            </Ellipse.Fill>
-                        </Ellipse>
-                    </Button>
-                    <StackPanel Margin="2,0" VerticalAlignment="Center">
-                        <TextBlock
-                            x:Name="dyhnamesta"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            x:Load="{x:Bind ShowDyh}"
-                            Text="{x:Bind Dyhname}" />
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Dateline}" />
-                            <TextBlock
-                                x:Name="fromInfot"
-                                Margin="5,0,0,0"
-                                x:Load="{x:Bind ShowFromInfo}"
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                Tag="{x:Bind Uurl}"
-                                Tapped="OnTapped"
-                                Text="{x:Bind FromInfo}" />
-                        </StackPanel>
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel
-                    Grid.Row="1"
-                    Grid.Column="3"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal">
-                    <Button
-                        Width="32"
-                        Height="32"
-                        Style="{StaticResource IconButtonStyle}"
-                        ToolTipService.ToolTip="在手机上打开">
-                        <Button.Flyout>
-                            <Flyout>
-                                <Flyout.FlyoutPresenterStyle>
-                                    <Style TargetType="FlyoutPresenter">
-                                        <Setter Property="Padding" Value="0" />
-                                        <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
-                                        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
-                                        <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
-                                        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-                                    </Style>
-                                </Flyout.FlyoutPresenterStyle>
-                                <ctrl:ShowQRCodeControl QRCodeText="{x:Bind QRUrl}" />
-                            </Flyout>
-                        </Button.Flyout>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED14;" />
-                    </Button>
-
-                    <Button
-                        x:Name="moreButton"
-                        Width="32"
-                        Height="32"
-                        Style="{StaticResource IconButtonStyle}">
-                        <SymbolIcon Symbol="More" />
-                        <Button.Flyout>
-                            <MenuFlyout>
-                                <MenuFlyoutItem
-                                    x:Name="reportButton"
-                                    x:Uid="/Feed/report"
-                                    Click="FeedButton_Click"
-                                    Tag="{x:Bind Id}" />
-                                <ToggleMenuFlyoutItem
-                                    x:Name="copyButton"
-                                    x:Uid="/Feed/Copy"
-                                    IsChecked="{x:Bind IsCopyEnabled, Mode=TwoWay}" />
-                            </MenuFlyout>
-                        </Button.Flyout>
-                    </Button>
-                </StackPanel>
-
-                <TextBlock
-                    x:Name="mTitleT"
-                    Grid.Row="2"
-                    Grid.ColumnSpan="3"
-                    Margin="4"
-                    x:Load="{x:Bind ShowMessageTitle}"
-                    FontSize="16"
-                    FontWeight="Black"
-                    IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                    Text="{x:Bind MessageTitle}"
-                    TextWrapping="Wrap" />
-
-                <ctrl:TextBlockEx
-                    Grid.Row="3"
-                    Grid.ColumnSpan="3"
-                    Margin="4"
-                    IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                    MessageText="{x:Bind Message}" />
-
-                <GridView
-                    Name="picA"
-                    Grid.Row="4"
-                    Grid.ColumnSpan="3"
-                    MinHeight="0"
-                    Margin="4,8,4,4"
-                    Padding="0"
-                    HorizontalContentAlignment="Left"
-                    x:Load="{x:Bind ShowPicArr}"
-                    ItemTemplate="{StaticResource Pic}"
-                    ItemsSource="{x:Bind PicArr}"
-                    ScrollViewer.VerticalScrollMode="Disabled" />
-
+            Tapped="{x:Bind local:Feed.OnTapped}">
+            <UserControl Loaded="{x:Bind local:Feed.UserControl_Loaded}" SizeChanged="{x:Bind local:Feed.UserControl_SizeChanged}">
                 <Grid
-                    x:Name="sourceF"
-                    Grid.Row="5"
-                    Grid.ColumnSpan="3"
-                    Margin="4"
-                    Padding="10,0"
-                    x:Load="{x:Bind ShowSourceFeedGrid}"
-                    Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+                    Padding="8,4"
+                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
                     BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                     BorderThickness="1"
-                    CornerRadius="8"
-                    Tag="{x:Bind SourceFeed.Url}"
-                    Tapped="OnTapped">
+                    CornerRadius="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel
+                        x:Name="StickUp"
+                        x:Load="{x:Bind IsStickTop}"
+                        Orientation="Horizontal">
+                        <SymbolIcon Foreground="Red" Symbol="Upload" />
+                        <TextBlock
+                            x:Uid="/Feed/stickUp"
+                            Margin="10"
+                            Foreground="Red" />
+                    </StackPanel>
+
+                    <StackPanel
+                        x:Name="userb"
+                        Grid.Row="1"
+                        x:Load="{x:Bind ShowUser}"
+                        Orientation="Horizontal">
+                        <Button
+                            Margin="0,4"
+                            Padding="0"
+                            Background="Transparent"
+                            Click="{x:Bind local:Feed.FeedButton_Click}"
+                            Style="{ThemeResource ButtonRevealStyle}"
+                            Tag="{x:Bind Uurl}">
+                            <Ellipse Width="36" Height="36">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{x:Bind UserSmallAvatar.Pic, Mode=OneWay}" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Button>
+                        <StackPanel Margin="8,0" VerticalAlignment="Center">
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                                Text="{x:Bind Username}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    x:Name="datelineTxb"
+                                    Margin="0,0,5,0"
+                                    x:Load="{x:Bind ShowDateline}"
+                                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                    Text="{x:Bind Dateline}" />
+                                <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Info}" />
+                                <TextBlock
+                                    Margin="5,0,0,0"
+                                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                    Text="{x:Bind DeviceTitle}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel
+                        x:Name="dyhb"
+                        Grid.Row="1"
+                        x:Load="{x:Bind ShowUser2}"
+                        Orientation="Horizontal">
+                        <Button
+                            x:Name="dyhlogo"
+                            x:Load="{x:Bind ShowDyh}"
+                            Background="Transparent"
+                            Click="{x:Bind local:Feed.FeedButton_Click}"
+                            Style="{StaticResource ButtonStyle1}"
+                            Tag="{x:Bind Dyhurl}">
+                            <Ellipse
+                                Width="40"
+                                Height="40"
+                                HorizontalAlignment="Left">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{x:Bind Dyhlogo.Pic, Mode=OneWay}" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Button>
+                        <StackPanel Margin="2,0" VerticalAlignment="Center">
+                            <TextBlock
+                                x:Name="dyhnamesta"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                x:Load="{x:Bind ShowDyh}"
+                                Text="{x:Bind Dyhname}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Dateline}" />
+                                <TextBlock
+                                    x:Name="fromInfot"
+                                    Margin="5,0,0,0"
+                                    x:Load="{x:Bind ShowFromInfo}"
+                                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                    Tag="{x:Bind Uurl}"
+                                    Tapped="{x:Bind local:Feed.OnTapped}"
+                                    Text="{x:Bind FromInfo}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel
+                        x:Name="btnsPanel"
+                        Grid.Row="10"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+
+                        <Button
+                            x:Name="likeButton"
+                            x:Load="{x:Bind ShowLikes}"
+                            Click="{x:Bind local:Feed.FeedButton_Click}"
+                            Style="{StaticResource FeedOpButtonStyle}"
+                            Tag="{x:Bind}">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon
+                                    x:Name="like2"
+                                    Symbol="Like"
+                                    Visibility="{x:Bind Liked2, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <SymbolIcon
+                                    x:Name="like1"
+                                    Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"
+                                    Symbol="Like"
+                                    Visibility="{x:Bind Liked, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <TextBlock Margin="3,0" Text="{x:Bind Likenum, Mode=OneWay}" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button
+                            x:Name="makeReplyButton"
+                            x:Load="{x:Bind ShowLikes}"
+                            Click="{x:Bind local:Feed.FeedButton_Click}"
+                            Style="{StaticResource FeedOpButtonStyle}"
+                            Tag="{x:Bind}">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Comment" />
+                                <TextBlock
+                                    Margin="3,0"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind Replynum, Mode=OneWay}" />
+                            </StackPanel>
+                        </Button>
+
+                        <StackPanel
+                            x:Name="sharePanel"
+                            Padding="2"
+                            HorizontalAlignment="Center"
+                            x:Load="{x:Bind ShowLikes}"
+                            Orientation="Horizontal">
+                            <SymbolIcon Symbol="Share" />
+                            <TextBlock
+                                Margin="3,0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind ShareNum}" />
+                        </StackPanel>
+
+                        <Button
+                            Width="32"
+                            Height="32"
+                            Style="{StaticResource IconButtonStyle}"
+                            Tag="{x:Bind QRUrl}"
+                            ToolTipService.ToolTip="在手机上打开">
+                            <Button.Flyout>
+                                <Flyout Opened="{x:Bind local:Feed.Flyout_Opened}">
+                                    <Flyout.FlyoutPresenterStyle>
+                                        <Style TargetType="FlyoutPresenter">
+                                            <Setter Property="Padding" Value="0" />
+                                            <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
+                                            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+                                            <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
+                                            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                                        </Style>
+                                    </Flyout.FlyoutPresenterStyle>
+                                </Flyout>
+                            </Button.Flyout>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED14;" />
+                        </Button>
+
+                        <Button
+                            x:Name="moreButton"
+                            Width="32"
+                            Height="32"
+                            Style="{StaticResource IconButtonStyle}">
+                            <SymbolIcon Symbol="More" />
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem
+                                        x:Name="reportButton"
+                                        x:Uid="/Feed/report"
+                                        Click="{x:Bind local:Feed.FeedButton_Click}"
+                                        Tag="{x:Bind Id}" />
+                                    <ToggleMenuFlyoutItem
+                                        x:Name="copyButton"
+                                        x:Uid="/Feed/Copy"
+                                        IsChecked="{x:Bind IsCopyEnabled, Mode=TwoWay}" />
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
+                    </StackPanel>
 
                     <TextBlock
-                        x:Name="sourceF2"
-                        x:Uid="/Feed/sourceFeedNotFount"
-                        Margin="15"
-                        x:Load="{x:Bind ShowSourceFeed, Converter={StaticResource TrueToFalseConverter}}" />
+                        x:Name="mTitleT"
+                        Grid.Row="2"
+                        Margin="4"
+                        x:Load="{x:Bind ShowMessageTitle}"
+                        FontSize="16"
+                        FontWeight="Black"
+                        IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                        Text="{x:Bind MessageTitle}"
+                        TextWrapping="Wrap" />
+
+                    <ctrl:TextBlockEx
+                        Grid.Row="3"
+                        Margin="4"
+                        IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                        MessageText="{x:Bind Message}" />
+
+                    <GridView
+                        Name="picA"
+                        Grid.Row="4"
+                        MinHeight="0"
+                        Margin="4,8,4,4"
+                        Padding="0"
+                        HorizontalContentAlignment="Left"
+                        x:Load="{x:Bind ShowPicArr}"
+                        ItemTemplate="{StaticResource Pic}"
+                        ItemsSource="{x:Bind PicArr}"
+                        ScrollViewer.VerticalScrollMode="Disabled" />
 
                     <Grid
-                        x:Name="sourceFG"
-                        x:Load="{x:Bind ShowSourceFeed}"
+                        x:Name="sourceF"
+                        Grid.Row="5"
+                        Margin="4"
+                        Padding="10,0"
+                        x:Load="{x:Bind ShowSourceFeedGrid}"
+                        Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+                        BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
                         Tag="{x:Bind SourceFeed.Url}"
-                        Tapped="OnTapped">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
+                        Tapped="{x:Bind local:Feed.OnTapped}">
 
-                        <StackPanel Grid.Row="0" Orientation="Horizontal">
-                            <Button
-                                Margin="4"
-                                Padding="2"
-                                Background="Transparent"
-                                Click="FeedButton_Click"
-                                Content="{x:Bind SourceFeed.Username}"
-                                Style="{StaticResource ButtonRevealStyle}"
-                                Tag="{x:Bind SourceFeed.Uurl}" />
+                        <TextBlock
+                            x:Name="sourceF2"
+                            x:Uid="/Feed/sourceFeedNotFount"
+                            Margin="15"
+                            x:Load="{x:Bind ShowSourceFeed, Converter={StaticResource TrueToFalseConverter}}" />
+
+                        <Grid
+                            x:Name="sourceFG"
+                            x:Load="{x:Bind ShowSourceFeed}"
+                            Tag="{x:Bind SourceFeed.Url}"
+                            Tapped="{x:Bind local:Feed.OnTapped}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                <Button
+                                    Margin="4"
+                                    Padding="2"
+                                    Background="Transparent"
+                                    Click="{x:Bind local:Feed.FeedButton_Click}"
+                                    Content="{x:Bind SourceFeed.Username}"
+                                    Style="{StaticResource ButtonRevealStyle}"
+                                    Tag="{x:Bind SourceFeed.Uurl}" />
+
+                                <TextBlock
+                                    Margin="4"
+                                    VerticalAlignment="Center"
+                                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                    Text="{x:Bind SourceFeed.Dateline}" />
+                            </StackPanel>
 
                             <TextBlock
+                                x:Name="sourceMT"
+                                Grid.Row="1"
                                 Margin="4"
-                                VerticalAlignment="Center"
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                Text="{x:Bind SourceFeed.Dateline}" />
-                        </StackPanel>
+                                x:Load="{x:Bind SourceFeed.ShowMessageTitle}"
+                                FontSize="16"
+                                FontWeight="Black"
+                                IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                                Tag="{x:Bind SourceFeed.Url}"
+                                Tapped="{x:Bind local:Feed.OnTapped}"
+                                Text="{x:Bind SourceFeed.MessageTitle}"
+                                TextWrapping="Wrap" />
 
-                        <TextBlock
-                            x:Name="sourceMT"
-                            Grid.Row="1"
-                            Margin="4"
-                            x:Load="{x:Bind SourceFeed.ShowMessageTitle}"
-                            FontSize="16"
-                            FontWeight="Black"
-                            IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                            Tag="{x:Bind SourceFeed.Url}"
-                            Tapped="OnTapped"
-                            Text="{x:Bind SourceFeed.MessageTitle}"
-                            TextWrapping="Wrap" />
+                            <ctrl:TextBlockEx
+                                Grid.Row="2"
+                                Margin="4"
+                                IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                                MessageText="{x:Bind SourceFeed.Message}"
+                                Tag="{x:Bind SourceFeed.Url}"
+                                Tapped="{x:Bind local:Feed.OnTapped}" />
 
-                        <ctrl:TextBlockEx
-                            Grid.Row="2"
-                            Margin="4"
-                            IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                            MessageText="{x:Bind SourceFeed.Message}"
-                            Tag="{x:Bind SourceFeed.Url}"
-                            Tapped="OnTapped" />
-
-                        <GridView
-                            Name="sourcePic"
-                            Grid.Row="3"
-                            MinHeight="0"
-                            MaxWidth="420"
-                            Margin="4,8,4,4"
-                            Padding="0"
-                            HorizontalContentAlignment="Left"
-                            x:Load="{x:Bind SourceFeed.ShowPicArr}"
-                            ItemTemplate="{StaticResource Pic}"
-                            ItemsSource="{x:Bind SourceFeed.PicArr}"
-                            ScrollViewer.VerticalScrollMode="Disabled" />
+                            <GridView
+                                Name="sourcePic"
+                                Grid.Row="3"
+                                MinHeight="0"
+                                MaxWidth="420"
+                                Margin="4,8,4,4"
+                                Padding="0"
+                                HorizontalContentAlignment="Left"
+                                x:Load="{x:Bind SourceFeed.ShowPicArr}"
+                                ItemTemplate="{StaticResource Pic}"
+                                ItemsSource="{x:Bind SourceFeed.PicArr}"
+                                ScrollViewer.VerticalScrollMode="Disabled" />
+                        </Grid>
                     </Grid>
-                </Grid>
 
-                <Grid
-                    x:Name="extraT"
-                    Grid.Row="6"
-                    Grid.ColumnSpan="3"
-                    Margin="0,4,0,0"
-                    x:Load="{x:Bind ShowExtraUrl}"
-                    Background="{ThemeResource SystemControlBackgroundListLowBrush}"
-                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Tag="{x:Bind ExtraUrl}"
-                    Tapped="OnTapped">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Border Background="{ThemeResource SystemControlBackgroundListLowBrush}" CornerRadius="8">
-                        <Image
-                            Width="56"
-                            Height="56"
-                            Source="{x:Bind ExtraPic.Pic, Mode=OneWay}" />
-                    </Border>
+                    <ListViewItem
+                        x:Name="extraT"
+                        Grid.Row="6"
+                        Margin="0,4,0,0"
+                        Padding="0"
+                        HorizontalContentAlignment="Stretch"
+                        x:Load="{x:Bind ShowExtraUrl}"
+                        KeyDown="{x:Bind local:Feed.ListViewItem_KeyDown}"
+                        Style="{StaticResource FixedListViewItemStyle}"
+                        Tag="{x:Bind ExtraUrl}"
+                        Tapped="{x:Bind local:Feed.OnTapped}">
+                        <Grid
+                            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8">
+                            <Grid.Background>
+                                <AcrylicBrush
+                                    BackgroundSource="Backdrop"
+                                    FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                    TintColor="{x:Bind ExtraPic.BackgroundColor, Mode=OneWay}"
+                                    TintOpacity="0.8" />
+                            </Grid.Background>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border CornerRadius="8">
+                                <Image
+                                    Width="56"
+                                    Height="56"
+                                    Source="{x:Bind ExtraPic.Pic, Mode=OneWay}" />
+                            </Border>
+                            <StackPanel
+                                Grid.Column="1"
+                                Margin="8,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center">
+                                <TextBlock
+                                    Foreground="White"
+                                    MaxLines="2"
+                                    Text="{x:Bind ExtraTitle}"
+                                    TextTrimming="WordEllipsis"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    Foreground="LightGray"
+                                    Text="{x:Bind ExtraUrl2}"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Grid>
+                    </ListViewItem>
+
+                    <Border Grid.Row="7" />
+
+                    <ListView
+                        x:Name="relaRLis"
+                        Grid.Row="8"
+                        x:Load="{x:Bind ShowRelationRows}"
+                        IsItemClickEnabled="True"
+                        ItemClick="{x:Bind local:Feed.relaRLis_ItemClick}"
+                        ItemContainerStyle="{StaticResource FixedListViewItemStyle}"
+                        ItemTemplate="{StaticResource RelationRowsItem}"
+                        ItemsSource="{x:Bind RelationRows}"
+                        Style="{StaticResource HorizontalListViewStyle}" />
+
+                    <ListView
+                        x:Name="repRL"
+                        Grid.Row="9"
+                        Windows10version1809:CornerRadius="12"
+                        x:Load="{x:Bind ShowReplyRows}"
+                        ItemContainerStyle="{StaticResource FixedListViewItemStyle}"
+                        ItemTemplate="{StaticResource ReplyRowsItem}"
+                        ItemsSource="{x:Bind ReplyRows}"
+                        Style="{StaticResource VerticalListViewStyle}" />
+
                     <StackPanel
-                        Grid.Column="1"
-                        Margin="8,0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center">
-                        <TextBlock
-                            MaxLines="2"
-                            Text="{x:Bind ExtraTitle}"
-                            TextTrimming="WordEllipsis"
-                            TextWrapping="Wrap" />
-                        <TextBlock
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            Text="{x:Bind ExtraUrl2}"
-                            TextWrapping="Wrap" />
+                        x:Name="questionDetail"
+                        Grid.Row="10"
+                        Margin="0,0,5,0"
+                        HorizontalAlignment="Left"
+                        x:Load="{x:Bind IsQuestionFeed}"
+                        Orientation="Horizontal">
+                        <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind QuestionAnswerNum}" />
+                        <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">人回答·</TextBlock>
+                        <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind QuestionFollowNum}" />
+                        <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">人关注</TextBlock>
                     </StackPanel>
+
+                    <ctrl:MakeFeedControl
+                        x:Name="makeFeed"
+                        Grid.Row="11"
+                        x:Load="False"
+                        FeedId="{x:Bind Id}"
+                        MakeFeedMode="Reply"
+                        MakedFeedSuccessful="{x:Bind local:Feed.makeFeed_MakedFeedSuccessful}"
+                        Tag="{x:Bind}"
+                        Visibility="Collapsed" />
                 </Grid>
-
-                <Border Grid.Row="7" Grid.ColumnSpan="3" />
-
-                <ListView
-                    x:Name="relaRLis"
-                    Grid.Row="8"
-                    Grid.ColumnSpan="3"
-                    Visibility="{x:Bind ShowRelationRows}"
-                    IsItemClickEnabled="True"
-                    ItemClick="relaRLis_ItemClick"
-                    ItemContainerStyle="{StaticResource FixedListViewItemStyle}"
-                    ItemTemplate="{StaticResource RelationRowsItem}"
-                    ItemsSource="{x:Bind RelationRows}"
-                    Style="{StaticResource HorizontalListViewStyle}" />
-
-                <ListView
-                    x:Name="repRL"
-                    Grid.Row="9"
-                    Grid.ColumnSpan="3"
-                    Windows10version1809:CornerRadius="12"
-                    Visibility="{x:Bind ShowReplyRows}"
-                    ItemContainerStyle="{StaticResource FixedListViewItemStyle}"
-                    ItemTemplate="{StaticResource ReplyRowsItem}"
-                    ItemsSource="{x:Bind ReplyRows}"
-                    Style="{StaticResource VerticalListViewStyle}" />
-
-                <Button
-                    x:Name="likeButton"
-                    Grid.Column="0"
-                    x:Load="{x:Bind ShowLikes}"
-                    Click="FeedButton_Click"
-                    Style="{StaticResource FeedOpButtonStyle}"
-                    Tag="{x:Bind}">
-                    <StackPanel Orientation="Horizontal">
-                        <SymbolIcon
-                            x:Name="like2"
-                            Symbol="Like"
-                            Visibility="{x:Bind Liked2, Converter={StaticResource BoolToVisibilityConverter}}" />
-                        <SymbolIcon
-                            x:Name="like1"
-                            Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"
-                            Symbol="Like"
-                            Visibility="{x:Bind Liked, Converter={StaticResource BoolToVisibilityConverter}}" />
-                        <TextBlock Margin="3,0" Text="{x:Bind Likenum, Mode=OneWay}" />
-                    </StackPanel>
-                </Button>
-                <Button
-                    x:Name="makeReplyButton"
-                    Grid.Column="1"
-                    x:Load="{x:Bind ShowLikes}"
-                    Click="FeedButton_Click"
-                    Style="{StaticResource FeedOpButtonStyle}"
-                    Tag="{x:Bind}">
-                    <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Comment" />
-                        <TextBlock
-                            Margin="3,0"
-                            VerticalAlignment="Center"
-                            Text="{x:Bind Replynum, Mode=OneWay}" />
-                    </StackPanel>
-                </Button>
-                <StackPanel
-                    x:Name="sharePanel"
-                    Grid.Row="10"
-                    Grid.Column="2"
-                    Padding="2"
-                    HorizontalAlignment="Center"
-                    x:Load="{x:Bind ShowLikes}"
-                    Orientation="Horizontal">
-                    <SymbolIcon Symbol="Share" />
-                    <TextBlock
-                        Margin="3,0"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind ShareNum}" />
-                </StackPanel>
-
-                <StackPanel
-                    x:Name="questionDetail"
-                    Grid.Row="10"
-                    Grid.ColumnSpan="3"
-                    Margin="0,0,5,0"
-                    HorizontalAlignment="Left"
-                    x:Load="{x:Bind IsQuestionFeed}"
-                    Orientation="Horizontal">
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind QuestionAnswerNum}" />
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">人回答·</TextBlock>
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind QuestionFollowNum}" />
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">人关注</TextBlock>
-                </StackPanel>
-                <ctrl:MakeFeedControl
-                    x:Name="makeFeed"
-                    Grid.Row="11"
-                    Grid.ColumnSpan="3"
-                    x:Load="False"
-                    FeedId="{x:Bind Id}"
-                    MakeFeedMode="Reply"
-                    MakedFeedSuccessful="makeFeed_MakedFeedSuccessful"
-                    Tag="{x:Bind}"
-                    Visibility="Collapsed" />
-            </Grid>
+            </UserControl>
         </ListViewItem>
     </DataTemplate>
 </ResourceDictionary>

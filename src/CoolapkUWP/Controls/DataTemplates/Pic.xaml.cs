@@ -7,12 +7,12 @@ namespace CoolapkUWP.Controls.DataTemplates
     {
         public Pic() => InitializeComponent();
 
-        private void Image_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private static void Image_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             UIHelper.ShowImage((sender as FrameworkElement).Tag as Models.ImageModel);
         }
 
-        private void ListViewItem_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        private static void ListViewItem_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
             {

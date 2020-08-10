@@ -86,14 +86,20 @@ namespace CoolapkUWP.Helpers
         }
     }
 
+    enum UiSettingChangedType
+    {
+        LightMode,
+        DarkMode,
+        NoPicChanged,
+    }
+
     internal static partial class SettingsHelper
     {
         private static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public static readonly MetroLog.ILogManager logManager = MetroLog.LogManagerFactory.CreateLogManager();
         public static readonly UISettings uiSettings = new UISettings();
         public static ElementTheme Theme => Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
-        public static Core.WeakEvent<bool> BackgroundChanged { get; } = new Core.WeakEvent<bool>();
-        public static Core.WeakEvent<bool> NoPicModeChanged { get; } = new Core.WeakEvent<bool>();
+        public static Core.WeakEvent<UiSettingChangedType> UiSettingChanged { get; } = new Core.WeakEvent<UiSettingChangedType>();
 
         static SettingsHelper()
         {
@@ -109,7 +115,7 @@ namespace CoolapkUWP.Helpers
             {
                 bool value = o.GetColorValue(UIColorType.Background) == Windows.UI.Colors.Black;
                 Set(IsDarkMode, value);
-                BackgroundChanged.Invoke(value);
+                UiSettingChanged.Invoke(value ? UiSettingChangedType.DarkMode : UiSettingChangedType.LightMode);
             }
         }
 

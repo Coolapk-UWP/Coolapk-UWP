@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages.FeedPages
@@ -68,7 +57,10 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void TitleBar_RefreshButtonClick(object sender, RoutedEventArgs e) => _ = LoadList(-2);
+        private void TitleBar_RefreshButtonClick(object sender, RoutedEventArgs e)
+        {
+            _ = LoadList(-2);
+        }
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e)
         {
@@ -78,12 +70,12 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void ListViewItem_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private static void ListViewItem_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             Helpers.UIHelper.OpenLinkAsync((sender as FrameworkElement)?.Tag as string);
         }
 
-        private void ListViewItem_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        private static void ListViewItem_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
             {

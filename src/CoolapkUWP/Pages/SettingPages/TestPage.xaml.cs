@@ -19,7 +19,7 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            var f = ViewModelBase.GetProvider(FeedListType.UserPageList, await Core.Helpers.NetworkHelper.GetUserIDByNameAsync(uid.Text));
+            var f = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, await Core.Helpers.NetworkHelper.GetUserIDByNameAsync(uid.Text));
             if (f != null)
                 UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
         }

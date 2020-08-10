@@ -77,7 +77,7 @@ namespace CoolapkUWP.Controls
                 {
                     arg = new object[] { FeedId };
                 }
-                var (r, _) = await DataHelper.PostDataAsync(UriHelper.GetUri(type), content);
+                var (r, _) = await DataHelper.PostDataAsync(UriHelper.GetUri(type, arg), content);
                 if (r)
                 {
                     SendSuccessful();
@@ -101,7 +101,7 @@ namespace CoolapkUWP.Controls
             MakedFeedSuccessful?.Invoke(this, new EventArgs());
         }
 
-        private string GetBoundary()
+        private static string GetBoundary()
         {
             byte[] vs = new byte[16];
             new Random().NextBytes(vs);
@@ -131,9 +131,9 @@ namespace CoolapkUWP.Controls
             inputBox.Document.Selection.MoveRight(TextRangeUnit.Character, 1, false);
         }
 
-        private void InputBox_ContextMenuOpening(object sender, ContextMenuEventArgs e) => e.Handled = true;
+        internal static void InputBox_ContextMenuOpening(object sender, ContextMenuEventArgs e) => e.Handled = true;
 
-        private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        internal static void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (string.IsNullOrEmpty(sender.Text) || args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) { return; }
 
@@ -143,12 +143,12 @@ namespace CoolapkUWP.Controls
                                   select emoji);
         }
 
-        private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        internal static void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             sender.Text = (args.SelectedItem as EmojiData).Name;
         }
 
-        private async void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        internal async void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             if (args.ChosenSuggestion == null) { return; }
             await InsertEmoji(args.ChosenSuggestion as EmojiData);

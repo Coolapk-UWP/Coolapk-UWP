@@ -13,10 +13,10 @@
     <Page.Resources>
         <DataTemplate x:Key="history" x:DataType="model:HistoryModel">
             <ListViewItem
-                KeyDown="ListViewItem_KeyDown"
+                KeyDown="{x:Bind local:HistoryPage.ListViewItem_KeyDown}"
                 Style="{StaticResource AppListViewItemStyle}"
                 Tag="{x:Bind Url}"
-                Tapped="ListViewItem_Tapped">
+                Tapped="{x:Bind local:HistoryPage.ListViewItem_Tapped}">
                 <Grid Padding="4,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="56" />

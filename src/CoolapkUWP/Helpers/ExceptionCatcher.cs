@@ -34,7 +34,7 @@ namespace CoolapkUWP.Helpers
         public static ExceptionHandlingSynchronizationContext RegisterForFrame(Frame rootFrame)
         {
             if (rootFrame == null)
-                throw new ArgumentNullException("rootFrame");
+                throw new ArgumentNullException(nameof(rootFrame));
 
             var synchronizationContext = Register();
 

@@ -4,9 +4,14 @@ using System.Linq;
 
 namespace CoolapkUWP.Models
 {
+    [DebuggerStepThrough]
     public class MenuItem
     {
-        [DebuggerStepThrough]
+        public bool IsInGroup { get; private set; }
+        public string Title { get; private set; }
+        public string Uri { get; private set; }
+        public System.Collections.Generic.IEnumerable<MenuItem> Entities { get; private set; }
+
         private MenuItem(JToken t, bool isInGroup)
         {
             if (t == null) { throw new System.ArgumentNullException(nameof(t)); }
@@ -15,21 +20,14 @@ namespace CoolapkUWP.Models
             IsInGroup = isInGroup;
         }
 
-        [DebuggerStepThrough]
         public MenuItem(JToken t) : this(t, false)
         {
-            var a = (JArray)t["entities"];
-            if (a != null && a.Count > 0)
+            if (t["entities"] is JArray a && a.Count > 0)
             {
                 Entities = from ta in a
                            where ta.Value<string>("entityType") == "page"
                            select new MenuItem(ta, true);
             }
         }
-
-        public bool IsInGroup { get; private set; }
-        public string Title { get; private set; }
-        public string Uri { get; private set; }
-        public System.Collections.Generic.IEnumerable<MenuItem> Entities { get; private set; }
     }
 }

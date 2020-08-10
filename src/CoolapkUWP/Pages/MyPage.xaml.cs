@@ -110,7 +110,7 @@ namespace CoolapkUWP.Pages
 
         #region 搜索框相关
 
-        private async void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        private static async void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
@@ -124,7 +124,7 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        private static void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             if (args.ChosenSuggestion is SearchWord word)
             {
@@ -136,7 +136,7 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        private static void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             sender.Text = ((SearchWord)args.SelectedItem).GetTitle();
         }
@@ -166,7 +166,7 @@ namespace CoolapkUWP.Pages
                     break;
 
                 case "feed":
-                    var f = ViewModelBase.GetProvider(FeedListType.UserPageList, SettingsHelper.Get<string>(SettingsHelper.Uid));
+                    var f = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, SettingsHelper.Get<string>(SettingsHelper.Uid));
                     if (f != null)
                         UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
                     break;
@@ -231,7 +231,7 @@ namespace CoolapkUWP.Pages
 
         private void MakeFeedControl_MakedFeedSuccessful(object sender, System.EventArgs e)
         {
-            Refresh();
+            _ = Refresh();
         }
 
         private void TextBlockEx_RichTextBlockLoaded(object sender, System.EventArgs e)

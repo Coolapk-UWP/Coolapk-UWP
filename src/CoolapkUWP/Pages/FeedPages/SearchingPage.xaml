@@ -6,6 +6,7 @@
     xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
+    xmlns:local="using:CoolapkUWP.Pages.FeedPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
@@ -15,7 +16,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:DataTemplates />
+                <templates:OtherDataTemplates />
                 <templates:Feed />
                 <templates:SearchWord />
             </ResourceDictionary.MergedDictionaries>
@@ -117,8 +118,8 @@
                 ItemTemplate="{StaticResource searchWord}"
                 QueryIcon="Find"
                 QuerySubmitted="SearchText_QuerySubmitted"
-                SuggestionChosen="AutoSuggestBox_SuggestionChosen"
-                TextChanged="SearchText_TextChanged" />
+                SuggestionChosen="{x:Bind local:SearchingPage.AutoSuggestBox_SuggestionChosen}"
+                TextChanged="{x:Bind local:SearchingPage.SearchText_TextChanged}" />
             <ComboBox
                 x:Name="searchTypeComboBox"
                 Grid.Column="3"

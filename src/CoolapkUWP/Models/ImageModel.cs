@@ -8,50 +8,9 @@ namespace CoolapkUWP.Models
 {
     public class ImageModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public ImageModel(string uri, ImageType type)
-        {
-            Uri = uri;
-            Type = type;
-            SettingsHelper.BackgroundChanged.Add(isDarkMode =>
-                {
-                    _ = UIHelper.ShellDispatcher?.RunAsync(
-                        Windows.UI.Core.CoreDispatcherPriority.Normal,
-                        () =>
-                        {
-                            if (pic == null)
-                            {
-                                GetImage();
-                            }
-                            else
-                            {
-                                if (pic.TryGetTarget(out BitmapImage image) && image.UriSource.Scheme == "ms-appx")
-                                {
-                                    Pic = ImageCacheHelper.NoPic;
-                                }
-                            }
-                        });
-                });
-
-            SettingsHelper.NoPicModeChanged.Add(_ => GetImage());
-        }
-
         private WeakReference<BitmapImage> pic;
         private bool isLongPic;
         private ImmutableArray<ImageModel> contextArray;
-
-        public ImmutableArray<ImageModel> ContextArray
-        {
-            get => contextArray;
-            set
-            {
-                if (contextArray.IsDefaultOrEmpty)
-                {
-                    contextArray = value;
-                }
-            }
-        }
 
         public BitmapImage Pic
         {
@@ -91,11 +50,58 @@ namespace CoolapkUWP.Models
             }
         }
 
-        public bool IsGif { get => Uri.Substring(Uri.LastIndexOf('.')).ToLower().Contains("gif", StringComparison.Ordinal); }
+        public ImmutableArray<ImageModel> ContextArray
+        {
+            get => contextArray;
+            set
+            {
+                if (contextArray.IsDefaultOrEmpty)
+                {
+                    contextArray = value;
+                }
+            }
+        }
+
+        public bool IsGif { get => Uri.Substring(Uri.LastIndexOf('.')).ToUpperInvariant().Contains("GIF", StringComparison.Ordinal); }
 
         public string Uri { get; }
 
         public ImageType Type { get; }
+
+        public ImageModel(string uri, ImageType type)
+        {
+            Uri = uri;
+            Type = type;
+            SettingsHelper.UiSettingChanged.Add(mode =>
+                {
+                    switch (mode)
+                    {
+                        case UiSettingChangedType.LightMode:
+                        case UiSettingChangedType.DarkMode:
+                            _ = UIHelper.ShellDispatcher?.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () =>
+                                {
+                                    if (pic == null)
+                                    {
+                                        GetImage();
+                                    }
+                                    else if (pic.TryGetTarget(out BitmapImage image) && image.UriSource != null)
+                                    {
+                                        Pic = ImageCacheHelper.NoPic;
+                                    }
+                                });
+
+                            break;
+
+                        case UiSettingChangedType.NoPicChanged:
+                            GetImage();
+                            break;
+                    }
+                });
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
@@ -105,7 +111,9 @@ namespace CoolapkUWP.Models
 
         private async void GetImage()
         {
+            if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode)) { Pic = ImageCacheHelper.NoPic; }
             var bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri);
+            if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode)) { return; }
             Pic = bitmapImage;
             IsLongPic = bitmapImage.PixelHeight > bitmapImage.PixelWidth * 2;
         }

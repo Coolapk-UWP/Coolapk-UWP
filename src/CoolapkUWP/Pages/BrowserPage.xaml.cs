@@ -100,7 +100,7 @@ namespace CoolapkUWP.Pages
             await Windows.System.Launcher.LaunchUriAsync(new Uri(uri));
         }
 
-        private async void tryLoginButton_Click(object sender, RoutedEventArgs e)
+        private void tryLoginButton_Click(object sender, RoutedEventArgs e)
         {
             CheckLogin();
         }

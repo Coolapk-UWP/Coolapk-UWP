@@ -80,7 +80,7 @@ namespace CoolapkUWP.ViewModels.FeedRepliesPage
         public async Task Refresh(int p = -1)
         {
             await provider?.Refresh(p);
-            if (p == -2)
+            if (p == -2 && provider?.Models.Count == 0)
             {
                 provider?.Models.Insert(0, replyModel);
             }

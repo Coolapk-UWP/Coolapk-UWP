@@ -6,6 +6,16 @@ namespace CoolapkUWP.Models
 {
     internal class SimpleFeedReplyModel : Entity
     {
+        public string Rusername { get; private set; }
+        public string Rurl { get; private set; }
+        public int Id { get; private set; }
+        public string Uurl { get; private set; }
+        public string Username { get; private set; }
+        public string Message { get; private set; }
+        public bool IsFeedAuthor { get; private set; }
+        public bool ShowPic { get; protected set; }
+        public string PicUri { get; private set; }
+
         public SimpleFeedReplyModel(JObject o) : base(o)
         {
             Id = o.Value<int>("id");
@@ -14,12 +24,13 @@ namespace CoolapkUWP.Models
             IsFeedAuthor = o.Value<int>("isFeedAuthor") == 1;
             Rurl = $"/u/{o.Value<int>("ruid")}";
             Rusername = o.Value<string>("rusername");
-            
+
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
 
-            Message = string.IsNullOrEmpty(Rusername)
-                ? $"{GetUserLink(Uurl, Username) + GetAuthorString()}: {o.Value<string>("message")}"
-                : $"{GetUserLink(Uurl, Username) + GetAuthorString()}@{GetUserLink(Rurl, Rusername)}: {o.Value<string>("message")}";
+            Message = 
+                string.IsNullOrEmpty(Rusername)
+                ? $"{GetUserLink(Uurl, Username) + GetAuthorString(IsFeedAuthor)}: {o.Value<string>("message")}"
+                : $"{GetUserLink(Uurl, Username) + GetAuthorString(IsFeedAuthor)}@{GetUserLink(Rurl, Rusername)}: {o.Value<string>("message")}";
 
             ShowPic = o.TryGetValue("pic", out JToken value) && !string.IsNullOrEmpty(value.ToString());
             if (ShowPic)
@@ -29,24 +40,14 @@ namespace CoolapkUWP.Models
             }
         }
 
-        private string GetAuthorString()
+        private static string GetAuthorString(bool isFeedAuthor)
         {
-            return IsFeedAuthor ? TextBlockEx.AuthorBorder : string.Empty;
+            return isFeedAuthor ? TextBlockEx.AuthorBorder : string.Empty;
         }
 
-        private string GetUserLink(string url, string name)
+        private static string GetUserLink(string url, string name)
         {
             return $"<a href=\"{url}\" type=\"user-detail\">{name}</a>";
         }
-
-        public string Rusername { get; private set; }
-        public string Rurl { get; private set; }
-        public double Id { get; private set; }
-        public string Uurl { get; private set; }
-        public string Username { get; private set; }
-        public string Message { get; private set; }
-        public bool IsFeedAuthor { get; private set; }
-        public bool ShowPic { get; protected set; }
-        public string PicUri { get; private set; }
     }
 }

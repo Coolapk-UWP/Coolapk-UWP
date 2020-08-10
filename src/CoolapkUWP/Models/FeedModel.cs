@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 
 namespace CoolapkUWP.Models
@@ -18,88 +17,6 @@ namespace CoolapkUWP.Models
 
     internal class FeedModel : FeedModelBase
     {
-        public FeedModel(JObject token, FeedDisplayMode mode = FeedDisplayMode.normal) : base(token)
-        {
-            if (!string.IsNullOrEmpty(MessageTitle) && !mode.HasFlag(FeedDisplayMode.notShowMessageTitle)) ShowMessageTitle = true;
-            if (mode.HasFlag(FeedDisplayMode.isFirstPageFeed))
-            {
-                Info = token.Value<string>("infoHtml").Replace("&nbsp;", string.Empty);
-                ShowDateline = false;
-                ShowReplyRows = token.TryGetValue("replyRows", out JToken value) && (value as JArray ?? new JArray()).Count > 0 ? true : false;
-                if (ShowReplyRows)
-                {
-                    ReplyRows = value.Select(item => new ReplyRowsItem((JObject)item)).ToList();
-                }
-            }
-            else if (mode.HasFlag(FeedDisplayMode.normal))
-                if (token.TryGetValue("info", out JToken value1))
-                    Info = value1.ToString();
-
-            if (token.Value<string>("entityType") != "article")
-            {
-                if (token.Value<string>("feedType") == "question")
-                    ShowLikes = false;
-                Uurl = token["userInfo"].Value<string>("url");
-            }
-            else
-            {
-                if (!mode.HasFlag(FeedDisplayMode.notShowDyhName))
-                {
-                    ShowDyh = true;
-                    var dyhlogoUrl = token["dyh_info"].Value<string>("logo");
-                    if (!string.IsNullOrEmpty(dyhlogoUrl))
-                        Dyhlogo = new ImageModel(dyhlogoUrl, ImageType.Icon);
-                    Dyhurl = token["dyh_info"].Value<string>("url");
-                    Dyhname = token.Value<string>("dyh_name");
-                }
-                ShowFromInfo = (token["dyh_info"] as JObject).TryGetValue("fromInfo", out JToken value);
-                if (ShowFromInfo)
-                {
-                    FromInfo = value.ToString();
-                    Uurl = $"/u/{token.Value<int>("from_uid")}";
-                }
-            }
-
-            ShowRelationRows = (token.TryGetValue("location", out JToken valuelocation) && !string.IsNullOrEmpty(valuelocation.ToString()))
-                               | (token.TryGetValue("ttitle", out JToken valuettitle) && !string.IsNullOrEmpty(valuettitle.ToString()))
-                               | (token.TryGetValue("dyh_name", out JToken valuedyh) && !string.IsNullOrEmpty(valuedyh.ToString()))
-                               | (token.TryGetValue("relationRows", out JToken valuerelationRows) && (valuerelationRows as JArray ?? new JArray()).Count > 0);
-            if (ShowRelationRows)
-            {
-                var buider = new List<RelationRowsItem>();
-                if (!(valuelocation == null || string.IsNullOrEmpty(valuelocation.ToString())))
-                {
-                    buider.Add(new RelationRowsItem { Title = valuelocation.ToString() });
-                }
-
-                if (!(valuettitle == null || string.IsNullOrEmpty(valuettitle.ToString())))
-                {
-                    buider.Add(new RelationRowsItem { Title = valuettitle.ToString(), Url = token.Value<string>("turl"), Logo = new ImageModel(token.Value<string>("tpic"), ImageType.Icon) });
-                }
-
-                if (!(token.Value<string>("entityType") == "article" || valuedyh == null || string.IsNullOrEmpty(valuedyh.ToString())))
-                {
-                    buider.Add(new RelationRowsItem { Title = valuedyh.ToString(), Url = $"/dyh/{token["dyh_id"].ToString().Replace("\"", string.Empty)}" });
-                }
-
-                if (valuerelationRows != null)
-                {
-                    foreach (var i in valuerelationRows as JArray)
-                    {
-                        JObject item = i as JObject;
-                        buider.Add(new RelationRowsItem { Title = item.Value<string>("title"), Url = item.Value<string>("url"), Logo = new ImageModel(item.Value<string>("logo"), ImageType.Icon) });
-                    }
-                }
-
-                if (buider.Count == 0)
-                {
-                    ShowRelationRows = false;
-                }
-                RelationRows = buider;
-            }
-            IsStickTop = token.TryGetValue("isStickTop", out JToken j) && int.Parse(j.ToString()) == 1;
-        }
-
         public new bool ShowMessageTitle { get; private set; }
         public new string Uurl { get; private set; }
         public new string Info { get; private set; }
@@ -116,6 +33,92 @@ namespace CoolapkUWP.Models
         public bool ShowLikes { get; private set; } = true;
         public List<ReplyRowsItem> ReplyRows { get; private set; }
         public List<RelationRowsItem> RelationRows { get; private set; }
+
+        public FeedModel(JObject token, FeedDisplayMode mode = FeedDisplayMode.normal) : base(token)
+        {
+            ShowMessageTitle = !string.IsNullOrEmpty(MessageTitle) && !mode.HasFlag(FeedDisplayMode.notShowMessageTitle);
+            if (mode.HasFlag(FeedDisplayMode.isFirstPageFeed))
+            {
+                Info = token.Value<string>("infoHtml").Replace("&nbsp;", string.Empty, StringComparison.Ordinal);
+                ShowDateline = false;
+                ShowReplyRows = token.TryGetValue("replyRows", out JToken value) && ((value as JArray)?.Count ?? 0) > 0;
+                if (ShowReplyRows)
+                {
+                    ReplyRows = value.Select(item => new ReplyRowsItem((JObject)item)).ToList();
+                }
+            }
+            else if (mode.HasFlag(FeedDisplayMode.normal) && token.TryGetValue("info", out JToken value1))
+            {
+                Info = value1.ToString();
+            }
+
+            if (token.Value<string>("entityType") == "article")
+            {
+                ShowDyh = !mode.HasFlag(FeedDisplayMode.notShowDyhName);
+                if (ShowDyh)
+                {
+                    Dyhurl = token["dyh_info"].Value<string>("url");
+                    Dyhname = token.Value<string>("dyh_name");
+                    var dyhlogoUrl = token["dyh_info"].Value<string>("logo");
+                    if (!string.IsNullOrEmpty(dyhlogoUrl))
+                    {
+                        Dyhlogo = new ImageModel(dyhlogoUrl, ImageType.Icon);
+                    }
+                }
+                ShowFromInfo = (token["dyh_info"] as JObject).TryGetValue("fromInfo", out JToken value);
+                if (ShowFromInfo)
+                {
+                    FromInfo = value.ToString();
+                    Uurl = $"/u/{token.Value<int>("from_uid")}";
+                }
+            }
+            else
+            {
+                ShowLikes = token.Value<string>("feedType") != "question";
+                Uurl = token["userInfo"].Value<string>("url");
+            }
+
+            ShowRelationRows = (token.TryGetValue("location", out JToken vLocation) && !string.IsNullOrEmpty(vLocation.ToString())) |
+                               (token.TryGetValue("ttitle", out JToken vTtitle) && !string.IsNullOrEmpty(vTtitle.ToString())) |
+                               (token.TryGetValue("dyh_name", out JToken vDyh) && !string.IsNullOrEmpty(vDyh.ToString())) |
+                               (token.TryGetValue("relationRows", out JToken vRelationRows) && ((vRelationRows as JArray)?.Count ?? 0) > 0);
+            if (ShowRelationRows)
+            {
+                var buider = new List<RelationRowsItem>();
+                if (vLocation != null && !string.IsNullOrEmpty(vLocation.ToString()))
+                {
+                    buider.Add(new RelationRowsItem { Title = vLocation.ToString() });
+                }
+
+                if (vTtitle != null && !string.IsNullOrEmpty(vTtitle.ToString()))
+                {
+                    buider.Add(new RelationRowsItem { Title = vTtitle.ToString(), Url = token.Value<string>("turl"), Logo = new ImageModel(token.Value<string>("tpic"), ImageType.Icon) });
+                }
+
+                if (token.Value<string>("entityType") != "article" && vDyh != null && !string.IsNullOrEmpty(vDyh.ToString()))
+                {
+                    buider.Add(new RelationRowsItem { Title = vDyh.ToString(), Url = $"/dyh/{token["dyh_id"].ToString().Replace("\"", string.Empty)}" });
+                }
+
+                if (vRelationRows != null)
+                {
+                    foreach (var i in vRelationRows as JArray)
+                    {
+                        JObject item = i as JObject;
+                        buider.Add(new RelationRowsItem
+                        {
+                            Title = item.Value<string>("title"),
+                            Url = item.Value<string>("url"),
+                            Logo = new ImageModel(item.Value<string>("logo"), ImageType.Icon)
+                        });
+                    }
+                }
+
+                ShowRelationRows = buider.Count != 0;
+                RelationRows = buider;
+            }
+            IsStickTop = token.TryGetValue("isStickTop", out JToken j) && int.Parse(j.ToString()) == 1;
+        }
     }
 
     public class RelationRowsItem
@@ -127,18 +130,17 @@ namespace CoolapkUWP.Models
 
     public class ReplyRowsItem
     {
+        public string ExtraFlag { get; private set; }
+        public double Id { get; private set; }
+        public string Message { get; private set; }
+
         public ReplyRowsItem(JObject token)
         {
             ExtraFlag = token.Value<string>("extraFlag");
             Id = token.Value<int>("id");
-            if (string.IsNullOrEmpty(token.Value<string>("pic")))
-                Message = $"<a href=\"/u/{token.Value<int>("uid")}\" type=\"user-detail\">{token.Value<string>("username")}</a>：{token.Value<string>("message")}";
-            else
-                Message = $"<a href=\"/u/{token.Value<int>("uid")}\" type=\"user-detail\">{token.Value<string>("username")}</a>：{token.Value<string>("message")} <a href=\"{token.Value<string>("pic")}\">查看图片</a>";
+            Message = string.IsNullOrEmpty(token.Value<string>("pic"))
+                ? $"<a href=\"/u/{token.Value<int>("uid")}\" type=\"user-detail\">{token.Value<string>("username")}</a>：{token.Value<string>("message")}"
+                : $"<a href=\"/u/{token.Value<int>("uid")}\" type=\"user-detail\">{token.Value<string>("username")}</a>：{token.Value<string>("message")} <a href=\"{token.Value<string>("pic")}\">查看图片</a>";
         }
-
-        public string ExtraFlag { get; private set; }
-        public double Id { get; private set; }
-        public string Message { get; private set; }
     }
 }

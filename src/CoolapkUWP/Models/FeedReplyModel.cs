@@ -8,37 +8,9 @@ namespace CoolapkUWP.Models
 {
     internal class FeedReplyModel : SimpleFeedReplyModel, INotifyPropertyChanged, ICanChangeLikModel, ICanChangeReplyNum, ICanCopy
     {
-        public FeedReplyModel(JObject o, bool showReplyRow = true) : base(o)
-        {
-            Dateline = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty)));
-            Message = o.Value<string>("message");
-            var userSmallAvatarUrl = o["userInfo"].Value<string>("userSmallAvatar");
-            if (!string.IsNullOrEmpty(userSmallAvatarUrl))
-            {
-                UserSmallAvatar = new ImageModel(userSmallAvatarUrl, ImageType.BigAvatar);
-            }
-            Likenum = o["likenum"].ToString().Replace("\"", string.Empty);
-            Replynum = o["replynum"].ToString().Replace("\"", string.Empty);
-            o.TryGetValue("replyRowsCount", out JToken value1);
-            ReplyRowsCount = int.Parse(value1?.ToString() ?? "0");
-            ShowreplyRows = showReplyRow && ReplyRowsCount > 0;
-            if (ShowreplyRows)
-            {
-                ReplyRows = o["replyRows"].Select(item => new SimpleFeedReplyModel((JObject)item)).ToList();
-
-                ReplyRowsMore = o.Value<int>("replyRowsMore");
-            }
-            Liked = o.TryGetValue("userAction", out JToken v) ? v.Value<int>("like") == 1 : false;
-            if (ShowPic)
-            {
-                Pic = new ImageModel(PicUri, ImageType.SmallImage);
-            }
-        }
-
         private string likenum1;
         private string replynum;
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        private bool isCopyEnabled;
 
         public string Likenum
         {
@@ -59,6 +31,17 @@ namespace CoolapkUWP.Models
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Replynum)));
             }
         }
+
+        public bool IsCopyEnabled
+        {
+            get => isCopyEnabled;
+            set
+            {
+                isCopyEnabled = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCopyEnabled)));
+            }
+        }
+
         public new string Message { get; private set; }
         public ImageModel UserSmallAvatar { get; private set; }
         public ImageModel Pic { get; private set; }
@@ -71,17 +54,34 @@ namespace CoolapkUWP.Models
         public bool Liked { get; set; }
         public bool Liked2 { get => !Liked; }
 
-        private bool isCopyEnabled;
+        string ICanChangeLikModel.Id => $"{Id}";
 
-        public bool IsCopyEnabled
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public FeedReplyModel(JObject o, bool showReplyRow = true) : base(o)
         {
-            get => isCopyEnabled;
-            set
+            Dateline = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal)));
+            Message = o.Value<string>("message");
+            var userSmallAvatarUrl = o["userInfo"].Value<string>("userSmallAvatar");
+            if (!string.IsNullOrEmpty(userSmallAvatarUrl))
             {
-                isCopyEnabled = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCopyEnabled)));
+                UserSmallAvatar = new ImageModel(userSmallAvatarUrl, ImageType.BigAvatar);
+            }
+            Likenum = o["likenum"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal);
+            Replynum = o["replynum"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal);
+            o.TryGetValue("replyRowsCount", out JToken value1);
+            ReplyRowsCount = int.Parse(value1?.ToString() ?? "0");
+            ShowreplyRows = showReplyRow && ReplyRowsCount > 0;
+            if (ShowreplyRows)
+            {
+                ReplyRows = o["replyRows"].Select(item => new SimpleFeedReplyModel((JObject)item)).ToList();
+                ReplyRowsMore = o.Value<int>("replyRowsMore");
+            }
+            Liked = o.TryGetValue("userAction", out JToken v) ? v.Value<int>("like") == 1 : false;
+            if (ShowPic)
+            {
+                Pic = new ImageModel(PicUri, ImageType.SmallImage);
             }
         }
-        string ICanChangeLikModel.Id => Id.ToString();
     }
 }

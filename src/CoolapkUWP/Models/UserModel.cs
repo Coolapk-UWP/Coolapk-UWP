@@ -12,14 +12,14 @@ namespace CoolapkUWP.Models
             UserName = o.Value<string>("username");
             if (o.TryGetValue("fans", out JToken a))
             {
-                FansNum = a.ToString().Replace("\"", string.Empty);
-                FollowNum = o["follow"].ToString().Replace("\"", string.Empty);
+                FansNum = a.ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal);
+                FollowNum = o["follow"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal);
                 if (o.TryGetValue("bio", out JToken b))
                 {
                     Bio = b.ToString();
                 }
 
-                LoginTime = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(o["logintime"].ToString().Replace("\"", string.Empty))) + "活跃";
+                LoginTime = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(o["logintime"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal))) + "活跃";
             }
             UserAvatar = new ImageModel(o.Value<string>("userSmallAvatar"), ImageType.BigAvatar);
         }

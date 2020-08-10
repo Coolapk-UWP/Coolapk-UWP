@@ -12,7 +12,7 @@ namespace CoolapkUWP.Pages.FeedPages
 {
     public sealed partial class FeedListPage : Page
     {
-        private ViewModelBase provider;
+        private FeedListPageViewModelBase provider;
 
         public FeedListPage() => this.InitializeComponent();
 
@@ -20,9 +20,9 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             base.OnNavigatedTo(e);
             titleBar.ShowProgressRing();
-
-            provider = e.Parameter as ViewModelBase;
+            provider = e.Parameter as FeedListPageViewModelBase;
             listView.ItemsSource = provider.Models;
+            provider.TitleUpdate += Provider_TitleUpdate;
 
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
             switch (provider.ListType)
@@ -52,11 +52,17 @@ namespace CoolapkUWP.Pages.FeedPages
                     };
                     rightComboBox.SelectedIndex = (provider as ICanComboBoxChangeSelectedIndex).ComboBoxSelectedIndex;
                     break;
+
+                case FeedListType.CollectionPageList:
+                    rightComboBox.Visibility = Visibility.Visible;
+                    rightComboBox.ItemsSource = ((CollectionViewModel)provider).ComboBoxItems;
+                    rightComboBox.SelectedIndex = (provider as ICanComboBoxChangeSelectedIndex).ComboBoxSelectedIndex;
+                    break;
             }
-            await provider.LoadNextPage();
+            Refresh();
+            titleBar.ShowProgressRing();
             await System.Threading.Tasks.Task.Delay(30);
 
-            titleBar.Title = provider.Title;
             scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
             if (provider.Models.Count > 0)
             {
@@ -70,10 +76,16 @@ namespace CoolapkUWP.Pages.FeedPages
             titleBar.HideProgressRing();
         }
 
+        private void Provider_TitleUpdate(object sender, System.EventArgs e)
+        {
+            titleBar.Title = provider.Title;
+        }
+
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             provider.VerticalOffsets[0] = scrollViewer.VerticalOffset;
             provider?.ChangeCopyMode(false);
+            provider.TitleUpdate -= Provider_TitleUpdate;
             rightComboBox.SelectionChanged -= FeedTypeComboBox_SelectionChanged;
             titleBar.Title = string.Empty;
 
@@ -92,10 +104,15 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
-        private void UserDetailBorder_Tapped(object sender, TappedRoutedEventArgs e)
+        private static void UserDetailBorder_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (!(e == null || UIHelper.IsOriginSource(sender, e.OriginalSource))) { return; }
-            if (e.OriginalSource.GetType() == typeof(Windows.UI.Xaml.Shapes.Ellipse) && sender.GetType() == typeof(ListViewItem)) { return; }
+            if (e.OriginalSource.GetType() == typeof(Windows.UI.Xaml.Shapes.Ellipse)) { return; }
+            if (sender is ListViewItem l && l.Tag is Models.IndexPageModel i)
+            {
+                UIHelper.OpenLinkAsync(i.Url);
+            }
+            else { return; }
 
             UIHelper.ShowImage((sender as FrameworkElement)?.Tag as Models.ImageModel);
         }
@@ -152,13 +169,11 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private async void scrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        private void scrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             if (!e.IsIntermediate && scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
             {
-                titleBar.ShowProgressRing();
-                await provider.LoadNextPage();
-                titleBar.HideProgressRing();
+                Refresh();
             }
         }
 
@@ -174,13 +189,26 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             Refresh(-2);
         }
+
+        internal static void UserDetailBorder_Loaded(object sender, RoutedEventArgs e)
+        {
+            var b = sender as Border;
+            b.Height = b.ActualWidth;
+        }
+
+        internal static void UserDetailBorder_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var b = sender as Border;
+            b.Height = e.NewSize.Width;
+        }
     }
 
     internal enum FeedListType
     {
         UserPageList,
         TagPageList,
-        DyhPageList
+        DyhPageList,
+        CollectionPageList,
     }
 
     internal class FeedListPageTemplateSelector : DataTemplateSelector
@@ -189,6 +217,7 @@ namespace CoolapkUWP.Pages.FeedPages
         public DataTemplate Feed { get; set; }
         public DataTemplate TopicHeader { get; set; }
         public DataTemplate DyhHeader { get; set; }
+        public DataTemplate CollectionHeader { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
@@ -197,6 +226,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 case UserDetail _: return UserHeader;
                 case TopicDetail _: return TopicHeader;
                 case DyhDetail _: return DyhHeader;
+                case CollectionDetail _: return CollectionHeader;
                 default: return Feed;
             }
         }

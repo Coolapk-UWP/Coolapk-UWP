@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CoolapkUWP.Core.Helpers
@@ -32,7 +33,7 @@ namespace CoolapkUWP.Core.Helpers
             using (var md5 = MD5.Create())
             {
                 var r1 = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
-                var r2 = BitConverter.ToString(r1).ToLower();
+                var r2 = BitConverter.ToString(r1).ToLowerInvariant();
                 return r2.Replace("-", "");
             }
         }
@@ -82,7 +83,24 @@ namespace CoolapkUWP.Core.Helpers
 
     public static partial class Utils
     {
-        private static readonly Dictionary<Uri, string> responseCache = new Dictionary<Uri, string>();
+        private static readonly Dictionary<Uri, (DateTime, string)> responseCache = new Dictionary<Uri, (DateTime, string)>();
+
+        private static readonly object locker = new object();
+
+        private readonly static Timer cleanCacheTimer = new Timer(o =>
+        {
+            lock (locker)
+            {
+                var now = DateTime.Now;
+                var needDelete = (from i in responseCache
+                                  where (now - i.Value.Item1).TotalMinutes > 2
+                                  select i.Key).ToArray();
+                foreach (var item in needDelete)
+                {
+                    responseCache.Remove(item);
+                }
+            }
+        }, null, TimeSpan.FromMinutes(2), TimeSpan.FromMinutes(2));
 
         private static (bool, JToken) GetResult(string json)
         {
@@ -111,33 +129,40 @@ namespace CoolapkUWP.Core.Helpers
             {
                 json = await NetworkHelper.GetSrtingAsync(uri, cookies);
 
-                if (responseCache.ContainsKey(uri))
+                lock (locker)
                 {
-                    responseCache[uri] = json;
-
-                    int i = uri.PathAndQuery.IndexOf("page=", StringComparison.Ordinal);
-                    if (i != -1)
+                    if (responseCache.ContainsKey(uri))
                     {
-                        string u = uri.PathAndQuery.Substring(i);
+                        responseCache[uri] = (DateTime.Now, json);
 
-                        var needDelete = (from item in responseCache
-                                          where item.Key != uri
-                                          where item.Key.PathAndQuery.IndexOf(u, StringComparison.Ordinal) == 0
-                                          select item).ToArray();
-                        foreach (var item in needDelete)
+                        int i = uri.PathAndQuery.IndexOf("page=", StringComparison.Ordinal);
+                        if (i != -1)
                         {
-                            responseCache.Remove(item.Key);
+                            string u = uri.PathAndQuery.Substring(i);
+
+                            var needDelete = (from item in responseCache
+                                              where item.Key != uri
+                                              where item.Key.PathAndQuery.IndexOf(u, StringComparison.Ordinal) == 0
+                                              select item).ToArray();
+                            foreach (var item in needDelete)
+                            {
+                                responseCache.Remove(item.Key);
+                            }
                         }
                     }
-                }
-                else
-                {
-                    responseCache.Add(uri, json);
+                    else
+                    {
+                        responseCache.Add(uri, (DateTime.Now, json));
+                    }
                 }
             }
             else
             {
-                json = responseCache[uri];
+                lock (locker)
+                {
+                    json = responseCache[uri].Item2;
+                    responseCache[uri] = (DateTime.Now, json);
+                }
             }
 
             return GetResult(json);

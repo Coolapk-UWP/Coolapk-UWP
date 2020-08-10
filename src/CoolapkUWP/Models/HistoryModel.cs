@@ -6,6 +6,12 @@ namespace CoolapkUWP.Models
 {
     public class HistoryModel : Entity
     {
+        public string Title { get; private set; }
+        public string Url { get; private set; }
+        public string Description { get; private set; }
+        public ImageModel Pic { get; private set; }
+        public string Id { get; private set; }
+
         public HistoryModel(JObject o) : base(o)
         {
             if (o.TryGetValue("id", out JToken v1) && !string.IsNullOrEmpty(v1.ToString()))
@@ -33,11 +39,5 @@ namespace CoolapkUWP.Models
                 Pic = new ImageModel(v6.ToString(), ImageType.Icon);
             }
         }
-
-        public string Title { get; private set; }
-        public string Url { get; private set; }
-        public string Description { get; private set; }
-        public ImageModel Pic { get; private set; }
-        public string Id { get; private set; }
     }
 }

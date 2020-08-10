@@ -12,40 +12,40 @@ using System.Threading.Tasks;
 
 namespace CoolapkUWP.ViewModels.FeedListPage
 {
-    internal abstract class ViewModelBase : IViewModel
+    internal abstract class FeedListPageViewModelBase : IViewModel
     {
+        protected const string idName = "id";
+        protected static readonly Func<JObject, Entity[]> getEntity = (o) => new Entity[] { new FeedModel(o) };
+        protected static readonly Func<Entity, JToken, bool> isEqual = (a, b) => a is FeedListDetailBase ? false : ((FeedModel)a).Id == b.Value<int>("id").ToString();
+        private string title;
+
         public string Id { get; }
         public FeedListType ListType { get; }
         protected abstract CoolapkListProvider Provider { get; }
         public ObservableCollection<Entity> Models { get => Provider?.Models ?? null; }
         public double[] VerticalOffsets { get; set; } = new double[1];
 
-        public string Title { get; protected set; }
-
-        protected const string idName = "id";
-        protected static readonly Func<JObject, Entity[]> getEntity = (o) => new Entity[] { new FeedModel(o) };
-        protected static readonly Func<Entity, JToken, bool> isEqual = (a, b) => a is FeedListDetailBase ? false : ((FeedModel)a).Id == b.Value<int>("id").ToString();
-
-        protected ViewModelBase(string id, FeedListType type)
+        public string Title
         {
-            Id = string.IsNullOrEmpty(id) ? throw new ArgumentException(nameof(id))
-                                          : id;
-            ListType = type;
-            _ = InitialDetail();
-        }
-
-        internal async Task InitialDetail()
-        {
-            while (Provider?.Models == null)
+            get => title;
+            protected set
             {
-                await Task.Delay(20);
+                title = value;
+                TitleUpdate?.Invoke(this, null);
             }
-            FeedListDetailBase item = await GetDetail();
-            Models.Insert(0, item);
-            Title = GetTitleBarText(item);
         }
 
-        public static ViewModelBase GetProvider(FeedListType type, string id)
+        public event EventHandler TitleUpdate;
+
+        protected FeedListPageViewModelBase(string id, FeedListType type)
+        {
+            Id = string.IsNullOrEmpty(id)
+                ? throw new ArgumentException(nameof(id))
+                : id;
+            ListType = type;
+        }
+
+        public static FeedListPageViewModelBase GetProvider(FeedListType type, string id)
         {
             if (string.IsNullOrEmpty(id) || id == "0") return null;
             switch (type)
@@ -53,6 +53,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                 case FeedListType.UserPageList: return new UserViewModel(id);
                 case FeedListType.TagPageList: return new TagViewModel(id);
                 case FeedListType.DyhPageList: return new DyhViewModel(id);
+                case FeedListType.CollectionPageList: return new CollectionViewModel(id);
                 default: return null;
             }
         }
@@ -83,6 +84,10 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                     type = UriType.GetDyhDetail;
                     break;
 
+                case FeedListType.CollectionPageList:
+                    type = UriType.GetCollectionDetail;
+                    break;
+
                 default:
                     throw new ArgumentException($"{typeof(FeedListType).FullName}值错误");
             }
@@ -106,6 +111,10 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                     case FeedListType.DyhPageList:
                         d = new DyhDetail(o);
                         break;
+
+                    case FeedListType.CollectionPageList:
+                        d = new CollectionDetail(o);
+                        break;
                 }
             }
             return d;
@@ -113,33 +122,27 @@ namespace CoolapkUWP.ViewModels.FeedListPage
 
         protected abstract string GetTitleBarText(FeedListDetailBase detail);
 
-        public async Task Refresh()
+        public async Task Refresh(int p)
         {
+            await Provider.Refresh(p);
+
             ICanComboBoxChangeSelectedIndex it = null;
             if (Models.Count > 0)
             {
                 it = Models[0] as ICanComboBoxChangeSelectedIndex;
                 Models.RemoveAt(0);
             }
-
             var item = await GetDetail();
+            Title = GetTitleBarText(item);
             if (it != null)
             {
                 await (item as ICanComboBoxChangeSelectedIndex).SetComboBoxSelectedIndex(it.ComboBoxSelectedIndex);
             }
             Models.Insert(0, item);
-            Title = GetTitleBarText(item);
-
-            await Provider?.Refresh(1);
         }
-
-        public async Task LoadNextPage() => await Provider?.Refresh();
-
-        [Obsolete]
-        public async Task Refresh(int p) => await Provider?.Refresh(p);
     }
 
-    internal class UserViewModel : ViewModelBase
+    internal class UserViewModel : FeedListPageViewModelBase
     {
         protected override CoolapkListProvider Provider { get; }
 
@@ -165,7 +168,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
         protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as UserDetail).UserName;
     }
 
-    internal class TagViewModel : ViewModelBase, ICanComboBoxChangeSelectedIndex
+    internal class TagViewModel : FeedListPageViewModelBase, ICanComboBoxChangeSelectedIndex
     {
         public int ComboBoxSelectedIndex { get; private set; }
 
@@ -210,13 +213,12 @@ namespace CoolapkUWP.ViewModels.FeedListPage
             ComboBoxSelectedIndex = value;
             if (Provider != null)
             {
-                Provider.Clear();
-                await InitialDetail();
+                await Refresh(-2);
             }
         }
     }
 
-    internal class DyhViewModel : ViewModelBase, ICanComboBoxChangeSelectedIndex
+    internal class DyhViewModel : FeedListPageViewModelBase, ICanComboBoxChangeSelectedIndex
     {
         public int ComboBoxSelectedIndex { get; private set; }
 
@@ -227,8 +229,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                 ComboBoxSelectedIndex = value;
                 if (Provider != null)
                 {
-                    Provider.Reset();
-                    await InitialDetail();
+                    await Refresh(-2);
                 }
             }
         }
@@ -252,4 +253,79 @@ namespace CoolapkUWP.ViewModels.FeedListPage
 
         protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as DyhDetail).Title;
     }
+
+    internal class CollectionViewModel : FeedListPageViewModelBase, ICanComboBoxChangeSelectedIndex
+    {
+        protected override CoolapkListProvider Provider { get; }
+
+        public int ComboBoxSelectedIndex { get; private set; }
+
+        public ObservableCollection<string> ComboBoxItems { get; private set; }
+        private System.Collections.Generic.List<string> comboBoxLinks;
+        public async Task SetComboBoxSelectedIndex(int value)
+        {
+            if (value > -1)
+            {
+                ComboBoxSelectedIndex = value;
+                if (Provider != null)
+                {
+                    await Refresh(-2);
+                }
+            }
+        }
+
+
+        internal CollectionViewModel(string id) : base(id, FeedListType.CollectionPageList)
+        {
+            ComboBoxItems = new ObservableCollection<string>(new[] { "全部" });
+            comboBoxLinks = new System.Collections.Generic.List<string>(new[] { string.Empty });
+            Provider =
+                new CoolapkListProvider(
+                    (p, page, firstItem, lastItem) =>
+                    {
+                        if (ComboBoxSelectedIndex == 0 && string.IsNullOrEmpty(comboBoxLinks[0]))
+                        {
+                            return UriHelper.GetUri(
+                                UriType.GetCollectionContents,
+                                Id,
+                                p < 0 ? ++page : p,
+                                string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}");
+                        }
+                        else
+                        {
+                            var str = $"/v6/page/dataList?url={comboBoxLinks[ComboBoxSelectedIndex]}&page={(p < 0 ? ++page : p)}{(string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}")}";
+                            return new Uri(UriHelper.BaseUri, str.Replace("#", "%23", StringComparison.Ordinal));
+                        }
+                    },
+                    isEqual, (o) =>
+                    {
+                        if (o.Value<string>("entityType") == "card" && o.Value<string>("entityTemplate") == "selectorLinkCard")
+                        {
+                            var array = o["entities"] as JArray;
+                            for (int i = 0; i < array.Count; i++)
+                            {
+                                string title = i == 0 ? "全部" : array[i].Value<string>("title");
+                                var url = array[i].Value<string>("url") + "&title=" + title;
+                                if (i == 0)
+                                {
+                                    comboBoxLinks[i] = url;
+                                }
+                                else
+                                {
+                                    ComboBoxItems.Add(title);
+                                    comboBoxLinks.Add(url);
+                                }
+                            }
+                            return null;
+                        }
+                        else
+                        {
+                            return new[] { new FeedModel(o) };
+                        }
+                    }, "entityId");
+        }
+
+        protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as CollectionDetail).Title;
+    }
+
 }

@@ -72,7 +72,7 @@
                                 KeyDown="ListViewItem_KeyDown"
                                 Style="{StaticResource AppListViewItemStyle}"
                                 Tag="{x:Bind Url}"
-                                Tapped="Grid_Tapped">
+                                Tapped="{x:Bind local:FeedShellListControl.Grid_Tapped}">
 
                                 <StackPanel
                                     Padding="8,4"
@@ -108,7 +108,7 @@
                                 KeyDown="ListViewItem_KeyDown"
                                 Style="{StaticResource FixedListViewItemStyle}"
                                 Tag="{x:Bind Url}"
-                                Tapped="Grid_Tapped">
+                                Tapped="{x:Bind local:FeedShellListControl.Grid_Tapped}">
                                 <Grid
                                     Padding="4"
                                     Background="{ThemeResource SystemControlBackgroundAltHighBrush}"

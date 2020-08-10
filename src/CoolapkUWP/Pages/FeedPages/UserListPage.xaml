@@ -13,7 +13,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:DataTemplates />
+                <templates:OtherDataTemplates />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>

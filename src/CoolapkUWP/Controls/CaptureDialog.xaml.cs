@@ -19,12 +19,14 @@ namespace CoolapkUWP.Controls
 
         private async void SetImage()
         {
-            unixTimeSpan = $"{Core.Helpers.Utils.ConvertDateTimeToUnixTimeStamp(DateTime.Now)}";
+            unixTimeSpan = $"{Utils.ConvertDateTimeToUnixTimeStamp(DateTime.Now)}";
             image.Source = await DataHelper.GetImageAsync($"https://api.coolapk.com/v6/account/captchaImage?time={unixTimeSpan}&w=192&h=80");
         }
 
         private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+            image.Source = null;
+            _ = ImageCacheHelper.CleanCaptchaCacheAsync();
             using (var content = new MultipartFormDataContent())
             using (var type = new StringContent(Core.Exceptions.CoolapkMessageException.RequestCaptcha))
             using (var code = new StringContent(textbox.Text))
