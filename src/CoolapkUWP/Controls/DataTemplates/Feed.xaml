@@ -361,43 +361,57 @@
                         </Grid>
                     </Grid>
 
-                    <Grid
+                    <ListViewItem
                         x:Name="extraT"
                         Grid.Row="6"
                         Margin="0,4,0,0"
+                        Padding="0"
+                        HorizontalContentAlignment="Stretch"
                         x:Load="{x:Bind ShowExtraUrl}"
-                        Background="{ThemeResource SystemControlBackgroundListLowBrush}"
-                        BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                        BorderThickness="1"
-                        CornerRadius="8"
+                        KeyDown="{x:Bind local:Feed.ListViewItem_KeyDown}"
+                        Style="{StaticResource FixedListViewItemStyle}"
                         Tag="{x:Bind ExtraUrl}"
                         Tapped="{x:Bind local:Feed.OnTapped}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Border Background="{ThemeResource SystemControlBackgroundListLowBrush}" CornerRadius="8">
-                            <Image
-                                Width="56"
-                                Height="56"
-                                Source="{x:Bind ExtraPic.Pic, Mode=OneWay}" />
-                        </Border>
-                        <StackPanel
-                            Grid.Column="1"
-                            Margin="8,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center">
-                            <TextBlock
-                                MaxLines="2"
-                                Text="{x:Bind ExtraTitle}"
-                                TextTrimming="WordEllipsis"
-                                TextWrapping="Wrap" />
-                            <TextBlock
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                Text="{x:Bind ExtraUrl2}"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
-                    </Grid>
+                        <Grid
+                            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8">
+                            <Grid.Background>
+                                <AcrylicBrush
+                                    BackgroundSource="Backdrop"
+                                    FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                    TintColor="{x:Bind ExtraPic.BackgroundColor, Mode=OneWay}"
+                                    TintOpacity="0.8" />
+                            </Grid.Background>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border CornerRadius="8">
+                                <Image
+                                    Width="56"
+                                    Height="56"
+                                    Source="{x:Bind ExtraPic.Pic, Mode=OneWay}" />
+                            </Border>
+                            <StackPanel
+                                Grid.Column="1"
+                                Margin="8,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center">
+                                <TextBlock
+                                    Foreground="White"
+                                    MaxLines="2"
+                                    Text="{x:Bind ExtraTitle}"
+                                    TextTrimming="WordEllipsis"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    Foreground="LightGray"
+                                    Text="{x:Bind ExtraUrl2}"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Grid>
+                    </ListViewItem>
 
                     <Border Grid.Row="7" />
 

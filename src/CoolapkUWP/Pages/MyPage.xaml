@@ -184,35 +184,51 @@
                     Style="{StaticResource FixedListViewItemStyle}"
                     Tag="{x:Bind Url}"
                     Tapped="ListViewItem_Tapped">
-                    <StackPanel
-                        Padding="4"
-                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    <Border
                         BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                         BorderThickness="1"
                         CornerRadius="8">
-                        <Image
-                            Width="24"
-                            Height="24"
-                            Margin="4"
-                            Source="{x:Bind Pic.Pic, Mode=OneWay}" />
+                        <Border.Background>
+                            <ImageBrush ImageSource="{x:Bind Pic.Pic, Mode=OneWay}" />
+                        </Border.Background>
+                        <StackPanel Padding="4">
+                            <StackPanel.Background>
+                                <AcrylicBrush
+                                    BackgroundSource="Backdrop"
+                                    FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                    TintColor="{x:Bind Pic.BackgroundColor, Mode=OneWay}"
+                                    TintOpacity="0.5" />
+                            </StackPanel.Background>
 
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            MaxLines="2"
-                            Text="{x:Bind Title}"
-                            TextAlignment="Center"
-                            TextTrimming="CharacterEllipsis"
-                            TextWrapping="Wrap" />
+                            <Border
+                                Width="36"
+                                Height="36"
+                                Margin="4"
+                                CornerRadius="4">
+                                <Image Source="{x:Bind Pic.Pic, Mode=OneWay}" />
+                            </Border>
 
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            MaxLines="1"
-                            Text="{x:Bind SubTitle}"
-                            TextAlignment="Center"
-                            TextTrimming="CharacterEllipsis"
-                            TextWrapping="Wrap" />
-                    </StackPanel>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Foreground="White"
+                                MaxLines="2"
+                                Text="{x:Bind Title}"
+                                TextAlignment="Center"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="Wrap" />
+
+                            <TextBlock
+                                x:Name="subTitle"
+                                HorizontalAlignment="Center"
+                                x:Load="{x:Bind SubTitle, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
+                                Foreground="White"
+                                MaxLines="1"
+                                Text="{x:Bind SubTitle}"
+                                TextAlignment="Center"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Border>
                 </ListViewItem>
             </DataTemplate>
 
@@ -293,8 +309,8 @@
             <winui:ProgressRing
                 x:Name="ring"
                 Grid.Column="1"
-                Width="32"
-                Height="32"
+                Width="24"
+                Height="24"
                 Margin="8,0"
                 Visibility="Collapsed" />
 

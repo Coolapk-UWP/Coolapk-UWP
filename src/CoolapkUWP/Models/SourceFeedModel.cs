@@ -19,7 +19,7 @@ namespace CoolapkUWP.Models
         public bool ShowPicArr { get; private set; }
         public bool IsCoolPictuers { get; private set; }
         public bool IsMoreThanOnePic { get; private set; }
-        public ImageModel Pic { get; private set; }
+        public BackgroundImageModel Pic { get; private set; }
         public ImmutableArray<ImageModel> PicArr { get; private set; } = ImmutableArray<ImageModel>.Empty;
         public bool IsQuestionFeed { get; private set; }
 
@@ -66,7 +66,7 @@ namespace CoolapkUWP.Models
             }
             if (o.TryGetValue("pic", out JToken value1) && !string.IsNullOrEmpty(value1.ToString()))
             {
-                Pic = new ImageModel(value1.ToString(), ImageType.SmallImage);
+                Pic = new BackgroundImageModel(value1.ToString(), ImageType.SmallImage);
             }
         }
     }

@@ -96,26 +96,15 @@ namespace CoolapkUWP.Pages
 
         private async void GetImage()
         {
-            var url = Type == ImageType.SmallImage || Type == ImageType.SmallAvatar ? Uri + ".s.jpg" : Uri;
-            var uri = new Uri(url);
-            BitmapImage source;
-            try
+            BitmapImage bitmapImage = null;
+            while (bitmapImage is null)
             {
-                IsProgressRingActived = true;
-                source = await Microsoft.Toolkit.Uwp.UI.ImageCache.Instance.GetFromCacheAsync(uri, true);
+#pragma warning disable 0612
+                bitmapImage = await ImageCacheHelper.GetImageAsyncOld(Type, Uri, this, inAppNotify);
+#pragma warning restore 0612
             }
-            catch
-            {
-                _ = inAppNotify.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    var str = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
-                    inAppNotify.Show(str, UIHelper.duration);
-                });
-                source = ImageCacheHelper.NoPic;
-            }
-
-            IsProgressRingActived = false;
-            Pic = source;
+            await Task.Delay(20);
+            Pic = bitmapImage;
         }
 
         private static ImageType ChangeType(ImageType type)
@@ -433,15 +422,15 @@ namespace CoolapkUWP.Pages
                     break;
 
                 case "save":
-                    string u = imageModels[SFlipView.SelectedIndex].Uri;
-                    string fileName = u.Substring(u.LastIndexOf('/') + 1);
+                    var u = imageModels[SFlipView.SelectedIndex].Uri;
+                    var fileName = u.Substring(u.LastIndexOf('/') + 1);
                     var fileSavePicker = new FileSavePicker
                     {
                         SuggestedStartLocation = PickerLocationId.PicturesLibrary,
                         SuggestedFileName = fileName.Replace(fileName.Substring(fileName.LastIndexOf('.')), string.Empty, StringComparison.Ordinal)
                     };
 
-                    string uu = fileName.Substring(fileName.LastIndexOf('.') + 1);
+                    var uu = fileName.Substring(fileName.LastIndexOf('.') + 1);
                     int index = uu.IndexOfAny(new char[] { '?', '%', '&' });
                     uu = uu.Substring(0, index == -1 ? uu.Length : index);
                     fileSavePicker.FileTypeChoices.Add($"{uu}文件", new string[] { "." + uu });
@@ -451,8 +440,9 @@ namespace CoolapkUWP.Pages
                     {
                         using (var fs = await file.OpenStreamForWriteAsync())
                         {
-                            var image = await ImageCache.Instance.GetFileFromCacheAsync(new Uri(imageModels[SFlipView.SelectedIndex].Uri));
-                            using (Stream s = (await image.OpenReadAsync()).AsStreamForRead())
+                            var folder = await ApplicationData.Current.LocalCacheFolder.GetFolderAsync(imageModels[SFlipView.SelectedIndex].Type.ToString());
+                            var storageFile = await folder.GetFileAsync(Core.Helpers.Utils.GetMD5(u));
+                            using (var s = (await storageFile.OpenReadAsync()).AsStreamForRead())
                             {
                                 await s.CopyToAsync(fs);
                             }

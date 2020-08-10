@@ -96,6 +96,7 @@
 - [Json.NET](https://www.newtonsoft.com/json)
 - [QRCoder](https://github.com/codebude/QRCoder)
 - [Metro Log](https://github.com/novotnyllc/MetroLog)
+- [Color Thief](https://github.com/KSemenenko/ColorThief)
 
 ## 鸣谢
 - 酷安UWP原作者[@一块小板子](http://www.coolapk.com/u/695942)([Github](https://github.com/oboard))

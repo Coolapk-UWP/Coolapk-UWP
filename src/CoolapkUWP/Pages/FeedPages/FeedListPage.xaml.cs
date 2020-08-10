@@ -20,9 +20,9 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             base.OnNavigatedTo(e);
             titleBar.ShowProgressRing();
-
             provider = e.Parameter as FeedListPageViewModelBase;
             listView.ItemsSource = provider.Models;
+            provider.TitleUpdate += Provider_TitleUpdate;
 
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
             switch (provider.ListType)
@@ -72,16 +72,20 @@ namespace CoolapkUWP.Pages.FeedPages
                 }
             }
             rightComboBox.SelectionChanged += FeedTypeComboBox_SelectionChanged;
-            await System.Threading.Tasks.Task.Delay(30);
-            titleBar.Title = provider.Title;
 
             titleBar.HideProgressRing();
+        }
+
+        private void Provider_TitleUpdate(object sender, System.EventArgs e)
+        {
+            titleBar.Title = provider.Title;
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             provider.VerticalOffsets[0] = scrollViewer.VerticalOffset;
             provider?.ChangeCopyMode(false);
+            provider.TitleUpdate -= Provider_TitleUpdate;
             rightComboBox.SelectionChanged -= FeedTypeComboBox_SelectionChanged;
             titleBar.Title = string.Empty;
 

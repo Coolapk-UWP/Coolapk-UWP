@@ -36,11 +36,12 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
     internal class UserDetail : FeedListDetailBase
     {
         public ImageModel UserFace { get; private set; }
-        public ImageModel Background { get; private set; }
-        public double FollowNum { get; private set; }
-        public double FansNum { get; private set; }
-        public double FeedNum { get; private set; }
-        public double Level { get; private set; }
+        public BackgroundImageModel Background { get; private set; }
+        public int FollowNum { get; private set; }
+        public int FansNum { get; private set; }
+        public int FeedNum { get; private set; }
+        public int Level { get; private set; }
+        public int BeLikedNum { get; private set; }
         public string UserName { get; private set; }
         public string Bio { get; private set; }
         public string Verify_title { get; private set; }
@@ -57,6 +58,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
                 o.Value<int>("uid").ToString() == SettingsHelper.Get<string>(SettingsHelper.Uid) ? string.Empty : o.Value<int>("isFollow") == 0
                 ? loader.GetString("follow")
                 : loader.GetString("unFollow");
+            BeLikedNum = o.Value<int>("be_like_num");
             FollowNum = o.Value<int>("follow");
             FansNum = o.Value<int>("fans");
             Level = o.Value<int>("level");
@@ -69,7 +71,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             City = $"{o.Value<string>("province")} {o.Value<string>("city")}";
             Astro = o.Value<string>("astro");
             UserFace = new ImageModel(o.Value<string>("userAvatar"), ImageType.BigAvatar);
-            Background = new ImageModel(o.Value<string>("cover"), ImageType.OriginImage);
+            Background = new BackgroundImageModel(o.Value<string>("cover"), ImageType.OriginImage);
         }
     }
 

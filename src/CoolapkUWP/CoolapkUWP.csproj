@@ -148,6 +148,7 @@
     <Compile Include="Helpers\ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\HasValueConverter.cs" />
     <Compile Include="Helpers\ValueConverters\TrueToFalseConverter.cs" />
+    <Compile Include="Models\BackgroundImageModel.cs" />
     <Compile Include="Models\Controls\MakeFeedControlModel.cs" />
     <Compile Include="Models\Controls\UserHubModel.cs" />
     <Compile Include="Models\DyhModel.cs" />
@@ -920,6 +921,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="ksemenenko.ColorThief">
+      <Version>1.1.1.4</Version>
+    </PackageReference>
     <PackageReference Include="MetroLog">
       <Version>1.0.1</Version>
     </PackageReference>

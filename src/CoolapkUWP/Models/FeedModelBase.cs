@@ -60,7 +60,7 @@ namespace CoolapkUWP.Models
         public bool Liked { get; set; }
         public bool Liked2 { get => !Liked; }
         public string Id => EntityId;
-        public ImageModel ExtraPic { get; private set; }
+        public BackgroundImageModel ExtraPic { get; private set; }
         public ImageModel UserSmallAvatar { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -119,7 +119,7 @@ namespace CoolapkUWP.Models
                     var extraPicUrl = token.Value<string>("extra_pic");
                     if (!string.IsNullOrEmpty(extraPicUrl))
                     {
-                        ExtraPic = new ImageModel(extraPicUrl, ImageType.Icon);
+                        ExtraPic = new BackgroundImageModel(extraPicUrl, ImageType.Icon);
                     }
                 }
                 DeviceTitle = token.Value<string>("device_title");

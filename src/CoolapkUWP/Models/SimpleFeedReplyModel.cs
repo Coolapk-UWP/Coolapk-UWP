@@ -8,7 +8,7 @@ namespace CoolapkUWP.Models
     {
         public string Rusername { get; private set; }
         public string Rurl { get; private set; }
-        public double Id { get; private set; }
+        public int Id { get; private set; }
         public string Uurl { get; private set; }
         public string Username { get; private set; }
         public string Message { get; private set; }

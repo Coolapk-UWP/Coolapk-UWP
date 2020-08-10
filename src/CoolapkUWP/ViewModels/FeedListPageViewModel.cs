@@ -14,17 +14,28 @@ namespace CoolapkUWP.ViewModels.FeedListPage
 {
     internal abstract class FeedListPageViewModelBase : IViewModel
     {
+        protected const string idName = "id";
+        protected static readonly Func<JObject, Entity[]> getEntity = (o) => new Entity[] { new FeedModel(o) };
+        protected static readonly Func<Entity, JToken, bool> isEqual = (a, b) => a is FeedListDetailBase ? false : ((FeedModel)a).Id == b.Value<int>("id").ToString();
+        private string title;
+
         public string Id { get; }
         public FeedListType ListType { get; }
         protected abstract CoolapkListProvider Provider { get; }
         public ObservableCollection<Entity> Models { get => Provider?.Models ?? null; }
         public double[] VerticalOffsets { get; set; } = new double[1];
 
-        public string Title { get; protected set; }
+        public string Title
+        {
+            get => title;
+            protected set
+            {
+                title = value;
+                TitleUpdate?.Invoke(this, null);
+            }
+        }
 
-        protected const string idName = "id";
-        protected static readonly Func<JObject, Entity[]> getEntity = (o) => new Entity[] { new FeedModel(o) };
-        protected static readonly Func<Entity, JToken, bool> isEqual = (a, b) => a is FeedListDetailBase ? false : ((FeedModel)a).Id == b.Value<int>("id").ToString();
+        public event EventHandler TitleUpdate;
 
         protected FeedListPageViewModelBase(string id, FeedListType type)
         {

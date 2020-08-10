@@ -88,7 +88,6 @@
                     Tapped="{x:Bind local:FeedListPage.UserDetailBorder_Tapped}">
 
                     <Border
-                        x:Name="UserDetailBorder"
                         MinHeight="200"
                         Margin="8"
                         CornerRadius="8"
@@ -102,7 +101,15 @@
                             x:Name="UserDetailGrid"
                             Padding="0,4"
                             VerticalAlignment="Bottom"
-                            Background="#99000000">
+                            CornerRadius="8">
+                            <Grid.Background>
+                                <AcrylicBrush
+                                    BackgroundSource="Backdrop"
+                                    FallbackColor="#99000000"
+                                    TintColor="{x:Bind Background.BackgroundColor, Mode=OneWay}"
+                                    TintOpacity="0.6" />
+                            </Grid.Background>
+
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="*" />
@@ -121,22 +128,60 @@
                                 </Ellipse.Fill>
                             </Ellipse>
 
-                            <StackPanel Grid.Column="1" Margin="0,0,5,3">
-                                <TextBlock
-                                    Margin="0,0,12,0"
-                                    FontSize="20"
-                                    FontWeight="Bold"
-                                    Foreground="White"
-                                    IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                                    Text="{x:Bind UserName}" />
+                            <StackPanel Grid.Column="1" Margin="0,0,5,4">
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="2,0,6,0"
+                                        FontSize="20"
+                                        FontWeight="Bold"
+                                        Foreground="White"
+                                        IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                                        Text="{x:Bind UserName}" />
+
+                                    <TextBlock
+                                        Margin="0,0,3,1"
+                                        VerticalAlignment="Bottom"
+                                        Foreground="White"
+                                        Text="Lv." />
+
+                                    <TextBlock
+                                        Name="level"
+                                        Margin="0,0,0,1"
+                                        VerticalAlignment="Bottom"
+                                        FontWeight="Bold"
+                                        Foreground="White"
+                                        Text="{x:Bind Level}"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+
+                                <StackPanel
+                                    x:Name="verify_title"
+                                    Margin="2"
+                                    x:Load="{x:Bind Verify_title, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
+                                    Orientation="Horizontal">
+                                    <FontIcon
+                                        FontFamily="Segoe MDL2 Assets"
+                                        FontSize="14"
+                                        Foreground="LightGreen"
+                                        Glyph="&#xE10B;" />
+                                    <TextBlock
+                                        Margin="4,0,0,0"
+                                        FontSize="14"
+                                        Foreground="White"
+                                        IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                                        Text="{x:Bind Verify_title}"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
 
                                 <TextBlock
-                                    x:Name="verify_title"
-                                    x:Load="{x:Bind Verify_title, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
+                                    x:Name="bio"
+                                    Margin="2,0"
+                                    x:Load="{x:Bind Bio, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
                                     FontSize="14"
                                     Foreground="White"
                                     IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                                    Text="{x:Bind Verify_title}"
+                                    Text="{x:Bind Bio}"
                                     TextWrapping="Wrap" />
 
                                 <StackPanel Orientation="Horizontal">
@@ -150,7 +195,6 @@
                                         Template="{StaticResource ButtonTemplate1}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock
-                                                Margin="0,0,3,0"
                                                 FontWeight="Bold"
                                                 Foreground="White"
                                                 Text="{x:Bind FollowNum}" />
@@ -159,7 +203,7 @@
                                     </Button>
 
                                     <Button
-                                        Margin="4,0,0,0"
+                                        Margin="2,0,0,0"
                                         Padding="2"
                                         Background="Transparent"
                                         Click="Button_Click"
@@ -169,7 +213,6 @@
                                         Template="{StaticResource ButtonTemplate1}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock
-                                                Margin="0,0,3,0"
                                                 FontWeight="Bold"
                                                 Foreground="White"
                                                 Text="{x:Bind FansNum}" />
@@ -179,36 +222,20 @@
 
                                     <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                                         <TextBlock
-                                            Margin="4,0,3,0"
+                                            Margin="4,0,0,0"
                                             FontWeight="Bold"
                                             Foreground="White"
                                             Text="{x:Bind FeedNum}" />
                                         <TextBlock x:Uid="/FeedListPage/Feeds" Foreground="White" />
+
+                                        <TextBlock
+                                            Margin="4,0,0,0"
+                                            FontWeight="Bold"
+                                            Foreground="White"
+                                            Text="{x:Bind BeLikedNum}" />
+                                        <TextBlock Foreground="White" Text="获赞" />
                                     </StackPanel>
-
-                                    <TextBlock
-                                        Margin="8,0,3,0"
-                                        VerticalAlignment="Center"
-                                        Foreground="White"
-                                        Text="Lv." />
-
-                                    <TextBlock
-                                        Name="level"
-                                        VerticalAlignment="Center"
-                                        FontWeight="Bold"
-                                        Foreground="White"
-                                        Text="{x:Bind Level}"
-                                        TextWrapping="Wrap" />
                                 </StackPanel>
-
-                                <TextBlock
-                                    x:Name="bio"
-                                    x:Load="{x:Bind Bio, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
-                                    FontSize="14"
-                                    Foreground="White"
-                                    IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                                    Text="{x:Bind Bio}"
-                                    TextWrapping="Wrap" />
 
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock
@@ -216,7 +243,7 @@
                                         Margin="2,0"
                                         x:Load="{x:Bind Gender, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
                                         FontSize="12"
-                                        Foreground="White"
+                                        Foreground="LightGray"
                                         Text="{x:Bind Gender}"
                                         TextWrapping="Wrap" />
 
@@ -225,7 +252,7 @@
                                         Margin="2,0"
                                         x:Load="{x:Bind City, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
                                         FontSize="12"
-                                        Foreground="White"
+                                        Foreground="LightGray"
                                         IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                                         Text="{x:Bind City}"
                                         TextWrapping="Wrap" />
@@ -235,14 +262,14 @@
                                         Margin="2,0"
                                         x:Load="{x:Bind Astro, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
                                         FontSize="12"
-                                        Foreground="White"
+                                        Foreground="LightGray"
                                         Text="{x:Bind Astro}"
                                         TextWrapping="Wrap" />
 
                                     <TextBlock
                                         Margin="2,0"
                                         FontSize="12"
-                                        Foreground="White"
+                                        Foreground="LightGray"
                                         Text="{x:Bind Logintime}"
                                         TextWrapping="Wrap" />
                                 </StackPanel>
@@ -251,7 +278,7 @@
                             <Button
                                 x:Name="FollowButton"
                                 Grid.Column="1"
-                                Margin="4"
+                                Margin="4,0"
                                 Padding="4"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
@@ -447,7 +474,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Ellipse Width="20" Height="20">
                                         <Ellipse.Fill>
-                                            <ImageBrush ImageSource="{x:Bind UserAvatar.Pic}" />
+                                            <ImageBrush ImageSource="{x:Bind UserAvatar.Pic, Mode=OneWay}" />
                                         </Ellipse.Fill>
                                     </Ellipse>
 

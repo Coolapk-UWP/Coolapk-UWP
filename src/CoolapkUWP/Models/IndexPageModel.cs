@@ -18,7 +18,7 @@ namespace CoolapkUWP.Models
         public string SubTitle { get; private set; }
         public string Url { get; private set; }
         public string Description { get; private set; }
-        public ImageModel Pic { get; private set; }
+        public BackgroundImageModel Pic { get; private set; }
 
         public IndexPageModel(JObject token) : base(token)
         {
@@ -48,15 +48,15 @@ namespace CoolapkUWP.Models
             }
             if (token.TryGetValue("cover_pic", out JToken v8) && !string.IsNullOrEmpty(v8.ToString()))
             {
-                Pic = new ImageModel(v8.ToString(), ImageType.OriginImage);
+                Pic = new BackgroundImageModel(v8.ToString(), ImageType.OriginImage);
             }
             else if (token.TryGetValue("pic", out JToken v5) && !string.IsNullOrEmpty(v5.ToString()))
             {
-                Pic = new ImageModel(v5.ToString(), ImageType.OriginImage);
+                Pic = new BackgroundImageModel(v5.ToString(), ImageType.OriginImage);
             }
             else if (token.TryGetValue("logo", out JToken v6) && !string.IsNullOrEmpty(v6.ToString()))
             {
-                Pic = new ImageModel(v6.ToString(), ImageType.Icon);
+                Pic = new BackgroundImageModel(v6.ToString(), ImageType.Icon);
             }
         }
     }

@@ -77,7 +77,7 @@ namespace CoolapkUWP.Controls
                 {
                     arg = new object[] { FeedId };
                 }
-                var (r, _) = await DataHelper.PostDataAsync(UriHelper.GetUri(type), content);
+                var (r, _) = await DataHelper.PostDataAsync(UriHelper.GetUri(type, arg), content);
                 if (r)
                 {
                     SendSuccessful();

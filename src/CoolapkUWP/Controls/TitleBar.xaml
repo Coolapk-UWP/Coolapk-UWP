@@ -46,9 +46,9 @@
         <winui:ProgressRing
             x:Name="progressRing"
             Grid.Column="3"
-            Width="28"
-            Height="28"
-            Margin="6,32,6,0"
+            Width="24"
+            Height="24"
+            Margin="8,34,8,2"
             IsActive="False"
             Visibility="Collapsed" />
         <Button

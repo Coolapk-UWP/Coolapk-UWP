@@ -259,5 +259,11 @@ namespace CoolapkUWP.Pages.FeedPages
             var view = sender as FlipView;
             view.MaxHeight = e.NewSize.Width / 3;
         }
+
+        internal static void TextBlockEx_RichTextBlockLoaded(object sender, EventArgs e)
+        {
+            var b = (Controls.TextBlockEx)sender;
+            b.MaxLine = 4;
+        }
     }
 }
