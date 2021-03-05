@@ -66,15 +66,15 @@
 
 ### 更新应用
 - 下载并解压最新的[安装包`(UWP_x.x.x.0_x86_x64_arm_Debug.appxbundle)`](https://github.com/Tangent-90/Coolapk-UWP/releases/latest)
-- 双击`*.appxbundle`，单击安装，坐和放宽
-![安装](Images/Guides/Snipaste_2019-10-13_16-01-09.png)
+- 双击`*.appxbundle`，单击更新，坐和放宽
+![更新](Images/Guides/Snipaste_2019-10-13_16-01-09.png)
 
 ### 一键安装
 - 在浏览器中打开链接：`ms-appinstaller:?source=https://raw.fastgit.org/Tangent-90/Coolapk-UWP/screenshots/Appxbundle/CoolapkUWP.appxbundle`
 - 弹出窗口后单击确定
 ![弹窗](Images/Guides/Snipaste_2021-03-05_22-26-31.png)
 - 单击安装，坐和放宽
-![安装](Images/Guides/Snipaste_2019-10-13_16-01-09.png)
+![安装](Images/Guides/Snipaste_2019-10-13_12-42-40.png)
 
 ## 屏幕截图
 - 启动图
