@@ -72,7 +72,7 @@
 ### 一键安装
 - 在浏览器中打开链接：`ms-appinstaller:?source=https://raw.fastgit.org/Tangent-90/Coolapk-UWP/screenshots/Appxbundle/CoolapkUWP.appxbundle`
 - 弹出窗口后单击确定
-![弹窗](Images/Guides/Snipaste_2021-03-05_22-14-56.png)
+![弹窗](Images/Guides/Snipaste_2021-03-05_22-26-31.png)
 - 单击安装，坐和放宽
 ![安装](Images/Guides/Snipaste_2019-10-13_16-01-09.png)
 
