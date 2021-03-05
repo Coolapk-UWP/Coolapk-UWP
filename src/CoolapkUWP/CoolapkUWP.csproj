@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CoolapkUWP</RootNamespace>
     <AssemblyName>CoolapkUWP</AssemblyName>
-    <DefaultLanguage>en</DefaultLanguage>
+    <DefaultLanguage>zh-cn</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
@@ -28,7 +28,7 @@
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>5F01EF1FDCD63BB02566857714B77BC66C56E296</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>0BFC20EF753C6F027EA97A14C211B35AE34AC440</PackageCertificateThumbprint>
     <AppInstallerUpdateFrequency>0</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
@@ -241,6 +241,11 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\BadgeLogo.scale-100.png" />
+    <Content Include="Assets\BadgeLogo.scale-125.png" />
+    <Content Include="Assets\BadgeLogo.scale-150.png" />
+    <Content Include="Assets\BadgeLogo.scale-200.png" />
+    <Content Include="Assets\BadgeLogo.scale-400.png" />
     <Content Include="Assets\Emoji\0000.png" />
     <Content Include="Assets\Emoji\0001.png" />
     <Content Include="Assets\Emoji\0002.png" />
@@ -745,6 +750,16 @@
     <Content Include="Assets\Emoji\2332.png" />
     <Content Include="Assets\Emoji\2336.png" />
     <Content Include="Assets\Emoji\2337.png" />
+    <Content Include="Assets\Emoji\2338.png" />
+    <Content Include="Assets\Emoji\2339.png" />
+    <Content Include="Assets\Emoji\2340.png" />
+    <Content Include="Assets\Emoji\2341.png" />
+    <Content Include="Assets\Emoji\2342.png" />
+    <Content Include="Assets\Emoji\2343.png" />
+    <Content Include="Assets\Emoji\2344.png" />
+    <Content Include="Assets\Emoji\2345.png" />
+    <Content Include="Assets\Emoji\2346.png" />
+    <Content Include="Assets\Emoji\coolapk_emotion_1031.png" />
     <Content Include="Assets\img_placeholder.png" />
     <Content Include="Assets\img_placeholder_night.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
@@ -985,8 +1000,8 @@
     <PRIResource Include="Strings\zh-Hans\FeedListPage.resw" />
     <PRIResource Include="Strings\zh-Hans\NotificationsPage.resw" />
     <PRIResource Include="Strings\zh-Hans\ShowImagePage.resw" />
-    <PRIResource Include="Assets\EmojiData\EmojiId.resw" />
     <PRIResource Include="Assets\EmojiData\OldEmojiId.resw" />
+    <PRIResource Include="Assets\EmojiData\EmojiId.resw" />
     <None Include="CoolapkUWP_TemporaryKey.pfx" />
     <PRIResource Include="Strings\zh-Hans\BrowserPage.resw" />
     <PRIResource Include="Strings\zh-Hans\MyPage.resw" />

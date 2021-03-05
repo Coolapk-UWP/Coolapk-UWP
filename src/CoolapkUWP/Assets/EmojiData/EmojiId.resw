@@ -120,1740 +120,1335 @@
   <data name="(cos滑稽)" xml:space="preserve">
     <value>0000</value>
   </data>
-
   <data name="(haha)" xml:space="preserve">
     <value>0001</value>
   </data>
-
   <data name="(OK)" xml:space="preserve">
     <value>0002</value>
   </data>
-
   <data name="(sofa)" xml:space="preserve">
     <value>0003</value>
   </data>
-
   <data name="(what)" xml:space="preserve">
     <value>0004</value>
   </data>
-
   <data name="(三道杠)" xml:space="preserve">
     <value>0005</value>
   </data>
-
   <data name="(不高兴)" xml:space="preserve">
     <value>0006</value>
   </data>
-
   <data name="(乖)" xml:space="preserve">
     <value>0007</value>
   </data>
-
   <data name="(传统滑稽)" xml:space="preserve">
     <value>0008</value>
   </data>
-
   <data name="(你懂的)" xml:space="preserve">
     <value>0009</value>
   </data>
-
   <data name="(便便)" xml:space="preserve">
     <value>0010</value>
   </data>
-
   <data name="(冷)" xml:space="preserve">
     <value>0011</value>
   </data>
-
   <data name="(勉强)" xml:space="preserve">
     <value>0012</value>
   </data>
-
   <data name="(受虐滑稽)" xml:space="preserve">
     <value>0013</value>
   </data>
-
   <data name="(吃瓜)" xml:space="preserve">
     <value>0014</value>
   </data>
-
   <data name="(吐)" xml:space="preserve">
     <value>0015</value>
   </data>
-
   <data name="(吐舌)" xml:space="preserve">
     <value>0016</value>
   </data>
-
   <data name="(呀咩爹)" xml:space="preserve">
     <value>0017</value>
   </data>
-
   <data name="(呵呵)" xml:space="preserve">
     <value>0018</value>
   </data>
-
   <data name="(呼~)" xml:space="preserve">
     <value>0019</value>
   </data>
-
   <data name="(咦)" xml:space="preserve">
     <value>0020</value>
   </data>
-
   <data name="(哈哈)" xml:space="preserve">
     <value>0021</value>
   </data>
-
   <data name="(哼)" xml:space="preserve">
     <value>0022</value>
   </data>
-
   <data name="(啊)" xml:space="preserve">
     <value>0023</value>
   </data>
-
   <data name="(喝酒)" xml:space="preserve">
     <value>0024</value>
   </data>
-
   <data name="(喷)" xml:space="preserve">
     <value>0025</value>
   </data>
-
   <data name="(嘿嘿嘿)" xml:space="preserve">
     <value>0026</value>
   </data>
-
   <data name="(噗)" xml:space="preserve">
     <value>0027</value>
   </data>
-
   <data name="(困成狗)" xml:space="preserve">
     <value>0028</value>
   </data>
-
   <data name="(墨镜滑稽)" xml:space="preserve">
     <value>0029</value>
   </data>
-
   <data name="(大拇指)" xml:space="preserve">
     <value>0030</value>
   </data>
-
   <data name="(太开心)" xml:space="preserve">
     <value>0031</value>
   </data>
-
   <data name="(太阳)" xml:space="preserve">
     <value>0032</value>
   </data>
-
   <data name="(委屈)" xml:space="preserve">
     <value>0033</value>
   </data>
-
   <data name="(小乖)" xml:space="preserve">
     <value>0034</value>
   </data>
-
   <data name="(小嘴滑稽)" xml:space="preserve">
     <value>0035</value>
   </data>
-
   <data name="(小红脸)" xml:space="preserve">
     <value>0036</value>
   </data>
-
   <data name="(开心)" xml:space="preserve">
     <value>0037</value>
   </data>
-
   <data name="(弱)" xml:space="preserve">
     <value>0038</value>
   </data>
-
   <data name="(彩虹)" xml:space="preserve">
     <value>0039</value>
   </data>
-
   <data name="(微微一笑)" xml:space="preserve">
     <value>0040</value>
   </data>
-
   <data name="(心碎)" xml:space="preserve">
     <value>0041</value>
   </data>
-
   <data name="(怒)" xml:space="preserve">
     <value>0042</value>
   </data>
-
   <data name="(惊哭)" xml:space="preserve">
     <value>0043</value>
   </data>
-
   <data name="(惊讶)" xml:space="preserve">
     <value>0044</value>
   </data>
-
   <data name="(懒得理)" xml:space="preserve">
     <value>0045</value>
   </data>
-
   <data name="(托腮)" xml:space="preserve">
     <value>0046</value>
   </data>
-
   <data name="(挖鼻)" xml:space="preserve">
     <value>0047</value>
   </data>
-
   <data name="(捂嘴笑)" xml:space="preserve">
     <value>0048</value>
   </data>
-
   <data name="(摊手)" xml:space="preserve">
     <value>0049</value>
   </data>
-
   <data name="(斗鸡眼滑稽)" xml:space="preserve">
     <value>0050</value>
   </data>
-
   <data name="(星星月亮)" xml:space="preserve">
     <value>0051</value>
   </data>
-
   <data name="(暗中观察)" xml:space="preserve">
     <value>0052</value>
   </data>
-
   <data name="(柯基暗中观察)" xml:space="preserve">
     <value>0053</value>
   </data>
-
   <data name="(欢呼)" xml:space="preserve">
     <value>0054</value>
   </data>
-
   <data name="(汗)" xml:space="preserve">
     <value>0055</value>
   </data>
-
   <data name="(泪)" xml:space="preserve">
     <value>0056</value>
   </data>
-
   <data name="(流汗滑稽)" xml:space="preserve">
     <value>0057</value>
   </data>
-
   <data name="(滑稽)" xml:space="preserve">
     <value>0058</value>
   </data>
-
   <data name="(滑稽炸)" xml:space="preserve">
     <value>0059</value>
   </data>
-
   <data name="(灯泡)" xml:space="preserve">
     <value>0060</value>
   </data>
-
   <data name="(爱心)" xml:space="preserve">
     <value>0061</value>
   </data>
-
   <data name="(犀利)" xml:space="preserve">
     <value>0062</value>
   </data>
-
   <data name="(狂汗)" xml:space="preserve">
     <value>0063</value>
   </data>
-
   <data name="(玫瑰)" xml:space="preserve">
     <value>0064</value>
   </data>
-
   <data name="(疑问)" xml:space="preserve">
     <value>0065</value>
   </data>
-
   <data name="(真棒)" xml:space="preserve">
     <value>0066</value>
   </data>
-
   <data name="(睡觉)" xml:space="preserve">
     <value>0067</value>
   </data>
-
   <data name="(礼物)" xml:space="preserve">
     <value>0068</value>
   </data>
-
   <data name="(稽滑)" xml:space="preserve">
     <value>0069</value>
   </data>
-
   <data name="(突然兴奋)" xml:space="preserve">
     <value>0070</value>
   </data>
-
   <data name="(笑尿)" xml:space="preserve">
     <value>0071</value>
   </data>
-
   <data name="(笑眼)" xml:space="preserve">
     <value>0072</value>
   </data>
-
   <data name="(紧张)" xml:space="preserve">
     <value>0073</value>
   </data>
-
   <data name="(红领巾)" xml:space="preserve">
     <value>0074</value>
   </data>
-
   <data name="(纸巾)" xml:space="preserve">
     <value>0075</value>
   </data>
-
   <data name="(胜利)" xml:space="preserve">
     <value>0076</value>
   </data>
-
   <data name="(花心)" xml:space="preserve">
     <value>0077</value>
   </data>
-
   <data name="(茶杯)" xml:space="preserve">
     <value>0078</value>
   </data>
-
   <data name="(药丸)" xml:space="preserve">
     <value>0079</value>
   </data>
-
   <data name="(蛋糕)" xml:space="preserve">
     <value>0080</value>
   </data>
-
   <data name="(蜡烛)" xml:space="preserve">
     <value>0081</value>
   </data>
-
   <data name="(鄙视)" xml:space="preserve">
     <value>0082</value>
   </data>
-
   <data name="(酷)" xml:space="preserve">
     <value>0083</value>
   </data>
-
   <data name="(酸爽)" xml:space="preserve">
     <value>0084</value>
   </data>
-
   <data name="(钱)" xml:space="preserve">
     <value>0085</value>
   </data>
-
   <data name="(钱币)" xml:space="preserve">
     <value>0086</value>
   </data>
-
   <data name="(阴险)" xml:space="preserve">
     <value>0087</value>
   </data>
-
   <data name="(音乐)" xml:space="preserve">
     <value>0088</value>
   </data>
-
   <data name="(香蕉)" xml:space="preserve">
     <value>0089</value>
   </data>
-
   <data name="(黑头瞪眼)" xml:space="preserve">
     <value>0090</value>
   </data>
-
   <data name="(黑头高兴)" xml:space="preserve">
     <value>0091</value>
   </data>
-
   <data name="(黑线)" xml:space="preserve">
     <value>0092</value>
   </data>
-
-
   <data name="[Blob滑稽]" xml:space="preserve">
     <value>1000</value>
   </data>
-
   <data name="[cos滑稽]" xml:space="preserve">
     <value>1001</value>
   </data>
-
   <data name="[doge]" xml:space="preserve">
     <value>1002</value>
   </data>
-
   <data name="[doge互粉]" xml:space="preserve">
     <value>1003</value>
   </data>
-
   <data name="[doge原谅ta]" xml:space="preserve">
     <value>1004</value>
   </data>
-
   <data name="[doge口罩]" xml:space="preserve">
     <value>1005</value>
   </data>
-
   <data name="[doge吃惊]" xml:space="preserve">
     <value>1006</value>
   </data>
-
   <data name="[doge吃瓜]" xml:space="preserve">
     <value>1007</value>
   </data>
-
   <data name="[doge告辞]" xml:space="preserve">
     <value>1008</value>
   </data>
-
   <data name="[doge呵斥]" xml:space="preserve">
     <value>1009</value>
   </data>
-
   <data name="[doge并不简单]" xml:space="preserve">
     <value>1010</value>
   </data>
-
   <data name="[doge期待]" xml:space="preserve">
     <value>1011</value>
   </data>
-
   <data name="[doge汗]" xml:space="preserve">
     <value>1012</value>
   </data>
-
   <data name="[doge疑问]" xml:space="preserve">
     <value>1013</value>
   </data>
-
   <data name="[doge笑哭]" xml:space="preserve">
     <value>1014</value>
   </data>
-
   <data name="[doge装酷]" xml:space="preserve">
     <value>1015</value>
   </data>
-
   <data name="[doge酷]" xml:space="preserve">
     <value>1016</value>
   </data>
-
   <data name="[doge问号]" xml:space="preserve">
     <value>1017</value>
   </data>
-
   <data name="[doge飞吻]" xml:space="preserve">
     <value>1018</value>
   </data>
-
   <data name="[dw哭]" xml:space="preserve">
     <value>1019</value>
   </data>
-
   <data name="[Google滑稽]" xml:space="preserve">
     <value>1020</value>
   </data>
-
   <data name="[NO]" xml:space="preserve">
     <value>1021</value>
   </data>
-
   <data name="[ok]" xml:space="preserve">
     <value>1022</value>
   </data>
-
   <data name="[py交易]" xml:space="preserve">
     <value>1023</value>
   </data>
-
   <data name="[qqdoge]" xml:space="preserve">
     <value>1024</value>
   </data>
-
   <data name="[SegoeUI滑稽]" xml:space="preserve">
     <value>1025</value>
   </data>
-
   <data name="[t耐克嘴]" xml:space="preserve">
     <value>1026</value>
   </data>
-
   <data name="[wpy交易]" xml:space="preserve">
     <value>1027</value>
   </data>
-
   <data name="[wv5]" xml:space="preserve">
     <value>1028</value>
   </data>
-
   <data name="[ww亲亲]" xml:space="preserve">
     <value>1029</value>
   </data>
-
   <data name="[w→_→]" xml:space="preserve">
     <value>1030</value>
   </data>
-
   <data name="[w互粉]" xml:space="preserve">
     <value>1031</value>
   </data>
-
   <data name="[w偷笑]" xml:space="preserve">
     <value>1032</value>
   </data>
-
   <data name="[w傻眼]" xml:space="preserve">
     <value>1033</value>
   </data>
-
   <data name="[w兔子]" xml:space="preserve">
     <value>1034</value>
   </data>
-
   <data name="[w再见]" xml:space="preserve">
     <value>1035</value>
   </data>
-
   <data name="[w压岁钱]" xml:space="preserve">
     <value>1036</value>
   </data>
-
   <data name="[w可怜]" xml:space="preserve">
     <value>1037</value>
   </data>
-
   <data name="[w可爱]" xml:space="preserve">
     <value>1038</value>
   </data>
-
   <data name="[w右哼哼]" xml:space="preserve">
     <value>1039</value>
   </data>
-
   <data name="[w吃惊]" xml:space="preserve">
     <value>1040</value>
   </data>
-
   <data name="[w吃瓜]" xml:space="preserve">
     <value>1041</value>
   </data>
-
   <data name="[w吐]" xml:space="preserve">
     <value>1042</value>
   </data>
-
   <data name="[w呵呵]" xml:space="preserve">
     <value>1043</value>
   </data>
-
   <data name="[w哆啦a梦吃惊]" xml:space="preserve">
     <value>1044</value>
   </data>
-
   <data name="[w哆啦a梦笑]" xml:space="preserve">
     <value>1045</value>
   </data>
-
   <data name="[w哆啦a梦色]" xml:space="preserve">
     <value>1046</value>
   </data>
-
   <data name="[w哈哈]" xml:space="preserve">
     <value>1047</value>
   </data>
-
   <data name="[w哭]" xml:space="preserve">
     <value>1048</value>
   </data>
-
   <data name="[w哼]" xml:space="preserve">
     <value>1049</value>
   </data>
-
   <data name="[w啤酒鸡腿]" xml:space="preserve">
     <value>1050</value>
   </data>
-
   <data name="[w喜]" xml:space="preserve">
     <value>1051</value>
   </data>
-
   <data name="[w嘘]" xml:space="preserve">
     <value>1052</value>
   </data>
-
   <data name="[w嘻嘻]" xml:space="preserve">
     <value>1053</value>
   </data>
-
   <data name="[w嘿嘿嘿]" xml:space="preserve">
     <value>1054</value>
   </data>
-
   <data name="[w囧]" xml:space="preserve">
     <value>1055</value>
   </data>
-
   <data name="[w困]" xml:space="preserve">
     <value>1056</value>
   </data>
-
   <data name="[w太开心]" xml:space="preserve">
     <value>1057</value>
   </data>
-
   <data name="[w失望]" xml:space="preserve">
     <value>1058</value>
   </data>
-
   <data name="[w奥特曼]" xml:space="preserve">
     <value>1059</value>
   </data>
-
   <data name="[w女孩儿]" xml:space="preserve">
     <value>1060</value>
   </data>
-
   <data name="[w委屈]" xml:space="preserve">
     <value>1061</value>
   </data>
-
   <data name="[w定]" xml:space="preserve">
     <value>1062</value>
   </data>
-
   <data name="[w害羞]" xml:space="preserve">
     <value>1063</value>
   </data>
-
   <data name="[w小样儿]" xml:space="preserve">
     <value>1064</value>
   </data>
-
   <data name="[w左哼哼]" xml:space="preserve">
     <value>1065</value>
   </data>
-
   <data name="[w左哼哼哭]" xml:space="preserve">
     <value>1066</value>
   </data>
-
   <data name="[w帅]" xml:space="preserve">
     <value>1067</value>
   </data>
-
   <data name="[w干杯]" xml:space="preserve">
     <value>1068</value>
   </data>
-
   <data name="[w并不简单]" xml:space="preserve">
     <value>1069</value>
   </data>
-
   <data name="[w广而告之]" xml:space="preserve">
     <value>1070</value>
   </data>
-
   <data name="[w怒~]" xml:space="preserve">
     <value>1071</value>
   </data>
-
   <data name="[w怒骂]" xml:space="preserve">
     <value>1072</value>
   </data>
-
   <data name="[w思考]" xml:space="preserve">
     <value>1073</value>
   </data>
-
   <data name="[w急眼]" xml:space="preserve">
     <value>1074</value>
   </data>
-
   <data name="[w悲伤]" xml:space="preserve">
     <value>1075</value>
   </data>
-
   <data name="[w感冒]" xml:space="preserve">
     <value>1076</value>
   </data>
-
   <data name="[w懒得理你]" xml:space="preserve">
     <value>1077</value>
   </data>
-
   <data name="[w我美吗]" xml:space="preserve">
     <value>1078</value>
   </data>
-
   <data name="[w打哈欠]" xml:space="preserve">
     <value>1079</value>
   </data>
-
   <data name="[w打脸]" xml:space="preserve">
     <value>1080</value>
   </data>
-
   <data name="[w抓狂]" xml:space="preserve">
     <value>1081</value>
   </data>
-
   <data name="[w拜拜]" xml:space="preserve">
     <value>1082</value>
   </data>
-
   <data name="[w挖鼻屎]" xml:space="preserve">
     <value>1083</value>
   </data>
-
   <data name="[w捂脸哭]" xml:space="preserve">
     <value>1084</value>
   </data>
-
   <data name="[w摊手]" xml:space="preserve">
     <value>1085</value>
   </data>
-
   <data name="[w操练]" xml:space="preserve">
     <value>1086</value>
   </data>
-
   <data name="[w新浪]" xml:space="preserve">
     <value>1087</value>
   </data>
-
   <data name="[w旅行]" xml:space="preserve">
     <value>1088</value>
   </data>
-
   <data name="[w晕]" xml:space="preserve">
     <value>1089</value>
   </data>
-
   <data name="[w熊猫]" xml:space="preserve">
     <value>1090</value>
   </data>
-
   <data name="[w爱你]" xml:space="preserve">
     <value>1091</value>
   </data>
-
   <data name="[w猪头]" xml:space="preserve">
     <value>1092</value>
   </data>
-
   <data name="[w生病]" xml:space="preserve">
     <value>1093</value>
   </data>
-
   <data name="[w男孩儿]" xml:space="preserve">
     <value>1094</value>
   </data>
-
   <data name="[w疑问]" xml:space="preserve">
     <value>1095</value>
   </data>
-
   <data name="[w睡觉]" xml:space="preserve">
     <value>1096</value>
   </data>
-
   <data name="[w神兽]" xml:space="preserve">
     <value>1097</value>
   </data>
-
   <data name="[w神马]" xml:space="preserve">
     <value>1098</value>
   </data>
-
   <data name="[w笑哭]" xml:space="preserve">
     <value>1099</value>
   </data>
-
   <data name="[w累]" xml:space="preserve">
     <value>1100</value>
   </data>
-
   <data name="[w织毛衣]" xml:space="preserve">
     <value>1101</value>
   </data>
-
   <data name="[w给力]" xml:space="preserve">
     <value>1102</value>
   </data>
-
   <data name="[w肥皂]" xml:space="preserve">
     <value>1103</value>
   </data>
-
   <data name="[w舔]" xml:space="preserve">
     <value>1104</value>
   </data>
-
   <data name="[w花心]" xml:space="preserve">
     <value>1105</value>
   </data>
-
   <data name="[w萌]" xml:space="preserve">
     <value>1106</value>
   </data>
-
   <data name="[w蛋糕]" xml:space="preserve">
     <value>1107</value>
   </data>
-
   <data name="[w调皮]" xml:space="preserve">
     <value>1108</value>
   </data>
-
   <data name="[w跪了]" xml:space="preserve">
     <value>1109</value>
   </data>
-
   <data name="[w鄙视]" xml:space="preserve">
     <value>1110</value>
   </data>
-
   <data name="[w酷]" xml:space="preserve">
     <value>1111</value>
   </data>
-
   <data name="[w酷币]" xml:space="preserve">
     <value>1112</value>
   </data>
-
   <data name="[w钱]" xml:space="preserve">
     <value>1113</value>
   </data>
-
   <data name="[w闭嘴]" xml:space="preserve">
     <value>1114</value>
   </data>
-
   <data name="[w阴险]" xml:space="preserve">
     <value>1115</value>
   </data>
-
   <data name="[w馋嘴]" xml:space="preserve">
     <value>1116</value>
   </data>
-
   <data name="[w黑线]" xml:space="preserve">
     <value>1117</value>
   </data>
-
   <data name="[w鼓掌]" xml:space="preserve">
     <value>1118</value>
   </data>
-
+  <data name="[yyds]" xml:space="preserve">
+    <value>2343</value>
+  </data>
+  <data name="[下次一定]" xml:space="preserve">
+    <value>2345</value>
+  </data>
   <data name="[不开心]" xml:space="preserve">
     <value>1119</value>
   </data>
-
   <data name="[乒乓]" xml:space="preserve">
     <value>1120</value>
   </data>
-
   <data name="[二哈]" xml:space="preserve">
     <value>1121</value>
   </data>
-
   <data name="[二哈盯]" xml:space="preserve">
     <value>1122</value>
   </data>
-
   <data name="[亲亲]" xml:space="preserve">
     <value>1123</value>
   </data>
-
   <data name="[便便]" xml:space="preserve">
     <value>1124</value>
   </data>
-
   <data name="[假笑]" xml:space="preserve">
     <value>1125</value>
   </data>
-
   <data name="[偷看]" xml:space="preserve">
     <value>1126</value>
   </data>
-
   <data name="[傲慢]" xml:space="preserve">
     <value>1127</value>
   </data>
-
   <data name="[再见]" xml:space="preserve">
     <value>1128</value>
   </data>
-
   <data name="[冷汗]" xml:space="preserve">
     <value>1129</value>
   </data>
-
   <data name="[凋谢]" xml:space="preserve">
     <value>1130</value>
   </data>
-
   <data name="[刀]" xml:space="preserve">
     <value>1131</value>
   </data>
-
+  <data name="[列文虎克]" xml:space="preserve">
+    <value>2339</value>
+  </data>
   <data name="[勾引]" xml:space="preserve">
     <value>1132</value>
   </data>
-
   <data name="[卖萌]" xml:space="preserve">
     <value>1133</value>
   </data>
-
   <data name="[发呆]" xml:space="preserve">
     <value>1134</value>
   </data>
-
   <data name="[发怒]" xml:space="preserve">
     <value>1135</value>
   </data>
-
   <data name="[发抖]" xml:space="preserve">
     <value>1136</value>
   </data>
-
   <data name="[受虐滑稽]" xml:space="preserve">
     <value>1137</value>
   </data>
-
   <data name="[可怜]" xml:space="preserve">
     <value>1138</value>
   </data>
-
   <data name="[可爱]" xml:space="preserve">
     <value>1139</value>
   </data>
-
   <data name="[右哼哼]" xml:space="preserve">
     <value>1140</value>
   </data>
-
   <data name="[吃瓜]" xml:space="preserve">
     <value>1141</value>
   </data>
-
   <data name="[吐]" xml:space="preserve">
     <value>1142</value>
   </data>
-
   <data name="[吐舌]" xml:space="preserve">
     <value>1143</value>
   </data>
-
   <data name="[吓]" xml:space="preserve">
     <value>1144</value>
   </data>
-
   <data name="[呲牙]" xml:space="preserve">
     <value>1145</value>
   </data>
-
   <data name="[呵呵]" xml:space="preserve">
     <value>1146</value>
   </data>
-
   <data name="[咒骂]" xml:space="preserve">
     <value>1147</value>
   </data>
-
   <data name="[咖啡]" xml:space="preserve">
     <value>1148</value>
   </data>
-
   <data name="[哈哈]" xml:space="preserve">
     <value>1149</value>
   </data>
-
   <data name="[哈哈哈]" xml:space="preserve">
     <value>1150</value>
   </data>
-
   <data name="[哈欠]" xml:space="preserve">
     <value>1151</value>
   </data>
-
   <data name="[哦吼吼]" xml:space="preserve">
     <value>1152</value>
   </data>
-
   <data name="[哼唧]" xml:space="preserve">
     <value>1153</value>
   </data>
-
   <data name="[啤酒]" xml:space="preserve">
     <value>1154</value>
   </data>
-
   <data name="[喝茶]" xml:space="preserve">
     <value>1155</value>
   </data>
-
   <data name="[喝酒]" xml:space="preserve">
     <value>1156</value>
   </data>
-
   <data name="[喵喵]" xml:space="preserve">
     <value>1157</value>
   </data>
-
   <data name="[喵喵互粉]" xml:space="preserve">
     <value>1158</value>
   </data>
-
   <data name="[喵喵再见]" xml:space="preserve">
     <value>1159</value>
   </data>
-
   <data name="[喵喵原谅ta]" xml:space="preserve">
     <value>1160</value>
   </data>
-
   <data name="[喵喵口罩]" xml:space="preserve">
     <value>1161</value>
   </data>
-
   <data name="[喵喵吃惊]" xml:space="preserve">
     <value>1162</value>
   </data>
-
   <data name="[喵喵吃瓜]" xml:space="preserve">
     <value>1163</value>
   </data>
-
   <data name="[喵喵告辞]" xml:space="preserve">
     <value>1164</value>
   </data>
-
   <data name="[喵喵呵斥]" xml:space="preserve">
     <value>1165</value>
   </data>
-
   <data name="[喵喵并不简单]" xml:space="preserve">
     <value>1166</value>
   </data>
-
   <data name="[喵喵期待]" xml:space="preserve">
     <value>1167</value>
   </data>
-
   <data name="[喵喵汗]" xml:space="preserve">
     <value>1168</value>
   </data>
-
   <data name="[喵喵疑问]" xml:space="preserve">
     <value>1169</value>
   </data>
-
   <data name="[喵喵笑哭]" xml:space="preserve">
     <value>1170</value>
   </data>
-
   <data name="[喵喵装酷]" xml:space="preserve">
     <value>1171</value>
   </data>
-
   <data name="[喵喵鄙视]" xml:space="preserve">
     <value>1172</value>
   </data>
-
   <data name="[喵喵酷]" xml:space="preserve">
     <value>1173</value>
   </data>
-
   <data name="[喵喵问号]" xml:space="preserve">
     <value>1174</value>
   </data>
-
   <data name="[喵喵飞吻]" xml:space="preserve">
     <value>1175</value>
   </data>
-
   <data name="[喷]" xml:space="preserve">
     <value>1176</value>
   </data>
-
   <data name="[喷血]" xml:space="preserve">
     <value>1177</value>
   </data>
-
   <data name="[嘘]" xml:space="preserve">
     <value>1178</value>
   </data>
-
   <data name="[嘿哈]" xml:space="preserve">
     <value>1179</value>
   </data>
-
   <data name="[嘿嘿]" xml:space="preserve">
     <value>1180</value>
   </data>
-
   <data name="[噗]" xml:space="preserve">
     <value>1181</value>
   </data>
-
   <data name="[困]" xml:space="preserve">
     <value>1182</value>
   </data>
-
   <data name="[坏笑]" xml:space="preserve">
     <value>1183</value>
   </data>
-
   <data name="[墨镜滑稽]" xml:space="preserve">
     <value>1184</value>
   </data>
-
+  <data name="[夏阁艾迪剑]" xml:space="preserve">
+    <value>2344</value>
+  </data>
   <data name="[大兵]" xml:space="preserve">
     <value>1185</value>
   </data>
-
   <data name="[大哭]" xml:space="preserve">
     <value>1186</value>
   </data>
-
   <data name="[太阳]" xml:space="preserve">
     <value>1187</value>
   </data>
-
+  <data name="[头条通知书]" xml:space="preserve">
+    <value>2347</value>
+  </data>
   <data name="[奋斗]" xml:space="preserve">
     <value>1188</value>
   </data>
-
   <data name="[奸笑]" xml:space="preserve">
     <value>1189</value>
   </data>
-
   <data name="[委屈]" xml:space="preserve">
     <value>1190</value>
   </data>
-
   <data name="[害怕]" xml:space="preserve">
     <value>1191</value>
   </data>
-
   <data name="[害羞]" xml:space="preserve">
     <value>1192</value>
   </data>
-
   <data name="[小嘴滑稽]" xml:space="preserve">
     <value>1193</value>
   </data>
-
   <data name="[小纠结]" xml:space="preserve">
     <value>1194</value>
   </data>
-
   <data name="[尴尬]" xml:space="preserve">
     <value>1195</value>
   </data>
-
   <data name="[左哼哼]" xml:space="preserve">
     <value>1196</value>
   </data>
-
   <data name="[差劲]" xml:space="preserve">
     <value>1197</value>
   </data>
-
   <data name="[弱]" xml:space="preserve">
     <value>1198</value>
   </data>
-
   <data name="[强]" xml:space="preserve">
     <value>1199</value>
   </data>
-
   <data name="[得意]" xml:space="preserve">
     <value>1200</value>
   </data>
-
   <data name="[微微一笑]" xml:space="preserve">
     <value>1201</value>
   </data>
-
   <data name="[微笑]" xml:space="preserve">
     <value>1202</value>
   </data>
-
   <data name="[心碎]" xml:space="preserve">
     <value>1203</value>
   </data>
-
   <data name="[快哭了]" xml:space="preserve">
     <value>1204</value>
   </data>
-
   <data name="[怄火]" xml:space="preserve">
     <value>1205</value>
   </data>
-
   <data name="[惊喜]" xml:space="preserve">
     <value>1206</value>
   </data>
-
   <data name="[惊恐]" xml:space="preserve">
     <value>1207</value>
   </data>
-
   <data name="[惊讶]" xml:space="preserve">
     <value>1208</value>
   </data>
-
+  <data name="[感知不强]" xml:space="preserve">
+    <value>2341</value>
+  </data>
   <data name="[憨笑]" xml:space="preserve">
     <value>1209</value>
   </data>
-
   <data name="[懒得理]" xml:space="preserve">
     <value>1210</value>
   </data>
-
   <data name="[我最美]" xml:space="preserve">
     <value>1211</value>
   </data>
-
   <data name="[托腮]" xml:space="preserve">
     <value>1212</value>
   </data>
-
   <data name="[抓狂]" xml:space="preserve">
     <value>1213</value>
   </data>
-
   <data name="[折磨]" xml:space="preserve">
     <value>1214</value>
   </data>
-
   <data name="[抠鼻]" xml:space="preserve">
     <value>1215</value>
   </data>
-
   <data name="[抱拳]" xml:space="preserve">
     <value>1216</value>
   </data>
-
   <data name="[拥抱]" xml:space="preserve">
     <value>1217</value>
   </data>
-
   <data name="[拳头]" xml:space="preserve">
     <value>1218</value>
   </data>
-
   <data name="[挑眉坏笑]" xml:space="preserve">
     <value>1219</value>
   </data>
-
   <data name="[挨打]" xml:space="preserve">
     <value>1220</value>
   </data>
-
   <data name="[捂嘴笑]" xml:space="preserve">
     <value>1221</value>
   </data>
-
   <data name="[捂脸]" xml:space="preserve">
     <value>1222</value>
   </data>
-
   <data name="[掩面笑]" xml:space="preserve">
     <value>1223</value>
   </data>
-
   <data name="[握手]" xml:space="preserve">
     <value>1224</value>
   </data>
-
   <data name="[撇嘴]" xml:space="preserve">
     <value>1225</value>
   </data>
-
   <data name="[擦汗]" xml:space="preserve">
     <value>1226</value>
   </data>
-
   <data name="[敲打]" xml:space="preserve">
     <value>1227</value>
   </data>
-
   <data name="[斗鸡眼滑稽]" xml:space="preserve">
     <value>1228</value>
   </data>
-
   <data name="[斜眼笑]" xml:space="preserve">
     <value>1229</value>
   </data>
-
   <data name="[新币1分]" xml:space="preserve">
     <value>1230</value>
   </data>
-
   <data name="[新酷币1$]" xml:space="preserve">
     <value>1231</value>
   </data>
-
   <data name="[新酷币100块]" xml:space="preserve">
     <value>1232</value>
   </data>
-
   <data name="[新酷币10块]" xml:space="preserve">
     <value>1233</value>
   </data>
-
   <data name="[新酷币1€]" xml:space="preserve">
     <value>1234</value>
   </data>
-
   <data name="[新酷币1块]" xml:space="preserve">
     <value>1235</value>
   </data>
-
   <data name="[新酷币1毛]" xml:space="preserve">
     <value>1236</value>
   </data>
-
   <data name="[新酷币2$]" xml:space="preserve">
     <value>1237</value>
   </data>
-
   <data name="[新酷币20块]" xml:space="preserve">
     <value>1238</value>
   </data>
-
   <data name="[新酷币2€]" xml:space="preserve">
     <value>1239</value>
   </data>
-
   <data name="[新酷币2分]" xml:space="preserve">
     <value>1240</value>
   </data>
-
   <data name="[新酷币2块]" xml:space="preserve">
     <value>1241</value>
   </data>
-
   <data name="[新酷币2毛]" xml:space="preserve">
     <value>1242</value>
   </data>
-
   <data name="[新酷币5$]" xml:space="preserve">
     <value>1243</value>
   </data>
-
   <data name="[新酷币50块]" xml:space="preserve">
     <value>1244</value>
   </data>
-
   <data name="[新酷币5€]" xml:space="preserve">
     <value>1245</value>
   </data>
-
   <data name="[新酷币5分]" xml:space="preserve">
     <value>1246</value>
   </data>
-
   <data name="[新酷币5块]" xml:space="preserve">
     <value>1247</value>
   </data>
-
   <data name="[新酷币5毛]" xml:space="preserve">
     <value>1248</value>
   </data>
-
   <data name="[新酷币]" xml:space="preserve">
     <value>1249</value>
   </data>
-
   <data name="[无奈]" xml:space="preserve">
     <value>1250</value>
   </data>
-
   <data name="[无语]" xml:space="preserve">
     <value>1251</value>
   </data>
-
   <data name="[晕]" xml:space="preserve">
     <value>1252</value>
   </data>
-
   <data name="[月亮]" xml:space="preserve">
     <value>1253</value>
   </data>
-
   <data name="[机智]" xml:space="preserve">
     <value>1254</value>
   </data>
-
   <data name="[欢呼]" xml:space="preserve">
     <value>1255</value>
   </data>
-
   <data name="[汗]" xml:space="preserve">
     <value>1256</value>
   </data>
-
   <data name="[泪奔]" xml:space="preserve">
     <value>1257</value>
   </data>
-
   <data name="[流汗]" xml:space="preserve">
     <value>1258</value>
   </data>
-
   <data name="[流汗滑稽]" xml:space="preserve">
     <value>1259</value>
   </data>
-
   <data name="[流泪]" xml:space="preserve">
     <value>1260</value>
   </data>
-
   <data name="[滑稽]" xml:space="preserve">
     <value>1261</value>
   </data>
-
   <data name="[火把]" xml:space="preserve">
     <value>1262</value>
   </data>
-
   <data name="[灰色酷币]" xml:space="preserve">
     <value>1263</value>
   </data>
-
   <data name="[炸弹]" xml:space="preserve">
     <value>1264</value>
   </data>
-
   <data name="[爆怒]" xml:space="preserve">
     <value>1265</value>
   </data>
-
   <data name="[爱你]" xml:space="preserve">
     <value>1266</value>
   </data>
-
   <data name="[爱心]" xml:space="preserve">
     <value>1267</value>
   </data>
-
   <data name="[爱情]" xml:space="preserve">
     <value>1268</value>
   </data>
-
   <data name="[牛啤]" xml:space="preserve">
     <value>1269</value>
   </data>
-
   <data name="[猪头]" xml:space="preserve">
     <value>1270</value>
   </data>
-
   <data name="[玫瑰]" xml:space="preserve">
     <value>1271</value>
   </data>
-
   <data name="[瓢虫]" xml:space="preserve">
     <value>1272</value>
   </data>
-
   <data name="[疑问]" xml:space="preserve">
     <value>1273</value>
   </data>
-
   <data name="[白眼]" xml:space="preserve">
     <value>1274</value>
   </data>
-
   <data name="[白纹酷币]" xml:space="preserve">
     <value>1275</value>
   </data>
-
   <data name="[皱眉]" xml:space="preserve">
     <value>1276</value>
   </data>
-
+  <data name="[真正的音乐]" xml:space="preserve">
+    <value>2340</value>
+  </data>
   <data name="[睡]" xml:space="preserve">
     <value>1277</value>
   </data>
-
   <data name="[示爱]" xml:space="preserve">
     <value>1278</value>
   </data>
-
   <data name="[礼物]" xml:space="preserve">
     <value>1279</value>
   </data>
-
   <data name="[笑哭]" xml:space="preserve">
     <value>1280</value>
   </data>
-
   <data name="[笑哭再见]" xml:space="preserve">
     <value>1281</value>
   </data>
-
   <data name="[笑眼]" xml:space="preserve">
     <value>1282</value>
   </data>
-
   <data name="[篮球]" xml:space="preserve">
     <value>1283</value>
   </data>
-
   <data name="[糗大了]" xml:space="preserve">
     <value>1284</value>
   </data>
-
   <data name="[红药丸]" xml:space="preserve">
     <value>1285</value>
   </data>
-
+  <data name="[给我整一个]" xml:space="preserve">
+    <value>2342</value>
+  </data>
   <data name="[绿帽]" xml:space="preserve">
     <value>1286</value>
   </data>
-
   <data name="[绿色酷币]" xml:space="preserve">
     <value>1287</value>
   </data>
-
   <data name="[绿药丸]" xml:space="preserve">
     <value>1288</value>
   </data>
-
   <data name="[耐克嘴]" xml:space="preserve">
     <value>1289</value>
   </data>
-
   <data name="[耶]" xml:space="preserve">
     <value>1290</value>
   </data>
-
   <data name="[胜利]" xml:space="preserve">
     <value>1291</value>
   </data>
-
   <data name="[舒服]" xml:space="preserve">
     <value>1292</value>
   </data>
-
   <data name="[舔]" xml:space="preserve">
     <value>1293</value>
   </data>
-
   <data name="[色]" xml:space="preserve">
     <value>1294</value>
   </data>
-
   <data name="[菜刀]" xml:space="preserve">
     <value>1295</value>
   </data>
-
   <data name="[蛋糕]" xml:space="preserve">
     <value>1296</value>
   </data>
-
   <data name="[表面哭泣]" xml:space="preserve">
     <value>1297</value>
   </data>
-
   <data name="[表面开心]" xml:space="preserve">
     <value>1298</value>
   </data>
-
   <data name="[衰]" xml:space="preserve">
     <value>1299</value>
   </data>
-
   <data name="[西瓜]" xml:space="preserve">
     <value>1300</value>
   </data>
-
   <data name="[调皮]" xml:space="preserve">
     <value>1301</value>
   </data>
-
   <data name="[足球]" xml:space="preserve">
     <value>1302</value>
   </data>
-
   <data name="[跳跳]" xml:space="preserve">
     <value>1303</value>
   </data>
-
   <data name="[转圈]" xml:space="preserve">
     <value>1304</value>
   </data>
-
   <data name="[鄙视]" xml:space="preserve">
     <value>1305</value>
   </data>
-
   <data name="[酷]" xml:space="preserve">
     <value>1306</value>
   </data>
-
   <data name="[酷安]" xml:space="preserve">
     <value>1307</value>
   </data>
-
+  <data name="[酷安土豆]" xml:space="preserve">
+    <value>2346</value>
+  </data>
   <data name="[酷安绿帽]" xml:space="preserve">
     <value>1308</value>
   </data>
-
   <data name="[酷安钓鱼]" xml:space="preserve">
     <value>1309</value>
   </data>
-
   <data name="[酷币1$]" xml:space="preserve">
     <value>1310</value>
   </data>
-
   <data name="[酷币100块]" xml:space="preserve">
     <value>1311</value>
   </data>
-
   <data name="[酷币10块]" xml:space="preserve">
     <value>1312</value>
   </data>
-
   <data name="[酷币1]" xml:space="preserve">
     <value>1313</value>
   </data>
-
   <data name="[酷币1€]" xml:space="preserve">
     <value>1314</value>
   </data>
-
   <data name="[酷币1分]" xml:space="preserve">
     <value>1315</value>
   </data>
-
   <data name="[酷币1块]" xml:space="preserve">
     <value>1316</value>
   </data>
-
   <data name="[酷币1毛]" xml:space="preserve">
     <value>1317</value>
   </data>
-
   <data name="[酷币2$]" xml:space="preserve">
     <value>1318</value>
   </data>
-
   <data name="[酷币20块]" xml:space="preserve">
     <value>1319</value>
   </data>
-
   <data name="[酷币2]" xml:space="preserve">
     <value>1320</value>
   </data>
-
   <data name="[酷币2€]" xml:space="preserve">
     <value>1321</value>
   </data>
-
   <data name="[酷币2分]" xml:space="preserve">
     <value>1322</value>
   </data>
-
   <data name="[酷币2块]" xml:space="preserve">
     <value>1323</value>
   </data>
-
   <data name="[酷币2毛]" xml:space="preserve">
     <value>1324</value>
   </data>
-
   <data name="[酷币5$]" xml:space="preserve">
     <value>1325</value>
   </data>
-
   <data name="[酷币50块]" xml:space="preserve">
     <value>1326</value>
   </data>
-
   <data name="[酷币5]" xml:space="preserve">
     <value>1327</value>
   </data>
-
   <data name="[酷币5€]" xml:space="preserve">
     <value>1328</value>
   </data>
-
   <data name="[酷币5分]" xml:space="preserve">
     <value>1329</value>
   </data>
-
   <data name="[酷币5块]" xml:space="preserve">
     <value>1330</value>
   </data>
-
   <data name="[酷币5毛]" xml:space="preserve">
     <value>1331</value>
   </data>
-
   <data name="[酷币]" xml:space="preserve">
     <value>1332</value>
   </data>
-
   <data name="[酷币空]" xml:space="preserve">
     <value>1333</value>
   </data>
-
+  <data name="[针不戳]" xml:space="preserve">
+    <value>2338</value>
+  </data>
   <data name="[闪电]" xml:space="preserve">
     <value>1334</value>
   </data>
-
   <data name="[闭嘴]" xml:space="preserve">
     <value>1335</value>
   </data>
-
   <data name="[阴险]" xml:space="preserve">
     <value>1336</value>
   </data>
-
   <data name="[难过]" xml:space="preserve">
     <value>1337</value>
   </data>
-
   <data name="[飞吻]" xml:space="preserve">
     <value>1338</value>
   </data>
-
   <data name="[饥饿]" xml:space="preserve">
     <value>1339</value>
   </data>
-
   <data name="[饭]" xml:space="preserve">
     <value>1340</value>
   </data>
-
   <data name="[骚扰]" xml:space="preserve">
     <value>1341</value>
   </data>
