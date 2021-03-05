@@ -10,7 +10,7 @@
 <a href="https://github.com/Tangent-90/Coolapk-UWP/stargazers"><img alt="GitHub" src="https://img.shields.io/github/stars/Tangent-90/Coolapk-UWP.svg?label=Stars&style=flat-square"></a>
 
 <a href="https://github.com/Tangent-90/Coolapk-UWP/releases/latest"><img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/Tangent-90/Coolapk-UWP/total.svg?label=DOWNLOAD&logo=github&style=for-the-badge"></a>
-<a href="https://pan.baidu.com/s/1Wjy-CUfjm0sOHCKLwQEALQ"><img alt="Baidu Netdisk" src="https://img.shields.io/badge/download-%e5%af%86%e7%a0%81%ef%bc%9alIIl-magenta.svg?label=%e4%b8%8b%e8%bd%bd&logo=baidu&style=for-the-badge"></a>
+<a href=""><img alt="Baidu Netdisk" src="https://img.shields.io/badge/download-%e5%af%86%e7%a0%81%ef%bc%9alIIl-magenta.svg?label=%e4%b8%8b%e8%bd%bd&logo=baidu&style=for-the-badge"></a>
 
 ## 目录
 - [声明](#声明)
@@ -67,6 +67,13 @@
 ### 更新应用
 - 下载并解压最新的[安装包`(UWP_x.x.x.0_x86_x64_arm_Debug.appxbundle)`](https://github.com/Tangent-90/Coolapk-UWP/releases/latest)
 - 双击`*.appxbundle`，单击安装，坐和放宽
+![安装](Images/Guides/Snipaste_2019-10-13_16-01-09.png)
+
+### 一键安装
+- 在浏览器中打开链接：`ms-appinstaller:?source=https://raw.fastgit.org/Tangent-90/Coolapk-UWP/screenshots/Appxbundle/CoolapkUWP.appxbundle`
+- 弹出窗口后单击确定
+![弹窗](Images/Guides/Snipaste_2021-03-05_22-14-56.png)
+- 单击安装，坐和放宽
 ![安装](Images/Guides/Snipaste_2019-10-13_16-01-09.png)
 
 ## 屏幕截图
