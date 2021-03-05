@@ -153,7 +153,7 @@
                         <Button
                             x:Name="gotoTestPage"
                             Click="Button_Click"
-                            Content="go to test page"
+                            Content="前往测试页面"
                             Tag="gotoTestPage"
                             Visibility="Collapsed" />
                     </StackPanel>

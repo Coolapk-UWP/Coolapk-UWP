@@ -4,36 +4,57 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:control="using:CoolapkUWP.Controls"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:helper="using:CoolapkUWP.Helpers"
+    xmlns:local="using:CoolapkUWP.Pages.SettingPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="using:CoolapkUWP.Models.CoolapkUWP.Core.Models.Controls.MakeFeedControlModel"
-    Background="Transparent"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d">
 
-    <ListView IsItemClickEnabled="False" SelectionMode="None">
-        <ListView.ItemContainerStyle>
-            <Style TargetType="ListViewItem">
-                <Setter Property="Template" Value="{StaticResource AppListViewItemTemplate}" />
-            </Style>
-        </ListView.ItemContainerStyle>
-        <ListView.Header>
-            <controls:ScrollHeader Mode="QuickReturn">
-                <control:TitleBar
-                    Title="TestPage"
-                    BackButtonClicked="Button_Click_3"
-                    IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" />
-            </controls:ScrollHeader>
-        </ListView.Header>
-        <StackPanel>
-            <TextBox x:Name="uid" Header="uid" />
-            <Button Click="Button_Click">go</Button>
-            <TextBox x:Name="url" Header="url" />
-            <Button Click="Button_Click_5">go</Button>
-            <TextBox x:Name="message" Header="message" />
-            <Button Click="Button_Click_4">show</Button>
-            <Button Click="Button_Click_1">to login page</Button>
-            <control:MakeFeedControl />
-        </StackPanel>
-    </ListView>
+    <Page.Resources>
+        <converter:TrueToFalseConverter x:Key="TrueToFalseConverter" />
+        <Style x:Key="HeaderStyle" TargetType="controls:HeaderedContentControl">
+            <Setter Property="Margin" Value="0,8" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <ScrollViewer Padding="{StaticResource StackPanelMargin}">
+            <StackPanel Margin="16,0">
+
+                <controls:HeaderedContentControl x:Name="test1" Style="{StaticResource HeaderStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox x:Name="uid" Header="输入UID" Grid.Row="0" Margin="0,2"/>
+                        <Button Click="Button_Click" Grid.Row="1" Margin="0,2">前往</Button>
+                        <TextBox x:Name="url" Header="输入URL" Grid.Row="2" Margin="0,2"/>
+                        <Button Click="Button_Click_5" Grid.Row="3" Margin="0,2">前往</Button>
+                        <TextBox x:Name="message" Header="信息" Grid.Row="4" Margin="0,2"/>
+                        <Button Click="Button_Click_4" Grid.Row="5" Margin="0,2">显示</Button>
+                        <Button Click="Button_Click_1" Grid.Row="6" Margin="0,2">前往登录页面</Button>
+                        <control:MakeFeedControl Grid.Row="7" Margin="0,2"/>
+
+                    </Grid>
+                </controls:HeaderedContentControl>
+
+            </StackPanel>
+        </ScrollViewer>
+        <control:TitleBar Title="测试" BackButtonClicked="Button_Click_3" IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" />
+    </Grid>
 </Page>
