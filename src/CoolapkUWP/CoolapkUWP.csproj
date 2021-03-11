@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CoolapkUWP</RootNamespace>
     <AssemblyName>CoolapkUWP</AssemblyName>
-    <DefaultLanguage>zh-cn</DefaultLanguage>
+    <DefaultLanguage>zh-Hans</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>

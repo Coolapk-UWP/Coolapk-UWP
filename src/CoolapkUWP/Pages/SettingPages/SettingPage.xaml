@@ -42,6 +42,7 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
@@ -91,6 +92,16 @@
                             Margin="0,2"
                             Click="Button_Click"
                             Tag="AccountSetting" />
+
+                        <Button
+                            x:Uid="/SettingPage/AccountLogout"
+                            Style="{StaticResource ButtonRevealStyle}"
+                            Grid.Row="5"
+                            Grid.ColumnSpan="2"
+                            Margin="0,2"
+                            Click="Button_Click"
+                            Tag="AccountSetting" />
+
                     </Grid>
                 </controls:HeaderedContentControl>
 
