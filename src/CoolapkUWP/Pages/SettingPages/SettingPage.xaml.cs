@@ -210,6 +210,11 @@ namespace CoolapkUWP.Pages.SettingPages
                 case "AccountSetting":
                     UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "https://account.coolapk.com/account/settings" });
                     break;
+
+                case "AccountLogout":
+                    SettingsHelper.Logout();
+                    break;
+
                 case "MyDevice":
                     UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
                     break;

@@ -101,7 +101,7 @@
                             Grid.ColumnSpan="2"
                             Margin="0,2"
                             Click="Button_Click"
-                            Tag="AccountSetting" />
+                            Tag="MyDevice" />
 
                         <Button
                             x:Uid="/SettingPage/AccountLogout"
@@ -110,7 +110,7 @@
                             Grid.ColumnSpan="2"
                             Margin="0,2"
                             Click="Button_Click"
-                            Tag="AccountSetting" />
+                            Tag="AccountLogout" />
 
                     </Grid>
                 </controls:HeaderedContentControl>
