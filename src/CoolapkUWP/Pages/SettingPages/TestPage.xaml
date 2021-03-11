@@ -47,7 +47,7 @@
                         <Button Click="Button_Click_5" Style="{StaticResource ButtonRevealStyle}" Grid.Row="3" Margin="0,2">前往</Button>
                         <TextBox x:Name="message" Header="信息" Grid.Row="4" Margin="0,2"/>
                         <Button Click="Button_Click_4" Style="{StaticResource ButtonRevealStyle}" Grid.Row="5" Margin="0,2">显示</Button>
-                        <Button Click="Button_Click_1" Style="{StaticResource ButtonRevealStyle}" Grid.Row="6" Margin="0,2">前往登录页面</Button>
+                        <Button Click="Button_Click_1" Style="{StaticResource ButtonRevealStyle}" Grid.Row="6" Margin="0,2">我的机型</Button>
                         <control:MakeFeedControl Grid.Row="7" Margin="0,2"/>
 
                     </Grid>

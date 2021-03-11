@@ -150,6 +150,9 @@
   <data name="MessageDialogTitle" xml:space="preserve">
     <value>提示</value>
   </data>
+  <data name="MyDevice.Content" xml:space="preserve">
+    <value>我的机型</value>
+  </data>
   <data name="NoPicsModeCheckBox.Header" xml:space="preserve">
     <value>无图模式</value>
   </data>
