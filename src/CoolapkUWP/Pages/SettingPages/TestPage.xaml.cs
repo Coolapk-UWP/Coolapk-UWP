@@ -44,5 +44,10 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
         }
+
+        private void TitleBar_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

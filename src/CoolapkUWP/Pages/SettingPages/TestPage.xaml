@@ -55,6 +55,6 @@
 
             </StackPanel>
         </ScrollViewer>
-        <control:TitleBar Title="测试" BackButtonClicked="Button_Click_3" IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" />
+        <control:TitleBar Title="测试" BackButtonClicked="Button_Click_3" IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" Loaded="TitleBar_Loaded" />
     </Grid>
 </Page>
