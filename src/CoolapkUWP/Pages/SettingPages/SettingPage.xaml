@@ -141,6 +141,7 @@
 
                         <Button
                             x:Uid="/SettingPage/CheckUpdate"
+                            Style="{StaticResource ButtonRevealStyle}"
                             Grid.Row="2"
                             Grid.Column="0"
                             Click="Button_Click"
