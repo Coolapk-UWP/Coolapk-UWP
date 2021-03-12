@@ -49,5 +49,10 @@ namespace CoolapkUWP.Pages.SettingPages
         {
 
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SettingPageNew));
+        }
     }
 }

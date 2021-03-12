@@ -754,10 +754,10 @@
     <value>1118</value>
   </data>
   <data name="[yyds]" xml:space="preserve">
-    <value>2343</value>
+    <value>1350</value>
   </data>
   <data name="[下次一定]" xml:space="preserve">
-    <value>2345</value>
+    <value>1352</value>
   </data>
   <data name="[不开心]" xml:space="preserve">
     <value>1119</value>
@@ -799,7 +799,7 @@
     <value>1131</value>
   </data>
   <data name="[列文虎克]" xml:space="preserve">
-    <value>2339</value>
+    <value>1346</value>
   </data>
   <data name="[勾引]" xml:space="preserve">
     <value>1132</value>
@@ -961,7 +961,7 @@
     <value>1184</value>
   </data>
   <data name="[夏阁艾迪剑]" xml:space="preserve">
-    <value>2344</value>
+    <value>1351</value>
   </data>
   <data name="[大兵]" xml:space="preserve">
     <value>1185</value>
@@ -973,7 +973,7 @@
     <value>1187</value>
   </data>
   <data name="[头条通知书]" xml:space="preserve">
-    <value>2347</value>
+    <value>1354</value>
   </data>
   <data name="[奋斗]" xml:space="preserve">
     <value>1188</value>
@@ -1004,6 +1004,9 @@
   </data>
   <data name="[差劲]" xml:space="preserve">
     <value>1197</value>
+  </data>
+  <data name="[幽灵]" xml:space="preserve">
+    <value>0999</value>
   </data>
   <data name="[弱]" xml:space="preserve">
     <value>1198</value>
@@ -1039,7 +1042,7 @@
     <value>1208</value>
   </data>
   <data name="[感知不强]" xml:space="preserve">
-    <value>2341</value>
+    <value>1348</value>
   </data>
   <data name="[憨笑]" xml:space="preserve">
     <value>1209</value>
@@ -1246,7 +1249,7 @@
     <value>1276</value>
   </data>
   <data name="[真正的音乐]" xml:space="preserve">
-    <value>2340</value>
+    <value>1347</value>
   </data>
   <data name="[睡]" xml:space="preserve">
     <value>1277</value>
@@ -1276,7 +1279,7 @@
     <value>1285</value>
   </data>
   <data name="[给我整一个]" xml:space="preserve">
-    <value>2342</value>
+    <value>1349</value>
   </data>
   <data name="[绿帽]" xml:space="preserve">
     <value>1286</value>
@@ -1345,7 +1348,7 @@
     <value>1307</value>
   </data>
   <data name="[酷安土豆]" xml:space="preserve">
-    <value>2346</value>
+    <value>1353</value>
   </data>
   <data name="[酷安绿帽]" xml:space="preserve">
     <value>1308</value>
@@ -1426,7 +1429,7 @@
     <value>1333</value>
   </data>
   <data name="[针不戳]" xml:space="preserve">
-    <value>2338</value>
+    <value>1345</value>
   </data>
   <data name="[闪电]" xml:space="preserve">
     <value>1334</value>

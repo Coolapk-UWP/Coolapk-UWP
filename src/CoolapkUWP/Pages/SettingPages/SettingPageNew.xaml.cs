@@ -22,9 +22,6 @@ namespace CoolapkUWP.Pages.SettingPages
     /// </summary>
     public sealed partial class SettingPageNew : Page
     {
-        public SettingPageNew()
-        {
-            this.InitializeComponent();
-        }
+        private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
     }
 }

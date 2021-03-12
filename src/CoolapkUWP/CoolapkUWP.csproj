@@ -342,6 +342,7 @@
     <Content Include="Assets\Emoji\0090.png" />
     <Content Include="Assets\Emoji\0091.png" />
     <Content Include="Assets\Emoji\0092.png" />
+    <Content Include="Assets\Emoji\0999.png" />
     <Content Include="Assets\Emoji\1000.png" />
     <Content Include="Assets\Emoji\1001.png" />
     <Content Include="Assets\Emoji\1002.png" />
@@ -687,6 +688,16 @@
     <Content Include="Assets\Emoji\1342.png" />
     <Content Include="Assets\Emoji\1343.png" />
     <Content Include="Assets\Emoji\1344.png" />
+    <Content Include="Assets\Emoji\1345.png" />
+    <Content Include="Assets\Emoji\1346.png" />
+    <Content Include="Assets\Emoji\1347.png" />
+    <Content Include="Assets\Emoji\1348.png" />
+    <Content Include="Assets\Emoji\1349.png" />
+    <Content Include="Assets\Emoji\1350.png" />
+    <Content Include="Assets\Emoji\1351.png" />
+    <Content Include="Assets\Emoji\1352.png" />
+    <Content Include="Assets\Emoji\1353.png" />
+    <Content Include="Assets\Emoji\1354.png" />
     <Content Include="Assets\Emoji\2002.png" />
     <Content Include="Assets\Emoji\2004.png" />
     <Content Include="Assets\Emoji\2009.png" />
@@ -753,16 +764,6 @@
     <Content Include="Assets\Emoji\2332.png" />
     <Content Include="Assets\Emoji\2336.png" />
     <Content Include="Assets\Emoji\2337.png" />
-    <Content Include="Assets\Emoji\2338.png" />
-    <Content Include="Assets\Emoji\2339.png" />
-    <Content Include="Assets\Emoji\2340.png" />
-    <Content Include="Assets\Emoji\2341.png" />
-    <Content Include="Assets\Emoji\2342.png" />
-    <Content Include="Assets\Emoji\2343.png" />
-    <Content Include="Assets\Emoji\2344.png" />
-    <Content Include="Assets\Emoji\2345.png" />
-    <Content Include="Assets\Emoji\2346.png" />
-    <Content Include="Assets\Emoji\coolapk_emotion_1031.png" />
     <Content Include="Assets\img_placeholder.png" />
     <Content Include="Assets\img_placeholder_night.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
@@ -983,6 +984,7 @@
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
     </None>
+    <PRIResource Include="Strings\zh-Hans\SettingPageNew.resw" />
     <PRIResource Include="Strings\en\ShowImagePage.resw" />
     <PRIResource Include="Strings\en\SettingPage.resw" />
     <PRIResource Include="Strings\en\Resources.resw" />
