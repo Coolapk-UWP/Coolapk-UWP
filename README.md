@@ -37,9 +37,6 @@
 4. 更多内容请自行发掘<img alt="流汗滑稽" src="./src/CoolapkUWP/Assets/Emoji/1259.png" width="20px" />
 
 ## 如何安装应用
-
-<iframe src="//player.bilibili.com/player.html?aid=844607436&bvid=BV1y54y1a768&cid=309705979&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
-
 ### 最低需求
 - Windows 10 Build ~~15063~~ 17134及以上
 - 设备需支持ARM/x86/x64
