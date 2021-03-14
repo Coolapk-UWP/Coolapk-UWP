@@ -5,6 +5,7 @@ using System.ComponentModel;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
+using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -233,7 +234,8 @@ namespace CoolapkUWP.Pages.SettingPages
                     {
                         f.Hide();
                     }
-                    Frame.Navigate(typeof(MyPage));
+                    Frame.Navigate(typeof(SettingPage));
+                    Frame.GoBack();
                     break;
 
                 case "MyDevice":

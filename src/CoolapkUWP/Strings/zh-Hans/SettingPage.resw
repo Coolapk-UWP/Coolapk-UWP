@@ -123,6 +123,9 @@
   <data name="AccountLogoutConfirm.Content" xml:space="preserve">
     <value>确定退出</value>
   </data>
+  <data name="AccountLogoutTitle.Text" xml:space="preserve">
+    <value>你确定要退出登录吗？</value>
+  </data>
   <data name="AccountSetting.Content" xml:space="preserve">
     <value>账户设置</value>
   </data>

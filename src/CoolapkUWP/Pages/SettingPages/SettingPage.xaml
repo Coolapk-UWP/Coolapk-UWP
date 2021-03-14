@@ -107,7 +107,7 @@
                             <Button.Flyout>
                                 <Flyout>
                                     <StackPanel>
-                                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="All items will be removed. Do you want to continue?" Margin="0,0,0,12" />
+                                        <TextBlock x:Uid="/SettingPage/AccountLogoutTitle" Style="{ThemeResource BaseTextBlockStyle}" Margin="0,0,0,12" />
                                         <Button x:Uid="/SettingPage/AccountLogoutConfirm" Click="Button_Click" Tag="AccountLogout" />
                                     </StackPanel>
                                 </Flyout>
