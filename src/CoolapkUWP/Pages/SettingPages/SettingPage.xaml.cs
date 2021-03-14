@@ -190,23 +190,15 @@ namespace CoolapkUWP.Pages.SettingPages
                     break;
 
                 case "reset":
-                    bool b = true;
-                    //if (!string.IsNullOrEmpty(Get<string>(Uid)))
+                    Logout();
+                    ApplicationData.Current.LocalSettings.Values.Clear();
+                    SetDefaultSettings();
+                    if (this.reset.Flyout is Flyout flyout_reset)
                     {
-                        var loader = ResourceLoader.GetForCurrentView("SettingPage");
-                        MessageDialog dialog = new MessageDialog(loader.GetString("MessageDialogContent"), loader.GetString("MessageDialogTitle"));
-                        dialog.Commands.Add(new UICommand(ResourceLoader.GetForCurrentView().GetString("Yes")));
-                        dialog.Commands.Add(new UICommand(ResourceLoader.GetForCurrentView().GetString("No")));
-                        if ((await dialog.ShowAsync()).Label == ResourceLoader.GetForCurrentView().GetString("Yes"))
-                            Logout();
-                        else
-                            b = false;
+                        flyout_reset.Hide();
                     }
-                    if (b)
-                    {
-                        ApplicationData.Current.LocalSettings.Values.Clear();
-                        SetDefaultSettings();
-                    }
+                    Frame.Navigate(typeof(SettingPage));
+                    Frame.GoBack();
                     break;
 
                 case "CleanCache":
@@ -230,9 +222,9 @@ namespace CoolapkUWP.Pages.SettingPages
                 case "AccountLogout":
                     SettingsHelper.Logout();
                     LogoutButtonVisibility = Visibility.Collapsed;
-                    if (this.AccountLogout.Flyout is Flyout f)
+                    if (this.AccountLogout.Flyout is Flyout flyout_logout)
                     {
-                        f.Hide();
+                        flyout_logout.Hide();
                     }
                     Frame.Navigate(typeof(SettingPage));
                     Frame.GoBack();

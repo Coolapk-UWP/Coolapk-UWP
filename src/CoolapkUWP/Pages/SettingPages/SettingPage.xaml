@@ -172,12 +172,17 @@
                 <controls:HeaderedContentControl x:Uid="/SettingPage/OthersSettingsHeader" Style="{StaticResource HeaderStyle}">
                     <StackPanel>
                         <CheckBox x:Uid="/SettingPage/ShowOtherExceptionCheckBox" IsChecked="{x:Bind ShowOtherException2, Mode=TwoWay}" />
-                        <Button
-                            x:Uid="/SettingPage/ResetSettings"
-                            Style="{StaticResource ButtonRevealStyle}"
-                            Margin="0,2"
-                            Click="Button_Click"
-                            Tag="reset" />
+                        
+                        <Button x:Uid="/SettingPage/ResetSettings" Margin="0,2" Name="reset">
+                            <Button.Flyout>
+                                <Flyout>
+                                    <StackPanel>
+                                        <TextBlock x:Uid="/SettingPage/ResetSettingsTitle" Style="{ThemeResource BaseTextBlockStyle}" Margin="0,0,0,12" />
+                                        <Button x:Uid="/SettingPage/ResetSettingsConfirm" Click="Button_Click" Tag="reset" />
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
 
                         <HyperlinkButton
                             x:Uid="/SettingPage/FeedbackLink"

@@ -171,6 +171,12 @@
   <data name="ResetSettings.Content" xml:space="preserve">
     <value>恢复默认设置</value>
   </data>
+  <data name="ResetSettingsConfirm.Content" xml:space="preserve">
+    <value>恢复默认</value>
+  </data>
+  <data name="ResetSettingsTitle.Text" xml:space="preserve">
+    <value>进行此操作会同时退出登录，你确定吗？</value>
+  </data>
   <data name="ShowOtherExceptionCheckBox.Content" xml:space="preserve">
     <value>显示运行过程中出现的未知错误</value>
   </data>
