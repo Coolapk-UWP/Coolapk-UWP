@@ -121,7 +121,7 @@
     <value>酷安第三方UWP应用</value>
   </data>
   <data name="AppName" xml:space="preserve">
-    <value>酷安 UWP</value>
+    <value>酷安</value>
   </data>
   <data name="ExceptionThrown" xml:space="preserve">
     <value>程序出现了错误……</value>
