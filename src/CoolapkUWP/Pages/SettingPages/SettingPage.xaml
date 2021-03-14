@@ -41,9 +41,6 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
@@ -85,10 +82,24 @@
                             HorizontalAlignment="Left"
                             IsActive="{x:Bind IsCleanCacheButtonEnabled, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}" />
 
+                    </Grid>
+                </controls:HeaderedContentControl>
+
+                <controls:HeaderedContentControl x:Uid="/SettingPage/AccountSettingsHeader" Style="{StaticResource HeaderStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
                         <Button
                             x:Uid="/SettingPage/AccountSetting"
                             Style="{StaticResource ButtonRevealStyle}"
-                            Grid.Row="4"
+                            Grid.Row="0"
                             Grid.ColumnSpan="2"
                             Margin="0,2"
                             Click="Button_Click"
@@ -97,13 +108,13 @@
                         <Button
                             x:Uid="/SettingPage/MyDevice"
                             Style="{StaticResource ButtonRevealStyle}"
-                            Grid.Row="5"
+                            Grid.Row="1"
                             Grid.ColumnSpan="2"
                             Margin="0,2"
                             Click="Button_Click"
                             Tag="MyDevice" />
 
-                        <Button x:Uid="/SettingPage/AccountLogout" Grid.Row="7" Grid.ColumnSpan="2" Margin="0,2" Name="AccountLogout">
+                        <Button x:Uid="/SettingPage/AccountLogout" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,2" Name="AccountLogout">
                             <Button.Flyout>
                                 <Flyout>
                                     <StackPanel>
@@ -113,10 +124,9 @@
                                 </Flyout>
                             </Button.Flyout>
                         </Button>
-
                     </Grid>
                 </controls:HeaderedContentControl>
-
+                
                 <controls:HeaderedContentControl x:Uid="/SettingPage/UpdateSettingsHeader" Style="{StaticResource HeaderStyle}">
                     <Grid>
                         <Grid.RowDefinitions>

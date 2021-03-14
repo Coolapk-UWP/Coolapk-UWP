@@ -129,6 +129,9 @@
   <data name="AccountSetting.Content" xml:space="preserve">
     <value>账户设置</value>
   </data>
+  <data name="AccountSettingsHeader.Header" xml:space="preserve">
+    <value>账户</value>
+  </data>
   <data name="CheckUpdate.Content" xml:space="preserve">
     <value>检查更新</value>
   </data>
