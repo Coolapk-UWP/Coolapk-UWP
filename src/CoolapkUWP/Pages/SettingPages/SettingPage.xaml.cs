@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
+using Microsoft.VisualBasic;
 using System;
 using System.ComponentModel;
 using Windows.ApplicationModel;
@@ -7,6 +8,8 @@ using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Input;
 using static CoolapkUWP.Helpers.SettingsHelper;
 
 namespace CoolapkUWP.Pages.SettingPages
@@ -14,6 +17,18 @@ namespace CoolapkUWP.Pages.SettingPages
     public sealed partial class SettingPage : Page, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private Visibility logoutButtonVisibility;
+
+        private Visibility LogoutButtonVisibility
+        {
+            get => logoutButtonVisibility;
+            set
+            {
+                logoutButtonVisibility = value;
+                RaisePropertyChangedEvent();
+            }
+        }
 
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
@@ -213,6 +228,12 @@ namespace CoolapkUWP.Pages.SettingPages
 
                 case "AccountLogout":
                     SettingsHelper.Logout();
+                    LogoutButtonVisibility = Visibility.Collapsed;
+                    if (this.AccountLogout.Flyout is Flyout f)
+                    {
+                        f.Hide();
+                    }
+                    Frame.Navigate(typeof(MyPage));
                     break;
 
                 case "MyDevice":

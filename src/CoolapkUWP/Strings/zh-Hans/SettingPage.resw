@@ -120,6 +120,9 @@
   <data name="AccountLogout.Content" xml:space="preserve">
     <value>退出登录</value>
   </data>
+  <data name="AccountLogoutConfirm.Content" xml:space="preserve">
+    <value>确定退出</value>
+  </data>
   <data name="AccountSetting.Content" xml:space="preserve">
     <value>账户设置</value>
   </data>

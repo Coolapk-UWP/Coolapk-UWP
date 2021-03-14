@@ -103,14 +103,16 @@
                             Click="Button_Click"
                             Tag="MyDevice" />
 
-                        <Button
-                            x:Uid="/SettingPage/AccountLogout"
-                            Style="{StaticResource ButtonRevealStyle}"
-                            Grid.Row="6"
-                            Grid.ColumnSpan="2"
-                            Margin="0,2"
-                            Click="Button_Click"
-                            Tag="AccountLogout" />
+                        <Button x:Uid="/SettingPage/AccountLogout" Grid.Row="7" Grid.ColumnSpan="2" Margin="0,2" Name="AccountLogout">
+                            <Button.Flyout>
+                                <Flyout>
+                                    <StackPanel>
+                                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="All items will be removed. Do you want to continue?" Margin="0,0,0,12" />
+                                        <Button x:Uid="/SettingPage/AccountLogoutConfirm" Click="Button_Click" Tag="AccountLogout" />
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
 
                     </Grid>
                 </controls:HeaderedContentControl>
