@@ -7,12 +7,12 @@
     xmlns:local="using:CoolapkUWP.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:CoolapkUWP.Models"
-    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     NavigationCacheMode="Required"
     mc:Ignorable="d">
 
-    <winui:NavigationView
+    <muxc:NavigationView
         x:Name="navigationView"
         IsBackButtonVisible="Collapsed"
         IsSettingsVisible="False"
@@ -20,32 +20,26 @@
         MenuItemsSource="{x:Bind MenuItems, Mode=OneWay}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
-                <VisualState x:Name="MobileMode">
+                <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0"/>
+                        <AdaptiveTrigger
+                        MinWindowWidth="{x:Bind navigationView.CompactModeThresholdWidth}" />
                     </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="navigationView.PaneDisplayMode" Value="LeftCompact"/>
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="PCMode">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="500"/>
-                    </VisualState.StateTriggers>
+
                     <VisualState.Setters>
                         <Setter Target="navigationView.PaneDisplayMode" Value="Top"/>
                     </VisualState.Setters>
-                </VisualState>
+                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <winui:NavigationView.MenuItemTemplate>
+        <muxc:NavigationView.MenuItemTemplate>
             <DataTemplate x:DataType="model:MenuItem">
-                <winui:NavigationViewItem Content="{x:Bind Title}" MenuItemsSource="{x:Bind Entities}" />
+                <muxc:NavigationViewItem Content="{x:Bind Title}" MenuItemsSource="{x:Bind Entities}" />
             </DataTemplate>
-        </winui:NavigationView.MenuItemTemplate>
-        <winui:NavigationView.PaneFooter>
+        </muxc:NavigationView.MenuItemTemplate>
+        <muxc:NavigationView.PaneFooter>
             <StackPanel Margin="0,0,40,0" Orientation="Horizontal">
-                <winui:ProgressRing
+                <muxc:ProgressRing
                     x:Name="progressRing"
                     Width="24"
                     Height="24"
@@ -55,7 +49,7 @@
                     <SymbolIcon Symbol="Refresh" />
                 </Button>
             </StackPanel>
-        </winui:NavigationView.PaneFooter>
+        </muxc:NavigationView.PaneFooter>
         <Frame x:Name="navigationViewFrame" />
-    </winui:NavigationView>
+    </muxc:NavigationView>
 </Page>
