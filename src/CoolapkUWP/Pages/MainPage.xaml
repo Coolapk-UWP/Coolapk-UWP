@@ -17,8 +17,27 @@
         IsBackButtonVisible="Collapsed"
         IsSettingsVisible="False"
         ItemInvoked="NavigationView_ItemInvoked"
-        MenuItemsSource="{x:Bind MenuItems, Mode=OneWay}"
-        PaneDisplayMode="Top">
+        MenuItemsSource="{x:Bind MenuItems, Mode=OneWay}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="MobileMode">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="navigationView.PaneDisplayMode" Value="LeftCompact"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="PCMode">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="500"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="navigationView.PaneDisplayMode" Value="Top"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <winui:NavigationView.MenuItemTemplate>
             <DataTemplate x:DataType="model:MenuItem">
                 <winui:NavigationViewItem Content="{x:Bind Title}" MenuItemsSource="{x:Bind Entities}" />
