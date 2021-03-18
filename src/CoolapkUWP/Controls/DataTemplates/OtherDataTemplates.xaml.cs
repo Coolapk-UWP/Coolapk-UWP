@@ -1,7 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
 
 namespace CoolapkUWP.Controls.DataTemplates
 {

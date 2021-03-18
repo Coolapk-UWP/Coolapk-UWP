@@ -3,7 +3,6 @@ using CoolapkUWP.Core.Models;
 using CoolapkUWP.Core.Providers;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -60,10 +59,10 @@ namespace CoolapkUWP.ViewModels.FeedDetailList
                     "uid");
             ShareProvider =
                 new CoolapkListProvider(
-                    (p, page, firstItem, lastItem) => 
+                    (p, page, firstItem, lastItem) =>
                         UriHelper.GetUri(
                             UriType.GetShareList,
-                            p == -2 ? true : false, 
+                            p == -2 ? true : false,
                             id,
                             p < 0 ? ++page : p),
                     (a, b) => ((SourceFeedModel)a).Url == b.Value<string>("url"),

@@ -1,16 +1,11 @@
 ﻿using CoolapkUWP.Helpers;
-using Microsoft.VisualBasic;
 using System;
 using System.ComponentModel;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
-using System.Threading.Tasks;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
 using static CoolapkUWP.Helpers.SettingsHelper;
 
 namespace CoolapkUWP.Pages.SettingPages

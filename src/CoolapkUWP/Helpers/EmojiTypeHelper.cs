@@ -119,7 +119,7 @@ namespace CoolapkUWP.Helpers
             dataBuider.Add(new EmojiData("[夏阁艾迪剑]"));
             dataBuider.Add(new EmojiData("[下次一定]"));
             dataBuider.Add(new EmojiData("[酷安土豆]"));
-            dataBuider.Add(new EmojiData("[头条通知书]"));            
+            dataBuider.Add(new EmojiData("[头条通知书]"));
 
             buider.Add(new EmojiTypeHeader("常规", dataBuider.ToImmutable()));
             dataBuider.Clear();

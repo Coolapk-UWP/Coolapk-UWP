@@ -27,7 +27,7 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
             UserName = o.Value<string>("fromusername");
             UserUri = o.Value<string>("url");
             Dateline = DataHelper.ConvertUnixTimeStampToReadable(o.Value<int>("dateline"));
-            
+
             var note = o.Value<string>("note");
             Regex regex = new Regex("<a.*?>.*?</a>"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
             while (regex.IsMatch(note))
@@ -88,10 +88,10 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
             UserName = o.Value<string>("username");
             Uri = o.Value<string>("url");
             FeedMessage = (o.Value<string>("extra_title"));
-            Message = 
-                (string.IsNullOrEmpty(o.Value<string>("rusername")) 
-                 ? string.Empty 
-                 : $"回复<a href=\"/u/{o.Value<string>("ruid")}\">{o.Value<string>("rusername")}</a>: ") 
+            Message =
+                (string.IsNullOrEmpty(o.Value<string>("rusername"))
+                 ? string.Empty
+                 : $"回复<a href=\"/u/{o.Value<string>("ruid")}\">{o.Value<string>("rusername")}</a>: ")
                 + o.Value<string>("message");
             var avatar = o.Value<string>("userAvatar");
             if (!string.IsNullOrEmpty(avatar))

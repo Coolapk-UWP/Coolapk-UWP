@@ -29,7 +29,7 @@
                     <VisualState.Setters>
                         <Setter Target="navigationView.PaneDisplayMode" Value="Top"/>
                     </VisualState.Setters>
-                 </VisualState>
+                </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <muxc:NavigationView.MenuItemTemplate>

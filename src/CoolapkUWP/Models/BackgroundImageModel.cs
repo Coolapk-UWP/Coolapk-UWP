@@ -1,11 +1,7 @@
 ﻿using ColorThiefDotNet;
 using CoolapkUWP.Helpers;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
 using Windows.UI.Xaml.Media.Imaging;
 

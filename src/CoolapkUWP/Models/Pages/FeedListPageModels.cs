@@ -54,7 +54,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
         internal UserDetail(JObject o) : base(o)
         {
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
-            FollowStatus = 
+            FollowStatus =
                 o.Value<int>("uid").ToString() == SettingsHelper.Get<string>(SettingsHelper.Uid) ? string.Empty : o.Value<int>("isFollow") == 0
                 ? loader.GetString("follow")
                 : loader.GetString("unFollow");
@@ -118,9 +118,9 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             ShowUserButton = showUserButton;
             Url = showUserButton ? o["userInfo"].Value<string>("url") : string.Empty;
             UserName = showUserButton ? o["userInfo"].Value<string>("username") : string.Empty;
-            UserAvatar = 
-                showUserButton 
-                ? new ImageModel(o["userInfo"].Value<string>("userAvatar").Replace("\"", string.Empty, System.StringComparison.Ordinal), ImageType.BigAvatar) 
+            UserAvatar =
+                showUserButton
+                ? new ImageModel(o["userInfo"].Value<string>("userAvatar").Replace("\"", string.Empty, System.StringComparison.Ordinal), ImageType.BigAvatar)
                 : null;
         }
     }

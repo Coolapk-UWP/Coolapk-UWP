@@ -83,7 +83,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private static void Ellipse_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if ( e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse ||
+            if (e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse ||
                 (sender is Grid && !(e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse)))
                 UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
         }

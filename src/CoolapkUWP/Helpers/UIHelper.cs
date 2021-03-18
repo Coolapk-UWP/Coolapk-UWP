@@ -331,7 +331,7 @@ namespace CoolapkUWP.Helpers
                     NavigateInSplitPane(typeof(FeedListPage), f);
                 }
             }
-            else if(str.IsFirst(i++))
+            else if (str.IsFirst(i++))
             {
                 string u = str.Replace(i - 1);
                 var f = FeedListPageViewModelBase.GetProvider(FeedListType.CollectionPageList, u);

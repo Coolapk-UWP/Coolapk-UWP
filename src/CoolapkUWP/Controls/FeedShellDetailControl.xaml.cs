@@ -28,7 +28,7 @@ namespace CoolapkUWP.Controls
                 feedDetail = value;
                 if (value?.IsQuestionFeed ?? true)
                 {
-                    if(makeFeed != null)
+                    if (makeFeed != null)
                     {
                         UnloadObject(makeFeed);
                     }

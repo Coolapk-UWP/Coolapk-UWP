@@ -1,16 +1,16 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Controls.MakeFeedControlModel;
 using System;
-using System.Net.Http;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using CoolapkUWP.Core.Helpers;
 
 namespace CoolapkUWP.Controls
 {

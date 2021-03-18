@@ -197,7 +197,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     {
                         provider.AddTab($"/page/dataList?url={model.Url.Replace("#", "%23", StringComparison.Ordinal)}&title={model.Title}");
                     }
-                    
+
                     var pivotItem = new PivotItem
                     {
                         Header = model.Title

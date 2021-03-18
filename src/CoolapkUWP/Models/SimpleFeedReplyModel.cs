@@ -27,7 +27,7 @@ namespace CoolapkUWP.Models
 
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
 
-            Message = 
+            Message =
                 string.IsNullOrEmpty(Rusername)
                 ? $"{GetUserLink(Uurl, Username) + GetAuthorString(IsFeedAuthor)}: {o.Value<string>("message")}"
                 : $"{GetUserLink(Uurl, Username) + GetAuthorString(IsFeedAuthor)}@{GetUserLink(Rurl, Rusername)}: {o.Value<string>("message")}";
