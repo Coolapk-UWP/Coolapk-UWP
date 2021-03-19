@@ -20,7 +20,7 @@
         Header=" "
         ItemInvoked="NavigationView_ItemInvoked"
         MenuItemsSource="{x:Bind MenuItems, Mode=OneWay}"
-        Background="{ThemeResource SystemControlAcrylicElementBrush}">
+        Background="{ThemeResource SystemControlAcrylicWindowBrush}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState>
