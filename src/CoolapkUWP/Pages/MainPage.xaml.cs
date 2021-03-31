@@ -90,6 +90,7 @@ namespace CoolapkUWP.Pages
 
             navigationView.SelectedItem = menuItems.First(i => i.Title == "头条");
             navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false));
+            //navigationView.Header = "头条";
 
             allMenuItems = menuItems.Concat(
                     from i in menuItems
@@ -110,7 +111,7 @@ namespace CoolapkUWP.Pages
             else if (args.InvokedItem is string title)
             {
                 if (title == "关注") { return; }
-
+                sender.Header = title;
                 var item = allMenuItems.First(i => i.Title == title);
                 var uri = title == "头条" ? "/main/indexV8" : $"{item.Uri}&title={title}";
                 navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(uri, false), args.RecommendedNavigationTransitionInfo);
