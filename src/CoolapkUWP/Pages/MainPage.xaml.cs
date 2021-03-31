@@ -100,7 +100,14 @@ namespace CoolapkUWP.Pages
 
         private void NavigationView_ItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
         {
-            if (args.InvokedItem is string title)
+            if (args.IsSettingsInvoked)
+            {
+                if (Frame.CurrentSourcePageType != typeof(SettingPages.SettingPage))
+                {
+                    Frame.Navigate(typeof(SettingPages.SettingPage));
+                }
+            }
+            else if (args.InvokedItem is string title)
             {
                 if (title == "关注") { return; }
 

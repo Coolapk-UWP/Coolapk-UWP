@@ -15,7 +15,7 @@
     <muxc:NavigationView
         x:Name="navigationView"
         IsBackButtonVisible="Collapsed"
-        IsSettingsVisible="False"
+        IsSettingsVisible="True"
         AlwaysShowHeader="True"
         Header=" "
         ItemInvoked="NavigationView_ItemInvoked"
@@ -31,27 +31,30 @@
 
                     <VisualState.Setters>
                         <Setter Target="BottomButton.Orientation" Value="Horizontal"/>
+                        <Setter Target="BottomButton.Margin" Value="0,0,40,0"/>
+                        <Setter Target="BottomButton.Visibility" Value="Visible"/>
                         <Setter Target="navigationView.PaneDisplayMode" Value="Top"/>
                         <Setter Target="navigationView.AlwaysShowHeader" Value="False"/>
+                        <Setter Target="navigationView.IsSettingsVisible" Value="False"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <muxc:NavigationView.MenuItemTemplate>
             <DataTemplate x:DataType="model:MenuItem">
-                <muxc:NavigationViewItem Content="{x:Bind Title}" MenuItemsSource="{x:Bind Entities}" />
+                <muxc:NavigationViewItem Content="{x:Bind Title}" MenuItemsSource="{x:Bind Entities}"/>
             </DataTemplate>
         </muxc:NavigationView.MenuItemTemplate>
         <muxc:NavigationView.PaneFooter>
-            <StackPanel x:Name="BottomButton" Margin="0,0,40,0" Orientation="Vertical">
+            <StackPanel x:Name="BottomButton" Orientation="Vertical" Visibility="Collapsed">
                 <muxc:ProgressRing
                     x:Name="progressRing"
                     Width="24"
                     Height="24"
                     Margin="8,0"
-                    IsActive="True" />
-                <Button Click="Button_Click" Style="{StaticResource IconButtonStyle}">
-                    <SymbolIcon Symbol="Refresh" />
+                    IsActive="True"/>
+                <Button x:Name="Refresh"  Click="Button_Click" Style="{StaticResource IconButtonStyle}">
+                    <SymbolIcon Symbol="Refresh"/>
                 </Button>
             </StackPanel>
         </muxc:NavigationView.PaneFooter>
