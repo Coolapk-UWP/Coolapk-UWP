@@ -200,6 +200,10 @@ namespace CoolapkUWP.Pages
                     LogoutButtonVisibility = Visibility.Collapsed;
                     break;
 
+                case "LvHelp":
+                    UIHelper.OpenLinkAsync("/feed/18221454");
+                    break;
+
                 default:
                     if (tag is string s)
                     {

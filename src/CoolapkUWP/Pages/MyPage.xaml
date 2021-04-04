@@ -370,7 +370,7 @@
                     Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="26" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
@@ -406,7 +406,7 @@
 
                     <StackPanel
                         Grid.Row="2"
-                        Margin="104,0,0,0"
+                        Margin="100,0,0,0"
                         Orientation="Horizontal">
                         <TextBlock
                             Margin="2,0"
@@ -422,6 +422,15 @@
                             VerticalAlignment="Center"
                             Text="{Binding NextLevelNowExperience, Mode=OneWay}" />
                     </StackPanel>
+                    
+                    <ListViewItem
+                        Grid.Row="1"
+                        Margin="90,0,0,0"
+                        KeyDown="ListViewItem_KeyDown"
+                        Tag="LvHelp"
+                        Tapped="ListViewItem_Tapped"
+                        Height="1px">
+                    </ListViewItem>
 
                     <TextBlock
                         Grid.Row="3"
