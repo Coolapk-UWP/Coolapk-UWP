@@ -21,6 +21,7 @@
         ItemInvoked="NavigationView_ItemInvoked"
         MenuItemsSource="{x:Bind MenuItems, Mode=OneWay}"
         Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState>
@@ -40,11 +41,13 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+
         <muxc:NavigationView.MenuItemTemplate>
             <DataTemplate x:DataType="model:MenuItem">
                 <muxc:NavigationViewItem Content="{x:Bind Title}" MenuItemsSource="{x:Bind Entities}"/>
             </DataTemplate>
         </muxc:NavigationView.MenuItemTemplate>
+
         <muxc:NavigationView.PaneFooter>
             <StackPanel x:Name="BottomButton" Orientation="Vertical" Visibility="Collapsed">
                 <muxc:ProgressRing
@@ -58,6 +61,8 @@
                 </Button>
             </StackPanel>
         </muxc:NavigationView.PaneFooter>
+
         <Frame x:Name="navigationViewFrame" />
+
     </muxc:NavigationView>
 </Page>
