@@ -19,6 +19,18 @@ namespace CoolapkUWP
             this.Suspending += OnSuspending;
         }
 
+        protected override async void OnActivated(IActivatedEventArgs args)
+        {
+            if (args.Kind == ActivationKind.Protocol)
+            {
+                
+
+                var protocalArgs = (ProtocolActivatedEventArgs)args;
+                
+            }
+            Window.Current.Activate();
+        }
+
         /// <summary> 在应用程序由最终用户正常启动时进行调用。将在启动应用程序以打开特定文件等情况下使用。</summary>
         /// <param name="e"> 有关启动请求和过程的详细信息。 </param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
