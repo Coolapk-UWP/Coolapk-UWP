@@ -35,7 +35,12 @@
       <Extensions>
         <uap:Extension Category="windows.protocol">
           <uap:Protocol Name="coolmarket">
-            <uap:DisplayName>浏览器跳转</uap:DisplayName>
+            <uap:DisplayName>酷市场网页跳转</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="coolapk">
+            <uap:DisplayName>酷安网页跳转</uap:DisplayName>
           </uap:Protocol>
         </uap:Extension>
       </Extensions>

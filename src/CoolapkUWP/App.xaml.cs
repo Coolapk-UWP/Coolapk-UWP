@@ -1,4 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Pages;
+using CoolapkUWP.Pages.SettingPages;
+using CoolapkUWP.Pages.FeedPages;
 using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
@@ -19,16 +22,47 @@ namespace CoolapkUWP
             this.Suspending += OnSuspending;
         }
 
-        protected override async void OnActivated(IActivatedEventArgs args)
+        protected override async void OnActivated(IActivatedEventArgs e)
         {
-            if (args.Kind == ActivationKind.Protocol)
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null)
             {
-                
-
-                var protocalArgs = (ProtocolActivatedEventArgs)args;
-                
+                rootFrame = new Frame();
+                Window.Current.Content = rootFrame;
             }
+            rootFrame.Navigate(typeof(Pages.ShellPage));
             Window.Current.Activate();
+            if (e.Kind == ActivationKind.Protocol)
+            {
+                var protocolArgs = (ProtocolActivatedEventArgs)e;
+                switch (protocolArgs.Uri.Host)
+                {
+                    case "www.coolapk.com":
+                        UIHelper.OpenLinkAsync(protocolArgs.Uri.AbsolutePath);
+                        break;
+                    case "coolapk.com":
+                        UIHelper.OpenLinkAsync(protocolArgs.Uri.AbsolutePath);
+                        break;
+                    case "www.coolmarket.com":
+                        UIHelper.OpenLinkAsync(protocolArgs.Uri.AbsolutePath);
+                        break;
+                    case "coolmarket.com":
+                        UIHelper.OpenLinkAsync(protocolArgs.Uri.AbsolutePath);
+                        break;
+                    case "settings":
+                        UIHelper.NavigateInSplitPane(typeof(SettingPage));
+                        break;
+                    case "flags":
+                        UIHelper.NavigateInSplitPane(typeof(TestPage));
+                        break;
+                    case "history":
+                        UIHelper.NavigateInSplitPane(typeof(HistoryPage), new ViewModels.HistoryPage.ViewModel("浏览历史"));
+                        break;
+                    default:
+                        UIHelper.OpenLinkAsync("/" + protocolArgs.Uri.Host + protocolArgs.Uri.AbsolutePath);
+                        break;
+                }
+            }
         }
 
         /// <summary> 在应用程序由最终用户正常启动时进行调用。将在启动应用程序以打开特定文件等情况下使用。</summary>

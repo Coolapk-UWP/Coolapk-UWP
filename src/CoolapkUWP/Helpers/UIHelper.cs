@@ -273,6 +273,8 @@ namespace CoolapkUWP.Helpers
 
         public static async void OpenLinkAsync(string str)
         {
+            //UIHelper.ShowMessage(str);
+
             if (string.IsNullOrWhiteSpace(str)) { return; }
 
             if (str == "/contacts/fans")
