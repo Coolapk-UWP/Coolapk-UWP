@@ -162,6 +162,7 @@
     <Compile Include="Models\IndexPageModel.cs" />
     <Compile Include="Models\Pages\FeedListPageModels.cs" />
     <Compile Include="Models\Pages\NotificationsPageModels.cs" />
+    <Compile Include="Models\Pages\ProductModel.cs" />
     <Compile Include="Models\SimpleFeedReplyModel.cs" />
     <Compile Include="Models\SourceFeedModel.cs" />
     <Compile Include="Controls\GridPanel.cs" />

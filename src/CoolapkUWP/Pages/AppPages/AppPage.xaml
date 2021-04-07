@@ -1,16 +1,18 @@
 ﻿<Page
     x:Class="CoolapkUWP.Pages.AppPages.AppPage"
+    xmlns:ctrl="using:CoolapkUWP.Controls"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Loaded="Page_Loaded"
-    mc:Ignorable="d" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d" Background="{ThemeResource SystemControlBackgroundListLowBrush}">
 
     <Grid>
         <ScrollViewer>
             <StackPanel>
-                <Border Height="50"/>
+                <Border Height="70"/>
                 <Grid>
                     <Image x:Name="AppIconImage" x:FieldModifier="Public" HorizontalAlignment="Left" Height="60" Margin="20" VerticalAlignment="Top" Width="60"/>
                     <StackPanel Margin="100,10,0,0">
@@ -21,7 +23,7 @@
                 </Grid>
                 <Grid  Padding="10" Height="50">
                     <TextBlock x:Name="AppXText" x:FieldModifier="Public" Text="" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
-                    <Button x:Name="DownloadButton" Click="DownloadButton_Click" Content="下载" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78" BorderThickness="0" Background="{ThemeResource SystemControlHighlightListAccentHighBrush}"/>
+                    <Button x:Name="DownloadButton" Click="DownloadButton_Click" Content="下载" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78" BorderThickness="0" Background="{ThemeResource SystemControlHighlightListAccentHighBrush}" Visibility="Collapsed"/>
                 </Grid>
                 <Grid Visibility="Collapsed" Margin="0,1,0,0" x:Name="DPanel" Padding="10" >
                     <TextBlock x:Name="AppDText" x:FieldModifier="Public" TextWrapping="Wrap" Text="" TextAlignment="Center"  VerticalAlignment="Top"/>
@@ -52,11 +54,7 @@
                 <Grid Height="auto" Padding="10"  Margin="0,10">
                     <TextBlock x:Name="AppRText" x:FieldModifier="Public" Text="5.0" />
                     <StackPanel Orientation="Horizontal" Margin="40,0" VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <SymbolIcon x:Name="star1" Symbol="Favorite" Foreground="#FF4CAF50"/>
-                        <SymbolIcon x:Name="star2" Symbol="Favorite" Foreground="#FFCCDB38"/>
-                        <SymbolIcon x:Name="star3" Symbol="Favorite" Foreground="#FFFFEA39"/>
-                        <SymbolIcon x:Name="star4" Symbol="Favorite" Foreground="#FFFFB234"/>
-                        <SymbolIcon x:Name="star5" Symbol="Favorite" Foreground="#FFFF8B5A"/>
+                        <muxc:RatingControl x:Name="AppRating" IsReadOnly="True" PlaceholderValue="2.1" Margin="0,-3,0,0" />
                     </StackPanel>
                     <TextBlock x:Name="AppPText" x:FieldModifier="Public" Text="共0人评分" Margin="0,30,0,0" />
                 </Grid>
@@ -68,31 +66,38 @@
             </StackPanel>
         </ScrollViewer>
 
-        <!--顶栏-->
-        <Grid Height="48" VerticalAlignment="Top" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
-            <Button Click="BackButton_Click" Height="48" Width="48" Style="{StaticResource NavigationBackButtonNormalStyle}"/>
-            <TextBlock Margin="50,0,0,2" x:Name="TitleTextBlock" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <Button HorizontalAlignment="Right" Width="48" Height="48" Background="Transparent">
-                <SymbolIcon Symbol="More" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
-                <Button.Flyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem Text="访问网页" Click="GotoUri_Click"/>
-                        <MenuFlyoutSubItem Text="复制">
-                            <MenuFlyoutItem Text="简介" Click="CopyM_Click" Tag="0"/>
-                            <MenuFlyoutItem Text="点评" Click="CopyM_Click" Tag="1"/>
-                            <MenuFlyoutItem Text="包名" Click="CopyM_Click" Tag="2"/>
-                            <MenuFlyoutItem Text="版本号" Click="CopyM_Click" Tag="3"/>
-                            <MenuFlyoutItem Text="更新日记" Click="CopyM_Click" Tag="4"/>
-                        </MenuFlyoutSubItem>
-                    </MenuFlyout>
-                </Button.Flyout>
-            </Button>
-        </Grid>
-
         <!--缩略图显示-->
         <FlipView Visibility="Collapsed" x:Name="ScreenShotFlipView" />
         <Button x:Name="CloseFlip" Visibility="Collapsed" Click="CloseFlip_Click"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Foreground="White" Height="50">
             <SymbolIcon Symbol="Cancel" Foreground="White"/>
         </Button>
+
+        <ctrl:TitleBar
+            x:Name="titleBar"
+            BackButtonClicked="TitleBar_BackButtonClick"
+            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}"
+            RefreshButtonClicked="titleBar_RefreshButtonClicked"
+            RefreshButtonVisibility="Visible" Loaded="titleBar_Loaded" Visibility="Visible">
+            <ctrl:TitleBar.RightAreaContent>
+                <StackPanel Orientation="Horizontal">
+                    
+                    <Button Style="{StaticResource IconButtonStyle}">
+                        <SymbolIcon Symbol="More" />
+                        <Button.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="访问网页" Click="GotoUri_Click"/>
+                                <MenuFlyoutSubItem Text="复制">
+                                    <MenuFlyoutItem Text="简介" Click="CopyM_Click" Tag="0"/>
+                                    <MenuFlyoutItem Text="点评" Click="CopyM_Click" Tag="1"/>
+                                    <MenuFlyoutItem Text="包名" Click="CopyM_Click" Tag="2"/>
+                                    <MenuFlyoutItem Text="版本号" Click="CopyM_Click" Tag="3"/>
+                                    <MenuFlyoutItem Text="更新日记" Click="CopyM_Click" Tag="4"/>
+                                </MenuFlyoutSubItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                </StackPanel>
+            </ctrl:TitleBar.RightAreaContent>
+        </ctrl:TitleBar>
     </Grid>
 </Page>

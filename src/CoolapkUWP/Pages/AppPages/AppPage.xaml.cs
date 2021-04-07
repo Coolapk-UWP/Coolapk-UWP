@@ -31,6 +31,12 @@ namespace CoolapkUWP.Pages.AppPages
             }
             return s;
         }
+
+        private void titleBar_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -39,6 +45,7 @@ namespace CoolapkUWP.Pages.AppPages
         }
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            titleBar.ShowProgressRing();
             if (string.IsNullOrEmpty(applink)) return;
             this.Tag = applink;
             try
@@ -61,10 +68,10 @@ namespace CoolapkUWP.Pages.AppPages
             pstr = Regex.Split(str, @"<p class=""apk_rank_p1"">")[1].Split('<')[0].Trim();
 
             //Download URI
-            ddstr = Regex.Split(Regex.Split(Regex.Split(str, "function onDownloadApk")[1], "window.location.href")[1], @"""")[1];
+            //ddstr = Regex.Split(Regex.Split(Regex.Split(str, "function onDownloadApk")[1], "window.location.href")[1], @"""")[1];
 
             AppIconImage.Source = new BitmapImage(new Uri(iurl, UriKind.RelativeOrAbsolute));
-            TitleTextBlock.Text = AppTitleText.Text = nstr;
+            titleBar.Title = AppTitleText.Text = nstr;
             AppVTText.Text = vtstr;
             AppV2Text.Text = vstr;
             AppVText.Text = vstr;
@@ -124,36 +131,8 @@ namespace CoolapkUWP.Pages.AppPages
 
             //评分。。
             AppRText.Text = rstr;
+            AppRating.PlaceholderValue = Double.Parse(rstr);
             AppPText.Text = pstr;
-            //星星
-            double rdob = Double.Parse(rstr);
-            if (rdob > 4.5)
-            {
-
-            }
-            else if (rdob > 3.0)
-            {
-                star5.Symbol = Symbol.OutlineStar;
-            }
-            else if (rdob > 4.0)
-            {
-                star4.Symbol = Symbol.OutlineStar;
-                star5.Symbol = Symbol.OutlineStar;
-            }
-            else if (rdob > 3.0)
-            {
-                star3.Symbol = Symbol.OutlineStar;
-                star4.Symbol = Symbol.OutlineStar;
-                star5.Symbol = Symbol.OutlineStar;
-            }
-            else if (rdob < 2.0)
-            {
-                //没有评分那么差的应用吧233
-                star2.Symbol = Symbol.OutlineStar;
-                star3.Symbol = Symbol.OutlineStar;
-                star4.Symbol = Symbol.OutlineStar;
-                star5.Symbol = Symbol.OutlineStar;
-            }
 
 
             /*
@@ -168,7 +147,7 @@ namespace CoolapkUWP.Pages.AppPages
             {
                 KPanel.Visibility = Visibility.Collapsed;
             }*/
-            //Tools.HideProgressBar();
+            titleBar.HideProgressRing();
         }
 
         private void CopyM_Click(object sender, RoutedEventArgs e)
@@ -230,6 +209,15 @@ namespace CoolapkUWP.Pages.AppPages
         {
             // Download the URI
             var success = await Launcher.LaunchUriAsync(new Uri(ddstr));
+        }
+
+        private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
+
+        private void titleBar_RefreshButtonClicked(object sender, RoutedEventArgs e)
+        {
+            titleBar.ShowProgressRing();
+            titleBar.HideProgressRing();
+
         }
     }
 }
