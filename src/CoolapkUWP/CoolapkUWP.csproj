@@ -177,6 +177,9 @@
     <Compile Include="Controls\DataTemplateSelectors.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Models\MenuItemModel.cs" />
+    <Compile Include="Pages\AppPages\AppPage.xaml.cs">
+      <DependentUpon>AppPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\FeedPages\FeedRepliesPage.xaml.cs">
       <DependentUpon>FeedRepliesPage.xaml</DependentUpon>
     </Compile>
@@ -878,6 +881,10 @@
     <Page Include="Controls\DataTemplates\OtherDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\AppPages\AppPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\FeedPages\FeedListPage.xaml">
       <SubType>Designer</SubType>

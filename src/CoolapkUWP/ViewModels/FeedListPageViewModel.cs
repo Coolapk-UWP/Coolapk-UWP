@@ -54,6 +54,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                 case FeedListType.TagPageList: return new TagViewModel(id);
                 case FeedListType.DyhPageList: return new DyhViewModel(id);
                 case FeedListType.CollectionPageList: return new CollectionViewModel(id);
+                case FeedListType.ProductPageList: return new ProductViewModel(id);
                 default: return null;
             }
         }
@@ -88,6 +89,10 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                     type = UriType.GetCollectionDetail;
                     break;
 
+                case FeedListType.ProductPageList:
+                    type = UriType.GetProductDetail;
+                    break;
+
                 default:
                     throw new ArgumentException($"{typeof(FeedListType).FullName}值错误");
             }
@@ -114,6 +119,10 @@ namespace CoolapkUWP.ViewModels.FeedListPage
 
                     case FeedListType.CollectionPageList:
                         d = new CollectionDetail(o);
+                        break;
+
+                    case FeedListType.ProductPageList:
+                        d = new ProductDetail(o);
                         break;
                 }
             }
@@ -326,6 +335,43 @@ namespace CoolapkUWP.ViewModels.FeedListPage
         }
 
         protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as CollectionDetail).Title;
+    }
+
+    internal class ProductViewModel : FeedListPageViewModelBase, ICanComboBoxChangeSelectedIndex
+    {
+        public ObservableCollection<string> ComboBoxItems { get; private set; }
+        public int ComboBoxSelectedIndex { get; private set; }
+
+        public async Task SetComboBoxSelectedIndex(int value)
+        {
+            if (value > -1)
+            {
+                ComboBoxSelectedIndex = value;
+                if (Provider != null)
+                {
+                    await Refresh(-2);
+                }
+            }
+        }
+
+        protected override CoolapkListProvider Provider { get; }
+
+        internal ProductViewModel(string id) : base(id, FeedListType.ProductPageList)
+        {
+            Provider =
+                new CoolapkListProvider(
+                    (p, page, firstItem, lastItem) =>
+                        UriHelper.GetUri(
+                            UriType.GetProductFeeds,
+                            Id,
+                            ComboBoxSelectedIndex == 0 ? "all" : "square",
+                            p < 0 ? ++page : p,
+                            string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
+                    isEqual, getEntity, idName);
+        }
+
+        protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as ProductDetail).Title;
     }
 
 }

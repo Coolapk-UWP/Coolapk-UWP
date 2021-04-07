@@ -157,4 +157,46 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             LastUpdate = DataHelper.ConvertUnixTimeStampToReadable(o.Value<int>("lastupdate")) + "更新";
         }
     }
+
+    internal class ProductDetail : FeedListDetailBase
+    {
+        public ImageModel Logo { get; private set; }
+        public string Title { get; private set; }
+        public string Description { get; private set; }
+        public double FollowNum { get; private set; }
+        public bool ShowUserButton { get; private set; }
+        public string Url { get; private set; }
+        public string UserName { get; private set; }
+        public ImageModel UserAvatar { get; private set; }
+        public int SelectedIndex { get; private set; }
+        public bool ShowComboBox { get; private set; }
+        public double MinPrice { get; private set; }
+        public double MaxPrice { get; private set; }
+        public string PriceCurrency { get; private set; }
+        public string ReleaseTime { get; private set; }
+        public string HotNumTXT { get; private set; }
+
+        internal ProductDetail(JObject o) : base(o)
+        {
+            //bool showUserButton = o.Value<int>("uid") != 0;
+            FollowNum = o.Value<int>("follow_num");
+            //ShowComboBox = o.Value<int>("is_open_discuss") == 1;
+            Logo = new ImageModel(o.Value<string>("logo"), ImageType.Icon);
+            Title = o.Value<string>("title");
+            UIHelper.ShowMessage(Title);
+            Description = o.Value<string>("description");
+            MinPrice = o.Value<int>("price_min");
+            MaxPrice = o.Value<int>("price_max");
+            PriceCurrency = o.Value<string>("price_currency");
+            ReleaseTime = o.Value<string>("release_time");
+            HotNumTXT = o.Value<string>("hot_num_txt");
+            //ShowUserButton = showUserButton;
+            //Url = showUserButton ? o["userInfo"].Value<string>("url") : string.Empty;
+            //UserName = showUserButton ? o["userInfo"].Value<string>("username") : string.Empty;
+            //UserAvatar =
+            //    showUserButton
+            //    ? new ImageModel(o["userInfo"].Value<string>("userAvatar").Replace("\"", string.Empty, System.StringComparison.Ordinal), ImageType.BigAvatar)
+            //    : null;
+        }
+    }
 }

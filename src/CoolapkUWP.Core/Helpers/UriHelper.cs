@@ -15,6 +15,8 @@ namespace CoolapkUWP.Core.Helpers
         GetCollectionDetail,
         GetDyhDetail,
         GetDyhFeeds,
+        GetProductDetail,
+        GetProductFeeds,
         GetFeedDetail,
         GetFeedReplies,
         GetHotReplies,
@@ -71,6 +73,8 @@ namespace CoolapkUWP.Core.Helpers
                 case UriType.GetCollectionDetail: return "/v6/collection/detail?id={0}";
                 case UriType.GetDyhDetail: return "/v6/dyh/detail?dyhId={0}";
                 case UriType.GetDyhFeeds: return "/v6/dyhArticle/list?dyhId={0}&type={1}&page={2}{3}{4}";
+                case UriType.GetProductDetail: return "/v6//product/detail?id={0}";
+                case UriType.GetProductFeeds: return "/v6/page/dataList?url=/page?url=/product/feedList?type=feed&id={0}&subTitle=&page={1}{2}{3}";
                 case UriType.GetFeedDetail: return "/v6/feed/detail?id={0}";
                 case UriType.GetFeedReplies: return "/v6/feed/replyList?id={0}&listType={1}&page={2}{3}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={4}";
                 case UriType.GetHotReplies: return "/v6/feed/hotReplyList?id={0}&page={1}{2}&discussMode=1";

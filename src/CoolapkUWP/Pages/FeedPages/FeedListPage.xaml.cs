@@ -58,6 +58,12 @@ namespace CoolapkUWP.Pages.FeedPages
                     rightComboBox.ItemsSource = ((CollectionViewModel)provider).ComboBoxItems;
                     rightComboBox.SelectedIndex = (provider as ICanComboBoxChangeSelectedIndex).ComboBoxSelectedIndex;
                     break;
+
+                case FeedListType.ProductPageList:
+                    rightComboBox.Visibility = Visibility.Visible;
+                    rightComboBox.ItemsSource = ((ProductViewModel)provider).ComboBoxItems;
+                    rightComboBox.SelectedIndex = (provider as ICanComboBoxChangeSelectedIndex).ComboBoxSelectedIndex;
+                    break;
             }
             Refresh();
             titleBar.ShowProgressRing();
@@ -209,6 +215,7 @@ namespace CoolapkUWP.Pages.FeedPages
         TagPageList,
         DyhPageList,
         CollectionPageList,
+        ProductPageList,
     }
 
     internal class FeedListPageTemplateSelector : DataTemplateSelector
@@ -218,6 +225,7 @@ namespace CoolapkUWP.Pages.FeedPages
         public DataTemplate TopicHeader { get; set; }
         public DataTemplate DyhHeader { get; set; }
         public DataTemplate CollectionHeader { get; set; }
+        public DataTemplate ProductHeader { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
@@ -227,6 +235,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 case TopicDetail _: return TopicHeader;
                 case DyhDetail _: return DyhHeader;
                 case CollectionDetail _: return CollectionHeader;
+                case ProductDetail _: return ProductHeader;
                 default: return Feed;
             }
         }

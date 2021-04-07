@@ -247,6 +247,9 @@ namespace CoolapkUWP.Helpers
             "http://image.coolapk.com/",
             "https",
             "http",
+            "/product/",
+            "/game/",
+            "apk",
         }.ToImmutableArray();
 
         private static bool IsFirst(this string str, int i) => str.IndexOf(routes[i], StringComparison.Ordinal) == 0;
@@ -371,6 +374,24 @@ namespace CoolapkUWP.Helpers
                 {
                     Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
                 }
+            }
+            else if (str.IsFirst(i++))
+            {
+                string u = str.Replace(i - 1);
+                UIHelper.ShowMessage(u);
+                var f = FeedListPageViewModelBase.GetProvider(FeedListType.ProductPageList, u);
+                if (f != null)
+                {
+                    NavigateInSplitPane(typeof(FeedListPage), f);
+                }
+            }
+            else if (str.IsFirst(i++))
+            {
+                NavigateInSplitPane(typeof(Pages.AppPages.AppPage), "https://www.coolapk.com" + str);
+            }
+            else if (str.IsFirst(i++))
+            {
+                NavigateInSplitPane(typeof(Pages.AppPages.AppPage), "https://www.coolapk.com" + str);
             }
             //else
             //{
