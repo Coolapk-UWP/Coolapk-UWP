@@ -390,6 +390,19 @@
                         </Ellipse.Fill>
                     </Ellipse>
 
+                    <Button
+                        Grid.RowSpan="3"
+                        Width="56"
+                        Height="56"
+                        Margin="24,8"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Tag="MyFeed"
+                        Click="Button_Click"
+                        Background="Transparent"
+                        Style="{StaticResource ButtonRevealStyle}">
+                    </Button>
+
                     <TextBlock
                         Grid.Row="0"
                         Margin="104,0,0,0"
@@ -429,6 +442,7 @@
                         KeyDown="ListViewItem_KeyDown"
                         Tag="LvHelp"
                         Tapped="ListViewItem_Tapped"
+                        Background="Transparent"
                         Height="1px">
                     </ListViewItem>
 

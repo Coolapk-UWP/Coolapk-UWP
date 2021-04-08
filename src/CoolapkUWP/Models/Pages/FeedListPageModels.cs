@@ -183,7 +183,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             //ShowComboBox = o.Value<int>("is_open_discuss") == 1;
             Logo = new ImageModel(o.Value<string>("logo"), ImageType.Icon);
             Title = o.Value<string>("title");
-            UIHelper.ShowMessage(Title);
+            //UIHelper.ShowMessage(Title);
             Description = o.Value<string>("description");
             MinPrice = o.Value<int>("price_min");
             MaxPrice = o.Value<int>("price_max");
@@ -199,4 +199,27 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             //    : null;
         }
     }
+
+    internal class AppDetail : FeedListDetailBase
+    {
+        public ImageModel Logo { get; private set; }
+        public string Title { get; private set; }
+        public string Description { get; private set; }
+        public double FollowNum { get; private set; }
+        public double CommentNum { get; private set; }
+        public string RealId { get; private set; }
+
+        internal AppDetail(JObject o) : base(o)
+        {
+            FollowNum = o.Value<int>("follownum");
+            Logo = new ImageModel(o.Value<string>("logo"), ImageType.Icon);
+            Title = o.Value<string>("title");
+            Description = o.Value<string>("description");
+            CommentNum = o.TryGetValue("commentnum", out JToken tt) ? int.Parse(tt.ToString()) : o.Value<int>("commentCount");
+            int t = o.Value<int>("entityId");
+            RealId = t.ToString();
+            UIHelper.ShowMessage(EntityId);
+        }
+    }
+
 }

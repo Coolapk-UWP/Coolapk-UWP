@@ -217,7 +217,6 @@ namespace CoolapkUWP.Pages.AppPages
         {
             titleBar.ShowProgressRing();
             titleBar.HideProgressRing();
-
         }
     }
 }

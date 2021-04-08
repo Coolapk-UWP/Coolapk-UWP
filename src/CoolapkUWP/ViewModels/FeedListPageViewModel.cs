@@ -51,10 +51,12 @@ namespace CoolapkUWP.ViewModels.FeedListPage
             switch (type)
             {
                 case FeedListType.UserPageList: return new UserViewModel(id);
+                case FeedListType.FeedPageList: return new FeedViewModel(id);
                 case FeedListType.TagPageList: return new TagViewModel(id);
                 case FeedListType.DyhPageList: return new DyhViewModel(id);
                 case FeedListType.CollectionPageList: return new CollectionViewModel(id);
                 case FeedListType.ProductPageList: return new ProductViewModel(id);
+                case FeedListType.AppPageList: return new AppViewModel(id);
                 default: return null;
             }
         }
@@ -77,6 +79,10 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                     type = UriType.GetUserSpace;
                     break;
 
+                case FeedListType.FeedPageList:
+                    type = UriType.GetUserSpace;
+                    break;
+
                 case FeedListType.TagPageList:
                     type = UriType.GetTagDetail;
                     break;
@@ -91,6 +97,10 @@ namespace CoolapkUWP.ViewModels.FeedListPage
 
                 case FeedListType.ProductPageList:
                     type = UriType.GetProductDetail;
+                    break;
+
+                case FeedListType.AppPageList:
+                    type = UriType.GetAppDetail;
                     break;
 
                 default:
@@ -109,6 +119,10 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                         d = new UserDetail(o);
                         break;
 
+                    case FeedListType.FeedPageList:
+                        //d = new UserDetail(o);
+                        break;
+
                     case FeedListType.TagPageList:
                         d = new TopicDetail(o);
                         break;
@@ -123,6 +137,10 @@ namespace CoolapkUWP.ViewModels.FeedListPage
 
                     case FeedListType.ProductPageList:
                         d = new ProductDetail(o);
+                        break;
+
+                    case FeedListType.AppPageList:
+                        d = new AppDetail(o);
                         break;
                 }
             }
@@ -151,11 +169,66 @@ namespace CoolapkUWP.ViewModels.FeedListPage
         }
     }
 
-    internal class UserViewModel : FeedListPageViewModelBase
+    internal class UserViewModel : FeedListPageViewModelBase, ICanComboBoxChangeSelectedIndex
     {
+        public int ComboBoxSelectedIndex { get; private set; }
+
+        private string sortType = "feed";
+
         protected override CoolapkListProvider Provider { get; }
 
         internal UserViewModel(string uid) : base(uid, FeedListType.UserPageList)
+        {
+            Provider =
+                new CoolapkListProvider(
+                    (p, page, firstItem, lastItem) =>
+                        UriHelper.GetUri(
+                            UriType.GetUserFeeds,
+                            Id,
+                            p < 0 ? ++page : p,
+                            string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}",
+                            sortType),
+                    isEqual, getEntity, idName);
+        }
+
+        public void Report()
+        {
+            UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, $"https://m.coolapk.com/mp/do?c=user&m=report&id={Id}" });
+        }
+
+        protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as UserDetail).UserName;
+
+        public async Task SetComboBoxSelectedIndex(int value)
+        {
+            switch (value)
+            {
+                case -1: return;
+                case 0:
+                    sortType = "feed";
+                    break;
+
+                case 1:
+                    sortType = "htmlFeed";
+                    break;
+
+                case 2:
+                    sortType = "questionAndAnswer";
+                    break;
+            }
+            ComboBoxSelectedIndex = value;
+            if (Provider != null)
+            {
+                await Refresh(-2);
+            }
+        }
+    }
+
+    internal class FeedViewModel : FeedListPageViewModelBase
+    {
+        protected override CoolapkListProvider Provider { get; }
+
+        internal FeedViewModel(string uid) : base(uid, FeedListType.FeedPageList)
         {
             Provider =
                 new CoolapkListProvider(
@@ -174,7 +247,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
             UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, $"https://m.coolapk.com/mp/do?c=user&m=report&id={Id}" });
         }
 
-        protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as UserDetail).UserName;
+        protected override string GetTitleBarText(FeedListDetailBase detail) => "我的动态";
     }
 
     internal class TagViewModel : FeedListPageViewModelBase, ICanComboBoxChangeSelectedIndex
@@ -339,20 +412,9 @@ namespace CoolapkUWP.ViewModels.FeedListPage
 
     internal class ProductViewModel : FeedListPageViewModelBase, ICanComboBoxChangeSelectedIndex
     {
-        public ObservableCollection<string> ComboBoxItems { get; private set; }
         public int ComboBoxSelectedIndex { get; private set; }
 
-        public async Task SetComboBoxSelectedIndex(int value)
-        {
-            if (value > -1)
-            {
-                ComboBoxSelectedIndex = value;
-                if (Provider != null)
-                {
-                    await Refresh(-2);
-                }
-            }
-        }
+        private string sortType = "feed";
 
         protected override CoolapkListProvider Provider { get; }
 
@@ -364,14 +426,60 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                         UriHelper.GetUri(
                             UriType.GetProductFeeds,
                             Id,
-                            ComboBoxSelectedIndex == 0 ? "all" : "square",
                             p < 0 ? ++page : p,
                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
-                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
+                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}",
+                            sortType),
                     isEqual, getEntity, idName);
         }
 
         protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as ProductDetail).Title;
+
+        public async Task SetComboBoxSelectedIndex(int value)
+        {
+            switch (value)
+            {
+                case -1: return;
+                case 0:
+                    sortType = "feed";
+                    break;
+
+                case 1:
+                    sortType = "answer";
+                    break;
+
+                case 2:
+                    sortType = "article";
+                    break;
+            }
+            ComboBoxSelectedIndex = value;
+            if (Provider != null)
+            {
+                await Refresh(-2);
+            }
+        }
+    }
+
+    internal class AppViewModel : FeedListPageViewModelBase
+    {
+        protected override CoolapkListProvider Provider { get; }
+
+        internal AppViewModel(string uid) : base(uid, FeedListType.FeedPageList)
+        {
+            Provider =
+                new CoolapkListProvider(
+                    (p, page, firstItem, lastItem) =>
+                        UriHelper.GetUri(
+                            UriType.GetAppFeeds,
+                            Id,
+                            p < 0 ? ++page : p,
+                            string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"
+                            ),
+                    isEqual, getEntity, idName);
+        }
+
+        protected override string GetTitleBarText(FeedListDetailBase detail) => /*(detail as AppDetail).Title + */"应用吧";
     }
 
 }

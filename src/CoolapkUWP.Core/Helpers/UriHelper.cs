@@ -11,6 +11,8 @@ namespace CoolapkUWP.Core.Helpers
         CreateFeedReply,
         CreateReplyReply,
         GetAnswers,
+        GetAppDetail,
+        GetAppFeeds,
         GetCollectionContents,
         GetCollectionDetail,
         GetDyhDetail,
@@ -69,12 +71,14 @@ namespace CoolapkUWP.Core.Helpers
                 case UriType.CreateFeedReply: return "/v6/feed/reply?id={0}&type=feed";
                 case UriType.CreateReplyReply: return "/v6/feed/reply?id={0}&type=reply";
                 case UriType.GetAnswers: return "/v6/question/answerList?id={0}&sort={1}&page={2}{3}{4}";
+                case UriType.GetAppDetail: return "/v6/apk/detail?id={0}&installed=0";
+                case UriType.GetAppFeeds: return "/v6/page/dataList?url=%23/feed/apkCommentList?isIncludeTop=1&id={0}&subTitle=&page={1}{2}{3}";
                 case UriType.GetCollectionContents: return "/v6/collection/itemList?id={0}&page={1}{2}";
                 case UriType.GetCollectionDetail: return "/v6/collection/detail?id={0}";
                 case UriType.GetDyhDetail: return "/v6/dyh/detail?dyhId={0}";
                 case UriType.GetDyhFeeds: return "/v6/dyhArticle/list?dyhId={0}&type={1}&page={2}{3}{4}";
                 case UriType.GetProductDetail: return "/v6//product/detail?id={0}";
-                case UriType.GetProductFeeds: return "/v6/page/dataList?url=/page?url=/product/feedList?type=feed&id={0}&subTitle=&page={1}{2}{3}";
+                case UriType.GetProductFeeds: return "/v6/page/dataList?url=/page?url=/product/feedList?type={4}&id={0}&page={1}{2}{3}";
                 case UriType.GetFeedDetail: return "/v6/feed/detail?id={0}";
                 case UriType.GetFeedReplies: return "/v6/feed/replyList?id={0}&listType={1}&page={2}{3}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={4}";
                 case UriType.GetHotReplies: return "/v6/feed/hotReplyList?id={0}&page={1}{2}&discussMode=1";
@@ -89,7 +93,7 @@ namespace CoolapkUWP.Core.Helpers
                 case UriType.GetShareList: return "/v6/feed/forwardList?id={0}&type=feed&page={1}";
                 case UriType.GetTagDetail: return "/v6/topic/newTagDetail?tag={0}";
                 case UriType.GetTagFeeds: return "/v6/topic/tagFeedList?tag={0}&page={1}{2}{3}&listType={4}&blockStatus=0";
-                case UriType.GetUserFeeds: return "/v6/user/feedList?uid={0}&page={1}{2}{3}";
+                case UriType.GetUserFeeds: return "/v6/user/{4}List?uid={0}&page={1}{2}{3}";
                 case UriType.GetUserHistory: return "/v6/user/hitHistoryList?page={0}{1}{2}";
                 case UriType.GetUserList: return "/v6/user/{0}?uid={1}&page={2}{3}{4}";
                 case UriType.GetUserRecentHistory: return "/v6/user/recentHistoryList?page={0}{1}{2}";

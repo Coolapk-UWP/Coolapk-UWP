@@ -165,10 +165,16 @@ namespace CoolapkUWP.Pages
                     UIHelper.NavigateInSplitPane(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.Comment));
                     break;
 
-                case "feed":
+                case "MyFeed":
                     var f = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, SettingsHelper.Get<string>(SettingsHelper.Uid));
                     if (f != null)
                         UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
+                    break;
+
+                case "feed":
+                    var r = FeedListPageViewModelBase.GetProvider(FeedListType.FeedPageList, SettingsHelper.Get<string>(SettingsHelper.Uid));
+                    if (r != null)
+                        UIHelper.NavigateInSplitPane(typeof(FeedListPage), r);
                     break;
 
                 case "follow":

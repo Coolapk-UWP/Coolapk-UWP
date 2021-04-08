@@ -28,6 +28,18 @@ namespace CoolapkUWP.Pages.FeedPages
             switch (provider.ListType)
             {
                 case FeedListType.UserPageList:
+                    rightComboBox.Visibility = Visibility.Visible;
+                    rightComboBox.ItemsSource = new string[]
+                    {
+                        loader.GetString("feed"),
+                        loader.GetString("htmlFeed"),
+                        loader.GetString("questionAndAnswer"),
+                    };
+                    rightComboBox.SelectedIndex = (provider as ICanComboBoxChangeSelectedIndex).ComboBoxSelectedIndex;
+                    FindName(nameof(reportButton));
+                    break;
+
+                case FeedListType.FeedPageList:
                     rightComboBox.Visibility = Visibility.Collapsed;
                     FindName(nameof(reportButton));
                     break;
@@ -60,9 +72,19 @@ namespace CoolapkUWP.Pages.FeedPages
                     break;
 
                 case FeedListType.ProductPageList:
-                    rightComboBox.Visibility = Visibility.Visible;
-                    rightComboBox.ItemsSource = ((ProductViewModel)provider).ComboBoxItems;
+                    rightComboBox.Visibility = Visibility.Collapsed;
+                    rightComboBox.ItemsSource = new string[]
+                    {
+                        loader.GetString("feed"),
+                        loader.GetString("answer"),
+                        loader.GetString("article"),
+                    };
                     rightComboBox.SelectedIndex = (provider as ICanComboBoxChangeSelectedIndex).ComboBoxSelectedIndex;
+                    break;
+
+                case FeedListType.AppPageList:
+                    rightComboBox.Visibility = Visibility.Collapsed;
+                    //FindName(nameof(reportButton));
                     break;
             }
             Refresh();
@@ -212,10 +234,12 @@ namespace CoolapkUWP.Pages.FeedPages
     internal enum FeedListType
     {
         UserPageList,
+        FeedPageList,
         TagPageList,
         DyhPageList,
         CollectionPageList,
         ProductPageList,
+        AppPageList,
     }
 
     internal class FeedListPageTemplateSelector : DataTemplateSelector
@@ -226,6 +250,7 @@ namespace CoolapkUWP.Pages.FeedPages
         public DataTemplate DyhHeader { get; set; }
         public DataTemplate CollectionHeader { get; set; }
         public DataTemplate ProductHeader { get; set; }
+        public DataTemplate AppHeader { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
@@ -236,6 +261,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 case DyhDetail _: return DyhHeader;
                 case CollectionDetail _: return CollectionHeader;
                 case ProductDetail _: return ProductHeader;
+                case AppDetail _: return AppHeader;
                 default: return Feed;
             }
         }

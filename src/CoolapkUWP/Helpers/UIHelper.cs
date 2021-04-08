@@ -249,7 +249,7 @@ namespace CoolapkUWP.Helpers
             "http",
             "/product/",
             "/game/",
-            "apk",
+            "/apk/",
         }.ToImmutableArray();
 
         private static bool IsFirst(this string str, int i) => str.IndexOf(routes[i], StringComparison.Ordinal) == 0;
@@ -322,11 +322,6 @@ namespace CoolapkUWP.Helpers
                     NavigateInSplitPane(typeof(FeedListPage), f);
                 }
             }
-            //else if (str.IndexOf("/product/") == 0)
-            //{
-            //    string u = str.Replace("/product/", string.Empty);
-            //    Navigate(typeof(FeedListPage), new object[] { FeedListType.TagPageList, u });
-            //}
             else if (str.IsFirst(i++))
             {
                 string u = str.Replace(i - 1);
@@ -378,7 +373,7 @@ namespace CoolapkUWP.Helpers
             else if (str.IsFirst(i++))
             {
                 string u = str.Replace(i - 1);
-                UIHelper.ShowMessage(u);
+                //UIHelper.ShowMessage(u);
                 var f = FeedListPageViewModelBase.GetProvider(FeedListType.ProductPageList, u);
                 if (f != null)
                 {
@@ -387,11 +382,26 @@ namespace CoolapkUWP.Helpers
             }
             else if (str.IsFirst(i++))
             {
-                NavigateInSplitPane(typeof(Pages.AppPages.AppPage), "https://www.coolapk.com" + str);
+                //NavigateInSplitPane(typeof(Pages.AppPages.AppPage), "https://www.coolapk.com" + str);
+                string u = str.Replace(i - 1);
+                //UIHelper.ShowMessage(u);
+                var f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, u);
+                if (f != null)
+                {
+                    UIHelper.ShowMessage(u);
+                    NavigateInSplitPane(typeof(FeedListPage), f);
+                }
             }
             else if (str.IsFirst(i++))
             {
-                NavigateInSplitPane(typeof(Pages.AppPages.AppPage), "https://www.coolapk.com" + str);
+                //NavigateInSplitPane(typeof(Pages.AppPages.AppPage), "https://www.coolapk.com" + str);
+                string u = str.Replace(i - 1);
+                var f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, u);
+                if (f != null)
+                {
+                    UIHelper.ShowMessage(u);
+                    NavigateInSplitPane(typeof(FeedListPage), f);
+                }
             }
             //else
             //{
