@@ -135,6 +135,9 @@
   <data name="longPicText" xml:space="preserve">
     <value>长图</value>
   </data>
+  <data name="QR.Text" xml:space="preserve">
+    <value>二维码</value>
+  </data>
   <data name="report.Text" xml:space="preserve">
     <value>举报</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="seePic" xml:space="preserve">
     <value>查看图片</value>
+  </data>
+  <data name="Share.Text" xml:space="preserve">
+    <value>分享</value>
   </data>
   <data name="sourceFeedNotFount.Text" xml:space="preserve">
     <value>抱歉，该转发已被删除。</value>

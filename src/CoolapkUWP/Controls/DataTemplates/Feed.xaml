@@ -191,18 +191,22 @@
                             </StackPanel>
                         </Button>
 
-                        <StackPanel
-                            x:Name="sharePanel"
+                        <Button
+                            x:Name="shareButton"
                             Padding="2"
                             HorizontalAlignment="Center"
                             x:Load="{x:Bind ShowLikes}"
-                            Orientation="Horizontal">
+                            Click="{x:Bind local:Feed.FeedButton_Click}"
+                            Style="{StaticResource FeedOpButtonStyle}"
+                            Tag="{x:Bind}">
+                            <StackPanel Orientation="Horizontal">
                             <SymbolIcon Symbol="Share" />
                             <TextBlock
                                 Margin="3,0"
                                 VerticalAlignment="Center"
                                 Text="{x:Bind ShareNum}" />
-                        </StackPanel>
+                            </StackPanel>
+                        </Button>
 
                         <Button
                             Width="32"

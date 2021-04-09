@@ -382,26 +382,26 @@ namespace CoolapkUWP.Helpers
             }
             else if (str.IsFirst(i++))
             {
-                //NavigateInSplitPane(typeof(Pages.AppPages.AppPage), "https://www.coolapk.com" + str);
-                string u = str.Replace(i - 1);
-                //UIHelper.ShowMessage(u);
-                var f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, u);
-                if (f != null)
-                {
-                    UIHelper.ShowMessage(u);
-                    NavigateInSplitPane(typeof(FeedListPage), f);
-                }
+                NavigateInSplitPane(typeof(Pages.AppPages.AppPage), "https://www.coolapk.com" + str);
+                //string u = str.Replace(i - 1);
+                ////UIHelper.ShowMessage(u);
+                //var f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, u);
+                //if (f != null)
+                //{
+                //    UIHelper.ShowMessage(u);
+                //    NavigateInSplitPane(typeof(FeedListPage), f);
+                //}
             }
             else if (str.IsFirst(i++))
             {
-                //NavigateInSplitPane(typeof(Pages.AppPages.AppPage), "https://www.coolapk.com" + str);
-                string u = str.Replace(i - 1);
-                var f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, u);
-                if (f != null)
-                {
-                    UIHelper.ShowMessage(u);
-                    NavigateInSplitPane(typeof(FeedListPage), f);
-                }
+                NavigateInSplitPane(typeof(Pages.AppPages.AppPage), "https://www.coolapk.com" + str);
+                //string u = str.Replace(i - 1);
+                //var f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, u);
+                //if (f != null)
+                //{
+                //    UIHelper.ShowMessage(u);
+                //    NavigateInSplitPane(typeof(FeedListPage), f);
+                //}
             }
             //else
             //{

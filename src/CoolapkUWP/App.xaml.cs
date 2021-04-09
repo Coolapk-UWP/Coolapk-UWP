@@ -1,7 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Pages;
-using CoolapkUWP.Pages.SettingPages;
 using CoolapkUWP.Pages.FeedPages;
+using CoolapkUWP.Pages.SettingPages;
 using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;

@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.ViewModels.FeedDetailPage;
+using CoolapkUWP.Controls;
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel;

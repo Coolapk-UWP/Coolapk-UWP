@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -10,6 +11,8 @@ namespace CoolapkUWP.Controls.DataTemplates
     public partial class Feed : ResourceDictionary
     {
         public Feed() => InitializeComponent();
+
+        static string temp;
 
         internal static void OnTapped(object sender, TappedRoutedEventArgs e)
         {
@@ -54,6 +57,11 @@ namespace CoolapkUWP.Controls.DataTemplates
                 case "reportButton":
                     DisabledCopy();
                     UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, $"https://m.coolapk.com/mp/do?c=feed&m=report&type=feed&id={element.Tag}" });
+                    break;
+
+                case "shareButton":
+                    DisabledCopy();                 
+                    DataTransferManager.ShowShareUI();
                     break;
 
                 default:

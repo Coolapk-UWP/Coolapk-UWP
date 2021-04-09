@@ -146,6 +146,7 @@
     </Compile>
     <Compile Include="Helpers\EmojiTypeHelper.cs" />
     <Compile Include="Helpers\NotificationsNum.cs" />
+    <Compile Include="Helpers\ShareHelp.cs" />
     <Compile Include="Helpers\ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\HasValueConverter.cs" />
     <Compile Include="Helpers\ValueConverters\TrueToFalseConverter.cs" />
@@ -162,7 +163,7 @@
     <Compile Include="Models\IndexPageModel.cs" />
     <Compile Include="Models\Pages\FeedListPageModels.cs" />
     <Compile Include="Models\Pages\NotificationsPageModels.cs" />
-    <Compile Include="Models\Pages\ProductModel.cs" />
+    <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\SimpleFeedReplyModel.cs" />
     <Compile Include="Models\SourceFeedModel.cs" />
     <Compile Include="Controls\GridPanel.cs" />

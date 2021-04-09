@@ -72,7 +72,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     break;
 
                 case FeedListType.ProductPageList:
-                    rightComboBox.Visibility = Visibility.Collapsed;
+                    rightComboBox.Visibility = Visibility.Visible;
                     rightComboBox.ItemsSource = new string[]
                     {
                         loader.GetString("feed"),

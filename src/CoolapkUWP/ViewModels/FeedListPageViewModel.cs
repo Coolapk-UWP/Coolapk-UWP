@@ -136,7 +136,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                         break;
 
                     case FeedListType.ProductPageList:
-                        //d = new ProductDetail(o);
+                        d = new ProductDetail(o);
                         break;
 
                     case FeedListType.AppPageList:

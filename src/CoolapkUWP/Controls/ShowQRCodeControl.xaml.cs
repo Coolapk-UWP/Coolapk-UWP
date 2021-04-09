@@ -1,8 +1,10 @@
 ﻿using QRCoder;
+using CoolapkUWP.Helpers;
 using System;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace CoolapkUWP.Controls
 {
@@ -16,8 +18,48 @@ namespace CoolapkUWP.Controls
             set
             {
                 qrCodeText = value;
+                //UIHelper.ShowMessage(qrCodeText);
+                GetShare();
                 RefreshQRCode();
             }
+        }
+
+        void FeedPage_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            System.Uri shareLinkString = ValidateAndGetUri(qrCodeText);
+            if (shareLinkString != null)
+            {
+                DataPackage dataPackage = new DataPackage();
+                dataPackage.SetWebLink(shareLinkString);
+                dataPackage.Properties.Title = "动态分享";
+                dataPackage.Properties.Description = "链接";
+                DataRequest request = args.Request;
+                request.Data = dataPackage;
+            }
+            else
+            {
+                DataRequest request = args.Request;
+                request.FailWithDisplayText("分享失败");
+            }
+        }
+
+        private System.Uri ValidateAndGetUri(string uriString)
+        {
+            System.Uri uri = null;
+            try
+            {
+                uri = new System.Uri(uriString);
+            }
+            catch (System.FormatException)
+            {
+            }
+            return uri;
+        }
+
+        protected void GetShare()
+        {
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+            dataTransferManager.DataRequested += FeedPage_DataRequested;
         }
 
         private async void RefreshQRCode()

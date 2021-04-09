@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -18,6 +19,48 @@ namespace CoolapkUWP.Pages.SettingPages
             //System.Diagnostics.Debug.WriteLine(
             //loader.GetString("?")
             //    );
+        }
+
+        void IndexPage_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            //分享一个链接
+            System.Uri shareLinkString = ValidateAndGetUri(url.Text);
+            if (shareLinkString != null)
+            {
+                //创建一个数据包
+                DataPackage dataPackage = new DataPackage();
+
+                //把要分享的链接放到数据包里
+                dataPackage.SetWebLink(shareLinkString);
+
+                //数据包的标题（内容和标题必须提供）
+                dataPackage.Properties.Title = "链接分享测试";
+                //数据包的描述
+                dataPackage.Properties.Description = "这是一个链接";
+
+                //给dataRequest对象赋值
+                DataRequest request = args.Request;
+                request.Data = dataPackage;
+            }
+            else
+            {
+                DataRequest request = args.Request;
+                request.FailWithDisplayText("请输入链接");
+            }
+        }
+
+        private System.Uri ValidateAndGetUri(string uriString)
+        {
+            System.Uri uri = null;
+            try
+            {
+                uri = new System.Uri(uriString);
+            }
+            catch (System.FormatException)
+            {
+                UIHelper.ShowMessage(url.Text + "并不是一个链接");
+            }
+            return uri;
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -117,6 +160,15 @@ namespace CoolapkUWP.Pages.SettingPages
                 }
             }
             else UIHelper.OpenLinkAsync(Url + ID.Text);
+        }
+
+        protected void ShowUIButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+
+            dataTransferManager.DataRequested += IndexPage_DataRequested;
+
+            DataTransferManager.ShowShareUI();
         }
 
         private void TitleBar_Loaded(object sender, RoutedEventArgs e)
