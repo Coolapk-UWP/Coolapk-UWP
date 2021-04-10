@@ -147,6 +147,9 @@
   <data name="FollowNum.Text" xml:space="preserve">
     <value>关注</value>
   </data>
+  <data name="HotNumTXT" xml:space="preserve">
+    <value>热度</value>
+  </data>
   <data name="htmlFeed" xml:space="preserve">
     <value>图文</value>
   </data>
