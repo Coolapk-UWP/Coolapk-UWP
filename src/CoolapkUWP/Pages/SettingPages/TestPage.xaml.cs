@@ -36,7 +36,7 @@ namespace CoolapkUWP.Pages.SettingPages
                 //数据包的标题（内容和标题必须提供）
                 dataPackage.Properties.Title = "链接分享测试";
                 //数据包的描述
-                dataPackage.Properties.Description = "这是一个链接";
+                dataPackage.Properties.Description = url.Text;
 
                 //给dataRequest对象赋值
                 DataRequest request = args.Request;
@@ -44,8 +44,12 @@ namespace CoolapkUWP.Pages.SettingPages
             }
             else
             {
+                DataPackage dataPackage = new DataPackage();
+                dataPackage.SetText(url.Text);
+                dataPackage.Properties.Title = "内容分享测试";
+                dataPackage.Properties.Description = "内含文本";
                 DataRequest request = args.Request;
-                request.FailWithDisplayText("请输入链接");
+                request.Data = dataPackage;
             }
         }
 

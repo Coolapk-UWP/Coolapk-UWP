@@ -60,8 +60,7 @@ namespace CoolapkUWP.Controls.DataTemplates
                     break;
 
                 case "shareButton":
-                    DisabledCopy();                 
-                    DataTransferManager.ShowShareUI();
+                    DisabledCopy();
                     break;
 
                 default:

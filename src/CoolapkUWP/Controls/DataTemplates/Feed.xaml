@@ -161,7 +161,8 @@
                             x:Load="{x:Bind ShowLikes}"
                             Click="{x:Bind local:Feed.FeedButton_Click}"
                             Style="{StaticResource FeedOpButtonStyle}"
-                            Tag="{x:Bind}">
+                            Tag="{x:Bind}"
+                            ToolTipService.ToolTip="点赞">
                             <StackPanel Orientation="Horizontal">
                                 <SymbolIcon
                                     x:Name="like2"
@@ -181,7 +182,8 @@
                             x:Load="{x:Bind ShowLikes}"
                             Click="{x:Bind local:Feed.FeedButton_Click}"
                             Style="{StaticResource FeedOpButtonStyle}"
-                            Tag="{x:Bind}">
+                            Tag="{x:Bind}"
+                            ToolTipService.ToolTip="回复">
                             <StackPanel Orientation="Horizontal">
                                 <SymbolIcon Symbol="Comment" />
                                 <TextBlock
@@ -190,7 +192,7 @@
                                     Text="{x:Bind Replynum, Mode=OneWay}" />
                             </StackPanel>
                         </Button>
-
+                        
                         <Button
                             x:Name="shareButton"
                             Padding="2"
@@ -198,22 +200,15 @@
                             x:Load="{x:Bind ShowLikes}"
                             Click="{x:Bind local:Feed.FeedButton_Click}"
                             Style="{StaticResource FeedOpButtonStyle}"
-                            Tag="{x:Bind}">
+                            Tag="{x:Bind QRUrl}"
+                            ToolTipService.ToolTip="分享">
                             <StackPanel Orientation="Horizontal">
-                            <SymbolIcon Symbol="Share" />
-                            <TextBlock
+                                <SymbolIcon Symbol="Share" />
+                                <TextBlock
                                 Margin="3,0"
                                 VerticalAlignment="Center"
                                 Text="{x:Bind ShareNum}" />
                             </StackPanel>
-                        </Button>
-
-                        <Button
-                            Width="32"
-                            Height="32"
-                            Style="{StaticResource IconButtonStyle}"
-                            Tag="{x:Bind QRUrl}"
-                            ToolTipService.ToolTip="在手机上打开">
                             <Button.Flyout>
                                 <Flyout Opened="{x:Bind local:Feed.Flyout_Opened}">
                                     <Flyout.FlyoutPresenterStyle>
@@ -227,14 +222,14 @@
                                     </Flyout.FlyoutPresenterStyle>
                                 </Flyout>
                             </Button.Flyout>
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED14;" />
                         </Button>
 
                         <Button
                             x:Name="moreButton"
                             Width="32"
                             Height="32"
-                            Style="{StaticResource IconButtonStyle}">
+                            Style="{StaticResource IconButtonStyle}"
+                            ToolTipService.ToolTip="更多">
                             <SymbolIcon Symbol="More" />
                             <Button.Flyout>
                                 <MenuFlyout>
