@@ -86,7 +86,7 @@ namespace CoolapkUWP
                             UIHelper.ShowMessage(arg.Item2);
                             break;
                         default:
-                            UIHelper.ShowMessage(UIHelper.ConvertMessageTypeToMessage(arg.Item1));
+                            //UIHelper.ShowMessage(UIHelper.ConvertMessageTypeToMessage(arg.Item1));
                             break;
                     }
                 };

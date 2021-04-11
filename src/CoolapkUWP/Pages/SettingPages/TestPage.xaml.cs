@@ -4,6 +4,8 @@ using CoolapkUWP.ViewModels.FeedListPage;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Notifications;
+using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace CoolapkUWP.Pages.SettingPages
 {
@@ -107,6 +109,9 @@ namespace CoolapkUWP.Pages.SettingPages
                     Url = "/product/";
                     i = 0;
                     break;
+                case "页面":
+                    i = 2;
+                    break;
                 case "看看号":
                     Url = "/dyh/";
                     i = 0;
@@ -121,6 +126,72 @@ namespace CoolapkUWP.Pages.SettingPages
                     break;
             }
         }
+
+        // In a real app, these would be initialized with actual data
+        static string from = "Jennifer Parker";
+        static string subject = "Photos from our trip";
+        static string body = "Check out these awesome photos I took while in New Zealand!";
+
+
+        // Construct the tile content
+        TileContent content = new TileContent()
+        {
+            Visual = new TileVisual()
+            {
+                TileMedium = new TileBinding()
+                {
+                    Content = new TileBindingContentAdaptive()
+                    {
+                        Children =
+                {
+                    new AdaptiveText()
+                    {
+                        Text = from
+                    },
+
+                    new AdaptiveText()
+                    {
+                        Text = subject,
+                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                    },
+
+                    new AdaptiveText()
+                    {
+                        Text = body,
+                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                    }
+                }
+                    }
+                },
+
+                TileWide = new TileBinding()
+                {
+                    Content = new TileBindingContentAdaptive()
+                    {
+                        Children =
+                {
+                    new AdaptiveText()
+                    {
+                        Text = from,
+                        HintStyle = AdaptiveTextStyle.Subtitle
+                    },
+
+                    new AdaptiveText()
+                    {
+                        Text = subject,
+                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                    },
+
+                    new AdaptiveText()
+                    {
+                        Text = body,
+                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                    }
+                }
+                    }
+                }
+            }
+        };
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
@@ -163,7 +234,19 @@ namespace CoolapkUWP.Pages.SettingPages
                     UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
                 }
             }
+            if (i==2)
+            {
+                Frame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(ID.Text, false));
+            }
             else UIHelper.OpenLinkAsync(Url + ID.Text);
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            // Create the tile notification
+            var notification = new TileNotification(content.GetXml());
+            // Send the notification to the primary tile
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
         }
 
         protected void ShowUIButton_Click(object sender, RoutedEventArgs e)

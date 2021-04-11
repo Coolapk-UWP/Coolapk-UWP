@@ -90,7 +90,6 @@ namespace CoolapkUWP.Pages
 
             navigationView.SelectedItem = menuItems.First(i => i.Title == "头条");
             navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false));
-            //navigationView.Header = "头条";
 
             allMenuItems = menuItems.Concat(
                     from i in menuItems
@@ -114,10 +113,12 @@ namespace CoolapkUWP.Pages
                 sender.Header = title;
                 var item = allMenuItems.First(i => i.Title == title);
                 var uri = title == "头条" ? "/main/indexV8" : $"{item.Uri}&title={title}";
+                UIHelper.ShowMessage(uri);
                 navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(uri, false), args.RecommendedNavigationTransitionInfo);
             }
             else if (args.InvokedItem is MenuItem item1)
             {
+                UIHelper.ShowMessage(item1.Uri);
                 navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(item1.Uri, false), args.RecommendedNavigationTransitionInfo);
             }
         }

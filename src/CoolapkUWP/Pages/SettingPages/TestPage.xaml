@@ -37,6 +37,8 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
@@ -65,12 +67,13 @@
                                 <x:String>话题</x:String>
                                 <x:String>应用</x:String>
                                 <x:String>数码</x:String>
+                                <x:String>页面</x:String>
                                 <x:String>看看号</x:String>
                                 <x:String>收藏集</x:String>
                             </ComboBox>
                         </StackPanel>
-                        <Button Click="Button_Click_6" Style="{StaticResource ButtonRevealStyle}" Grid.Row="10" Margin="0,59,0,2">前往</Button>
-
+                        <Button Click="Button_Click_6" Style="{StaticResource ButtonRevealStyle}" Grid.Row="10" Margin="0,2">前往</Button>
+                        <Button Click="Button_Click_7" Style="{StaticResource ButtonRevealStyle}" Grid.Row="11" Margin="0,2">更新磁贴</Button>
                     </Grid>
                 </controls:HeaderedContentControl>
 

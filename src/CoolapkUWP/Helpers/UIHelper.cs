@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Pages.FeedPages;
+﻿using CoolapkUWP.Pages;
+using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
@@ -236,6 +237,7 @@ namespace CoolapkUWP.Helpers
 
         private static readonly ImmutableArray<string> routes = new string[]
         {
+            "/page?",
             "/u/",
             "/feed/",
             "/picture/",
@@ -291,10 +293,16 @@ namespace CoolapkUWP.Helpers
                 return;
             }
 
+            int i = 0;
+            if (str.IsFirst(i++))
+            {
+                Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(str, false));
+            }
+
             if (str.Contains('?')) str = str.Substring(0, str.IndexOf('?'));
             if (str.Contains('%')) str = str.Substring(0, str.IndexOf('%'));
             if (str.Contains('&')) str = str.Substring(0, str.IndexOf('&'));
-            int i = 0;
+            
             if (str.IsFirst(i++))
             {
                 var u = str.Replace(i - 1);
