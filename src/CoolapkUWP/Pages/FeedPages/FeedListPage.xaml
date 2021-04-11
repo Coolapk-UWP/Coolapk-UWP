@@ -528,6 +528,51 @@
                             <TextBlock Text="{x:Bind FollowNum}" />
                             <TextBlock x:Uid="/FeedListPage/FollowNum" />
                             <TextBlock Margin="5,0,0,0" Text="{x:Bind HotNumTXT}" />
+                            <TextBlock x:Uid="/FeedListPage/HotNumTXT" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="AppDetail" x:DataType="model:AppDetail">
+                <Grid
+                    x:Name="DetailGrid"
+                    Margin="0,0,0,8"
+                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border
+                        Width="84"
+                        Height="84"
+                        Margin="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        CornerRadius="8">
+                        <Image Source="{x:Bind Logo.Pic, Mode=OneWay}" />
+                    </Border>
+
+                    <StackPanel Grid.Column="1" Margin="0,18">
+                        <TextBlock
+                            FontSize="20"
+                            FontWeight="Black"
+                            IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                            Text="{x:Bind Title}" />
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Margin="0,0,12,0"
+                            IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                            Text="{x:Bind Description}"
+                            TextWrapping="Wrap" />
+
+                        <StackPanel Margin="0,5" Orientation="Horizontal">
+                            <TextBlock Text="{x:Bind FollowNum}" />
+                            <TextBlock x:Uid="/FeedListPage/FollowNum" />
+                            <TextBlock Margin="5,0,0,0" Text="{x:Bind CommentNum}" />
                             <TextBlock x:Uid="/FeedListPage/Comment" />
                         </StackPanel>
                     </StackPanel>
@@ -536,6 +581,7 @@
 
             <local:FeedListPageTemplateSelector
                 x:Key="tempse"
+                AppHeader="{StaticResource AppDetail}"
                 ProductHeader="{StaticResource ProductDetail}"
                 CollectionHeader="{StaticResource CollectionDetail}"
                 DyhHeader="{StaticResource DYHDetail}"

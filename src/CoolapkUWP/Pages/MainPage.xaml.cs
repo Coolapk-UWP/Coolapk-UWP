@@ -85,7 +85,7 @@ namespace CoolapkUWP.Pages
                 where ta.Value<string>("title") != "酷品"
                 where ta.Value<string>("title") != "看看号"
                 where ta.Value<string>("title") != "直播"
-                where ta.Value<string>("title") != "视频"
+                //where ta.Value<string>("title") != "视频"
                 select new MenuItem(ta);
 
             navigationView.SelectedItem = menuItems.First(i => i.Title == "头条");

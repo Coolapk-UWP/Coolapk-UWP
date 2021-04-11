@@ -22,7 +22,7 @@ namespace CoolapkUWP.ViewModels.MyPage
         {
             switch (jo.Value<string>("entityType"))
             {
-                case "entity_type_user_card_manager": return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);
+                case "entity_type_user_card_manager": /*return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);*/
                 default:
                     if (jo.TryGetValue("entityTemplate", out JToken v1))
                     {

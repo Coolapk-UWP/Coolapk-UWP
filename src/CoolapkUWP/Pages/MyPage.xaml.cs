@@ -172,7 +172,7 @@ namespace CoolapkUWP.Pages
                     break;
 
                 case "feed":
-                    var r = FeedListPageViewModelBase.GetProvider(FeedListType.FeedPageList, SettingsHelper.Get<string>(SettingsHelper.Uid));
+                    var r = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, SettingsHelper.Get<string>(SettingsHelper.Uid));
                     if (r != null)
                         UIHelper.NavigateInSplitPane(typeof(FeedListPage), r);
                     break;
@@ -224,6 +224,12 @@ namespace CoolapkUWP.Pages
                         else if (s.Contains("我关注的话题", System.StringComparison.Ordinal))
                         {
                             UIHelper.NavigateInSplitPane(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("#/topic/userFollowTagList&title=我关注的话题", true));
+                        }
+                        else if (s.Contains("我的收藏单", System.StringComparison.Ordinal))
+                        {
+                        }
+                        else if (s.Contains("我的问答", System.StringComparison.Ordinal))
+                        {
                         }
                         else { UIHelper.OpenLinkAsync(tag as string); }
                     }

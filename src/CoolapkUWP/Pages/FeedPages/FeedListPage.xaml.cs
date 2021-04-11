@@ -39,11 +39,6 @@ namespace CoolapkUWP.Pages.FeedPages
                     FindName(nameof(reportButton));
                     break;
 
-                case FeedListType.FeedPageList:
-                    rightComboBox.Visibility = Visibility.Collapsed;
-                    FindName(nameof(reportButton));
-                    break;
-
                 case FeedListType.TagPageList:
                     rightComboBox.Visibility = Visibility.Visible;
                     rightComboBox.ItemsSource = new string[]
@@ -234,7 +229,6 @@ namespace CoolapkUWP.Pages.FeedPages
     internal enum FeedListType
     {
         UserPageList,
-        FeedPageList,
         TagPageList,
         DyhPageList,
         CollectionPageList,

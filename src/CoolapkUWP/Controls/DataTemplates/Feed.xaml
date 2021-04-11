@@ -20,7 +20,7 @@
         x:Key="FeedOpButtonStyle"
         BasedOn="{StaticResource ButtonRevealStyle}"
         TargetType="Button">
-        <Setter Property="Height" Value="32" />
+        <Setter Property="Height" Value="34" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="Grid.Row" Value="10" />

@@ -2,6 +2,7 @@
 using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
+using CoolapkUWP.ViewModels.FeedListPage;
 
 namespace CoolapkUWP.Models.Pages.FeedListPageModels
 {
@@ -170,19 +171,21 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
         public string PriceCurrency { get; private set; }
         public string ReleaseTime { get; private set; }
         public string HotNumTXT { get; private set; }
+        public double Score { get; private set; }
 
         internal ProductDetail(JObject o) : base(o)
         {
             FollowNum = o.Value<int>("follow_num");
             Logo = new ImageModel(o.Value<string>("logo"), ImageType.Icon);
             Title = o.Value<string>("title");
-            UIHelper.ShowMessage(Title);
+            //UIHelper.ShowMessage(Title);
             Description = o.Value<string>("description");
             MinPrice = o.Value<int>("price_min");
             MaxPrice = o.Value<int>("price_max");
             PriceCurrency = o.Value<string>("price_currency");
             ReleaseTime = o.Value<string>("release_time");
             HotNumTXT = o.Value<string>("hot_num_txt");
+            Score = o.Value<int>("star_average_score");
         }
     }
 
@@ -193,7 +196,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
         public string Description { get; private set; }
         public double FollowNum { get; private set; }
         public double CommentNum { get; private set; }
-        public string RealId { get; private set; }
+        public new string EntityId { get; private set; }
 
         internal AppDetail(JObject o) : base(o)
         {
@@ -203,8 +206,8 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             Description = o.Value<string>("description");
             CommentNum = o.TryGetValue("commentnum", out JToken tt) ? int.Parse(tt.ToString()) : o.Value<int>("commentCount");
             int t = o.Value<int>("entityId");
-            RealId = t.ToString();
-            UIHelper.ShowMessage(EntityId);
+            EntityId = t.ToString();
+            //UIHelper.ShowMessage(EntityId);
         }
     }
 

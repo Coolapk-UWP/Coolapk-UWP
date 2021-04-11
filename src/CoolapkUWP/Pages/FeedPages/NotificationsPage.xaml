@@ -207,7 +207,7 @@
                             Margin="8,0"
                             Orientation="Horizontal"
                             Tag="atCommentMe">
-                            <SymbolIcon Symbol="Account" />
+                            <SymbolIcon Symbol="Comment" />
                             <TextBlock
                                 Margin="8,0"
                                 VerticalAlignment="Center"
@@ -240,7 +240,7 @@
                             Margin="8,0"
                             Orientation="Horizontal"
                             Tag="message">
-                            <SymbolIcon Symbol="Comment" />
+                            <SymbolIcon Symbol="Mail" />
                             <TextBlock
                                 Margin="8,0"
                                 VerticalAlignment="Center"
