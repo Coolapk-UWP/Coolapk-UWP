@@ -1,11 +1,14 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
+using Microsoft.Toolkit.Uwp.Notifications;
+using System;
+using System.Collections.Generic;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.UI.Notifications;
+using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Notifications;
-using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace CoolapkUWP.Pages.SettingPages
 {
@@ -110,6 +113,7 @@ namespace CoolapkUWP.Pages.SettingPages
                     i = 0;
                     break;
                 case "页面":
+                    Url = "/page?url=";
                     i = 2;
                     break;
                 case "看看号":
@@ -128,9 +132,9 @@ namespace CoolapkUWP.Pages.SettingPages
         }
 
         // In a real app, these would be initialized with actual data
-        static string from = "Jennifer Parker";
-        static string subject = "Photos from our trip";
-        static string body = "Check out these awesome photos I took while in New Zealand!";
+        static string from = "动态磁贴测试";
+        static string subject = "这是一个通知";
+        static string body = "这个通知不会消失，除非你手动清除它";
 
 
         // Construct the tile content
@@ -234,9 +238,9 @@ namespace CoolapkUWP.Pages.SettingPages
                     UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
                 }
             }
-            if (i==2)
+            if (i == 2)
             {
-                Frame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(ID.Text, false));
+                UIHelper.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(Url + ID.Text, false));
             }
             else UIHelper.OpenLinkAsync(Url + ID.Text);
         }
@@ -249,6 +253,16 @@ namespace CoolapkUWP.Pages.SettingPages
             TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
         }
 
+        private void Button_Click_8(object sender, RoutedEventArgs e)
+        {
+            TileUpdateManager.CreateTileUpdaterForApplication().Clear();
+        }
+
+        //private void Button_Click_8(object sender, RoutedEventArgs e)
+        //{
+        //    await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
+        //}
+
         protected void ShowUIButton_Click(object sender, RoutedEventArgs e)
         {
             DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
@@ -256,6 +270,36 @@ namespace CoolapkUWP.Pages.SettingPages
             dataTransferManager.DataRequested += IndexPage_DataRequested;
 
             DataTransferManager.ShowShareUI();
+        }
+
+        private async void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (JumpList.IsSupported())
+            {
+                var list = await JumpList.LoadCurrentAsync();
+                list.Items.Clear();//建议每次在添加之前清除掉原先已经存在的数据
+                list.Items.Add(JumpListItem.CreateSeparator());
+
+                new List<JumpListItem>()
+                  {
+                      CreateJumpListItem("feed","动态","页面",new Uri("ms-appx:///Assets/facebook.png")),
+                      CreateJumpListItem("notification","通知","页面",new Uri("ms-appx:///Assets/github.png")),
+                      CreateJumpListItem("test","测试","页面",new Uri("ms-appx:///Assets/google.png")),
+                      CreateJumpListItem("settings","设置","页面",new Uri("ms-appx:///Assets/linked-in.png"))
+                  }.ForEach((item) =>
+                  {
+                      list.Items.Add(item);
+                  });
+                await list.SaveAsync();
+            }
+        }
+
+        private JumpListItem CreateJumpListItem(string arguments, string displayName, string groupName, Uri uri)
+        {
+            JumpListItem item = JumpListItem.CreateWithArguments(arguments, displayName);
+            item.GroupName = groupName;
+            item.Logo = uri;
+            return item;
         }
 
         private void TitleBar_Loaded(object sender, RoutedEventArgs e)

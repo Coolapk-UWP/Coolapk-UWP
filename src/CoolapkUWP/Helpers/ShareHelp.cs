@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CoolapkUWP.Helpers;
-using CoolapkUWP.Pages.FeedPages;
-using CoolapkUWP.ViewModels.FeedListPage;
 using Windows.ApplicationModel.DataTransfer;
 
 namespace CoolapkUWP.Helpers

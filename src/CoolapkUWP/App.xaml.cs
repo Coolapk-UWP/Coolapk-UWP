@@ -34,6 +34,7 @@ namespace CoolapkUWP
             if (e.Kind == ActivationKind.Protocol)
             {
                 var protocolArgs = (ProtocolActivatedEventArgs)e;
+                UIHelper.ShowMessage(protocolArgs.Uri.Host);
                 switch (protocolArgs.Uri.Host)
                 {
                     case "www.coolapk.com":
@@ -47,6 +48,12 @@ namespace CoolapkUWP
                         break;
                     case "coolmarket.com":
                         UIHelper.OpenLinkAsync(protocolArgs.Uri.AbsolutePath);
+                        break;
+                    case "http":
+                        UIHelper.OpenLinkAsync(protocolArgs.Uri.Host + ":" + protocolArgs.Uri.AbsolutePath);
+                        break;
+                    case "https":
+                        UIHelper.OpenLinkAsync(protocolArgs.Uri.Host + ":" + protocolArgs.Uri.AbsolutePath);
                         break;
                     case "settings":
                         UIHelper.NavigateInSplitPane(typeof(SettingPage));
@@ -90,6 +97,20 @@ namespace CoolapkUWP
                             break;
                     }
                 };
+                if (e.Arguments != null)
+                {
+                    switch(e.Arguments)
+                    {
+                        case "settings":
+                            UIHelper.NavigateInSplitPane(typeof(SettingPage));
+                            break;
+                        case "test":
+                            UIHelper.NavigateInSplitPane(typeof(TestPage));
+                            break;
+                        default:
+                            break;
+                    }    
+                }
             }
 
             Window.Current.Activate();

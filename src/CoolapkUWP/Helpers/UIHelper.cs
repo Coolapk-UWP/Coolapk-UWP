@@ -1,5 +1,4 @@
-﻿using CoolapkUWP.Pages;
-using CoolapkUWP.Pages.FeedPages;
+﻿using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
@@ -249,6 +248,7 @@ namespace CoolapkUWP.Helpers
             "http://image.coolapk.com/",
             "https",
             "http",
+            "www.coolapk.com",
             "/product/",
             "/game/",
             "/apk/",
@@ -265,6 +265,10 @@ namespace CoolapkUWP.Helpers
             else if (oldText == -2)
             {
                 return str.Replace("http://www.coolapk.com", string.Empty, StringComparison.Ordinal);
+            }
+            else if (oldText == -3)
+            {
+                return str.Replace("www.coolapk.com", string.Empty, StringComparison.Ordinal);
             }
             else if (oldText < 0)
             {
@@ -302,7 +306,7 @@ namespace CoolapkUWP.Helpers
             if (str.Contains('?')) str = str.Substring(0, str.IndexOf('?'));
             if (str.Contains('%')) str = str.Substring(0, str.IndexOf('%'));
             if (str.Contains('&')) str = str.Substring(0, str.IndexOf('&'));
-            
+
             if (str.IsFirst(i++))
             {
                 var u = str.Replace(i - 1);
@@ -379,6 +383,10 @@ namespace CoolapkUWP.Helpers
                 {
                     Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
                 }
+            }
+            else if (str.IsFirst(i++))
+            {
+                OpenLinkAsync(str.Replace(-3));
             }
             else if (str.IsFirst(i++))
             {
