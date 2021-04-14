@@ -510,11 +510,14 @@
                     </Border>
 
                     <StackPanel Grid.Column="1" Margin="0,18">
-                        <TextBlock
-                            FontSize="20"
-                            FontWeight="Black"
-                            IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                            Text="{x:Bind Title}" />
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <TextBlock
+                                FontSize="20"
+                                FontWeight="Black"
+                                IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                                Text="{x:Bind Title}" />
+                            <winui:RatingControl x:Name="AppRating" IsReadOnly="True" PlaceholderValue="{x:Bind StarScore}" Margin="10,0,0,0"/>
+                        </StackPanel>
 
                         <TextBlock
                             Grid.Row="1"

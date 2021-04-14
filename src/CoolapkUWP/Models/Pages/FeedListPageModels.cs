@@ -171,6 +171,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
         public string ReleaseTime { get; private set; }
         public string HotNumTXT { get; private set; }
         public double Score { get; private set; }
+        public double StarScore { get; private set; }
 
         internal ProductDetail(JObject o) : base(o)
         {
@@ -184,7 +185,8 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             PriceCurrency = o.Value<string>("price_currency");
             ReleaseTime = o.Value<string>("release_time");
             HotNumTXT = o.Value<string>("hot_num_txt");
-            Score = o.Value<int>("star_average_score");
+            Score = o.Value<double>("star_average_score");
+            StarScore = Score / 2;
         }
     }
 

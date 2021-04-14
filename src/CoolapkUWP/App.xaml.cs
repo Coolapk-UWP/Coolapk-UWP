@@ -99,7 +99,7 @@ namespace CoolapkUWP
                 };
                 if (e.Arguments != null)
                 {
-                    switch(e.Arguments)
+                    switch (e.Arguments)
                     {
                         case "settings":
                             UIHelper.NavigateInSplitPane(typeof(SettingPage));
@@ -109,7 +109,7 @@ namespace CoolapkUWP
                             break;
                         default:
                             break;
-                    }    
+                    }
                 }
             }
 
