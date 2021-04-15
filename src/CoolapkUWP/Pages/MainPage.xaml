@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:CoolapkUWP.Models"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     NavigationCacheMode="Required"
     mc:Ignorable="d">
 
@@ -18,6 +18,7 @@
         IsSettingsVisible="True"
         AlwaysShowHeader="True"
         Header=" "
+        Margin="0,32,0,0"
         ItemInvoked="NavigationView_ItemInvoked"
         MenuItemsSource="{x:Bind MenuItems, Mode=OneWay}"
         Background="{ThemeResource SystemControlAcrylicWindowBrush}">
