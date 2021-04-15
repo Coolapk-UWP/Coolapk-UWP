@@ -16,6 +16,7 @@ namespace CoolapkUWP.Pages.SettingPages
     {
         string Url = "/feed/";
         int i = 0;
+        string html;
 
         public TestPage()
         {
@@ -258,11 +259,6 @@ namespace CoolapkUWP.Pages.SettingPages
             TileUpdateManager.CreateTileUpdaterForApplication().Clear();
         }
 
-        //private void Button_Click_8(object sender, RoutedEventArgs e)
-        //{
-        //    await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
-        //}
-
         protected void ShowUIButton_Click(object sender, RoutedEventArgs e)
         {
             DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
@@ -290,6 +286,16 @@ namespace CoolapkUWP.Pages.SettingPages
                   {
                       list.Items.Add(item);
                   });
+                await list.SaveAsync();
+            }
+        }
+
+        private async void MainPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (JumpList.IsSupported())
+            {
+                var list = await JumpList.LoadCurrentAsync();
+                list.Items.Clear();//建议每次在添加之前清除掉原先已经存在的数据
                 await list.SaveAsync();
             }
         }

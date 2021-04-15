@@ -46,7 +46,7 @@ namespace CoolapkUWP.Pages.AppPages
         {
             titleBar.ShowProgressRing();
             if (string.IsNullOrEmpty(applink)) return;
-            this.Tag = applink;
+            Tag = applink;
             try
             {
                 LaunchAppViewLoad(await new HttpClient().GetStringAsync(Tag.ToString()));

@@ -48,6 +48,8 @@ namespace CoolapkUWP.Core.Helpers
         SearchTags,
         SearchUsers,
         SearchWords,
+
+        GetDevMyList,
     }
 
     [DebuggerStepThrough]
@@ -55,11 +57,18 @@ namespace CoolapkUWP.Core.Helpers
     {
         public static readonly Uri CoolapkUri = new Uri("https://coolapk.com");
         public static readonly Uri BaseUri = new Uri("https://api.coolapk.com");
+        public static readonly Uri DevUri = new Uri("https://developer.coolapk.com");
 
         public static Uri GetUri(UriType type, params object[] args)
         {
             var u = string.Format(GetTemplate(type), args);
             return new Uri(BaseUri, u);
+        }
+
+        public static Uri GetDevUri(UriType type, params object[] args)
+        {
+            var u = string.Format(GetTemplate(type), args);
+            return new Uri(DevUri, u);
         }
 
         private static string GetTemplate(UriType type)
@@ -108,6 +117,8 @@ namespace CoolapkUWP.Core.Helpers
                 case UriType.SearchTags: return "/v6/search?type=feedTopic&searchValue={0}&page={1}{2}&showAnonymous=-1";
                 case UriType.SearchUsers: return "/v6/search?type=user&searchValue={0}&page={1}{2}&showAnonymous=-1";
                 case UriType.SearchWords: return "/v6/search/suggestSearchWordsNew?searchValue={0}&type=app";
+
+                case UriType.GetDevMyList: return "/do?c=apk&m=myList&listType={0}&p={1}";
                 default: throw new ArgumentException($"{typeof(UriType).FullName}值错误");
             }
         }

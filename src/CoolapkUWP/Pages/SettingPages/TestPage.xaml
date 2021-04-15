@@ -40,6 +40,8 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
@@ -78,7 +80,10 @@
                             <Button Click="Button_Click_7" Style="{StaticResource ButtonRevealStyle}">更新磁贴</Button>
                             <Button Click="Button_Click_8" Style="{StaticResource ButtonRevealStyle}" Margin="2,0,0,0">清除通知</Button>
                         </StackPanel>
-                        <Button Click="MainPage_Loaded" Style="{StaticResource ButtonRevealStyle}" Grid.Row="12" Margin="0,2">添加JumpList</Button>
+                        <StackPanel Orientation="Horizontal" Grid.Row="12" Margin="0.2" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <Button Click="MainPage_Loaded" Style="{StaticResource ButtonRevealStyle}">添加 JumpList</Button>
+                            <Button Click="MainPage_Unloaded" Style="{StaticResource ButtonRevealStyle}" Margin="2,0,0,0">清除</Button>
+                        </StackPanel>
                     </Grid>
                 </controls:HeaderedContentControl>
 

@@ -146,7 +146,7 @@
     </Compile>
     <Compile Include="Helpers\EmojiTypeHelper.cs" />
     <Compile Include="Helpers\NotificationsNum.cs" />
-    <Compile Include="Helpers\ShareHelp.cs" />
+    <Compile Include="Helpers\ShareHelper.cs" />
     <Compile Include="Helpers\ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\HasValueConverter.cs" />
     <Compile Include="Helpers\ValueConverters\TrueToFalseConverter.cs" />
@@ -181,6 +181,9 @@
     <Compile Include="Models\MenuItemModel.cs" />
     <Compile Include="Pages\AppPages\AppPage.xaml.cs">
       <DependentUpon>AppPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AppPages\DevPage.xaml.cs">
+      <DependentUpon>DevPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\FeedPages\FeedRepliesPage.xaml.cs">
       <DependentUpon>FeedRepliesPage.xaml</DependentUpon>
@@ -888,6 +891,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\AppPages\DevPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\FeedPages\FeedListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -997,9 +1004,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\.editorconfig">
-      <Link>.editorconfig</Link>
-    </None>
     <PRIResource Include="Strings\zh-Hans\SettingPageNew.resw" />
     <PRIResource Include="Strings\en\ShowImagePage.resw" />
     <PRIResource Include="Strings\en\SettingPage.resw" />
@@ -1027,7 +1031,6 @@
     <PRIResource Include="Strings\zh-Hans\ShowImagePage.resw" />
     <PRIResource Include="Assets\EmojiData\OldEmojiId.resw" />
     <PRIResource Include="Assets\EmojiData\EmojiId.resw" />
-    <None Include="CoolapkUWP_TemporaryKey.pfx" />
     <PRIResource Include="Strings\zh-Hans\BrowserPage.resw" />
     <PRIResource Include="Strings\zh-Hans\MyPage.resw" />
     <PRIResource Include="Strings\zh-Hans\SettingPage.resw">
