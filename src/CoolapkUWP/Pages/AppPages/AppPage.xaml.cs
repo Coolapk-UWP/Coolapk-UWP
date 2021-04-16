@@ -1,7 +1,10 @@
-﻿using System;
+﻿using CoolapkUWP.Helpers;
+using System;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.UserActivities;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -146,6 +149,7 @@ namespace CoolapkUWP.Pages.AppPages
             {
                 KPanel.Visibility = Visibility.Collapsed;
             }*/
+            GenerateActivityAsync();
             titleBar.HideProgressRing();
         }
 
@@ -179,6 +183,28 @@ namespace CoolapkUWP.Pages.AppPages
                 Clipboard.SetContent(dp);
             }
         }
+
+        UserActivitySession _currentActivity;
+        private async Task GenerateActivityAsync()
+        {
+            // Get the default UserActivityChannel and query it for our UserActivity. If the activity doesn't exist, one is created.
+            UserActivityChannel channel = UserActivityChannel.GetDefault();
+            UserActivity userActivity = await channel.GetOrCreateUserActivityAsync(nstr);
+
+            // Populate required properties
+            userActivity.VisualElements.DisplayText = nstr;
+            userActivity.VisualElements.AttributionDisplayText = jstr;
+            userActivity.VisualElements.Description = dstr;
+            userActivity.ActivationUri = new Uri("coolapk://"+ applink);
+            
+            //Save
+            await userActivity.SaveAsync(); //save the new metadata
+            
+            // Dispose of any current UserActivitySession, and create a new one.
+            _currentActivity?.Dispose();
+            _currentActivity = userActivity.CreateSession();
+        }
+
         private async void GotoUri_Click(object sender, RoutedEventArgs e)
         {
             // Launch the URI

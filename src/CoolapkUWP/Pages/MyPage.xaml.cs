@@ -61,6 +61,7 @@ namespace CoolapkUWP.Pages
         public MyPage()
         {
             this.InitializeComponent();
+            this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
             Loaded += (s, e) =>
            {
                LogoutButtonVisibility = string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid))

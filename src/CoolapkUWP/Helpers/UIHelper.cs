@@ -13,6 +13,7 @@ using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 using InAppNotify = Microsoft.Toolkit.Uwp.UI.Controls.InAppNotification;
 
 namespace CoolapkUWP.Helpers
@@ -221,7 +222,7 @@ namespace CoolapkUWP.Helpers
         {
             mainFrame?.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                mainFrame?.Navigate(pageType, e);
+                mainFrame?.Navigate(pageType, e, new EntranceNavigationTransitionInfo());
             });
         }
 
@@ -230,7 +231,7 @@ namespace CoolapkUWP.Helpers
             paneFrame?.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 IsSplitViewPaneOpenedChanged?.Invoke(null, true);
-                paneFrame?.Navigate(pageType, e);
+                paneFrame?.Navigate(pageType, e, new EntranceNavigationTransitionInfo());
             });
         }
 
