@@ -1,13 +1,7 @@
-﻿using System;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.System;
+﻿using System.Net.Http;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-using System.Collections.ObjectModel;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -34,7 +28,7 @@ namespace CoolapkUWP.Pages.AppPages
             {
                 GetDevMyList(await new HttpClient().GetStringAsync("https://developer.coolapk.com/do?c=apk&m=myList"));
             }
-            catch (HttpRequestException ex) {}
+            catch (HttpRequestException ex) { }
             catch { throw; }
         }
 
@@ -42,7 +36,7 @@ namespace CoolapkUWP.Pages.AppPages
 
         private void GetDevMyList(string str)
         {
-            
+
         }
 
 

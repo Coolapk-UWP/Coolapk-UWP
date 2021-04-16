@@ -129,7 +129,7 @@
                         SelectionChanged="rightComboBox_SelectionChanged"
                         Visibility="Collapsed" />
 
-                    <Button Style="{StaticResource IconButtonStyle}" ToolTipService.ToolTip="在手机上打开">
+                    <Button Style="{StaticResource IconButtonStyle}" ToolTipService.ToolTip="分享链接">
                         <Button.Flyout>
                             <Flyout>
                                 <Flyout.FlyoutPresenterStyle>
@@ -152,7 +152,8 @@
                         x:Load="{x:Bind provider.FeedDetail.IsQuestionFeed, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}"
                         Click="Button_Click"
                         Style="{StaticResource IconButtonStyle}"
-                        Tag="MakeLike">
+                        Tag="MakeLike"
+                        ToolTipService.ToolTip="点赞">
                         <StackPanel>
                             <SymbolIcon
                                 x:Name="like1"

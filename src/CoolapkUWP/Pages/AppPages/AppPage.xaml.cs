@@ -1,5 +1,4 @@
-﻿using CoolapkUWP.Helpers;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -193,13 +192,15 @@ namespace CoolapkUWP.Pages.AppPages
 
             // Populate required properties
             userActivity.VisualElements.DisplayText = nstr;
-            userActivity.VisualElements.AttributionDisplayText = jstr;
-            userActivity.VisualElements.Description = dstr;
-            userActivity.ActivationUri = new Uri("coolapk://"+ applink);
-            
+            if (jstr.Length > 3)
+                userActivity.VisualElements.Description = jstr;
+            else
+                userActivity.VisualElements.Description = dstr;
+            userActivity.ActivationUri = new Uri("coolapk://" + applink);
+
             //Save
             await userActivity.SaveAsync(); //save the new metadata
-            
+
             // Dispose of any current UserActivitySession, and create a new one.
             _currentActivity?.Dispose();
             _currentActivity = userActivity.CreateSession();
