@@ -2,6 +2,7 @@
 using CoolapkUWP.Models;
 using System;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.UserActivities;
 using Windows.UI.Xaml;
@@ -40,6 +41,7 @@ namespace CoolapkUWP.Controls
                     FindName(nameof(makeFeed));
                 }
                 RaisePropertyChangedEvent();
+                GenerateActivityAsync();
             }
         }
 
@@ -104,6 +106,17 @@ namespace CoolapkUWP.Controls
             }
         }
 
+        private string Massage_Ex( string str )
+        {
+            Regex r = new Regex("<a.*?>", RegexOptions.IgnoreCase);
+            Regex r1 = new Regex("<a.*?/>", RegexOptions.IgnoreCase);
+            Regex r2 = new Regex("</a.*?>", RegexOptions.IgnoreCase);
+            str = r.Replace(str, "");
+            str = r1.Replace(str, "");
+            str = r2.Replace(str, "");
+            return str;
+        }
+
         UserActivitySession _currentActivity;
         private async Task GenerateActivityAsync()
         {
@@ -113,7 +126,8 @@ namespace CoolapkUWP.Controls
 
             // Populate required properties
             userActivity.VisualElements.DisplayText = FeedDetail.MessageTitle;
-            userActivity.VisualElements.Description = FeedDetail.Message;
+            userActivity.VisualElements.AttributionDisplayText = FeedDetail.MessageTitle;
+            userActivity.VisualElements.Description = Massage_Ex(FeedDetail.Message);
             userActivity.ActivationUri = new Uri("coolapk://" + FeedDetail.QRUrl);
 
             //Save

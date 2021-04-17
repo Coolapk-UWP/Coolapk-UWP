@@ -192,6 +192,7 @@ namespace CoolapkUWP.Pages.AppPages
 
             // Populate required properties
             userActivity.VisualElements.DisplayText = nstr;
+            userActivity.VisualElements.AttributionDisplayText = nstr;
             if (jstr.Length > 3)
                 userActivity.VisualElements.Description = jstr;
             else
