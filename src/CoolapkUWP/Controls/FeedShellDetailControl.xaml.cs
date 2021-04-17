@@ -40,8 +40,8 @@ namespace CoolapkUWP.Controls
                 {
                     FindName(nameof(makeFeed));
                 }
-                RaisePropertyChangedEvent();
                 GenerateActivityAsync();
+                RaisePropertyChangedEvent();
             }
         }
 
@@ -106,7 +106,7 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        private string Massage_Ex( string str )
+        private string Massage_Ex(string str)
         {
             Regex r = new Regex("<a.*?>", RegexOptions.IgnoreCase);
             Regex r1 = new Regex("<a.*?/>", RegexOptions.IgnoreCase);
