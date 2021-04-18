@@ -3,6 +3,7 @@ using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Pages.FeedListPageModels;
 using CoolapkUWP.ViewModels;
 using CoolapkUWP.ViewModels.FeedListPage;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -82,9 +83,9 @@ namespace CoolapkUWP.Pages.FeedPages
                     //FindName(nameof(reportButton));
                     break;
             }
-            Refresh();
+            _ = Refresh();
             titleBar.ShowProgressRing();
-            await System.Threading.Tasks.Task.Delay(30);
+            await Task.Delay(30);
 
             scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
             if (provider.Models.Count > 0)
@@ -115,10 +116,13 @@ namespace CoolapkUWP.Pages.FeedPages
             base.OnNavigatingFrom(e);
         }
 
-        private async void Refresh(int p = -1)
+        private async Task Refresh(int p = -1)
         {
             titleBar.ShowProgressRing();
-            scrollViewer.ChangeView(null, 0, null);
+            if (p == -2)
+            {
+                scrollViewer.ChangeView(null, 0, null);
+            }
             titleBar.Title = provider.Title;
             await provider.Refresh(p);
 
@@ -161,7 +165,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     await DataHelper.GetDataAsync(
                         UriHelper.GetUri(type, provider.Id),
                         true);
-                    Refresh();
+                    _ = Refresh();
                     break;
 
                 case "copy":
@@ -188,7 +192,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
             if (provider.Models.Count == 1)
             {
-                Refresh();
+                _ = Refresh();
             }
         }
 
@@ -196,7 +200,7 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             if (!e.IsIntermediate && scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
             {
-                Refresh();
+                _ = Refresh();
             }
         }
 
@@ -210,7 +214,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void titleBar_RefreshButtonClicked(object sender, RoutedEventArgs e)
         {
-            Refresh(-2);
+            _ = Refresh(-2);
         }
 
         internal static void UserDetailBorder_Loaded(object sender, RoutedEventArgs e)

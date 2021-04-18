@@ -19,7 +19,6 @@ namespace CoolapkUWP.ViewModels.FeedListPage
         protected static readonly Func<Entity, JToken, bool> isEqual = (a, b) => a is FeedListDetailBase ? false : ((FeedModel)a).Id == b.Value<int>("id").ToString();
         private string title;
 
-
         public string Id { get; }
         public FeedListType ListType { get; }
         protected abstract CoolapkListProvider Provider { get; }
@@ -429,7 +428,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
     internal class AppViewModel : FeedListPageViewModelBase
     {
         protected override CoolapkListProvider Provider { get; }
-        public string RealId { get; }
+        
 
         internal AppViewModel(string uid) : base(uid, FeedListType.AppPageList)
         {
