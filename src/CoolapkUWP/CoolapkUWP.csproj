@@ -776,6 +776,8 @@
     <Content Include="Assets\Emoji\2332.png" />
     <Content Include="Assets\Emoji\2336.png" />
     <Content Include="Assets\Emoji\2337.png" />
+    <Content Include="Assets\Icons\ic_search_green_24dp.png" />
+    <Content Include="Assets\Icons\ic_settings_white_24dp.png" />
     <Content Include="Assets\img_placeholder.png" />
     <Content Include="Assets\img_placeholder_night.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />

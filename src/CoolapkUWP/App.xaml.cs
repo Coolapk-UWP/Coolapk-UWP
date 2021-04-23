@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Resources;
+using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -30,11 +31,18 @@ namespace CoolapkUWP
                 Window.Current.Content = rootFrame;
             }
             rootFrame.Navigate(typeof(Pages.ShellPage));
+            bool isSupported = JumpList.IsSupported();
+            if (isSupported)
+            {
+                var jumpList = await JumpList.LoadCurrentAsync();
+                jumpList.SystemGroupKind = JumpListSystemGroupKind.None;
+                await jumpList.SaveAsync();
+            }
             Window.Current.Activate();
             if (e.Kind == ActivationKind.Protocol)
             {
                 var protocolArgs = (ProtocolActivatedEventArgs)e;
-                UIHelper.ShowMessage(protocolArgs.Uri.Host);
+                //UIHelper.ShowMessage(protocolArgs.Uri.Host);
                 switch (protocolArgs.Uri.Host)
                 {
                     case "www.coolapk.com":
@@ -101,6 +109,9 @@ namespace CoolapkUWP
                 {
                     switch (e.Arguments)
                     {
+                        case "search":
+                            UIHelper.NavigateInSplitPane(typeof(SearchingPage));
+                            break;
                         case "settings":
                             UIHelper.NavigateInSplitPane(typeof(SettingPage));
                             break;

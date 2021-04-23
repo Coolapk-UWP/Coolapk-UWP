@@ -19,7 +19,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
         internal readonly ObservableCollection<Entity> mainModels;
         internal ImmutableList<CoolapkListProvider> tabProviders { get; private set; } = ImmutableList<CoolapkListProvider>.Empty;
         protected bool IsHotFeedPage { get => mainUri == "/main/indexV8"; }
-        protected bool IsIndexPage { get => mainUri.Contains("index") && !mainUri.Contains("index?") || mainUri.Contains("list") && !mainUri.Contains("list?") || mainUri.Contains("List") && !mainUri.Contains("List?") || mainUri.Contains("dyhSubscribe") && !mainUri.Contains("dyhSubscribe?"); }
+        protected bool IsIndexPage { get => mainUri.Contains("index") && !mainUri.Contains("index?") || mainUri.Contains("init") && !mainUri.Contains("init?") || mainUri.Contains("list") && !mainUri.Contains("list?") || mainUri.Contains("List") && !mainUri.Contains("List?") || mainUri.Contains("dyhSubscribe") && !mainUri.Contains("dyhSubscribe?"); }
         internal bool ShowTitleBar { get; }
 
         public int ComboBoxSelectedIndex { get; private set; }
@@ -56,7 +56,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
                 Title = uri.Substring(uri.LastIndexOf(Value, StringComparison.Ordinal) + Value.Length);
             }
 
-            if (uri.IndexOf("/page", StringComparison.Ordinal) == -1 && !uri.Contains("index") && !uri.Contains("/user/") && !uri.Contains("/apk/") && !uri.Contains("/appForum/") && !uri.Contains("/picture/") && !uri.Contains("/topic/"))
+            if (uri.IndexOf("/page", StringComparison.Ordinal) == -1 && !uri.Contains("/main/") && !uri.Contains("/user/") && !uri.Contains("/apk/") && !uri.Contains("/appForum/") && !uri.Contains("/picture/") && !uri.Contains("/topic/"))
             {
                 uri = "/page/dataList?url=" + uri;
             }
@@ -91,20 +91,22 @@ namespace CoolapkUWP.ViewModels.IndexPage
                             case "feedScrollCard":
                             case "imageTextScrollCard":
                             case "iconMiniLinkGridCard":
-                            case "iconMiniGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
-                            case "colorfulFatScrollCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
-                            case "colorfulScrollCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
-                            case "iconLongTitleGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
+                            case "iconMiniGridCard": 
+                            case "colorfulFatScrollCard": 
+                            case "colorfulScrollCard": 
+                            case "iconLongTitleGridCard": 
                             case "gridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
                             //case "listCard": //return new IndexPageHasEntitiesModel(jo, EntityType.Others);
                             case "headCard":
                             case "imageCarouselCard_1": //return new IndexPageHasEntitiesViewModel(jo, EntitiesType.Image_1);
-                            case "imageCard": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
+                            case "imageCard":
                             case "iconButtonGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
+                            case "configCard":
                             case "iconLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.IconLink);
                             case "feedGroupListCard":
                             case "textLinkListCard": return new IndexPageHasEntitiesModel(jo, EntityType.TextLinks);
                             case "textCard":
+                            case "hot":
                             case "messageCard": return new IndexPageMessageCardModel(jo);
                             case "refreshCard": return new IndexPageOperationCardModel(jo, OperationType.Refresh);
                             case "unLoginCard": return new IndexPageOperationCardModel(jo, OperationType.Login);

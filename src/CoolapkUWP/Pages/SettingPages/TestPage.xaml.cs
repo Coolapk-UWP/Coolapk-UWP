@@ -243,7 +243,10 @@ namespace CoolapkUWP.Pages.SettingPages
             }
             if (i == 2)
             {
-                UIHelper.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(Url + ID.Text, false));
+                if (ID.Text.Contains("V"))
+                    UIHelper.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(Url + ID.Text, true));
+                else
+                    UIHelper.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(ID.Text, true));
             }
             else UIHelper.OpenLinkAsync(Url + ID.Text);
         }
@@ -288,7 +291,7 @@ namespace CoolapkUWP.Pages.SettingPages
                       CreateJumpListItem("feed","动态","页面",new Uri("ms-appx:///Assets/facebook.png")),
                       CreateJumpListItem("notification","通知","页面",new Uri("ms-appx:///Assets/github.png")),
                       CreateJumpListItem("test","测试","页面",new Uri("ms-appx:///Assets/google.png")),
-                      CreateJumpListItem("settings","设置","页面",new Uri("ms-appx:///Assets/linked-in.png"))
+                      CreateJumpListItem("settings","设置","页面",new Uri("ms-appx:///Assets/Icons/ic_settings_white_24dp.png"))
                   }.ForEach((item) =>
                   {
                       list.Items.Add(item);
