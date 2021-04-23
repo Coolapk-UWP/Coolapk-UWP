@@ -18,7 +18,8 @@ namespace CoolapkUWP.ViewModels.IndexPage
         internal CoolapkListProvider mainProvider { get; private set; }
         internal readonly ObservableCollection<Entity> mainModels;
         internal ImmutableList<CoolapkListProvider> tabProviders { get; private set; } = ImmutableList<CoolapkListProvider>.Empty;
-        protected bool IsHotFeedPage { get => mainUri.Contains("index") && !mainUri.Contains("index?") || mainUri.Contains("list") && !mainUri.Contains("list?")|| mainUri.Contains("List") && !mainUri.Contains("List?") || mainUri.Contains("dyhSubscribe") || mainUri.Contains("dyhSubscribe"); }
+        protected bool IsHotFeedPage { get => mainUri == "/main/indexV8"; }
+        protected bool IsIndexPage { get => mainUri.Contains("index") && !mainUri.Contains("index?") || mainUri.Contains("list") && !mainUri.Contains("list?")|| mainUri.Contains("List") && !mainUri.Contains("List?") || mainUri.Contains("dyhSubscribe") && !mainUri.Contains("dyhSubscribe?"); }
         internal bool ShowTitleBar { get; }
 
         public int ComboBoxSelectedIndex { get; private set; }
@@ -55,7 +56,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
                 Title = uri.Substring(uri.LastIndexOf(Value, StringComparison.Ordinal) + Value.Length);
             }
 
-            if (uri.IndexOf("/page", StringComparison.Ordinal) == -1 && !uri.Contains("index") && !uri.Contains("/apk/") && !uri.Contains("/appForum/") && !uri.Contains("/picture/") && !uri.Contains("/topic/"))
+            if (uri.IndexOf("/page", StringComparison.Ordinal) == -1 && !uri.Contains("index") && !uri.Contains("/user/") && !uri.Contains("/apk/") && !uri.Contains("/appForum/") && !uri.Contains("/picture/") && !uri.Contains("/topic/"))
             {
                 uri = "/page/dataList?url=" + uri;
             }
@@ -146,7 +147,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
         private CoolapkListProvider GetProvider(string uri)
         {
             return new CoolapkListProvider(
-                    GetUri(uri, IsHotFeedPage),
+                    GetUri(uri, IsIndexPage),
                     (a, b) => a.EntityId == b.Value<string>("entityId").Replace("\"", string.Empty, StringComparison.Ordinal),
                     GetEntities,
                     "entityId");

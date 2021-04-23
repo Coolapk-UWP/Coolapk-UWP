@@ -303,6 +303,11 @@ namespace CoolapkUWP.Pages.SettingPages
             UIHelper.Navigate(typeof(MainPageV7));
         }
 
+        private void MainPageV11_loaded(object sender, RoutedEventArgs e)
+        {
+            UIHelper.Navigate(typeof(MainPage));
+        }
+
         private async void MainPage_Unloaded(object sender, RoutedEventArgs e)
         {
             if (JumpList.IsSupported())

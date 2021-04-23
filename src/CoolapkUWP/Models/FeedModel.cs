@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace CoolapkUWP.Models
 {
@@ -40,7 +41,13 @@ namespace CoolapkUWP.Models
             ShowMessageTitle = !string.IsNullOrEmpty(MessageTitle) && !mode.HasFlag(FeedDisplayMode.notShowMessageTitle);
             if (mode.HasFlag(FeedDisplayMode.isFirstPageFeed))
             {
+                Regex r = new Regex("<a.*?>", RegexOptions.IgnoreCase);
+                Regex r1 = new Regex("<a.*?/>", RegexOptions.IgnoreCase);
+                Regex r2 = new Regex("</a.*?>", RegexOptions.IgnoreCase);
                 Info = token.Value<string>("infoHtml").Replace("&nbsp;", string.Empty, StringComparison.Ordinal);
+                Info = r.Replace(Info, "");
+                Info = r1.Replace(Info, "");
+                Info = r2.Replace(Info, "");
                 ShowDateline = false;
                 ShowReplyRows = token.TryGetValue("replyRows", out JToken value) && ((value as JArray)?.Count ?? 0) > 0;
                 if (ShowReplyRows)

@@ -2,6 +2,7 @@
 using CoolapkUWP.Helpers;
 using System;
 using System.ComponentModel;
+using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -70,8 +71,22 @@ namespace CoolapkUWP.Pages
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            string Version = "V11";
             base.OnNavigatedTo(e);
-            shellFrame.Navigate(typeof(MainPage));
+            if (ApplicationData.Current.LocalSettings.Values["Version"] != null)
+                Version = ApplicationData.Current.LocalSettings.Values["Version"].ToString();
+            switch (Version)
+            {
+                case "V6":
+                    shellFrame.Navigate(typeof(MainPageV7));
+                    break;
+                case "V7":
+                    shellFrame.Navigate(typeof(MainPageV7));
+                    break;
+                default:
+                    shellFrame.Navigate(typeof(MainPage));
+                    break;
+            }
             paneFrame.Navigate(typeof(MyPage), new ViewModels.MyPage.ViewMode());
             UIHelper.MainFrame = shellFrame;
             UIHelper.PaneFrame = paneFrame;

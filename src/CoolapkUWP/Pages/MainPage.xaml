@@ -69,7 +69,7 @@
             <muxc:NavigationViewItem Content="酷品" Tag="V11_FIND_GOODS" Visibility="Collapsed"/>
             <muxc:NavigationViewItem Content="好物" Tag="V11_FIND_GOOD_GOODS" Visibility="Collapsed"/>
             <muxc:NavigationViewItem Content="二手" Tag="V11_DISCOVERY_SECOND_HAND" Visibility="Collapsed"/>
-            <muxc:NavigationViewItem Content="看看号" Tag="V11_FIND_DYH" Visibility="Collapsed"/>
+            <muxc:NavigationViewItem Content="看看号" Tag="V11_FIND_DYH"/>
 
             <muxc:NavigationViewItemSeparator/>
             <muxc:NavigationViewItem Content="数码" Tag="V10_DIGITAL_HOME"/>
