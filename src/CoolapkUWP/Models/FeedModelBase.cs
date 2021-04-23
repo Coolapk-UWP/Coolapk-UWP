@@ -125,7 +125,9 @@ namespace CoolapkUWP.Models
                 DeviceTitle = token.Value<string>("device_title");
             }
             //else showUser = false;
-            Liked = token.TryGetValue("userAction", out JToken v) ? int.Parse(v["like"].ToString()) == 1 : false;
+            if (token.Value<string>("extra_fromApi") == "V11_HOME_TAB_NEWS")
+                Liked = false;
+            else Liked = token.TryGetValue("userAction", out JToken v) ? int.Parse(v["like"].ToString()) == 1 : false;
         }
     }
 }

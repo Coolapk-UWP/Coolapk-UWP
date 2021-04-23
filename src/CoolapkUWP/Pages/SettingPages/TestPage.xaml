@@ -42,6 +42,9 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
@@ -54,6 +57,7 @@
                         <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0.2" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Button Click="Button_Click_0" Style="{StaticResource ButtonRevealStyle}">前往</Button>
                             <Button Click="ShowUIButton_Click" Style="{StaticResource ButtonRevealStyle}" Margin="2,0,0,0">分享</Button>
+                            <Button Click="Button_Click_9" Style="{StaticResource ButtonRevealStyle}" Margin="2,0,0,0">浏览器</Button>
                         </StackPanel>
                         <Button Click="Button_Click_5" Style="{StaticResource ButtonRevealStyle}" Grid.Row="4" Margin="0,2">网络测试</Button>
                         <TextBox x:Name="message" Header="信息" Grid.Row="5" Margin="0,2"/>
@@ -80,9 +84,22 @@
                             <Button Click="Button_Click_7" Style="{StaticResource ButtonRevealStyle}">更新磁贴</Button>
                             <Button Click="Button_Click_8" Style="{StaticResource ButtonRevealStyle}" Margin="2,0,0,0">清除通知</Button>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Grid.Row="12" Margin="0.2" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" Grid.Row="12" Margin="0.4" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Button Click="MainPage_Loaded" Style="{StaticResource ButtonRevealStyle}">添加 JumpList</Button>
                             <Button Click="MainPage_Unloaded" Style="{StaticResource ButtonRevealStyle}" Margin="2,0,0,0">清除</Button>
+                        </StackPanel>
+                        <ComboBox x:Name="comboBoxVersion" SelectionChanged="comboBoxVersion_SelectionChanged" Header="选择兼容版本号(需要重启)" PlaceholderText="选择版本号" Grid.Row="13" Margin="2,0,0,0">
+                            <x:String>V5</x:String>
+                            <x:String>V6</x:String>
+                            <x:String>V7</x:String>
+                            <x:String>V8</x:String>
+                            <x:String>V9</x:String>
+                            <x:String>V10</x:String>
+                            <x:String>V11</x:String>
+                        </ComboBox>
+                        <StackPanel Orientation="Horizontal" Grid.Row="14" Margin="2" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <Button Click="MainPageV7_loaded" Style="{StaticResource ButtonRevealStyle}">V7首页</Button>
+                            <Button Click="Restart" Style="{StaticResource ButtonRevealStyle}" Margin="2,0,0,0">重启生效</Button>
                         </StackPanel>
                     </Grid>
                 </controls:HeaderedContentControl>

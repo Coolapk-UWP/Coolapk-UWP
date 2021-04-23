@@ -1,10 +1,13 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Collections.Generic;
+using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
 using Windows.UI.Notifications;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
@@ -16,7 +19,6 @@ namespace CoolapkUWP.Pages.SettingPages
     {
         string Url = "/feed/";
         int i = 0;
-        string html;
 
         public TestPage()
         {
@@ -25,6 +27,7 @@ namespace CoolapkUWP.Pages.SettingPages
             //System.Diagnostics.Debug.WriteLine(
             //loader.GetString("?")
             //    );
+            comboBoxVersion.SelectedValue = ApplicationData.Current.LocalSettings.Values["Version"];
         }
 
         void IndexPage_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
@@ -59,14 +62,14 @@ namespace CoolapkUWP.Pages.SettingPages
             }
         }
 
-        private System.Uri ValidateAndGetUri(string uriString)
+        private Uri ValidateAndGetUri(string uriString)
         {
-            System.Uri uri = null;
+            Uri uri = null;
             try
             {
-                uri = new System.Uri(uriString);
+                uri = new Uri(uriString);
             }
-            catch (System.FormatException)
+            catch (FormatException)
             {
                 UIHelper.ShowMessage(url.Text + "并不是一个链接");
             }
@@ -259,6 +262,11 @@ namespace CoolapkUWP.Pages.SettingPages
             TileUpdateManager.CreateTileUpdaterForApplication().Clear();
         }
 
+        private void Button_Click_9(object sender, RoutedEventArgs e)
+        {
+            UIHelper.Navigate(typeof(BrowserPage), new object[] { false, url.Text });
+        }
+
         protected void ShowUIButton_Click(object sender, RoutedEventArgs e)
         {
             DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
@@ -290,6 +298,11 @@ namespace CoolapkUWP.Pages.SettingPages
             }
         }
 
+        private void MainPageV7_loaded(object sender, RoutedEventArgs e)
+        {
+            UIHelper.Navigate(typeof(MainPageV7));
+        }
+
         private async void MainPage_Unloaded(object sender, RoutedEventArgs e)
         {
             if (JumpList.IsSupported())
@@ -300,12 +313,23 @@ namespace CoolapkUWP.Pages.SettingPages
             }
         }
 
+        private async void Restart(object sender, RoutedEventArgs e)
+        {
+            await CoreApplication.RequestRestartAsync(string.Empty);
+        }
+
         private JumpListItem CreateJumpListItem(string arguments, string displayName, string groupName, Uri uri)
         {
             JumpListItem item = JumpListItem.CreateWithArguments(arguments, displayName);
             item.GroupName = groupName;
             item.Logo = uri;
             return item;
+        }
+
+        private void comboBoxVersion_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string temp = comboBoxVersion.SelectedItem.ToString();
+            ApplicationData.Current.LocalSettings.Values["Version"] = temp;
         }
 
         private void TitleBar_Loaded(object sender, RoutedEventArgs e)

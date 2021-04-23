@@ -22,6 +22,7 @@ namespace CoolapkUWP.Models
         public BackgroundImageModel Pic { get; private set; }
         public ImmutableArray<ImageModel> PicArr { get; private set; } = ImmutableArray<ImageModel>.Empty;
         public bool IsQuestionFeed { get; private set; }
+        public bool IsRatingFeed { get; private set; }
 
         public SourceFeedModel(JObject o) : base(o)
         {
@@ -42,7 +43,10 @@ namespace CoolapkUWP.Models
                 Uurl = o["userInfo"].Value<string>("url");
                 Username = o["userInfo"].Value<string>("username");
                 Dateline = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal)));
-                Message = o.Value<string>("message");
+                IsRatingFeed = o.Value<string>("feedType") == "rating";
+                if(IsRatingFeed)
+                    Message = "【评分】" + o.Value<string>("rating_score") + "分\n" + o.Value<string>("message");
+                else Message = o.Value<string>("message");
                 MessageTitle = o.TryGetValue("message_title", out JToken j) ? j.ToString() : string.Empty;
             }
             ShowPicArr = o.TryGetValue("picArr", out JToken picArr) && (picArr as JArray).Count > 0 && !string.IsNullOrEmpty((picArr as JArray)[0].ToString());

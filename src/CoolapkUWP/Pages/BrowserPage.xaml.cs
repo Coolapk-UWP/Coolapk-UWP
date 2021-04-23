@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using System;
 using Windows.ApplicationModel.Resources;
+using Windows.Security.ExchangeActiveSyncProvisioning;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -45,16 +46,26 @@ namespace CoolapkUWP.Pages
         {
             base.OnNavigatedTo(e);
             object[] vs = e.Parameter as object[];
+            titleBar.ShowProgressRing();
             IsLoginPage = (bool)vs[0];
             if (IsLoginPage)
             {
-                webView.Source = new Uri(loginUri);
+                LoadUri(loginUri);
             }
             else if (!string.IsNullOrEmpty(vs[1] as string))
             {
                 uri = vs[1] as string;
-                webView.Source = new Uri(uri);
+                LoadUri(uri);
             }
+        }
+
+        private void LoadUri(String uri)
+
+        {
+            EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
+            var httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(Windows.Web.Http.HttpMethod.Get, new Uri(uri));
+            httpRequestMessage.Headers.UserAgent.ParseAdd("(#Build; " + deviceInfo.SystemManufacturer + "; "+ deviceInfo.SystemProductName +"; ; " + "10.0) +CoolMarket / 11.1.2 - 2104021 - universal");
+            webView.NavigateWithHttpRequestMessage(httpRequestMessage);
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -75,6 +86,7 @@ namespace CoolapkUWP.Pages
             }
 
             titleBar.Title = sender.DocumentTitle;
+            titleBar.HideProgressRing();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
@@ -98,6 +110,12 @@ namespace CoolapkUWP.Pages
         private async void GotoSystemBrowserButton_Click(object sender, RoutedEventArgs e)
         {
             await Windows.System.Launcher.LaunchUriAsync(new Uri(uri));
+        }
+
+        private async void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.GoBack();
+            Frame.Navigate(typeof(BrowserPage), new object[] { false, uri });
         }
 
         private void tryLoginButton_Click(object sender, RoutedEventArgs e)

@@ -8,10 +8,13 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Security.ExchangeActiveSyncProvisioning;
+using Windows.Storage;
 
 namespace CoolapkUWP.Core.Helpers
 {
     [DebuggerStepThrough]
+
     public static class NetworkHelper
     {
         private static readonly HttpClientHandler clientHandler = new HttpClientHandler();
@@ -20,14 +23,54 @@ namespace CoolapkUWP.Core.Helpers
 
         static NetworkHelper()
         {
+            string Version = "V11";
+            EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
             client.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
-            client.DefaultRequestHeaders.Add("X-Sdk-Int", "28");
+            client.DefaultRequestHeaders.Add("X-Sdk-Int", "30");
             client.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
             client.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
-            client.DefaultRequestHeaders.Add("X-App-Version", "9.2.2");
-            client.DefaultRequestHeaders.Add("X-App-Code", "1905301");
-            client.DefaultRequestHeaders.Add("X-Api-Version", "9");
+            if (ApplicationData.Current.LocalSettings.Values["Version"] != null)
+                Version = ApplicationData.Current.LocalSettings.Values["Version"].ToString();
+            switch (Version)
+            {
+                case "V6":
+                    client.DefaultRequestHeaders.Add("X-App-Version", "6.10.6");
+                    client.DefaultRequestHeaders.Add("X-App-Code", "1608291");
+                    break;
+                case "V7":
+                    client.DefaultRequestHeaders.Add("X-App-Version", "7.9.6_S");
+                    client.DefaultRequestHeaders.Add("X-App-Code", "1710201");
+                    client.DefaultRequestHeaders.Add("X-Api-Version", "7");
+                    break;
+                case "V8":
+                    client.DefaultRequestHeaders.Add("X-App-Version", "8.4.1");
+                    client.DefaultRequestHeaders.Add("X-App-Code", "1806141");
+                    client.DefaultRequestHeaders.Add("X-Api-Version", "8");
+                    break;
+                case "V9":
+                    client.DefaultRequestHeaders.Add("X-App-Version", "9.2.2");
+                    client.DefaultRequestHeaders.Add("X-App-Code", "1905301");
+                    client.DefaultRequestHeaders.Add("X-Api-Version", "9");
+                    break;
+                case "V10":
+                    client.DefaultRequestHeaders.Add("X-App-Version", "10.5.3");
+                    client.DefaultRequestHeaders.Add("X-App-Code", "2009271");
+                    client.DefaultRequestHeaders.Add("X-Api-Version", "10");
+                    break;
+                case "V11":
+                    client.DefaultRequestHeaders.Add("X-App-Version", "11.1.2");
+                    client.DefaultRequestHeaders.Add("X-App-Code", "2104021");
+                    client.DefaultRequestHeaders.Add("X-Api-Version", "11");
+                    break;
+                default:
+                    client.DefaultRequestHeaders.Add("X-App-Version", "11.1.5-beta3");
+                    client.DefaultRequestHeaders.Add("X-App-Code", "2104221");
+                    client.DefaultRequestHeaders.Add("X-Api-Version", "11");
+                    break;
+            }
             client.DefaultRequestHeaders.Add("X-App-Device", Utils.GetMD5(guid));
+            //client.DefaultRequestHeaders.UserAgent.ParseAdd("Dalvik/2.1.0 (Linux; U; Android 11; GM1910 Build/RKQ1.201022.002) (#Build; OnePlus; GM1910; GM1910_21_210317; 11) +CoolMarket/11.1.2-2104021-universal");
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("(#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; ; " + "10.0) +CoolMarket/11.1.2-2104021-universal");
         }
 
         private static string GetCoolapkAppToken()

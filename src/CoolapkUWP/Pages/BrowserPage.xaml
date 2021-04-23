@@ -17,7 +17,9 @@
         <control:TitleBar
             x:Name="titleBar"
             BackButtonClicked="BackButton_Click"
-            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}">
+            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}"
+            RefreshButtonClicked="Refresh_Click"
+            RefreshButtonVisibility="Visible">
             <control:TitleBar.RightAreaContent>
                 <Grid>
                     <Button

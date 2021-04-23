@@ -428,7 +428,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
     internal class AppViewModel : FeedListPageViewModelBase
     {
         protected override CoolapkListProvider Provider { get; }
-        
+
 
         internal AppViewModel(string uid) : base(uid, FeedListType.AppPageList)
         {

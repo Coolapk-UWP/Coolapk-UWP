@@ -18,7 +18,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
         internal CoolapkListProvider mainProvider { get; private set; }
         internal readonly ObservableCollection<Entity> mainModels;
         internal ImmutableList<CoolapkListProvider> tabProviders { get; private set; } = ImmutableList<CoolapkListProvider>.Empty;
-        protected bool IsHotFeedPage { get => mainUri == "/main/indexV8"; }
+        protected bool IsHotFeedPage { get => mainUri.Contains("index")|| mainUri.Contains("dyhSubscribe"); }
         internal bool ShowTitleBar { get; }
 
         public int ComboBoxSelectedIndex { get; private set; }
@@ -87,9 +87,14 @@ namespace CoolapkUWP.ViewModels.IndexPage
                             case "imageTextScrollCard":
                             case "iconMiniLinkGridCard":
                             case "iconMiniGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
+                            case "colorfulFatScrollCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
+                            case "colorfulScrollCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
+                            case "iconLongTitleGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
+                            //case "listCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
                             case "headCard":
                             case "imageCarouselCard_1": //return new IndexPageHasEntitiesViewModel(jo, EntitiesType.Image_1);
                             case "imageCard": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
+                            case "iconButtonGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
                             case "iconLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.IconLink);
                             case "feedGroupListCard":
                             case "textLinkListCard": return new IndexPageHasEntitiesModel(jo, EntityType.TextLinks);

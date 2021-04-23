@@ -1,4 +1,4 @@
-﻿#define LOAD_MAIN_PAGE
+﻿//#define LOAD_MAIN_PAGE
 
 using CoolapkUWP.Core.Helpers;
 using CoolapkUWP.Helpers;
@@ -69,6 +69,7 @@ namespace CoolapkUWP.Pages
 #if LOAD_MAIN_PAGE
             GetIndexPageItems();
 #endif
+            navigationView.SelectedItem = navigationView.MenuItems[1];
         }
 
         private async void GetIndexPageItems()
@@ -120,6 +121,29 @@ namespace CoolapkUWP.Pages
             {
                 UIHelper.ShowMessage(item1.Uri);
                 navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(item1.Uri, false), args.RecommendedNavigationTransitionInfo);
+            }
+        }
+
+        private void NavigationView_SelectionChanged(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)
+        {
+            if (args.IsSettingsSelected)
+            {
+                if (Frame.CurrentSourcePageType != typeof(SettingPages.SettingPage))
+                {
+                    Frame.Navigate(typeof(SettingPages.SettingPage));
+                }
+            }
+            else
+            {
+                var selectedItem = (Microsoft.UI.Xaml.Controls.NavigationViewItem)args.SelectedItem;
+                if (!((string)selectedItem.Tag).StartsWith('V'))
+                    navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=V9_HOME_TAB_FOLLOW&type=" + selectedItem.Tag, false), args.RecommendedNavigationTransitionInfo);
+                else if ((string)selectedItem.Tag == "V9_HOME_TAB_HEADLINE")
+                    navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false), args.RecommendedNavigationTransitionInfo);
+                else if ((string)selectedItem.Tag == "V11_FIND_DYH")
+                    navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/user/dyhSubscribe", false), args.RecommendedNavigationTransitionInfo);
+                else navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=" + selectedItem.Tag, false), args.RecommendedNavigationTransitionInfo);
+                //UIHelper.ShowMessage((string)selectedItem.Tag);
             }
         }
 
