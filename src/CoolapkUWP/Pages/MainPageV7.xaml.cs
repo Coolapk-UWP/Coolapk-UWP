@@ -51,7 +51,7 @@ namespace CoolapkUWP.Pages
         public MainPageV7()
         {
             this.InitializeComponent();
-            navigationView.SelectedItem = navigationView.MenuItems[1];
+            navigationView.SelectedItem = navigationView.MenuItems[0];
         }
 
         private void NavigationView_SelectionChanged(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)

@@ -60,6 +60,7 @@ namespace CoolapkUWP.Models
         public bool Liked { get; set; }
         public bool Liked2 { get => !Liked; }
         public string Id => EntityId;
+        public bool HaveUserInfo { get; private set; }
         public BackgroundImageModel ExtraPic { get; private set; }
         public ImageModel UserSmallAvatar { get; private set; }
 
@@ -103,7 +104,19 @@ namespace CoolapkUWP.Models
                 //if (token["entityTemplate"].GetString() == "feedByDyhHeader") showUser = false;
                 if (ShowUser)
                 {
-                    var userSmallAvatarUrl = token["userInfo"].Value<string>("userSmallAvatar");
+                    try
+                    {
+                        HaveUserInfo = !string.IsNullOrEmpty((string)token["userInfo"]);
+                    }
+                    catch
+                    {
+                        HaveUserInfo = false;
+                    }
+                    string userSmallAvatarUrl;
+                    if (HaveUserInfo)
+                    userSmallAvatarUrl = token["userInfo"].Value<string>("userSmallAvatar");
+                    else
+                    userSmallAvatarUrl = token.Value<string>("userAvatar");
                     if (!string.IsNullOrEmpty(userSmallAvatarUrl))
                     {
                         UserSmallAvatar = new ImageModel(userSmallAvatarUrl, ImageType.BigAvatar);

@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Core.Models;
 using CoolapkUWP.Helpers;
+using Microsoft.Toolkit.Uwp.UI.Triggers;
 using Newtonsoft.Json.Linq;
 using System.Collections.Immutable;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace CoolapkUWP.Models
         public bool ShowPicArr { get; private set; }
         public bool IsCoolPictuers { get; private set; }
         public bool IsMoreThanOnePic { get; private set; }
+        public bool HaveUserInfo { get; private set; }
         public BackgroundImageModel Pic { get; private set; }
         public ImmutableArray<ImageModel> PicArr { get; private set; } = ImmutableArray<ImageModel>.Empty;
         public bool IsQuestionFeed { get; private set; }
@@ -40,8 +42,24 @@ namespace CoolapkUWP.Models
                 {
                     Url = Url.Replace("/feed/", "/question/", System.StringComparison.Ordinal);
                 }
-                Uurl = o["userInfo"].Value<string>("url");
-                Username = o["userInfo"].Value<string>("username");
+                try
+                {
+                    HaveUserInfo = !string.IsNullOrEmpty((string)o["userInfo"]);
+                }
+                catch
+                {
+                    HaveUserInfo = false;
+                }
+                if (HaveUserInfo)
+                {
+                    Uurl = o["userInfo"].Value<string>("url");
+                    Username = o["userInfo"].Value<string>("username");
+                }
+                else
+                {
+                    Uurl = "/u/"+o.Value<string>("uid");
+                    Username = o.Value<string>("username");
+                }
                 Dateline = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal)));
                 IsRatingFeed = o.Value<string>("feedType") == "rating";
                 if(IsRatingFeed)

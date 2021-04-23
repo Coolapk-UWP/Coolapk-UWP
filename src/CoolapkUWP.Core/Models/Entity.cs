@@ -21,9 +21,14 @@ namespace CoolapkUWP.Core.Models
                 EntityType = v2.ToString();
             }
 
-            if (o.TryGetValue("entityFixed", out JToken v3) && v3.ToObject<int>() == 1)
+            if (o.TryGetValue("entityFixed", out JToken v3))
             {
-                EntityFixed = true;
+                try
+                {
+                    if (v3.ToObject<int>() == 1)
+                        EntityFixed = true;
+                }
+                catch { }
             }
         }
 

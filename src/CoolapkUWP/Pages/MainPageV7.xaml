@@ -45,8 +45,8 @@
         <muxc:NavigationView.MenuItems>
 
             <muxc:NavigationViewItem Content="头条" Tag="/main/index"/>
-            <muxc:NavigationViewItem Content="应用" Tag="/apk/index"/>
-            <muxc:NavigationViewItem Content="游戏" Tag="/apk/index"/>
+            <muxc:NavigationViewItem Content="应用" Tag="/apk/index?apkType=1"/>
+            <muxc:NavigationViewItem Content="游戏" Tag="/apk/index?apkType=2"/>
             <muxc:NavigationViewItem Content="应用集" Tag="/album/index"/>
             <muxc:NavigationViewItem Content="排行" Tag="/apk/realRankList"/>
             <muxc:NavigationViewItem Content="分类" Tag="/apk/categoryList"/>

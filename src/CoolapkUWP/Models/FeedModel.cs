@@ -31,6 +31,7 @@ namespace CoolapkUWP.Models
         public bool ShowRelationRows { get; private set; }
         public bool ShowReplyRows { get; private set; }
         public bool ShowLikes { get; private set; } = true;
+        public bool HaveUserInfo { get; private set; }
         public List<ReplyRowsItem> ReplyRows { get; private set; }
         public List<RelationRowsItem> RelationRows { get; private set; }
 
@@ -75,7 +76,22 @@ namespace CoolapkUWP.Models
             else
             {
                 ShowLikes = token.Value<string>("feedType") != "question";
-                Uurl = token["userInfo"].Value<string>("url");
+                try
+                {
+                    HaveUserInfo = !string.IsNullOrEmpty((string)token["userInfo"]);
+                }
+                catch
+                {
+                    HaveUserInfo = false;
+                }
+                if (HaveUserInfo)
+                {
+                    Uurl = token["userInfo"].Value<string>("url");
+                }
+                else
+                {
+                    Uurl = "/u/" + token.Value<string>("uid");
+                }
             }
 
             ShowRelationRows = (token.TryGetValue("location", out JToken vLocation) && !string.IsNullOrEmpty(vLocation.ToString())) |

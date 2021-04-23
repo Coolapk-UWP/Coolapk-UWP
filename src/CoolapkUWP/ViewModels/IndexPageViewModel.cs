@@ -18,7 +18,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
         internal CoolapkListProvider mainProvider { get; private set; }
         internal readonly ObservableCollection<Entity> mainModels;
         internal ImmutableList<CoolapkListProvider> tabProviders { get; private set; } = ImmutableList<CoolapkListProvider>.Empty;
-        protected bool IsHotFeedPage { get => mainUri.Contains("index")|| mainUri.Contains("dyhSubscribe"); }
+        protected bool IsHotFeedPage { get => mainUri.Contains("index") && !mainUri.Contains("index?") || mainUri.Contains("list") && !mainUri.Contains("list?")|| mainUri.Contains("List") && !mainUri.Contains("List?") || mainUri.Contains("dyhSubscribe") || mainUri.Contains("dyhSubscribe"); }
         internal bool ShowTitleBar { get; }
 
         public int ComboBoxSelectedIndex { get; private set; }
@@ -31,6 +31,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
             mainUri = GetUri(uri);
 
             mainProvider = GetProvider(mainUri);
+            UIHelper.ShowMessage(mainUri);
             mainModels = mainProvider.Models;
         }
 
@@ -54,7 +55,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
                 Title = uri.Substring(uri.LastIndexOf(Value, StringComparison.Ordinal) + Value.Length);
             }
 
-            if (uri.IndexOf("/page", StringComparison.Ordinal) == -1 && uri != "/main/indexV8")
+            if (uri.IndexOf("/page", StringComparison.Ordinal) == -1 && !uri.Contains("index") && !uri.Contains("/apk/") && !uri.Contains("/appForum/") && !uri.Contains("/picture/") && !uri.Contains("/topic/"))
             {
                 uri = "/page/dataList?url=" + uri;
             }
@@ -70,6 +71,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
             switch (jo.Value<string>("entityType"))
             {
                 case "feed": return new FeedModel(jo, isHotFeedPage ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
+                case "discovery": return new FeedModel(jo, isHotFeedPage ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
                 case "user": return new UserModel(jo);
                 case "topic": return new TopicModel(jo);
                 case "dyh": return new DyhModel(jo);
@@ -79,6 +81,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
                     {
                         switch (v1.Value<string>())
                         {
+                            case "feed": return new FeedModel(jo, isHotFeedPage ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
                             case "imageTextGridCard":
                             case "imageSquareScrollCard":
                             case "iconScrollCard":
@@ -90,7 +93,8 @@ namespace CoolapkUWP.ViewModels.IndexPage
                             case "colorfulFatScrollCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
                             case "colorfulScrollCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
                             case "iconLongTitleGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
-                            //case "listCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
+                            case "gridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
+                            //case "listCard": //return new IndexPageHasEntitiesModel(jo, EntityType.Others);
                             case "headCard":
                             case "imageCarouselCard_1": //return new IndexPageHasEntitiesViewModel(jo, EntitiesType.Image_1);
                             case "imageCard": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
