@@ -89,7 +89,7 @@ namespace CoolapkUWP.Helpers
                 frame.Navigate(typeof(Pages.ShowImagePage), args);
                 Window.Current.Content = frame;
                 Window.Current.Activate();
-                var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
+                var loader = ResourceLoader.GetForViewIndependentUse("Feed");
                 ApplicationView.GetForCurrentView().Title = loader.GetString("seePic");
 
                 viewId = ApplicationView.GetForCurrentView().Id;

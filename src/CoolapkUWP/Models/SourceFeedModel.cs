@@ -32,7 +32,7 @@ namespace CoolapkUWP.Models
             if (o.Value<string>("entityType") == "article")
             {
                 Dateline = DataHelper.ConvertUnixTimeStampToReadable(o.Value<int>("digest_time"));
-                Message = o.Value<string>("message").Substring(0, 120) + "……<a href=\"\">查看更多</a>";
+                Message = o.Value<string>("message").Substring(0, 120) + "……<a href=\"" + Url + "\">查看更多</a>";
                 MessageTitle = o.Value<string>("title");
             }
             else

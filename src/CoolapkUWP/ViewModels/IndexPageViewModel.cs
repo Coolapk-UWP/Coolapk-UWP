@@ -76,6 +76,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
                 case "user": return new UserModel(jo);
                 case "topic": return new TopicModel(jo);
                 case "dyh": return new DyhModel(jo);
+                case "product": return new ProductModel(jo);
                 case "entity_type_user_card_manager": return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);
                 default:
                     if (jo.TryGetValue("entityTemplate", out JToken v1))

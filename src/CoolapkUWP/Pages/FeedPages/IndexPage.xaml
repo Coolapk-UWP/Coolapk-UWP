@@ -29,6 +29,7 @@
                 CoolPic="{StaticResource coolPicture}"
                 DataTemplate2="{StaticResource imageTextScrollCard}"
                 Dyh="{StaticResource DYH}"
+                Product="{StaticResource Product}"
                 Feed="{StaticResource feed}"
                 IconLinks="{StaticResource iconLinks}"
                 Images="{StaticResource imageCard}"

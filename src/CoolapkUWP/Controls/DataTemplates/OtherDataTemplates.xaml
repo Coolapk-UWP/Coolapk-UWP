@@ -107,6 +107,57 @@
         </ListViewItem>
     </DataTemplate>
 
+    <DataTemplate x:Key="Product" x:DataType="models:ProductModel">
+        <ListViewItem
+            KeyDown="{x:Bind local:OtherDataTemplates.ListViewItem_KeyDown}"
+            Style="{StaticResource AppListViewItemStyle}"
+            Tag="{x:Bind Url}"
+            Tapped="{x:Bind local:OtherDataTemplates.OnTapped}">
+            <Grid
+                Padding="4"
+                Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="56" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Ellipse
+                    Grid.RowSpan="2"
+                    Width="40"
+                    Height="40"
+                    Margin="8,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind Logo.Pic, Mode=OneWay}" />
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Text="{x:Bind Title}" />
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Horizontal">
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Follownum}" />
+                    <TextBlock
+                        x:Uid="/FeedListPage/Subscribed"
+                        Margin="0,0,5,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                </StackPanel>
+            </Grid>
+        </ListViewItem>
+    </DataTemplate>
+
     <DataTemplate x:Key="User" x:DataType="models:UserModel">
         <ListViewItem
             KeyDown="{x:Bind local:OtherDataTemplates.ListViewItem_KeyDown}"
@@ -161,6 +212,7 @@
                     Grid.Column="1"
                     Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                     Text="{x:Bind Bio}"
+                    MaxLines="2"
                     TextWrapping="Wrap" />
             </Grid>
         </ListViewItem>

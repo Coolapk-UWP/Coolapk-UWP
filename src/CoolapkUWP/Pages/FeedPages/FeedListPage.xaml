@@ -516,7 +516,6 @@
                                 FontWeight="Black"
                                 IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                                 Text="{x:Bind Title}" />
-                            <winui:RatingControl x:Name="AppRating" IsReadOnly="True" PlaceholderValue="{x:Bind StarScore}" Margin="10,0,0,0"/>
                         </StackPanel>
 
                         <TextBlock
@@ -527,11 +526,16 @@
                             Text="{x:Bind Description}"
                             TextWrapping="Wrap" />
 
-                        <StackPanel Margin="0,5" Orientation="Horizontal">
+                        <StackPanel Margin="0,5" Orientation="Horizontal" Grid.Row="2">
                             <TextBlock Text="{x:Bind FollowNum}" />
                             <TextBlock x:Uid="/FeedListPage/FollowNum" />
                             <TextBlock Margin="5,0,0,0" Text="{x:Bind HotNumTXT}" />
                             <TextBlock x:Uid="/FeedListPage/HotNumTXT" />
+                        </StackPanel>
+
+                        <StackPanel Margin="0,5" Orientation="Horizontal"  Grid.Row="3">
+                            <TextBlock Text="{x:Bind Score}" Margin="0,3,0,0" />
+                            <winui:RatingControl x:Name="AppRating" IsReadOnly="True" PlaceholderValue="{x:Bind StarScore}" Margin="10,0,0,0" HorizontalAlignment="Left"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>

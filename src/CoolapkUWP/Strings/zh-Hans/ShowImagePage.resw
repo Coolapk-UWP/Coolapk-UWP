@@ -130,10 +130,10 @@
     <value>查看原图</value>
   </data>
   <data name="SaveButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>保存原图</value>
+    <value>保存图片</value>
   </data>
   <data name="SaveMenuItem.Text" xml:space="preserve">
-    <value>保存原图</value>
+    <value>保存图片</value>
   </data>
   <data name="ZoomInButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>放大</value>

@@ -75,7 +75,7 @@
             <muxc:NavigationViewItem Content="数码" Tag="V10_DIGITAL_HOME"/>
             <muxc:NavigationViewItem Content="手机" Tag="V10_CHANNEL_SJB"/>
             <muxc:NavigationViewItem Content="耳机" Tag="V11_ZHUANTI_EARPHONE"/>
-            <muxc:NavigationViewItem Content="排行榜" Tag="V10_CHANNEL_SMB_TOP" Visibility="Collapsed"/>
+            <muxc:NavigationViewItem Content="排行榜" Tag="V10_CHANNEL_SMB_TOP" Visibility="Visible"/>
 
         </muxc:NavigationView.MenuItems>
 
