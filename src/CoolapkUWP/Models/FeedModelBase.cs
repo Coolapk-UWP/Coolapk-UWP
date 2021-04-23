@@ -114,9 +114,9 @@ namespace CoolapkUWP.Models
                     }
                     string userSmallAvatarUrl;
                     if (HaveUserInfo)
-                    userSmallAvatarUrl = token["userInfo"].Value<string>("userSmallAvatar");
+                        userSmallAvatarUrl = token["userInfo"].Value<string>("userSmallAvatar");
                     else
-                    userSmallAvatarUrl = token.Value<string>("userAvatar");
+                        userSmallAvatarUrl = token.Value<string>("userAvatar");
                     if (!string.IsNullOrEmpty(userSmallAvatarUrl))
                     {
                         UserSmallAvatar = new ImageModel(userSmallAvatarUrl, ImageType.BigAvatar);

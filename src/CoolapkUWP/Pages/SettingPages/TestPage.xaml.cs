@@ -1,5 +1,4 @@
-﻿using CoolapkUWP.Core.Helpers;
-using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
 using Microsoft.Toolkit.Uwp.Notifications;

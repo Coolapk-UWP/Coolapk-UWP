@@ -1,6 +1,5 @@
 ﻿using CoolapkUWP.Core.Models;
 using CoolapkUWP.Helpers;
-using Microsoft.Toolkit.Uwp.UI.Triggers;
 using Newtonsoft.Json.Linq;
 using System.Collections.Immutable;
 using System.Linq;
@@ -11,6 +10,7 @@ namespace CoolapkUWP.Models
     {
         public string Url { get; private set; }
         public string QRUrl { get => "https://www.coolapk.com" + Url.Replace("/question/", "/feed/", System.StringComparison.Ordinal); }
+        public string Shareurl { get; private set; }
         public string Uurl { get; private set; }
         public string Username { get; private set; }
         public string Dateline { get; private set; }
@@ -57,12 +57,12 @@ namespace CoolapkUWP.Models
                 }
                 else
                 {
-                    Uurl = "/u/"+o.Value<string>("uid");
+                    Uurl = "/u/" + o.Value<string>("uid");
                     Username = o.Value<string>("username");
                 }
                 Dateline = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal)));
                 IsRatingFeed = o.Value<string>("feedType") == "rating";
-                if(IsRatingFeed)
+                if (IsRatingFeed)
                     Message = "【评分】" + o.Value<string>("rating_score") + "分\n" + o.Value<string>("message");
                 else Message = o.Value<string>("message");
                 MessageTitle = o.TryGetValue("message_title", out JToken j) ? j.ToString() : string.Empty;
@@ -90,6 +90,7 @@ namespace CoolapkUWP.Models
             {
                 Pic = new BackgroundImageModel(value1.ToString(), ImageType.SmallImage);
             }
+            Shareurl = string.IsNullOrEmpty(o.Value<string>("shareUrl")) ? QRUrl : o.Value<string>("shareUrl");
         }
     }
 }

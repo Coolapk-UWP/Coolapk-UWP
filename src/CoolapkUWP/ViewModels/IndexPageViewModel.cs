@@ -19,7 +19,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
         internal readonly ObservableCollection<Entity> mainModels;
         internal ImmutableList<CoolapkListProvider> tabProviders { get; private set; } = ImmutableList<CoolapkListProvider>.Empty;
         protected bool IsHotFeedPage { get => mainUri == "/main/indexV8"; }
-        protected bool IsIndexPage { get => mainUri.Contains("index") && !mainUri.Contains("index?") || mainUri.Contains("list") && !mainUri.Contains("list?")|| mainUri.Contains("List") && !mainUri.Contains("List?") || mainUri.Contains("dyhSubscribe") && !mainUri.Contains("dyhSubscribe?"); }
+        protected bool IsIndexPage { get => mainUri.Contains("index") && !mainUri.Contains("index?") || mainUri.Contains("list") && !mainUri.Contains("list?") || mainUri.Contains("List") && !mainUri.Contains("List?") || mainUri.Contains("dyhSubscribe") && !mainUri.Contains("dyhSubscribe?"); }
         internal bool ShowTitleBar { get; }
 
         public int ComboBoxSelectedIndex { get; private set; }

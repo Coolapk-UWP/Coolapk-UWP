@@ -11,8 +11,6 @@ namespace CoolapkUWP.Controls.DataTemplates
     {
         public Feed() => InitializeComponent();
 
-        static string temp;
-
         internal static void OnTapped(object sender, TappedRoutedEventArgs e)
         {
             var s = sender as FrameworkElement;

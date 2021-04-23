@@ -200,7 +200,7 @@
                             x:Load="{x:Bind ShowLikes}"
                             Click="{x:Bind local:Feed.FeedButton_Click}"
                             Style="{StaticResource FeedOpButtonStyle}"
-                            Tag="{x:Bind QRUrl}"
+                            Tag="{x:Bind Shareurl}"
                             ToolTipService.ToolTip="分享">
                             <StackPanel Orientation="Horizontal">
                                 <SymbolIcon Symbol="Share" />
