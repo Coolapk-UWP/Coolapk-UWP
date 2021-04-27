@@ -429,7 +429,6 @@ namespace CoolapkUWP.ViewModels.FeedListPage
     {
         protected override CoolapkListProvider Provider { get; }
 
-
         internal AppViewModel(string uid) : base(uid, FeedListType.AppPageList)
         {
             Provider =
@@ -444,7 +443,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                             ),
                     isEqual, getEntity, idName);
         }
-        protected override string GetTitleBarText(FeedListDetailBase detail) => /*(detail as AppDetail).Title + */"应用吧";
+        protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as AppDetail).Title + "吧";
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Pages.FeedPages;
+﻿using CoolapkUWP.Pages;
+using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
@@ -86,7 +87,7 @@ namespace CoolapkUWP.Helpers
             await applicationView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 Frame frame = new Frame();
-                frame.Navigate(typeof(Pages.ShowImagePage), args);
+                frame.Navigate(typeof(ShowImagePage), args);
                 Window.Current.Content = frame;
                 Window.Current.Activate();
                 var loader = ResourceLoader.GetForViewIndependentUse("Feed");
@@ -193,6 +194,7 @@ namespace CoolapkUWP.Helpers
     {
         private static Frame mainFrame;
         private static Frame paneFrame;
+        static ShellPage shellPage = new ShellPage();
 
         public static Frame MainFrame
         {
@@ -220,6 +222,7 @@ namespace CoolapkUWP.Helpers
 
         public static void Navigate(Type pageType, object e = null)
         {
+            shellPage.CloseSplit();
             mainFrame?.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 mainFrame?.Navigate(pageType, e, new EntranceNavigationTransitionInfo());

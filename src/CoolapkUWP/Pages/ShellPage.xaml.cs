@@ -128,5 +128,20 @@ namespace CoolapkUWP.Pages
             splitView.IsPaneOpen = canOpen;
             PaneOpenSymbolIcon = canOpen ? Symbol.OpenPane : Symbol.ClosePane;
         }
+
+        public bool IsSplitFloat()
+        {
+            if (splitView.DisplayMode == SplitViewDisplayMode.Overlay)
+                return true;
+            else return false;
+        }
+
+        public void CloseSplit()
+        {
+            if (splitView.DisplayMode == SplitViewDisplayMode.Overlay)
+            {
+                splitView.IsPaneOpen = false;
+            }
+        }
     }
 }

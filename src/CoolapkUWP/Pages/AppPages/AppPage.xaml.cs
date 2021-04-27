@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Pages.FeedPages;
+using CoolapkUWP.ViewModels.FeedListPage;
+using System;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -12,10 +15,13 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages.AppPages
 {
+    /// <summary>
+    /// 这是小板子最后的遗产了，只有这个页面从第一个版本流传至今，希望后人不要把它删了(●'◡'●)
+    /// </summary>
     public sealed partial class AppPage : Page
     {
-        string jstr = "", vmstr = "", dstr = "", vstr, mstr, nstr, iurl, vtstr, rstr, pstr, ddstr;
-        string applink = "";
+        string AppInfo = "", AppVersionMassage = "", AppReview = "", AppVersion, AppMassage, AppName, AppLogo, AppUpdateTime, AppScore, AppCommendNum, AppDownloadUrl, id;
+        string AppLink = "";
         public AppPage()
         {
             this.InitializeComponent();
@@ -42,13 +48,13 @@ namespace CoolapkUWP.Pages.AppPages
         {
             base.OnNavigatedTo(e);
             //将传过来的数据 类型转换一下
-            applink = e.Parameter as string;
+            AppLink = e.Parameter as string;
         }
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             titleBar.ShowProgressRing();
-            if (string.IsNullOrEmpty(applink)) return;
-            Tag = applink;
+            if (string.IsNullOrEmpty(AppLink)) return;
+            Tag = AppLink;
             try
             {
                 LaunchAppViewLoad(await new HttpClient().GetStringAsync(Tag.ToString()));
@@ -57,42 +63,46 @@ namespace CoolapkUWP.Pages.AppPages
         }
         private void LaunchAppViewLoad(String str)
         {
-            try { jstr = ReplaceHtml(Regex.Split(Regex.Split(Regex.Split(str, "应用简介</p>")[1], @"<div class=""apk_left_title_info"">")[1], "</div>")[0].Trim()); } catch (Exception) { }
-            try { vmstr = ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[2], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
-            try { dstr = ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[1], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
-            vstr = Regex.Split(str, @"<p class=""detail_app_title"">")[1].Split('>')[1].Split('<')[0].Trim();
-            mstr = Regex.Split(str, @"<p class=""apk_topba_message"">")[1].Split('<')[0].Trim().Replace("\n", "").Replace(" ", "");
-            nstr = Regex.Split(str, @"<p class=""detail_app_title"">")[1].Split('<')[0].Trim();
-            iurl = Regex.Split(str, @"<div class=""apk_topbar"">")[1].Split('"')[1].Trim();
-            vtstr = Regex.Split(str, "更新时间：")[1].Split('<')[0].Trim();
-            rstr = Regex.Split(str, @"<p class=""rank_num"">")[1].Split('<')[0].Trim();
-            pstr = Regex.Split(str, @"<p class=""apk_rank_p1"">")[1].Split('<')[0].Trim();
+            try { AppInfo = ReplaceHtml(Regex.Split(Regex.Split(Regex.Split(str, "应用简介</p>")[1], @"<div class=""apk_left_title_info"">")[1], "</div>")[0].Trim()); } catch (Exception) { }
+            try { AppVersionMassage = ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[2], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
+            try { AppReview = ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[1], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
+
+            id = Regex.Split(str, @"onclick=""onDownloadApk")[1].Split('(')[1].Split(')')[0].Trim();
+            AppVersion = Regex.Split(str, @"<p class=""detail_app_title"">")[1].Split('>')[1].Split('<')[0].Trim();
+            AppMassage = Regex.Split(str, @"<p class=""apk_topba_message"">")[1].Split('<')[0].Trim().Replace("\n", "").Replace(" ", "");
+            AppName = Regex.Split(str, @"<p class=""detail_app_title"">")[1].Split('<')[0].Trim();
+            AppLogo = Regex.Split(str, @"<div class=""apk_topbar"">")[1].Split('"')[1].Trim();
+            AppUpdateTime = Regex.Split(str, "更新时间：")[1].Split('<')[0].Trim();
+            AppScore = Regex.Split(str, @"<p class=""rank_num"">")[1].Split('<')[0].Trim();
+            AppCommendNum = Regex.Split(str, @"<p class=""apk_rank_p1"">")[1].Split('<')[0].Trim();
+
+            //UIHelper.ShowMessage(id);
 
             //Download URI
-            //ddstr = Regex.Split(Regex.Split(Regex.Split(str, "function onDownloadApk")[1], "window.location.href")[1], @"""")[1];
+            //AppDownloadUrl = Regex.Split(Regex.Split(Regex.Split(str, "function onDownloadApk")[1], "window.location.href")[1], @"""")[1];
 
-            AppIconImage.Source = new BitmapImage(new Uri(iurl, UriKind.RelativeOrAbsolute));
-            titleBar.Title = AppTitleText.Text = nstr;
-            AppVTText.Text = vtstr;
-            AppV2Text.Text = vstr;
-            AppVText.Text = vstr;
-            AppMText.Text = Regex.Split(mstr, "/")[2] + " " + Regex.Split(mstr, "/")[3] + " " + rstr + "分";
-            AppXText.Text = Regex.Split(mstr, "/")[1] + " · " + Regex.Split(mstr, "/")[0];
+            AppIconImage.Source = new BitmapImage(new Uri(AppLogo, UriKind.RelativeOrAbsolute));
+            titleBar.Title = AppTitleText.Text = AppName;
+            AppVTText.Text = AppUpdateTime;
+            AppV2Text.Text = AppVersion;
+            AppVText.Text = AppVersion;
+            AppMText.Text = Regex.Split(AppMassage, "/")[2] + " " + Regex.Split(AppMassage, "/")[3] + " " + AppScore + "分";
+            AppXText.Text = Regex.Split(AppMassage, "/")[1] + " · " + Regex.Split(AppMassage, "/")[0];
 
             if (Regex.Split(str, @"<p class=""apk_left_title_info"">").Length > 3)
             {
                 //当应用有点评
-                AppVMText.Text = vmstr;
-                AppDText.Text = dstr;
+                AppVMText.Text = AppVersionMassage;
+                AppDText.Text = AppReview;
                 DPanel.Visibility = Visibility.Visible;
             }
             else
             {
                 //当应用无点评的时候（小编要是一个一个全好好点评我就不用加判断了嘛！）
-                AppVMText.Text = dstr;
+                AppVMText.Text = AppReview;
                 AppDText.Text = "";
             }
-            if (dstr.Contains("更新时间") && dstr.Contains("ROM") && dstr.Contains("名称")) UPanel.Visibility = Visibility.Collapsed;
+            if (AppReview.Contains("更新时间") && AppReview.Contains("ROM") && AppReview.Contains("名称")) UPanel.Visibility = Visibility.Collapsed;
 
 
             //加载截图！
@@ -128,21 +138,21 @@ namespace CoolapkUWP.Pages.AppPages
             }
 
             //还有简介（丧心病狂啊）
-            AppJText.Text = jstr;
+            AppJText.Text = AppInfo;
 
             //评分。。
-            AppRText.Text = rstr;
-            AppRating.PlaceholderValue = Double.Parse(rstr);
-            AppPText.Text = pstr;
+            AppRText.Text = AppScore;
+            AppRating.PlaceholderValue = Double.Parse(AppScore);
+            AppPText.Text = AppCommendNum;
 
 
             /*
             //获取开发者
-            string knstr = Web.ReplaceHtml(Regex.Split(Regex.Split(str, "开发者名称：")[1], "</p>")[0]);
+            string kAppName = Web.ReplaceHtml(Regex.Split(Regex.Split(str, "开发者名称：")[1], "</p>")[0]);
             try
             {
-                AppKNText.Text = knstr;
-                AppKImage.Source = new BitmapImage(new Uri(await CoolApkSDK.GetCoolApkUserFaceUri(knstr), UriKind.RelativeOrAbsolute));
+                AppKNText.Text = kAppName;
+                AppKImage.Source = new BitmapImage(new Uri(await CoolApkSDK.GetCoolApkUserFaceUri(kAppName), UriKind.RelativeOrAbsolute));
             }
             catch (Exception)
             {
@@ -161,11 +171,11 @@ namespace CoolapkUWP.Pages.AppPages
                 // copy 
                 if (selectedItem.Tag.ToString() == "0")
                 {
-                    dp.SetText(jstr);
+                    dp.SetText(AppInfo);
                 }
                 else if (selectedItem.Tag.ToString() == "1")
                 {
-                    dp.SetText(dstr);
+                    dp.SetText(AppReview);
                 }
                 else if (selectedItem.Tag.ToString() == "2")
                 {
@@ -173,11 +183,11 @@ namespace CoolapkUWP.Pages.AppPages
                 }
                 else if (selectedItem.Tag.ToString() == "3")
                 {
-                    dp.SetText(vstr);
+                    dp.SetText(AppVersion);
                 }
                 else if (selectedItem.Tag.ToString() == "24")
                 {
-                    dp.SetText(vmstr);
+                    dp.SetText(AppVersionMassage);
                 }
                 Clipboard.SetContent(dp);
             }
@@ -188,16 +198,16 @@ namespace CoolapkUWP.Pages.AppPages
         {
             // Get the default UserActivityChannel and query it for our UserActivity. If the activity doesn't exist, one is created.
             UserActivityChannel channel = UserActivityChannel.GetDefault();
-            UserActivity userActivity = await channel.GetOrCreateUserActivityAsync(nstr);
+            UserActivity userActivity = await channel.GetOrCreateUserActivityAsync(AppName);
 
             // Populate required properties
-            userActivity.VisualElements.DisplayText = nstr;
-            userActivity.VisualElements.AttributionDisplayText = nstr;
-            if (jstr.Length > 3)
-                userActivity.VisualElements.Description = jstr;
+            userActivity.VisualElements.DisplayText = AppName;
+            userActivity.VisualElements.AttributionDisplayText = AppName;
+            if (AppInfo.Length > 3)
+                userActivity.VisualElements.Description = AppInfo;
             else
-                userActivity.VisualElements.Description = dstr;
-            userActivity.ActivationUri = new Uri("coolapk://" + applink);
+                userActivity.VisualElements.Description = AppReview;
+            userActivity.ActivationUri = new Uri("coolapk://" + AppLink);
 
             //Save
             await userActivity.SaveAsync(); //save the new metadata
@@ -210,32 +220,45 @@ namespace CoolapkUWP.Pages.AppPages
         private async void GotoUri_Click(object sender, RoutedEventArgs e)
         {
             // Launch the URI
-            var success = await Launcher.LaunchUriAsync(new Uri(applink));
+            var success = await Launcher.LaunchUriAsync(new Uri(AppLink));
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.GoBack();
+            if (ScreenShotFlipView.Visibility == Visibility.Visible)
+                CloseFlip_Click();
+            else Frame.GoBack();
         }
 
         private void ScreenShotView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ScreenShotFlipView.Visibility = Visibility.Visible;
-            CloseFlip.Visibility = Visibility.Visible;
+            //CloseFlip.Visibility = Visibility.Visible;
+            //CloseBlock.Visibility = Visibility.Visible;
             ScreenShotView.SelectedIndex = -1;
         }
 
-        private void CloseFlip_Click(object sender, RoutedEventArgs e)
+        private void CloseFlip_Click( )
         {
             ScreenShotFlipView.Visibility = Visibility.Collapsed;
-            CloseFlip.Visibility = Visibility.Collapsed;
+            //CloseBlock.Visibility = Visibility.Collapsed;
+            //CloseFlip.Visibility = Visibility.Collapsed;
         }
 
 
         private async void DownloadButton_Click(object sender, RoutedEventArgs e)
         {
             // Download the URI
-            var success = await Launcher.LaunchUriAsync(new Uri(ddstr));
+            var success = await Launcher.LaunchUriAsync(new Uri(AppDownloadUrl));
+        }
+
+        private async void ViewFeed(object sender, RoutedEventArgs e)
+        {
+            var f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, id);
+            if (f != null)
+            {
+                UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
+            }
         }
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();

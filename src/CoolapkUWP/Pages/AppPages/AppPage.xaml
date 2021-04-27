@@ -14,32 +14,91 @@
             <StackPanel>
                 <Border Height="70"/>
                 <Grid>
-                    <Image x:Name="AppIconImage" x:FieldModifier="Public" HorizontalAlignment="Left" Height="60" Margin="20" VerticalAlignment="Top" Width="60"/>
+                    <Image 
+                        x:Name="AppIconImage" 
+                        x:FieldModifier="Public" 
+                        HorizontalAlignment="Left" 
+                        Height="60" Margin="20" 
+                        VerticalAlignment="Top" Width="60"/>
                     <StackPanel Margin="100,10,0,0">
-                        <TextBlock x:Name="AppTitleText" x:FieldModifier="Public" FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Padding="0,0,0,5"/>
-                        <TextBlock x:Name="AppVText" x:FieldModifier="Public" Text="" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}" Padding="0,0,0,5"/>
-                        <TextBlock x:Name="AppMText" x:FieldModifier="Public" Text="" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}" />
+                        <TextBlock 
+                            x:Name="AppTitleText" 
+                            x:FieldModifier="Public" 
+                            FontSize="20" HorizontalAlignment="Left" 
+                            TextWrapping="Wrap" VerticalAlignment="Top" 
+                            Padding="0,0,0,5"/>
+                        <TextBlock 
+                            x:Name="AppVText" 
+                            x:FieldModifier="Public" 
+                            Text="" HorizontalAlignment="Left" 
+                            TextWrapping="Wrap" VerticalAlignment="Top" 
+                            Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}" Padding="0,0,0,5"/>
+                        <TextBlock 
+                            x:Name="AppMText" 
+                            x:FieldModifier="Public" 
+                            Text="" HorizontalAlignment="Left" 
+                            TextWrapping="Wrap" VerticalAlignment="Top" 
+                            Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}" />
                     </StackPanel>
                 </Grid>
                 <Grid  Padding="10" Height="50">
-                    <TextBlock x:Name="AppXText" x:FieldModifier="Public" Text="" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
-                    <Button x:Name="DownloadButton" Click="DownloadButton_Click" Content="下载" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78" BorderThickness="0" Background="{ThemeResource SystemControlHighlightListAccentHighBrush}" Visibility="Collapsed"/>
+                    <TextBlock 
+                        x:Name="AppXText" 
+                        x:FieldModifier="Public" 
+                        Text="" HorizontalAlignment="Left" 
+                        TextWrapping="Wrap" VerticalAlignment="Center" 
+                        Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                    <Button 
+                        x:Name="DownloadButton" 
+                        Style="{StaticResource ButtonRevealStyle}" 
+                        Click="DownloadButton_Click" Content="下载" 
+                        HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Width="78" BorderThickness="0" 
+                        Background="{ThemeResource SystemControlHighlightListAccentHighBrush}" Visibility="Collapsed"/>
                 </Grid>
                 <Grid Visibility="Collapsed" Margin="0,1,0,0" x:Name="DPanel" Padding="10" >
-                    <TextBlock x:Name="AppDText" x:FieldModifier="Public" TextWrapping="Wrap" Text="" TextAlignment="Center"  VerticalAlignment="Top"/>
+                    <TextBlock 
+                        x:Name="AppDText" 
+                        x:FieldModifier="Public" 
+                        TextWrapping="Wrap" 
+                        Text="" TextAlignment="Center"  
+                        VerticalAlignment="Top"/>
                 </Grid>
 
                 <!--大按钮-->
-                <Button x:Name="UPanel" Background="#504CAF50" BorderThickness="0"  HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Button 
+                    x:Name="UPanel" 
+                    Style="{StaticResource ButtonRevealStyle}" 
+                    Background="#504CAF50" BorderThickness="0"  
+                    HorizontalContentAlignment="Stretch" 
+                    HorizontalAlignment="Stretch" Click="ViewFeed">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Name="AppV2Text" x:FieldModifier="Public" Text="" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top"  />
-                            <TextBlock x:Name="AppVTText" x:FieldModifier="Public" Text="" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                            <TextBlock 
+                                x:Name="AppV2Text" 
+                                x:FieldModifier="Public" 
+                                Text="" Margin="10" 
+                                TextWrapping="Wrap" VerticalAlignment="Top"  />
+                            <TextBlock 
+                                x:Name="AppVTText" 
+                                x:FieldModifier="Public" 
+                                Text="" Margin="10" 
+                                TextWrapping="Wrap" VerticalAlignment="Top" 
+                                Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
                         </StackPanel>
-                        <TextBlock x:Name="AppVMText" x:FieldModifier="Public" Text="" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBlock 
+                            x:Name="AppVMText" 
+                            x:FieldModifier="Public" 
+                            Text="" Margin="10" 
+                            TextWrapping="Wrap" VerticalAlignment="Top" />
                     </StackPanel>
                 </Button>
-                <ListBox x:Name="ScreenShotView" Height="150" SelectionChanged="ScreenShotView_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <ListBox 
+                    x:Name="ScreenShotView" Height="150" 
+                    SelectionChanged="ScreenShotView_SelectionChanged" 
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                    BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -47,40 +106,90 @@
                     </ListBox.ItemsPanel>
                 </ListBox>
                 <Grid Height="auto" Padding="10" >
-                    <TextBlock x:Name="AppJText" x:FieldModifier="Public" Text="简介" TextWrapping="Wrap" VerticalAlignment="Top" />
+                    <TextBlock 
+                        x:Name="AppJText"
+                        x:FieldModifier="Public"
+                        Text="简介"
+                        TextWrapping="Wrap" 
+                        VerticalAlignment="Top" />
                 </Grid>
 
                 <!--<p class="rank_num">-->
                 <Grid Height="auto" Padding="10"  Margin="0,10">
-                    <TextBlock x:Name="AppRText" x:FieldModifier="Public" Text="5.0" />
-                    <StackPanel Orientation="Horizontal" Margin="40,0" VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <muxc:RatingControl x:Name="AppRating" IsReadOnly="True" PlaceholderValue="0" Margin="0,-3,0,0" />
+                    <TextBlock 
+                        x:Name="AppRText"
+                        x:FieldModifier="Public"
+                        Text="5.0" />
+                    <StackPanel 
+                        Orientation="Horizontal" 
+                        Margin="40,0" 
+                        VerticalAlignment="Top" 
+                        HorizontalAlignment="Left">
+                        <muxc:RatingControl 
+                            x:Name="AppRating" 
+                            IsReadOnly="True"
+                            PlaceholderValue="0" 
+                            Margin="0,-3,0,0" />
                     </StackPanel>
-                    <TextBlock x:Name="AppPText" x:FieldModifier="Public" Text="共0人评分" Margin="0,30,0,0" />
+                    <TextBlock 
+                        x:Name="AppPText" 
+                        x:FieldModifier="Public" 
+                        Text="共0人评分" 
+                        Margin="0,30,0,0" />
                 </Grid>
                 <Grid x:Name="KPanel" Padding="10" >
-                    <Image x:Name="AppKImage" x:FieldModifier="Public" HorizontalAlignment="Left" Height="60" Margin="5" VerticalAlignment="Top" Width="60" />
-                    <TextBlock x:Name="AppKNText" x:FieldModifier="Public" Text="" Margin="70,0,0,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <Image 
+                        x:Name="AppKImage" 
+                        x:FieldModifier="Public" 
+                        HorizontalAlignment="Left" 
+                        Height="60" Margin="5" 
+                        VerticalAlignment="Top" Width="60" />
+                    <TextBlock 
+                        x:Name="AppKNText" 
+                        x:FieldModifier="Public" 
+                        Text="" Margin="70,0,0,0" 
+                        FontSize="20" VerticalAlignment="Center" 
+                        HorizontalAlignment="Left"/>
                 </Grid>
 
             </StackPanel>
         </ScrollViewer>
 
         <!--缩略图显示-->
-        <FlipView Visibility="Collapsed" x:Name="ScreenShotFlipView" />
-        <Button x:Name="CloseFlip" Visibility="Collapsed" Click="CloseFlip_Click"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Foreground="White" Height="50">
-            <SymbolIcon Symbol="Cancel" Foreground="White"/>
+        <FlipView Visibility="Collapsed" x:Name="ScreenShotFlipView" Margin="0,72,0,0"/>
+        <Rectangle 
+            x:Name="CloseBlock"
+            Margin="0,72,0,0" 
+            Width="40" Height="40"
+            Visibility="Collapsed"
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top"
+            Fill="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}"/>
+        <Button 
+            x:Name="CloseFlip" 
+            Style="{StaticResource IconButtonStyle}" 
+            Margin="0,72,0,0"
+            Visibility="Collapsed" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top">
+            <SymbolIcon Symbol="Cancel"/>
         </Button>
 
         <ctrl:TitleBar
             x:Name="titleBar"
-            BackButtonClicked="TitleBar_BackButtonClick"
+            BackButtonClicked="BackButton_Click"
             IsBackButtonEnabled="{x:Bind Frame.CanGoBack}"
             RefreshButtonClicked="titleBar_RefreshButtonClicked"
             RefreshButtonVisibility="Visible" Loaded="titleBar_Loaded" Visibility="Visible">
             <ctrl:TitleBar.RightAreaContent>
                 <StackPanel Orientation="Horizontal">
-                    
+                    <Button 
+                        Style="{StaticResource IconButtonStyle}"
+                        Click="ViewFeed"
+                        ToolTipService.ToolTip="查看评论">
+                        <SymbolIcon Symbol="Comment"/>
+                    </Button>
+                        
                     <Button Style="{StaticResource IconButtonStyle}">
                         <SymbolIcon Symbol="More" />
                         <Button.Flyout>
