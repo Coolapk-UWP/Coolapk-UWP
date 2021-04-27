@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -150,6 +151,15 @@ namespace CoolapkUWP.Pages
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             UIHelper.RefreshIndexPage();
+        }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ApplicationView view = ApplicationView.GetForCurrentView();
+            bool isInFullScreenMode = view.IsFullScreenMode;
+            if (isInFullScreenMode)
+                navigationView.Margin = new Thickness(0, 32, 0, 0);
+            else navigationView.Margin = new Thickness(0, 0, 0, 0);
         }
     }
 }

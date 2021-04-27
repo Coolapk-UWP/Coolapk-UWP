@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
@@ -191,5 +192,36 @@ namespace CoolapkUWP
                 }
             }
         }
+
+        //private const string LIVETILETASK = "LIVETILETASK";
+        //private async void RegisterLiveTileTask()
+        //{
+        //    var status = await BackgroundExecutionManager.RequestAccessAsync();
+        //    if (status == BackgroundAccessStatus.Unspecified || status == BackgroundAccessStatus.Denied)
+        //    {
+        //        return;
+        //    }
+        //    BackgroundTaskRegistration.AllTasks.(t =>
+        //   {
+        //       if (t.Value.Name == LIVETILETASK)
+        //       {
+        //           t.Value.Unregister(true);
+        //       }
+        //   });
+
+        //    var taskBuilder = new BackgroundTaskBuilder
+        //    {
+        //        Name = LIVETILETASK,
+        //        TaskEntryPoint = typeof(Controls.LiveTileControl).FullName
+        //    };
+        //    taskBuilder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
+
+        //    //var updater = TileUpdateManager.CreateTileUpdaterForApplication();
+        //    //updater.Clear();
+        //    //var updater2 = TileUpdateManager.CreateTileUpdaterForSecondaryTile("appdota2");
+        //    //updater2.Clear(); 
+        //    taskBuilder.SetTrigger(new TimeTrigger(60, false));
+        //    taskBuilder.Register();
+        //}
     }
 }

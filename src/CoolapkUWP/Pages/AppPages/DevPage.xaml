@@ -14,29 +14,18 @@
         <ScrollViewer Padding="{StaticResource StackPanelMargin}">
             <StackPanel Margin="16,0">
 
-                <controls:HeaderedContentControl x:Name="test1" Style="{StaticResource HeaderStyle}">
+                <controls:HeaderedContentControl x:Name="test1" Style="{StaticResource NavigationViewTitleHeaderContentControlTextStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
+
+                        <TextBlock x:Name="main" Grid.Row="1"/>
+
                     </Grid>
                 </controls:HeaderedContentControl>
 

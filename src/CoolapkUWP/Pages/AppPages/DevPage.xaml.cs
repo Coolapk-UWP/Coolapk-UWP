@@ -36,7 +36,7 @@ namespace CoolapkUWP.Pages.AppPages
 
         private void GetDevMyList(string str)
         {
-
+            main.Text = str;
         }
 
 

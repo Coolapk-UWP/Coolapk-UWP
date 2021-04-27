@@ -269,6 +269,11 @@ namespace CoolapkUWP.Pages.SettingPages
             UIHelper.Navigate(typeof(BrowserPage), new object[] { false, url.Text });
         }
 
+        private void Button_Click_10(object sender, RoutedEventArgs e)
+        {
+            UIHelper.Navigate(typeof(AppPages.DevPage));
+        }
+
         protected void ShowUIButton_Click(object sender, RoutedEventArgs e)
         {
             DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();

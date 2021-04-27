@@ -91,10 +91,10 @@ namespace CoolapkUWP.ViewModels.IndexPage
                             case "feedScrollCard":
                             case "imageTextScrollCard":
                             case "iconMiniLinkGridCard":
-                            case "iconMiniGridCard": 
-                            case "colorfulFatScrollCard": 
-                            case "colorfulScrollCard": 
-                            case "iconLongTitleGridCard": 
+                            case "iconMiniGridCard":
+                            case "colorfulFatScrollCard":
+                            case "colorfulScrollCard":
+                            case "iconLongTitleGridCard":
                             case "gridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
                             //case "listCard": //return new IndexPageHasEntitiesModel(jo, EntityType.Others);
                             case "headCard":
