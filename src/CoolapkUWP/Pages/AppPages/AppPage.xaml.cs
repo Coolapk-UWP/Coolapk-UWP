@@ -16,7 +16,7 @@ using Windows.UI.Xaml.Navigation;
 namespace CoolapkUWP.Pages.AppPages
 {
     /// <summary>
-    /// 这是小板子最后的遗产了，只有这个页面从第一个版本流传至今，希望后人不要把它删了(●'◡'●)
+    /// 这是小板子留下的最后的东西了，只有这个页面从第一个版本流传至今，希望后人不要把它删了(●'◡'●)
     /// </summary>
     public sealed partial class AppPage : Page
     {
