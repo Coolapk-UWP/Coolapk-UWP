@@ -80,7 +80,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
                 case FeedListType.AppPageList:
                     rightComboBox.Visibility = Visibility.Collapsed;
-                    //FindName(nameof(reportButton));
+                    FindName(nameof(reportButton));
                     break;
             }
             _ = Refresh();
@@ -173,7 +173,15 @@ namespace CoolapkUWP.Pages.FeedPages
                     break;
 
                 case "report":
-                    (provider as UserViewModel).Report();
+                    switch (provider.ListType)
+                    { 
+                        case FeedListType.UserPageList: 
+                            (provider as UserViewModel).Report(); 
+                            break;
+                        //case FeedListType.AppPageList:
+                        //    (provider as AppViewModel).Report();
+                        //    break;
+                    }
                     break;
 
                 default:

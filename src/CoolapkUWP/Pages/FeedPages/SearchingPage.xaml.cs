@@ -29,6 +29,7 @@ namespace CoolapkUWP.Pages.FeedPages
             FeedList.ItemsSource = provider.providers[0].Models;
             UserList.ItemsSource = provider.providers[1].Models;
             TopicList.ItemsSource = provider.providers[2].Models;
+            //ProductList.ItemsSource = provider.providers[3].Models;
 
             searchTypeComboBox.SelectedIndex = provider.TypeComboBoxSelectedIndex;
 

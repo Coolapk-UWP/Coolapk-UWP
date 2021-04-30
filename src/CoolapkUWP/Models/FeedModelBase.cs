@@ -46,6 +46,8 @@ namespace CoolapkUWP.Models
         public string Info { get; private set; }
         public string ShareNum { get; private set; }
         public string DeviceTitle { get; private set; }
+        public string ChangeCount { get; private set; }
+        public string ChangeTitle { get; private set; }
         public bool ShowSourceFeed { get; private set; }
         public bool ShowSourceFeedGrid { get; private set; }
         public SourceFeedModel SourceFeed { get; private set; }
@@ -82,6 +84,12 @@ namespace CoolapkUWP.Models
             Likenum = token["likenum"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
             Replynum = token["replynum"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
             ShareNum = token["forwardnum"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
+            if (token.TryGetValue("change_count", out JToken v) || v != null)
+                ChangeCount = v.ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
+            else ChangeCount = token["isModified"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
+                ChangeTitle = "已编辑" + ChangeCount + "次";
+            if (ChangeTitle == "已编辑0次") 
+                ChangeTitle = null;
             if (token.Value<string>("entityType") != "article")
             {
                 if (IsQuestionFeed)
@@ -140,7 +148,7 @@ namespace CoolapkUWP.Models
             //else showUser = false;
             if (token.Value<string>("extra_fromApi") == "V11_HOME_TAB_NEWS")
                 Liked = false;
-            else Liked = token.TryGetValue("userAction", out JToken v) ? int.Parse(v["like"].ToString()) == 1 : false;
+            else Liked = token.TryGetValue("userAction", out JToken v1) ? int.Parse(v1["like"].ToString()) == 1 : false;
         }
     }
 }

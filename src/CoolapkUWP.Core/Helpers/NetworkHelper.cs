@@ -58,14 +58,14 @@ namespace CoolapkUWP.Core.Helpers
                     client.DefaultRequestHeaders.Add("X-Api-Version", "10");
                     break;
                 case "V11":
-                    client.DefaultRequestHeaders.Add("X-App-Version", "11.1.2");
-                    client.DefaultRequestHeaders.Add("X-App-Code", "2104021");
+                    client.DefaultRequestHeaders.Add("X-App-Version", "11.1.5.1");
+                    client.DefaultRequestHeaders.Add("X-App-Code", "2104291");
                     client.DefaultRequestHeaders.Add("X-Api-Version", "11");
                     break;
                 default:
-                    client.DefaultRequestHeaders.Add("X-App-Version", "11.1.5-beta3");
-                    client.DefaultRequestHeaders.Add("X-App-Code", "2104221");
-                    client.DefaultRequestHeaders.Add("X-Api-Version", "11");
+                    client.DefaultRequestHeaders.Add("X-App-Version", "9.2.2");
+                    client.DefaultRequestHeaders.Add("X-App-Code", "1905301");
+                    client.DefaultRequestHeaders.Add("X-Api-Version", "9");
                     break;
             }
             client.DefaultRequestHeaders.Add("X-App-Device", Utils.GetMD5(guid));

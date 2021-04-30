@@ -18,8 +18,9 @@ namespace CoolapkUWP.ViewModels.IndexPage
         internal CoolapkListProvider mainProvider { get; private set; }
         internal readonly ObservableCollection<Entity> mainModels;
         internal ImmutableList<CoolapkListProvider> tabProviders { get; private set; } = ImmutableList<CoolapkListProvider>.Empty;
-        protected bool IsHotFeedPage { get => mainUri == "/main/indexV8"; }
-        protected bool IsIndexPage { get => mainUri.Contains("index") && !mainUri.Contains("index?") || mainUri.Contains("init") && !mainUri.Contains("init?") || mainUri.Contains("list") && !mainUri.Contains("list?") || mainUri.Contains("List") && !mainUri.Contains("List?") || mainUri.Contains("dyhSubscribe") && !mainUri.Contains("dyhSubscribe?"); }
+        protected bool IsHotFeedPage { get => mainUri == "/main/indexV8" || mainUri == "/main/index"; }
+        protected bool IsIndexPage { get => !mainUri.Contains("?"); }
+        protected bool IsInitPage { get => mainUri == "/main/init"; }
         internal bool ShowTitleBar { get; }
 
         public int ComboBoxSelectedIndex { get; private set; }
@@ -102,6 +103,10 @@ namespace CoolapkUWP.ViewModels.IndexPage
                             case "imageCard":
                             case "iconButtonGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
                             case "configCard":
+                                if (jo.TryGetValue("url", out JToken v2) && (v2.ToString()).Length >= 5)
+                                    return new IndexPageHasEntitiesModel(jo, EntityType.IconLink);
+                                else
+                                    return null;
                             case "iconLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.IconLink);
                             case "feedGroupListCard":
                             case "textLinkListCard": return new IndexPageHasEntitiesModel(jo, EntityType.TextLinks);

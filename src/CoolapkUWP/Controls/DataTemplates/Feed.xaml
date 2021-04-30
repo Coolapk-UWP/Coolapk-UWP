@@ -104,6 +104,10 @@
                                     Margin="5,0,0,0"
                                     Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                                     Text="{x:Bind DeviceTitle}" />
+                                <TextBlock
+                                    Margin="5,0,0,0"
+                                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                    Text="{x:Bind ChangeTitle}" />
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

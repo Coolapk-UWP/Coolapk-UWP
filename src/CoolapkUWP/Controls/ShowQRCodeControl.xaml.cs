@@ -25,7 +25,7 @@ namespace CoolapkUWP.Controls
 
         void FeedPage_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
-            System.Uri shareLinkString = ValidateAndGetUri(qrCodeText);
+            Uri shareLinkString = ValidateAndGetUri(qrCodeText);
             if (shareLinkString != null)
             {
                 DataPackage dataPackage = new DataPackage();
@@ -46,14 +46,14 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        private System.Uri ValidateAndGetUri(string uriString)
+        private static Uri ValidateAndGetUri(string uriString)
         {
-            System.Uri uri = null;
+            Uri uri = null;
             try
             {
-                uri = new System.Uri(uriString);
+                uri = new Uri(uriString);
             }
-            catch (System.FormatException)
+            catch (FormatException)
             {
             }
             return uri;
@@ -62,9 +62,8 @@ namespace CoolapkUWP.Controls
         protected void ShowUIButton_Click(object sender, RoutedEventArgs e)
         {
             DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
-
+            dataTransferManager.DataRequested -= FeedPage_DataRequested;
             dataTransferManager.DataRequested += FeedPage_DataRequested;
-
             DataTransferManager.ShowShareUI();
         }
 

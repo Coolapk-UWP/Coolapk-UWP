@@ -83,6 +83,13 @@
                     </Border>
                 </ScrollViewer>
             </PivotItem>
+            <!--<PivotItem>
+                <ScrollViewer x:Name="scrollViewer3" ViewChanged="ScrollViewer_ViewChanged">
+                    <Border Padding="{StaticResource StackPanelMargin}">
+                        <winui:ItemsRepeater x:Name="ProductList" ItemTemplate="{StaticResource Product}" />
+                    </Border>
+                </ScrollViewer>
+            </PivotItem>-->
         </Pivot>
         <Grid
             Height="{StaticResource PageTitleHeight}"
@@ -130,6 +137,7 @@
                 <ComboBoxItem>动态</ComboBoxItem>
                 <ComboBoxItem>用户</ComboBoxItem>
                 <ComboBoxItem>话题</ComboBoxItem>
+                <ComboBoxItem>数码</ComboBoxItem>
             </ComboBox>
         </Grid>
     </Grid>

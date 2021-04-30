@@ -348,5 +348,10 @@ namespace CoolapkUWP.Pages.SettingPages
         {
 
         }
+
+        private void Button_Click_11(object sender, RoutedEventArgs e)
+        {
+            UIHelper.NavigateInSplitPane(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/init", true));
+        }
     }
 }

@@ -162,6 +162,11 @@ namespace CoolapkUWP.Pages.AppPages
             titleBar.HideProgressRing();
         }
 
+        private void Report_Click(object sender, RoutedEventArgs e)
+        {
+            UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "https://m.coolapk.com/mp/apk/report?apkname="+ Regex.Split(Tag.ToString(), "/")[4]});
+        }
+
         private void CopyM_Click(object sender, RoutedEventArgs e)
         {
 
@@ -238,7 +243,7 @@ namespace CoolapkUWP.Pages.AppPages
             ScreenShotView.SelectedIndex = -1;
         }
 
-        private void CloseFlip_Click( )
+        private void CloseFlip_Click()
         {
             ScreenShotFlipView.Visibility = Visibility.Collapsed;
             //CloseBlock.Visibility = Visibility.Collapsed;

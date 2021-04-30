@@ -444,6 +444,11 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                     isEqual, getEntity, idName);
         }
         protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as AppDetail).Title + "吧";
+
+        public void Report()
+        {
+            UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, $"https://m.coolapk.com/mp/apk/report?apkname={Id}" });
+        }
     }
 
 }

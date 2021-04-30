@@ -68,6 +68,17 @@ namespace CoolapkUWP.ViewModels.SearchPage
                         page,
                         page > 1 ? "&lastItem=" + lastItem : string.Empty),
                 (o) => new TopicModel(o),
+                "id"),
+
+            new SearchListProvider(
+                (keyWord, page, lastItem) =>
+                    UriHelper.GetUri(
+                        UriType.Search,
+                        "product",
+                        keyWord,
+                        page,
+                        page > 1 ? "&lastItem=" + lastItem : string.Empty),
+                (o) => new TopicModel(o),
                 "id")
         }.ToImmutableArray();
     }

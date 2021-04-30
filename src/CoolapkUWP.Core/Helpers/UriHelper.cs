@@ -33,6 +33,7 @@ namespace CoolapkUWP.Core.Helpers
         GetShareList,
         GetTagDetail,
         GetTagFeeds,
+        GetDeviceFeeds,
         GetUserFeeds,
         GetUserHistory,
         GetUserList,
@@ -44,6 +45,7 @@ namespace CoolapkUWP.Core.Helpers
         OperateUnfollow,
         OperateUnlike,
         RequestValidate,
+        Search,
         SearchFeeds,
         SearchTags,
         SearchUsers,
@@ -113,6 +115,7 @@ namespace CoolapkUWP.Core.Helpers
                 case UriType.OperateUnfollow: return "/v6/user/follow?uid={0}";
                 case UriType.OperateUnlike: return "/v6/feed/unlike{0}?id={1}&detail=0";
                 case UriType.RequestValidate: return "/v6/account/requestValidate";
+                case UriType.Search: return "/v6/search?type={0}&searchValue={1}&page={2}{3}&showAnonymous=-1";
                 case UriType.SearchFeeds: return "/v6/search?type=feed&feedType={0}&sort={1}&searchValue={2}&page={3}{4}&showAnonymous=-1";
                 case UriType.SearchTags: return "/v6/search?type=feedTopic&searchValue={0}&page={1}{2}&showAnonymous=-1";
                 case UriType.SearchUsers: return "/v6/search?type=user&searchValue={0}&page={1}{2}&showAnonymous=-1";

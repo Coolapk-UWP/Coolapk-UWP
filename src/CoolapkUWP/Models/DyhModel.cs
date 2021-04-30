@@ -15,7 +15,10 @@ namespace CoolapkUWP.Models
         {
             Url = o.Value<string>("url");
             Title = o.Value<string>("title");
-            Follownum = o["follownum"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal);
+            if (!string.IsNullOrEmpty((string)o["follownum"]))
+                Follownum = o["follownum"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal);
+            else if (!string.IsNullOrEmpty((string)o["follow_num"]))
+                Follownum = o["follow_num"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal);
             Logo = new ImageModel(o.Value<string>("logo"), ImageType.Icon);
         }
     }

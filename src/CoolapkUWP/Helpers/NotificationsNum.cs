@@ -177,6 +177,7 @@ namespace CoolapkUWP.Helpers
                 CommentMeNum = o.Value<int>("commentme");
                 FeedLikeNum = o.Value<int>("feedlike");
             }
+            UIHelper.SetBadgeNumber(BadgeNum.ToString());
         }
     }
 }

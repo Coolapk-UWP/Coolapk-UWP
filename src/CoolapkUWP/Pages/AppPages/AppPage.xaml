@@ -189,18 +189,19 @@
                         ToolTipService.ToolTip="查看评论">
                         <SymbolIcon Symbol="Comment"/>
                     </Button>
-                        
-                    <Button Style="{StaticResource IconButtonStyle}">
+
+                    <Button Style="{StaticResource IconButtonStyle}" ToolTipService.ToolTip="更多">
                         <SymbolIcon Symbol="More" />
                         <Button.Flyout>
                             <MenuFlyout>
-                                <MenuFlyoutItem Text="访问网页" Click="GotoUri_Click"/>
-                                <MenuFlyoutSubItem Text="复制">
-                                    <MenuFlyoutItem Text="简介" Click="CopyM_Click" Tag="0"/>
-                                    <MenuFlyoutItem Text="点评" Click="CopyM_Click" Tag="1"/>
-                                    <MenuFlyoutItem Text="包名" Click="CopyM_Click" Tag="2"/>
-                                    <MenuFlyoutItem Text="版本号" Click="CopyM_Click" Tag="3"/>
-                                    <MenuFlyoutItem Text="更新日记" Click="CopyM_Click" Tag="4"/>
+                                <MenuFlyoutItem Text="访问网页" Click="GotoUri_Click" Icon="Globe"/>
+                                <MenuFlyoutItem Text="举报" Click="Report_Click" Icon="ReportHacked"/>
+                                <MenuFlyoutSubItem Text="复制" Icon="Copy">
+                                    <MenuFlyoutItem Text="简介" Click="CopyM_Click" Tag="0" Icon="List"/>
+                                    <MenuFlyoutItem Text="点评" Click="CopyM_Click" Tag="1" Icon="Edit"/>
+                                    <MenuFlyoutItem Text="包名" Click="CopyM_Click" Tag="2" Icon="Shop"/>
+                                    <MenuFlyoutItem Text="版本号" Click="CopyM_Click" Tag="3" Icon="OpenWith"/>
+                                    <MenuFlyoutItem Text="更新日志" Click="CopyM_Click" Tag="4" Icon="Flag"/>
                                 </MenuFlyoutSubItem>
                             </MenuFlyout>
                         </Button.Flyout>
