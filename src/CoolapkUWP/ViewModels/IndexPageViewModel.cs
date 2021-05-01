@@ -33,7 +33,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
             mainUri = GetUri(uri);
 
             mainProvider = GetProvider(mainUri);
-            UIHelper.ShowMessage(mainUri);
+            //UIHelper.ShowMessage(mainUri);
             mainModels = mainProvider.Models;
         }
 

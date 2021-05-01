@@ -174,13 +174,13 @@ namespace CoolapkUWP.Pages.FeedPages
 
                 case "report":
                     switch (provider.ListType)
-                    { 
-                        case FeedListType.UserPageList: 
-                            (provider as UserViewModel).Report(); 
+                    {
+                        case FeedListType.UserPageList:
+                            (provider as UserViewModel).Report();
                             break;
-                        //case FeedListType.AppPageList:
-                        //    (provider as AppViewModel).Report();
-                        //    break;
+                            //case FeedListType.AppPageList:
+                            //    (provider as AppViewModel).Report();
+                            //    break;
                     }
                     break;
 

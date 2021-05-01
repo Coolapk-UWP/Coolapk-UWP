@@ -164,7 +164,7 @@ namespace CoolapkUWP.Pages.AppPages
 
         private void Report_Click(object sender, RoutedEventArgs e)
         {
-            UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "https://m.coolapk.com/mp/apk/report?apkname="+ Regex.Split(Tag.ToString(), "/")[4]});
+            UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "https://m.coolapk.com/mp/apk/report?apkname=" + Regex.Split(Tag.ToString(), "/")[4] });
         }
 
         private void CopyM_Click(object sender, RoutedEventArgs e)

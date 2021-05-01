@@ -288,10 +288,10 @@ namespace CoolapkUWP.Pages.SettingPages
 
                 new List<JumpListItem>()
                   {
-                      CreateJumpListItem("feed","动态","页面",new Uri("ms-appx:///Assets/facebook.png")),
-                      CreateJumpListItem("notification","通知","页面",new Uri("ms-appx:///Assets/github.png")),
-                      CreateJumpListItem("test","测试","页面",new Uri("ms-appx:///Assets/google.png")),
-                      CreateJumpListItem("settings","设置","页面",new Uri("ms-appx:///Assets/Icons/ic_settings_white_24dp.png"))
+                      //CreateJumpListItem("feed","动态","页面",new Uri("ms-appx:///Assets/facebook.png")),
+                      //CreateJumpListItem("notification","通知","页面",new Uri("ms-appx:///Assets/github.png")),
+                      CreateJumpListItem("test","打开测试页面","测试",new Uri("ms-appx:///Assets/Icons/ic_settings_white_24dp.png")),
+                      //CreateJumpListItem("settings","设置","页面",new Uri("ms-appx:///Assets/Icons/ic_settings_white_24dp.png"))
                   }.ForEach((item) =>
                   {
                       list.Items.Add(item);

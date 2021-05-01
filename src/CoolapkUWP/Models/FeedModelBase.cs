@@ -87,8 +87,8 @@ namespace CoolapkUWP.Models
             if (token.TryGetValue("change_count", out JToken v) || v != null)
                 ChangeCount = v.ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
             else ChangeCount = token["isModified"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
-                ChangeTitle = "已编辑" + ChangeCount + "次";
-            if (ChangeTitle == "已编辑0次") 
+            ChangeTitle = "已编辑" + ChangeCount + "次";
+            if (ChangeTitle == "已编辑0次")
                 ChangeTitle = null;
             if (token.Value<string>("entityType") != "article")
             {
@@ -97,13 +97,13 @@ namespace CoolapkUWP.Models
                     QuestionAnswerNum = token["question_answer_num"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
                     QuestionFollowNum = token["question_follow_num"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
                 }
-                ShowSourceFeedGrid = !IsQuestionFeed && !string.IsNullOrEmpty(token["source_id"]?.ToString());
+                ShowSourceFeedGrid = !IsQuestionFeed && (!string.IsNullOrEmpty(token["forwardid"]?.ToString()) || (!string.IsNullOrEmpty(token["source_id"]?.ToString())));
                 if (ShowSourceFeedGrid)
                 {
                     ShowSourceFeed = token.TryGetValue("forwardSourceFeed", out JToken jsonValue) &&
                                      jsonValue != null &&
                                      jsonValue.ToString() != "null" &&
-                                     string.IsNullOrEmpty(jsonValue.ToString());
+                                     !string.IsNullOrEmpty(jsonValue.ToString());
                     if (ShowSourceFeed)
                     {
                         SourceFeed = new SourceFeedModel(jsonValue as JObject);

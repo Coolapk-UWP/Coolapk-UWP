@@ -192,7 +192,7 @@ namespace CoolapkUWP.Helpers
         /// </summary>
         public void ClearNums()
         {
-            BadgeNum = FollowNum = MessageNum = AtMeNum = AtCommentMeNum = CommentMeNum = FeedLikeNum= CloudInstall = Notification = 0;
+            BadgeNum = FollowNum = MessageNum = AtMeNum = AtCommentMeNum = CommentMeNum = FeedLikeNum = CloudInstall = Notification = 0;
             timer?.Cancel();
             timer = null;
         }

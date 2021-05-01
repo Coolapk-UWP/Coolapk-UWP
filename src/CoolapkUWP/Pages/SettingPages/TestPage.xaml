@@ -91,7 +91,6 @@
                             <Button Click="MainPage_Unloaded" Style="{StaticResource ButtonRevealStyle}" Margin="2,0,0,0">清除</Button>
                         </StackPanel>
                         <ComboBox x:Name="comboBoxVersion" SelectionChanged="comboBoxVersion_SelectionChanged" Header="选择兼容版本号(需要重启)" PlaceholderText="选择版本号" Grid.Row="12" Margin="2,0,0,0">
-                            <x:String>V5</x:String>
                             <x:String>V6</x:String>
                             <x:String>V7</x:String>
                             <x:String>V8</x:String>

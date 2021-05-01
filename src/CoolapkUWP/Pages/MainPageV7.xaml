@@ -10,6 +10,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     NavigationCacheMode="Required"
+    SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
 
     <muxc:NavigationView
@@ -18,7 +19,6 @@
         IsSettingsVisible="True"
         AlwaysShowHeader="True"
         Header=" "
-        Margin="0,32,0,0"
         SelectionChanged="NavigationView_SelectionChanged"
         Background="{ThemeResource SystemControlAcrylicWindowBrush}">
 
