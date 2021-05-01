@@ -218,17 +218,12 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
+            UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
         }
 
         private void Button_Click_0(object sender, RoutedEventArgs e)
         {
             UIHelper.OpenLinkAsync(url.Text);
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(SettingPageNew));
         }
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
@@ -243,7 +238,7 @@ namespace CoolapkUWP.Pages.SettingPages
             }
             if (i == 2)
             {
-                if (ID.Text.Contains("V"))
+                if (ID.Text.StartsWith("V"))
                     UIHelper.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(Url + ID.Text, true));
                 else
                     UIHelper.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(ID.Text, true));

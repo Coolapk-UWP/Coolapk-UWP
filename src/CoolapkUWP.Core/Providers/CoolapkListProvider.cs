@@ -89,6 +89,14 @@ namespace CoolapkUWP.Core.Providers
             {
                 return jToken.ToString();
             }
+            else if ((token as JObject).TryGetValue("entityId", out JToken v1))
+            {
+                return v1.ToString();
+            }
+            else if ((token as JObject).TryGetValue("id", out JToken v2))
+            {
+                return v2.ToString();
+            }
             else
             {
                 throw new ArgumentException(nameof(_idName));

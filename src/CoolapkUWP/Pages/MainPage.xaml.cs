@@ -130,7 +130,7 @@ namespace CoolapkUWP.Pages
         {
             if (args.IsSettingsSelected)
             {
-                navigationViewFrame.Navigate(typeof(SettingPages.SettingPage), args.RecommendedNavigationTransitionInfo);
+                Frame.Navigate(typeof(SettingPages.SettingPage), args.RecommendedNavigationTransitionInfo);
             }
             else if (args.SelectedItemContainer != null)
             {
