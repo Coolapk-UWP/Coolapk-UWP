@@ -18,7 +18,7 @@ namespace CoolapkUWP.Helpers
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private double badgeNum, followNum, messageNum, atMeNum, atCommentMeNum, commentMeNum, feedLikeNum;
+        private double badgeNum, followNum, messageNum, atMeNum, atCommentMeNum, commentMeNum, feedLikeNum, cloudInstall, notification;
 
         /// <summary>
         ///     新的消息总数。
@@ -132,6 +132,38 @@ namespace CoolapkUWP.Helpers
             }
         }
 
+        /// <summary>
+        ///     新“云安装”数。
+        /// </summary>
+        public double CloudInstall
+        {
+            get => cloudInstall;
+            private set
+            {
+                if (value != cloudInstall)
+                {
+                    cloudInstall = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(cloudInstall)));
+                }
+            }
+        }
+
+        /// <summary>
+        ///     新“通知”数。
+        /// </summary>
+        public double Notification
+        {
+            get => notification;
+            private set
+            {
+                if (value != notification)
+                {
+                    notification = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(notification)));
+                }
+            }
+        }
+
         private ThreadPoolTimer timer;
 
         /// <summary>
@@ -160,7 +192,7 @@ namespace CoolapkUWP.Helpers
         /// </summary>
         public void ClearNums()
         {
-            BadgeNum = FollowNum = MessageNum = AtMeNum = AtCommentMeNum = CommentMeNum = FeedLikeNum = 0;
+            BadgeNum = FollowNum = MessageNum = AtMeNum = AtCommentMeNum = CommentMeNum = FeedLikeNum= CloudInstall = Notification = 0;
             timer?.Cancel();
             timer = null;
         }
@@ -169,6 +201,8 @@ namespace CoolapkUWP.Helpers
         {
             if (o != null)
             {
+                CloudInstall = o.Value<int>("cloudInstall");
+                Notification = o.Value<int>("notification");
                 BadgeNum = o.Value<int>("badge");
                 FollowNum = o.Value<int>("contacts_follow");
                 MessageNum = o.Value<int>("message");
@@ -178,6 +212,7 @@ namespace CoolapkUWP.Helpers
                 FeedLikeNum = o.Value<int>("feedlike");
             }
             UIHelper.SetBadgeNumber(BadgeNum.ToString());
+            //UIHelper.ShowMessage(BadgeNum.ToString());
         }
     }
 }

@@ -194,9 +194,6 @@
     <Compile Include="Pages\MainPageV7.xaml.cs">
       <DependentUpon>MainPageV7.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SettingPages\SettingPageNew.xaml.cs">
-      <DependentUpon>SettingPageNew.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\ShowImagePage.xaml.cs">
       <DependentUpon>ShowImagePage.xaml</DependentUpon>
     </Compile>
@@ -922,10 +919,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\MainPageV7.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\SettingPages\SettingPageNew.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

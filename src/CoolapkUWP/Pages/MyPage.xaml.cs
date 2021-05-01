@@ -147,14 +147,17 @@ namespace CoolapkUWP.Pages
         private void NotificationNums_BadgeNumberChanged(object sender, System.EventArgs e)
         {
             if (sender is NotificationNums num)
+            {
                 ChangeBadgeNum(num.BadgeNum);
-            throw new System.NotImplementedException();
+            }
+            else throw new System.NotImplementedException();
         }
 
         private void ChangeBadgeNum(double num) =>
             _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 BadgeNum = num;
+                UIHelper.SetBadgeNumber(num.ToString());
                 BadgeIconGlyph = num > 0 ? "\uED0C" : "\uED0D";
             });
 

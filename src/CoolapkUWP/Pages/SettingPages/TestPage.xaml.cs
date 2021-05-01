@@ -353,5 +353,10 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             UIHelper.NavigateInSplitPane(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/init", true));
         }
+
+        private void Button_Click_12(object sender, RoutedEventArgs e)
+        {
+            UIHelper.SetBadgeNumber(message.Text);
+        }
     }
 }
