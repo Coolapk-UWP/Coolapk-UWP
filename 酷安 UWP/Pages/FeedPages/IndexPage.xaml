@@ -9,7 +9,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:data="using:CoolapkUWP.Data"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource SystemControlBackgroundListLowBrush}">
 
     <Page.Resources>
         <ResourceDictionary>

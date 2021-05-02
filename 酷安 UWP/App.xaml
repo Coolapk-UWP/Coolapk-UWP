@@ -5,8 +5,12 @@
 
     <Application.Resources>
         <!--<Color x:Key="SystemAccentColor">#4CAF50</Color>-->
-
-        <ControlTemplate x:Key="ListViewItemTemplate1" TargetType="ListViewItem">
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <!-- Other merged dictionaries here -->
+            </ResourceDictionary.MergedDictionaries>
+            <ControlTemplate x:Key="ListViewItemTemplate1" TargetType="ListViewItem">
             <ListViewItemPresenter x:Name="Root" PressedBackground="Transparent" 
                                    PlaceholderBackground="Transparent" 
                                    PointerOverBackground="Transparent" 
@@ -183,5 +187,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

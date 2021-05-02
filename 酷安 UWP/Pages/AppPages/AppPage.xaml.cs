@@ -19,6 +19,12 @@ namespace CoolapkUWP.Pages.AppPages
         {
             this.InitializeComponent();
         }
+
+        private void titleBar_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -52,7 +58,7 @@ namespace CoolapkUWP.Pages.AppPages
             //ddstr = Regex.Split(Regex.Split(Regex.Split(str, "function onDownloadApk")[1], "window.location.href")[1], @"""")[1];
 
             AppIconImage.Source = new BitmapImage(new Uri(iurl, UriKind.RelativeOrAbsolute));
-            TitleTextBlock.Text = AppTitleText.Text = nstr;
+            titleBar.Title = AppTitleText.Text = nstr;
             AppVTText.Text = vtstr;
             AppV2Text.Text = vstr;
             AppVText.Text = vstr;
@@ -115,33 +121,34 @@ namespace CoolapkUWP.Pages.AppPages
             AppPText.Text = pstr;
             //星星
             double rdob = Double.Parse(rstr);
-            if (rdob > 4.5)
-            {
+            AppRating.PlaceholderValue = rdob;
+            //if (rdob > 4.5)
+            //{
 
-            }
-            else if (rdob > 3.0)
-            {
-                star5.Symbol = Symbol.OutlineStar;
-            }
-            else if (rdob > 4.0)
-            {
-                star4.Symbol = Symbol.OutlineStar;
-                star5.Symbol = Symbol.OutlineStar;
-            }
-            else if (rdob > 3.0)
-            {
-                star3.Symbol = Symbol.OutlineStar;
-                star4.Symbol = Symbol.OutlineStar;
-                star5.Symbol = Symbol.OutlineStar;
-            }
-            else if (rdob < 2.0)
-            {
-                //没有评分那么差的应用吧233
-                star2.Symbol = Symbol.OutlineStar;
-                star3.Symbol = Symbol.OutlineStar;
-                star4.Symbol = Symbol.OutlineStar;
-                star5.Symbol = Symbol.OutlineStar;
-            }
+            //}
+            //else if (rdob > 3.0)
+            //{
+            //    star5.Symbol = Symbol.OutlineStar;
+            //}
+            //else if (rdob > 4.0)
+            //{
+            //    star4.Symbol = Symbol.OutlineStar;
+            //    star5.Symbol = Symbol.OutlineStar;
+            //}
+            //else if (rdob > 3.0)
+            //{
+            //    star3.Symbol = Symbol.OutlineStar;
+            //    star4.Symbol = Symbol.OutlineStar;
+            //    star5.Symbol = Symbol.OutlineStar;
+            //}
+            //else if (rdob < 2.0)
+            //{
+            //    //没有评分那么差的应用吧233
+            //    star2.Symbol = Symbol.OutlineStar;
+            //    star3.Symbol = Symbol.OutlineStar;
+            //    star4.Symbol = Symbol.OutlineStar;
+            //    star5.Symbol = Symbol.OutlineStar;
+            //}
 
 
             /*
@@ -195,11 +202,6 @@ namespace CoolapkUWP.Pages.AppPages
             var success = await Launcher.LaunchUriAsync(new Uri(applink));
         }
 
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.GoBack();
-        }
-
         private void ScreenShotView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ScreenShotFlipView.Visibility = Visibility.Visible;
@@ -207,7 +209,7 @@ namespace CoolapkUWP.Pages.AppPages
             ScreenShotView.SelectedIndex = -1;
         }
 
-        private void CloseFlip_Click(object sender, RoutedEventArgs e)
+        private void CloseFlip_Click()
         {
             ScreenShotFlipView.Visibility = Visibility.Collapsed;
             CloseFlip.Visibility = Visibility.Collapsed;
@@ -218,6 +220,18 @@ namespace CoolapkUWP.Pages.AppPages
         {
             // Download the URI
             var success = await Launcher.LaunchUriAsync(new Uri(ddstr));
+        }
+
+        private void Report_Click(object sender, RoutedEventArgs e)
+        {
+            Tools.Navigate(typeof(BrowserPage), new object[] { false, "https://m.coolapk.com/mp/apk/report?apkname=" + Regex.Split(Tag.ToString(), "/")[4] });
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ScreenShotFlipView.Visibility == Visibility.Visible)
+                CloseFlip_Click();
+            else Frame.GoBack();
         }
     }
 }

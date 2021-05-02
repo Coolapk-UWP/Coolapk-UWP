@@ -85,7 +85,7 @@ namespace CoolapkUWP.Control
                             if (Emojis.emojis.Contains(s))
                                 xamlContent += $@"
 <InlineUIContainer>
-    <Image Source='{$"/Assets/Emoji/{s}.png"}' Height='20' Width='20' ToolTipService.ToolTip='{item}'/>
+    <Image Source='{$"/Assets/Emoji/{s}.png"}' Height='20' Width='20' Margin='-1, 0, 0, -4' ToolTipService.ToolTip='{item}'/>
 </InlineUIContainer>";
                             else xamlContent += $@"<Run Text='{item}'/>";
                             break;
@@ -93,12 +93,12 @@ namespace CoolapkUWP.Control
                             if (Settings.GetBoolen("IsUseOldEmojiMode") && Emojis.oldEmojis.Contains(item))
                                 xamlContent += $@"
 <InlineUIContainer>
-    <Image Source='{$"/Assets/Emoji/{item}2.png"}' Height='20' Width='20' ToolTipService.ToolTip='{item}'/>
+    <Image Source='{$"/Assets/Emoji/{item}2.png"}' Height='20' Width='20' Margin='-1, 0, 0, -4' ToolTipService.ToolTip='{item}'/>
 </InlineUIContainer>";
                             else if (Emojis.emojis.Contains(item))
                                 xamlContent += $@"
 <InlineUIContainer>
-    <Image Source='{$"/Assets/Emoji/{item}.png"}' Height='20' Width='20' ToolTipService.ToolTip='{item}'/>
+    <Image Source='{$"/Assets/Emoji/{item}.png"}' Height='20' Width='20' Margin='-1, 0, 0, -4' ToolTipService.ToolTip='{item}'/>
 </InlineUIContainer>";
                             else xamlContent += $@"<Run Text='{item}'/>";
                             break;

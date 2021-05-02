@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:CoolapkUWP.Data"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
 
     <ScrollViewer>
         <StackPanel Padding="{x:Bind data:Settings.stackPanelMargin}">
@@ -34,21 +34,21 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Button Tag="feed" Click="Button_Click" Grid.Column="0" HorizontalAlignment="Stretch" 
-                        Style="{StaticResource ButtonStyle1}" VerticalAlignment="Stretch" Padding="0">
+                        Style="{StaticResource ButtonRevealStyle}" VerticalAlignment="Stretch" Padding="0">
                         <StackPanel>
                             <TextBlock HorizontalAlignment="Center">动态</TextBlock>
                             <TextBlock HorizontalAlignment="Center" Text="{x:Bind feedNum,Mode=OneWay}"/>
                         </StackPanel>
                     </Button>
                     <Button Tag="follow" Click="Button_Click" Grid.Column="1" HorizontalAlignment="Stretch" 
-                        Style="{StaticResource ButtonStyle1}" VerticalAlignment="Stretch" Padding="0">
+                        Style="{StaticResource ButtonRevealStyle}" VerticalAlignment="Stretch" Padding="0">
                         <StackPanel>
                             <TextBlock HorizontalAlignment="Center">关注</TextBlock>
                             <TextBlock HorizontalAlignment="Center" Text="{x:Bind followNum,Mode=OneWay}"/>
                         </StackPanel>
                     </Button>
                     <Button Tag="fans" Click="Button_Click" Grid.Column="2" HorizontalAlignment="Stretch" 
-                        Style="{StaticResource ButtonStyle1}" VerticalAlignment="Stretch" Padding="0">
+                        Style="{StaticResource ButtonRevealStyle}" VerticalAlignment="Stretch" Padding="0">
                         <StackPanel>
                             <TextBlock HorizontalAlignment="Center">粉丝</TextBlock>
                             <TextBlock HorizontalAlignment="Center" Text="{x:Bind fansNum,Mode=OneWay}"/>
@@ -56,7 +56,8 @@
                     </Button>
                 </Grid>
             </Grid>
-            <Button Height="160" x:Name="LoginButton" Visibility="Collapsed" Click="LoginButton_Click" HorizontalAlignment="Stretch">
+            <Button Height="160" x:Name="LoginButton" Style="{StaticResource ButtonRevealStyle}"
+                    Visibility="Collapsed" Click="LoginButton_Click" HorizontalAlignment="Stretch">
                 点击登录
             </Button>
             <AppBarButton Icon="Setting" Label="设置" Click="Button_Click" Tag="settings"/>

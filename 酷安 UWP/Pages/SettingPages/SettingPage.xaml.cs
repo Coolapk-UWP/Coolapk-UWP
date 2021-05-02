@@ -93,7 +93,9 @@ namespace CoolapkUWP.Pages.SettingPages
                     case 3: name = "大头像"; break;
                     case 4: name = "图标"; break;
                 }
-                double s = await ImageCache.GetCacheSize((ImageType)i, source.Token);
+                double s = 0;
+                try { s = await ImageCache.GetCacheSize((ImageType)i, source.Token); }
+                catch { Tools.ShowMessage("缓存信息获取失败"); }
                 size += s;
                 models.Add(new CacheSizeViewModel
                 {

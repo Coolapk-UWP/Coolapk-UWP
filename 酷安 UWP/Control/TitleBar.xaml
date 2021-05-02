@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:CoolapkUWP.Data"
     mc:Ignorable="d"
-    d:DesignHeight="300"
+    d:DesignHeight="48"
     d:DesignWidth="400"
     Tapped="titleGrid_Tapped">
 

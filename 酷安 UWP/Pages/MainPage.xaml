@@ -9,6 +9,7 @@
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
     NavigationCacheMode="Required" SizeChanged="Page_SizeChanged"
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
