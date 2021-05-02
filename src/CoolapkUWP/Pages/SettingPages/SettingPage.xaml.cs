@@ -180,7 +180,7 @@ namespace CoolapkUWP.Pages.SettingPages
 
                 case "checkUpdate":
                     IsCheckUpdateButtonEnabled = false;
-                    await CheckUpdateAsync();
+                    await CheckUpdateAsync(true);
                     IsCheckUpdateButtonEnabled = true;
                     break;
 

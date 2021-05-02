@@ -119,7 +119,7 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        public static async Task CheckUpdateAsync()
+        public static async Task CheckUpdateAsync( bool showmassage )
         {
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
             try
@@ -159,7 +159,7 @@ namespace CoolapkUWP.Helpers
                         grid.Children.Add(button);
                         UIHelper.InAppNotification.Show(grid, 6000);
                     }
-                    else UIHelper.ShowMessage(loader.GetString("NoUpdate"));
+                    else if (showmassage) UIHelper.ShowMessage(loader.GetString("NoUpdate"));
                 }
             }
             catch (HttpRequestException) { UIHelper.ShowMessage(loader.GetString("NetworkError")); }

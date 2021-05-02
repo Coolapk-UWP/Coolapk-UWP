@@ -38,7 +38,7 @@ namespace CoolapkUWP.Pages
             Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             if (SettingsHelper.Get<bool>(SettingsHelper.CheckUpdateWhenLuanching))
             {
-                _ = SettingsHelper.CheckUpdateAsync();
+                _ = SettingsHelper.CheckUpdateAsync(false);
             }
 
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
@@ -71,7 +71,7 @@ namespace CoolapkUWP.Pages
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            string Version = "V11";
+            string Version = "V9";
             base.OnNavigatedTo(e);
             if (ApplicationData.Current.LocalSettings.Values["Version"] != null)
                 Version = ApplicationData.Current.LocalSettings.Values["Version"].ToString();
