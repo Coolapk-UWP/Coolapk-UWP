@@ -21,7 +21,7 @@
                 </Grid>
                 <Grid  Padding="10" Height="50">
                     <TextBlock x:Name="AppXText" x:FieldModifier="Public" Text="" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
-                    <Button x:Name="DownloadButton" Click="DownloadButton_Click" Content="下载" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78" BorderThickness="0" Background="{ThemeResource SystemControlHighlightListAccentHighBrush}"/>
+                    <Button x:Name="DownloadButton" Click="DownloadButton_Click" Content="下载" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78" BorderThickness="0" Background="{ThemeResource SystemControlHighlightListAccentHighBrush}" Visibility="Collapsed"/>
                 </Grid>
                 <Grid Visibility="Collapsed" Margin="0,1,0,0" x:Name="DPanel" Padding="10" >
                     <TextBlock x:Name="AppDText" x:FieldModifier="Public" TextWrapping="Wrap" Text="" TextAlignment="Center"  VerticalAlignment="Top"/>

@@ -31,7 +31,7 @@ namespace CoolapkUWP.Control.ViewModels
         private ImageSource logo1;
         public ImageSource logo
         {
-            get => logo1; 
+            get => logo1;
             private set
             {
                 logo1 = value;

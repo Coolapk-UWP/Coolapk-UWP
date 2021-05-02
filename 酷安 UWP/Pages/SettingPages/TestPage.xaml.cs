@@ -1,15 +1,8 @@
-﻿using CoolapkUWP.Control.ViewModels;
-using CoolapkUWP.Data;
+﻿using CoolapkUWP.Data;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 

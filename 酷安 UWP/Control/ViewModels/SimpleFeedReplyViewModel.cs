@@ -1,5 +1,4 @@
-﻿using CoolapkUWP.Data;
-using Windows.Data.Json;
+﻿using Windows.Data.Json;
 
 namespace CoolapkUWP.Control.ViewModels
 {

@@ -1,6 +1,5 @@
 ﻿using CoolapkUWP.Data;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.UI.Xaml.Media;
 

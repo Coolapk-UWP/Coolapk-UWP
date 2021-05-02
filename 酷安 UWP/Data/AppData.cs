@@ -28,7 +28,7 @@ namespace CoolapkUWP.Data
                 this.OnPropertyChanged("Title");
             }
         }
-        
+
         //描述
         private string describe;
         public string Describe
@@ -40,7 +40,7 @@ namespace CoolapkUWP.Data
                 this.OnPropertyChanged("Describe");
             }
         }
-                          
+
         //Tag
         private string tag;
         public string Tag

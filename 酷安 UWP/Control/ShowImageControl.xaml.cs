@@ -71,7 +71,7 @@ namespace CoolapkUWP.Control
                 else datas.Add(new ImageData(type, urls[i]));
                 Images.Add(null);
             }
-            Task.Run(async() =>
+            Task.Run(async () =>
             {
                 await Task.Delay(20);
                 await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => SFlipView.SelectedIndex = index);

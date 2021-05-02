@@ -1,12 +1,12 @@
-﻿using System;
+﻿using CoolapkUWP.Data;
+using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using CoolapkUWP.Data;
-using System.Threading.Tasks;
 
 namespace CoolapkUWP
 {

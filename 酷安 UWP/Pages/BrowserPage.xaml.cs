@@ -1,8 +1,5 @@
 ﻿using CoolapkUWP.Data;
 using System;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
