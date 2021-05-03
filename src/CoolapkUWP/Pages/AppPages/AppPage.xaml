@@ -10,6 +10,15 @@
     mc:Ignorable="d" Background="{ThemeResource SystemControlBackgroundListLowBrush}">
 
     <Grid>
+        <Grid.Resources>
+            <Storyboard x:Name="EnterStoryboard">
+                <FadeInThemeAnimation Storyboard.TargetName="ScreenShotFlipView" />
+            </Storyboard>
+            <Storyboard x:Name="ExitStoryboard">
+                <FadeOutThemeAnimation Storyboard.TargetName="ScreenShotFlipView" />
+            </Storyboard>
+        </Grid.Resources>
+        
         <ScrollViewer>
             <StackPanel>
                 <Border Height="70"/>

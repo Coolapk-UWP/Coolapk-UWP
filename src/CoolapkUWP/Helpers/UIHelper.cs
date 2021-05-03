@@ -136,7 +136,7 @@ namespace CoolapkUWP.Helpers
                         messageList.RemoveAt(0);
                         await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                         {
-                            if (messageList.Count == 0) statusGrid.ShowMessage(string.Empty);
+                            if (messageList.Count == 0) statusGrid.Rectangle_PointerExited();
                             //if (!isShowingProgressBar) HideProgressBar();
                         });
                     }

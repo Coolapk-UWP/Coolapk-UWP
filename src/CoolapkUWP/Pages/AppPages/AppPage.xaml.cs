@@ -25,6 +25,7 @@ namespace CoolapkUWP.Pages.AppPages
         public AppPage()
         {
             this.InitializeComponent();
+            Rectangle_PointerExited();
         }
         public static string ReplaceHtml(string str)
         {
@@ -231,7 +232,7 @@ namespace CoolapkUWP.Pages.AppPages
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             if (ScreenShotFlipView.Visibility == Visibility.Visible)
-                CloseFlip_Click();
+                CloseFlip_ClickAsync();
             else Frame.GoBack();
         }
 
@@ -241,10 +242,13 @@ namespace CoolapkUWP.Pages.AppPages
             //CloseFlip.Visibility = Visibility.Visible;
             //CloseBlock.Visibility = Visibility.Visible;
             ScreenShotView.SelectedIndex = -1;
+            Rectangle_PointerEntered();
         }
 
-        private void CloseFlip_Click()
+        private async Task CloseFlip_ClickAsync()
         {
+            Rectangle_PointerExited();
+            await Task.Delay(300);
             ScreenShotFlipView.Visibility = Visibility.Collapsed;
             //CloseBlock.Visibility = Visibility.Collapsed;
             //CloseFlip.Visibility = Visibility.Collapsed;
@@ -272,6 +276,16 @@ namespace CoolapkUWP.Pages.AppPages
         {
             titleBar.ShowProgressRing();
             titleBar.HideProgressRing();
+        }
+
+        private void Rectangle_PointerEntered()
+        {
+            EnterStoryboard.Begin();
+        }
+
+        private void Rectangle_PointerExited()
+        {
+            ExitStoryboard.Begin();
         }
     }
 }
