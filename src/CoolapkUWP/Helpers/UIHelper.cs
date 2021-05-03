@@ -1,9 +1,12 @@
-﻿using CoolapkUWP.Pages;
+﻿using CoolapkUWP.Controls;
+using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +19,7 @@ using Windows.UI.Notifications;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media.Animation;
 using InAppNotify = Microsoft.Toolkit.Uwp.UI.Controls.InAppNotification;
 
@@ -43,9 +47,13 @@ namespace CoolapkUWP.Helpers
 
     static partial class UIHelper
     {
-        public const int duration = 3500;
+        public const int duration = 3000;
+        static bool isShowingMessage;
         private static InAppNotify inAppNotification;
         private static CoreDispatcher shellDispatcher;
+        public static List<Popup> popups = new List<Popup>();
+        static ObservableCollection<string> messageList = new ObservableCollection<string>();
+        public static bool HasStatusBar => Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
 
         public static CoreDispatcher ShellDispatcher
         {
@@ -80,6 +88,61 @@ namespace CoolapkUWP.Helpers
               {
                   InAppNotification?.Show(message, duration);
               });
+        }
+
+        public static void ShowPopup(Popup popup)
+        {
+            popup.RequestedTheme = SettingsHelper.Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (SettingsHelper.Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
+            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
+                popups.Insert(popups.Count - 1, popup);
+            else
+                popups.Add(popup);
+            popup.IsOpen = true;
+            popups.Last().IsOpen = false;
+            popups.Last().IsOpen = true;
+        }
+
+        public static void Hide(this Popup popup)
+        {
+            popup.IsOpen = false;
+            if (popups.Contains(popup)) popups.Remove(popup);
+        }
+
+        public static async void StatusBar_ShowMessage(string message)
+        {
+            messageList.Add(message);
+            if (!isShowingMessage)
+            {
+                isShowingMessage = true;
+                while (messageList.Count > 0)
+                {
+                    string s = $"[1/{messageList.Count}]{messageList[0]}";
+                    if (HasStatusBar)
+                    {
+                        StatusBar statusBar = StatusBar.GetForCurrentView();
+                        statusBar.ProgressIndicator.Text = s;
+                        //if (isShowingProgressBar) statusBar.ProgressIndicator.ProgressValue = null;
+                        //else statusBar.ProgressIndicator.ProgressValue = 0;
+                        await statusBar.ProgressIndicator.ShowAsync();
+                        await Task.Delay(3000);
+                        //if (messageList.Count == 0 && !isShowingProgressBar) await statusBar.ProgressIndicator.HideAsync();
+                        statusBar.ProgressIndicator.Text = string.Empty;
+                        messageList.RemoveAt(0);
+                    }
+                    else if (popups.Last().Child is StatusGrid statusGrid)
+                    {
+                        await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowMessage(s));
+                        await Task.Delay(3000);
+                        messageList.RemoveAt(0);
+                        await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        {
+                            if (messageList.Count == 0) statusGrid.ShowMessage(string.Empty);
+                            //if (!isShowingProgressBar) HideProgressBar();
+                        });
+                    }
+                }
+                isShowingMessage = false;
+            }
         }
 
         private static async void ShowImageWindow(object args)
@@ -122,7 +185,7 @@ namespace CoolapkUWP.Helpers
             {
                 foreach (var item in CoreApplication.Views)
                 {
-                    await item.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    await item.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         (Window.Current.Content as FrameworkElement).RequestedTheme = SettingsHelper.Theme;
                     });
@@ -391,7 +454,7 @@ namespace CoolapkUWP.Helpers
                 }
                 else
                 {
-                    Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
+                    Navigate(typeof(BrowserPage), new object[] { false, str });
                 }
             }
             else if (str.IsFirst(i++))

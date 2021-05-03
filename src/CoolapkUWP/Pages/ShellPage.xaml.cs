@@ -6,6 +6,7 @@ using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages
@@ -67,6 +68,12 @@ namespace CoolapkUWP.Pages
 #pragma warning disable 0612
             _ = ImageCacheHelper.CleanOldVersionImageCacheAsync();
 #pragma warning restore 0612
+
+            Popup popup = new Popup { RequestedTheme = SettingsHelper.Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (SettingsHelper.Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light) };
+            StatusGrid statusGrid2 = new StatusGrid();
+            popup.Child = statusGrid2;
+            UIHelper.popups.Add(popup);
+            popup.IsOpen = true;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)

@@ -98,7 +98,7 @@ namespace CoolapkUWP.Helpers
         private static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public static readonly MetroLog.ILogManager logManager = MetroLog.LogManagerFactory.CreateLogManager();
         public static readonly UISettings uiSettings = new UISettings();
-        public static ElementTheme Theme => Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
+        public static ElementTheme Theme => SettingsHelper.Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (SettingsHelper.Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
         public static Core.WeakEvent<UiSettingChangedType> UiSettingChanged { get; } = new Core.WeakEvent<UiSettingChangedType>();
 
         static SettingsHelper()
@@ -119,7 +119,7 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        public static async Task CheckUpdateAsync( bool showmassage )
+        public static async Task CheckUpdateAsync(bool showmassage)
         {
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
             try
@@ -159,10 +159,10 @@ namespace CoolapkUWP.Helpers
                         grid.Children.Add(button);
                         UIHelper.InAppNotification.Show(grid, 6000);
                     }
-                    else if (showmassage) UIHelper.ShowMessage(loader.GetString("NoUpdate"));
+                    else if (showmassage) UIHelper.StatusBar_ShowMessage(loader.GetString("NoUpdate"));
                 }
             }
-            catch (HttpRequestException) { UIHelper.ShowMessage(loader.GetString("NetworkError")); }
+            catch (HttpRequestException) { UIHelper.StatusBar_ShowMessage(loader.GetString("NetworkError")); }
         }
 
         public static async Task<bool> CheckLoginInfo()

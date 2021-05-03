@@ -62,7 +62,8 @@
                         <Button Click="Button_Click_5" Style="{StaticResource ButtonRevealStyle}" Grid.Row="4" Margin="0,2">网络测试</Button>
                         <TextBox x:Name="message" Header="通知测试" Grid.Row="5" Margin="0,2"/>
                         <StackPanel Orientation="Horizontal" Grid.Row="6" Margin="0.4" VerticalAlignment="Top" HorizontalAlignment="Left">
-                            <Button Click="Button_Click_4" Style="{StaticResource ButtonRevealStyle}" Margin="0,2">应用内通知</Button>
+                            <Button Click="Button_Click_4" Style="{StaticResource ButtonRevealStyle}">应用内通知</Button>
+                            <Button Click="Button_Click_2" Style="{StaticResource ButtonRevealStyle}" Margin="2,0,0,0">状态栏通知</Button>
                             <Button Click="Button_Click_12" Style="{StaticResource ButtonRevealStyle}" Margin="2,0,0,0">显示小圆点</Button>
                         </StackPanel>
                         <Button Click="Button_Click_1" Style="{StaticResource ButtonRevealStyle}" Grid.Row="7" Margin="0,2">我的机型</Button>

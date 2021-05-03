@@ -33,6 +33,7 @@ namespace CoolapkUWP.Core.Helpers
         GetShareList,
         GetTagDetail,
         GetTagFeeds,
+        GetTopicDetail,
         GetDeviceFeeds,
         GetUserFeeds,
         GetUserHistory,
@@ -104,6 +105,8 @@ namespace CoolapkUWP.Core.Helpers
                 case UriType.GetShareList: return "/v6/feed/forwardList?id={0}&type=feed&page={1}";
                 case UriType.GetTagDetail: return "/v6/topic/newTagDetail?tag={0}";
                 case UriType.GetTagFeeds: return "/v6/topic/tagFeedList?tag={0}&page={1}{2}{3}&listType={4}&blockStatus=0";
+                case UriType.GetTopicDetail: return "/v6/topic/tagDetail?tag={0}";
+                case UriType.GetDeviceFeeds: return "/v6/topic/deviceFeedList?tag={0}&page={1}{2}{3}&listType={4}&blockStatus=0";
                 case UriType.GetUserFeeds: return "/v6/user/{4}List?uid={0}&page={1}{2}{3}";
                 case UriType.GetUserHistory: return "/v6/user/hitHistoryList?page={0}{1}{2}";
                 case UriType.GetUserList: return "/v6/user/{0}?uid={1}&page={2}{3}{4}";

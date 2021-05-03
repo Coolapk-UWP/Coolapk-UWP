@@ -34,7 +34,7 @@ namespace CoolapkUWP.Controls
                 content.Add(type, "type");
                 content.Add(code, "code");
                 var (_, t) = (await DataHelper.PostDataAsync(UriHelper.GetUri(UriType.RequestValidate), content));
-                UIHelper.ShowMessage(t.ToString());
+                UIHelper.StatusBar_ShowMessage(t.ToString());
             }
         }
 

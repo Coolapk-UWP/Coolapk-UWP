@@ -65,7 +65,7 @@ namespace CoolapkUWP.Helpers
                     var str = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
                     if (notify == null)
                     {
-                        UIHelper.ShowMessage(str);
+                        UIHelper.StatusBar_ShowMessage(str);
                     }
                     else
                     {
@@ -214,7 +214,7 @@ namespace CoolapkUWP.Helpers
                 var str = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
                 if (notify == null)
                 {
-                    UIHelper.ShowMessage(str);
+                    UIHelper.StatusBar_ShowMessage(str);
                 }
                 else
                 {

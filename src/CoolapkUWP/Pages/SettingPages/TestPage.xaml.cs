@@ -32,7 +32,7 @@ namespace CoolapkUWP.Pages.SettingPages
         void IndexPage_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
             //分享一个链接
-            System.Uri shareLinkString = ValidateAndGetUri(url.Text);
+            Uri shareLinkString = ValidateAndGetUri(url.Text);
             if (shareLinkString != null)
             {
                 //创建一个数据包
@@ -352,6 +352,11 @@ namespace CoolapkUWP.Pages.SettingPages
         private void Button_Click_12(object sender, RoutedEventArgs e)
         {
             UIHelper.SetBadgeNumber(message.Text);
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            UIHelper.StatusBar_ShowMessage(message.Text);
         }
     }
 }

@@ -101,7 +101,7 @@ namespace CoolapkUWP
                             UIHelper.ShowMessage(arg.Item2);
                             break;
                         default:
-                            //UIHelper.ShowMessage(UIHelper.ConvertMessageTypeToMessage(arg.Item1));
+                            UIHelper.StatusBar_ShowMessage(UIHelper.ConvertMessageTypeToMessage(arg.Item1));
                             break;
                     }
                 };
@@ -138,7 +138,7 @@ namespace CoolapkUWP
             if (!(!SettingsHelper.Get<bool>(SettingsHelper.ShowOtherException) || e.Exception is TaskCanceledException || e.Exception is OperationCanceledException))
             {
                 var loader = ResourceLoader.GetForViewIndependentUse();
-                UIHelper.ShowMessage($"{loader.GetString("ExceptionThrown")}\n{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})"
+                UIHelper.StatusBar_ShowMessage($"{loader.GetString("ExceptionThrown")}\n{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})"
 #if DEBUG
                     + $"\n{e.Exception.StackTrace}"
 #endif
@@ -170,19 +170,19 @@ namespace CoolapkUWP
                 var loader = ResourceLoader.GetForViewIndependentUse();
                 if (e.Exception is System.Net.Http.HttpRequestException || e.Exception.HResult <= -2147012721 && e.Exception.HResult >= -2147012895)
                 {
-                    UIHelper.ShowMessage($"{loader.GetString("NetworkError")}(0x{Convert.ToString(e.Exception.HResult, 16)})");
+                    UIHelper.StatusBar_ShowMessage($"{loader.GetString("NetworkError")}(0x{Convert.ToString(e.Exception.HResult, 16)})");
                 }
                 else if (e.Exception is Core.Exceptions.CoolapkMessageException)
                 {
-                    UIHelper.ShowMessage(e.Exception.Message);
+                    UIHelper.StatusBar_ShowMessage(e.Exception.Message);
                 }
                 else if (e.Exception is Core.Exceptions.UserNameErrorException)
                 {
-                    UIHelper.ShowMessage(loader.GetString("UserNameError"));
+                    UIHelper.StatusBar_ShowMessage(loader.GetString("UserNameError"));
                 }
                 else if (SettingsHelper.Get<bool>(SettingsHelper.ShowOtherException))
                 {
-                    UIHelper.ShowMessage($"{loader.GetString("ExceptionThrown")}\n{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})"
+                    UIHelper.StatusBar_ShowMessage($"{loader.GetString("ExceptionThrown")}\n{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})"
 #if DEBUG
                         + $"\n{e.Exception.StackTrace}"
 #endif
@@ -191,36 +191,5 @@ namespace CoolapkUWP
                 }
             }
         }
-
-        //private const string LIVETILETASK = "LIVETILETASK";
-        //private async void RegisterLiveTileTask()
-        //{
-        //    var status = await BackgroundExecutionManager.RequestAccessAsync();
-        //    if (status == BackgroundAccessStatus.Unspecified || status == BackgroundAccessStatus.Denied)
-        //    {
-        //        return;
-        //    }
-        //    BackgroundTaskRegistration.AllTasks.(t =>
-        //   {
-        //       if (t.Value.Name == LIVETILETASK)
-        //       {
-        //           t.Value.Unregister(true);
-        //       }
-        //   });
-
-        //    var taskBuilder = new BackgroundTaskBuilder
-        //    {
-        //        Name = LIVETILETASK,
-        //        TaskEntryPoint = typeof(Controls.LiveTileControl).FullName
-        //    };
-        //    taskBuilder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
-
-        //    //var updater = TileUpdateManager.CreateTileUpdaterForApplication();
-        //    //updater.Clear();
-        //    //var updater2 = TileUpdateManager.CreateTileUpdaterForSecondaryTile("appdota2");
-        //    //updater2.Clear(); 
-        //    taskBuilder.SetTrigger(new TimeTrigger(60, false));
-        //    taskBuilder.Register();
-        //}
     }
 }
