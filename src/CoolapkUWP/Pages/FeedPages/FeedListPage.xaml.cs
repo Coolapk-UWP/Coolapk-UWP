@@ -82,6 +82,17 @@ namespace CoolapkUWP.Pages.FeedPages
                     rightComboBox.Visibility = Visibility.Collapsed;
                     FindName(nameof(reportButton));
                     break;
+
+                case FeedListType.DevicePageList:
+                    rightComboBox.Visibility = Visibility.Visible;
+                    rightComboBox.ItemsSource = new string[]
+                    {
+                        loader.GetString("all"),
+                        loader.GetString("newest"),
+                        loader.GetString("hot"),
+                    };
+                    rightComboBox.SelectedIndex = (provider as ICanComboBoxChangeSelectedIndex).ComboBoxSelectedIndex;
+                    break;
             }
             _ = Refresh();
             titleBar.ShowProgressRing();
@@ -246,6 +257,7 @@ namespace CoolapkUWP.Pages.FeedPages
         CollectionPageList,
         ProductPageList,
         AppPageList,
+        DevicePageList,
     }
 
     internal class FeedListPageTemplateSelector : DataTemplateSelector
@@ -257,6 +269,7 @@ namespace CoolapkUWP.Pages.FeedPages
         public DataTemplate CollectionHeader { get; set; }
         public DataTemplate ProductHeader { get; set; }
         public DataTemplate AppHeader { get; set; }
+        public DataTemplate DeviceHeader { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item)
         {

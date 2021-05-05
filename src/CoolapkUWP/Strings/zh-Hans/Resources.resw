@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDescription" xml:space="preserve">
-    <value>酷安第三方UWP应用</value>
+    <value>一个基于UWP平台的酷安客户端</value>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>酷安</value>
@@ -137,7 +137,7 @@
     <value>图片加载失败</value>
   </data>
   <data name="NetworkError" xml:space="preserve">
-    <value>网络异常</value>
+    <value>无法连接到网络</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>否</value>

@@ -56,6 +56,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                 case FeedListType.CollectionPageList: return new CollectionViewModel(id);
                 case FeedListType.ProductPageList: return new ProductViewModel(id);
                 case FeedListType.AppPageList: return new AppViewModel(id);
+                case FeedListType.DevicePageList: return new DeviceViewModel(id);
                 default: return null;
             }
         }
@@ -98,6 +99,10 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                     type = UriType.GetAppDetail;
                     break;
 
+                case FeedListType.DevicePageList:
+                    type = UriType.GetTopicDetail;
+                    break;
+
                 default:
                     throw new ArgumentException($"{typeof(FeedListType).FullName}值错误");
             }
@@ -132,6 +137,10 @@ namespace CoolapkUWP.ViewModels.FeedListPage
 
                     case FeedListType.AppPageList:
                         d = new AppDetail(o);
+                        break;
+
+                    case FeedListType.DevicePageList:
+                        d = new TopicDetail(o);
                         break;
                 }
             }
@@ -448,6 +457,56 @@ namespace CoolapkUWP.ViewModels.FeedListPage
         public void Report()
         {
             UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, $"https://m.coolapk.com/mp/apk/report?apkname={Id}" });
+        }
+    }
+
+    internal class DeviceViewModel : FeedListPageViewModelBase, ICanComboBoxChangeSelectedIndex
+    {
+        public int ComboBoxSelectedIndex { get; private set; }
+
+        private string sortType = "lastupdate_desc";
+
+        protected override CoolapkListProvider Provider { get; }
+
+        internal DeviceViewModel(string tag) : base(tag, FeedListType.DevicePageList)
+        {
+            Provider =
+                new CoolapkListProvider(
+                    (p, page, firstItem, lastItem) =>
+                        UriHelper.GetUri(
+                            UriType.GetDeviceFeeds,
+                            Id,
+                            p < 0 ? ++page : p,
+                            string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}",
+                            sortType),
+                    isEqual, getEntity, idName);
+        }
+
+        protected override string GetTitleBarText(FeedListDetailBase detail) => "来自" + (detail as TopicDetail).Title + "的动态";
+
+        public async Task SetComboBoxSelectedIndex(int value)
+        {
+            switch (value)
+            {
+                case -1: return;
+                case 0:
+                    sortType = "all";
+                    break;
+
+                case 1:
+                    sortType = "newest";
+                    break;
+
+                case 2:
+                    sortType = "hot";
+                    break;
+            }
+            ComboBoxSelectedIndex = value;
+            if (Provider != null)
+            {
+                await Refresh(-2);
+            }
         }
     }
 

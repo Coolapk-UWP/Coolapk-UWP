@@ -147,6 +147,9 @@
   <data name="FollowNum.Text" xml:space="preserve">
     <value>关注</value>
   </data>
+  <data name="hot" xml:space="preserve">
+    <value>热门</value>
+  </data>
   <data name="HotNumTXT.Text" xml:space="preserve">
     <value>热度</value>
   </data>
@@ -155,6 +158,9 @@
   </data>
   <data name="lastupdate_desc" xml:space="preserve">
     <value>最近回复</value>
+  </data>
+  <data name="newest" xml:space="preserve">
+    <value>最新</value>
   </data>
   <data name="popular" xml:space="preserve">
     <value>按热度排序</value>

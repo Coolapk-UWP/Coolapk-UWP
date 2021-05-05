@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Controls;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
 using Microsoft.Toolkit.Uwp.Notifications;
@@ -119,6 +120,10 @@ namespace CoolapkUWP.Pages.SettingPages
                     Url = "/page?url=";
                     i = 2;
                     break;
+                case "设备":
+                    Url = "";
+                    i = 3;
+                    break;
                 case "看看号":
                     Url = "/dyh/";
                     i = 0;
@@ -236,12 +241,20 @@ namespace CoolapkUWP.Pages.SettingPages
                     UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
                 }
             }
-            if (i == 2)
+            else if (i == 2)
             {
                 if (ID.Text.StartsWith("V"))
                     UIHelper.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(Url + ID.Text, true));
                 else
                     UIHelper.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(ID.Text, true));
+            }
+            else if (i == 3)
+            {
+                var f = FeedListPageViewModelBase.GetProvider(FeedListType.DevicePageList, ID.Text);
+                if (f != null)
+                {
+                    UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
+                }
             }
             else UIHelper.OpenLinkAsync(Url + ID.Text);
         }
@@ -357,6 +370,21 @@ namespace CoolapkUWP.Pages.SettingPages
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             UIHelper.StatusBar_ShowMessage(message.Text);
+        }
+
+        private void Button_Click_13(object sender, RoutedEventArgs e)
+        {
+            UIHelper.ShowProgressBar();
+        }
+
+        private void Button_Click_14(object sender, RoutedEventArgs e)
+        {
+            UIHelper.PausedProgressBar();
+        }
+
+        private void Button_Click_15(object sender, RoutedEventArgs e)
+        {
+            UIHelper.ErrorProgressBar();
         }
     }
 }

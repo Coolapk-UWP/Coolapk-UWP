@@ -20,6 +20,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
             base.OnNavigatedTo(e);
 
             provider = e.Parameter as ViewModels.IndexPage.ViewModel;
@@ -31,14 +32,22 @@ namespace CoolapkUWP.Pages.FeedPages
             }
 
             ShowProgressRing();
-            listView.ItemsSource = provider.mainModels;
-            await Refresh(-2);
+            try
+            {
+                listView.ItemsSource = provider.mainModels;
+                await Refresh(-2);
 
-            await Task.Delay(30);
-            titleBar.Title = provider.Title;
-            scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
+                await Task.Delay(30);
+                titleBar.Title = provider.Title;
+                scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
 
-            HideProgressRing();
+                HideProgressRing();
+            }
+            catch
+            {
+                UIHelper.ErrorProgressBar();
+                UIHelper.StatusBar_ShowMessage(loader.GetString("NetworkError"));
+            }
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -61,7 +70,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             else
             {
-                UIHelper.ShowMainPageProgressRing();
+                UIHelper.ShowProgressBar();
             }
         }
 
@@ -73,7 +82,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             else
             {
-                UIHelper.HideMainPageProgressRing();
+                UIHelper.HideProgressBar();
             }
         }
 

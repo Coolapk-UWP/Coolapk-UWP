@@ -49,6 +49,7 @@ namespace CoolapkUWP.Helpers
     {
         public const int duration = 3000;
         static bool isShowingMessage;
+        public static bool isShowingProgressBar;
         private static InAppNotify inAppNotification;
         private static CoreDispatcher shellDispatcher;
         public static List<Popup> popups = new List<Popup>();
@@ -108,6 +109,37 @@ namespace CoolapkUWP.Helpers
             if (popups.Contains(popup)) popups.Remove(popup);
         }
 
+        public static async void ShowProgressBar()
+        {
+            isShowingProgressBar = true;
+            if (HasStatusBar)
+            {
+                StatusBar.GetForCurrentView().ProgressIndicator.ProgressValue = null;
+                await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
+            }
+            else if (popups.Last().Child is StatusGrid statusGrid)
+                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar());
+        }
+
+        public static async void PausedProgressBar()
+        {
+            if (!HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
+                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.PausedProgressBar());
+        }
+
+        public static async void ErrorProgressBar()
+        {
+            if (!HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
+                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ErrorProgressBar());
+        }
+
+        public static async void HideProgressBar()
+        {
+            isShowingProgressBar = false;
+            if (HasStatusBar) await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
+            else if (popups.Last().Child is StatusGrid statusGrid) statusGrid.HideProgressBar();
+        }
+
         public static async void StatusBar_ShowMessage(string message)
         {
             messageList.Add(message);
@@ -121,11 +153,11 @@ namespace CoolapkUWP.Helpers
                     {
                         StatusBar statusBar = StatusBar.GetForCurrentView();
                         statusBar.ProgressIndicator.Text = s;
-                        //if (isShowingProgressBar) statusBar.ProgressIndicator.ProgressValue = null;
-                        //else statusBar.ProgressIndicator.ProgressValue = 0;
+                        if (isShowingProgressBar) statusBar.ProgressIndicator.ProgressValue = null;
+                        else statusBar.ProgressIndicator.ProgressValue = 0;
                         await statusBar.ProgressIndicator.ShowAsync();
                         await Task.Delay(3000);
-                        //if (messageList.Count == 0 && !isShowingProgressBar) await statusBar.ProgressIndicator.HideAsync();
+                        if (messageList.Count == 0 && !isShowingProgressBar) await statusBar.ProgressIndicator.HideAsync();
                         statusBar.ProgressIndicator.Text = string.Empty;
                         messageList.RemoveAt(0);
                     }
@@ -137,7 +169,7 @@ namespace CoolapkUWP.Helpers
                         await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                         {
                             if (messageList.Count == 0) statusGrid.Rectangle_PointerExited();
-                            //if (!isShowingProgressBar) HideProgressBar();
+                            if (!isShowingProgressBar) HideProgressBar();
                         });
                     }
                 }

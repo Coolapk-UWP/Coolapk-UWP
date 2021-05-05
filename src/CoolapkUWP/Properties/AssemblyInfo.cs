@@ -5,12 +5,12 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("CoolapkUWP")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Coolapk UWP")]
+[assembly: AssemblyDescription("一个基于UWP平台的第三方酷安客户端")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CoolapkUWP")]
-[assembly: AssemblyCopyright("Copyright ©  2017 - 2021")]
+[assembly: AssemblyCompany("Coolapk UWP Project")]
+[assembly: AssemblyProduct("Coolapk UWP")]
+[assembly: AssemblyCopyright("Copyright © 2017 - 2021 Coolapk UWP Project")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
