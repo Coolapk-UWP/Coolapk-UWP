@@ -1,4 +1,7 @@
-﻿using System.ComponentModel;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Immutable;
+using System.ComponentModel;
+using Windows.Storage;
 using ImageSource = Windows.UI.Xaml.Media.ImageSource;
 
 namespace CoolapkUWP.Models.Controls
@@ -117,6 +120,27 @@ namespace CoolapkUWP.Models.Controls
             }
         }
 
+        public bool IsAuthor { get; private set; }
+        public bool IsSpecial { get; private set; }
+
+        private static readonly ImmutableArray<string> authors = new string[]
+        {
+            "536381",//wherewhere
+            "695942",//一块小板子
+            "0",
+        }.ToImmutableArray();
+
+        private static readonly ImmutableArray<string> specials = new string[]
+        {
+            "1222543",
+            "1893913",
+            "2134270",
+            "1494629",
+            "3327704",
+            "3591060",
+            "0",
+        }.ToImmutableArray();
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
@@ -125,7 +149,7 @@ namespace CoolapkUWP.Models.Controls
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public UserHubModel(Newtonsoft.Json.Linq.JObject o, ImageSource image)
+        public UserHubModel(JObject o, ImageSource image)
         {
             UserAvatar = image;
             UserName = o.Value<string>("username");
@@ -137,6 +161,43 @@ namespace CoolapkUWP.Models.Controls
             NextLevelPercentage = o.Value<double>("next_level_percentage");
             LevelTodayMessage = o.Value<string>("level_today_message");
             NextLevelNowExperience = $"{nextLevelPercentage / 100 * nextLevelExperience:F0}/{nextLevelExperience}";
+            if (o.TryGetValue("entityId", out JToken u))
+            {
+                FindIsAuthor(u.ToString());
+                FindIsSpecial(u.ToString());
+            }
+            ApplicationData.Current.LocalSettings.Values["IsAuthor"] = IsAuthor;
+            ApplicationData.Current.LocalSettings.Values["IsAuthor"] = IsSpecial;
+        }
+
+        private static bool Is(string str, int i) => str == authors[i];
+
+        private void FindIsAuthor(string uid)
+        {
+            int i;
+            for (i = 0; authors[i] != "0"; i++)
+            {
+                if (Is(uid, i))
+                {
+                    IsAuthor = true;
+                    break;
+                }
+                else IsAuthor = false;
+            }
+        }
+
+        private void FindIsSpecial(string uid)
+        {
+            int i;
+            for (i = 0; specials[i] != "0"; i++)
+            {
+                if (Is(uid, i))
+                {
+                    IsSpecial = true;
+                    break;
+                }
+                else IsSpecial = false;
+            }
         }
     }
 }

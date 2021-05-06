@@ -411,6 +411,7 @@
                         Text="{Binding UserName, Mode=OneWay}" />
 
                     <winui:ProgressBar
+                        x:Name="LevelBar"
                         Grid.Row="1"
                         Width="240"
                         Margin="100,0,0,0"

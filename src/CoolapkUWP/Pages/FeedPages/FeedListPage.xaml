@@ -272,6 +272,15 @@
                                         Foreground="LightGray"
                                         Text="{x:Bind Logintime}"
                                         TextWrapping="Wrap" />
+
+                                    <TextBlock
+                                        x:Name="block"
+                                        Margin="2,0"
+                                        x:Load="{x:Bind IsBlock}"
+                                        FontSize="12"
+                                        Foreground="LightGray"
+                                        Text="[限流中]"
+                                        TextWrapping="Wrap" />
                                 </StackPanel>
                             </StackPanel>
 

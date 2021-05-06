@@ -136,6 +136,12 @@
   <data name="ImageLoadError" xml:space="preserve">
     <value>图片加载失败</value>
   </data>
+  <data name="IndexPageError" xml:space="preserve">
+    <value>主页加载失败</value>
+  </data>
+  <data name="MyPageError" xml:space="preserve">
+    <value>个人页面加载失败</value>
+  </data>
   <data name="NetworkError" xml:space="preserve">
     <value>无法连接到网络</value>
   </data>

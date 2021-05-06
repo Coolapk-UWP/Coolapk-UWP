@@ -159,9 +159,11 @@ namespace CoolapkUWP.Pages.SettingPages
         protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-#if DEBUG
-            gotoTestPage.Visibility = Visibility.Visible;
+#if !DEBUG
+            if (UIHelper.IsAuthor)
 #endif
+            gotoTestPage.Visibility = Visibility.Visible;
+
             if (IsBackgroundColorFollowSystem2)
             {
                 ThemeMode.SelectedIndex = 2;

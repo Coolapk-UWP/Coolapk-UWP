@@ -50,6 +50,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
         public string Astro { get; private set; }
         public string Logintime { get; private set; }
         public string FollowStatus { get; private set; }
+        public bool IsBlock { get; private set; }
 
         internal UserDetail(JObject o) : base(o)
         {
@@ -72,6 +73,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             Astro = o.Value<string>("astro");
             UserFace = new ImageModel(o.Value<string>("userAvatar"), ImageType.BigAvatar);
             Background = new BackgroundImageModel(o.Value<string>("cover"), ImageType.OriginImage);
+            IsBlock = UIHelper.IsSpecialUser && o.TryGetValue("block_status", out JToken v) && v.ToString() != "0";
         }
     }
 

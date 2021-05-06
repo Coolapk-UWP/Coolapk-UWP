@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
 using Windows.Data.Xml.Dom;
+using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Notifications;
@@ -50,6 +51,8 @@ namespace CoolapkUWP.Helpers
         public const int duration = 3000;
         static bool isShowingMessage;
         public static bool isShowingProgressBar;
+        public static bool IsAuthor => ApplicationData.Current.LocalSettings.Values["IsAuthor"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsAuthor"];
+        public static bool IsSpecialUser => (ApplicationData.Current.LocalSettings.Values["IsAuthor"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsAuthor"]) || ApplicationData.Current.LocalSettings.Values["IsSpecial"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsSpecial"];
         private static InAppNotify inAppNotification;
         private static CoreDispatcher shellDispatcher;
         public static List<Popup> popups = new List<Popup>();
@@ -385,9 +388,10 @@ namespace CoolapkUWP.Helpers
         {
             //UIHelper.ShowMessage(str);
 
-#if DEBUG
-            var rawstr = str;
+#if !DEBUG
+            if (UIHelper.IsAuthor)
 #endif
+            var rawstr = str;
 
             if (string.IsNullOrWhiteSpace(str)) { return; }
 
@@ -532,12 +536,13 @@ namespace CoolapkUWP.Helpers
             //    u = u.Substring(u.IndexOf('/') + 1);
             //    Navigate(typeof(FeedDetailPage), u);
             //}
-#if DEBUG
             else
             {
+#if !DEBUG
+            if (UIHelper.IsAuthor)
+#endif
                 Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(rawstr, true));
             }
-#endif
         }
 
         public static void SetBadgeNumber(string badgeGlyphValue)

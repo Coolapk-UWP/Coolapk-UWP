@@ -46,7 +46,7 @@ namespace CoolapkUWP.Pages.FeedPages
             catch
             {
                 UIHelper.ErrorProgressBar();
-                UIHelper.StatusBar_ShowMessage(loader.GetString("NetworkError"));
+                UIHelper.StatusBar_ShowMessage(loader.GetString("IndexPageError"));
             }
         }
 

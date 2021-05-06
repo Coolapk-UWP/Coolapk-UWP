@@ -91,6 +91,7 @@
                     Width="24"
                     Height="24"
                     Margin="8,0"
+                    Visibility="Collapsed"
                     IsActive="True"/>
                 <Button x:Name="Refresh"  Click="Button_Click" Style="{StaticResource IconButtonStyle}">
                     <SymbolIcon Symbol="Refresh"/>

@@ -137,7 +137,6 @@
                 <ComboBoxItem>动态</ComboBoxItem>
                 <ComboBoxItem>用户</ComboBoxItem>
                 <ComboBoxItem>话题</ComboBoxItem>
-                <ComboBoxItem>数码</ComboBoxItem>
             </ComboBox>
         </Grid>
     </Grid>

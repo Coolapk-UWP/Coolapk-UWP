@@ -72,17 +72,24 @@ namespace CoolapkUWP.Pages
 
         private async Task Refresh()
         {
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
             if (string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid))) { return; }
 
-            ring.IsActive = true;
-            ring.Visibility = Visibility.Visible;
+            ShowProgressRing();
 
-            await provider?.Refresh();
-            mainGrid.DataContext = provider?.UserModel;
-            repeater.ItemsSource = provider?.provider.Models;
+            try
+            {
+                await provider?.Refresh();
+                mainGrid.DataContext = provider?.UserModel;
+                repeater.ItemsSource = provider?.provider.Models;
 
-            ring.IsActive = false;
-            ring.Visibility = Visibility.Collapsed;
+                HideProgressRing();
+            }
+            catch
+            {
+                ErrorProgressBar();
+                UIHelper.StatusBar_ShowMessage(loader.GetString("IndexPageError"));
+            }
         }
 
         protected override async void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
@@ -108,6 +115,64 @@ namespace CoolapkUWP.Pages
 
             base.OnNavigatingFrom(e);
         }
+
+        private void ShowProgressRing()
+        {
+            if (mainGrid.Visibility == Visibility)
+            {
+                ShowProgressBar();
+            }
+            else
+            {
+                ring.IsActive = true;
+                ring.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void HideProgressRing()
+        {
+            if (mainGrid.Visibility == Visibility)
+            {
+                HideProgressBar();
+            }
+            else
+            {
+                ring.Visibility = Visibility.Collapsed;
+                ring.IsActive = false;
+            }
+        }
+
+        #region 进度条相关
+
+        public void ShowProgressBar()
+        {
+            LevelBar.IsIndeterminate = true;
+            LevelBar.ShowError = false;
+            LevelBar.ShowPaused = false;
+        }
+
+        public void PausedProgressBar()
+        {
+            LevelBar.IsIndeterminate = true;
+            LevelBar.ShowError = false;
+            LevelBar.ShowPaused = true;
+        }
+
+        public void ErrorProgressBar()
+        {
+            LevelBar.IsIndeterminate = true;
+            LevelBar.ShowPaused = false;
+            LevelBar.ShowError = true;
+        }
+
+        public void HideProgressBar()
+        {
+            LevelBar.IsIndeterminate = false;
+            LevelBar.ShowError = false;
+            LevelBar.ShowPaused = false;
+        }
+
+        #endregion
 
         #region 搜索框相关
 

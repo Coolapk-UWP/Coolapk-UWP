@@ -10,6 +10,9 @@ namespace CoolapkUWP.Models
         {
             Url = o.Value<string>("url");
             UserName = o.Value<string>("username");
+            IsBlock = o.TryGetValue("block_status", out JToken v) && v.ToString() != "0";
+            if (UIHelper.IsSpecialUser && IsBlock)
+                UserName += " [限流中]";
             if (o.TryGetValue("fans", out JToken a))
             {
                 FansNum = a.ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal);
@@ -30,6 +33,7 @@ namespace CoolapkUWP.Models
         public string FansNum { get; private set; }
         public string LoginTime { get; private set; }
         public string Bio { get; private set; }
+        public bool IsBlock { get; private set; }
         public ImageModel UserAvatar { get; private set; }
     }
 }

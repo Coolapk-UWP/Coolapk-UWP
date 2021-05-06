@@ -25,6 +25,7 @@ namespace CoolapkUWP.Models
         public ImmutableArray<ImageModel> PicArr { get; private set; } = ImmutableArray<ImageModel>.Empty;
         public bool IsQuestionFeed { get; private set; }
         public bool IsRatingFeed { get; private set; }
+        public bool IsBlock { get; private set; }
 
         public SourceFeedModel(JObject o) : base(o)
         {
@@ -91,6 +92,9 @@ namespace CoolapkUWP.Models
                 Pic = new BackgroundImageModel(value1.ToString(), ImageType.SmallImage);
             }
             Shareurl = string.IsNullOrEmpty(o.Value<string>("shareUrl")) ? QRUrl : o.Value<string>("shareUrl");
+            IsBlock = o.TryGetValue("block_status", out JToken v) && v.ToString() != "0";
+            if (UIHelper.IsSpecialUser && IsBlock)
+                Username += " [已折叠]";
         }
     }
 }
