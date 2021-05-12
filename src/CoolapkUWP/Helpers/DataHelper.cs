@@ -38,6 +38,11 @@ namespace CoolapkUWP.Helpers
             return Utils.PostDataAsync(uri, content, GetCoolapkCookies());
         }
 
+        public static Task<(bool isSucceed, string result)> GetHtmlAsync(Uri uri,string request)
+        {
+            return Utils.GetHtmlAsync(uri, GetCoolapkCookies() , request);
+        }
+
         public static Task<(bool isSucceed, JToken result)> GetDataAsync(Uri uri, bool forceRefresh)
         {
             return Utils.GetDataAsync(uri, forceRefresh, GetCoolapkCookies());

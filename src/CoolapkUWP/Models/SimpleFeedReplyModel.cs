@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Controls;
 using CoolapkUWP.Core.Models;
+using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
 
 namespace CoolapkUWP.Models
@@ -15,6 +16,7 @@ namespace CoolapkUWP.Models
         public bool IsFeedAuthor { get; private set; }
         public bool ShowPic { get; protected set; }
         public string PicUri { get; private set; }
+        public bool IsBlock { get; private set; }
 
         public SimpleFeedReplyModel(JObject o) : base(o)
         {
@@ -38,6 +40,9 @@ namespace CoolapkUWP.Models
                 PicUri = value.ToString();
                 Message += $" <a href=\"{PicUri}\">{loader.GetString("seePic")}</a>";
             }
+            IsBlock = o.TryGetValue("block_status", out JToken v) && v.ToString() != "0";
+            if (UIHelper.IsSpecialUser && IsBlock)
+                Username += " [已折叠]";
         }
 
         private static string GetAuthorString(bool isFeedAuthor)

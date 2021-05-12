@@ -122,6 +122,19 @@ namespace CoolapkUWP.Core.Helpers
             return GetResult(json);
         }
 
+        public static async Task<(bool isSucceed, string result)> GetHtmlAsync(Uri uri, IEnumerable<(string, string)> cookies,string request)
+        {
+            var json = await NetworkHelper.GetHtmlAsync(uri, cookies , request);
+            if (cookies == null)
+                ShowInAppMessage(MessageType.Message, "cookies为null");
+            if (string.IsNullOrEmpty(json))
+            {
+                ShowInAppMessage(MessageType.Message, "获取失败");
+                return (false, null);
+            }
+            else { return (true, json); }
+        }
+
         public static async Task<(bool isSucceed, JToken result)> GetDataAsync(Uri uri, bool forceRefresh, IEnumerable<(string, string)> cookies)
         {
             string json;

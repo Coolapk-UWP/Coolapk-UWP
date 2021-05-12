@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:CoolapkUWP.Models"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
-    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     d:DesignHeight="300"
     d:DesignWidth="400"
     mc:Ignorable="d">
@@ -59,7 +59,8 @@
                     </ListViewItem>
 
                     <Border Margin="0,8">
-                        <winui:ItemsRepeater x:Name="replyList" ItemTemplate="{StaticResource feed_reply}" />
+                        <winui:ItemsRepeater x:Name="replyList" ItemTemplate="{StaticResource feed_reply}">
+                        </winui:ItemsRepeater>
                     </Border>
                 </StackPanel>
             </PivotItem>

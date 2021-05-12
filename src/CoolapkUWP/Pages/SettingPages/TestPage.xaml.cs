@@ -9,6 +9,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.UI.Notifications;
 using Windows.UI.StartScreen;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -384,6 +385,21 @@ namespace CoolapkUWP.Pages.SettingPages
         private void Button_Click_15(object sender, RoutedEventArgs e)
         {
             UIHelper.ErrorProgressBar();
+        }
+
+        private void Button_Click_16(object sender, RoutedEventArgs e)
+        {
+            ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
+        }
+
+        private void Button_Click_17(object sender, RoutedEventArgs e)
+        {
+            ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
+        }
+
+        private void Button_Click_18(object sender, RoutedEventArgs e)
+        {
+            UIHelper.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(url.Text, true));
         }
     }
 }

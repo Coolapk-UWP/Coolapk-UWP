@@ -95,6 +95,9 @@ namespace CoolapkUWP.Models
             IsBlock = o.TryGetValue("block_status", out JToken v) && v.ToString() != "0";
             if (UIHelper.IsSpecialUser && IsBlock)
                 Username += " [已折叠]";
+            if (o.TryGetValue("status", out JToken s) && s.ToString() == "-1")
+                Username += " [仅自己可见]";
+
         }
     }
 }

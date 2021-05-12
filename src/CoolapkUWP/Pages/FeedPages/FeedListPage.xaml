@@ -294,11 +294,21 @@
                                 x:Load="{x:Bind FollowStatus, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
                                 Background="Transparent"
                                 Click="Button_Click"
-                                Content="{x:Bind FollowStatus}"
-                                Foreground="White"
                                 Style="{ThemeResource ButtonRevealStyle}"
                                 Tag="FollowUser"
-                                Template="{StaticResource ButtonTemplate1}" />
+                                Template="{StaticResource ButtonTemplate1}">
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon
+                                        FontFamily="Segoe MDL2 Assets"
+                                        FontSize="14"
+                                        Foreground="White"
+                                        Glyph="{x:Bind FanStatus}" />
+                                    <TextBlock
+                                        Text="{x:Bind FollowStatus}"
+                                        Margin="2,-2,0,0"
+                                        Foreground="White" />
+                                </StackPanel>
+                            </Button>
                         </Grid>
                     </Border>
                 </ListViewItem>

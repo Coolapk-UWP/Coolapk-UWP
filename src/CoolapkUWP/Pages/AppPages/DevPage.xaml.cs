@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using CoolapkUWP.Helpers;
+using System;
+using System.Net.Http;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -24,12 +26,10 @@ namespace CoolapkUWP.Pages.AppPages
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                GetDevMyList(await new HttpClient().GetStringAsync("https://developer.coolapk.com/do?c=apk&m=myList"));
-            }
-            catch (HttpRequestException ex) { }
-            catch { throw; }
+            Uri uri = new Uri("https://api.coolapk.com/v6/feed/changeHistoryList?id=26935758");
+            var (isSucceed, result) = await DataHelper.GetHtmlAsync(uri,"XMLHttpRequest");
+            if (!isSucceed) { }
+            else main.Text = result;
         }
 
         #region Task：任务

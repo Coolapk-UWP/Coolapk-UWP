@@ -155,7 +155,7 @@ namespace CoolapkUWP.Pages
         {
             ApplicationView view = ApplicationView.GetForCurrentView();
             bool isInFullScreenMode = view.IsFullScreenMode;
-            if (isInFullScreenMode)
+            if (isInFullScreenMode || view.ViewMode == ApplicationViewMode.CompactOverlay)
                 navigationView.Margin = new Thickness(0, 32, 0, 0);
             else navigationView.Margin = new Thickness(0, 0, 0, 0);
         }

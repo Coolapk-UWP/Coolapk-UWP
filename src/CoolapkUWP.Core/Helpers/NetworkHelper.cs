@@ -25,7 +25,7 @@ namespace CoolapkUWP.Core.Helpers
         {
             string Version = "V11";
             EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
-            client.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
+            //client.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
             client.DefaultRequestHeaders.Add("X-Sdk-Int", "30");
             client.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
             client.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
@@ -92,6 +92,14 @@ namespace CoolapkUWP.Core.Helpers
             headers.Add(name, GetCoolapkAppToken());
         }
 
+        private static void ReplaceRequested(this System.Net.Http.Headers.HttpRequestHeaders headers, string request)
+        {
+            const string name = "X-Requested-With";
+            headers.Remove(name);
+            if (request != null)
+                headers.Add(name, request);
+        }
+
         private static void ReplaceCoolapkCookie(this CookieContainer container, IEnumerable<(string name, string value)> cookies)
         {
             if (cookies == null) { return; }
@@ -103,17 +111,18 @@ namespace CoolapkUWP.Core.Helpers
             }
         }
 
-        private static void BeforeGetOrPost(IEnumerable<(string name, string value)> coolapkCookies)
+        private static void BeforeGetOrPost(IEnumerable<(string name, string value)> coolapkCookies, string request)
         {
             clientHandler.CookieContainer.ReplaceCoolapkCookie(coolapkCookies);
             client.DefaultRequestHeaders.ReplaceAppToken();
+            client.DefaultRequestHeaders.ReplaceRequested(request);
         }
 
         public static async Task<string> PostAsync(Uri uri, HttpContent content, IEnumerable<(string name, string value)> coolapkCookies)
         {
             try
             {
-                BeforeGetOrPost(coolapkCookies);
+                BeforeGetOrPost(coolapkCookies, "XMLHttpRequest");
                 var response = await client.PostAsync(uri, content);
                 return await response.Content.ReadAsStringAsync();
             }
@@ -124,7 +133,7 @@ namespace CoolapkUWP.Core.Helpers
         {
             try
             {
-                BeforeGetOrPost(coolapkCookies);
+                BeforeGetOrPost(coolapkCookies, "XMLHttpRequest");
                 return await client.GetStreamAsync(uri);
             }
             catch { throw; }
@@ -134,7 +143,18 @@ namespace CoolapkUWP.Core.Helpers
         {
             try
             {
-                BeforeGetOrPost(coolapkCookies);
+                BeforeGetOrPost(coolapkCookies, "XMLHttpRequest");
+                return await client.GetStringAsync(uri);
+            }
+            catch { throw; }
+        }
+
+        public static async Task<string> GetHtmlAsync(Uri uri, IEnumerable<(string name, string value)> coolapkCookies , string request)
+        {
+            try
+            {
+                BeforeGetOrPost(coolapkCookies, request);
+
                 return await client.GetStringAsync(uri);
             }
             catch { throw; }

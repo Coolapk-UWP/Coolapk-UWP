@@ -11,6 +11,7 @@
     xmlns:model="using:CoolapkUWP.Models"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Background="{ThemeResource SystemControlBackgroundListLowBrush}"
     mc:Ignorable="d">
 
@@ -714,7 +715,10 @@
                     MaxWidth="820"
                     Padding="{StaticResource StackPanelMargin}"
                     HorizontalAlignment="Center">
-                    <winui:ItemsRepeater x:Name="listView" ItemTemplate="{StaticResource FTemplateSelector}" />
+                    <winui:ItemsRepeater
+                        x:Name="listView"
+                        ItemTemplate="{StaticResource FTemplateSelector}">
+                    </winui:ItemsRepeater>
                 </Border>
             </ScrollViewer>
         </winui:ItemsRepeaterScrollHost>

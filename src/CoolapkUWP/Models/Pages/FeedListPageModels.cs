@@ -50,6 +50,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
         public string Astro { get; private set; }
         public string Logintime { get; private set; }
         public string FollowStatus { get; private set; }
+        public string FanStatus { get; private set; }
         public bool IsBlock { get; private set; }
 
         internal UserDetail(JObject o) : base(o)
@@ -58,7 +59,10 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             FollowStatus =
                 o.Value<int>("uid").ToString() == SettingsHelper.Get<string>(SettingsHelper.Uid) ? string.Empty : o.Value<int>("isFollow") == 0
                 ? loader.GetString("follow")
-                : loader.GetString("unFollow");
+                : o.Value<int>("isFans") == 1 ? loader.GetString("FanandFollow") : loader.GetString("unFollow");
+            FanStatus = o.Value<int>("uid").ToString() == SettingsHelper.Get<string>(SettingsHelper.Uid) ? string.Empty : o.Value<int>("isFollow") == 1
+                ? loader.GetString("isFollow")
+                : o.Value<int>("isFans") == 1 ? loader.GetString("isFan") : loader.GetString("notFan");
             BeLikedNum = o.Value<int>("be_like_num");
             FollowNum = o.Value<int>("follow");
             FansNum = o.Value<int>("fans");

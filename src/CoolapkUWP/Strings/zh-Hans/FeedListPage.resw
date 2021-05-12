@@ -132,6 +132,12 @@
   <data name="dateline_desc" xml:space="preserve">
     <value>按时间排序</value>
   </data>
+  <data name="FanandFollow" xml:space="preserve">
+    <value>已互粉</value>
+  </data>
+  <data name="FanbutnotFollow" xml:space="preserve">
+    <value>关注</value>
+  </data>
   <data name="Fans.Text" xml:space="preserve">
     <value>粉丝</value>
   </data>
@@ -156,11 +162,20 @@
   <data name="htmlFeed" xml:space="preserve">
     <value>图文</value>
   </data>
+  <data name="isFan" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="isFollow" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="lastupdate_desc" xml:space="preserve">
     <value>最近回复</value>
   </data>
   <data name="newest" xml:space="preserve">
     <value>最新</value>
+  </data>
+  <data name="notFan" xml:space="preserve">
+    <value></value>
   </data>
   <data name="popular" xml:space="preserve">
     <value>按热度排序</value>
@@ -175,6 +190,6 @@
     <value>订阅</value>
   </data>
   <data name="unFollow" xml:space="preserve">
-    <value>取消关注</value>
+    <value>已关注</value>
   </data>
 </root>

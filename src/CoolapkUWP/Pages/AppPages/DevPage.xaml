@@ -20,11 +20,11 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="400" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock x:Name="main" Grid.Row="1"/>
+                        <TextBlock x:Name="main" Grid.Row="0" TextWrapping="Wrap"/>
 
                     </Grid>
                 </controls:HeaderedContentControl>
