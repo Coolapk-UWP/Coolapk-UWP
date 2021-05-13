@@ -401,5 +401,10 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             UIHelper.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(url.Text, true));
         }
+
+        private void Button_Click_19(object sender, RoutedEventArgs e)
+        {
+            UIHelper.NavigateInSplitPane(typeof(FeedOnlyPage), new ViewModels.FeedOnlyPage.ViewModel("536381", ViewModels.FeedOnlyPage.ListType.UserFeed, "htmlFeed"));
+        }
     }
 }

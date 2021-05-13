@@ -3,6 +3,7 @@ using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
+using CoolapkUWP.ViewModels.FeedOnlyPage;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Linq;
@@ -241,9 +242,9 @@ namespace CoolapkUWP.Pages
                     break;
 
                 case "feed":
-                    var r = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, SettingsHelper.Get<string>(SettingsHelper.Uid));
+                    var r = SettingsHelper.Get<string>(SettingsHelper.Uid);
                     if (r != null)
-                        UIHelper.NavigateInSplitPane(typeof(FeedListPage), r);
+                        UIHelper.NavigateInSplitPane(typeof(FeedOnlyPage), new ViewModel(r, ListType.UserFeed, "feed"));
                     break;
 
                 case "follow":
@@ -299,6 +300,9 @@ namespace CoolapkUWP.Pages
                         }
                         else if (s.Contains("我的问答", System.StringComparison.Ordinal))
                         {
+                            var r = SettingsHelper.Get<string>(SettingsHelper.Uid);
+                            if (r != null)
+                                UIHelper.NavigateInSplitPane(typeof(FeedOnlyPage), new ViewModel(r, ListType.UserFeed, "questionAndAnswer"));
                         }
                         else { UIHelper.OpenLinkAsync(tag as string); }
                     }

@@ -1,5 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Pages.FeedPages;
+using CoolapkUWP.ViewModels.FeedListPage;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -58,6 +60,19 @@ namespace CoolapkUWP.Controls.DataTemplates
 
                 case "shareButton":
                     DisabledCopy();
+                    break;
+
+                case "deviceButton":
+                    var f = FeedListPageViewModelBase.GetProvider(FeedListType.DevicePageList, (sender as FrameworkElement).Tag as string);
+                    if (f != null)
+                    {
+                        UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
+                    }
+                    break;
+
+                case "changeButton":
+                    DisabledCopy();
+                    UIHelper.NavigateInSplitPane(typeof(FeedOnlyPage), new ViewModels.FeedOnlyPage.ViewModel((sender as FrameworkElement).Tag as string, ViewModels.FeedOnlyPage.ListType.FeedInfo, "changeHistory"));
                     break;
 
                 default:

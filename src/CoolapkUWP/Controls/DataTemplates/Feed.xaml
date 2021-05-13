@@ -13,6 +13,7 @@
         <local:RelationRowsItem />
     </ResourceDictionary.MergedDictionaries>
 
+    <converter:HasValueConverter x:Key="HasValueConverter" />
     <converter:TrueToFalseConverter x:Key="TrueToFalseConverter" />
     <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
@@ -99,15 +100,43 @@
                                     x:Load="{x:Bind ShowDateline}"
                                     Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                                     Text="{x:Bind Dateline}" />
-                                <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Info}" />
                                 <TextBlock
-                                    Margin="5,0,0,0"
                                     Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                    Text="{x:Bind DeviceTitle}" />
-                                <TextBlock
-                                    Margin="5,0,0,0"
+                                    Text="{x:Bind Info}" />
+                                <Button
+                                    x:Name="deviceButton"
+                                    Padding="0"
+                                    x:Load="{x:Bind DeviceTitle, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
+                                    Margin="2,0,0,0"
+                                    Style="{ThemeResource ButtonRevealStyle}"
+                                    Click="{x:Bind local:Feed.FeedButton_Click}"
                                     Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                    Text="{x:Bind ChangeTitle}" />
+                                    Background="Transparent"
+                                    Tag="{x:Bind DeviceTitle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="0,-2,0,0"
+                                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                            Text="{x:Bind DeviceTitle}" />
+                                    </StackPanel>
+                                </Button>
+                                <Button
+                                    x:Name="changeButton"
+                                    Padding="2"
+                                    x:Load="{x:Bind ChangeTitle, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
+                                    Margin="2,-4,0,0"
+                                    Style="{ThemeResource ButtonRevealStyle}"
+                                    Click="{x:Bind local:Feed.FeedButton_Click}"
+                                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                    Background="Transparent"
+                                    Tag="{x:Bind EntityId}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="0,-2,0,0"
+                                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                            Text="{x:Bind ChangeTitle}" />
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

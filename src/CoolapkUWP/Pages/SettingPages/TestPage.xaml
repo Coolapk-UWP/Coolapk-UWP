@@ -116,7 +116,10 @@
                             <Button Click="Button_Click_16" Style="{StaticResource ButtonRevealStyle}">进入画中画模式</Button>
                             <Button Click="Button_Click_17" Style="{StaticResource ButtonRevealStyle}" Margin="2,0,0,0">退出</Button>
                         </StackPanel>
-                        <Button Click="Button_Click_10" Style="{StaticResource ButtonRevealStyle}" Grid.Row="16" Margin="0,2">前往开发人员页面</Button>
+                        <StackPanel Orientation="Horizontal" Grid.Row="16" Margin="2" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <Button Click="Button_Click_10" Style="{StaticResource ButtonRevealStyle}">前往开发人员页面</Button>
+                            <Button Click="Button_Click_19" Style="{StaticResource ButtonRevealStyle}" Margin="2,0,0,0">测试新页面</Button>
+                        </StackPanel>
                     </Grid>
                 </controls:HeaderedContentControl>
 
