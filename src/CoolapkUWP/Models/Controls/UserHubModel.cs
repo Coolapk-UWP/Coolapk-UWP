@@ -123,6 +123,7 @@ namespace CoolapkUWP.Models.Controls
         public bool IsAuthor { get; private set; }
         public bool IsSpecial { get; private set; }
 
+        #region
         private static readonly ImmutableArray<string> authors = new string[]
         {
             "536381",//wherewhere
@@ -140,6 +141,7 @@ namespace CoolapkUWP.Models.Controls
             "3591060",
             "0",
         }.ToImmutableArray();
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -172,6 +174,7 @@ namespace CoolapkUWP.Models.Controls
 
         private static bool Is(string str, int i) => str == authors[i];
 
+        #region
         private void FindIsAuthor(string uid)
         {
             int i;
@@ -199,5 +202,6 @@ namespace CoolapkUWP.Models.Controls
                 else IsSpecial = false;
             }
         }
+        #endregion
     }
 }

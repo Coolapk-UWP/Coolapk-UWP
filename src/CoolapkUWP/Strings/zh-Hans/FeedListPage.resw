@@ -126,6 +126,12 @@
   <data name="article" xml:space="preserve">
     <value>图文</value>
   </data>
+  <data name="block_status-1" xml:space="preserve">
+    <value>[黑号]</value>
+  </data>
+  <data name="block_status2" xml:space="preserve">
+    <value>[已限流]</value>
+  </data>
   <data name="Comment.Text" xml:space="preserve">
     <value>讨论</value>
   </data>
@@ -162,11 +168,20 @@
   <data name="htmlFeed" xml:space="preserve">
     <value>图文</value>
   </data>
+  <data name="inBlackList" xml:space="preserve">
+    <value>已拉黑</value>
+  </data>
+  <data name="isBlack" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="isFan" xml:space="preserve">
     <value></value>
   </data>
   <data name="isFollow" xml:space="preserve">
-    <value></value>
+    <value></value>
+  </data>
+  <data name="isfriend" xml:space="preserve">
+    <value></value>
   </data>
   <data name="lastupdate_desc" xml:space="preserve">
     <value>最近回复</value>
@@ -185,6 +200,12 @@
   </data>
   <data name="square" xml:space="preserve">
     <value>广场</value>
+  </data>
+  <data name="status-1" xml:space="preserve">
+    <value>[已锁定]</value>
+  </data>
+  <data name="status1" xml:space="preserve">
+    <value>[半黑号]</value>
   </data>
   <data name="Subscribed.Text" xml:space="preserve">
     <value>订阅</value>

@@ -51,17 +51,19 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
         public string Logintime { get; private set; }
         public string FollowStatus { get; private set; }
         public string FanStatus { get; private set; }
-        public bool IsBlock { get; private set; }
+        public string BlockStatus { get; private set; }
 
         internal UserDetail(JObject o) : base(o)
         {
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
             FollowStatus =
-                o.Value<int>("uid").ToString() == SettingsHelper.Get<string>(SettingsHelper.Uid) ? string.Empty : o.Value<int>("isFollow") == 0
-                ? loader.GetString("follow")
+                o.Value<int>("uid").ToString() == SettingsHelper.Get<string>(SettingsHelper.Uid) ? string.Empty
+                : o.Value<int>("isBlackList") == 1 ? loader.GetString("inBlackList")
+                : o.Value<int>("isFollow") == 0 ? loader.GetString("follow")
                 : o.Value<int>("isFans") == 1 ? loader.GetString("FanandFollow") : loader.GetString("unFollow");
-            FanStatus = o.Value<int>("uid").ToString() == SettingsHelper.Get<string>(SettingsHelper.Uid) ? string.Empty : o.Value<int>("isFollow") == 1
-                ? loader.GetString("isFollow")
+            FanStatus = o.Value<int>("uid").ToString() == SettingsHelper.Get<string>(SettingsHelper.Uid) ? string.Empty
+                : o.Value<int>("isBlackList") == 1 ? loader.GetString("isBlack")
+                : o.Value<int>("isFollow") == 1 ? o.Value<int>("isFans") == 0 ? loader.GetString("follow") : loader.GetString("isfriend")
                 : o.Value<int>("isFans") == 1 ? loader.GetString("isFan") : loader.GetString("notFan");
             BeLikedNum = o.Value<int>("be_like_num");
             FollowNum = o.Value<int>("follow");
@@ -77,7 +79,9 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             Astro = o.Value<string>("astro");
             UserFace = new ImageModel(o.Value<string>("userAvatar"), ImageType.BigAvatar);
             Background = new BackgroundImageModel(o.Value<string>("cover"), ImageType.OriginImage);
-            IsBlock = UIHelper.IsSpecialUser && o.TryGetValue("block_status", out JToken v) && v.ToString() != "0";
+            BlockStatus = o.Value<int>("status") == -1 ? loader.GetString("status-1")
+                : UIHelper.IsSpecialUser && o.Value<int>("block_status") == -1 ? loader.GetString("block_status-1")
+                : UIHelper.IsSpecialUser && o.Value<int>("block_status") == 2 ? loader.GetString("block_status2") : null;
         }
     }
 

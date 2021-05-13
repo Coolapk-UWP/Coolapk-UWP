@@ -276,10 +276,10 @@
                                     <TextBlock
                                         x:Name="block"
                                         Margin="2,0"
-                                        x:Load="{x:Bind IsBlock}"
+                                        x:Load="{x:Bind BlockStatus, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
                                         FontSize="12"
                                         Foreground="LightGray"
-                                        Text="[限流中]"
+                                        Text="{x:Bind BlockStatus}"
                                         TextWrapping="Wrap" />
                                 </StackPanel>
                             </StackPanel>

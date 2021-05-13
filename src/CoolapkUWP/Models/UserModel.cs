@@ -8,11 +8,12 @@ namespace CoolapkUWP.Models
     {
         public UserModel(JObject o) : base(o)
         {
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
             Url = o.Value<string>("url");
-            UserName = o.Value<string>("username");
-            IsBlock = o.TryGetValue("block_status", out JToken v) && v.ToString() != "0";
-            if (UIHelper.IsSpecialUser && IsBlock)
-                UserName += " [限流中]";
+            BlockStatus = o.Value<int>("status") == -1 ? loader.GetString("status-1")
+                : UIHelper.IsSpecialUser && o.Value<int>("block_status") == -1 ? loader.GetString("block_status-1")
+                : UIHelper.IsSpecialUser && o.Value<int>("block_status") == 2 ? loader.GetString("block_status2") : null;
+            UserName = o.Value<string>("username") + " " + BlockStatus;
             if (o.TryGetValue("fans", out JToken a))
             {
                 FansNum = a.ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal);
@@ -33,7 +34,7 @@ namespace CoolapkUWP.Models
         public string FansNum { get; private set; }
         public string LoginTime { get; private set; }
         public string Bio { get; private set; }
-        public bool IsBlock { get; private set; }
+        public string BlockStatus { get; private set; }
         public ImageModel UserAvatar { get; private set; }
     }
 }
