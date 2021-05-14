@@ -1,6 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
 using System;
-using System.Net.Http;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -16,7 +15,7 @@ namespace CoolapkUWP.Pages.AppPages
     {
         public DevPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -27,9 +26,8 @@ namespace CoolapkUWP.Pages.AppPages
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             Uri uri = new Uri("https://api.coolapk.com/v6/feed/changeHistoryList?id=26935758");
-            var (isSucceed, result) = await DataHelper.GetHtmlAsync(uri,"XMLHttpRequest");
-            if (!isSucceed) { }
-            else main.Text = result;
+            var (isSucceed, result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
+            if (isSucceed) { main.Text = result; }
         }
 
         #region Task：任务
@@ -44,8 +42,7 @@ namespace CoolapkUWP.Pages.AppPages
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            if (Frame.CanGoBack)
-                Frame.GoBack();
+            if (Frame.CanGoBack) { Frame.GoBack(); }
         }
 
         private void TitleBar_Loaded(object sender, RoutedEventArgs e)

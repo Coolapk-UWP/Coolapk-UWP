@@ -148,7 +148,7 @@ namespace CoolapkUWP.Helpers
         {
             if (string.IsNullOrEmpty(url)) { return null; }
 
-            if (url.IndexOf("ms-appx") == 0)
+            if (url.IndexOf("ms-appx", StringComparison.Ordinal) == 0)
             {
                 return new BitmapImage(new Uri(url));
             }

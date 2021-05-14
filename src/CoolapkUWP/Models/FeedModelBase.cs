@@ -70,8 +70,7 @@ namespace CoolapkUWP.Models
 
         internal void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
-            if (name != null)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
 
         public FeedModelBase(JObject token) : base(token)
@@ -84,12 +83,11 @@ namespace CoolapkUWP.Models
             Likenum = token["likenum"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
             Replynum = token["replynum"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
             ShareNum = token["forwardnum"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
-            if (token.TryGetValue("change_count", out JToken v) || v != null)
-                ChangeCount = v.ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
-            else ChangeCount = token["isModified"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
+            ChangeCount = token.TryGetValue("change_count", out JToken v) || v != null
+                ? v.ToString().Replace("\"", string.Empty, StringComparison.Ordinal)
+                : token["isModified"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
             ChangeTitle = "已编辑" + ChangeCount + "次";
-            if (ChangeTitle == "已编辑0次")
-                ChangeTitle = null;
+            if (ChangeTitle == "已编辑0次") { ChangeTitle = null; }
             if (token.Value<string>("entityType") != "article")
             {
                 if (IsQuestionFeed)
@@ -120,11 +118,7 @@ namespace CoolapkUWP.Models
                     {
                         HaveUserInfo = false;
                     }
-                    string userSmallAvatarUrl;
-                    if (HaveUserInfo)
-                        userSmallAvatarUrl = token["userInfo"].Value<string>("userSmallAvatar");
-                    else
-                        userSmallAvatarUrl = token.Value<string>("userAvatar");
+                    string userSmallAvatarUrl = HaveUserInfo ? token["userInfo"].Value<string>("userSmallAvatar") : token.Value<string>("userAvatar");
                     if (!string.IsNullOrEmpty(userSmallAvatarUrl))
                     {
                         UserSmallAvatar = new ImageModel(userSmallAvatarUrl, ImageType.BigAvatar);
@@ -146,9 +140,8 @@ namespace CoolapkUWP.Models
                 DeviceTitle = token.Value<string>("device_title");
             }
             //else showUser = false;
-            if (token.Value<string>("extra_fromApi") == "V11_HOME_TAB_NEWS")
-                Liked = false;
-            else Liked = token.TryGetValue("userAction", out JToken v1) ? int.Parse(v1["like"].ToString()) == 1 : false;
+            Liked = token.Value<string>("extra_fromApi") != "V11_HOME_TAB_NEWS"
+                && token.TryGetValue("userAction", out JToken v1) && int.Parse(v1["like"].ToString()) == 1;
         }
     }
 }

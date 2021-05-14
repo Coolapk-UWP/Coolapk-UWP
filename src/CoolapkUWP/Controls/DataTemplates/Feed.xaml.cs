@@ -24,7 +24,7 @@ namespace CoolapkUWP.Controls.DataTemplates
             UIHelper.OpenLinkAsync(s.Tag as string);
         }
 
-        internal static async void FeedButton_Click(object sender, RoutedEventArgs e)
+        internal static async void FeedButton_Click(object sender, RoutedEventArgs _)
         {
             void DisabledCopy()
             {
@@ -105,19 +105,16 @@ namespace CoolapkUWP.Controls.DataTemplates
             }
         }
 
-        internal static void ListViewItem_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        internal static void ListViewItem_RightTapped(object sender, RightTappedRoutedEventArgs _)
         {
             FrameworkElement s = (FrameworkElement)sender;
             var b = s.FindName("moreButton") as Button;
             b.Flyout.ShowAt(s);
         }
 
-        internal static void relaRLis_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            UIHelper.OpenLinkAsync(((Models.RelationRowsItem)e.ClickedItem).Url);
-        }
+        internal static void relaRLis_ItemClick(object _, ItemClickEventArgs e) => UIHelper.OpenLinkAsync(((Models.RelationRowsItem)e.ClickedItem).Url);
 
-        internal static void Flyout_Opened(object sender, object e)
+        internal static void Flyout_Opened(object sender, object _)
         {
             var flyout = (Flyout)sender;
             if (flyout.Content == null)

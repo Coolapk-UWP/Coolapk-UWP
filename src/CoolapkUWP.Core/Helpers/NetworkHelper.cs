@@ -30,7 +30,7 @@ namespace CoolapkUWP.Core.Helpers
             client.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
             client.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
             if (ApplicationData.Current.LocalSettings.Values["Version"] != null)
-                Version = ApplicationData.Current.LocalSettings.Values["Version"].ToString();
+            { Version = ApplicationData.Current.LocalSettings.Values["Version"].ToString(); }
             switch (Version)
             {
                 case "V6":
@@ -96,15 +96,14 @@ namespace CoolapkUWP.Core.Helpers
         {
             const string name = "X-Requested-With";
             headers.Remove(name);
-            if (request != null)
-                headers.Add(name, request);
+            if (request != null) { headers.Add(name, request); }
         }
 
         private static void ReplaceCoolapkCookie(this CookieContainer container, IEnumerable<(string name, string value)> cookies)
         {
             if (cookies == null) { return; }
 
-            var c = container.GetCookies(UriHelper.CoolapkUri);
+            //var c = container.GetCookies(UriHelper.CoolapkUri);
             foreach (var item in cookies)
             {
                 container.SetCookies(UriHelper.BaseUri, $"{item.name}={item.value}");
@@ -149,7 +148,7 @@ namespace CoolapkUWP.Core.Helpers
             catch { throw; }
         }
 
-        public static async Task<string> GetHtmlAsync(Uri uri, IEnumerable<(string name, string value)> coolapkCookies , string request)
+        public static async Task<string> GetHtmlAsync(Uri uri, IEnumerable<(string name, string value)> coolapkCookies, string request)
         {
             try
             {

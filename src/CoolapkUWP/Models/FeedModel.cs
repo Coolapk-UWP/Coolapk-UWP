@@ -91,14 +91,7 @@ namespace CoolapkUWP.Models
                 {
                     HaveUserInfo = false;
                 }
-                if (HaveUserInfo)
-                {
-                    Uurl = token["userInfo"].Value<string>("url");
-                }
-                else
-                {
-                    Uurl = "/u/" + token.Value<string>("uid");
-                }
+                Uurl = HaveUserInfo ? token["userInfo"].Value<string>("url") : "/u/" + token.Value<string>("uid");
             }
 
             ShowRelationRows = (token.TryGetValue("location", out JToken vLocation) && !string.IsNullOrEmpty(vLocation.ToString())) |

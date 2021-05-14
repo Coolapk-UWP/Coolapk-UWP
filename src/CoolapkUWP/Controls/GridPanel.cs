@@ -37,7 +37,7 @@ namespace CoolapkUWP.Controls
         protected override Size MeasureOverride(Size availableSize)
         {
             StackCount = (int)(availableSize.Width / DesiredColumnWidth);
-            if (StackCount == 0) StackCount = 1;
+            if (StackCount == 0) { StackCount = 1; }
             Size requestSize = new Size { Width = availableSize.Width };
             List<double> offsetY = new double[StackCount].ToList();
             double offsetY2 = 0;
@@ -50,9 +50,9 @@ namespace CoolapkUWP.Controls
                         double height = 0;
                         for (int j = 0; j < StackCount; j++)
                         {
-                            Children[i * StackCount + j]?.Measure(new Size(availableSize.Width / StackCount, double.PositiveInfinity));
-                            if (Children[i * StackCount + j]?.DesiredSize.Height > height)
-                                height = Children[i * StackCount + j].DesiredSize.Height;
+                            Children[(i * StackCount) + j]?.Measure(new Size(availableSize.Width / StackCount, double.PositiveInfinity));
+                            if (Children[(i * StackCount) + j]?.DesiredSize.Height > height)
+                            { height = Children[(i * StackCount) + j].DesiredSize.Height; }
                         }
                         offsetY2 += height;
                     }
@@ -98,18 +98,26 @@ namespace CoolapkUWP.Controls
             if (CubeInSameHeight)
             {
                 if (Children.Count > 0)
+                {
                     for (int i = 0; i < (int)Math.Ceiling((double)Children.Count / StackCount); i++)
                     {
                         double height = 0;
                         for (int j = 0; j < StackCount; j++)
-                            if (Children[i * StackCount + j]?.DesiredSize.Height > height)
-                                height = Children[i * StackCount + j].DesiredSize.Height;
+                        {
+                            if (Children[(i * StackCount) + j]?.DesiredSize.Height > height)
+                            { height = Children[(i * StackCount) + j].DesiredSize.Height; }
+                        }
                         for (int j = 0; j < StackCount; j++)
-                            Children[i * StackCount + j]?.Arrange(new Rect(offsetX[j], offsetY2, DesiredSize.Width / StackCount, height));
+                        { Children[(i * StackCount) + j]?.Arrange(new Rect(offsetX[j], offsetY2, DesiredSize.Width / StackCount, height)); }
+
                         offsetY2 += height;
                     }
+                }
             }
-            else foreach (var item in Children)
+            else
+            {
+                foreach (var item in Children)
+                {
                     if (item is ListViewItem l &&
                         l.Content is IndexPageHasEntitiesModel m &&
                         (m.EntitiesType == EntityType.TabLink || m.EntitiesType == EntityType.SelectorLink))
@@ -126,6 +134,9 @@ namespace CoolapkUWP.Controls
                         item.Arrange(new Rect(offsetX[minIndex], offsetY[minIndex], DesiredSize.Width / StackCount, item.DesiredSize.Height));
                         offsetY[minIndex] += item.DesiredSize.Height;
                     }
+                }
+            }
+
             return finalSize;
         }
     }

@@ -14,8 +14,7 @@ namespace CoolapkUWP.Helpers
         public static ExceptionHandlingSynchronizationContext Register()
         {
             var syncContext = Current;
-            if (syncContext == null)
-                throw new InvalidOperationException("Ensure a synchronization context exists before calling this method.");
+            if (syncContext == null) { throw new InvalidOperationException("Ensure a synchronization context exists before calling this method."); }
             if (!(syncContext is ExceptionHandlingSynchronizationContext customSynchronizationContext))
             {
                 customSynchronizationContext = new ExceptionHandlingSynchronizationContext(syncContext);
@@ -33,8 +32,7 @@ namespace CoolapkUWP.Helpers
         /// </returns>
         public static ExceptionHandlingSynchronizationContext RegisterForFrame(Frame rootFrame)
         {
-            if (rootFrame == null)
-                throw new ArgumentNullException(nameof(rootFrame));
+            if (rootFrame == null) { throw new ArgumentNullException(nameof(rootFrame)); }
 
             var synchronizationContext = Register();
 
@@ -46,8 +44,7 @@ namespace CoolapkUWP.Helpers
 
         private static void EnsureContext(SynchronizationContext context)
         {
-            if (Current != context)
-                SetSynchronizationContext(context);
+            if (Current != context) { SetSynchronizationContext(context); }
         }
 
         private readonly SynchronizationContext _syncContext;
@@ -72,18 +69,18 @@ namespace CoolapkUWP.Helpers
             }
             catch (Exception ex)
             {
-                if (!HandleException(ex)) throw;
+                if (!HandleException(ex)) { throw; }
             }
         };
 
         private bool HandleException(Exception exception)
         {
-            if (UnhandledException == null) return false;
+            if (UnhandledException == null) { return false; }
             var exWrapper = new AysncUnhandledExceptionEventArgs { Exception = exception };
             UnhandledException(this, exWrapper);
 
 #if DEBUG && !DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
-            if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
+            if (System.Diagnostics.Debugger.IsAttached) { System.Diagnostics.Debugger.Break(); }
 #endif
             return exWrapper.Handled;
         }

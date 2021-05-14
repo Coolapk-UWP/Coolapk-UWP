@@ -72,8 +72,7 @@ namespace CoolapkUWP.Controls
             using (var qrGenerator = new QRCodeGenerator())
             {
                 var qrCodeData = qrGenerator.CreateQrCode("https://www.coolapk.com", QRCodeGenerator.ECCLevel.Q);
-                if (QRCodeText != null)
-                    qrCodeData = qrGenerator.CreateQrCode(QRCodeText, QRCodeGenerator.ECCLevel.Q);
+                if (QRCodeText != null) { qrCodeData = qrGenerator.CreateQrCode(QRCodeText, QRCodeGenerator.ECCLevel.Q); }
                 using (var qrCodeBmp = new PngByteQRCode(qrCodeData))
                 {
                     byte[] qrCodeImageBmp = qrCodeBmp.GetGraphic(
@@ -98,7 +97,7 @@ namespace CoolapkUWP.Controls
 
         public ShowQRCodeControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

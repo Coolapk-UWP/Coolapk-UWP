@@ -33,26 +33,14 @@ namespace CoolapkUWP.ViewModels.FeedDetailPage
 
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
-            if (name != null)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
 
         internal static async Task<ViewModel> GetViewModelAsync(string id)
         {
             if (string.IsNullOrEmpty(id)) { throw new ArgumentException(nameof(id)); }
             var detail = await GetFeedDetailAsync(id);
-            if (detail != null)
-            {
-                if (detail.IsQuestionFeed)
-                {
-                    return new QuestionViewModel(id);
-                }
-                else
-                {
-                    return new FeedViewModel(id);
-                }
-            }
-            else { return null; }
+            return detail != null ? detail.IsQuestionFeed ? new QuestionViewModel(id) : (ViewModel)new FeedViewModel(id) : null;
         }
 
         protected ViewModel(string id)
@@ -67,11 +55,7 @@ namespace CoolapkUWP.ViewModels.FeedDetailPage
             if (!isSucceed) { return null; }
 
             var detail = (JObject)result;
-            if (detail != null)
-            {
-                return new FeedDetailModel(detail);
-            }
-            return null;
+            return detail != null ? new FeedDetailModel(detail) : null;
         }
 
         public abstract Task Refresh(int p = -1);

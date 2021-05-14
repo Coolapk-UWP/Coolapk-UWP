@@ -40,7 +40,7 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        public BrowserPage() => this.InitializeComponent();
+        public BrowserPage() => InitializeComponent();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -59,13 +59,15 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private void LoadUri(String uri)
+        private void LoadUri(string uri)
 
         {
             EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
-            var httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(Windows.Web.Http.HttpMethod.Get, new Uri(uri));
-            httpRequestMessage.Headers.UserAgent.ParseAdd("(#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; ; " + "10.0) +CoolMarket / 11.1.2 - 2104021 - universal");
-            webView.NavigateWithHttpRequestMessage(httpRequestMessage);
+            using (var httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(Windows.Web.Http.HttpMethod.Get, new Uri(uri)))
+            {
+                httpRequestMessage.Headers.UserAgent.ParseAdd("(#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; ; " + "10.0) +CoolMarket / 11.1.2 - 2104021 - universal");
+                webView.NavigateWithHttpRequestMessage(httpRequestMessage);
+            }
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

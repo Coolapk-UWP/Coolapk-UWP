@@ -19,8 +19,7 @@ namespace CoolapkUWP.Controls
 
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
-            if (name != null)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
 
         public FeedDetailModel FeedDetail
@@ -49,16 +48,16 @@ namespace CoolapkUWP.Controls
 
         public FeedShellDetailControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         public event EventHandler RequireRefresh;
 
-        private static void Image_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.ShowImage((sender as FrameworkElement).Tag as Models.ImageModel);
+        private static void Image_Tapped(object sender, TappedRoutedEventArgs _) => UIHelper.ShowImage((sender as FrameworkElement).Tag as ImageModel);
 
         private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (FeedDetail.IsCopyEnabled || e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
+            if (FeedDetail.IsCopyEnabled || (e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource))) { return; }
 
             UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
         }
@@ -76,7 +75,7 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        private static void Grid_Tapped(object sender, TappedRoutedEventArgs e)
+        private static void Grid_Tapped(object sender, TappedRoutedEventArgs _)
         {
             if ((sender as FrameworkElement).Tag is string s)
             {
@@ -106,7 +105,7 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        private string Massage_Ex(string str)
+        private static string Massage_Ex(string str)
         {
             Regex r = new Regex("<a.*?>", RegexOptions.IgnoreCase);
             Regex r1 = new Regex("<a.*?/>", RegexOptions.IgnoreCase);

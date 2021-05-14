@@ -14,7 +14,7 @@ namespace CoolapkUWP.Pages.FeedPages
     {
         private ViewModels.IndexPage.ViewModel provider;
 
-        public IndexPage() => this.InitializeComponent();
+        public IndexPage() => InitializeComponent();
 
         private void UIHelper_RequireIndexPageRefresh(object sender, EventArgs e) => RefreshPage();
 
@@ -237,7 +237,7 @@ namespace CoolapkUWP.Pages.FeedPages
             HideProgressRing();
         }
 
-        internal static void FlipView_Loaded(object sender, RoutedEventArgs e)
+        internal static void FlipView_Loaded(object sender, RoutedEventArgs _)
         {
             var view = sender as FlipView;
             view.MaxHeight = view.ActualWidth / 3;

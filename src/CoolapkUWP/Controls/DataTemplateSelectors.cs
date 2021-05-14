@@ -28,14 +28,13 @@ namespace CoolapkUWP.Controls
         {
             if (item is FeedModel f)
             {
-                if (f.IsCoolPictuers) return CoolPic;
-                else return Feed;
+                return f.IsCoolPictuers ? CoolPic : Feed;
             }
-            else if (item is UserModel) return User;
-            else if (item is TopicModel) return Topic;
-            else if (item is DyhModel) return Dyh;
-            else if (item is ProductModel) return Product;
-            else if (item is IndexPageMessageCardModel) return MessageCard;
+            else if (item is UserModel) { return User; }
+            else if (item is TopicModel) { return Topic; }
+            else if (item is DyhModel) { return Dyh; }
+            else if (item is ProductModel) { return Product; }
+            else if (item is IndexPageMessageCardModel) { return MessageCard; }
             else if (item is IndexPageHasEntitiesModel m)
             {
                 switch (m.EntitiesType)
@@ -59,7 +58,7 @@ namespace CoolapkUWP.Controls
                     default: return Others;
                 }
             }
-            else return Others;
+            else { return Others; }
         }
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
@@ -83,9 +82,7 @@ namespace CoolapkUWP.Controls
         {
             if (item is SourceFeedModel f)
             {
-                if (f.IsQuestionFeed) { return QuestionFeed; }
-                else if (f.ShowMessageTitle) { return FeedImageText; }
-                else { return f.IsCoolPictuers ? CoolPic : Feed; }
+                return f.IsQuestionFeed ? QuestionFeed : f.ShowMessageTitle ? FeedImageText : f.IsCoolPictuers ? CoolPic : Feed;
             }
             else if (item is UserModel) { return User; }
             else

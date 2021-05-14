@@ -17,12 +17,12 @@ namespace CoolapkUWP.Pages.SettingPages
 {
     public sealed partial class TestPage : Page
     {
-        string Url = "/feed/";
-        int i = 0;
+        private string Url = "/feed/";
+        private int i;
 
         public TestPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             //var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView("EmojiId");
             //System.Diagnostics.Debug.WriteLine(
             //loader.GetString("?")
@@ -79,8 +79,7 @@ namespace CoolapkUWP.Pages.SettingPages
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             var f = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, await Core.Helpers.NetworkHelper.GetUserIDByNameAsync(uid.Text));
-            if (f != null)
-                UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
+            if (f != null) { UIHelper.NavigateInSplitPane(typeof(FeedListPage), f); }
         }
 
         private void IDComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -207,8 +206,7 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            if (Frame.CanGoBack)
-                Frame.GoBack();
+            if (Frame.CanGoBack) { Frame.GoBack(); }
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
@@ -243,10 +241,8 @@ namespace CoolapkUWP.Pages.SettingPages
             }
             else if (i == 2)
             {
-                if (ID.Text.StartsWith("V"))
-                    UIHelper.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(Url + ID.Text, true));
-                else
-                    UIHelper.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(ID.Text, true));
+                if (ID.Text.StartsWith("V", StringComparison.Ordinal)) { UIHelper.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(Url + ID.Text, true)); }
+                else { UIHelper.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(ID.Text, true)); }
             }
             else if (i == 3)
             {
@@ -256,7 +252,7 @@ namespace CoolapkUWP.Pages.SettingPages
                     UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
                 }
             }
-            else UIHelper.OpenLinkAsync(Url + ID.Text);
+            else { UIHelper.OpenLinkAsync(Url + ID.Text); }
         }
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
@@ -338,7 +334,7 @@ namespace CoolapkUWP.Pages.SettingPages
             await CoreApplication.RequestRestartAsync(string.Empty);
         }
 
-        private JumpListItem CreateJumpListItem(string arguments, string displayName, string groupName, Uri uri)
+        private static JumpListItem CreateJumpListItem(string arguments, string displayName, string groupName, Uri uri)
         {
             JumpListItem item = JumpListItem.CreateWithArguments(arguments, displayName);
             item.GroupName = groupName;

@@ -25,8 +25,7 @@ namespace CoolapkUWP.Core.Models
             {
                 try
                 {
-                    if (v3.ToObject<int>() == 1)
-                        EntityFixed = true;
+                    if (v3.ToObject<int>() == 1) { EntityFixed = true; }
                 }
                 catch { }
             }

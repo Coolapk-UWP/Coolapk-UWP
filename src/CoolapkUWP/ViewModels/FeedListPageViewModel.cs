@@ -16,7 +16,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
     {
         protected const string idName = "id";
         protected static readonly Func<JObject, Entity[]> getEntity = (o) => new Entity[] { new FeedModel(o) };
-        protected static readonly Func<Entity, JToken, bool> isEqual = (a, b) => a is FeedListDetailBase ? false : ((FeedModel)a).Id == b.Value<int>("id").ToString();
+        protected static readonly Func<Entity, JToken, bool> isEqual = (a, b) => !(a is FeedListDetailBase) && ((FeedModel)a).Id == b.Value<int>("id").ToString();
         private string title;
 
         public string Id { get; }
@@ -47,7 +47,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
 
         public static FeedListPageViewModelBase GetProvider(FeedListType type, string id)
         {
-            if (string.IsNullOrEmpty(id) || id == "0") return null;
+            if (string.IsNullOrEmpty(id) || id == "0") { return null; }
             switch (type)
             {
                 case FeedListType.UserPageList: return new UserViewModel(id);

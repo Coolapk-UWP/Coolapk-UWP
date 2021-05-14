@@ -103,10 +103,9 @@ namespace CoolapkUWP.ViewModels.IndexPage
                             case "imageCard":
                             case "iconButtonGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
                             case "configCard":
-                                if (jo.TryGetValue("url", out JToken v2) && (v2.ToString()).Length >= 5)
-                                    return new IndexPageHasEntitiesModel(jo, EntityType.IconLink);
-                                else
-                                    return null;
+                                return jo.TryGetValue("url", out JToken v2) && v2.ToString().Length >= 5
+                                    ? new IndexPageHasEntitiesModel(jo, EntityType.IconLink)
+                                    : null;
                             case "iconLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.IconLink);
                             case "feedGroupListCard":
                             case "textLinkListCard": return new IndexPageHasEntitiesModel(jo, EntityType.TextLinks);
@@ -121,7 +120,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
                             default: return null;
                         }
                     }
-                    else return null;
+                    else { return null; }
             }
         }
 

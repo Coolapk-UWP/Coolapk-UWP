@@ -19,8 +19,7 @@ namespace CoolapkUWP.Pages
 
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
-            if (name != null)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
 
         private ViewModels.MyPage.ViewMode provider;
@@ -61,8 +60,8 @@ namespace CoolapkUWP.Pages
 
         public MyPage()
         {
-            this.InitializeComponent();
-            this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+            InitializeComponent();
+            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
             Loaded += (s, e) =>
            {
                LogoutButtonVisibility = string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid))
@@ -216,7 +215,7 @@ namespace CoolapkUWP.Pages
             {
                 ChangeBadgeNum(num.BadgeNum);
             }
-            else throw new System.NotImplementedException();
+            else { throw new System.NotImplementedException(); }
         }
 
         private void ChangeBadgeNum(double num) =>
@@ -237,14 +236,12 @@ namespace CoolapkUWP.Pages
 
                 case "MyFeed":
                     var f = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, SettingsHelper.Get<string>(SettingsHelper.Uid));
-                    if (f != null)
-                        UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
+                    if (f != null) { UIHelper.NavigateInSplitPane(typeof(FeedListPage), f); }
                     break;
 
                 case "feed":
                     var r = SettingsHelper.Get<string>(SettingsHelper.Uid);
-                    if (r != null)
-                        UIHelper.NavigateInSplitPane(typeof(FeedOnlyPage), new ViewModel(r, ListType.UserFeed, "feed"));
+                    if (r != null) { UIHelper.NavigateInSplitPane(typeof(FeedOnlyPage), new ViewModel(r, ListType.UserFeed, "feed")); }
                     break;
 
                 case "follow":
@@ -301,8 +298,7 @@ namespace CoolapkUWP.Pages
                         else if (s.Contains("我的问答", System.StringComparison.Ordinal))
                         {
                             var r = SettingsHelper.Get<string>(SettingsHelper.Uid);
-                            if (r != null)
-                                UIHelper.NavigateInSplitPane(typeof(FeedOnlyPage), new ViewModel(r, ListType.UserFeed, "questionAndAnswer"));
+                            if (r != null) { UIHelper.NavigateInSplitPane(typeof(FeedOnlyPage), new ViewModel(r, ListType.UserFeed, "questionAndAnswer")); }
                         }
                         else { UIHelper.OpenLinkAsync(tag as string); }
                     }
@@ -355,7 +351,7 @@ namespace CoolapkUWP.Pages
                     default: return Others;
                 }
             }
-            else return Others;
+            else { return Others; }
         }
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);

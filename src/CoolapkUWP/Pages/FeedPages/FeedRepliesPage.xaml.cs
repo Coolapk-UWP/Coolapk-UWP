@@ -12,7 +12,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public FeedRepliesPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)

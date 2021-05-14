@@ -13,7 +13,7 @@ namespace CoolapkUWP.Controls
 
         public CaptchaDialog()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             SetImage();
         }
 
@@ -33,7 +33,7 @@ namespace CoolapkUWP.Controls
             {
                 content.Add(type, "type");
                 content.Add(code, "code");
-                var (_, t) = (await DataHelper.PostDataAsync(UriHelper.GetUri(UriType.RequestValidate), content));
+                var (_, t) = await DataHelper.PostDataAsync(UriHelper.GetUri(UriType.RequestValidate), content);
                 UIHelper.StatusBar_ShowMessage(t.ToString());
             }
         }

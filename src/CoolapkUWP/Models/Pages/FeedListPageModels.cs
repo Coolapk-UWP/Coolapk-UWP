@@ -23,8 +23,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
 
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
-            if (name != null)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
 
         protected FeedListDetailBase(JObject o) : base(o)

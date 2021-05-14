@@ -87,7 +87,7 @@ namespace CoolapkUWP.Core.Helpers
 
         private static readonly object locker = new object();
 
-        private readonly static Timer cleanCacheTimer = new Timer(o =>
+        private static readonly Timer cleanCacheTimer = new Timer(o =>
         {
             lock (locker)
             {
@@ -122,9 +122,9 @@ namespace CoolapkUWP.Core.Helpers
             return GetResult(json);
         }
 
-        public static async Task<(bool isSucceed, string result)> GetHtmlAsync(Uri uri, IEnumerable<(string, string)> cookies,string request)
+        public static async Task<(bool isSucceed, string result)> GetHtmlAsync(Uri uri, IEnumerable<(string, string)> cookies, string request)
         {
-            var json = await NetworkHelper.GetHtmlAsync(uri, cookies , request);
+            var json = await NetworkHelper.GetHtmlAsync(uri, cookies, request);
             if (cookies == null)
                 ShowInAppMessage(MessageType.Message, "cookies为null");
             if (string.IsNullOrEmpty(json))

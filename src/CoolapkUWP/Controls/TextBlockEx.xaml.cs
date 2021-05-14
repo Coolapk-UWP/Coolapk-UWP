@@ -29,7 +29,7 @@ namespace CoolapkUWP.Controls
             get => _messageText;
             set
             {
-                var str = value.Replace("<!--break-->", string.Empty, System.StringComparison.OrdinalIgnoreCase);
+                var str = value.Replace("<!--break-->", string.Empty, StringComparison.OrdinalIgnoreCase);
                 if (str != _messageText)
                 {
                     _messageText = str;
@@ -46,6 +46,7 @@ namespace CoolapkUWP.Controls
             get => mainContent?.MaxLines ?? 0;
             set
             {
+                //UIHelper.StatusBar_ShowMessage(value.ToString());
                 if (value >= 0)
                 {
                     _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
@@ -53,14 +54,8 @@ namespace CoolapkUWP.Controls
                         if (mainContent != null)
                         {
                             mainContent.MaxLines = value;
-                            if (value > 0)
-                            {
-                                mainContent.TextTrimming = TextTrimming.WordEllipsis;
-                            }
-                            else
-                            {
-                                mainContent.TextTrimming = TextTrimming.None;
-                            }
+                            mainContent.TextTrimming = value > 0 ? TextTrimming.WordEllipsis : TextTrimming.None;
+                            //UIHelper.StatusBar_ShowMessage(mainContent.MaxLines.ToString());
                         }
                     });
                 }
@@ -79,7 +74,7 @@ namespace CoolapkUWP.Controls
             });
         }
 
-        public TextBlockEx() => this.InitializeComponent();
+        public TextBlockEx() => InitializeComponent();
 
         public event EventHandler RichTextBlockLoaded;
 
@@ -120,7 +115,7 @@ namespace CoolapkUWP.Controls
                                     href = match.Value.Substring(match.Value.IndexOf('"') + 1, match.Value.LastIndexOf('"') - match.Value.IndexOf('"') - 1);
                                 }
 
-                                if (item.Contains("t=\"image\"", System.StringComparison.Ordinal))
+                                if (item.Contains("t=\"image\"", StringComparison.Ordinal))
                                 {
                                     NewLine();
 
@@ -252,7 +247,7 @@ namespace CoolapkUWP.Controls
                                         Run run2 = new Run { Text = "\uE167", FontFamily = new FontFamily("Segoe MDL2 Assets") };
                                         hyperlink.Inlines.Add(run2);
                                     }
-                                    else if (content == "查看图片" && (href.IndexOf("http://image.coolapk.com") == 0 || href.IndexOf("https://image.coolapk.com") == 0))
+                                    else if (content == "查看图片" && (href.IndexOf("http://image.coolapk.com", StringComparison.Ordinal) == 0 || href.IndexOf("https://image.coolapk.com", StringComparison.Ordinal) == 0))
                                     {
                                         content = loader.GetString("seePic");
                                         Run run2 = new Run { Text = "\uE158", FontFamily = new FontFamily("Segoe MDL2 Assets") };
@@ -262,7 +257,7 @@ namespace CoolapkUWP.Controls
                                     hyperlink.Inlines.Add(run);
                                     hyperlink.Click += (sender, e) =>
                                     {
-                                        if (content == loader.GetString("seePic") && (href.IndexOf("http://image.coolapk.com") == 0 || href.IndexOf("https://image.coolapk.com") == 0))
+                                        if (content == loader.GetString("seePic") && (href.IndexOf("http://image.coolapk.com", StringComparison.Ordinal) == 0 || href.IndexOf("https://image.coolapk.com", StringComparison.Ordinal) == 0))
                                         {
                                             UIHelper.ShowImage(href, ImageType.SmallImage);
                                         }
@@ -324,6 +319,7 @@ namespace CoolapkUWP.Controls
                 block.TextTrimming = TextTrimming.WordEllipsis;
             }
             RichTextBlockLoaded?.Invoke(this, null);
+            //UIHelper.StatusBar_ShowMessage(MaxLine.ToString());
         }
 
         private static Task<ImmutableArray<string>> GetStringList(string text)
@@ -338,7 +334,7 @@ namespace CoolapkUWP.Controls
                 for (int i = 0; i < text.Length;)
                 {
                     var matchedValue = link.Match(text, i);
-                    int index = (string.IsNullOrEmpty(matchedValue.Value) ? text.Length : text.IndexOf(matchedValue.Value, i)) - i;
+                    int index = (string.IsNullOrEmpty(matchedValue.Value) ? text.Length : text.IndexOf(matchedValue.Value, i, StringComparison.Ordinal)) - i;
                     if (index == 0)
                     {
                         buider.Add(matchedValue.Value.Replace("\n", "<br/>"));
@@ -356,7 +352,7 @@ namespace CoolapkUWP.Controls
                 {
                     for (int i = 0; i < buider[j].Length;)
                     {
-                        int a = buider[j].IndexOf(AuthorBorder, i) == -1 ? -1 : buider[j].IndexOf(AuthorBorder, i) - i;
+                        int a = buider[j].IndexOf(AuthorBorder, i, StringComparison.Ordinal) == -1 ? -1 : buider[j].IndexOf(AuthorBorder, i, StringComparison.Ordinal) - i;
                         if (a == 0)
                         {
                             if (buider[j].Length > length)
@@ -384,7 +380,7 @@ namespace CoolapkUWP.Controls
                         for (int i = 0; i < buider[j].Length;)
                         {
                             var v = emojis[k].Match(buider[j], i);
-                            int a = string.IsNullOrEmpty(v.Value) ? -1 : buider[j].IndexOf(v.Value, i) - i;
+                            int a = string.IsNullOrEmpty(v.Value) ? -1 : buider[j].IndexOf(v.Value, i, StringComparison.Ordinal) - i;
                             if (a == 0)
                             {
                                 if (EmojiHelper.Contains(buider[j].Substring(0, v.Length)) && (emojis[k].IsMatch(buider[j], i + v.Length) || buider[j].Length > v.Length))
@@ -413,7 +409,7 @@ namespace CoolapkUWP.Controls
                 {
                     for (int i = 0; i < buider[j].Length;)
                     {
-                        int a = buider[j].IndexOf("\n", i) == -1 ? -1 : buider[j].IndexOf("\n", i) - i;
+                        int a = buider[j].IndexOf("\n", i, StringComparison.Ordinal) == -1 ? -1 : buider[j].IndexOf("\n", i, StringComparison.Ordinal) - i;
                         if (a == 0)
                         {
                             if (!link.IsMatch(buider[j]) && buider[j].Length > 1)

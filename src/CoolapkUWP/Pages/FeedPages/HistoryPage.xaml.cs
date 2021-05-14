@@ -11,7 +11,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public HistoryPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -70,7 +70,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private static void ListViewItem_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private static void ListViewItem_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs _)
         {
             Helpers.UIHelper.OpenLinkAsync((sender as FrameworkElement)?.Tag as string);
         }

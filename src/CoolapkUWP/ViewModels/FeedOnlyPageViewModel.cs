@@ -33,7 +33,7 @@ namespace CoolapkUWP.ViewModels.FeedOnlyPage
             Models = provider.Models;
         }
 
-        private string GetTitle(ListType type, string branch)
+        private static string GetTitle(ListType type, string branch)
         {
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedOnlyPage");
             switch (type)
@@ -160,7 +160,7 @@ namespace CoolapkUWP.ViewModels.FeedOnlyPage
                             default: return null;
                         }
                     }
-                    else return null;
+                    else { return null; }
             }
         }
 

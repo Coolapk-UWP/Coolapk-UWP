@@ -69,7 +69,7 @@ namespace CoolapkUWP.Controls
                             default: return null;
                         }
                     }
-                    else return null;
+                    else { return null; }
             }
         }
 

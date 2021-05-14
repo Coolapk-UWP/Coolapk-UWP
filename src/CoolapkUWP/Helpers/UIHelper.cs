@@ -56,7 +56,7 @@ namespace CoolapkUWP.Helpers
         private static InAppNotify inAppNotification;
         private static CoreDispatcher shellDispatcher;
         public static List<Popup> popups = new List<Popup>();
-        static ObservableCollection<string> messageList = new ObservableCollection<string>();
+        private static readonly ObservableCollection<string> messageList = new ObservableCollection<string>();
         public static bool HasStatusBar => Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
 
         public static CoreDispatcher ShellDispatcher
@@ -97,10 +97,8 @@ namespace CoolapkUWP.Helpers
         public static void ShowPopup(Popup popup)
         {
             popup.RequestedTheme = SettingsHelper.Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (SettingsHelper.Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
-            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
-                popups.Insert(popups.Count - 1, popup);
-            else
-                popups.Add(popup);
+            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop") { popups.Insert(popups.Count - 1, popup); }
+            else { popups.Add(popup); }
             popup.IsOpen = true;
             popups.Last().IsOpen = false;
             popups.Last().IsOpen = true;
@@ -109,7 +107,7 @@ namespace CoolapkUWP.Helpers
         public static void Hide(this Popup popup)
         {
             popup.IsOpen = false;
-            if (popups.Contains(popup)) popups.Remove(popup);
+            if (popups.Contains(popup)) { popups.Remove(popup); }
         }
 
         public static async void ShowProgressBar()
@@ -121,26 +119,26 @@ namespace CoolapkUWP.Helpers
                 await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
             }
             else if (popups.Last().Child is StatusGrid statusGrid)
-                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar());
+            { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar()); }
         }
 
         public static async void PausedProgressBar()
         {
             if (!HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
-                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.PausedProgressBar());
+            { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.PausedProgressBar()); }
         }
 
         public static async void ErrorProgressBar()
         {
             if (!HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
-                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ErrorProgressBar());
+            { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ErrorProgressBar()); }
         }
 
         public static async void HideProgressBar()
         {
             isShowingProgressBar = false;
-            if (HasStatusBar) await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
-            else if (popups.Last().Child is StatusGrid statusGrid) statusGrid.HideProgressBar();
+            if (HasStatusBar) { await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync(); }
+            else if (popups.Last().Child is StatusGrid statusGrid) { statusGrid.HideProgressBar(); }
         }
 
         public static async void StatusBar_ShowMessage(string message)
@@ -156,11 +154,10 @@ namespace CoolapkUWP.Helpers
                     {
                         StatusBar statusBar = StatusBar.GetForCurrentView();
                         statusBar.ProgressIndicator.Text = s;
-                        if (isShowingProgressBar) statusBar.ProgressIndicator.ProgressValue = null;
-                        else statusBar.ProgressIndicator.ProgressValue = 0;
+                        statusBar.ProgressIndicator.ProgressValue = isShowingProgressBar ? null : (double?)0;
                         await statusBar.ProgressIndicator.ShowAsync();
                         await Task.Delay(3000);
-                        if (messageList.Count == 0 && !isShowingProgressBar) await statusBar.ProgressIndicator.HideAsync();
+                        if (messageList.Count == 0 && !isShowingProgressBar) { await statusBar.ProgressIndicator.HideAsync(); }
                         statusBar.ProgressIndicator.Text = string.Empty;
                         messageList.RemoveAt(0);
                     }
@@ -171,8 +168,8 @@ namespace CoolapkUWP.Helpers
                         messageList.RemoveAt(0);
                         await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                         {
-                            if (messageList.Count == 0) statusGrid.Rectangle_PointerExited();
-                            if (!isShowingProgressBar) HideProgressBar();
+                            if (messageList.Count == 0) { statusGrid.Rectangle_PointerExited(); }
+                            if (!isShowingProgressBar) { HideProgressBar(); }
                         });
                     }
                 }
@@ -294,7 +291,7 @@ namespace CoolapkUWP.Helpers
     {
         private static Frame mainFrame;
         private static Frame paneFrame;
-        static ShellPage shellPage = new ShellPage();
+        private static readonly ShellPage shellPage = new ShellPage();
 
         public static Frame MainFrame
         {
@@ -362,26 +359,13 @@ namespace CoolapkUWP.Helpers
 
         private static string Replace(this string str, int oldText)
         {
-            if (oldText == -1)
-            {
-                return str.Replace("https://www.coolapk.com", string.Empty, StringComparison.Ordinal);
-            }
-            else if (oldText == -2)
-            {
-                return str.Replace("http://www.coolapk.com", string.Empty, StringComparison.Ordinal);
-            }
-            else if (oldText == -3)
-            {
-                return str.Replace("www.coolapk.com", string.Empty, StringComparison.Ordinal);
-            }
-            else if (oldText < 0)
-            {
-                throw new Exception($"i = {oldText}");
-            }
-            else
-            {
-                return str.Replace(routes[oldText], string.Empty, StringComparison.Ordinal);
-            }
+            return oldText == -1
+                ? str.Replace("https://www.coolapk.com", string.Empty, StringComparison.Ordinal)
+                : oldText == -2
+                    ? str.Replace("http://www.coolapk.com", string.Empty, StringComparison.Ordinal)
+                    : oldText == -3
+                                    ? str.Replace("www.coolapk.com", string.Empty, StringComparison.Ordinal)
+                                    : oldText < 0 ? throw new Exception($"i = {oldText}") : str.Replace(routes[oldText], string.Empty, StringComparison.Ordinal);
         }
 
         public static async void OpenLinkAsync(string str)
@@ -412,9 +396,9 @@ namespace CoolapkUWP.Helpers
                 Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(str, true));
             }
 
-            if (str.Contains('?')) str = str.Substring(0, str.IndexOf('?'));
-            if (str.Contains('%')) str = str.Substring(0, str.IndexOf('%'));
-            if (str.Contains('&')) str = str.Substring(0, str.IndexOf('&'));
+            if (str.Contains('?')) { str = str.Substring(0, str.IndexOf('?')); }
+            if (str.Contains('%')) { str = str.Substring(0, str.IndexOf('%')); }
+            if (str.Contains('&')) { str = str.Substring(0, str.IndexOf('&')); }
 
             if (str.IsFirst(i++))
             {
@@ -428,9 +412,8 @@ namespace CoolapkUWP.Helpers
             }
             else if (str.IsFirst(i++) || str.IsFirst(i++))
             {
-                if (str == "/feed/writer")
-                    UIHelper.ShowMessage("暂不支持");
-                else Navigate(typeof(FeedShellPage), new ViewModels.FeedDetailPage.FeedViewModel(str.Replace(i - 1)));
+                if (str == "/feed/writer") { ShowMessage("暂不支持"); }
+                else { Navigate(typeof(FeedShellPage), new ViewModels.FeedDetailPage.FeedViewModel(str.Replace(i - 1))); }
             }
             else if (str.IsFirst(i++))
             {
@@ -469,7 +452,7 @@ namespace CoolapkUWP.Helpers
             }
             else if (str == "https://m.coolapk.com/mp/user/communitySpecification")
             {
-                Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
+                Navigate(typeof(BrowserPage), new object[] { false, str });
             }
             else if (str.IsFirst(i++))
             {
@@ -479,7 +462,7 @@ namespace CoolapkUWP.Helpers
                 }
                 else
                 {
-                    Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
+                    Navigate(typeof(BrowserPage), new object[] { false, str });
                 }
             }
             else if (str.IsFirst(i++))

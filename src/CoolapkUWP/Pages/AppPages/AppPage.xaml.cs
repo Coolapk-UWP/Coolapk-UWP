@@ -20,11 +20,11 @@ namespace CoolapkUWP.Pages.AppPages
     /// </summary>
     public sealed partial class AppPage : Page
     {
-        string AppInfo = "", AppVersionMassage = "", AppReview = "", AppVersion, AppMassage, AppName, AppLogo, AppUpdateTime, AppScore, AppCommendNum, AppDownloadUrl, id;
+        string AppInfo = "", AppVersionMassage = "", AppReview = "", AppVersion, AppMassage, AppName, AppLogo, AppUpdateTime, AppScore, AppCommendNum, /*AppDownloadUrl,*/ id;
         string AppLink = "";
         public AppPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             Rectangle_PointerExited();
         }
         public static string ReplaceHtml(string str)
@@ -32,7 +32,7 @@ namespace CoolapkUWP.Pages.AppPages
             //换行和段落
             string s = str.Replace("<br>", "\n").Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br />", "\n").Replace("<p>", "").Replace("</p>", "\n").Replace("&nbsp;", " ");
             //链接彻底删除！
-            while (s.IndexOf("<a") > 0)
+            while (s.IndexOf("<a", StringComparison.Ordinal) > 0)
             {
                 s = s.Replace(@"<a href=""" + Regex.Split(Regex.Split(s, @"<a href=""")[1], @""">")[0] + @""">", "");
                 s = s.Replace("</a>", "");
@@ -54,15 +54,15 @@ namespace CoolapkUWP.Pages.AppPages
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             titleBar.ShowProgressRing();
-            if (string.IsNullOrEmpty(AppLink)) return;
+            if (string.IsNullOrEmpty(AppLink)) { return; }
             Tag = AppLink;
             try
             {
                 LaunchAppViewLoad(await new HttpClient().GetStringAsync(Tag.ToString()));
             }
-            catch (HttpRequestException ex) { /*Tools.ShowHttpExceptionMessage(ex);*/ }
+            catch (HttpRequestException) { /*Tools.ShowHttpExceptionMessage(ex);*/ }
         }
-        private void LaunchAppViewLoad(String str)
+        private void LaunchAppViewLoad(string str)
         {
             try { AppInfo = ReplaceHtml(Regex.Split(Regex.Split(Regex.Split(str, "应用简介</p>")[1], @"<div class=""apk_left_title_info"">")[1], "</div>")[0].Trim()); } catch (Exception) { }
             try { AppVersionMassage = ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[2], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
@@ -103,15 +103,15 @@ namespace CoolapkUWP.Pages.AppPages
                 AppVMText.Text = AppReview;
                 AppDText.Text = "";
             }
-            if (AppReview.Contains("更新时间") && AppReview.Contains("ROM") && AppReview.Contains("名称")) UPanel.Visibility = Visibility.Collapsed;
+            if (AppReview.Contains("更新时间") && AppReview.Contains("ROM") && AppReview.Contains("名称")) { UPanel.Visibility = Visibility.Collapsed; }
 
 
             //加载截图！
-            String images = Regex.Split(Regex.Split(str, @"<div class=""ex-screenshot-thumb-carousel"">")[1], "</div>")[0];
-            String[] imagearray = Regex.Split(images, "<img");
+            string images = Regex.Split(Regex.Split(str, @"<div class=""ex-screenshot-thumb-carousel"">")[1], "</div>")[0];
+            string[] imagearray = Regex.Split(images, "<img");
             for (int i = 0; i < imagearray.Length - 1; i++)
             {
-                String imageUrl = imagearray[i + 1].Split('"')[1];
+                string imageUrl = imagearray[i + 1].Split('"')[1];
                 if (!imageUrl.Equals(""))
                 {
                     Image newImage = new Image
@@ -128,7 +128,7 @@ namespace CoolapkUWP.Pages.AppPages
             imagearray = Regex.Split(images, "<img");
             for (int i = 0; i < imagearray.Length - 1; i++)
             {
-                String imageurl = imagearray[i + 1].Split('"')[1];
+                string imageurl = imagearray[i + 1].Split('"')[1];
                 Image newImage = new Image
                 {
                     //获得图片
@@ -143,7 +143,7 @@ namespace CoolapkUWP.Pages.AppPages
 
             //评分。。
             AppRText.Text = AppScore;
-            AppRating.PlaceholderValue = Double.Parse(AppScore);
+            AppRating.PlaceholderValue = double.Parse(AppScore);
             AppPText.Text = AppCommendNum;
 
 
@@ -209,10 +209,7 @@ namespace CoolapkUWP.Pages.AppPages
             // Populate required properties
             userActivity.VisualElements.DisplayText = AppName;
             userActivity.VisualElements.AttributionDisplayText = AppName;
-            if (AppInfo.Length > 3)
-                userActivity.VisualElements.Description = AppInfo;
-            else
-                userActivity.VisualElements.Description = AppReview;
+            userActivity.VisualElements.Description = AppInfo.Length > 3 ? AppInfo : AppReview;
             userActivity.ActivationUri = new Uri("coolapk://" + AppLink);
 
             //Save
@@ -226,14 +223,13 @@ namespace CoolapkUWP.Pages.AppPages
         private async void GotoUri_Click(object sender, RoutedEventArgs e)
         {
             // Launch the URI
-            var success = await Launcher.LaunchUriAsync(new Uri(AppLink));
+            _ = await Launcher.LaunchUriAsync(new Uri(AppLink));
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ScreenShotFlipView.Visibility == Visibility.Visible)
-                CloseFlip_ClickAsync();
-            else Frame.GoBack();
+            if (ScreenShotFlipView.Visibility == Visibility.Visible) { CloseFlip_ClickAsync(); }
+            else { Frame.GoBack(); }
         }
 
         private void ScreenShotView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -258,7 +254,7 @@ namespace CoolapkUWP.Pages.AppPages
         private async void DownloadButton_Click(object sender, RoutedEventArgs e)
         {
             // Download the URI
-            var success = await Launcher.LaunchUriAsync(new Uri(AppDownloadUrl));
+            //var success = await Launcher.LaunchUriAsync(new Uri(AppDownloadUrl));
         }
 
         private async void ViewFeed(object sender, RoutedEventArgs e)
@@ -270,7 +266,7 @@ namespace CoolapkUWP.Pages.AppPages
             }
         }
 
-        private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
+        //private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
         private void titleBar_RefreshButtonClicked(object sender, RoutedEventArgs e)
         {

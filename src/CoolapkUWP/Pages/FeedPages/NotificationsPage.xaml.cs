@@ -16,7 +16,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public NotificationsPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -85,7 +85,7 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             if (e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse ||
                 (sender is Grid && !(e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse)))
-                UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+            { UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string); }
         }
 
         private void titleBar_RefreshButtonClicked(object sender, RoutedEventArgs e) => _ = Load(-2);
