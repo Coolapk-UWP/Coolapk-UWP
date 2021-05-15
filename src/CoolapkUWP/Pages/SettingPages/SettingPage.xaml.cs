@@ -190,7 +190,7 @@ namespace CoolapkUWP.Pages.SettingPages
                     Logout();
                     ApplicationData.Current.LocalSettings.Values.Clear();
                     SetDefaultSettings();
-                    if (this.reset.Flyout is Flyout flyout_reset)
+                    if (reset.Flyout is Flyout flyout_reset)
                     {
                         flyout_reset.Hide();
                     }
@@ -217,9 +217,9 @@ namespace CoolapkUWP.Pages.SettingPages
                     break;
 
                 case "AccountLogout":
-                    SettingsHelper.Logout();
+                    Logout();
                     LogoutButtonVisibility = Visibility.Collapsed;
-                    if (this.AccountLogout.Flyout is Flyout flyout_logout)
+                    if (AccountLogout.Flyout is Flyout flyout_logout)
                     {
                         flyout_logout.Hide();
                     }
@@ -228,7 +228,7 @@ namespace CoolapkUWP.Pages.SettingPages
                     break;
 
                 case "MyDevice":
-                    UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
+                    UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
                     break;
             }
         }

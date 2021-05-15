@@ -16,12 +16,12 @@ namespace CoolapkUWP.Helpers
     [DebuggerStepThrough]
     internal static class DataHelper
     {
-        private static IEnumerable<(string name, string value)> GetCoolapkCookies()
+        private static IEnumerable<(string name, string value)> GetCoolapkCookies(Uri uri)
         {
             using (var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
             {
                 var cookieManager = filter.CookieManager;
-                foreach (var item in cookieManager.GetCookies(UriHelper.BaseUri))
+                foreach (var item in cookieManager.GetCookies(GetHost(uri)))
                 {
                     if (item.Name == "uid" ||
                         item.Name == "username" ||
@@ -35,27 +35,27 @@ namespace CoolapkUWP.Helpers
 
         public static Task<(bool isSucceed, JToken result)> PostDataAsync(Uri uri, System.Net.Http.HttpContent content)
         {
-            return Utils.PostDataAsync(uri, content, GetCoolapkCookies());
+            return Utils.PostDataAsync(uri, content, GetCoolapkCookies(uri));
         }
 
         public static Task<(bool isSucceed, string result)> GetHtmlAsync(Uri uri, string request)
         {
-            return Utils.GetHtmlAsync(uri, GetCoolapkCookies(), request);
+            return Utils.GetHtmlAsync(uri, GetCoolapkCookies(uri), request);
         }
 
         public static Task<(bool isSucceed, JToken result)> GetDataAsync(Uri uri, bool forceRefresh)
         {
-            return Utils.GetDataAsync(uri, forceRefresh, GetCoolapkCookies());
+            return Utils.GetDataAsync(uri, forceRefresh, GetCoolapkCookies(uri));
         }
 
         public static Task Refresh(this Core.Providers.CoolapkListProvider provider, int p = 1)
         {
-            return provider.Refresh(GetCoolapkCookies(), p);
+            return provider.Refresh(GetCoolapkCookies(UriHelper.BaseUri), p);
         }
 
         public static Task Search(this Core.Providers.SearchListProvider provider, string keyWord)
         {
-            return provider.Search(keyWord, GetCoolapkCookies());
+            return provider.Search(keyWord, GetCoolapkCookies(UriHelper.BaseUri));
         }
 
 #pragma warning disable 0612
@@ -64,7 +64,7 @@ namespace CoolapkUWP.Helpers
             var folder = await ImageCacheHelper.GetFolderAsync(ImageType.Captcha);
             var file = await folder.CreateFileAsync(Utils.GetMD5(uri));
 
-            var s = await GetStreamAsync(new Uri(uri), GetCoolapkCookies());
+            var s = await GetStreamAsync(new Uri(uri), GetCoolapkCookies(new Uri(uri)));
 
             using (var ss = await file.OpenStreamForWriteAsync())
             {

@@ -197,6 +197,9 @@
     <Compile Include="Pages\FeedPages\HistoryPage.xaml.cs">
       <DependentUpon>HistoryPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\FeedPages\HTMLTextPage.xaml.cs">
+      <DependentUpon>HTMLTextPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\MainPageV7.xaml.cs">
       <DependentUpon>MainPageV7.xaml</DependentUpon>
     </Compile>
@@ -926,6 +929,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\FeedPages\HistoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\FeedPages\HTMLTextPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

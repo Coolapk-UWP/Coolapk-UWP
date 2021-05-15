@@ -393,7 +393,8 @@ namespace CoolapkUWP.Helpers
             int i = 0;
             if (str.IsFirst(i++))
             {
-                Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(str, true));
+                var u = str.Replace(i - 1);
+                Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(u, true));
             }
 
             if (str.Contains('?')) { str = str.Substring(0, str.IndexOf('?')); }
@@ -452,7 +453,7 @@ namespace CoolapkUWP.Helpers
             }
             else if (str == "https://m.coolapk.com/mp/user/communitySpecification")
             {
-                Navigate(typeof(BrowserPage), new object[] { false, str });
+                NavigateInSplitPane(typeof(HTMLTextPage), str);
             }
             else if (str.IsFirst(i++))
             {

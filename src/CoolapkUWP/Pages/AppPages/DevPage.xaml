@@ -19,19 +19,31 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="400" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
 
                         <TextBlock x:Name="main" Grid.Row="0" TextWrapping="Wrap"/>
+                        <WebView x:Name="webview" Grid.Row="1"/>
+                        <control:TextBlockEx x:Name="text" Grid.Row="2"/>
+                        <ScrollViewer
+                            Grid.Row="3"
+                            Margin="12"
+                            BorderBrush="{ThemeResource AppBarBorderThemeBrush}"
+                            BorderThickness="2"
+                            HorizontalScrollBarVisibility="Disabled"
+                            VerticalScrollBarVisibility="Visible">
+                            <controls:MarkdownTextBlock
+                                x:Name="MarkdownText"
+                                Margin="0,8"
+                                FontSize="16"
+                                Background="Transparent" 
+                                Header1Foreground="{ThemeResource SystemControlForegroundAccentBrush}"/>
+                        </ScrollViewer>
 
                     </Grid>
                 </controls:HeaderedContentControl>
 
             </StackPanel>
         </ScrollViewer>
-        <control:TitleBar Title="开发人员页面" BackButtonClicked="Button_Click_3" IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" Loaded="TitleBar_Loaded" />
+        <control:TitleBar x:Name="title" Title="开发人员页面" BackButtonClicked="Button_Click_3" IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" Loaded="TitleBar_Loaded" />
     </Grid>
 </Page>
 

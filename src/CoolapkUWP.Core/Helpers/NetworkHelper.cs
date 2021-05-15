@@ -99,20 +99,25 @@ namespace CoolapkUWP.Core.Helpers
             if (request != null) { headers.Add(name, request); }
         }
 
-        private static void ReplaceCoolapkCookie(this CookieContainer container, IEnumerable<(string name, string value)> cookies)
+        private static void ReplaceCoolapkCookie(this CookieContainer container, IEnumerable<(string name, string value)> cookies, Uri uri)
         {
             if (cookies == null) { return; }
 
             //var c = container.GetCookies(UriHelper.CoolapkUri);
-            foreach (var item in cookies)
+            foreach (var (name, value) in cookies)
             {
-                container.SetCookies(UriHelper.BaseUri, $"{item.name}={item.value}");
+                container.SetCookies(GetHost(uri), $"{name}={value}");
             }
         }
 
-        private static void BeforeGetOrPost(IEnumerable<(string name, string value)> coolapkCookies, string request)
+        public static Uri GetHost(Uri uri)
         {
-            clientHandler.CookieContainer.ReplaceCoolapkCookie(coolapkCookies);
+            return new Uri("https://" + uri.Host);
+        }
+
+        private static void BeforeGetOrPost(IEnumerable<(string name, string value)> coolapkCookies, Uri uri, string request)
+        {
+            clientHandler.CookieContainer.ReplaceCoolapkCookie(coolapkCookies, uri);
             client.DefaultRequestHeaders.ReplaceAppToken();
             client.DefaultRequestHeaders.ReplaceRequested(request);
         }
@@ -121,7 +126,7 @@ namespace CoolapkUWP.Core.Helpers
         {
             try
             {
-                BeforeGetOrPost(coolapkCookies, "XMLHttpRequest");
+                BeforeGetOrPost(coolapkCookies, uri, "XMLHttpRequest");
                 var response = await client.PostAsync(uri, content);
                 return await response.Content.ReadAsStringAsync();
             }
@@ -132,7 +137,7 @@ namespace CoolapkUWP.Core.Helpers
         {
             try
             {
-                BeforeGetOrPost(coolapkCookies, "XMLHttpRequest");
+                BeforeGetOrPost(coolapkCookies, uri, "XMLHttpRequest");
                 return await client.GetStreamAsync(uri);
             }
             catch { throw; }
@@ -142,7 +147,7 @@ namespace CoolapkUWP.Core.Helpers
         {
             try
             {
-                BeforeGetOrPost(coolapkCookies, "XMLHttpRequest");
+                BeforeGetOrPost(coolapkCookies, uri, "XMLHttpRequest");
                 return await client.GetStringAsync(uri);
             }
             catch { throw; }
@@ -152,8 +157,7 @@ namespace CoolapkUWP.Core.Helpers
         {
             try
             {
-                BeforeGetOrPost(coolapkCookies, request);
-
+                BeforeGetOrPost(coolapkCookies, uri, request);
                 return await client.GetStringAsync(uri);
             }
             catch { throw; }

@@ -1,5 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Text.RegularExpressions;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -25,9 +27,43 @@ namespace CoolapkUWP.Pages.AppPages
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            Uri uri = new Uri("https://api.coolapk.com/v6/feed/changeHistoryList?id=26935758");
+            Uri uri = new Uri("https://m.coolapk.com/mp/user/agreement");
             var (isSucceed, result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
-            if (isSucceed) { main.Text = result; }
+            if (isSucceed)
+            {
+                //main.Text = result;
+                var o = JObject.Parse(result);
+                //webview.NavigateToString(o.TryGetValue("html", out JToken token) ? token.ToString() : "错误");
+                //text.MessageText = o.TryGetValue("html", out JToken token) ? token.ToString() : "错误";
+                MarkdownText.Text = CSStoMarkDown(o.TryGetValue("html", out JToken token) ? token.ToString() : "错误");
+                title.Title = o.TryGetValue("title", out JToken Title) ? Title.ToString() : title.Title;
+            }
+        }
+
+        private static string CSStoMarkDown(string text)
+        {
+            Regex h1 = new Regex("<h1 style.*?>", RegexOptions.IgnoreCase);
+            Regex h2 = new Regex("<h2 style.*?>", RegexOptions.IgnoreCase);
+            Regex h3 = new Regex("<h3 style.*?>", RegexOptions.IgnoreCase);
+            Regex div = new Regex("<div style.*?>", RegexOptions.IgnoreCase);
+            Regex p = new Regex("<p style.*?>", RegexOptions.IgnoreCase);
+
+            text = text.Replace("</h1>", "");
+            text = text.Replace("</h2>", "");
+            text = text.Replace("</h3>", "");
+            text = text.Replace("</div>", "");
+            text = text.Replace("</p>", "");
+
+            text = h1.Replace(text, "#");
+            text = h2.Replace(text, "##");
+            text = h3.Replace(text, "###");
+            text = text.Replace("<br>", "  \n");
+            text = div.Replace(text, "");
+            text = p.Replace(text, "");
+
+            for (int i = 0; i < 20; i++) { text = text.Replace("(" + i.ToString() + ") ", " 1. "); }
+
+            return text;
         }
 
         #region Task：任务
