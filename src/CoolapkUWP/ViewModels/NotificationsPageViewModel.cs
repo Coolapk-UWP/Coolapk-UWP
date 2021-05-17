@@ -19,6 +19,7 @@ namespace CoolapkUWP.ViewModels.NotificationsPage
         AtCommentMe,
         Like,
         Follow,
+        Message,
     }
 
     internal class ViewModel : IViewModel
@@ -74,20 +75,43 @@ namespace CoolapkUWP.ViewModels.NotificationsPage
                     getEntities = (o) => new Entity[] { new SimpleNotificationModel(o) };
                     break;
 
+                case ListType.Message:
+                    Title = loader.GetString("MessageText");
+                    listName = "message";
+                    checkEqual = (a, b) => (a as NotificationModel).Id == b.Value<int>("id");
+                    getEntities = (o) => new Entity[] { new MessageNotificationModel(o) };
+                    break;
+
                 default: throw new ArgumentException(nameof(type));
             }
 
-            provider =
-                new CoolapkListProvider(
-                    (p, page, firstItem, lastItem) =>
-                        UriHelper.GetUri(
-                            UriType.GetNotifications,
-                            listName,
-                            p < 0 ? ++page : p,
-                            string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
-                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
-                    checkEqual, getEntities, "id");
-            ListType = type;
+            if (listName == "message")
+            {
+                provider =
+              new CoolapkListProvider(
+                  (p, page, firstItem, lastItem) =>
+                      UriHelper.GetUri(
+                          UriType.GetChats,
+                          p < 0 ? ++page : p,
+                          string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                          string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
+                  checkEqual, getEntities, "id");
+                ListType = type;
+            }
+            else
+            {
+                provider =
+              new CoolapkListProvider(
+                  (p, page, firstItem, lastItem) =>
+                      UriHelper.GetUri(
+                          UriType.GetNotifications,
+                          listName,
+                          p < 0 ? ++page : p,
+                          string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                          string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
+                  checkEqual, getEntities, "id");
+                ListType = type;
+            }
         }
 
         public Task Refresh(int p = -1) => provider?.Refresh(p);

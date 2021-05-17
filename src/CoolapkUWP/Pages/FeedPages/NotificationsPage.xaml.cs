@@ -78,6 +78,10 @@ namespace CoolapkUWP.Pages.FeedPages
                 case "follow":
                     Frame.Navigate(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.Follow));
                     break;
+
+                case "message":
+                    Frame.Navigate(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.Message));
+                    break;
             }
         }
 
@@ -113,6 +117,7 @@ namespace CoolapkUWP.Pages.FeedPages
         public DataTemplate Reply { get; set; }
         public DataTemplate Like { get; set; }
         public DataTemplate AtCommentMe { get; set; }
+        public DataTemplate Message { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
@@ -121,6 +126,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 case FeedModel _: return Feed;
                 case LikeNotificationModel _: return Like;
                 case AtCommentMeNotificationModel _: return AtCommentMe;
+                case MessageNotificationModel _: return Message;
                 default: return Reply;
             }
         }

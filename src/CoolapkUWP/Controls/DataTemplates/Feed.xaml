@@ -51,6 +51,7 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
@@ -124,7 +125,7 @@
                                     x:Name="changeButton"
                                     Padding="0"
                                     x:Load="{x:Bind ChangeTitle, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
-                                    Margin="2,-4,0,0"
+                                    Margin="2,0,0,0"
                                     Style="{ThemeResource ButtonRevealStyle}"
                                     Click="{x:Bind local:Feed.FeedButton_Click}"
                                     Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
@@ -445,11 +446,28 @@
                         </Grid>
                     </ListViewItem>
 
-                    <Border Grid.Row="7" />
+                    <Grid
+                        x:Name="bilibili"
+                        Grid.Row="7"
+                        Margin="4"
+                        Padding="10,10"
+                        x:Load="{x:Bind ShowVideo}"
+                        SizeChanged="bilibili_SizeChanged"
+                        Height="{x:Bind local:Feed.BilibiliHeight}"
+                        Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+                        BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <WebView
+                            x:Name="webview"
+                            DefaultBackgroundColor="Transparent"/>
+                    </Grid>
+
+                    <Border Grid.Row="8" />
 
                     <ListView
                         x:Name="relaRLis"
-                        Grid.Row="8"
+                        Grid.Row="9"
                         x:Load="{x:Bind ShowRelationRows}"
                         IsItemClickEnabled="True"
                         ItemClick="{x:Bind local:Feed.relaRLis_ItemClick}"
@@ -460,7 +478,7 @@
 
                     <ListView
                         x:Name="repRL"
-                        Grid.Row="9"
+                        Grid.Row="10"
                         Windows10version1809:CornerRadius="12"
                         x:Load="{x:Bind ShowReplyRows}"
                         ItemContainerStyle="{StaticResource FixedListViewItemStyle}"
@@ -470,7 +488,7 @@
 
                     <StackPanel
                         x:Name="questionDetail"
-                        Grid.Row="10"
+                        Grid.Row="11"
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
                         x:Load="{x:Bind IsQuestionFeed}"
@@ -483,7 +501,7 @@
 
                     <ctrl:MakeFeedControl
                         x:Name="makeFeed"
-                        Grid.Row="11"
+                        Grid.Row="12"
                         x:Load="False"
                         FeedId="{x:Bind Id}"
                         MakeFeedMode="Reply"

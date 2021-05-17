@@ -12,7 +12,7 @@
         <ScrollViewer Padding="{StaticResource StackPanelMargin}">
             <StackPanel Margin="16,0">
                 <ScrollViewer
-                            Grid.Row="3"
+                            Grid.Row="0"
                             Margin="12"
                             BorderBrush="Transparent"
                             BorderThickness="2"

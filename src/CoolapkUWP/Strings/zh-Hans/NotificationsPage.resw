@@ -144,6 +144,9 @@
   <data name="Message.Text" xml:space="preserve">
     <value>私信</value>
   </data>
+  <data name="MessageText" xml:space="preserve">
+    <value>私信</value>
+  </data>
   <data name="noMore" xml:space="preserve">
     <value>没有更多了</value>
   </data>

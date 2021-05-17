@@ -20,11 +20,17 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
     internal class SimpleNotificationModel : NotificationModel
     {
         public string Note { get; private set; }
+        public string BlockStatus { get; private set; }
 
         public SimpleNotificationModel(JObject o) : base(o)
         {
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
+            BlockStatus = o["fromUserInfo"].Value<int>("status") == -1 ? loader.GetString("status-1")
+               : UIHelper.IsSpecialUser && o["fromUserInfo"].Value<int>("block_status") == -1 ? loader.GetString("block_status-1")
+               : UIHelper.IsSpecialUser && o["fromUserInfo"].Value<int>("block_status") == 2 ? loader.GetString("block_status2") : null;
+
             Id = o.Value<int>("id");
-            UserName = o.Value<string>("fromusername");
+            UserName = o.Value<string>("fromusername") + " " + BlockStatus;
             UserUri = o.Value<string>("url");
             Dateline = DataHelper.ConvertUnixTimeStampToReadable(o.Value<int>("dateline"));
 
@@ -50,6 +56,10 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
             {
                 UserAvatar = new ImageModel(avatar, ImageType.BigAvatar);
             }
+            if (UIHelper.IsSpecialUser && o.TryGetValue("block_status", out JToken v) && v.ToString() != "0")
+            { Dateline += " [已折叠]"; }
+            if (o.TryGetValue("status", out JToken s) && s.ToString() == "-1")
+            { Dateline += " [仅自己可见]"; }
         }
     }
 
@@ -57,13 +67,18 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
     {
         public string Title { get; private set; }
         public string FeedMessage { get; private set; }
+        public string BlockStatus { get; private set; }
 
         public LikeNotificationModel(JObject o) : base(o)
         {
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
+            BlockStatus = o["likeUserInfo"].Value<int>("status") == -1 ? loader.GetString("status-1")
+               : UIHelper.IsSpecialUser && o["likeUserInfo"].Value<int>("block_status") == -1 ? loader.GetString("block_status-1")
+               : UIHelper.IsSpecialUser && o["likeUserInfo"].Value<int>("block_status") == 2 ? loader.GetString("block_status2") : null;
             Id = o.Value<int>("id");
             UserUri = "/u/" + o.Value<int>("likeUid");
             Dateline = DataHelper.ConvertUnixTimeStampToReadable(o.Value<int>("likeTime"));
-            UserName = o.Value<string>("likeUsername");
+            UserName = o.Value<string>("likeUsername") + " " + BlockStatus;
             Uri = o.Value<string>("url");
             Title = "赞了你的" + (o.TryGetValue("feedTypeName", out JToken value) ? value.ToString() : o.Value<string>("infoHtml"));
             FeedMessage = o.Value<string>("message");
@@ -72,6 +87,10 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
             {
                 UserAvatar = new ImageModel(avatar, ImageType.BigAvatar);
             }
+            if (UIHelper.IsSpecialUser && o.TryGetValue("block_status", out JToken v) && v.ToString() != "0")
+            { Dateline += " [已折叠]"; }
+            if (o.TryGetValue("status", out JToken s) && s.ToString() == "-1")
+            { Dateline += " [仅自己可见]"; }
         }
     }
 
@@ -79,15 +98,20 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
     {
         public string Message { get; private set; }
         public string FeedMessage { get; private set; }
+        public string BlockStatus { get; private set; }
 
         public AtCommentMeNotificationModel(JObject o) : base(o)
         {
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
+            BlockStatus = o["userInfo"].Value<int>("status") == -1 ? loader.GetString("status-1")
+               : UIHelper.IsSpecialUser && o["userInfo"].Value<int>("block_status") == -1 ? loader.GetString("block_status-1")
+               : UIHelper.IsSpecialUser && o["userInfo"].Value<int>("block_status") == 2 ? loader.GetString("block_status2") : null;
             Id = o.Value<int>("id");
             UserUri = "/u/" + o.Value<int>("uid");
             Dateline = DataHelper.ConvertUnixTimeStampToReadable(o.Value<int>("dateline"));
-            UserName = o.Value<string>("username");
+            UserName = o.Value<string>("username") + " " + BlockStatus;
             Uri = o.Value<string>("url");
-            FeedMessage = (o.Value<string>("extra_title"));
+            FeedMessage = o.Value<string>("extra_title");
             Message =
                 (string.IsNullOrEmpty(o.Value<string>("rusername"))
                  ? string.Empty
@@ -98,6 +122,37 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
             {
                 UserAvatar = new ImageModel(avatar, ImageType.BigAvatar);
             }
+            if (UIHelper.IsSpecialUser && o.TryGetValue("block_status", out JToken v) && v.ToString() != "0")
+            { Dateline += " [已折叠]"; }
+            if (o.TryGetValue("status", out JToken s) && s.ToString() == "-1")
+            { Dateline += " [仅自己可见]"; }
+        }
+    }
+
+    internal class MessageNotificationModel : NotificationModel
+    {
+        public string FeedMessage { get; private set; }
+        public string BlockStatus { get; private set; }
+
+        public MessageNotificationModel(JObject o) : base(o)
+        {
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
+            BlockStatus = o["messageUserInfo"].Value<int>("status") == -1 ? loader.GetString("status-1")
+                : UIHelper.IsSpecialUser && o["messageUserInfo"].Value<int>("block_status") == -1 ? loader.GetString("block_status-1")
+                : UIHelper.IsSpecialUser && o["messageUserInfo"].Value<int>("block_status") == 2 ? loader.GetString("block_status2") : null;
+            Id = o.Value<int>("id");
+            UserUri = "/u/" + o.Value<int>("uid");
+            Dateline = DataHelper.ConvertUnixTimeStampToReadable(o.Value<int>("dateline"));
+            UserName = o["messageUserInfo"].Value<string>("username") + " " + BlockStatus;
+            Uri = o.Value<string>("ukey");
+            FeedMessage = o.Value<string>("message");
+            var avatar = o["messageUserInfo"].Value<string>("userAvatar");
+            if (!string.IsNullOrEmpty(avatar))
+            {
+                UserAvatar = new ImageModel(avatar, ImageType.BigAvatar);
+            }
+            if (o.Value<int>("is_top") == 1)
+            { Dateline += " " + "[置顶]"; }
         }
     }
 }

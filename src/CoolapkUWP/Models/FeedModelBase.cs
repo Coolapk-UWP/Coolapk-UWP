@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
+using System.Linq;
 
 namespace CoolapkUWP.Models
 {
@@ -52,9 +53,11 @@ namespace CoolapkUWP.Models
         public bool ShowSourceFeedGrid { get; private set; }
         public SourceFeedModel SourceFeed { get; private set; }
         public bool ShowExtraUrl { get; private set; }
+        public bool ShowVideo { get; private set; }
         public string ExtraTitle { get; private set; }
         public string ExtraUrl { get; private set; }
         public string ExtraUrl2 { get; private set; }
+        public string VideoUrl { get; private set; }
         public string QuestionAnswerNum { get; private set; }
         public string QuestionFollowNum { get; private set; }
         public bool ShowUser { get; private set; } = true;
@@ -79,7 +82,7 @@ namespace CoolapkUWP.Models
             {
                 Info = value1.ToString();
             }
-
+            VideoUrl = null;
             Likenum = token["likenum"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
             Replynum = token["replynum"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
             ShareNum = token["forwardnum"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
@@ -137,6 +140,22 @@ namespace CoolapkUWP.Models
                         ExtraPic = new BackgroundImageModel(extraPicUrl, ImageType.Icon);
                     }
                 }
+
+                ShowVideo = token.TryGetValue("media_type", out JToken media_type) && media_type.ToString() == "2" && token.TryGetValue("media_url", out JToken media_url) && (media_url.Contains("bilibili") || media_url.Contains("b23"));
+
+                if (media_type.ToString() != "0")
+                {
+                    ShowExtraUrl = true;
+                    ExtraTitle = "视频分享";
+                    ExtraUrl = token.Value<string>("media_url");
+                    ExtraUrl2 = (ExtraUrl?.IndexOf("http", StringComparison.Ordinal) ?? -1) == 0 ? new Uri(ExtraUrl).Host : string.Empty;
+                    var extraPicUrl = token.Value<string>("media_pic");
+                    if (!string.IsNullOrEmpty(extraPicUrl))
+                    {
+                        ExtraPic = new BackgroundImageModel(extraPicUrl, ImageType.Icon);
+                    }
+                }
+
                 DeviceTitle = token.Value<string>("device_title");
             }
             //else showUser = false;

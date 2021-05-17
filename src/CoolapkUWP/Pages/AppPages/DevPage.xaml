@@ -5,41 +5,50 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:control="using:CoolapkUWP.Controls"
+    xmlns:control="using:CoolapkUWP.Controls" xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d" 
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    Loaded="Page_Loaded" 
-    >
+    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
+    Loaded="Page_Loaded">
+
     <Grid>
+
+        <WebView
+            x:Name="webview"
+            Margin="{StaticResource StackPanelMargin}"
+            DefaultBackgroundColor="Transparent"/>
+
         <ScrollViewer Padding="{StaticResource StackPanelMargin}">
             <StackPanel Margin="16,0">
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
 
-                <controls:HeaderedContentControl x:Name="test1" Style="{StaticResource NavigationViewTitleHeaderContentControlTextStyle}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-
-                        <TextBlock x:Name="main" Grid.Row="0" TextWrapping="Wrap"/>
-                        <WebView x:Name="webview" Grid.Row="1"/>
-                        <control:TextBlockEx x:Name="text" Grid.Row="2"/>
-                        <ScrollViewer
+                    <TextBlock
+                            x:Name="main"
+                            Grid.Row="0"
+                            FontSize="16"
+                            TextWrapping="Wrap"/>
+                    <control:TextBlockEx
+                            x:Name="text"
+                            Grid.Row="2"/>
+                    <ScrollViewer
                             Grid.Row="3"
                             Margin="12"
-                            BorderBrush="{ThemeResource AppBarBorderThemeBrush}"
+                            BorderBrush="Transparent"
                             BorderThickness="2"
                             HorizontalScrollBarVisibility="Disabled"
                             VerticalScrollBarVisibility="Visible">
-                            <controls:MarkdownTextBlock
+                        <controls:MarkdownTextBlock
                                 x:Name="MarkdownText"
                                 Margin="0,8"
                                 FontSize="16"
                                 Background="Transparent" 
                                 Header1Foreground="{ThemeResource SystemControlForegroundAccentBrush}"/>
-                        </ScrollViewer>
+                    </ScrollViewer>
 
-                    </Grid>
-                </controls:HeaderedContentControl>
+                </Grid>
 
             </StackPanel>
         </ScrollViewer>

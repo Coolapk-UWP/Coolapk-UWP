@@ -46,10 +46,6 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
 
                         <TextBox x:Name="uid" Header="输入UID" Grid.Row="0" Margin="0,2"/>
                         <Button Click="Button_Click" Style="{StaticResource ButtonRevealStyle}" Grid.Row="1" Margin="0,2">前往</Button>

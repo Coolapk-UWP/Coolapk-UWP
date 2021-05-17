@@ -1,4 +1,4 @@
-﻿//#define LOAD_MAIN_PAGE
+﻿#define LOAD_MAIN_PAGE
 
 using CoolapkUWP.Core.Helpers;
 using CoolapkUWP.Helpers;
@@ -19,18 +19,18 @@ namespace CoolapkUWP.Pages
 {
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
-        private IEnumerable<MenuItem> allMenuItems;
-        private IEnumerable<MenuItem> menuItems;
+        //private IEnumerable<MenuItem> allMenuItems;
+        //private IEnumerable<MenuItem> menuItems;
 
-        private IEnumerable<MenuItem> MenuItems
-        {
-            get => menuItems;
-            set
-            {
-                menuItems = value;
-                RaisePropertyChangedEvent();
-            }
-        }
+        //private IEnumerable<MenuItem> MenuItems
+        //{
+        //    get => menuItems;
+        //    set
+        //    {
+        //        menuItems = value;
+        //        RaisePropertyChangedEvent();
+        //    }
+        //}
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -67,7 +67,7 @@ namespace CoolapkUWP.Pages
 
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 #if LOAD_MAIN_PAGE
             //GetIndexPageItems();
 #endif
@@ -76,55 +76,59 @@ namespace CoolapkUWP.Pages
 
         private async void GetIndexPageItems()
         {
-            var (isSucceed, result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetIndexPageNames), true);
-            if (!isSucceed) { return; }
+            #region 自动获取Items
+            //var (isSucceed, result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetIndexPageNames), true);
+            //if (!isSucceed) { return; }
 
-            var temp = (JArray)result;
+            //var temp = (JArray)result;
 
-            MenuItems =
-                from t in temp
-                where t.Value<string>("entityTemplate") == "configCard"
-                from ta in t["entities"]
-                where ta.Value<string>("title") != "酷品"
-                //where ta.Value<string>("title") != "看看号"
-                where ta.Value<string>("title") != "直播"
-                //where ta.Value<string>("title") != "视频"
-                select new MenuItem(ta);
+            //MenuItems =
+            //    from t in temp
+            //    where t.Value<string>("entityTemplate") == "configCard"
+            //    from ta in t["entities"]
+            //    where ta.Value<string>("title") != "酷品"
+            //    //where ta.Value<string>("title") != "看看号"
+            //    where ta.Value<string>("title") != "直播"
+            //    //where ta.Value<string>("title") != "视频"
+            //    select new MenuItem(ta);
 
-            navigationView.SelectedItem = menuItems.First(i => i.Title == "头条");
-            navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false));
+            //navigationView.SelectedItem = menuItems.First(i => i.Title == "头条");
+            //navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false));
 
-            allMenuItems = menuItems.Concat(
-                    from i in menuItems
-                    where i.Entities != null
-                    from j in i.Entities
-                    select j);
+            //allMenuItems = menuItems.Concat(
+            //        from i in menuItems
+            //        where i.Entities != null
+            //        from j in i.Entities
+            //        select j);
+            #endregion
         }
 
-        private void NavigationView_ItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
-        {
-            if (args.IsSettingsInvoked)
-            {
-                if (Frame.CurrentSourcePageType != typeof(SettingPages.SettingPage))
-                {
-                    Frame.Navigate(typeof(SettingPages.SettingPage));
-                }
-            }
-            else if (args.InvokedItem is string title)
-            {
-                if (title == "关注") { return; }
-                sender.Header = title;
-                var item = allMenuItems.First(i => i.Title == title);
-                var uri = title == "头条" ? "/main/indexV8" : $"{item.Uri}&title={title}";
-                //UIHelper.ShowMessage(uri);
-                navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(uri, false), args.RecommendedNavigationTransitionInfo);
-            }
-            else if (args.InvokedItem is MenuItem item1)
-            {
-                //UIHelper.ShowMessage(item1.Uri);
-                navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(item1.Uri, false), args.RecommendedNavigationTransitionInfo);
-            }
-        }
+        #region ItemInvoked
+        //private void NavigationView_ItemInvoked(muxc.NavigationView sender, muxc.NavigationViewItemInvokedEventArgs args)
+        //{
+        //    if (args.IsSettingsInvoked)
+        //    {
+        //        if (Frame.CurrentSourcePageType != typeof(SettingPages.SettingPage))
+        //        {
+        //            Frame.Navigate(typeof(SettingPages.SettingPage));
+        //        }
+        //    }
+        //    else if (args.InvokedItem is string title)
+        //    {
+        //        if (title == "关注") { return; }
+        //        sender.Header = title;
+        //        var item = allMenuItems.First(i => i.Title == title);
+        //        var uri = title == "头条" ? "/main/indexV8" : $"{item.Uri}&title={title}";
+        //        //UIHelper.ShowMessage(uri);
+        //        navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(uri, false), args.RecommendedNavigationTransitionInfo);
+        //    }
+        //    else if (args.InvokedItem is MenuItem item1)
+        //    {
+        //        //UIHelper.ShowMessage(item1.Uri);
+        //        navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(item1.Uri, false), args.RecommendedNavigationTransitionInfo);
+        //    }
+        //}
+        #endregion
 
         private void NavigationView_SelectionChanged(muxc.NavigationView sender, muxc.NavigationViewSelectionChangedEventArgs args)
         {

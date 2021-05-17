@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Controls;
+using CoolapkUWP.Helpers;
 using System;
 using Windows.ApplicationModel.Resources;
 using Windows.Security.ExchangeActiveSyncProvisioning;
@@ -116,8 +117,9 @@ namespace CoolapkUWP.Pages
 
         private async void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            Frame.GoBack();
-            Frame.Navigate(typeof(BrowserPage), new object[] { false, uri });
+            titleBar.ShowProgressRing();
+            webView.Refresh();
+            titleBar.HideProgressRing();
         }
 
         private void tryLoginButton_Click(object sender, RoutedEventArgs e)

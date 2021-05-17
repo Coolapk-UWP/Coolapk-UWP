@@ -27,16 +27,16 @@ namespace CoolapkUWP.Pages.AppPages
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            Uri uri = new Uri("https://m.coolapk.com/mp/user/agreement");
+            Uri uri = new Uri("https://api.coolapk.com/v6/message/list?page=1");
             var (isSucceed, result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
             if (isSucceed)
             {
-                //main.Text = result;
-                var o = JObject.Parse(result);
+                main.Text = result;
+                //var o = JObject.Parse(result);
                 //webview.NavigateToString(o.TryGetValue("html", out JToken token) ? token.ToString() : "错误");
                 //text.MessageText = o.TryGetValue("html", out JToken token) ? token.ToString() : "错误";
-                MarkdownText.Text = CSStoMarkDown(o.TryGetValue("html", out JToken token) ? token.ToString() : "错误");
-                title.Title = o.TryGetValue("title", out JToken Title) ? Title.ToString() : title.Title;
+                //MarkdownText.Text = CSStoMarkDown(o.TryGetValue("html", out JToken token) ? token.ToString() : "错误");
+                //title.Title = o.TryGetValue("title", out JToken Title) ? Title.ToString() : title.Title;
             }
         }
 
@@ -70,7 +70,7 @@ namespace CoolapkUWP.Pages.AppPages
 
         private void GetDevMyList(string str)
         {
-            main.Text = str;
+            //main.Text = str;
         }
 
 

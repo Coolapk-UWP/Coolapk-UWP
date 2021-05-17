@@ -28,7 +28,7 @@
                     Tag="{x:Bind Uri}"
                     Tapped="{x:Bind local:NotificationsPage.Ellipse_Tapped}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="48" />
+                        <ColumnDefinition Width="56" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -37,8 +37,8 @@
                     </Grid.RowDefinitions>
                     <Ellipse
                         Grid.RowSpan="2"
-                        Width="32"
-                        Height="32"
+                        Width="40"
+                        Height="40"
                         Margin="4"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
@@ -100,13 +100,12 @@
                             </StackPanel>
                         </Button>
                         <TextBlock
-                            Margin="8,0"
                             VerticalAlignment="Center"
                             Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                             IsTextSelectionEnabled="False"
                             Text="{x:Bind Dateline}" />
                     </StackPanel>
-                    <StackPanel Grid.Row="1" Margin="4,0,4,8">
+                    <StackPanel Grid.Row="1" Margin="8,0,4,8">
                         <TextBlock Text="{x:Bind Title}" />
                         <control:TextBlockEx
                             Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
@@ -135,7 +134,7 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Top"
                             Background="Transparent"
-                            Style="{StaticResource ButtonStyle1}"
+                            Style="{StaticResource ButtonRevealStyle}"
                             Tag="{x:Bind UserUri}"
                             Tapped="{x:Bind local:NotificationsPage.Ellipse_Tapped}">
                             <StackPanel Orientation="Horizontal">
@@ -148,7 +147,7 @@
                             </StackPanel>
                         </Button>
                         <TextBlock
-                            Margin="8,4"
+                            Margin="0,5"
                             Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                             Text="{x:Bind Dateline}" />
                     </StackPanel>
@@ -158,12 +157,69 @@
                     </StackPanel>
                 </Grid>
             </DataTemplate>
+            <DataTemplate x:Key="Message" x:DataType="model:MessageNotificationModel">
+                <Grid
+                    Margin="4"
+                    Padding="8"
+                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Tag="{x:Bind Uri}"
+                    Tapped="{x:Bind local:NotificationsPage.Ellipse_Tapped}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="56" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Ellipse
+                        Grid.RowSpan="2"
+                        Width="40"
+                        Height="40"
+                        Margin="4"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Tag="{x:Bind UserUri}"
+                        Tapped="{x:Bind local:NotificationsPage.Ellipse_Tapped}">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{x:Bind UserAvatar.Pic, Mode=OneWay}" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top">
+                        <TextBlock
+                            Text="{x:Bind UserName}" />
+                        <TextBlock
+                            Margin="8,0"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Text="{x:Bind Dateline}" />
+                    </StackPanel>
+
+                    <control:TextBlockEx
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        MaxLine="2"
+                        MessageText="{x:Bind FeedMessage}" />
+                </Grid>
+            </DataTemplate>
             <local:NotificationsPageTemplateSelector
                 x:Key="temse"
                 AtCommentMe="{StaticResource AtCommentMe}"
                 Feed="{StaticResource feed}"
                 Like="{StaticResource Like}"
-                Reply="{StaticResource Reply}" />
+                Reply="{StaticResource Reply}" 
+                Message="{StaticResource Message}"/>
         </ResourceDictionary>
     </Page.Resources>
 

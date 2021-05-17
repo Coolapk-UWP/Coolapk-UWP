@@ -27,6 +27,7 @@ namespace CoolapkUWP.Core.Helpers
         GetIndexPageNames,
         GetLikeList,
         GetMyPageCard,
+        GetChats,
         GetNotifications,
         GetNotificationNumbers,
         GetReplyReplies,
@@ -100,6 +101,7 @@ namespace CoolapkUWP.Core.Helpers
                 case UriType.GetIndexPageNames: return "/v6/main/init";
                 case UriType.GetLikeList: return "/v6/feed/likeList?id={0}&listType=lastupdate_desc&page={1}{2}";
                 case UriType.GetMyPageCard: return "/v6/account/loadConfig?key=my_page_card_config";
+                case UriType.GetChats: return "/v6/message/list?page={0}{1}{2}";
                 case UriType.GetNotifications: return "/v6/notification/{0}?page={1}{2}{3}";
                 case UriType.GetNotificationNumbers: return "/v6/notification/checkCount";
                 case UriType.GetReplyReplies: return "/v6/feed/replyList?id={0}&listType=&page={1}{2}&discussMode=0&feedType=feed_reply&blockStatus=0&fromFeedAuthor=0";
