@@ -1,7 +1,14 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Helpers;
+using CoolapkUWP.Models;
+using Microsoft.Toolkit.Uwp.Notifications;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -15,6 +22,9 @@ namespace CoolapkUWP.Pages.AppPages
     /// </summary>
     public sealed partial class DevPage : Page
     {
+        private FeedDetailModel FeedDetail { get; set; }
+        private Models.Pages.FeedListPageModels.UserDetail UserDetail { get; set; }
+
         public DevPage()
         {
             InitializeComponent();
@@ -27,17 +37,68 @@ namespace CoolapkUWP.Pages.AppPages
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            Uri uri = new Uri("https://api.coolapk.com/v6/message/list?page=1");
-            var (isSucceed, result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
-            if (isSucceed)
-            {
-                main.Text = result;
-                //var o = JObject.Parse(result);
-                //webview.NavigateToString(o.TryGetValue("html", out JToken token) ? token.ToString() : "错误");
-                //text.MessageText = o.TryGetValue("html", out JToken token) ? token.ToString() : "错误";
-                //MarkdownText.Text = CSStoMarkDown(o.TryGetValue("html", out JToken token) ? token.ToString() : "错误");
-                //title.Title = o.TryGetValue("title", out JToken Title) ? Title.ToString() : title.Title;
-            }
+            #region 测试
+            //Uri uri = new Uri("https://api.coolapk.com/v6/message/list?page=1");
+            //var (isSucceed, result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
+            //if (isSucceed)
+            //{
+            //    //main.Text = result;
+            //    //var o = JObject.Parse(result);
+            //    //webview.NavigateToString(o.TryGetValue("html", out JToken token) ? token.ToString() : "错误");
+            //    //text.MessageText = o.TryGetValue("html", out JToken token) ? token.ToString() : "错误";
+            //    //MarkdownText.Text = CSStoMarkDown(o.TryGetValue("html", out JToken token) ? token.ToString() : "错误");
+            //    //title.Title = o.TryGetValue("title", out JToken Title) ? Title.ToString() : title.Title;
+            //}
+            //webview.NavigationCompleted += OnNavigationCompleted;
+            //webview.NavigateToString("");
+            //FeedDetail = await GetFeedDetailAsync("26933449");
+            //content = new TileContent()
+            //{
+            //    Visual = new TileVisual()
+            //    {
+            //        Branding = TileBranding.NameAndLogo,
+            //        DisplayName = FeedDetail.Info,
+            //        TileMedium = new TileBinding()
+            //        {
+            //            Content = new TileBindingContentAdaptive()
+            //            {
+            //                Children =
+            //                {
+            //                    new AdaptiveText()
+            //                    {
+            //                        Text = FeedDetail.Username,
+            //                        HintStyle = AdaptiveTextStyle.Base,
+            //                    },
+
+            //                    new AdaptiveText()
+            //                    {
+            //                        Text = FeedDetail.Message,
+            //                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+            //                        HintWrap = true
+            //                    }
+            //                }
+            //            }
+            //        },
+            //    }
+            //};
+            #endregion
+            var notification = new TileNotification(content.GetXml());
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
+        }
+
+        protected static async Task<FeedDetailModel> GetFeedDetailAsync(string id)
+        {
+            var (isSucceed, result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetFeedDetail, id), true);
+            if (!isSucceed) { return null; }
+
+            var detail = (JObject)result;
+            return detail != null ? new FeedDetailModel(detail) : null;
+        }
+
+        private async void OnNavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs e)
+        {
+            var userId = await webview.InvokeScriptAsync("eval", new[] { "return navigator.userAgent;" });
+            main.Text = userId;
         }
 
         private static string CSStoMarkDown(string text)
@@ -85,5 +146,7 @@ namespace CoolapkUWP.Pages.AppPages
         {
 
         }
+
+        private TileContent content;
     }
 }

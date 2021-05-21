@@ -111,9 +111,9 @@ namespace CoolapkUWP.Core.Helpers
                 case UriType.GetTagFeeds: return "/v6/topic/tagFeedList?tag={0}&page={1}{2}{3}&listType={4}&blockStatus=0";
                 case UriType.GetTopicDetail: return "/v6/topic/tagDetail?tag={0}";
                 case UriType.GetDeviceFeeds: return "/v6/topic/deviceFeedList?tag={0}&page={1}{2}{3}&listType={4}&blockStatus=0";
-                case UriType.GetUserFeeds: return "/v6/user/{4}List?uid={0}&page={1}{2}{3}";
+                case UriType.GetUserFeeds: return "/v6/user/{4}List?uid={0}&page={1}{2}{3}&isIncludeTop=1";
                 case UriType.GetUserHistory: return "/v6/user/hitHistoryList?page={0}{1}{2}";
-                case UriType.GetUserList: return "/v6/user/{0}?uid={1}&page={2}{3}{4}";
+                case UriType.GetUserList: return "/v6/user/{0}?uid={1}&page={2}{3}{4}&isIncludeTop=1";
                 case UriType.GetUserRecentHistory: return "/v6/user/recentHistoryList?page={0}{1}{2}";
                 case UriType.GetUserSpace: return "/v6/user/space?uid={0}";
                 case UriType.GetUserProfile: return "/v6/user/profile?uid={0}";

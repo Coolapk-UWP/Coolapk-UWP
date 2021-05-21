@@ -1,14 +1,8 @@
 ﻿#define LOAD_MAIN_PAGE
 
-using CoolapkUWP.Core.Helpers;
 using CoolapkUWP.Helpers;
-using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

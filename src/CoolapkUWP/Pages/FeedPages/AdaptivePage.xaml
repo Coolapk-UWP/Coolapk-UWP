@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="CoolapkUWP.Pages.FeedPages.FeedOnlyPage"
+    x:Class="CoolapkUWP.Pages.FeedPages.AdaptivePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ctrl="using:CoolapkUWP.Controls"

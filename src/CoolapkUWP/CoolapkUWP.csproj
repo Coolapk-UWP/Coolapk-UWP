@@ -188,8 +188,8 @@
     <Compile Include="Pages\AppPages\DevPage.xaml.cs">
       <DependentUpon>DevPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\FeedPages\FeedOnlyPage.xaml.cs">
-      <DependentUpon>FeedOnlyPage.xaml</DependentUpon>
+    <Compile Include="Pages\FeedPages\AdaptivePage.xaml.cs">
+      <DependentUpon>AdaptivePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\FeedPages\FeedRepliesPage.xaml.cs">
       <DependentUpon>FeedRepliesPage.xaml</DependentUpon>
@@ -247,7 +247,7 @@
     <Compile Include="Pages\FeedPages\UserListPage.xaml.cs">
       <DependentUpon>UserListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\FeedOnlyPageViewModel.cs" />
+    <Compile Include="ViewModels\AdaptivePageViewModel.cs" />
     <Compile Include="ViewModels\FeedRepliesPageViewModel.cs" />
     <Compile Include="ViewModels\IndexPageViewModel.cs" />
     <Compile Include="ViewModels\Interfaces.cs" />
@@ -920,7 +920,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\FeedPages\FeedOnlyPage.xaml">
+    <Page Include="Pages\FeedPages\AdaptivePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1085,7 +1085,7 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\zh-Hans\FeedOnlyPage.resw" />
+    <PRIResource Include="Strings\zh-Hans\AdaptivePage.resw" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -14,7 +14,7 @@
         x:Name="titleGrid"
         Height="{StaticResource PageTitleHeight}"
         VerticalAlignment="Top"
-        Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
+        Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40" />
             <ColumnDefinition Width="*" />

@@ -139,13 +139,13 @@ namespace CoolapkUWP.Pages.SettingPages
         }
 
         // In a real app, these would be initialized with actual data
-        static string from = "动态磁贴测试";
-        static string subject = "这是一个通知";
-        static string body = "这个通知不会消失，除非你手动清除它";
+        private const string from = "动态磁贴测试";
+        private const string subject = "这是一个通知";
+        private const string body = "这个通知不会消失，除非你手动清除它";
 
 
         // Construct the tile content
-        TileContent content = new TileContent()
+        private readonly TileContent content = new TileContent()
         {
             Visual = new TileVisual()
             {
@@ -154,24 +154,24 @@ namespace CoolapkUWP.Pages.SettingPages
                     Content = new TileBindingContentAdaptive()
                     {
                         Children =
-                {
-                    new AdaptiveText()
-                    {
-                        Text = from
-                    },
+                        {
+                            new AdaptiveText()
+                            {
+                                Text = from
+                            },
 
-                    new AdaptiveText()
-                    {
-                        Text = subject,
-                        HintStyle = AdaptiveTextStyle.CaptionSubtle
-                    },
+                            new AdaptiveText()
+                            {
+                                Text = subject,
+                                HintStyle = AdaptiveTextStyle.CaptionSubtle
+                            },
 
-                    new AdaptiveText()
-                    {
-                        Text = body,
-                        HintStyle = AdaptiveTextStyle.CaptionSubtle
-                    }
-                }
+                            new AdaptiveText()
+                            {
+                                Text = body,
+                                HintStyle = AdaptiveTextStyle.CaptionSubtle
+                            }
+                        }
                     }
                 },
 
@@ -400,7 +400,7 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private void Button_Click_19(object sender, RoutedEventArgs e)
         {
-            UIHelper.NavigateInSplitPane(typeof(FeedOnlyPage), new ViewModels.FeedOnlyPage.ViewModel("536381", ViewModels.FeedOnlyPage.ListType.UserFeed, "htmlFeed"));
+            UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModels.AdaptivePage.ViewModel("536381", ViewModels.AdaptivePage.ListType.UserFeed, "htmlFeed"));
         }
     }
 }

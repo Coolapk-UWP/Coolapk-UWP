@@ -2,7 +2,6 @@
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
 using System;
-using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
@@ -55,12 +54,8 @@ namespace CoolapkUWP.Pages.AppPages
         {
             titleBar.ShowProgressRing();
             if (string.IsNullOrEmpty(AppLink)) { return; }
-            Tag = AppLink;
-            try
-            {
-                LaunchAppViewLoad(await new HttpClient().GetStringAsync(Tag.ToString()));
-            }
-            catch (HttpRequestException) { /*Tools.ShowHttpExceptionMessage(ex);*/ }
+            var (isSucceed, result) = await DataHelper.GetHtmlAsync(new Uri(AppLink), "com.coolapk.market");
+            if (isSucceed) { LaunchAppViewLoad(result); }
         }
         private void LaunchAppViewLoad(string str)
         {

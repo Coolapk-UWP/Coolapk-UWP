@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace CoolapkUWP.ViewModels.FeedOnlyPage
+namespace CoolapkUWP.ViewModels.AdaptivePage
 {
     internal enum ListType
     {
@@ -35,7 +35,7 @@ namespace CoolapkUWP.ViewModels.FeedOnlyPage
 
         private static string GetTitle(ListType type, string branch)
         {
-            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedOnlyPage");
+            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("AdaptivePage");
             switch (type)
             {
                 case ListType.UserFeed:

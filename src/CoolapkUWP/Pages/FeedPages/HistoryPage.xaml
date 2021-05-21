@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:CoolapkUWP.Models"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="history" x:DataType="model:HistoryModel">
@@ -16,7 +16,8 @@
                 KeyDown="{x:Bind local:HistoryPage.ListViewItem_KeyDown}"
                 Style="{StaticResource AppListViewItemStyle}"
                 Tag="{x:Bind Url}"
-                Tapped="{x:Bind local:HistoryPage.ListViewItem_Tapped}">
+                Tapped="{x:Bind local:HistoryPage.ListViewItem_Tapped}"
+                MaxHeight="105">
                 <Grid Padding="4,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="56" />

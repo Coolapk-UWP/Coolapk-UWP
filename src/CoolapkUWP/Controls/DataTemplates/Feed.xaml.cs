@@ -74,7 +74,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
                 case "changeButton":
                     DisabledCopy();
-                    UIHelper.NavigateInSplitPane(typeof(FeedOnlyPage), new ViewModels.FeedOnlyPage.ViewModel((sender as FrameworkElement).Tag as string, ViewModels.FeedOnlyPage.ListType.FeedInfo, "changeHistory"));
+                    UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModels.AdaptivePage.ViewModel((sender as FrameworkElement).Tag as string, ViewModels.AdaptivePage.ListType.FeedInfo, "changeHistory"));
                     break;
 
                 default:

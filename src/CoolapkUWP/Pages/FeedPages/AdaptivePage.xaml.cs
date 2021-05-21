@@ -1,4 +1,4 @@
-﻿using CoolapkUWP.ViewModels.FeedOnlyPage;
+﻿using CoolapkUWP.ViewModels.AdaptivePage;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -6,11 +6,11 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages.FeedPages
 {
-    public sealed partial class FeedOnlyPage : Page
+    public sealed partial class AdaptivePage : Page
     {
         private ViewModel provider;
 
-        public FeedOnlyPage()
+        public AdaptivePage()
         {
             InitializeComponent();
         }

@@ -3,7 +3,7 @@ using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
-using CoolapkUWP.ViewModels.FeedOnlyPage;
+using CoolapkUWP.ViewModels.AdaptivePage;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Linq;
@@ -241,7 +241,7 @@ namespace CoolapkUWP.Pages
 
                 case "feed":
                     var r = SettingsHelper.Get<string>(SettingsHelper.Uid);
-                    if (r != null) { UIHelper.NavigateInSplitPane(typeof(FeedOnlyPage), new ViewModel(r, ListType.UserFeed, "feed")); }
+                    if (r != null) { UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModel(r, ListType.UserFeed, "feed")); }
                     break;
 
                 case "follow":
@@ -290,7 +290,7 @@ namespace CoolapkUWP.Pages
                         }
                         else if (s.Contains("我关注的话题", System.StringComparison.Ordinal))
                         {
-                            UIHelper.NavigateInSplitPane(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("#/topic/userFollowTagList&title=我关注的话题", true));
+                            UIHelper.NavigateInSplitPane(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("#/topic/userFollowTagList", true));
                         }
                         else if (s.Contains("我的收藏单", System.StringComparison.Ordinal))
                         {
@@ -298,7 +298,7 @@ namespace CoolapkUWP.Pages
                         else if (s.Contains("我的问答", System.StringComparison.Ordinal))
                         {
                             var r = SettingsHelper.Get<string>(SettingsHelper.Uid);
-                            if (r != null) { UIHelper.NavigateInSplitPane(typeof(FeedOnlyPage), new ViewModel(r, ListType.UserFeed, "questionAndAnswer")); }
+                            if (r != null) { UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModel(r, ListType.UserFeed, "questionAndAnswer")); }
                         }
                         else { UIHelper.OpenLinkAsync(tag as string); }
                     }

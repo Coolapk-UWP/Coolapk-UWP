@@ -1,5 +1,4 @@
-﻿using CoolapkUWP.Controls;
-using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Helpers;
 using System;
 using Windows.ApplicationModel.Resources;
 using Windows.Security.ExchangeActiveSyncProvisioning;

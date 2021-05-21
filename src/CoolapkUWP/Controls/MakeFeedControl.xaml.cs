@@ -31,7 +31,7 @@ namespace CoolapkUWP.Controls
 
         public MakeFeedControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -61,6 +61,7 @@ namespace CoolapkUWP.Controls
                         using (var d = new StringContent(contentText))
                         {
                             content.Add(d, "message");
+                            //content.Add(new StringContent("http://image.coolapk.com/feed/2021/0520/17/536381_c9996893_2179_5867@1080x2340.jpeg"), "pic");
                             await MakeFeed(type, content);
                         }
                         break;

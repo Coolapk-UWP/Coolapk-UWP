@@ -63,10 +63,14 @@
                         x:Name="StickUp"
                         x:Load="{x:Bind IsStickTop}"
                         Orientation="Horizontal">
-                        <SymbolIcon Foreground="Red" Symbol="Upload" />
+                        <FontIcon
+                            Foreground="Red"
+                            FontSize="16"
+                            Margin="4,0,0,0"
+                            Glyph=""/>
                         <TextBlock
                             x:Uid="/Feed/stickUp"
-                            Margin="10"
+                            Margin="5,4,5,5"
                             Foreground="Red" />
                     </StackPanel>
 

@@ -20,7 +20,7 @@
         AlwaysShowHeader="True"
         Header=" "
         SelectionChanged="NavigationView_SelectionChanged"
-        Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+        Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}">
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
