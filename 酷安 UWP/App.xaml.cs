@@ -3,7 +3,6 @@ using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -69,7 +68,8 @@ namespace CoolapkUWP
             {
                 if (Window.Current.Content != null)
                 {
-                    await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
+                    //await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
+                    Tools.ShowMessage($"{e.Exception.Message}\n{e.Exception.StackTrace}");
                     Tools.HideProgressBar();
                 }
             }
@@ -99,7 +99,8 @@ namespace CoolapkUWP
             {
                 if (Window.Current.Content != null)
                 {
-                    await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
+                    //await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
+                    Tools.ShowMessage($"{e.Exception.Message}\n{e.Exception.StackTrace}");
                     Tools.HideProgressBar();
                 }
             }

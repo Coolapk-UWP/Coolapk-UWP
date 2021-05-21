@@ -58,7 +58,7 @@ namespace CoolapkUWP.Control
             <Image Source='{await ImageCache.GetImagePath(ImageType.SmallImage, href)}' Tag='{href}' ToolTipService.ToolTip='{content}'/>";
                                 if (isGif)
                                     xamlContent += @"
-            <Border Background='{ThemeResource SystemControlBackgroundAccentBrush}' VerticalAlignment='Bottom' HorizontalAlignment='Righ'>
+            <Border Background='{ThemeResource SystemControlBackgroundAccentBrush}' VerticalAlignment='Bottom' HorizontalAlignment='Right'>
                 <TextBlock>GIF</TextBlock>
             </Border>
         </Grid>

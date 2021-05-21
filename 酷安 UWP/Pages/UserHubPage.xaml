@@ -34,21 +34,21 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Button Tag="feed" Click="Button_Click" Grid.Column="0" HorizontalAlignment="Stretch" 
-                        Style="{StaticResource ButtonRevealStyle}" VerticalAlignment="Stretch" Padding="0">
+                        Style="{StaticResource ButtonRevealStyle}" Background="Transparent" VerticalAlignment="Stretch" Padding="0">
                         <StackPanel>
                             <TextBlock HorizontalAlignment="Center">动态</TextBlock>
                             <TextBlock HorizontalAlignment="Center" Text="{x:Bind feedNum,Mode=OneWay}"/>
                         </StackPanel>
                     </Button>
                     <Button Tag="follow" Click="Button_Click" Grid.Column="1" HorizontalAlignment="Stretch" 
-                        Style="{StaticResource ButtonRevealStyle}" VerticalAlignment="Stretch" Padding="0">
+                        Style="{StaticResource ButtonRevealStyle}" Background="Transparent" VerticalAlignment="Stretch" Padding="0">
                         <StackPanel>
                             <TextBlock HorizontalAlignment="Center">关注</TextBlock>
                             <TextBlock HorizontalAlignment="Center" Text="{x:Bind followNum,Mode=OneWay}"/>
                         </StackPanel>
                     </Button>
                     <Button Tag="fans" Click="Button_Click" Grid.Column="2" HorizontalAlignment="Stretch" 
-                        Style="{StaticResource ButtonRevealStyle}" VerticalAlignment="Stretch" Padding="0">
+                        Style="{StaticResource ButtonRevealStyle}" Background="Transparent" VerticalAlignment="Stretch" Padding="0">
                         <StackPanel>
                             <TextBlock HorizontalAlignment="Center">粉丝</TextBlock>
                             <TextBlock HorizontalAlignment="Center" Text="{x:Bind fansNum,Mode=OneWay}"/>

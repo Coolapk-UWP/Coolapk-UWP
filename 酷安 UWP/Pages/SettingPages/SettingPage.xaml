@@ -80,7 +80,7 @@
                         <TextBlock FontSize="20" VerticalAlignment="Center" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}">版本：</TextBlock>
                         <TextBlock x:Name="VersionTextBlock" FontSize="20" VerticalAlignment="Center" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
                     </StackPanel>
-                    <Button Tag="gotoTestPage" Click="Button_Click" Visibility="Collapsed" x:Name="gotoTestPage" Content="go to test page" Grid.Row="13" Style="{StaticResource ButtonRevealStyle}"/>
+                    <Button Tag="gotoTestPage" Click="Button_Click" Visibility="Collapsed" x:Name="gotoTestPage" Content="前往测试页面" Grid.Row="13" Style="{StaticResource ButtonRevealStyle}"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

@@ -76,6 +76,18 @@ namespace CoolapkUWP.Data
                 await statusGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar());
         }
 
+        public static async void PausedProgressBar()
+        {
+            if (!Settings.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
+            { await statusGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => statusGrid.PausedProgressBar()); }
+        }
+
+        public static async void ErrorProgressBar()
+        {
+            if (!Settings.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
+            { await statusGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => statusGrid.ErrorProgressBar()); }
+        }
+
         public static async void HideProgressBar()
         {
             isShowingProgressBar = false;
