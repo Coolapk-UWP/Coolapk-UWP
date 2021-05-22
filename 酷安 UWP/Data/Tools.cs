@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
+using Windows.Security.ExchangeActiveSyncProvisioning;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -28,15 +29,17 @@ namespace CoolapkUWP.Data
         public static bool isShowingProgressBar;
         static Tools()
         {
+            EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
             mClient = new HttpClient();
             mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "28");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
             mClient.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
+            mClient.DefaultRequestHeaders.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT 10.0; Win64; x64; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP; " + "10.0)");
+            mClient.DefaultRequestHeaders.UserAgent.ParseAdd(" +CoolMarket/9.2.2-1905301-universal");
             mClient.DefaultRequestHeaders.Add("X-App-Version", "9.2.2");
             mClient.DefaultRequestHeaders.Add("X-App-Code", "1905301");
             mClient.DefaultRequestHeaders.Add("X-Api-Version", "9");
-            //mClient.DefaultRequestHeaders.Add("X-App-Device", "QRTBCOgkUTgsTat9WYphFI7kWbvFWaYByO1YjOCdjOxAjOxEkOFJjODlDI7ATNxMjM5MTOxcjMwAjN0AyOxEjNwgDNxITM2kDMzcTOgsTZzkTZlJ2MwUDNhJ2MyYzM");
             mClient.DefaultRequestHeaders.Add("Cookie", Settings.cookie);
             Popup popup = new Popup { RequestedTheme = Settings.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
             StatusGrid statusGrid2 = new StatusGrid();
@@ -406,7 +409,7 @@ namespace CoolapkUWP.Data
                 case 3: str = "GB"; break;
                 case 4: str = "TB"; break;
             }
-            return $"{size.ToString("N2")} {str}";
+            return $"{size:N2} {str}";
         }
     }
 }
