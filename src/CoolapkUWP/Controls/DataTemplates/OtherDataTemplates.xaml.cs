@@ -9,7 +9,7 @@ namespace CoolapkUWP.Controls.DataTemplates
     {
         public OtherDataTemplates()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         internal static void OnTapped(object sender, TappedRoutedEventArgs e)

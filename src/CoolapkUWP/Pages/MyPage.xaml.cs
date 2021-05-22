@@ -2,8 +2,8 @@
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
-using CoolapkUWP.ViewModels.FeedListPage;
 using CoolapkUWP.ViewModels.AdaptivePage;
+using CoolapkUWP.ViewModels.FeedListPage;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Linq;

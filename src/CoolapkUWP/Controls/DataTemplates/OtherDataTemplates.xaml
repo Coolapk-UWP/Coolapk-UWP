@@ -5,6 +5,8 @@
     xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:models="using:CoolapkUWP.Models">
 
+    <DataTemplate x:Key="null" />
+    
     <DataTemplate x:Key="Topic" x:DataType="models:TopicModel">
         <ListViewItem
             KeyDown="{x:Bind local:OtherDataTemplates.ListViewItem_KeyDown}"

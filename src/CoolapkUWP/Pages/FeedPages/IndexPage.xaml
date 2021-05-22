@@ -11,7 +11,6 @@
     xmlns:model="using:CoolapkUWP.Models"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Background="{ThemeResource SystemControlBackgroundListLowBrush}"
     mc:Ignorable="d">
 
@@ -57,8 +56,6 @@
                 ImageText="{StaticResource imageText}"
                 QuestionFeed="{StaticResource question2}"
                 User="{StaticResource user2}" />
-
-            <DataTemplate x:Key="null" />
 
             <DataTemplate x:Key="titleCard" x:DataType="model:IndexPageOperationCardModel">
                 <ListViewItem
@@ -708,7 +705,9 @@
 
     <Grid>
         <winui:ItemsRepeaterScrollHost>
-            <ScrollViewer x:Name="scrollViewer" ViewChanged="ScrollViewer_ViewChanged">
+            <ScrollViewer
+                x:Name="scrollViewer"
+                ViewChanged="ScrollViewer_ViewChanged">
                 <Border
                     x:Name="listBorder"
                     MinWidth="320"
