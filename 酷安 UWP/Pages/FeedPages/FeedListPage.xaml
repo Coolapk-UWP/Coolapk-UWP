@@ -126,7 +126,7 @@
                                         SelectionMode="None" PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新" RefreshRequested="{x:Bind Refresh}">
             <controls:PullToRefreshListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <control:GridPanel DesiredColumnWidth="384.0"/>
+                    <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384.0"/>
                 </ItemsPanelTemplate>
             </controls:PullToRefreshListView.ItemsPanel>
             <controls:PullToRefreshListView.ItemContainerStyle>

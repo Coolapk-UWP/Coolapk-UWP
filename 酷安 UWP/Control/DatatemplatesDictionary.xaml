@@ -242,7 +242,7 @@
                 </Button>
                 <Button Style="{StaticResource ButtonStyle1}" Padding="2" HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Link"/>
+                        <SymbolIcon Symbol="Share"/>
                         <TextBlock Margin="3,0" Text="{x:Bind share_num}"/>
                     </StackPanel>
                 </Button>

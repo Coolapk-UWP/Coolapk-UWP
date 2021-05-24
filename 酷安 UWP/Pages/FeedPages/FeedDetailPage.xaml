@@ -240,7 +240,7 @@
                                     </ListView.ItemContainerStyle>
                                     <ListView.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <control:GridPanel DesiredColumnWidth="384.0"/>
+                                            <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384.0"/>
                                         </ItemsPanelTemplate>
                                     </ListView.ItemsPanel>
                                 </ListView>
@@ -253,7 +253,7 @@
                                           ItemsSource="{x:Bind replies}">
                                     <ListView.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <control:GridPanel DesiredColumnWidth="384.0"/>
+                                            <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384.0"/>
                                         </ItemsPanelTemplate>
                                     </ListView.ItemsPanel>
                                     <ListView.ItemContainerStyle>
@@ -296,7 +296,7 @@
                             <ListView SelectionMode="None" ScrollViewer.VerticalScrollMode="Disabled" >
                                 <ListView.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <control:GridPanel DesiredColumnWidth="384.0"/>
+                                        <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384.0"/>
                                     </ItemsPanelTemplate>
                                 </ListView.ItemsPanel>
                                 <ListView.ItemContainerStyle>
@@ -329,7 +329,7 @@
                                   ItemsSource="{x:Bind answers}" ItemTemplate="{StaticResource feed}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <control:GridPanel DesiredColumnWidth="384.0"/>
+                                <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384.0"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                         <ListView.ItemContainerStyle>
