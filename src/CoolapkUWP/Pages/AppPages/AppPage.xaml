@@ -31,8 +31,8 @@
                         VerticalAlignment="Top" Width="60"/>
                     <StackPanel Margin="100,10,0,0">
                         <TextBlock 
-                            x:Name="AppTitleText" 
-                            x:FieldModifier="Public" 
+                            x:Name="AppTitleText"
+                            x:FieldModifier="Public"
                             FontSize="20" HorizontalAlignment="Left" 
                             TextWrapping="Wrap" VerticalAlignment="Top" 
                             Padding="0,0,0,5"/>

@@ -124,43 +124,41 @@ namespace CoolapkUWP.Helpers
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
             try
             {
-                using (HttpClient client = new HttpClient())
+                var (isSucceed, result) = await DataHelper.GetHtmlAsync(new Uri("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest"), null);
+                if (!isSucceed) { (isSucceed, result) = await DataHelper.GetHtmlAsync(new Uri("https://v2.kkpp.cc/repos/Tangent-90/Coolapk-UWP/releases/latest"), null); }
+                var keys = JObject.Parse(result);
+                var ver = keys.Value<string>("tag_name").Replace("v", string.Empty).Split('.');
+                if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major ||
+                   (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor) ||
+                   (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
                 {
-                    client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0;)");
-                    var keys = JObject.Parse(await client.GetStringAsync("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest"));
-                    var ver = keys.Value<string>("tag_name").Replace("v", string.Empty).Split('.');
-                    if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major ||
-                       (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor) ||
-                       (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
+                    var grid = new Grid();
+                    var textBlock = new TextBlock
                     {
-                        var grid = new Grid();
-                        var textBlock = new TextBlock
-                        {
-                            Text = string.Format(
-                                        loader.GetString("HasUpdate"),
-                                        Package.Current.Id.Version.Major,
-                                        Package.Current.Id.Version.Minor,
-                                        Package.Current.Id.Version.Build,
-                                        keys.Value<string>("tag_name")),
-                            HorizontalAlignment = HorizontalAlignment.Left,
-                            VerticalAlignment = VerticalAlignment.Center
-                        };
-                        var button = new Button
-                        {
-                            Content = loader.GetString("GotoGithub"),
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            VerticalAlignment = VerticalAlignment.Center
-                        };
-                        button.Click += async (_, __) =>
-                        {
-                            await Windows.System.Launcher.LaunchUriAsync(new Uri(keys.Value<string>("html_url")));
-                        };
-                        grid.Children.Add(textBlock);
-                        grid.Children.Add(button);
-                        UIHelper.InAppNotification.Show(grid, 6000);
-                    }
-                    else if (showmassage) { UIHelper.StatusBar_ShowMessage(loader.GetString("NoUpdate")); }
+                        Text = string.Format(
+                                    loader.GetString("HasUpdate"),
+                                    Package.Current.Id.Version.Major,
+                                    Package.Current.Id.Version.Minor,
+                                    Package.Current.Id.Version.Build,
+                                    keys.Value<string>("tag_name")),
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+                    var button = new Button
+                    {
+                        Content = loader.GetString("GotoGithub"),
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+                    button.Click += async (_, __) =>
+                    {
+                        await Windows.System.Launcher.LaunchUriAsync(new Uri(keys.Value<string>("html_url")));
+                    };
+                    grid.Children.Add(textBlock);
+                    grid.Children.Add(button);
+                    UIHelper.InAppNotification.Show(grid, 6000);
                 }
+                else if (showmassage) { UIHelper.StatusBar_ShowMessage(loader.GetString("NoUpdate")); }
             }
             catch (HttpRequestException) { UIHelper.StatusBar_ShowMessage(loader.GetString("NetworkError")); }
         }

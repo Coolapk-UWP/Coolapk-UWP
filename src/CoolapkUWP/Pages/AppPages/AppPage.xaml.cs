@@ -1,6 +1,8 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -19,6 +21,8 @@ namespace CoolapkUWP.Pages.AppPages
     /// </summary>
     public sealed partial class AppPage : Page
     {
+        private AppPageMode AppPageMode { get; set; }
+
         string AppInfo = "", AppVersionMassage = "", AppReview = "", AppVersion, AppMassage, AppName, AppLogo, AppUpdateTime, AppScore, AppCommendNum, /*AppDownloadUrl,*/ id;
         string AppLink = "";
         public AppPage()
@@ -44,21 +48,38 @@ namespace CoolapkUWP.Pages.AppPages
 
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             //将传过来的数据 类型转换一下
             AppLink = e.Parameter as string;
+            AppPageMode = await GetAppDetailAsync(AppLink);
         }
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             titleBar.ShowProgressRing();
             if (string.IsNullOrEmpty(AppLink)) { return; }
-            var (isSucceed, result) = await DataHelper.GetHtmlAsync(new Uri(AppLink), "com.coolapk.market");
-            if (isSucceed) { LaunchAppViewLoad(result); }
+            var (HTMLisSucceed, html) = await DataHelper.GetHtmlAsync(new Uri(AppLink), "com.coolapk.market");
+            if (HTMLisSucceed) { LaunchAppViewLoad(html); }
+        }
+        private static async Task<AppPageMode> GetAppDetailAsync(string AppLink)
+        {
+            var (isSucceed, result) = await DataHelper.GetHtmlAsync(new Uri(AppLink), "XMLHttpRequest");
+            if (!isSucceed) { return null; }
+
+            var detail = JObject.Parse(result);
+            return detail != null ? new AppPageMode(detail) : null;
         }
         private void LaunchAppViewLoad(string str)
         {
+            #region 基于Json的内容获取
+
+            titleBar.Title = AppTitleText.Text = AppPageMode.NavTitle;
+
+            #endregion
+
+            #region 小板子的HTML内容获取
+
             try { AppInfo = ReplaceHtml(Regex.Split(Regex.Split(Regex.Split(str, "应用简介</p>")[1], @"<div class=""apk_left_title_info"">")[1], "</div>")[0].Trim()); } catch (Exception) { }
             try { AppVersionMassage = ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[2], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
             try { AppReview = ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[1], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
@@ -77,8 +98,8 @@ namespace CoolapkUWP.Pages.AppPages
             //Download URI
             //AppDownloadUrl = Regex.Split(Regex.Split(Regex.Split(str, "function onDownloadApk")[1], "window.location.href")[1], @"""")[1];
 
-            AppIconImage.Source = new BitmapImage(new Uri(AppLogo, UriKind.RelativeOrAbsolute));
-            titleBar.Title = AppTitleText.Text = AppName;
+            //AppIconImage.Source = new BitmapImage(new Uri(AppLogo, UriKind.RelativeOrAbsolute));
+            //titleBar.Title = AppTitleText.Text = AppName;
             AppVTText.Text = AppUpdateTime;
             AppV2Text.Text = AppVersion;
             AppVText.Text = AppVersion;
@@ -154,6 +175,9 @@ namespace CoolapkUWP.Pages.AppPages
             {
                 KPanel.Visibility = Visibility.Collapsed;
             }*/
+
+            #endregion
+
             GenerateActivityAsync();
             titleBar.HideProgressRing();
         }

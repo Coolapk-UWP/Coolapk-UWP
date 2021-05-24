@@ -36,8 +36,8 @@ namespace CoolapkUWP.Pages.AppPages
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             #region 测试
-            //Uri uri = new Uri("https://api.coolapk.com/v6/message/list?page=1");
-            //var (isSucceed, result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
+            Uri uri = new Uri("https://www.coolapk.com/apk/3283");
+            var (isSucceed, result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
             //if (isSucceed)
             //{
             //    //main.Text = result;

@@ -176,6 +176,7 @@
     <Compile Include="Models\FeedModel.cs" />
     <Compile Include="Models\SearchPageModel.cs" />
     <Compile Include="Models\TopicModel.cs" />
+    <Compile Include="Models\AppPageMode.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Helpers\ExceptionCatcher.cs" />

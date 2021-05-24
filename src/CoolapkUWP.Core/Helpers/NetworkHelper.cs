@@ -25,7 +25,6 @@ namespace CoolapkUWP.Core.Helpers
         {
             string Version = "V11";
             EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
-            //client.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
             client.DefaultRequestHeaders.Add("X-Sdk-Int", "30");
             client.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
             client.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
