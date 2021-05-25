@@ -49,7 +49,6 @@ namespace CoolapkUWP.Pages.FeedPages
                 feedId = vs[1] as string;
                 flyout = vs[2] as Flyout;
             }
-            else InputBox.Margin = Settings.stackPanelMargin;
             foreach (var item in Emojis.emojis)
             {
                 string u = $"ms-appx:///Assets/Emoji/{item}{(Emojis.oldEmojis.Contains(item) && Settings.GetBoolen("IsUseOldEmojiMode") ? "2" : string.Empty)}.png";

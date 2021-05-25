@@ -98,7 +98,7 @@
     </Page.Resources>
 
     <Grid>
-        <controls:PullToRefreshListView Padding="{x:Bind data:Settings.stackPanelMargin}" x:Name="MainListView" SelectionMode="None" RefreshRequested="MainListView_RefreshRequested"
+        <controls:PullToRefreshListView x:Name="MainListView" SelectionMode="None" RefreshRequested="MainListView_RefreshRequested"
                                         PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新">
             <controls:PullToRefreshListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">

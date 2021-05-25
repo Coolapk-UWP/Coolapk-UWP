@@ -143,6 +143,7 @@ namespace CoolapkUWP.Data
                     var o = Tools.GetJSonObject(await Tools.GetJson("/account/checkLoginInfo"));
                     Tools.notifications.Initial(o["notifyCount"].GetObject());
                     Tools.mainPage.UserAvatar = await ImageCache.GetImage(ImageType.BigAvatar, o["userAvatar"].GetString());
+                    Tools.mainPage.UserNames = o["username"].GetString();
                     return true;
                 }
                 else return false;
@@ -157,6 +158,7 @@ namespace CoolapkUWP.Data
             cookie = string.Empty;
             Set("Uid", string.Empty);
             Tools.mainPage.UserAvatar = null;
+            Tools.mainPage.UserNames = "登录";
         }
     }
 }

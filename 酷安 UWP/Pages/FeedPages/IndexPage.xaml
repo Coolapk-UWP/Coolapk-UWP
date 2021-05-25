@@ -238,7 +238,7 @@
 
     <Grid>
         <controls:PullToRefreshListView x:Name="listView" ItemsSource="{x:Bind Collection}" RefreshRequested="{x:Bind RefreshPage}" PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新"
-                                        Padding="{x:Bind data:Settings.stackPanelMargin}" ItemTemplateSelector="{StaticResource FTemplateSelector}" SelectionMode="None">
+                                        ItemTemplateSelector="{StaticResource FTemplateSelector}" SelectionMode="None">
             <controls:PullToRefreshListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384"/>
@@ -250,6 +250,6 @@
                 </Style>
             </controls:PullToRefreshListView.ItemContainerStyle>
         </controls:PullToRefreshListView>
-        <control:TitleBar x:Name="TitleBar" BackButtonClick="TitleBar_BackButtonClick" RefreshEvent="{x:Bind RefreshPage}"/>
+        <control:TitleBar x:Name="TitleBar" Visibility="Collapsed" BackButtonClick="TitleBar_BackButtonClick" RefreshEvent="{x:Bind RefreshPage}"/>
     </Grid>
 </Page>

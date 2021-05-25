@@ -6,20 +6,21 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     mc:Ignorable="d" >
 
     <Grid>
         <WebView Margin="{x:Bind data:Settings.stackPanelMargin}" NavigationCompleted="WebView_NavigationCompleted" x:Name="webView"/>
         <control:TitleBar x:Name="titleBar" BackButtonClick="BackButton_Click"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Height="{x:Bind data:Settings.PageTitleHeight}">
-            <Button Background="Transparent" Style="{StaticResource ButtonStyle1}" Height="48" Click="{x:Bind CheckLogin}" 
+            <Button Background="Transparent" Style="{StaticResource ButtonRevealStyle}" Height="48" Click="{x:Bind CheckLogin}" 
                     VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" x:Name="TryLoginButton">
                 尝试获取token
                 <ToolTipService.ToolTip>
                     <ToolTip Content="如果登录成功而没有自动返回上一页，请点这里"/>
                 </ToolTipService.ToolTip>
             </Button>
-            <Button Background="Transparent" Style="{StaticResource ButtonStyle1}" Height="48" Click="GotoSystemBrowserButton_Click" 
+            <Button Background="Transparent" Style="{StaticResource BottomNavButtonStyle}" Height="48" Click="GotoSystemBrowserButton_Click" 
                     VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" x:Name="GotoSystemBrowserButton">
                 在浏览器中打开
             </Button>

@@ -37,13 +37,14 @@ namespace CoolapkUWP.Pages.FeedPages
             base.OnNavigatedTo(e);
             object[] vs = e.Parameter as object[];
             //initialPage = vs[2] as InitialPage;
-            if ((bool)vs[1]) TitleBar.Visibility = Visibility.Collapsed;
+            if (!(bool)vs[1])
+            {
+                TitleBar.Visibility = Visibility.Visible;
+                listView.Padding = Settings.stackPanelMargin;
+            }
             pageUrl = vs[0] as string;
             TitleBar.BackButtonVisibility = Visibility.Visible;
-            if (pageUrl.Contains("&title=")) TitleBar.Title = pageUrl.Substring(pageUrl.LastIndexOf("&title=") + 7);
-            if (pageUrl.IndexOf("/page") == -1 && pageUrl != "/main/indexV8") pageUrl = "/page/dataList?url=" + pageUrl;
-            else if (pageUrl.IndexOf("/page") == 0 && !pageUrl.Contains("/page/dataList")) pageUrl = pageUrl.Replace("/page", "/page/dataList");
-            pageUrl = pageUrl.Replace("#", "%23");
+            pageUrl = GetUri(pageUrl);
             index = -1;
             GetUrlPage();
             Task.Run(async () =>
@@ -54,6 +55,25 @@ namespace CoolapkUWP.Pages.FeedPages
                     (VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
                 });
             });
+        }
+
+        private string GetUri(string uri)
+        {
+            if (uri.Contains("&title="))
+            {
+                const string Value = "&title=";
+                TitleBar.Title = uri.Substring(uri.LastIndexOf(Value, StringComparison.Ordinal) + Value.Length);
+            }
+
+            if (uri.IndexOf("/page", StringComparison.Ordinal) == -1 && (uri.StartsWith("#", StringComparison.Ordinal) || (!uri.Contains("/main/") && !uri.Contains("/user/") && !uri.Contains("/apk/") && !uri.Contains("/appForum/") && !uri.Contains("/picture/") && !uri.Contains("/topic/") && !uri.Contains("/discovery/"))))
+            {
+                uri = "/page/dataList?url=" + uri;
+            }
+            else if (uri.IndexOf("/page", StringComparison.Ordinal) == 0 && !uri.Contains("/page/dataList"))
+            {
+                uri = uri.Replace("/page", "/page/dataList");
+            }
+            return uri.Replace("#", "%23");
         }
 
         async void GetUrlPage(int p = -1)
@@ -73,7 +93,7 @@ namespace CoolapkUWP.Pages.FeedPages
         async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
         {
             Tools.ShowProgressBar();
-            string s = await Tools.GetJson($"{url}{(url == "/main/indexV8" ? "?" : "&")}page={page}");
+            string s = await Tools.GetJson($"{url}{(url.Contains("?") ? "&" : "?")}page={page}");
             JsonArray Root = Tools.GetDataArray(s);
             if (Root != null && Root.Count > 0)
                 if (page == 1)

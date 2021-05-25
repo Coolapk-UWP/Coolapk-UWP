@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Data;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -40,14 +41,45 @@ namespace CoolapkUWP.Pages.SettingPages
     /// </summary>
     public sealed partial class SettingPage : Page
     {
-        public SettingPage() => this.InitializeComponent();
+        public SettingPage()
+        {
+            InitializeComponent();
+            main.Text =
+@"
+#### 欢迎使用酷安 UWP！
+##### 声明
+1. 本程序是[酷安](https://coolapk.com)的第三方客户端，仅用作学习交流使用，禁止用于商业用途。
+2. 本程序是开源软件，因此，在使用时请确保程序是来自[本Github仓库](https://github.com/Tangent-90/Coolapk-UWP)，以确保您的数据安全。
+3. 若程序来源无异常，程序运行过程中您的所有数据都仅用于与酷安的服务器交流或储存于本地，开发者不会窃取您的任何数据。但即便如此，也请注意使用环境的安全性。
+4. 若您对[酷安](https://coolapk.com)如何处理您的数据存在疑虑，请访问[酷安用户服务协议](https://m.coolapk.com/mp/user/agreement)、[酷安隐私保护政策](https://m.coolapk.com/mp/user/privacy)、[酷安二手安全条约](https://m.coolapk.com/mp/user/ershouAgreement)。
+##### 鸣谢
+|                                       贡献                                     |                作者               |
+| ----------------------------------------------------------------------------- | -------------------------------- |
+| [原作(CoolApk-UWP)](https://github.com/oboard/CoolApk-UWP)                     | [oboard](https://github.com/oboard)|
+| [Token获取方法(CoolapkTokenCrack)](https://github.com/ZCKun/CoolapkTokenCrack) | [ZCKun](https://github.com/ZCKun/)|
+##### 引用及参考
+- [Coolapk-kotlin](https://github.com/bjzhou/Coolapk-kotlin)
+- [UWP Community Toolkit](https://github.com/Microsoft/UWPCommunityToolkit/)
+- [Win UI](https://github.com/microsoft/microsoft-ui-xaml)
+- [Json.NET](https://www.newtonsoft.com/json)
+- [QRCoder](https://github.com/codebude/QRCoder)
+- [Metro Log](https://github.com/novotnyllc/MetroLog)
+- [Color Thief](https://github.com/KSemenenko/ColorThief)
+";
+        }
 
-        CancellationTokenSource source;
-        ObservableCollection<CacheSizeViewModel> models = new ObservableCollection<CacheSizeViewModel>();
+        private CancellationTokenSource source;
+        private readonly ObservableCollection<CacheSizeViewModel> models = new ObservableCollection<CacheSizeViewModel>();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            var vs = e.Parameter;
+            if (!(bool)vs)
+            {
+                TitleBar.Visibility = Visibility.Visible;
+                listView.Padding = Settings.stackPanelMargin;
+            }
             Tools.ShowProgressBar();
             IsNoPicsMode.IsOn = Settings.GetBoolen("IsNoPicsMode");
             IsUseOldEmojiMode.IsOn = Settings.GetBoolen("IsUseOldEmojiMode");
@@ -73,7 +105,16 @@ namespace CoolapkUWP.Pages.SettingPages
             }
         }
 
-        async void GetCacheSize()
+        private async void MarkdownText_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            if (Uri.TryCreate(e.Link, UriKind.Absolute, out Uri link))
+            {
+                string str = link.ToString();
+                Tools.OpenLink(str);
+            }
+        }
+
+        private async void GetCacheSize()
         {
             Tools.ShowProgressBar();
             CacheSizeTextBlock.Text = "正在加载……";
@@ -119,7 +160,7 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             ToggleSwitch toggle = sender as ToggleSwitch;
             Settings.Set(toggle.Name, toggle.IsOn);
-            switch (toggle.Name as string)
+            switch (toggle.Name)
             {
                 case "IsDarkMode":
                     Settings.CheckTheme();
@@ -141,15 +182,25 @@ namespace CoolapkUWP.Pages.SettingPages
                 case "gotoTestPage": Tools.Navigate(typeof(TestPage), null); break;
                 case "checkUpdate": Settings.CheckUpdate(); break;
                 case "RefreshCache": GetCacheSize(); break;
-                case "logout": Settings.Logout(); break;
+                case "logout":
+                    Settings.Logout();
+                    if (AccountLogout.Flyout is Flyout flyout_logout)
+                    {
+                        flyout_logout.Hide();
+                    }
+                    _ = Frame.Navigate(typeof(SettingPage));
+                    Frame.GoBack();
+                    break;
                 case "reset":
-                    MessageDialog dialog = new MessageDialog("进行此操作会同时退出登录。\n你确定吗？", "提示");
-                    dialog.Commands.Add(new UICommand("是"));
-                    dialog.Commands.Add(new UICommand("否"));
-                    if ((await dialog.ShowAsync()).Label == "是")
                     {
                         ApplicationData.Current.LocalSettings.Values.Clear();
                         Settings.Logout();
+                        if (reset.Flyout is Flyout flyout_reset)
+                        {
+                            flyout_reset.Hide();
+                        }
+                        _ = Frame.Navigate(typeof(SettingPage));
+                        Frame.GoBack();
                     }
                     break;
                 case "CleanCache":
@@ -170,6 +221,14 @@ namespace CoolapkUWP.Pages.SettingPages
                     CleanAllCacheButton.IsEnabled = true;
                     GetCacheSize();
                     CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = true;
+                    break;
+                case "AccountSetting":
+                    Tools.Navigate(typeof(BrowserPage), new object[] { false, "https://account.coolapk.com/account/settings" });
+                    break;
+                case "MyDevice":
+                    Tools.Navigate(typeof(BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
+                    break;
+                default:
                     break;
             }
         }

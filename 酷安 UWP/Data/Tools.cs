@@ -20,7 +20,7 @@ namespace CoolapkUWP.Data
 {
     static class Tools
     {
-        static HttpClient mClient;
+        public static HttpClient mClient;
         public static NotificationsNum notifications = new NotificationsNum();
         public static Pages.MainPage mainPage = null;
         public static List<Popup> popups = new List<Popup>();
@@ -32,7 +32,7 @@ namespace CoolapkUWP.Data
             EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
             mClient = new HttpClient();
             mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
-            mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "28");
+            mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "30");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
             mClient.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
             mClient.DefaultRequestHeaders.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT 10.0; Win64; x64; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP; " + "10.0)");
@@ -40,6 +40,9 @@ namespace CoolapkUWP.Data
             mClient.DefaultRequestHeaders.Add("X-App-Version", "9.2.2");
             mClient.DefaultRequestHeaders.Add("X-App-Code", "1905301");
             mClient.DefaultRequestHeaders.Add("X-Api-Version", "9");
+            mClient.DefaultRequestHeaders.Add("X-App-Channel", "coolapk");
+            mClient.DefaultRequestHeaders.Add("X-App-Mode", "universal");
+            mClient.DefaultRequestHeaders.Add("X-Dark-Mode", Settings.GetBoolen("IsDarkMode") ? "1" : "0");
             mClient.DefaultRequestHeaders.Add("Cookie", Settings.cookie);
             Popup popup = new Popup { RequestedTheme = Settings.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
             StatusGrid statusGrid2 = new StatusGrid();
@@ -174,7 +177,11 @@ namespace CoolapkUWP.Data
             if (str.Contains('?')) str = str.Substring(0, str.IndexOf('?'));
             if (str.Contains('%')) str = str.Substring(0, str.IndexOf('%'));
             if (str.Contains('&')) str = str.Substring(0, str.IndexOf('&'));
-            if (str.IndexOf("/u/") == 0)
+            if (str == "https://m.coolapk.com/mp/user/communitySpecification")
+            {
+                Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
+            }
+            else if (str.IndexOf("/u/") == 0)
             {
                 string u = str.Replace("/u/", string.Empty);
                 if (int.TryParse(u, out int uu))

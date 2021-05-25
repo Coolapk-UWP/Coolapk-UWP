@@ -1,15 +1,17 @@
 ﻿using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
+using CoolapkUWP.Pages.FeedPages;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Windows.ApplicationModel.Background;
 using Windows.Data.Json;
 using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using muxc = Microsoft.UI.Xaml.Controls;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -18,7 +20,8 @@ namespace CoolapkUWP.Pages
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        ImageSource userAvatar;
+
+        private ImageSource userAvatar;
         public ImageSource UserAvatar
         {
             get => userAvatar;
@@ -28,16 +31,29 @@ namespace CoolapkUWP.Pages
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserAvatar)));
             }
         }
-        bool a = true;
-        static int seletedItem =
-#if DEBUG
-            0;
-#else
-        1;
-#endif
+
+        private string userNames;
+        public string UserNames
+        {
+            get => userNames;
+            set
+            {
+                if (value == null) { value = "个人中心"; }
+                userNames = value;
+                UserName.Text = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserNames)));
+            }
+        }
+
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            Settings.CheckLoginInfo();
+            Tools.notifications.BadgeNumberChanged += (sender, e) =>
+            {
+                if (sender is NotificationsNum num) ChangeBadgeNum(num.BadgeNum);
+            };
+            ChangeBadgeNum(Tools.notifications.BadgeNum);
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
                 Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             if (Settings.GetBoolen("CheckUpdateWhenLuanching")) Settings.CheckUpdate();
@@ -58,29 +74,52 @@ namespace CoolapkUWP.Pages
                 }
             };
             Tools.mainPage = this;
+            navigationView.SelectedItem = navigationView.MenuItems[1];
             RegisterBackgroundTask();
-            GetIndexPageItems();
         }
 
-        private void NavigateInVFrame(int index)
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            switch (index)
+            ApplicationView view = ApplicationView.GetForCurrentView();
+            bool isInFullScreenMode = view.IsFullScreenMode;
+            if (isInFullScreenMode || view.ViewMode == ApplicationViewMode.CompactOverlay)
+                navigationView.Margin = new Thickness(0, 32, 0, 0);
+            else navigationView.Margin = new Thickness(0, 0, 0, 0);
+        }
+
+        private void NavigationView_SelectionChanged(muxc.NavigationView sender, muxc.NavigationViewSelectionChangedEventArgs args)
+        {
+            if (args.IsSettingsSelected)
             {
-                case 0:
-                    VFrame.Navigate(typeof(UserHubPage));
-                    seletedItem = 0;
-                    SetNavItemBorder(2);
-                    break;
-                case 1:
-                    TopNavListView.SelectedIndex = 0;
-                    seletedItem = 1;
-                    break;
-                case 2:
-                    TopNavListView.SelectedIndex = TopNavListView.Items.Count - 3;
-                    seletedItem = 2;
-                    break;
+                _ = navigationViewFrame.Navigate(typeof(SettingPages.SettingPage), true, args.RecommendedNavigationTransitionInfo);
+            }
+            else if (args.SelectedItemContainer != null)
+            {
+                var navItemTag = args.SelectedItemContainer.Tag.ToString();
+                switch (navItemTag)
+                {
+                    case "MakeFeed":
+                        _ = navigationViewFrame.Navigate(typeof(MakeFeedPage), new object[] { MakeFeedMode.Feed }, args.RecommendedNavigationTransitionInfo);
+                        break;
+                    case "Notification":
+                        _ = navigationViewFrame.Navigate(typeof(NotificationsPage), NotificationPageType.Comment, args.RecommendedNavigationTransitionInfo);
+                        break;
+                    case "UserHub":
+                        _ = navigationViewFrame.Navigate(typeof(UserHubPage), args.RecommendedNavigationTransitionInfo);
+                        break;
+                    default:
+                        if (!navItemTag.StartsWith("V"))
+                            _ = navigationViewFrame.Navigate(typeof(IndexPage), new object[] { "/page?url=V9_HOME_TAB_FOLLOW&type=" + navItemTag, true }, args.RecommendedNavigationTransitionInfo);
+                        else if (navItemTag == "V9_HOME_TAB_HEADLINE")
+                            _ = navigationViewFrame.Navigate(typeof(IndexPage), new object[] { "/main/indexV8", true }, args.RecommendedNavigationTransitionInfo);
+                        else if (navItemTag == "V11_FIND_DYH")
+                            _ = navigationViewFrame.Navigate(typeof(IndexPage), new object[] { "/user/dyhSubscribe", true }, args.RecommendedNavigationTransitionInfo);
+                        else _ = navigationViewFrame.Navigate(typeof(IndexPage), new object[] { "/page?url=" + navItemTag, true }, args.RecommendedNavigationTransitionInfo);
+                        break;
+                }
             }
         }
+
         #region 搜索框相关
         private async void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
@@ -144,248 +183,23 @@ namespace CoolapkUWP.Pages
             if (args.SelectedItem is ISearchPageViewModel m) sender.Text = m.GetTitle();
         }
         #endregion
-        #region toIndexPage
-        List<string> IndexPageUrls = new List<string>();
-        private Visibility indexPageNavButtonVisibility = Visibility.Collapsed;
-        public Visibility IndexPageNavButtonVisibility
-        {
-            get => indexPageNavButtonVisibility;
-            set
-            {
-                indexPageNavButtonVisibility = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IndexPageNavButtonVisibility)));
-            }
-        }
-        private Visibility indexPageFollowNavButtonVisibility = Visibility.Collapsed;
-        public Visibility IndexPageFollowNavButtonVisibility
-        {
-            get => indexPageFollowNavButtonVisibility;
-            set
-            {
-                indexPageFollowNavButtonVisibility = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IndexPageFollowNavButtonVisibility)));
-            }
-        }
-        private Visibility appPageFollowNavButtonVisibility = Visibility.Collapsed;
-        public Visibility AppPageNavButtonVisibility
-        {
-            get => appPageFollowNavButtonVisibility;
-            set
-            {
-                appPageFollowNavButtonVisibility = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AppPageNavButtonVisibility)));
-            }
-        }
-        int followItemNum;
-        async void GetIndexPageItems()
-        {
-            await Settings.CheckLoginInfo();
-            Tools.notifications.BadgeNumberChanged += (sender, e) =>
-            {
-                if (sender is NotificationsNum num) ChangeBadgeNum(num.BadgeNum);
-            };
-            ChangeBadgeNum(Tools.notifications.BadgeNum);
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson("/main/init"));
-            if (array != null & array.Count > 0)
-            {
-                int i = 1;
-                foreach (var a in array)
-                    if (a.GetObject()["entityTemplate"].GetString() == "configCard")
-                        foreach (var b in a.GetObject()["entities"].GetArray())
-                        {
-                            JsonObject IndexPageNavItem = b.GetObject();
-                            switch (IndexPageNavItem["title"].GetString())
-                            {
-                                case "酷品":
-                                case "看看号":
-                                case "直播": continue;
-                            }
-                            ListViewItem listViewItem = new ListViewItem { Content = new TextBlock { Text = IndexPageNavItem["title"].GetString() } };
-                            if (IndexPageNavItem["title"].GetString() != "关注")
-                                listViewItem.SetBinding(VisibilityProperty, new Windows.UI.Xaml.Data.Binding
-                                {
-                                    Source = this,
-                                    Path = new PropertyPath("IndexPageNavButtonVisibility")
-                                });
-                            else listViewItem.Visibility = Visibility.Collapsed;
-                            IndexPageUrls.Add(IndexPageNavItem["title"].GetString() == "头条" ? "/main/indexV8" : $"{IndexPageNavItem["url"].GetString()}&title={IndexPageNavItem["title"].GetString()}");
-                            TopNavListView.Items.Insert(i++, listViewItem);
-                            if (IndexPageNavItem["title"].GetString() == "关注")
-                            {
-                                foreach (var t in IndexPageNavItem["entities"].GetArray())
-                                {
-                                    followItemNum++;
-                                    JsonObject followNavItem = t.GetObject();
-                                    if (followNavItem["entityType"].GetString() == "page")
-                                    {
-                                        ListViewItem listViewItem2 = new ListViewItem { Content = new TextBlock { Text = followNavItem["title"].GetString() } };
-                                        listViewItem2.SetBinding(VisibilityProperty, new Windows.UI.Xaml.Data.Binding
-                                        {
-                                            Source = this,
-                                            Path = new PropertyPath("IndexPageFollowNavButtonVisibility")
-                                        });
-                                        TopNavListView.Items.Insert(i++, listViewItem2);
-                                        IndexPageUrls.Add($"{followNavItem["url"].GetString()}&title={followNavItem["title"].GetString()}");
-                                    }
-                                }
-                            }
-                        }
-            }
-            if (a)
-            {
-                a = false;
-                NavigateInVFrame(seletedItem);
-            }
-        }
 
+        #region toIndexPage
         private void ChangeBadgeNum(double num)
             => Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                                                                  {
                                                                      if (num > 0)
                                                                      {
-                                                                         NotifyStatus.Text = "";// ED0C
-                                                                         NotifyNumber.Visibility = Visibility.Visible;
-                                                                         NotifyNumber.Text = num.ToString();
+                                                                         NotifyStatus.Glyph = "";// ED0C
+                                                                         Notify.Content = num.ToString() + "个通知";
                                                                      }
                                                                      else
                                                                      {
-                                                                         NotifyStatus.Text = "";// ED0D
-                                                                         NotifyNumber.Visibility = Visibility.Collapsed;
+                                                                         NotifyStatus.Glyph = "";// ED0D
+                                                                         Notify.Content = "通知";
                                                                      }
                                                                  });
-
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (TopNavListView.SelectedIndex == -1) return;
-            else if (TopNavListView.SelectedIndex == 0)
-            {
-                (TopNavListView.Items[0] as FrameworkElement).Visibility = IndexPageFollowNavButtonVisibility = Visibility.Collapsed;
-                (TopNavListView.Items[1] as FrameworkElement).Visibility = IndexPageNavButtonVisibility = Visibility.Visible;
-                TopNavListView.SelectedIndex = 8;
-                (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Visible;
-                AppPageNavButtonVisibility = Visibility.Collapsed;
-            }
-            else if (TopNavListView.SelectedIndex == 1)
-            {
-                IndexPageFollowNavButtonVisibility = Visibility.Visible;
-                (TopNavListView.Items[1] as FrameworkElement).Visibility = Visibility.Collapsed;
-                TopNavListView.SelectedIndex = 2;
-                (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Visible;
-                AppPageNavButtonVisibility = Visibility.Collapsed;
-            }
-            else if (TopNavListView.SelectedIndex == TopNavListView.Items.Count - 5) return;
-            else if (TopNavListView.SelectedIndex == TopNavListView.Items.Count - 4)
-            {
-                (TopNavListView.Items[0] as FrameworkElement).Visibility = Visibility.Visible;
-                (TopNavListView.Items[1] as FrameworkElement).Visibility = IndexPageFollowNavButtonVisibility = IndexPageNavButtonVisibility = Visibility.Collapsed;
-                (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Collapsed;
-                AppPageNavButtonVisibility = Visibility.Visible;
-                TopNavListView.SelectedIndex = TopNavListView.Items.Count - 3;
-            }
-            else
-            {
-                void gotoAppRecommendPage(int i)
-                {
-                    AppPageNavButtonVisibility = Visibility.Visible;
-                    IndexPageFollowNavButtonVisibility = (TopNavListView.Items[1] as FrameworkElement).Visibility = (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Collapsed;
-                    VFrame.Navigate(typeof(AppPages.AppRecommendPage), i);
-                }
-                if (TopNavListView.SelectedIndex == TopNavListView.Items.Count - 3) gotoAppRecommendPage(0);
-                else if (TopNavListView.SelectedIndex == TopNavListView.Items.Count - 2) gotoAppRecommendPage(1);
-                else if (TopNavListView.SelectedIndex == TopNavListView.Items.Count - 1) gotoAppRecommendPage(2);
-                else if (TopNavListView.SelectedIndex > followItemNum)
-                {
-                    IndexPageFollowNavButtonVisibility = AppPageNavButtonVisibility = Visibility.Collapsed;
-                    (TopNavListView.Items[1] as FrameworkElement).Visibility = (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Visible;
-                    VFrame.Navigate(typeof(FeedPages.IndexPage), new object[] { IndexPageUrls[TopNavListView.SelectedIndex - 1], true, null });
-                }
-                else
-                {
-                    (TopNavListView.Items[1] as FrameworkElement).Visibility = AppPageNavButtonVisibility = Visibility.Collapsed;
-                    IndexPageFollowNavButtonVisibility = (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Visible;
-                    VFrame.Navigate(typeof(FeedPages.IndexPage), new object[] { IndexPageUrls[TopNavListView.SelectedIndex - 1], true, null });
-                }
-            }
-            SetNavItemBorder(0);
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            (TopNavListView.Items[1] as FrameworkElement).Visibility = AppPageNavButtonVisibility = IndexPageFollowNavButtonVisibility = IndexPageNavButtonVisibility = Visibility.Collapsed;
-            (TopNavListView.Items[0] as FrameworkElement).Visibility = (TopNavListView.Items[TopNavListView.Items.Count - 4] as FrameworkElement).Visibility = Visibility.Visible;
-            if (sender == UserButton)
-            {
-                VFrame.Navigate(typeof(UserHubPage));
-                SetNavItemBorder(2);
-            }
-            else if (sender == NotifiesCenterButton)
-            {
-                VFrame.Navigate(typeof(NotificationsPage), NotificationPageType.Comment);
-                SetNavItemBorder(1);
-            }
-            else if (sender == MakeFeedButton)
-            {
-                VFrame.Navigate(typeof(FeedPages.MakeFeedPage), new object[] { FeedPages.MakeFeedMode.Feed });
-                SetNavItemBorder(3);
-            }
-        }
-
-        void SetNavItemBorder(int mode)
-        {
-            Thickness thickness = new Thickness(0);
-            foreach (object item in TopNavListView.Items)
-            {
-                ListViewItem listViewItem = item as ListViewItem;
-                if (listViewItem is null) continue;
-                listViewItem.BorderThickness = thickness;
-            }
-            MakeFeedButton.BorderThickness = NotifiesCenterButton.BorderThickness = UserButton.BorderThickness = thickness;
-            switch (mode)
-            {
-                case 0:
-                    (TopNavListView.Items[TopNavListView.SelectedIndex] as ListViewItem).BorderThickness = new Thickness(0, 0, 0, 2);
-                    break;
-                case 1:
-                    NotifiesCenterButton.BorderThickness = new Thickness(0, 0, 0, 2);
-                    break;
-                case 2:
-                    UserButton.BorderThickness = new Thickness(0, 0, 0, 2);
-                    break;
-                case 3:
-                    MakeFeedButton.BorderThickness = new Thickness(0, 0, 0, 2);
-                    break;
-            }
-        }
         #endregion
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (e.NewSize.Width >= 768)
-            {
-                SearchBox.Visibility = Visibility.Visible;
-                SearchButton.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                SearchBox.Visibility = Visibility.Collapsed;
-                SearchButton.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            SearchBox.Visibility = Visibility.Visible;
-            SearchButton.Visibility = Visibility.Collapsed;
-            SearchBox.Focus(FocusState.Keyboard);
-        }
-
-        private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (Window.Current.Bounds.Width < 768)
-            {
-                SearchBox.Visibility = Visibility.Collapsed;
-                SearchButton.Visibility = Visibility.Visible;
-            }
-        }
 
         private async void RegisterBackgroundTask()
         {

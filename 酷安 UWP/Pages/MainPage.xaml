@@ -8,9 +8,11 @@
     xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     NavigationCacheMode="Required" SizeChanged="Page_SizeChanged"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     mc:Ignorable="d">
+
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,83 +21,101 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid>
-        <Frame x:Name="VFrame">
-            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">正在加载……</TextBlock>
-            </Grid>
-        </Frame>
-        <Grid x:Name="PCTopBar" VerticalAlignment="Top" Height="{x:Bind data:Settings.PageTitleHeight}" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" BorderThickness="0,0,0,2" Padding="0,0,0,-2"
-                  cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" fcu:Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <ListView ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollMode="Disabled"
-                          SelectionChanged="ListView_SelectionChanged" x:Name="TopNavListView" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsStackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="MinWidth" Value="32"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListViewItem">
-                                    <ListViewItemPresenter x:Name="Root" PressedBackground="Transparent" 
-                                                               PlaceholderBackground="Transparent" 
-                                                               PointerOverBackground="Transparent" 
-                                                               SelectedBackground="Transparent" 
-                                                               SelectedPressedBackground="Transparent" 
-                                                               SelectedPointerOverBackground="Transparent">
-                                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
-                                            <ContentPresenter Margin="0" Padding="6,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                        </Border>
-                                    </ListViewItemPresenter>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListViewItem Width="60">首页</ListViewItem>
-                <AppBarSeparator Width="20"/>
-                <ListViewItem>应用游戏</ListViewItem>
-                <ListViewItem Visibility="{x:Bind AppPageNavButtonVisibility,Mode=OneWay}">应用</ListViewItem>
-                <ListViewItem Visibility="{x:Bind AppPageNavButtonVisibility,Mode=OneWay}">游戏</ListViewItem>
-                <ListViewItem Visibility="{x:Bind AppPageNavButtonVisibility,Mode=OneWay}">分类</ListViewItem>
-            </ListView>
-            <StackPanel Orientation="Horizontal" Grid.Column="1">
-                <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
-                        VerticalAlignment="Bottom" Height="48" Width="48" Click="SearchButton_Click" x:Name="SearchButton">
-                    <SymbolIcon Symbol="Find"/>
-                </Button>
-                <AutoSuggestBox Visibility="Collapsed" LostFocus="SearchBox_LostFocus" x:Name="SearchBox" Margin="4,0,0,8" Height="32" Grid.Column="1" VerticalAlignment="Bottom" QueryIcon="Find" ItemTemplateSelector="{StaticResource tspl}" MinWidth="180"
-                                TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" SuggestionChosen="AutoSuggestBox_SuggestionChosen"/>
-                <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
-                        VerticalAlignment="Bottom" Height="48" Width="48" Click="Button_Click" x:Name="MakeFeedButton">
-                    <SymbolIcon Symbol="Add"/>
-                </Button>
-                <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
-                        VerticalAlignment="Bottom" Height="48" Width="48" Click="Button_Click" x:Name="NotifiesCenterButton" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="" x:Name="NotifyStatus"/>
-                        <TextBlock x:Name="NotifyNumber" VerticalAlignment="Bottom" Margin="2,0"/>
-                    </StackPanel>
-                </Button>
-                <Button Background="Transparent" cu:Style="{StaticResource ButtonStyle1}" fcu:Style="{ThemeResource ButtonRevealStyle}" Padding="0" BorderThickness="0"
-                        VerticalAlignment="Bottom" Height="48" Width="48" x:Name="UserButton" Click="Button_Click" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
+    <muxc:NavigationView
+        x:Name="navigationView"
+        IsBackButtonVisible="Collapsed"
+        IsSettingsVisible="True"
+        AlwaysShowHeader="True"
+        Header=" "
+        SelectionChanged="NavigationView_SelectionChanged"
+        Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger
+                        MinWindowWidth="{x:Bind navigationView.CompactModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="navigationView.PaneDisplayMode" Value="Top"/>
+                        <Setter Target="navigationView.AlwaysShowHeader" Value="False"/>
+                        <Setter Target="LoginIcon.HorizontalAlignment" Value="Center"/>
+                        <Setter Target="UserName.Visibility" Value="Collapsed"/>
+                        <Setter Target="LoginIcon.Margin" Value="0"/>
+                        <Setter Target="UserIcon.Width" Value="24"/>
+                        <Setter Target="UserIcon.Height" Value="24"/>
+                        <Setter Target="UserIcon.Margin" Value="0"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <muxc:NavigationView.MenuItems>
+
+            <muxc:NavigationViewItem Content="关注" Tag="V9_HOME_TAB_FOLLOW">
+                <muxc:NavigationViewItem.MenuItems>
+                    <muxc:NavigationViewItem Content="全部关注" Tag="V9_HOME_TAB_FOLLOW"/>
+                    <muxc:NavigationViewItem Content="好友关注" Tag="circle"/>
+                    <muxc:NavigationViewItem Content="应用关注" Tag="apk"/>
+                    <muxc:NavigationViewItem Content="话题关注" Tag="topic"/>
+                    <muxc:NavigationViewItem Content="问题关注" Tag="question"/>
+                    <muxc:NavigationViewItem Content="数码关注" Tag="product"/>
+                </muxc:NavigationViewItem.MenuItems>
+            </muxc:NavigationViewItem>
+            <muxc:NavigationViewItem Content="头条" Tag="V9_HOME_TAB_HEADLINE"/>
+            <muxc:NavigationViewItem Content="热榜" Tag="V9_HOME_TAB_RANKING"/>
+            <muxc:NavigationViewItem Content="快讯" Tag="V11_HOME_TAB_NEWS"/>
+            <muxc:NavigationViewItem Content="闲聊" Tag="V8_HUODONG_XIANLIAO_20210409"/>
+            <muxc:NavigationViewItem Content="话题" Tag="V9_HOME_TAB_TOPIC"/>
+            <muxc:NavigationViewItem Content="直播" Tag="V9_HOME_TAB_LIVE" Visibility="Collapsed"/>
+            <muxc:NavigationViewItem Content="视频" Tag="V9_HOME_TAB_SHIPIN"/>
+            <muxc:NavigationViewItem Content="问答" Tag="V9_HOME_TAB_WENDA"/>
+
+            <muxc:NavigationViewItemSeparator/>
+            <muxc:NavigationViewItem Content="酷图" Tag="V11_FIND_COOLPIC"/>
+            <muxc:NavigationViewItem Content="酷品" Tag="V11_FIND_GOODS" Visibility="Collapsed"/>
+            <muxc:NavigationViewItem Content="好物" Tag="V11_FIND_GOOD_GOODS" Visibility="Collapsed"/>
+            <muxc:NavigationViewItem Content="二手" Tag="V11_DISCOVERY_SECOND_HAND" Visibility="Collapsed"/>
+            <muxc:NavigationViewItem Content="看看号" Tag="V11_FIND_DYH"/>
+
+            <muxc:NavigationViewItemSeparator/>
+            <muxc:NavigationViewItem Content="数码" Tag="V10_DIGITAL_HOME"/>
+            <muxc:NavigationViewItem Content="手机" Tag="V10_CHANNEL_SJB"/>
+            <muxc:NavigationViewItem Content="耳机" Tag="V11_ZHUANTI_EARPHONE"/>
+            <muxc:NavigationViewItem Content="排行榜" Tag="V10_CHANNEL_SMB_TOP" Visibility="Visible"/>
+
+        </muxc:NavigationView.MenuItems>
+
+        <muxc:NavigationView.FooterMenuItems>
+            <muxc:NavigationViewItem Content="发动态" Tag="MakeFeed" Icon="Add"/>
+            <muxc:NavigationViewItem x:Name="Notify" Content="通知" Tag="Notification">
+                <muxc:NavigationViewItem.Icon>
+                    <FontIcon x:Name="NotifyStatus"/>
+                </muxc:NavigationViewItem.Icon>
+            </muxc:NavigationViewItem>
+            <muxc:NavigationViewItem Tag="UserHub">
+                <StackPanel Orientation="Horizontal">
                     <Grid>
-                        <SymbolIcon Symbol="Contact"/>
-                        <Ellipse Width="26" Height="26">
+                        <FontIcon x:Name="LoginIcon" Glyph="" FontSize="16" HorizontalAlignment="Left" Margin="-4,0,0,0"/>
+                        <Ellipse x:Name="UserIcon" Width="18" Height="18" HorizontalAlignment="Left" Margin="-5,0,0,0">
                             <Ellipse.Fill>
                                 <ImageBrush ImageSource="{x:Bind UserAvatar,Mode=OneWay}"/>
                             </Ellipse.Fill>
                         </Ellipse>
                     </Grid>
-                </Button>
-            </StackPanel>
-        </Grid>
-    </Grid>
+                    <TextBlock x:Name="UserName" Margin="11"/>
+                </StackPanel>
+            </muxc:NavigationViewItem>
+        </muxc:NavigationView.FooterMenuItems>
+
+        <muxc:NavigationView.AutoSuggestBox>
+            <AutoSuggestBox x:Name="SearchBox" QueryIcon="Find" ItemTemplateSelector="{StaticResource tspl}" MinWidth="180"
+                                TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" SuggestionChosen="AutoSuggestBox_SuggestionChosen"/>
+        </muxc:NavigationView.AutoSuggestBox>
+
+        <Frame x:Name="navigationViewFrame" />
+
+    </muxc:NavigationView>
 </Page>

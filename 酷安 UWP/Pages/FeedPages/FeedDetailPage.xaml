@@ -9,7 +9,7 @@
       xmlns:viewModel="using:CoolapkUWP.Control.ViewModels"
       mc:Ignorable="d"
       SizeChanged="Page_SizeChanged"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+      Background="{ThemeResource SystemControlBackgroundListLowBrush}">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -342,7 +342,7 @@
             </Grid>
         </controls:PullToRefreshListView>
         <StackPanel x:Name="PivotItemPanel" Orientation="Horizontal" VerticalAlignment="Bottom" 
-                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="8,0">
+                    Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}" Padding="8,0">
             <Button Style="{StaticResource ButtonStyle1}">
                 写回复
                 <Button.Flyout>
@@ -381,7 +381,7 @@
             <Button BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}" BorderThickness="0"
                     Style="{StaticResource ButtonStyle1}" Click="Button_Click" Tag="share" x:Name="ToSharePivotItemButton">
                 <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Symbol="Link"/>
+                    <SymbolIcon Symbol="Share"/>
                     <TextBlock Margin="3,0" Text="{x:Bind FeedDetail.share_num,Mode=OneWay}"/>
                 </StackPanel>
             </Button>

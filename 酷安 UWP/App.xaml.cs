@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Data;
+using CoolapkUWP.Pages.SettingPages;
 using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
@@ -22,6 +23,56 @@ namespace CoolapkUWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+        }
+
+        protected override async void OnActivated(IActivatedEventArgs e)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null)
+            {
+                rootFrame = new Frame();
+                rootFrame.NavigationFailed += OnNavigationFailed;
+                // 当导航堆栈尚未还原时，导航到第一页，
+                // 并通过将所需信息作为导航参数传入来配置
+                // 参数
+                _ = rootFrame.Navigate(typeof(Pages.MainPage));
+                Window.Current.Content = rootFrame;
+            }
+            Window.Current.Activate();
+            if (e.Kind == ActivationKind.Protocol)
+            {
+                var protocolArgs = (ProtocolActivatedEventArgs)e;
+                switch (protocolArgs.Uri.Host)
+                {
+                    case "www.coolapk.com":
+                        Tools.OpenLink(protocolArgs.Uri.AbsolutePath);
+                        break;
+                    case "coolapk.com":
+                        Tools.OpenLink(protocolArgs.Uri.AbsolutePath);
+                        break;
+                    case "www.coolmarket.com":
+                        Tools.OpenLink(protocolArgs.Uri.AbsolutePath);
+                        break;
+                    case "coolmarket.com":
+                        Tools.OpenLink(protocolArgs.Uri.AbsolutePath);
+                        break;
+                    case "http":
+                        Tools.OpenLink(protocolArgs.Uri.Host + ":" + protocolArgs.Uri.AbsolutePath);
+                        break;
+                    case "https":
+                        Tools.OpenLink(protocolArgs.Uri.Host + ":" + protocolArgs.Uri.AbsolutePath);
+                        break;
+                    case "settings":
+                        Tools.Navigate(typeof(SettingPage), false);
+                        break;
+                    case "flags":
+                        Tools.Navigate(typeof(TestPage));
+                        break;
+                    default:
+                        Tools.OpenLink("/" + protocolArgs.Uri.Host + protocolArgs.Uri.AbsolutePath);
+                        break;
+                }
+            }
         }
 
         /// <summary>
