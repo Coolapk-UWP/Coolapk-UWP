@@ -86,6 +86,7 @@ namespace CoolapkUWP.Models
         SelectorLink,
         IconLink,
         TextLinks,
+        ScrollLink,
         Others,
     }
 

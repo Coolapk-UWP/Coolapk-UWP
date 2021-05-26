@@ -207,11 +207,11 @@ namespace CoolapkUWP.Pages
                     {
                         imageModels.Add(new ImageModel(item, notify, Dispatcher));
                     }
-                    Task.Run(async () =>
-                    {
-                        await Task.Delay(20);
-                        await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => SFlipView.SelectedIndex = model.ContextArray.IndexOf(model));
-                    });
+                    _ = Task.Run(async () =>
+                      {
+                          await Task.Delay(20);
+                          await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => SFlipView.SelectedIndex = model.ContextArray.IndexOf(model));
+                      });
                 }
             }
             else if (e.Parameter is object[] param)
@@ -225,18 +225,18 @@ namespace CoolapkUWP.Pages
             var view = sender as ScrollViewer;
             if (view.ZoomFactor != 2)
             {
-                view.ChangeView(view.HorizontalOffset * 2, view.VerticalOffset * 2, 2);
+                _ = view.ChangeView(view.HorizontalOffset * 2, view.VerticalOffset * 2, 2);
             }
             else
             {
-                view.ChangeView(view.HorizontalOffset / view.ZoomFactor, view.VerticalOffset / view.ZoomFactor, 1);
+                _ = view.ChangeView(view.HorizontalOffset / view.ZoomFactor, view.VerticalOffset / view.ZoomFactor, 1);
             }
         }
 
         private static void ScrollViewerMain_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
             var view = (sender as FrameworkElement).Parent as ScrollViewer;
-            view.ChangeView(view.HorizontalOffset - e.Delta.Translation.X * view.ZoomFactor, view.VerticalOffset - e.Delta.Translation.Y * view.ZoomFactor, null);
+            _ = view.ChangeView(view.HorizontalOffset - e.Delta.Translation.X * view.ZoomFactor, view.VerticalOffset - e.Delta.Translation.Y * view.ZoomFactor, null);
         }
 
         private void ShowMenuFlyout()
@@ -376,7 +376,7 @@ namespace CoolapkUWP.Pages
                         var factor = item.ZoomFactor;
                         if (factor + 0.25 < 3)
                         {
-                            item.ChangeView(item.HorizontalOffset / factor * (factor + 0.25), item.VerticalOffset / factor * (factor + 0.25), factor + 0.25F);
+                            _ = item.ChangeView(item.HorizontalOffset / factor * (factor + 0.25), item.VerticalOffset / factor * (factor + 0.25), factor + 0.25F);
                         }
                     });
                     break;
@@ -387,7 +387,7 @@ namespace CoolapkUWP.Pages
                         var factor = item.ZoomFactor;
                         if (factor - 0.25 > 0.5)
                         {
-                            item.ChangeView(item.HorizontalOffset / factor * (factor - 0.25), item.VerticalOffset / factor * (factor - 0.25), factor - 0.25F);
+                            _ = item.ChangeView(item.HorizontalOffset / factor * (factor - 0.25), item.VerticalOffset / factor * (factor - 0.25), factor - 0.25F);
                         }
                     });
                     break;

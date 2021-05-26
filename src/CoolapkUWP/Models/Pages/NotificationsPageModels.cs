@@ -72,9 +72,9 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
         public LikeNotificationModel(JObject o) : base(o)
         {
             var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
-            BlockStatus = o["likeUserInfo"].Value<int>("status") == -1 ? loader.GetString("status-1")
-               : UIHelper.IsSpecialUser && o["likeUserInfo"].Value<int>("block_status") == -1 ? loader.GetString("block_status-1")
-               : UIHelper.IsSpecialUser && o["likeUserInfo"].Value<int>("block_status") == 2 ? loader.GetString("block_status2") : null;
+            //BlockStatus = o["likeUserInfo"].Value<int>("status") == -1 ? loader.GetString("status-1")
+            //   : UIHelper.IsSpecialUser && o["likeUserInfo"].Value<int>("block_status") == -1 ? loader.GetString("block_status-1")
+            //   : UIHelper.IsSpecialUser && o["likeUserInfo"].Value<int>("block_status") == 2 ? loader.GetString("block_status2") : null;
             Id = o.Value<int>("id");
             UserUri = "/u/" + o.Value<int>("likeUid");
             Dateline = DataHelper.ConvertUnixTimeStampToReadable(o.Value<int>("likeTime"));

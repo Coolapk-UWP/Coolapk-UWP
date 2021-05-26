@@ -1,7 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Pages.NotificationsPageModels;
-using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,14 +27,14 @@ namespace CoolapkUWP.Pages.FeedPages
 
             if (provider.ListType == ViewModels.NotificationsPage.ListType.Comment)
             {
-                FindName(nameof(NavigateItems));
+                _ = FindName(nameof(NavigateItems));
             }
             list.ItemsSource = provider.Models;
             await Load(-2);
 
             await Task.Delay(30);
             titleBar.Title = provider.Title;
-            scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
+            _ = scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
             titleBar.HideProgressRing();
         }
 
@@ -52,7 +51,7 @@ namespace CoolapkUWP.Pages.FeedPages
             titleBar.ShowProgressRing();
             if (p == -2)
             {
-                scrollViewer.ChangeView(null, 0, null);
+                _ = scrollViewer.ChangeView(null, 0, null);
                 titleBar.Title = provider.Title;
             }
             await provider?.Refresh(p);
@@ -64,23 +63,23 @@ namespace CoolapkUWP.Pages.FeedPages
             switch ((e.ClickedItem as StackPanel).Tag as string)
             {
                 case "atMe":
-                    Frame.Navigate(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.AtMe));
+                    _ = Frame.Navigate(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.AtMe));
                     break;
 
                 case "atCommentMe":
-                    Frame.Navigate(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.AtCommentMe));
+                    _ = Frame.Navigate(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.AtCommentMe));
                     break;
 
                 case "like":
-                    Frame.Navigate(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.Like));
+                    _ = Frame.Navigate(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.Like));
                     break;
 
                 case "follow":
-                    Frame.Navigate(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.Follow));
+                    _ = Frame.Navigate(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.Follow));
                     break;
 
                 case "message":
-                    Frame.Navigate(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.Message));
+                    _ = Frame.Navigate(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.Message));
                     break;
             }
         }

@@ -27,7 +27,7 @@
             <control:FirstTemplateSelector
                 x:Key="FTemplateSelector"
                 CoolPic="{StaticResource coolPicture}"
-                DataTemplate2="{StaticResource imageTextScrollCard}"
+                ImageTextScrollCard="{StaticResource imageTextScrollCard}"
                 Dyh="{StaticResource DYH}"
                 Product="{StaticResource Product}"
                 Feed="{StaticResource feed}"
@@ -47,10 +47,11 @@
             <control:ThirdTemplateSelector
                 x:Key="ThTemplateSelector"
                 CoolPic="{StaticResource coolPicture}"
-                DataTemplate0="{StaticResource null}"
-                DataTemplate2="{StaticResource dyh}"
-                DataTemplate4="{StaticResource dyh}"
-                DataTemplate7="{StaticResource textLink}"
+                Null="{StaticResource null}"
+                IconLink="{StaticResource iconLink}"
+                SquareLinkCard="{StaticResource squareLinkCard}"
+                ScrollLinkCard="{StaticResource scrollLinkCard}"
+                TextLink="{StaticResource textLink}"
                 Feed="{StaticResource feed}"
                 FeedImageText="{StaticResource feedArticle2}"
                 ImageText="{StaticResource imageText}"
@@ -184,7 +185,7 @@
                         Padding="8,4,8,8"
                         VerticalAlignment="Stretch"
                         x:Load="{x:Bind Description, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
-                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                        Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                         CornerRadius="8">
                         <control:TextBlockEx MessageText="{x:Bind Description}" />
                     </Border>
@@ -195,7 +196,7 @@
                 <Border
                     Margin="8"
                     HorizontalAlignment="Stretch"
-                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                     CornerRadius="8">
                     <winui:ItemsRepeater HorizontalAlignment="Center" ItemsSource="{x:Bind Entities}">
                         <winui:ItemsRepeater.Layout>
@@ -215,10 +216,13 @@
                                     Style="{ThemeResource ButtonRevealStyle}"
                                     Tag="{x:Bind}">
                                     <StackPanel HorizontalAlignment="Stretch">
-                                        <Image
-                                            Width="40"
-                                            Height="40"
+                                        <Border
+                                    Width="40"
+                                    Height="40"
+                                    CornerRadius="4">
+                                            <Image
                                             Source="{x:Bind Pic.Pic, Mode=OneWay}" />
+                                        </Border>
                                         <TextBlock
                                             Margin="0,2"
                                             HorizontalAlignment="Center"
@@ -313,7 +317,7 @@
                 <StackPanel
                     Margin="8"
                     Padding="8,4,8,8"
-                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                     CornerRadius="8">
                     <TextBlock
                         x:Name="titleText"
@@ -353,7 +357,7 @@
                         <Image
                             VerticalAlignment="Top"
                             Source="{x:Bind Pic.Pic, Mode=OneWay}"
-                            Stretch="Uniform" />
+                            Stretch="UniformToFill" />
                         <Border
                             x:Name="picsIcon"
                             Padding="8"
@@ -368,8 +372,8 @@
                             Margin="0,32,0,0"
                             Padding="0,4"
                             VerticalAlignment="Bottom"
-                            Background="#A0000000"
-                            CornerRadius="8">
+                            Background="{ThemeResource SystemControlChromeLowAcrylicElementBrush}"
+                            CornerRadius="1">
                             <control:TextBlockEx
                                 Margin="8"
                                 Foreground="White"
@@ -443,7 +447,7 @@
                     Tapped="Grid_Tapped">
                     <StackPanel
                         Padding="4"
-                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                        Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                         BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                         BorderThickness="1"
                         CornerRadius="8">
@@ -473,7 +477,7 @@
                     Tapped="Grid_Tapped">
                     <StackPanel
                         Padding="10"
-                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                        Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                         Orientation="Horizontal">
                         <Image
                             Width="20"
@@ -487,7 +491,117 @@
                 </ListViewItem>
             </DataTemplate>
 
-            <DataTemplate x:Key="dyh" x:DataType="model:IndexPageModel">
+            <DataTemplate x:Key="scrollLinkCard" x:DataType="model:IndexPageModel">
+                <ListViewItem
+                    Margin="4,0"
+                    KeyDown="ListViewItem_KeyDown"
+                    Style="{StaticResource FixedListViewItemStyle}"
+                    Tag="{x:Bind Url}"
+                    Tapped="Grid_Tapped">
+                    <Border
+                        BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{x:Bind Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                        </Border.Background>
+                        <StackPanel Padding="4">
+                            <StackPanel.Background>
+                                <AcrylicBrush
+                                    BackgroundSource="Backdrop"
+                                    FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                    TintColor="{x:Bind Pic.BackgroundColor, Mode=OneWay}"
+                                    TintOpacity="0.5" />
+                            </StackPanel.Background>
+                            <StackPanel Orientation="Horizontal">
+                                <Border
+                                    Width="40"
+                                    Height="40"
+                                    Margin="4"
+                                    Background="White"
+                                    CornerRadius="4">
+                                    <Image Source="{x:Bind Pic.Pic, Mode=OneWay}"/>
+                                </Border>
+                                <StackPanel
+                                    Margin="2"
+                                    Orientation="Vertical"
+                                    VerticalAlignment="Center">
+                                    <TextBlock
+                                        HorizontalAlignment="Left"
+                                        Foreground="White"
+                                        MaxLines="1"
+                                        Text="{x:Bind Title}"
+                                        TextAlignment="Left"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="Wrap" />
+
+                                    <TextBlock
+                                        x:Name="subTitle"
+                                        HorizontalAlignment="Left"
+                                        x:Load="{x:Bind SubTitle, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
+                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                        MaxLines="1"
+                                        Text="{x:Bind SubTitle}"
+                                        TextAlignment="Left"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </ListViewItem>
+            </DataTemplate>
+
+            <DataTemplate x:Key="squareLinkCard" x:DataType="model:IndexPageModel">
+                <ListViewItem
+                    Height="86"
+                    Width="72"
+                    Margin="4,0"
+                    KeyDown="ListViewItem_KeyDown"
+                    Style="{StaticResource FixedListViewItemStyle}"
+                    Tag="{x:Bind Url}"
+                    Tapped="Grid_Tapped">
+                    <Border
+                        BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{x:Bind Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                        </Border.Background>
+                        <StackPanel Padding="4" VerticalAlignment="Bottom">
+                            <StackPanel.Background>
+                                <AcrylicBrush
+                                    BackgroundSource="Backdrop"
+                                    FallbackColor="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                                    TintColor="{x:Bind Pic.BackgroundColor, Mode=OneWay}"
+                                    TintOpacity="0.5" />
+                            </StackPanel.Background>
+
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Foreground="White"
+                                MaxLines="2"
+                                Text="{x:Bind Title}"
+                                TextAlignment="Center"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="Wrap" />
+
+                            <TextBlock
+                                x:Name="subTitle"
+                                HorizontalAlignment="Center"
+                                x:Load="{x:Bind SubTitle, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
+                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                MaxLines="1"
+                                Text="{x:Bind SubTitle}"
+                                TextAlignment="Center"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Border>
+                </ListViewItem>
+            </DataTemplate>
+
+            <DataTemplate x:Key="iconLink" x:DataType="model:IndexPageModel">
                 <ListViewItem
                     MaxWidth="72"
                     Margin="4,0"
@@ -559,9 +673,8 @@
                         CornerRadius="8">
                         <Image Source="{x:Bind Pic.Pic, Mode=OneWay}" Stretch="Uniform" />
                         <Border
-                            Height="52"
-                            VerticalAlignment="Bottom"
-                            CornerRadius="4">
+                            MinHeight="52"
+                            VerticalAlignment="Bottom">
 
                             <Border.Background>
                                 <AcrylicBrush

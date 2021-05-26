@@ -21,7 +21,7 @@
                 <Grid
                     Margin="4"
                     Padding="8"
-                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                     BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8"
@@ -70,7 +70,7 @@
                 <Grid
                     Margin="4"
                     Padding="4"
-                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                     BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8"
@@ -117,7 +117,7 @@
             <DataTemplate x:Key="AtCommentMe" x:DataType="model:AtCommentMeNotificationModel">
                 <Grid
                     Padding="4,0"
-                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                     BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8"
@@ -161,7 +161,7 @@
                 <Grid
                     Margin="4"
                     Padding="8"
-                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                     BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8"

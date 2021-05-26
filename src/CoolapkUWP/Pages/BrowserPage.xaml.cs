@@ -23,7 +23,7 @@ namespace CoolapkUWP.Pages
                 isLoginPage = value;
                 if (value)
                 {
-                    FindName(nameof(tryLoginButton));
+                    _ = FindName(nameof(tryLoginButton));
                     if (openInSystemBrowserButton != null)
                     {
                         UnloadObject(openInSystemBrowserButton);
@@ -31,7 +31,7 @@ namespace CoolapkUWP.Pages
                 }
                 else
                 {
-                    FindName(nameof(openInSystemBrowserButton));
+                    _ = FindName(nameof(openInSystemBrowserButton));
                     if (tryLoginButton != null)
                     {
                         UnloadObject(tryLoginButton);
@@ -50,23 +50,24 @@ namespace CoolapkUWP.Pages
             IsLoginPage = (bool)vs[0];
             if (IsLoginPage)
             {
-                LoadUri(loginUri);
+                webView.Navigate(new Uri(loginUri));
             }
             else if (!string.IsNullOrEmpty(vs[1] as string))
             {
                 uri = vs[1] as string;
-                LoadUri(uri);
+                webView.Navigate(new Uri(uri));
             }
         }
 
-        private void LoadUri(string uri)
+        private void LoadUri(Uri uri)
 
         {
             EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
-            using (var httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(Windows.Web.Http.HttpMethod.Get, new Uri(uri)))
+            using (var httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(Windows.Web.Http.HttpMethod.Get, uri))
             {
-                httpRequestMessage.Headers.UserAgent.ParseAdd("(#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; ; " + "10.0) +CoolMarket / 11.1.2 - 2104021 - universal");
+                httpRequestMessage.Headers.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT 10.0; Win64; x64; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP; " + "10.0)" + " +CoolMarket/11.2-2105201-universal");
                 webView.NavigateWithHttpRequestMessage(httpRequestMessage);
+                webView.NavigationStarting += WebView_NavigationStarting;
             }
         }
 
@@ -74,6 +75,13 @@ namespace CoolapkUWP.Pages
         {
             _ = SettingsHelper.CheckLoginInfo();
             base.OnNavigatingFrom(e);
+        }
+
+        private void WebView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        {
+            webView.NavigationStarting -= WebView_NavigationStarting;
+            args.Cancel = true;
+            LoadUri(args.Uri);
         }
 
         private void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
@@ -111,7 +119,7 @@ namespace CoolapkUWP.Pages
 
         private async void GotoSystemBrowserButton_Click(object sender, RoutedEventArgs e)
         {
-            await Windows.System.Launcher.LaunchUriAsync(new Uri(uri));
+            _ = await Windows.System.Launcher.LaunchUriAsync(new Uri(uri));
         }
 
         private async void Refresh_Click(object sender, RoutedEventArgs e)

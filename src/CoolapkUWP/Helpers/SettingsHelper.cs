@@ -35,15 +35,15 @@ namespace CoolapkUWP.Helpers
 #pragma warning disable CS0612 // 类型或成员已过时
             if (localSettings.Values.ContainsKey(DefaultFollowPageIndex))
             {
-                localSettings.Values.Remove(DefaultFollowPageIndex);
+                _ = localSettings.Values.Remove(DefaultFollowPageIndex);
             }
             if (localSettings.Values.ContainsKey(UserName))
             {
-                localSettings.Values.Remove(UserName);
+                _ = localSettings.Values.Remove(UserName);
             }
             if (localSettings.Values.ContainsKey(UserAvatar))
             {
-                localSettings.Values.Remove(UserAvatar);
+                _ = localSettings.Values.Remove(UserAvatar);
             }
 #pragma warning restore CS0612
 
@@ -152,7 +152,7 @@ namespace CoolapkUWP.Helpers
                     };
                     button.Click += async (_, __) =>
                     {
-                        await Windows.System.Launcher.LaunchUriAsync(new Uri(keys.Value<string>("html_url")));
+                        _ = await Windows.System.Launcher.LaunchUriAsync(new Uri(keys.Value<string>("html_url")));
                     };
                     grid.Children.Add(textBlock);
                     grid.Children.Add(button);

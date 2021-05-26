@@ -20,7 +20,7 @@ namespace CoolapkUWP.Controls
         public DataTemplate RefreshCard { get; set; }
         public DataTemplate TextLinkList { get; set; }
         public DataTemplate IconLinks { get; set; }
-        public DataTemplate DataTemplate2 { get; set; }
+        public DataTemplate ImageTextScrollCard { get; set; }
         public DataTemplate TabLinkCard { get; set; }
         public DataTemplate SelectorLinkCard { get; set; }
 
@@ -45,7 +45,7 @@ namespace CoolapkUWP.Controls
                     case EntityType.IconLink: return IconLinks;
                     case EntityType.TextLinks: return TextLinkList;
                     case EntityType.Others:
-                    default: return DataTemplate2;
+                    default: return ImageTextScrollCard;
                 }
             }
             else if (item is IndexPageOperationCardModel o)
@@ -66,14 +66,15 @@ namespace CoolapkUWP.Controls
 
     public class ThirdTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate DataTemplate0 { get; set; }
+        public DataTemplate Null { get; set; }
         public DataTemplate DataTemplate1 { get; set; }
-        public DataTemplate DataTemplate2 { get; set; }
-        public DataTemplate DataTemplate4 { get; set; }
+        public DataTemplate IconLink { get; set; }
+        public DataTemplate SquareLinkCard { get; set; }
         public DataTemplate FeedImageText { get; set; }
         public DataTemplate ImageText { get; set; }
         public DataTemplate QuestionFeed { get; set; }
-        public DataTemplate DataTemplate7 { get; set; }
+        public DataTemplate TextLink { get; set; }
+        public DataTemplate ScrollLinkCard { get; set; }
         public DataTemplate Feed { get; set; }
         public DataTemplate User { get; set; }
         public DataTemplate CoolPic { get; set; }
@@ -89,20 +90,22 @@ namespace CoolapkUWP.Controls
             {
                 switch ((item as IndexPageModel)?.EntityType ?? string.Empty)
                 {
-                    case "picCategory":
                     case "imageSquare":
-                    case "product":
                     case "icon":
                     case "iconMiniLink":
-                    case "iconLink": return DataTemplate2;
+                    case "iconMini":
+                    case "IconLink": return IconLink;
                     case "dyh":
-                    case "topic": return DataTemplate4;
-                    case "textLink": return DataTemplate7;
+                    case "product": return ScrollLinkCard;
+                    case "picCategory":
+                    case "entity":
+                    case "topic": return SquareLinkCard;
+                    case "textLink": return TextLink;
                     case "imageText": return ImageText;
                 }
             }
 
-            return DataTemplate0;
+            return Null;
         }
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);

@@ -17,7 +17,7 @@ namespace CoolapkUWP.Core.Helpers
 
     public static class NetworkHelper
     {
-        private static readonly HttpClientHandler clientHandler = new HttpClientHandler();
+        public static readonly HttpClientHandler clientHandler = new HttpClientHandler();
         private static readonly HttpClient client = new HttpClient(clientHandler);
         private static readonly string guid = Guid.NewGuid().ToString();
 
@@ -99,14 +99,14 @@ namespace CoolapkUWP.Core.Helpers
         private static void ReplaceAppToken(this System.Net.Http.Headers.HttpRequestHeaders headers)
         {
             const string name = "X-App-Token";
-            headers.Remove(name);
+            _ = headers.Remove(name);
             headers.Add(name, GetCoolapkAppToken());
         }
 
         private static void ReplaceRequested(this System.Net.Http.Headers.HttpRequestHeaders headers, string request)
         {
             const string name = "X-Requested-With";
-            headers.Remove(name);
+            _ = headers.Remove(name);
             if (request != null) { headers.Add(name, request); }
         }
 
@@ -138,7 +138,9 @@ namespace CoolapkUWP.Core.Helpers
             try
             {
                 BeforeGetOrPost(coolapkCookies, uri, "XMLHttpRequest");
+                _ = client.DefaultRequestHeaders.Remove("X-App-Device");
                 var response = await client.PostAsync(uri, content);
+                client.DefaultRequestHeaders.Add("X-App-Device", Utils.GetMD5(guid));
                 return await response.Content.ReadAsStringAsync();
             }
             catch { throw; }

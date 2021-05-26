@@ -39,7 +39,7 @@
             <UserControl Loaded="{x:Bind local:Feed.UserControl_Loaded}" SizeChanged="{x:Bind local:Feed.UserControl_SizeChanged}">
                 <Grid
                     Padding="8,4"
-                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                     BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8">

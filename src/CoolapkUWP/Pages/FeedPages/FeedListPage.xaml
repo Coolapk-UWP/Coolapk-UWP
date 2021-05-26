@@ -11,7 +11,7 @@
     xmlns:model1="using:CoolapkUWP.Models"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+    Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>

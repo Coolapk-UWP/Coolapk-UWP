@@ -6,7 +6,7 @@ namespace CoolapkUWP.Models
 {
     internal class AppPageMode : Entity
     {
-        public string DownloadUrl{ get; private set; }
+        public string DownloadUrl { get; private set; }
         public string NavTitle { get; private set; }
         public int EntityID { get; private set; }
         public string Version { get; private set; }

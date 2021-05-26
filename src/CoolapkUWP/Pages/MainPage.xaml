@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:CoolapkUWP.Models"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+    Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
     NavigationCacheMode="Required"
     SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
@@ -66,7 +66,7 @@
             <muxc:NavigationViewItemSeparator/>
             <muxc:NavigationViewItem Content="酷图" Tag="V11_FIND_COOLPIC"/>
             <muxc:NavigationViewItem Content="酷品" Tag="V11_FIND_GOODS" Visibility="Collapsed"/>
-            <muxc:NavigationViewItem Content="好物" Tag="V11_FIND_GOOD_GOODS" Visibility="Collapsed"/>
+            <muxc:NavigationViewItem Content="好物" Tag="V11_FIND_GOOD_GOODS_HOME"/>
             <muxc:NavigationViewItem Content="二手" Tag="V11_DISCOVERY_SECOND_HAND" Visibility="Collapsed"/>
             <muxc:NavigationViewItem Content="看看号" Tag="V11_FIND_DYH"/>
 

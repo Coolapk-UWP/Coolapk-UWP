@@ -162,7 +162,7 @@
                     Tapped="ListViewItem_Tapped">
                     <StackPanel
                         Padding="10"
-                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                        Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                         Orientation="Horizontal">
                         <Image
                             Width="20"

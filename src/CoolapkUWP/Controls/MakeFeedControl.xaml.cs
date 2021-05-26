@@ -61,7 +61,7 @@ namespace CoolapkUWP.Controls
                         using (var d = new StringContent(contentText))
                         {
                             content.Add(d, "message");
-                            //content.Add(new StringContent("http://image.coolapk.com/feed/2021/0520/17/536381_c9996893_2179_5867@1080x2340.jpeg"), "pic");
+                            if (!string.IsNullOrEmpty(Uri.Text)) { content.Add(new StringContent(Uri.Text), "pic"); }
                             await MakeFeed(type, content);
                         }
                         break;
@@ -90,7 +90,7 @@ namespace CoolapkUWP.Controls
                 if (cex.MessageStatus == Core.Exceptions.CoolapkMessageException.RequestCaptcha)
                 {
                     var dialog = new CaptchaDialog();
-                    await dialog.ShowAsync();
+                    _ = await dialog.ShowAsync();
                 }
             }
         }
@@ -107,12 +107,11 @@ namespace CoolapkUWP.Controls
             byte[] vs = new byte[16];
             new Random().NextBytes(vs);
             var builder = new System.Text.StringBuilder();
-            foreach (var item in vs)
-                builder.Append(Convert.ToString(item, 16));
-            builder.Insert(8, "-");
-            builder.Insert(13, "-");
-            builder.Insert(18, "-");
-            builder.Insert(23, "-");
+            foreach (var item in vs) { _ = builder.Append(Convert.ToString(item, 16)); }
+            _ = builder.Insert(8, "-");
+            _ = builder.Insert(13, "-");
+            _ = builder.Insert(18, "-");
+            _ = builder.Insert(23, "-");
             return builder.ToString();
         }
 
@@ -129,7 +128,7 @@ namespace CoolapkUWP.Controls
                                                     VerticalCharacterAlignment.Baseline,
                                                     data.Name,
                                                     await (await StorageFile.GetFileFromApplicationUriAsync(data.Uri)).OpenReadAsync());
-            inputBox.Document.Selection.MoveRight(TextRangeUnit.Character, 1, false);
+            _ = inputBox.Document.Selection.MoveRight(TextRangeUnit.Character, 1, false);
         }
 
         internal static void InputBox_ContextMenuOpening(object sender, ContextMenuEventArgs e) => e.Handled = true;

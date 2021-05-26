@@ -66,10 +66,10 @@
             Tapped="{x:Bind local:OtherDataTemplates.OnTapped}">
             <Grid
                 Padding="4"
-                Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                 BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                 BorderThickness="1"
-                CornerRadius="8">
+                CornerRadius="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="56" />
                     <ColumnDefinition />
@@ -117,10 +117,10 @@
             Tapped="{x:Bind local:OtherDataTemplates.OnTapped}">
             <Grid
                 Padding="4"
-                Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                 BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                 BorderThickness="1"
-                CornerRadius="8">
+                CornerRadius="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="56" />
                     <ColumnDefinition />

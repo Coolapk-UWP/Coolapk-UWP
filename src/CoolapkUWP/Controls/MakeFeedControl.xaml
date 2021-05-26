@@ -10,8 +10,6 @@
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Height="200"
-    d:DesignHeight="200"
-    d:DesignWidth="300"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -23,10 +21,13 @@
 
     <Grid
         Margin="0,4"
+        BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+        BorderThickness="1"
         Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
         CornerRadius="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
@@ -237,5 +238,6 @@
                 Click="Button_Click"
                 Icon="Send" />
         </CommandBar>
+        <TextBox x:Name="Uri" Grid.Row="2" Visibility="Collapsed"/>
     </Grid>
 </UserControl>

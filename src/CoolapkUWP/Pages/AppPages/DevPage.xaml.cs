@@ -36,8 +36,8 @@ namespace CoolapkUWP.Pages.AppPages
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             #region 测试
-            Uri uri = new Uri("https://www.coolapk.com/apk/3283");
-            var (isSucceed, result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
+            //Uri uri = new Uri("https://m.coolapk.com/mp/do?c=userDevice&m=deviceFeedback");
+            //var (isSucceed, result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
             //if (isSucceed)
             //{
             //    //main.Text = result;
@@ -80,8 +80,8 @@ namespace CoolapkUWP.Pages.AppPages
             //    }
             //};
             #endregion
-            var notification = new TileNotification(content.GetXml());
-            TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
+            //var notification = new TileNotification(content.GetXml());
+            //TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
         }
 
         protected static async Task<FeedDetailModel> GetFeedDetailAsync(string id)
@@ -146,5 +146,11 @@ namespace CoolapkUWP.Pages.AppPages
         }
 
         private TileContent content;
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Uri uri = new Uri(Uri.Text);
+            var (isSucceed, result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
+        }
     }
 }

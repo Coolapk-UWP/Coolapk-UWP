@@ -12,7 +12,8 @@
         <WebView
             x:Name="webView"
             Margin="{StaticResource StackPanelMargin}"
-            NavigationCompleted="WebView_NavigationCompleted" />
+            NavigationCompleted="WebView_NavigationCompleted"
+            NavigationStarting="WebView_NavigationStarting"/>
 
         <control:TitleBar
             x:Name="titleBar"

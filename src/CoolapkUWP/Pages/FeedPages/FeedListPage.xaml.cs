@@ -37,7 +37,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         loader.GetString("questionAndAnswer"),
                     };
                     rightComboBox.SelectedIndex = (provider as ICanComboBoxChangeSelectedIndex).ComboBoxSelectedIndex;
-                    FindName(nameof(reportButton));
+                    _ = FindName(nameof(reportButton));
                     break;
 
                 case FeedListType.TagPageList:
@@ -80,7 +80,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
                 case FeedListType.AppPageList:
                     rightComboBox.Visibility = Visibility.Collapsed;
-                    FindName(nameof(reportButton));
+                    _ = FindName(nameof(reportButton));
                     break;
 
                 case FeedListType.DevicePageList:
@@ -98,7 +98,7 @@ namespace CoolapkUWP.Pages.FeedPages
             titleBar.ShowProgressRing();
             await Task.Delay(30);
 
-            scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
+            _ = scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
             if (provider.Models.Count > 0)
             {
                 if (provider.Models[0] is DyhDetail detail)
@@ -132,7 +132,7 @@ namespace CoolapkUWP.Pages.FeedPages
             titleBar.ShowProgressRing();
             if (p == -2)
             {
-                scrollViewer.ChangeView(null, 0, null);
+                _ = scrollViewer.ChangeView(null, 0, null);
             }
             titleBar.Title = provider.Title;
             await provider.Refresh(p);
@@ -173,7 +173,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         (provider.Models[0] as UserDetail).FollowStatus == Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage").GetString("follow")
                             ? UriType.OperateUnfollow
                             : UriType.OperateFollow;
-                    await DataHelper.GetDataAsync(
+                    _ = await DataHelper.GetDataAsync(
                         UriHelper.GetUri(type, provider.Id),
                         true);
                     _ = Refresh();

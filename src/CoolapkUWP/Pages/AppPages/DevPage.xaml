@@ -20,11 +20,13 @@
         <ScrollViewer Padding="{StaticResource StackPanelMargin}">
             <StackPanel Margin="16,0">
                 
-                <Grid>
+                <Grid Margin="8">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-
+                    <TextBox x:Name="Uri"/>
+                    <Button Style="{StaticResource ButtonRevealStyle}" Grid.Row="1" Click="Button_Click" Content="获取" />
                     <TextBlock
                             x:Name="main"
                             Grid.Row="0"

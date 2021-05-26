@@ -32,7 +32,7 @@
             <UserControl Loaded="{x:Bind local:FeedReply.UserControl_Loaded}" SizeChanged="{x:Bind local:FeedReply.UserControl_SizeChanged}">
                 <Grid
                     Padding="4,4,12,0"
-                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                     BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8">
