@@ -8,12 +8,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.UI;
-using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -153,7 +151,7 @@ namespace CoolapkUWP.Control
                                     image.Tapped += (sender, e) =>
                                     {
                                         e.Handled = true;
-                                        Tools.ShowImage(imageModel.url,ImageType.OriginImage);
+                                        Tools.ShowImage(imageModel.url, ImageType.OriginImage);
                                     };
 
                                     Grid grid = new Grid();
@@ -331,7 +329,6 @@ namespace CoolapkUWP.Control
                                 else { AddText(item); }
                                 break;
                             }
-                            break;
 
                         default: AddText(item); break;
                     }

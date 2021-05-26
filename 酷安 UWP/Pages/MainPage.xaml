@@ -10,7 +10,7 @@
     xmlns:data="using:CoolapkUWP.Data"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     NavigationCacheMode="Required" SizeChanged="Page_SizeChanged"
-    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d">
 
     <Page.Resources>

@@ -8,7 +8,7 @@
     xmlns:local="using:CoolapkUWP.Pages.SettingPages"
     xmlns:control="using:CoolapkUWP.Control" xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlBackgroundListLowBrush}">
+    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
 
     <Page.Resources>
         <Style x:Key="HeaderStyle" TargetType="controls:HeaderedContentControl">

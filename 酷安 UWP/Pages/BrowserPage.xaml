@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
-    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d" >
 
     <Grid>

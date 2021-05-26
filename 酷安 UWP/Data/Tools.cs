@@ -12,6 +12,7 @@ using Windows.Data.Json;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Security.ExchangeActiveSyncProvisioning;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -27,6 +28,19 @@ namespace CoolapkUWP.Data
         static ObservableCollection<string> messageList = new ObservableCollection<string>();
         static bool isShowingMessage;
         public static bool isShowingProgressBar;
+        private static CoreDispatcher shellDispatcher;
+
+        public static CoreDispatcher ShellDispatcher
+        {
+            get => shellDispatcher;
+            set
+            {
+                if (shellDispatcher == null)
+                {
+                    shellDispatcher = value;
+                }
+            }
+        }
         static Tools()
         {
             EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();

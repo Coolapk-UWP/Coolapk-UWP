@@ -9,7 +9,7 @@
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlBackgroundListLowBrush}">
+    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

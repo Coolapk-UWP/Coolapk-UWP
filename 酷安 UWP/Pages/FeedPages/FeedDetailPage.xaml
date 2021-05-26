@@ -9,7 +9,7 @@
       xmlns:viewModel="using:CoolapkUWP.Control.ViewModels"
       mc:Ignorable="d"
       SizeChanged="Page_SizeChanged"
-      Background="{ThemeResource SystemControlBackgroundListLowBrush}">
+      Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

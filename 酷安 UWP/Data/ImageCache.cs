@@ -22,6 +22,7 @@ namespace CoolapkUWP.Data
         static BitmapImage whiteNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
         static BitmapImage darkNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
         static Dictionary<ImageType, StorageFolder> folders = new Dictionary<ImageType, StorageFolder>();
+        internal static BitmapImage NoPic { get => Settings.GetBoolen("IsNoPicsMode") ? darkNoPicMode : whiteNoPicMode; }
 
         private static async Task<StorageFolder> GetFolder(ImageType type)
         {
@@ -59,11 +60,11 @@ namespace CoolapkUWP.Data
             }
         }
 
-        public static async Task<string> GetImagePath(ImageType type, string url, bool showMessage = false)
+        public static async Task<StorageFile> GetImagePath(ImageType type, string url, bool showMessage = false)
         {
-            if (url.IndexOf("ms-appx") == 0) return url;
+            if (url.IndexOf("ms-appx") == 0) return await StorageFile.GetFileFromApplicationUriAsync(new Uri(url));
             else if (string.IsNullOrEmpty(url) || Settings.GetBoolen("IsNoPicsMode"))
-                return Settings.GetBoolen("IsDarkMode") ? "ms-appx:/Assets/img_placeholder_night.png" : "ms-appx:/Assets/img_placeholder.png";
+                return await StorageFile.GetFileFromApplicationUriAsync(new Uri(Settings.GetBoolen("IsDarkMode") ? "ms-appx:/Assets/img_placeholder_night.png" : "ms-appx:/Assets/img_placeholder.png"));
             else
             {
                 string fileName = Tools.GetMD5(url);
@@ -75,10 +76,10 @@ namespace CoolapkUWP.Data
                 {
                     StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
                     try { await DownloadImage(file, url, showMessage); }
-                    catch (FileLoadException) { return file.Path; }
-                    return file.Path;
+                    catch (FileLoadException) { return file; }
+                    return file;
                 }
-                else if (item is StorageFile file) return file.Path;
+                else if (item is StorageFile file) return file;
                 else return null;
             }
         }

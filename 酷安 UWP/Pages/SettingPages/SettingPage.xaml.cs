@@ -7,7 +7,6 @@ using System.Threading;
 using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.UI;
-using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

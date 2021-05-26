@@ -9,7 +9,7 @@
     xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:data="using:CoolapkUWP.Data"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlBackgroundListLowBrush}">
+    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
 
     <Grid>
         <Grid.RowDefinitions>
