@@ -72,8 +72,9 @@ namespace CoolapkUWP.ViewModels.IndexPage
         {
             switch (jo.Value<string>("entityType"))
             {
-                case "feed": return new FeedModel(jo, isHotFeedPage ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
+                case "feed":
                 case "discovery": return new FeedModel(jo, isHotFeedPage ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
+                case "liveTopic": return new LiveMode(jo);
                 case "user": return new UserModel(jo);
                 case "topic": return new TopicModel(jo);
                 case "dyh": return new DyhModel(jo);

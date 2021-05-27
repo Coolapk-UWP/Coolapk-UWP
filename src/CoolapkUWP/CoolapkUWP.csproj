@@ -22,7 +22,7 @@
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
     <AppxBundle>Always</AppxBundle>
-    <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-arm64;win10-arm64-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
@@ -156,6 +156,8 @@
     <Compile Include="Models\BackgroundImageModel.cs" />
     <Compile Include="Models\Controls\MakeFeedControlModel.cs" />
     <Compile Include="Models\Controls\UserHubModel.cs" />
+    <Compile Include="Models\Links\SourceFeedModel.cs" />
+    <Compile Include="Models\LiveModel.cs" />
     <Compile Include="Models\DyhModel.cs" />
     <Compile Include="Models\FeedReplyModel.cs" />
     <Compile Include="Models\FeedModelBase.cs" />

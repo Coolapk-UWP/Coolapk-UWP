@@ -34,7 +34,11 @@ namespace CoolapkUWP.Models
             {
                 SubTitle = v7.ToString();
             }
-            if (token.TryGetValue("url", out JToken v3) && !string.IsNullOrEmpty(v3.ToString()))
+            if (token.TryGetValue("video_playback_url", out JToken v0) && !string.IsNullOrEmpty(v0.ToString()))
+            {
+                Url = v0.ToString();
+            }
+            else if (token.TryGetValue("url", out JToken v3) && !string.IsNullOrEmpty(v3.ToString()))
             {
                 Url = v3.ToString();
             }
@@ -57,6 +61,10 @@ namespace CoolapkUWP.Models
             else if (token.TryGetValue("logo", out JToken v6) && !string.IsNullOrEmpty(v6.ToString()))
             {
                 Pic = new BackgroundImageModel(v6.ToString(), ImageType.Icon);
+            }
+            else if (token.TryGetValue("pic_url", out JToken v9) && !string.IsNullOrEmpty(v9.ToString()))
+            {
+                Pic = new BackgroundImageModel(v9.ToString(), ImageType.Icon);
             }
         }
     }

@@ -36,8 +36,9 @@ namespace CoolapkUWP.Pages.AppPages
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             #region 测试
-            //Uri uri = new Uri("https://m.coolapk.com/mp/do?c=userDevice&m=deviceFeedback");
-            //var (isSucceed, result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
+            Uri uri = new Uri("https://qapi.ithome.com/api/content/getcontentdetail?id=5209");
+            (bool _, string result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
+            Models.Links.SourceFeedModel _ = new Models.Links.SourceFeedModel(JObject.Parse(result), Models.Links.LinkType.ITHome);
             //if (isSucceed)
             //{
             //    //main.Text = result;

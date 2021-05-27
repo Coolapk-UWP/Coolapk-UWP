@@ -13,6 +13,7 @@ namespace CoolapkUWP.Controls
         public DataTemplate Dyh { get; set; }
         public DataTemplate Product { get; set; }
         public DataTemplate CoolPic { get; set; }
+        public DataTemplate LiveTopic { get; set; }
         public DataTemplate MessageCard { get; set; }
         public DataTemplate Images { get; set; }
         public DataTemplate TitleCard { get; set; }
@@ -34,6 +35,7 @@ namespace CoolapkUWP.Controls
             else if (item is TopicModel) { return Topic; }
             else if (item is DyhModel) { return Dyh; }
             else if (item is ProductModel) { return Product; }
+            else if (item is LiveMode) { return LiveTopic; }
             else if (item is IndexPageMessageCardModel) { return MessageCard; }
             else if (item is IndexPageHasEntitiesModel m)
             {

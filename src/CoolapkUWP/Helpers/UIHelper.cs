@@ -320,10 +320,10 @@ namespace CoolapkUWP.Helpers
         public static void Navigate(Type pageType, object e = null)
         {
             shellPage.CloseSplit();
-            mainFrame?.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                mainFrame?.Navigate(pageType, e, new EntranceNavigationTransitionInfo());
-            });
+            _ = (mainFrame?.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+              {
+                  mainFrame?.Navigate(pageType, e, new EntranceNavigationTransitionInfo());
+              }));
         }
 
         public static void NavigateInSplitPane(Type pageType, object e = null)
@@ -375,7 +375,7 @@ namespace CoolapkUWP.Helpers
 #if !DEBUG
             if (UIHelper.IsAuthor)
 #endif
-            var rawstr = str;
+            string rawstr = str;
 
             if (string.IsNullOrWhiteSpace(str)) { return; }
 

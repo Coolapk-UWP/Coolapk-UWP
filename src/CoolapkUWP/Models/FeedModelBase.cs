@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoolapkUWP.Models
 {
@@ -51,7 +52,9 @@ namespace CoolapkUWP.Models
         public string ChangeTitle { get; private set; }
         public bool ShowSourceFeed { get; private set; }
         public bool ShowSourceFeedGrid { get; private set; }
+        public bool ShowLinkSourceFeed { get; private set; }
         public SourceFeedModel SourceFeed { get; private set; }
+        public Links.SourceFeedModel LinkSourceFeed { get; private set; }
         public bool ShowExtraUrl { get; private set; }
         public bool ShowVideo { get; private set; }
         public string ExtraTitle { get; private set; }
@@ -131,10 +134,21 @@ namespace CoolapkUWP.Models
                 ShowExtraUrl = token.TryGetValue("extra_title", out JToken valueextra_title) && !string.IsNullOrEmpty(valueextra_title.ToString());
                 if (ShowExtraUrl)
                 {
-                    ExtraTitle = valueextra_title.ToString();
                     ExtraUrl = token.Value<string>("extra_url");
+                    //if (ExtraUrl.Contains("ithome"))
+                    //{
+                    //    Uri uri = new Uri("https://qapi.ithome.com/api/content/getcontentdetail?id=5209");
+                    //    //DataHelper.GetHtmlAsync(uri, "XMLHttpRequest").Wait();
+                    //    try { var (isSucceed, result) = DataHelper.GetHtmlAsync(uri, "XMLHttpRequest").Result; }
+                    //    catch { }
+                    //    UIHelper.ShowMessage(ShowLinkSourceFeed.ToString());
+                    //    //JObject json = JObject.Parse(result);
+                    //    //LinkSourceFeed = new Links.SourceFeedModel(json, Links.LinkType.ITHome);
+                    //    //ShowLinkSourceFeed = true;
+                    //}
+                    ExtraTitle = valueextra_title.ToString();
                     ExtraUrl2 = (ExtraUrl?.IndexOf("http", StringComparison.Ordinal) ?? -1) == 0 ? new Uri(ExtraUrl).Host : string.Empty;
-                    var extraPicUrl = token.Value<string>("extra_pic");
+                    string extraPicUrl = token.Value<string>("extra_pic");
                     if (!string.IsNullOrEmpty(extraPicUrl))
                     {
                         ExtraPic = new BackgroundImageModel(extraPicUrl, ImageType.Icon);

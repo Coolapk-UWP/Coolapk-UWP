@@ -59,7 +59,7 @@
             <muxc:NavigationViewItem Content="快讯" Tag="V11_HOME_TAB_NEWS"/>
             <muxc:NavigationViewItem Content="闲聊" Tag="V8_HUODONG_XIANLIAO_20210409"/>
             <muxc:NavigationViewItem Content="话题" Tag="V9_HOME_TAB_TOPIC"/>
-            <muxc:NavigationViewItem Content="直播" Tag="V9_HOME_TAB_LIVE" Visibility="Collapsed"/>
+            <muxc:NavigationViewItem Content="直播" Tag="V9_HOME_TAB_LIVE"/>
             <muxc:NavigationViewItem Content="视频" Tag="V9_HOME_TAB_SHIPIN"/>
             <muxc:NavigationViewItem Content="问答" Tag="V9_HOME_TAB_WENDA"/>
 

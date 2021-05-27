@@ -11,7 +11,6 @@ namespace CoolapkUWP.Controls.DataTemplates
 {
     public partial class Feed : ResourceDictionary
     {
-        public static double BilibiliHeight { get; private set; }
 
         public Feed() => InitializeComponent();
 
@@ -139,11 +138,6 @@ namespace CoolapkUWP.Controls.DataTemplates
         internal static void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             UserControl_SizeChanged(sender, null);
-        }
-
-        private void bilibili_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            BilibiliHeight = e.NewSize.Width * 9 / 16;
         }
     }
 }

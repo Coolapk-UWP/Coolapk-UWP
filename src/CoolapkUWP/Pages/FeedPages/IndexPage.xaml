@@ -27,6 +27,7 @@
             <control:FirstTemplateSelector
                 x:Key="FTemplateSelector"
                 CoolPic="{StaticResource coolPicture}"
+                LiveTopic="{StaticResource liveTopic}"
                 ImageTextScrollCard="{StaticResource imageTextScrollCard}"
                 Dyh="{StaticResource DYH}"
                 Product="{StaticResource Product}"
@@ -406,6 +407,44 @@
                 </ListViewItem>
             </DataTemplate>
 
+            <DataTemplate x:Key="liveTopic" x:DataType="model:LiveMode">
+                <ListViewItem
+                    Margin="8"
+                    KeyDown="ListViewItem_KeyDown"
+                    Style="{StaticResource AppListViewItemStyle}"
+                    Tag="{x:Bind Url}"
+                    Tapped="Grid_Tapped">
+                    <Grid
+                        BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <Image
+                            VerticalAlignment="Top"
+                            Source="{x:Bind Pic.Pic, Mode=OneWay}"
+                            Stretch="Fill" />
+                        <StackPanel
+                            Margin="0,32,0,0"
+                            Padding="0,4"
+                            VerticalAlignment="Bottom"
+                            Background="{ThemeResource SystemControlChromeLowAcrylicElementBrush}"
+                            CornerRadius="1">
+                            <TextBlock
+                                Margin="8,4"
+                                FontSize="16"
+                                Foreground="White"
+                                MaxLines="2"
+                                Text="{x:Bind Title}"
+                                TextTrimming="WordEllipsis"
+                                TextWrapping="Wrap" />
+                            <control:TextBlockEx
+                                Margin="8"
+                                Foreground="White"
+                                MessageText="{x:Bind Message}" />
+                        </StackPanel>
+                    </Grid>
+                </ListViewItem>
+            </DataTemplate>
+            
             <DataTemplate x:Key="selectorLinkCard" x:DataType="model:IndexPageHasEntitiesModel">
                 <ListView
                     x:Name="tabListv"
@@ -534,17 +573,6 @@
                                         TextAlignment="Left"
                                         TextTrimming="CharacterEllipsis"
                                         TextWrapping="Wrap" />
-
-                                    <TextBlock
-                                        x:Name="subTitle"
-                                        HorizontalAlignment="Left"
-                                        x:Load="{x:Bind SubTitle, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
-                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                        MaxLines="1"
-                                        Text="{x:Bind SubTitle}"
-                                        TextAlignment="Left"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="Wrap" />
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
@@ -614,7 +642,7 @@
                         BorderThickness="1"
                         CornerRadius="8">
                         <Border.Background>
-                            <ImageBrush ImageSource="{x:Bind Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                            <ImageBrush ImageSource="{x:Bind Pic.Pic, Mode=OneWay}" Stretch="Fill" />
                         </Border.Background>
                         <StackPanel Padding="4">
                             <StackPanel.Background>
@@ -673,7 +701,6 @@
                         CornerRadius="8">
                         <Image Source="{x:Bind Pic.Pic, Mode=OneWay}" Stretch="Uniform" />
                         <Border
-                            MinHeight="52"
                             VerticalAlignment="Bottom">
 
                             <Border.Background>
@@ -685,10 +712,10 @@
                             </Border.Background>
 
                             <TextBlock
-                                Margin="8,4"
+                                Margin="8"
                                 FontSize="16"
                                 Foreground="White"
-                                MaxLines="2"
+                                MaxLines="1"
                                 Text="{x:Bind MessageTitle}"
                                 TextTrimming="WordEllipsis"
                                 TextWrapping="Wrap" />
@@ -699,24 +726,28 @@
 
             <DataTemplate x:Key="imageText" x:DataType="model:IndexPageModel">
                 <ListViewItem
-                    Margin="4,0"
+                    Margin="8"
                     KeyDown="ListViewItem_KeyDown"
                     Style="{StaticResource AppListViewItemStyle}"
                     Tag="{x:Bind}"
                     Tapped="Grid_Tapped">
                     <Grid
-                        Width="260"
-                        Height="118"
+                        MaxWidth="260"
+                        MaxHeight="118"
                         Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
                         BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                         BorderThickness="1"
                         CornerRadius="8">
-                        <Image Source="{x:Bind Pic.Pic, Mode=OneWay}" Stretch="Uniform" />
-                        <Border
-                            Height="52"
+                        <Image
+                            VerticalAlignment="Top"
+                            Source="{x:Bind Pic.Pic, Mode=OneWay}"
+                            Stretch="UniformToFill" />
+                        <StackPanel
+                            Margin="0,32,0,0"
+                            Padding="0,4"
                             VerticalAlignment="Bottom"
-                            Background="#70000000"
-                            CornerRadius="8">
+                            Background="{ThemeResource SystemControlChromeLowAcrylicElementBrush}"
+                            CornerRadius="1">
                             <TextBlock
                                 Margin="8,4"
                                 FontSize="16"
@@ -725,7 +756,7 @@
                                 Text="{x:Bind Title}"
                                 TextTrimming="WordEllipsis"
                                 TextWrapping="Wrap" />
-                        </Border>
+                        </StackPanel>
                     </Grid>
                 </ListViewItem>
             </DataTemplate>

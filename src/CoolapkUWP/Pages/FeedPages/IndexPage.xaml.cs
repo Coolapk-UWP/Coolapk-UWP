@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -216,7 +217,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
                 for (int i = 0; i < provider.tabProviders.Count; i++)
                 {
-                    var list = new Microsoft.UI.Xaml.Controls.ItemsRepeater
+                    ItemsRepeater list = new ItemsRepeater
                     {
                         ItemTemplate = Resources["FTemplateSelector"] as DataTemplateSelector,
                         ItemsSource = provider.tabProviders[i].Models,
