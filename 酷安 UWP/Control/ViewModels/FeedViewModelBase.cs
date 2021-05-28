@@ -56,7 +56,8 @@ namespace CoolapkUWP.Control.ViewModels
                 device_title = token["device_title"].GetString();
             }
             //else showUser = false;
-            liked = token.TryGetValue("userAction", out IJsonValue v) ? v.GetObject()["like"].GetNumber() == 1 : false;
+            liked = token["extra_fromApi"].GetString() != "V11_HOME_TAB_NEWS"
+                && token.TryGetValue("userAction", out IJsonValue v) && v.GetObject()["like"].GetNumber() == 1;
             GetPic();
         }
 

@@ -43,10 +43,15 @@ namespace CoolapkUWP.Control
                 case "imageSquareScrollCard":
                 case "iconScrollCard":
                 case "imageTextScrollCard":
+                case "colorfulFatScrollCard":
+                case "colorfulScrollCard":
+                case "iconLongTitleGridCard":
                 case "feedScrollCard": return DataTemplate2;
                 case "textCard":
+                case "hot":
                 case "messageCard": return DataTemplate3;
                 case "refreshCard": return DataTemplate4;
+                case "feedGroupListCard":
                 case "textLinkListCard": return DataTemplate5;
                 case "iconGridCard":
                 case "iconMiniGridCard":
@@ -54,6 +59,8 @@ namespace CoolapkUWP.Control
                 case "iconLinkGridCard": return DataTemplate6;
                 case "iconTabLinkGridCard": return DataTemplate7;
                 case "selectorLinkCard": return DataTemplate8;
+                case "headCard":
+                case "iconButtonGridCard":
                 case "imageCard": return DataTemplate9;
             }
         }
@@ -85,8 +92,12 @@ namespace CoolapkUWP.Control
                     case "image_1": return DataTemplate1;
                     case "icon":
                     case "iconMiniLink":
+                    case "iconMini":
                     case "iconLink": return DataTemplate2;
+                    case "product":
                     case "dyh": return DataTemplate3;
+                    case "picCategory":
+                    case "entity":
                     case "topic": return DataTemplate4;
                     case "textLink": return DataTemplate7;
                     case "imageSquare": return DataTemplate9;
