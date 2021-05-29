@@ -17,7 +17,7 @@
                 BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8">
-                <Image Source="{x:Bind Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                <Image Source="{x:Bind Pic, Mode=OneWay}" Stretch="UniformToFill"/>
                 <StackPanel
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
@@ -27,14 +27,14 @@
                         x:Load="{x:Bind IsLongPic, Mode=OneWay}"
                         Background="#0F9D58"
                         CornerRadius="8,0,0,0">
-                        <TextBlock x:Uid="/Feed/longPic" Foreground="White" />
+                        <TextBlock x:Uid="/Feed/longPic" Foreground="White"/>
                     </Border>
                     <Border
                         x:Name="gif"
                         x:Load="{x:Bind IsGif}"
                         Background="#0F9D58"
                         CornerRadius="8,0,0,0">
-                        <TextBlock Foreground="White" Text="GIF" />
+                        <TextBlock Foreground="White" Text="GIF"/>
                     </Border>
                 </StackPanel>
             </Grid>

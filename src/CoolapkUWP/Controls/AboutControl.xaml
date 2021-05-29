@@ -15,5 +15,5 @@
         x:Name="main"
         Margin="0,8"
         LinkClicked="MarkdownText_LinkClicked"
-        Background="Transparent" />
+        Background="Transparent"/>
 </UserControl>

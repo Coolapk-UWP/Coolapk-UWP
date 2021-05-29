@@ -16,38 +16,38 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:SearchWord />
+                <templates:SearchWord/>
+                <templates:OtherDataTemplates/>
+                <templates:IndexCardTemplates/>
             </ResourceDictionary.MergedDictionaries>
 
-            <converter:HasValueConverter x:Key="HasValueConverter" />
+            <converter:HasValueConverter x:Key="HasValueConverter"/>
 
-            <converter:TrueToFalseConverter x:Key="TrueToFalseConverter" />
+            <converter:TrueToFalseConverter x:Key="TrueToFalseConverter"/>
 
             <local:FirstTemplateSelector
                 x:Key="templas"
-                DataTemplate2="{StaticResource imageTextScrollCard}"
+                ImageTextScrollCard="{StaticResource ImageTextScrollCard}"
                 Others="{StaticResource null}"
-                TextLinkList="{StaticResource textLinkListCard}"
-                TitleCard="{StaticResource titleCard}" />
+                TextLinkList="{StaticResource TextLinkListCard}"
+                TitleCard="{StaticResource TitleCard}"/>
 
             <local:SecondaryTemplateSelector
                 x:Key="sectem"
-                Histroy="{StaticResource history}"
-                HistroyIcon="{StaticResource historyIcon}"
+                Histroy="{StaticResource History}"
+                HistroyIcon="{StaticResource HistoryIcon}"
                 Null="{StaticResource null}"
-                TextLink="{StaticResource textLink}" />
+                TextLink="{StaticResource TextLink}"/>
 
             <Style
                 x:Key="NaviItemStyle"
                 BasedOn="{StaticResource AppListViewItemStyle}"
                 TargetType="ListViewItem">
-                <Setter Property="Margin" Value="0" />
-                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Background" Value="Transparent"/>
             </Style>
 
-            <DataTemplate x:Key="null" />
-
-            <DataTemplate x:Key="textLinkListCard" x:DataType="model:IndexPageHasEntitiesModel">
+            <DataTemplate x:Key="TextLinkListCard" x:DataType="model:IndexPageHasEntitiesModel">
                 <StackPanel Margin="8">
                     <ListViewItem
                         x:Name="title"
@@ -91,7 +91,7 @@
                 </StackPanel>
             </DataTemplate>
 
-            <DataTemplate x:Key="imageTextScrollCard" x:DataType="model:IndexPageHasEntitiesModel">
+            <DataTemplate x:Key="ImageTextScrollCard" x:DataType="model:IndexPageHasEntitiesModel">
                 <StackPanel Margin="8">
                     <ListViewItem
                         HorizontalContentAlignment="Stretch"
@@ -129,7 +129,7 @@
                 </StackPanel>
             </DataTemplate>
 
-            <DataTemplate x:Key="titleCard" x:DataType="model:IndexPageOperationCardModel">
+            <DataTemplate x:Key="TitleCard" x:DataType="model:IndexPageOperationCardModel">
                 <ListViewItem
                     Margin="8"
                     KeyDown="ListViewItem_KeyDown"
@@ -152,148 +152,21 @@
                     </Grid>
                 </ListViewItem>
             </DataTemplate>
-
-            <DataTemplate x:Key="textLink" x:DataType="model:IndexPageModel">
-                <ListViewItem
-                    Margin="4,0"
-                    KeyDown="ListViewItem_KeyDown"
-                    Style="{StaticResource AppListViewItemStyle}"
-                    Tag="{x:Bind Url}"
-                    Tapped="ListViewItem_Tapped">
-                    <StackPanel
-                        Padding="10"
-                        Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
-                        Orientation="Horizontal">
-                        <Image
-                            Width="20"
-                            Height="20"
-                            Source="{x:Bind Pic.Pic, Mode=OneWay}" />
-                        <TextBlock
-                            Margin="8,0"
-                            Text="{x:Bind Title}"
-                            TextWrapping="Wrap" />
-                    </StackPanel>
-                </ListViewItem>
-            </DataTemplate>
-
-            <DataTemplate x:Key="historyIcon" x:DataType="model:IndexPageModel">
-                <ListViewItem
-                    MaxWidth="72"
-                    Margin="4,0"
-                    KeyDown="ListViewItem_KeyDown"
-                    Style="{StaticResource FixedListViewItemStyle}"
-                    Tag="{x:Bind Url}"
-                    Tapped="ListViewItem_Tapped">
-                    <Border
-                        BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                        BorderThickness="1"
-                        CornerRadius="8">
-                        <Border.Background>
-                            <ImageBrush ImageSource="{x:Bind Pic.Pic, Mode=OneWay}" />
-                        </Border.Background>
-                        <StackPanel Padding="4">
-                            <StackPanel.Background>
-                                <AcrylicBrush
-                                    BackgroundSource="Backdrop"
-                                    FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
-                                    TintColor="{x:Bind Pic.BackgroundColor, Mode=OneWay}"
-                                    TintOpacity="0.5" />
-                            </StackPanel.Background>
-
-                            <Border
-                                Width="36"
-                                Height="36"
-                                Margin="4"
-                                CornerRadius="4">
-                                <Image Source="{x:Bind Pic.Pic, Mode=OneWay}" />
-                            </Border>
-
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Foreground="White"
-                                MaxLines="2"
-                                Text="{x:Bind Title}"
-                                TextAlignment="Center"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="Wrap" />
-
-                            <TextBlock
-                                x:Name="subTitle"
-                                HorizontalAlignment="Center"
-                                x:Load="{x:Bind SubTitle, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
-                                Foreground="White"
-                                MaxLines="1"
-                                Text="{x:Bind SubTitle}"
-                                TextAlignment="Center"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
-                    </Border>
-                </ListViewItem>
-            </DataTemplate>
-
-            <DataTemplate x:Key="history" x:DataType="model:IndexPageModel">
-                <ListViewItem
-                    KeyDown="ListViewItem_KeyDown"
-                    Style="{StaticResource AppListViewItemStyle}"
-                    Tag="{x:Bind Url}"
-                    Tapped="ListViewItem_Tapped">
-                    <Grid Padding="4,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="56" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <Border
-                            Grid.RowSpan="2"
-                            Margin="8,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            CornerRadius="8">
-                            <Image
-                                Width="40"
-                                Height="40"
-                                Source="{x:Bind Pic.Pic, Mode=OneWay}" />
-                        </Border>
-
-                        <TextBlock
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Text="{x:Bind Title}" />
-
-                        <ctrl:TextBlockEx
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            MaxLine="2"
-                            MessageText="{x:Bind Description}"
-                            RichTextBlockLoaded="TextBlockEx_RichTextBlockLoaded" />
-                    </Grid>
-                </ListViewItem>
-            </DataTemplate>
-
         </ResourceDictionary>
     </Page.Resources>
 
     <Grid Padding="0,32,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid Height="40">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="44" />
-                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="44"/>
+                <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
 
             <AutoSuggestBox
@@ -304,7 +177,7 @@
                 QueryIcon="Find"
                 QuerySubmitted="{x:Bind local:MyPage.AutoSuggestBox_QuerySubmitted}"
                 SuggestionChosen="{x:Bind local:MyPage.AutoSuggestBox_SuggestionChosen}"
-                TextChanged="{x:Bind local:MyPage.AutoSuggestBox_TextChanged}" />
+                TextChanged="{x:Bind local:MyPage.AutoSuggestBox_TextChanged}"/>
 
             <winui:ProgressRing
                 x:Name="ring"
@@ -312,7 +185,7 @@
                 Width="24"
                 Height="24"
                 Margin="8,0"
-                Visibility="Collapsed" />
+                Visibility="Collapsed"/>
 
             <Button
                 Grid.Column="2"
@@ -325,11 +198,11 @@
                     <FontIcon
                         FontFamily="Segoe MDL2 Assets"
                         FontSize="20"
-                        Glyph="{x:Bind BadgeIconGlyph, Mode=OneWay}" />
+                        Glyph="{x:Bind BadgeIconGlyph, Mode=OneWay}"/>
                     <TextBlock
                         Margin="4,0,0,0"
                         VerticalAlignment="Bottom"
-                        Text="{x:Bind BadgeNum.ToString(), Mode=OneWay}" />
+                        Text="{x:Bind BadgeNum.ToString(), Mode=OneWay}"/>
                 </StackPanel>
             </Button>
 
@@ -340,23 +213,23 @@
                 AllowFocusOnInteraction="True"
                 Click="Button_Click"
                 Style="{ThemeResource IconButtonStyle}">
-                <SymbolIcon Symbol="Add" />
+                <SymbolIcon Symbol="Add"/>
 
                 <Button.Flyout>
                     <Flyout>
                         <Flyout.FlyoutPresenterStyle>
                             <Style TargetType="FlyoutPresenter">
-                                <Setter Property="Padding" Value="0" />
-                                <Setter Property="MinWidth" Value="320" />
-                                <Setter Property="MaxHeight" Value="320" />
-                                <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
-                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
-                                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
-                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="MinWidth" Value="320"/>
+                                <Setter Property="MaxHeight" Value="320"/>
+                                <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
 
-                        <ctrl:MakeFeedControl MakeFeedMode="Feed" MakedFeedSuccessful="MakeFeedControl_MakedFeedSuccessful" />
+                        <ctrl:MakeFeedControl MakeFeedMode="Feed" MakedFeedSuccessful="MakeFeedControl_MakedFeedSuccessful"/>
                     </Flyout>
                 </Button.Flyout>
             </Button>
@@ -369,13 +242,13 @@
                     Margin="0,8,0,0"
                     Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="26" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="72px" />
-                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="26"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="72px"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
                     <Ellipse
@@ -386,7 +259,7 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center">
                         <Ellipse.Fill>
-                            <ImageBrush ImageSource="{Binding UserAvatar, Mode=OneWay}" />
+                            <ImageBrush ImageSource="{Binding UserAvatar, Mode=OneWay}"/>
                         </Ellipse.Fill>
                     </Ellipse>
 
@@ -408,7 +281,7 @@
                         Margin="104,0,0,0"
                         FontSize="20"
                         FontWeight="Bold"
-                        Text="{Binding UserName, Mode=OneWay}" />
+                        Text="{Binding UserName, Mode=OneWay}"/>
 
                     <winui:ProgressBar
                         x:Name="LevelBar"
@@ -416,7 +289,7 @@
                         Width="240"
                         Margin="100,0,0,0"
                         HorizontalAlignment="Left"
-                        Value="{Binding NextLevelPercentage, Mode=OneWay}" />
+                        Value="{Binding NextLevelPercentage, Mode=OneWay}"/>
 
                     <StackPanel
                         Grid.Row="2"
@@ -425,16 +298,16 @@
                         <TextBlock
                             Margin="2,0"
                             VerticalAlignment="Center"
-                            Text="Lv." />
+                            Text="Lv."/>
                         <TextBlock
                             Margin="2,0"
                             VerticalAlignment="Center"
                             FontWeight="Bold"
-                            Text="{Binding LevelNum, Mode=OneWay}" />
+                            Text="{Binding LevelNum, Mode=OneWay}"/>
                         <TextBlock
                             Margin="4,0"
                             VerticalAlignment="Center"
-                            Text="{Binding NextLevelNowExperience, Mode=OneWay}" />
+                            Text="{Binding NextLevelNowExperience, Mode=OneWay}"/>
                     </StackPanel>
                     
                     <ListViewItem
@@ -450,13 +323,13 @@
                     <TextBlock
                         Grid.Row="3"
                         Margin="104,0,0,0"
-                        Text="{Binding LevelTodayMessage, Mode=OneWay}" />
+                        Text="{Binding LevelTodayMessage, Mode=OneWay}"/>
 
                     <Grid Grid.Row="5" Padding="4">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <Button
@@ -469,8 +342,8 @@
                             Style="{StaticResource ButtonRevealStyle}"
                             Tag="feed">
                             <StackPanel>
-                                <TextBlock x:Uid="/Mypage/FeedText" HorizontalAlignment="Center" />
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding FeedNum, Mode=OneWay}" />
+                                <TextBlock x:Uid="/Mypage/FeedText" HorizontalAlignment="Center"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding FeedNum, Mode=OneWay}"/>
                             </StackPanel>
                         </Button>
 
@@ -484,8 +357,8 @@
                             Style="{StaticResource ButtonRevealStyle}"
                             Tag="follow">
                             <StackPanel>
-                                <TextBlock x:Uid="/Mypage/FollowText" HorizontalAlignment="Center" />
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding FollowNum, Mode=OneWay}" />
+                                <TextBlock x:Uid="/Mypage/FollowText" HorizontalAlignment="Center"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding FollowNum, Mode=OneWay}"/>
                             </StackPanel>
                         </Button>
 
@@ -499,8 +372,8 @@
                             Style="{StaticResource ButtonRevealStyle}"
                             Tag="fans">
                             <StackPanel>
-                                <TextBlock x:Uid="/Mypage/FollowerText" HorizontalAlignment="Center" />
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding FansNum, Mode=OneWay}" />
+                                <TextBlock x:Uid="/Mypage/FollowerText" HorizontalAlignment="Center"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding FansNum, Mode=OneWay}"/>
                             </StackPanel>
                         </Button>
                     </Grid>
@@ -510,7 +383,7 @@
                         Grid.Row="6"
                         Margin="0,8"
                         ItemTemplate="{StaticResource templas}"
-                        Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}" />
+                        Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}"/>
                 </Grid>
 
                 <ListViewItem
@@ -520,8 +393,8 @@
                     Tapped="ListViewItem_Tapped"
                     Visibility="{x:Bind LogoutButtonVisibility, Converter={StaticResource TrueToFalseConverter}, ConverterParameter='Visibility', Mode=OneWay}">
                     <StackPanel Padding="16,0" Orientation="Horizontal">
-                        <SymbolIcon Symbol="AddFriend" />
-                        <TextBlock x:Uid="/Mypage/Login" Margin="8,0" />
+                        <SymbolIcon Symbol="AddFriend"/>
+                        <TextBlock x:Uid="/Mypage/Login" Margin="8,0"/>
                     </StackPanel>
                 </ListViewItem>
 
@@ -531,8 +404,8 @@
                     Tag="settings"
                     Tapped="ListViewItem_Tapped">
                     <StackPanel Padding="16,0" Orientation="Horizontal">
-                        <SymbolIcon Symbol="Setting" />
-                        <TextBlock x:Uid="/Mypage/Setting" Margin="8,0" />
+                        <SymbolIcon Symbol="Setting"/>
+                        <TextBlock x:Uid="/Mypage/Setting" Margin="8,0"/>
                     </StackPanel>
                 </ListViewItem>
 
@@ -543,8 +416,8 @@
                     Tapped="ListViewItem_Tapped"
                     Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}">
                     <StackPanel Padding="16,0" Orientation="Horizontal">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF3B1;" />
-                        <TextBlock x:Uid="/Mypage/Logout" Margin="8,0" />
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF3B1;"/>
+                        <TextBlock x:Uid="/Mypage/Logout" Margin="8,0"/>
                     </StackPanel>
                 </ListViewItem>
             </StackPanel>

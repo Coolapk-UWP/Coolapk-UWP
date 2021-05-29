@@ -13,15 +13,15 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <Style
             x:Key="IconButtonStyle2"
             BasedOn="{StaticResource ButtonRevealStyle}"
             TargetType="Button">
-            <Setter Property="Height" Value="32" />
-            <Setter Property="Width" Value="32" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Padding" Value="0" />
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
         </Style>
     </Page.Resources>
 
@@ -41,12 +41,12 @@
                         Click="Button_Click"
                         Icon="Pictures"
                         Tag="origin"
-                        Visibility="{x:Bind IsOriginButtonEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        Visibility="{x:Bind IsOriginButtonEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     <MenuFlyoutItem
                         x:Uid="/ShowImagePage/SaveMenuItem"
                         Click="Button_Click"
                         Icon="Save"
-                        Tag="save" />
+                        Tag="save"/>
                 </MenuFlyout>
             </FlipView.ContextFlyout>
             <FlipView.ItemTemplate>
@@ -75,7 +75,7 @@
                                     RenderTransformOrigin="0.5,0.5"
                                     Source="{x:Bind Pic, Mode=OneWay}">
                                     <Image.RenderTransform>
-                                        <CompositeTransform />
+                                        <CompositeTransform/>
                                     </Image.RenderTransform>
                                     <Image.Resources>
                                         <Storyboard x:Name="storyboard">
@@ -84,7 +84,7 @@
                                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)"
                                                 From="-90"
                                                 To="0"
-                                                Duration="0:0:0.1" />
+                                                Duration="0:0:0.1"/>
                                         </Storyboard>
                                     </Image.Resources>
                                 </Image>
@@ -95,7 +95,7 @@
                         <winui:ProgressRing
                             Width="60"
                             Height="60"
-                            IsActive="{x:Bind IsProgressRingActived, Mode=OneWay}" />
+                            IsActive="{x:Bind IsProgressRingActived, Mode=OneWay}"/>
                     </Grid>
                 </DataTemplate>
             </FlipView.ItemTemplate>
@@ -105,7 +105,7 @@
             x:Name="titleBorder"
             Height="32"
             VerticalAlignment="Top"
-            Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}" />
+            Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}"/>
 
         <StackPanel
             HorizontalAlignment="Center"
@@ -118,7 +118,7 @@
                 IsEnabled="{x:Bind IsBackButtonEnabled, Mode=OneWay}"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="back">
-                <SymbolIcon Symbol="Back" />
+                <SymbolIcon Symbol="Back"/>
             </Button>
 
             <Button
@@ -127,7 +127,7 @@
                 Click="Button_Click"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="zoomIn">
-                <SymbolIcon Symbol="ZoomIn" />
+                <SymbolIcon Symbol="ZoomIn"/>
             </Button>
 
             <Button
@@ -136,7 +136,7 @@
                 Click="Button_Click"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="zoomOut">
-                <SymbolIcon Symbol="ZoomOut" />
+                <SymbolIcon Symbol="ZoomOut"/>
             </Button>
 
             <Button
@@ -144,20 +144,20 @@
                 Click="Button_Click"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="rotate">
-                <SymbolIcon Symbol="Rotate" />
+                <SymbolIcon Symbol="Rotate"/>
             </Button>
 
             <TextBlock
                 Margin="12,0,0,0"
                 VerticalAlignment="Center"
-                Text="{x:Bind SelectedIndex, Mode=OneWay}" />
+                Text="{x:Bind SelectedIndex, Mode=OneWay}"/>
 
-            <TextBlock VerticalAlignment="Center" Text="/" />
+            <TextBlock VerticalAlignment="Center" Text="/"/>
 
             <TextBlock
                 Margin="0,0,12,0"
                 VerticalAlignment="Center"
-                Text="{x:Bind imageModels.Count, Mode=OneWay}" />
+                Text="{x:Bind imageModels.Count, Mode=OneWay}"/>
 
             <Button
                 x:Uid="/ShowImagePage/SaveButton"
@@ -165,7 +165,7 @@
                 Click="Button_Click"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="save">
-                <SymbolIcon Symbol="Save" />
+                <SymbolIcon Symbol="Save"/>
             </Button>
 
             <Button
@@ -175,7 +175,7 @@
                 IsEnabled="{x:Bind IsOriginButtonEnabled, Mode=OneWay}"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="origin">
-                <SymbolIcon Symbol="Pictures" />
+                <SymbolIcon Symbol="Pictures"/>
             </Button>
 
             <Button
@@ -184,10 +184,10 @@
                 IsEnabled="{x:Bind IsForwardButtonEnabled, Mode=OneWay}"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="forward">
-                <SymbolIcon Symbol="Forward" />
+                <SymbolIcon Symbol="Forward"/>
             </Button>
         </StackPanel>
 
-        <controls:InAppNotification x:Name="notify" />
+        <controls:InAppNotification x:Name="notify"/>
     </Grid>
 </Page>

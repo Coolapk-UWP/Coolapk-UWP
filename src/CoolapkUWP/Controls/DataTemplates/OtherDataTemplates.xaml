@@ -5,7 +5,7 @@
     xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:models="using:CoolapkUWP.Models">
 
-    <DataTemplate x:Key="null" />
+    <DataTemplate x:Key="null"/>
     
     <DataTemplate x:Key="Topic" x:DataType="models:TopicModel">
         <ListViewItem
@@ -15,12 +15,12 @@
             Tapped="{x:Bind local:OtherDataTemplates.OnTapped}">
             <Grid Padding="4">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="56" />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="56"/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Ellipse
                     Grid.RowSpan="2"
@@ -30,7 +30,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="{x:Bind Logo.Pic, Mode=OneWay}" />
+                        <ImageBrush ImageSource="{x:Bind Logo.Pic, Mode=OneWay}"/>
                     </Ellipse.Fill>
                 </Ellipse>
                 <TextBlock
@@ -38,21 +38,21 @@
                     Grid.Column="1"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Text="{x:Bind Title}" />
+                    Text="{x:Bind Title}"/>
                 <StackPanel
                     Grid.Row="1"
                     Grid.Column="1"
                     Orientation="Horizontal">
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Follownum}" />
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Follownum}"/>
                     <TextBlock
                         x:Uid="/FeedListPage/FollowNum"
                         Margin="0,0,5,0"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Commentnum}" />
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Commentnum}"/>
                     <TextBlock
                         x:Uid="/FeedListPage/Comment"
                         Margin="0,0,5,0"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
                 </StackPanel>
             </Grid>
         </ListViewItem>
@@ -71,12 +71,12 @@
                 BorderThickness="1"
                 CornerRadius="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="56" />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="56"/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Ellipse
                     Grid.RowSpan="2"
@@ -86,7 +86,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="{x:Bind Logo.Pic, Mode=OneWay}" />
+                        <ImageBrush ImageSource="{x:Bind Logo.Pic, Mode=OneWay}"/>
                     </Ellipse.Fill>
                 </Ellipse>
                 <TextBlock
@@ -94,16 +94,16 @@
                     Grid.Column="1"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Text="{x:Bind Title}" />
+                    Text="{x:Bind Title}"/>
                 <StackPanel
                     Grid.Row="1"
                     Grid.Column="1"
                     Orientation="Horizontal">
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Follownum}" />
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Follownum}"/>
                     <TextBlock
                         x:Uid="/FeedListPage/Subscribed"
                         Margin="0,0,5,0"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
                 </StackPanel>
             </Grid>
         </ListViewItem>
@@ -122,12 +122,12 @@
                 BorderThickness="1"
                 CornerRadius="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="56" />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="56"/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Ellipse
                     Grid.RowSpan="2"
@@ -137,7 +137,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="{x:Bind Logo.Pic, Mode=OneWay}" />
+                        <ImageBrush ImageSource="{x:Bind Logo.Pic, Mode=OneWay}"/>
                     </Ellipse.Fill>
                 </Ellipse>
                 <TextBlock
@@ -145,16 +145,16 @@
                     Grid.Column="1"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Text="{x:Bind Title}" />
+                    Text="{x:Bind Title}"/>
                 <StackPanel
                     Grid.Row="1"
                     Grid.Column="1"
                     Orientation="Horizontal">
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Follownum}" />
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Follownum}"/>
                     <TextBlock
                         x:Uid="/FeedListPage/Subscribed"
                         Margin="0,0,5,0"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
                 </StackPanel>
             </Grid>
         </ListViewItem>
@@ -168,13 +168,13 @@
             Tapped="{x:Bind local:OtherDataTemplates.OnTapped}">
             <Grid Padding="4,8">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="56" />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="56"/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Ellipse
                     Grid.RowSpan="3"
@@ -184,7 +184,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="{x:Bind UserAvatar.Pic, Mode=OneWay}" />
+                        <ImageBrush ImageSource="{x:Bind UserAvatar.Pic, Mode=OneWay}"/>
                     </Ellipse.Fill>
                 </Ellipse>
                 <TextBlock
@@ -192,22 +192,22 @@
                     Grid.Column="1"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Text="{x:Bind UserName}" />
+                    Text="{x:Bind UserName}"/>
                 <StackPanel
                     Grid.Row="1"
                     Grid.Column="1"
                     Orientation="Horizontal">
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind FollowNum}" />
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind FollowNum}"/>
                     <TextBlock
                         x:Uid="/FeedListPage/FollowNum"
                         Margin="0,0,5,0"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind FansNum}" />
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind FansNum}"/>
                     <TextBlock
                         x:Uid="/FeedListPage/Fans"
                         Margin="0,0,5,0"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind LoginTime}" />
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind LoginTime}"/>
                 </StackPanel>
                 <TextBlock
                     Grid.Row="2"
@@ -215,7 +215,7 @@
                     Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                     Text="{x:Bind Bio}"
                     MaxLines="2"
-                    TextWrapping="Wrap" />
+                    TextWrapping="Wrap"/>
             </Grid>
         </ListViewItem>
     </DataTemplate>

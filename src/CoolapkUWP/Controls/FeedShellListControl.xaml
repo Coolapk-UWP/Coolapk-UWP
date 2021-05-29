@@ -15,7 +15,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:FeedReply />
+                <templates:FeedReply/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -28,7 +28,7 @@
             SelectionChanged="FeedDetailPivot_SelectionChanged">
             <Pivot.ItemContainerStyle>
                 <Style TargetType="PivotItem">
-                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Padding" Value="0"/>
                 </Style>
             </Pivot.ItemContainerStyle>
 
@@ -43,7 +43,7 @@
                             <TextBlock
                                 x:Uid="/FeedShellListControl/hotReply"
                                 Margin="12"
-                                VerticalAlignment="Center" />
+                                VerticalAlignment="Center"/>
                         </ListView.Header>
                     </ListView>
 
@@ -55,7 +55,7 @@
                         <TextBlock
                             x:Uid="/FeedShellListControl/getHotReply"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center"/>
                     </ListViewItem>
 
                     <Border Margin="0,8">
@@ -85,14 +85,14 @@
                                         Height="30"
                                         HorizontalAlignment="Left">
                                         <Ellipse.Fill>
-                                            <ImageBrush ImageSource="{x:Bind UserAvatar.Pic}" />
+                                            <ImageBrush ImageSource="{x:Bind UserAvatar.Pic}"/>
                                         </Ellipse.Fill>
                                     </Ellipse>
 
                                     <TextBlock
                                         Margin="5,0"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind UserName}" />
+                                        Text="{x:Bind UserName}"/>
                                 </StackPanel>
                             </ListViewItem>
                         </DataTemplate>
@@ -117,12 +117,12 @@
                                     BorderThickness="1"
                                     CornerRadius="8">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
                                     <Button
@@ -132,19 +132,19 @@
                                         Background="Transparent"
                                         Content="{x:Bind Username}"
                                         Style="{StaticResource ButtonRevealStyle}"
-                                        Tag="{x:Bind Uurl}" />
+                                        Tag="{x:Bind Uurl}"/>
 
                                     <TextBlock
                                         Grid.Column="1"
                                         VerticalAlignment="Center"
                                         Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                        Text="{x:Bind Dateline}" />
+                                        Text="{x:Bind Dateline}"/>
 
                                     <local:TextBlockEx
                                         Grid.Row="1"
                                         Grid.ColumnSpan="2"
                                         Margin="8,4"
-                                        MessageText="{x:Bind Message}" />
+                                        MessageText="{x:Bind Message}"/>
                                 </Grid>
                             </ListViewItem>
                         </DataTemplate>

@@ -78,7 +78,7 @@ namespace CoolapkUWP.Pages.FeedPages
             text = h2.Replace(text, "##");
             text = h3.Replace(text, "###");
             text = h4.Replace(text, "####");
-            text = text.Replace("<br />", "  \n");
+            text = text.Replace("<br/>", "  \n");
             text = div.Replace(text, "");
             text = p.Replace(text, "");
             text = ul.Replace(text, "");

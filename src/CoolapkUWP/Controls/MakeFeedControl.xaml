@@ -14,7 +14,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:OtherDataTemplates />
+                <templates:OtherDataTemplates/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -26,9 +26,9 @@
         Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
         CornerRadius="8">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <RichEditBox
@@ -37,7 +37,7 @@
             Margin="8,8,8,0"
             AcceptsReturn="True"
             ContextMenuOpening="{x:Bind local:MakeFeedControl.InputBox_ContextMenuOpening}"
-            TextWrapping="Wrap" />
+            TextWrapping="Wrap"/>
 
         <CommandBar Grid.Row="1">
             <AppBarButton
@@ -48,33 +48,33 @@
                     <Flyout Opened="Flyout_Opened">
                         <Flyout.FlyoutPresenterStyle>
                             <Style TargetType="FlyoutPresenter">
-                                <Setter Property="Padding" Value="0" />
-                                <Setter Property="MaxHeight" Value="320" />
-                                <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
-                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
-                                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
-                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="MaxHeight" Value="320"/>
+                                <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
 
                         <Pivot x:Name="searchPivot">
                             <Pivot.ItemContainerStyle>
                                 <Style TargetType="PivotItem">
-                                    <Setter Property="Padding" Value="0" />
-                                    <Setter Property="Margin" Value="0" />
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
                                 </Style>
                             </Pivot.ItemContainerStyle>
 
                             <PivotItem>
                                 <PivotItem.Header>
                                     <PivotHeaderItem Height="32" Padding="8,0">
-                                        <TextBlock Text="用户" />
+                                        <TextBlock Text="用户"/>
                                     </PivotHeaderItem>
                                 </PivotItem.Header>
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
 
                                     <AutoSuggestBox
@@ -82,7 +82,7 @@
                                         Margin="8,8,8,0"
                                         PlaceholderText="搜索用户……"
                                         QueryIcon="Find"
-                                        QuerySubmitted="AutoSuggestBox_QuerySubmitted_1" />
+                                        QuerySubmitted="AutoSuggestBox_QuerySubmitted_1"/>
 
                                     <ScrollViewer Grid.Row="1" ViewChanged="ScrollViewer_ViewChanged">
                                         <ListView
@@ -90,7 +90,7 @@
                                             IsItemClickEnabled="True"
                                             ItemClick="ListView_ItemClick"
                                             ItemTemplate="{StaticResource User}"
-                                            ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
                                     </ScrollViewer>
 
                                     <winui:ProgressRing
@@ -100,21 +100,21 @@
                                         Height="40"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        IsActive="False" />
+                                        IsActive="False"/>
                                 </Grid>
                             </PivotItem>
 
                             <PivotItem>
                                 <PivotItem.Header>
                                     <PivotHeaderItem Height="32" Padding="8,0">
-                                        <TextBlock Text="话题" />
+                                        <TextBlock Text="话题"/>
                                     </PivotHeaderItem>
                                 </PivotItem.Header>
 
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
 
                                     <AutoSuggestBox
@@ -122,7 +122,7 @@
                                         Margin="8,8,8,0"
                                         PlaceholderText="搜索话题……"
                                         QueryIcon="Find"
-                                        QuerySubmitted="AutoSuggestBox_QuerySubmitted_1" />
+                                        QuerySubmitted="AutoSuggestBox_QuerySubmitted_1"/>
 
                                     <ScrollViewer Grid.Row="1" ViewChanged="ScrollViewer_ViewChanged">
                                         <ListView
@@ -130,7 +130,7 @@
                                             IsItemClickEnabled="True"
                                             ItemClick="ListView_ItemClick"
                                             ItemTemplate="{StaticResource Topic}"
-                                            ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
                                     </ScrollViewer>
 
                                     <winui:ProgressRing
@@ -140,7 +140,7 @@
                                         Height="40"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        IsActive="False" />
+                                        IsActive="False"/>
                                 </Grid>
                             </PivotItem>
                         </Pivot>
@@ -157,19 +157,19 @@
                     <Flyout>
                         <Flyout.FlyoutPresenterStyle>
                             <Style TargetType="FlyoutPresenter">
-                                <Setter Property="Padding" Value="0" />
-                                <Setter Property="MaxHeight" Value="320" />
-                                <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
-                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
-                                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
-                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="MaxHeight" Value="320"/>
+                                <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
 
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="*" />
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
                             <AutoSuggestBox
@@ -184,9 +184,9 @@
                                             <Image
                                                 Width="24"
                                                 Height="24"
-                                                Source="{x:Bind Emoji, Mode=OneWay}" />
+                                                Source="{x:Bind Emoji, Mode=OneWay}"/>
 
-                                            <TextBlock Margin="4,0" Text="{x:Bind Name}" />
+                                            <TextBlock Margin="4,0" Text="{x:Bind Name}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </AutoSuggestBox.ItemTemplate>
@@ -195,15 +195,15 @@
                             <Pivot Grid.Row="1" ItemsSource="{x:Bind helper:EmojiTypeHelper.TypeHeaders}">
                                 <Pivot.ItemContainerStyle>
                                     <Style TargetType="PivotItem">
-                                        <Setter Property="Padding" Value="0" />
-                                        <Setter Property="Margin" Value="0" />
+                                        <Setter Property="Padding" Value="0"/>
+                                        <Setter Property="Margin" Value="0"/>
                                     </Style>
                                 </Pivot.ItemContainerStyle>
 
                                 <Pivot.HeaderTemplate>
                                     <DataTemplate x:DataType="model:EmojiTypeHeader">
                                         <PivotHeaderItem Height="32" Padding="8,0">
-                                            <TextBlock FontSize="16" Text="{x:Bind Name}" />
+                                            <TextBlock FontSize="16" Text="{x:Bind Name}"/>
                                         </PivotHeaderItem>
                                     </DataTemplate>
                                 </Pivot.HeaderTemplate>
@@ -221,7 +221,7 @@
                                                         Width="36"
                                                         Height="36"
                                                         Source="{x:Bind Emoji, Mode=OneWay}"
-                                                        ToolTipService.ToolTip="{x:Bind Name}" />
+                                                        ToolTipService.ToolTip="{x:Bind Name}"/>
                                                 </DataTemplate>
                                             </GridView.ItemTemplate>
                                         </GridView>
@@ -236,7 +236,7 @@
             <AppBarButton
                 x:Uid="/MakeFeedControl/sendButton"
                 Click="Button_Click"
-                Icon="Send" />
+                Icon="Send"/>
         </CommandBar>
         <TextBox x:Name="Uri" Grid.Row="2" Visibility="Collapsed"/>
     </Grid>

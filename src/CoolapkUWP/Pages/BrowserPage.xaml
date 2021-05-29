@@ -30,7 +30,7 @@
                         x:Load="False"
                         Background="Transparent"
                         Click="tryLoginButton_Click"
-                        Style="{StaticResource ButtonRevealStyle}" />
+                        Style="{StaticResource ButtonRevealStyle}"/>
                     <Button
                         x:Name="openInSystemBrowserButton"
                         x:Uid="/BrowserPage/OpenInBrowserButton"
@@ -38,7 +38,7 @@
                         x:Load="False"
                         Background="Transparent"
                         Click="GotoSystemBrowserButton_Click"
-                        Style="{StaticResource ButtonRevealStyle}" />
+                        Style="{StaticResource ButtonRevealStyle}"/>
                 </Grid>
             </control:TitleBar.RightAreaContent>
         </control:TitleBar>

@@ -20,12 +20,12 @@
                 MaxHeight="105">
                 <Grid Padding="4,8">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="56" />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="56"/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Border
                         Grid.RowSpan="2"
@@ -36,7 +36,7 @@
                         <Image
                             Width="40"
                             Height="40"
-                            Source="{x:Bind Pic.Pic, Mode=OneWay}" />
+                            Source="{x:Bind Pic.Pic, Mode=OneWay}"/>
                     </Border>
 
                     <TextBlock
@@ -44,7 +44,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Text="{x:Bind Title}" />
+                        Text="{x:Bind Title}"/>
 
                     <ctrl:TextBlockEx
                         Grid.Row="1"
@@ -53,7 +53,7 @@
                         VerticalAlignment="Top"
                         Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                         MaxLine="2"
-                        MessageText="{x:Bind Description}" />
+                        MessageText="{x:Bind Description}"/>
                 </Grid>
             </ListViewItem>
         </DataTemplate>
@@ -68,7 +68,7 @@
                     MaxWidth="768"
                     Padding="{StaticResource StackPanelMargin}"
                     HorizontalAlignment="Center">
-                    <winui:ItemsRepeater x:Name="list" ItemTemplate="{StaticResource history}" />
+                    <winui:ItemsRepeater x:Name="list" ItemTemplate="{StaticResource history}"/>
                 </Border>
             </ScrollViewer>
         </winui:ItemsRepeaterScrollHost>
@@ -78,6 +78,6 @@
             BackButtonClicked="TitleBar_BackButtonClick"
             IsBackButtonEnabled="{x:Bind Frame.CanGoBack}"
             RefreshButtonClicked="TitleBar_RefreshButtonClick"
-            RefreshButtonVisibility="Visible" />
+            RefreshButtonVisibility="Visible"/>
     </Grid>
 </Page>

@@ -17,10 +17,10 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:Feed />
+                <templates:Feed/>
             </ResourceDictionary.MergedDictionaries>
 
-            <converter:HasValueConverter x:Key="HasValueConverter" />
+            <converter:HasValueConverter x:Key="HasValueConverter"/>
 
             <ControlTemplate x:Key="ButtonTemplate1" TargetType="Button">
                 <Grid
@@ -38,41 +38,41 @@
                         Content="{TemplateBinding Content}"
                         ContentTemplate="{TemplateBinding ContentTemplate}"
                         ContentTransitions="{TemplateBinding ContentTransitions}"
-                        CornerRadius="{TemplateBinding CornerRadius}" />
+                        CornerRadius="{TemplateBinding CornerRadius}"/>
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup x:Name="CommonStates">
                             <VisualState x:Name="Normal">
                                 <Storyboard>
-                                    <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
+                                    <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
                                 </Storyboard>
                             </VisualState>
                             <VisualState x:Name="PointerOver">
                                 <VisualState.Setters>
-                                    <Setter Target="RootGrid.(RevealBrush.State)" Value="PointerOver" />
-                                    <Setter Target="RootGrid.Background" Value="{ThemeResource ButtonRevealBackgroundPointerOver}" />
-                                    <Setter Target="ContentPresenter.BorderBrush" Value="{ThemeResource ButtonRevealBorderBrushPointerOver}" />
-                                    <Setter Target="ContentPresenter.Foreground" Value="White" />
+                                    <Setter Target="RootGrid.(RevealBrush.State)" Value="PointerOver"/>
+                                    <Setter Target="RootGrid.Background" Value="{ThemeResource ButtonRevealBackgroundPointerOver}"/>
+                                    <Setter Target="ContentPresenter.BorderBrush" Value="{ThemeResource ButtonRevealBorderBrushPointerOver}"/>
+                                    <Setter Target="ContentPresenter.Foreground" Value="White"/>
                                 </VisualState.Setters>
                                 <Storyboard>
-                                    <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
+                                    <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
                                 </Storyboard>
                             </VisualState>
                             <VisualState x:Name="Pressed">
                                 <VisualState.Setters>
-                                    <Setter Target="RootGrid.(RevealBrush.State)" Value="Pressed" />
-                                    <Setter Target="RootGrid.Background" Value="{ThemeResource ButtonRevealBackgroundPressed}" />
-                                    <Setter Target="ContentPresenter.BorderBrush" Value="{ThemeResource ButtonRevealBorderBrushPressed}" />
-                                    <Setter Target="ContentPresenter.Foreground" Value="White" />
+                                    <Setter Target="RootGrid.(RevealBrush.State)" Value="Pressed"/>
+                                    <Setter Target="RootGrid.Background" Value="{ThemeResource ButtonRevealBackgroundPressed}"/>
+                                    <Setter Target="ContentPresenter.BorderBrush" Value="{ThemeResource ButtonRevealBorderBrushPressed}"/>
+                                    <Setter Target="ContentPresenter.Foreground" Value="White"/>
                                 </VisualState.Setters>
                                 <Storyboard>
-                                    <PointerDownThemeAnimation Storyboard.TargetName="RootGrid" />
+                                    <PointerDownThemeAnimation Storyboard.TargetName="RootGrid"/>
                                 </Storyboard>
                             </VisualState>
                             <VisualState x:Name="Disabled">
                                 <VisualState.Setters>
-                                    <Setter Target="RootGrid.Background" Value="{ThemeResource ButtonRevealBackgroundDisabled}" />
-                                    <Setter Target="ContentPresenter.BorderBrush" Value="{ThemeResource ButtonRevealBorderBrushDisabled}" />
-                                    <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource ButtonForegroundDisabled}" />
+                                    <Setter Target="RootGrid.Background" Value="{ThemeResource ButtonRevealBackgroundDisabled}"/>
+                                    <Setter Target="ContentPresenter.BorderBrush" Value="{ThemeResource ButtonRevealBorderBrushDisabled}"/>
+                                    <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource ButtonForegroundDisabled}"/>
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>
@@ -94,7 +94,7 @@
                         Loaded="{x:Bind local:FeedListPage.UserDetailBorder_Loaded}"
                         SizeChanged="{x:Bind local:FeedListPage.UserDetailBorder_SizeChanged}">
                         <Border.Background>
-                            <ImageBrush ImageSource="{x:Bind Background.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                            <ImageBrush ImageSource="{x:Bind Background.Pic, Mode=OneWay}" Stretch="UniformToFill"/>
                         </Border.Background>
 
                         <Grid
@@ -107,12 +107,12 @@
                                     BackgroundSource="Backdrop"
                                     FallbackColor="#99000000"
                                     TintColor="{x:Bind Background.BackgroundColor, Mode=OneWay}"
-                                    TintOpacity="0.6" />
+                                    TintOpacity="0.6"/>
                             </Grid.Background>
 
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
                             <Ellipse
@@ -124,7 +124,7 @@
                                 Tag="{x:Bind UserFace}"
                                 Tapped="{x:Bind local:FeedListPage.UserDetailBorder_Tapped}">
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{x:Bind UserFace.Pic, Mode=OneWay}" />
+                                    <ImageBrush ImageSource="{x:Bind UserFace.Pic, Mode=OneWay}"/>
                                 </Ellipse.Fill>
                             </Ellipse>
 
@@ -137,13 +137,13 @@
                                         FontWeight="Bold"
                                         Foreground="White"
                                         IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                                        Text="{x:Bind UserName}" />
+                                        Text="{x:Bind UserName}"/>
 
                                     <TextBlock
                                         Margin="0,0,3,1"
                                         VerticalAlignment="Bottom"
                                         Foreground="White"
-                                        Text="Lv." />
+                                        Text="Lv."/>
 
                                     <TextBlock
                                         Name="level"
@@ -152,7 +152,7 @@
                                         FontWeight="Bold"
                                         Foreground="White"
                                         Text="{x:Bind Level}"
-                                        TextWrapping="Wrap" />
+                                        TextWrapping="Wrap"/>
                                 </StackPanel>
 
                                 <StackPanel
@@ -164,14 +164,14 @@
                                         FontFamily="Segoe MDL2 Assets"
                                         FontSize="14"
                                         Foreground="LightGreen"
-                                        Glyph="&#xE10B;" />
+                                        Glyph="&#xE10B;"/>
                                     <TextBlock
                                         Margin="4,0,0,0"
                                         FontSize="14"
                                         Foreground="White"
                                         IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                                         Text="{x:Bind Verify_title}"
-                                        TextWrapping="Wrap" />
+                                        TextWrapping="Wrap"/>
                                 </StackPanel>
 
                                 <TextBlock
@@ -182,7 +182,7 @@
                                     Foreground="White"
                                     IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                                     Text="{x:Bind Bio}"
-                                    TextWrapping="Wrap" />
+                                    TextWrapping="Wrap"/>
 
                                 <StackPanel Orientation="Horizontal">
                                     <Button
@@ -197,8 +197,8 @@
                                             <TextBlock
                                                 FontWeight="Bold"
                                                 Foreground="White"
-                                                Text="{x:Bind FollowNum}" />
-                                            <TextBlock x:Uid="/FeedListPage/FollowNum" Foreground="White" />
+                                                Text="{x:Bind FollowNum}"/>
+                                            <TextBlock x:Uid="/FeedListPage/FollowNum" Foreground="White"/>
                                         </StackPanel>
                                     </Button>
 
@@ -215,8 +215,8 @@
                                             <TextBlock
                                                 FontWeight="Bold"
                                                 Foreground="White"
-                                                Text="{x:Bind FansNum}" />
-                                            <TextBlock x:Uid="/FeedListPage/Fans" Foreground="White" />
+                                                Text="{x:Bind FansNum}"/>
+                                            <TextBlock x:Uid="/FeedListPage/Fans" Foreground="White"/>
                                         </StackPanel>
                                     </Button>
 
@@ -225,15 +225,15 @@
                                             Margin="4,0,0,0"
                                             FontWeight="Bold"
                                             Foreground="White"
-                                            Text="{x:Bind FeedNum}" />
-                                        <TextBlock x:Uid="/FeedListPage/Feeds" Foreground="White" />
+                                            Text="{x:Bind FeedNum}"/>
+                                        <TextBlock x:Uid="/FeedListPage/Feeds" Foreground="White"/>
 
                                         <TextBlock
                                             Margin="4,0,0,0"
                                             FontWeight="Bold"
                                             Foreground="White"
-                                            Text="{x:Bind BeLikedNum}" />
-                                        <TextBlock Foreground="White" Text="获赞" />
+                                            Text="{x:Bind BeLikedNum}"/>
+                                        <TextBlock Foreground="White" Text="获赞"/>
                                     </StackPanel>
                                 </StackPanel>
 
@@ -245,7 +245,7 @@
                                         FontSize="12"
                                         Foreground="LightGray"
                                         Text="{x:Bind Gender}"
-                                        TextWrapping="Wrap" />
+                                        TextWrapping="Wrap"/>
 
                                     <TextBlock
                                         x:Name="city"
@@ -255,7 +255,7 @@
                                         Foreground="LightGray"
                                         IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                                         Text="{x:Bind City}"
-                                        TextWrapping="Wrap" />
+                                        TextWrapping="Wrap"/>
 
                                     <TextBlock
                                         x:Name="astro"
@@ -264,14 +264,14 @@
                                         FontSize="12"
                                         Foreground="LightGray"
                                         Text="{x:Bind Astro}"
-                                        TextWrapping="Wrap" />
+                                        TextWrapping="Wrap"/>
 
                                     <TextBlock
                                         Margin="2,0"
                                         FontSize="12"
                                         Foreground="LightGray"
                                         Text="{x:Bind Logintime}"
-                                        TextWrapping="Wrap" />
+                                        TextWrapping="Wrap"/>
 
                                     <TextBlock
                                         x:Name="block"
@@ -280,7 +280,7 @@
                                         FontSize="12"
                                         Foreground="LightGray"
                                         Text="{x:Bind BlockStatus}"
-                                        TextWrapping="Wrap" />
+                                        TextWrapping="Wrap"/>
                                 </StackPanel>
                             </StackPanel>
 
@@ -302,11 +302,11 @@
                                         FontFamily="Segoe MDL2 Assets"
                                         FontSize="14"
                                         Foreground="White"
-                                        Glyph="{x:Bind FanStatus}" />
+                                        Glyph="{x:Bind FanStatus}"/>
                                     <TextBlock
                                         Text="{x:Bind FollowStatus}"
                                         Margin="2,-2,0,0"
-                                        Foreground="White" />
+                                        Foreground="White"/>
                                 </StackPanel>
                             </Button>
                         </Grid>
@@ -320,12 +320,12 @@
                     Padding="8"
                     Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
                     <Border
@@ -335,7 +335,7 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         CornerRadius="8">
-                        <Image Source="{x:Bind Logo.Pic, Mode=OneWay}" />
+                        <Image Source="{x:Bind Logo.Pic, Mode=OneWay}"/>
                     </Border>
 
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
@@ -343,18 +343,18 @@
                             FontSize="20"
                             FontWeight="Black"
                             IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                            Text="{x:Bind Title}" />
+                            Text="{x:Bind Title}"/>
 
                         <TextBlock
                             IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                             Text="{x:Bind Description}"
-                            TextWrapping="Wrap" />
+                            TextWrapping="Wrap"/>
 
                         <StackPanel Margin="0,5" Orientation="Horizontal">
-                            <TextBlock Text="{x:Bind FollowNum}" />
-                            <TextBlock x:Uid="/FeedListPage/FollowNum" />
-                            <TextBlock Margin="5,0,0,0" Text="{x:Bind CommentNum}" />
-                            <TextBlock x:Uid="/FeedListPage/Comment" />
+                            <TextBlock Text="{x:Bind FollowNum}"/>
+                            <TextBlock x:Uid="/FeedListPage/FollowNum"/>
+                            <TextBlock Margin="5,0,0,0" Text="{x:Bind CommentNum}"/>
+                            <TextBlock x:Uid="/FeedListPage/Comment"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -365,8 +365,8 @@
                     Margin="0,0,0,8"
                     Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <Border
@@ -376,7 +376,7 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         CornerRadius="8">
-                        <Image Source="{x:Bind Logo.Pic, Mode=OneWay}" />
+                        <Image Source="{x:Bind Logo.Pic, Mode=OneWay}"/>
                     </Border>
 
                     <StackPanel Grid.Column="1" Margin="0,18">
@@ -384,7 +384,7 @@
                             FontSize="20"
                             FontWeight="Black"
                             IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                            Text="{x:Bind Title}" />
+                            Text="{x:Bind Title}"/>
 
                         <TextBlock
                             Grid.Row="1"
@@ -392,18 +392,18 @@
                             Margin="0,0,12,0"
                             IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                             Text="{x:Bind Description}"
-                            TextWrapping="Wrap" />
+                            TextWrapping="Wrap"/>
 
                         <StackPanel Margin="0,5" Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,0,2"
                                 VerticalAlignment="Center"
-                                Text="{x:Bind FollowNum}" />
+                                Text="{x:Bind FollowNum}"/>
 
                             <TextBlock
                                 x:Uid="/FeedListPage/Subscribed"
                                 Margin="2,0,10,2"
-                                VerticalAlignment="Center" />
+                                VerticalAlignment="Center"/>
 
                             <Button
                                 x:Name="showUser"
@@ -417,14 +417,14 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Ellipse Width="20" Height="20">
                                         <Ellipse.Fill>
-                                            <ImageBrush ImageSource="{x:Bind UserAvatar.Pic}" />
+                                            <ImageBrush ImageSource="{x:Bind UserAvatar.Pic}"/>
                                         </Ellipse.Fill>
                                     </Ellipse>
 
                                     <TextBlock
                                         Margin="5,0"
                                         VerticalAlignment="Top"
-                                        Text="{x:Bind UserName}" />
+                                        Text="{x:Bind UserName}"/>
                                 </StackPanel>
                             </Button>
 
@@ -435,53 +435,53 @@
             <DataTemplate x:Key="CollectionDetail" x:DataType="model:CollectionDetail">
                 <Grid Margin="0,0,0,8" Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
                     <Image
                         x:Name="Header"
                         x:Load="{x:Bind ShowCoverPic}"
-                        Source="{x:Bind CoverPic.Pic, Mode=OneWay}" />
+                        Source="{x:Bind CoverPic.Pic, Mode=OneWay}"/>
 
                     <StackPanel Grid.Row="1" Margin="12,8">
                         <TextBlock
                             FontSize="20"
                             FontWeight="Black"
                             IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                            Text="{x:Bind Title}" />
+                            Text="{x:Bind Title}"/>
 
                         <TextBlock
                             IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                             Text="{x:Bind Description}"
-                            TextWrapping="Wrap" />
+                            TextWrapping="Wrap"/>
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind LikeNum}" />
+                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind LikeNum}"/>
 
                             <TextBlock
                                 Margin="0,0,8,0"
                                 Foreground="{ThemeResource SystemBaseMediumColor}"
-                                Text="点赞" />
+                                Text="点赞"/>
 
-                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind FollowNum}" />
+                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind FollowNum}"/>
 
                             <TextBlock
                                 x:Uid="/FeedListPage/FollowNum"
                                 Margin="0,0,8,0"
-                                Foreground="{ThemeResource SystemBaseMediumColor}" />
+                                Foreground="{ThemeResource SystemBaseMediumColor}"/>
 
-                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="共" />
+                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="共"/>
 
-                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind ItemsNum}" />
+                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="{x:Bind ItemsNum}"/>
 
-                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="项" />
+                            <TextBlock Foreground="{ThemeResource SystemBaseMediumColor}" Text="项"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,8,2"
                                 VerticalAlignment="Center"
-                                Text="{x:Bind LastUpdate}" />
+                                Text="{x:Bind LastUpdate}"/>
                             <Button
                                 x:Name="showUser"
                                 Padding="2"
@@ -493,14 +493,14 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Ellipse Width="20" Height="20">
                                         <Ellipse.Fill>
-                                            <ImageBrush ImageSource="{x:Bind UserAvatar.Pic, Mode=OneWay}" />
+                                            <ImageBrush ImageSource="{x:Bind UserAvatar.Pic, Mode=OneWay}"/>
                                         </Ellipse.Fill>
                                     </Ellipse>
 
                                     <TextBlock
                                         Margin="5,0"
                                         VerticalAlignment="Top"
-                                        Text="{x:Bind UserName}" />
+                                        Text="{x:Bind UserName}"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>
@@ -514,8 +514,8 @@
                     Margin="0,0,0,8"
                     Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <Border
@@ -525,7 +525,7 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         CornerRadius="8">
-                        <Image Source="{x:Bind Logo.Pic, Mode=OneWay}" />
+                        <Image Source="{x:Bind Logo.Pic, Mode=OneWay}"/>
                     </Border>
 
                     <StackPanel Grid.Column="1" Margin="0,18">
@@ -534,7 +534,7 @@
                                 FontSize="20"
                                 FontWeight="Black"
                                 IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                                Text="{x:Bind Title}" />
+                                Text="{x:Bind Title}"/>
                         </StackPanel>
 
                         <TextBlock
@@ -543,17 +543,17 @@
                             Margin="0,0,12,0"
                             IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                             Text="{x:Bind Description}"
-                            TextWrapping="Wrap" />
+                            TextWrapping="Wrap"/>
 
                         <StackPanel Margin="0,5" Orientation="Horizontal" Grid.Row="2">
-                            <TextBlock Text="{x:Bind FollowNum}" />
-                            <TextBlock x:Uid="/FeedListPage/FollowNum" />
-                            <TextBlock Margin="5,0,0,0" Text="{x:Bind HotNumTXT}" />
-                            <TextBlock x:Uid="/FeedListPage/HotNumTXT" />
+                            <TextBlock Text="{x:Bind FollowNum}"/>
+                            <TextBlock x:Uid="/FeedListPage/FollowNum"/>
+                            <TextBlock Margin="5,0,0,0" Text="{x:Bind HotNumTXT}"/>
+                            <TextBlock x:Uid="/FeedListPage/HotNumTXT"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Orientation="Horizontal"  Grid.Row="3">
-                            <TextBlock Text="{x:Bind Score}" Margin="0,3,0,0" />
+                            <TextBlock Text="{x:Bind Score}" Margin="0,3,0,0"/>
                             <winui:RatingControl x:Name="AppRating" IsReadOnly="True" PlaceholderValue="{x:Bind StarScore}" Margin="10,0,0,0" HorizontalAlignment="Left"/>
                         </StackPanel>
                     </StackPanel>
@@ -566,8 +566,8 @@
                     Margin="0,0,0,8"
                     Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <Border
@@ -577,7 +577,7 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         CornerRadius="8">
-                        <Image Source="{x:Bind Logo.Pic, Mode=OneWay}" />
+                        <Image Source="{x:Bind Logo.Pic, Mode=OneWay}"/>
                     </Border>
 
                     <StackPanel Grid.Column="1" Margin="0,18">
@@ -585,7 +585,7 @@
                             FontSize="20"
                             FontWeight="Black"
                             IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                            Text="{x:Bind Title}" />
+                            Text="{x:Bind Title}"/>
 
                         <TextBlock
                             Grid.Row="1"
@@ -593,13 +593,13 @@
                             Margin="0,0,12,0"
                             IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                             Text="{x:Bind Description}"
-                            TextWrapping="Wrap" />
+                            TextWrapping="Wrap"/>
 
                         <StackPanel Margin="0,5" Orientation="Horizontal">
-                            <TextBlock Text="{x:Bind FollowNum}" />
-                            <TextBlock x:Uid="/FeedListPage/FollowNum" />
-                            <TextBlock Margin="5,0,0,0" Text="{x:Bind CommentNum}" />
-                            <TextBlock x:Uid="/FeedListPage/Comment" />
+                            <TextBlock Text="{x:Bind FollowNum}"/>
+                            <TextBlock x:Uid="/FeedListPage/FollowNum"/>
+                            <TextBlock Margin="5,0,0,0" Text="{x:Bind CommentNum}"/>
+                            <TextBlock x:Uid="/FeedListPage/Comment"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -613,7 +613,7 @@
                 DyhHeader="{StaticResource DYHDetail}"
                 Feed="{StaticResource feed}"
                 TopicHeader="{StaticResource TopicDetail}"
-                UserHeader="{StaticResource UserDetail}" />
+                UserHeader="{StaticResource UserDetail}"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -625,7 +625,7 @@
                     MaxWidth="768"
                     Padding="{StaticResource StackPanelMargin}"
                     HorizontalAlignment="Center">
-                    <winui:ItemsRepeater x:Name="listView" ItemTemplate="{StaticResource tempse}" />
+                    <winui:ItemsRepeater x:Name="listView" ItemTemplate="{StaticResource tempse}"/>
                 </Border>
             </ScrollViewer>
         </winui:ItemsRepeaterScrollHost>
@@ -638,10 +638,10 @@
             RefreshButtonVisibility="Visible">
             <ctrl:TitleBar.RightAreaContent>
                 <StackPanel Orientation="Horizontal">
-                    <ComboBox x:Name="rightComboBox" VerticalAlignment="Center" />
+                    <ComboBox x:Name="rightComboBox" VerticalAlignment="Center"/>
 
                     <Button Style="{StaticResource IconButtonStyle}" ToolTipService.ToolTip="更多">
-                        <SymbolIcon Symbol="More" />
+                        <SymbolIcon Symbol="More"/>
                         <Button.Flyout>
                             <MenuFlyout>
                                 <MenuFlyoutItem
@@ -649,13 +649,13 @@
                                     x:Uid="/Feed/report"
                                     x:Load="False"
                                     Click="Button_Click"
-                                    Tag="report" />
+                                    Tag="report"/>
 
                                 <ToggleMenuFlyoutItem
                                     x:Name="copyButton"
                                     x:Uid="/Feed/Copy"
                                     Click="Button_Click"
-                                    Tag="copy" />
+                                    Tag="copy"/>
                             </MenuFlyout>
                         </Button.Flyout>
                     </Button>

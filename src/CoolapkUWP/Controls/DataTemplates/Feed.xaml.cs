@@ -3,6 +3,7 @@ using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
+using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -138,6 +139,12 @@ namespace CoolapkUWP.Controls.DataTemplates
         internal static void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             UserControl_SizeChanged(sender, null);
+        }
+
+        internal static void TextBlockEx_RichTextBlockLoaded(object sender, EventArgs e)
+        {
+            var b = (Controls.TextBlockEx)sender;
+            b.MaxLine = 4;
         }
     }
 }

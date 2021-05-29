@@ -331,7 +331,7 @@ namespace CoolapkUWP.Pages
         public DataTemplate Others { get; set; }
         public DataTemplate TitleCard { get; set; }
         public DataTemplate TextLinkList { get; set; }
-        public DataTemplate DataTemplate2 { get; set; }
+        public DataTemplate ImageTextScrollCard { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
@@ -340,7 +340,7 @@ namespace CoolapkUWP.Pages
                 switch (m.EntitiesType)
                 {
                     case EntityType.TextLinks: return TextLinkList;
-                    default: return DataTemplate2;
+                    default: return ImageTextScrollCard;
                 }
             }
             else if (item is IndexPageOperationCardModel o)

@@ -16,9 +16,9 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:Feed />
+                <templates:Feed/>
             </ResourceDictionary.MergedDictionaries>
-            <converter:TrueToFalseConverter x:Key="TrueToFalseConverter" />
+            <converter:TrueToFalseConverter x:Key="TrueToFalseConverter"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -30,12 +30,12 @@
                 ViewChanged="ScrollViewer_ViewChanged">
                 <Grid x:Name="mainGrid">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition x:Name="LeftColumnDefinition" Width="*" />
-                        <ColumnDefinition x:Name="RightColumnDefinition" Width="0" />
+                        <ColumnDefinition x:Name="LeftColumnDefinition" Width="*"/>
+                        <ColumnDefinition x:Name="RightColumnDefinition" Width="0"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
                     <ScrollViewer
@@ -44,7 +44,7 @@
                         VerticalAlignment="Top"
                         VerticalScrollMode="{x:Bind MainScrollMode, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}, ConverterParameter='ScrollMode'}">
                         <Border x:Name="detailBorder">
-                            <ctrl:FeedShellDetailControl x:Name="detailControl" RequireRefresh="detailControl_RequireRefresh" />
+                            <ctrl:FeedShellDetailControl x:Name="detailControl" RequireRefresh="detailControl_RequireRefresh"/>
                         </Border>
                     </ScrollViewer>
 
@@ -59,12 +59,12 @@
                             <ctrl:FeedShellListControl
                                 x:Name="listControl"
                                 x:Load="False"
-                                NeedProgressRing="listCtrl_NeedProgressRing" />
+                                NeedProgressRing="listCtrl_NeedProgressRing"/>
 
                             <winui:ItemsRepeater
                                 x:Name="answersList"
                                 x:Load="False"
-                                ItemTemplate="{StaticResource feed}" />
+                                ItemTemplate="{StaticResource feed}"/>
                         </Grid>
                     </ScrollViewer>
                 </Grid>
@@ -84,8 +84,8 @@
                     Style="{StaticResource ButtonStyle1}"
                     Tag="reply">
                     <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Comment" />
-                        <TextBlock Margin="3,0" Text="{Binding Replynum, Mode=OneWay}" />
+                        <SymbolIcon Symbol="Comment"/>
+                        <TextBlock Margin="3,0" Text="{Binding Replynum, Mode=OneWay}"/>
                     </StackPanel>
                 </Button>
                 <Button
@@ -96,8 +96,8 @@
                     Style="{StaticResource ButtonStyle1}"
                     Tag="like">
                     <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Like" />
-                        <TextBlock Margin="3,0" Text="{Binding Likenum, Mode=OneWay}" />
+                        <SymbolIcon Symbol="Like"/>
+                        <TextBlock Margin="3,0" Text="{Binding Likenum, Mode=OneWay}"/>
                     </StackPanel>
                 </Button>
                 <Button
@@ -108,8 +108,8 @@
                     Style="{StaticResource ButtonStyle1}"
                     Tag="share">
                     <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Share" />
-                        <TextBlock Margin="3,0" Text="{Binding ShareNum, Mode=OneWay}" />
+                        <SymbolIcon Symbol="Share"/>
+                        <TextBlock Margin="3,0" Text="{Binding ShareNum, Mode=OneWay}"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
@@ -127,24 +127,24 @@
                         x:Name="rightComboBox"
                         VerticalAlignment="Center"
                         SelectionChanged="rightComboBox_SelectionChanged"
-                        Visibility="Collapsed" />
+                        Visibility="Collapsed"/>
 
                     <Button Style="{StaticResource IconButtonStyle}" ToolTipService.ToolTip="分享链接">
                         <Button.Flyout>
                             <Flyout>
                                 <Flyout.FlyoutPresenterStyle>
                                     <Style TargetType="FlyoutPresenter">
-                                        <Setter Property="Padding" Value="0" />
-                                        <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
-                                        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
-                                        <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
-                                        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                                        <Setter Property="Padding" Value="0"/>
+                                        <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
+                                        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+                                        <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
+                                        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
                                     </Style>
                                 </Flyout.FlyoutPresenterStyle>
-                                <ctrl:ShowQRCodeControl x:Name="showQRCodeControl" />
+                                <ctrl:ShowQRCodeControl x:Name="showQRCodeControl"/>
                             </Flyout>
                         </Button.Flyout>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED14;" />
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED14;"/>
                     </Button>
 
                     <Button
@@ -159,8 +159,8 @@
                                 x:Name="like1"
                                 Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"
                                 Symbol="Like"
-                                Visibility="Collapsed" />
-                            <SymbolIcon x:Name="like2" Symbol="Like" />
+                                Visibility="Collapsed"/>
+                            <SymbolIcon x:Name="like2" Symbol="Like"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>

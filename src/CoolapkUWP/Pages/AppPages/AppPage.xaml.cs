@@ -32,7 +32,7 @@ namespace CoolapkUWP.Pages.AppPages
         public static string ReplaceHtml(string str)
         {
             //换行和段落
-            string s = str.Replace("<br>", "\n").Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br />", "\n").Replace("<p>", "").Replace("</p>", "\n").Replace("&nbsp;", " ");
+            string s = str.Replace("<br>", "\n").Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br/>", "\n").Replace("<p>", "").Replace("</p>", "\n").Replace("&nbsp;", " ");
             //链接彻底删除！
             while (s.IndexOf("<a", StringComparison.Ordinal) > 0)
             {
@@ -65,8 +65,8 @@ namespace CoolapkUWP.Pages.AppPages
             #region 小板子的HTML内容获取
 
             try { AppInfo = ReplaceHtml(Regex.Split(Regex.Split(Regex.Split(str, "应用简介</p>")[1], @"<div class=""apk_left_title_info"">")[1], "</div>")[0].Trim()); } catch (Exception) { }
-            try { AppVersionMassage = ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[2], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
-            try { AppReview = ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[1], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
+            try { AppVersionMassage = ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[2], "</p>")[0].Replace("<br/>", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
+            try { AppReview = ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[1], "</p>")[0].Replace("<br/>", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
 
             id = Regex.Split(str, @"onclick=""onDownloadApk")[1].Split('(')[1].Split(')')[0].Trim();
             AppVersion = Regex.Split(str, @"<p class=""detail_app_title"">")[1].Split('>')[1].Split('<')[0].Trim();

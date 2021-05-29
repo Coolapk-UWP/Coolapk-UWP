@@ -16,12 +16,12 @@
         VerticalAlignment="Top"
         Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="40" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="40"/>
         </Grid.ColumnDefinitions>
         <Button
             x:Name="BackButton"
@@ -29,7 +29,7 @@
             VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
             Click="BackButton_Click"
             Style="{StaticResource IconButtonStyle}">
-            <SymbolIcon Symbol="Back" />
+            <SymbolIcon Symbol="Back"/>
         </Button>
         <TextBlock
             x:Name="title"
@@ -37,12 +37,12 @@
             Margin="2,9"
             HorizontalAlignment="Left"
             VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
-            FontSize="18" />
+            FontSize="18"/>
         <ContentPresenter
             x:Name="userContentPresenter"
             Grid.Column="2"
             Height="40"
-            VerticalAlignment="{StaticResource TitleContentVerticalAlignment}" />
+            VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"/>
         <winui:ProgressRing
             x:Name="progressRing"
             Grid.Column="3"
@@ -50,7 +50,7 @@
             Height="24"
             Margin="8,34,8,2"
             IsActive="False"
-            Visibility="Collapsed" />
+            Visibility="Collapsed"/>
         <Button
             x:Name="RefreshButton"
             Grid.Column="4"
@@ -58,11 +58,11 @@
             Click="RefreshButton_Click"
             Style="{StaticResource IconButtonStyle}"
             Visibility="Collapsed">
-            <SymbolIcon Symbol="Refresh" />
+            <SymbolIcon Symbol="Refresh"/>
         </Button>
         <Border
             x:Name="RightEmpty"
             Grid.Column="4"
-            Width="40" />
+            Width="40"/>
     </Grid>
 </UserControl>

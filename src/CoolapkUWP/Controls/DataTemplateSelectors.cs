@@ -80,6 +80,8 @@ namespace CoolapkUWP.Controls
         public DataTemplate Feed { get; set; }
         public DataTemplate User { get; set; }
         public DataTemplate CoolPic { get; set; }
+        public DataTemplate Histroy { get; set; }
+        public DataTemplate HistroyIcon { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
@@ -104,6 +106,9 @@ namespace CoolapkUWP.Controls
                     case "topic": return SquareLinkCard;
                     case "textLink": return TextLink;
                     case "imageText": return ImageText;
+                    case "recentHistory": return HistroyIcon;
+                    case "collection":
+                    case "history": return Histroy;
                 }
             }
 

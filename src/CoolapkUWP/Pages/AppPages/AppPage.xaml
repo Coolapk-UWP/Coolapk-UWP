@@ -12,10 +12,10 @@
     <Grid>
         <Grid.Resources>
             <Storyboard x:Name="EnterStoryboard">
-                <FadeInThemeAnimation Storyboard.TargetName="ScreenShotFlipView" />
+                <FadeInThemeAnimation Storyboard.TargetName="ScreenShotFlipView"/>
             </Storyboard>
             <Storyboard x:Name="ExitStoryboard">
-                <FadeOutThemeAnimation Storyboard.TargetName="ScreenShotFlipView" />
+                <FadeOutThemeAnimation Storyboard.TargetName="ScreenShotFlipView"/>
             </Storyboard>
         </Grid.Resources>
         
@@ -47,7 +47,7 @@
                             x:FieldModifier="Public" 
                             Text="" HorizontalAlignment="Left" 
                             TextWrapping="Wrap" VerticalAlignment="Top" 
-                            Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}" />
+                            Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
                     </StackPanel>
                 </Grid>
                 <Grid  Padding="10" Height="50">
@@ -87,7 +87,7 @@
                                 x:Name="AppV2Text" 
                                 x:FieldModifier="Public" 
                                 Text="" Margin="10" 
-                                TextWrapping="Wrap" VerticalAlignment="Top"  />
+                                TextWrapping="Wrap" VerticalAlignment="Top" />
                             <TextBlock 
                                 x:Name="AppVTText" 
                                 x:FieldModifier="Public" 
@@ -99,7 +99,7 @@
                             x:Name="AppVMText" 
                             x:FieldModifier="Public" 
                             Text="" Margin="10" 
-                            TextWrapping="Wrap" VerticalAlignment="Top" />
+                            TextWrapping="Wrap" VerticalAlignment="Top"/>
                     </StackPanel>
                 </Button>
                 <ListBox 
@@ -120,7 +120,7 @@
                         x:FieldModifier="Public"
                         Text="简介"
                         TextWrapping="Wrap" 
-                        VerticalAlignment="Top" />
+                        VerticalAlignment="Top"/>
                 </Grid>
 
                 <!--<p class="rank_num">-->
@@ -128,7 +128,7 @@
                     <TextBlock 
                         x:Name="AppRText"
                         x:FieldModifier="Public"
-                        Text="5.0" />
+                        Text="5.0"/>
                     <StackPanel 
                         Orientation="Horizontal" 
                         Margin="40,0" 
@@ -138,13 +138,13 @@
                             x:Name="AppRating" 
                             IsReadOnly="True"
                             PlaceholderValue="0" 
-                            Margin="0,-3,0,0" />
+                            Margin="0,-3,0,0"/>
                     </StackPanel>
                     <TextBlock 
                         x:Name="AppPText" 
                         x:FieldModifier="Public" 
                         Text="共0人评分" 
-                        Margin="0,30,0,0" />
+                        Margin="0,30,0,0"/>
                 </Grid>
                 <Grid x:Name="KPanel" Padding="10" >
                     <Image 
@@ -152,7 +152,7 @@
                         x:FieldModifier="Public" 
                         HorizontalAlignment="Left" 
                         Height="60" Margin="5" 
-                        VerticalAlignment="Top" Width="60" />
+                        VerticalAlignment="Top" Width="60"/>
                     <TextBlock 
                         x:Name="AppKNText" 
                         x:FieldModifier="Public" 
@@ -200,7 +200,7 @@
                     </Button>
 
                     <Button Style="{StaticResource IconButtonStyle}" ToolTipService.ToolTip="更多">
-                        <SymbolIcon Symbol="More" />
+                        <SymbolIcon Symbol="More"/>
                         <Button.Flyout>
                             <MenuFlyout>
                                 <MenuFlyoutItem Text="访问网页" Click="GotoUri_Click" Icon="Globe"/>

@@ -14,7 +14,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:FeedReply />
+                <templates:FeedReply/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -26,7 +26,7 @@
                     MaxWidth="768"
                     Padding="{StaticResource StackPanelMargin}"
                     HorizontalAlignment="Center">
-                    <winui:ItemsRepeater x:Name="FeedReplyList" ItemTemplate="{StaticResource feed_reply}" />
+                    <winui:ItemsRepeater x:Name="FeedReplyList" ItemTemplate="{StaticResource feed_reply}"/>
                 </Border>
             </ScrollViewer>
         </winui:ItemsRepeaterScrollHost>
@@ -36,6 +36,6 @@
             BackButtonClicked="TitleBar_BackButtonClick"
             IsBackButtonEnabled="{x:Bind Frame.CanGoBack}"
             RefreshButtonClicked="TitleBar_RefreshEvent"
-            RefreshButtonVisibility="Visible" />
+            RefreshButtonVisibility="Visible"/>
     </Grid>
 </Page>

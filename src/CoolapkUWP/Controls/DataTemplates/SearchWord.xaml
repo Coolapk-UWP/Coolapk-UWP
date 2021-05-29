@@ -7,8 +7,8 @@
 
     <DataTemplate x:Key="searchWord" x:DataType="models:SearchWord">
         <StackPanel Orientation="Horizontal">
-            <SymbolIcon Symbol="{x:Bind Symbol}" />
-            <TextBlock Margin="10,0" Text="{x:Bind Title}" />
+            <SymbolIcon Symbol="{x:Bind Symbol}"/>
+            <TextBlock Margin="10,0" Text="{x:Bind Title}"/>
         </StackPanel>
     </DataTemplate>
 </ResourceDictionary>

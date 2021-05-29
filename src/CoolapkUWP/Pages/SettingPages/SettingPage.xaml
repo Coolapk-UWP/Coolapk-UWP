@@ -13,10 +13,10 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <converter:TrueToFalseConverter x:Key="TrueToFalseConverter" />
+        <converter:TrueToFalseConverter x:Key="TrueToFalseConverter"/>
         <Style x:Key="HeaderStyle" TargetType="controls:HeaderedContentControl">
-            <Setter Property="Margin" Value="0,8" />
-            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Margin" Value="0,8"/>
+            <Setter Property="FontSize" Value="18"/>
         </Style>
     </Page.Resources>
 
@@ -29,41 +29,41 @@
                     Margin="0,8"
                     FontSize="18"
                     SelectionChanged="RadioButtons_SelectionChanged">
-                    <RadioButton x:Uid="/SettingPage/ThemeModeLight" />
-                    <RadioButton x:Uid="/SettingPage/ThemeModeDark" />
-                    <RadioButton x:Uid="/SettingPage/ThemeModeDefault" />
+                    <RadioButton x:Uid="/SettingPage/ThemeModeLight"/>
+                    <RadioButton x:Uid="/SettingPage/ThemeModeDark"/>
+                    <RadioButton x:Uid="/SettingPage/ThemeModeDefault"/>
                 </winui:RadioButtons>
 
                 <controls:HeaderedContentControl x:Uid="/SettingPage/ContentSettingsHeader" Style="{StaticResource HeaderStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <CheckBox
                             x:Uid="/SettingPage/UseOldEmojiModeCheckBox"
                             Grid.Row="0"
                             Grid.ColumnSpan="2"
-                            IsChecked="{x:Bind IsUseOldEmojiMode2, Mode=TwoWay}" />
+                            IsChecked="{x:Bind IsUseOldEmojiMode2, Mode=TwoWay}"/>
 
                         <CheckBox
                             x:Uid="/SettingPage/DisplayOriginPictureCheckBox"
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
-                            IsChecked="{x:Bind IsDisplayOriginPicture2, Mode=TwoWay}" />
+                            IsChecked="{x:Bind IsDisplayOriginPicture2, Mode=TwoWay}"/>
 
                         <ToggleSwitch
                             x:Uid="/SettingPage/NoPicsModeCheckBox"
                             Grid.Row="2"
                             Grid.ColumnSpan="2"
-                            IsOn="{x:Bind IsNoPicsMode2, Mode=TwoWay}" />
+                            IsOn="{x:Bind IsNoPicsMode2, Mode=TwoWay}"/>
 
                         <Button
                             x:Uid="/SettingPage/CleanCacheButton"
@@ -73,14 +73,14 @@
                             Margin="0,2"
                             Click="Button_Click"
                             IsEnabled="{x:Bind IsCleanCacheButtonEnabled, Mode=OneWay}"
-                            Tag="CleanCache" />
+                            Tag="CleanCache"/>
 
                         <winui:ProgressRing
                             Grid.Row="3"
                             Grid.Column="1"
                             Margin="8,0"
                             HorizontalAlignment="Left"
-                            IsActive="{x:Bind IsCleanCacheButtonEnabled, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}" />
+                            IsActive="{x:Bind IsCleanCacheButtonEnabled, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}"/>
 
                     </Grid>
                 </controls:HeaderedContentControl>
@@ -88,13 +88,13 @@
                 <controls:HeaderedContentControl x:Uid="/SettingPage/AccountSettingsHeader" Style="{StaticResource HeaderStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Button
                             x:Uid="/SettingPage/AccountSetting"
@@ -103,7 +103,7 @@
                             Grid.ColumnSpan="2"
                             Margin="0,2"
                             Click="Button_Click"
-                            Tag="AccountSetting" />
+                            Tag="AccountSetting"/>
 
                         <Button
                             x:Uid="/SettingPage/MyDevice"
@@ -112,14 +112,14 @@
                             Grid.ColumnSpan="2"
                             Margin="0,2"
                             Click="Button_Click"
-                            Tag="MyDevice" />
+                            Tag="MyDevice"/>
 
                         <Button x:Uid="/SettingPage/AccountLogout" Style="{StaticResource ButtonRevealStyle}" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,2" Name="AccountLogout">
                             <Button.Flyout>
                                 <Flyout>
                                     <StackPanel>
-                                        <TextBlock x:Uid="/SettingPage/AccountLogoutTitle" Style="{ThemeResource BaseTextBlockStyle}" Margin="0,0,0,12" />
-                                        <Button x:Uid="/SettingPage/AccountLogoutConfirm" Style="{StaticResource ButtonRevealStyle}" Click="Button_Click" Tag="AccountLogout" />
+                                        <TextBlock x:Uid="/SettingPage/AccountLogoutTitle" Style="{ThemeResource BaseTextBlockStyle}" Margin="0,0,0,12"/>
+                                        <Button x:Uid="/SettingPage/AccountLogoutConfirm" Style="{StaticResource ButtonRevealStyle}" Click="Button_Click" Tag="AccountLogout"/>
                                     </StackPanel>
                                 </Flyout>
                             </Button.Flyout>
@@ -130,26 +130,26 @@
                 <controls:HeaderedContentControl x:Uid="/SettingPage/UpdateSettingsHeader" Style="{StaticResource HeaderStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
                             Grid.Row="0"
                             Grid.ColumnSpan="2"
                             FontSize="{ThemeResource ContentControlFontSize}"
-                            Text="{x:Bind local:SettingPage.VersionTextBlockText}" />
+                            Text="{x:Bind local:SettingPage.VersionTextBlockText}"/>
 
                         <CheckBox
                             x:Uid="/SettingPage/CheckUpdateWhenLuanchingCheckBox"
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
-                            IsChecked="{x:Bind CheckUpdateWhenLuanching2, Mode=TwoWay}" />
+                            IsChecked="{x:Bind CheckUpdateWhenLuanching2, Mode=TwoWay}"/>
 
                         <Button
                             x:Uid="/SettingPage/CheckUpdate"
@@ -158,27 +158,27 @@
                             Grid.Column="0"
                             Click="Button_Click"
                             IsEnabled="{x:Bind IsCheckUpdateButtonEnabled, Mode=OneWay}"
-                            Tag="checkUpdate" />
+                            Tag="checkUpdate"/>
 
                         <winui:ProgressRing
                             Grid.Row="2"
                             Grid.Column="1"
                             Margin="8,0"
                             HorizontalAlignment="Left"
-                            IsActive="{x:Bind IsCheckUpdateButtonEnabled, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}" />
+                            IsActive="{x:Bind IsCheckUpdateButtonEnabled, Converter={StaticResource TrueToFalseConverter}, Mode=OneWay}"/>
                     </Grid>
                 </controls:HeaderedContentControl>
 
                 <controls:HeaderedContentControl x:Uid="/SettingPage/OthersSettingsHeader" Style="{StaticResource HeaderStyle}">
                     <StackPanel>
-                        <CheckBox x:Uid="/SettingPage/ShowOtherExceptionCheckBox" IsChecked="{x:Bind ShowOtherException2, Mode=TwoWay}" />
+                        <CheckBox x:Uid="/SettingPage/ShowOtherExceptionCheckBox" IsChecked="{x:Bind ShowOtherException2, Mode=TwoWay}"/>
 
                         <Button x:Uid="/SettingPage/ResetSettings" Style="{StaticResource ButtonRevealStyle}" Margin="0,2" Name="reset">
                             <Button.Flyout>
                                 <Flyout>
                                     <StackPanel>
-                                        <TextBlock x:Uid="/SettingPage/ResetSettingsTitle" Style="{ThemeResource BaseTextBlockStyle}" Margin="0,0,0,12" />
-                                        <Button x:Uid="/SettingPage/ResetSettingsConfirm" Style="{StaticResource ButtonRevealStyle}" Click="Button_Click" Tag="reset" />
+                                        <TextBlock x:Uid="/SettingPage/ResetSettingsTitle" Style="{ThemeResource BaseTextBlockStyle}" Margin="0,0,0,12"/>
+                                        <Button x:Uid="/SettingPage/ResetSettingsConfirm" Style="{StaticResource ButtonRevealStyle}" Click="Button_Click" Tag="reset"/>
                                     </StackPanel>
                                 </Flyout>
                             </Button.Flyout>
@@ -187,31 +187,31 @@
                         <HyperlinkButton
                             x:Uid="/SettingPage/FeedbackLink"
                             Click="Button_Click"
-                            Tag="feedback" />
+                            Tag="feedback"/>
                         <HyperlinkButton
                             x:Uid="/SettingPage/LogFolderLink"
                             Click="Button_Click"
-                            Tag="logFolder" />
+                            Tag="logFolder"/>
                         <Button
                             x:Name="gotoTestPage"
                             Style="{StaticResource ButtonRevealStyle}"
                             Click="Button_Click"
                             Content="前往测试页面"
                             Tag="gotoTestPage"
-                            Visibility="Collapsed" />
+                            Visibility="Collapsed"/>
                     </StackPanel>
                 </controls:HeaderedContentControl>
 
                 <TextBlock
                     Margin="0,16,0,0"
                     FontSize="18"
-                    Text="关于" />
-                <control:AboutControl HorizontalAlignment="Left" />
+                    Text="关于"/>
+                <control:AboutControl HorizontalAlignment="Left"/>
             </StackPanel>
         </ScrollViewer>
         <control:TitleBar
             x:Uid="/SettingPage/Title"
             BackButtonClicked="TitleBar_BackButtonClick"
-            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" />
+            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}"/>
     </Grid>
 </Page>

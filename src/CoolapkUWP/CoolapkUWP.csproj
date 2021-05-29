@@ -123,6 +123,7 @@
     </Compile>
     <Compile Include="Controls\DataTemplates\Feed.xaml.cs" />
     <Compile Include="Controls\DataTemplates\FeedReply.xaml.cs" />
+    <Compile Include="Controls\DataTemplates\IndexCardTemplates.xaml.cs" />
     <Compile Include="Controls\DataTemplates\Pic.xaml.cs" />
     <Compile Include="Controls\DataTemplates\RelationRowsItem.xaml.cs" />
     <Compile Include="Controls\DataTemplates\SearchWord.xaml.cs" />
@@ -866,6 +867,10 @@
     <Page Include="Controls\DataTemplates\FeedReply.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DataTemplates\IndexCardTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\DataTemplates\Pic.xaml">
       <SubType>Designer</SubType>

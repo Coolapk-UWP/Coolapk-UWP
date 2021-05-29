@@ -19,7 +19,7 @@
             PanePlacement="Right">
             <SplitView.Pane>
                 <Grid>
-                    <Frame x:Name="paneFrame" Navigated="paneFrame_Navigated" />
+                    <Frame x:Name="paneFrame" Navigated="paneFrame_Navigated"/>
                     <Button
                         x:Name="goHomeButton"
                         Margin="0,32,0,0"
@@ -28,13 +28,13 @@
                         Click="Button_Click"
                         Style="{StaticResource IconButtonStyle}"
                         Tag="home">
-                        <SymbolIcon Symbol="Home" />
+                        <SymbolIcon Symbol="Home"/>
                     </Button>
                 </Grid>
             </SplitView.Pane>
 
             <Grid>
-                <Frame x:Name="shellFrame" />
+                <Frame x:Name="shellFrame"/>
                 <Button
                     Margin="0,32,0,0"
                     HorizontalAlignment="Right"
@@ -42,12 +42,12 @@
                     Click="Button_Click"
                     Style="{StaticResource IconButtonStyle}"
                     Tag="panel">
-                    <SymbolIcon Symbol="{x:Bind PaneOpenSymbolIcon, Mode=OneWay}" />
+                    <SymbolIcon Symbol="{x:Bind PaneOpenSymbolIcon, Mode=OneWay}"/>
                 </Button>
             </Grid>
         </SplitView>
 
-        <mtctrl:InAppNotification x:Name="AppNotification" StackMode="StackInFront" />
+        <mtctrl:InAppNotification x:Name="AppNotification" StackMode="StackInFront"/>
         
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>

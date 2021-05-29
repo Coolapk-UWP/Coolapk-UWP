@@ -32,6 +32,6 @@
             RefreshButtonVisibility="Visible"
             RefreshButtonClicked="TitleBar_RefreshButtonClicked"
             BackButtonClicked="TitleBar_BackButtonClick"
-            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" />
+            IsBackButtonEnabled="{x:Bind Frame.CanGoBack}"/>
     </Grid>
 </Page>

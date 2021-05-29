@@ -13,13 +13,13 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <Image
@@ -28,7 +28,7 @@
             Grid.Column="0"
             Width="192"
             Height="80"
-            Margin="8" />
+            Margin="8"/>
 
 
         <HyperlinkButton
@@ -36,12 +36,12 @@
             Grid.Column="1"
             VerticalAlignment="Bottom"
             Click="HyperlinkButton_Click"
-            Content="换一张" />
+            Content="换一张"/>
 
         <TextBox
             x:Name="textbox"
             Grid.Row="1"
             Grid.ColumnSpan="2"
-            HorizontalAlignment="Stretch" />
+            HorizontalAlignment="Stretch"/>
     </Grid>
 </ContentDialog>

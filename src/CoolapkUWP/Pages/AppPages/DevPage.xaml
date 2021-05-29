@@ -22,11 +22,11 @@
                 
                 <Grid Margin="8">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <TextBox x:Name="Uri"/>
-                    <Button Style="{StaticResource ButtonRevealStyle}" Grid.Row="1" Click="Button_Click" Content="获取" />
+                    <Button Style="{StaticResource ButtonRevealStyle}" Grid.Row="1" Click="Button_Click" Content="获取"/>
                     <TextBlock
                             x:Name="main"
                             Grid.Row="0"
@@ -54,7 +54,7 @@
 
             </StackPanel>
         </ScrollViewer>
-        <control:TitleBar x:Name="title" Title="开发人员页面" BackButtonClicked="Button_Click_3" IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" Loaded="TitleBar_Loaded" />
+        <control:TitleBar x:Name="title" Title="开发人员页面" BackButtonClicked="Button_Click_3" IsBackButtonEnabled="{x:Bind Frame.CanGoBack}" Loaded="TitleBar_Loaded"/>
     </Grid>
 </Page>
 

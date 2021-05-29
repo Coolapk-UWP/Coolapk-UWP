@@ -27,7 +27,7 @@
                 <VisualState>
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger
-                        MinWindowWidth="{x:Bind navigationView.CompactModeThresholdWidth}" />
+                        MinWindowWidth="{x:Bind navigationView.CompactModeThresholdWidth}"/>
                     </VisualState.StateTriggers>
 
                     <VisualState.Setters>
@@ -99,7 +99,7 @@
             </StackPanel>
         </muxc:NavigationView.PaneFooter>
 
-        <Frame x:Name="navigationViewFrame" />
+        <Frame x:Name="navigationViewFrame"/>
 
     </muxc:NavigationView>
 </Page>

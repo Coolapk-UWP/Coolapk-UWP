@@ -16,9 +16,9 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:OtherDataTemplates />
-                <templates:Feed />
-                <templates:SearchWord />
+                <templates:OtherDataTemplates/>
+                <templates:Feed/>
+                <templates:SearchWord/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -31,7 +31,7 @@
             SelectionChanged="DetailPivot_SelectionChanged">
             <Pivot.ItemContainerStyle>
                 <Style TargetType="PivotItem">
-                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="Margin" Value="0"/>
                 </Style>
             </Pivot.ItemContainerStyle>
             <PivotItem>
@@ -65,28 +65,28 @@
                                 <ComboBoxItem>评论数</ComboBoxItem>
                             </ComboBox>
                         </StackPanel>
-                        <winui:ItemsRepeater x:Name="FeedList" ItemTemplate="{StaticResource feed}" />
+                        <winui:ItemsRepeater x:Name="FeedList" ItemTemplate="{StaticResource feed}"/>
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>
             <PivotItem>
                 <ScrollViewer x:Name="scrollViewer1" ViewChanged="ScrollViewer_ViewChanged">
                     <Border Padding="{StaticResource StackPanelMargin}">
-                        <winui:ItemsRepeater x:Name="UserList" ItemTemplate="{StaticResource User}" />
+                        <winui:ItemsRepeater x:Name="UserList" ItemTemplate="{StaticResource User}"/>
                     </Border>
                 </ScrollViewer>
             </PivotItem>
             <PivotItem>
                 <ScrollViewer x:Name="scrollViewer2" ViewChanged="ScrollViewer_ViewChanged">
                     <Border Padding="{StaticResource StackPanelMargin}">
-                        <winui:ItemsRepeater x:Name="TopicList" ItemTemplate="{StaticResource Topic}" />
+                        <winui:ItemsRepeater x:Name="TopicList" ItemTemplate="{StaticResource Topic}"/>
                     </Border>
                 </ScrollViewer>
             </PivotItem>
             <!--<PivotItem>
                 <ScrollViewer x:Name="scrollViewer3" ViewChanged="ScrollViewer_ViewChanged">
                     <Border Padding="{StaticResource StackPanelMargin}">
-                        <winui:ItemsRepeater x:Name="ProductList" ItemTemplate="{StaticResource Product}" />
+                        <winui:ItemsRepeater x:Name="ProductList" ItemTemplate="{StaticResource Product}"/>
                     </Border>
                 </ScrollViewer>
             </PivotItem>-->
@@ -97,10 +97,10 @@
             VerticalAlignment="Top"
             Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <winui:ProgressRing
                 x:Name="progressRing"
@@ -109,13 +109,13 @@
                 Height="24"
                 Margin="8,0,4,8"
                 VerticalAlignment="Bottom"
-                Visibility="Collapsed" />
+                Visibility="Collapsed"/>
             <Button
                 x:Name="BackButton"
                 VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
                 Click="BackButton_Click"
                 Style="{ThemeResource IconButtonStyle}">
-                <SymbolIcon Symbol="Back" />
+                <SymbolIcon Symbol="Back"/>
             </Button>
             <AutoSuggestBox
                 x:Name="SearchText"
@@ -126,7 +126,7 @@
                 QueryIcon="Find"
                 QuerySubmitted="SearchText_QuerySubmitted"
                 SuggestionChosen="{x:Bind local:SearchingPage.AutoSuggestBox_SuggestionChosen}"
-                TextChanged="{x:Bind local:SearchingPage.SearchText_TextChanged}" />
+                TextChanged="{x:Bind local:SearchingPage.SearchText_TextChanged}"/>
             <ComboBox
                 x:Name="searchTypeComboBox"
                 Grid.Column="3"

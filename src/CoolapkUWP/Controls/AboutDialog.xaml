@@ -9,5 +9,5 @@
     PrimaryButtonText="我知道了"
     mc:Ignorable="d">
 
-    <local:AboutControl />
+    <local:AboutControl/>
 </ContentDialog>
