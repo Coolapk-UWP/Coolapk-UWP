@@ -50,9 +50,10 @@
                             Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
                     </StackPanel>
                 </Grid>
-                <Grid  Padding="10" Height="50">
+                <Grid Margin="0,-10,0,0"  Padding="10" Height="50">
                     <TextBlock 
-                        x:Name="AppXText" 
+                        x:Name="AppXText"
+                        Margin="6"
                         x:FieldModifier="Public" 
                         Text="" HorizontalAlignment="Left" 
                         TextWrapping="Wrap" VerticalAlignment="Center" 
@@ -98,7 +99,7 @@
                         <TextBlock 
                             x:Name="AppVMText" 
                             x:FieldModifier="Public" 
-                            Text="" Margin="10" 
+                            Text="" Margin="10,0,10,10" 
                             TextWrapping="Wrap" VerticalAlignment="Top"/>
                     </StackPanel>
                 </Button>
@@ -118,13 +119,14 @@
                     <TextBlock 
                         x:Name="AppJText"
                         x:FieldModifier="Public"
+                        Margin="10"
                         Text="简介"
                         TextWrapping="Wrap" 
                         VerticalAlignment="Top"/>
                 </Grid>
 
                 <!--<p class="rank_num">-->
-                <Grid Height="auto" Padding="10"  Margin="0,10">
+                <Grid Height="auto" Padding="10"  Margin="10,-30">
                     <TextBlock 
                         x:Name="AppRText"
                         x:FieldModifier="Public"

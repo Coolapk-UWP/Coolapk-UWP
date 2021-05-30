@@ -5,6 +5,7 @@ using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.AdaptivePage;
 using CoolapkUWP.ViewModels.FeedListPage;
 using Newtonsoft.Json.Linq;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -72,7 +73,7 @@ namespace CoolapkUWP.Pages
 
         private async Task Refresh()
         {
-            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
+            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
             if (string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid))) { return; }
 
             ShowProgressRing();
@@ -180,13 +181,25 @@ namespace CoolapkUWP.Pages
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                var (isSucceed, result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.SearchWords, sender.Text), true);
-                sender.ItemsSource =
-                    isSucceed &&
-                    result is JArray array &&
-                    array.Count > 0
-                        ? (from i in array select new SearchWord(i as JObject))
-                        : null;
+                (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.SearchWords, sender.Text), true);
+                if (isSucceed && result != null && result is JArray array && array.Count > 0)
+                {
+                    ObservableCollection<object> observableCollection = new ObservableCollection<object>();
+                    sender.ItemsSource = observableCollection;
+                    foreach (JToken token in array)
+                    {
+                        switch (token.Value<string>("entityType"))
+                        {
+                            case "apk":
+                                observableCollection.Add(new AppPageMode(token as JObject));
+                                break;
+                            case "searchWord":
+                            default:
+                                observableCollection.Add(new SearchWord (token as JObject));
+                                break;
+                        }
+                    }
+                }
             }
         }
 
@@ -235,12 +248,12 @@ namespace CoolapkUWP.Pages
                     break;
 
                 case "MyFeed":
-                    var f = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, SettingsHelper.Get<string>(SettingsHelper.Uid));
+                    FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, SettingsHelper.Get<string>(SettingsHelper.Uid));
                     if (f != null) { UIHelper.NavigateInSplitPane(typeof(FeedListPage), f); }
                     break;
 
                 case "feed":
-                    var r = SettingsHelper.Get<string>(SettingsHelper.Uid);
+                    string r = SettingsHelper.Get<string>(SettingsHelper.Uid);
                     if (r != null) { UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModel(r, ListType.UserFeed, "feed")); }
                     break;
 
@@ -256,7 +269,7 @@ namespace CoolapkUWP.Pages
 
         private void ListViewItem_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            var tag = (sender as FrameworkElement)?.Tag;
+            object tag = (sender as FrameworkElement)?.Tag;
 
             switch (tag as string)
             {
@@ -297,7 +310,7 @@ namespace CoolapkUWP.Pages
                         }
                         else if (s.Contains("我的问答", System.StringComparison.Ordinal))
                         {
-                            var r = SettingsHelper.Get<string>(SettingsHelper.Uid);
+                            string r = SettingsHelper.Get<string>(SettingsHelper.Uid);
                             if (r != null) { UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModel(r, ListType.UserFeed, "questionAndAnswer")); }
                         }
                         else { UIHelper.OpenLinkAsync(tag as string); }
@@ -321,13 +334,14 @@ namespace CoolapkUWP.Pages
 
         private void TextBlockEx_RichTextBlockLoaded(object sender, System.EventArgs e)
         {
-            var ele = (Controls.TextBlockEx)sender;
+            Controls.TextBlockEx ele = (Controls.TextBlockEx)sender;
             ele.MaxLine = 2;
         }
     }
 
     public class FirstTemplateSelector : DataTemplateSelector
     {
+        public DataTemplate App { get; set; }
         public DataTemplate Others { get; set; }
         public DataTemplate TitleCard { get; set; }
         public DataTemplate TextLinkList { get; set; }

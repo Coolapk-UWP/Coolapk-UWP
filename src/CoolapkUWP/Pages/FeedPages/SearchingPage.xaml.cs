@@ -114,7 +114,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void SearchText_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            foreach (var item in provider.providers)
+            foreach (Core.Providers.SearchListProvider item in provider.providers)
             {
                 item.Reset();
             }
@@ -125,10 +125,10 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                var (isSucceed, result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetSearchWords, sender.Text), true);
+                (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetSearchWords, sender.Text), true);
                 if (!isSucceed) { return; }
 
-                var array = (JArray)result;
+                JArray array = (JArray)result;
                 sender.ItemsSource = array != null && array.Count > 0 ? array.Select(i => new SearchWord(i as JObject)) : null;
             }
         }

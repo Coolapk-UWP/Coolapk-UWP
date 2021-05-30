@@ -60,7 +60,7 @@ namespace CoolapkUWP.Controls
             }
             else
             {
-                foreach (var item in Children)
+                foreach (UIElement item in Children)
                 {
                     if (item is ListViewItem l &&
                         l.Content is IndexPageHasEntitiesModel m &&
@@ -68,7 +68,7 @@ namespace CoolapkUWP.Controls
                     {
                         int maxIndex = offsetY.IndexOf(offsetY.Max());
                         item.Measure(new Size(availableSize.Width, double.PositiveInfinity));
-                        var itemRequestSize = item.DesiredSize;
+                        Size itemRequestSize = item.DesiredSize;
                         offsetY[maxIndex] += itemRequestSize.Height;
                         for (int i = 0; i < StackCount; i++)
                             offsetY[i] = offsetY[maxIndex];
@@ -77,7 +77,7 @@ namespace CoolapkUWP.Controls
                     {
                         int minIndex = offsetY.IndexOf(offsetY.Min());
                         item.Measure(new Size(availableSize.Width / StackCount, double.PositiveInfinity));
-                        var itemRequestSize = item.DesiredSize;
+                        Size itemRequestSize = item.DesiredSize;
                         offsetY[minIndex] += itemRequestSize.Height;
                     }
                 }
@@ -116,7 +116,7 @@ namespace CoolapkUWP.Controls
             }
             else
             {
-                foreach (var item in Children)
+                foreach (UIElement item in Children)
                 {
                     if (item is ListViewItem l &&
                         l.Content is IndexPageHasEntitiesModel m &&

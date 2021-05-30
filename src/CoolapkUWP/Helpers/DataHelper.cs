@@ -18,10 +18,10 @@ namespace CoolapkUWP.Helpers
     {
         private static IEnumerable<(string name, string value)> GetCoolapkCookies(Uri uri)
         {
-            using (var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
+            using (Windows.Web.Http.Filters.HttpBaseProtocolFilter filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
             {
-                var cookieManager = filter.CookieManager;
-                foreach (var item in cookieManager.GetCookies(GetHost(uri)))
+                Windows.Web.Http.HttpCookieManager cookieManager = filter.CookieManager;
+                foreach (Windows.Web.Http.HttpCookie item in cookieManager.GetCookies(GetHost(uri)))
                 {
                     if (item.Name == "uid" ||
                         item.Name == "username" ||
@@ -61,12 +61,12 @@ namespace CoolapkUWP.Helpers
 #pragma warning disable 0612
         public static async Task<BitmapImage> GetImageAsync(string uri)
         {
-            var folder = await ImageCacheHelper.GetFolderAsync(ImageType.Captcha);
-            var file = await folder.CreateFileAsync(Utils.GetMD5(uri));
+            Windows.Storage.StorageFolder folder = await ImageCacheHelper.GetFolderAsync(ImageType.Captcha);
+            Windows.Storage.StorageFile file = await folder.CreateFileAsync(Utils.GetMD5(uri));
 
-            var s = await GetStreamAsync(new Uri(uri), GetCoolapkCookies(new Uri(uri)));
+            Stream s = await GetStreamAsync(new Uri(uri), GetCoolapkCookies(new Uri(uri)));
 
-            using (var ss = await file.OpenStreamForWriteAsync())
+            using (Stream ss = await file.OpenStreamForWriteAsync())
             {
                 await s.CopyToAsync(ss);
             }
@@ -82,7 +82,7 @@ namespace CoolapkUWP.Helpers
 
         public static string ConvertUnixTimeStampToReadable(double time, DateTime baseTime)
         {
-            var (type, obj) = Utils.ConvertUnixTimeStampToReadable(time, baseTime);
+            (Utils.TimeIntervalType type, object obj) = Utils.ConvertUnixTimeStampToReadable(time, baseTime);
             switch (type)
             {
                 case Utils.TimeIntervalType.MonthsAgo:
@@ -110,14 +110,14 @@ namespace CoolapkUWP.Helpers
             if (model == null) { return; }
 
             bool isReply = model is FeedReplyModel;
-            var u = UriHelper.GetUri(
+            Uri u = UriHelper.GetUri(
                 model.Liked ? UriType.OperateUnlike : UriType.OperateLike,
                 isReply ? "Reply" : string.Empty,
                 model.Id);
-            var (isSucceed, result) = await GetDataAsync(u, true);
+            (bool isSucceed, JToken result) = await GetDataAsync(u, true);
             if (!isSucceed) { return; }
 
-            var o = result as JObject;
+            JObject o = result as JObject;
             await dispatcher?.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 model.Liked = !model.Liked;

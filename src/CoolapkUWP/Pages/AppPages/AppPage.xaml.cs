@@ -20,8 +20,6 @@ namespace CoolapkUWP.Pages.AppPages
     /// </summary>
     public sealed partial class AppPage : Page
     {
-        private AppPageMode AppPageMode { get; set; }
-
         string AppInfo = "", AppVersionMassage = "", AppReview = "", AppVersion, AppMassage, AppName, AppLogo, AppUpdateTime, AppScore, AppCommendNum, /*AppDownloadUrl,*/ id;
         string AppLink = "";
         public AppPage()
@@ -32,7 +30,7 @@ namespace CoolapkUWP.Pages.AppPages
         public static string ReplaceHtml(string str)
         {
             //换行和段落
-            string s = str.Replace("<br>", "\n").Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br/>", "\n").Replace("<p>", "").Replace("</p>", "\n").Replace("&nbsp;", " ");
+            string s = str.Replace("<br>", "\n").Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br/>", "\n").Replace("<p>", "").Replace("</p>", "\n").Replace("&nbsp;", " ").Replace("<br />", "").Replace("<br />", "");
             //链接彻底删除！
             while (s.IndexOf("<a", StringComparison.Ordinal) > 0)
             {
@@ -57,7 +55,7 @@ namespace CoolapkUWP.Pages.AppPages
         {
             titleBar.ShowProgressRing();
             if (string.IsNullOrEmpty(AppLink)) { return; }
-            var (HTMLisSucceed, html) = await DataHelper.GetHtmlAsync(new Uri(AppLink), "com.coolapk.market");
+            (bool HTMLisSucceed, string html) = await DataHelper.GetHtmlAsync(new Uri(AppLink), "com.coolapk.market");
             if (HTMLisSucceed) { LaunchAppViewLoad(html); }
         }
         private void LaunchAppViewLoad(string str)
@@ -262,7 +260,7 @@ namespace CoolapkUWP.Pages.AppPages
 
         private async void ViewFeed(object sender, RoutedEventArgs e)
         {
-            var f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, id);
+            FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, id);
             if (f != null)
             {
                 UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);

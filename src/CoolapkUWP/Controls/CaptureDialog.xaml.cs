@@ -27,13 +27,13 @@ namespace CoolapkUWP.Controls
         {
             image.Source = null;
             _ = ImageCacheHelper.CleanCaptchaCacheAsync();
-            using (var content = new MultipartFormDataContent())
-            using (var type = new StringContent(Core.Exceptions.CoolapkMessageException.RequestCaptcha))
-            using (var code = new StringContent(textbox.Text))
+            using (MultipartFormDataContent content = new MultipartFormDataContent())
+            using (StringContent type = new StringContent(Core.Exceptions.CoolapkMessageException.RequestCaptcha))
+            using (StringContent code = new StringContent(textbox.Text))
             {
                 content.Add(type, "type");
                 content.Add(code, "code");
-                var (_, t) = await DataHelper.PostDataAsync(UriHelper.GetUri(UriType.RequestValidate), content);
+                (bool _, Newtonsoft.Json.Linq.JToken t) = await DataHelper.PostDataAsync(UriHelper.GetUri(UriType.RequestValidate), content);
                 UIHelper.StatusBar_ShowMessage(t.ToString());
             }
         }

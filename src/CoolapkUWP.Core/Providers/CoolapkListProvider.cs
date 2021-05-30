@@ -51,12 +51,12 @@ namespace CoolapkUWP.Core.Providers
             Func<Entity, bool> needDeleteJudger)
         {
             _getUri = getUri ?? throw new ArgumentNullException(nameof(getUri));
-            var needDeleteItems = (from entity in Models
+            Entity[] needDeleteItems = (from entity in Models
                                    where needDeleteJudger(entity)
                                    select entity).ToArray();
-            foreach (var item in needDeleteItems)
+            foreach (Entity item in needDeleteItems)
             {
-                Models.Remove(item);
+                _ = Models.Remove(item);
             }
             page = 0;
         }
@@ -66,12 +66,12 @@ namespace CoolapkUWP.Core.Providers
             page = p;
             lastItem = firstItem = string.Empty;
 
-            var temp = Models.Except(from m in Models
+            Entity[] temp = Models.Except(from m in Models
                                      where m.EntityFixed
                                      select m).ToArray();
-            foreach (var item in temp)
+            foreach (Entity item in temp)
             {
-                Models.Remove(item);
+                _ = Models.Remove(item);
             }
         }
 
@@ -84,53 +84,43 @@ namespace CoolapkUWP.Core.Providers
 
         private string GetId(JToken token)
         {
-            if (token == null) { return string.Empty; }
-            else if ((token as JObject).TryGetValue(_idName, out JToken jToken))
-            {
-                return jToken.ToString();
-            }
-            else if ((token as JObject).TryGetValue("entityId", out JToken v1))
-            {
-                return v1.ToString();
-            }
-            else if ((token as JObject).TryGetValue("id", out JToken v2))
-            {
-                return v2.ToString();
-            }
-            else
-            {
-                throw new ArgumentException(nameof(_idName));
-            }
+            return token == null
+                ? string.Empty
+                : (token as JObject).TryGetValue(_idName, out JToken jToken)
+                    ? jToken.ToString()
+                    : (token as JObject).TryGetValue("entityId", out JToken v1)
+                                    ? v1.ToString()
+                                    : (token as JObject).TryGetValue("id", out JToken v2) ? v2.ToString() : throw new ArgumentException(nameof(_idName));
         }
 
         public async Task Refresh(IEnumerable<(string, string)> cookies, int p = -1)
         {
             if (p == -2) { Reset(0); }
 
-            var (isSucceed, result) = await Utils.GetDataAsync(_getUri(p, page, firstItem, lastItem), p == -2, cookies);
+            (bool isSucceed, JToken result) = await Utils.GetDataAsync(_getUri(p, page, firstItem, lastItem), p == -2, cookies);
             if (!isSucceed) { return; }
 
-            var array = (JArray)result;
+            JArray array = (JArray)result;
             if (p < 0) { page++; }
 
             if (array != null && array.Count > 0)
             {
-                var fixedEntities = (from m in Models
+                Entity[] fixedEntities = (from m in Models
                                      where m.EntityFixed
                                      select m).ToArray();
-                var fixedNum = fixedEntities.Length;
-                foreach (var item in fixedEntities)
+                int fixedNum = fixedEntities.Length;
+                foreach (Entity item in fixedEntities)
                 {
                     Models.Remove(item);
                 }
 
-                var needDeleteEntites = (from m in Models
+                Entity[] needDeleteEntites = (from m in Models
                                          from b in array
                                          where _checkEqual(m, b)
                                          select m).ToArray();
-                foreach (var item in needDeleteEntites)
+                foreach (Entity item in needDeleteEntites)
                 {
-                    Models.Remove(item);
+                    _ = Models.Remove(item);
                 }
 
                 for (int i = 0; i < fixedNum; i++)
@@ -150,10 +140,10 @@ namespace CoolapkUWP.Core.Providers
 
                     for (int i = 0; i < array.Count; i++)
                     {
-                        var entities = _getEntities((JObject)array[i]);
+                        IEnumerable<Entity> entities = _getEntities((JObject)array[i]);
                         if (entities == null) { continue; }
 
-                        foreach (var item in entities)
+                        foreach (Entity item in entities)
                         {
                             if (item == null) { continue; }
 
@@ -172,13 +162,13 @@ namespace CoolapkUWP.Core.Providers
 
                     foreach (JObject item in array)
                     {
-                        var entities = _getEntities(item);
+                        IEnumerable<Entity> entities = _getEntities(item);
                         if (entities == null) { continue; }
 
-                        foreach (var i in entities)
+                        foreach (Entity i in entities)
                         {
                             if (i == null) { continue; }
-                            var b = fixedEntities.Any(k => k.EntityId == i.EntityId);
+                            bool b = fixedEntities.Any(k => k.EntityId == i.EntityId);
                             if (b) { continue; }
 
                             Models.Add(i);

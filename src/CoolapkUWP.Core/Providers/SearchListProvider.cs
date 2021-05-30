@@ -39,10 +39,10 @@ namespace CoolapkUWP.Core.Providers
 
         public async Task Search(string keyWord, IEnumerable<(string, string)> cookies)
         {
-            var (isSucceed, result) = await Utils.GetDataAsync(_getUri(keyWord, ++Page, lastItem), true, cookies);
+            (bool isSucceed, JToken result) = await Utils.GetDataAsync(_getUri(keyWord, ++Page, lastItem), true, cookies);
             if (!isSucceed) { return; }
 
-            var array = (JArray)result;
+            JArray array = (JArray)result;
             if (Page == 1)
             {
                 Models.Clear();

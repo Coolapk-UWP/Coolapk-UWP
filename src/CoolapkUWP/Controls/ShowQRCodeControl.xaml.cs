@@ -69,24 +69,24 @@ namespace CoolapkUWP.Controls
 
         private async void RefreshQRCode()
         {
-            using (var qrGenerator = new QRCodeGenerator())
+            using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
             {
-                var qrCodeData = qrGenerator.CreateQrCode("https://www.coolapk.com", QRCodeGenerator.ECCLevel.Q);
+                QRCodeData qrCodeData = qrGenerator.CreateQrCode("https://www.coolapk.com", QRCodeGenerator.ECCLevel.Q);
                 if (QRCodeText != null) { qrCodeData = qrGenerator.CreateQrCode(QRCodeText, QRCodeGenerator.ECCLevel.Q); }
-                using (var qrCodeBmp = new PngByteQRCode(qrCodeData))
+                using (PngByteQRCode qrCodeBmp = new PngByteQRCode(qrCodeData))
                 {
                     byte[] qrCodeImageBmp = qrCodeBmp.GetGraphic(
                         20,
                         new byte[] { 0, 0, 0, 0xFF },
                         new byte[] { 0xFF, 0xFF, 0xFF, 0xFF });
-                    using (var stream = new InMemoryRandomAccessStream())
+                    using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
                     {
-                        using (var writer = new DataWriter(stream.GetOutputStreamAt(0)))
+                        using (DataWriter writer = new DataWriter(stream.GetOutputStreamAt(0)))
                         {
                             writer.WriteBytes(qrCodeImageBmp);
                             await writer.StoreAsync();
                         }
-                        var image = new BitmapImage();
+                        BitmapImage image = new BitmapImage();
                         await image.SetSourceAsync(stream);
 
                         qrCodeImage.Source = image;

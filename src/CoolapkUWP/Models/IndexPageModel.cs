@@ -34,6 +34,10 @@ namespace CoolapkUWP.Models
             {
                 SubTitle = v7.ToString();
             }
+            else if (token.TryGetValue("subtitle", out JToken v10) && !string.IsNullOrEmpty(v10.ToString()))
+            {
+                SubTitle = v10.ToString();
+            }
             if (token.TryGetValue("video_playback_url", out JToken v0) && !string.IsNullOrEmpty(v0.ToString()))
             {
                 Url = v0.ToString();
@@ -71,6 +75,8 @@ namespace CoolapkUWP.Models
 
     internal class IndexPageMessageCardModel : Entity
     {
+        public ImmutableArray<Entity> Entities { get; private set; }
+        public bool ShowEntities { get; private set; }
         public string Description { get; private set; }
         public string Title { get; private set; }
 
@@ -84,6 +90,30 @@ namespace CoolapkUWP.Models
             {
                 Description = v4.ToString();
             }
+            if (token.TryGetValue("entities", out JToken v7) && (v7 as JArray).Count > 0)
+            {
+                ImmutableArray<Entity>.Builder buider = ImmutableArray.CreateBuilder<Entity>();
+                foreach (JObject item in v7 as JArray)
+                {
+                    switch (item.Value<string>("entityType"))
+                    {
+                        case "feed":
+                            buider.Add(new FeedModel(item));
+                            break;
+
+                        case "user":
+                            buider.Add(new UserModel(item));
+                            break;
+
+                        default:
+                            buider.Add(new IndexPageModel(item));
+                            break;
+                    }
+                }
+                Entities = buider.ToImmutable();
+                ShowEntities = true;
+            }
+            else { ShowEntities = false; }
         }
     }
 
@@ -103,6 +133,8 @@ namespace CoolapkUWP.Models
         public EntityType EntitiesType { get; private set; }
         public string Title { get; private set; }
         public string Url { get; private set; }
+        public bool ShowTitle { get; private set; }
+        public bool ShowEntities { get; private set; }
         public string Description { get; private set; }
         public ImmutableArray<Entity> Entities { get; private set; }
 
@@ -123,7 +155,7 @@ namespace CoolapkUWP.Models
             }
             if (token.TryGetValue("entities", out JToken v7) && (v7 as JArray).Count > 0)
             {
-                var buider = ImmutableArray.CreateBuilder<Entity>();
+                ImmutableArray<Entity>.Builder buider = ImmutableArray.CreateBuilder<Entity>();
                 foreach (JObject item in v7 as JArray)
                 {
                     switch (item.Value<string>("entityType"))
@@ -142,7 +174,10 @@ namespace CoolapkUWP.Models
                     }
                 }
                 Entities = buider.ToImmutable();
+                ShowEntities = true;
             }
+            else { ShowEntities = false; }
+            ShowTitle = !(string.IsNullOrEmpty(Title) && string.IsNullOrEmpty(Url));
         }
     }
 

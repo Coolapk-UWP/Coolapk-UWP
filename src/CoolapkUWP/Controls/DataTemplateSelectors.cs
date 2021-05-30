@@ -11,6 +11,7 @@ namespace CoolapkUWP.Controls
         public DataTemplate User { get; set; }
         public DataTemplate Topic { get; set; }
         public DataTemplate Dyh { get; set; }
+        public DataTemplate App { get; set; }
         public DataTemplate Product { get; set; }
         public DataTemplate CoolPic { get; set; }
         public DataTemplate LiveTopic { get; set; }
@@ -36,6 +37,7 @@ namespace CoolapkUWP.Controls
             else if (item is DyhModel) { return Dyh; }
             else if (item is ProductModel) { return Product; }
             else if (item is LiveMode) { return LiveTopic; }
+            else if (item is AppPageMode) { return App; }
             else if (item is IndexPageMessageCardModel) { return MessageCard; }
             else if (item is IndexPageHasEntitiesModel m)
             {
@@ -79,6 +81,7 @@ namespace CoolapkUWP.Controls
         public DataTemplate ScrollLinkCard { get; set; }
         public DataTemplate Feed { get; set; }
         public DataTemplate User { get; set; }
+        public DataTemplate Text { get; set; }
         public DataTemplate CoolPic { get; set; }
         public DataTemplate Histroy { get; set; }
         public DataTemplate HistroyIcon { get; set; }
@@ -100,21 +103,39 @@ namespace CoolapkUWP.Controls
                     case "iconMini":
                     case "IconLink": return IconLink;
                     case "dyh":
+                    case "apk":
+                    case "appForum":
                     case "product": return ScrollLinkCard;
                     case "picCategory":
                     case "entity":
+                    case "image":
                     case "topic": return SquareLinkCard;
+                    case "link":
                     case "textLink": return TextLink;
                     case "imageText": return ImageText;
                     case "recentHistory": return HistroyIcon;
                     case "collection":
                     case "history": return Histroy;
+                    case "hot": return Text;
+                    default: return Null;
                 }
             }
 
             return Null;
         }
 
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
+    }
+
+    public class SearchPageTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate App { get; set; }
+        public DataTemplate SearchWord { get; set; }
+        protected override DataTemplate SelectTemplateCore(object item)
+        {
+            if (item is AppPageMode) return App;
+            return SearchWord;
+        }
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
 }

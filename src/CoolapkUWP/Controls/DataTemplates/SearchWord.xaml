@@ -3,12 +3,76 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
-    xmlns:models="using:CoolapkUWP.Models">
+    xmlns:models="using:CoolapkUWP.Models" xmlns:control="using:CoolapkUWP.Controls">
+
+    <control:SearchPageTemplateSelector
+        x:Key="SearchWord"
+        App="{StaticResource Apps}"
+        SearchWord="{StaticResource searchWord}"/>
 
     <DataTemplate x:Key="searchWord" x:DataType="models:SearchWord">
         <StackPanel Orientation="Horizontal">
             <SymbolIcon Symbol="{x:Bind Symbol}"/>
             <TextBlock Margin="10,0" Text="{x:Bind Title}"/>
         </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Apps" x:DataType="models:AppPageMode">
+        <ListViewItem
+            KeyDown="{x:Bind local:OtherDataTemplates.ListViewItem_KeyDown}"
+            Tag="{x:Bind Url}"
+            Tapped="{x:Bind local:OtherDataTemplates.OnTapped}">
+            <Grid Padding="-10,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="56"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Ellipse
+                    Grid.RowSpan="3"
+                    Width="40"
+                    Height="40"
+                    Margin="8"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind Logo.Pic, Mode=OneWay}"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Text="{x:Bind Title}"/>
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Horizontal">
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind FollowNum}"/>
+                    <TextBlock
+                        x:Uid="/FeedListPage/FollowNum"
+                        Margin="0,0,5,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind DownloadNum}"/>
+                    <TextBlock
+                        x:Uid="/FeedListPage/DownloadNum"
+                        Margin="0,0,5,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind LastUpdate}"/>
+                </StackPanel>
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Text="{x:Bind Introduce}"
+                    MaxLines="2"
+                    TextWrapping="Wrap"/>
+            </Grid>
+        </ListViewItem>
     </DataTemplate>
 </ResourceDictionary>

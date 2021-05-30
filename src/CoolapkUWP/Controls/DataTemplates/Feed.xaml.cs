@@ -17,7 +17,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         internal static void OnTapped(object sender, TappedRoutedEventArgs e)
         {
-            var s = sender as FrameworkElement;
+            FrameworkElement s = sender as FrameworkElement;
             if (e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
             if ((s.DataContext as ICanCopy)?.IsCopyEnabled ?? false) { return; }
 
@@ -41,8 +41,8 @@ namespace CoolapkUWP.Controls.DataTemplates
             {
                 case "makeReplyButton":
                     DisabledCopy();
-                    var item = element.FindAscendant<ListViewItem>();
-                    var ctrl = item.FindName("makeFeed") as MakeFeedControl;
+                    ListViewItem item = element.FindAscendant<ListViewItem>();
+                    MakeFeedControl ctrl = item.FindName("makeFeed") as MakeFeedControl;
                     ctrl.Visibility = ctrl.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
                     break;
 
@@ -65,7 +65,7 @@ namespace CoolapkUWP.Controls.DataTemplates
                     break;
 
                 case "deviceButton":
-                    var f = FeedListPageViewModelBase.GetProvider(FeedListType.DevicePageList, (sender as FrameworkElement).Tag as string);
+                    FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.DevicePageList, (sender as FrameworkElement).Tag as string);
                     if (f != null)
                     {
                         UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
@@ -110,7 +110,7 @@ namespace CoolapkUWP.Controls.DataTemplates
         internal static void ListViewItem_RightTapped(object sender, RightTappedRoutedEventArgs _)
         {
             FrameworkElement s = (FrameworkElement)sender;
-            var b = s.FindName("moreButton") as Button;
+            Button b = s.FindName("moreButton") as Button;
             b.Flyout.ShowAt(s);
         }
 
@@ -118,7 +118,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         internal static void Flyout_Opened(object sender, object _)
         {
-            var flyout = (Flyout)sender;
+            Flyout flyout = (Flyout)sender;
             if (flyout.Content == null)
             {
                 flyout.Content = new ShowQRCodeControl
@@ -130,9 +130,9 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         internal static void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var uc = sender as UserControl;
-            var bp = uc.FindChildByName("btnsPanel") as StackPanel;
-            var width = e is null ? uc.Width : e.NewSize.Width;
+            UserControl uc = sender as UserControl;
+            StackPanel bp = uc.FindChildByName("btnsPanel") as StackPanel;
+            double width = e is null ? uc.Width : e.NewSize.Width;
             bp.SetValue(Grid.RowProperty, width > 600 ? 1 : 10);
         }
 
@@ -143,7 +143,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         internal static void TextBlockEx_RichTextBlockLoaded(object sender, EventArgs e)
         {
-            var b = (Controls.TextBlockEx)sender;
+            TextBlockEx b = (TextBlockEx)sender;
             b.MaxLine = 4;
         }
     }

@@ -31,7 +31,8 @@
         QuestionFeed="{StaticResource Question}"
         User="{StaticResource UserList}"
         Histroy="{StaticResource History}"
-        HistroyIcon="{StaticResource HistoryIcon}"/>
+        HistroyIcon="{StaticResource HistoryIcon}"
+        Text="{StaticResource Text}"/>
 
     <!--一级卡片-->
     
@@ -232,8 +233,10 @@
     <DataTemplate x:Key="ImageTextScrollCard" x:DataType="models:IndexPageHasEntitiesModel">
         <StackPanel Margin="8">
             <ListViewItem
+                x:Name="Title"
                 HorizontalContentAlignment="Stretch"
                 Style="{StaticResource FixedListViewItemStyle}"
+                x:Load="{x:Bind ShowTitle}"
                 Tag="{x:Bind}"
                 Tapped="Grid_Tapped">
                 <Grid
@@ -252,12 +255,16 @@
                         Symbol="Forward"/>
                 </Grid>
             </ListViewItem>
-            <winui:ItemsRepeaterScrollHost>
+            <winui:ItemsRepeaterScrollHost
+                x:Name="Entities"
+                x:Load="{x:Bind ShowEntities}">
                 <ScrollViewer
                     HorizontalScrollBarVisibility="Auto"
                     HorizontalScrollMode="Auto"
                     VerticalScrollMode="Disabled">
-                    <winui:ItemsRepeater ItemTemplate="{StaticResource ThTemplateSelector}" ItemsSource="{x:Bind Entities}">
+                    <winui:ItemsRepeater
+                        ItemTemplate="{StaticResource ThTemplateSelector}"
+                        ItemsSource="{x:Bind Entities}">
                         <winui:ItemsRepeater.Layout>
                             <winui:StackLayout Orientation="Horizontal"/>
                         </winui:ItemsRepeater.Layout>
@@ -279,7 +286,27 @@
                 x:Load="{x:Bind Title, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
                 FontSize="16"
                 Text="{x:Bind Title}"/>
-            <control:TextBlockEx MessageText="{x:Bind Description}"/>
+            <control:TextBlockEx
+                x:Name="description"
+                x:Load="{x:Bind Description, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
+                MessageText="{x:Bind Description}"/>
+            <winui:ItemsRepeaterScrollHost
+                x:Name="entities"
+                x:Load="{x:Bind ShowEntities}">
+                <ScrollViewer
+                    HorizontalScrollBarVisibility="Auto"
+                    HorizontalScrollMode="Auto"
+                    VerticalScrollMode="Disabled"
+                    Margin="-10,0,0,0">
+                    <winui:ItemsRepeater
+                        ItemTemplate="{StaticResource ThTemplateSelector}"
+                        ItemsSource="{x:Bind Entities}">
+                        <winui:ItemsRepeater.Layout>
+                            <winui:StackLayout Orientation="Horizontal"/>
+                        </winui:ItemsRepeater.Layout>
+                    </winui:ItemsRepeater>
+                </ScrollViewer>
+            </winui:ItemsRepeaterScrollHost>
         </StackPanel>
     </DataTemplate>
 
@@ -377,6 +404,20 @@
         </ListViewItem>
     </DataTemplate>
 
+    <DataTemplate x:Key="Text" x:DataType="models:IndexPageModel">
+        <ListViewItem
+            Margin="4,0"
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource AppListViewItemStyle}"
+            Tag="{x:Bind Url}"
+            Tapped="Grid_Tapped">
+            <TextBlock
+                Margin="8,0"
+                Text="{x:Bind Title}"
+                TextWrapping="Wrap"/>
+        </ListViewItem>
+    </DataTemplate>
+
     <DataTemplate x:Key="ScrollLinkCard" x:DataType="models:IndexPageModel">
         <ListViewItem
             Margin="4,0"
@@ -391,7 +432,7 @@
                 <Border.Background>
                     <ImageBrush
                         ImageSource="{x:Bind Pic.Pic, Mode=OneWay}"
-                        Stretch="UniformToFill"/>
+                        Stretch="Fill"/>
                 </Border.Background>
                 <StackPanel Padding="4">
                     <StackPanel.Background>
@@ -462,7 +503,8 @@
                     <TextBlock
                         HorizontalAlignment="Center"
                         Foreground="White"
-                        MaxLines="2"
+                        MaxLines="1"
+                        Margin="0,2,0,2"
                         Text="{x:Bind Title}"
                         TextAlignment="Center"
                         TextTrimming="CharacterEllipsis"

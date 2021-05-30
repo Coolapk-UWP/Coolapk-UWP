@@ -78,6 +78,8 @@ namespace CoolapkUWP.ViewModels.IndexPage
                 case "user": return new UserModel(jo);
                 case "topic": return new TopicModel(jo);
                 case "dyh": return new DyhModel(jo);
+                case "apk":
+                case "appForum": return new AppPageMode(jo);
                 case "product": return new ProductModel(jo);
                 case "entity_type_user_card_manager": return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);
                 default:
@@ -97,11 +99,20 @@ namespace CoolapkUWP.ViewModels.IndexPage
                             case "colorfulFatScrollCard":
                             case "colorfulScrollCard":
                             case "iconLongTitleGridCard":
+                            case "linkCard":
+                            case "apkListCard":
+                            case "apkScrollCardWithBackground":
+                            case "imageScrollCard":
+                            case "apkScrollCard":
+                            //case "iconListCard":
+                            //case "listCard":
+                            case "feedListCard":
                             case "gridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
                             //case "listCard": //return new IndexPageHasEntitiesModel(jo, EntityType.Others);
                             case "headCard":
                             case "imageCarouselCard_1": //return new IndexPageHasEntitiesViewModel(jo, EntitiesType.Image_1);
                             case "imageCard":
+                            //case "apkImageCard":
                             case "iconButtonGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
                             case "configCard":
                                 return jo.TryGetValue("url", out JToken v2) && v2.ToString().Length >= 5
@@ -111,7 +122,6 @@ namespace CoolapkUWP.ViewModels.IndexPage
                             case "feedGroupListCard":
                             case "textLinkListCard": return new IndexPageHasEntitiesModel(jo, EntityType.TextLinks);
                             case "textCard":
-                            case "hot":
                             case "messageCard": return new IndexPageMessageCardModel(jo);
                             case "refreshCard": return new IndexPageOperationCardModel(jo, OperationType.Refresh);
                             case "unLoginCard": return new IndexPageOperationCardModel(jo, OperationType.Login);
@@ -138,7 +148,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
             {
                 foreach (JObject item in jo.Value<JArray>("entities"))
                 {
-                    var entity = GetEntity(item, IsHotFeedPage);
+                    Entity entity = GetEntity(item, IsHotFeedPage);
                     if (entity != null)
                     {
                         yield return entity;

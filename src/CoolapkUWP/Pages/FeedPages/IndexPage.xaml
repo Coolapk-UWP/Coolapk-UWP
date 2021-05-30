@@ -33,6 +33,7 @@
                 Dyh="{StaticResource DYH}"
                 Product="{StaticResource Product}"
                 Feed="{StaticResource feed}"
+                App="{StaticResource App}"
                 IconLinks="{StaticResource IconLinks}"
                 Images="{StaticResource ImageCard}"
                 LoginCard="{StaticResource LoginCard}"

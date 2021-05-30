@@ -42,8 +42,8 @@ namespace CoolapkUWP.Controls.DataTemplates
             switch (element.Name)
             {
                 case "makeReplyButton":
-                    var item = Microsoft.Toolkit.Uwp.UI.Extensions.VisualTree.FindAscendant<ListViewItem>(element);
-                    var ctrl = item.FindName("makeFeed") as MakeFeedControl;
+                    ListViewItem item = Microsoft.Toolkit.Uwp.UI.Extensions.VisualTree.FindAscendant<ListViewItem>(element);
+                    MakeFeedControl ctrl = item.FindName("makeFeed") as MakeFeedControl;
                     ctrl.Visibility = ctrl.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
                     DisabledCopy();
                     break;
@@ -95,15 +95,15 @@ namespace CoolapkUWP.Controls.DataTemplates
         internal static void ListViewItem_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
             FrameworkElement s = (FrameworkElement)sender;
-            var b = s.FindName("moreButton") as Button;
+            Button b = s.FindName("moreButton") as Button;
             b.Flyout.ShowAt(s);
         }
 
         internal static void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var uc = sender as UserControl;
-            var bp = uc.FindChildByName("btnsPanel") as StackPanel;
-            var width = e is null ? uc.Width : e.NewSize.Width;
+            UserControl uc = sender as UserControl;
+            StackPanel bp = uc.FindChildByName("btnsPanel") as StackPanel;
+            double width = e is null ? uc.Width : e.NewSize.Width;
             bp.SetValue(Grid.RowProperty, width > 524 ? 0 : 4);
         }
 

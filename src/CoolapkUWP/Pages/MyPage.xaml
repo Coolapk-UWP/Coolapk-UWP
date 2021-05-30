@@ -27,6 +27,7 @@
 
             <local:FirstTemplateSelector
                 x:Key="templas"
+                App="{StaticResource App}"
                 ImageTextScrollCard="{StaticResource ImageTextScrollCard}"
                 Others="{StaticResource null}"
                 TextLinkList="{StaticResource TextLinkListCard}"
@@ -173,7 +174,7 @@
                 x:Name="SearchBox"
                 Margin="8,0"
                 VerticalAlignment="Center"
-                ItemTemplate="{StaticResource searchWord}"
+                ItemTemplateSelector="{StaticResource SearchWord}"
                 QueryIcon="Find"
                 QuerySubmitted="{x:Bind local:MyPage.AutoSuggestBox_QuerySubmitted}"
                 SuggestionChosen="{x:Bind local:MyPage.AutoSuggestBox_SuggestionChosen}"

@@ -39,14 +39,14 @@ namespace CoolapkUWP.Controls
             inputBox.Document.GetText(TextGetOptions.UseObjectText, out string contentText);
             contentText = contentText.Replace("\r", "\r\n");
             if (string.IsNullOrWhiteSpace(contentText)) return;
-            using (var content = new MultipartFormDataContent(GetBoundary()))
+            using (MultipartFormDataContent content = new MultipartFormDataContent(GetBoundary()))
             {
                 switch (MakeFeedMode)
                 {
                     case MakeFeedMode.Feed:
-                        using (var a = new StringContent(contentText))
-                        using (var b = new StringContent("feed"))
-                        using (var c = new StringContent("0"))
+                        using (StringContent a = new StringContent(contentText))
+                        using (StringContent b = new StringContent("feed"))
+                        using (StringContent c = new StringContent("0"))
                         {
                             content.Add(a, "message");
                             content.Add(b, "type");
@@ -57,8 +57,8 @@ namespace CoolapkUWP.Controls
 
                     case MakeFeedMode.Reply:
                     case MakeFeedMode.ReplyReply:
-                        var type = MakeFeedMode == MakeFeedMode.Reply ? UriType.CreateFeedReply : UriType.CreateReplyReply;
-                        using (var d = new StringContent(contentText))
+                        UriType type = MakeFeedMode == MakeFeedMode.Reply ? UriType.CreateFeedReply : UriType.CreateReplyReply;
+                        using (StringContent d = new StringContent(contentText))
                         {
                             content.Add(d, "message");
                             if (!string.IsNullOrEmpty(Uri.Text)) { content.Add(new StringContent(Uri.Text), "pic"); }
@@ -78,7 +78,7 @@ namespace CoolapkUWP.Controls
                 {
                     arg = new object[] { FeedId };
                 }
-                var (r, _) = await DataHelper.PostDataAsync(UriHelper.GetUri(type, arg), content);
+                (bool r, Newtonsoft.Json.Linq.JToken _) = await DataHelper.PostDataAsync(UriHelper.GetUri(type, arg), content);
                 if (r)
                 {
                     SendSuccessful();
@@ -89,7 +89,7 @@ namespace CoolapkUWP.Controls
                 UIHelper.ShowMessage(cex.Message);
                 if (cex.MessageStatus == Core.Exceptions.CoolapkMessageException.RequestCaptcha)
                 {
-                    var dialog = new CaptchaDialog();
+                    CaptchaDialog dialog = new CaptchaDialog();
                     _ = await dialog.ShowAsync();
                 }
             }
@@ -106,8 +106,8 @@ namespace CoolapkUWP.Controls
         {
             byte[] vs = new byte[16];
             new Random().NextBytes(vs);
-            var builder = new System.Text.StringBuilder();
-            foreach (var item in vs) { _ = builder.Append(Convert.ToString(item, 16)); }
+            System.Text.StringBuilder builder = new System.Text.StringBuilder();
+            foreach (byte item in vs) { _ = builder.Append(Convert.ToString(item, 16)); }
             _ = builder.Insert(8, "-");
             _ = builder.Insert(13, "-");
             _ = builder.Insert(18, "-");
@@ -205,10 +205,10 @@ namespace CoolapkUWP.Controls
 
         private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
-            var s = (ScrollViewer)sender;
+            ScrollViewer s = (ScrollViewer)sender;
             if (e.IsIntermediate && s.VerticalOffset == s.ScrollableHeight)
             {
-                var i = searchPivot.SelectedIndex;
+                int i = searchPivot.SelectedIndex;
                 rings[i].IsActive = true;
                 await viewModel.ChangeWordAndSearch(boxes[i].Text, i + 1);
                 rings[i].IsActive = false;

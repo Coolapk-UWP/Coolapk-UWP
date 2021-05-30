@@ -11,10 +11,7 @@ namespace CoolapkUWP.Controls
         public string Title
         {
             get => title.Text;
-            set
-            {
-                title.Text = value ?? string.Empty;
-            }
+            set => title.Text = value ?? string.Empty;
         }
 
         public event RoutedEventHandler RefreshButtonClicked;

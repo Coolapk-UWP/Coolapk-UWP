@@ -86,13 +86,13 @@ namespace CoolapkUWP.Core.Helpers
 
         private static string GetCoolapkAppToken()
         {
-            var t = Utils.ConvertDateTimeToUnixTimeStamp(DateTime.Now);
-            var hex_t = "0x" + Convert.ToString((int)t, 16);
+            double t = Utils.ConvertDateTimeToUnixTimeStamp(DateTime.Now);
+            string hex_t = "0x" + Convert.ToString((int)t, 16);
             // 时间戳加密
-            var md5_t = Utils.GetMD5($"{t}");
-            var a = $"token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?{md5_t}${guid}&com.coolapk.market";
-            var md5_a = Utils.GetMD5(Convert.ToBase64String(Encoding.UTF8.GetBytes(a)));
-            var token = md5_a + guid + hex_t;
+            string md5_t = Utils.GetMD5($"{t}");
+            string a = $"token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?{md5_t}${guid}&com.coolapk.market";
+            string md5_a = Utils.GetMD5(Convert.ToBase64String(Encoding.UTF8.GetBytes(a)));
+            string token = md5_a + guid + hex_t;
             return token;
         }
 
@@ -115,7 +115,7 @@ namespace CoolapkUWP.Core.Helpers
             if (cookies == null) { return; }
 
             //var c = container.GetCookies(UriHelper.CoolapkUri);
-            foreach (var (name, value) in cookies)
+            foreach ((string name, string value) in cookies)
             {
                 container.SetCookies(GetHost(uri), $"{name}={value}");
             }
@@ -139,7 +139,7 @@ namespace CoolapkUWP.Core.Helpers
             {
                 BeforeGetOrPost(coolapkCookies, uri, "XMLHttpRequest");
                 _ = client.DefaultRequestHeaders.Remove("X-App-Device");
-                var response = await client.PostAsync(uri, content);
+                HttpResponseMessage response = await client.PostAsync(uri, content);
                 client.DefaultRequestHeaders.Add("X-App-Device", Utils.GetMD5(guid));
                 return await response.Content.ReadAsStringAsync();
             }
@@ -185,7 +185,7 @@ namespace CoolapkUWP.Core.Helpers
                 throw new UserNameErrorException();
             }
 
-            var str = string.Empty;
+            string str = string.Empty;
             try
             {
                 str = await client.GetStringAsync(new Uri("https://www.coolapk.com/n/" + name));
@@ -193,7 +193,7 @@ namespace CoolapkUWP.Core.Helpers
             }
             catch
             {
-                var o = JObject.Parse(str);
+                JObject o = JObject.Parse(str);
                 if (o == null) { throw; }
                 else
                 {

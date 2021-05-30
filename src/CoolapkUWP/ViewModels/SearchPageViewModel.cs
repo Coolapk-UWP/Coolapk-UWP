@@ -101,7 +101,7 @@ namespace CoolapkUWP.ViewModels.SearchPage
             }
             TypeComboBoxSelectedIndex = selectedIndex;
             KeyWord = keyWord;
-            foreach (var item in providers)
+            foreach (SearchListProvider item in providers)
             {
                 item.Reset();
             }
@@ -112,7 +112,7 @@ namespace CoolapkUWP.ViewModels.SearchPage
             if (KeyWord != keyWord)
             {
                 KeyWord = keyWord;
-                foreach (var item in providers)
+                foreach (SearchListProvider item in providers)
                 {
                     item.Reset();
                 }

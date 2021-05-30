@@ -66,13 +66,13 @@ namespace CoolapkUWP.Core.Helpers
 
         public static Uri GetUri(UriType type, params object[] args)
         {
-            var u = string.Format(GetTemplate(type), args);
+            string u = string.Format(GetTemplate(type), args);
             return new Uri(BaseUri, u);
         }
 
         public static Uri GetDevUri(UriType type, params object[] args)
         {
-            var u = string.Format(GetTemplate(type), args);
+            string u = string.Format(GetTemplate(type), args);
             return new Uri(DevUri, u);
         }
 

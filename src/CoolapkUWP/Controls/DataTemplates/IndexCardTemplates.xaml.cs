@@ -73,7 +73,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         internal static void TextBlockEx_RichTextBlockLoaded(object sender, EventArgs e)
         {
-            var b = (TextBlockEx)sender;
+            TextBlockEx b = (TextBlockEx)sender;
             b.MaxLine = 4;
         }
 

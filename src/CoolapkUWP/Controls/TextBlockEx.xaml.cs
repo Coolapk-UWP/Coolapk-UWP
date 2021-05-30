@@ -29,7 +29,7 @@ namespace CoolapkUWP.Controls
             get => _messageText;
             set
             {
-                var str = value.Replace("<!--break-->", string.Empty, StringComparison.OrdinalIgnoreCase);
+                string str = value.Replace("<!--break-->", string.Empty, StringComparison.OrdinalIgnoreCase);
                 if (str != _messageText)
                 {
                     _messageText = str;
@@ -80,12 +80,12 @@ namespace CoolapkUWP.Controls
 
         private async void GetTextBlock()
         {
-            var block = new RichTextBlock
+            RichTextBlock block = new RichTextBlock
             {
                 IsTextSelectionEnabled = IsTextSelectionEnabled,
                 TextWrapping = TextWrapping.Wrap,
             };
-            var paragraph = new Paragraph();
+            Paragraph paragraph = new Paragraph();
 
             void NewLine()
             {
@@ -94,10 +94,10 @@ namespace CoolapkUWP.Controls
             }
             void AddText(string item) => paragraph.Inlines.Add(new Run { Text = item.Replace("&amp;", "&").Replace("&quot;", "\"") });
 
-            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
-            var imageArrayBuider = ImmutableArray.CreateBuilder<ImageModel>();
-            var list = await GetStringList(_messageText);
-            foreach (var item in list)
+            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
+            ImmutableArray<ImageModel>.Builder imageArrayBuider = ImmutableArray.CreateBuilder<ImageModel>();
+            ImmutableArray<string> list = await GetStringList(_messageText);
+            foreach (string item in list)
             {
                 if (string.IsNullOrEmpty(item)) { NewLine(); }
                 else
@@ -108,10 +108,10 @@ namespace CoolapkUWP.Controls
                             {
                                 string content = item.Substring(item.IndexOf('>') + 1, item.LastIndexOf('<') - item.IndexOf('>') - 1);
                                 string href = string.Empty;
-                                var hrefRegex = new Regex("href=\"(\\S|\\s)+?\"");
+                                Regex hrefRegex = new Regex("href*?=*?\"(\\S|\\s)+?\"");
                                 if (hrefRegex.IsMatch(item))
                                 {
-                                    var match = hrefRegex.Match(item);
+                                    Match match = hrefRegex.Match(item);
                                     href = match.Value.Substring(match.Value.IndexOf('"') + 1, match.Value.LastIndexOf('"') - match.Value.IndexOf('"') - 1);
                                 }
 
@@ -119,7 +119,7 @@ namespace CoolapkUWP.Controls
                                 {
                                     NewLine();
 
-                                    var imageModel = new ImageModel(href, ImageType.SmallImage);
+                                    ImageModel imageModel = new ImageModel(href, ImageType.SmallImage);
                                     imageArrayBuider.Add(imageModel);
 
                                     InlineUIContainer container = new InlineUIContainer();
@@ -279,7 +279,7 @@ namespace CoolapkUWP.Controls
                                 {
                                     InlineUIContainer container = new InlineUIContainer();
 
-                                    var useOld = item[0] != '#' && SettingsHelper.Get<bool>(SettingsHelper.IsUseOldEmojiMode) && EmojiHelper.Contains(item, true);
+                                    bool useOld = item[0] != '#' && SettingsHelper.Get<bool>(SettingsHelper.IsUseOldEmojiMode) && EmojiHelper.Contains(item, true);
                                     Image image = new Image
                                     {
                                         Height = Width = 20,
@@ -300,8 +300,8 @@ namespace CoolapkUWP.Controls
                 }
             }
 
-            var array = imageArrayBuider.ToImmutable();
-            foreach (var item in array)
+            ImmutableArray<ImageModel> array = imageArrayBuider.ToImmutable();
+            foreach (ImageModel item in array)
             {
                 item.ContextArray = array;
             }
@@ -326,14 +326,14 @@ namespace CoolapkUWP.Controls
         {
             return Task.Run(() =>
             {
-                var link = new Regex("<a(\\S|\\s)*?>(\\S|\\s)*?</a>");
-                var emojis = new Regex[] { new Regex(@"\[\S*?\]"), new Regex(@"#\(\S*?\)") };
-                var buider = ImmutableArray.CreateBuilder<string>();
+                Regex link = new Regex("<a(\\S|\\s)*?>(\\S|\\s)*?<*?a*?>");
+                Regex[] emojis = new Regex[] { new Regex(@"\[\S*?\]"), new Regex(@"#\(\S*?\)") };
+                ImmutableArray<string>.Builder buider = ImmutableArray.CreateBuilder<string>();
 
                 //处理超链接或图文中的图片
                 for (int i = 0; i < text.Length;)
                 {
-                    var matchedValue = link.Match(text, i);
+                    Match matchedValue = link.Match(text, i);
                     int index = (string.IsNullOrEmpty(matchedValue.Value) ? text.Length : text.IndexOf(matchedValue.Value, i, StringComparison.Ordinal)) - i;
                     if (index == 0)
                     {
@@ -347,7 +347,7 @@ namespace CoolapkUWP.Controls
                     }
                 }
                 //(IsFeedAuthor ? $"[{loader.GetString("feedAuthorText")}
-                var length = AuthorBorder.Length;
+                int length = AuthorBorder.Length;
                 for (int j = 0; j < buider.Count; j++)
                 {
                     for (int i = 0; i < buider[j].Length;)
@@ -379,7 +379,7 @@ namespace CoolapkUWP.Controls
                     {
                         for (int i = 0; i < buider[j].Length;)
                         {
-                            var v = emojis[k].Match(buider[j], i);
+                            Match v = emojis[k].Match(buider[j], i);
                             int a = string.IsNullOrEmpty(v.Value) ? -1 : buider[j].IndexOf(v.Value, i, StringComparison.Ordinal) - i;
                             if (a == 0)
                             {

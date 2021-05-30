@@ -20,7 +20,7 @@ namespace CoolapkUWP.Controls
 
         public async void Run(IBackgroundTaskInstance taskInstance)
         {
-            var deferral = taskInstance.GetDeferral();
+            BackgroundTaskDeferral deferral = taskInstance.GetDeferral();
 
             await GetLatestNews();
 
@@ -44,7 +44,7 @@ namespace CoolapkUWP.Controls
         {
             try
             {
-                var response = GetProvider(mainUri);
+                CoolapkListProvider response = GetProvider(mainUri);
 
             }
             catch (Exception)
@@ -80,7 +80,7 @@ namespace CoolapkUWP.Controls
             {
                 foreach (JObject item in jo.Value<JArray>("entities"))
                 {
-                    var entity = GetEntity(item, IsHotFeedPage);
+                    Entity entity = GetEntity(item, IsHotFeedPage);
                     if (entity != null)
                     {
                         yield return entity;

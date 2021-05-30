@@ -67,7 +67,7 @@ namespace CoolapkUWP.Models
                 {
                     Dyhurl = token["dyh_info"].Value<string>("url");
                     Dyhname = token.Value<string>("dyh_name");
-                    var dyhlogoUrl = token["dyh_info"].Value<string>("logo");
+                    string dyhlogoUrl = token["dyh_info"].Value<string>("logo");
                     if (!string.IsNullOrEmpty(dyhlogoUrl))
                     {
                         Dyhlogo = new ImageModel(dyhlogoUrl, ImageType.Icon);
@@ -100,7 +100,7 @@ namespace CoolapkUWP.Models
                                (token.TryGetValue("relationRows", out JToken vRelationRows) && ((vRelationRows as JArray)?.Count ?? 0) > 0);
             if (ShowRelationRows)
             {
-                var buider = new List<RelationRowsItem>();
+                List<RelationRowsItem> buider = new List<RelationRowsItem>();
                 if (vLocation != null && !string.IsNullOrEmpty(vLocation.ToString()))
                 {
                     buider.Add(new RelationRowsItem { Title = vLocation.ToString() });
@@ -118,7 +118,7 @@ namespace CoolapkUWP.Models
 
                 if (vRelationRows != null)
                 {
-                    foreach (var i in vRelationRows as JArray)
+                    foreach (JToken i in vRelationRows as JArray)
                     {
                         JObject item = i as JObject;
                         buider.Add(new RelationRowsItem

@@ -13,7 +13,7 @@
             Style="{StaticResource AppListViewItemStyle}"
             Tag="{x:Bind Url}"
             Tapped="{x:Bind local:OtherDataTemplates.OnTapped}">
-            <Grid Padding="4">
+            <Grid Padding="4,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="56"/>
                     <ColumnDefinition/>
@@ -21,12 +21,13 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Ellipse
-                    Grid.RowSpan="2"
+                    Grid.RowSpan="3"
                     Width="40"
                     Height="40"
-                    Margin="8,0"
+                    Margin="8"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
                     <Ellipse.Fill>
@@ -50,10 +51,18 @@
                         Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
                     <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Commentnum}"/>
                     <TextBlock
-                        x:Uid="/FeedListPage/Comment"
+                        x:Uid="/FeedListPage/Commentnum"
                         Margin="0,0,5,0"
                         Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind LastUpdate}"/>
                 </StackPanel>
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Text="{x:Bind Description}"
+                    MaxLines="2"
+                    TextWrapping="Wrap"/>
             </Grid>
         </ListViewItem>
     </DataTemplate>
@@ -64,25 +73,21 @@
             Style="{StaticResource AppListViewItemStyle}"
             Tag="{x:Bind Url}"
             Tapped="{x:Bind local:OtherDataTemplates.OnTapped}">
-            <Grid
-                Padding="4"
-                Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
-                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                BorderThickness="1"
-                CornerRadius="1">
+            <Grid Padding="4,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="56"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Ellipse
-                    Grid.RowSpan="2"
+                    Grid.RowSpan="3"
                     Width="40"
                     Height="40"
-                    Margin="8,0"
+                    Margin="8"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
                     <Ellipse.Fill>
@@ -101,10 +106,23 @@
                     Orientation="Horizontal">
                     <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Follownum}"/>
                     <TextBlock
-                        x:Uid="/FeedListPage/Subscribed"
+                        x:Uid="/FeedListPage/FollowNum"
                         Margin="0,0,5,0"
                         Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Commentnum}"/>
+                    <TextBlock
+                        x:Uid="/FeedListPage/NewsNum"
+                        Margin="0,0,5,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind LastUpdate}"/>
                 </StackPanel>
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Text="{x:Bind Description}"
+                    MaxLines="2"
+                    TextWrapping="Wrap"/>
             </Grid>
         </ListViewItem>
     </DataTemplate>
@@ -115,25 +133,21 @@
             Style="{StaticResource AppListViewItemStyle}"
             Tag="{x:Bind Url}"
             Tapped="{x:Bind local:OtherDataTemplates.OnTapped}">
-            <Grid
-                Padding="4"
-                Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
-                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                BorderThickness="1"
-                CornerRadius="1">
+            <Grid Padding="4,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="56"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Ellipse
-                    Grid.RowSpan="2"
+                    Grid.RowSpan="3"
                     Width="40"
                     Height="40"
-                    Margin="8,0"
+                    Margin="8"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
                     <Ellipse.Fill>
@@ -152,10 +166,23 @@
                     Orientation="Horizontal">
                     <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Follownum}"/>
                     <TextBlock
-                        x:Uid="/FeedListPage/Subscribed"
+                        x:Uid="/FeedListPage/FollowNum"
                         Margin="0,0,5,0"
                         Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Commentnum}"/>
+                    <TextBlock
+                        x:Uid="/FeedListPage/Commentnum"
+                        Margin="0,0,5,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind LastUpdate}"/>
                 </StackPanel>
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Text="{x:Bind Description}"
+                    MaxLines="2"
+                    TextWrapping="Wrap"/>
             </Grid>
         </ListViewItem>
     </DataTemplate>
@@ -214,6 +241,66 @@
                     Grid.Column="1"
                     Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                     Text="{x:Bind Bio}"
+                    MaxLines="2"
+                    TextWrapping="Wrap"/>
+            </Grid>
+        </ListViewItem>
+    </DataTemplate>
+
+    <DataTemplate x:Key="App" x:DataType="models:AppPageMode">
+        <ListViewItem
+            KeyDown="{x:Bind local:OtherDataTemplates.ListViewItem_KeyDown}"
+            Style="{StaticResource AppListViewItemStyle}"
+            Tag="{x:Bind Url}"
+            Tapped="{x:Bind local:OtherDataTemplates.OnTapped}">
+            <Grid Padding="4,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="56"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Ellipse
+                    Grid.RowSpan="3"
+                    Width="40"
+                    Height="40"
+                    Margin="8"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind Logo.Pic, Mode=OneWay}"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Text="{x:Bind Title}"/>
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Horizontal">
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind FollowNum}"/>
+                    <TextBlock
+                        x:Uid="/FeedListPage/FollowNum"
+                        Margin="0,0,5,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind DownloadNum}"/>
+                    <TextBlock
+                        x:Uid="/FeedListPage/DownloadNum"
+                        Margin="0,0,5,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind LastUpdate}"/>
+                </StackPanel>
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Text="{x:Bind Introduce}"
                     MaxLines="2"
                     TextWrapping="Wrap"/>
             </Grid>

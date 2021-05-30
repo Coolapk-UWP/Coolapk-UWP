@@ -81,7 +81,7 @@ namespace CoolapkUWP.Models
                     PicArr = (from item in picArr
                               select new ImageModel(item.ToString(), ImageType.SmallImage)).ToImmutableArray();
 
-                    foreach (var item in PicArr)
+                    foreach (ImageModel item in PicArr)
                     {
                         item.ContextArray = PicArr;
                     }
