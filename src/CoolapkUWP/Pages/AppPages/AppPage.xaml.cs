@@ -20,8 +20,8 @@ namespace CoolapkUWP.Pages.AppPages
     /// </summary>
     public sealed partial class AppPage : Page
     {
-        string AppInfo = "", AppVersionMassage = "", AppReview = "", AppVersion, AppMassage, AppName, AppLogo, AppUpdateTime, AppScore, AppCommendNum, /*AppDownloadUrl,*/ id;
-        string AppLink = "";
+        private string AppInfo = "", AppVersionMassage = "", AppReview = "", AppVersion, AppMassage, AppName, AppLogo, AppUpdateTime, AppScore, AppCommendNum, /*AppDownloadUrl,*/ id;
+        private string AppLink = "";
         public AppPage()
         {
             InitializeComponent();
@@ -45,7 +45,7 @@ namespace CoolapkUWP.Pages.AppPages
 
         }
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             //将传过来的数据 类型转换一下

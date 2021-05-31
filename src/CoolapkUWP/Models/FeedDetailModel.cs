@@ -99,7 +99,7 @@ namespace CoolapkUWP.Models
                                (o.TryGetValue("relationRows", out JToken vRelationRows) && ((vRelationRows as JArray)?.Count ?? 0) > 0);
             if (ShowRelationRows)
             {
-                var builder = new List<RelationRowsItem>();
+                List<RelationRowsItem> builder = new List<RelationRowsItem>();
                 if (vLocation != null && !string.IsNullOrEmpty(vLocation.ToString()))
                 {
                     builder.Add(new RelationRowsItem { Title = vLocation.ToString() });

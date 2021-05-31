@@ -16,7 +16,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public SearchingPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -38,20 +38,15 @@ namespace CoolapkUWP.Pages.FeedPages
             await Task.Delay(30);
             if (searchTypeComboBox.SelectedIndex > -1)
             {
-                (FindName($"scrollViewer{searchTypeComboBox.SelectedIndex}") as ScrollViewer).ChangeView(null, provider.VerticalOffsets[0], null, true);
+                _ = (FindName($"scrollViewer{searchTypeComboBox.SelectedIndex}") as ScrollViewer).ChangeView(null, provider.VerticalOffsets[0], null, true);
             }
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            if (searchTypeComboBox.SelectedIndex > -1)
-            {
-                provider.VerticalOffsets[0] = (FindName($"scrollViewer{searchTypeComboBox.SelectedIndex}") as ScrollViewer).VerticalOffset;
-            }
-            else
-            {
-                provider.VerticalOffsets[0] = 0;
-            }
+            provider.VerticalOffsets[0] = searchTypeComboBox.SelectedIndex > -1
+                ? (FindName($"scrollViewer{searchTypeComboBox.SelectedIndex}") as ScrollViewer).VerticalOffset
+                : 0;
 
             base.OnNavigatingFrom(e);
         }
@@ -135,8 +130,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         internal static void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            if (args.SelectedItem is SearchWord m)
-                sender.Text = m.GetTitle();
+            if (args.SelectedItem is SearchWord m) { sender.Text = m.GetTitle(); }
         }
 
         #endregion 搜索框相关

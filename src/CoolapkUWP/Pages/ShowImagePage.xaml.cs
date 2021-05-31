@@ -184,9 +184,9 @@ namespace CoolapkUWP.Pages
 
         public ShowImagePage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            var bar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
+            Windows.UI.ViewManagement.ApplicationViewTitleBar bar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
             bar.InactiveBackgroundColor = bar.ButtonInactiveBackgroundColor = bar.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
             Window.Current.SetTitleBar(titleBorder);
         }
@@ -203,7 +203,7 @@ namespace CoolapkUWP.Pages
                 }
                 else
                 {
-                    foreach (var item in model.ContextArray)
+                    foreach (Models.ImageModel item in model.ContextArray)
                     {
                         imageModels.Add(new ImageModel(item, notify, Dispatcher));
                     }
@@ -222,7 +222,7 @@ namespace CoolapkUWP.Pages
 
         private static void ScrollViewerMain_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
-            var view = sender as ScrollViewer;
+            ScrollViewer view = sender as ScrollViewer;
             if (view.ZoomFactor != 2)
             {
                 _ = view.ChangeView(view.HorizontalOffset * 2, view.VerticalOffset * 2, 2);
@@ -235,7 +235,7 @@ namespace CoolapkUWP.Pages
 
         private static void ScrollViewerMain_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
-            var view = (sender as FrameworkElement).Parent as ScrollViewer;
+            ScrollViewer view = (sender as FrameworkElement).Parent as ScrollViewer;
             _ = view.ChangeView(view.HorizontalOffset - e.Delta.Translation.X * view.ZoomFactor, view.VerticalOffset - e.Delta.Translation.Y * view.ZoomFactor, null);
         }
 
@@ -265,8 +265,8 @@ namespace CoolapkUWP.Pages
         private void ResetDegree(int index)
         {
             Storyboard storyboard = null;
-            var images = SFlipView.FindDescendants<Image>();
-            foreach (var item in images)
+            System.Collections.Generic.IEnumerable<Image> images = SFlipView.FindDescendants<Image>();
+            foreach (Image item in images)
             {
                 if (item.DataContext != imageModels[index]) { continue; }
 
@@ -276,7 +276,7 @@ namespace CoolapkUWP.Pages
 
             if (storyboard == null) { return; }
 
-            var a = (DoubleAnimation)storyboard.Children[0];
+            DoubleAnimation a = (DoubleAnimation)storyboard.Children[0];
             if (a.From == -90) { return; }
 
             a.To = 0;
@@ -288,7 +288,7 @@ namespace CoolapkUWP.Pages
         {
             if (imageModels.Count == 0 || SFlipView.SelectedIndex == -1) { return; }
 
-            var i = SFlipView.SelectedIndex + 1;
+            int i = SFlipView.SelectedIndex + 1;
             SelectedIndex = i;
             if (i == 1)
             {
@@ -329,9 +329,9 @@ namespace CoolapkUWP.Pages
 
         private void OperateWithScrollViewers(Action<ScrollViewer> action)
         {
-            var views = VisualTree.FindDescendants<ScrollViewer>(SFlipView);
+            System.Collections.Generic.IEnumerable<ScrollViewer> views = VisualTree.FindDescendants<ScrollViewer>(SFlipView);
             int n = 0;
-            foreach (var item in views)
+            foreach (ScrollViewer item in views)
             {
                 if (n != 0 && n == selectedIndex)
                 {
@@ -373,7 +373,7 @@ namespace CoolapkUWP.Pages
                 case "zoomIn":
                     OperateWithScrollViewers((item) =>
                     {
-                        var factor = item.ZoomFactor;
+                        float factor = item.ZoomFactor;
                         if (factor + 0.25 < 3)
                         {
                             _ = item.ChangeView(item.HorizontalOffset / factor * (factor + 0.25), item.VerticalOffset / factor * (factor + 0.25), factor + 0.25F);
@@ -384,7 +384,7 @@ namespace CoolapkUWP.Pages
                 case "zoomOut":
                     OperateWithScrollViewers((item) =>
                     {
-                        var factor = item.ZoomFactor;
+                        float factor = item.ZoomFactor;
                         if (factor - 0.25 > 0.5)
                         {
                             _ = item.ChangeView(item.HorizontalOffset / factor * (factor - 0.25), item.VerticalOffset / factor * (factor - 0.25), factor - 0.25F);
@@ -396,8 +396,8 @@ namespace CoolapkUWP.Pages
                     if (SFlipView.SelectedIndex == -1 || SFlipView.Items.Count == 0) { return; }
 
                     Storyboard storyboard = null;
-                    var images = SFlipView.FindDescendants<Image>();
-                    foreach (var item in images)
+                    System.Collections.Generic.IEnumerable<Image> images = SFlipView.FindDescendants<Image>();
+                    foreach (Image item in images)
                     {
                         if (item.DataContext != imageModels[SFlipView.SelectedIndex]) { continue; }
 
@@ -407,7 +407,7 @@ namespace CoolapkUWP.Pages
 
                     if (storyboard == null) { return; }
 
-                    var a = (DoubleAnimation)storyboard.Children[0];
+                    DoubleAnimation a = (DoubleAnimation)storyboard.Children[0];
                     a.From = a.To;
                     a.To += 90;
                     storyboard.Begin();
@@ -419,27 +419,27 @@ namespace CoolapkUWP.Pages
                     break;
 
                 case "save":
-                    var u = imageModels[SFlipView.SelectedIndex].Uri;
-                    var fileName = u.Substring(u.LastIndexOf('/') + 1);
-                    var fileSavePicker = new FileSavePicker
+                    string u = imageModels[SFlipView.SelectedIndex].Uri;
+                    string fileName = u.Substring(u.LastIndexOf('/') + 1);
+                    FileSavePicker fileSavePicker = new FileSavePicker
                     {
                         SuggestedStartLocation = PickerLocationId.PicturesLibrary,
                         SuggestedFileName = fileName.Replace(fileName.Substring(fileName.LastIndexOf('.')), string.Empty, StringComparison.Ordinal)
                     };
 
-                    var uu = fileName.Substring(fileName.LastIndexOf('.') + 1);
+                    string uu = fileName.Substring(fileName.LastIndexOf('.') + 1);
                     int index = uu.IndexOfAny(new char[] { '?', '%', '&' });
                     uu = uu.Substring(0, index == -1 ? uu.Length : index);
                     fileSavePicker.FileTypeChoices.Add($"{uu}文件", new string[] { "." + uu });
 
-                    var file = await fileSavePicker.PickSaveFileAsync();
+                    StorageFile file = await fileSavePicker.PickSaveFileAsync();
                     if (file != null)
                     {
-                        using (var fs = await file.OpenStreamForWriteAsync())
+                        using (Stream fs = await file.OpenStreamForWriteAsync())
                         {
-                            var folder = await ApplicationData.Current.LocalCacheFolder.GetFolderAsync(imageModels[SFlipView.SelectedIndex].Type.ToString());
-                            var storageFile = await folder.GetFileAsync(Core.Helpers.Utils.GetMD5(u));
-                            using (var s = (await storageFile.OpenReadAsync()).AsStreamForRead())
+                            StorageFolder folder = await ApplicationData.Current.LocalCacheFolder.GetFolderAsync(imageModels[SFlipView.SelectedIndex].Type.ToString());
+                            StorageFile storageFile = await folder.GetFileAsync(Core.Helpers.Utils.GetMD5(u));
+                            using (Stream s = (await storageFile.OpenReadAsync()).AsStreamForRead())
                             {
                                 await s.CopyToAsync(fs);
                             }

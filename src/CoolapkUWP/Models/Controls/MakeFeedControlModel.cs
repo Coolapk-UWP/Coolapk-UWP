@@ -67,7 +67,7 @@ namespace CoolapkUWP.Models.Controls.MakeFeedControlModel
 
         private async void GetImage()
         {
-            var uri = EmojiHelper.Get(Name);
+            Uri uri = EmojiHelper.Get(Name);
             Uri = uri;
             await Task.Delay(20);
             Emoji = new BitmapImage(uri);

@@ -104,19 +104,19 @@ namespace CoolapkUWP.Models
         private async void GetImage()
         {
             if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode)) { Pic = ImageCacheHelper.NoPic; }
-            var bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri);
+            BitmapImage bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri);
             if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode)) { return; }
             Pic = bitmapImage;
         }
 
         private async void SetBrush()
         {
-            var file = await ImageCacheHelper.GetImageFileAsync(Type, Uri);
+            Windows.Storage.StorageFile file = await ImageCacheHelper.GetImageFileAsync(Type, Uri);
             if (file is null) { return; }
-            using (var stream = await file.OpenReadAsync())
+            using (Windows.Storage.Streams.IRandomAccessStreamWithContentType stream = await file.OpenReadAsync())
             {
-                var decoder = await BitmapDecoder.CreateAsync(stream);
-                var color = await thief.GetColor(decoder);
+                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
+                QuantizedColor color = await thief.GetColor(decoder);
                 BackgroundColor =
                     Windows.UI.Color.FromArgb(
                         color.Color.A,

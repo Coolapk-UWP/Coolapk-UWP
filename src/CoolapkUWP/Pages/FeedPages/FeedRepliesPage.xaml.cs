@@ -27,7 +27,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
             await Task.Delay(30);
             titleBar.Title = provider.Title;
-            scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
+            _ = scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
             titleBar.HideProgressRing();
         }
 
@@ -52,7 +52,7 @@ namespace CoolapkUWP.Pages.FeedPages
             titleBar.ShowProgressRing();
             if (p == -2)
             {
-                scrollViewer?.ChangeView(null, 0, null);
+                _ = (scrollViewer?.ChangeView(null, 0, null));
                 titleBar.Title = provider.Title;
             }
             await provider.Refresh(p);

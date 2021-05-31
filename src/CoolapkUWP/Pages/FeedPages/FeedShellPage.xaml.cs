@@ -42,12 +42,12 @@ namespace CoolapkUWP.Pages.FeedPages
             titleBar.Title = provider.Title;
             if (MainScrollMode == ScrollMode.Disabled)
             {
-                detailScrollViewer.ChangeView(null, provider.VerticalOffsets[1], null, true);
-                rightScrollViewer.ChangeView(null, provider.VerticalOffsets[2], null, true);
+                _ = detailScrollViewer.ChangeView(null, provider.VerticalOffsets[1], null, true);
+                _ = rightScrollViewer.ChangeView(null, provider.VerticalOffsets[2], null, true);
             }
             else
             {
-                mainScrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
+                _ = mainScrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
             }
         }
 
@@ -86,22 +86,22 @@ namespace CoolapkUWP.Pages.FeedPages
 
             detailControl.FeedDetail = provider.FeedDetail;
 
-            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedShellPage");
+            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedShellPage");
             if (provider.FeedDetail.IsQuestionFeed)
             {
                 if (listControl != null)
                 {
                     UnloadObject(listControl);
                 }
-                FindName(nameof(answersList));
+                _ = FindName(nameof(answersList));
                 answersList.ItemsSource = ((QuestionViewModel)provider).Models;
 
                 PivotItemPanel.Visibility = Visibility.Collapsed;
                 rightComboBox.ItemsSource = new string[]
                 {
-                        loader.GetString("popular"),
-                        loader.GetString("like"),
-                        loader.GetString("dateline_desc"),
+                    loader.GetString("popular"),
+                    loader.GetString("like"),
+                    loader.GetString("dateline_desc"),
                 };
                 rightComboBox.SelectedIndex = ((QuestionViewModel)provider).ComboBoxSelectedIndex;
                 rightComboBox.Visibility = Visibility.Visible;
@@ -112,7 +112,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     UnloadObject(answersList);
                 }
-                FindName(nameof(listControl));
+                _ = FindName(nameof(listControl));
                 FeedViewModel feedViewModel = provider as FeedViewModel;
                 listControl.SetProvider(feedViewModel.ReplyListVM);
 
@@ -126,10 +126,10 @@ namespace CoolapkUWP.Pages.FeedPages
 
                 rightComboBox.ItemsSource = new string[]
                 {
-                        loader.GetString("lastupdate_desc"),
-                        loader.GetString("dateline_desc"),
-                        loader.GetString("popular"),
-                        loader.GetString("isFromAuthor"),
+                    loader.GetString("lastupdate_desc"),
+                    loader.GetString("dateline_desc"),
+                    loader.GetString("popular"),
+                    loader.GetString("isFromAuthor"),
                 };
                 rightComboBox.SelectedIndex = feedViewModel.ReplyListVM?.ComboBoxSelectedIndex ?? 0;
 
@@ -138,7 +138,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
             if (provider.FeedDetail.SourceFeed?.ShowPicArr ?? false)
             {
-                FindName("sourcePic");
+                _ = FindName("sourcePic");
             }
             Page_SizeChanged(null, null);
             titleBar.Title = provider.Title;
@@ -149,13 +149,13 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             if (MainScrollMode == ScrollMode.Disabled)
             {
-                rightScrollViewer.ChangeView(null, 0, null);
+                _ = rightScrollViewer.ChangeView(null, 0, null);
             }
             else
             {
-                var point = rightScrollViewer.TransformToVisual(mainScrollViewer).TransformPoint(new Windows.Foundation.Point(0, 0));
+                Windows.Foundation.Point point = rightScrollViewer.TransformToVisual(mainScrollViewer).TransformPoint(new Windows.Foundation.Point(0, 0));
                 System.Diagnostics.Debug.WriteLine(point.Y);
-                mainScrollViewer.ChangeView(null, point.Y, null);
+                _ = mainScrollViewer.ChangeView(null, point.Y, null);
             }
         }
 

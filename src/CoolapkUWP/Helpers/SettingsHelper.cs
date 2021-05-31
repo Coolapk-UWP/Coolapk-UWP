@@ -86,7 +86,7 @@ namespace CoolapkUWP.Helpers
         }
     }
 
-    enum UiSettingChangedType
+    internal enum UiSettingChangedType
     {
         LightMode,
         DarkMode,
@@ -121,19 +121,19 @@ namespace CoolapkUWP.Helpers
 
         public static async Task CheckUpdateAsync(bool showmassage)
         {
-            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
+            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
             try
             {
-                var (isSucceed, result) = await DataHelper.GetHtmlAsync(new Uri("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest"), null);
+                (bool isSucceed, string result) = await DataHelper.GetHtmlAsync(new Uri("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest"), null);
                 if (!isSucceed) { (isSucceed, result) = await DataHelper.GetHtmlAsync(new Uri("https://v2.kkpp.cc/repos/Tangent-90/Coolapk-UWP/releases/latest"), null); }
-                var keys = JObject.Parse(result);
-                var ver = keys.Value<string>("tag_name").Replace("v", string.Empty).Split('.');
+                JObject keys = JObject.Parse(result);
+                string[] ver = keys.Value<string>("tag_name").Replace("v", string.Empty).Split('.');
                 if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major ||
                    (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor) ||
                    (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
                 {
-                    var grid = new Grid();
-                    var textBlock = new TextBlock
+                    Grid grid = new Grid();
+                    TextBlock textBlock = new TextBlock
                     {
                         Text = string.Format(
                                     loader.GetString("HasUpdate"),
@@ -144,7 +144,7 @@ namespace CoolapkUWP.Helpers
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Center
                     };
-                    var button = new Button
+                    Button button = new Button
                     {
                         Content = loader.GetString("GotoGithub"),
                         HorizontalAlignment = HorizontalAlignment.Right,
@@ -167,11 +167,11 @@ namespace CoolapkUWP.Helpers
         {
             try
             {
-                using (var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
+                using (Windows.Web.Http.Filters.HttpBaseProtocolFilter filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
                 {
-                    var cookieManager = filter.CookieManager;
+                    Windows.Web.Http.HttpCookieManager cookieManager = filter.CookieManager;
                     string uid = string.Empty, token = string.Empty, userName = string.Empty;
-                    foreach (var item in cookieManager.GetCookies(new Uri("http://coolapk.com")))
+                    foreach (Windows.Web.Http.HttpCookie item in cookieManager.GetCookies(new Uri("http://coolapk.com")))
                     {
                         switch (item.Name)
                         {
@@ -186,6 +186,9 @@ namespace CoolapkUWP.Helpers
                             case "token":
                                 token = item.Value;
                                 break;
+
+                            default:
+                                break;
                         }
                     }
 
@@ -198,10 +201,10 @@ namespace CoolapkUWP.Helpers
                     {
                         Set(Uid, uid);
 
-                        var (isSucceed, result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetNotificationNumbers), true);
+                        (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetNotificationNumbers), true);
                         if (!isSucceed) { return false; }
 
-                        var o = (JObject)result;
+                        JObject o = (JObject)result;
                         UIHelper.NotificationNums.Initial((JObject)o["notifyCount"]);
                         return true;
                     }
@@ -212,10 +215,10 @@ namespace CoolapkUWP.Helpers
 
         public static void Logout()
         {
-            using (var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
+            using (Windows.Web.Http.Filters.HttpBaseProtocolFilter filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
             {
-                var cookieManager = filter.CookieManager;
-                foreach (var item in cookieManager.GetCookies(UriHelper.BaseUri))
+                Windows.Web.Http.HttpCookieManager cookieManager = filter.CookieManager;
+                foreach (Windows.Web.Http.HttpCookie item in cookieManager.GetCookies(UriHelper.BaseUri))
                 {
                     cookieManager.DeleteCookie(item);
                 }

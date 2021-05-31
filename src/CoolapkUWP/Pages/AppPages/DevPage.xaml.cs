@@ -87,16 +87,16 @@ namespace CoolapkUWP.Pages.AppPages
 
         protected static async Task<FeedDetailModel> GetFeedDetailAsync(string id)
         {
-            var (isSucceed, result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetFeedDetail, id), true);
+            (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetFeedDetail, id), true);
             if (!isSucceed) { return null; }
 
-            var detail = (JObject)result;
+            JObject detail = (JObject)result;
             return detail != null ? new FeedDetailModel(detail) : null;
         }
 
         private async void OnNavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs e)
         {
-            var userId = await webview.InvokeScriptAsync("eval", new[] { "return navigator.userAgent;" });
+            string userId = await webview.InvokeScriptAsync("eval", new[] { "return navigator.userAgent;" });
             main.Text = userId;
         }
 
@@ -151,7 +151,7 @@ namespace CoolapkUWP.Pages.AppPages
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             Uri uri = new Uri(Uri.Text);
-            var (isSucceed, result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
+            (bool isSucceed, string result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
         }
     }
 }

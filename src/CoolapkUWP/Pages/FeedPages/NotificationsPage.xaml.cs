@@ -81,6 +81,8 @@ namespace CoolapkUWP.Pages.FeedPages
                 case "message":
                     _ = Frame.Navigate(typeof(NotificationsPage), new ViewModels.NotificationsPage.ViewModel(ViewModels.NotificationsPage.ListType.Message));
                     break;
+                default:
+                    break;
             }
         }
 

@@ -179,7 +179,7 @@ namespace CoolapkUWP.Helpers
 
         private static async void ShowImageWindow(object args)
         {
-            var applicationView = CoreApplication.CreateNewView();
+            CoreApplicationView applicationView = CoreApplication.CreateNewView();
             int viewId = 0;
             await applicationView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
@@ -187,13 +187,13 @@ namespace CoolapkUWP.Helpers
                 frame.Navigate(typeof(ShowImagePage), args);
                 Window.Current.Content = frame;
                 Window.Current.Activate();
-                var loader = ResourceLoader.GetForViewIndependentUse("Feed");
+                ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("Feed");
                 ApplicationView.GetForCurrentView().Title = loader.GetString("seePic");
 
                 viewId = ApplicationView.GetForCurrentView().Id;
             });
 
-            var viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(viewId);
+            bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(viewId);
         }
 
         public static void ShowImage(string url, ImageType type)
@@ -215,7 +215,7 @@ namespace CoolapkUWP.Helpers
 
             if (Window.Current.Content is FrameworkElement frameworkElement)
             {
-                foreach (var item in CoreApplication.Views)
+                foreach (CoreApplicationView item in CoreApplication.Views)
                 {
                     await item.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
@@ -244,7 +244,7 @@ namespace CoolapkUWP.Helpers
                         break;
                 }
 
-                var view = ApplicationView.GetForCurrentView().TitleBar;
+                ApplicationViewTitleBar view = ApplicationView.GetForCurrentView().TitleBar;
                 view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
                 view.ForegroundColor = view.ButtonForegroundColor = view.ButtonHoverForegroundColor = view.ButtonPressedForegroundColor = ForeColor;
                 view.InactiveForegroundColor = view.ButtonInactiveForegroundColor = ButtonForeInactiveColor;
@@ -255,7 +255,7 @@ namespace CoolapkUWP.Helpers
 
         public static bool IsOriginSource(object source, object originalSource)
         {
-            var r = false;
+            bool r = false;
             if (VisualTree.FindAscendant(originalSource as DependencyObject, typeof(Button)) == null && VisualTree.FindAscendant(originalSource as DependencyObject, typeof(AppBarButton)) == null && originalSource.GetType() != typeof(Button) && originalSource.GetType() != typeof(AppBarButton) && originalSource.GetType() != typeof(RichEditBox))
             {
                 r = source == VisualTree.FindAscendant(originalSource as DependencyObject, source.GetType());
@@ -393,7 +393,7 @@ namespace CoolapkUWP.Helpers
             int i = 0;
             if (str.IsFirst(i++))
             {
-                var u = str.Replace(i - 1);
+                string u = str.Replace(i - 1);
                 Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(u, true));
             }
 
@@ -403,9 +403,9 @@ namespace CoolapkUWP.Helpers
 
             if (str.IsFirst(i++))
             {
-                var u = str.Replace(i - 1);
-                var uid = int.TryParse(u, out _) ? u : await Core.Helpers.NetworkHelper.GetUserIDByNameAsync(u);
-                var f = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, uid);
+                string u = str.Replace(i - 1);
+                string uid = int.TryParse(u, out _) ? u : await Core.Helpers.NetworkHelper.GetUserIDByNameAsync(u);
+                FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, uid);
                 if (f != null)
                 {
                     NavigateInSplitPane(typeof(FeedListPage), f);
@@ -423,7 +423,7 @@ namespace CoolapkUWP.Helpers
             else if (str.IsFirst(i++) || str.IsFirst(i++))
             {
                 string u = str.Replace(i - 1);
-                var f = FeedListPageViewModelBase.GetProvider(FeedListType.TagPageList, u);
+                FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.TagPageList, u);
                 if (f != null)
                 {
                     NavigateInSplitPane(typeof(FeedListPage), f);
@@ -432,7 +432,7 @@ namespace CoolapkUWP.Helpers
             else if (str.IsFirst(i++))
             {
                 string u = str.Replace(i - 1);
-                var f = FeedListPageViewModelBase.GetProvider(FeedListType.DyhPageList, u);
+                FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.DyhPageList, u);
                 if (f != null)
                 {
                     NavigateInSplitPane(typeof(FeedListPage), f);
@@ -441,7 +441,7 @@ namespace CoolapkUWP.Helpers
             else if (str.IsFirst(i++))
             {
                 string u = str.Replace(i - 1);
-                var f = FeedListPageViewModelBase.GetProvider(FeedListType.CollectionPageList, u);
+                FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.CollectionPageList, u);
                 if (f != null)
                 {
                     NavigateInSplitPane(typeof(FeedListPage), f);
@@ -485,7 +485,7 @@ namespace CoolapkUWP.Helpers
             {
                 string u = str.Replace(i - 1);
                 //UIHelper.ShowMessage(u);
-                var f = FeedListPageViewModelBase.GetProvider(FeedListType.ProductPageList, u);
+                FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.ProductPageList, u);
                 if (f != null)
                 {
                     NavigateInSplitPane(typeof(FeedListPage), f);

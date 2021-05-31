@@ -15,7 +15,7 @@ namespace CoolapkUWP.Pages.FeedPages
     {
         private FeedListPageViewModelBase provider;
 
-        public FeedListPage() => this.InitializeComponent();
+        public FeedListPage() => InitializeComponent();
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -25,7 +25,7 @@ namespace CoolapkUWP.Pages.FeedPages
             listView.ItemsSource = provider.Models;
             provider.TitleUpdate += Provider_TitleUpdate;
 
-            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
+            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
             switch (provider.ListType)
             {
                 case FeedListType.UserPageList:
@@ -92,6 +92,8 @@ namespace CoolapkUWP.Pages.FeedPages
                         loader.GetString("hot"),
                     };
                     rightComboBox.SelectedIndex = (provider as ICanComboBoxChangeSelectedIndex).ComboBoxSelectedIndex;
+                    break;
+                default:
                     break;
             }
             _ = Refresh();
@@ -169,7 +171,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     break;
 
                 case "FollowUser":
-                    var type =
+                    UriType type =
                         (provider.Models[0] as UserDetail).FollowStatus == Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage").GetString("follow")
                             ? UriType.OperateUnfollow
                             : UriType.OperateFollow;
@@ -189,6 +191,8 @@ namespace CoolapkUWP.Pages.FeedPages
                         case FeedListType.UserPageList:
                             (provider as UserViewModel).Report();
                             break;
+                        default:
+                            break;
                             //case FeedListType.AppPageList:
                             //    (provider as AppViewModel).Report();
                             //    break;
@@ -204,7 +208,7 @@ namespace CoolapkUWP.Pages.FeedPages
         private async void FeedTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (string.IsNullOrEmpty(provider.Id)) { return; }
-            var dataProvider = provider as ICanComboBoxChangeSelectedIndex;
+            ICanComboBoxChangeSelectedIndex dataProvider = provider as ICanComboBoxChangeSelectedIndex;
 
             titleBar.ShowProgressRing();
             await dataProvider.SetComboBoxSelectedIndex((sender as ComboBox).SelectedIndex);
@@ -238,13 +242,13 @@ namespace CoolapkUWP.Pages.FeedPages
 
         internal static void UserDetailBorder_Loaded(object sender, RoutedEventArgs e)
         {
-            var b = sender as Border;
+            Border b = sender as Border;
             b.Height = b.ActualWidth;
         }
 
         internal static void UserDetailBorder_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var b = sender as Border;
+            Border b = sender as Border;
             b.Height = e.NewSize.Width;
         }
     }

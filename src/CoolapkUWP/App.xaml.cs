@@ -18,8 +18,8 @@ namespace CoolapkUWP
     {
         public Application()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
 
         protected override async void OnActivated(IActivatedEventArgs e)
@@ -34,14 +34,14 @@ namespace CoolapkUWP
             bool isSupported = JumpList.IsSupported();
             if (isSupported)
             {
-                var jumpList = await JumpList.LoadCurrentAsync();
+                JumpList jumpList = await JumpList.LoadCurrentAsync();
                 jumpList.SystemGroupKind = JumpListSystemGroupKind.None;
                 await jumpList.SaveAsync();
             }
             Window.Current.Activate();
             if (e.Kind == ActivationKind.Protocol)
             {
-                var protocolArgs = (ProtocolActivatedEventArgs)e;
+                ProtocolActivatedEventArgs protocolArgs = (ProtocolActivatedEventArgs)e;
                 //UIHelper.ShowMessage(protocolArgs.Uri.Host);
                 switch (protocolArgs.Uri.Host)
                 {
@@ -137,7 +137,7 @@ namespace CoolapkUWP
             e.Handled = true;
             if (!(!SettingsHelper.Get<bool>(SettingsHelper.ShowOtherException) || e.Exception is TaskCanceledException || e.Exception is OperationCanceledException))
             {
-                var loader = ResourceLoader.GetForViewIndependentUse();
+                ResourceLoader loader = ResourceLoader.GetForViewIndependentUse();
                 UIHelper.StatusBar_ShowMessage($"{loader.GetString("ExceptionThrown")}\n{e.Exception.Message}\n{e.Exception.HResult}(0x{Convert.ToString(e.Exception.HResult, 16)})"
 #if DEBUG
                     + $"\n{e.Exception.StackTrace}"
@@ -152,7 +152,7 @@ namespace CoolapkUWP
         /// <param name="e"> 有关挂起请求的详细信息。 </param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
-            var deferral = e.SuspendingOperation.GetDeferral();
+            SuspendingDeferral deferral = e.SuspendingOperation.GetDeferral();
             //TODO: 保存应用程序状态并停止任何后台活动
             deferral.Complete();
         }
@@ -167,7 +167,7 @@ namespace CoolapkUWP
             e.Handled = true;
             if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
             {
-                var loader = ResourceLoader.GetForViewIndependentUse();
+                ResourceLoader loader = ResourceLoader.GetForViewIndependentUse();
                 if (e.Exception is System.Net.Http.HttpRequestException || e.Exception.HResult <= -2147012721 && e.Exception.HResult >= -2147012895)
                 {
                     UIHelper.StatusBar_ShowMessage($"{loader.GetString("NetworkError")}(0x{Convert.ToString(e.Exception.HResult, 16)})");

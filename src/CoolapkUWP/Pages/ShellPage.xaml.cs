@@ -29,13 +29,12 @@ namespace CoolapkUWP.Pages
 
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
-            if (name != null)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
 
         public ShellPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             if (SettingsHelper.Get<bool>(SettingsHelper.CheckUpdateWhenLuanching))
             {
@@ -81,7 +80,7 @@ namespace CoolapkUWP.Pages
             string Version = "V9";
             base.OnNavigatedTo(e);
             if (ApplicationData.Current.LocalSettings.Values["Version"] != null)
-                Version = ApplicationData.Current.LocalSettings.Values["Version"].ToString();
+            { Version = ApplicationData.Current.LocalSettings.Values["Version"].ToString(); }
             switch (Version)
             {
                 case "V6":
@@ -118,7 +117,9 @@ namespace CoolapkUWP.Pages
                     break;
 
                 case "home":
-                    paneFrame.Navigate(typeof(MyPage), new ViewModels.MyPage.ViewMode());
+                    _ = paneFrame.Navigate(typeof(MyPage), new ViewModels.MyPage.ViewMode());
+                    break;
+                default:
                     break;
             }
         }
@@ -130,7 +131,7 @@ namespace CoolapkUWP.Pages
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var canOpen = splitView.IsPaneOpen && (e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 960;
+            bool canOpen = splitView.IsPaneOpen && (e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 960;
 
             splitView.IsPaneOpen = canOpen;
             PaneOpenSymbolIcon = canOpen ? Symbol.OpenPane : Symbol.ClosePane;
@@ -140,9 +141,7 @@ namespace CoolapkUWP.Pages
 
         public bool IsSplitFloat()
         {
-            if (splitView.DisplayMode == SplitViewDisplayMode.Overlay)
-                return true;
-            else return false;
+            return splitView.DisplayMode == SplitViewDisplayMode.Overlay;
         }
 
         public void CloseSplit()

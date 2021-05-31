@@ -49,7 +49,7 @@ namespace CoolapkUWP.Helpers
                 {
                     url += ".s.jpg";
                 }
-                var uri = new Uri(url);
+                Uri uri = new Uri(url);
 
                 try
                 {
@@ -57,12 +57,12 @@ namespace CoolapkUWP.Helpers
                     {
                         model.IsProgressRingActived = true;
                     }
-                    var image = await ImageCache.Instance.GetFromCacheAsync(uri, true);
+                    BitmapImage image = await ImageCache.Instance.GetFromCacheAsync(uri, true);
                     return image;
                 }
                 catch
                 {
-                    var str = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
+                    string str = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
                     if (notify == null)
                     {
                         UIHelper.StatusBar_ShowMessage(str);
@@ -104,7 +104,7 @@ namespace CoolapkUWP.Helpers
                 {
                     url += ".s.jpg";
                 }
-                var uri = new Uri(url);
+                Uri uri = new Uri(url);
                 return await ImageCache.Instance.GetFileFromCacheAsync(uri);
             }
         }
@@ -158,14 +158,14 @@ namespace CoolapkUWP.Helpers
             }
             else
             {
-                var fileName = Core.Helpers.Utils.GetMD5(url);
-                var folder = await GetFolderAsync(type);
-                var item = await folder.TryGetItemAsync(fileName);
+                string fileName = Core.Helpers.Utils.GetMD5(url);
+                StorageFolder folder = await GetFolderAsync(type);
+                IStorageItem item = await folder.TryGetItemAsync(fileName);
                 if (type == ImageType.SmallImage || type == ImageType.SmallAvatar)
                 {
                     url += ".s.jpg";
                 }
-                var forceGetPic = model != null;
+                bool forceGetPic = model != null;
                 if (item is null)
                 {
                     StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
@@ -200,9 +200,9 @@ namespace CoolapkUWP.Helpers
                 {
                     model.IsProgressRingActived = true;
                 }
-                using (var hc = new HttpClient())
-                using (var stream = await hc.GetStreamAsync(new Uri(url)))
-                using (var fs = await file.OpenStreamForWriteAsync())
+                using (HttpClient hc = new HttpClient())
+                using (Stream stream = await hc.GetStreamAsync(new Uri(url)))
+                using (Stream fs = await file.OpenStreamForWriteAsync())
                 {
                     await stream.CopyToAsync(fs);
                 }
@@ -211,7 +211,7 @@ namespace CoolapkUWP.Helpers
             catch (FileLoadException) { return NoPic; }
             catch (HttpRequestException)
             {
-                var str = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
+                string str = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
                 if (notify == null)
                 {
                     UIHelper.StatusBar_ShowMessage(str);
@@ -236,7 +236,7 @@ namespace CoolapkUWP.Helpers
         {
             for (int i = 0; i < 5; i++)
             {
-                var type = (ImageType)i;
+                ImageType type = (ImageType)i;
                 await (await GetFolderAsync(type)).DeleteAsync();
                 await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync(type.ToString());
             }

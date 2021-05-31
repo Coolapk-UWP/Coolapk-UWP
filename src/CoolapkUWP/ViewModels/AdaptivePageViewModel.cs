@@ -35,7 +35,7 @@ namespace CoolapkUWP.ViewModels.AdaptivePage
 
         private static string GetTitle(ListType type, string branch)
         {
-            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("AdaptivePage");
+            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("AdaptivePage");
             switch (type)
             {
                 case ListType.UserFeed:
@@ -94,7 +94,7 @@ namespace CoolapkUWP.ViewModels.AdaptivePage
             {
                 foreach (JObject item in jo.Value<JArray>("entities"))
                 {
-                    var entity = GetEntity(item);
+                    Entity entity = GetEntity(item);
                     if (entity != null)
                     {
                         yield return entity;

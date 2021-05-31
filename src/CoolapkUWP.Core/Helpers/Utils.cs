@@ -153,7 +153,7 @@ namespace CoolapkUWP.Core.Helpers
                                               where item.Key != uri
                                               where item.Key.PathAndQuery.IndexOf(u, StringComparison.Ordinal) == 0
                                               select item).ToArray();
-                            foreach (var item in needDelete)
+                            foreach (KeyValuePair<Uri, (DateTime, string)> item in needDelete)
                             {
                                 _ = responseCache.Remove(item.Key);
                             }

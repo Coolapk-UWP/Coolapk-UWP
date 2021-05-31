@@ -28,8 +28,7 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
-            if (name != null)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
 
         private bool isNoPicsMode = Get<bool>(IsNoPicsMode);
@@ -47,8 +46,8 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             get
             {
-                var ver = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
-                var loader = ResourceLoader.GetForViewIndependentUse();
+                string ver = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
+                ResourceLoader loader = ResourceLoader.GetForViewIndependentUse();
                 string name = loader?.GetString("AppName") ?? "CoolapkUWP";
                 return $"{name} v{ver}";
             }
@@ -178,7 +177,7 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             switch ((sender as FrameworkElement).Tag as string)
             {
-                case "gotoTestPage": Frame.Navigate(typeof(TestPage)); break;
+                case "gotoTestPage": _ = Frame.Navigate(typeof(TestPage)); break;
 
                 case "checkUpdate":
                     IsCheckUpdateButtonEnabled = false;
@@ -194,7 +193,7 @@ namespace CoolapkUWP.Pages.SettingPages
                     {
                         flyout_reset.Hide();
                     }
-                    Frame.Navigate(typeof(SettingPage));
+                    _ = Frame.Navigate(typeof(SettingPage));
                     Frame.GoBack();
                     break;
 
@@ -223,12 +222,14 @@ namespace CoolapkUWP.Pages.SettingPages
                     {
                         flyout_logout.Hide();
                     }
-                    Frame.Navigate(typeof(SettingPage));
+                    _ = Frame.Navigate(typeof(SettingPage));
                     Frame.GoBack();
                     break;
 
                 case "MyDevice":
                     UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
+                    break;
+                default:
                     break;
             }
         }
@@ -250,6 +251,8 @@ namespace CoolapkUWP.Pages.SettingPages
                 case 2:
                     IsBackgroundColorFollowSystem2 = true;
                     UiSettingChanged?.Invoke(IsDarkMode2 ? UiSettingChangedType.DarkMode : UiSettingChangedType.LightMode);
+                    break;
+                default:
                     break;
             }
         }

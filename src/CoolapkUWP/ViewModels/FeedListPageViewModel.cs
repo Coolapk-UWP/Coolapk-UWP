@@ -106,10 +106,10 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                 default:
                     throw new ArgumentException($"{typeof(FeedListType).FullName}值错误");
             }
-            var (isSucceed, result) = await DataHelper.GetDataAsync(UriHelper.GetUri(type, Id), true);
+            (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(type, Id), true);
             if (!isSucceed) { return null; }
 
-            var o = (JObject)result;
+            JObject o = (JObject)result;
             FeedListDetailBase d = null;
             if (o != null)
             {
@@ -159,7 +159,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                 it = Models[0] as ICanComboBoxChangeSelectedIndex;
                 Models.RemoveAt(0);
             }
-            var item = await GetDetail();
+            FeedListDetailBase item = await GetDetail();
             Title = GetTitleBarText(item);
             if (it != null)
             {
@@ -349,7 +349,7 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                         }
                         else
                         {
-                            var str = $"/v6/page/dataList?url={comboBoxLinks[ComboBoxSelectedIndex]}&page={(p < 0 ? ++page : p)}{(string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}")}";
+                            string str = $"/v6/page/dataList?url={comboBoxLinks[ComboBoxSelectedIndex]}&page={(p < 0 ? ++page : p)}{(string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}")}";
                             return new Uri(UriHelper.BaseUri, str.Replace("#", "%23", StringComparison.Ordinal));
                         }
                     },
@@ -357,11 +357,11 @@ namespace CoolapkUWP.ViewModels.FeedListPage
                     {
                         if (o.Value<string>("entityType") == "card" && o.Value<string>("entityTemplate") == "selectorLinkCard")
                         {
-                            var array = o["entities"] as JArray;
+                            JArray array = o["entities"] as JArray;
                             for (int i = 0; i < array.Count; i++)
                             {
                                 string title = i == 0 ? "全部" : array[i].Value<string>("title");
-                                var url = array[i].Value<string>("url") + "&title=" + title;
+                                string url = array[i].Value<string>("url") + "&title=" + title;
                                 if (i == 0)
                                 {
                                     comboBoxLinks[i] = url;

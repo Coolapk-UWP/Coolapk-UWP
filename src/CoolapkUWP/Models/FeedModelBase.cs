@@ -163,7 +163,7 @@ namespace CoolapkUWP.Models
                     ExtraTitle = "视频分享";
                     ExtraUrl = token.Value<string>("media_url");
                     ExtraUrl2 = (ExtraUrl?.IndexOf("http", StringComparison.Ordinal) ?? -1) == 0 ? new Uri(ExtraUrl).Host : string.Empty;
-                    var extraPicUrl = token.Value<string>("media_pic");
+                    string extraPicUrl = token.Value<string>("media_pic");
                     if (!string.IsNullOrEmpty(extraPicUrl))
                     {
                         ExtraPic = new BackgroundImageModel(extraPicUrl, ImageType.Icon);

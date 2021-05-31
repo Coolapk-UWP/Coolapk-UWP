@@ -39,7 +39,7 @@ namespace CoolapkUWP.ViewModels.FeedDetailPage
         internal static async Task<ViewModel> GetViewModelAsync(string id)
         {
             if (string.IsNullOrEmpty(id)) { throw new ArgumentException(nameof(id)); }
-            var detail = await GetFeedDetailAsync(id);
+            FeedDetailModel detail = await GetFeedDetailAsync(id);
             return detail != null ? detail.IsQuestionFeed ? new QuestionViewModel(id) : (ViewModel)new FeedViewModel(id) : null;
         }
 
@@ -51,10 +51,10 @@ namespace CoolapkUWP.ViewModels.FeedDetailPage
 
         protected static async Task<FeedDetailModel> GetFeedDetailAsync(string id)
         {
-            var (isSucceed, result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetFeedDetail, id), true);
+            (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetFeedDetail, id), true);
             if (!isSucceed) { return null; }
 
-            var detail = (JObject)result;
+            JObject detail = (JObject)result;
             return detail != null ? new FeedDetailModel(detail) : null;
         }
 
@@ -73,7 +73,7 @@ namespace CoolapkUWP.ViewModels.FeedDetailPage
         {
             if (FeedDetail == null || p == 1)
             {
-                var feedDetail = await GetFeedDetailAsync(id);
+                FeedDetailModel feedDetail = await GetFeedDetailAsync(id);
                 Title = feedDetail.Title;
                 if (ReplyListVM == null || ReplyListVM.Id != id)
                 {

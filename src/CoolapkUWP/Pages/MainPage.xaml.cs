@@ -30,15 +30,14 @@ namespace CoolapkUWP.Pages
 
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
-            if (name != null)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
 
         private void UIHelper_NeedMainPageProgressRing(object sender, bool e)
         {
             if (e)
             {
-                FindName(nameof(progressRing));
+                _ = FindName(nameof(progressRing));
             }
             progressRing.IsActive = e;
             if (!e)
@@ -128,18 +127,15 @@ namespace CoolapkUWP.Pages
         {
             if (args.IsSettingsSelected)
             {
-                Frame.Navigate(typeof(SettingPages.SettingPage), args.RecommendedNavigationTransitionInfo);
+                _ = Frame.Navigate(typeof(SettingPages.SettingPage), args.RecommendedNavigationTransitionInfo);
             }
             else if (args.SelectedItemContainer != null)
             {
-                var navItemTag = args.SelectedItemContainer.Tag.ToString();
-                if (!navItemTag.StartsWith('V'))
-                    navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=V9_HOME_TAB_FOLLOW&type=" + navItemTag, false), args.RecommendedNavigationTransitionInfo);
-                else if (navItemTag == "V9_HOME_TAB_HEADLINE")
-                    navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false), args.RecommendedNavigationTransitionInfo);
-                else if (navItemTag == "V11_FIND_DYH")
-                    navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/user/dyhSubscribe", false), args.RecommendedNavigationTransitionInfo);
-                else navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=" + navItemTag, false), args.RecommendedNavigationTransitionInfo);
+                string navItemTag = args.SelectedItemContainer.Tag.ToString();
+                if (!navItemTag.StartsWith('V')) { navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=V9_HOME_TAB_FOLLOW&type=" + navItemTag, false), args.RecommendedNavigationTransitionInfo); }
+                else if (navItemTag == "V9_HOME_TAB_HEADLINE") { navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false), args.RecommendedNavigationTransitionInfo); }
+                else if (navItemTag == "V11_FIND_DYH") { navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/user/dyhSubscribe", false), args.RecommendedNavigationTransitionInfo); }
+                else { navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=" + navItemTag, false), args.RecommendedNavigationTransitionInfo); }
                 //UIHelper.ShowMessage((string)selectedItem.Tag);
             }
         }
@@ -153,9 +149,9 @@ namespace CoolapkUWP.Pages
         {
             ApplicationView view = ApplicationView.GetForCurrentView();
             bool isInFullScreenMode = view.IsFullScreenMode;
-            if (isInFullScreenMode || view.ViewMode == ApplicationViewMode.CompactOverlay)
-                navigationView.Margin = new Thickness(0, 32, 0, 0);
-            else navigationView.Margin = new Thickness(0, 0, 0, 0);
+            navigationView.Margin = isInFullScreenMode || view.ViewMode == ApplicationViewMode.CompactOverlay
+                ? new Thickness(0, 32, 0, 0)
+                : new Thickness(0, 0, 0, 0);
         }
     }
 }

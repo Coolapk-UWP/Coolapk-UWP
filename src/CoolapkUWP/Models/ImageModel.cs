@@ -111,7 +111,7 @@ namespace CoolapkUWP.Models
         private async void GetImage()
         {
             if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode)) { Pic = ImageCacheHelper.NoPic; }
-            var bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri);
+            BitmapImage bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri);
             if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode)) { return; }
             Pic = bitmapImage;
             IsLongPic = bitmapImage.PixelHeight > bitmapImage.PixelWidth * 2;

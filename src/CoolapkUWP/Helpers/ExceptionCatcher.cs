@@ -13,7 +13,7 @@ namespace CoolapkUWP.Helpers
         /// </returns>
         public static ExceptionHandlingSynchronizationContext Register()
         {
-            var syncContext = Current;
+            SynchronizationContext syncContext = Current;
             if (syncContext == null) { throw new InvalidOperationException("Ensure a synchronization context exists before calling this method."); }
             if (!(syncContext is ExceptionHandlingSynchronizationContext customSynchronizationContext))
             {
@@ -34,7 +34,7 @@ namespace CoolapkUWP.Helpers
         {
             if (rootFrame == null) { throw new ArgumentNullException(nameof(rootFrame)); }
 
-            var synchronizationContext = Register();
+            ExceptionHandlingSynchronizationContext synchronizationContext = Register();
 
             rootFrame.Navigating += (sender, args) => EnsureContext(synchronizationContext);
             rootFrame.Loaded += (sender, args) => EnsureContext(synchronizationContext);
@@ -76,7 +76,7 @@ namespace CoolapkUWP.Helpers
         private bool HandleException(Exception exception)
         {
             if (UnhandledException == null) { return false; }
-            var exWrapper = new AysncUnhandledExceptionEventArgs { Exception = exception };
+            AysncUnhandledExceptionEventArgs exWrapper = new AysncUnhandledExceptionEventArgs { Exception = exception };
             UnhandledException(this, exWrapper);
 
 #if DEBUG && !DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION

@@ -33,7 +33,7 @@ namespace CoolapkUWP.ViewModels.NotificationsPage
 
         internal ViewModel(ListType type)
         {
-            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("NotificationsPage");
+            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("NotificationsPage");
             string listName = string.Empty;
             Func<Entity, JToken, bool> checkEqual = null;
             Func<JObject, IEnumerable<Entity>> getEntities = null;

@@ -63,7 +63,7 @@ namespace CoolapkUWP.Pages
 
         {
             EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
-            using (var httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(Windows.Web.Http.HttpMethod.Get, uri))
+            using (Windows.Web.Http.HttpRequestMessage httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(Windows.Web.Http.HttpMethod.Get, uri))
             {
                 httpRequestMessage.Headers.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT 10.0; Win64; x64; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP; " + "10.0)" + " +CoolMarket/11.2-2105201-universal");
                 webView.NavigateWithHttpRequestMessage(httpRequestMessage);
@@ -103,7 +103,7 @@ namespace CoolapkUWP.Pages
 
         private async void CheckLogin()
         {
-            var loader = ResourceLoader.GetForCurrentView("BrowserPage");
+            ResourceLoader loader = ResourceLoader.GetForCurrentView("BrowserPage");
             if (await SettingsHelper.CheckLoginInfo())
             {
                 if (Frame.CanGoBack) { Frame.GoBack(); }

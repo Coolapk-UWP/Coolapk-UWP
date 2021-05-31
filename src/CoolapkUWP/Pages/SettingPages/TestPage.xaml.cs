@@ -78,7 +78,7 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            var f = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, await Core.Helpers.NetworkHelper.GetUserIDByNameAsync(uid.Text));
+            FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, await Core.Helpers.NetworkHelper.GetUserIDByNameAsync(uid.Text));
             if (f != null) { UIHelper.NavigateInSplitPane(typeof(FeedListPage), f); }
         }
 
@@ -233,7 +233,7 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             if (i == 1)
             {
-                var f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, ID.Text);
+                FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, ID.Text);
                 if (f != null)
                 {
                     UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
@@ -246,7 +246,7 @@ namespace CoolapkUWP.Pages.SettingPages
             }
             else if (i == 3)
             {
-                var f = FeedListPageViewModelBase.GetProvider(FeedListType.DevicePageList, ID.Text);
+                FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.DevicePageList, ID.Text);
                 if (f != null)
                 {
                     UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
@@ -258,7 +258,7 @@ namespace CoolapkUWP.Pages.SettingPages
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
             // Create the tile notification
-            var notification = new TileNotification(content.GetXml());
+            TileNotification notification = new TileNotification(content.GetXml());
             // Send the notification to the primary tile
             TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
         }
@@ -291,7 +291,7 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             if (JumpList.IsSupported())
             {
-                var list = await JumpList.LoadCurrentAsync();
+                JumpList list = await JumpList.LoadCurrentAsync();
                 list.Items.Clear();//建议每次在添加之前清除掉原先已经存在的数据
                 list.Items.Add(JumpListItem.CreateSeparator());
 
@@ -323,7 +323,7 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             if (JumpList.IsSupported())
             {
-                var list = await JumpList.LoadCurrentAsync();
+                JumpList list = await JumpList.LoadCurrentAsync();
                 list.Items.Clear();//建议每次在添加之前清除掉原先已经存在的数据
                 await list.SaveAsync();
             }

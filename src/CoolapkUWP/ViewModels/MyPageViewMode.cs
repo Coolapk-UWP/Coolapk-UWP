@@ -42,7 +42,7 @@ namespace CoolapkUWP.ViewModels.MyPage
                             default: return null;
                         }
                     }
-                    else return null;
+                    else { return null};
             }
         }
 
@@ -62,12 +62,12 @@ namespace CoolapkUWP.ViewModels.MyPage
         {
             if (string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid))) { return; }
 
-            var (isSucceed, result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetUserProfile, SettingsHelper.Get<string>(SettingsHelper.Uid)), true);
+            (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetUserProfile, SettingsHelper.Get<string>(SettingsHelper.Uid)), true);
             if (!isSucceed) { return; }
 
-            var o = (JObject)result;
+            JObject o = (JObject)result;
             string url = o.Value<string>("userAvatar");
-            var bitmapImage = await ImageCacheHelper.GetImageAsync(ImageType.BigAvatar, url);
+            Windows.UI.Xaml.Media.Imaging.BitmapImage bitmapImage = await ImageCacheHelper.GetImageAsync(ImageType.BigAvatar, url);
             UserModel = new Models.Controls.UserHubModel(o, bitmapImage);
 
             provider?.Reset();

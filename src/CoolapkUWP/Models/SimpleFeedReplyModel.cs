@@ -27,7 +27,7 @@ namespace CoolapkUWP.Models
             Rurl = $"/u/{o.Value<int>("ruid")}";
             Rusername = o.Value<string>("rusername");
 
-            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
+            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
 
             Message =
                 string.IsNullOrEmpty(Rusername)

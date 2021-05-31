@@ -9,8 +9,8 @@ namespace CoolapkUWP.Helpers
 
         static EmojiTypeHelper()
         {
-            var buider = ImmutableArray.CreateBuilder<EmojiTypeHeader>();
-            var dataBuider = ImmutableArray.CreateBuilder<EmojiData>();
+            ImmutableArray<EmojiTypeHeader>.Builder buider = ImmutableArray.CreateBuilder<EmojiTypeHeader>();
+            ImmutableArray<EmojiData>.Builder dataBuider = ImmutableArray.CreateBuilder<EmojiData>();
 
             #region 常规
 

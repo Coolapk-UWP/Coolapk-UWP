@@ -179,7 +179,7 @@ namespace CoolapkUWP.Helpers
             {
                 timer = ThreadPoolTimer.CreatePeriodicTimer(async (source) =>
                 {
-                    var (isSucceed, result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetNotificationNumbers), true);
+                    (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetNotificationNumbers), true);
                     if (!isSucceed) { return; }
 
                     ChangeNumber((JObject)result);

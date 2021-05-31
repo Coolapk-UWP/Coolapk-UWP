@@ -21,7 +21,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
+            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
             base.OnNavigatedTo(e);
 
             provider = e.Parameter as ViewModels.IndexPage.ViewModel;
@@ -40,7 +40,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
                 await Task.Delay(30);
                 titleBar.Title = provider.Title;
-                scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
+                _ = scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
 
                 HideProgressRing();
             }
@@ -92,7 +92,7 @@ namespace CoolapkUWP.Pages.FeedPages
             ShowProgressRing();
             if (p == -2)
             {
-                scrollViewer.ChangeView(null, 0, null);
+                _ = scrollViewer.ChangeView(null, 0, null);
             }
             await provider?.Refresh(p);
             HideProgressRing();
@@ -177,8 +177,8 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
         {
-            var model = (sender as FrameworkElement).DataContext as IndexPageModel;
-            var u = $"/page/dataList?url={model.Url.Replace("#", "%23", StringComparison.Ordinal)}&title={model.Title}";
+            IndexPageModel model = (sender as FrameworkElement).DataContext as IndexPageModel;
+            string u = $"/page/dataList?url={model.Url.Replace("#", "%23", StringComparison.Ordinal)}&title={model.Title}";
             if (provider.tabProviders.Count > 0)
             {
                 provider.tabProviders[provider.ComboBoxSelectedIndex].ChangeGetDataFunc(
@@ -196,11 +196,11 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void Pivot_Loaded(object sender, RoutedEventArgs e)
         {
-            var pivot = sender as Pivot;
+            Pivot pivot = sender as Pivot;
             if (pivot.Items.Count == 0)
             {
-                var needAddTabs = provider.tabProviders.IsEmpty;
-                var index = provider.ComboBoxSelectedIndex;
+                bool needAddTabs = provider.tabProviders.IsEmpty;
+                int index = provider.ComboBoxSelectedIndex;
                 foreach (IndexPageModel model in pivot.Tag as System.Collections.IEnumerable)
                 {
                     if (needAddTabs)
@@ -208,7 +208,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         provider.AddTab($"/page/dataList?url={model.Url.Replace("#", "%23", StringComparison.Ordinal)}&title={model.Title}");
                     }
 
-                    var pivotItem = new PivotItem
+                    PivotItem pivotItem = new PivotItem
                     {
                         Header = model.Title
                     };
@@ -240,9 +240,9 @@ namespace CoolapkUWP.Pages.FeedPages
 
         internal static void FlipView_Loaded(object sender, RoutedEventArgs _)
         {
-            var view = sender as FlipView;
+            FlipView view = sender as FlipView;
             view.MaxHeight = view.ActualWidth / 3;
-            var timer = new DispatcherTimer
+            DispatcherTimer timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(10)
             };
@@ -266,13 +266,13 @@ namespace CoolapkUWP.Pages.FeedPages
 
         internal static void flipView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var view = sender as FlipView;
+            FlipView view = sender as FlipView;
             view.MaxHeight = e.NewSize.Width / 3;
         }
 
         internal static void TextBlockEx_RichTextBlockLoaded(object sender, EventArgs e)
         {
-            var b = (Controls.TextBlockEx)sender;
+            Controls.TextBlockEx b = (Controls.TextBlockEx)sender;
             b.MaxLine = 4;
         }
     }

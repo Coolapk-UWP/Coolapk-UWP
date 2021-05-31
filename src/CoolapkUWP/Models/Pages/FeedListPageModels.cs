@@ -54,7 +54,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
 
         internal UserDetail(JObject o) : base(o)
         {
-            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
+            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
             FollowStatus =
                 o.Value<int>("uid").ToString() == SettingsHelper.Get<string>(SettingsHelper.Uid) ? string.Empty
                 : o.Value<int>("isBlackList") == 1 ? loader.GetString("inBlackList")

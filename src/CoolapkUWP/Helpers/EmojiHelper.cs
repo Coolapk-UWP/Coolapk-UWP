@@ -12,17 +12,10 @@ namespace CoolapkUWP.Helpers
         [DebuggerStepThrough]
         public static bool Contains(string key, bool useOldEmoji = false)
         {
-            var _key = key[0] == '#' ? key.Substring(1) : key;
+            string _key = key[0] == '#' ? key.Substring(1) : key;
             try
             {
-                if (useOldEmoji)
-                {
-                    return !string.IsNullOrEmpty(oldEmojiIdLoader.GetString(_key));
-                }
-                else
-                {
-                    return !string.IsNullOrEmpty(emojiIdLoader.GetString(_key));
-                }
+                return useOldEmoji ? !string.IsNullOrEmpty(oldEmojiIdLoader.GetString(_key)) : !string.IsNullOrEmpty(emojiIdLoader.GetString(_key));
             }
             catch (ArgumentException)
             {
@@ -33,18 +26,11 @@ namespace CoolapkUWP.Helpers
         [DebuggerStepThrough]
         public static Uri Get(string key, bool useOldEmoji = false)
         {
-            var _key = key[0] == '#' ? key.Substring(1) : key;
+            string _key = key[0] == '#' ? key.Substring(1) : key;
             try
             {
                 string id = useOldEmoji ? oldEmojiIdLoader.GetString(_key) : emojiIdLoader.GetString(_key);
-                if (string.IsNullOrEmpty(id))
-                {
-                    return ImageCacheHelper.NoPic.UriSource;
-                }
-                else
-                {
-                    return new Uri($"ms-appx:///Assets/Emoji/{id}.png");
-                }
+                return string.IsNullOrEmpty(id) ? ImageCacheHelper.NoPic.UriSource : new Uri($"ms-appx:///Assets/Emoji/{id}.png");
             }
             catch (ArgumentException)
             {

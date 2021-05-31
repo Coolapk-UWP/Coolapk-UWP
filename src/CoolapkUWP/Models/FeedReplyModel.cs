@@ -62,7 +62,7 @@ namespace CoolapkUWP.Models
         {
             Dateline = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal)));
             Message = o.Value<string>("message");
-            var userSmallAvatarUrl = o["userInfo"].Value<string>("userSmallAvatar");
+            string userSmallAvatarUrl = o["userInfo"].Value<string>("userSmallAvatar");
             if (!string.IsNullOrEmpty(userSmallAvatarUrl))
             {
                 UserSmallAvatar = new ImageModel(userSmallAvatarUrl, ImageType.BigAvatar);

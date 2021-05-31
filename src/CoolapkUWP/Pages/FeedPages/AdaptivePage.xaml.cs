@@ -52,7 +52,7 @@ namespace CoolapkUWP.Pages.FeedPages
             titleBar.ShowProgressRing();
             if (p == -2)
             {
-                scrollViewer?.ChangeView(null, 0, null);
+                _ = (scrollViewer?.ChangeView(null, 0, null));
                 titleBar.Title = provider.Title;
             }
             await provider.Refresh(p);
