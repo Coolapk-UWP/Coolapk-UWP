@@ -30,6 +30,7 @@
                 CoolPic="{StaticResource CoolPicture}"
                 LiveTopic="{StaticResource LiveTopic}"
                 ImageTextScrollCard="{StaticResource ImageTextScrollCard}"
+                ScrollCardWithBackColor="{StaticResource ScrollCardWithBackColor}"
                 Dyh="{StaticResource DYH}"
                 Product="{StaticResource Product}"
                 Feed="{StaticResource feed}"

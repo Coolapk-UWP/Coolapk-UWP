@@ -42,7 +42,7 @@ namespace CoolapkUWP.ViewModels.MyPage
                             default: return null;
                         }
                     }
-                    else { return null};
+                    else { return null; }
             }
         }
 

@@ -21,18 +21,21 @@
         x:Key="ThTemplateSelector"
         CoolPic="{StaticResource CoolPicture}"
         Null="{StaticResource null}"
+        Link="{StaticResource Link}"
         IconLink="{StaticResource IconLink}"
         SquareLinkCard="{StaticResource SquareLinkCard}"
         ScrollLinkCard="{StaticResource ScrollLinkCard}"
+        IconMiniLink="{StaticResource IconMiniLink}"
         TextLink="{StaticResource TextLink}"
         Feed="{StaticResource feed}"
         FeedImageText="{StaticResource Article}"
         ImageText="{StaticResource ImageText}"
+        ImageIcon="{StaticResource ImageIcon}"
         QuestionFeed="{StaticResource Question}"
         User="{StaticResource UserList}"
         Histroy="{StaticResource History}"
-        HistroyIcon="{StaticResource HistoryIcon}"
-        Text="{StaticResource Text}"/>
+        Text="{StaticResource Text}"
+        List="{StaticResource List}"/>
 
     <!--一级卡片-->
     
@@ -187,9 +190,11 @@
     <DataTemplate x:Key="TextLinkListCard" x:DataType="models:IndexPageHasEntitiesModel">
         <StackPanel Margin="8">
             <ListViewItem
+                x:Name="Title"
                 HorizontalContentAlignment="Stretch"
                 KeyDown="ListViewItem_KeyDown"
                 Style="{StaticResource FixedListViewItemStyle}"
+                x:Load="{x:Bind ShowTitle}"
                 Tag="{x:Bind}"
                 Tapped="Grid_Tapped">
                 <Grid
@@ -232,6 +237,53 @@
 
     <DataTemplate x:Key="ImageTextScrollCard" x:DataType="models:IndexPageHasEntitiesModel">
         <StackPanel Margin="8">
+            <ListViewItem
+                x:Name="Title"
+                HorizontalContentAlignment="Stretch"
+                Style="{StaticResource FixedListViewItemStyle}"
+                x:Load="{x:Bind ShowTitle}"
+                Tag="{x:Bind}"
+                Tapped="Grid_Tapped">
+                <Grid
+                    Padding="8,0"
+                    HorizontalAlignment="Stretch">
+                    <TextBlock
+                        x:Name="titleText"
+                        VerticalAlignment="Center"
+                        x:Load="{x:Bind Title, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
+                        FontSize="16"
+                        Text="{x:Bind Title}"/>
+                    <SymbolIcon
+                        x:Name="forwardSymbol"
+                        HorizontalAlignment="Right"
+                        x:Load="{x:Bind Url, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
+                        Symbol="Forward"/>
+                </Grid>
+            </ListViewItem>
+            <winui:ItemsRepeaterScrollHost
+                x:Name="Entities"
+                x:Load="{x:Bind ShowEntities}">
+                <ScrollViewer
+                    HorizontalScrollBarVisibility="Auto"
+                    HorizontalScrollMode="Auto"
+                    VerticalScrollMode="Disabled">
+                    <winui:ItemsRepeater
+                        ItemTemplate="{StaticResource ThTemplateSelector}"
+                        ItemsSource="{x:Bind Entities}">
+                        <winui:ItemsRepeater.Layout>
+                            <winui:StackLayout Orientation="Horizontal"/>
+                        </winui:ItemsRepeater.Layout>
+                    </winui:ItemsRepeater>
+                </ScrollViewer>
+            </winui:ItemsRepeaterScrollHost>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ScrollCardWithBackColor" x:DataType="models:IndexPageHasEntitiesModel">
+        <StackPanel
+            Margin="8"
+            CornerRadius="8"
+            Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
             <ListViewItem
                 x:Name="Title"
                 HorizontalContentAlignment="Stretch"
@@ -381,6 +433,58 @@
         </ListViewItem>
     </DataTemplate>
 
+    <DataTemplate x:Key="List" x:DataType="models:IndexPageModel">
+        <ListViewItem
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource AppListViewItemStyle}"
+            Tag="{x:Bind Url}"
+            Tapped="Grid_Tapped">
+            <Grid Padding="4,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="56"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Ellipse
+                    Grid.RowSpan="3"
+                    Width="40"
+                    Height="40"
+                    Margin="8"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind Pic.Pic, Mode=OneWay}"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Text="{x:Bind Title}"/>
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Text="{x:Bind SubTitle}"/>
+                </StackPanel>
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Text="{x:Bind Description}"
+                    MaxLines="2"
+                    TextWrapping="Wrap"/>
+            </Grid>
+        </ListViewItem>
+    </DataTemplate>
+
     <DataTemplate x:Key="TextLink" x:DataType="models:IndexPageModel">
         <ListViewItem
             Margin="4,0"
@@ -390,6 +494,7 @@
             Tapped="Grid_Tapped">
             <StackPanel
                 Padding="10"
+                CornerRadius="4"
                 Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                 Orientation="Horizontal">
                 <Image
@@ -401,6 +506,36 @@
                     Text="{x:Bind Title}"
                     TextWrapping="Wrap"/>
             </StackPanel>
+        </ListViewItem>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Link" x:DataType="models:IndexPageModel">
+        <ListViewItem
+            Margin="4,0"
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource FixedListViewItemStyle}"
+            Tag="{x:Bind}"
+            Tapped="Grid_Tapped">
+            <Grid
+                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
+                <Image
+                    MaxWidth="160"
+                    MaxHeight="65"
+                    Stretch="UniformToFill"
+                    Source="{x:Bind Pic.Pic, Mode=OneWay}"/>
+                <StackPanel
+                    Padding="10"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom">
+                    <TextBlock
+                        Margin="8,0"
+                        Text="{x:Bind Title}"
+                        TextWrapping="Wrap"/>
+                </StackPanel>
+            </Grid>
         </ListViewItem>
     </DataTemplate>
 
@@ -463,10 +598,98 @@
                                 TextAlignment="Left"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="Wrap"/>
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                Foreground="White"
+                                MaxLines="1"
+                                Text="{x:Bind SubTitle}"
+                                TextAlignment="Left"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="Wrap"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </Border>
+        </ListViewItem>
+    </DataTemplate>
+
+    <DataTemplate x:Key="IconMiniLink" x:DataType="models:IndexPageModel">
+        <ListViewItem
+            Margin="4,0"
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource FixedListViewItemStyle}"
+            Tag="{x:Bind Url}"
+            Tapped="Grid_Tapped">
+            <Border
+                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                BorderThickness="0"
+                CornerRadius="8">
+                <StackPanel
+                    Orientation="Horizontal"
+                    Padding="4">
+                    <Border
+                        Width="18"
+                        Height="18"
+                        Margin="4"
+                        CornerRadius="4">
+                        <Image Source="{x:Bind Pic.Pic, Mode=OneWay}"/>
+                    </Border>
+                    <StackPanel
+                        Margin="2"
+                        Orientation="Vertical"
+                        VerticalAlignment="Center">
+                        <TextBlock
+                            HorizontalAlignment="Left"
+                            Foreground="White"
+                            MaxLines="1"
+                            Text="{x:Bind Title}"
+                            TextAlignment="Left"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="Wrap"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </ListViewItem>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ImageIcon" x:DataType="models:IndexPageModel">
+        <ListViewItem
+            Margin="4,0"
+            Width="72"
+            KeyDown="ListViewItem_KeyDown"
+            Style="{StaticResource FixedListViewItemStyle}"
+            Tag="{x:Bind Url}"
+            Tapped="Grid_Tapped">
+            <Grid
+                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
+                <Image
+                    VerticalAlignment="Top"
+                    Source="{x:Bind Pic.Pic, Mode=OneWay}"
+                    Stretch="Fill"/>
+                <StackPanel
+                    Padding="2"
+                    VerticalAlignment="Bottom"
+                    CornerRadius="1">
+                    <StackPanel.Background>
+                        <AcrylicBrush
+                            BackgroundSource="Backdrop"
+                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintColor="{x:Bind Pic.BackgroundColor, Mode=OneWay}"
+                            TintOpacity="0.4"/>
+                    </StackPanel.Background>
+
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Foreground="White"
+                        MaxLines="1"
+                        Text="{x:Bind Title}"
+                        TextAlignment="Center"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="Wrap"/>
+                </StackPanel>
+            </Grid>
         </ListViewItem>
     </DataTemplate>
 
@@ -551,7 +774,7 @@
                     <TextBlock
                         HorizontalAlignment="Center"
                         Foreground="White"
-                        MaxLines="2"
+                        MaxLines="1"
                         Text="{x:Bind Title}"
                         TextAlignment="Center"
                         TextTrimming="CharacterEllipsis"
@@ -580,8 +803,6 @@
             Tag="{x:Bind}"
             Tapped="Grid_Tapped">
             <Grid
-                MaxWidth="260"
-                MaxHeight="118"
                 Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
                 BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                 BorderThickness="1"
@@ -589,7 +810,7 @@
                 <Image
                     VerticalAlignment="Top"
                     Source="{x:Bind Pic.Pic, Mode=OneWay}"
-                    Stretch="UniformToFill"/>
+                    Stretch="Fill"/>
                 <StackPanel
                     Margin="0,32,0,0"
                     Padding="0,4"
@@ -606,64 +827,6 @@
                         TextWrapping="Wrap"/>
                 </StackPanel>
             </Grid>
-        </ListViewItem>
-    </DataTemplate>
-
-    <DataTemplate x:Key="HistoryIcon" x:DataType="models:IndexPageModel">
-        <ListViewItem
-            MaxWidth="72"
-            Margin="4,0"
-            KeyDown="ListViewItem_KeyDown"
-            Style="{StaticResource FixedListViewItemStyle}"
-            Tag="{x:Bind Url}"
-            Tapped="Grid_Tapped">
-            <Border
-                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                BorderThickness="1"
-                CornerRadius="8">
-                <Border.Background>
-                    <ImageBrush
-                        ImageSource="{x:Bind Pic.Pic, Mode=OneWay}"
-                        Stretch="Fill"/>
-                </Border.Background>
-                <StackPanel Padding="4">
-                    <StackPanel.Background>
-                        <AcrylicBrush
-                            BackgroundSource="Backdrop"
-                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
-                            TintColor="{x:Bind Pic.BackgroundColor, Mode=OneWay}"
-                            TintOpacity="0.5"/>
-                    </StackPanel.Background>
-
-                    <Border
-                        Width="36"
-                        Height="36"
-                        Margin="4"
-                        CornerRadius="4">
-                        <Image Source="{x:Bind Pic.Pic, Mode=OneWay}"/>
-                    </Border>
-
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        Foreground="White"
-                        MaxLines="1"
-                        Text="{x:Bind Title}"
-                        TextAlignment="Center"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="Wrap"/>
-
-                    <TextBlock
-                        x:Name="subTitle"
-                        HorizontalAlignment="Center"
-                        x:Load="{x:Bind SubTitle, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
-                        Foreground="White"
-                        MaxLines="1"
-                        Text="{x:Bind SubTitle}"
-                        TextAlignment="Center"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="Wrap"/>
-                </StackPanel>
-            </Border>
         </ListViewItem>
     </DataTemplate>
 

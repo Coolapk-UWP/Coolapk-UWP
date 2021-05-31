@@ -88,38 +88,38 @@ namespace CoolapkUWP.ViewModels.IndexPage
                         switch (v1.Value<string>())
                         {
                             case "feed": return new FeedModel(jo, isHotFeedPage ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
-                            case "imageTextGridCard":
                             case "imageSquareScrollCard":
                             case "iconScrollCard":
                             case "iconGridCard":
                             case "feedScrollCard":
                             case "imageTextScrollCard":
-                            case "iconMiniLinkGridCard":
-                            case "iconMiniGridCard":
                             case "colorfulFatScrollCard":
                             case "colorfulScrollCard":
                             case "iconLongTitleGridCard":
                             case "linkCard":
-                            case "apkListCard":
+                            case "iconButtonGridCard":
                             case "apkScrollCardWithBackground":
                             case "imageScrollCard":
                             case "apkScrollCard":
                             //case "iconListCard":
                             //case "listCard":
-                            case "feedListCard":
                             case "gridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
+                            case "iconMiniLinkGridCard":
+                            case "iconMiniGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.ScrollLink);
                             //case "listCard": //return new IndexPageHasEntitiesModel(jo, EntityType.Others);
                             case "headCard":
                             case "imageCarouselCard_1": //return new IndexPageHasEntitiesViewModel(jo, EntitiesType.Image_1);
-                            case "imageCard":
+                            case "imageCard": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
                             //case "apkImageCard":
-                            case "iconButtonGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
                             case "configCard":
                                 return jo.TryGetValue("url", out JToken v2) && v2.ToString().Length >= 5
                                     ? new IndexPageHasEntitiesModel(jo, EntityType.IconLink)
                                     : null;
                             case "iconLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.IconLink);
                             case "feedGroupListCard":
+                            case "feedListCard":
+                            case "imageTextGridCard":
+                            case "apkListCard":
                             case "textLinkListCard": return new IndexPageHasEntitiesModel(jo, EntityType.TextLinks);
                             case "textCard":
                             case "messageCard": return new IndexPageMessageCardModel(jo);

@@ -106,7 +106,9 @@ namespace CoolapkUWP.Controls
                     {
                         case '<':
                             {
-                                string content = item.Substring(item.IndexOf('>') + 1, item.LastIndexOf('<') - item.IndexOf('>') - 1);
+                                string content;
+                                try { content = item.Substring(item.IndexOf('>') + 1, item.LastIndexOf('<') - item.IndexOf('>') - 1); }
+                                catch (ArgumentOutOfRangeException) { content = ""; }
                                 string href = string.Empty;
                                 Regex hrefRegex = new Regex("href*?=*?\"(\\S|\\s)+?\"");
                                 if (hrefRegex.IsMatch(item))

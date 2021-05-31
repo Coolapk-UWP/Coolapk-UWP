@@ -23,6 +23,7 @@ namespace CoolapkUWP.Controls
         public DataTemplate TextLinkList { get; set; }
         public DataTemplate IconLinks { get; set; }
         public DataTemplate ImageTextScrollCard { get; set; }
+        public DataTemplate ScrollCardWithBackColor { get; set; }
         public DataTemplate TabLinkCard { get; set; }
         public DataTemplate SelectorLinkCard { get; set; }
 
@@ -48,6 +49,7 @@ namespace CoolapkUWP.Controls
                     case EntityType.Image: return Images;
                     case EntityType.IconLink: return IconLinks;
                     case EntityType.TextLinks: return TextLinkList;
+                    case EntityType.ScrollLink: return ScrollCardWithBackColor;
                     case EntityType.Others:
                     default: return ImageTextScrollCard;
                 }
@@ -79,12 +81,15 @@ namespace CoolapkUWP.Controls
         public DataTemplate QuestionFeed { get; set; }
         public DataTemplate TextLink { get; set; }
         public DataTemplate ScrollLinkCard { get; set; }
+        public DataTemplate IconMiniLink { get; set; }
+        public DataTemplate ImageIcon { get; set; }
         public DataTemplate Feed { get; set; }
         public DataTemplate User { get; set; }
         public DataTemplate Text { get; set; }
+        public DataTemplate Link { get; set; }
         public DataTemplate CoolPic { get; set; }
         public DataTemplate Histroy { get; set; }
-        public DataTemplate HistroyIcon { get; set; }
+        public DataTemplate List { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
@@ -93,27 +98,38 @@ namespace CoolapkUWP.Controls
                 return f.IsQuestionFeed ? QuestionFeed : f.ShowMessageTitle ? FeedImageText : f.IsCoolPictuers ? CoolPic : Feed;
             }
             else if (item is UserModel) { return User; }
-            else
+            else if (item is IndexPageModel)
             {
                 switch ((item as IndexPageModel)?.EntityType ?? string.Empty)
                 {
                     case "imageSquare":
                     case "icon":
                     case "iconMiniLink":
+                    case "recentHistory":
                     case "iconMini":
-                    case "IconLink": return IconLink;
+                    case "IconLink":
                     case "dyh":
                     case "apk":
                     case "appForum":
-                    case "product": return ScrollLinkCard;
                     case "picCategory":
+                    case "product":
                     case "entity":
-                    case "image":
-                    case "topic": return SquareLinkCard;
-                    case "link":
+                    case "topic":
+                        switch ((item as IndexPageModel).EntityForward)
+                        {
+                            case "iconMiniLinkGridCard":
+                            case "iconMiniGridCard": return IconMiniLink;
+                            case "imageSquareScrollCard": return SquareLinkCard;
+                            case "colorfulFatScrollCard": return ScrollLinkCard;
+                            case "apkListCard":
+                            case "feedListCard": return List;
+                            default: return IconLink;
+                        }
+                    case "iconButton":
+                    case "link": return Link;
                     case "textLink": return TextLink;
+                    case "image": return ImageIcon;
                     case "imageText": return ImageText;
-                    case "recentHistory": return HistroyIcon;
                     case "collection":
                     case "history": return Histroy;
                     case "hot": return Text;

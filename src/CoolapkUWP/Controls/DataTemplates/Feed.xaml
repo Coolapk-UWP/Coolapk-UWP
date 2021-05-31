@@ -31,6 +31,7 @@
         <ListViewItem
             Margin="8"
             DataContext="{x:Bind}"
+            MaxWidth="800"
             KeyDown="{x:Bind local:Feed.ListViewItem_KeyDown}"
             RightTapped="{x:Bind local:Feed.ListViewItem_RightTapped}"
             Style="{StaticResource FixedListViewItemStyle}"

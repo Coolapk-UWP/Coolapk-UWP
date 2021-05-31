@@ -36,7 +36,7 @@
             <local:SecondaryTemplateSelector
                 x:Key="sectem"
                 Histroy="{StaticResource History}"
-                HistroyIcon="{StaticResource HistoryIcon}"
+                IconLink="{StaticResource IconLink}"
                 Null="{StaticResource null}"
                 TextLink="{StaticResource TextLink}"/>
 

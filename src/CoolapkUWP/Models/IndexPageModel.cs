@@ -14,6 +14,7 @@ namespace CoolapkUWP.Models
     internal class IndexPageModel : Entity, IHasUriAndTitle
     {
         public string EntityTemplate { get; private set; }
+        public string EntityForward { get; private set; }
         public string Title { get; private set; }
         public string SubTitle { get; private set; }
         public string Url { get; private set; }
@@ -25,6 +26,10 @@ namespace CoolapkUWP.Models
             if (token.TryGetValue("entityTemplate", out JToken v1))
             {
                 EntityTemplate = v1.ToString();
+            }
+            else if (token.TryGetValue("entityForward", out JToken v3))
+            {
+                EntityForward = v3.ToString();
             }
             if (token.TryGetValue("title", out JToken v2) && !string.IsNullOrEmpty(v2.ToString()))
             {
@@ -38,6 +43,34 @@ namespace CoolapkUWP.Models
             {
                 SubTitle = v10.ToString();
             }
+            else if (token.TryGetValue("hot_num_txt", out JToken hot_num_txt) && !string.IsNullOrEmpty(hot_num_txt.ToString()))
+            {
+                SubTitle = hot_num_txt.ToString() + "热度";
+            }
+            else if (token.TryGetValue("link_tag", out JToken link_tag) && !string.IsNullOrEmpty(link_tag.ToString()))
+            {
+                SubTitle = link_tag.ToString();
+            }
+            else if (token.TryGetValue("apkTypeName", out JToken apkTypeName) && !string.IsNullOrEmpty(apkTypeName.ToString()))
+            {
+                SubTitle = apkTypeName.ToString();
+            }
+            else if (token.TryGetValue("keywords", out JToken keywords) && !string.IsNullOrEmpty(keywords.ToString()))
+            {
+                SubTitle = keywords.ToString();
+            }
+            else if (token.TryGetValue("catName", out JToken catName) && !string.IsNullOrEmpty(catName.ToString()))
+            {
+                SubTitle = catName.ToString();
+            }
+            else if (token.TryGetValue("rss_type", out JToken rss_type) && !string.IsNullOrEmpty(rss_type.ToString()))
+            {
+                SubTitle = rss_type.ToString();
+            }
+            else if (token.TryGetValue("description", out JToken description) && !string.IsNullOrEmpty(description.ToString()))
+            {
+                SubTitle = description.ToString();
+            }
             if (token.TryGetValue("video_playback_url", out JToken v0) && !string.IsNullOrEmpty(v0.ToString()))
             {
                 Url = v0.ToString();
@@ -49,6 +82,34 @@ namespace CoolapkUWP.Models
             if (token.TryGetValue("description", out JToken v4) && !string.IsNullOrEmpty(v4.ToString()))
             {
                 Description = v4.ToString();
+            }
+            else if (token.TryGetValue("release_time", out JToken release_time) && !string.IsNullOrEmpty(release_time.ToString()))
+            {
+                Description = "发布日期：" + release_time.ToString();
+            }
+            else if (token.TryGetValue("link_tag", out JToken link_tag) && !string.IsNullOrEmpty(link_tag.ToString()))
+            {
+                Description = link_tag.ToString();
+            }
+            else if (token.TryGetValue("hot_num_txt", out JToken hot_num_txt) && !string.IsNullOrEmpty(hot_num_txt.ToString()))
+            {
+                Description = hot_num_txt.ToString() + "热度";
+            }
+            else if (token.TryGetValue("keywords", out JToken keywords) && !string.IsNullOrEmpty(keywords.ToString()))
+            {
+                Description = keywords.ToString();
+            }
+            else if (token.TryGetValue("catName", out JToken catName) && !string.IsNullOrEmpty(catName.ToString()))
+            {
+                Description = catName.ToString();
+            }
+            else if (token.TryGetValue("apkTypeName", out JToken apkTypeName) && !string.IsNullOrEmpty(apkTypeName.ToString()))
+            {
+                Description = apkTypeName.ToString();
+            }
+            else if (token.TryGetValue("rss_type", out JToken rss_type) && !string.IsNullOrEmpty(rss_type.ToString()))
+            {
+                Description = rss_type.ToString();
             }
             else if (token.TryGetValue("subTitle", out JToken v9) && !string.IsNullOrEmpty(v9.ToString()))
             {
@@ -135,6 +196,7 @@ namespace CoolapkUWP.Models
         public string Url { get; private set; }
         public bool ShowTitle { get; private set; }
         public bool ShowEntities { get; private set; }
+        public string EntityTemplate { get; private set; }
         public string Description { get; private set; }
         public ImmutableArray<Entity> Entities { get; private set; }
 
@@ -153,11 +215,16 @@ namespace CoolapkUWP.Models
             {
                 Description = v4.ToString();
             }
+            if (token.TryGetValue("entityTemplate", out JToken v5) && !string.IsNullOrEmpty(v5.ToString()))
+            {
+                EntityTemplate = v5.ToString();
+            }
             if (token.TryGetValue("entities", out JToken v7) && (v7 as JArray).Count > 0)
             {
                 ImmutableArray<Entity>.Builder buider = ImmutableArray.CreateBuilder<Entity>();
                 foreach (JObject item in v7 as JArray)
                 {
+                    item.Property("entityType").AddAfterSelf(new JProperty("entityForward", EntityTemplate));
                     switch (item.Value<string>("entityType"))
                     {
                         case "feed":

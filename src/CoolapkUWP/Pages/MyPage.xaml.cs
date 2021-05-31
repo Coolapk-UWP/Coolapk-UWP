@@ -258,11 +258,14 @@ namespace CoolapkUWP.Pages
                     break;
 
                 case "follow":
-                    Frame.Navigate(typeof(UserListPage), new ViewModels.UserListPage.ViewModel(SettingsHelper.Get<string>(SettingsHelper.Uid), true, "我"));
+                    _ = Frame.Navigate(typeof(UserListPage), new ViewModels.UserListPage.ViewModel(SettingsHelper.Get<string>(SettingsHelper.Uid), true, "我"));
                     break;
 
                 case "fans":
-                    Frame.Navigate(typeof(UserListPage), new ViewModels.UserListPage.ViewModel(SettingsHelper.Get<string>(SettingsHelper.Uid), false, "我"));
+                    _ = Frame.Navigate(typeof(UserListPage), new ViewModels.UserListPage.ViewModel(SettingsHelper.Get<string>(SettingsHelper.Uid), false, "我"));
+                    break;
+
+                default:
                     break;
             }
         }
@@ -375,7 +378,7 @@ namespace CoolapkUWP.Pages
     {
         public DataTemplate Null { get; set; }
         public DataTemplate Histroy { get; set; }
-        public DataTemplate HistroyIcon { get; set; }
+        public DataTemplate IconLink { get; set; }
         public DataTemplate TextLink { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item)
@@ -383,7 +386,7 @@ namespace CoolapkUWP.Pages
             switch ((item as IndexPageModel)?.EntityType)
             {
                 case "topic":
-                case "recentHistory": return HistroyIcon;
+                case "recentHistory": return IconLink;
                 case "textLink": return TextLink;
                 case "collection":
                 case "history": return Histroy;
