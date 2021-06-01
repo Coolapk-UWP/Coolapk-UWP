@@ -51,6 +51,7 @@ namespace CoolapkUWP.Control.ViewModels
                     entities = models.ToArray();
                 }
             }
+            hasHead = hasTitle || hasUrl;
             GetPic(token);
         }
 
@@ -78,6 +79,7 @@ namespace CoolapkUWP.Control.ViewModels
         public bool hasDescription { get; private set; }
         public string description { get; private set; }
         public bool hasPic { get; private set; }
+        public bool hasHead { get; private set; }
         public ImageSource pic
         {
             get => pic1;

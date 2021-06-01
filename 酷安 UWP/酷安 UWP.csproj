@@ -138,6 +138,9 @@
     <Compile Include="Data\ImageCache.cs" />
     <Compile Include="Data\NotificationsNum.cs" />
     <Compile Include="Data\TileManager.cs" />
+    <Compile Include="Data\ValueConverters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Data\ValueConverters\HasValueConverter.cs" />
+    <Compile Include="Data\ValueConverters\TrueToFalseConverter.cs" />
     <Compile Include="Pages\AppPages\AppRecommendPage.xaml.cs">
       <DependentUpon>AppRecommendPage.xaml</DependentUpon>
     </Compile>
@@ -209,6 +212,16 @@
     <Content Include="Assets\BadgeLogo.scale-150.png" />
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\BadgeLogo.scale-400.png" />
+    <Content Include="Assets\Emoji\[yyds].png" />
+    <Content Include="Assets\Emoji\[下次一定].png" />
+    <Content Include="Assets\Emoji\[列文虎克].png" />
+    <Content Include="Assets\Emoji\[夏阁艾迪剑].png" />
+    <Content Include="Assets\Emoji\[头条通知书].png" />
+    <Content Include="Assets\Emoji\[感知不强].png" />
+    <Content Include="Assets\Emoji\[真正的音乐].png" />
+    <Content Include="Assets\Emoji\[给我整一个].png" />
+    <Content Include="Assets\Emoji\[酷安土豆].png" />
+    <Content Include="Assets\Emoji\[针不错].png" />
     <Content Include="Assets\img_placeholder.png" />
     <Content Include="Assets\img_placeholder_night.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />

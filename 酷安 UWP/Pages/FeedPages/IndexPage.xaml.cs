@@ -22,13 +22,13 @@ namespace CoolapkUWP.Pages.FeedPages
     /// </summary>
     public sealed partial class IndexPage : Page
     {
-        int page = 0;
-        List<int> pages = new List<int>();
-        string pageUrl;
-        ObservableCollection<Entity> Collection = new ObservableCollection<Entity>();
-        int index;
-        List<string> urls = new List<string>();
-        ObservableCollection<ObservableCollection<Entity>> Feeds2 = new ObservableCollection<ObservableCollection<Entity>>();
+        private int page = 0;
+        private readonly List<int> pages = new List<int>();
+        private string pageUrl;
+        private readonly ObservableCollection<Entity> Collection = new ObservableCollection<Entity>();
+        private int index;
+        private readonly List<string> urls = new List<string>();
+        private readonly ObservableCollection<ObservableCollection<Entity>> Feeds2 = new ObservableCollection<ObservableCollection<Entity>>();
 
         public IndexPage() => this.InitializeComponent();
 
@@ -47,14 +47,14 @@ namespace CoolapkUWP.Pages.FeedPages
             pageUrl = GetUri(pageUrl);
             index = -1;
             GetUrlPage();
-            Task.Run(async () =>
-            {
-                await Task.Delay(1000);
-                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
-                    (VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
-                });
-            });
+            _ = Task.Run(async () =>
+              {
+                  await Task.Delay(1000);
+                  await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                  {
+                      (VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
+                  });
+              });
         }
 
         private string GetUri(string uri)
@@ -76,26 +76,25 @@ namespace CoolapkUWP.Pages.FeedPages
             return uri.Replace("#", "%23");
         }
 
-        async void GetUrlPage(int p = -1)
+        private async void GetUrlPage(int p = -1)
         {
             if (index == -1)
             {
-                if (!await GetUrlPage(p == -1 ? ++page : p, pageUrl, Collection))
-                    page--;
+                try { if (!await GetUrlPage(p == -1 ? ++page : p, pageUrl, Collection)) { page--; } } catch { }
             }
             else if (p == -1)
             {
-                if (!await GetUrlPage(page = p == -1 ? ++pages[index] : p, urls[index], Feeds2[index]))
-                    pages[index]--;
+                if (!await GetUrlPage(page = p == -1 ? ++pages[index] : p, urls[index], Feeds2[index])) { pages[index]--; }
             }
         }
 
-        async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
+        private async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
         {
             Tools.ShowProgressBar();
             string s = await Tools.GetJson($"{url}{(url.Contains("?") ? "&" : "?")}page={page}");
             JsonArray Root = Tools.GetDataArray(s);
             if (Root != null && Root.Count > 0)
+            {
                 if (page == 1)
                 {
                     int n = 0;
@@ -105,8 +104,7 @@ namespace CoolapkUWP.Pages.FeedPages
                                                from c in Root
                                                where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
                                                select b).ToArray();
-                        foreach (var item in needDeleteItems)
-                            Collection.Remove(item);
+                        foreach (var item in needDeleteItems) { Collection.Remove(item); }
                         n = (from b in FeedsCollection
                              where b.entityFixed
                              select b).Count();
@@ -142,10 +140,12 @@ namespace CoolapkUWP.Pages.FeedPages
                         return false;
                     }
                 }
+            }
+
             return false;
         }
 
-        Entity GetEntity(JsonObject token)
+        private Entity GetEntity(JsonObject token)
         {
             switch (token["entityType"].GetString())
             {
@@ -166,9 +166,13 @@ namespace CoolapkUWP.Pages.FeedPages
             if (!e.IsIntermediate)
             {
                 if (Collection.Count != 0)
+                {
                     if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
+                    {
                         //if (string.IsNullOrEmpty(pageUrl)) GetIndexPage(++page);
                         GetUrlPage();
+                    }
+                }
             }
         }
 
@@ -186,10 +190,10 @@ namespace CoolapkUWP.Pages.FeedPages
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
             FrameworkElement element = sender as FrameworkElement;
-            if (element.Tag is string s) Tools.OpenLink(s);
+            if (element.Tag is string s) { Tools.OpenLink(s); }
             else if (element.Tag is IndexPageViewModel m)
             {
-                if (string.IsNullOrEmpty(m.url)) return;
+                if (string.IsNullOrEmpty(m.url)) { return; }
                 string str = m.url;
                 if (str.IndexOf("/page") == 0)
                 {
@@ -197,8 +201,8 @@ namespace CoolapkUWP.Pages.FeedPages
                     str += $"&title={m.title}";
                     Tools.Navigate(typeof(IndexPage), new object[] { str, false, null });
                 }
-                else if (str.IndexOf('#') == 0) Tools.Navigate(typeof(IndexPage), new object[] { $"{str}&title={m.title}", false, null });
-                else Tools.OpenLink(str);
+                else if (str.IndexOf('#') == 0) { Tools.Navigate(typeof(IndexPage), new object[] { $"{str}&title={m.title}", false, null }); }
+                else { Tools.OpenLink(str); }
             }
         }
 
@@ -211,8 +215,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 var needDeleteItems = (from b in feeds
                                        where b.entityType == "feed"
                                        select b).ToArray();
-                foreach (var item in needDeleteItems)
-                    feeds.Remove(item);
+                foreach (var item in needDeleteItems) { feeds.Remove(item); }
                 urls[0] = $"/page/dataList?url={model.url}&title={model.title}";
                 urls[0] = urls[0].Replace("#", "%23");
                 pages[0] = 0;
@@ -224,8 +227,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 var needDeleteItems = (from b in feeds
                                        where b.entityType == "topic"
                                        select b).ToArray();
-                foreach (var item in needDeleteItems)
-                    feeds.Remove(item);
+                foreach (var item in needDeleteItems) { feeds.Remove(item); }
                 pageUrl = $"/page/dataList?url={model.url}&title={model.title}";
                 pageUrl = pageUrl.Replace("#", "%23");
                 page = 0;
@@ -249,7 +251,7 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 Entity[] f = element.Tag as Entity[];
                 Style style = new Style(typeof(ListViewItem));
-                style.Setters.Add(new Setter(TemplateProperty, Application.Current.Resources["ListViewItemTemplate1"] as ControlTemplate));
+                style.Setters.Add(new Setter(TemplateProperty, Windows.UI.Xaml.Application.Current.Resources["ListViewItemTemplate1"] as ControlTemplate));
                 for (int j = 0; j < f.Length; j++)
                 {
                     IndexPageViewModel model = f[j] as IndexPageViewModel;
@@ -274,7 +276,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     pages.Add(1);
                     Feeds2.Add(ff);
                     urls.Add("/page/dataList?url=" + model.url.Replace("#", "%23") + $"&title={model.title}");
-                    if (j == 0) load(element, i);
+                    if (j == 0) { load(element, i); }
                 }
                 return;
             }
@@ -282,7 +284,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e) => load(sender as Pivot);
 
-        void load(Pivot element, PivotItem i = null)
+        private void load(Pivot element, PivotItem i = null)
         {
             PivotItem item = i is null ? element.SelectedItem as PivotItem : i;
             IndexPageViewModel model = item.Tag as IndexPageViewModel;

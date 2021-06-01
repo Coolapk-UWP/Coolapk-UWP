@@ -16,9 +16,29 @@
                 <control:DatatemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate x:Key="UserDetail" x:DataType="local:UserDetail">
-                <Border x:Name="UserDetailBorder" MinHeight="200"
-                        Background="{x:Bind Background,Mode=OneWay}" Tag="{x:Bind BackgroundUrl}" Tapped="UserDetailBorder_Tapped">
-                    <Grid Background="#99000000" VerticalAlignment="Bottom" x:Name="UserDetailGrid">
+                <Border
+                    x:Name="UserDetailBorder"
+                    Margin="8"
+                    CornerRadius="8"
+                    Tag="{x:Bind BackgroundUrl}"
+                    Tapped="UserDetailBorder_Tapped"
+                    SizeChanged="{x:Bind local:FeedListPage.UserDetailBorder_SizeChanged}">
+                    <Border.Background>
+                        <ImageBrush
+                            ImageSource="{x:Bind Background.Pic,Mode=OneWay}"
+                            Stretch="UniformToFill"/>
+                    </Border.Background>
+                    <Grid
+                        Padding="0,4"
+                        VerticalAlignment="Bottom"
+                        x:Name="UserDetailGrid">
+                        <Grid.Background>
+                            <AcrylicBrush
+                                BackgroundSource="Backdrop"
+                                TintColor="{x:Bind Background.BackgroundColor, Mode=OneWay}"
+                                FallbackColor="#99000000"
+                                TintOpacity="0.6"/>
+                        </Grid.Background>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>

@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Control.ViewModels;
+﻿using CoolapkUWP.Control;
+using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
 using CoolapkUWP.Pages.FeedPages;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
@@ -305,5 +306,10 @@ namespace CoolapkUWP.Pages
             }
         }
 
+        internal static void TextBlockEx_RichTextBlockLoaded(object sender, EventArgs e)
+        {
+            MTextBlock b = (MTextBlock)sender;
+            b.MaxLine = 2;
+        }
     }
 }

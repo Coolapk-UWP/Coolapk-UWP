@@ -72,7 +72,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         Logintime = $"{Tools.ConvertTime(detail["logintime"].GetNumber())}活跃",
                         FeedNum = detail["feed"].GetNumber(),
                         UserFace = await ImageCache.GetImage(ImageType.SmallAvatar, detail["userSmallAvatar"].GetString()),
-                        Background = new ImageBrush { ImageSource = await ImageCache.GetImage(ImageType.OriginImage, detail["cover"].GetString()), Stretch = Stretch.UniformToFill }
+                        Background = new BackgroundImageViewModel(detail["cover"].GetString(), ImageType.OriginImage),
                     };
                 }
                 else return null;
@@ -384,6 +384,12 @@ namespace CoolapkUWP.Pages.FeedPages
                 Refresh();
             }
         }
+
+        internal static void UserDetailBorder_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Border b = sender as Border;
+            b.Height = e.NewSize.Width <= 400 ? e.NewSize.Width : 400;
+        }
     }
     class UserDetail
     {
@@ -396,7 +402,7 @@ namespace CoolapkUWP.Pages.FeedPages
         public double Level;
         public string Bio;
         public string BackgroundUrl;
-        public ImageBrush Background;
+        public BackgroundImageViewModel Background;
         public string Verify_title;
         public string Gender;
         public string City;
