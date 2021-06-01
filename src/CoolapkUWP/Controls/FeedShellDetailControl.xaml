@@ -18,6 +18,15 @@
             </ResourceDictionary.MergedDictionaries>
             <converter:TrueToFalseConverter x:Key="TrueToFalseConverter"/>
             <converter:HasValueConverter x:Key="HasValueConverter"/>
+            <Style
+                x:Key="FeedOpButtonStyle"
+                BasedOn="{StaticResource ButtonRevealStyle}"
+                TargetType="Button">
+                <Setter Property="Height" Value="34"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="Grid.Row" Value="10"/>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -176,26 +185,41 @@
             </StackPanel>
         </StackPanel>
 
-        <Button
-            x:Name="moreButton"
+        <StackPanel
             Grid.Row="3"
-            Height="32"
-            HorizontalAlignment="Right"
-            Style="{StaticResource IconButtonStyle}">
-            <SymbolIcon Symbol="More"/>
-            <Button.Flyout>
-                <MenuFlyout>
-                    <MenuFlyoutItem
-                        x:Name="reportButton"
-                        x:Uid="/Feed/report"
-                        Click="Button_Click"/>
-                    <ToggleMenuFlyoutItem
-                        x:Name="copyButton"
-                        x:Uid="/Feed/Copy"
-                        IsChecked="{x:Bind FeedDetail.IsCopyEnabled, Mode=TwoWay}"/>
-                </MenuFlyout>
-            </Button.Flyout>
-        </Button>
+            Margin="8"
+            Orientation="Horizontal"
+            HorizontalAlignment="Right">
+            <Button
+                x:Name="makeReplyButton"
+                Click="Button_Click"
+                Style="{StaticResource FeedOpButtonStyle}"
+                Tag="{x:Bind}"
+                ToolTipService.ToolTip="回复">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Symbol="Comment"/>
+                </StackPanel>
+            </Button>
+            <Button
+                x:Name="moreButton"
+                Height="32"
+                Style="{StaticResource IconButtonStyle}"
+                ToolTipService.ToolTip="更多">
+                <SymbolIcon Symbol="More"/>
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem
+                            x:Name="reportButton"
+                            x:Uid="/Feed/report"
+                            Click="Button_Click"/>
+                        <ToggleMenuFlyoutItem
+                            x:Name="copyButton"
+                            x:Uid="/Feed/Copy"
+                            IsChecked="{x:Bind FeedDetail.IsCopyEnabled, Mode=TwoWay}"/>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+        </StackPanel>
 
         <local:TextBlockEx
             x:Name="feedArticlePresenter"
@@ -385,6 +409,7 @@
             x:Load="False"
             FeedId="{x:Bind FeedDetail.Id, Mode=OneWay}"
             MakeFeedMode="Reply"
+            Visibility="Collapsed"
             MakedFeedSuccessful="makeFeed_MakedFeedSuccessful"/>
     </Grid>
 </UserControl>

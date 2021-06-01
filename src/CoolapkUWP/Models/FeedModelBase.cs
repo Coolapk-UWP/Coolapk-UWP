@@ -3,7 +3,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace CoolapkUWP.Models
 {
@@ -135,9 +137,10 @@ namespace CoolapkUWP.Models
                 if (ShowExtraUrl)
                 {
                     ExtraUrl = token.Value<string>("extra_url");
-                    if (ExtraUrl.Contains("ithome"))
+                    if (ExtraUrl.Contains("ithome") && ExtraUrl.Contains("qcontent"))
                     {
-                        Uri uri = new Uri("https://qapi.ithome.com/api/content/getcontentdetail?id=5209");
+                        string id = ExtraUrl.Replace("https://m.ithome.com/html/app/open.html?url=ithome%3A%2F%2Fqcontent%3Fid%3D", string.Empty, StringComparison.Ordinal);
+                        Uri uri = new Uri("https://qapi.ithome.com/api/content/getcontentdetail?id=" + id);
                         Task task = new Task(async () =>
                         {
                             (bool isSucceed, string result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");

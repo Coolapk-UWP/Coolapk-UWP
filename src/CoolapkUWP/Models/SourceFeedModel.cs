@@ -79,7 +79,7 @@ namespace CoolapkUWP.Models
                 if (ShowPicArr || IsCoolPictuers)
                 {
                     PicArr = (from item in picArr
-                              select new ImageModel(item.ToString(), ImageType.SmallImage)).ToImmutableArray();
+                              select new ImageModel(item.ToString(), ImageType.Icon)).ToImmutableArray();
 
                     foreach (ImageModel item in PicArr)
                     {

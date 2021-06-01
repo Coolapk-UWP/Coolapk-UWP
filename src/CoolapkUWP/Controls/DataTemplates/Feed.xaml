@@ -416,11 +416,11 @@
                             BorderThickness="1"
                             CornerRadius="8">
                             <Border.Background>
-                                <ImageBrush ImageSource="{x:Bind ExtraPic.Pic, Mode=OneWay}" Stretch="Fill"/>
+                                <ImageBrush
+                                    ImageSource="{x:Bind ExtraPic.Pic, Mode=OneWay}"
+                                    Stretch="UniformToFill"/>
                             </Border.Background>
                             <Grid
-                                x:Name="extraTF"
-                                x:Load="{x:Bind ShowLinkSourceFeed, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}}"
                                 BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                                 BorderThickness="0"
                                 CornerRadius="8">
@@ -429,10 +429,12 @@
                                         BackgroundSource="Backdrop"
                                         FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                                         TintColor="{x:Bind ExtraPic.BackgroundColor, Mode=OneWay}"
-                                        TintOpacity="0.8"/>
+                                        TintOpacity="1"/>
                                 </Grid.Background>
 
                                 <Grid
+                                    x:Name="extraTF"
+                                    x:Load="{x:Bind ShowLinkSourceFeed, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}}"
                                     Margin="4">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
@@ -440,9 +442,9 @@
                                     </Grid.ColumnDefinitions>
                                     <Border CornerRadius="8">
                                         <Image
-                                        Width="56"
-                                        Height="56"
-                                        Source="{x:Bind ExtraPic.Pic, Mode=OneWay}"/>
+                                            Width="56"
+                                            Height="56"
+                                            Source="{x:Bind ExtraPic.Pic, Mode=OneWay}"/>
                                     </Border>
                                     <StackPanel
                                         Grid.Column="1"
@@ -452,12 +454,12 @@
                                         <TextBlock
                                             Foreground="White"
                                             MaxLines="2"
-                                            Text="{x:Bind ExtraTitle, Mode=OneWay}"
+                                            Text="{x:Bind ExtraTitle}"
                                             TextTrimming="WordEllipsis"
                                             TextWrapping="Wrap"/>
                                         <TextBlock
                                             Foreground="LightGray"
-                                            Text="{x:Bind ExtraUrl2, Mode=OneWay}"
+                                            Text="{x:Bind ExtraUrl2}"
                                             TextWrapping="Wrap"/>
                                     </StackPanel>
                                 </Grid>
@@ -465,7 +467,8 @@
                                 <Grid
                                     x:Name="sourceLFG"
                                     x:Load="{x:Bind ShowLinkSourceFeed, Mode=OneWay}"
-                                    Tag="{x:Bind LinkSourceFeed.Url}"
+                                    Padding="10,0"
+                                    Tag="{x:Bind LinkSourceFeed.Url, Mode=OneWay}"
                                     Tapped="{x:Bind local:Feed.OnTapped}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>

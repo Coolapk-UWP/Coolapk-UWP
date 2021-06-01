@@ -3,6 +3,7 @@ using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace CoolapkUWP.Models.Links
 {
@@ -55,6 +56,20 @@ namespace CoolapkUWP.Models.Links
                                 {
                                     Username = userNick.ToString();
                                 }
+                            }
+                            if (data.TryGetValue("pictures", out JToken pictures))
+                            {
+                                ShowPicArr = (pictures as JArray).Any();
+                                PicArr = (from item in pictures as JArray
+                                          select new ImageModel((item as JObject).Value<string>("src"), ImageType.SmallImage)).ToImmutableArray();
+                                foreach (ImageModel item in PicArr)
+                                {
+                                    item.ContextArray = PicArr;
+                                }
+                            }
+                            if (data.TryGetValue("createTime", out JToken createTime))
+                            {
+                                Dateline = createTime.ToString();
                             }
                         }
                     }

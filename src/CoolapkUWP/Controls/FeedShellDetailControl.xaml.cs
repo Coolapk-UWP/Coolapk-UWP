@@ -2,6 +2,7 @@
 using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
@@ -69,6 +70,11 @@ namespace CoolapkUWP.Controls
             FrameworkElement element = sender as FrameworkElement;
             switch (element.Name)
             {
+                case "makeReplyButton":
+                    FeedDetail.IsCopyEnabled = false;
+                    makeFeed.Visibility = (makeFeed.Visibility == Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
+                    break;
+
                 case "reportButton":
                     FeedDetail.IsCopyEnabled = false;
                     UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, $"https://m.coolapk.com/mp/do?c=feed&m=report&type=feed&id={FeedDetail.Id}" });
