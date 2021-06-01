@@ -10,22 +10,11 @@ namespace CoolapkUWP.Models
 
         public SearchWord(JObject keys)
         {
-            if (keys.Value<string>("logo").Contains("app", System.StringComparison.Ordinal))
-            {
-                Symbol = Symbol.Shop;
-            }
-            else if (keys.Value<string>("logo").Contains("cube", System.StringComparison.Ordinal))
-            {
-                Symbol = Symbol.Shop;
-            }
-            else if (keys.Value<string>("logo").Contains("xitongguanli", System.StringComparison.Ordinal))
-            {
-                Symbol = Symbol.Contact;
-            }
-            else
-            {
-                Symbol = Symbol.Find;
-            }
+            Symbol = keys.Value<string>("logo").Contains("app", System.StringComparison.Ordinal)
+                ? Symbol.Shop
+                : keys.Value<string>("logo").Contains("cube", System.StringComparison.Ordinal)
+                    ? Symbol.Shop
+                    : keys.Value<string>("logo").Contains("xitongguanli", System.StringComparison.Ordinal) ? Symbol.Contact : Symbol.Find;
             Title = keys.Value<string>("title");
         }
 

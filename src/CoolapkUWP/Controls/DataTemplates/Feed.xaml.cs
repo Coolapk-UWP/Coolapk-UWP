@@ -65,6 +65,7 @@ namespace CoolapkUWP.Controls.DataTemplates
                     break;
 
                 case "deviceButton":
+                    DisabledCopy();
                     FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.DevicePageList, (sender as FrameworkElement).Tag as string);
                     if (f != null)
                     {

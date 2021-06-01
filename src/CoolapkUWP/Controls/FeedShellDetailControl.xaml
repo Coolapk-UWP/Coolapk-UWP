@@ -157,7 +157,9 @@
                     VerticalAlignment="Top"
                     Text="{x:Bind FeedDetail.Username, Mode=OneWay}"/>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind FeedDetail.Dateline, Mode=OneWay}"/>
+                    <TextBlock
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Text="{x:Bind FeedDetail.Dateline, Mode=OneWay}"/>
                     <TextBlock
                         Margin="5,0,0,0"
                         Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
@@ -166,6 +168,10 @@
                         Margin="5,0,0,0"
                         Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                         Text="{x:Bind FeedDetail.DeviceTitle, Mode=OneWay}"/>
+                    <TextBlock
+                        Margin="5,0,0,0"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Text="{x:Bind FeedDetail.ChangeTitle, Mode=OneWay}"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>
@@ -208,7 +214,9 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <local:TextBlockEx IsTextSelectionEnabled="{x:Bind FeedDetail.IsCopyEnabled, Mode=OneWay}" MessageText="{x:Bind FeedDetail.Message, Mode=OneWay}"/>
+            <local:TextBlockEx
+                IsTextSelectionEnabled="{x:Bind FeedDetail.IsCopyEnabled, Mode=OneWay}"
+                MessageText="{x:Bind FeedDetail.Message, Mode=OneWay}"/>
             <GridView
                 x:Name="picA"
                 Grid.Row="1"
@@ -233,7 +241,7 @@
             Tapped="{x:Bind local:FeedShellDetailControl.Grid_Tapped}">
             <Grid
                 Padding="12,4"
-                Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                 BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8">

@@ -205,7 +205,11 @@ namespace CoolapkUWP.Pages
 
         private static void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            if (args.ChosenSuggestion is SearchWord word)
+            if (args.ChosenSuggestion is AppPageMode app)
+            {
+                UIHelper.NavigateInSplitPane(typeof(AppPages.AppPage), "https://www.coolapk.com" + app.Url);
+            }
+            else if (args.ChosenSuggestion is SearchWord word)
             {
                 UIHelper.NavigateInSplitPane(typeof(SearchingPage), new ViewModels.SearchPage.ViewModel(word.Symbol == Symbol.Contact ? 1 : 0, word.GetTitle()));
             }
@@ -217,7 +221,11 @@ namespace CoolapkUWP.Pages
 
         private static void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            sender.Text = ((SearchWord)args.SelectedItem).GetTitle();
+            if (args.SelectedItem is SearchWord searchWord)
+            {
+                string Text = searchWord.GetTitle();
+                sender.Text = Text;
+            }
         }
 
         #endregion 搜索框相关

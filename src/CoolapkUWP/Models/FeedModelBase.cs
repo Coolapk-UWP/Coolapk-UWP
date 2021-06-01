@@ -135,17 +135,21 @@ namespace CoolapkUWP.Models
                 if (ShowExtraUrl)
                 {
                     ExtraUrl = token.Value<string>("extra_url");
-                    //if (ExtraUrl.Contains("ithome"))
-                    //{
-                    //    Uri uri = new Uri("https://qapi.ithome.com/api/content/getcontentdetail?id=5209");
-                    //    //DataHelper.GetHtmlAsync(uri, "XMLHttpRequest").Wait();
-                    //    try { var (isSucceed, result) = DataHelper.GetHtmlAsync(uri, "XMLHttpRequest").Result; }
-                    //    catch { }
-                    //    UIHelper.ShowMessage(ShowLinkSourceFeed.ToString());
-                    //    //JObject json = JObject.Parse(result);
-                    //    //LinkSourceFeed = new Links.SourceFeedModel(json, Links.LinkType.ITHome);
-                    //    //ShowLinkSourceFeed = true;
-                    //}
+                    if (ExtraUrl.Contains("ithome"))
+                    {
+                        Uri uri = new Uri("https://qapi.ithome.com/api/content/getcontentdetail?id=5209");
+                        Task task = new Task(async () =>
+                        {
+                            (bool isSucceed, string result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
+                            if (isSucceed)
+                            {
+                                JObject json = JObject.Parse(result);
+                                LinkSourceFeed = new Links.SourceFeedModel(json, Links.LinkType.ITHome);
+                                ShowLinkSourceFeed = true;
+                            }
+                        });
+                        task.Start();
+                    }
                     ExtraTitle = valueextra_title.ToString();
                     ExtraUrl2 = (ExtraUrl?.IndexOf("http", StringComparison.Ordinal) ?? -1) == 0 ? new Uri(ExtraUrl).Host : string.Empty;
                     string extraPicUrl = token.Value<string>("extra_pic");

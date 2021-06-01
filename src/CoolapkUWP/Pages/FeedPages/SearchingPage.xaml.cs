@@ -2,6 +2,7 @@
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using Newtonsoft.Json.Linq;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
@@ -109,11 +110,18 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void SearchText_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            foreach (Core.Providers.SearchListProvider item in provider.providers)
+            if (args.ChosenSuggestion is AppPageMode app)
             {
-                item.Reset();
+                UIHelper.NavigateInSplitPane(typeof(AppPages.AppPage), "https://www.coolapk.com" + app.Url);
             }
-            _ = StartSearch();
+            else
+            {
+                foreach (Core.Providers.SearchListProvider item in provider.providers)
+                {
+                    item.Reset();
+                }
+                _ = StartSearch();
+            }
         }
 
         internal static async void SearchText_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -121,10 +129,24 @@ namespace CoolapkUWP.Pages.FeedPages
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
                 (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetSearchWords, sender.Text), true);
-                if (!isSucceed) { return; }
-
-                JArray array = (JArray)result;
-                sender.ItemsSource = array != null && array.Count > 0 ? array.Select(i => new SearchWord(i as JObject)) : null;
+                if(isSucceed && result != null && result is JArray array && array.Count > 0)
+                {
+                    ObservableCollection<object> observableCollection = new ObservableCollection<object>();
+                    sender.ItemsSource = observableCollection;
+                    foreach (JToken token in array)
+                    {
+                        switch (token.Value<string>("entityType"))
+                        {
+                            case "apk":
+                                observableCollection.Add(new AppPageMode(token as JObject));
+                                break;
+                            case "searchWord":
+                            default:
+                                observableCollection.Add(new SearchWord(token as JObject));
+                                break;
+                        }
+                    }
+                }
             }
         }
 

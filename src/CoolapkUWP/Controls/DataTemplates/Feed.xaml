@@ -420,7 +420,7 @@
                             </Border.Background>
                             <Grid
                                 x:Name="extraTF"
-                                x:Load="{x:Bind ShowLinkSourceFeed, Converter={StaticResource TrueToFalseConverter}}"
+                                x:Load="{x:Bind ShowLinkSourceFeed, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}}"
                                 BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                                 BorderThickness="0"
                                 CornerRadius="8">
@@ -452,19 +452,19 @@
                                         <TextBlock
                                             Foreground="White"
                                             MaxLines="2"
-                                            Text="{x:Bind ExtraTitle}"
+                                            Text="{x:Bind ExtraTitle, Mode=OneWay}"
                                             TextTrimming="WordEllipsis"
                                             TextWrapping="Wrap"/>
                                         <TextBlock
                                             Foreground="LightGray"
-                                            Text="{x:Bind ExtraUrl2}"
+                                            Text="{x:Bind ExtraUrl2, Mode=OneWay}"
                                             TextWrapping="Wrap"/>
                                     </StackPanel>
                                 </Grid>
 
                                 <Grid
                                     x:Name="sourceLFG"
-                                    x:Load="{x:Bind ShowLinkSourceFeed}"
+                                    x:Load="{x:Bind ShowLinkSourceFeed, Mode=OneWay}"
                                     Tag="{x:Bind LinkSourceFeed.Url}"
                                     Tapped="{x:Bind local:Feed.OnTapped}">
                                     <Grid.RowDefinitions>
@@ -480,36 +480,36 @@
                                             Padding="2"
                                             Background="Transparent"
                                             Click="{x:Bind local:Feed.FeedButton_Click}"
-                                            Content="{x:Bind LinkSourceFeed.Username}"
+                                            Content="{x:Bind LinkSourceFeed.Username, Mode=OneWay}"
                                             Style="{StaticResource ButtonRevealStyle}"
-                                            Tag="{x:Bind LinkSourceFeed.Uurl}"/>
+                                            Tag="{x:Bind LinkSourceFeed.Uurl, Mode=OneWay}"/>
 
                                         <TextBlock
                                             Margin="4"
                                             VerticalAlignment="Center"
                                             Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                            Text="{x:Bind LinkSourceFeed.Dateline}"/>
+                                            Text="{x:Bind LinkSourceFeed.Dateline, Mode=OneWay}"/>
                                     </StackPanel>
 
                                     <TextBlock
                                         x:Name="sourceLMT"
                                         Grid.Row="1"
                                         Margin="4"
-                                        x:Load="{x:Bind LinkSourceFeed.ShowMessageTitle}"
+                                        x:Load="{x:Bind LinkSourceFeed.ShowMessageTitle, Mode=OneWay}"
                                         FontSize="16"
                                         FontWeight="Black"
                                         IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                                        Tag="{x:Bind LinkSourceFeed.Url}"
+                                        Tag="{x:Bind LinkSourceFeed.Url, Mode=OneWay}"
                                         Tapped="{x:Bind local:Feed.OnTapped}"
-                                        Text="{x:Bind LinkSourceFeed.MessageTitle}"
+                                        Text="{x:Bind LinkSourceFeed.MessageTitle, Mode=OneWay}"
                                         TextWrapping="Wrap"/>
 
                                     <ctrl:TextBlockEx
                                         Grid.Row="2"
                                         Margin="4"
                                         IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                                        MessageText="{x:Bind LinkSourceFeed.Message}"
-                                        Tag="{x:Bind LinkSourceFeed.Url}"
+                                        MessageText="{x:Bind LinkSourceFeed.Message, Mode=OneWay}"
+                                        Tag="{x:Bind LinkSourceFeed.Url, Mode=OneWay}"
                                         Tapped="{x:Bind local:Feed.OnTapped}"/>
 
                                     <GridView
@@ -520,9 +520,9 @@
                                         Margin="4,8,4,4"
                                         Padding="0"
                                         HorizontalContentAlignment="Left"
-                                        x:Load="{x:Bind LinkSourceFeed.ShowPicArr}"
+                                        x:Load="{x:Bind LinkSourceFeed.ShowPicArr, Mode=OneWay}"
                                         ItemTemplate="{StaticResource Pic}"
-                                        ItemsSource="{x:Bind LinkSourceFeed.PicArr}"
+                                        ItemsSource="{x:Bind LinkSourceFeed.PicArr, Mode=OneWay}"
                                         ScrollViewer.VerticalScrollMode="Disabled"/>
                                 </Grid>
                             </Grid>

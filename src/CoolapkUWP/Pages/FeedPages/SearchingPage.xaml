@@ -122,7 +122,7 @@
                 Grid.Column="2"
                 Margin="4,0,4,4"
                 VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
-                ItemTemplate="{StaticResource searchWord}"
+                ItemTemplateSelector="{StaticResource SearchWord}"
                 QueryIcon="Find"
                 QuerySubmitted="SearchText_QuerySubmitted"
                 SuggestionChosen="{x:Bind local:SearchingPage.AutoSuggestBox_SuggestionChosen}"

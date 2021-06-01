@@ -172,6 +172,7 @@
 
             <AutoSuggestBox
                 x:Name="SearchBox"
+                x:Uid="/Mypage/Search"
                 Margin="8,0"
                 VerticalAlignment="Center"
                 ItemTemplateSelector="{StaticResource SearchWord}"

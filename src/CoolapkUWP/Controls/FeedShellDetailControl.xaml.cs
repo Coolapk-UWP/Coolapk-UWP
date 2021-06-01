@@ -1,5 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Pages.FeedPages;
+using CoolapkUWP.ViewModels.FeedListPage;
 using System;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
@@ -64,14 +66,32 @@ namespace CoolapkUWP.Controls
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (sender == reportButton)
+            FrameworkElement element = sender as FrameworkElement;
+            switch (element.Name)
             {
-                FeedDetail.IsCopyEnabled = false;
-                UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, $"https://m.coolapk.com/mp/do?c=feed&m=report&type=feed&id={FeedDetail.Id}" });
-            }
-            else
-            {
-                UIHelper.OpenLinkAsync((sender as Button).Tag as string);
+                case "reportButton":
+                    FeedDetail.IsCopyEnabled = false;
+                    UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, $"https://m.coolapk.com/mp/do?c=feed&m=report&type=feed&id={FeedDetail.Id}" });
+                    break;
+
+                case "deviceButton":
+                    FeedDetail.IsCopyEnabled = false;
+                    FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.DevicePageList, (sender as FrameworkElement).Tag as string);
+                    if (f != null)
+                    {
+                        UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
+                    }
+                    break;
+
+                case "changeButton":
+                    FeedDetail.IsCopyEnabled = false;
+                    UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModels.AdaptivePage.ViewModel((sender as FrameworkElement).Tag as string, ViewModels.AdaptivePage.ListType.FeedInfo, "changeHistory"));
+                    break;
+
+                default:
+                    FeedDetail.IsCopyEnabled = false;
+                    UIHelper.OpenLinkAsync((sender as Button).Tag as string);
+                    break;
             }
         }
 
