@@ -39,7 +39,7 @@ namespace CoolapkUWP.Data
 
         public static async Task<BitmapImage> GetImage(ImageType type, string url, bool showMessage = false)
         {
-            if (string.IsNullOrEmpty(url)) return null;
+            if (string.IsNullOrEmpty(url)) return NoPic;
             else if (url.IndexOf("ms-appx") == 0) return new BitmapImage(new Uri(url));
             else
             {
@@ -56,7 +56,7 @@ namespace CoolapkUWP.Data
                     return GetLocalImage(file.Path);
                 }
                 else if (item is StorageFile file) return GetLocalImage(file.Path);
-                else return null;
+                else return NoPic;
             }
         }
 

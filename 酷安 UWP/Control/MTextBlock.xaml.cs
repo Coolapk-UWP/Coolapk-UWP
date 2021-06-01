@@ -111,7 +111,7 @@ namespace CoolapkUWP.Control
                                 try { content = item.Substring(item.IndexOf('>') + 1, item.LastIndexOf('<') - item.IndexOf('>') - 1); }
                                 catch (ArgumentOutOfRangeException) { content = ""; }
                                 string href = string.Empty;
-                                var hrefRegex = new Regex("href=\"(\\S|\\s)+?\"");
+                                var hrefRegex = new Regex("href*?=*?\"(\\S|\\s)+?\"");
                                 if (hrefRegex.IsMatch(item))
                                 {
                                     var match = hrefRegex.Match(item);
@@ -360,7 +360,7 @@ namespace CoolapkUWP.Control
         {
             return Task.Run(() =>
             {
-                var link = new Regex("<a(\\S|\\s)*?>(\\S|\\s)*?</a>");
+                var link = new Regex("<a(\\S|\\s)*?>(\\S|\\s)*?<*?a*?>");
                 var emojis = new Regex(@"\[\S*?\]|#\(\S*?\)");
                 var buider = ImmutableArray.CreateBuilder<string>();
 
