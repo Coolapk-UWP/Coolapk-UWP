@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Models
@@ -10,6 +11,7 @@ namespace CoolapkUWP.Models
     {
         private WeakReference<BitmapImage> pic;
         private bool isLongPic;
+        private bool isWidePic;
         private ImmutableArray<ImageModel> contextArray;
 
         public BitmapImage Pic
@@ -46,6 +48,16 @@ namespace CoolapkUWP.Models
             private set
             {
                 isLongPic = value;
+                RaisePropertyChangedEvent();
+            }
+        }
+
+        public bool IsWidePic
+        {
+            get => isWidePic;
+            private set
+            {
+                isWidePic = value;
                 RaisePropertyChangedEvent();
             }
         }
@@ -114,7 +126,12 @@ namespace CoolapkUWP.Models
             BitmapImage bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri);
             if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode)) { return; }
             Pic = bitmapImage;
-            IsLongPic = bitmapImage.PixelHeight > bitmapImage.PixelWidth * 2;
+            IsLongPic =
+                ((bitmapImage.PixelHeight * Window.Current.Bounds.Width) > bitmapImage.PixelWidth * Window.Current.Bounds.Height * 1.5)
+                && bitmapImage.PixelHeight > bitmapImage.PixelWidth * 1.5;
+            IsWidePic =
+                ((bitmapImage.PixelWidth * Window.Current.Bounds.Height) > bitmapImage.PixelHeight * Window.Current.Bounds.Width * 1.5)
+                && bitmapImage.PixelWidth > bitmapImage.PixelHeight * 1.5;
         }
     }
 }

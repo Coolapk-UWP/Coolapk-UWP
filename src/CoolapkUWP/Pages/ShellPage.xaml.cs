@@ -84,16 +84,16 @@ namespace CoolapkUWP.Pages
             switch (Version)
             {
                 case "V6":
-                    shellFrame.Navigate(typeof(MainPageV7));
+                    _ = shellFrame.Navigate(typeof(MainPageV7));
                     break;
                 case "V7":
-                    shellFrame.Navigate(typeof(MainPageV7));
+                    _ = shellFrame.Navigate(typeof(MainPageV7));
                     break;
                 default:
-                    shellFrame.Navigate(typeof(MainPage));
+                    _ = shellFrame.Navigate(typeof(MainPage));
                     break;
             }
-            paneFrame.Navigate(typeof(MyPage), new ViewModels.MyPage.ViewMode());
+            _ = paneFrame.Navigate(typeof(MyPage), new ViewModels.MyPage.ViewMode());
             UIHelper.MainFrame = shellFrame;
             UIHelper.PaneFrame = paneFrame;
             UIHelper.InAppNotification = AppNotification;
@@ -135,8 +135,7 @@ namespace CoolapkUWP.Pages
 
             splitView.IsPaneOpen = canOpen;
             PaneOpenSymbolIcon = canOpen ? Symbol.OpenPane : Symbol.ClosePane;
-            if (Window.Current.Bounds.Width <= 440)
-                splitView.OpenPaneLength = Window.Current.Bounds.Width;
+            if (Window.Current.Bounds.Width <= 440) { splitView.OpenPaneLength = Window.Current.Bounds.Width; }
         }
 
         public bool IsSplitFloat()

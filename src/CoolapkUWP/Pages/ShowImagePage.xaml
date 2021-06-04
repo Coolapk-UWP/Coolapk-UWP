@@ -8,7 +8,7 @@
     xmlns:local="using:CoolapkUWP.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     KeyUp="Page_KeyUp"
     mc:Ignorable="d">
 
@@ -105,7 +105,7 @@
             x:Name="titleBorder"
             Height="32"
             VerticalAlignment="Top"
-            Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}"/>
+            Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"/>
 
         <StackPanel
             HorizontalAlignment="Center"
