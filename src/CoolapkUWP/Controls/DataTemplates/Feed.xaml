@@ -420,15 +420,13 @@
                                     ImageSource="{x:Bind ExtraPic.Pic, Mode=OneWay}"
                                     Stretch="UniformToFill"/>
                             </Border.Background>
-                            <Grid
-                                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                                BorderThickness="0"
-                                CornerRadius="8">
+                            <Grid>
                                 <Grid.Background>
                                     <AcrylicBrush
                                         BackgroundSource="Backdrop"
-                                        FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                        FallbackColor="{ThemeResource SystemChromeMediumLowColor}"
                                         TintColor="{x:Bind ExtraPic.BackgroundColor, Mode=OneWay}"
+                                        TintLuminosityOpacity ="1"
                                         TintOpacity="1"/>
                                 </Grid.Background>
 
