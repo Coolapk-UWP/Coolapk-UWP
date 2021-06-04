@@ -1,11 +1,15 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.BackgroundTask;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.Pages.SettingPages;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Resources;
+using Windows.UI.Notifications;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -20,6 +24,7 @@ namespace CoolapkUWP
         {
             InitializeComponent();
             Suspending += OnSuspending;
+            //RegisterLiveTileTask();
         }
 
         protected override async void OnActivated(IActivatedEventArgs e)
@@ -84,7 +89,7 @@ namespace CoolapkUWP
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             RegisterExceptionHandlingSynchronizationContext();
-            this.UnhandledException += Application_UnhandledException;
+            UnhandledException += Application_UnhandledException;
 
             if (!(Window.Current.Content is Frame rootFrame))
             {
@@ -120,6 +125,17 @@ namespace CoolapkUWP
                             break;
                         default:
                             break;
+                    }
+                }
+                if (e.TileActivatedInfo != null)
+                {
+                    if (e.TileActivatedInfo.RecentlyShownNotifications.Count > 0)
+                    {
+                        // Get arguments from the notifications that were recently displayed
+                        string[] allArgs = e.TileActivatedInfo.RecentlyShownNotifications
+                        .Select(i => i.Arguments)
+                        .ToArray();
+                        UIHelper.OpenLinkAsync(allArgs[0]);
                     }
                 }
             }
@@ -190,6 +206,34 @@ namespace CoolapkUWP
                     SettingsHelper.logManager.GetLogger("UnhandledException").Error($"\n{e.Exception.Message}\n{e.Exception.HResult}\n{e.Exception.StackTrace}");
                 }
             }
+        }
+
+        private const string LIVETILETASK = "LIVETILETAKS";
+        private async void RegisterLiveTileTask()
+        {
+            var status = await BackgroundExecutionManager.RequestAccessAsync();
+            if (status == BackgroundAccessStatus.Unspecified || status == BackgroundAccessStatus.Denied) { return; }
+
+            foreach (System.Collections.Generic.KeyValuePair<Guid, IBackgroundTaskRegistration> t in BackgroundTaskRegistration.AllTasks)
+            {
+                if (t.Value.Name == LIVETILETASK)
+                {
+                    t.Value.Unregister(true);
+                }
+            }
+
+            BackgroundTaskBuilder taskBuilder = new BackgroundTaskBuilder
+            {
+                Name = LIVETILETASK,
+                TaskEntryPoint = typeof(LiveTileTask).FullName
+            };
+
+            taskBuilder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
+
+            TileUpdater updater = TileUpdateManager.CreateTileUpdaterForApplication();
+            updater.Clear();
+            taskBuilder.SetTrigger(new TimeTrigger(60, false));
+            _ = taskBuilder.Register();
         }
     }
 }

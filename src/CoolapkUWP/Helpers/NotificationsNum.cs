@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.BackgroundTask;
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
@@ -179,6 +180,7 @@ namespace CoolapkUWP.Helpers
             {
                 timer = ThreadPoolTimer.CreatePeriodicTimer(async (source) =>
                 {
+                    LiveTileTask.GetData(new Uri("http://api.coolapk.com/v6/page/dataList?url=V9_HOME_TAB_FOLLOW&type=circle&page=1"));
                     (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetNotificationNumbers), true);
                     if (!isSucceed) { return; }
 
