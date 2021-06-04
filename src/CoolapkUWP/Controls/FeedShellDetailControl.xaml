@@ -331,51 +331,128 @@
         <ListViewItem
             x:Name="extraT"
             Grid.Row="6"
+            Padding="0"
             Margin="0,5,0,0"
             x:Load="{x:Bind FeedDetail.ShowExtraUrl, Mode=OneWay}"
             KeyDown="Grid_KeyDown"
             Style="{StaticResource FixedListViewItemStyle}"
             Tag="{x:Bind FeedDetail.ExtraUrl, Mode=OneWay}"
+            HorizontalContentAlignment="Stretch"
             Tapped="StackPanel_Tapped">
-            <Grid
+            <Border
                 BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8">
-                <Grid.Background>
-                    <AcrylicBrush
-                        BackgroundSource="Backdrop"
-                        FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
-                        TintColor="{x:Bind FeedDetail.ExtraPic.BackgroundColor, Mode=OneWay}"
-                        TintOpacity="0.8"/>
-                </Grid.Background>
+                <Border.Background>
+                    <ImageBrush
+                        ImageSource="{x:Bind FeedDetail.ExtraPic.Pic, Mode=OneWay}"
+                        Stretch="UniformToFill"/>
+                </Border.Background>
+                <Grid
+                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                    BorderThickness="0"
+                    CornerRadius="8">
+                    <Grid.Background>
+                        <AcrylicBrush
+                            BackgroundSource="Backdrop"
+                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintColor="{x:Bind FeedDetail.ExtraPic.BackgroundColor, Mode=OneWay}"
+                            TintOpacity="1"/>
+                    </Grid.Background>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Border CornerRadius="8">
-                    <Image
-                        Width="56"
-                        Height="56"
-                        Source="{x:Bind FeedDetail.ExtraPic.Pic, Mode=OneWay}"/>
-                </Border>
-                <StackPanel
-                    Grid.Column="1"
-                    Margin="8,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center">
-                    <TextBlock
-                        Foreground="White"
-                        MaxLines="2"
-                        Text="{x:Bind FeedDetail.ExtraTitle, Mode=OneWay}"
-                        TextTrimming="WordEllipsis"
-                        TextWrapping="Wrap"/>
-                    <TextBlock
-                        Foreground="LightGray"
-                        Text="{x:Bind FeedDetail.ExtraUrl2, Mode=OneWay}"
-                        TextWrapping="Wrap"/>
-                </StackPanel>
-            </Grid>
+                    <Grid
+                        x:Name="extraTF"
+                        x:Load="{x:Bind FeedDetail.ShowLinkSourceFeed, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border CornerRadius="8">
+                            <Image
+                                Width="56"
+                                Height="56"
+                                Source="{x:Bind FeedDetail.ExtraPic.Pic, Mode=OneWay}"/>
+                        </Border>
+                        <StackPanel
+                            Grid.Column="1"
+                            Margin="8,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+                            <TextBlock
+                                Foreground="White"
+                                MaxLines="2"
+                                Text="{x:Bind FeedDetail.ExtraTitle, Mode=OneWay}"
+                                TextTrimming="WordEllipsis"
+                                TextWrapping="Wrap"/>
+                            <TextBlock
+                                Foreground="LightGray"
+                                Text="{x:Bind FeedDetail.ExtraUrl2, Mode=OneWay}"
+                                TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid
+                        Margin="3"
+                        Padding="12,4"
+                        x:Name="sourceLFG"
+                        x:Load="{x:Bind FeedDetail.ShowLinkSourceFeed, Mode=OneWay}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Button
+                                Margin="0,0,5,0"
+                                Padding="2"
+                                Background="Transparent"
+                                Click="Button_Click"
+                                Content="{x:Bind FeedDetail.LinkSourceFeed.Username, Mode=OneWay}"
+                                Style="{StaticResource ButtonRevealStyle}"
+                                Tag="{x:Bind FeedDetail.LinkSourceFeed.Uurl, Mode=OneWay}"/>
+                            <TextBlock
+                                Margin="5,0"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                Text="{x:Bind FeedDetail.LinkSourceFeed.Dateline, Mode=OneWay}"/>
+                        </StackPanel>
+
+                        <Grid
+                            Grid.Row="1"
+                            Margin="3"
+                            Tag="{x:Bind FeedDetail.LinkSourceFeed.Url, Mode=OneWay}"
+                            Tapped="StackPanel_Tapped">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                x:Name="sourceLMT"
+                                x:Load="{x:Bind FeedDetail.LinkSourceFeed.MessageTitle, Converter={StaticResource HasValueConverter}, ConverterParameter='string', Mode=OneWay}"
+                                FontSize="16"
+                                FontWeight="Black"
+                                Text="{x:Bind FeedDetail.LinkSourceFeed.MessageTitle, Mode=OneWay}"
+                                TextWrapping="Wrap"/>
+                            <local:TextBlockEx
+                                Grid.Row="1"
+                                IsTextSelectionEnabled="{x:Bind FeedDetail.IsCopyEnabled, Mode=OneWay}"
+                                MessageText="{x:Bind FeedDetail.LinkSourceFeed.Message, Mode=OneWay}"/>
+                            <GridView
+                                x:Name="sourceLPic"
+                                Grid.Row="2"
+                                MinHeight="0"
+                                Margin="0,5,0,0"
+                                Padding="0"
+                                HorizontalContentAlignment="Left"
+                                x:Load="{x:Bind FeedDetail.LinkSourceFeed.ShowPicArr, Mode=OneWay}"
+                                ItemTemplate="{StaticResource Pic}"
+                                ItemsSource="{x:Bind FeedDetail.LinkSourceFeed.PicArr, Mode=OneWay}"
+                                ScrollViewer.VerticalScrollMode="Disabled"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Border>
         </ListViewItem>
 
         <ListView

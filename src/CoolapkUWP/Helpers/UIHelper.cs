@@ -370,11 +370,6 @@ namespace CoolapkUWP.Helpers
 
         public static async void OpenLinkAsync(string str)
         {
-            //UIHelper.ShowMessage(str);
-
-#if !DEBUG
-            if (UIHelper.IsAuthor)
-#endif
             string rawstr = str;
 
             if (string.IsNullOrWhiteSpace(str)) { return; }
@@ -401,7 +396,11 @@ namespace CoolapkUWP.Helpers
             if (str.Contains('%')) { str = str.Substring(0, str.IndexOf('%')); }
             if (str.Contains('&')) { str = str.Substring(0, str.IndexOf('&')); }
 
-            if (str.IsFirst(i++))
+            if (str.IndexOf("ithome://", StringComparison.Ordinal) == 0)
+            {
+                await Windows.System.Launcher.LaunchUriAsync(new Uri(str));
+            }
+            else if (str.IsFirst(i++))
             {
                 string u = str.Replace(i - 1);
                 string uid = int.TryParse(u, out _) ? u : await Core.Helpers.NetworkHelper.GetUserIDByNameAsync(u);

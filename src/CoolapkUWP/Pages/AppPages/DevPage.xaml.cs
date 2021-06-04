@@ -38,7 +38,7 @@ namespace CoolapkUWP.Pages.AppPages
             #region 测试
             Uri uri = new Uri("https://qapi.ithome.com/api/content/getcontentdetail?id=5209");
             (bool _, string result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
-            Models.Links.SourceFeedModel _ = new Models.Links.SourceFeedModel(JObject.Parse(result), Models.Links.LinkType.ITHome);
+            //Models.Links.SourceFeedModel _ = new Models.Links.SourceFeedModel(JObject.Parse(result), Models.Links.LinkType.ITHome);
             //if (isSucceed)
             //{
             //    //main.Text = result;

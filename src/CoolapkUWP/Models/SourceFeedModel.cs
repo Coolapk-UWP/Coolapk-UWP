@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Core.Models;
 using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -41,7 +42,7 @@ namespace CoolapkUWP.Models
                 IsQuestionFeed = o.Value<string>("feedType") == "question";
                 if (IsQuestionFeed)
                 {
-                    Url = Url.Replace("/feed/", "/question/", System.StringComparison.Ordinal);
+                    Url = Url.Replace("/feed/", "/question/", StringComparison.Ordinal);
                 }
                 try
                 {
@@ -97,7 +98,6 @@ namespace CoolapkUWP.Models
                 Username += " [已折叠]";
             if (o.TryGetValue("status", out JToken s) && s.ToString() == "-1")
                 Username += " [仅自己可见]";
-
         }
     }
 }

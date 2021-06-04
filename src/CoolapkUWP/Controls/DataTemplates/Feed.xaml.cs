@@ -23,9 +23,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
             if (e != null) { e.Handled = true; }
 
-            if (s.Tag.ToString().Contains("ithome://"))
-            { Windows.System.Launcher.LaunchUriAsync(new Uri(s.Tag as string)); }
-            else { UIHelper.OpenLinkAsync(s.Tag as string); }
+            UIHelper.OpenLinkAsync(s.Tag as string);
         }
 
         internal static async void FeedButton_Click(object sender, RoutedEventArgs _)

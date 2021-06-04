@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
@@ -14,6 +15,7 @@ namespace CoolapkUWP.Models
         private string likenum1;
         private string replynum;
         private bool isCopyEnabled;
+        private bool showLinkSourceFeed;
 
         public string Likenum
         {
@@ -45,6 +47,16 @@ namespace CoolapkUWP.Models
             }
         }
 
+        public bool ShowLinkSourceFeed
+        {
+            get => showLinkSourceFeed;
+            set
+            {
+                showLinkSourceFeed = value;
+                RaisePropertyChangedEvent();
+            }
+        }
+
         //public bool ShowSourceFeed2 { get => !ShowSourceFeed; }
 
         public string Info { get; private set; }
@@ -54,7 +66,6 @@ namespace CoolapkUWP.Models
         public string ChangeTitle { get; private set; }
         public bool ShowSourceFeed { get; private set; }
         public bool ShowSourceFeedGrid { get; private set; }
-        public bool ShowLinkSourceFeed { get; private set; }
         public SourceFeedModel SourceFeed { get; private set; }
         public Links.SourceFeedModel LinkSourceFeed { get; private set; }
         public bool ShowExtraUrl { get; private set; }
@@ -137,21 +148,19 @@ namespace CoolapkUWP.Models
                 if (ShowExtraUrl)
                 {
                     ExtraUrl = token.Value<string>("extra_url");
-                    if (ExtraUrl.Contains("ithome") && ExtraUrl.Contains("qcontent"))
+                    if (ExtraUrl.Contains("coolapk") && ExtraUrl.Contains("feed"))
                     {
-                        string id = ExtraUrl.Replace("https://m.ithome.com/html/app/open.html?url=ithome%3A%2F%2Fqcontent%3Fid%3D", string.Empty, StringComparison.Ordinal);
-                        Uri uri = new Uri("https://qapi.ithome.com/api/content/getcontentdetail?id=" + id);
-                        Task task = new Task(async () =>
-                        {
-                            (bool isSucceed, string result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
-                            if (isSucceed)
-                            {
-                                JObject json = JObject.Parse(result);
-                                LinkSourceFeed = new Links.SourceFeedModel(json, Links.LinkType.ITHome);
-                                ShowLinkSourceFeed = true;
-                            }
-                        });
-                        task.Start();
+                        Regex GetID = new Regex(@"/feed/([\d|\w]+)");
+                        Uri uri = UriHelper.GetUri(UriType.GetFeedDetail, GetID.Match(ExtraUrl).Groups[1].Value);
+                        LinkSourceFeed = new Links.SourceFeedModel(uri, Links.LinkType.Coolapk);
+                        ShowLinkSourceFeed = true;
+                    }
+                    else if (ExtraUrl.Contains("ithome") && ExtraUrl.Contains("qcontent"))
+                    {
+                        Regex GetID = new Regex(@"[%26|%3F]id%3D([\d|\s]+)");
+                        Uri uri = UriHelper.GetITHomeUri(UriType.GetITHomeFeed, GetID.Match(ExtraUrl).Groups[1].Value);
+                        LinkSourceFeed = new Links.SourceFeedModel(uri, Links.LinkType.ITHome);
+                        ShowLinkSourceFeed = true;
                     }
                     ExtraTitle = valueextra_title.ToString();
                     ExtraUrl2 = (ExtraUrl?.IndexOf("http", StringComparison.Ordinal) ?? -1) == 0 ? new Uri(ExtraUrl).Host : string.Empty;

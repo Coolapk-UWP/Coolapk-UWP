@@ -16,10 +16,12 @@
             BorderThickness="1"
             CornerRadius="8"
             Orientation="Horizontal">
-            <Image
-                Width="20"
-                Height="20"
-                Source="{x:Bind Logo.Pic, Mode=OneWay}"/>
+            <Border CornerRadius="2">
+                <Image
+                    Width="20"
+                    Height="20"
+                    Source="{x:Bind Logo.Pic, Mode=OneWay}"/>
+            </Border>
             <TextBlock Margin="4,0,0,0" Text="{x:Bind Title}"/>
         </StackPanel>
     </DataTemplate>
