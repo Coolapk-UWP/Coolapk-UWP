@@ -69,8 +69,8 @@ namespace CoolapkUWP.Control.ViewModels
                 extra_pic = await ImageCache.GetImage(ImageType.Icon, extraPicUrl);
         }
 
-        string userSmallAvatarUrl;
-        string extraPicUrl;
+        public string userSmallAvatarUrl;
+        private readonly string extraPicUrl;
         private ImageSource extra_pic1;
         private ImageSource userSmallAvatar1;
         private string likenum1;

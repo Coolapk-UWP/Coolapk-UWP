@@ -43,7 +43,11 @@ namespace CoolapkUWP.Control.ViewModels
                 }
             }
             if (token.TryGetValue("pic", out IJsonValue value1) && !string.IsNullOrEmpty(value1.GetString()))
+            {
+                havePic = true;
                 pic = await ImageCache.GetImage(ImageType.SmallImage, value1.GetString());
+                picUrl = value1.GetString();
+            }
         }
         public string url { get; private set; }
         public string uurl { get; private set; }
@@ -53,6 +57,8 @@ namespace CoolapkUWP.Control.ViewModels
         public string message_title { get; private set; }
         public string message { get; private set; }
         public bool showPicArr { get; private set; }
+        public bool havePic { get; private set; }
+        public string picUrl { get; private set; }
         public List<string> pics { get; private set; } = new List<string>();
         public ObservableCollection<ImageData> picArr { get; private set; }
         private ImageSource pic1;

@@ -1,4 +1,5 @@
-﻿using Windows.ApplicationModel.Background;
+﻿using CoolapkUWP.Control;
+using Windows.ApplicationModel.Background;
 
 namespace CoolapkUWP.Data
 {
@@ -8,6 +9,7 @@ namespace CoolapkUWP.Data
         {
             BackgroundTaskDeferral deferral = taskInstance.GetDeferral();
             await new NotificationsNum().RefreshNotificationsNum(true);
+            await LiveTileControl.GetData("/page/dataList?url=V9_HOME_TAB_FOLLOW&type=circle&page=1");
             deferral.Complete();
         }
     }
