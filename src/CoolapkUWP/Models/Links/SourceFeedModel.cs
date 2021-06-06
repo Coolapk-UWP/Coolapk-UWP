@@ -251,11 +251,33 @@ namespace CoolapkUWP.Models.Links
                                 {
                                     foreach (JObject v in contents as JArray)
                                     {
-                                        if (v.TryGetValue("content", out JToken content))
-                                        { Message += content.ToString() + "\n"; }
+                                        if (v.TryGetValue("content", out JToken content) && v.TryGetValue("type", out JToken type2))
+                                        {
+                                            switch (type2.ToString())
+                                            {
+                                                case "0":
+                                                    Message += content.ToString();
+                                                    break;
+                                                case "2":
+                                                    if (v.TryGetValue("link", out JToken link) && !string.IsNullOrEmpty(link.ToString()))
+                                                    {
+                                                        Message += "<a class=\"feed-link-url\" href=\"" + link.ToString() + "\" target=\"_blank\" rel=\"nofollow\">查看链接</a>";
+                                                    }
+                                                    else { Message += content.ToString(); }
+                                                    break;
+                                                case "3":
+                                                    if (v.TryGetValue("topicId", out JToken topicId) && !string.IsNullOrEmpty(topicId.ToString()))
+                                                    {
+                                                        Message += "<a class=\"feed-link-tag\" href=\"" + "ithome://qtopic?id=" + topicId.ToString() + "\">" + content.ToString() + "</a>";
+                                                    }
+                                                    else { Message += content.ToString(); }
+                                                    break;
+                                                default:
+                                                    Message += content.ToString();
+                                                    break;
+                                            }
+                                        }
                                     }
-                                    Message = Message.PadRight(1);
-                                    Message = Message.Remove(Message.Length - 1, 1);
                                 }
                                 if (data.TryGetValue("user", out JToken v2))
                                 {
