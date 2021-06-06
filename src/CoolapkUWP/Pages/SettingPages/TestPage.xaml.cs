@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.BackgroundTask;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
 using Microsoft.Toolkit.Uwp.Notifications;
@@ -28,6 +29,7 @@ namespace CoolapkUWP.Pages.SettingPages
             //loader.GetString("?")
             //    );
             comboBoxVersion.SelectedValue = ApplicationData.Current.LocalSettings.Values["Version"];
+            tile.Text = ApplicationData.Current.LocalSettings.Values["TileUrl"].ToString();
         }
 
         void IndexPage_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
@@ -401,6 +403,12 @@ namespace CoolapkUWP.Pages.SettingPages
         private void Button_Click_19(object sender, RoutedEventArgs e)
         {
             UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModels.AdaptivePage.ViewModel("536381", ViewModels.AdaptivePage.ListType.UserFeed, "htmlFeed"));
+        }
+
+        private void Button_Click_20(object sender, RoutedEventArgs e)
+        {
+            ApplicationData.Current.LocalSettings.Values["TileUrl"] = tile.Text;
+            LiveTileTask.UpdateTile();
         }
     }
 }

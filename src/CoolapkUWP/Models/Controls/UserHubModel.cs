@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CoolapkUWP.Helpers;
+using Newtonsoft.Json.Linq;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using Windows.Storage;
@@ -128,7 +129,6 @@ namespace CoolapkUWP.Models.Controls
         {
             "536381",//wherewhere
             "695942",//一块小板子
-            "0",
         }.ToImmutableArray();
 
         private static readonly ImmutableArray<string> specials = new string[]
@@ -139,7 +139,6 @@ namespace CoolapkUWP.Models.Controls
             "1494629",
             "3327704",
             "3591060",
-            "0",
         }.ToImmutableArray();
         #endregion
 
@@ -169,37 +168,31 @@ namespace CoolapkUWP.Models.Controls
                 FindIsSpecial(u.ToString());
             }
             ApplicationData.Current.LocalSettings.Values["IsAuthor"] = IsAuthor;
-            ApplicationData.Current.LocalSettings.Values["IsAuthor"] = IsSpecial;
+            ApplicationData.Current.LocalSettings.Values["IsSpecial"] = IsSpecial;
         }
-
-        private static bool Is(string str, int i) => str == authors[i];
 
         #region
         private void FindIsAuthor(string uid)
         {
-            int i;
-            for (i = 0; authors[i] != "0"; i++)
+            foreach (string i in authors)
             {
-                if (Is(uid, i))
+                if (uid == i)
                 {
                     IsAuthor = true;
                     break;
                 }
-                else IsAuthor = false;
             }
         }
 
         private void FindIsSpecial(string uid)
         {
-            int i;
-            for (i = 0; specials[i] != "0"; i++)
+            foreach (string i in specials)
             {
-                if (Is(uid, i))
+                if (uid == i)
                 {
                     IsSpecial = true;
                     break;
                 }
-                else IsSpecial = false;
             }
         }
         #endregion

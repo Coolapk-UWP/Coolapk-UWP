@@ -29,7 +29,7 @@ namespace CoolapkUWP.Pages
         private string badgeIconGlyph = "\uED0D";
         private Visibility logoutButtonVisibility;
 
-        private Visibility LogoutButtonVisibility
+        public Visibility LogoutButtonVisibility
         {
             get => logoutButtonVisibility;
             set
@@ -103,7 +103,7 @@ namespace CoolapkUWP.Pages
             provider = (ViewModels.MyPage.ViewMode)e.Parameter;
             await Refresh();
             await Task.Delay(30);
-            scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
+            _ = scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
         }
 
         protected override void OnNavigatingFrom(Windows.UI.Xaml.Navigation.NavigatingCancelEventArgs e)
@@ -285,7 +285,7 @@ namespace CoolapkUWP.Pages
             switch (tag as string)
             {
                 case "settings":
-                    Frame.Navigate(typeof(SettingPages.SettingPage));
+                    _ = Frame.Navigate(typeof(SettingPages.SettingPage));
                     break;
 
                 case "login":

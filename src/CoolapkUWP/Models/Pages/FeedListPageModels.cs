@@ -62,7 +62,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
                 : o.Value<int>("isFans") == 1 ? loader.GetString("FanandFollow") : loader.GetString("unFollow");
             FanStatus = o.Value<int>("uid").ToString() == SettingsHelper.Get<string>(SettingsHelper.Uid) ? string.Empty
                 : o.Value<int>("isBlackList") == 1 ? loader.GetString("isBlack")
-                : o.Value<int>("isFollow") == 1 ? o.Value<int>("isFans") == 0 ? loader.GetString("follow") : loader.GetString("isfriend")
+                : o.Value<int>("isFollow") == 1 ? o.Value<int>("isFans") == 0 ? loader.GetString("isFollow") : loader.GetString("isFriend")
                 : o.Value<int>("isFans") == 1 ? loader.GetString("isFan") : loader.GetString("notFan");
             BeLikedNum = o.Value<int>("be_like_num");
             FollowNum = o.Value<int>("follow");

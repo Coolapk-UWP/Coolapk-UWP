@@ -186,7 +186,7 @@
   <data name="isFollow" xml:space="preserve">
     <value></value>
   </data>
-  <data name="isfriend" xml:space="preserve">
+  <data name="isFriend" xml:space="preserve">
     <value></value>
   </data>
   <data name="lastupdate_desc" xml:space="preserve">

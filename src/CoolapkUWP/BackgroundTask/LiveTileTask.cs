@@ -6,6 +6,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
+using Windows.Storage;
 using Windows.UI.Notifications;
 
 namespace CoolapkUWP.BackgroundTask
@@ -16,9 +17,22 @@ namespace CoolapkUWP.BackgroundTask
         {
             BackgroundTaskDeferral deferral = taskInstance.GetDeferral();
 
-            await GetData(new Uri("http://api.coolapk.com/v6/page/dataList?url=V9_HOME_TAB_FOLLOW&type=circle&page=1"));
+            Uri uri = new Uri("https://api.coolapk.com/v6/page/dataList?url=V9_HOME_TAB_FOLLOW&type=circle");
+            if (ApplicationData.Current.LocalSettings.Values["TileUrl"] != null)
+            { uri = new Uri(ApplicationData.Current.LocalSettings.Values["TileUrl"].ToString()); }
+            else { ApplicationData.Current.LocalSettings.Values["TileUrl"] = uri.ToString(); }
+            await GetData(uri);
 
             deferral.Complete();
+        }
+
+        public static void UpdateTile()
+        {
+            Uri uri = new Uri("https://api.coolapk.com/v6/page/dataList?url=V9_HOME_TAB_FOLLOW&type=circle");
+            if (ApplicationData.Current.LocalSettings.Values["TileUrl"] != null)
+            { uri = new Uri(ApplicationData.Current.LocalSettings.Values["TileUrl"].ToString()); }
+            else { ApplicationData.Current.LocalSettings.Values["TileUrl"] = uri.ToString(); }
+            _ = GetData(uri);
         }
 
         private static async Task<JObject> GetJson(Uri uri)
@@ -37,10 +51,21 @@ namespace CoolapkUWP.BackgroundTask
                 foreach (JObject v in (JArray)data)
                 {
                     if (i >= 5) { break; }
-                    if (v.TryGetValue("entityType", out JToken entityType) && (entityType.ToString() == "feed" || entityType.ToString() == "discovery"))
+                    if (v.TryGetValue("entityType", out JToken entityType))
                     {
-                        i++;
-                        UpdateTitle(GetTitle(v));
+                        if (entityType.ToString() == "feed" || entityType.ToString() == "discovery")
+                        {
+                            i++;
+                            UpdateTitle(GetFeedTitle(v));
+                        }
+                        else if (entityType.ToString() == "contacts")
+                        {
+                            if (v.TryGetValue("fUserInfo", out JToken fUserInfo))
+                            {
+                                i++;
+                                UpdateTitle(GetUserTitle((JObject)fUserInfo));
+                            }
+                        }
                     }
                 }
             }
@@ -57,7 +82,7 @@ namespace CoolapkUWP.BackgroundTask
             catch { }
         }
 
-        private static TileContent GetTitle(JObject token)
+        private static TileContent GetFeedTitle(JObject token)
         {
             FeedDetailModel FeedDetail = new FeedDetailModel(token);
             Regex r = new Regex("<a.*?>", RegexOptions.IgnoreCase);
@@ -177,6 +202,175 @@ namespace CoolapkUWP.BackgroundTask
                                     Text = Message,
                                     HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                     HintWrap = true
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        private static TileContent GetUserTitle(JObject token)
+        {
+            UserModel UserDetail = new UserModel(token);
+            return new TileContent()
+            {
+                Visual = new TileVisual()
+                {
+                    Branding = TileBranding.NameAndLogo,
+                    DisplayName = UserDetail.UserName,
+                    Arguments = UserDetail.Url,
+
+                    TileMedium = new TileBinding()
+                    {
+                        Content = new TileBindingContentAdaptive()
+                        {
+                            BackgroundImage = new TileBackgroundImage()
+                            {
+                                Source = UserDetail.Background.Uri,
+                                HintOverlay = 70
+                            },
+
+                            Children =
+                            {
+                                new AdaptiveText()
+                                {
+                                    Text = UserDetail.UserName,
+                                    HintStyle = AdaptiveTextStyle.Caption,
+                                },
+
+                                new AdaptiveText()
+                                {
+                                    Text = UserDetail.FollowNum + "关注" + UserDetail.FansNum + "粉丝"+ UserDetail.LoginTime+"活跃",
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                },
+
+                                new AdaptiveText()
+                                {
+                                    Text = UserDetail.Bio,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true,
+                                    HintMaxLines = 2
+                                }
+                            }
+                        }
+                    },
+                    TileWide = new TileBinding()
+                    {
+                        Content = new TileBindingContentAdaptive()
+                        {
+                            BackgroundImage = new TileBackgroundImage()
+                            {
+                                Source = UserDetail.Background.Uri,
+                                HintOverlay = 70
+                            },
+
+                            Children =
+                            {
+                                new AdaptiveGroup()
+                                {
+                                    Children =
+                                    {
+                                        new AdaptiveSubgroup()
+                                        {
+                                            HintWeight = 33,
+                                            Children =
+                                            {
+                                                new AdaptiveImage()
+                                                {
+                                                    Source = UserDetail.UserAvatar.Uri,
+                                                    HintCrop = AdaptiveImageCrop.Circle
+                                                }
+                                            },
+                                        },
+                                        new AdaptiveSubgroup()
+                                        {
+                                            Children =
+                                            {
+                                                new AdaptiveText()
+                                                {
+                                                    Text = UserDetail.UserName,
+                                                    HintStyle = AdaptiveTextStyle.Caption,
+                                                },
+
+                                                new AdaptiveText()
+                                                {
+                                                    Text = UserDetail.FollowNum + "关注" + UserDetail.FansNum + "粉丝"+ UserDetail.LoginTime+"活跃",
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                                },
+
+                                                new AdaptiveText()
+                                                {
+                                                    Text = UserDetail.Bio,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                                    HintWrap = true,
+                                                    HintMaxLines = 2
+                                                }
+                                            },
+                                        }
+                                    }
+                                },
+                            }
+                        }
+                    },
+                    TileLarge = new TileBinding()
+                    {
+                        Content = new TileBindingContentAdaptive()
+                        {
+                            BackgroundImage = new TileBackgroundImage()
+                            {
+                                Source = UserDetail.Background.Uri,
+                                HintOverlay = 70
+                            },
+
+                            Children =
+                            {
+                                new AdaptiveGroup()
+                                {
+                                    Children =
+                                    {
+                                        new AdaptiveSubgroup()
+                                        {
+                                            HintWeight = 2,
+                                            Children =
+                                            {
+                                                new AdaptiveImage()
+                                                {
+                                                    Source = UserDetail.UserAvatar.Uri,
+                                                    HintCrop = AdaptiveImageCrop.Circle
+                                                }
+                                            }
+                                        },
+
+                                        new AdaptiveSubgroup()
+                                        {
+                                            HintWeight = 1
+                                        },
+
+                                        new AdaptiveSubgroup()
+                                        {
+                                            HintWeight = 2
+                                        },
+                                    }
+                                },
+
+                                new AdaptiveText()
+                                {
+                                    Text = UserDetail.UserName,
+                                    HintStyle = AdaptiveTextStyle.Caption,
+                                },
+
+                                new AdaptiveText()
+                                {
+                                    Text = UserDetail.FollowNum + "关注" + UserDetail.FansNum + "粉丝"+ UserDetail.LoginTime+"活跃",
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                },
+
+                                new AdaptiveText()
+                                {
+                                    Text = UserDetail.Bio,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true,
                                 }
                             }
                         }

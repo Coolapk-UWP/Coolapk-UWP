@@ -153,7 +153,13 @@ namespace CoolapkUWP.Pages.SettingPages
             }
         }
 
-        public SettingPage() => this.InitializeComponent();
+        public SettingPage()
+        {
+            InitializeComponent();
+            LogoutButtonVisibility = string.IsNullOrEmpty(Get<string>(Uid))
+                                             ? Visibility.Collapsed
+                                             : Visibility.Visible;
+        }
 
         protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
         {
@@ -163,14 +169,7 @@ namespace CoolapkUWP.Pages.SettingPages
 #endif
             gotoTestPage.Visibility = Visibility.Visible;
 
-            if (IsBackgroundColorFollowSystem2)
-            {
-                ThemeMode.SelectedIndex = 2;
-            }
-            else
-            {
-                ThemeMode.SelectedIndex = IsDarkMode2 ? 1 : 0;
-            }
+            ThemeMode.SelectedIndex = IsBackgroundColorFollowSystem2 ? 2 : IsDarkMode2 ? 1 : 0;
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)

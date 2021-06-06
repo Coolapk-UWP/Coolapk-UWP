@@ -7,6 +7,7 @@
     xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:CoolapkUWP.Pages.SettingPages"
+    xmlns:page="using:CoolapkUWP.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
@@ -85,7 +86,7 @@
                     </Grid>
                 </controls:HeaderedContentControl>
 
-                <controls:HeaderedContentControl x:Uid="/SettingPage/AccountSettingsHeader" Style="{StaticResource HeaderStyle}">
+                <controls:HeaderedContentControl x:Uid="/SettingPage/AccountSettingsHeader" Style="{StaticResource HeaderStyle}" Visibility="{x:Bind LogoutButtonVisibility}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
@@ -114,12 +115,25 @@
                             Click="Button_Click"
                             Tag="MyDevice"/>
 
-                        <Button x:Uid="/SettingPage/AccountLogout" Style="{StaticResource ButtonRevealStyle}" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,2" Name="AccountLogout">
+                        <Button
+                            x:Uid="/SettingPage/AccountLogout"
+                            Style="{StaticResource ButtonRevealStyle}"
+                            Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            Margin="0,2"
+                            Name="AccountLogout">
                             <Button.Flyout>
                                 <Flyout>
                                     <StackPanel>
-                                        <TextBlock x:Uid="/SettingPage/AccountLogoutTitle" Style="{ThemeResource BaseTextBlockStyle}" Margin="0,0,0,12"/>
-                                        <Button x:Uid="/SettingPage/AccountLogoutConfirm" Style="{StaticResource ButtonRevealStyle}" Click="Button_Click" Tag="AccountLogout"/>
+                                        <TextBlock
+                                            x:Uid="/SettingPage/AccountLogoutTitle"
+                                            Style="{ThemeResource BaseTextBlockStyle}"
+                                            Margin="0,0,0,12"/>
+                                        <Button
+                                            x:Uid="/SettingPage/AccountLogoutConfirm"
+                                            Style="{StaticResource ButtonRevealStyle}"
+                                            Click="Button_Click"
+                                            Tag="AccountLogout"/>
                                     </StackPanel>
                                 </Flyout>
                             </Button.Flyout>

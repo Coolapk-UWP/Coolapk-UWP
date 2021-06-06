@@ -45,6 +45,8 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
 
                         <TextBox x:Name="uid" Header="输入UID" Grid.Row="0" Margin="0,2"/>
@@ -116,6 +118,10 @@
                         <StackPanel Orientation="Horizontal" Grid.Row="16" Margin="2" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Button Click="Button_Click_10" Style="{StaticResource ButtonRevealStyle}">前往开发人员页面</Button>
                             <Button Click="Button_Click_19" Style="{StaticResource ButtonRevealStyle}" Margin="2,0,0,0">测试新页面</Button>
+                        </StackPanel>
+                        <TextBox x:Name="tile" Header="修改动态磁贴源" Grid.Row="17" Margin="0,2"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="18" Margin="0.2" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <Button Click="Button_Click_20" Style="{StaticResource ButtonRevealStyle}">保存</Button>
                         </StackPanel>
                     </Grid>
                 </controls:HeaderedContentControl>

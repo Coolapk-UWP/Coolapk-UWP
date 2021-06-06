@@ -8,7 +8,7 @@ namespace CoolapkUWP.Models
     {
         public UserModel(JObject o) : base(o)
         {
-            var loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
+            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
             Url = o.Value<string>("url");
             BlockStatus = o.Value<int>("status") == -1 ? loader.GetString("status-1")
                 : UIHelper.IsSpecialUser && o.Value<int>("block_status") == -1 ? loader.GetString("block_status-1")
@@ -26,6 +26,7 @@ namespace CoolapkUWP.Models
                 LoginTime = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(o["logintime"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal))) + "活跃";
             }
             UserAvatar = new ImageModel(o.Value<string>("userSmallAvatar"), ImageType.BigAvatar);
+            Background = new BackgroundImageModel(o.Value<string>("cover"), ImageType.OriginImage);
         }
 
         public string Url { get; private set; }
@@ -36,5 +37,6 @@ namespace CoolapkUWP.Models
         public string Bio { get; private set; }
         public string BlockStatus { get; private set; }
         public ImageModel UserAvatar { get; private set; }
+        public BackgroundImageModel Background { get; private set; }
     }
 }
