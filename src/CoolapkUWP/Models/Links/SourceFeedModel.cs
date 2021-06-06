@@ -118,17 +118,6 @@ namespace CoolapkUWP.Models.Links
             }
         }
 
-        private BackgroundImageModel pic;
-        public BackgroundImageModel Pic
-        {
-            get => pic;
-            set
-            {
-                pic = value;
-                RaisePropertyChangedEvent();
-            }
-        }
-
         private ImmutableArray<ImageModel> picArr;
         public ImmutableArray<ImageModel> PicArr
         {
@@ -230,10 +219,6 @@ namespace CoolapkUWP.Models.Links
                                         }
                                     }
                                 }
-                                if (data.TryGetValue("pic", out JToken value1) && !string.IsNullOrEmpty(value1.ToString()))
-                                {
-                                    Pic = new BackgroundImageModel(value1.ToString(), ImageType.SmallImage);
-                                }
                             }
                         }
                         Succeed = true;
@@ -260,16 +245,12 @@ namespace CoolapkUWP.Models.Links
                                                     break;
                                                 case "2":
                                                     if (v.TryGetValue("link", out JToken link) && !string.IsNullOrEmpty(link.ToString()))
-                                                    {
-                                                        Message += "<a class=\"feed-link-url\" href=\"" + link.ToString() + "\" target=\"_blank\" rel=\"nofollow\">查看链接</a>";
-                                                    }
+                                                    { Message += "<a class=\"feed-link-url\" href=\"" + link.ToString() + "\" target=\"_blank\" rel=\"nofollow\">查看链接</a>"; }
                                                     else { Message += content.ToString(); }
                                                     break;
                                                 case "3":
                                                     if (v.TryGetValue("topicId", out JToken topicId) && !string.IsNullOrEmpty(topicId.ToString()))
-                                                    {
-                                                        Message += "<a class=\"feed-link-tag\" href=\"" + "ithome://qtopic?id=" + topicId.ToString() + "\">" + content.ToString() + "</a>";
-                                                    }
+                                                    { Message += "<a class=\"feed-link-tag\" href=\"" + "ithome://qtopic?id=" + topicId.ToString() + "\">" + content.ToString() + "</a>"; }
                                                     else { Message += content.ToString(); }
                                                     break;
                                                 default:

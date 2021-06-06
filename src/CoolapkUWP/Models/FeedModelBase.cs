@@ -150,9 +150,7 @@ namespace CoolapkUWP.Models
                     ExtraUrl = token.Value<string>("extra_url");
                     if (ExtraUrl.Contains("coolapk") && ExtraUrl.Contains("feed"))
                     {
-                        Regex GetID = new Regex(@"/feed/([\d|\w]+)");
-                        Uri uri = UriHelper.GetUri(UriType.GetFeedDetail, GetID.Match(ExtraUrl).Groups[1].Value);
-                        LinkSourceFeed = new Links.SourceFeedModel(uri, Links.LinkType.Coolapk);
+                        LinkSourceFeed = new Links.SourceFeedModel(new Uri(ExtraUrl), Links.LinkType.Coolapk);
                         ShowLinkSourceFeed = true;
                     }
                     else if (ExtraUrl.Contains("ithome") && ExtraUrl.Contains("qcontent"))
