@@ -4,9 +4,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace CoolapkUWP.Models
 {
@@ -81,7 +80,6 @@ namespace CoolapkUWP.Models
         public bool Liked { get; set; }
         public bool Liked2 { get => !Liked; }
         public string Id => EntityId;
-        public bool HaveUserInfo { get; private set; }
         public BackgroundImageModel ExtraPic { get; private set; }
         public ImageModel UserSmallAvatar { get; private set; }
 
@@ -94,25 +92,39 @@ namespace CoolapkUWP.Models
 
         public FeedModelBase(JObject token) : base(token)
         {
-            if (token.TryGetValue("info", out JToken value1))
+            if (token.TryGetValue("info", out JToken info))
             {
-                Info = value1.ToString();
+                Info = info.ToString();
             }
             VideoUrl = null;
-            Likenum = token["likenum"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
-            Replynum = token["replynum"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
-            ShareNum = token["forwardnum"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
-            ChangeCount = token.TryGetValue("change_count", out JToken v) || v != null
-                ? v.ToString().Replace("\"", string.Empty, StringComparison.Ordinal)
+            if (token.TryGetValue("likenum", out JToken likenum))
+            {
+                Likenum = likenum.ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
+            }
+            if (token.TryGetValue("replynum", out JToken replynum))
+            {
+                Replynum = replynum.ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
+            }
+            if (token.TryGetValue("forwardnum", out JToken forwardnum))
+            {
+                ShareNum = forwardnum.ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
+            }
+            ChangeCount = token.TryGetValue("change_count", out JToken change_count) || change_count != null
+                ? change_count.ToString().Replace("\"", string.Empty, StringComparison.Ordinal)
                 : token["isModified"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
-            ChangeTitle = "已编辑" + ChangeCount + "次";
-            if (ChangeTitle == "已编辑0次") { ChangeTitle = null; }
-            if (token.Value<string>("entityType") != "article")
+            ChangeTitle = ChangeCount == "0" ? null : "已编辑" + ChangeCount + "次";
+            if (token.TryGetValue("entityType",out JToken entityType) && entityType.ToString() != "article")
             {
                 if (IsQuestionFeed)
                 {
-                    QuestionAnswerNum = token["question_answer_num"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
-                    QuestionFollowNum = token["question_follow_num"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
+                    if (token.TryGetValue("question_answer_num", out JToken question_answer_num))
+                    {
+                        QuestionAnswerNum = question_answer_num.ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
+                    }
+                    if (token.TryGetValue("question_follow_num", out JToken question_follow_num))
+                    {
+                        QuestionFollowNum = question_follow_num.ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
+                    }
                 }
                 ShowSourceFeedGrid = !IsQuestionFeed && (!string.IsNullOrEmpty(token["forwardid"]?.ToString()) || (!string.IsNullOrEmpty(token["source_id"]?.ToString())));
                 if (ShowSourceFeedGrid)
@@ -129,43 +141,55 @@ namespace CoolapkUWP.Models
                 //if (token["entityTemplate"].GetString() == "feedByDyhHeader") showUser = false;
                 if (ShowUser)
                 {
-                    try
+                    if (token.TryGetValue("userInfo", out JToken v2) && !string.IsNullOrEmpty(v2.ToString()))
                     {
-                        HaveUserInfo = !string.IsNullOrEmpty((string)token["userInfo"]);
+                        JObject userInfo = (JObject)v2;
+                        if (userInfo.TryGetValue("userSmallAvatar", out JToken userSmallAvatar))
+                        { UserSmallAvatar = new ImageModel(userSmallAvatar.ToString(), ImageType.BigAvatar); }
                     }
-                    catch
+                    else
                     {
-                        HaveUserInfo = false;
-                    }
-                    string userSmallAvatarUrl = HaveUserInfo ? token["userInfo"].Value<string>("userSmallAvatar") : token.Value<string>("userAvatar");
-                    if (!string.IsNullOrEmpty(userSmallAvatarUrl))
-                    {
-                        UserSmallAvatar = new ImageModel(userSmallAvatarUrl, ImageType.BigAvatar);
+                        if (token.TryGetValue("userAvatar", out JToken userAvatar))
+                        { UserSmallAvatar = new ImageModel(userAvatar.ToString(), ImageType.BigAvatar); }
                     }
                 }
 
                 ShowExtraUrl = token.TryGetValue("extra_title", out JToken valueextra_title) && !string.IsNullOrEmpty(valueextra_title.ToString());
                 if (ShowExtraUrl)
                 {
-                    ExtraUrl = token.Value<string>("extra_url");
+                    if (token.TryGetValue("extra_url", out JToken extra_url))
+                    {
+                        ExtraUrl = extra_url.ToString();
+                        if (ExtraUrl.Contains("b23.tv")|| ExtraUrl.Contains("t.cn"))
+                        {
+                            ExtraUrl = NetworkHelper.ExpandShortUrl(new Uri(ExtraUrl));
+                        }
+                    }
                     if (ExtraUrl.Contains("coolapk") && ExtraUrl.Contains("feed"))
                     {
                         LinkSourceFeed = new Links.SourceFeedModel(new Uri(ExtraUrl), Links.LinkType.Coolapk);
                         ShowLinkSourceFeed = true;
                     }
+                    else if (ExtraUrl.Contains("bilibili") && ExtraUrl.Contains("t.bilibili"))
+                    {
+                        Regex GetID = new Regex(@"/t.*?/([\d|\w]+)");
+                        Uri uri = UriHelper.GetLinkUri(UriType.GetBilibiliFeed, LinkType.Bilibili, GetID.Match(ExtraUrl).Groups[1].Value);
+                        MultipartFormDataContent content = new MultipartFormDataContent { { new StringContent(GetID.Match(ExtraUrl).Groups[1].Value), "dynamic_id" } };
+                        LinkSourceFeed = new Links.SourceFeedModel(uri, Links.LinkType.Bilibili, true, content);
+                        ShowLinkSourceFeed = true;
+                    }
                     else if (ExtraUrl.Contains("ithome") && ExtraUrl.Contains("qcontent"))
                     {
-                        Regex GetID = new Regex(@"[%26|%3F]id%3D([\d|\s]+)");
-                        Uri uri = UriHelper.GetITHomeUri(UriType.GetITHomeFeed, GetID.Match(ExtraUrl).Groups[1].Value);
+                        Regex GetID = new Regex(@"[%26|%3F]id%3D([\d|\w]+)");
+                        Uri uri = UriHelper.GetLinkUri(UriType.GetITHomeFeed, LinkType.ITHome, GetID.Match(ExtraUrl).Groups[1].Value);
                         LinkSourceFeed = new Links.SourceFeedModel(uri, Links.LinkType.ITHome);
                         ShowLinkSourceFeed = true;
                     }
                     ExtraTitle = valueextra_title.ToString();
                     ExtraUrl2 = (ExtraUrl?.IndexOf("http", StringComparison.Ordinal) ?? -1) == 0 ? new Uri(ExtraUrl).Host : string.Empty;
-                    string extraPicUrl = token.Value<string>("extra_pic");
-                    if (!string.IsNullOrEmpty(extraPicUrl))
+                    if (token.TryGetValue("extra_pic", out JToken extra_pic) && !string.IsNullOrEmpty(extra_pic.ToString()))
                     {
-                        ExtraPic = new BackgroundImageModel(extraPicUrl, ImageType.Icon);
+                        ExtraPic = new BackgroundImageModel(extra_pic.ToString(), ImageType.Icon);
                     }
                 }
 
@@ -184,11 +208,17 @@ namespace CoolapkUWP.Models
                     }
                 }
 
-                DeviceTitle = token.Value<string>("device_title");
+                if (token.TryGetValue("device_title", out JToken device_title))
+                {
+                    DeviceTitle = device_title.ToString();
+                }
             }
-            //else showUser = false;
-            Liked = token.Value<string>("extra_fromApi") != "V11_HOME_TAB_NEWS"
-                && token.TryGetValue("userAction", out JToken v1) && int.Parse(v1["like"].ToString()) == 1;
+
+            if(token.TryGetValue("userAction", out JToken v1))
+            {
+                JObject userAction = (JObject)v1;
+                Liked = userAction.TryGetValue("like", out JToken like) && like.ToString() == "1";
+            }
         }
     }
 }

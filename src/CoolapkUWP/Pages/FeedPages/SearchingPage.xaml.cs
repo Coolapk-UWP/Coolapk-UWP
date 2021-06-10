@@ -3,7 +3,6 @@ using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -129,7 +128,7 @@ namespace CoolapkUWP.Pages.FeedPages
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
                 (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetSearchWords, sender.Text), true);
-                if(isSucceed && result != null && result is JArray array && array.Count > 0)
+                if (isSucceed && result != null && result is JArray array && array.Count > 0)
                 {
                     ObservableCollection<object> observableCollection = new ObservableCollection<object>();
                     sender.ItemsSource = observableCollection;

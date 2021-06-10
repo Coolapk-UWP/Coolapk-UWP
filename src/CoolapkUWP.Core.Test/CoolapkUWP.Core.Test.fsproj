@@ -8,22 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="nunit" Version="3.13.2"/>
-    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0"/>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4"/>
+    <PackageReference Include="nunit" Version="3.13.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="UtilTest.fs"/>
-    <Compile Include="Program.fs"/>
+    <Compile Include="UtilTest.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoolapkUWP.Core\CoolapkUWP.Core.csproj"/>
+    <ProjectReference Include="..\CoolapkUWP.Core\CoolapkUWP.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="5.0.1"/>
+    <PackageReference Update="FSharp.Core" Version="5.0.1" />
   </ItemGroup>
 
 </Project>

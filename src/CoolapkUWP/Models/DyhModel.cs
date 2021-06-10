@@ -27,7 +27,7 @@ namespace CoolapkUWP.Models
             {
                 Commentnum = o["newsnum"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal);
             }
-            else if(!string.IsNullOrEmpty((string)o["commentnum"]))
+            else if (!string.IsNullOrEmpty((string)o["commentnum"]))
             {
                 Commentnum = o["commentnum"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal);
             }

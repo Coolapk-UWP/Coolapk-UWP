@@ -2,7 +2,6 @@
 using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.ComponentModel;
 using System.Text.RegularExpressions;

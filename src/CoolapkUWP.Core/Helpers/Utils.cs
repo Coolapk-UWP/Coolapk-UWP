@@ -90,8 +90,8 @@ namespace CoolapkUWP.Core.Helpers
             {
                 DateTime now = DateTime.Now;
                 Uri[] needDelete = (from i in responseCache
-                                  where (now - i.Value.Item1).TotalMinutes > 2
-                                  select i.Key).ToArray();
+                                    where (now - i.Value.Item1).TotalMinutes > 2
+                                    select i.Key).ToArray();
                 foreach (Uri item in needDelete)
                 {
                     _ = responseCache.Remove(item);
@@ -113,6 +113,17 @@ namespace CoolapkUWP.Core.Helpers
             else { return (true, token); }
         }
 
+        public static async Task<(bool isSucceed, string result)> PostHtmlAsync(Uri uri, System.Net.Http.HttpContent content, IEnumerable<(string, string)> cookies)
+        {
+            string json = await NetworkHelper.PostAsync(uri, content, cookies);
+            if (string.IsNullOrEmpty(json))
+            {
+                ShowInAppMessage(MessageType.Message, "获取失败");
+                return (false, null);
+            }
+            else { return (true, json); }
+        }
+
         public static async Task<(bool isSucceed, JToken result)> PostDataAsync(Uri uri, System.Net.Http.HttpContent content, IEnumerable<(string, string)> cookies)
         {
             string json = await NetworkHelper.PostAsync(uri, content, cookies);
@@ -122,7 +133,6 @@ namespace CoolapkUWP.Core.Helpers
         public static async Task<(bool isSucceed, string result)> GetHtmlAsync(Uri uri, IEnumerable<(string, string)> cookies, string request)
         {
             string json = await NetworkHelper.GetHtmlAsync(uri, cookies, request);
-            if (cookies == null) { ShowInAppMessage(MessageType.Message, "cookies为null"); }
             if (string.IsNullOrEmpty(json))
             {
                 ShowInAppMessage(MessageType.Message, "获取失败");
@@ -150,9 +160,9 @@ namespace CoolapkUWP.Core.Helpers
                             string u = uri.PathAndQuery.Substring(i);
 
                             KeyValuePair<Uri, (DateTime, string)>[] needDelete = (from item in responseCache
-                                              where item.Key != uri
-                                              where item.Key.PathAndQuery.IndexOf(u, StringComparison.Ordinal) == 0
-                                              select item).ToArray();
+                                                                                  where item.Key != uri
+                                                                                  where item.Key.PathAndQuery.IndexOf(u, StringComparison.Ordinal) == 0
+                                                                                  select item).ToArray();
                             foreach (KeyValuePair<Uri, (DateTime, string)> item in needDelete)
                             {
                                 _ = responseCache.Remove(item.Key);

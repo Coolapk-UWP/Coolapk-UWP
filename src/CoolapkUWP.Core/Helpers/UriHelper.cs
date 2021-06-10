@@ -4,6 +4,13 @@ using System.Diagnostics;
 namespace CoolapkUWP.Core.Helpers
 {
     /// <summary> 程序支持的能从服务器中获取的数据的类型。 </summary>
+    public enum LinkType
+    {
+        Coolapk,
+        ITHome,
+        Bilibili
+    }
+
     public enum UriType
     {
         CheckLoginInfo,
@@ -53,10 +60,9 @@ namespace CoolapkUWP.Core.Helpers
         SearchTags,
         SearchUsers,
         SearchWords,
-
         GetDevMyList,
-
-        GetITHomeFeed
+        GetITHomeFeed,
+        GetBilibiliFeed
     }
 
     [DebuggerStepThrough]
@@ -65,8 +71,8 @@ namespace CoolapkUWP.Core.Helpers
         public static readonly Uri CoolapkUri = new Uri("https://coolapk.com");
         public static readonly Uri BaseUri = new Uri("https://api.coolapk.com");
         public static readonly Uri DevUri = new Uri("https://developer.coolapk.com");
-
         public static readonly Uri ITHomeUri = new Uri("https://qapi.ithome.com");
+        public static readonly Uri BilibiliUri = new Uri("https://api.vc.bilibili.com");
 
         public static Uri GetUri(UriType type, params object[] args)
         {
@@ -74,16 +80,26 @@ namespace CoolapkUWP.Core.Helpers
             return new Uri(BaseUri, u);
         }
 
-        public static Uri GetDevUri(UriType type, params object[] args)
+        public static Uri GetLinkUri(UriType type, LinkType linkType = LinkType.Coolapk, params object[] args)
         {
             string u = string.Format(GetTemplate(type), args);
-            return new Uri(DevUri, u);
-        }
-
-        public static Uri GetITHomeUri(UriType type, params object[] args)
-        {
-            string u = string.Format(GetTemplate(type), args);
-            return new Uri(ITHomeUri, u);
+            Uri BaseUri;
+            switch (linkType)
+            {
+                case LinkType.Coolapk:
+                    BaseUri = CoolapkUri;
+                    break;
+                case LinkType.ITHome:
+                    BaseUri = ITHomeUri;
+                    break;
+                case LinkType.Bilibili:
+                    BaseUri = BilibiliUri;
+                    break;
+                default:
+                    BaseUri = null;
+                    break;
+            }
+            return new Uri(BaseUri, u);
         }
 
         private static string GetTemplate(UriType type)
@@ -141,6 +157,8 @@ namespace CoolapkUWP.Core.Helpers
                 case UriType.GetDevMyList: return "/do?c=apk&m=myList&listType={0}&p={1}";
                 //IT之家
                 case UriType.GetITHomeFeed: return "/api/content/getcontentdetail?id={0}";
+                //BibiBili
+                case UriType.GetBilibiliFeed: return "/dynamic_svr/v1/dynamic_svr/get_dynamic_detail";
                 default: throw new ArgumentException($"{typeof(UriType).FullName}值错误");
             }
         }

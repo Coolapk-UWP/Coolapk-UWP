@@ -7,7 +7,6 @@ using CoolapkUWP.ViewModels.FeedListPage;
 using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -195,7 +194,7 @@ namespace CoolapkUWP.Pages
                                 break;
                             case "searchWord":
                             default:
-                                observableCollection.Add(new SearchWord (token as JObject));
+                                observableCollection.Add(new SearchWord(token as JObject));
                                 break;
                         }
                     }

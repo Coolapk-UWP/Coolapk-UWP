@@ -201,5 +201,20 @@ namespace CoolapkUWP.Core.Helpers
                 }
             }
         }
+
+        public static string ExpandShortUrl(Uri ShortUrl)
+        {
+            string NativeUrl = null;
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(ShortUrl);
+            req.AllowAutoRedirect = false;
+            try { _ = (HttpWebResponse)req.GetResponse(); }
+            catch (WebException ex)
+            {
+                HttpWebResponse res = ex.Response as HttpWebResponse;
+                if (res.StatusCode == HttpStatusCode.Found)
+                { NativeUrl = res.Headers["Location"]; }
+            }
+            return NativeUrl == null ? ShortUrl.ToString() : NativeUrl;
+        }
     }
 }

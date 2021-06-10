@@ -10,7 +10,7 @@ namespace CoolapkUWP.Models
     public class SourceFeedModel : Entity
     {
         public string Url { get; private set; }
-        public string QRUrl { get => "https://www.coolapk.com" + Url.Replace("/question/", "/feed/", System.StringComparison.Ordinal); }
+        public string QRUrl { get => "https://www.coolapk.com" + Url.Replace("/question/", "/feed/", StringComparison.Ordinal); }
         public string Shareurl { get; private set; }
         public string Uurl { get; private set; }
         public string Username { get; private set; }
@@ -21,7 +21,6 @@ namespace CoolapkUWP.Models
         public bool ShowPicArr { get; private set; }
         public bool IsCoolPictuers { get; private set; }
         public bool IsMoreThanOnePic { get; private set; }
-        public bool HaveUserInfo { get; private set; }
         public bool HavePic { get; private set; }
         public BackgroundImageModel Pic { get; private set; }
         public ImmutableArray<ImageModel> PicArr { get; private set; } = ImmutableArray<ImageModel>.Empty;
@@ -31,7 +30,7 @@ namespace CoolapkUWP.Models
 
         public SourceFeedModel(JObject o) : base(o)
         {
-            Url = o.TryGetValue("url", out JToken json) ? json.ToString() : $"/feed/{o["id"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal)}";
+            Url = o.TryGetValue("url", out JToken json) ? json.ToString() : $"/feed/{o["id"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal)}";
             if (o.Value<string>("entityType") == "article")
             {
                 Dateline = DataHelper.ConvertUnixTimeStampToReadable(o.Value<int>("digest_time"));
@@ -45,30 +44,34 @@ namespace CoolapkUWP.Models
                 {
                     Url = Url.Replace("/feed/", "/question/", StringComparison.Ordinal);
                 }
-                try
+                if (o.TryGetValue("userInfo", out JToken v2) && !string.IsNullOrEmpty(v2.ToString()))
                 {
-                    HaveUserInfo = !string.IsNullOrEmpty((string)o["userInfo"]);
-                }
-                catch
-                {
-                    HaveUserInfo = false;
-                }
-                if (HaveUserInfo)
-                {
-                    Uurl = o["userInfo"].Value<string>("url");
-                    Username = o["userInfo"].Value<string>("username");
+                    JObject userInfo = (JObject)v2;
+                    if (userInfo.TryGetValue("url", out JToken url))
+                    {
+                        Uurl = url.ToString();
+                    }
+                    if (userInfo.TryGetValue("username", out JToken username))
+                    {
+                        Username = username.ToString();
+                    }
                 }
                 else
                 {
-                    Uurl = "/u/" + o.Value<string>("uid");
-                    Username = o.Value<string>("username");
+                    if (o.TryGetValue("uid", out JToken uid))
+                    {
+                        Uurl = "/u/" + uid.ToString();
+                    }
+                    if (o.TryGetValue("username", out JToken username))
+                    {
+                        Username = username.ToString();
+                    }
                 }
                 Dateline = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal)));
                 IsRatingFeed = o.Value<string>("feedType") == "rating";
-                if (IsRatingFeed)
-                    Message = "【评分】" + o.Value<string>("rating_score") + "分\n" + o.Value<string>("message");
-                else Message = o.Value<string>("message");
-                MessageTitle = o.TryGetValue("message_title", out JToken j) ? j.ToString() : string.Empty;
+                Message = IsRatingFeed ? "【评分】" + o.Value<string>("rating_score") + "分\n" + o.Value<string>("message") : o.Value<string>("message");
+                MessageTitle = o.TryGetValue("message_title", out JToken message_title) ? message_title.ToString()
+                    : o.TryGetValue("editor_title", out JToken editor_title) ? editor_title.ToString() : string.Empty;
             }
             ShowPicArr = o.TryGetValue("picArr", out JToken picArr) && (picArr as JArray).Count > 0 && !string.IsNullOrEmpty((picArr as JArray)[0].ToString());
             if (o.Value<string>("feedTypeName") == "酷图")
@@ -97,9 +100,9 @@ namespace CoolapkUWP.Models
             Shareurl = string.IsNullOrEmpty(o.Value<string>("shareUrl")) ? QRUrl : o.Value<string>("shareUrl");
             IsBlock = o.TryGetValue("block_status", out JToken v) && v.ToString() != "0";
             if (UIHelper.IsSpecialUser && IsBlock)
-                Username += " [已折叠]";
+            { Username += " [已折叠]"; }
             if (o.TryGetValue("status", out JToken s) && s.ToString() == "-1")
-                Username += " [仅自己可见]";
+            { Username += " [仅自己可见]"; }
         }
     }
 }

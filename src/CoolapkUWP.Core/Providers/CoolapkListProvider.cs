@@ -52,8 +52,8 @@ namespace CoolapkUWP.Core.Providers
         {
             _getUri = getUri ?? throw new ArgumentNullException(nameof(getUri));
             Entity[] needDeleteItems = (from entity in Models
-                                   where needDeleteJudger(entity)
-                                   select entity).ToArray();
+                                        where needDeleteJudger(entity)
+                                        select entity).ToArray();
             foreach (Entity item in needDeleteItems)
             {
                 _ = Models.Remove(item);
@@ -67,8 +67,8 @@ namespace CoolapkUWP.Core.Providers
             lastItem = firstItem = string.Empty;
 
             Entity[] temp = Models.Except(from m in Models
-                                     where m.EntityFixed
-                                     select m).ToArray();
+                                          where m.EntityFixed
+                                          select m).ToArray();
             foreach (Entity item in temp)
             {
                 _ = Models.Remove(item);
@@ -106,8 +106,8 @@ namespace CoolapkUWP.Core.Providers
             if (array != null && array.Count > 0)
             {
                 Entity[] fixedEntities = (from m in Models
-                                     where m.EntityFixed
-                                     select m).ToArray();
+                                          where m.EntityFixed
+                                          select m).ToArray();
                 int fixedNum = fixedEntities.Length;
                 foreach (Entity item in fixedEntities)
                 {
@@ -115,9 +115,9 @@ namespace CoolapkUWP.Core.Providers
                 }
 
                 Entity[] needDeleteEntites = (from m in Models
-                                         from b in array
-                                         where _checkEqual(m, b)
-                                         select m).ToArray();
+                                              from b in array
+                                              where _checkEqual(m, b)
+                                              select m).ToArray();
                 foreach (Entity item in needDeleteEntites)
                 {
                     _ = Models.Remove(item);

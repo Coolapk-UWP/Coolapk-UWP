@@ -3,7 +3,6 @@ using CoolapkUWP.Models;
 using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.AdaptivePage;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Linq;
 using Windows.UI.Xaml;

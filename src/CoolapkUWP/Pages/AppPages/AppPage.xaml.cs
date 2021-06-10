@@ -1,5 +1,4 @@
 ﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
 using System;

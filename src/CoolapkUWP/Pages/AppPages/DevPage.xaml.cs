@@ -1,8 +1,6 @@
 ﻿using CoolapkUWP.Core.Helpers;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
-using CoolapkUWP.Models.Pages.FeedListPageModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Newtonsoft.Json.Linq;
 using System;
@@ -38,9 +36,13 @@ namespace CoolapkUWP.Pages.AppPages
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             #region 测试
-            Uri uri = new Uri("https://qapi.ithome.com/api/content/getcontentdetail?id=5209");
-            (bool _, string result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
-            GetData(new Uri("http://api.coolapk.com/v6/user/followList?uid=536381&page=1"));
+            //Uri uri = new Uri("https://qapi.ithome.com/api/content/getcontentdetail?id=5209");
+            //(bool _, string result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
+            //GetData(new Uri("http://api.coolapk.com/v6/user/followList?uid=536381&page=1"));
+            //MultipartFormDataContent content = new MultipartFormDataContent();
+            //content.Add(new StringContent("532743392602094571"), "dynamic_id");
+            //(bool _, string _) = await DataHelper.PostHtmlAsync(new Uri("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/get_dynamic_detail") , content);
+            //UIHelper.StatusBar_ShowMessage(NetworkHelper.ExpandShortUrl(new Uri("https://b23.tv/M35xll")));
             //Models.Links.SourceFeedModel _ = new Models.Links.SourceFeedModel(JObject.Parse(result), Models.Links.LinkType.ITHome);
             //if (isSucceed)
             //{
@@ -165,7 +167,7 @@ namespace CoolapkUWP.Pages.AppPages
         private async void GetData(Uri uri)
         {
             JObject token = await GetJson(uri);
-            if(token.TryGetValue("data", out JToken data))
+            if (token.TryGetValue("data", out JToken data))
             {
                 int i = 0;
                 foreach (JObject v in (JArray)data)
@@ -178,7 +180,7 @@ namespace CoolapkUWP.Pages.AppPages
                             i++;
                             UpdateTitle(GetFeedTitle(v));
                         }
-                        else if(entityType.ToString() == "contacts")
+                        else if (entityType.ToString() == "contacts")
                         {
                             if (v.TryGetValue("fUserInfo", out JToken fUserInfo))
                             {
@@ -284,13 +286,13 @@ namespace CoolapkUWP.Pages.AppPages
                                                     Text = UserDetail.UserName,
                                                     HintStyle = AdaptiveTextStyle.Caption,
                                                 },
-                                                
+
                                                 new AdaptiveText()
                                                 {
                                                     Text = UserDetail.FollowNum + "关注" + UserDetail.FansNum + "粉丝"+ UserDetail.LoginTime+"活跃",
                                                     HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                                 },
-                                                
+
                                                 new AdaptiveText()
                                                 {
                                                     Text = UserDetail.Bio,

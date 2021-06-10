@@ -45,7 +45,7 @@ namespace CoolapkUWP.Helpers
             }
             else
             {
-                if ((type == ImageType.SmallImage || type == ImageType.SmallAvatar) && !url.Contains("ithome"))
+                if ((type == ImageType.SmallImage || type == ImageType.SmallAvatar))
                 {
                     url += ".s.jpg";
                 }
@@ -100,7 +100,7 @@ namespace CoolapkUWP.Helpers
             }
             else
             {
-                if ((type == ImageType.SmallImage || type == ImageType.SmallAvatar) && !url.Contains("ithome"))
+                if ((type == ImageType.SmallImage || type == ImageType.SmallAvatar))
                 {
                     url += ".s.jpg";
                 }
@@ -161,7 +161,7 @@ namespace CoolapkUWP.Helpers
                 string fileName = Core.Helpers.Utils.GetMD5(url);
                 StorageFolder folder = await GetFolderAsync(type);
                 IStorageItem item = await folder.TryGetItemAsync(fileName);
-                if ((type == ImageType.SmallImage || type == ImageType.SmallAvatar) && !url.Contains("ithome"))
+                if ((type == ImageType.SmallImage || type == ImageType.SmallAvatar))
                 {
                     url += ".s.jpg";
                 }
