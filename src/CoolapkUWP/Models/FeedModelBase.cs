@@ -113,7 +113,7 @@ namespace CoolapkUWP.Models
                 ? change_count.ToString().Replace("\"", string.Empty, StringComparison.Ordinal)
                 : token["isModified"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
             ChangeTitle = ChangeCount == "0" ? null : "已编辑" + ChangeCount + "次";
-            if (token.TryGetValue("entityType",out JToken entityType) && entityType.ToString() != "article")
+            if (token.TryGetValue("entityType", out JToken entityType) && entityType.ToString() != "article")
             {
                 if (IsQuestionFeed)
                 {
@@ -160,7 +160,7 @@ namespace CoolapkUWP.Models
                     if (token.TryGetValue("extra_url", out JToken extra_url))
                     {
                         ExtraUrl = extra_url.ToString();
-                        if (ExtraUrl.Contains("b23.tv")|| ExtraUrl.Contains("t.cn"))
+                        if (ExtraUrl.Contains("b23.tv") || ExtraUrl.Contains("t.cn"))
                         {
                             ExtraUrl = NetworkHelper.ExpandShortUrl(new Uri(ExtraUrl));
                         }
@@ -214,7 +214,7 @@ namespace CoolapkUWP.Models
                 }
             }
 
-            if(token.TryGetValue("userAction", out JToken v1))
+            if (token.TryGetValue("userAction", out JToken v1))
             {
                 JObject userAction = (JObject)v1;
                 Liked = userAction.TryGetValue("like", out JToken like) && like.ToString() == "1";

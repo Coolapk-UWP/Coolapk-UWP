@@ -27,7 +27,7 @@
                 <VisualState>
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger
-                        MinWindowWidth="{x:Bind navigationView.CompactModeThresholdWidth}"/>
+                            MinWindowWidth="{x:Bind navigationView.CompactModeThresholdWidth}"/>
                     </VisualState.StateTriggers>
 
                     <VisualState.Setters>

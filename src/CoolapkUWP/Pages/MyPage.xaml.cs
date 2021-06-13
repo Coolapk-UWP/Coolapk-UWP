@@ -272,6 +272,10 @@ namespace CoolapkUWP.Pages
                     _ = Frame.Navigate(typeof(UserListPage), new ViewModels.UserListPage.ViewModel(SettingsHelper.Get<string>(SettingsHelper.Uid), false, "我"));
                     break;
 
+                case "backButton":
+                    UIHelper.HideSplitView();
+                    break;
+
                 default:
                     break;
             }
@@ -346,6 +350,22 @@ namespace CoolapkUWP.Pages
         {
             Controls.TextBlockEx ele = (Controls.TextBlockEx)sender;
             ele.MaxLine = 2;
+        }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if(UIHelper.IsSplitViewPaneOverlay)
+            {
+                BackButton.Visibility = Visibility.Visible;
+                Head.Margin = new Thickness(8, 0, 8, 0);
+                Column0.Width = new GridLength(40);
+            }
+            else
+            {
+                BackButton.Visibility = Visibility.Collapsed;
+                Head.Margin = new Thickness(0, 0, 0, 0);
+                Column0.Width = new GridLength(0);
+            }
         }
     }
 

@@ -132,23 +132,27 @@
     </Page.Resources>
 
     <Grid>
-        <winui:ItemsRepeaterScrollHost>
-            <ScrollViewer
-                x:Name="scrollViewer"
-                ViewChanged="ScrollViewer_ViewChanged">
-                <Border
-                    x:Name="listBorder"
-                    MinWidth="320"
-                    MaxWidth="820"
-                    Padding="{StaticResource StackPanelMargin}"
-                    HorizontalAlignment="Center">
-                    <winui:ItemsRepeater
-                        x:Name="listView"
-                        ItemTemplate="{StaticResource FTemplateSelector}">
-                    </winui:ItemsRepeater>
-                </Border>
-            </ScrollViewer>
-        </winui:ItemsRepeaterScrollHost>
+        <RefreshContainer
+            x:Name="RefreshContainer"
+            RefreshRequested="RefreshContainer_RefreshRequested">
+            <winui:ItemsRepeaterScrollHost>
+                <ScrollViewer
+                    x:Name="scrollViewer"
+                    ViewChanged="ScrollViewer_ViewChanged">
+                    <Border
+                        x:Name="listBorder"
+                        MinWidth="320"
+                        MaxWidth="820"
+                        Padding="{StaticResource StackPanelMargin}"
+                        HorizontalAlignment="Center">
+                        <winui:ItemsRepeater
+                            x:Name="listView"
+                            ItemTemplate="{StaticResource FTemplateSelector}">
+                        </winui:ItemsRepeater>
+                    </Border>
+                </ScrollViewer>
+            </winui:ItemsRepeaterScrollHost>
+        </RefreshContainer>
 
         <control:TitleBar
             x:Name="titleBar"

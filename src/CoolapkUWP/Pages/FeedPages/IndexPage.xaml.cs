@@ -275,5 +275,13 @@ namespace CoolapkUWP.Pages.FeedPages
             Controls.TextBlockEx b = (Controls.TextBlockEx)sender;
             b.MaxLine = 4;
         }
+
+        private async void RefreshContainer_RefreshRequested(Windows.UI.Xaml.Controls.RefreshContainer sender, Windows.UI.Xaml.Controls.RefreshRequestedEventArgs args)
+        {
+            using (Windows.Foundation.Deferral RefreshCompletionDeferral = args.GetDeferral())
+            {
+                await Refresh(-2);
+            }
+        }
     }
 }

@@ -30,26 +30,19 @@ namespace CoolapkUWP.Helpers
     internal static partial class UIHelper
     {
         public static event EventHandler<bool> IsSplitViewPaneOpenedChanged;
-
         public static event EventHandler<bool> NeedMainPageProgressRing;
-
         public static event EventHandler RequireIndexPageRefresh;
-
         public static void ShowSplitView() => IsSplitViewPaneOpenedChanged?.Invoke(null, true);
-
         public static void HideSplitView() => IsSplitViewPaneOpenedChanged?.Invoke(null, false);
-
         public static void ShowMainPageProgressRing() => NeedMainPageProgressRing?.Invoke(null, true);
-
         public static void HideMainPageProgressRing() => NeedMainPageProgressRing?.Invoke(null, false);
-
         public static void RefreshIndexPage() => RequireIndexPageRefresh?.Invoke(null, null);
     }
 
-    static partial class UIHelper
+    internal static partial class UIHelper
     {
         public const int duration = 3000;
-        static bool isShowingMessage;
+        private static bool isShowingMessage;
         public static bool isShowingProgressBar;
         public static bool IsAuthor => ApplicationData.Current.LocalSettings.Values["IsAuthor"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsAuthor"];
         public static bool IsSpecialUser => (ApplicationData.Current.LocalSettings.Values["IsAuthor"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsAuthor"]) || ApplicationData.Current.LocalSettings.Values["IsSpecial"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsSpecial"];
@@ -287,11 +280,17 @@ namespace CoolapkUWP.Helpers
         }
     }
 
-    static partial class UIHelper
+    internal static partial class UIHelper
     {
+        public static bool isSplitViewPaneOverlay;
         private static Frame mainFrame;
         private static Frame paneFrame;
-        private static readonly ShellPage shellPage = new ShellPage();
+
+        public static bool IsSplitViewPaneOverlay
+        {
+            get => isSplitViewPaneOverlay;
+            set => isSplitViewPaneOverlay = value;
+        }
 
         public static Frame MainFrame
         {
@@ -319,11 +318,11 @@ namespace CoolapkUWP.Helpers
 
         public static void Navigate(Type pageType, object e = null)
         {
-            shellPage.CloseSplit();
             _ = (mainFrame?.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
               {
-                  mainFrame?.Navigate(pageType, e, new EntranceNavigationTransitionInfo());
+                  _ = (mainFrame?.Navigate(pageType, e, new EntranceNavigationTransitionInfo()));
               }));
+            if (IsSplitViewPaneOverlay) { HideSplitView(); }
         }
 
         public static void NavigateInSplitPane(Type pageType, object e = null)

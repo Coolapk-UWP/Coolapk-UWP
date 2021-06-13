@@ -119,6 +119,7 @@ namespace CoolapkUWP.Pages
                 case "home":
                     _ = paneFrame.Navigate(typeof(MyPage), new ViewModels.MyPage.ViewMode());
                     break;
+
                 default:
                     break;
             }
@@ -135,20 +136,8 @@ namespace CoolapkUWP.Pages
 
             splitView.IsPaneOpen = canOpen;
             PaneOpenSymbolIcon = canOpen ? Symbol.OpenPane : Symbol.ClosePane;
-            if (Window.Current.Bounds.Width <= 440) { splitView.OpenPaneLength = Window.Current.Bounds.Width; }
-        }
-
-        public bool IsSplitFloat()
-        {
-            return splitView.DisplayMode == SplitViewDisplayMode.Overlay;
-        }
-
-        public void CloseSplit()
-        {
-            if (splitView.DisplayMode == SplitViewDisplayMode.Overlay)
-            {
-                splitView.IsPaneOpen = false;
-            }
+            splitView.OpenPaneLength = Window.Current.Bounds.Width <= 660 ? Window.Current.Bounds.Width : 400;
+            UIHelper.IsSplitViewPaneOverlay = splitView.DisplayMode == SplitViewDisplayMode.Overlay;
         }
     }
 }

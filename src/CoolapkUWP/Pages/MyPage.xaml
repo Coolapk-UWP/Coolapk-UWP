@@ -12,6 +12,7 @@
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     NavigationCacheMode="Enabled"
+    SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
@@ -162,17 +163,30 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Height="40">
+        <Grid
+            x:Name="Head"
+            Height="40">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="Column0"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="44"/>
                 <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
 
+            <Button
+                x:Name="BackButton"
+                Grid.Column="0"
+                Click="Button_Click"
+                Tag="backButton"
+                Style="{ThemeResource IconButtonStyle}">
+                <SymbolIcon Symbol="Back"/>
+            </Button>
+
             <AutoSuggestBox
                 x:Name="SearchBox"
                 x:Uid="/Mypage/Search"
+                Grid.Column="1"
                 Margin="8,0"
                 VerticalAlignment="Center"
                 ItemTemplateSelector="{StaticResource SearchWord}"
@@ -183,14 +197,14 @@
 
             <winui:ProgressRing
                 x:Name="ring"
-                Grid.Column="1"
+                Grid.Column="2"
                 Width="24"
                 Height="24"
                 Margin="8,0"
                 Visibility="Collapsed"/>
 
             <Button
-                Grid.Column="2"
+                Grid.Column="3"
                 Width="44"
                 HorizontalAlignment="Right"
                 Click="Button_Click"
@@ -209,7 +223,7 @@
             </Button>
 
             <Button
-                Grid.Column="3"
+                Grid.Column="4"
                 Width="40"
                 HorizontalAlignment="Right"
                 AllowFocusOnInteraction="True"
@@ -311,7 +325,7 @@
                             VerticalAlignment="Center"
                             Text="{Binding NextLevelNowExperience, Mode=OneWay}"/>
                     </StackPanel>
-                    
+
                     <ListViewItem
                         Grid.Row="1"
                         Margin="90,0,0,0"
