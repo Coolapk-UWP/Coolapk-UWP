@@ -47,6 +47,11 @@
                         Click="Button_Click"
                         Icon="Save"
                         Tag="save"/>
+                    <MenuFlyoutItem
+                        x:Uid="/ShowImagePage/CopyMenuUri"
+                        Click="Button_Click"
+                        Icon="Copy"
+                        Tag="uri"/>
                 </MenuFlyout>
             </FlipView.ContextFlyout>
             <FlipView.ItemTemplate>
@@ -111,15 +116,6 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Orientation="Horizontal">
-            <Button
-                x:Uid="/ShowImagePage/BackButton"
-                Margin="4,0"
-                Click="Button_Click"
-                IsEnabled="{x:Bind IsBackButtonEnabled, Mode=OneWay}"
-                Style="{StaticResource IconButtonStyle2}"
-                Tag="back">
-                <SymbolIcon Symbol="Back"/>
-            </Button>
 
             <Button
                 x:Uid="/ShowImagePage/ZoomInButton"
@@ -176,15 +172,6 @@
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="origin">
                 <SymbolIcon Symbol="Pictures"/>
-            </Button>
-
-            <Button
-                x:Uid="/ShowImagePage/ForwardButton"
-                Click="Button_Click"
-                IsEnabled="{x:Bind IsForwardButtonEnabled, Mode=OneWay}"
-                Style="{StaticResource IconButtonStyle2}"
-                Tag="forward">
-                <SymbolIcon Symbol="Forward"/>
             </Button>
         </StackPanel>
 

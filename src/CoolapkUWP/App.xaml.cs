@@ -1,5 +1,4 @@
-﻿using CoolapkUWP.BackgroundTask;
-using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.Pages.SettingPages;
 using System;
@@ -9,11 +8,11 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Resources;
-using Windows.UI.Notifications;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace CoolapkUWP
 {
@@ -24,7 +23,6 @@ namespace CoolapkUWP
         {
             InitializeComponent();
             Suspending += OnSuspending;
-            //RegisterLiveTileTask();
         }
 
         protected override async void OnActivated(IActivatedEventArgs e)
@@ -90,6 +88,7 @@ namespace CoolapkUWP
         {
             RegisterExceptionHandlingSynchronizationContext();
             UnhandledException += Application_UnhandledException;
+            RegisterBackgroundTask();
 
             if (!(Window.Current.Content is Frame rootFrame))
             {
@@ -208,32 +207,35 @@ namespace CoolapkUWP
             }
         }
 
-        private const string LIVETILETASK = "LIVETILETAKS";
-        private async void RegisterLiveTileTask()
+        private async void RegisterBackgroundTask()
         {
-            var status = await BackgroundExecutionManager.RequestAccessAsync();
-            if (status == BackgroundAccessStatus.Unspecified || status == BackgroundAccessStatus.Denied) { return; }
+            string BackgroundTaskName = "LiveTileTask";
 
-            foreach (System.Collections.Generic.KeyValuePair<Guid, IBackgroundTaskRegistration> t in BackgroundTaskRegistration.AllTasks)
+            // Check for background access (optional)
+            await BackgroundExecutionManager.RequestAccessAsync();
+
+            // Register (Single Process)
+            BackgroundTaskRegistration _ = BackgroundTaskHelper.Register(BackgroundTaskName, new TimeTrigger(15, false), true);
+        }
+
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            base.OnBackgroundActivated(args);
+
+            BackgroundTaskDeferral deferral = args.TaskInstance.GetDeferral();
+
+            switch (args.TaskInstance.Task.Name)
             {
-                if (t.Value.Name == LIVETILETASK)
-                {
-                    t.Value.Unregister(true);
-                }
+                case "LiveTileTask":
+                    new BackgroundTasks.LiveTileTask().Run(args.TaskInstance);
+                    break;
+
+                default:
+                    deferral.Complete();
+                    break;
             }
 
-            BackgroundTaskBuilder taskBuilder = new BackgroundTaskBuilder
-            {
-                Name = LIVETILETASK,
-                TaskEntryPoint = typeof(LiveTileTask).FullName
-            };
-
-            taskBuilder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
-
-            TileUpdater updater = TileUpdateManager.CreateTileUpdaterForApplication();
-            updater.Clear();
-            taskBuilder.SetTrigger(new TimeTrigger(60, false));
-            _ = taskBuilder.Register();
+            deferral.Complete();
         }
     }
 }

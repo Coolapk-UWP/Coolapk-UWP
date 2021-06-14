@@ -1,12 +1,9 @@
 ﻿<Page
     x:Class="CoolapkUWP.Pages.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:cctrl="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:CoolapkUWP.Pages"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="using:CoolapkUWP.Models"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
     NavigationCacheMode="Required"
@@ -92,18 +89,26 @@
         </muxc:NavigationView.MenuItemTemplate>-->
 
         <muxc:NavigationView.PaneFooter>
-            <StackPanel x:Name="BottomButton" Orientation="Vertical" Visibility="Collapsed">
-                <muxc:ProgressRing
-                    x:Name="progressRing"
-                    Width="24"
-                    Height="24"
-                    Margin="8,0"
-                    Visibility="Collapsed"
-                    IsActive="True"/>
-                <Button x:Name="Refresh"  Click="Button_Click" Style="{StaticResource IconButtonStyle}">
-                    <SymbolIcon Symbol="Refresh"/>
-                </Button>
-            </StackPanel>
+            <Grid>
+                <StackPanel
+                    x:Name="BottomButton"
+                    Orientation="Vertical"
+                    Visibility="Collapsed">
+                    <muxc:ProgressRing
+                        x:Name="progressRing"
+                        Width="24"
+                        Height="24"
+                        Margin="8,0"
+                        Visibility="Collapsed"
+                        IsActive="True"/>
+                    <Button
+                        x:Name="Refresh"
+                        Click="Button_Click"
+                        Style="{StaticResource IconButtonStyle}">
+                        <SymbolIcon Symbol="Refresh"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
         </muxc:NavigationView.PaneFooter>
 
         <Frame x:Name="navigationViewFrame"/>

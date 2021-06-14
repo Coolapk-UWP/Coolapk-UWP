@@ -1,4 +1,4 @@
-﻿using CoolapkUWP.BackgroundTask;
+﻿using CoolapkUWP.BackgroundTasks;
 using CoolapkUWP.Core.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
@@ -180,7 +180,7 @@ namespace CoolapkUWP.Helpers
             {
                 timer = ThreadPoolTimer.CreatePeriodicTimer(async (source) =>
                 {
-                    LiveTileTask.UpdateTile();
+                    //LiveTileTask.UpdateTile();
                     (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetNotificationNumbers), true);
                     if (!isSucceed) { return; }
 

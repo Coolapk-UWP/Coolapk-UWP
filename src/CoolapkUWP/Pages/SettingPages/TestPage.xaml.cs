@@ -1,4 +1,4 @@
-﻿using CoolapkUWP.BackgroundTask;
+﻿using CoolapkUWP.BackgroundTasks;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;

@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Core;
@@ -186,8 +187,8 @@ namespace CoolapkUWP.Pages
         {
             InitializeComponent();
             Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            Windows.UI.ViewManagement.ApplicationViewTitleBar bar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
-            bar.InactiveBackgroundColor = bar.ButtonInactiveBackgroundColor = bar.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
+            Windows.UI.ViewManagement.ApplicationViewTitleBar titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.InactiveBackgroundColor = titleBar.ButtonInactiveBackgroundColor = titleBar.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
             Window.Current.SetTitleBar(titleBorder);
         }
 
@@ -445,6 +446,12 @@ namespace CoolapkUWP.Pages
                             }
                         }
                     }
+                    break;
+
+                case "uri":
+                    DataPackage data = new DataPackage();
+                    data.SetText(imageModels[SFlipView.SelectedIndex].Uri);
+                    Clipboard.SetContent(data);
                     break;
             }
         }

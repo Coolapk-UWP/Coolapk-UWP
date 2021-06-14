@@ -9,7 +9,7 @@ using Windows.ApplicationModel.Background;
 using Windows.Storage;
 using Windows.UI.Notifications;
 
-namespace CoolapkUWP.BackgroundTask
+namespace CoolapkUWP.BackgroundTasks
 {
     public sealed class LiveTileTask : IBackgroundTask
     {
@@ -21,7 +21,7 @@ namespace CoolapkUWP.BackgroundTask
             if (ApplicationData.Current.LocalSettings.Values["TileUrl"] != null)
             { uri = new Uri(ApplicationData.Current.LocalSettings.Values["TileUrl"].ToString()); }
             else { ApplicationData.Current.LocalSettings.Values["TileUrl"] = uri.ToString(); }
-            await GetData(uri);
+            try { await GetData(uri); } catch { }
 
             deferral.Complete();
         }
@@ -32,7 +32,7 @@ namespace CoolapkUWP.BackgroundTask
             if (ApplicationData.Current.LocalSettings.Values["TileUrl"] != null)
             { uri = new Uri(ApplicationData.Current.LocalSettings.Values["TileUrl"].ToString()); }
             else { ApplicationData.Current.LocalSettings.Values["TileUrl"] = uri.ToString(); }
-            _ = GetData(uri);
+            try { _ = GetData(uri); } catch { }
         }
 
         private static async Task<JObject> GetJson(Uri uri)

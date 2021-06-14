@@ -354,7 +354,7 @@ namespace CoolapkUWP.Pages
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if(UIHelper.IsSplitViewPaneOverlay)
+            if (UIHelper.IsSplitViewPaneOverlay)
             {
                 BackButton.Visibility = Visibility.Visible;
                 Head.Margin = new Thickness(8, 0, 8, 0);
