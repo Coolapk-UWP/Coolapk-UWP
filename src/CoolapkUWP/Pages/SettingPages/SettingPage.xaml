@@ -220,7 +220,12 @@
                     Margin="0,16,0,0"
                     FontSize="18"
                     Text="关于"/>
-                <control:AboutControl HorizontalAlignment="Left"/>
+                <controls:MarkdownTextBlock
+                    Margin="0,8"
+                    x:Uid="/MarkDown/about"
+                    HorizontalAlignment="Left"
+                    LinkClicked="MarkdownText_LinkClicked"
+                    Background="Transparent"/>
             </StackPanel>
         </ScrollViewer>
         <control:TitleBar

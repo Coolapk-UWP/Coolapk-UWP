@@ -27,13 +27,12 @@ namespace CoolapkUWP
 
         protected override async void OnActivated(IActivatedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame == null)
+            if (!(Window.Current.Content is Frame rootFrame))
             {
                 rootFrame = new Frame();
                 Window.Current.Content = rootFrame;
             }
-            rootFrame.Navigate(typeof(Pages.ShellPage));
+            _ = rootFrame.Navigate(typeof(Pages.ShellPage));
             bool isSupported = JumpList.IsSupported();
             if (isSupported)
             {

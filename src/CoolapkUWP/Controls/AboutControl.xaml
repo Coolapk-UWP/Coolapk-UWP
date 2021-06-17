@@ -12,8 +12,8 @@
     mc:Ignorable="d">
 
     <controls:MarkdownTextBlock
-        x:Name="main"
         Margin="0,8"
+        x:Uid="/MarkDown/about"
         LinkClicked="MarkdownText_LinkClicked"
         Background="Transparent"/>
 </UserControl>

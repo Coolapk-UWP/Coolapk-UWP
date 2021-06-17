@@ -73,17 +73,20 @@ namespace CoolapkUWP.Pages.FeedPages
             text = text.Replace("</ul>", "");
             text = text.Replace("</li>", "");
             text = text.Replace("</span>", "**");
+            text = text.Replace("</strong>", "**");
 
             text = h1.Replace(text, "#");
             text = h2.Replace(text, "##");
             text = h3.Replace(text, "###");
             text = h4.Replace(text, "####");
             text = text.Replace("<br/>", "  \n");
+            text = text.Replace("<br />", "  \n");
             text = div.Replace(text, "");
             text = p.Replace(text, "");
             text = ul.Replace(text, "");
             text = li.Replace(text, " - ");
             text = span.Replace(text, "**");
+            text = text.Replace("<strong>", "**");
 
             for (int i = 0; i < 20; i++) { text = text.Replace("(" + i.ToString() + ") ", " 1. "); }
 
