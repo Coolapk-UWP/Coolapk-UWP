@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="all" xml:space="preserve">
-    <value>Select</value>
+    <value>Featured</value>
   </data>
   <data name="Comment.Text" xml:space="preserve">
-    <value>Discuss</value>
+    <value>Comment</value>
   </data>
   <data name="dateline_desc" xml:space="preserve">
     <value>Sort by time</value>
@@ -133,10 +133,10 @@
     <value>Feeds</value>
   </data>
   <data name="follow" xml:space="preserve">
-    <value>Follows</value>
+    <value>Follow</value>
   </data>
   <data name="FollowNum.Text" xml:space="preserve">
-    <value>Follows</value>
+    <value>Follow</value>
   </data>
   <data name="lastupdate_desc" xml:space="preserve">
     <value>Recent Comments</value>
@@ -148,9 +148,48 @@
     <value>Hall</value>
   </data>
   <data name="Subscribed.Text" xml:space="preserve">
-    <value>Subscript</value>
+    <value>Subscribe</value>
   </data>
   <data name="unFollow" xml:space="preserve">
-    <value>Unsubscript</value>
+    <value>Followed</value>
+  </data>
+  <data name="notFan" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="popular" xml:space="preserve">
+    <value>Sort by popularity</value>
+  </data>
+  <data name="questionAndAnswer" xml:space="preserve">
+    <value>Q&A</value>
+  </data>
+  <data name="answer" xml:space="preserve">
+    <value>Q&A</value>
+  </data>
+  <data name="square" xml:space="preserve">
+    <value>Square</value>
+  </data>
+  <data name="status-1" xml:space="preserve">
+    <value>[Locked]</value>
+  </data>
+  <data name="status1" xml:space="preserve">
+    <value>[Half blocked]</value>
+  </data>
+   <data name="inBlackList" xml:space="preserve">
+    <value>In Blacklist</value>
+  </data>
+  <data name="DownloadNum.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="FanandFollow" xml:space="preserve">
+    <value>Mutual fans</value>
+  </data>
+  <data name="article" xml:space="preserve">
+    <value>Article</value>
+  </data>
+  <data name="block_status-1" xml:space="preserve">
+    <value>[Blocked]</value>
+  </data>
+  <data name="block_status2" xml:space="preserve">
+    <value>[Current limited]</value>
   </data>
 </root>
