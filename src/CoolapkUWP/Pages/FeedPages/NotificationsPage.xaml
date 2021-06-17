@@ -224,90 +224,94 @@
     </Page.Resources>
 
     <Grid>
-        <winui:ItemsRepeaterScrollHost>
-            <ScrollViewer x:Name="scrollViewer" ViewChanged="scrollViewer_ViewChanged">
-                <StackPanel
-                    x:Name="listPanel"
-                    MinWidth="320"
-                    MaxWidth="768"
-                    Padding="{StaticResource StackPanelMargin}"
-                    HorizontalAlignment="Center">
-                    <ListView
-                        x:Name="NavigateItems"
-                        x:Load="False"
-                        IsItemClickEnabled="True"
-                        ItemClick="ListView_ItemClick"
-                        ScrollViewer.VerticalScrollMode="Disabled">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="Template" Value="{StaticResource AppListViewItemTemplate}"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                <Setter Property="Margin" Value="4,0"/>
-                                <Setter Property="Padding" Value="0"/>
-                                <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"/>
-                                <Setter Property="BorderThickness" Value="1"/>
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                        <StackPanel
-                            Margin="8,0"
-                            Orientation="Horizontal"
-                            Tag="atMe">
-                            <SymbolIcon Symbol="Account"/>
-                            <TextBlock
+        <RefreshContainer
+            x:Name="RefreshContainer"
+            Margin="{StaticResource StackPanelMargin}"
+            RefreshRequested="RefreshContainer_RefreshRequested">
+            <winui:ItemsRepeaterScrollHost>
+                <ScrollViewer x:Name="scrollViewer" ViewChanged="scrollViewer_ViewChanged">
+                    <StackPanel
+                        x:Name="listPanel"
+                        MinWidth="320"
+                        MaxWidth="768"
+                        HorizontalAlignment="Center">
+                        <ListView
+                            x:Name="NavigateItems"
+                            x:Load="False"
+                            IsItemClickEnabled="True"
+                            ItemClick="ListView_ItemClick"
+                            ScrollViewer.VerticalScrollMode="Disabled">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Template" Value="{StaticResource AppListViewItemTemplate}"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="Margin" Value="4,0"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <StackPanel
                                 Margin="8,0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind data:UIHelper.NotificationNums.AtMeNum, Mode=OneWay}"/>
-                            <TextBlock x:Uid="/NotificationsPage/AtMe" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <StackPanel
-                            Margin="8,0"
-                            Orientation="Horizontal"
-                            Tag="atCommentMe">
-                            <SymbolIcon Symbol="Comment"/>
-                            <TextBlock
+                                Orientation="Horizontal"
+                                Tag="atMe">
+                                <SymbolIcon Symbol="Account"/>
+                                <TextBlock
+                                    Margin="8,0"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind data:UIHelper.NotificationNums.AtMeNum, Mode=OneWay}"/>
+                                <TextBlock x:Uid="/NotificationsPage/AtMe" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel
                                 Margin="8,0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind data:UIHelper.NotificationNums.AtCommentMeNum, Mode=OneWay}"/>
-                            <TextBlock x:Uid="/NotificationsPage/AtMeComment" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <StackPanel
-                            Margin="8,0"
-                            Orientation="Horizontal"
-                            Tag="like">
-                            <SymbolIcon Symbol="Like"/>
-                            <TextBlock
+                                Orientation="Horizontal"
+                                Tag="atCommentMe">
+                                <SymbolIcon Symbol="Comment"/>
+                                <TextBlock
+                                    Margin="8,0"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind data:UIHelper.NotificationNums.AtCommentMeNum, Mode=OneWay}"/>
+                                <TextBlock x:Uid="/NotificationsPage/AtMeComment" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel
                                 Margin="8,0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind data:UIHelper.NotificationNums.FeedLikeNum, Mode=OneWay}"/>
-                            <TextBlock x:Uid="/NotificationsPage/Liked" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <StackPanel
-                            Margin="8,0"
-                            Orientation="Horizontal"
-                            Tag="follow">
-                            <SymbolIcon Symbol="AddFriend"/>
-                            <TextBlock
+                                Orientation="Horizontal"
+                                Tag="like">
+                                <SymbolIcon Symbol="Like"/>
+                                <TextBlock
+                                    Margin="8,0"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind data:UIHelper.NotificationNums.FeedLikeNum, Mode=OneWay}"/>
+                                <TextBlock x:Uid="/NotificationsPage/Liked" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel
                                 Margin="8,0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind data:UIHelper.NotificationNums.FollowNum, Mode=OneWay}"/>
-                            <TextBlock x:Uid="/NotificationsPage/Followed" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <StackPanel
-                            Margin="8,0"
-                            Orientation="Horizontal"
-                            Tag="message">
-                            <SymbolIcon Symbol="Mail"/>
-                            <TextBlock
+                                Orientation="Horizontal"
+                                Tag="follow">
+                                <SymbolIcon Symbol="AddFriend"/>
+                                <TextBlock
+                                    Margin="8,0"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind data:UIHelper.NotificationNums.FollowNum, Mode=OneWay}"/>
+                                <TextBlock x:Uid="/NotificationsPage/Followed" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel
                                 Margin="8,0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind data:UIHelper.NotificationNums.MessageNum, Mode=OneWay}"/>
-                            <TextBlock x:Uid="/NotificationsPage/Message" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </ListView>
-                    <winui:ItemsRepeater x:Name="list" ItemTemplate="{StaticResource temse}"/>
-                </StackPanel>
-            </ScrollViewer>
-        </winui:ItemsRepeaterScrollHost>
+                                Orientation="Horizontal"
+                                Tag="message">
+                                <SymbolIcon Symbol="Mail"/>
+                                <TextBlock
+                                    Margin="8,0"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind data:UIHelper.NotificationNums.MessageNum, Mode=OneWay}"/>
+                                <TextBlock x:Uid="/NotificationsPage/Message" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ListView>
+                        <winui:ItemsRepeater x:Name="list" ItemTemplate="{StaticResource temse}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </winui:ItemsRepeaterScrollHost>
+        </RefreshContainer>
 
         <control:TitleBar
             x:Name="titleBar"

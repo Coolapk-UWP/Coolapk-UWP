@@ -110,6 +110,14 @@ namespace CoolapkUWP.Pages.FeedPages
                 _ = Load();
             }
         }
+
+        private async void RefreshContainer_RefreshRequested(RefreshContainer sender, RefreshRequestedEventArgs args)
+        {
+            using (Windows.Foundation.Deferral RefreshCompletionDeferral = args.GetDeferral())
+            {
+                await Load(-2);
+            }
+        }
     }
 
     internal class NotificationsPageTemplateSelector : DataTemplateSelector

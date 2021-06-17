@@ -251,192 +251,199 @@
             </Button>
         </Grid>
 
-        <ScrollViewer x:Name="scrollViewer" Grid.Row="1">
-            <StackPanel>
-                <Grid
-                    x:Name="mainGrid"
-                    Margin="0,8,0,0"
-                    Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="26"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="72px"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
+        <RefreshContainer
+            Grid.Row="1"
+            x:Name="RefreshContainer"
+            RefreshRequested="RefreshContainer_RefreshRequested">
+            <winui:ItemsRepeaterScrollHost>
+                <ScrollViewer x:Name="scrollViewer">
+                    <StackPanel>
+                        <Grid
+                            x:Name="mainGrid"
+                            Margin="0,8,0,0"
+                            Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="26"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="72px"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
 
-                    <Ellipse
-                        Grid.RowSpan="3"
-                        Width="56"
-                        Height="56"
-                        Margin="24,8"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{Binding UserAvatar, Mode=OneWay}"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
+                            <Ellipse
+                                Grid.RowSpan="3"
+                                Width="56"
+                                Height="56"
+                                Margin="24,8"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding UserAvatar, Mode=OneWay}"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
 
-                    <Button
-                        Grid.RowSpan="3"
-                        Width="56"
-                        Height="56"
-                        Margin="24,8"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Tag="MyFeed"
-                        Click="Button_Click"
-                        Background="Transparent"
-                        Style="{StaticResource ButtonRevealStyle}">
-                    </Button>
+                            <Button
+                                Grid.RowSpan="3"
+                                Width="56"
+                                Height="56"
+                                Margin="24,8"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Tag="MyFeed"
+                                Click="Button_Click"
+                                Background="Transparent"
+                                Style="{StaticResource ButtonRevealStyle}">
+                            </Button>
 
-                    <TextBlock
-                        Grid.Row="0"
-                        Margin="104,0,0,0"
-                        FontSize="20"
-                        FontWeight="Bold"
-                        Text="{Binding UserName, Mode=OneWay}"/>
+                            <TextBlock
+                                Grid.Row="0"
+                                Margin="104,0,0,0"
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Text="{Binding UserName, Mode=OneWay}"/>
 
-                    <winui:ProgressBar
-                        x:Name="LevelBar"
-                        Grid.Row="1"
-                        Width="240"
-                        Margin="100,0,0,0"
-                        HorizontalAlignment="Left"
-                        Value="{Binding NextLevelPercentage, Mode=OneWay}"/>
+                            <winui:ProgressBar
+                                x:Name="LevelBar"
+                                Grid.Row="1"
+                                Width="240"
+                                Margin="100,0,0,0"
+                                HorizontalAlignment="Left"
+                                Value="{Binding NextLevelPercentage, Mode=OneWay}"/>
 
-                    <StackPanel
-                        Grid.Row="2"
-                        Margin="100,0,0,0"
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Margin="2,0"
-                            VerticalAlignment="Center"
-                            Text="Lv."/>
-                        <TextBlock
-                            Margin="2,0"
-                            VerticalAlignment="Center"
-                            FontWeight="Bold"
-                            Text="{Binding LevelNum, Mode=OneWay}"/>
-                        <TextBlock
-                            Margin="4,0"
-                            VerticalAlignment="Center"
-                            Text="{Binding NextLevelNowExperience, Mode=OneWay}"/>
-                    </StackPanel>
-
-                    <ListViewItem
-                        Grid.Row="1"
-                        Margin="90,0,0,0"
-                        KeyDown="ListViewItem_KeyDown"
-                        Tag="LvHelp"
-                        Tapped="ListViewItem_Tapped"
-                        Background="Transparent"
-                        Height="1px">
-                    </ListViewItem>
-
-                    <TextBlock
-                        Grid.Row="3"
-                        Margin="104,0,0,0"
-                        Text="{Binding LevelTodayMessage, Mode=OneWay}"/>
-
-                    <Grid Grid.Row="5" Padding="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Button
-                            Grid.Column="0"
-                            Padding="0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Transparent"
-                            Click="Button_Click"
-                            Style="{StaticResource ButtonRevealStyle}"
-                            Tag="feed">
-                            <StackPanel>
-                                <TextBlock x:Uid="/Mypage/FeedText" HorizontalAlignment="Center"/>
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding FeedNum, Mode=OneWay}"/>
+                            <StackPanel
+                                Grid.Row="2"
+                                Margin="100,0,0,0"
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="2,0"
+                                    VerticalAlignment="Center"
+                                    Text="Lv."/>
+                                <TextBlock
+                                    Margin="2,0"
+                                    VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="{Binding LevelNum, Mode=OneWay}"/>
+                                <TextBlock
+                                    Margin="4,0"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding NextLevelNowExperience, Mode=OneWay}"/>
                             </StackPanel>
-                        </Button>
 
-                        <Button
-                            Grid.Column="1"
-                            Padding="0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Transparent"
-                            Click="Button_Click"
-                            Style="{StaticResource ButtonRevealStyle}"
-                            Tag="follow">
-                            <StackPanel>
-                                <TextBlock x:Uid="/Mypage/FollowText" HorizontalAlignment="Center"/>
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding FollowNum, Mode=OneWay}"/>
+                            <ListViewItem
+                                Grid.Row="1"
+                                Margin="90,0,0,0"
+                                KeyDown="ListViewItem_KeyDown"
+                                Tag="LvHelp"
+                                Tapped="ListViewItem_Tapped"
+                                Background="Transparent"
+                                Height="1px">
+                            </ListViewItem>
+
+                            <TextBlock
+                                Grid.Row="3"
+                                Margin="104,0,0,0"
+                                Text="{Binding LevelTodayMessage, Mode=OneWay}"/>
+
+                            <Grid Grid.Row="5" Padding="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button
+                                    Grid.Column="0"
+                                    Padding="0"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Background="Transparent"
+                                    Click="Button_Click"
+                                    Style="{StaticResource ButtonRevealStyle}"
+                                    Tag="feed">
+                                    <StackPanel>
+                                        <TextBlock x:Uid="/Mypage/FeedText" HorizontalAlignment="Center"/>
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding FeedNum, Mode=OneWay}"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <Button
+                                    Grid.Column="1"
+                                    Padding="0"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Background="Transparent"
+                                    Click="Button_Click"
+                                    Style="{StaticResource ButtonRevealStyle}"
+                                    Tag="follow">
+                                    <StackPanel>
+                                        <TextBlock x:Uid="/Mypage/FollowText" HorizontalAlignment="Center"/>
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding FollowNum, Mode=OneWay}"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <Button
+                                    Grid.Column="2"
+                                    Padding="0"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Background="Transparent"
+                                    Click="Button_Click"
+                                    Style="{StaticResource ButtonRevealStyle}"
+                                    Tag="fans">
+                                    <StackPanel>
+                                        <TextBlock x:Uid="/Mypage/FollowerText" HorizontalAlignment="Center"/>
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding FansNum, Mode=OneWay}"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+
+                            <winui:ItemsRepeater
+                                x:Name="repeater"
+                                Grid.Row="6"
+                                Margin="0,8"
+                                ItemTemplate="{StaticResource templas}"
+                                Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}"/>
+                        </Grid>
+
+                        <ListViewItem
+                            KeyDown="ListViewItem_KeyDown"
+                            Style="{StaticResource NaviItemStyle}"
+                            Tag="login"
+                            Tapped="ListViewItem_Tapped"
+                            Visibility="{x:Bind LogoutButtonVisibility, Converter={StaticResource TrueToFalseConverter}, ConverterParameter='Visibility', Mode=OneWay}">
+                            <StackPanel Padding="16,0" Orientation="Horizontal">
+                                <SymbolIcon Symbol="AddFriend"/>
+                                <TextBlock x:Uid="/Mypage/Login" Margin="8,0"/>
                             </StackPanel>
-                        </Button>
+                        </ListViewItem>
 
-                        <Button
-                            Grid.Column="2"
-                            Padding="0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Transparent"
-                            Click="Button_Click"
-                            Style="{StaticResource ButtonRevealStyle}"
-                            Tag="fans">
-                            <StackPanel>
-                                <TextBlock x:Uid="/Mypage/FollowerText" HorizontalAlignment="Center"/>
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding FansNum, Mode=OneWay}"/>
+                        <ListViewItem
+                            KeyDown="ListViewItem_KeyDown"
+                            Style="{StaticResource NaviItemStyle}"
+                            Tag="settings"
+                            Tapped="ListViewItem_Tapped">
+                            <StackPanel Padding="16,0" Orientation="Horizontal">
+                                <SymbolIcon Symbol="Setting"/>
+                                <TextBlock x:Uid="/Mypage/Setting" Margin="8,0"/>
                             </StackPanel>
-                        </Button>
-                    </Grid>
+                        </ListViewItem>
 
-                    <winui:ItemsRepeater
-                        x:Name="repeater"
-                        Grid.Row="6"
-                        Margin="0,8"
-                        ItemTemplate="{StaticResource templas}"
-                        Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}"/>
-                </Grid>
-
-                <ListViewItem
-                    KeyDown="ListViewItem_KeyDown"
-                    Style="{StaticResource NaviItemStyle}"
-                    Tag="login"
-                    Tapped="ListViewItem_Tapped"
-                    Visibility="{x:Bind LogoutButtonVisibility, Converter={StaticResource TrueToFalseConverter}, ConverterParameter='Visibility', Mode=OneWay}">
-                    <StackPanel Padding="16,0" Orientation="Horizontal">
-                        <SymbolIcon Symbol="AddFriend"/>
-                        <TextBlock x:Uid="/Mypage/Login" Margin="8,0"/>
+                        <ListViewItem
+                            KeyDown="ListViewItem_KeyDown"
+                            Style="{StaticResource NaviItemStyle}"
+                            Tag="logout"
+                            Tapped="ListViewItem_Tapped"
+                            Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}">
+                            <StackPanel Padding="16,0" Orientation="Horizontal">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF3B1;"/>
+                                <TextBlock x:Uid="/Mypage/Logout" Margin="8,0"/>
+                            </StackPanel>
+                        </ListViewItem>
                     </StackPanel>
-                </ListViewItem>
-
-                <ListViewItem
-                    KeyDown="ListViewItem_KeyDown"
-                    Style="{StaticResource NaviItemStyle}"
-                    Tag="settings"
-                    Tapped="ListViewItem_Tapped">
-                    <StackPanel Padding="16,0" Orientation="Horizontal">
-                        <SymbolIcon Symbol="Setting"/>
-                        <TextBlock x:Uid="/Mypage/Setting" Margin="8,0"/>
-                    </StackPanel>
-                </ListViewItem>
-
-                <ListViewItem
-                    KeyDown="ListViewItem_KeyDown"
-                    Style="{StaticResource NaviItemStyle}"
-                    Tag="logout"
-                    Tapped="ListViewItem_Tapped"
-                    Visibility="{x:Bind LogoutButtonVisibility, Mode=OneWay}">
-                    <StackPanel Padding="16,0" Orientation="Horizontal">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF3B1;"/>
-                        <TextBlock x:Uid="/Mypage/Logout" Margin="8,0"/>
-                    </StackPanel>
-                </ListViewItem>
-            </StackPanel>
-        </ScrollViewer>
+                </ScrollViewer>
+            </winui:ItemsRepeaterScrollHost>
+        </RefreshContainer>
     </Grid>
 </Page>

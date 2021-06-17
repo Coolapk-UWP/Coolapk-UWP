@@ -9,7 +9,7 @@ namespace CoolapkUWP.Pages.FeedPages
     {
         private ViewModels.UserListPage.ViewModel provider;
 
-        public UserListPage() => this.InitializeComponent();
+        public UserListPage() => InitializeComponent();
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -61,6 +61,14 @@ namespace CoolapkUWP.Pages.FeedPages
             if (Frame.CanGoBack)
             {
                 Frame.GoBack();
+            }
+        }
+
+        private async void RefreshContainer_RefreshRequested(RefreshContainer _, RefreshRequestedEventArgs args)
+        {
+            using (Windows.Foundation.Deferral RefreshCompletionDeferral = args.GetDeferral())
+            {
+                await LoadList(-2);
             }
         }
     }

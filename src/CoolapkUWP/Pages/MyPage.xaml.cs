@@ -367,6 +367,14 @@ namespace CoolapkUWP.Pages
                 Column0.Width = new GridLength(0);
             }
         }
+
+        private async void RefreshContainer_RefreshRequested(RefreshContainer _, RefreshRequestedEventArgs args)
+        {
+            using (Windows.Foundation.Deferral RefreshCompletionDeferral = args.GetDeferral())
+            {
+                await Refresh();
+            }
+        }
     }
 
     public class FirstTemplateSelector : DataTemplateSelector

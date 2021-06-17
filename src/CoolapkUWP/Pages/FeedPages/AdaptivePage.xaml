@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ctrl="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:CoolapkUWP.Pages.FeedPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
@@ -19,17 +18,21 @@
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
-        <winui:ItemsRepeaterScrollHost>
-            <ScrollViewer x:Name="scrollViewer" ViewChanged="VScrollViewer_ViewChanged">
-                <Border
-                    MinWidth="320"
-                    MaxWidth="768"
-                    Padding="{StaticResource StackPanelMargin}"
-                    HorizontalAlignment="Center">
-                    <winui:ItemsRepeater x:Name="FeedList" ItemTemplate="{StaticResource feed}"/>
-                </Border>
-            </ScrollViewer>
-        </winui:ItemsRepeaterScrollHost>
+        <RefreshContainer
+            x:Name="RefreshContainer"
+            Margin="{StaticResource StackPanelMargin}"
+            RefreshRequested="RefreshContainer_RefreshRequested">
+            <winui:ItemsRepeaterScrollHost>
+                <ScrollViewer x:Name="scrollViewer" ViewChanged="VScrollViewer_ViewChanged">
+                    <Border
+                        MinWidth="320"
+                        MaxWidth="768"
+                        HorizontalAlignment="Center">
+                        <winui:ItemsRepeater x:Name="FeedList" ItemTemplate="{StaticResource feed}"/>
+                    </Border>
+                </ScrollViewer>
+            </winui:ItemsRepeaterScrollHost>
+        </RefreshContainer>
 
         <ctrl:TitleBar
             x:Name="titleBar"
