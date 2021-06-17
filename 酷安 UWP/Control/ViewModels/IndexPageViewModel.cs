@@ -26,6 +26,42 @@ namespace CoolapkUWP.Control.ViewModels
                 if (hasUrl)
                     url = v3.GetString();
             }
+            if (token.TryGetValue("subTitle", out IJsonValue v8) && !string.IsNullOrEmpty(v8.GetString()))
+            {
+                subTitle = v8.GetString();
+            }
+            else if (token.TryGetValue("subtitle", out IJsonValue v10) && !string.IsNullOrEmpty(v10.GetString()))
+            {
+                subTitle = v10.GetString();
+            }
+            else if (token.TryGetValue("hot_num_txt", out IJsonValue hot_num_txt) && !string.IsNullOrEmpty(hot_num_txt.GetString()))
+            {
+                subTitle = hot_num_txt.GetString() + "热度";
+            }
+            else if (token.TryGetValue("link_tag", out IJsonValue link_tag) && !string.IsNullOrEmpty(link_tag.GetString()))
+            {
+                subTitle = link_tag.GetString();
+            }
+            else if (token.TryGetValue("apkTypeName", out IJsonValue apkTypeName) && !string.IsNullOrEmpty(apkTypeName.GetString()))
+            {
+                subTitle = apkTypeName.GetString();
+            }
+            else if (token.TryGetValue("keywords", out IJsonValue keywords) && !string.IsNullOrEmpty(keywords.GetString()))
+            {
+                subTitle = keywords.GetString();
+            }
+            else if (token.TryGetValue("catName", out IJsonValue catName) && !string.IsNullOrEmpty(catName.GetString()))
+            {
+                subTitle = catName.GetString();
+            }
+            else if (token.TryGetValue("rss_type", out IJsonValue rss_type) && !string.IsNullOrEmpty(rss_type.GetString()))
+            {
+                subTitle = rss_type.GetString();
+            }
+            else if (token.TryGetValue("description", out IJsonValue description) && !string.IsNullOrEmpty(description.GetString()))
+            {
+                subTitle = description.GetString();
+            }
             if (token.TryGetValue("description", out IJsonValue v4) && v4.ValueType == JsonValueType.String)
             {
                 hasDescription = !string.IsNullOrEmpty(v4.GetString());
@@ -69,11 +105,24 @@ namespace CoolapkUWP.Control.ViewModels
                 if (hasPic)
                     pic = await ImageCache.GetImage(ImageType.Icon, v6.GetString());
             }
+            else if (token.TryGetValue("cover_pic", out IJsonValue v7) && v7.ValueType == JsonValueType.String)
+            {
+                hasPic = !string.IsNullOrEmpty(v7.GetString());
+                if (hasPic)
+                    pic = await ImageCache.GetImage(ImageType.Icon, v7.GetString());
+            }
+            else if (token.TryGetValue("pic_url", out IJsonValue v8) && v8.ValueType == JsonValueType.String)
+            {
+                hasPic = !string.IsNullOrEmpty(v8.GetString());
+                if (hasPic)
+                    pic = await ImageCache.GetImage(ImageType.Icon, v8.GetString());
+            }
         }
 
         public string entityTemplate { get; private set; }
         public bool hasTitle { get; private set; }
         public string title { get; private set; }
+        public string subTitle { get; private set; }
         public bool hasUrl { get; private set; }
         public string url { get; private set; }
         public bool hasDescription { get; private set; }

@@ -7,7 +7,6 @@
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:viewmodel="using:CoolapkUWP.Control.ViewModels"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:data="using:CoolapkUWP.Data"
     xmlns:converter="using:CoolapkUWP.Data.ValueConverters"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
@@ -242,30 +241,6 @@
                 </ListViewItem>
             </DataTemplate>
             <!--三级-->
-            <DataTemplate x:Key="imageSquare" x:DataType="viewmodel:IndexPageViewModel">
-                <ListViewItem
-                    Style="{StaticResource NoPaddingListViewItem}"
-                    Height="86"
-                    Width="72"
-                    Margin="4,0"
-                    Template="{StaticResource ListViewItemTemplate1}"
-                    Tapped="Grid_Tapped"
-                    Tag="{x:Bind url}">
-                    <Grid
-                    CornerRadius="8">
-                        <Grid.Background>
-                            <ImageBrush
-                                ImageSource="{x:Bind pic,Mode=OneWay}"
-                                Stretch="UniformToFill"/>
-                        </Grid.Background>
-                        <TextBlock
-                            Text="{x:Bind title}"
-                            TextWrapping="Wrap"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"/>
-                    </Grid>
-                </ListViewItem>
-            </DataTemplate>
             <DataTemplate x:Key="user2" x:DataType="viewmodel:UserViewModel">
                 <ListViewItem
                     Style="{StaticResource NoPaddingListViewItem}"
@@ -348,8 +323,64 @@
             </DataTemplate>
             <DataTemplate x:Key="dyh" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem
+                    MaxWidth="72"
+                    Margin="4,0"
+                    Style="{StaticResource NoPaddingListViewItem}"
+                    VerticalContentAlignment="Top"
+                    Template="{StaticResource ListViewItemTemplate1}">
+                    <Border
+                        BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <Border.Background>
+                            <ImageBrush
+                                ImageSource="{x:Bind pic, Mode=OneWay}"
+                                Stretch="Fill" />
+                        </Border.Background>
+                        <StackPanel Padding="4">
+                            <StackPanel.Background>
+                                <AcrylicBrush
+                                    BackgroundSource="Backdrop"
+                                    FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                    TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                                    TintOpacity="0.5"/>
+                            </StackPanel.Background>
+
+                            <Border
+                                Width="36"
+                                Height="36"
+                                Margin="4"
+                                CornerRadius="4">
+                                <Image Source="{x:Bind pic, Mode=OneWay}"/>
+                            </Border>
+
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Foreground="White"
+                                MaxLines="1"
+                                Text="{x:Bind title}"
+                                TextAlignment="Center"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="Wrap" />
+
+                            <TextBlock
+                                x:Name="subTitle"
+                                HorizontalAlignment="Center"
+                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                MaxLines="1"
+                                Text="{x:Bind subTitle}"
+                                TextAlignment="Center"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="Wrap"/>
+
+                        </StackPanel>
+                    </Border>
+                </ListViewItem>
+            </DataTemplate>
+            <DataTemplate x:Key="imageSquare" x:DataType="viewmodel:IndexPageViewModel">
+                <ListViewItem
                     Height="86"
-                    Width="86"
+                    Width="72"
                     Margin="4,0"
                     Style="{StaticResource NoPaddingListViewItem}"
                     VerticalContentAlignment="Top"
@@ -374,7 +405,7 @@
                                 TextAlignment="Center"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="Wrap" />
-                            
+
                         </StackPanel>
                     </Border>
                 </ListViewItem>

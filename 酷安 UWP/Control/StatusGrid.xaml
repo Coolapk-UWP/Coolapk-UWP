@@ -9,8 +9,21 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid x:Name="statusGrid" Height="32" Padding="0,0,140,0" VerticalAlignment="Top" Background="Transparent">
-        <muxc:ProgressBar Visibility="Collapsed" ShowError="False" ShowPaused="False" VerticalAlignment="Top" x:Name="statusBar"/>
-        <TextBlock Margin="16,3" FontSize="16" x:Name="messageTextBlock"/>
+    <Grid
+        x:Name="statusGrid"
+        Height="32"
+        Padding="0,0,140,0"
+        VerticalAlignment="Top"
+        Background="Transparent">
+        <muxc:ProgressBar
+            Visibility="Collapsed"
+            ShowError="False"
+            ShowPaused="False"
+            VerticalAlignment="Top"
+            x:Name="statusBar"/>
+        <TextBlock
+            Margin="16,3"
+            FontSize="16"
+            x:Name="messageTextBlock"/>
     </Grid>
 </UserControl>

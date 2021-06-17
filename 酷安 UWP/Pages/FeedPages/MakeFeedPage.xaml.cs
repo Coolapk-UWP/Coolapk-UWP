@@ -113,7 +113,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void Flyout_Opened(object sender, object e)
         {
-            GridView gridView = ((sender as Flyout).Content as GridView);
+            GridView gridView = (sender as Flyout).Content as GridView;
             if (gridView.ItemsSource is null)
                 gridView.ItemsSource = emojis;
         }

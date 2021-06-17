@@ -6,6 +6,16 @@
     xmlns:models="using:CoolapkUWP.Control.ViewModels"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls">
 
+    <Style
+        x:Key="FeedOpButtonStyle"
+        BasedOn="{StaticResource ButtonRevealStyle}"
+        TargetType="Button">
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Grid.Row" Value="10"/>
+    </Style>
+
     <DataTemplate x:Key="null"/>
 
     <DataTemplate x:Key="Topic" x:DataType="models:TopicViewModel">
@@ -159,7 +169,7 @@
                 Orientation="Horizontal">
                 <Button
                     Tapped="OnTapped"
-                    Style="{StaticResource ButtonStyle1}"
+                    Style="{StaticResource ButtonRevealStyle}"
                     Tag="{x:Bind uurl}"
                     Background="Transparent"
                     Padding="0"
@@ -305,12 +315,15 @@
                 </GridView.ItemTemplate>
             </GridView>
             <Grid
-                Background="{ThemeResource SystemControlBackgroundListLowBrush}"
                 Padding="10,0"
-                Margin="-10,0"
+                Margin="4"
                 Grid.Row="5"
+                BorderThickness="1"
+                CornerRadius="8"
                 x:Name="sourceF"
-                x:Load="{x:Bind showSourceFeedGrid}">
+                x:Load="{x:Bind showSourceFeedGrid}"
+                Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
                 <TextBlock
                     x:Name="sourceF2"
                     x:Load="{x:Bind showSourceFeed2}"
@@ -490,21 +503,24 @@
                                 Source="{x:Bind logo,Mode=OneWay}"/>
                             <TextBlock
                                 Text="{x:Bind title}"
-                                Margin="3,0,0,0"/>
+                                Margin="4,0,0,0"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
             <ListView
                 ScrollViewer.VerticalScrollMode="Disabled"
-                Background="{ThemeResource SystemControlBackgroundListLowBrush}"
                 Style="{StaticResource ListViewStyle}"
                 Grid.Row="10"
+                BorderThickness="1"
+                CornerRadius="8"
                 ItemsSource="{x:Bind replyRows}"
                 x:Name="repRL"
                 ItemClick="repRL_ItemClick"
                 IsItemClickEnabled="True"
-                x:Load="{x:Bind showReplyRows}">
+                x:Load="{x:Bind showReplyRows}"
+                Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter
@@ -522,10 +538,13 @@
                     <DataTemplate x:DataType="models:ReplyRowsItem">
                         <StackPanel Tag="{x:Bind id}">
                             <Border
-                                Margin="5,0"
+                                Margin="0,0"
+                                CornerRadius="0,0,8,0"
                                 Background="{ThemeResource SystemControlHighlightListAccentHighBrush}"
                                 HorizontalAlignment="Left">
-                                <TextBlock Text="{x:Bind extraFlag}" />
+                                <TextBlock
+                                    Margin="2,1"
+                                    Text="{x:Bind extraFlag}" />
                             </Border>
                             <control:MTextBlock
                                 Margin="5"
@@ -541,8 +560,8 @@
                 Grid.Row="11"
                 HorizontalAlignment="Left">
                 <Button
-                    Style="{StaticResource ButtonStyle1}"
-                    Padding="2"
+                    Style="{StaticResource FeedOpButtonStyle}"
+                    Padding="8,0"
                     HorizontalAlignment="Center"
                     x:Name="likeButton"
                     Tag="{x:Bind}"
@@ -563,8 +582,8 @@
                     </StackPanel>
                 </Button>
                 <Button
-                    Style="{StaticResource ButtonStyle1}"
-                    Padding="2"
+                    Style="{StaticResource FeedOpButtonStyle}"
+                    Padding="8,0"
                     HorizontalAlignment="Center"
                     Tag="{x:Bind entityId}">
                     <StackPanel Orientation="Horizontal">
@@ -597,7 +616,10 @@
                                         Value="300"/>
                                     <Setter
                                         Property="MinHeight"
-                                        Value="300"/>
+                                        Value="200"/>
+                                    <Setter
+                                        Property="Background"
+                                        Value="Transparent"/>
                                 </Style>
                             </Flyout.FlyoutPresenterStyle>
                             <Frame x:Name="replyFlyoutFrame"/>
@@ -605,8 +627,8 @@
                     </Button.Flyout>
                 </Button>
                 <Button
-                    Style="{StaticResource ButtonStyle1}"
-                    Padding="2"
+                    Style="{StaticResource FeedOpButtonStyle}"
+                    Padding="8,0"
                     HorizontalAlignment="Center">
                     <StackPanel
                         Orientation="Horizontal">
@@ -641,16 +663,16 @@
             <Button
                 Grid.RowSpan="4"
                 Padding="0"
-                Margin="4,12,8,0"
+                Margin="4,6,8,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                Style="{StaticResource ButtonStyle1}"
+                Style="{StaticResource ButtonRevealStyle}"
                 Tapped="OnTapped"
                 Tag="{x:Bind uurl}"
                 Background="Transparent">
                 <Ellipse
-                    Width="28"
-                    Height="28">
+                    Width="36"
+                    Height="36">
                     <Ellipse.Fill>
                         <ImageBrush ImageSource="{x:Bind userSmallAvatar,Mode=OneWay}"/>
                     </Ellipse.Fill>
@@ -661,9 +683,9 @@
                 VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
                     <Button
-                        Style="{StaticResource ButtonStyle1}"
+                        Style="{StaticResource ButtonRevealStyle}"
                         Content="{x:Bind username}"
-                        Padding="0,4"
+                        Padding="0"
                         Margin="0,4"
                         Tapped="OnTapped"
                         Tag="{x:Bind uurl}"
@@ -687,7 +709,7 @@
                     </Border>
                 </StackPanel>
                 <StackPanel
-                    Padding="0,-10,0,0"
+                    Padding="0,-5,0,0"
                     Orientation="Horizontal">
                     <TextBlock
                         Text="{x:Bind dateline}"
@@ -725,35 +747,36 @@
                     x:Load="{x:Bind showPic}"
                     Grid.Row="1"
                     Margin="0,4"
-                    HorizontalAlignment="Left">
+                    CornerRadius="8"
+                    BorderThickness="1"
+                    HorizontalAlignment="Left"
+                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
                     <Image
-                        MaxHeight="70"
-                        MaxWidth="70"
+                        MaxHeight="102"
+                        MaxWidth="102"
+                        MinHeight="0"
+                        MinWidth="0"
                         Stretch="UniformToFill"
                         Source="{x:Bind pic.Pic,Mode=OneWay}"
                         Tapped="Image_Tapped"
-                        Tag="{x:Bind picUrl}"
-                        MinHeight="0"
-                        MinWidth="0"/>
+                        Tag="{x:Bind picUrl}"/>
                     <StackPanel
                         Orientation="Horizontal"
                         VerticalAlignment="Bottom"
                         HorizontalAlignment="Right">
                         <Border
                             x:Name="longPic"
+                            CornerRadius="8,0,0,0"
                             x:Load="{x:Bind pic.IsLongPic}"
                             Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                            <TextBlock>
-                                长图
-                            </TextBlock>
+                            <TextBlock Text=" 长图 "/>
                         </Border>
                         <Border
                             x:Name="gif"
+                            CornerRadius="8,0,0,0"
                             x:Load="{x:Bind pic.IsGif}"
                             Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                            <TextBlock>
-                                GIF
-                            </TextBlock>
+                            <TextBlock Text=" GIF "/>
                         </Border>
                     </StackPanel>
                 </Grid>
@@ -765,7 +788,8 @@
                 HorizontalAlignment="Left">
                 <Button
                     Background="Transparent"
-                    Padding="2"
+                    Style="{StaticResource FeedOpButtonStyle}"
+                    Padding="8,0"
                     HorizontalAlignment="Center"
                     x:Name="likeButton"
                     Tag="{x:Bind}"
@@ -787,7 +811,8 @@
                 </Button>
                 <Button
                     Background="Transparent"
-                    Padding="2"
+                    Style="{StaticResource FeedOpButtonStyle}"
+                    Padding="8,0"
                     HorizontalAlignment="Center"
                     Tag="{x:Bind id}">
                     <StackPanel Orientation="Horizontal">
@@ -820,7 +845,7 @@
                                         Value="300"/>
                                     <Setter
                                         Property="MinHeight"
-                                        Value="300"/>
+                                        Value="200"/>
                                 </Style>
                             </Flyout.FlyoutPresenterStyle>
                             <Frame x:Name="replyFlyoutFrame"/>
@@ -829,18 +854,22 @@
                 </Button>
                 <Button
                     Background="Transparent"
+                    Height="34"
                     Padding="2"
                     HorizontalAlignment="Center"
                     Content="查看会话"
-                    Style="{StaticResource ButtonStyle1}"
+                    Style="{StaticResource ButtonRevealStyle}"
                     Foreground="Gray"
                     Tapped="replyRowsItem_Tapped"
                     Tag="{x:Bind}"/>
             </StackPanel>
             <ListView
                 Grid.Column="1"
-                Margin="0,0,8,8"
+                Margin="0,4,8,8"
+                CornerRadius="8"
+                BorderThickness="1"
                 Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+                BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
                 ScrollViewer.VerticalScrollMode="Disabled"
                 x:Name="replyRows"
                 x:Load="{x:Bind showreplyRows}"

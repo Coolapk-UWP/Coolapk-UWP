@@ -89,7 +89,7 @@
                             </Grid>
                         </ListViewItem>
                         <StackPanel Grid.Row="3" Orientation="Horizontal">
-                            <Button Click="Button_Click" Style="{StaticResource ButtonStyle1}" Tag="{x:Bind FeedDetail.uurl,Mode=OneWay}" 
+                            <Button Click="Button_Click" Style="{StaticResource ButtonRevealStyle}" Tag="{x:Bind FeedDetail.uurl,Mode=OneWay}" 
                                     Background="{x:Null}" Padding="0" Margin="8">
                                 <Ellipse Width="36" Height="36" HorizontalAlignment="Left">
                                     <Ellipse.Fill>
@@ -116,14 +116,34 @@
                             <GridView ScrollViewer.VerticalScrollMode="Disabled" x:Name="picA" x:Load="{x:Bind FeedDetail.showPicArr,Mode=OneWay}" Grid.Row="1" MinHeight="0" Padding="0" Margin="0,5,0,0" HorizontalContentAlignment="Left" SelectionChanged="GridView_SelectionChanged" Tag="{x:Bind FeedDetail.pics,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.picArr,Mode=OneWay}">
                                 <GridView.ItemTemplate>
                                     <DataTemplate x:DataType="viewModel:ImageData">
-                                        <Grid>
-                                            <Image MaxHeight="70" MaxWidth="70"  MinHeight="0" MinWidth="0" Source="{x:Bind Pic}" Stretch="UniformToFill"/>
-                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-                                                <Border x:Name="longPic" x:Load="{x:Bind IsLongPic}" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                                                    <TextBlock>长图</TextBlock>
+                                        <Grid
+                                            CornerRadius="8"
+                                            BorderThickness="1"
+                                            BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
+                                            <Image
+                                                MaxHeight="102"
+                                                MaxWidth="102"
+                                                MinHeight="0"
+                                                MinWidth="0"
+                                                Source="{x:Bind Pic}"
+                                                Stretch="UniformToFill"/>
+                                            <StackPanel
+                                                Orientation="Horizontal"
+                                                VerticalAlignment="Bottom"
+                                                HorizontalAlignment="Right">
+                                                <Border
+                                                    x:Name="longPic"
+                                                    CornerRadius="8,0,0,0"
+                                                    x:Load="{x:Bind IsLongPic}"
+                                                    Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                                    <TextBlock Text=" 长图 "/>
                                                 </Border>
-                                                <Border x:Name="gif" x:Load="{x:Bind IsGif}" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                                                    <TextBlock>GIF</TextBlock>
+                                                <Border
+                                                    x:Name="gif"
+                                                    CornerRadius="8,0,0,0"
+                                                    x:Load="{x:Bind IsGif}"
+                                                    Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                                    <TextBlock Text=" GIF "/>
                                                 </Border>
                                             </StackPanel>
                                         </Grid>

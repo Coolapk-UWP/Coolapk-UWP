@@ -2,7 +2,6 @@
     x:Class="CoolapkUWP.Control.TitleBar"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:CoolapkUWP.Control"
     xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,20 +12,56 @@
     d:DesignWidth="400"
     Tapped="titleGrid_Tapped">
 
-    <Grid x:Name="titleGrid" Height="{x:Bind data:Settings.PageTitleHeight}" VerticalAlignment="Top" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" BorderThickness="0,0,0,2" Padding="0,0,0,-2"
-          cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" fcu:Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}">
+    <Grid
+        x:Name="titleGrid"
+        Height="{x:Bind data:Settings.PageTitleHeight}"
+        VerticalAlignment="Top"
+        BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
+        BorderThickness="0,0,0,2"
+        Padding="0,0,0,-2"
+        cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
+        fcu:Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="48"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="0" x:Name="BackButton" Click="BackButton_Click" Style="{StaticResource ButtonRevealStyle}" Background="Transparent" Width="48" Height="48" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}">
-            <SymbolIcon x:Name="BackButtonIcon" Symbol="Back"/>
+        <Button
+            Grid.Column="0"
+            x:Name="BackButton"
+            Click="BackButton_Click"
+            Style="{StaticResource ButtonRevealStyle}"
+            Background="Transparent"
+            Width="48"
+            Height="48"
+            VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}">
+            <SymbolIcon
+                x:Name="BackButtonIcon"
+                Symbol="Back"/>
         </Button>
-        <TextBlock Grid.Column="1" Margin="{x:Bind data:Settings.titleTextMargin}" x:Name="title" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}"/>
-        <!--<Button Grid.Column="2" Visibility="Collapsed" x:Name="MoreButton" Style="{StaticResource ButtonStyle1}" Width="48" Height="48" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}">
+        <TextBlock
+            Grid.Column="1"
+            Margin="{x:Bind data:Settings.titleTextMargin}"
+            x:Name="title"
+            FontSize="20"
+            HorizontalAlignment="Left"
+            VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}"/>
+        <!--<Button
+            Grid.Column="2"
+            Visibility="Collapsed"
+            x:Name="MoreButton"
+            Style="{StaticResource ButtonStyle1}"
+            Width="48"
+            Height="48"
+            VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}">
             <SymbolIcon Symbol="More"/>
         </Button>-->
-        <ComboBox x:Name="ChangeModeComboBox" Margin="8" SelectionChanged="ChangeModeComboBox_SelectionChanged" Grid.Column="2" Visibility="Collapsed" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}"/>
+        <ComboBox
+            x:Name="ChangeModeComboBox"
+            Margin="8"
+            SelectionChanged="ChangeModeComboBox_SelectionChanged"
+            Grid.Column="2"
+            Visibility="Collapsed"
+            VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}"/>
     </Grid>
 </UserControl>

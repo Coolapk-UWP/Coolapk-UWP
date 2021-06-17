@@ -11,7 +11,12 @@
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
 
-    <Grid>
+    <Grid
+        Margin="0,4"
+        BorderThickness="1"
+        CornerRadius="8"
+        Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
+        BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="48"/>
@@ -28,6 +33,7 @@
                                 <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
                                 <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
                                 <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+                                <Setter Property="Background" Value="{ThemeResource SystemControlChromeLowAcrylicElementBrush}"/>
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
                         <GridView SelectionMode="None" ItemClick="GridView_ItemClick" IsItemClickEnabled="True" Padding="0,32,0,0">
