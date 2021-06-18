@@ -59,7 +59,7 @@ namespace CoolapkUWP.Models.Pages.NotificationsPageModels
                    : UIHelper.IsSpecialUser && fromUserInfo.Value<int>("block_status") == -1 ? loader.GetString("block_status-1")
                    : UIHelper.IsSpecialUser && fromUserInfo.Value<int>("block_status") == 2 ? loader.GetString("block_status2") : null;
             }
-            else if(o.TryGetValue("fromUserAvatar", out JToken fromUserAvatar))
+            else if (o.TryGetValue("fromUserAvatar", out JToken fromUserAvatar))
             {
                 UserAvatar = new ImageModel(fromUserAvatar.ToString(), ImageType.BigAvatar);
             }

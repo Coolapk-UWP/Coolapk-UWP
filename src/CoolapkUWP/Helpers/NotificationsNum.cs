@@ -1,5 +1,4 @@
-﻿using CoolapkUWP.BackgroundTasks;
-using CoolapkUWP.Core.Helpers;
+﻿using CoolapkUWP.Core.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;

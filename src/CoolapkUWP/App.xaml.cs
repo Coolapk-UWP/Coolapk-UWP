@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.Pages.SettingPages;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +13,6 @@ using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace CoolapkUWP
 {
@@ -206,7 +206,7 @@ namespace CoolapkUWP
             }
         }
 
-        private async void RegisterBackgroundTask()
+        private static async void RegisterBackgroundTask()
         {
             string BackgroundTaskName = "LiveTileTask";
 
