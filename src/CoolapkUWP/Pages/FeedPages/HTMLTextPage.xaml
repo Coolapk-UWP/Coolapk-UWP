@@ -9,24 +9,29 @@
     Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d">
     <Grid>
-        <ScrollViewer Padding="{StaticResource StackPanelMargin}">
-            <StackPanel Margin="16,0">
-                <ScrollViewer
-                            Grid.Row="0"
-                            Margin="12"
-                            BorderBrush="Transparent"
-                            BorderThickness="2"
-                            HorizontalScrollBarVisibility="Disabled"
-                            VerticalScrollBarVisibility="Visible">
-                    <controls:MarkdownTextBlock
-                                x:Name="MarkdownText"
-                                Margin="0,8"
-                                FontSize="16"
-                                Background="Transparent" 
-                                Header1Foreground="#0f9d58"/>
-                </ScrollViewer>
-            </StackPanel>
-        </ScrollViewer>
+        <RefreshContainer
+            x:Name="RefreshContainer"
+            Margin="{StaticResource StackPanelMargin}"
+            RefreshRequested="RefreshContainer_RefreshRequested">
+            <ScrollViewer x:Name="scrollViewer">
+                <StackPanel Margin="16,0">
+                    <ScrollViewer
+                        Grid.Row="0"
+                        Margin="12"
+                        BorderBrush="Transparent"
+                        BorderThickness="2"
+                        HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Visible">
+                        <controls:MarkdownTextBlock
+                            x:Name="MarkdownText"
+                            Margin="0,8"
+                            FontSize="16"
+                            Background="Transparent" 
+                            Header1Foreground="#0f9d58"/>
+                    </ScrollViewer>
+                </StackPanel>
+            </ScrollViewer>
+        </RefreshContainer>
         <control:TitleBar
             x:Name="TitleBar"
             RefreshButtonVisibility="Visible"

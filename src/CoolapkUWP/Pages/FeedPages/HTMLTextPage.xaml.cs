@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -30,7 +31,7 @@ namespace CoolapkUWP.Pages.FeedPages
             Load_HTML(uri);
         }
 
-        private async void Load_HTML(Uri uri)
+        private async Task Load_HTML(Uri uri)
         {
             (bool isSucceed, string result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
             if (isSucceed)
@@ -93,12 +94,29 @@ namespace CoolapkUWP.Pages.FeedPages
             return text;
         }
 
+        private async Task Refresh(int p = -1)
+        {
+            TitleBar.ShowProgressRing();
+            if (p == -2)
+            {
+                _ = (scrollViewer?.ChangeView(null, 0, null));
+            }
+            await Load_HTML(uri);
+        }
+
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
         private void TitleBar_RefreshButtonClicked(object sender, RoutedEventArgs e)
         {
-            TitleBar.ShowProgressRing();
-            Load_HTML(uri);
+            _ = Refresh(-2);
+        }
+
+        private async void RefreshContainer_RefreshRequested(RefreshContainer _, RefreshRequestedEventArgs args)
+        {
+            using (Windows.Foundation.Deferral RefreshCompletionDeferral = args.GetDeferral())
+            {
+                await Refresh(-2);
+            }
         }
     }
 }

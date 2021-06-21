@@ -67,6 +67,14 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
+        private async void RefreshContainer_RefreshRequested(RefreshContainer _, RefreshRequestedEventArgs args)
+        {
+            using (Windows.Foundation.Deferral RefreshCompletionDeferral = args.GetDeferral())
+            {
+                await GetReplys(-2);
+            }
+        }
+
         private void TitleBar_RefreshEvent(object sender, RoutedEventArgs e) => _ = GetReplys(-2);
     }
 }

@@ -23,17 +23,17 @@ namespace CoolapkUWP.Models
 
         public IndexPageModel(JObject token) : base(token)
         {
-            if (token.TryGetValue("entityTemplate", out JToken v1))
+            if (token.TryGetValue("entityTemplate", out JToken entityTemplate) && !string.IsNullOrEmpty(entityTemplate.ToString()))
             {
-                EntityTemplate = v1.ToString();
+                EntityTemplate = entityTemplate.ToString();
             }
-            else if (token.TryGetValue("entityForward", out JToken v3))
+            else if (token.TryGetValue("entityForward", out JToken entityForward) && !string.IsNullOrEmpty(entityForward.ToString()))
             {
-                EntityForward = v3.ToString();
+                EntityForward = entityForward.ToString();
             }
-            if (token.TryGetValue("title", out JToken v2) && !string.IsNullOrEmpty(v2.ToString()))
+            if (token.TryGetValue("title", out JToken title) && !string.IsNullOrEmpty(title.ToString()))
             {
-                Title = v2.ToString();
+                Title = title.ToString();
             }
             if (token.TryGetValue("subTitle", out JToken v7) && !string.IsNullOrEmpty(v7.ToString()))
             {
@@ -54,6 +54,10 @@ namespace CoolapkUWP.Models
             else if (token.TryGetValue("apkTypeName", out JToken apkTypeName) && !string.IsNullOrEmpty(apkTypeName.ToString()))
             {
                 SubTitle = apkTypeName.ToString();
+            }
+            else if (token.TryGetValue("typeName", out JToken typeName) && !string.IsNullOrEmpty(typeName.ToString()))
+            {
+                SubTitle = typeName.ToString();
             }
             else if (token.TryGetValue("keywords", out JToken keywords) && !string.IsNullOrEmpty(keywords.ToString()))
             {
@@ -107,6 +111,10 @@ namespace CoolapkUWP.Models
             {
                 Description = apkTypeName.ToString();
             }
+            else if (token.TryGetValue("typeName", out JToken typeName) && !string.IsNullOrEmpty(typeName.ToString()))
+            {
+                Description = typeName.ToString();
+            }
             else if (token.TryGetValue("rss_type", out JToken rss_type) && !string.IsNullOrEmpty(rss_type.ToString()))
             {
                 Description = rss_type.ToString();
@@ -143,18 +151,50 @@ namespace CoolapkUWP.Models
 
         public IndexPageMessageCardModel(JObject token) : base(token)
         {
-            if (token.TryGetValue("title", out JToken v))
+            if (token.TryGetValue("title", out JToken title))
             {
-                Title = v.ToString();
+                Title = title.ToString();
             }
-            if (token.TryGetValue("description", out JToken v4))
+            if (token.TryGetValue("description", out JToken description))
             {
-                Description = v4.ToString();
+                Description = description.ToString();
             }
-            if (token.TryGetValue("entities", out JToken v7) && (v7 as JArray).Count > 0)
+            else if (token.TryGetValue("release_time", out JToken release_time) && !string.IsNullOrEmpty(release_time.ToString()))
+            {
+                Description = "发布日期：" + release_time.ToString();
+            }
+            else if (token.TryGetValue("link_tag", out JToken link_tag) && !string.IsNullOrEmpty(link_tag.ToString()))
+            {
+                Description = link_tag.ToString();
+            }
+            else if (token.TryGetValue("hot_num_txt", out JToken hot_num_txt) && !string.IsNullOrEmpty(hot_num_txt.ToString()))
+            {
+                Description = hot_num_txt.ToString() + "热度";
+            }
+            else if (token.TryGetValue("keywords", out JToken keywords) && !string.IsNullOrEmpty(keywords.ToString()))
+            {
+                Description = keywords.ToString();
+            }
+            else if (token.TryGetValue("catName", out JToken catName) && !string.IsNullOrEmpty(catName.ToString()))
+            {
+                Description = catName.ToString();
+            }
+            else if (token.TryGetValue("apkTypeName", out JToken apkTypeName) && !string.IsNullOrEmpty(apkTypeName.ToString()))
+            {
+                Description = apkTypeName.ToString();
+            }
+            else if (token.TryGetValue("rss_type", out JToken rss_type) && !string.IsNullOrEmpty(rss_type.ToString()))
+            {
+                Description = rss_type.ToString();
+            }
+            else if (token.TryGetValue("subTitle", out JToken subTitle) && !string.IsNullOrEmpty(subTitle.ToString()))
+            {
+                Description = subTitle.ToString();
+            }
+            if (token.TryGetValue("entities", out JToken entities) && (entities as JArray).Count > 0)
             {
                 ImmutableArray<Entity>.Builder buider = ImmutableArray.CreateBuilder<Entity>();
-                foreach (JObject item in v7 as JArray)
+                foreach (JObject item in entities as JArray)
                 {
                     switch (item.Value<string>("entityType"))
                     {
@@ -203,26 +243,58 @@ namespace CoolapkUWP.Models
         public IndexPageHasEntitiesModel(JObject token, EntityType type) : base(token)
         {
             EntitiesType = type;
-            if (token.TryGetValue("title", out JToken v2) && !string.IsNullOrEmpty(v2.ToString()))
+            if (token.TryGetValue("title", out JToken title) && !string.IsNullOrEmpty(title.ToString()))
             {
-                Title = v2.ToString();
+                Title = title.ToString();
             }
-            if (token.TryGetValue("url", out JToken v3) && !string.IsNullOrEmpty(v3.ToString()))
+            if (token.TryGetValue("url", out JToken url) && !string.IsNullOrEmpty(url.ToString()))
             {
-                Url = v3.ToString();
+                Url = url.ToString();
             }
-            if (token.TryGetValue("description", out JToken v4) && !string.IsNullOrEmpty(v4.ToString()))
+            if (token.TryGetValue("description", out JToken description) && !string.IsNullOrEmpty(description.ToString()))
             {
-                Description = v4.ToString();
+                Description = description.ToString();
             }
-            if (token.TryGetValue("entityTemplate", out JToken v5) && !string.IsNullOrEmpty(v5.ToString()))
+            else if (token.TryGetValue("release_time", out JToken release_time) && !string.IsNullOrEmpty(release_time.ToString()))
             {
-                EntityTemplate = v5.ToString();
+                Description = "发布日期：" + release_time.ToString();
             }
-            if (token.TryGetValue("entities", out JToken v7) && (v7 as JArray).Count > 0)
+            else if (token.TryGetValue("link_tag", out JToken link_tag) && !string.IsNullOrEmpty(link_tag.ToString()))
+            {
+                Description = link_tag.ToString();
+            }
+            else if (token.TryGetValue("hot_num_txt", out JToken hot_num_txt) && !string.IsNullOrEmpty(hot_num_txt.ToString()))
+            {
+                Description = hot_num_txt.ToString() + "热度";
+            }
+            else if (token.TryGetValue("keywords", out JToken keywords) && !string.IsNullOrEmpty(keywords.ToString()))
+            {
+                Description = keywords.ToString();
+            }
+            else if (token.TryGetValue("catName", out JToken catName) && !string.IsNullOrEmpty(catName.ToString()))
+            {
+                Description = catName.ToString();
+            }
+            else if (token.TryGetValue("apkTypeName", out JToken apkTypeName) && !string.IsNullOrEmpty(apkTypeName.ToString()))
+            {
+                Description = apkTypeName.ToString();
+            }
+            else if (token.TryGetValue("rss_type", out JToken rss_type) && !string.IsNullOrEmpty(rss_type.ToString()))
+            {
+                Description = rss_type.ToString();
+            }
+            else if (token.TryGetValue("subTitle", out JToken subTitle) && !string.IsNullOrEmpty(subTitle.ToString()))
+            {
+                Description = subTitle.ToString();
+            }
+            if (token.TryGetValue("entityTemplate", out JToken entityTemplate) && !string.IsNullOrEmpty(entityTemplate.ToString()))
+            {
+                EntityTemplate = entityTemplate.ToString();
+            }
+            if (token.TryGetValue("entities", out JToken entities) && (entities as JArray).Count > 0)
             {
                 ImmutableArray<Entity>.Builder buider = ImmutableArray.CreateBuilder<Entity>();
-                foreach (JObject item in v7 as JArray)
+                foreach (JObject item in entities as JArray)
                 {
                     item.Property("entityType").AddAfterSelf(new JProperty("entityForward", EntityTemplate));
                     switch (item.Value<string>("entityType"))
@@ -265,9 +337,9 @@ namespace CoolapkUWP.Models
         public IndexPageOperationCardModel(JObject token, OperationType type) : base(token)
         {
             OperationType = type;
-            if (token.TryGetValue("title", out JToken v2) && !string.IsNullOrEmpty(v2.ToString()))
+            if (token.TryGetValue("title", out JToken title) && !string.IsNullOrEmpty(title.ToString()))
             {
-                Title = v2.ToString();
+                Title = title.ToString();
             }
             switch (type)
             {

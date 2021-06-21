@@ -82,5 +82,13 @@ namespace CoolapkUWP.Pages.FeedPages
                 ListViewItem_Tapped(sender, null);
             }
         }
+
+        private async void RefreshContainer_RefreshRequested(RefreshContainer sender, RefreshRequestedEventArgs args)
+        {
+            using (Windows.Foundation.Deferral RefreshCompletionDeferral = args.GetDeferral())
+            {
+                await LoadList(-2);
+            }
+        }
     }
 }

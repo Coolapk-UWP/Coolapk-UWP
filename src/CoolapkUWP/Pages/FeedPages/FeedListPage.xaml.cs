@@ -251,6 +251,14 @@ namespace CoolapkUWP.Pages.FeedPages
             Border b = sender as Border;
             b.Height = e.NewSize.Width;
         }
+
+        private async void RefreshContainer_RefreshRequested(RefreshContainer _, RefreshRequestedEventArgs args)
+        {
+            using (Windows.Foundation.Deferral RefreshCompletionDeferral = args.GetDeferral())
+            {
+                await Refresh(-2);
+            }
+        }
     }
 
     internal enum FeedListType

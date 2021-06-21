@@ -19,17 +19,21 @@
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
-        <winui:ItemsRepeaterScrollHost>
-            <ScrollViewer x:Name="scrollViewer" ViewChanged="VScrollViewer_ViewChanged">
-                <Border
-                    MinWidth="320"
-                    MaxWidth="768"
-                    Padding="{StaticResource StackPanelMargin}"
-                    HorizontalAlignment="Center">
-                    <winui:ItemsRepeater x:Name="FeedReplyList" ItemTemplate="{StaticResource feed_reply}"/>
-                </Border>
-            </ScrollViewer>
-        </winui:ItemsRepeaterScrollHost>
+        <RefreshContainer
+            x:Name="RefreshContainer"
+            Margin="{StaticResource StackPanelMargin}"
+            RefreshRequested="RefreshContainer_RefreshRequested">
+            <winui:ItemsRepeaterScrollHost>
+                <ScrollViewer x:Name="scrollViewer" ViewChanged="VScrollViewer_ViewChanged">
+                    <Border
+                        MinWidth="320"
+                        MaxWidth="768"
+                        HorizontalAlignment="Center">
+                        <winui:ItemsRepeater x:Name="FeedReplyList" ItemTemplate="{StaticResource feed_reply}"/>
+                    </Border>
+                </ScrollViewer>
+            </winui:ItemsRepeaterScrollHost>
+        </RefreshContainer>
 
         <ctrl:TitleBar
             x:Name="titleBar"

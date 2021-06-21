@@ -134,6 +134,7 @@
     <Grid>
         <RefreshContainer
             x:Name="RefreshContainer"
+            Margin="{StaticResource StackPanelMargin}"
             RefreshRequested="RefreshContainer_RefreshRequested">
             <winui:ItemsRepeaterScrollHost>
                 <ScrollViewer
@@ -143,7 +144,6 @@
                         x:Name="listBorder"
                         MinWidth="320"
                         MaxWidth="820"
-                        Padding="{StaticResource StackPanelMargin}"
                         HorizontalAlignment="Center">
                         <winui:ItemsRepeater
                             x:Name="listView"

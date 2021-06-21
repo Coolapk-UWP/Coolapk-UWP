@@ -28,7 +28,7 @@ namespace CoolapkUWP.Pages.FeedPages
             if (!provider.ShowTitleBar)
             {
                 titleBar.Visibility = Visibility.Collapsed;
-                listBorder.Padding = new Thickness(0);
+                RefreshContainer.Margin = new Thickness(0);
                 UIHelper.RequireIndexPageRefresh += UIHelper_RequireIndexPageRefresh;
             }
 
