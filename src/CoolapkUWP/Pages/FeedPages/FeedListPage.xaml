@@ -433,7 +433,11 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="CollectionDetail" x:DataType="model:CollectionDetail">
-                <Grid Margin="0,0,0,8" Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                <Grid
+                    Margin="0,0,0,8"
+                    CornerRadius="0,0,8,8"
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
+                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
@@ -512,7 +516,9 @@
                 <Grid
                     x:Name="DetailGrid"
                     Margin="0,0,0,8"
-                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                    CornerRadius="0,0,8,8"
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
+                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
@@ -564,7 +570,9 @@
                 <Grid
                     x:Name="DetailGrid"
                     Margin="0,0,0,8"
-                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                    CornerRadius="0,0,8,8"
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
+                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>

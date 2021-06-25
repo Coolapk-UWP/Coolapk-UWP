@@ -17,7 +17,7 @@
 
     <converter:HasValueConverter x:Key="HasValueConverter"/>
 
-    <control:ThirdTemplateSelector
+    <control:ItemTemplateSelector
         x:Key="ThTemplateSelector"
         CoolPic="{StaticResource CoolPicture}"
         Null="{StaticResource null}"

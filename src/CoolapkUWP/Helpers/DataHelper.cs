@@ -33,7 +33,7 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        public static Task<(bool isSucceed, string result)> PostHtmlAsync(Uri uri, System.Net.Http.HttpContent content)
+        public static Task<(bool isSucceed, string result)> PostHtmlAsync(Uri uri, System.Net.Http.HttpContent content = null)
         {
             return Utils.PostHtmlAsync(uri, content, GetCoolapkCookies(uri));
         }

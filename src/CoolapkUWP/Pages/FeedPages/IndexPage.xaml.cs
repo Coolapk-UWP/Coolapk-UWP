@@ -37,8 +37,6 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 listView.ItemsSource = provider.mainModels;
                 await Refresh(-2);
-
-                await Task.Delay(30);
                 titleBar.Title = provider.Title;
                 _ = scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
 

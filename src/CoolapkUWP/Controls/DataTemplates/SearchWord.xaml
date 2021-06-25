@@ -5,7 +5,7 @@
     xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:models="using:CoolapkUWP.Models" xmlns:control="using:CoolapkUWP.Controls">
 
-    <control:SearchPageTemplateSelector
+    <control:SearchTemplateSelector
         x:Key="SearchWord"
         App="{StaticResource Apps}"
         SearchWord="{StaticResource searchWord}"/>

@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Core.Helpers;
+﻿using CoolapkUWP.Controls;
+using CoolapkUWP.Core.Helpers;
 using CoolapkUWP.Core.Models;
 using CoolapkUWP.Core.Providers;
 using CoolapkUWP.Helpers;
@@ -94,7 +95,7 @@ namespace CoolapkUWP.ViewModels.AdaptivePage
             {
                 foreach (JObject item in jo.Value<JArray>("entities"))
                 {
-                    Entity entity = GetEntity(item);
+                    Entity entity = EntityTemplateSelector.GetEntity(item);
                     if (entity != null)
                     {
                         yield return entity;
@@ -103,74 +104,14 @@ namespace CoolapkUWP.ViewModels.AdaptivePage
             }
             else
             {
-                yield return GetEntity(jo);
+                yield return EntityTemplateSelector.GetEntity(jo);
             }
             yield break;
-        }
-
-        private static Entity GetEntity(JObject jo)
-        {
-            switch (jo.Value<string>("entityType"))
-            {
-                case "feed": return new FeedModel(jo, FeedDisplayMode.normal);
-                case "discovery": return new FeedModel(jo, FeedDisplayMode.normal);
-                case "user": return new UserModel(jo);
-                case "topic": return new TopicModel(jo);
-                case "dyh": return new DyhModel(jo);
-                case "product": return new ProductModel(jo);
-                case "entity_type_user_card_manager": return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);
-                default:
-                    if (jo.TryGetValue("entityTemplate", out JToken v1))
-                    {
-                        switch (v1.Value<string>())
-                        {
-                            case "feed": return new FeedModel(jo, FeedDisplayMode.normal);
-                            case "imageTextGridCard":
-                            case "imageSquareScrollCard":
-                            case "iconScrollCard":
-                            case "iconGridCard":
-                            case "feedScrollCard":
-                            case "imageTextScrollCard":
-                            case "iconMiniLinkGridCard":
-                            case "iconMiniGridCard":
-                            case "colorfulFatScrollCard":
-                            case "colorfulScrollCard":
-                            case "iconLongTitleGridCard":
-                            case "gridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
-                            //case "listCard": //return new IndexPageHasEntitiesModel(jo, EntityType.Others);
-                            case "headCard":
-                            case "imageCarouselCard_1": //return new IndexPageHasEntitiesViewModel(jo, EntitiesType.Image_1);
-                            case "imageCard":
-                            case "iconButtonGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
-                            case "configCard":
-                                return jo.TryGetValue("url", out JToken v2) && v2.ToString().Length >= 5
-                                    ? new IndexPageHasEntitiesModel(jo, EntityType.IconLink)
-                                    : null;
-                            case "iconLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.IconLink);
-                            case "feedGroupListCard":
-                            case "textLinkListCard": return new IndexPageHasEntitiesModel(jo, EntityType.TextLinks);
-                            case "textCard":
-                            case "hot":
-                            case "messageCard": return new IndexPageMessageCardModel(jo);
-                            case "refreshCard": return new IndexPageOperationCardModel(jo, OperationType.Refresh);
-                            case "unLoginCard": return new IndexPageOperationCardModel(jo, OperationType.Login);
-                            case "titleCard": return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);
-                            case "iconTabLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.TabLink);
-                            case "selectorLinkCard": return new IndexPageHasEntitiesModel(jo, EntityType.SelectorLink);
-                            default: return null;
-                        }
-                    }
-                    else { return null; }
-            }
         }
 
         public async Task Refresh(int p = -1)
         {
             await provider?.Refresh(p);
-            if (p == -2 && provider?.Models.Count == 0)
-            {
-                provider?.Models.Insert(0, feedModel);
-            }
         }
     }
 }

@@ -25,8 +25,8 @@
 
             <converter:HasValueConverter x:Key="HasValueConverter"/>
 
-            <control:FirstTemplateSelector
-                x:Key="FTemplateSelector"
+            <control:CardTemplateSelector
+                x:Key="CardTemplateSelector"
                 CoolPic="{StaticResource CoolPicture}"
                 LiveTopic="{StaticResource LiveTopic}"
                 ImageTextScrollCard="{StaticResource ImageTextScrollCard}"
@@ -147,7 +147,7 @@
                         HorizontalAlignment="Center">
                         <winui:ItemsRepeater
                             x:Name="listView"
-                            ItemTemplate="{StaticResource FTemplateSelector}">
+                            ItemTemplate="{StaticResource CardTemplateSelector}">
                         </winui:ItemsRepeater>
                     </Border>
                 </ScrollViewer>

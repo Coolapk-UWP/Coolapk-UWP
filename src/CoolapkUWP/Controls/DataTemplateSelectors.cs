@@ -1,10 +1,13 @@
-﻿using CoolapkUWP.Models;
+﻿using CoolapkUWP.Core.Models;
+using CoolapkUWP.Models;
+using CoolapkUWP.Models.Pages.NotificationsPageModels;
+using Newtonsoft.Json.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Controls
 {
-    public class FirstTemplateSelector : DataTemplateSelector
+    public sealed class CardTemplateSelector : DataTemplateSelector
     {
         public DataTemplate Feed { get; set; }
         public DataTemplate Others { get; set; }
@@ -70,7 +73,7 @@ namespace CoolapkUWP.Controls
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
 
-    public class ThirdTemplateSelector : DataTemplateSelector
+    public sealed class ItemTemplateSelector : DataTemplateSelector
     {
         public DataTemplate Null { get; set; }
         public DataTemplate DataTemplate1 { get; set; }
@@ -143,7 +146,30 @@ namespace CoolapkUWP.Controls
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
 
-    public class SearchPageTemplateSelector : DataTemplateSelector
+    internal class NotificationsTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate Feed { get; set; }
+        public DataTemplate Reply { get; set; }
+        public DataTemplate Like { get; set; }
+        public DataTemplate AtCommentMe { get; set; }
+        public DataTemplate Message { get; set; }
+
+        protected override DataTemplate SelectTemplateCore(object item)
+        {
+            switch (item)
+            {
+                case FeedModel _: return Feed;
+                case LikeNotificationModel _: return Like;
+                case AtCommentMeNotificationModel _: return AtCommentMe;
+                case MessageNotificationModel _: return Message;
+                default: return Reply;
+            }
+        }
+
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
+    }
+
+    public sealed class SearchTemplateSelector : DataTemplateSelector
     {
         public DataTemplate App { get; set; }
         public DataTemplate SearchWord { get; set; }
@@ -153,5 +179,75 @@ namespace CoolapkUWP.Controls
             return SearchWord;
         }
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
+    }
+
+    public static class EntityTemplateSelector
+    {
+        public static Entity GetEntity(JObject jo, bool isHotFeedPage = false)
+        {
+            switch (jo.Value<string>("entityType"))
+            {
+                case "feed":
+                case "discovery": return new FeedModel(jo, isHotFeedPage ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
+                case "liveTopic": return new LiveMode(jo);
+                case "user": return new UserModel(jo);
+                case "topic": return new TopicModel(jo);
+                case "dyh": return new DyhModel(jo);
+                case "apk":
+                case "appForum": return new AppPageMode(jo);
+                case "product": return new ProductModel(jo);
+                case "entity_type_user_card_manager": return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);
+                default:
+                    if (jo.TryGetValue("entityTemplate", out JToken v1))
+                    {
+                        switch (v1.Value<string>())
+                        {
+                            case "feed": return new FeedModel(jo, isHotFeedPage ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
+                            case "imageSquareScrollCard":
+                            case "iconScrollCard":
+                            case "iconGridCard":
+                            case "feedScrollCard":
+                            case "imageTextScrollCard":
+                            case "colorfulFatScrollCard":
+                            case "colorfulScrollCard":
+                            case "iconLongTitleGridCard":
+                            case "linkCard":
+                            case "iconButtonGridCard":
+                            case "apkScrollCardWithBackground":
+                            case "imageScrollCard":
+                            case "apkScrollCard":
+                            //case "iconListCard":
+                            //case "listCard":
+                            case "gridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
+                            case "iconMiniLinkGridCard":
+                            case "iconMiniGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.ScrollLink);
+                            //case "listCard": //return new IndexPageHasEntitiesModel(jo, EntityType.Others);
+                            case "headCard":
+                            case "imageCarouselCard_1": //return new IndexPageHasEntitiesViewModel(jo, EntitiesType.Image_1);
+                            case "imageCard": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
+                            //case "apkImageCard":
+                            case "configCard":
+                                return jo.TryGetValue("url", out JToken v2) && v2.ToString().Length >= 5
+                                    ? new IndexPageHasEntitiesModel(jo, EntityType.IconLink)
+                                    : null;
+                            case "iconLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.IconLink);
+                            case "feedGroupListCard":
+                            case "feedListCard":
+                            case "imageTextGridCard":
+                            case "apkListCard":
+                            case "textLinkListCard": return new IndexPageHasEntitiesModel(jo, EntityType.TextLinks);
+                            case "textCard":
+                            case "messageCard": return new IndexPageMessageCardModel(jo);
+                            case "refreshCard": return new IndexPageOperationCardModel(jo, OperationType.Refresh);
+                            case "unLoginCard": return new IndexPageOperationCardModel(jo, OperationType.Login);
+                            case "titleCard": return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);
+                            case "iconTabLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.TabLink);
+                            case "selectorLinkCard": return new IndexPageHasEntitiesModel(jo, EntityType.SelectorLink);
+                            default: return null;
+                        }
+                    }
+                    else { return null; }
+            }
+        }
     }
 }

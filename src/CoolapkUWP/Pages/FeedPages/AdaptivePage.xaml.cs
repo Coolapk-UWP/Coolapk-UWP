@@ -23,11 +23,9 @@ namespace CoolapkUWP.Pages.FeedPages
             provider = e.Parameter as ViewModel;
 
             FeedList.ItemsSource = provider.Models;
-            await GetReplys(-2);
-
-            await Task.Delay(30);
+            await Refresh(-2);
             titleBar.Title = provider.Title;
-            scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
+            _ = scrollViewer.ChangeView(null, provider.VerticalOffsets[0], null, true);
             titleBar.HideProgressRing();
         }
 
@@ -43,11 +41,11 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             if (!e.IsIntermediate && scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
             {
-                _ = GetReplys();
+                _ = Refresh();
             }
         }
 
-        private async Task GetReplys(int p = -1)
+        private async Task Refresh(int p = -1)
         {
             titleBar.ShowProgressRing();
             if (p == -2)
@@ -56,6 +54,10 @@ namespace CoolapkUWP.Pages.FeedPages
                 titleBar.Title = provider.Title;
             }
             await provider.Refresh(p);
+            if (p == -2 && scrollViewer.VerticalOffset != 0)
+            {
+                _ = (scrollViewer?.ChangeView(null, 0, null));
+            }
             titleBar.HideProgressRing();
         }
 
@@ -67,13 +69,13 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void TitleBar_RefreshEvent(object sender, RoutedEventArgs e) => _ = GetReplys(-2);
+        private void TitleBar_RefreshEvent(object sender, RoutedEventArgs e) => _ = Refresh(-2);
 
         private async void RefreshContainer_RefreshRequested(RefreshContainer _, RefreshRequestedEventArgs args)
         {
             using (Windows.Foundation.Deferral RefreshCompletionDeferral = args.GetDeferral())
             {
-                await GetReplys(-2);
+                await Refresh(-2);
             }
         }
     }

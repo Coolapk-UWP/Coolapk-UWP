@@ -2,13 +2,13 @@
 using CoolapkUWP.Core.Models;
 using CoolapkUWP.Core.Providers;
 using CoolapkUWP.Helpers;
-using CoolapkUWP.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using CoolapkUWP.Controls;
 
 namespace CoolapkUWP.ViewModels.IndexPage
 {
@@ -18,9 +18,9 @@ namespace CoolapkUWP.ViewModels.IndexPage
         internal CoolapkListProvider mainProvider { get; private set; }
         internal readonly ObservableCollection<Entity> mainModels;
         internal ImmutableList<CoolapkListProvider> tabProviders { get; private set; } = ImmutableList<CoolapkListProvider>.Empty;
-        protected bool IsHotFeedPage { get => mainUri == "/main/indexV8" || mainUri == "/main/index"; }
-        protected bool IsIndexPage { get => !mainUri.Contains("?"); }
-        protected bool IsInitPage { get => mainUri == "/main/init"; }
+        protected bool IsHotFeedPage => mainUri == "/main/indexV8" || mainUri == "/main/index";
+        protected bool IsIndexPage => !mainUri.Contains("?");
+        protected bool IsInitPage => mainUri == "/main/init";
         internal bool ShowTitleBar { get; }
 
         public int ComboBoxSelectedIndex { get; private set; }
@@ -68,73 +68,6 @@ namespace CoolapkUWP.ViewModels.IndexPage
             return uri.Replace("#", "%23", StringComparison.Ordinal);
         }
 
-        private static Entity GetEntity(JObject jo, bool isHotFeedPage)
-        {
-            switch (jo.Value<string>("entityType"))
-            {
-                case "feed":
-                case "discovery": return new FeedModel(jo, isHotFeedPage ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
-                case "liveTopic": return new LiveMode(jo);
-                case "user": return new UserModel(jo);
-                case "topic": return new TopicModel(jo);
-                case "dyh": return new DyhModel(jo);
-                case "apk":
-                case "appForum": return new AppPageMode(jo);
-                case "product": return new ProductModel(jo);
-                case "entity_type_user_card_manager": return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);
-                default:
-                    if (jo.TryGetValue("entityTemplate", out JToken v1))
-                    {
-                        switch (v1.Value<string>())
-                        {
-                            case "feed": return new FeedModel(jo, isHotFeedPage ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
-                            case "imageSquareScrollCard":
-                            case "iconScrollCard":
-                            case "iconGridCard":
-                            case "feedScrollCard":
-                            case "imageTextScrollCard":
-                            case "colorfulFatScrollCard":
-                            case "colorfulScrollCard":
-                            case "iconLongTitleGridCard":
-                            case "linkCard":
-                            case "iconButtonGridCard":
-                            case "apkScrollCardWithBackground":
-                            case "imageScrollCard":
-                            case "apkScrollCard":
-                            //case "iconListCard":
-                            //case "listCard":
-                            case "gridCard": return new IndexPageHasEntitiesModel(jo, EntityType.Others);
-                            case "iconMiniLinkGridCard":
-                            case "iconMiniGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.ScrollLink);
-                            //case "listCard": //return new IndexPageHasEntitiesModel(jo, EntityType.Others);
-                            case "headCard":
-                            case "imageCarouselCard_1": //return new IndexPageHasEntitiesViewModel(jo, EntitiesType.Image_1);
-                            case "imageCard": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
-                            //case "apkImageCard":
-                            case "configCard":
-                                return jo.TryGetValue("url", out JToken v2) && v2.ToString().Length >= 5
-                                    ? new IndexPageHasEntitiesModel(jo, EntityType.IconLink)
-                                    : null;
-                            case "iconLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.IconLink);
-                            case "feedGroupListCard":
-                            case "feedListCard":
-                            case "imageTextGridCard":
-                            case "apkListCard":
-                            case "textLinkListCard": return new IndexPageHasEntitiesModel(jo, EntityType.TextLinks);
-                            case "textCard":
-                            case "messageCard": return new IndexPageMessageCardModel(jo);
-                            case "refreshCard": return new IndexPageOperationCardModel(jo, OperationType.Refresh);
-                            case "unLoginCard": return new IndexPageOperationCardModel(jo, OperationType.Login);
-                            case "titleCard": return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);
-                            case "iconTabLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.TabLink);
-                            case "selectorLinkCard": return new IndexPageHasEntitiesModel(jo, EntityType.SelectorLink);
-                            default: return null;
-                        }
-                    }
-                    else { return null; }
-            }
-        }
-
         private IEnumerable<Entity> GetEntities(JObject jo)
         {
             if (ComboBoxSelectedIndex == -1 && jo.TryGetValue("entityTemplate", out JToken t) && t?.ToString() == "configCard")
@@ -148,7 +81,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
             {
                 foreach (JObject item in jo.Value<JArray>("entities"))
                 {
-                    Entity entity = GetEntity(item, IsHotFeedPage);
+                    Entity entity = EntityTemplateSelector.GetEntity(item, IsHotFeedPage);
                     if (entity != null)
                     {
                         yield return entity;
@@ -157,7 +90,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
             }
             else
             {
-                yield return GetEntity(jo, IsHotFeedPage);
+                yield return EntityTemplateSelector.GetEntity(jo, IsHotFeedPage);
             }
             yield break;
         }

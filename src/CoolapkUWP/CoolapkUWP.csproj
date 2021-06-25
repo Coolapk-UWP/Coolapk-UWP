@@ -123,6 +123,7 @@
     </Compile>
     <Compile Include="Controls\DataTemplates\Feed.xaml.cs" />
     <Compile Include="Controls\DataTemplates\FeedReply.xaml.cs" />
+    <Compile Include="Controls\DataTemplates\NotificationTemplates.xaml.cs" />
     <Compile Include="Controls\DataTemplates\IndexCardTemplates.xaml.cs" />
     <Compile Include="Controls\DataTemplates\Pic.xaml.cs" />
     <Compile Include="Controls\DataTemplates\RelationRowsItem.xaml.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\IndexPageModel.cs" />
     <Compile Include="Models\Pages\FeedListPageModels.cs" />
+    <Compile Include="Models\Pages\MakeLikePageModels.cs" />
     <Compile Include="Models\Pages\NotificationsPageModels.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\SimpleFeedReplyModel.cs" />
@@ -213,6 +215,9 @@
     <Compile Include="Pages\MyPage.xaml.cs">
       <DependentUpon>MyPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ToolsPages\MakeLikePage.xaml.cs">
+      <DependentUpon>MakeLikePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\FeedDetailListViewModel.cs" />
     <Compile Include="ViewModels\FeedDetailPageViewModel.cs" />
     <Compile Include="ViewModels\FeedListPageViewModel.cs" />
@@ -255,6 +260,7 @@
     <Compile Include="ViewModels\FeedRepliesPageViewModel.cs" />
     <Compile Include="ViewModels\IndexPageViewModel.cs" />
     <Compile Include="ViewModels\Interfaces.cs" />
+    <Compile Include="ViewModels\MakeLikeViewModel.cs" />
     <Compile Include="ViewModels\MyPageViewMode.cs" />
     <Compile Include="ViewModels\NotificationsPageViewModel.cs" />
     <Compile Include="ViewModels\SearchPageViewModel.cs" />
@@ -868,6 +874,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\DataTemplates\NotificationTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\DataTemplates\IndexCardTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -993,6 +1003,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\MyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ToolsPages\MakeLikePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

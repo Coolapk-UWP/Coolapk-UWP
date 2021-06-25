@@ -1,14 +1,12 @@
 ﻿<Page
     x:Class="CoolapkUWP.Pages.FeedPages.NotificationsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:control="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:data="using:CoolapkUWP.Helpers"
-    xmlns:local="using:CoolapkUWP.Pages.FeedPages"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="using:CoolapkUWP.Models.Pages.NotificationsPageModels"
+    xmlns:control="using:CoolapkUWP.Controls"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
+    xmlns:data="using:CoolapkUWP.Helpers"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
     mc:Ignorable="d">
@@ -16,205 +14,11 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <templates:Feed/>
+                <templates:NotificationTemplates/>
             </ResourceDictionary.MergedDictionaries>
-            <DataTemplate x:Key="Reply" x:DataType="model:SimpleNotificationModel">
-                <Grid
-                    Margin="4"
-                    Padding="8"
-                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
-                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Tag="{x:Bind Uri}"
-                    Tapped="{x:Bind local:NotificationsPage.Ellipse_Tapped}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="56"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-                    <Ellipse
-                        Grid.RowSpan="2"
-                        Width="40"
-                        Height="40"
-                        Margin="4"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Tag="{x:Bind UserUri}"
-                        Tapped="{x:Bind local:NotificationsPage.Ellipse_Tapped}">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{x:Bind UserAvatar.Pic, Mode=OneWay}"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
-                    <StackPanel
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind UserName}"/>
-                        <TextBlock
-                            Margin="8,0,0,0"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            Text="{x:Bind Dateline}"/>
-                    </StackPanel>
-                    <control:TextBlockEx
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Padding="0,0,0,4"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        MessageText="{x:Bind Note}"/>
-                </Grid>
-            </DataTemplate>
-            <DataTemplate x:Key="Like" x:DataType="model:LikeNotificationModel">
-                <Grid
-                    Margin="4"
-                    Padding="4"
-                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
-                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Tag="{x:Bind Uri}"
-                    Tapped="{x:Bind local:NotificationsPage.Ellipse_Tapped}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal">
-                        <Button
-                            Margin="4"
-                            Padding="2"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            Background="Transparent"
-                            Style="{StaticResource ButtonRevealStyle}"
-                            Tag="{x:Bind UserUri}"
-                            Tapped="{x:Bind local:NotificationsPage.Ellipse_Tapped}">
-                            <StackPanel Orientation="Horizontal">
-                                <Ellipse Width="20" Height="20">
-                                    <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{x:Bind UserAvatar.Pic, Mode=OneWay}"/>
-                                    </Ellipse.Fill>
-                                </Ellipse>
-                                <TextBlock Margin="4,0,0,0" Text="{x:Bind UserName}"/>
-                            </StackPanel>
-                        </Button>
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            IsTextSelectionEnabled="False"
-                            Text="{x:Bind Dateline}"/>
-                    </StackPanel>
-                    <StackPanel Grid.Row="1" Margin="8,0,4,8">
-                        <TextBlock Text="{x:Bind Title}"/>
-                        <control:TextBlockEx
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            MaxLine="3"
-                            MessageText="{x:Bind FeedMessage}"/>
-                    </StackPanel>
-                </Grid>
-            </DataTemplate>
-            <DataTemplate x:Key="AtCommentMe" x:DataType="model:AtCommentMeNotificationModel">
-                <Grid
-                    Padding="4,0"
-                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
-                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Tag="{x:Bind Uri}"
-                    Tapped="{x:Bind local:NotificationsPage.Ellipse_Tapped}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal">
-                        <Button
-                            Margin="4"
-                            Padding="0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            Background="Transparent"
-                            Style="{StaticResource ButtonRevealStyle}"
-                            Tag="{x:Bind UserUri}"
-                            Tapped="{x:Bind local:NotificationsPage.Ellipse_Tapped}">
-                            <StackPanel Orientation="Horizontal">
-                                <Ellipse Width="20" Height="20">
-                                    <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{x:Bind UserAvatar.Pic, Mode=OneWay}"/>
-                                    </Ellipse.Fill>
-                                </Ellipse>
-                                <TextBlock Margin="4,0,0,0" Text="{x:Bind UserName}"/>
-                            </StackPanel>
-                        </Button>
-                        <TextBlock
-                            Margin="0,5"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            Text="{x:Bind Dateline}"/>
-                    </StackPanel>
-                    <StackPanel Grid.Row="1" Padding="6,0,6,8">
-                        <control:TextBlockEx MessageText="{x:Bind Message}"/>
-                        <control:TextBlockEx Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" MessageText="{x:Bind FeedMessage}"/>
-                    </StackPanel>
-                </Grid>
-            </DataTemplate>
-            <DataTemplate x:Key="Message" x:DataType="model:MessageNotificationModel">
-                <Grid
-                    Margin="4"
-                    Padding="8"
-                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
-                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Tag="{x:Bind Uri}"
-                    Tapped="{x:Bind local:NotificationsPage.Ellipse_Tapped}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="56"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-                    <Ellipse
-                        Grid.RowSpan="2"
-                        Width="40"
-                        Height="40"
-                        Margin="4"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Tag="{x:Bind UserUri}"
-                        Tapped="{x:Bind local:NotificationsPage.Ellipse_Tapped}">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{x:Bind UserAvatar.Pic, Mode=OneWay}"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
 
-                    <StackPanel
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top">
-                        <TextBlock
-                            Text="{x:Bind UserName}"/>
-                        <TextBlock
-                            Margin="8,0"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            Text="{x:Bind Dateline}"/>
-                    </StackPanel>
-
-                    <control:TextBlockEx
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        MaxLine="2"
-                        MessageText="{x:Bind FeedMessage}"/>
-                </Grid>
-            </DataTemplate>
-            <local:NotificationsPageTemplateSelector
-                x:Key="temse"
+            <control:NotificationsTemplateSelector
+                x:Key="NotificationsTemplateSelector"
                 AtCommentMe="{StaticResource AtCommentMe}"
                 Feed="{StaticResource feed}"
                 Like="{StaticResource Like}"
@@ -232,9 +36,7 @@
                 <ScrollViewer x:Name="scrollViewer" ViewChanged="scrollViewer_ViewChanged">
                     <StackPanel
                         x:Name="listPanel"
-                        MinWidth="320"
-                        MaxWidth="768"
-                        HorizontalAlignment="Center">
+                        MaxWidth="768">
                         <ListView
                             x:Name="NavigateItems"
                             x:Load="False"
@@ -307,7 +109,7 @@
                                 <TextBlock x:Uid="/NotificationsPage/Message" VerticalAlignment="Center"/>
                             </StackPanel>
                         </ListView>
-                        <winui:ItemsRepeater x:Name="list" ItemTemplate="{StaticResource temse}"/>
+                        <winui:ItemsRepeater x:Name="list" ItemTemplate="{StaticResource NotificationsTemplateSelector}"/>
                     </StackPanel>
                 </ScrollViewer>
             </winui:ItemsRepeaterScrollHost>
