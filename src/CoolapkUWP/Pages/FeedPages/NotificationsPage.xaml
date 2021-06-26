@@ -34,9 +34,7 @@
             RefreshRequested="RefreshContainer_RefreshRequested">
             <winui:ItemsRepeaterScrollHost>
                 <ScrollViewer x:Name="scrollViewer" ViewChanged="scrollViewer_ViewChanged">
-                    <StackPanel
-                        x:Name="listPanel"
-                        MaxWidth="768">
+                    <StackPanel x:Name="listPanel">
                         <ListView
                             x:Name="NavigateItems"
                             x:Load="False"

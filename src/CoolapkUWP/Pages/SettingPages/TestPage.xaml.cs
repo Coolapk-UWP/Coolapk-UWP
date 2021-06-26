@@ -402,7 +402,7 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private void Button_Click_19(object sender, RoutedEventArgs e)
         {
-            UIHelper.NavigateInSplitPane(typeof(ToolsPages.MakeLikePage));
+            UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModels.AdaptivePage.ViewModel("536381", ViewModels.AdaptivePage.ListType.UserFeed, "htmlFeed"));
         }
 
         private void Button_Click_20(object sender, RoutedEventArgs e)

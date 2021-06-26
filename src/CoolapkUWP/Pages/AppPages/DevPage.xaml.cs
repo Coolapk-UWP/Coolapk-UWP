@@ -4,6 +4,7 @@ using CoolapkUWP.Models;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.UI.Notifications;
@@ -88,6 +89,9 @@ namespace CoolapkUWP.Pages.AppPages
             #endregion
             //var notification = new TileNotification(content.GetXml());
             //TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
+            #region 通知测试
+            //MakeLikes(new Uri("https://api.coolapk.com/v6/user/feedList?uid=495798&page=1&isIncludeTop=1"));
+            #endregion
         }
 
         protected static async Task<FeedDetailModel> GetFeedDetailAsync(string id)
@@ -157,6 +161,7 @@ namespace CoolapkUWP.Pages.AppPages
             (bool isSucceed, string result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
         }
 
+        #region 磁铁测试
         private async Task<JObject> GetJson(Uri uri)
         {
             (bool isSucceed, string result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
@@ -500,5 +505,137 @@ namespace CoolapkUWP.Pages.AppPages
                 }
             };
         }
+        #endregion
+
+        #region 通知测试
+        public void SendUpdatableToastWithProgress()
+        {
+            // Define a tag (and optionally a group) to uniquely identify the notification, in order update the notification data later;
+            string tag = "weekly-playlist";
+            string group = "downloads";
+
+            // Construct the toast content with data bound fields
+            var content = new ToastContentBuilder()
+                .AddText("一键点赞")
+                .AddVisualChild(new AdaptiveProgressBar()
+                {
+                    Title = new BindableString("progressTitle"),
+                    Value = new BindableProgressBarValue("progressValue"),
+                    ValueStringOverride = new BindableString("progressValueString"),
+                    Status = new BindableString("progressStatus")
+                })
+                .GetToastContent();
+
+            // Generate the toast notification
+            var toast = new ToastNotification(content.GetXml());
+
+            // Assign the tag and group
+            toast.Tag = tag;
+            toast.Group = group;
+
+            // Assign initial NotificationData values
+            // Values must be of type string
+            toast.Data = new NotificationData();
+            toast.Data.Values["progressTitle"] = "正在准备点赞";
+            toast.Data.Values["progressValue"] = "0";
+            toast.Data.Values["progressValueString"] = "准备开始";
+            toast.Data.Values["progressStatus"] = "加载中...";
+
+            // Provide sequence number to prevent out-of-order updates, or assign 0 to indicate "always update"
+            toast.Data.SequenceNumber = 1;
+
+            // Show the toast notification to the user
+            ToastNotificationManager.CreateToastNotifier().Show(toast);
+        }
+
+        public void UpdateProgress(double num1,double num2, string id, string Title)
+        {
+            // Construct a NotificationData object;
+            string tag = "weekly-playlist";
+            string group = "downloads";
+
+            // Create NotificationData and make sure the sequence number is incremented
+            // since last update, or assign 0 for updating regardless of order
+            var data = new NotificationData
+            {
+                SequenceNumber = 2
+            };
+
+            // Assign new values
+            // Note that you only need to assign values that changed. In this example
+            // we don't assign progressStatus since we don't need to change it
+            data.Values["progressTitle"] = Title;
+            data.Values["progressStatus"] = id;
+            data.Values["progressValue"] = (num1 / num2).ToString();
+            data.Values["progressValueString"] = num1 + "/" + num2 + "正在点赞";
+
+            // Update the existing notification's data by using tag/group
+            ToastNotificationManager.CreateToastNotifier().Update(data, tag, group);
+        }
+
+        private void MakeLikes(Uri uri)
+        {
+            SendUpdatableToastWithProgress();
+            if (!string.IsNullOrEmpty(uri.ToString())) { GetJson2(uri); }
+        }
+
+        private async void GetJson2(Uri uri)
+        {
+            bool isSucceed;
+            string result;
+            (isSucceed, result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
+            if (isSucceed && !string.IsNullOrEmpty(result))
+            {
+                JObject json = JObject.Parse(result);
+                ReadJson(json);
+            }
+        }
+
+        private void ReadJson(JObject token)
+        {
+            if (token.TryGetValue("data", out JToken data))
+            {
+                double Number = 0;
+                double Number2 = (data as JArray).Count();
+                string Title = "即将开始";
+                string Title2 = "即将开始点赞";
+                UpdateProgress(Number,Number2,Title,Title2);
+                foreach (JObject v in (JArray)data)
+                {
+                    Number++;
+                    if (v.TryGetValue("entityType", out JToken entityType))
+                    {
+                        if (entityType.ToString() == "feed" || entityType.ToString() == "discovery")
+                        {
+                            if (v.TryGetValue("id", out JToken id))
+                            {
+                                Title = id.ToString();
+                                MakeLike(Title);
+                            }
+                            if (v.TryGetValue("message", out JToken message))
+                            {
+                                Title2 = message.ToString();
+                            }
+                            if (v.TryGetValue("userInfo", out JToken v2))
+                            {
+                                JObject userInfo = (JObject)v2;
+                                if (userInfo.TryGetValue("username", out JToken username))
+                                {
+                                }
+                            }
+                            UpdateProgress(Number, Number2, Title, Title2);
+                        }
+                    }
+                }
+            }
+        }
+
+        private async void MakeLike(string id)
+        {
+            bool isSucceed;
+            string result;
+            (isSucceed, result) = await DataHelper.GetHtmlAsync(UriHelper.GetUri(UriType.OperateUnlike, string.Empty, id), "XMLHttpRequest");
+        }
+        #endregion
     }
 }

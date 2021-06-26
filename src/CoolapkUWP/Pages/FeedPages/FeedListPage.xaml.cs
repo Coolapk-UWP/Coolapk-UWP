@@ -144,7 +144,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
-        private static void UserDetailBorder_Tapped(object sender, TappedRoutedEventArgs e)
+        public static void UserDetailBorder_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (!(e == null || UIHelper.IsOriginSource(sender, e.OriginalSource))) { return; }
             if (e.OriginalSource.GetType() == typeof(Windows.UI.Xaml.Shapes.Ellipse)) { return; }

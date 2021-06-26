@@ -112,6 +112,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BackgroundTasks\MakeLikeTask.cs" />
     <Compile Include="Controls\AboutControl.xaml.cs">
       <DependentUpon>AboutControl.xaml</DependentUpon>
     </Compile>
@@ -169,7 +170,6 @@
     <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\IndexPageModel.cs" />
     <Compile Include="Models\Pages\FeedListPageModels.cs" />
-    <Compile Include="Models\Pages\MakeLikePageModels.cs" />
     <Compile Include="Models\Pages\NotificationsPageModels.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\SimpleFeedReplyModel.cs" />
@@ -215,9 +215,6 @@
     <Compile Include="Pages\MyPage.xaml.cs">
       <DependentUpon>MyPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ToolsPages\MakeLikePage.xaml.cs">
-      <DependentUpon>MakeLikePage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\FeedDetailListViewModel.cs" />
     <Compile Include="ViewModels\FeedDetailPageViewModel.cs" />
     <Compile Include="ViewModels\FeedListPageViewModel.cs" />
@@ -260,7 +257,6 @@
     <Compile Include="ViewModels\FeedRepliesPageViewModel.cs" />
     <Compile Include="ViewModels\IndexPageViewModel.cs" />
     <Compile Include="ViewModels\Interfaces.cs" />
-    <Compile Include="ViewModels\MakeLikeViewModel.cs" />
     <Compile Include="ViewModels\MyPageViewMode.cs" />
     <Compile Include="ViewModels\NotificationsPageViewModel.cs" />
     <Compile Include="ViewModels\SearchPageViewModel.cs" />
@@ -1006,10 +1002,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ToolsPages\MakeLikePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ksemenenko.ColorThief">
@@ -1114,6 +1106,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="where.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pages\ToolsPages\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

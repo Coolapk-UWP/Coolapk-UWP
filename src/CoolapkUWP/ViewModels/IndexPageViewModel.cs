@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Core.Helpers;
+﻿using CoolapkUWP.Controls;
+using CoolapkUWP.Core.Helpers;
 using CoolapkUWP.Core.Models;
 using CoolapkUWP.Core.Providers;
 using CoolapkUWP.Helpers;
@@ -8,7 +9,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using CoolapkUWP.Controls;
 
 namespace CoolapkUWP.ViewModels.IndexPage
 {

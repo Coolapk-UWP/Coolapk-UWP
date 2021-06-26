@@ -1,10 +1,4 @@
 ﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Models;
-using CoolapkUWP.Pages;
-using CoolapkUWP.Pages.FeedPages;
-using CoolapkUWP.ViewModels.AdaptivePage;
-using System;
-using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
