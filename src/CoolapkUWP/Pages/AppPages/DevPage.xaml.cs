@@ -103,11 +103,11 @@ namespace CoolapkUWP.Pages.AppPages
             return detail != null ? new FeedDetailModel(detail) : null;
         }
 
-        private async void OnNavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs e)
-        {
-            string userId = await webview.InvokeScriptAsync("eval", new[] { "return navigator.userAgent;" });
-            main.Text = userId;
-        }
+        //private async void OnNavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs e)
+        //{
+        //    string userId = await webview.InvokeScriptAsync("eval", new[] { "return navigator.userAgent;" });
+        //    main.Text = userId;
+        //}
 
         private static string CSStoMarkDown(string text)
         {
@@ -548,7 +548,7 @@ namespace CoolapkUWP.Pages.AppPages
             ToastNotificationManager.CreateToastNotifier().Show(toast);
         }
 
-        public void UpdateProgress(double num1,double num2, string id, string Title)
+        public void UpdateProgress(double num1, double num2, string id, string Title)
         {
             // Construct a NotificationData object;
             string tag = "weekly-playlist";
@@ -599,7 +599,7 @@ namespace CoolapkUWP.Pages.AppPages
                 double Number2 = (data as JArray).Count();
                 string Title = "即将开始";
                 string Title2 = "即将开始点赞";
-                UpdateProgress(Number,Number2,Title,Title2);
+                UpdateProgress(Number, Number2, Title, Title2);
                 foreach (JObject v in (JArray)data)
                 {
                     Number++;

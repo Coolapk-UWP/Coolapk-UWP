@@ -172,18 +172,14 @@ namespace CoolapkUWP.Helpers
         /// <param name="jo">
         ///     用于初始化数值的、包含“NotifyCount”的 <c> JObject </c>。
         /// </param>
-        public void Initial(JObject jo)
+        public void Initial()
         {
-            ChangeNumber(jo);
+            GetNums();
             if (timer == null)
             {
                 timer = ThreadPoolTimer.CreatePeriodicTimer(async (source) =>
                 {
-                    //LiveTileTask.UpdateTile();
-                    (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetNotificationNumbers), true);
-                    if (!isSucceed) { return; }
-
-                    ChangeNumber((JObject)result);
+                    GetNums();
                 }, new TimeSpan(0, 1, 0));
             }
         }
@@ -198,22 +194,55 @@ namespace CoolapkUWP.Helpers
             timer = null;
         }
 
+        public async void GetNums()
+        {
+            (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetNotificationNumbers), true);
+            if (!isSucceed) { return; }
+            ChangeNumber((JObject)result);
+        }
+
         private void ChangeNumber(JObject o)
         {
             if (o != null)
             {
-                CloudInstall = o.Value<int>("cloudInstall");
-                Notification = o.Value<int>("notification");
-                BadgeNum = o.Value<int>("badge");
-                FollowNum = o.Value<int>("contacts_follow");
-                MessageNum = o.Value<int>("message");
-                AtMeNum = o.Value<int>("atme");
-                AtCommentMeNum = o.Value<int>("atcommentme");
-                CommentMeNum = o.Value<int>("commentme");
-                FeedLikeNum = o.Value<int>("feedlike");
+                if (o.TryGetValue("cloudInstall", out JToken cloudInstall) && cloudInstall != null)
+                {
+                    CloudInstall = o.Value<int>("cloudInstall");
+                }
+                if (o.TryGetValue("notification", out JToken notification) && notification != null)
+                {
+                    Notification = o.Value<int>("notification");
+                }
+                if (o.TryGetValue("badge", out JToken badge) && badge != null)
+                {
+                    BadgeNum = o.Value<int>("badge");
+                    UIHelper.SetBadgeNumber(BadgeNum.ToString());
+                }
+                if (o.TryGetValue("contacts_follow", out JToken contacts_follow) && contacts_follow != null)
+                {
+                    FollowNum = o.Value<int>("contacts_follow");
+                }
+                if (o.TryGetValue("message", out JToken message) && message != null)
+                {
+                    MessageNum = o.Value<int>("message");
+                }
+                if (o.TryGetValue("atme", out JToken atme) && atme != null)
+                {
+                    AtMeNum = o.Value<int>("atme");
+                }
+                if (o.TryGetValue("atcommentme", out JToken atcommentme) && atcommentme != null)
+                {
+                    AtCommentMeNum = o.Value<int>("atcommentme");
+                }
+                if (o.TryGetValue("commentme", out JToken commentme) && commentme != null)
+                {
+                    CommentMeNum = o.Value<int>("commentme");
+                }
+                if (o.TryGetValue("feedlike", out JToken feedlike) && feedlike != null)
+                {
+                    FeedLikeNum = o.Value<int>("feedlike");
+                }
             }
-            UIHelper.SetBadgeNumber(BadgeNum.ToString());
-            //UIHelper.ShowMessage(BadgeNum.ToString());
         }
     }
 }

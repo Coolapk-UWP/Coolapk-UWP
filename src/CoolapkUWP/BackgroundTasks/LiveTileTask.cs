@@ -22,6 +22,7 @@ namespace CoolapkUWP.BackgroundTasks
             { uri = new Uri(ApplicationData.Current.LocalSettings.Values["TileUrl"].ToString()); }
             else { ApplicationData.Current.LocalSettings.Values["TileUrl"] = uri.ToString(); }
             try { await GetData(uri); } catch { }
+            UIHelper.NotificationNums.GetNums();
 
             deferral.Complete();
         }
@@ -38,8 +39,7 @@ namespace CoolapkUWP.BackgroundTasks
         private static async Task<JObject> GetJson(Uri uri)
         {
             (bool isSucceed, string result) = await DataHelper.GetHtmlAsync(uri, "XMLHttpRequest");
-            if (isSucceed) { return JObject.Parse(result); }
-            else { return null; }
+            return isSucceed ? JObject.Parse(result) : null;
         }
 
         public static async Task GetData(Uri uri)
@@ -213,6 +213,7 @@ namespace CoolapkUWP.BackgroundTasks
         private static TileContent GetUserTitle(JObject token)
         {
             UserModel UserDetail = new UserModel(token);
+            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
             return new TileContent()
             {
                 Visual = new TileVisual()
@@ -241,7 +242,7 @@ namespace CoolapkUWP.BackgroundTasks
 
                                 new AdaptiveText()
                                 {
-                                    Text = UserDetail.FollowNum + "关注" + UserDetail.FansNum + "粉丝"+ UserDetail.LoginTime+"活跃",
+                                    Text = UserDetail.FollowNum + loader.GetString("follow") + UserDetail.FansNum + loader.GetString("fans") + UserDetail.LoginTime + loader.GetString("active"),
                                     HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                 },
 
@@ -295,7 +296,7 @@ namespace CoolapkUWP.BackgroundTasks
 
                                                 new AdaptiveText()
                                                 {
-                                                    Text = UserDetail.FollowNum + "关注" + UserDetail.FansNum + "粉丝"+ UserDetail.LoginTime+"活跃",
+                                                    Text = UserDetail.FollowNum + loader.GetString("follow") + UserDetail.FansNum + loader.GetString("fans") + UserDetail.LoginTime + loader.GetString("active"),
                                                     HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                                 },
 
@@ -362,7 +363,7 @@ namespace CoolapkUWP.BackgroundTasks
 
                                 new AdaptiveText()
                                 {
-                                    Text = UserDetail.FollowNum + "关注" + UserDetail.FansNum + "粉丝"+ UserDetail.LoginTime+"活跃",
+                                    Text = UserDetail.FollowNum + loader.GetString("follow") + UserDetail.FansNum + loader.GetString("fans") + UserDetail.LoginTime + loader.GetString("active"),
                                     HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                 },
 

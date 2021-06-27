@@ -4,6 +4,7 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.UI.Notifications;
@@ -19,13 +20,37 @@ namespace CoolapkUWP.BackgroundTasks
             deferral.Complete();
         }
 
-        public void MakeLikes(Uri uri)
+        public static void MakeLikes(string uri)
         {
-            SendUpdatableToastWithProgress();
-            if (!string.IsNullOrEmpty(uri.ToString())) { GetJson(uri); }
+            _ = ChangePage(uri);
         }
 
-        private async void GetJson(Uri uri)
+        private static async Task ChangePage(string uri)
+        {
+            Regex page = new Regex(@"page=(\d*)", RegexOptions.IgnoreCase);
+            Regex id = new Regex(@"[?|&](id|uid)=(\d*)", RegexOptions.IgnoreCase);
+            if (page.Match(uri).Success)
+            {
+                int pagenum = 0;
+                while (true)
+                {
+                    bool havemore;
+                    pagenum++;
+                    SendUpdatableToastWithProgress(id.Match(uri).Groups[2].Value, pagenum);
+                    uri = page.Replace(uri, "page=" + pagenum.ToString());
+                    havemore = await GetJson(id.Match(uri).Groups[2].Value, new Uri(uri));
+                    await Task.Delay(500);
+                    if (!havemore) { break; }
+                }
+            }
+            else
+            {
+                SendUpdatableToastWithProgress(id.Match(uri).Groups[2].Value);
+                if (uri != null) { await GetJson(id.Match(uri).Groups[2].Value, new Uri(uri)); }
+            }
+        }
+
+        private static async Task<bool> GetJson(string id, Uri uri)
         {
             bool isSucceed;
             string result;
@@ -33,52 +58,88 @@ namespace CoolapkUWP.BackgroundTasks
             if (isSucceed && !string.IsNullOrEmpty(result))
             {
                 JObject json = JObject.Parse(result);
-                ReadJson(json);
+                return await ReadJson(id, json);
             }
+            else { return false; }
         }
 
-        private async void ReadJson(JObject token)
+        private static async Task<bool> ReadJson(string uid, JObject token)
         {
-            if (token.TryGetValue("data", out JToken data))
+            if (token != null)
             {
-                double FinishNumber = 0, AllNumber = (data as JArray).Count();
-                string Status = "即将开始...", Title = "即将开始点赞";
-                UpdateProgress(FinishNumber, AllNumber, Status, Title);
-                foreach (JObject v in (JArray)data)
+                if (token.TryGetValue("data", out JToken data))
                 {
-                    FinishNumber++;
-                    if (v.TryGetValue("entityType", out JToken entityType))
+                    double FinishNumber = 0, AllNumber = (data as JArray).Count();
+                    string Status = "即将开始...", Title = "即将开始点赞";
+                    UpdateProgress(uid, FinishNumber, AllNumber, Status, Title);
+                    foreach (JObject v in (JArray)data)
                     {
-                        if (entityType.ToString() == "feed" || entityType.ToString() == "discovery")
+                        FinishNumber++;
+                        if (v.TryGetValue("entityType", out JToken entityType))
                         {
-                            Status = "正在点赞...";
-                            UpdateProgress(FinishNumber, AllNumber, Status, Title);
-                            if (v.TryGetValue("message", out JToken message))
+                            if (entityType.ToString() == "feed" || entityType.ToString() == "discovery")
                             {
-                                Title = message.ToString();
+                                Status = FinishNumber == AllNumber ? "点赞完成" : "正在点赞...";
+                                if (v.TryGetValue("message", out JToken message))
+                                {
+                                    Title = Massage_Ex(message.ToString());
+                                }
+                                UpdateProgress(uid, FinishNumber, AllNumber, Status, Title);
+
+                                if (v.TryGetValue("id", out JToken id))
+                                {
+                                    if (v.TryGetValue("userAction", out JToken v1))
+                                    {
+                                        JObject userAction = v1 as JObject;
+                                        if (userAction.TryGetValue("like", out JToken like) && like.ToString() != "1")
+                                        {
+                                            await Operatelike(id.ToString());
+                                            await Task.Delay(500);
+                                            Status = FinishNumber == AllNumber ? "点赞完成" : "点赞好了...";
+                                        }
+                                        else
+                                        {
+                                            await Task.Delay(500);
+                                            Status = FinishNumber == AllNumber ? "点赞完成" : "点赞过了...";
+                                        }
+                                    }
+                                }
+                                UpdateProgress(uid, FinishNumber, AllNumber, Status, Title);
                             }
-                            Status = "点赞完成...";
-                            UpdateProgress(FinishNumber, AllNumber, Status, Title);
                         }
                     }
                 }
+                return true;
             }
+            else { return false; }
+        }
+
+        private static string Massage_Ex(string str)
+        {
+            Regex r = new Regex("<a.*?>", RegexOptions.IgnoreCase);
+            Regex r1 = new Regex("<a.*?/>", RegexOptions.IgnoreCase);
+            Regex r2 = new Regex("</a.*?>", RegexOptions.IgnoreCase);
+            str = r.Replace(str, "");
+            str = r1.Replace(str, "");
+            str = r2.Replace(str, "");
+            return str;
         }
 
         private static async Task Operatelike(string id)
         {
-            (_, _) = await DataHelper.GetHtmlAsync(UriHelper.GetUri(UriType.OperateUnlike, string.Empty, id), "XMLHttpRequest");
+            (_, _) = await DataHelper.GetHtmlAsync(UriHelper.GetUri(UriType.OperateLike, string.Empty, id), "XMLHttpRequest");
         }
 
-        public static void SendUpdatableToastWithProgress()
+        public static void SendUpdatableToastWithProgress(string id, int page = 0)
         {
             // Define a tag (and optionally a group) to uniquely identify the notification, in order update the notification data later;
-            string tag = "weekly-playlist";
-            string group = "downloads";
+            string tag = id;
+            string group = "makelike";
 
             // Construct the toast content with data bound fields
             ToastContent content = new ToastContentBuilder()
-                .AddText("一键点赞")
+                .AddText("酷安一键点赞")
+                .AddText(page == 0 ? "正在进行一键点赞" : "正在点赞第" + page.ToString() + "页")
                 .AddVisualChild(new AdaptiveProgressBar()
                 {
                     Title = new BindableString("progressTitle"),
@@ -110,17 +171,17 @@ namespace CoolapkUWP.BackgroundTasks
             ToastNotificationManager.CreateToastNotifier().Show(toast);
         }
 
-        public static void UpdateProgress(double FinishNumber, double AllNumber, string Status, string Title)
+        public static void UpdateProgress(string id, double FinishNumber, double AllNumber, string Status, string Title)
         {
             // Construct a NotificationData object;
-            string tag = "weekly-playlist";
-            string group = "downloads";
+            string tag = id;
+            string group = "makelike";
 
             // Create NotificationData and make sure the sequence number is incremented
             // since last update, or assign 0 for updating regardless of order
             NotificationData data = new NotificationData
             {
-                SequenceNumber = 2
+                SequenceNumber = 0
             };
 
             // Assign new values

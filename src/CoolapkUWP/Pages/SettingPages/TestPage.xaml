@@ -1,14 +1,12 @@
 ﻿<Page
     x:Class="CoolapkUWP.Pages.SettingPages.TestPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:control="using:CoolapkUWP.Controls"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:CoolapkUWP.Pages.SettingPages"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:control="using:CoolapkUWP.Controls"
+    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d">
 
@@ -27,6 +25,8 @@
                 <controls:HeaderedContentControl x:Name="test1" Style="{StaticResource HeaderStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
@@ -122,6 +122,10 @@
                         <TextBox x:Name="tile" Header="修改动态磁贴源" Grid.Row="17" Margin="0,2"/>
                         <StackPanel Orientation="Horizontal" Grid.Row="18" Margin="0.2" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Button Click="Button_Click_20" Style="{StaticResource ButtonRevealStyle}">保存</Button>
+                        </StackPanel>
+                        <TextBox x:Name="makelike" Header="一键点赞" Grid.Row="19" Margin="0,2"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="20" Margin="0.2" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <Button Click="Button_Click_21" Style="{StaticResource ButtonRevealStyle}">点赞</Button>
                         </StackPanel>
                     </Grid>
                 </controls:HeaderedContentControl>

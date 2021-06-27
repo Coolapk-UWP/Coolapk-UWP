@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using CoolapkUWP.Helpers;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -47,6 +48,7 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 _ = scrollViewer.ChangeView(null, 0, null);
                 titleBar.Title = provider.Title;
+                UIHelper.NotificationNums.GetNums();
             }
             await provider?.Refresh(p);
             titleBar.HideProgressRing();
@@ -87,6 +89,7 @@ namespace CoolapkUWP.Pages.FeedPages
             if (Frame.CanGoBack)
             {
                 Frame.GoBack();
+                UIHelper.NotificationNums.GetNums();
             }
         }
 

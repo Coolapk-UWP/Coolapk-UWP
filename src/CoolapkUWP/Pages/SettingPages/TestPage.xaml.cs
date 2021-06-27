@@ -30,6 +30,7 @@ namespace CoolapkUWP.Pages.SettingPages
             //    );
             comboBoxVersion.SelectedValue = ApplicationData.Current.LocalSettings.Values["Version"];
             tile.Text = ApplicationData.Current.LocalSettings.Values["TileUrl"].ToString();
+            makelike.Text = "https://api.coolapk.com/v6/user/feedList?uid=536381&page=1&isIncludeTop=1";
         }
 
         void IndexPage_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
@@ -387,12 +388,12 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private void Button_Click_16(object sender, RoutedEventArgs e)
         {
-            ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
+            _ = ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
         }
 
         private void Button_Click_17(object sender, RoutedEventArgs e)
         {
-            ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
+            _ = ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
         }
 
         private void Button_Click_18(object sender, RoutedEventArgs e)
@@ -409,6 +410,11 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             ApplicationData.Current.LocalSettings.Values["TileUrl"] = tile.Text;
             LiveTileTask.UpdateTile();
+        }
+
+        private void Button_Click_21(object sender, RoutedEventArgs e)
+        {
+            MakeLikeTask.MakeLikes(makelike.Text);
         }
     }
 }
