@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Controls;
+﻿using CoolapkUWP.BackgroundTasks;
+using CoolapkUWP.Controls;
 using CoolapkUWP.Helpers;
 using System;
 using System.ComponentModel;
@@ -38,7 +39,7 @@ namespace CoolapkUWP.Pages
             Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             if (SettingsHelper.Get<bool>(SettingsHelper.CheckUpdateWhenLuanching))
             {
-                _ = SettingsHelper.CheckUpdateAsync(false);
+                _ = CheckUpdate.CheckUpdateAsync(false, false);
             }
 
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>

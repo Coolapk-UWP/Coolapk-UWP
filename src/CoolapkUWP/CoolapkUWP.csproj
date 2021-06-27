@@ -114,6 +114,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BackgroundTasks\CheckUpdate.cs" />
     <Compile Include="BackgroundTasks\MakeLikeTask.cs" />
     <Compile Include="Controls\AboutControl.xaml.cs">
       <DependentUpon>AboutControl.xaml</DependentUpon>

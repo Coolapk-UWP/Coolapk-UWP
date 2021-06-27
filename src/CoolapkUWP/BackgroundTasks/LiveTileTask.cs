@@ -45,7 +45,7 @@ namespace CoolapkUWP.BackgroundTasks
         public static async Task GetData(Uri uri)
         {
             JObject token = await GetJson(uri);
-            if (token.TryGetValue("data", out JToken data))
+            if (token != null && token.TryGetValue("data", out JToken data))
             {
                 int i = 0;
                 foreach (JObject v in (JArray)data)
@@ -242,7 +242,7 @@ namespace CoolapkUWP.BackgroundTasks
 
                                 new AdaptiveText()
                                 {
-                                    Text = UserDetail.FollowNum + loader.GetString("follow") + UserDetail.FansNum + loader.GetString("fans") + UserDetail.LoginTime + loader.GetString("active"),
+                                    Text = UserDetail.FollowNum + loader.GetString("follow") + UserDetail.FansNum + loader.GetString("fan") + UserDetail.LoginTime + loader.GetString("active"),
                                     HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                 },
 
@@ -296,7 +296,7 @@ namespace CoolapkUWP.BackgroundTasks
 
                                                 new AdaptiveText()
                                                 {
-                                                    Text = UserDetail.FollowNum + loader.GetString("follow") + UserDetail.FansNum + loader.GetString("fans") + UserDetail.LoginTime + loader.GetString("active"),
+                                                    Text = UserDetail.FollowNum + loader.GetString("follow") + UserDetail.FansNum + loader.GetString("fan") + UserDetail.LoginTime + loader.GetString("active"),
                                                     HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                                 },
 
@@ -363,7 +363,7 @@ namespace CoolapkUWP.BackgroundTasks
 
                                 new AdaptiveText()
                                 {
-                                    Text = UserDetail.FollowNum + loader.GetString("follow") + UserDetail.FansNum + loader.GetString("fans") + UserDetail.LoginTime + loader.GetString("active"),
+                                    Text = UserDetail.FollowNum + loader.GetString("follow") + UserDetail.FansNum + loader.GetString("fan") + UserDetail.LoginTime + loader.GetString("active"),
                                     HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                 },
 

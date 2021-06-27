@@ -222,21 +222,31 @@ namespace CoolapkUWP
 
         private static async void RegisterBackgroundTask()
         {
-            #region LiveTileTask
-            const string BackgroundTaskName = "LiveTileTask";
+            #region CheckUpdate
+            const string CheckUpdate = "CheckUpdate";
 
             // Check for background access (optional)
             await BackgroundExecutionManager.RequestAccessAsync();
 
             // Register (Single Process)
-            BackgroundTaskRegistration _ = BackgroundTaskHelper.Register(BackgroundTaskName, new TimeTrigger(15, false), true);
+            BackgroundTaskRegistration _CheckUpdate = BackgroundTaskHelper.Register(CheckUpdate, new TimeTrigger(1440, false), true);
+            #endregion
+
+            #region LiveTileTask
+            const string LiveTileTask = "LiveTileTask";
+
+            // Check for background access (optional)
+            await BackgroundExecutionManager.RequestAccessAsync();
+
+            // Register (Single Process)
+            BackgroundTaskRegistration _LiveTileTask = BackgroundTaskHelper.Register(LiveTileTask, new TimeTrigger(15, false), true);
             #endregion
 
             #region ToastBackgroundTask
-            const string taskName = "ToastBackgroundTask";
+            const string ToastBackgroundTask = "ToastBackgroundTask";
 
             // If background task is already registered, do nothing
-            if (BackgroundTaskRegistration.AllTasks.Any(i => i.Value.Name.Equals(taskName)))
+            if (BackgroundTaskRegistration.AllTasks.Any(i => i.Value.Name.Equals(ToastBackgroundTask)))
                 return;
 
             // Otherwise request access
@@ -245,7 +255,7 @@ namespace CoolapkUWP
             // Create the background task
             BackgroundTaskBuilder builder = new BackgroundTaskBuilder()
             {
-                Name = taskName
+                Name = ToastBackgroundTask
             };
 
             // Assign the toast action trigger
@@ -265,14 +275,17 @@ namespace CoolapkUWP
             switch (args.TaskInstance.Task.Name)
             {
                 case "ToastBackgroundTask":
-                    var details = args.TaskInstance.TriggerDetails as ToastNotificationActionTriggerDetail;
-                    if (details != null)
+                    if (args.TaskInstance.TriggerDetails is ToastNotificationActionTriggerDetail details)
                     {
                         ToastArguments arguments = ToastArguments.Parse(details.Argument);
                         ValueSet userInput = details.UserInput;
 
                         // Perform tasks
                     }
+                    break;
+
+                case "CheckUpdate":
+                    new BackgroundTasks.CheckUpdate().Run(args.TaskInstance);
                     break;
 
                 case "LiveTileTask":

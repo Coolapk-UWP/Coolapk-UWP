@@ -41,44 +41,44 @@
 
         <muxc:NavigationView.MenuItems>
 
-            <muxc:NavigationViewItem Content="/MainPage/V9_HOME_TAB_FOLLOW" Tag="V9_HOME_TAB_FOLLOW">
+            <muxc:NavigationViewItem x:Uid="/MainPage/V9_HOME_TAB_FOLLOW" Tag="V9_HOME_TAB_FOLLOW">
                 <muxc:NavigationViewItem.MenuItems>
-                    <muxc:NavigationViewItem Content="/MainPage/all" Tag="V9_HOME_TAB_FOLLOW"/>
-                    <muxc:NavigationViewItem Content="/MainPage/circle" Tag="circle"/>
-                    <muxc:NavigationViewItem Content="/MainPage/apk" Tag="apk"/>
-                    <muxc:NavigationViewItem Content="/MainPage/topic" Tag="topic"/>
-                    <muxc:NavigationViewItem Content="/MainPage/question" Tag="question"/>
-                    <muxc:NavigationViewItem Content="/MainPage/product" Tag="product"/>
+                    <muxc:NavigationViewItem x:Uid="/MainPage/all" Tag="V9_HOME_TAB_FOLLOW"/>
+                    <muxc:NavigationViewItem x:Uid="/MainPage/circle" Tag="circle"/>
+                    <muxc:NavigationViewItem x:Uid="/MainPage/apk" Tag="apk"/>
+                    <muxc:NavigationViewItem x:Uid="/MainPage/topic" Tag="topic"/>
+                    <muxc:NavigationViewItem x:Uid="/MainPage/question" Tag="question"/>
+                    <muxc:NavigationViewItem x:Uid="/MainPage/product" Tag="product"/>
                 </muxc:NavigationViewItem.MenuItems>
             </muxc:NavigationViewItem>
-            <muxc:NavigationViewItem Content="/MainPage/V9_HOME_TAB_HEADLINE" Tag="V9_HOME_TAB_HEADLINE"/>
-            <muxc:NavigationViewItem Content="/MainPage/V9_HOME_TAB_RANKING" Tag="V9_HOME_TAB_RANKING"/>
-            <muxc:NavigationViewItem Content="/MainPage/V11_HOME_TAB_NEWS" Tag="V11_HOME_TAB_NEWS"/>
-            <muxc:NavigationViewItem Content="/MainPage/V8_HUODONG_XIANLIAO_20210409" Tag="V8_HUODONG_XIANLIAO_20210409"/>
-            <muxc:NavigationViewItem Content="/MainPage/V9_HOME_TAB_TOPIC" Tag="V9_HOME_TAB_TOPIC"/>
-            <muxc:NavigationViewItem Content="/MainPage/V9_HOME_TAB_LIVE" Tag="V9_HOME_TAB_LIVE"/>
-            <muxc:NavigationViewItem Content="/MainPage/V9_HOME_TAB_SHIPIN" Tag="V9_HOME_TAB_SHIPIN"/>
-            <muxc:NavigationViewItem Content="/MainPage/V9_HOME_TAB_WENDA" Tag="V9_HOME_TAB_WENDA"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V9_HOME_TAB_HEADLINE" Tag="V9_HOME_TAB_HEADLINE"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V9_HOME_TAB_RANKING" Tag="V9_HOME_TAB_RANKING"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V11_HOME_TAB_NEWS" Tag="V11_HOME_TAB_NEWS"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V8_HUODONG_XIANLIAO_20210409" Tag="V8_HUODONG_XIANLIAO_20210409"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V9_HOME_TAB_TOPIC" Tag="V9_HOME_TAB_TOPIC"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V9_HOME_TAB_LIVE" Tag="V9_HOME_TAB_LIVE"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V9_HOME_TAB_SHIPIN" Tag="V9_HOME_TAB_SHIPIN"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V9_HOME_TAB_WENDA" Tag="V9_HOME_TAB_WENDA"/>
 
             <muxc:NavigationViewItemSeparator/>
-            <muxc:NavigationViewItem Content="/MainPage/V11_FIND_COOLPIC" Tag="V11_FIND_COOLPIC"/>
-            <muxc:NavigationViewItem Content="/MainPage/V11_FIND_GOODS" Tag="V11_FIND_GOODS" Visibility="Collapsed"/>
-            <muxc:NavigationViewItem Content="/MainPage/V11_FIND_GOOD_GOODS_HOME" Tag="V11_FIND_GOOD_GOODS_HOME"/>
-            <muxc:NavigationViewItem Content="/MainPage/V11_DISCOVERY_SECOND_HAND" Tag="V11_DISCOVERY_SECOND_HAND" Visibility="Collapsed"/>
-            <muxc:NavigationViewItem Content="/MainPage/V11_FIND_DYH" Tag="V11_FIND_DYH"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V11_FIND_COOLPIC" Tag="V11_FIND_COOLPIC"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V11_FIND_GOODS" Tag="V11_FIND_GOODS" Visibility="Collapsed"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V11_FIND_GOOD_GOODS_HOME" Tag="V11_FIND_GOOD_GOODS_HOME"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V11_DISCOVERY_SECOND_HAND" Tag="V11_DISCOVERY_SECOND_HAND" Visibility="Collapsed"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V11_FIND_DYH" Tag="V11_FIND_DYH"/>
 
             <muxc:NavigationViewItemSeparator/>
-            <muxc:NavigationViewItem Content="/MainPage/V10_DIGITAL_HOME" Tag="V10_DIGITAL_HOME"/>
-            <muxc:NavigationViewItem Content="/MainPage/V10_CHANNEL_SJB" Tag="V10_CHANNEL_SJB"/>
-            <muxc:NavigationViewItem Content="/MainPage/V11_ZHUANTI_EARPHONE" Tag="V11_ZHUANTI_EARPHONE"/>
-            <muxc:NavigationViewItem Content="/MainPage/V10_CHANNEL_SMB_TOP" Tag="V10_CHANNEL_SMB_TOP"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V10_DIGITAL_HOME" Tag="V10_DIGITAL_HOME"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V10_CHANNEL_SJB" Tag="V10_CHANNEL_SJB"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V11_ZHUANTI_EARPHONE" Tag="V11_ZHUANTI_EARPHONE"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V10_CHANNEL_SMB_TOP" Tag="V10_CHANNEL_SMB_TOP"/>
 
             <muxc:NavigationViewItemSeparator/>
-            <muxc:NavigationViewItem Content="/MainPage/V10_MARKET_HOME" Tag="V10_MARKET_HOME"/>
-            <muxc:NavigationViewItem Content="/MainPage/V8_MARKET_APP" Tag="V8_MARKET_APP"/>
-            <muxc:NavigationViewItem Content="/MainPage/V8_MARKET_GAME" Tag="V8_MARKET_GAME"/>
-            <muxc:NavigationViewItem Content="/MainPage/V8_MARKET_ALBUM" Tag="V8_MARKET_ALBUM" Visibility="Collapsed"/>
-            <muxc:NavigationViewItem Content="/MainPage/V10_MARKET_RANK" Tag="V10_MARKET_RANK"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V10_MARKET_HOME" Tag="V10_MARKET_HOME"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V8_MARKET_APP" Tag="V8_MARKET_APP"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V8_MARKET_GAME" Tag="V8_MARKET_GAME"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V8_MARKET_ALBUM" Tag="V8_MARKET_ALBUM" Visibility="Collapsed"/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V10_MARKET_RANK" Tag="V10_MARKET_RANK"/>
 
         </muxc:NavigationView.MenuItems>
 

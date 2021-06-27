@@ -196,9 +196,13 @@ namespace CoolapkUWP.Helpers
 
         public async void GetNums()
         {
-            (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetNotificationNumbers), true);
-            if (!isSucceed) { return; }
-            ChangeNumber((JObject)result);
+            try
+            {
+                (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetNotificationNumbers), true);
+                if (!isSucceed) { return; }
+                ChangeNumber((JObject)result);
+            }
+            catch { }
         }
 
         private void ChangeNumber(JObject o)

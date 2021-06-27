@@ -147,14 +147,14 @@
   <data name="DownloadNum.Text" xml:space="preserve">
     <value>下载</value>
   </data>
+  <data name="fan" xml:space="preserve">
+    <value>粉丝</value>
+  </data>
   <data name="FanandFollow" xml:space="preserve">
     <value>已互粉</value>
   </data>
   <data name="FanbutnotFollow" xml:space="preserve">
     <value>关注</value>
-  </data>
-  <data name="fans" xml:space="preserve">
-    <value>粉丝</value>
   </data>
   <data name="Fans.Text" xml:space="preserve">
     <value>粉丝</value>

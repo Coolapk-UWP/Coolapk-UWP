@@ -142,7 +142,7 @@ namespace CoolapkUWP.Helpers
                 isShowingMessage = true;
                 while (messageList.Count > 0)
                 {
-                    string s = $"[1/{messageList.Count}]{messageList[0]}";
+                    string s = $"[{messageList.Count}] {messageList[0]}";
                     if (HasStatusBar)
                     {
                         StatusBar statusBar = StatusBar.GetForCurrentView();

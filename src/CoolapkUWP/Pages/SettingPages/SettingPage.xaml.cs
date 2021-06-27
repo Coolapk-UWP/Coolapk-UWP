@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.BackgroundTasks;
+using CoolapkUWP.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.ComponentModel;
@@ -181,7 +182,7 @@ namespace CoolapkUWP.Pages.SettingPages
 
                 case "checkUpdate":
                     IsCheckUpdateButtonEnabled = false;
-                    await CheckUpdateAsync(true);
+                    await CheckUpdate.CheckUpdateAsync(true, false);
                     IsCheckUpdateButtonEnabled = true;
                     break;
 
