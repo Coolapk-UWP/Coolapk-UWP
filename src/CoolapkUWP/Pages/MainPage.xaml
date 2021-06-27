@@ -41,44 +41,44 @@
 
         <muxc:NavigationView.MenuItems>
 
-            <muxc:NavigationViewItem Content="关注" Tag="V9_HOME_TAB_FOLLOW">
+            <muxc:NavigationViewItem Content="/MainPage/V9_HOME_TAB_FOLLOW" Tag="V9_HOME_TAB_FOLLOW">
                 <muxc:NavigationViewItem.MenuItems>
-                    <muxc:NavigationViewItem Content="全部关注" Tag="V9_HOME_TAB_FOLLOW"/>
-                    <muxc:NavigationViewItem Content="好友关注" Tag="circle"/>
-                    <muxc:NavigationViewItem Content="应用关注" Tag="apk"/>
-                    <muxc:NavigationViewItem Content="话题关注" Tag="topic"/>
-                    <muxc:NavigationViewItem Content="问题关注" Tag="question"/>
-                    <muxc:NavigationViewItem Content="数码关注" Tag="product"/>
+                    <muxc:NavigationViewItem Content="/MainPage/all" Tag="V9_HOME_TAB_FOLLOW"/>
+                    <muxc:NavigationViewItem Content="/MainPage/circle" Tag="circle"/>
+                    <muxc:NavigationViewItem Content="/MainPage/apk" Tag="apk"/>
+                    <muxc:NavigationViewItem Content="/MainPage/topic" Tag="topic"/>
+                    <muxc:NavigationViewItem Content="/MainPage/question" Tag="question"/>
+                    <muxc:NavigationViewItem Content="/MainPage/product" Tag="product"/>
                 </muxc:NavigationViewItem.MenuItems>
             </muxc:NavigationViewItem>
-            <muxc:NavigationViewItem Content="头条" Tag="V9_HOME_TAB_HEADLINE"/>
-            <muxc:NavigationViewItem Content="热榜" Tag="V9_HOME_TAB_RANKING"/>
-            <muxc:NavigationViewItem Content="快讯" Tag="V11_HOME_TAB_NEWS"/>
-            <muxc:NavigationViewItem Content="闲聊" Tag="V8_HUODONG_XIANLIAO_20210409"/>
-            <muxc:NavigationViewItem Content="话题" Tag="V9_HOME_TAB_TOPIC"/>
-            <muxc:NavigationViewItem Content="直播" Tag="V9_HOME_TAB_LIVE"/>
-            <muxc:NavigationViewItem Content="视频" Tag="V9_HOME_TAB_SHIPIN"/>
-            <muxc:NavigationViewItem Content="问答" Tag="V9_HOME_TAB_WENDA"/>
+            <muxc:NavigationViewItem Content="/MainPage/V9_HOME_TAB_HEADLINE" Tag="V9_HOME_TAB_HEADLINE"/>
+            <muxc:NavigationViewItem Content="/MainPage/V9_HOME_TAB_RANKING" Tag="V9_HOME_TAB_RANKING"/>
+            <muxc:NavigationViewItem Content="/MainPage/V11_HOME_TAB_NEWS" Tag="V11_HOME_TAB_NEWS"/>
+            <muxc:NavigationViewItem Content="/MainPage/V8_HUODONG_XIANLIAO_20210409" Tag="V8_HUODONG_XIANLIAO_20210409"/>
+            <muxc:NavigationViewItem Content="/MainPage/V9_HOME_TAB_TOPIC" Tag="V9_HOME_TAB_TOPIC"/>
+            <muxc:NavigationViewItem Content="/MainPage/V9_HOME_TAB_LIVE" Tag="V9_HOME_TAB_LIVE"/>
+            <muxc:NavigationViewItem Content="/MainPage/V9_HOME_TAB_SHIPIN" Tag="V9_HOME_TAB_SHIPIN"/>
+            <muxc:NavigationViewItem Content="/MainPage/V9_HOME_TAB_WENDA" Tag="V9_HOME_TAB_WENDA"/>
 
             <muxc:NavigationViewItemSeparator/>
-            <muxc:NavigationViewItem Content="酷图" Tag="V11_FIND_COOLPIC"/>
-            <muxc:NavigationViewItem Content="酷品" Tag="V11_FIND_GOODS" Visibility="Collapsed"/>
-            <muxc:NavigationViewItem Content="好物" Tag="V11_FIND_GOOD_GOODS_HOME"/>
-            <muxc:NavigationViewItem Content="二手" Tag="V11_DISCOVERY_SECOND_HAND" Visibility="Collapsed"/>
-            <muxc:NavigationViewItem Content="看看号" Tag="V11_FIND_DYH"/>
+            <muxc:NavigationViewItem Content="/MainPage/V11_FIND_COOLPIC" Tag="V11_FIND_COOLPIC"/>
+            <muxc:NavigationViewItem Content="/MainPage/V11_FIND_GOODS" Tag="V11_FIND_GOODS" Visibility="Collapsed"/>
+            <muxc:NavigationViewItem Content="/MainPage/V11_FIND_GOOD_GOODS_HOME" Tag="V11_FIND_GOOD_GOODS_HOME"/>
+            <muxc:NavigationViewItem Content="/MainPage/V11_DISCOVERY_SECOND_HAND" Tag="V11_DISCOVERY_SECOND_HAND" Visibility="Collapsed"/>
+            <muxc:NavigationViewItem Content="/MainPage/V11_FIND_DYH" Tag="V11_FIND_DYH"/>
 
             <muxc:NavigationViewItemSeparator/>
-            <muxc:NavigationViewItem Content="数码" Tag="V10_DIGITAL_HOME"/>
-            <muxc:NavigationViewItem Content="手机" Tag="V10_CHANNEL_SJB"/>
-            <muxc:NavigationViewItem Content="耳机" Tag="V11_ZHUANTI_EARPHONE"/>
-            <muxc:NavigationViewItem Content="排行榜" Tag="V10_CHANNEL_SMB_TOP"/>
+            <muxc:NavigationViewItem Content="/MainPage/V10_DIGITAL_HOME" Tag="V10_DIGITAL_HOME"/>
+            <muxc:NavigationViewItem Content="/MainPage/V10_CHANNEL_SJB" Tag="V10_CHANNEL_SJB"/>
+            <muxc:NavigationViewItem Content="/MainPage/V11_ZHUANTI_EARPHONE" Tag="V11_ZHUANTI_EARPHONE"/>
+            <muxc:NavigationViewItem Content="/MainPage/V10_CHANNEL_SMB_TOP" Tag="V10_CHANNEL_SMB_TOP"/>
 
             <muxc:NavigationViewItemSeparator/>
-            <muxc:NavigationViewItem Content="精选" Tag="V10_MARKET_HOME"/>
-            <muxc:NavigationViewItem Content="应用" Tag="V8_MARKET_APP"/>
-            <muxc:NavigationViewItem Content="游戏" Tag="V8_MARKET_GAME"/>
-            <muxc:NavigationViewItem Content="应用集" Tag="V8_MARKET_ALBUM" Visibility="Collapsed"/>
-            <muxc:NavigationViewItem Content="排行" Tag="V10_MARKET_RANK"/>
+            <muxc:NavigationViewItem Content="/MainPage/V10_MARKET_HOME" Tag="V10_MARKET_HOME"/>
+            <muxc:NavigationViewItem Content="/MainPage/V8_MARKET_APP" Tag="V8_MARKET_APP"/>
+            <muxc:NavigationViewItem Content="/MainPage/V8_MARKET_GAME" Tag="V8_MARKET_GAME"/>
+            <muxc:NavigationViewItem Content="/MainPage/V8_MARKET_ALBUM" Tag="V8_MARKET_ALBUM" Visibility="Collapsed"/>
+            <muxc:NavigationViewItem Content="/MainPage/V10_MARKET_RANK" Tag="V10_MARKET_RANK"/>
 
         </muxc:NavigationView.MenuItems>
 
