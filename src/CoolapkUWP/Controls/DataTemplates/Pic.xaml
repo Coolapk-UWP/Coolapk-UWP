@@ -21,6 +21,21 @@
                     Source="{x:Bind Pic, Mode=OneWay}"
                     Stretch="UniformToFill"/>
                 <StackPanel
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+                    <Border
+                        x:Name="gif"
+                        x:Load="{x:Bind IsGif}"
+                        Background="#0F9D58"
+                        CornerRadius="0,8,0,0">
+                        <TextBlock
+                            Foreground="White"
+                            Margin="2,0"
+                            Text="GIF"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Orientation="Horizontal">
@@ -29,21 +44,20 @@
                         x:Load="{x:Bind IsLongPic, Mode=OneWay}"
                         Background="#0F9D58"
                         CornerRadius="8,0,0,0">
-                        <TextBlock x:Uid="/Feed/longPic" Foreground="White"/>
+                        <TextBlock
+                            x:Uid="/Feed/longPic"
+                            Foreground="White"
+                            Margin="2,0"/>
                     </Border>
                     <Border
                         x:Name="widePic"
                         x:Load="{x:Bind IsWidePic, Mode=OneWay}"
                         Background="#0F9D58"
                         CornerRadius="8,0,0,0">
-                        <TextBlock x:Uid="/Feed/widePic" Foreground="White"/>
-                    </Border>
-                    <Border
-                        x:Name="gif"
-                        x:Load="{x:Bind IsGif}"
-                        Background="#0F9D58"
-                        CornerRadius="8,0,0,0">
-                        <TextBlock Foreground="White" Text="GIF"/>
+                        <TextBlock
+                            x:Uid="/Feed/widePic"
+                            Foreground="White"
+                            Margin="2,0"/>
                     </Border>
                 </StackPanel>
             </Grid>

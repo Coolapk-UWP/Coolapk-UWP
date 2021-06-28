@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Core.Models;
 using CoolapkUWP.Helpers;
+using CoolapkUWP.Pages.FeedPages;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Immutable;
@@ -10,7 +11,7 @@ namespace CoolapkUWP.Models
     public class SourceFeedModel : Entity
     {
         public string Url { get; private set; }
-        public string QRUrl { get => "https://www.coolapk.com" + Url.Replace("/question/", "/feed/", StringComparison.Ordinal); }
+        public string QRUrl { get; private set; }
         public string Shareurl { get; private set; }
         public string Uurl { get; private set; }
         public string Username { get; private set; }
@@ -31,13 +32,71 @@ namespace CoolapkUWP.Models
         public SourceFeedModel(JObject o) : base(o)
         {
             Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
-            Url = o.TryGetValue("url", out JToken json) ? json.ToString() : $"/feed/{o["id"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal)}";
+            if (o.TryGetValue("url", out JToken uri) && !string.IsNullOrEmpty(uri.ToString()))
+            {
+                Url = uri.ToString();
+            }
+            else if (o.TryGetValue("id", out JToken id) && !string.IsNullOrEmpty(id.ToString()))
+            {
+                Url = $"/feed/{id.ToString().Replace("\"", string.Empty, StringComparison.Ordinal)}";
+            }
             if (o.Value<string>("entityType") == "article")
             {
                 Dateline = DataHelper.ConvertUnixTimeStampToReadable(o.Value<int>("digest_time"));
                 Message = o.Value<string>("message").Substring(0, 120);
                 Message = Message.Contains("</a>") ? o.Value<string>("message").Substring(0, 200) + "...<a href=\"" + Url + "\">" + loader.GetString("readmore") + "</a>" : Message + "...<a href=\"" + Url + "\">" + loader.GetString("readmore") + "</a>";
                 MessageTitle = o.Value<string>("title");
+            }
+            else if (o.TryGetValue("collection_item_info", out JToken v1) && v1 != null)
+            {
+                JObject collection_item_info = (JObject)v1;
+                if (collection_item_info.TryGetValue("url", out JToken url) && !string.IsNullOrEmpty(url.ToString()))
+                {
+                    Url = url.ToString();
+                }
+                if (collection_item_info.TryGetValue("dateline", out JToken dateline) && !string.IsNullOrEmpty(dateline.ToString()))
+                {
+                    Dateline = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(dateline.ToString()));
+                }
+                if (collection_item_info.TryGetValue("content", out JToken content) && !string.IsNullOrEmpty(content.ToString()))
+                {
+                    Message = content.ToString();
+                    Message = HTMLTextPage.CSStoMarkDown(Message);
+                }
+                if (collection_item_info.TryGetValue("title", out JToken title) && !string.IsNullOrEmpty(title.ToString()))
+                {
+                    MessageTitle = title.ToString();
+                }
+                if (o.TryGetValue("userInfo", out JToken v2) && !string.IsNullOrEmpty(v2.ToString()))
+                {
+                    JObject userInfo = (JObject)v2;
+                    if (userInfo.TryGetValue("url", out JToken urI))
+                    {
+                        Uurl = urI.ToString();
+                    }
+                    if (userInfo.TryGetValue("username", out JToken username))
+                    {
+                        Username = username.ToString();
+                    }
+                }
+                else
+                {
+                    if (o.TryGetValue("uid", out JToken uid))
+                    {
+                        Uurl = "/u/" + uid.ToString();
+                    }
+                    if (o.TryGetValue("username", out JToken username))
+                    {
+                        Username = username.ToString();
+                    }
+                }
+                if (Username == null)
+                {
+                    if (o.TryGetValue("title", out JToken title1) && !string.IsNullOrEmpty(title1.ToString()))
+                    {
+                        Username = title1.ToString();
+                    }
+                }
             }
             else
             {
@@ -99,6 +158,7 @@ namespace CoolapkUWP.Models
                 HavePic = true;
                 Pic = new BackgroundImageModel(value1.ToString(), ImageType.SmallImage);
             }
+            QRUrl = "https://www.coolapk.com" + Url != null ? Url.Replace("/question/", "/feed/", StringComparison.Ordinal) : string.Empty;
             Shareurl = string.IsNullOrEmpty(o.Value<string>("shareUrl")) ? QRUrl : o.Value<string>("shareUrl");
             IsBlock = o.TryGetValue("block_status", out JToken v) && v.ToString() != "0";
             if (UIHelper.IsSpecialUser && IsBlock)

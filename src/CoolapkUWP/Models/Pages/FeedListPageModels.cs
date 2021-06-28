@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Core.Models;
 using CoolapkUWP.Helpers;
+using CoolapkUWP.Pages.FeedPages;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 
@@ -95,9 +96,18 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
 
         internal TopicDetail(JObject o) : base(o)
         {
-            Logo = new ImageModel(o.Value<string>("logo"), ImageType.Icon);
-            Title = o.Value<string>("title");
-            Description = o.Value<string>("description");
+            if (o.TryGetValue("logo", out JToken logo) && !string.IsNullOrEmpty(logo.ToString()))
+            {
+                Logo = new ImageModel(logo.ToString(), ImageType.Icon);
+            }
+            if (o.TryGetValue("title", out JToken title) && !string.IsNullOrEmpty(title.ToString()))
+            {
+                Title = title.ToString();
+            }
+            if (o.TryGetValue("description", out JToken description) && !string.IsNullOrEmpty(description.ToString()))
+            {
+                Description = description.ToString();
+            }
             FollowNum = o.TryGetValue("follownum", out JToken t) ? int.Parse(t.ToString()) : o.Value<int>("follow_num");
             CommentNum = o.TryGetValue("commentnum", out JToken tt) ? int.Parse(tt.ToString()) : o.Value<int>("rating_total_num");
         }
@@ -159,7 +169,10 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             LikeNum = o.Value<int>("like_num");
             ItemsNum = o.Value<int>("item_num");
             Title = o.Value<string>("title");
-            Description = o.Value<string>("description");
+            if (o.TryGetValue("description", out JToken description) && !string.IsNullOrEmpty(description.ToString()))
+            {
+                Description = description.ToString();
+            }
             UUrl = o["userInfo"].Value<string>("url");
             UserName = o["userInfo"].Value<string>("username");
             UserAvatar = new ImageModel(o["userInfo"].Value<string>("userAvatar").Replace("\"", string.Empty, System.StringComparison.Ordinal), ImageType.BigAvatar);
@@ -184,18 +197,51 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
 
         internal ProductDetail(JObject o) : base(o)
         {
-            FollowNum = o.Value<int>("follow_num");
-            Logo = new ImageModel(o.Value<string>("logo"), ImageType.Icon);
-            Title = o.Value<string>("title");
-            //UIHelper.ShowMessage(Title);
-            Description = o.Value<string>("description");
-            MinPrice = o.Value<int>("price_min");
-            MaxPrice = o.Value<int>("price_max");
-            PriceCurrency = o.Value<string>("price_currency");
-            ReleaseTime = o.Value<string>("release_time");
-            HotNumTXT = o.Value<string>("hot_num_txt");
-            Score = o.Value<double>("star_average_score");
-            StarScore = Score / 2;
+            if (o.TryGetValue("follow_num", out JToken follow_num) && !string.IsNullOrEmpty(follow_num.ToString()))
+            {
+                FollowNum = int.Parse(follow_num.ToString());
+            }
+            if (o.TryGetValue("logo", out JToken logo) && !string.IsNullOrEmpty(logo.ToString()))
+            {
+                Logo = new ImageModel(logo.ToString(), ImageType.Icon);
+            }
+            if (o.TryGetValue("title", out JToken title) && !string.IsNullOrEmpty(title.ToString()))
+            {
+                Title = title.ToString();
+            }
+            if (o.TryGetValue("description", out JToken description) && !string.IsNullOrEmpty(description.ToString()))
+            {
+                Description = description.ToString();
+            }
+            else if (o.TryGetValue("release_time", out JToken releasetime) && !string.IsNullOrEmpty(releasetime.ToString()))
+            {
+                Description = releasetime.ToString();
+            }
+            if (o.TryGetValue("price_min", out JToken price_min) && !string.IsNullOrEmpty(price_min.ToString()))
+            {
+                MinPrice = int.Parse(price_min.ToString());
+            }
+            if (o.TryGetValue("price_max", out JToken price_max) && !string.IsNullOrEmpty(price_max.ToString()))
+            {
+                MaxPrice = int.Parse(price_max.ToString());
+            }
+            if (o.TryGetValue("price_currency", out JToken price_currency) && !string.IsNullOrEmpty(price_currency.ToString()))
+            {
+                PriceCurrency = price_currency.ToString();
+            }
+            if (o.TryGetValue("release_time", out JToken release_time) && !string.IsNullOrEmpty(release_time.ToString()))
+            {
+                ReleaseTime = release_time.ToString();
+            }
+            if (o.TryGetValue("hot_num_txt", out JToken hot_num_txt) && !string.IsNullOrEmpty(hot_num_txt.ToString()))
+            {
+                HotNumTXT = hot_num_txt.ToString();
+            }
+            if (o.TryGetValue("star_average_score", out JToken star_average_score) && !string.IsNullOrEmpty(star_average_score.ToString()))
+            {
+                Score = double.Parse(star_average_score.ToString());
+                StarScore = Score / 2;
+            }
         }
     }
 
@@ -210,14 +256,43 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
 
         internal AppDetail(JObject o) : base(o)
         {
-            FollowNum = o.Value<int>("follownum");
-            Logo = new ImageModel(o.Value<string>("logo"), ImageType.Icon);
-            Title = o.Value<string>("title");
-            Description = o.Value<string>("description");
-            CommentNum = o.TryGetValue("commentnum", out JToken tt) ? int.Parse(tt.ToString()) : o.Value<int>("commentCount");
-            int t = o.Value<int>("entityId");
-            EntityId = t.ToString();
-            //UIHelper.ShowMessage(EntityId);
+            if (o.TryGetValue("follownum", out JToken follownum) && !string.IsNullOrEmpty(follownum.ToString()))
+            {
+                FollowNum = int.Parse(follownum.ToString());
+            }
+            if (o.TryGetValue("logo", out JToken logo) && !string.IsNullOrEmpty(logo.ToString()))
+            {
+                Logo = new ImageModel(logo.ToString(), ImageType.Icon);
+            }
+            if (o.TryGetValue("title", out JToken title) && !string.IsNullOrEmpty(title.ToString()))
+            {
+                Title = title.ToString();
+            }
+            if (o.TryGetValue("description", out JToken description) && !string.IsNullOrEmpty(description.ToString()))
+            {
+                Description = description.ToString();
+            }
+            else if (o.TryGetValue("subtitle", out JToken subtitle) && !string.IsNullOrEmpty(subtitle.ToString()))
+            {
+                Description = subtitle.ToString();
+            }
+            else if (o.TryGetValue("introduce", out JToken introduce) && !string.IsNullOrEmpty(introduce.ToString()))
+            {
+                Description = introduce.ToString();
+                Description = HTMLTextPage.CSStoMarkDown(Description);
+            }
+            if (o.TryGetValue("commentnum", out JToken commentnum) && !string.IsNullOrEmpty(commentnum.ToString()))
+            {
+                CommentNum = int.Parse(commentnum.ToString());
+            }
+            else if (o.TryGetValue("commentCount", out JToken commentCount) && !string.IsNullOrEmpty(commentCount.ToString()))
+            {
+                CommentNum = int.Parse(commentCount.ToString());
+            }
+            if (o.TryGetValue("entityId", out JToken entityId) && !string.IsNullOrEmpty(entityId.ToString()))
+            {
+                EntityId = entityId.ToString();
+            }
         }
     }
 

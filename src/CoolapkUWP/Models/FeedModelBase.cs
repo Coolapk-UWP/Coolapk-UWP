@@ -111,7 +111,9 @@ namespace CoolapkUWP.Models
             }
             ChangeCount = token.TryGetValue("change_count", out JToken change_count) || change_count != null
                 ? change_count.ToString().Replace("\"", string.Empty, StringComparison.Ordinal)
-                : token["isModified"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal);
+                : token.TryGetValue("isModified", out JToken isModified)
+                ? isModified.ToString().Replace("\"", string.Empty, StringComparison.Ordinal)
+                : "0";
             ChangeTitle = ChangeCount == "0" ? null : "已编辑" + ChangeCount + "次";
             if (token.TryGetValue("entityType", out JToken entityType) && entityType.ToString() != "article")
             {
@@ -149,8 +151,14 @@ namespace CoolapkUWP.Models
                     }
                     else
                     {
-                        if (token.TryGetValue("userAvatar", out JToken userAvatar))
-                        { UserSmallAvatar = new ImageModel(userAvatar.ToString(), ImageType.BigAvatar); }
+                        if (token.TryGetValue("userAvatar", out JToken userAvatar) && !string.IsNullOrEmpty(userAvatar.ToString()))
+                        {
+                            UserSmallAvatar = new ImageModel(userAvatar.ToString(), ImageType.BigAvatar);
+                        }
+                        else if (token.TryGetValue("logo", out JToken logo) && !string.IsNullOrEmpty(logo.ToString()))
+                        {
+                            UserSmallAvatar = new ImageModel(logo.ToString(), ImageType.BigAvatar);
+                        }
                     }
                 }
 
@@ -195,7 +203,7 @@ namespace CoolapkUWP.Models
 
                 ShowVideo = token.TryGetValue("media_type", out JToken media_type) && media_type.ToString() == "2" && token.TryGetValue("media_url", out JToken media_url) && (media_url.Contains("bilibili") || media_url.Contains("b23"));
 
-                if (media_type.ToString() != "0")
+                if (media_type != null && media_type.ToString() != "0")
                 {
                     ShowExtraUrl = true;
                     ExtraTitle = "视频分享";

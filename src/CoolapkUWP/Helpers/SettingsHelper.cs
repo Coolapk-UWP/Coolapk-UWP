@@ -1,16 +1,10 @@
 ﻿using CoolapkUWP.BackgroundTasks;
 using CoolapkUWP.Core.Helpers;
-using Microsoft.Toolkit.Uwp.Notifications;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.Storage;
-using Windows.UI.Notifications;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Helpers
 {

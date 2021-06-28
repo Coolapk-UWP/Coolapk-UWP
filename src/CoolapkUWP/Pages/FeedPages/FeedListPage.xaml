@@ -548,7 +548,7 @@
                         <TextBlock
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
-                            Margin="0,0,12,0"
+                            Margin="0,5,12,0"
                             IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                             Text="{x:Bind Description}"
                             TextWrapping="Wrap"/>
@@ -600,7 +600,8 @@
                         <TextBlock
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
-                            Margin="0,0,12,0"
+                            Margin="0,5,12,0"
+                            MaxLines="5"
                             IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                             Text="{x:Bind Description}"
                             TextWrapping="Wrap"/>

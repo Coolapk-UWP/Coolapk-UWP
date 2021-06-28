@@ -390,7 +390,7 @@ namespace CoolapkUWP.Helpers
                 string u = str.Replace(i - 1);
                 Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(u, true));
             }
-            else if(str.Contains("/feed/changeHistoryDetail"))
+            else if (str.Contains("/feed/changeHistoryDetail"))
             {
                 Navigate(typeof(FeedShellPage), new ViewModels.FeedDetailPage.FeedViewModel(str.Replace(2)));
             }

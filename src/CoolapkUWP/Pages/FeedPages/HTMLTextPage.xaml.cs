@@ -53,7 +53,7 @@ namespace CoolapkUWP.Pages.FeedPages
             TitleBar.HideProgressRing();
         }
 
-        private static string CSStoMarkDown(string text)
+        public static string CSStoMarkDown(string text)
         {
             Regex h1 = new Regex("<h1 style.*?>", RegexOptions.IgnoreCase);
             Regex h2 = new Regex("<h2 style.*?>", RegexOptions.IgnoreCase);
@@ -70,6 +70,7 @@ namespace CoolapkUWP.Pages.FeedPages
             text = text.Replace("</h3>", "");
             text = text.Replace("</h4>", "");
             text = text.Replace("</div>", "");
+            text = text.Replace("<p>", "");
             text = text.Replace("</p>", "");
             text = text.Replace("</ul>", "");
             text = text.Replace("</li>", "");
