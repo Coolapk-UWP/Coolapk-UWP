@@ -16,6 +16,7 @@ namespace CoolapkUWP.Models
 
         public ImageModel MessageCover { get; private set; }
         public ImageModel Tpic { get; private set; }
+        public ImageModel DyhPic { get; private set; }
 
         public string MessageRawOutput { get; private set; }
         public bool ShowTtitle { get; private set; }
@@ -25,6 +26,7 @@ namespace CoolapkUWP.Models
         public bool ShowDyhName { get; private set; }
         public string DyhUrl { get; private set; }
         public string DyhName { get; private set; }
+        public string DyhSubTitle { get; private set; }
         public bool IsAnswerFeed { get; private set; }
         public string QuestionUrl { get; private set; }
         public string Title { get; private set; }
@@ -89,12 +91,28 @@ namespace CoolapkUWP.Models
                 Tpic = new ImageModel(o.Value<string>("tpic"), ImageType.Icon);
             }
 
-            ShowDyhName = o.TryGetValue("dyh_name", out JToken valuedyh) && !string.IsNullOrEmpty(valuedyh.ToString());
+            ShowDyhName = o.TryGetValue("targetRow", out JToken v) && !string.IsNullOrEmpty(v.ToString());
             if (ShowDyhName)
             {
-                DyhName = valuedyh.ToString();
-                DyhUrl = $"/dyh/{o.Value<int>("dyh_id")}";
+                JObject targetRow = (JObject)v;
+                if (targetRow.TryGetValue("logo",out JToken logo))
+                {
+                    DyhPic = new ImageModel(logo.ToString(), ImageType.Icon);
+                }
+                if (targetRow.TryGetValue("title", out JToken title))
+                {
+                    DyhName = title.ToString();
+                }
+                if (targetRow.TryGetValue("url", out JToken url))
+                {
+                    DyhUrl = url.ToString();
+                }
+                if (targetRow.TryGetValue("subTitle", out JToken subTitle))
+                {
+                    DyhSubTitle = subTitle.ToString();
+                }
             }
+
             ShowRelationRows = (o.TryGetValue("location", out JToken vLocation) && !string.IsNullOrEmpty(vLocation.ToString())) |
                                (o.TryGetValue("relationRows", out JToken vRelationRows) && ((vRelationRows as JArray)?.Count ?? 0) > 0);
             if (ShowRelationRows)

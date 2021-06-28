@@ -301,6 +301,8 @@
                     <ctrl:TextBlockEx
                         Grid.Row="3"
                         Margin="4"
+                        MaxLine="10"
+                        MaxHeight="200"
                         IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                         MessageText="{x:Bind Message}"/>
 
@@ -508,6 +510,8 @@
                                     <ctrl:TextBlockEx
                                         Grid.Row="2"
                                         Margin="4"
+                                        MaxLine="10"
+                                        MaxHeight="200"
                                         IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
                                         MessageText="{x:Bind LinkSourceFeed.Message, Mode=OneWay}"
                                         Tag="{x:Bind LinkSourceFeed.Url, Mode=OneWay}"

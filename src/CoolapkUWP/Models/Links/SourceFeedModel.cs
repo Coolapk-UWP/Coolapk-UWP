@@ -149,6 +149,7 @@ namespace CoolapkUWP.Models.Links
 
         private void ReadJson(JObject json, LinkType type)
         {
+            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
             switch (type)
             {
                 case LinkType.Coolapk:
@@ -176,8 +177,11 @@ namespace CoolapkUWP.Models.Links
                             {
                                 if (data.TryGetValue("message", out JToken message))
                                 {
-                                    Message = message.ToString().Substring(0, 120);
-                                    Message = Message.Contains("</a>") ? message.ToString().Substring(0, 200) + "……<a href=\"" + Url + "\">查看更多</a>" : Message + "……<a href=\"" + Url + "\">查看更多</a>";
+                                    if (Message.Contains("</a>") ? Message.Length - 200 >= 7 : Message.Length - 120 >= 7)
+                                    {
+                                        Message = message.ToString().Substring(0, 120);
+                                        Message = Message.Contains("</a>") ? message.ToString().Substring(0, 200) + "...<a href=\"" + Url + "\">" + loader.GetString("readmore") + "</a>" : Message + "...<a href=\"" + Url + "\">" + loader.GetString("readmore") + "</a>";
+                                    }
                                 }
                             }
                             else
@@ -185,9 +189,6 @@ namespace CoolapkUWP.Models.Links
                                 if (data.TryGetValue("message", out JToken message))
                                 {
                                     Message = message.ToString();
-                                    //Message = Message.PadLeft(1).Remove(0, 1);
-                                    //Message = Message.PadRight(1);
-                                    //Message = Message.Remove(Message.Length - 1, 1);
                                 }
                             }
                             if (data.TryGetValue("dateline", out JToken dateline))
@@ -275,6 +276,10 @@ namespace CoolapkUWP.Models.Links
                                     Url = "https://t.bilibili.com/" + dynamic_id_str;
                                 }
                             }
+                            if (Message.Length - 120 >= 7)
+                            {
+                                Message = message.ToString().Substring(0, 120) + "...<a href=\"" + Url + "\">";
+                            }
                         }
                     }
                     break;
@@ -313,6 +318,10 @@ namespace CoolapkUWP.Models.Links
                                                 break;
                                         }
                                     }
+                                }
+                                if (Message.Length - 120 >= 7)
+                                {
+                                    Message = message.ToString().Substring(0, 120) + "...<a href=\"" + Url + "\">";
                                 }
                             }
                             if (data.TryGetValue("user", out JToken v2))

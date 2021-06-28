@@ -30,11 +30,13 @@ namespace CoolapkUWP.Models
 
         public SourceFeedModel(JObject o) : base(o)
         {
+            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
             Url = o.TryGetValue("url", out JToken json) ? json.ToString() : $"/feed/{o["id"].ToString().Replace("\"", string.Empty, StringComparison.Ordinal)}";
             if (o.Value<string>("entityType") == "article")
             {
                 Dateline = DataHelper.ConvertUnixTimeStampToReadable(o.Value<int>("digest_time"));
-                Message = o.Value<string>("message").Substring(0, 120) + "……<a href=\"" + Url + "\">查看更多</a>";
+                Message = o.Value<string>("message").Substring(0, 120);
+                Message = Message.Contains("</a>") ? o.Value<string>("message").Substring(0, 200) + "...<a href=\"" + Url + "\">" + loader.GetString("readmore") + "</a>" : Message + "...<a href=\"" + Url + "\">" + loader.GetString("readmore") + "</a>";
                 MessageTitle = o.Value<string>("title");
             }
             else
@@ -69,7 +71,7 @@ namespace CoolapkUWP.Models
                 }
                 Dateline = DataHelper.ConvertUnixTimeStampToReadable(double.Parse(o["dateline"].ToString().Replace("\"", string.Empty, System.StringComparison.Ordinal)));
                 IsRatingFeed = o.Value<string>("feedType") == "rating";
-                Message = IsRatingFeed ? "【评分】" + o.Value<string>("rating_score") + "分\n" + o.Value<string>("message") : o.Value<string>("message");
+                Message = (IsRatingFeed ? "【评分】" + o.Value<string>("rating_score") + "分\n" + o.Value<string>("message") : o.Value<string>("message")).Replace("<a href=\"\">查看更多</a>", "<a href=\"" + Url + "\">" + loader.GetString("readmore") + "</a>");
                 MessageTitle = o.TryGetValue("message_title", out JToken message_title) ? message_title.ToString()
                     : o.TryGetValue("editor_title", out JToken editor_title) ? editor_title.ToString() : string.Empty;
             }

@@ -22,7 +22,8 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid>
+    <Grid
+        Background="{ThemeResource SystemControlBackgroundListLowBrush}">
         <Grid>
             <ScrollViewer
                 x:Name="mainScrollViewer"

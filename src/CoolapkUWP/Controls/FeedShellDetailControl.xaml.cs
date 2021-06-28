@@ -100,7 +100,7 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        private static void Grid_Tapped(object sender, TappedRoutedEventArgs _)
+        public static void Grid_Tapped(object sender, TappedRoutedEventArgs _)
         {
             if ((sender as FrameworkElement).Tag is string s)
             {

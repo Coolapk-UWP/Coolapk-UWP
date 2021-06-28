@@ -31,7 +31,6 @@
     </UserControl.Resources>
 
     <Grid
-        Margin="8,0"
         KeyDown="Grid_KeyDown"
         RightTapped="Grid_RightTapped">
         <Grid.RowDefinitions>
@@ -51,24 +50,38 @@
             x:Name="TTitle"
             HorizontalContentAlignment="Stretch"
             x:Load="{x:Bind FeedDetail.ShowTtitle, Mode=OneWay}"
-            Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+            Style="{StaticResource FixedListViewItemStyle}"
             Tag="{x:Bind FeedDetail.Turl, Mode=OneWay}"
             Tapped="StackPanel_Tapped"
             Template="{StaticResource AppListViewItemTemplate}">
             <Grid
                 Margin="8"
+                Padding="4"
+                Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
+                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center">
-                <Image
-                    Width="20"
-                    Height="20"
+                <Border  
+                    Width="32"
+                    Height="32"
+                    CornerRadius="4"
+                    Background="White"
                     HorizontalAlignment="Left"
-                    Source="{x:Bind FeedDetail.Tpic.Pic, Mode=OneWay}"/>
+                    VerticalAlignment="Center">
+                    <Image Source="{x:Bind FeedDetail.Tpic.Pic, Mode=OneWay}"/>
+                </Border>
                 <TextBlock
-                    Margin="23,0,0,0"
+                    Margin="36,0,0,0"
                     HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
                     Text="{x:Bind FeedDetail.Ttitle, Mode=OneWay}"/>
-                <SymbolIcon HorizontalAlignment="Right" Symbol="Forward"/>
+                <SymbolIcon
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="4,0"
+                    Symbol="Forward"/>
             </Grid>
         </ListViewItem>
 
@@ -77,19 +90,44 @@
             Grid.Row="1"
             HorizontalContentAlignment="Stretch"
             x:Load="{x:Bind FeedDetail.ShowDyhName, Mode=OneWay}"
-            Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+            Style="{StaticResource FixedListViewItemStyle}"
             Tag="{x:Bind FeedDetail.DyhUrl, Mode=OneWay}"
             Tapped="StackPanel_Tapped"
             Template="{StaticResource AppListViewItemTemplate}">
             <Grid
                 Margin="8"
+                Padding="4,4"
+                Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
+                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center">
-                <TextBlock
-                    Margin="23,0,0,0"
+                <Border
+                    Width="32"
+                    Height="32"
+                    CornerRadius="4"
+                    Background="White"
                     HorizontalAlignment="Left"
+                    VerticalAlignment="Center">
+                    <Image Source="{x:Bind FeedDetail.DyhPic.Pic, Mode=OneWay}"/>
+                </Border>
+                <TextBlock
+                    Margin="36,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
                     Text="{x:Bind FeedDetail.DyhName, Mode=OneWay}"/>
-                <SymbolIcon HorizontalAlignment="Right" Symbol="Forward"/>
+                <TextBlock
+                    Margin="0,0,30,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind FeedDetail.DyhSubTitle, Mode=OneWay}"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                <SymbolIcon
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="4,0"
+                    Symbol="Forward"/>
             </Grid>
         </ListViewItem>
 
@@ -332,7 +370,7 @@
             x:Name="extraT"
             Grid.Row="6"
             Padding="0"
-            Margin="0,5,0,0"
+            Margin="8,5,0,0"
             x:Load="{x:Bind FeedDetail.ShowExtraUrl, Mode=OneWay}"
             KeyDown="Grid_KeyDown"
             Style="{StaticResource FixedListViewItemStyle}"
@@ -434,6 +472,8 @@
                                 TextWrapping="Wrap"/>
                             <local:TextBlockEx
                                 Grid.Row="1"
+                                MaxLine="10"
+                                MaxHeight="200"
                                 IsTextSelectionEnabled="{x:Bind FeedDetail.IsCopyEnabled, Mode=OneWay}"
                                 MessageText="{x:Bind FeedDetail.LinkSourceFeed.Message, Mode=OneWay}"/>
                             <GridView
@@ -456,7 +496,7 @@
         <ListView
             x:Name="relaRLis"
             Grid.Row="7"
-            Margin="4,0"
+            Margin="8,0"
             HorizontalContentAlignment="Stretch"
             x:Load="{x:Bind FeedDetail.ShowRelationRows, Mode=OneWay}"
             ItemContainerStyle="{StaticResource FixedListViewItemStyle}"
@@ -481,6 +521,7 @@
         <local:MakeFeedControl
             x:Name="makeFeed"
             Grid.Row="9"
+            Margin="8,0"
             x:Load="False"
             FeedId="{x:Bind FeedDetail.Id, Mode=OneWay}"
             MakeFeedMode="Reply"

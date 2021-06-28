@@ -138,6 +138,9 @@
   <data name="QR.Text" xml:space="preserve">
     <value>二维码</value>
   </data>
+  <data name="readmore" xml:space="preserve">
+    <value>查看更多</value>
+  </data>
   <data name="report.Text" xml:space="preserve">
     <value>举报</value>
   </data>

@@ -51,7 +51,7 @@ namespace CoolapkUWP.ViewModels.FeedDetailPage
 
         protected static async Task<FeedDetailModel> GetFeedDetailAsync(string id)
         {
-            (bool isSucceed, JToken result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetFeedDetail, id), true);
+            (bool isSucceed, JToken result) = id.Contains("changeHistoryDetail") ? await DataHelper.GetDataAsync(new Uri(UriHelper.BaseUri.ToString() + "v6/feed/" + id), true) : await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetFeedDetail, id), true);
             if (!isSucceed) { return null; }
 
             JObject detail = (JObject)result;

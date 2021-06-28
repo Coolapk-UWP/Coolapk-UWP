@@ -50,7 +50,7 @@ namespace CoolapkUWP.Controls
             NeedProgressRing?.Invoke(this, false);
         }
 
-        private static void Grid_Tapped(object sender, TappedRoutedEventArgs e)
+        public static void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
 
