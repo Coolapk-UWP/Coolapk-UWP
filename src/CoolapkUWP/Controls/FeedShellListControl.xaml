@@ -48,10 +48,9 @@
                     </ListView>
 
                     <ListViewItem
-                        BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-                        BorderThickness="0,0,0,2"
                         Tapped="GetMoreHotReplyListViewItem_Tapped"
-                        Template="{StaticResource AppListViewItemTemplate}">
+                        Template="{StaticResource AppListViewItemTemplate}"
+                        BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
                         <TextBlock
                             x:Uid="/FeedShellListControl/getHotReply"
                             HorizontalAlignment="Center"

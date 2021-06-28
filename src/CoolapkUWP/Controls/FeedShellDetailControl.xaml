@@ -167,17 +167,33 @@
             Grid.Row="2"
             HorizontalContentAlignment="Stretch"
             x:Load="{x:Bind FeedDetail.IsAnswerFeed, Mode=OneWay}"
-            Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+            Style="{StaticResource FixedListViewItemStyle}"
             Tag="{x:Bind FeedDetail.QuestionUrl, Mode=OneWay}"
             Tapped="StackPanel_Tapped">
-            <Grid VerticalAlignment="Stretch">
-                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+            <Grid
+                Height="40"
+                Margin="8"
+                Padding="4"
+                Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
+                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center">
+                <StackPanel
+                    Margin="4,0"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
                     <TextBlock x:Uid="/FeedShellDetailControl/seeAll"/>
                     <TextBlock Text="("/>
                     <TextBlock Text="{x:Bind FeedDetail.QuestionAnswerNum, Mode=OneWay}"/>
                     <TextBlock Text=")"/>
                 </StackPanel>
-                <SymbolIcon HorizontalAlignment="Right" Symbol="Forward"/>
+                <SymbolIcon
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="4,0"
+                    Symbol="Forward"/>
             </Grid>
         </ListViewItem>
 
@@ -240,8 +256,7 @@
             </Button>
             <Button
                 x:Name="moreButton"
-                Height="32"
-                Style="{StaticResource IconButtonStyle}"
+                Style="{StaticResource FeedOpButtonStyle}"
                 ToolTipService.ToolTip="更多">
                 <SymbolIcon Symbol="More"/>
                 <Button.Flyout>

@@ -266,9 +266,7 @@
 
                         <Button
                             x:Name="moreButton"
-                            Width="32"
-                            Height="32"
-                            Style="{StaticResource IconButtonStyle}"
+                            Style="{StaticResource FeedOpButtonStyle}"
                             ToolTipService.ToolTip="更多">
                             <SymbolIcon Symbol="More"/>
                             <Button.Flyout>

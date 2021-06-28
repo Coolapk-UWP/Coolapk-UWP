@@ -162,8 +162,7 @@
 
                         <Button
                             x:Name="moreButton"
-                            Height="32"
-                            Style="{StaticResource IconButtonStyle}">
+                            Style="{StaticResource FeedOpButtonStyle2}">
                             <SymbolIcon Symbol="More"/>
                             <Button.Flyout>
                                 <MenuFlyout>

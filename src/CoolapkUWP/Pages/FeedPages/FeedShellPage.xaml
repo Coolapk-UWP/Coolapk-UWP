@@ -22,8 +22,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid
-        Background="{ThemeResource SystemControlBackgroundListLowBrush}">
+    <Grid Background="{ThemeResource SystemControlBackgroundListLowBrush}">
         <Grid>
             <ScrollViewer
                 x:Name="mainScrollViewer"
@@ -45,7 +44,9 @@
                         VerticalAlignment="Top"
                         VerticalScrollMode="{x:Bind MainScrollMode, Mode=OneWay, Converter={StaticResource TrueToFalseConverter}, ConverterParameter='ScrollMode'}">
                         <Border x:Name="detailBorder">
-                            <ctrl:FeedShellDetailControl x:Name="detailControl" RequireRefresh="detailControl_RequireRefresh"/>
+                            <ctrl:FeedShellDetailControl
+                                x:Name="detailControl"
+                                RequireRefresh="detailControl_RequireRefresh"/>
                         </Border>
                     </ScrollViewer>
 
@@ -60,6 +61,7 @@
                             <ctrl:FeedShellListControl
                                 x:Name="listControl"
                                 x:Load="False"
+                                Margin="-12,0"
                                 NeedProgressRing="listCtrl_NeedProgressRing"/>
 
                             <winui:ItemsRepeater
@@ -75,7 +77,7 @@
                 x:Name="PivotItemPanel"
                 Padding="8,0"
                 VerticalAlignment="Bottom"
-                Background="{ThemeResource SystemControlDisabledChromeMediumLowBrush}"
+                Background="{ThemeResource SystemControlChromeLowAcrylicElementBrush}"
                 Orientation="Horizontal">
                 <Button
                     x:Name="toReplyPivotItemButton"

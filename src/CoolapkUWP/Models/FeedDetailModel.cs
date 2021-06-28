@@ -83,19 +83,12 @@ namespace CoolapkUWP.Models
                     QuestionUrl = j.Value<string>("questionUrl");
                 }
             }
-            ShowTtitle = o.TryGetValue("ttitle", out JToken valuettitle) && !string.IsNullOrEmpty(valuettitle.ToString());
-            if (ShowTtitle)
-            {
-                Ttitle = valuettitle.ToString();
-                Turl = o.Value<string>("turl");
-                Tpic = new ImageModel(o.Value<string>("tpic"), ImageType.Icon);
-            }
 
             ShowDyhName = o.TryGetValue("targetRow", out JToken v) && !string.IsNullOrEmpty(v.ToString());
             if (ShowDyhName)
             {
                 JObject targetRow = (JObject)v;
-                if (targetRow.TryGetValue("logo",out JToken logo))
+                if (targetRow.TryGetValue("logo", out JToken logo))
                 {
                     DyhPic = new ImageModel(logo.ToString(), ImageType.Icon);
                 }
@@ -111,6 +104,14 @@ namespace CoolapkUWP.Models
                 {
                     DyhSubTitle = subTitle.ToString();
                 }
+            }
+
+            ShowTtitle = o.TryGetValue("ttitle", out JToken valuettitle) && !ShowDyhName && !string.IsNullOrEmpty(valuettitle.ToString());
+            if (ShowTtitle)
+            {
+                Ttitle = valuettitle.ToString();
+                Turl = o.Value<string>("turl");
+                Tpic = new ImageModel(o.Value<string>("tpic"), ImageType.Icon);
             }
 
             ShowRelationRows = (o.TryGetValue("location", out JToken vLocation) && !string.IsNullOrEmpty(vLocation.ToString())) |

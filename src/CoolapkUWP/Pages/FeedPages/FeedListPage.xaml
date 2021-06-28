@@ -315,9 +315,10 @@
             <DataTemplate x:Key="TopicDetail" x:DataType="model:TopicDetail">
                 <Grid
                     x:Name="DetailGrid"
-                    Margin="0,0,0,8"
                     Padding="8"
-                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                    Margin="0,0,0,8"
+                    CornerRadius="0,0,8,8"
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
@@ -361,8 +362,10 @@
             <DataTemplate x:Key="DYHDetail" x:DataType="model:DyhDetail">
                 <Grid
                     x:Name="DetailGrid"
+                    Padding="8"
                     Margin="0,0,0,8"
-                    Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                    CornerRadius="0,0,8,8"
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
@@ -433,10 +436,10 @@
             </DataTemplate>
             <DataTemplate x:Key="CollectionDetail" x:DataType="model:CollectionDetail">
                 <Grid
+                    Padding="8"
                     Margin="0,0,0,8"
                     CornerRadius="0,0,8,8"
-                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
-                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
@@ -514,10 +517,10 @@
             <DataTemplate x:Key="ProductDetail" x:DataType="model:ProductDetail">
                 <Grid
                     x:Name="DetailGrid"
+                    Padding="8"
                     Margin="0,0,0,8"
                     CornerRadius="0,0,8,8"
-                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
-                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
@@ -568,10 +571,10 @@
             <DataTemplate x:Key="AppDetail" x:DataType="model:AppDetail">
                 <Grid
                     x:Name="DetailGrid"
+                    Padding="8"
                     Margin="0,0,0,8"
                     CornerRadius="0,0,8,8"
-                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
-                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
+                    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
