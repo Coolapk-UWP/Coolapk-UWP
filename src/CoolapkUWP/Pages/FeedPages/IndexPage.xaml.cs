@@ -217,7 +217,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     ItemsRepeater list = new ItemsRepeater
                     {
-                        ItemTemplate = Resources["FTemplateSelector"] as DataTemplateSelector,
+                        ItemTemplate = Resources["CardTemplateSelector"] as DataTemplateSelector,
                         ItemsSource = provider.tabProviders[i].Models,
                     };
                     ((PivotItem)pivot.Items[i]).Content = list;
