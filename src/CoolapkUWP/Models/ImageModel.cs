@@ -133,5 +133,10 @@ namespace CoolapkUWP.Models
                 ((bitmapImage.PixelWidth * Window.Current.Bounds.Height) > bitmapImage.PixelHeight * Window.Current.Bounds.Width * 1.5)
                 && bitmapImage.PixelWidth > bitmapImage.PixelHeight * 1.5;
         }
+
+        public static implicit operator ImageModel(BackgroundImageModel v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

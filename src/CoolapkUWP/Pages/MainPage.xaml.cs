@@ -132,11 +132,11 @@ namespace CoolapkUWP.Pages
             else if (args.SelectedItemContainer != null)
             {
                 string navItemTag = args.SelectedItemContainer.Tag.ToString();
-                if (!navItemTag.StartsWith('V')) { navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=V9_HOME_TAB_FOLLOW&type=" + navItemTag, false), args.RecommendedNavigationTransitionInfo); }
-                else if (navItemTag == "V9_HOME_TAB_HEADLINE") { navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false), args.RecommendedNavigationTransitionInfo); }
-                else if (navItemTag == "V11_FIND_DYH") { navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/user/dyhSubscribe", false), args.RecommendedNavigationTransitionInfo); }
-                else { navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=" + navItemTag, false), args.RecommendedNavigationTransitionInfo); }
-                //UIHelper.ShowMessage((string)selectedItem.Tag);
+                if (!navItemTag.StartsWith('V')) { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=V9_HOME_TAB_FOLLOW&type=" + navItemTag, false), args.RecommendedNavigationTransitionInfo); }
+                else if (navItemTag == "V9_HOME_TAB_HEADLINE") { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false), args.RecommendedNavigationTransitionInfo); }
+                else if (navItemTag == "V11_FIND_DYH") { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/user/dyhSubscribe", false), args.RecommendedNavigationTransitionInfo); }
+                else if(navItemTag == "V11_DIGITAL_PRODUCT_LIST") { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/product/categoryList", false), args.RecommendedNavigationTransitionInfo); }
+                else { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=" + navItemTag, false), args.RecommendedNavigationTransitionInfo); }
             }
         }
 

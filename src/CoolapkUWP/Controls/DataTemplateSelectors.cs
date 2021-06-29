@@ -15,6 +15,7 @@ namespace CoolapkUWP.Controls
         public DataTemplate Topic { get; set; }
         public DataTemplate Dyh { get; set; }
         public DataTemplate App { get; set; }
+        public DataTemplate List { get; set; }
         public DataTemplate Product { get; set; }
         public DataTemplate CoolPic { get; set; }
         public DataTemplate LiveTopic { get; set; }
@@ -42,6 +43,7 @@ namespace CoolapkUWP.Controls
             else if (item is ProductModel) { return Product; }
             else if (item is LiveMode) { return LiveTopic; }
             else if (item is AppPageMode) { return App; }
+            else if (item is ListModel) { return List; }
             else if (item is IndexPageMessageCardModel) { return MessageCard; }
             else if (item is IndexPageHasEntitiesModel m)
             {
@@ -196,6 +198,7 @@ namespace CoolapkUWP.Controls
                 case "apk":
                 case "appForum": return new AppPageMode(jo);
                 case "product": return new ProductModel(jo);
+                case "productBrand": return new ListModel(jo);
                 case "entity_type_user_card_manager": return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);
                 default:
                     if (jo.TryGetValue("entityTemplate", out JToken v1))

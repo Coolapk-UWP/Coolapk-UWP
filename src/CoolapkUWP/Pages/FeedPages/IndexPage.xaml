@@ -33,6 +33,7 @@
                 Product="{StaticResource Product}"
                 Feed="{StaticResource feed}"
                 App="{StaticResource App}"
+                List="{StaticResource List}"
                 IconLinks="{StaticResource IconLinks}"
                 Images="{StaticResource ImageCard}"
                 LoginCard="{StaticResource LoginCard}"

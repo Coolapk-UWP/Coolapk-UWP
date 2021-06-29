@@ -306,4 +306,56 @@
             </Grid>
         </ListViewItem>
     </DataTemplate>
+
+    <DataTemplate x:Key="List" x:DataType="models:ListModel">
+        <ListViewItem
+            KeyDown="{x:Bind local:OtherDataTemplates.ListViewItem_KeyDown}"
+            Style="{StaticResource AppListViewItemStyle}"
+            Tag="{x:Bind Url}"
+            Tapped="{x:Bind local:OtherDataTemplates.OnTapped}">
+            <Grid Padding="4,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="56"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Ellipse
+                    Grid.RowSpan="3"
+                    Width="40"
+                    Height="40"
+                    Margin="8"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind Pic.Pic, Mode=OneWay}"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Text="{x:Bind Title}"/>
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Text="{x:Bind SubTitle}"/>
+                </StackPanel>
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Text="{x:Bind Description}"
+                    MaxLines="2"
+                    TextWrapping="Wrap"/>
+            </Grid>
+        </ListViewItem>
+    </DataTemplate>
 </ResourceDictionary>

@@ -486,11 +486,17 @@ namespace CoolapkUWP.Helpers
             else if (str.IsFirst(i++))
             {
                 string u = str.Replace(i - 1);
-                //UIHelper.ShowMessage(u);
-                FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.ProductPageList, u);
-                if (f != null)
+                if (str.Contains("/product/categoryList"))
                 {
-                    NavigateInSplitPane(typeof(FeedListPage), f);
+                    Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(str, true));
+                }
+                else
+                {
+                    FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.ProductPageList, u);
+                    if (f != null)
+                    {
+                        NavigateInSplitPane(typeof(FeedListPage), f);
+                    }
                 }
             }
             else if (str.IsFirst(i++))

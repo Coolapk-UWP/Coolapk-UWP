@@ -68,6 +68,7 @@
             <muxc:NavigationViewItem x:Uid="/MainPage/V11_FIND_DYH" Tag="V11_FIND_DYH"/>
 
             <muxc:NavigationViewItemSeparator/>
+            <muxc:NavigationViewItem x:Uid="/MainPage/V11_DIGITAL_PRODUCT_LIST" Tag="V11_DIGITAL_PRODUCT_LIST" Visibility="Collapsed"/>
             <muxc:NavigationViewItem x:Uid="/MainPage/V10_DIGITAL_HOME" Tag="V10_DIGITAL_HOME"/>
             <muxc:NavigationViewItem x:Uid="/MainPage/V10_CHANNEL_SJB" Tag="V10_CHANNEL_SJB"/>
             <muxc:NavigationViewItem x:Uid="/MainPage/V11_ZHUANTI_EARPHONE" Tag="V11_ZHUANTI_EARPHONE"/>

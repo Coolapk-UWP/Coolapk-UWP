@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="Tangent90.CoolapkUWP" Publisher="CN=where" Version="2.1.37.0" />
+  <Identity Name="Tangent90.CoolapkUWP" Publisher="CN=where" Version="2.1.39.0" />
   <mp:PhoneIdentity PhoneProductId="4e59c59e-ae78-4038-adad-d6ec7bb47191" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>ms-resource:AppName</DisplayName>
