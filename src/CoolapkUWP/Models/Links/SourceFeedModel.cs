@@ -177,6 +177,7 @@ namespace CoolapkUWP.Models.Links
                             {
                                 if (data.TryGetValue("message", out JToken message))
                                 {
+                                    Message = message.ToString();
                                     if (Message.Contains("</a>") ? Message.Length - 200 >= 7 : Message.Length - 120 >= 7)
                                     {
                                         Message = message.ToString().Substring(0, 120);
