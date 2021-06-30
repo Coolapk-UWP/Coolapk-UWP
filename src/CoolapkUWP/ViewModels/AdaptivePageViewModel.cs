@@ -3,10 +3,10 @@ using CoolapkUWP.Core.Helpers;
 using CoolapkUWP.Core.Models;
 using CoolapkUWP.Core.Providers;
 using CoolapkUWP.Helpers;
-using CoolapkUWP.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -16,22 +16,30 @@ namespace CoolapkUWP.ViewModels.AdaptivePage
     {
         UserFeed,
         FeedInfo,
+        IndexPage,
+        FullUrl,
     }
 
     internal class ViewModel : IViewModel
     {
-        private readonly CoolapkListProvider provider;
-        private readonly FeedModel feedModel;
-
+        public readonly CoolapkListProvider Provider;
         public ObservableCollection<Entity> Models;
         public double[] VerticalOffsets { get; set; } = new double[1];
         public string Title { get; protected set; } = string.Empty;
+        public int ComboBoxSelectedIndex { get; private set; }
+        internal bool ShowTitleBar { get; }
+        internal ImmutableList<CoolapkListProvider> TabProviders { get; private set; } = ImmutableList<CoolapkListProvider>.Empty;
 
-        internal ViewModel(string id, ListType type, string branch)
+        internal ViewModel(string id, ListType type = ListType.IndexPage, string branch = null, bool showtitle = true)
         {
+            ShowTitleBar = showtitle;
             Title = GetTitle(type, branch);
-            provider = GetProvider(id, type, branch);
-            Models = provider.Models;
+            if (type == ListType.IndexPage)
+            {
+                GetUri(id);
+            }
+            Provider = GetProvider(id, type, branch);
+            Models = Provider.Models;
         }
 
         private static string GetTitle(ListType type, string branch)
@@ -78,13 +86,23 @@ namespace CoolapkUWP.ViewModels.AdaptivePage
                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                             string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}",
                             branch);
+                case ListType.IndexPage:
+                    return (p, page, firstItem, lastItem) =>
+                        UriHelper.GetUri(
+                            UriType.GetIndexPage,
+                            id,
+                            id.Contains("?") ? "&" : "?",
+                            p < 0 ? ++page : p);
+                case ListType.FullUrl:
+                    return (p, page, firstItem, lastItem) =>
+                        new Uri(id);
                 default: return null;
             }
         }
 
         private IEnumerable<Entity> GetEntities(JObject jo)
         {
-            if (jo.TryGetValue("entityTemplate", out JToken t) && t?.ToString() == "configCard")
+            if (ComboBoxSelectedIndex == -1 && jo.TryGetValue("entityTemplate", out JToken t) && t?.ToString() == "configCard")
             {
                 JObject j = JObject.Parse(jo.Value<string>("extraData"));
                 Title = j.Value<string>("pageTitle");
@@ -111,7 +129,39 @@ namespace CoolapkUWP.ViewModels.AdaptivePage
 
         public async Task Refresh(int p = -1)
         {
-            await provider?.Refresh(p);
+            await Provider?.Refresh(p);
+        }
+
+        internal void AddTab(string uri) => TabProviders = TabProviders.Add(GetProvider(uri, ListType.IndexPage, string.Empty));
+
+        public async Task SetComboBoxSelectedIndex(int value)
+        {
+            if (value < 0 && value >= TabProviders.Count) { return; }
+
+            ComboBoxSelectedIndex = value;
+            if (TabProviders[ComboBoxSelectedIndex].Models.Count == 0)
+            {
+                await Refresh();
+            }
+        }
+
+        private string GetUri(string uri)
+        {
+            if (uri.Contains("&title=", StringComparison.Ordinal))
+            {
+                const string Value = "&title=";
+                Title = uri.Substring(uri.LastIndexOf(Value, StringComparison.Ordinal) + Value.Length);
+            }
+
+            if (uri.IndexOf("/page", StringComparison.Ordinal) == -1 && (uri.StartsWith("#", StringComparison.Ordinal) || (!uri.Contains("/main/") && !uri.Contains("/user/") && !uri.Contains("/apk/") && !uri.Contains("/appForum/") && !uri.Contains("/picture/") && !uri.Contains("/topic/") && !uri.Contains("/discovery/"))))
+            {
+                uri = "/page/dataList?url=" + uri;
+            }
+            else if (uri.IndexOf("/page", StringComparison.Ordinal) == 0 && !uri.Contains("/page/dataList", StringComparison.Ordinal))
+            {
+                uri = uri.Replace("/page", "/page/dataList", StringComparison.Ordinal);
+            }
+            return uri.Replace("#", "%23", StringComparison.Ordinal);
         }
     }
 }

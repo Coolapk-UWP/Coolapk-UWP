@@ -416,5 +416,10 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             MakeLikeTask.MakeLikes(makelike.Text);
         }
+
+        private void Button_Click_22(object sender, RoutedEventArgs e)
+        {
+            UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModels.AdaptivePage.ViewModel(url.Text, ViewModels.AdaptivePage.ListType.IndexPage, string.Empty, true));
+        }
     }
 }

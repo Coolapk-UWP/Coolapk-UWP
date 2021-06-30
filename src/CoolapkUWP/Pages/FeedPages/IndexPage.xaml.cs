@@ -168,11 +168,6 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            OnTapped((sender as FrameworkElement).Tag);
-        }
-
         private void ListViewItem_Tapped_1(object sender, TappedRoutedEventArgs e)
         {
             IndexPageModel model = (sender as FrameworkElement).DataContext as IndexPageModel;

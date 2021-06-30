@@ -135,7 +135,7 @@ namespace CoolapkUWP.Pages
                 if (!navItemTag.StartsWith('V')) { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=V9_HOME_TAB_FOLLOW&type=" + navItemTag, false), args.RecommendedNavigationTransitionInfo); }
                 else if (navItemTag == "V9_HOME_TAB_HEADLINE") { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false), args.RecommendedNavigationTransitionInfo); }
                 else if (navItemTag == "V11_FIND_DYH") { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/user/dyhSubscribe", false), args.RecommendedNavigationTransitionInfo); }
-                else if(navItemTag == "V11_DIGITAL_PRODUCT_LIST") { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/product/categoryList", false), args.RecommendedNavigationTransitionInfo); }
+                else if (navItemTag == "V11_DIGITAL_PRODUCT_LIST") { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/product/categoryList", false), args.RecommendedNavigationTransitionInfo); }
                 else { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=" + navItemTag, false), args.RecommendedNavigationTransitionInfo); }
             }
         }

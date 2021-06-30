@@ -55,7 +55,7 @@ namespace CoolapkUWP.Controls
 
         public event EventHandler RequireRefresh;
 
-        private static void Image_Tapped(object sender, TappedRoutedEventArgs _) => UIHelper.ShowImage((sender as FrameworkElement).Tag as ImageModel);
+        internal static void Image_Tapped(object sender, TappedRoutedEventArgs _) => UIHelper.ShowImage((sender as FrameworkElement).Tag as ImageModel);
 
         private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
         {

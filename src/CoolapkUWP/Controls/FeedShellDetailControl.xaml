@@ -134,9 +134,9 @@
         <Grid
             x:Name="feedArticleTitle"
             Grid.Row="2"
-            Margin="0,8,0,0"
+            Margin="0,0,0,0"
             x:Load="{x:Bind FeedDetail.IsFeedArticle, Mode=OneWay}"
-            CornerRadius="8">
+            CornerRadius="0,0,8,8">
             <Image
                 x:Name="messageCover"
                 x:Load="{x:Bind FeedDetail.HasMessageCover, Mode=OneWay}"
