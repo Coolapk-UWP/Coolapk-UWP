@@ -44,7 +44,7 @@ namespace CoolapkUWP.Pages.AppPages
 
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             //将传过来的数据 类型转换一下
@@ -251,13 +251,13 @@ namespace CoolapkUWP.Pages.AppPages
         }
 
 
-        private async void DownloadButton_Click(object sender, RoutedEventArgs e)
+        private void DownloadButton_Click(object sender, RoutedEventArgs e)
         {
             // Download the URI
             //var success = await Launcher.LaunchUriAsync(new Uri(AppDownloadUrl));
         }
 
-        private async void ViewFeed(object sender, RoutedEventArgs e)
+        private void ViewFeed(object sender, RoutedEventArgs e)
         {
             FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, id);
             if (f != null)

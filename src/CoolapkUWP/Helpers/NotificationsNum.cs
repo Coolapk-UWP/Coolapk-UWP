@@ -177,7 +177,7 @@ namespace CoolapkUWP.Helpers
             GetNums();
             if (timer == null)
             {
-                timer = ThreadPoolTimer.CreatePeriodicTimer(async (source) =>
+                timer = ThreadPoolTimer.CreatePeriodicTimer((source) =>
                 {
                     GetNums();
                 }, new TimeSpan(0, 1, 0));

@@ -41,7 +41,7 @@ namespace CoolapkUWP.Controls
                 {
                     FindName(nameof(makeFeed));
                 }
-                GenerateActivityAsync();
+                _ = GenerateActivityAsync();
                 RaisePropertyChangedEvent();
             }
         }

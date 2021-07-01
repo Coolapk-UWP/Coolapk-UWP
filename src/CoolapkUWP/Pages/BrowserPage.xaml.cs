@@ -101,10 +101,10 @@ namespace CoolapkUWP.Pages
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
 
-        private async void CheckLogin()
+        private void CheckLogin()
         {
             ResourceLoader loader = ResourceLoader.GetForCurrentView("BrowserPage");
-            if (await SettingsHelper.CheckLoginInfo())
+            if (SettingsHelper.CheckLoginInfo())
             {
                 if (Frame.CanGoBack) { Frame.GoBack(); }
                 UIHelper.NavigateInSplitPane(typeof(MyPage), new ViewModels.MyPage.ViewMode());
@@ -122,7 +122,7 @@ namespace CoolapkUWP.Pages
             _ = await Windows.System.Launcher.LaunchUriAsync(new Uri(uri));
         }
 
-        private async void Refresh_Click(object sender, RoutedEventArgs e)
+        private void Refresh_Click(object sender, RoutedEventArgs e)
         {
             titleBar.ShowProgressRing();
             webView.Refresh();

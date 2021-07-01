@@ -96,7 +96,7 @@ namespace CoolapkUWP.Pages
         {
             base.OnNavigatedTo(e);
             UIHelper.NotificationNums.BadgeNumberChanged += NotificationNums_BadgeNumberChanged;
-            await SettingsHelper.CheckLoginInfo();
+            SettingsHelper.CheckLoginInfo();
             ChangeBadgeNum(UIHelper.NotificationNums.BadgeNum);
 
             provider = (ViewModels.MyPage.ViewMode)e.Parameter;

@@ -67,8 +67,8 @@ namespace CoolapkUWP.Pages
             navigationView.SelectedItem = navigationView.MenuItems[1];
         }
 
-        private async void GetIndexPageItems()
-        {
+        //private async void GetIndexPageItems()
+        //{
             #region 自动获取Items
             //var (isSucceed, result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetIndexPageNames), true);
             //if (!isSucceed) { return; }
@@ -94,7 +94,7 @@ namespace CoolapkUWP.Pages
             //        from j in i.Entities
             //        select j);
             #endregion
-        }
+        //}
 
         #region ItemInvoked
         //private void NavigationView_ItemInvoked(muxc.NavigationView sender, muxc.NavigationViewItemInvokedEventArgs args)

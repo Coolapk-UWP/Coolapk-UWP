@@ -116,7 +116,7 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        public static async Task<bool> CheckLoginInfo()
+        public static bool CheckLoginInfo()
         {
             try
             {

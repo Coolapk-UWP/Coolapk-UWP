@@ -23,12 +23,12 @@ namespace CoolapkUWP.Pages.FeedPages
             InitializeComponent();
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             TitleBar.ShowProgressRing();
             uri = new Uri(e.Parameter.ToString());
-            Load_HTML(uri);
+            _ = Load_HTML(uri);
         }
 
         private async Task Load_HTML(Uri uri)
