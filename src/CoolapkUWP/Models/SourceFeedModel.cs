@@ -19,6 +19,7 @@ namespace CoolapkUWP.Models
         public string MessageTitle { get; private set; }
         public string Message { get; private set; }
         public bool ShowMessageTitle { get => !string.IsNullOrEmpty(MessageTitle); }
+        public string EntityForward { get; private set; }
         public bool ShowPicArr { get; private set; }
         public bool IsCoolPictuers { get; private set; }
         public bool IsMoreThanOnePic { get; private set; }
@@ -32,6 +33,10 @@ namespace CoolapkUWP.Models
         public SourceFeedModel(JObject o) : base(o)
         {
             Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
+            if (o.TryGetValue("entityForward", out JToken entityForward) && !string.IsNullOrEmpty(entityForward.ToString()))
+            {
+                EntityForward = entityForward.ToString();
+            }
             if (o.TryGetValue("url", out JToken uri) && !string.IsNullOrEmpty(uri.ToString()))
             {
                 Url = uri.ToString();

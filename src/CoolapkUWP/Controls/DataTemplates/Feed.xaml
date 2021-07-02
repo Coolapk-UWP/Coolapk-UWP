@@ -296,13 +296,15 @@
                         Text="{x:Bind MessageTitle}"
                         TextWrapping="Wrap"/>
 
-                    <ctrl:TextBlockEx
-                        Grid.Row="3"
-                        Margin="4"
-                        MaxLine="10"
+                    <Grid
                         MaxHeight="200"
-                        IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
-                        MessageText="{x:Bind Message}"/>
+                        Grid.Row="3"
+                        Margin="4">
+                        <ctrl:TextBlockEx
+                            MaxLine="10"
+                            IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                            MessageText="{x:Bind Message}"/>
+                    </Grid>
 
                     <GridView
                         Name="picA"
@@ -314,7 +316,15 @@
                         x:Load="{x:Bind ShowPicArr}"
                         ItemTemplate="{StaticResource Pic}"
                         ItemsSource="{x:Bind PicArr}"
-                        ScrollViewer.VerticalScrollMode="Disabled"/>
+                        ScrollViewer.VerticalScrollMode="Disabled">
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid
+                                    MaximumRowsOrColumns="3"
+                                    Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                    </GridView>
 
                     <Grid
                         x:Name="sourceF"
@@ -396,7 +406,15 @@
                                 x:Load="{x:Bind SourceFeed.ShowPicArr}"
                                 ItemTemplate="{StaticResource Pic}"
                                 ItemsSource="{x:Bind SourceFeed.PicArr}"
-                                ScrollViewer.VerticalScrollMode="Disabled"/>
+                                ScrollViewer.VerticalScrollMode="Disabled">
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsWrapGrid
+                                            MaximumRowsOrColumns="3"
+                                            Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+                            </GridView>
                         </Grid>
                     </Grid>
 
@@ -526,7 +544,15 @@
                                         x:Load="{x:Bind LinkSourceFeed.ShowPicArr, Mode=OneWay}"
                                         ItemTemplate="{StaticResource Pic}"
                                         ItemsSource="{x:Bind LinkSourceFeed.PicArr, Mode=OneWay}"
-                                        ScrollViewer.VerticalScrollMode="Disabled"/>
+                                        ScrollViewer.VerticalScrollMode="Disabled">
+                                        <GridView.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <ItemsWrapGrid
+                                                    MaximumRowsOrColumns="3"
+                                                    Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </GridView.ItemsPanel>
+                                    </GridView>
                                 </Grid>
                             </Grid>
                         </Border>
@@ -562,10 +588,20 @@
                         HorizontalAlignment="Left"
                         x:Load="{x:Bind IsQuestionFeed}"
                         Orientation="Horizontal">
-                        <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind QuestionAnswerNum}"/>
-                        <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">人回答·</TextBlock>
-                        <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind QuestionFollowNum}"/>
-                        <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">人关注</TextBlock>
+                        <TextBlock
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Text="{x:Bind QuestionAnswerNum}"/>
+                        <TextBlock
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
+                            人回答·
+                        </TextBlock>
+                        <TextBlock
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Text="{x:Bind QuestionFollowNum}"/>
+                        <TextBlock
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
+                            人关注
+                        </TextBlock>
                     </StackPanel>
 
                     <ctrl:MakeFeedControl
@@ -759,7 +795,7 @@
                 CornerRadius="8">
                 <Image
                     Source="{x:Bind Pic.Pic, Mode=OneWay}"
-                    Stretch="Uniform"/>
+                    Stretch="UniformToFill"/>
                 <Border
                     VerticalAlignment="Bottom"
                     CornerRadius="1">
@@ -780,6 +816,179 @@
                         Text="{x:Bind MessageTitle}"
                         TextTrimming="WordEllipsis"
                         TextWrapping="Wrap"/>
+                </Border>
+            </Grid>
+        </ListViewItem>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SmallFeed" x:DataType="models:FeedModel">
+        <ListViewItem
+            Margin="4,0"
+            KeyDown="{x:Bind local:Feed.ListViewItem_KeyDown}"
+            Style="{StaticResource AppListViewItemStyle}"
+            Tag="{x:Bind Url}"
+            Tapped="{x:Bind local:Feed.OnTapped}">
+            <Grid
+                Width="260"
+                Height="118"
+                Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
+                <Image
+                    Source="{x:Bind Pic.Pic, Mode=OneWay}"
+                    Stretch="UniformToFill"/>
+                <Border
+                    VerticalAlignment="Bottom"
+                    CornerRadius="1">
+
+                    <Border.Background>
+                        <AcrylicBrush
+                            BackgroundSource="Backdrop"
+                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintColor="{x:Bind Pic.BackgroundColor, Mode=OneWay}"
+                            TintOpacity="0.4"/>
+                    </Border.Background>
+
+                    <Grid
+                        Height="118"
+                        Padding="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <StackPanel
+                            x:Name="userb"
+                            Grid.Row="0"
+                            x:Load="{x:Bind ShowUser}"
+                            Orientation="Horizontal">
+                            <Button
+                                Margin="0,4"
+                                Padding="0"
+                                Background="Transparent"
+                                Click="{x:Bind local:Feed.FeedButton_Click}"
+                                Style="{ThemeResource ButtonRevealStyle}"
+                                Tag="{x:Bind Uurl}">
+                                <Ellipse Width="36" Height="36">
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{x:Bind UserSmallAvatar.Pic, Mode=OneWay}"/>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                            </Button>
+                            <StackPanel Margin="8,0" VerticalAlignment="Center">
+                                <TextBlock
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                                    Text="{x:Bind Username}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock
+                                        x:Name="datelineTxb"
+                                        Margin="0,0,5,0"
+                                        x:Load="{x:Bind ShowDateline}"
+                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                        Text="{x:Bind Dateline}"/>
+                                    <Button
+                                        x:Name="deviceButton"
+                                        Padding="0"
+                                        x:Load="{x:Bind DeviceTitle, Converter={StaticResource HasValueConverter}, ConverterParameter='string'}"
+                                        Margin="2,0,0,0"
+                                        Style="{ThemeResource ButtonRevealStyle}"
+                                        Click="{x:Bind local:Feed.FeedButton_Click}"
+                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                        Background="Transparent"
+                                        Tag="{x:Bind DeviceTitle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                Margin="0,-2,0,0"
+                                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                                Text="{x:Bind DeviceTitle}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel
+                            x:Name="dyhb"
+                            Grid.Row="0"
+                            x:Load="{x:Bind ShowUser2}"
+                            Orientation="Horizontal">
+                            <Button
+                                x:Name="dyhlogo"
+                                x:Load="{x:Bind ShowDyh}"
+                                Background="Transparent"
+                                Click="{x:Bind local:Feed.FeedButton_Click}"
+                                Style="{StaticResource ButtonStyle1}"
+                                Tag="{x:Bind Dyhurl}">
+                                <Ellipse
+                                    Width="40"
+                                    Height="40"
+                                    HorizontalAlignment="Left">
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{x:Bind Dyhlogo.Pic, Mode=OneWay}"/>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                            </Button>
+                            <StackPanel Margin="2,0" VerticalAlignment="Center">
+                                <TextBlock
+                                    x:Name="dyhnamesta"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    x:Load="{x:Bind ShowDyh}"
+                                    Text="{x:Bind Dyhname}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Dateline}"/>
+                                    <TextBlock
+                                        x:Name="fromInfot"
+                                        Margin="5,0,0,0"
+                                        x:Load="{x:Bind ShowFromInfo}"
+                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                        Tag="{x:Bind Uurl}"
+                                        Tapped="{x:Bind local:Feed.OnTapped}"
+                                        Text="{x:Bind FromInfo}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Grid
+                            Grid.Row="1"
+                            MaxHeight="60">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                x:Name="mTitleT"
+                                Margin="4"
+                                MaxLines="1"
+                                Grid.Row="0"
+                                x:Load="{x:Bind ShowMessageTitle}"
+                                FontSize="16"
+                                FontWeight="Black"
+                                IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                                Text="{x:Bind MessageTitle}"
+                                TextWrapping="Wrap"/>
+                        
+                            <ctrl:TextBlockEx
+                                Margin="4"
+                                MaxLine="3"
+                                Grid.Row="1"
+                                IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
+                                MessageText="{x:Bind Message}"/>
+                        </Grid>
+                    </Grid>
                 </Border>
             </Grid>
         </ListViewItem>

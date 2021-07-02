@@ -46,7 +46,6 @@ namespace CoolapkUWP.Controls
             get => mainContent?.MaxLines ?? 0;
             set
             {
-                //UIHelper.StatusBar_ShowMessage(value.ToString());
                 if (value >= 0)
                 {
                     _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
@@ -55,7 +54,6 @@ namespace CoolapkUWP.Controls
                         {
                             mainContent.MaxLines = value;
                             mainContent.TextTrimming = value > 0 ? TextTrimming.WordEllipsis : TextTrimming.None;
-                            //UIHelper.StatusBar_ShowMessage(mainContent.MaxLines.ToString());
                         }
                     });
                 }
@@ -321,7 +319,6 @@ namespace CoolapkUWP.Controls
                 block.TextTrimming = TextTrimming.WordEllipsis;
             }
             RichTextBlockLoaded?.Invoke(this, null);
-            //UIHelper.StatusBar_ShowMessage(MaxLine.ToString());
         }
 
         private static Task<ImmutableArray<string>> GetStringList(string text)

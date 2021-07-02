@@ -28,7 +28,7 @@ namespace CoolapkUWP.Models
             {
                 EntityTemplate = entityTemplate.ToString();
             }
-            else if (token.TryGetValue("entityForward", out JToken entityForward) && !string.IsNullOrEmpty(entityForward.ToString()))
+            if (token.TryGetValue("entityForward", out JToken entityForward) && !string.IsNullOrEmpty(entityForward.ToString()))
             {
                 EntityForward = entityForward.ToString();
             }

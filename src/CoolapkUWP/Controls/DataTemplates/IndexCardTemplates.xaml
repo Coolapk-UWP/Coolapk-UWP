@@ -2,11 +2,11 @@
     x:Class="CoolapkUWP.Controls.DataTemplates.IndexCardTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
-    xmlns:models="using:CoolapkUWP.Models"
     xmlns:Windows10version1809="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
-    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:control="using:CoolapkUWP.Controls"
+    xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
+    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
+    xmlns:models="using:CoolapkUWP.Models"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls">
 
     <ResourceDictionary.MergedDictionaries>
@@ -28,6 +28,7 @@
         IconMiniLink="{StaticResource IconMiniLink}"
         TextLink="{StaticResource TextLink}"
         Feed="{StaticResource feed}"
+        SmallFeed="{StaticResource SmallFeed}"
         FeedImageText="{StaticResource Article}"
         ImageText="{StaticResource ImageText}"
         ImageIcon="{StaticResource ImageIcon}"

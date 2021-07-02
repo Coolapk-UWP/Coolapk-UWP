@@ -8,7 +8,7 @@ namespace CoolapkUWP.Controls.DataTemplates
     {
         public RelationRowsItem() => InitializeComponent();
 
-        private static void OnTapped(object sender, TappedRoutedEventArgs e)
+        internal static void OnTapped(object sender, TappedRoutedEventArgs e)
         {
             UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
         }

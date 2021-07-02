@@ -304,7 +304,15 @@
                 x:Load="{x:Bind FeedDetail.ShowPicArr, Mode=OneWay}"
                 ItemTemplate="{StaticResource Pic}"
                 ItemsSource="{x:Bind FeedDetail.PicArr, Mode=OneWay}"
-                ScrollViewer.VerticalScrollMode="Disabled"/>
+                ScrollViewer.VerticalScrollMode="Disabled">
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid
+                            MaximumRowsOrColumns="3"
+                            Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
         </Grid>
 
         <ListViewItem
@@ -375,7 +383,15 @@
                             x:Load="{x:Bind FeedDetail.ShowPicArr, Mode=OneWay}"
                             ItemTemplate="{StaticResource Pic}"
                             ItemsSource="{x:Bind FeedDetail.SourceFeed.PicArr, Mode=OneWay}"
-                            ScrollViewer.VerticalScrollMode="Disabled"/>
+                            ScrollViewer.VerticalScrollMode="Disabled">
+                            <GridView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <ItemsWrapGrid
+                                        MaximumRowsOrColumns="3"
+                                        Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </GridView.ItemsPanel>
+                        </GridView>
                     </Grid>
                 </Grid>
             </Grid>
@@ -501,7 +517,15 @@
                                 x:Load="{x:Bind FeedDetail.LinkSourceFeed.ShowPicArr, Mode=OneWay}"
                                 ItemTemplate="{StaticResource Pic}"
                                 ItemsSource="{x:Bind FeedDetail.LinkSourceFeed.PicArr, Mode=OneWay}"
-                                ScrollViewer.VerticalScrollMode="Disabled"/>
+                                ScrollViewer.VerticalScrollMode="Disabled">
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsWrapGrid
+                                            MaximumRowsOrColumns="3"
+                                            Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+                            </GridView>
                         </Grid>
                     </Grid>
                 </Grid>
