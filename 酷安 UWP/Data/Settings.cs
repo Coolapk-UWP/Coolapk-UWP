@@ -141,7 +141,7 @@ namespace CoolapkUWP.Data
                     cookie = $"uid={uid}; username={userName}; token={token}";
                     Set("Uid", uid);
                     var o = Tools.GetJSonObject(await Tools.GetJson("/account/checkLoginInfo"));
-                    Tools.notifications.Initial(o["notifyCount"].GetObject());
+                    Tools.notifications.Initial(o);
                     Tools.mainPage.UserAvatar = await ImageCache.GetImage(ImageType.BigAvatar, o["userAvatar"].GetString());
                     Tools.mainPage.UserNames = o["username"].GetString();
                     return true;
