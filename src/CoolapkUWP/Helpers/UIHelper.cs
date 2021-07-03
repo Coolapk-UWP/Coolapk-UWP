@@ -283,6 +283,7 @@ namespace CoolapkUWP.Helpers
     internal static partial class UIHelper
     {
         public static bool isSplitViewPaneOverlay;
+        public static bool isSplitViewPaneOpen;
         private static Frame mainFrame;
         private static Frame paneFrame;
 
@@ -290,6 +291,12 @@ namespace CoolapkUWP.Helpers
         {
             get => isSplitViewPaneOverlay;
             set => isSplitViewPaneOverlay = value;
+        }
+
+        public static bool IsSplitViewPaneOpen
+        {
+            get => isSplitViewPaneOpen;
+            set => isSplitViewPaneOpen = value;
         }
 
         public static Frame MainFrame

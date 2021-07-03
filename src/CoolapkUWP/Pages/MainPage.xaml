@@ -4,15 +4,24 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
     NavigationCacheMode="Required"
     SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <templates:SearchWord/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <muxc:NavigationView
         x:Name="navigationView"
         IsBackButtonVisible="Collapsed"
+        IsTitleBarAutoPaddingEnabled="False"
         IsSettingsVisible="True"
         AlwaysShowHeader="True"
         Header=" "
@@ -29,8 +38,8 @@
 
                     <VisualState.Setters>
                         <Setter Target="BottomButton.Orientation" Value="Horizontal"/>
-                        <Setter Target="BottomButton.Margin" Value="0,0,40,0"/>
                         <Setter Target="BottomButton.Visibility" Value="Visible"/>
+                        <Setter Target="navigationView.Margin" Value="0,32,0,0"/>
                         <Setter Target="navigationView.PaneDisplayMode" Value="Top"/>
                         <Setter Target="navigationView.AlwaysShowHeader" Value="False"/>
                         <Setter Target="navigationView.IsSettingsVisible" Value="False"/>
@@ -104,9 +113,17 @@
                         IsActive="True"/>
                     <Button
                         x:Name="Refresh"
+                        Tag="Refresh"
                         Click="Button_Click"
                         Style="{StaticResource IconButtonStyle}">
                         <SymbolIcon Symbol="Refresh"/>
+                    </Button>
+                    <Button
+                        x:Name="panel"
+                        Tag="panel"
+                        Click="Button_Click"
+                        Style="{StaticResource IconButtonStyle}">
+                        <SymbolIcon Symbol="{x:Bind PaneOpenSymbolIcon, Mode=OneWay}"/>
                     </Button>
                 </StackPanel>
             </Grid>

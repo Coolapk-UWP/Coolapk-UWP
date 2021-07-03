@@ -634,7 +634,10 @@
             Margin="{StaticResource StackPanelMargin}"
             RefreshRequested="RefreshContainer_RefreshRequested">
             <winui:ItemsRepeaterScrollHost>
-                <ScrollViewer x:Name="scrollViewer" ViewChanged="scrollViewer_ViewChanged">
+                <ScrollViewer
+                    x:Name="scrollViewer"
+                    ViewChanged="scrollViewer_ViewChanged"
+                    VerticalScrollBarVisibility="Auto">
                     <Border
                         MinWidth="320"
                         MaxWidth="768"

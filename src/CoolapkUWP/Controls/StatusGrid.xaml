@@ -5,10 +5,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
-    d:DesignHeight="32"
+    d:DesignHeight="27"
     d:DesignWidth="400">
 
-    <Grid x:Name="statusGrid" Height="32" Padding="0,0,140,0" VerticalAlignment="Top" Background="Transparent">
+    <Grid
+        x:Name="statusGrid"
+        Height="27"
+        Padding="0,0,140,0"
+        VerticalAlignment="Top"
+        Background="Transparent">
         <Grid.Resources>
             <Storyboard x:Name="EnterStoryboard">
                 <FadeInThemeAnimation Storyboard.TargetName="messageTextBlock"/>
@@ -17,7 +22,16 @@
                 <FadeOutThemeAnimation Storyboard.TargetName="messageTextBlock"/>
             </Storyboard>
         </Grid.Resources>
-        <muxc:ProgressBar Visibility="Collapsed" Background="Transparent" ShowError="False" ShowPaused="False" VerticalAlignment="Top" x:Name="statusBar"/>
-        <TextBlock Margin="16,3" FontSize="16" x:Name="messageTextBlock"/>
+        <muxc:ProgressBar
+            Visibility="Collapsed"
+            Background="Transparent"
+            ShowError="False"
+            ShowPaused="False"
+            VerticalAlignment="Top"
+            x:Name="statusBar"/>
+        <TextBlock
+            Margin="16,3"
+            FontSize="16"
+            x:Name="messageTextBlock"/>
     </Grid>
 </UserControl>

@@ -3,7 +3,6 @@
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using System.ComponentModel;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -25,6 +24,18 @@ namespace CoolapkUWP.Pages
         //        RaisePropertyChangedEvent();
         //    }
         //}
+
+        private Symbol paneOpenSymbolIcon = Symbol.OpenPane;
+
+        public Symbol PaneOpenSymbolIcon
+        {
+            get => paneOpenSymbolIcon;
+            private set
+            {
+                paneOpenSymbolIcon = value;
+                RaisePropertyChangedEvent();
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -69,31 +80,31 @@ namespace CoolapkUWP.Pages
 
         //private async void GetIndexPageItems()
         //{
-            #region 自动获取Items
-            //var (isSucceed, result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetIndexPageNames), true);
-            //if (!isSucceed) { return; }
+        #region 自动获取Items
+        //var (isSucceed, result) = await DataHelper.GetDataAsync(UriHelper.GetUri(UriType.GetIndexPageNames), true);
+        //if (!isSucceed) { return; }
 
-            //var temp = (JArray)result;
+        //var temp = (JArray)result;
 
-            //MenuItems =
-            //    from t in temp
-            //    where t.Value<string>("entityTemplate") == "configCard"
-            //    from ta in t["entities"]
-            //    where ta.Value<string>("title") != "酷品"
-            //    //where ta.Value<string>("title") != "看看号"
-            //    where ta.Value<string>("title") != "直播"
-            //    //where ta.Value<string>("title") != "视频"
-            //    select new MenuItem(ta);
+        //MenuItems =
+        //    from t in temp
+        //    where t.Value<string>("entityTemplate") == "configCard"
+        //    from ta in t["entities"]
+        //    where ta.Value<string>("title") != "酷品"
+        //    //where ta.Value<string>("title") != "看看号"
+        //    where ta.Value<string>("title") != "直播"
+        //    //where ta.Value<string>("title") != "视频"
+        //    select new MenuItem(ta);
 
-            //navigationView.SelectedItem = menuItems.First(i => i.Title == "头条");
-            //navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false));
+        //navigationView.SelectedItem = menuItems.First(i => i.Title == "头条");
+        //navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false));
 
-            //allMenuItems = menuItems.Concat(
-            //        from i in menuItems
-            //        where i.Entities != null
-            //        from j in i.Entities
-            //        select j);
-            #endregion
+        //allMenuItems = menuItems.Concat(
+        //        from i in menuItems
+        //        where i.Entities != null
+        //        from j in i.Entities
+        //        select j);
+        #endregion
         //}
 
         #region ItemInvoked
@@ -132,26 +143,46 @@ namespace CoolapkUWP.Pages
             else if (args.SelectedItemContainer != null)
             {
                 string navItemTag = args.SelectedItemContainer.Tag.ToString();
-                if (!navItemTag.StartsWith('V')) { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=V9_HOME_TAB_FOLLOW&type=" + navItemTag, false), args.RecommendedNavigationTransitionInfo); }
+                if (navItemTag == "Refresh") { UIHelper.RefreshIndexPage(); }
+                else if (!navItemTag.StartsWith('V')) { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=V9_HOME_TAB_FOLLOW&type=" + navItemTag, false), args.RecommendedNavigationTransitionInfo); }
                 else if (navItemTag == "V9_HOME_TAB_HEADLINE") { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/main/indexV8", false), args.RecommendedNavigationTransitionInfo); }
                 else if (navItemTag == "V11_FIND_DYH") { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/user/dyhSubscribe", false), args.RecommendedNavigationTransitionInfo); }
                 else if (navItemTag == "V11_DIGITAL_PRODUCT_LIST") { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/product/categoryList", false), args.RecommendedNavigationTransitionInfo); }
                 else { _ = navigationViewFrame.Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel("/page?url=" + navItemTag, false), args.RecommendedNavigationTransitionInfo); }
             }
+            try { navigationView.PaneTitle = args.SelectedItemContainer.Content.ToString(); } catch { }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            UIHelper.RefreshIndexPage();
+            switch (((Button)sender).Tag as string)
+            {
+                case "Refresh":
+                    UIHelper.RefreshIndexPage();
+                    break;
+                case "panel":
+                    if (PaneOpenSymbolIcon == Symbol.OpenPane)
+                    {
+                        UIHelper.HideSplitView();
+                        PaneOpenSymbolIcon = Symbol.ClosePane;
+                    }
+                    else
+                    {
+                        UIHelper.ShowSplitView();
+                        PaneOpenSymbolIcon = Symbol.OpenPane;
+                    }
+                    break;
+            }
         }
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            ApplicationView view = ApplicationView.GetForCurrentView();
-            bool isInFullScreenMode = view.IsFullScreenMode;
-            navigationView.Margin = isInFullScreenMode || view.ViewMode == ApplicationViewMode.CompactOverlay
-                ? new Thickness(0, 32, 0, 0)
-                : new Thickness(0, 0, 0, 0);
+            //ApplicationView view = ApplicationView.GetForCurrentView();
+            //bool isInFullScreenMode = view.IsFullScreenMode;
+            //navigationView.Margin = isInFullScreenMode || view.ViewMode == ApplicationViewMode.CompactOverlay
+            //    ? new Thickness(0, 32, 0, 0)
+            //    : new Thickness(0, 0, 0, 0);
+            PaneOpenSymbolIcon = UIHelper.IsSplitViewPaneOpen ? Symbol.OpenPane : Symbol.ClosePane;
         }
     }
 }

@@ -35,15 +35,6 @@
 
             <Grid>
                 <Frame x:Name="shellFrame"/>
-                <Button
-                    Margin="0,32,0,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Click="Button_Click"
-                    Style="{StaticResource IconButtonStyle}"
-                    Tag="panel">
-                    <SymbolIcon Symbol="{x:Bind PaneOpenSymbolIcon, Mode=OneWay}"/>
-                </Button>
             </Grid>
         </SplitView>
 
