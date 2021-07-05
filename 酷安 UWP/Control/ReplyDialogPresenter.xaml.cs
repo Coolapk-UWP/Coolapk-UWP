@@ -20,15 +20,15 @@ namespace CoolapkUWP.Control
     /// </summary>
     public sealed partial class ReplyDialogPresenter : Page
     {
-        double id;
-        int page;
-        double lastItem;
-        ObservableCollection<FeedReplyViewModel> replys = new ObservableCollection<FeedReplyViewModel>();
-        ScrollViewer VScrollViewer;
+        private readonly double id;
+        private int page;
+        private double lastItem;
+        private readonly ObservableCollection<FeedReplyViewModel> replys = new ObservableCollection<FeedReplyViewModel>();
+        private ScrollViewer VScrollViewer;
         public ReplyDialogPresenter(object o, Popup popup)
         {
-            this.InitializeComponent();
-            Tools.ShowProgressBar();
+            InitializeComponent();
+            UIHelper.ShowProgressBar();
             Height = Window.Current.Bounds.Height;
             Width = Window.Current.Bounds.Width;
             HorizontalAlignment = HorizontalAlignment.Center;
@@ -43,16 +43,16 @@ namespace CoolapkUWP.Control
             reply.showreplyRows = false;
             replys.Add(reply);
             GetReplys(false);
-            Tools.HideProgressBar();
-            Task.Run(async () =>
-            {
-                await Task.Delay(200);
-                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
-                    VScrollViewer = VisualTree.FindDescendantByName(FeedReplyList, "ScrollViewer") as ScrollViewer;
-                    VScrollViewer.ViewChanged += VScrollViewer_ViewChanged;
-                });
-            });
+            UIHelper.HideProgressBar();
+            _ = Task.Run(async () =>
+              {
+                  await Task.Delay(200);
+                  await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                  {
+                      VScrollViewer = VisualTree.FindDescendantByName(FeedReplyList, "ScrollViewer") as ScrollViewer;
+                      VScrollViewer.ViewChanged += VScrollViewer_ViewChanged;
+                  });
+              });
         }
 
         private void WindowSizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
@@ -61,39 +61,41 @@ namespace CoolapkUWP.Control
             Width = e.Size.Width;
         }
 
-        async void GetReplys(bool isRefresh)
+        private async void GetReplys(bool isRefresh)
         {
-            Tools.ShowProgressBar();
+            UIHelper.ShowProgressBar();
             int page = isRefresh ? 1 : ++this.page;
-            string result = await Tools.GetJson($"/feed/replyList?id={id}&listType=&page={page}{(page > 1 ? $"&lastItem={lastItem}" : string.Empty)}&discussMode=0&feedType=feed_reply&blockStatus=0&fromFeedAuthor=0");
-            JsonArray array = Tools.GetDataArray(result);
+            string result = await UIHelper.GetJson($"/feed/replyList?id={id}&listType=&page={page}{(page > 1 ? $"&lastItem={lastItem}" : string.Empty)}&discussMode=0&feedType=feed_reply&blockStatus=0&fromFeedAuthor=0");
+            JsonArray array = UIHelper.GetDataArray(result);
             if (array != null && array.Count > 0)
+            {
                 if (isRefresh)
                 {
-                    VScrollViewer?.ChangeView(null, 0, null);
-                    var d = (from a in replys
-                             from b in array
-                             where a.id == b.GetObject()["id"].GetNumber()
-                             select a).ToArray();
+                    _ = (VScrollViewer?.ChangeView(null, 0, null));
+                    FeedReplyViewModel[] d = (from a in replys
+                                              from b in array
+                                              where a.id == b.GetObject()["id"].GetNumber()
+                                              select a).ToArray();
                     foreach (var item in d)
-                        replys.Remove(item);
+                    { replys.Remove(item); }
                     for (int i = 0; i < array.Count; i++)
-                        replys.Insert(i + 1, new FeedReplyViewModel(array[i]));
+                    { replys.Insert(i + 1, new FeedReplyViewModel(array[i])); }
                 }
                 else
                 {
-                    foreach (var item in array)
-                        replys.Add(new FeedReplyViewModel(item, false));
+                    foreach (IJsonValue item in array)
+                    { replys.Add(new FeedReplyViewModel(item, false)); }
                     lastItem = array.Last().GetObject()["id"].GetNumber();
                 }
-            else if (!isRefresh) this.page--;
-            Tools.HideProgressBar();
+            }
+            else if (!isRefresh) { this.page--; }
+            UIHelper.HideProgressBar();
         }
 
         private void VScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
-                GetReplys(false);
+            { GetReplys(false); }
         }
 
         private void FeedReplyList_RefreshRequested(object sender, EventArgs e) => GetReplys(true);

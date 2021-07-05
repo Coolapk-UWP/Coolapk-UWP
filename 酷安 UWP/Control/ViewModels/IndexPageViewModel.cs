@@ -5,7 +5,7 @@ using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    class IndexPageViewModel : Entity
+    internal class IndexPageViewModel : Entity
     {
         private ImageSource pic1;
 
@@ -13,18 +13,18 @@ namespace CoolapkUWP.Control.ViewModels
         {
             JsonObject token = t.GetObject();
             if (token.TryGetValue("entityTemplate", out IJsonValue v1))
-                entityTemplate = v1.GetString();
+            { entityTemplate = v1.GetString(); }
             if (token.TryGetValue("title", out IJsonValue v2) && v2.ValueType == JsonValueType.String)
             {
                 hasTitle = !string.IsNullOrEmpty(v2.GetString());
                 if (hasTitle)
-                    title = v2.GetString();
+                { title = v2.GetString(); }
             }
             if (token.TryGetValue("url", out IJsonValue v3) && v3.ValueType == JsonValueType.String)
             {
                 hasUrl = !string.IsNullOrEmpty(v3.GetString());
                 if (hasUrl)
-                    url = v3.GetString();
+                { url = v3.GetString(); }
             }
             if (token.TryGetValue("subTitle", out IJsonValue v8) && !string.IsNullOrEmpty(v8.GetString()))
             {
@@ -66,7 +66,7 @@ namespace CoolapkUWP.Control.ViewModels
             {
                 hasDescription = !string.IsNullOrEmpty(v4.GetString());
                 if (hasDescription)
-                    description = v4.GetString();
+                { description = v4.GetString(); }
             }
             if (token.TryGetValue("entities", out IJsonValue v7) && v7.ValueType == JsonValueType.Array)
             {
@@ -74,15 +74,15 @@ namespace CoolapkUWP.Control.ViewModels
                 if (hasEntities)
                 {
                     List<Entity> models = new List<Entity>();
-                    foreach (var item in v7.GetArray())
+                    foreach (IJsonValue item in v7.GetArray())
                     {
                         JsonObject o = item.GetObject();
                         if (o["entityType"].GetString() == "feed")
-                            models.Add(new FeedViewModel(item));
+                        { models.Add(new FeedViewModel(item)); }
                         else if (o["entityType"].GetString() == "user")
-                            models.Add(new UserViewModel(item));
+                        { models.Add(new UserViewModel(item)); }
                         else
-                            models.Add(new IndexPageViewModel(item));
+                        { models.Add(new IndexPageViewModel(item)); }
                     }
                     entities = models.ToArray();
                 }
@@ -97,25 +97,25 @@ namespace CoolapkUWP.Control.ViewModels
             {
                 hasPic = !string.IsNullOrEmpty(v5.GetString());
                 if (hasPic)
-                    pic = await ImageCache.GetImage(ImageType.Icon, v5.GetString());
+                { pic = await ImageCache.GetImage(ImageType.Icon, v5.GetString()); }
             }
             else if (token.TryGetValue("logo", out IJsonValue v6) && v6.ValueType == JsonValueType.String)
             {
                 hasPic = !string.IsNullOrEmpty(v6.GetString());
                 if (hasPic)
-                    pic = await ImageCache.GetImage(ImageType.Icon, v6.GetString());
+                { pic = await ImageCache.GetImage(ImageType.Icon, v6.GetString()); }
             }
             else if (token.TryGetValue("cover_pic", out IJsonValue v7) && v7.ValueType == JsonValueType.String)
             {
                 hasPic = !string.IsNullOrEmpty(v7.GetString());
                 if (hasPic)
-                    pic = await ImageCache.GetImage(ImageType.Icon, v7.GetString());
+                { pic = await ImageCache.GetImage(ImageType.Icon, v7.GetString()); }
             }
             else if (token.TryGetValue("pic_url", out IJsonValue v8) && v8.ValueType == JsonValueType.String)
             {
                 hasPic = !string.IsNullOrEmpty(v8.GetString());
                 if (hasPic)
-                    pic = await ImageCache.GetImage(ImageType.Icon, v8.GetString());
+                { pic = await ImageCache.GetImage(ImageType.Icon, v8.GetString()); }
             }
         }
 

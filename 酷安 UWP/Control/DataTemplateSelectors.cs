@@ -37,7 +37,6 @@ namespace CoolapkUWP.Control
             {
                 default: return Null;
                 case "imageTextGridCard":
-                case "imageCarouselCard_1":
                 case "imageSquareScrollCard":
                 case "iconScrollCard":
                 case "imageTextScrollCard":
@@ -60,6 +59,7 @@ namespace CoolapkUWP.Control
                 case "selectorLinkCard": return SelectorLinkCard;
                 case "headCard":
                 case "iconButtonGridCard":
+                case "imageCarouselCard_1":
                 case "imageCard": return ImageCard;
             }
         }

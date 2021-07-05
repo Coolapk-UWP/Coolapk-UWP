@@ -135,7 +135,7 @@
     <Compile Include="Control\ViewModels\SourceFeedViewModel.cs" />
     <Compile Include="Control\GridPanel.cs" />
     <Compile Include="Data\BackgroundTask.cs" />
-    <Compile Include="Data\Emojis.cs" />
+    <Compile Include="Data\EmojiHelper.cs" />
     <Compile Include="Data\ImageCache.cs" />
     <Compile Include="Data\NotificationsNum.cs" />
     <Compile Include="Data\TileManager.cs" />
@@ -150,7 +150,7 @@
     <Compile Include="Control\ViewModels\SearchPageViewModel.cs" />
     <Compile Include="Control\ViewModels\TopicViewModel.cs" />
     <Compile Include="Control\ViewModels\UserViewModel.cs" />
-    <Compile Include="Data\Settings.cs" />
+    <Compile Include="Data\SettingHelper.cs" />
     <Compile Include="Data\ExceptionCatcher.cs" />
     <Compile Include="Control\GetUpdateContentDialog.xaml.cs">
       <DependentUpon>GetUpdateContentDialog.xaml</DependentUpon>
@@ -187,7 +187,7 @@
     <Compile Include="Pages\SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Data\Tools.cs" />
+    <Compile Include="Data\UIHelper.cs" />
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

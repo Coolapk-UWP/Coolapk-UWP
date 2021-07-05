@@ -40,7 +40,7 @@ namespace CoolapkUWP.Pages.FeedPages
             if (!(bool)vs[1])
             {
                 TitleBar.Visibility = Visibility.Visible;
-                listView.Padding = Settings.stackPanelMargin;
+                listView.Padding = SettingHelper.stackPanelMargin;
             }
             pageUrl = vs[0] as string;
             TitleBar.BackButtonVisibility = Visibility.Visible;
@@ -78,21 +78,28 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private async void GetUrlPage(int p = -1)
         {
-            if (index == -1)
+            try
             {
-                try { if (!await GetUrlPage(p == -1 ? ++page : p, pageUrl, Collection)) { page--; } } catch { }
+                if (index == -1)
+                {
+                    if (!await GetUrlPage(p == -1 ? ++page : p, pageUrl, Collection)) { page--; }
+                }
+                else if (p == -1)
+                {
+                    if (!await GetUrlPage(page = p == -1 ? ++pages[index] : p, urls[index], Feeds2[index])) { pages[index]--; }
+                }
             }
-            else if (p == -1)
+            catch
             {
-                if (!await GetUrlPage(page = p == -1 ? ++pages[index] : p, urls[index], Feeds2[index])) { pages[index]--; }
+                UIHelper.ErrorProgressBar();
             }
         }
 
         private async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
         {
-            Tools.ShowProgressBar();
-            string s = await Tools.GetJson($"{url}{(url.Contains("?") ? "&" : "?")}page={page}");
-            JsonArray Root = Tools.GetDataArray(s);
+            UIHelper.ShowProgressBar();
+            string s = await UIHelper.GetJson($"{url}{(url.Contains("?") ? "&" : "?")}page={page}");
+            JsonArray Root = UIHelper.GetDataArray(s);
             if (Root != null && Root.Count > 0)
             {
                 if (page == 1)
@@ -100,11 +107,11 @@ namespace CoolapkUWP.Pages.FeedPages
                     int n = 0;
                     if (FeedsCollection.Count > 0)
                     {
-                        var needDeleteItems = (from b in FeedsCollection
-                                               from c in Root
-                                               where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
-                                               select b).ToArray();
-                        foreach (var item in needDeleteItems) { Collection.Remove(item); }
+                        Entity[] needDeleteItems = (from b in FeedsCollection
+                                                    from c in Root
+                                                    where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
+                                                    select b).ToArray();
+                        foreach (Entity item in needDeleteItems) { Collection.Remove(item); }
                         n = (from b in FeedsCollection
                              where b.entityFixed
                              select b).Count();
@@ -119,24 +126,24 @@ namespace CoolapkUWP.Pages.FeedPages
                             TitleBar.Title = j["pageTitle"].GetString();
                             continue;
                         }
-                        if (jo.TryGetValue("entityTemplate", out IJsonValue tt) && tt.GetString() == "fabCard") continue;
+                        if (jo.TryGetValue("entityTemplate", out IJsonValue tt) && tt.GetString() == "fabCard") { continue; }
                         FeedsCollection.Insert(n + k, GetEntity(jo));
                         k++;
                     }
-                    Tools.HideProgressBar();
+                    UIHelper.HideProgressBar();
                     return true;
                 }
                 else
                 {
                     if (Root.Count != 0)
                     {
-                        foreach (var i in Root) FeedsCollection.Add(GetEntity(i.GetObject()));
-                        Tools.HideProgressBar();
+                        foreach (IJsonValue i in Root) { FeedsCollection.Add(GetEntity(i.GetObject())); }
+                        UIHelper.HideProgressBar();
                         return true;
                     }
                     else
                     {
-                        Tools.HideProgressBar();
+                        UIHelper.HideProgressBar();
                         return false;
                     }
                 }
@@ -158,7 +165,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => Tools.OpenLink((sender as FrameworkElement).Tag as string);
+        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.OpenLink((sender as FrameworkElement).Tag as string);
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
@@ -176,10 +183,16 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
+        internal static void FlipView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            FlipView view = sender as FlipView;
+            view.MaxHeight = e.NewSize.Width / 3;
+        }
+
         public void RefreshPage() => GetUrlPage(1);
 
         private void Button_Click(object sender, RoutedEventArgs e)
-            => Tools.Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, (sender as FrameworkElement).Tag as string });
+            => UIHelper.Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, (sender as FrameworkElement).Tag as string });
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
         private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
@@ -190,7 +203,7 @@ namespace CoolapkUWP.Pages.FeedPages
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
             FrameworkElement element = sender as FrameworkElement;
-            if (element.Tag is string s) { Tools.OpenLink(s); }
+            if (element.Tag is string s) { UIHelper.OpenLink(s); }
             else if (element.Tag is IndexPageViewModel m)
             {
                 if (string.IsNullOrEmpty(m.url)) { return; }
@@ -199,10 +212,10 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     str = str.Replace("/page", "/page/dataList");
                     str += $"&title={m.title}";
-                    Tools.Navigate(typeof(IndexPage), new object[] { str, false, null });
+                    UIHelper.Navigate(typeof(IndexPage), new object[] { str, false, null });
                 }
-                else if (str.IndexOf('#') == 0) { Tools.Navigate(typeof(IndexPage), new object[] { $"{str}&title={m.title}", false, null }); }
-                else { Tools.OpenLink(str); }
+                else if (str.IndexOf('#') == 0) { UIHelper.Navigate(typeof(IndexPage), new object[] { $"{str}&title={m.title}", false, null }); }
+                else { UIHelper.OpenLink(str); }
             }
         }
 
@@ -212,10 +225,10 @@ namespace CoolapkUWP.Pages.FeedPages
             if (Feeds2.Count > 0)
             {
                 ObservableCollection<Entity> feeds = Feeds2[0];
-                var needDeleteItems = (from b in feeds
-                                       where b.entityType == "feed"
-                                       select b).ToArray();
-                foreach (var item in needDeleteItems) { feeds.Remove(item); }
+                Entity[] needDeleteItems = (from b in feeds
+                                            where b.entityType == "feed"
+                                            select b).ToArray();
+                foreach (Entity item in needDeleteItems) { feeds.Remove(item); }
                 urls[0] = $"/page/dataList?url={model.url}&title={model.title}";
                 urls[0] = urls[0].Replace("#", "%23");
                 pages[0] = 0;
@@ -224,10 +237,10 @@ namespace CoolapkUWP.Pages.FeedPages
             else
             {
                 ObservableCollection<Entity> feeds = Collection;
-                var needDeleteItems = (from b in feeds
-                                       where b.entityType == "topic"
-                                       select b).ToArray();
-                foreach (var item in needDeleteItems) { feeds.Remove(item); }
+                Entity[] needDeleteItems = (from b in feeds
+                                            where b.entityType == "topic"
+                                            select b).ToArray();
+                foreach (Entity item in needDeleteItems) { feeds.Remove(item); }
                 pageUrl = $"/page/dataList?url={model.url}&title={model.title}";
                 pageUrl = pageUrl.Replace("#", "%23");
                 page = 0;
@@ -255,8 +268,8 @@ namespace CoolapkUWP.Pages.FeedPages
                 for (int j = 0; j < f.Length; j++)
                 {
                     IndexPageViewModel model = f[j] as IndexPageViewModel;
-                    var ff = new ObservableCollection<Entity>();
-                    var l = new ListView
+                    ObservableCollection<Entity> ff = new ObservableCollection<Entity>();
+                    ListView l = new ListView
                     {
                         Style = Application.Current.Resources["ListViewStyle"] as Style,
                         ItemContainerStyle = style,
@@ -266,7 +279,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         SelectionMode = ListViewSelectionMode.None
                     };
                     l.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Disabled);
-                    var i = new PivotItem
+                    PivotItem i = new PivotItem
                     {
                         Tag = f[j],
                         Content = l,

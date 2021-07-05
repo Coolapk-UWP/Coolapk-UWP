@@ -1,5 +1,4 @@
-﻿using CoolapkUWP.Control;
-using CoolapkUWP.Control.ViewModels;
+﻿using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
 using CoolapkUWP.Pages.FeedPages;
 using System;
@@ -49,24 +48,24 @@ namespace CoolapkUWP.Pages
         public MainPage()
         {
             InitializeComponent();
-            Settings.CheckLoginInfo();
-            Tools.notifications.BadgeNumberChanged += (sender, e) =>
+            _ = SettingHelper.CheckLoginInfo();
+            UIHelper.notifications.BadgeNumberChanged += (sender, e) =>
             {
-                if (sender is NotificationsNum num) ChangeBadgeNum(num.BadgeNum);
+                if (sender is NotificationsNum num) { ChangeBadgeNum(num.BadgeNum); }
             };
-            ChangeBadgeNum(Tools.notifications.BadgeNum);
+            ChangeBadgeNum(UIHelper.notifications.BadgeNum);
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
-                Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            if (Settings.GetBoolen("CheckUpdateWhenLuanching")) Settings.CheckUpdate();
+            { Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true; }
+            if (SettingHelper.GetBoolen("CheckUpdateWhenLuanching")) { SettingHelper.CheckUpdate(); }
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
             {
-                int i = Settings.HasStatusBar ? Tools.popups.Count - 1 : Tools.popups.Count - 2;
+                int i = SettingHelper.HasStatusBar ? UIHelper.popups.Count - 1 : UIHelper.popups.Count - 2;
                 if (i >= 0)
                 {
                     ee.Handled = true;
-                    Windows.UI.Xaml.Controls.Primitives.Popup popup = Tools.popups[i];
+                    Windows.UI.Xaml.Controls.Primitives.Popup popup = UIHelper.popups[i];
                     popup.IsOpen = false;
-                    Tools.popups.Remove(popup);
+                    _ = UIHelper.popups.Remove(popup);
                 }
                 else if (Frame.CanGoBack)
                 {
@@ -74,7 +73,7 @@ namespace CoolapkUWP.Pages
                     Frame.GoBack();
                 }
             };
-            Tools.mainPage = this;
+            UIHelper.mainPage = this;
             navigationView.SelectedItem = navigationView.MenuItems[1];
             RegisterBackgroundTask();
         }
@@ -83,9 +82,9 @@ namespace CoolapkUWP.Pages
         {
             ApplicationView view = ApplicationView.GetForCurrentView();
             bool isInFullScreenMode = view.IsFullScreenMode;
-            if (isInFullScreenMode || view.ViewMode == ApplicationViewMode.CompactOverlay)
-                navigationView.Margin = new Thickness(0, 32, 0, 0);
-            else navigationView.Margin = new Thickness(0, 0, 0, 0);
+            navigationView.Margin = !(navigationView.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top) && (isInFullScreenMode || view.ViewMode == ApplicationViewMode.CompactOverlay)
+                ? new Thickness(0, 32, 0, 0)
+                : new Thickness(0, 0, 0, 0);
         }
 
         private void NavigationView_SelectionChanged(muxc.NavigationView sender, muxc.NavigationViewSelectionChangedEventArgs args)
@@ -96,7 +95,7 @@ namespace CoolapkUWP.Pages
             }
             else if (args.SelectedItemContainer != null)
             {
-                var navItemTag = args.SelectedItemContainer.Tag.ToString();
+                string navItemTag = args.SelectedItemContainer.Tag.ToString();
                 switch (navItemTag)
                 {
                     case "MakeFeed":
@@ -109,16 +108,22 @@ namespace CoolapkUWP.Pages
                         _ = navigationViewFrame.Navigate(typeof(UserHubPage), args.RecommendedNavigationTransitionInfo);
                         break;
                     default:
-                        if (!navItemTag.StartsWith("V"))
-                            _ = navigationViewFrame.Navigate(typeof(IndexPage), new object[] { "/page?url=V9_HOME_TAB_FOLLOW&type=" + navItemTag, true }, args.RecommendedNavigationTransitionInfo);
-                        else if (navItemTag == "V9_HOME_TAB_HEADLINE")
-                            _ = navigationViewFrame.Navigate(typeof(IndexPage), new object[] { "/main/indexV8", true }, args.RecommendedNavigationTransitionInfo);
-                        else if (navItemTag == "V11_FIND_DYH")
-                            _ = navigationViewFrame.Navigate(typeof(IndexPage), new object[] { "/user/dyhSubscribe", true }, args.RecommendedNavigationTransitionInfo);
-                        else _ = navigationViewFrame.Navigate(typeof(IndexPage), new object[] { "/page?url=" + navItemTag, true }, args.RecommendedNavigationTransitionInfo);
+                        _ = !navItemTag.StartsWith("V")
+                            ? navigationViewFrame.Navigate(typeof(IndexPage), new object[] { "/page?url=V9_HOME_TAB_FOLLOW&type=" + navItemTag, true }, args.RecommendedNavigationTransitionInfo)
+                            : navItemTag == "V9_HOME_TAB_HEADLINE"
+                            ? navigationViewFrame.Navigate(typeof(IndexPage), new object[] { "/main/indexV8", true }, args.RecommendedNavigationTransitionInfo)
+                            : navItemTag == "V11_FIND_DYH"
+                            ? navigationViewFrame.Navigate(typeof(IndexPage), new object[] { "/user/dyhSubscribe", true }, args.RecommendedNavigationTransitionInfo)
+                            : navigationViewFrame.Navigate(typeof(IndexPage), new object[] { "/page?url=" + navItemTag, true }, args.RecommendedNavigationTransitionInfo);
                         break;
                 }
             }
+            try
+            {
+                navigationView.Header = args.SelectedItemContainer.Content;
+                navigationView.PaneTitle = args.SelectedItemContainer.Content.ToString();
+            }
+            catch { }
         }
 
         #region 搜索框相关
@@ -126,12 +131,12 @@ namespace CoolapkUWP.Pages
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/search/suggestSearchWordsNew?searchValue={sender.Text}&type=app"));
+                JsonArray array = UIHelper.GetDataArray(await UIHelper.GetJson($"/search/suggestSearchWordsNew?searchValue={sender.Text}&type=app"));
                 if (array != null && array.Count > 0)
                 {
                     ObservableCollection<object> observableCollection = new ObservableCollection<object>();
                     sender.ItemsSource = observableCollection;
-                    foreach (var ite in array)
+                    foreach (IJsonValue ite in array)
                     {
                         JsonObject item = ite.GetObject();
                         switch (item["entityType"].GetString())
@@ -142,15 +147,15 @@ namespace CoolapkUWP.Pages
                                     AppName = item["title"].GetString(),
                                     DownloadNum = $"{item["score"].GetString()}分 {item["downCount"].ToString().Replace("\"", string.Empty)}下载",
                                     Url = item["url"].GetString(),
-                                    Icon = await ImageCache.GetImage(ImageType.Icon, (item["logo"].GetString())),
+                                    Icon = await ImageCache.GetImage(ImageType.Icon, item["logo"].GetString()),
                                     Size = item["apksize"].GetString(),
                                 });
                                 break;
                             case "searchWord":
                             default:
                                 Symbol s = Symbol.Find;
-                                if (item["logo"].GetString().Contains("cube")) s = Symbol.Shop;
-                                else if (item["logo"].GetString().Contains("xitongguanli")) s = Symbol.AllApps;
+                                if (item["logo"].GetString().Contains("cube")) { s = Symbol.Shop; }
+                                else if (item["logo"].GetString().Contains("xitongguanli")) { s = Symbol.AllApps; }
                                 observableCollection.Add(new SearchWord { Symbol = s, Title = item["title"].GetString() });
                                 break;
                         }
@@ -161,27 +166,29 @@ namespace CoolapkUWP.Pages
         private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             if (args.ChosenSuggestion is AppViewModel app)
-                Tools.Navigate(typeof(AppPages.AppPage), "https://www.coolapk.com" + app.Url);
+            { UIHelper.Navigate(typeof(AppPages.AppPage), "https://www.coolapk.com" + app.Url); }
             else if (args.ChosenSuggestion is SearchWord word)
             {
                 switch (word.Symbol)
                 {
                     case Symbol.Shop:
-                        Tools.Navigate(typeof(SearchPage), new object[] { 3, word.GetTitle() });
+                        UIHelper.Navigate(typeof(SearchPage), new object[] { 3, word.GetTitle() });
                         break;
                     case Symbol.Contact:
-                        Tools.Navigate(typeof(SearchPage), new object[] { 1, word.GetTitle() });
+                        UIHelper.Navigate(typeof(SearchPage), new object[] { 1, word.GetTitle() });
                         break;
                     case Symbol.Find:
-                        Tools.Navigate(typeof(SearchPage), new object[] { 0, word.Title });
+                        UIHelper.Navigate(typeof(SearchPage), new object[] { 0, word.Title });
+                        break;
+                    default:
                         break;
                 }
             }
-            else if (args.ChosenSuggestion is null) Tools.Navigate(typeof(SearchPage), new object[] { 0, sender.Text });
+            else if (args.ChosenSuggestion is null) { UIHelper.Navigate(typeof(SearchPage), new object[] { 0, sender.Text }); }
         }
         private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            if (args.SelectedItem is ISearchPageViewModel m) sender.Text = m.GetTitle();
+            if (args.SelectedItem is ISearchPageViewModel m) { sender.Text = m.GetTitle(); }
         }
         #endregion
 
@@ -205,11 +212,13 @@ namespace CoolapkUWP.Pages
         private async void RegisterBackgroundTask()
         {
             BackgroundAccessStatus status = await BackgroundExecutionManager.RequestAccessAsync();
-            if (status == BackgroundAccessStatus.Unspecified || status == BackgroundAccessStatus.DeniedByUser) return;
+            if (status == BackgroundAccessStatus.Unspecified || status == BackgroundAccessStatus.DeniedByUser) { return; }
 
-            foreach (var item in BackgroundTaskRegistration.AllTasks)
+            foreach (System.Collections.Generic.KeyValuePair<Guid, IBackgroundTaskRegistration> item in BackgroundTaskRegistration.AllTasks)
+            {
                 if (item.Value.Name == "BackgroundTask")
-                    item.Value.Unregister(true);
+                { item.Value.Unregister(true); }
+            }
             BackgroundTaskBuilder taskBuilder = new BackgroundTaskBuilder
             {
                 Name = "BackgroundTask",
@@ -217,7 +226,7 @@ namespace CoolapkUWP.Pages
             };
             taskBuilder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
             taskBuilder.SetTrigger(new TimeTrigger(30, false));
-            taskBuilder.Register();
+            _ = taskBuilder.Register();
         }
     }
 }

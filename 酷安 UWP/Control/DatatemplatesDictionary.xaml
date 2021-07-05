@@ -21,8 +21,8 @@
     <DataTemplate x:Key="Topic" x:DataType="models:TopicViewModel">
         <ListViewItem
             Padding="4"
-            BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-            BorderThickness="2"
+            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+            BorderThickness="1"
             Tag="{x:Bind url}"
             Tapped="OnTapped">
             <Grid>
@@ -80,7 +80,7 @@
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
             HorizontalContentAlignment="Stretch"
             Padding="0,4"
-            BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
+            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
             BorderThickness="0,1"
             Template="{StaticResource ListViewItemTemplate1}"
             Tag="{x:Bind url}"
@@ -132,8 +132,8 @@
     <DataTemplate x:DataType="models:FeedViewModel" x:Key="feed">
         <Grid
             MaxWidth="800"
-            BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-            BorderThickness="2"
+            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+            BorderThickness="1"
             Padding="12,4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -280,6 +280,13 @@
                 x:Load="{x:Bind showPicArr}"
                 Tag="{x:Bind pics}"
                 ItemsSource="{x:Bind picArr}">
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid
+                            MaximumRowsOrColumns="3"
+                            Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="models:ImageData">
                         <Grid
@@ -394,6 +401,13 @@
                         x:Load="{x:Bind sourceFeed.showPicArr}"
                         Tag="{x:Bind sourceFeed.pics}"
                         ItemsSource="{x:Bind sourceFeed.picArr}">
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid
+                                    MaximumRowsOrColumns="3"
+                                    Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
                         <GridView.ItemTemplate>
                             <DataTemplate x:DataType="models:ImageData">
                                 <Grid
@@ -657,8 +671,8 @@
             Padding="4,0,4,4"
             VerticalAlignment="Stretch"
             HorizontalAlignment="Stretch"
-            BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-            BorderThickness="2">
+            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+            BorderThickness="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
@@ -992,8 +1006,8 @@
     <DataTemplate x:Key="User" x:DataType="models:UserViewModel">
         <ListViewItem Style="{StaticResource NoPaddingListViewItem}"
                       HorizontalContentAlignment="Stretch"
-                      BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-                      BorderThickness="2"
+                      BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                      BorderThickness="1"
                       Template="{StaticResource ListViewItemTemplate1}" 
                       Tapped="OnTapped"
                       Tag="{x:Bind url}">

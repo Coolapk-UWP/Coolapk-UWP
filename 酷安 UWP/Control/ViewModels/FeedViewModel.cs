@@ -8,19 +8,20 @@ using Windows.UI.Xaml.Media;
 namespace CoolapkUWP.Control.ViewModels
 {
     [Flags]
-    enum FeedDisplayMode
+    internal enum FeedDisplayMode
     {
         normal = 0,
         isFirstPageFeed = 0x01,
         notShowDyhName = 0x02,
         notShowMessageTitle = 0x04
     }
-    class FeedViewModel : FeedViewModelBase
+
+    internal class FeedViewModel : FeedViewModelBase
     {
         public FeedViewModel(IJsonValue t, FeedDisplayMode mode = FeedDisplayMode.normal) : base(t)
         {
             JsonObject token = t.GetObject();
-            if (!string.IsNullOrEmpty(message_title) && !mode.HasFlag(FeedDisplayMode.notShowMessageTitle)) showMessage_title = true;
+            if (!string.IsNullOrEmpty(message_title) && !mode.HasFlag(FeedDisplayMode.notShowMessageTitle)) { showMessage_title = true; }
             if (mode.HasFlag(FeedDisplayMode.isFirstPageFeed))
             {
                 info = token["infoHtml"].GetString().Replace("&nbsp;", string.Empty);
@@ -29,19 +30,21 @@ namespace CoolapkUWP.Control.ViewModels
                 if (showReplyRows)
                 {
                     List<ReplyRowsItem> vs = new List<ReplyRowsItem>();
-                    foreach (var i in value.GetArray())
-                        vs.Add(new ReplyRowsItem(i.GetObject()));
+                    foreach (IJsonValue i in value.GetArray())
+                    { vs.Add(new ReplyRowsItem(i.GetObject())); }
                     replyRows = vs.ToArray();
                 }
             }
             else if (mode.HasFlag(FeedDisplayMode.normal))
+            {
                 if (token.TryGetValue("info", out IJsonValue value1))
-                    info = value1.GetString();
+                { info = value1.GetString(); }
+            }
 
             if (token["entityType"].GetString() != "article")
             {
                 if (token["feedType"].GetString() == "question")
-                    showLikes = false;
+                { showLikes = false; }
                 uurl = token["userInfo"].GetObject()["url"].GetString();
             }
             else
@@ -69,19 +72,21 @@ namespace CoolapkUWP.Control.ViewModels
             {
                 List<RelationRowsItem> vs = new List<RelationRowsItem>();
                 if (valuelocation != null && !string.IsNullOrEmpty(valuelocation.GetString()))
-                    vs.Add(new RelationRowsItem { title = valuelocation.GetString() });
+                { vs.Add(new RelationRowsItem { title = valuelocation.GetString() }); }
                 if (valuettitle != null && !string.IsNullOrEmpty(valuettitle.GetString()))
-                    vs.Add(new RelationRowsItem { title = valuettitle.GetString(), url = token["turl"].GetString(), logoUrl = token["tpic"].GetString() });
+                { vs.Add(new RelationRowsItem { title = valuettitle.GetString(), url = token["turl"].GetString(), logoUrl = token["tpic"].GetString() }); }
                 if (token["entityType"].GetString() != "article" && valuedyh != null && !string.IsNullOrEmpty(valuedyh.GetString()))
-                    vs.Add(new RelationRowsItem { title = valuedyh.GetString(), url = $"/dyh/{token["dyh_id"].ToString().Replace("\"", string.Empty)}" });
+                { vs.Add(new RelationRowsItem { title = valuedyh.GetString(), url = $"/dyh/{token["dyh_id"].ToString().Replace("\"", string.Empty)}" }); }
                 if (valuerelationRows != null)
-                    foreach (var i in valuerelationRows.GetArray())
+                {
+                    foreach (IJsonValue i in valuerelationRows.GetArray())
                     {
                         JsonObject item = i.GetObject();
                         vs.Add(new RelationRowsItem { title = item["title"].GetString(), url = item["url"].GetString(), logoUrl = item["logo"].GetString() });
                     }
+                }
                 relationRows = vs.ToArray();
-                if (vs.Count == 0) showRelationRows = false;
+                if (vs.Count == 0) { showRelationRows = false; }
             }
             isStickTop = token.TryGetValue("isStickTop", out IJsonValue j) && j.GetNumber() == 1;
             GetPic();
@@ -90,14 +95,18 @@ namespace CoolapkUWP.Control.ViewModels
         private async void GetPic()
         {
             if (showDyh && !string.IsNullOrEmpty(dyhlogoUrl))
-                dyhlogo = await ImageCache.GetImage(ImageType.Icon, dyhlogoUrl);
+            { dyhlogo = await ImageCache.GetImage(ImageType.Icon, dyhlogoUrl); }
             if (showRelationRows)
-                foreach (var item in relationRows)
+            {
+                foreach (RelationRowsItem item in relationRows)
+                {
                     if (!string.IsNullOrEmpty(item.logoUrl))
-                        item.logo = await ImageCache.GetImage(ImageType.Icon, item.logoUrl);
+                    { item.logo = await ImageCache.GetImage(ImageType.Icon, item.logoUrl); }
+                }
+            }
         }
 
-        string dyhlogoUrl;
+        private readonly string dyhlogoUrl;
         private ImageSource dyhlogo1;
 
         public new string uurl { get; private set; }
@@ -125,7 +134,8 @@ namespace CoolapkUWP.Control.ViewModels
         public RelationRowsItem[] relationRows { get; private set; }
         public new bool showMessage_title { get; private set; }
     }
-    class RelationRowsItem : INotifyPropertyChanged
+
+    internal class RelationRowsItem : INotifyPropertyChanged
     {
         public string url { get; set; }
         public string logoUrl;
@@ -144,16 +154,16 @@ namespace CoolapkUWP.Control.ViewModels
         }
         public string title { get; set; }
     }
-    class ReplyRowsItem
+
+    internal class ReplyRowsItem
     {
         public ReplyRowsItem(JsonObject token)
         {
             string getMessage(JsonObject jObject)
             {
-                if (string.IsNullOrEmpty(jObject["pic"].GetString()))
-                    return $@"<a href='/u/{jObject["uid"].GetNumber()}'>{jObject["username"].GetString()}</a>：{jObject["message"].GetString()}";
-                else
-                    return $@"<a href='/u/{jObject["uid"].GetNumber()}'>{jObject["username"].GetString()}</a>：{jObject["message"].GetString()} <a href='{jObject["pic"].GetString()}'>查看图片</a>";
+                return string.IsNullOrEmpty(jObject["pic"].GetString())
+                    ? $@"<a href='/u/{jObject["uid"].GetNumber()}'>{jObject["username"].GetString()}</a>：{jObject["message"].GetString()}"
+                    : $@"<a href='/u/{jObject["uid"].GetNumber()}'>{jObject["username"].GetString()}</a>：{jObject["message"].GetString()} <a href='{jObject["pic"].GetString()}'>查看图片</a>";
             }
             extraFlag = token["extraFlag"].GetString();
             id = token["id"].GetNumber();

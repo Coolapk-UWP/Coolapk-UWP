@@ -3,7 +3,7 @@ using Windows.Data.Json;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    class UserViewModel : Entity
+    internal class UserViewModel : Entity
     {
         public UserViewModel(IJsonValue t) : base(t)
         {
@@ -15,13 +15,13 @@ namespace CoolapkUWP.Control.ViewModels
                 FansNum = a.ToString().Replace("\"", string.Empty);
                 FollowNum = token["follow"].ToString().Replace("\"", string.Empty);
                 if (token.TryGetValue("bio", out IJsonValue b))
-                    Bio = b.GetString();
-                LoginTime = Tools.ConvertTime(double.Parse(token["logintime"].ToString().Replace("\"", string.Empty))) + "活跃";
+                { Bio = b.GetString(); }
+                LoginTime = UIHelper.ConvertTime(double.Parse(token["logintime"].ToString().Replace("\"", string.Empty))) + "活跃";
             }
             GetPic(token);
         }
 
-        async void GetPic(JsonObject token) => UserAvatar = await ImageCache.GetImage(ImageType.SmallAvatar, token["userSmallAvatar"].GetString());
+        private async void GetPic(JsonObject token) => UserAvatar = await ImageCache.GetImage(ImageType.SmallAvatar, token["userSmallAvatar"].GetString());
         public string url { get; private set; }
         public string UserName { get; private set; }
         public string FollowNum { get; private set; }

@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    class BackgroundImageViewModel : INotifyPropertyChanged
+    internal class BackgroundImageViewModel : INotifyPropertyChanged
     {
         private WeakReference<BitmapImage> pic;
         private static readonly Windows.UI.Color fallbackColor = Windows.UI.Color.FromArgb(0x99, 0, 0, 0);
@@ -65,7 +65,7 @@ namespace CoolapkUWP.Control.ViewModels
         {
             Uri = uri;
             Type = type;
-            _ = Tools.ShellDispatcher?.RunAsync(
+            _ = UIHelper.ShellDispatcher?.RunAsync(
                 Windows.UI.Core.CoreDispatcherPriority.Normal,
                 () =>
                 {
@@ -85,25 +85,25 @@ namespace CoolapkUWP.Control.ViewModels
         private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
             if (name != null)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
 
         private async void GetImage()
         {
-            if (Settings.GetBoolen("IsNoPicsMode")) { Pic = ImageCache.NoPic; }
-            var bitmapImage = await ImageCache.GetImage(Type, Uri);
-            if (Settings.GetBoolen("IsNoPicsMode")) { return; }
+            if (SettingHelper.GetBoolen("IsNoPicsMode")) { Pic = ImageCache.NoPic; }
+            BitmapImage bitmapImage = await ImageCache.GetImage(Type, Uri);
+            if (SettingHelper.GetBoolen("IsNoPicsMode")) { return; }
             Pic = bitmapImage;
         }
 
         private async void SetBrush()
         {
-            var file = await ImageCache.GetImagePath(Type, Uri);
+            Windows.Storage.StorageFile file = await ImageCache.GetImagePath(Type, Uri);
             if (file is null) { return; }
-            using (var stream = await file.OpenReadAsync())
+            using (Windows.Storage.Streams.IRandomAccessStreamWithContentType stream = await file.OpenReadAsync())
             {
-                var decoder = await BitmapDecoder.CreateAsync(stream);
-                var color = await thief.GetColor(decoder);
+                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
+                QuantizedColor color = await thief.GetColor(decoder);
                 BackgroundColor =
                     Windows.UI.Color.FromArgb(
                         color.Color.A,

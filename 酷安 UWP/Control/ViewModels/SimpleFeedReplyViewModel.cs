@@ -2,7 +2,7 @@
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    class SimpleFeedReplyViewModel
+    internal class SimpleFeedReplyViewModel
     {
         public SimpleFeedReplyViewModel(IJsonValue t)
         {
@@ -13,9 +13,9 @@ namespace CoolapkUWP.Control.ViewModels
             isFeedAuthor = token["isFeedAuthor"].GetNumber() == 1;
             rurl = $"/u/{token["ruid"].GetNumber()}";
             rusername = token["rusername"].GetString();
-            if (showRuser)
-                message = $"<a href=\"{uurl}\">{username}{(isFeedAuthor ? "(楼主)" : string.Empty)}</a>@<a href=\"{rurl}\">{rusername}</a>:{token["message"].GetString()}";
-            else message = $"<a href=\"{uurl}\">{username}{(isFeedAuthor ? "(楼主)" : string.Empty)}</a>:{token["message"].GetString()}";
+            message = showRuser
+                ? $"<a href=\"{uurl}\">{username}{(isFeedAuthor ? "(楼主)" : string.Empty)}</a>@<a href=\"{rurl}\">{rusername}</a>:{token["message"].GetString()}"
+                : $"<a href=\"{uurl}\">{username}{(isFeedAuthor ? "(楼主)" : string.Empty)}</a>:{token["message"].GetString()}";
             showPic = token.TryGetValue("pic", out IJsonValue value) && !string.IsNullOrEmpty(value.GetString());
             if (showPic)
             {

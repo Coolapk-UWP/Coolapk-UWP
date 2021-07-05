@@ -5,20 +5,20 @@ using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    interface ILike
+    internal interface ILike
     {
         string likenum { get; set; }
         bool liked { get; set; }
         string id { get; }
     }
 
-    class FeedViewModelBase : SourceFeedViewModel, ILike
+    internal class FeedViewModelBase : SourceFeedViewModel, ILike
     {
         public FeedViewModelBase(IJsonValue t) : base(t)
         {
             JsonObject token = t.GetObject();
             if (token.TryGetValue("info", out IJsonValue value1))
-                info = value1.GetString();
+            { info = value1.GetString(); }
             likenum = token["likenum"].ToString().Replace("\"", string.Empty);
             replynum = token["replynum"].ToString().Replace("\"", string.Empty);
             share_num = token["forwardnum"].ToString().Replace("\"", string.Empty);
@@ -37,20 +37,16 @@ namespace CoolapkUWP.Control.ViewModels
                                      && jsonValue != null
                                      && jsonValue.ToString() != "null";
                     if (showSourceFeed)
-                        sourceFeed = new SourceFeedViewModel(jsonValue.GetObject());
+                    { sourceFeed = new SourceFeedViewModel(jsonValue.GetObject()); }
                 }
                 //if (token["entityTemplate"].GetString() == "feedByDyhHeader") showUser = false;
-                if (showUser) userSmallAvatarUrl = token["userInfo"].GetObject()["userSmallAvatar"].GetString();
+                if (showUser) { userSmallAvatarUrl = token["userInfo"].GetObject()["userSmallAvatar"].GetString(); }
                 showExtra_url = token.TryGetValue("extra_title", out IJsonValue valueextra_title) && !string.IsNullOrEmpty(valueextra_title.GetString());
                 if (showExtra_url)
                 {
                     extra_title = valueextra_title.GetString();
                     extra_url = token["extra_url"].GetString();
-                    if (!string.IsNullOrEmpty(extra_url))
-                        if (extra_url.IndexOf("http") == 0)
-                            extra_url2 = new Uri(extra_url).Host;
-                        else extra_url2 = string.Empty;
-                    else extra_url2 = string.Empty;
+                    extra_url2 = !string.IsNullOrEmpty(extra_url) ? extra_url.IndexOf("http") == 0 ? new Uri(extra_url).Host : string.Empty : string.Empty;
                     extraPicUrl = token["extra_pic"].GetString();
                 }
                 device_title = token["device_title"].GetString();
@@ -64,9 +60,9 @@ namespace CoolapkUWP.Control.ViewModels
         private async void GetPic()
         {
             if (!string.IsNullOrEmpty(userSmallAvatarUrl))
-                userSmallAvatar = await ImageCache.GetImage(ImageType.SmallAvatar, userSmallAvatarUrl);
+            { userSmallAvatar = await ImageCache.GetImage(ImageType.SmallAvatar, userSmallAvatarUrl); }
             if (!string.IsNullOrEmpty(extraPicUrl))
-                extra_pic = await ImageCache.GetImage(ImageType.Icon, extraPicUrl);
+            { extra_pic = await ImageCache.GetImage(ImageType.Icon, extraPicUrl); }
         }
 
         public string userSmallAvatarUrl;

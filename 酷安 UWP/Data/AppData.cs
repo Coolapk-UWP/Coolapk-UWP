@@ -3,13 +3,13 @@ using System.ComponentModel;
 
 namespace CoolapkUWP.Data
 {
-    class AppData : INotifyPropertyChanged
+    internal class AppData : INotifyPropertyChanged
     {
         //缩略图
         private Uri thumbnail;
         public Uri Thumbnail
         {
-            get { return thumbnail; }
+            get => thumbnail;
             set
             {
                 thumbnail = value;
@@ -21,7 +21,7 @@ namespace CoolapkUWP.Data
         private string title;
         public string Title
         {
-            get { return title; }
+            get => title;
             set
             {
                 title = value;
@@ -33,7 +33,7 @@ namespace CoolapkUWP.Data
         private string describe;
         public string Describe
         {
-            get { return describe; }
+            get => describe;
             set
             {
                 describe = value;
@@ -45,7 +45,7 @@ namespace CoolapkUWP.Data
         private string tag;
         public string Tag
         {
-            get { return tag; }
+            get => tag;
             set
             {
                 tag = value;

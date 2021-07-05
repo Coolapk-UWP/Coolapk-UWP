@@ -6,43 +6,46 @@ using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    class FeedReplyViewModel : SimpleFeedReplyViewModel, INotifyPropertyChanged, ILike
+    internal class FeedReplyViewModel : SimpleFeedReplyViewModel, INotifyPropertyChanged, ILike
     {
         public FeedReplyViewModel(IJsonValue t, bool showReplyRow = true) : base(t)
         {
             JsonObject token = t.GetObject();
-            dateline = Tools.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
+            dateline = UIHelper.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
             message = token["message"].GetString();
             userSmallAvatarUrl = token["userInfo"].GetObject()["userSmallAvatar"].GetString();
             likenum = token["likenum"].ToString().Replace("\"", string.Empty);
             replynum = token["replynum"].ToString().Replace("\"", string.Empty);
-            token.TryGetValue("replyRowsCount", out IJsonValue value1);
-            replyRowsCount = value1?.GetNumber() ?? 0;
+            if (token.TryGetValue("replyRowsCount", out IJsonValue value1))
+            { replyRowsCount = value1?.GetNumber() ?? 0; }
             showreplyRows = showReplyRow && replyRowsCount > 0;
             if (showreplyRows)
             {
                 List<SimpleFeedReplyViewModel> models = new List<SimpleFeedReplyViewModel>();
-                foreach (var item in token["replyRows"].GetArray())
-                    models.Add(new SimpleFeedReplyViewModel(item));
+                foreach (IJsonValue item in token["replyRows"].GetArray())
+                { models.Add(new SimpleFeedReplyViewModel(item)); }
                 replyRows = models.ToArray();
                 replyRowsMore = token["replyRowsMore"].GetNumber();
             }
-            liked = token.TryGetValue("userAction", out IJsonValue v) ? v.GetObject()["like"].GetNumber() == 1 : false;
+            liked = token.TryGetValue("userAction", out IJsonValue v) && v.GetObject()["like"].GetNumber() == 1;
             GetPic();
         }
 
         private async void GetPic()
         {
             if (showPic)
+            {
                 pic = new ImageData
                 {
                     Pic = await ImageCache.GetImage(ImageType.SmallImage, picUrl),
                     url = picUrl
                 };
+            }
             if (!string.IsNullOrEmpty(userSmallAvatarUrl))
-                userSmallAvatar = await ImageCache.GetImage(ImageType.SmallAvatar, userSmallAvatarUrl);
+            { userSmallAvatar = await ImageCache.GetImage(ImageType.SmallAvatar, userSmallAvatarUrl); }
         }
-        string userSmallAvatarUrl;
+
+        private readonly string userSmallAvatarUrl;
         private ImageSource userSmallAvatar1;
         private ImageData pic1;
         private string likenum1;

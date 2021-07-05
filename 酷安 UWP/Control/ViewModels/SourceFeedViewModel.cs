@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    class SourceFeedViewModel : Entity
+    internal class SourceFeedViewModel : Entity
     {
         public SourceFeedViewModel(IJsonValue t) : base(t)
         {
@@ -16,13 +16,13 @@ namespace CoolapkUWP.Control.ViewModels
             {
                 uurl = token["userInfo"].GetObject()["url"].GetString();
                 username = token["userInfo"].GetObject()["username"].GetString();
-                dateline = Tools.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
+                dateline = UIHelper.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
                 message = token["message"].GetString();
                 message_title = token.TryGetValue("message_title", out IJsonValue j) ? j.GetString() : string.Empty;
             }
             else
             {
-                dateline = Tools.ConvertTime(token["digest_time"].GetNumber());
+                dateline = UIHelper.ConvertTime(token["digest_time"].GetNumber());
                 message = token["message"].GetString().Substring(0, 120) + "……<a href=\"\">查看更多</a>";
                 message_title = token["title"].GetString();
             }
@@ -31,12 +31,12 @@ namespace CoolapkUWP.Control.ViewModels
             GetPic(token);
         }
 
-        async void GetPic(JsonObject token)
+        private async void GetPic(JsonObject token)
         {
             if (showPicArr)
             {
                 picArr = new ObservableCollection<ImageData>();
-                foreach (var item in token["picArr"].GetArray())
+                foreach (IJsonValue item in token["picArr"].GetArray())
                 {
                     pics.Add(item.GetString());
                     picArr.Add(new ImageData { Pic = await ImageCache.GetImage(ImageType.SmallImage, item.GetString()), url = item.GetString() });

@@ -6,8 +6,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:viewmodel="using:CoolapkUWP.Control.ViewModels"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:converter="using:CoolapkUWP.Data.ValueConverters"
+    xmlns:local="using:CoolapkUWP.Pages.FeedPages"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
 
@@ -56,8 +57,8 @@
             
             <DataTemplate x:Key="Card" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem
-                    BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-                    BorderThickness="2"
+                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                    BorderThickness="1"
                     Padding="4"
                     HorizontalContentAlignment="Stretch"
                     Style="{StaticResource NoAnimationListViewItem}">
@@ -125,26 +126,24 @@
             </DataTemplate>
             <DataTemplate x:Key="imageCard" x:DataType="viewmodel:IndexPageViewModel">
                 <StackPanel>
-                    <ListViewItem
-                        Style="{StaticResource NoAnimationListViewItem}"
-                        HorizontalContentAlignment="Stretch">
-                        <ListView
-                            Style="{StaticResource ListViewStyle1}"
-                            ScrollViewer.VerticalScrollMode="Disabled"
-                            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                            MaxHeight="200"
-                            ItemsSource="{x:Bind entities}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="viewmodel:IndexPageViewModel">
-                                    <Image
-                                        MaxHeight="180"
-                                        Tapped="Grid_Tapped"
-                                        Tag="{x:Bind}"
-                                        Source="{x:Bind pic,Mode=OneWay}"/>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </ListViewItem>
+                    <FlipView
+                        x:Name="flipView"
+                        Margin="8,0"
+                        CornerRadius="8"
+                        Background="Transparent"
+                        ItemsSource="{x:Bind entities}"
+                        SizeChanged="{x:Bind local:IndexPage.FlipView_SizeChanged}">
+                        <FlipView.ItemTemplate>
+                            <DataTemplate x:DataType="viewmodel:IndexPageViewModel">
+                                <Image
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Source="{x:Bind pic, Mode=OneWay}"
+                                    Tag="{x:Bind}"
+                                    Tapped="Grid_Tapped"/>
+                            </DataTemplate>
+                        </FlipView.ItemTemplate>
+                    </FlipView>
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="textLinkListCard" x:DataType="viewmodel:IndexPageViewModel">
@@ -217,8 +216,8 @@
             <DataTemplate x:Key="messageCard" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem
                     Style="{StaticResource NoAnimationListViewItem}"
-                    BorderThickness="2"
-                    BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                     Margin="15,0">
                     <TextBlock
                         Margin="5"
@@ -327,6 +326,8 @@
                     Margin="4,0"
                     Style="{StaticResource NoPaddingListViewItem}"
                     VerticalContentAlignment="Top"
+                    Tapped="Grid_Tapped"
+                    Tag="{x:Bind url}"
                     Template="{StaticResource ListViewItemTemplate1}">
                     <Border
                         BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"

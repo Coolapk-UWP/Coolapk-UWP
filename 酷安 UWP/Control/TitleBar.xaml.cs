@@ -24,7 +24,7 @@ namespace CoolapkUWP.Control
         private void titleGrid_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             if (e.OriginalSource is Grid || (e.OriginalSource is TextBlock a && a == title))
-                RefreshEvent?.Invoke(sender, e);
+            { RefreshEvent?.Invoke(sender, e); }
         }
     }
 }

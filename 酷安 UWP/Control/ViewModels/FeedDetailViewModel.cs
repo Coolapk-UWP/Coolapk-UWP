@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    class FeedDetailViewModel : FeedViewModelBase
+    internal class FeedDetailViewModel : FeedViewModelBase
     {
         public FeedDetailViewModel(IJsonValue t) : base(t)
         {
@@ -15,34 +15,34 @@ namespace CoolapkUWP.Control.ViewModels
             if (token["entityType"].GetString() != "article")
             {
                 if (token.TryGetValue("share_num", out IJsonValue s))
-                    share_num = s.ToString().Replace("\"", string.Empty);
+                { share_num = s.ToString().Replace("\"", string.Empty); }
                 if (token["feedType"].GetString() == "feedArticle")
-                    isFeedArticle = true;
+                { isFeedArticle = true; }
                 if (isFeedArticle)
                 {
                     has_message_cover = token.TryGetValue("message_cover", out IJsonValue value) && !string.IsNullOrEmpty(value.GetString());
                     if (has_message_cover)
-                        message_cover_url = value.GetString();
+                    { message_cover_url = value.GetString(); }
                     JsonArray array = JsonArray.Parse(token["message_raw_output"].GetString());
                     message_raw_output = string.Empty;
                     StringBuilder builder = new StringBuilder();
-                    foreach (var i in array)
+                    foreach (IJsonValue i in array)
                     {
                         JsonObject item = i.GetObject();
                         if (item["type"].GetString() == "text")
-                            builder.Append(item["message"].GetString());
+                        { _ = builder.Append(item["message"].GetString()); }
                         else if (item["type"].GetString() == "image")
                         {
                             string description = string.IsNullOrEmpty(item["description"].GetString()) ? string.Empty : item["description"].GetString();
                             string uri = item["url"].GetString();
-                            builder.Append($"\n<a t=\"image\" href=\"{uri}\">{description}</a>\n");
+                            _ = builder.Append($"\n<a t=\"image\" href=\"{uri}\">{description}</a>\n");
                             feedArticlePics.Add(uri);
                         }
                     }
                     message_raw_output = builder.ToString();
                 }
                 if (token["feedType"].GetString() == "answer")
-                    isAnswerFeed = true;
+                { isAnswerFeed = true; }
                 if (isAnswerFeed)
                 {
                     JsonObject j = JsonObject.Parse(token["extraData"].GetString());
@@ -69,14 +69,16 @@ namespace CoolapkUWP.Control.ViewModels
             {
                 List<RelationRowsItem> vs = new List<RelationRowsItem>();
                 if (valuelocation != null && !string.IsNullOrEmpty(valuelocation.GetString()))
-                    vs.Add(new RelationRowsItem { title = valuelocation.GetString() });
+                { vs.Add(new RelationRowsItem { title = valuelocation.GetString() }); }
                 if (valuerelationRows != null)
-                    foreach (var i in valuerelationRows.GetArray())
+                {
+                    foreach (IJsonValue i in valuerelationRows.GetArray())
                     {
                         JsonObject item = i.GetObject();
                         vs.Add(new RelationRowsItem { title = item["title"].GetString(), url = item["url"].GetString(), logoUrl = item["logo"].GetString() });
                     }
-                if (vs.Count == 0) showRelationRows = false;
+                }
+                if (vs.Count == 0) { showRelationRows = false; }
                 relationRows = vs.ToArray();
             }
             GetPic();
@@ -85,13 +87,17 @@ namespace CoolapkUWP.Control.ViewModels
         private async void GetPic()
         {
             if (has_message_cover)
-                message_cover = await ImageCache.GetImage(ImageType.SmallImage, message_cover_url);
+            { message_cover = await ImageCache.GetImage(ImageType.SmallImage, message_cover_url); }
             if (showTtitle)
-                tpic = await ImageCache.GetImage(ImageType.Icon, tpicUrl);
+            { tpic = await ImageCache.GetImage(ImageType.Icon, tpicUrl); }
             if (showRelationRows)
-                foreach (var item in relationRows)
+            {
+                foreach (RelationRowsItem item in relationRows)
+                {
                     if (!string.IsNullOrEmpty(item.logoUrl))
-                        item.logo = await ImageCache.GetImage(ImageType.Icon, item.logoUrl);
+                    { item.logo = await ImageCache.GetImage(ImageType.Icon, item.logoUrl); }
+                }
+            }
         }
 
         string tpicUrl;

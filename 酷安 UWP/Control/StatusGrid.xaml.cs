@@ -10,11 +10,11 @@ namespace CoolapkUWP.Control
     {
         public StatusGrid()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             Width = Window.Current.Bounds.Width + 140;
             Window.Current.SizeChanged += (s, e) => Width = e.Size.Width + 140;
-            if (Tools.isShowingProgressBar) ShowProgressBar();
-            else HideProgressBar();
+            if (UIHelper.isShowingProgressBar) { ShowProgressBar(); }
+            else { HideProgressBar(); }
         }
 
         public void ShowProgressBar()

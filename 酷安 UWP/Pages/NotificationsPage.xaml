@@ -16,8 +16,13 @@
                 <control:DatatemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate x:Key="Reply" x:DataType="local:SimpleNotificationViewModel">
-                <Grid Padding="4,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" BorderThickness="2" 
-                      Tapped="Ellipse_Tapped" Tag="{x:Bind Uri}" Background="Transparent">
+                <Grid
+                    Padding="4,0"
+                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
+                    BorderThickness="1"
+                    Tapped="Ellipse_Tapped"
+                    Tag="{x:Bind Uri}"
+                    Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="56"/>
                         <ColumnDefinition Width="*"/>
@@ -26,88 +31,169 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Ellipse Width="40" Height="40" Grid.RowSpan="2" HorizontalAlignment="Left" Margin="8" VerticalAlignment="Top" Tapped="Ellipse_Tapped" Tag="{x:Bind FromUserUri}">
+                    <Ellipse
+                        Width="40"
+                        Height="40"
+                        Grid.RowSpan="2"
+                        HorizontalAlignment="Left"
+                        Margin="8"
+                        VerticalAlignment="Top"
+                        Tapped="Ellipse_Tapped"
+                        Tag="{x:Bind FromUserUri}">
                         <Ellipse.Fill>
                             <ImageBrush ImageSource="{x:Bind FromUserAvatar,Mode=OneWay}"/>
                         </Ellipse.Fill>
                     </Ellipse>
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Padding="0,4,0,0">
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Padding="0,4,0,0">
                         <TextBlock Text="{x:Bind FromUserName}"/>
-                        <TextBlock Text="{x:Bind Dateline}" Foreground="Gray" Margin="8,0,0,0"/>
+                        <TextBlock
+                            Text="{x:Bind Dateline}"
+                            Foreground="Gray"
+                            Margin="8,0,0,0"/>
                     </StackPanel>
-                    <control:MTextBlock Padding="0,0,0,4" Grid.Row="2" Grid.Column="1" Foreground="Gray" MessageText="{x:Bind Note}"/>
+                    <control:MTextBlock
+                        Padding="0,0,0,4"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Foreground="Gray"
+                        MessageText="{x:Bind Note}"/>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="Like" x:DataType="local:LikeNotificationViewModel">
-                <Grid Padding="4,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" BorderThickness="2" 
-                      Tapped="Ellipse_Tapped" Tag="{x:Bind Uri}" Background="Transparent">
+                <Grid
+                    Padding="4,0"
+                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
+                    BorderThickness="2"
+                    Tapped="Ellipse_Tapped"
+                    Tag="{x:Bind Uri}"
+                    Background="Transparent">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
-                        <Button Padding="0" Margin="4" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource ButtonStyle1}"
-                            Tapped="Ellipse_Tapped" Tag="{x:Bind LikeUserUri}" Background="Transparent">
+                        <Button
+                            Padding="0"
+                            Margin="4"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Style="{StaticResource ButtonStyle1}"
+                            Tapped="Ellipse_Tapped"
+                            Tag="{x:Bind LikeUserUri}"
+                            Background="Transparent">
                             <StackPanel Orientation="Horizontal">
-                                <Ellipse Width="20" Height="20">
+                                <Ellipse
+                                    Width="20"
+                                    Height="20">
                                     <Ellipse.Fill>
                                         <ImageBrush ImageSource="{x:Bind LikeUserAvatar,Mode=OneWay}"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
-                                <TextBlock Margin="4,0,0,0" Text="{x:Bind LikeUserName}"/>
+                                <TextBlock
+                                    Margin="4,0,0,0"
+                                    Text="{x:Bind LikeUserName}"/>
                             </StackPanel>
                         </Button>
-                        <TextBlock Text="{x:Bind Dateline}" Foreground="Gray" IsTextSelectionEnabled="False" Margin="8,4"/>
+                        <TextBlock
+                            Text="{x:Bind Dateline}"
+                            Foreground="Gray"
+                            IsTextSelectionEnabled="False"
+                            Margin="8,4"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="1" Margin="6,0">
+                    <StackPanel
+                        Grid.Row="1"
+                        Margin="6,0">
                         <TextBlock Text="{x:Bind Title}"/>
-                        <control:MTextBlock Padding="0,0,0,4" Foreground="Gray" MessageText="{x:Bind FeedMessage}"/>
+                        <control:MTextBlock
+                            Padding="0,0,0,4"
+                            Foreground="Gray"
+                            MessageText="{x:Bind FeedMessage}"/>
                     </StackPanel>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="AtCommentMe" x:DataType="local:AtCommentMeNotificationViewModel">
-                <Grid Padding="4,0" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" BorderThickness="2" 
-                      Tapped="Ellipse_Tapped" Tag="{x:Bind Uri}" Background="Transparent">
+                <Grid
+                    Padding="4,0"
+                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
+                    BorderThickness="1"
+                    Tapped="Ellipse_Tapped"
+                    Tag="{x:Bind Uri}"
+                    Background="Transparent">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
-                        <Button Padding="0" Margin="4" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource ButtonStyle1}"
-                            Tapped="Ellipse_Tapped" Tag="{x:Bind UserUri}" Background="Transparent">
+                        <Button
+                            Padding="0"
+                            Margin="4"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Style="{StaticResource ButtonStyle1}"
+                            Tapped="Ellipse_Tapped"
+                            Tag="{x:Bind UserUri}"
+                            Background="Transparent">
                             <StackPanel Orientation="Horizontal">
-                                <Ellipse Width="20" Height="20">
+                                <Ellipse
+                                    Width="20"
+                                    Height="20">
                                     <Ellipse.Fill>
                                         <ImageBrush ImageSource="{x:Bind UserAvatar,Mode=OneWay}"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
-                                <TextBlock Margin="4,0,0,0" Text="{x:Bind UserName}"/>
+                                <TextBlock
+                                    Margin="4,0,0,0"
+                                    Text="{x:Bind UserName}"/>
                             </StackPanel>
                         </Button>
-                        <TextBlock Text="{x:Bind Dateline}" Foreground="Gray" Margin="8,4"/>
+                        <TextBlock
+                            Text="{x:Bind Dateline}"
+                            Foreground="Gray"
+                            Margin="8,4"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="1" Padding="6,0,6,8">
+                    <StackPanel
+                        Grid.Row="1"
+                        Padding="6,0,6,8">
                         <control:MTextBlock MessageText="{x:Bind Message}"/>
-                        <control:MTextBlock Foreground="Gray" MessageText="{x:Bind FeedMessage}"/>
+                        <control:MTextBlock
+                            Foreground="Gray"
+                            MessageText="{x:Bind FeedMessage}"/>
                     </StackPanel>
                 </Grid>
             </DataTemplate>
-            <local:TemplateSelector x:Key="temse" DataTemplate1="{StaticResource feed}" DataTemplate2="{StaticResource Reply}"
-                                    DataTemplate3="{StaticResource Like}" DataTemplate4="{StaticResource AtCommentMe}"/>
+            <local:TemplateSelector
+                x:Key="temse"
+                DataTemplate1="{StaticResource feed}"
+                DataTemplate2="{StaticResource Reply}"
+                DataTemplate3="{StaticResource Like}"
+                DataTemplate4="{StaticResource AtCommentMe}"/>
         </ResourceDictionary>
     </Page.Resources>
 
     <Grid>
-        <controls:PullToRefreshListView x:Name="MainListView" SelectionMode="None" RefreshRequested="MainListView_RefreshRequested"
-                                        PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新">
+        <controls:PullToRefreshListView
+            x:Name="MainListView"
+            SelectionMode="None"
+            RefreshRequested="MainListView_RefreshRequested"
+            PullToRefreshLabel="下拉刷新"
+            ReleaseToRefreshLabel="松手刷新">
             <controls:PullToRefreshListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Padding" Value="0"/>
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 </Style>
             </controls:PullToRefreshListView.ItemContainerStyle>
-            <ListViewItem x:Name="NavigateItems" x:Load="False">
-                <ListView IsItemClickEnabled="True" ScrollViewer.VerticalScrollMode="Disabled" ItemClick="ListView_ItemClick">
+            <ListViewItem
+                x:Name="NavigateItems"
+                x:Load="False">
+                <ListView
+                    IsItemClickEnabled="True"
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    ItemClick="ListView_ItemClick">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <control:GridPanel DesiredColumnWidth="180.0"/>
@@ -119,35 +205,88 @@
                             <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
                         </Style>
                     </ListView.ItemContainerStyle>
-                    <StackPanel Orientation="Horizontal" Margin="8,0" Tag="atMe">
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="8,0"
+                        Tag="atMe">
                         <SymbolIcon Symbol="Account"/>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0">@我的动态</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:Tools.notifications.atMeNum,Mode=OneWay}"/>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Margin="8,0">
+                            @我的动态
+                        </TextBlock>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Margin="8,0"
+                            Text="{x:Bind data:UIHelper.notifications.atMeNum,Mode=OneWay}"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="8,0" Tag="atCommentMe">
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="8,0"
+                        Tag="atCommentMe">
                         <SymbolIcon Symbol="Account"/>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0">@我的评论</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:Tools.notifications.atCommentMeNum,Mode=OneWay}"/>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Margin="8,0">
+                            @我的评论
+                        </TextBlock>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Margin="8,0"
+                            Text="{x:Bind data:UIHelper.notifications.atCommentMeNum,Mode=OneWay}"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="8,0" Tag="like">
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="8,0"
+                        Tag="like">
                         <SymbolIcon Symbol="Like"/>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0">我收到的赞</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:Tools.notifications.feedLikeNum,Mode=OneWay}"/>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Margin="8,0">
+                            我收到的赞
+                        </TextBlock>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Margin="8,0"
+                            Text="{x:Bind data:UIHelper.notifications.feedLikeNum,Mode=OneWay}"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="8,0" Tag="follow">
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="8,0"
+                        Tag="follow">
                         <SymbolIcon Symbol="AddFriend"/>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0">好友关注</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:Tools.notifications.followNum,Mode=OneWay}"/>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Margin="8,0">
+                            好友关注
+                        </TextBlock>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Margin="8,0"
+                            Text="{x:Bind data:UIHelper.notifications.followNum,Mode=OneWay}"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="8,0" Tag="message">
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="8,0"
+                        Tag="message">
                         <SymbolIcon Symbol="Comment"/>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0">私信</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="8,0" Text="{x:Bind data:Tools.notifications.messageNum,Mode=OneWay}"/>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Margin="8,0">
+                            私信
+                        </TextBlock>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Margin="8,0"
+                            Text="{x:Bind data:UIHelper.notifications.messageNum,Mode=OneWay}"/>
                     </StackPanel>
                 </ListView>
             </ListViewItem>
             <ListViewItem>
-                <ListView ItemsSource="{x:Bind itemCollection}" ScrollViewer.VerticalScrollMode="Disabled" ItemTemplateSelector="{StaticResource temse}">
+                <ListView
+                    ItemsSource="{x:Bind itemCollection}"
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    ItemTemplateSelector="{StaticResource temse}">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <control:GridPanel DesiredColumnWidth="384.0"/>
@@ -163,6 +302,9 @@
                 </ListView>
             </ListViewItem>
         </controls:PullToRefreshListView>
-        <control:TitleBar x:Name="titleBar" x:Load="False" BackButtonClick="TitleBar_BackButtonClick"/>
+        <control:TitleBar
+            x:Name="titleBar"
+            x:Load="False"
+            BackButtonClick="TitleBar_BackButtonClick"/>
     </Grid>
 </Page>

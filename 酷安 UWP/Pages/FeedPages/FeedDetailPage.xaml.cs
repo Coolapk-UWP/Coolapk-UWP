@@ -23,9 +23,10 @@ namespace CoolapkUWP.Pages.FeedPages
     /// </summary>
     public sealed partial class FeedDetailPage : Page, INotifyPropertyChanged
     {
-        string feedId;
-        FeedDetailViewModel feedDetail = null;
-        FeedDetailViewModel FeedDetail
+        private string feedId;
+        private FeedDetailViewModel feedDetail = null;
+
+        private FeedDetailViewModel FeedDetail
         {
             get => feedDetail;
             set
@@ -34,29 +35,30 @@ namespace CoolapkUWP.Pages.FeedPages
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FeedDetail)));
             }
         }
-        ObservableCollection<FeedReplyViewModel> hotReplies = new ObservableCollection<FeedReplyViewModel>();
-        ObservableCollection<FeedReplyViewModel> replies = new ObservableCollection<FeedReplyViewModel>();
-        ObservableCollection<FeedViewModel> answers = new ObservableCollection<FeedViewModel>();
-        ObservableCollection<UserViewModel> likes = new ObservableCollection<UserViewModel>();
-        ObservableCollection<SourceFeedViewModel> shares = new ObservableCollection<SourceFeedViewModel>();
-        int repliesPage, likesPage, sharesPage, answersPage, hotRepliesPage;
-        double replyFirstItem, replyLastItem, likeFirstItem, likeLastItem, answerFirstItem, answerLastItem, hotReplyFirstItem, hotReplyLastItem;
-        string answerSortType = "reply";
-        string[] comboBoxItems = new string[] { "最近回复", "按时间排序", "按热度排序", "只看楼主" };
+
+        private readonly ObservableCollection<FeedReplyViewModel> hotReplies = new ObservableCollection<FeedReplyViewModel>();
+        private readonly ObservableCollection<FeedReplyViewModel> replies = new ObservableCollection<FeedReplyViewModel>();
+        private readonly ObservableCollection<FeedViewModel> answers = new ObservableCollection<FeedViewModel>();
+        private readonly ObservableCollection<UserViewModel> likes = new ObservableCollection<UserViewModel>();
+        private readonly ObservableCollection<SourceFeedViewModel> shares = new ObservableCollection<SourceFeedViewModel>();
+        private int repliesPage, likesPage, sharesPage, answersPage, hotRepliesPage;
+        private double replyFirstItem, replyLastItem, likeFirstItem, likeLastItem, answerFirstItem, answerLastItem, hotReplyFirstItem, hotReplyLastItem;
+        private string answerSortType = "reply";
+        private readonly string[] comboBoxItems = new string[] { "最近回复", "按时间排序", "按热度排序", "只看楼主" };
 
         public event PropertyChangedEventHandler PropertyChanged;
         public FeedDetailPage()
         {
-            this.InitializeComponent();
-            Task.Run(async () =>
-            {
-                await Task.Delay(300);
-                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
-                    (VisualTree.FindDescendantByName(MainListView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
-                    (VisualTree.FindDescendantByName(RightSideListView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
-                });
-            });
+            InitializeComponent();
+            _ = Task.Run(async () =>
+              {
+                  await Task.Delay(300);
+                  await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                  {
+                      (VisualTree.FindDescendantByName(MainListView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
+                      (VisualTree.FindDescendantByName(RightSideListView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
+                  });
+              });
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -68,23 +70,23 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public async void LoadFeedDetail()
         {
-            Tools.ShowProgressBar();
-            if (string.IsNullOrEmpty(feedId)) return;
-            JsonObject detail = Tools.GetJSonObject(await Tools.GetJson("/feed/detail?id=" + feedId));
+            UIHelper.ShowProgressBar();
+            if (string.IsNullOrEmpty(feedId)) { return; }
+            JsonObject detail = UIHelper.GetJSonObject(await UIHelper.GetJson("/feed/detail?id=" + feedId));
             if (detail != null)
             {
                 FeedDetail = new FeedDetailViewModel(detail);
                 TitleBar.Title = FeedDetail.title;
                 if (FeedDetail.isQuestionFeed)
                 {
-                    if (answersPage != 0 || answerLastItem != 0) return;
-                    FindName(nameof(AnswersListView));
+                    if (answersPage != 0 || answerLastItem != 0) { return; }
+                    _ = FindName(nameof(AnswersListView));
                     PivotItemPanel.Visibility = Visibility.Collapsed;
                     RefreshAnswers();
                 }
                 else
                 {
-                    FindName(nameof(FeedDetailPivot));
+                    _ = FindName(nameof(FeedDetailPivot));
                     if (feedArticleTitle != null)
                     {
                         feedArticleTitle.Height = feedArticleTitle.Width * 0.44;
@@ -96,7 +98,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     TitleBar.ComboBoxSelectedIndex = 0;
                 }
             }
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -125,7 +127,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 case "MakeLike":
                     if (FeedDetail.liked)
                     {
-                        JsonObject o = Tools.GetJSonObject(await Tools.GetJson($"/feed/unlike?id={feedId}&detail=0"));
+                        JsonObject o = UIHelper.GetJSonObject(await UIHelper.GetJson($"/feed/unlike?id={feedId}&detail=0"));
                         if (o != null)
                         {
                             FeedDetail.likenum = o["count"].GetNumber().ToString();
@@ -135,7 +137,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     }
                     else
                     {
-                        JsonObject o = Tools.GetJSonObject(await Tools.GetJson($"/feed/like?id={feedId}&detail=0"));
+                        JsonObject o = UIHelper.GetJSonObject(await UIHelper.GetJson($"/feed/like?id={feedId}&detail=0"));
                         if (o != null)
                         {
                             FeedDetail.likenum = o["count"].GetNumber().ToString();
@@ -145,7 +147,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     }
                     break;
                 default:
-                    Tools.OpenLink(tag);
+                    UIHelper.OpenLink(tag);
                     break;
             }
         }
@@ -154,12 +156,12 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if ((sender as FrameworkElement).Tag is string s) Tools.OpenLink(s);
+            if ((sender as FrameworkElement).Tag is string s) { UIHelper.OpenLink(s); }
         }
 
         async void Refresh()
         {
-            Tools.ShowProgressBar();
+            UIHelper.ShowProgressBar();
             if (FeedDetailPivot != null)
             {
                 switch (FeedDetailPivot.SelectedIndex)
@@ -173,60 +175,65 @@ namespace CoolapkUWP.Pages.FeedPages
                     case 2:
                         RefreshShares();
                         break;
+                    default:
+                        break;
                 }
             }
             else if (AnswersListView != null)
             {
                 if (answerLastItem != 0) return;
-                RefreshAnswers(1);
+                { RefreshAnswers(1); }
             }
             else
             {
                 LoadFeedDetail();
-                Tools.HideProgressBar();
+                UIHelper.HideProgressBar();
                 return;
             }
-            if (RefreshAll) await RefreshFeed();
-            Tools.HideProgressBar();
+            if (RefreshAll) { await RefreshFeed(); }
+            UIHelper.HideProgressBar();
         }
-        async Task RefreshFeed()
+
+        private async Task RefreshFeed()
         {
-            JsonObject detail = Tools.GetJSonObject(await Tools.GetJson("/feed/detail?id=" + feedId));
-            if (detail != null) FeedDetail = new FeedDetailViewModel(detail);
+            JsonObject detail = UIHelper.GetJSonObject(await UIHelper.GetJson("/feed/detail?id=" + feedId));
+            if (detail != null) { FeedDetail = new FeedDetailViewModel(detail); }
         }
-        async void RefreshHotFeed(int p = -1)
+
+        private async void RefreshHotFeed(int p = -1)
         {
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/feed/hotReplyList?id={feedId}&page={(p == -1 ? ++hotRepliesPage : p)}{(hotRepliesPage > 1 ? $"&firstItem={hotReplyFirstItem}&lastItem={hotReplyLastItem}" : string.Empty)}&discussMode=1"));
+            JsonArray array = UIHelper.GetDataArray(await UIHelper.GetJson($"/feed/hotReplyList?id={feedId}&page={(p == -1 ? ++hotRepliesPage : p)}{(hotRepliesPage > 1 ? $"&firstItem={hotReplyFirstItem}&lastItem={hotReplyLastItem}" : string.Empty)}&discussMode=1"));
             if (array != null && array.Count > 0)
             {
                 if (p == -1 || hotRepliesPage == 1)
                 {
-                    var d = (from a in hotReplies
-                             from b in array
-                             where a.id == b.GetObject()["id"].GetNumber()
-                             select a).ToArray();
-                    foreach (var item in d)
-                        hotReplies.Remove(item);
+                    FeedReplyViewModel[] d = (from a in hotReplies
+                                              from b in array
+                                              where a.id == b.GetObject()["id"].GetNumber()
+                                              select a).ToArray();
+                    foreach (FeedReplyViewModel item in d)
+                    { hotReplies.Remove(item); }
                     for (int i = 0; i < array.Count; i++)
-                        hotReplies.Insert(i, new FeedReplyViewModel(array[i]));
+                    { hotReplies.Insert(i, new FeedReplyViewModel(array[i])); }
                     hotReplyFirstItem = array.First().GetObject()["id"].GetNumber();
                     if (hotRepliesPage == 1)
-                        hotReplyLastItem = array.Last().GetObject()["id"].GetNumber();
+                    { hotReplyLastItem = array.Last().GetObject()["id"].GetNumber(); }
                 }
                 else
                 {
                     hotReplyLastItem = array.Last().GetObject()["id"].GetNumber();
-                    foreach (var item in array)
-                        hotReplies.Add(new FeedReplyViewModel(item));
+                    foreach (IJsonValue item in array)
+                    { hotReplies.Add(new FeedReplyViewModel(item)); }
                 }
             }
             else if (p == -1)
             {
                 hotRepliesPage--;
-                Tools.ShowMessage("没有更多热门回复了");
+                UIHelper.ShowMessage("没有更多热门回复了");
             }
         }
-        async void RefreshFeedReply(int p = -1)
+
+        private async void RefreshFeedReply(int p = -1)
         {
             string listType = string.Empty, isFromAuthor = string.Empty;
             switch (TitleBar.ComboBoxSelectedIndex)
@@ -248,120 +255,130 @@ namespace CoolapkUWP.Pages.FeedPages
                     listType = string.Empty;
                     isFromAuthor = "1";
                     break;
+                default:
+                    break;
             }
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/feed/replyList?id={feedId}&listType={listType}&page={(p == -1 ? ++repliesPage : p)}{(replyFirstItem == 0 ? string.Empty : $"&firstItem={replyFirstItem}")}{(replyLastItem == 0 ? string.Empty : $"&lastItem={replyLastItem}")}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}"));
+            JsonArray array = UIHelper.GetDataArray(await UIHelper.GetJson($"/feed/replyList?id={feedId}&listType={listType}&page={(p == -1 ? ++repliesPage : p)}{(replyFirstItem == 0 ? string.Empty : $"&firstItem={replyFirstItem}")}{(replyLastItem == 0 ? string.Empty : $"&lastItem={replyLastItem}")}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={isFromAuthor}"));
             if (array != null && array.Count != 0)
             {
                 if (p == 1 || repliesPage == 1)
                 {
-                    var d = (from a in replies
-                             from b in array
-                             where a.id == b.GetObject()["id"].GetNumber()
-                             select a).ToArray();
-                    foreach (var item in d)
-                        replies.Remove(item);
+                    FeedReplyViewModel[] d = (from a in replies
+                                              from b in array
+                                              where a.id == b.GetObject()["id"].GetNumber()
+                                              select a).ToArray();
+                    foreach (FeedReplyViewModel item in d)
+                    { replies.Remove(item); }
                     replyFirstItem = array.First().GetObject()["id"].GetNumber();
                     if (repliesPage == 1)
-                        replyLastItem = array.Last().GetObject()["id"].GetNumber();
+                    { replyLastItem = array.Last().GetObject()["id"].GetNumber(); }
                     for (int i = 0; i < array.Count; i++)
-                        replies.Insert(i, new FeedReplyViewModel(array[i]));
+                    { replies.Insert(i, new FeedReplyViewModel(array[i])); }
                 }
                 else
                 {
                     replyLastItem = array.Last().GetObject()["id"].GetNumber();
-                    foreach (var item in array)
-                        replies.Add(new FeedReplyViewModel(item));
+                    foreach (IJsonValue item in array)
+                    { replies.Add(new FeedReplyViewModel(item)); }
                 }
             }
             else if (p == -1)
             {
                 repliesPage--;
-                Tools.ShowMessage("没有更多回复了");
+                UIHelper.ShowMessage("没有更多回复了");
             }
         }
-        async void RefreshAnswers(int p = -1)
+
+        private async void RefreshAnswers(int p = -1)
         {
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/question/answerList?id={feedId}&sort={answerSortType}&page={(p == -1 ? ++answersPage : p)}{(answerFirstItem == 0 ? string.Empty : $"&firstItem={answerFirstItem}")}{(answerLastItem == 0 ? string.Empty : $"&lastItem={answerLastItem}")}"));
+            JsonArray array = UIHelper.GetDataArray(await UIHelper.GetJson($"/question/answerList?id={feedId}&sort={answerSortType}&page={(p == -1 ? ++answersPage : p)}{(answerFirstItem == 0 ? string.Empty : $"&firstItem={answerFirstItem}")}{(answerLastItem == 0 ? string.Empty : $"&lastItem={answerLastItem}")}"));
             if (array != null && array.Count != 0)
             {
                 if (p == 1 || answersPage == 1)
                 {
-                    var d = (from a in answers
-                             from b in array
-                             where a.url == b.GetObject()["url"].GetString()
-                             select a).ToArray();
-                    foreach (var item in d)
-                        answers.Remove(item);
+                    FeedViewModel[] d = (from a in answers
+                                         from b in array
+                                         where a.url == b.GetObject()["url"].GetString()
+                                         select a).ToArray();
+                    foreach (FeedViewModel item in d)
+                    { answers.Remove(item); }
                     for (int i = 0; i < array.Count; i++)
-                        answers.Insert(i, new FeedViewModel(array[i], FeedDisplayMode.notShowMessageTitle));
+                    { answers.Insert(i, new FeedViewModel(array[i], FeedDisplayMode.notShowMessageTitle)); }
                     answerFirstItem = array.First().GetObject()["id"].GetNumber();
                     if (answersPage == 1)
-                        answerLastItem = array.Last().GetObject()["id"].GetNumber();
+                    { answerLastItem = array.Last().GetObject()["id"].GetNumber(); }
                 }
                 else
                 {
                     answerLastItem = array.Last().GetObject()["id"].GetNumber();
-                    foreach (var item in array)
-                        answers.Add(new FeedViewModel(item, FeedDisplayMode.notShowMessageTitle));
+                    foreach (IJsonValue item in array)
+                    { answers.Add(new FeedViewModel(item, FeedDisplayMode.notShowMessageTitle)); }
                 }
             }
             else if (p == -1)
             {
                 answersPage--;
-                Tools.ShowMessage("没有更多回答了");
+                UIHelper.ShowMessage("没有更多回答了");
             }
         }
-        async void RefreshLikes(int p = -1)
+
+        private async void RefreshLikes(int p = -1)
         {
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/feed/likeList?id={feedId}&listType=lastupdate_desc&page={(p == -1 ? ++likesPage : p)}{(likeFirstItem == 0 ? string.Empty : $"&firstItem={likeFirstItem}")}{(likeLastItem == 0 ? string.Empty : $"&lastItem={likeLastItem}")}"));
+            JsonArray array = UIHelper.GetDataArray(await UIHelper.GetJson($"/feed/likeList?id={feedId}&listType=lastupdate_desc&page={(p == -1 ? ++likesPage : p)}{(likeFirstItem == 0 ? string.Empty : $"&firstItem={likeFirstItem}")}{(likeLastItem == 0 ? string.Empty : $"&lastItem={likeLastItem}")}"));
             if (array != null && array.Count != 0)
             {
                 if (p == 1 || likesPage == 1)
                 {
                     likeFirstItem = array.First().GetObject()["uid"].GetNumber();
                     if (likesPage == 1)
-                        likeLastItem = array.Last().GetObject()["uid"].GetNumber();
-                    var d = (from a in likes
-                             from b in array
-                             where a.url == b.GetObject()["url"].GetString()
-                             select a).ToArray();
-                    foreach (var item in d)
-                        likes.Remove(item);
+                    { likeLastItem = array.Last().GetObject()["uid"].GetNumber(); }
+                    UserViewModel[] d = (from a in likes
+                                         from b in array
+                                         where a.url == b.GetObject()["url"].GetString()
+                                         select a).ToArray();
+                    foreach (UserViewModel item in d)
+                    { likes.Remove(item); }
                     for (int i = 0; i < array.Count; i++)
-                        likes.Insert(i, new UserViewModel(array[i]));
+                    { likes.Insert(i, new UserViewModel(array[i])); }
                 }
                 else
                 {
                     likeLastItem = array.Last().GetObject()["uid"].GetNumber();
-                    foreach (var item in array)
-                        likes.Add(new UserViewModel(item));
+                    foreach (IJsonValue item in array)
+                    { likes.Add(new UserViewModel(item)); }
                 }
             }
             else if (p == -1)
             {
                 likesPage--;
-                Tools.ShowMessage("没有更多点赞用户了");
+                UIHelper.ShowMessage("没有更多点赞用户了");
             }
         }
-        async void RefreshShares()
+
+        private async void RefreshShares()
         {
-            string r = await Tools.GetJson($"/feed/forwardList?id={feedId}&type=feed&page={++sharesPage}");
-            JsonArray array = Tools.GetDataArray(r);
+            string r = await UIHelper.GetJson($"/feed/forwardList?id={feedId}&type=feed&page={++sharesPage}");
+            JsonArray array = UIHelper.GetDataArray(r);
             if (array != null && array.Count != 0)
             {
                 if (sharesPage == 1)
-                    foreach (var item in array)
-                        shares.Add(new SourceFeedViewModel(item));
-                else for (int i = 0; i < array.Count; i++)
+                {
+                    foreach (IJsonValue item in array)
+                    { shares.Add(new SourceFeedViewModel(item)); }
+                }
+                else
+                {
+                    for (int i = 0; i < array.Count; i++)
                     {
-                        if (shares.First()?.url == array[i].GetObject()["url"].GetString()) return;
+                        if (shares.First()?.url == array[i].GetObject()["url"].GetString()) { return; }
                         shares.Insert(i, new SourceFeedViewModel(array[i]));
                     }
+                }
             }
             else
             {
                 sharesPage--;
-                Tools.ShowMessage("没有更多转发了");
+                UIHelper.ShowMessage("没有更多转发了");
             }
         }
 
@@ -387,9 +404,10 @@ namespace CoolapkUWP.Pages.FeedPages
                 double a = scrollViewer.VerticalOffset;
                 if (a == scrollViewer.ScrollableHeight)
                 {
-                    Tools.ShowProgressBar();
-                    scrollViewer.ChangeView(null, a, null);
+                    UIHelper.ShowProgressBar();
+                    _ = scrollViewer.ChangeView(null, a, null);
                     if (FeedDetailPivot != null)
+                    {
                         switch (FeedDetailPivot.SelectedIndex)
                         {
                             case 0:
@@ -401,9 +419,12 @@ namespace CoolapkUWP.Pages.FeedPages
                             case 2:
                                 RefreshShares();
                                 break;
+                            default:
+                                break;
                         }
-                    else if (AnswersListView != null) RefreshAnswers();
-                    Tools.HideProgressBar();
+                    }
+                    else if (AnswersListView != null) { RefreshAnswers(); }
+                    UIHelper.HideProgressBar();
                 }
             }
         }
@@ -419,21 +440,22 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e) => Tools.OpenLink((sender as FrameworkElement).Tag as string);
+        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.OpenLink((sender as FrameworkElement).Tag as string);
 
-        private void Image_Tapped(object sender, TappedRoutedEventArgs e) => Tools.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
+        private void Image_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.ShowImage((sender as FrameworkElement).Tag as string, ImageType.SmallImage);
 
         private void GetMoreHotReplyListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => RefreshHotFeed();
 
         private void Flyout_Opened(object sender, object e)
         {
             if (replyFlyoutFrame.Content is null)
-                replyFlyoutFrame.Navigate(typeof(MakeFeedPage), new object[] { MakeFeedMode.Reply, feedId, sender });
+            { replyFlyoutFrame.Navigate(typeof(MakeFeedPage), new object[] { MakeFeedMode.Reply, feedId, sender }); }
         }
 
         private void FeedDetailPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (FeedDetailPivot != null)
+            {
                 switch (FeedDetailPivot.SelectedIndex)
                 {
                     case 1:
@@ -442,7 +464,10 @@ namespace CoolapkUWP.Pages.FeedPages
                     case 2:
                         if (shares.Count == 0) RefreshShares();
                         break;
+                    default:
+                        break;
                 }
+            }
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -460,6 +485,8 @@ namespace CoolapkUWP.Pages.FeedPages
                 case 2:
                     answerSortType = "dateline";
                     break;
+                default:
+                    break;
             }
             answers.Clear();
             answerFirstItem = answerLastItem = 0;
@@ -472,15 +499,16 @@ namespace CoolapkUWP.Pages.FeedPages
             GridView view = sender as GridView;
             if (view.SelectedIndex > -1)
             {
-                if (view.Tag is List<string> ss) Tools.ShowImages(ss.ToArray(), view.SelectedIndex);
+                if (view.Tag is List<string> ss) { UIHelper.ShowImages(ss.ToArray(), view.SelectedIndex); }
                 else if (view.Tag is string s && !string.IsNullOrWhiteSpace(s))
-                    Tools.ShowImage(s, ImageType.SmallImage);
+                { UIHelper.ShowImage(s, ImageType.SmallImage); }
             }
             view.SelectedIndex = -1;
         }
         #region 界面模式切换
         private double _detailListHeight;
-        double detailListHeight
+
+        private double detailListHeight
         {
             get => _detailListHeight;
             set
@@ -489,15 +517,16 @@ namespace CoolapkUWP.Pages.FeedPages
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(detailListHeight)));
             }
         }
-        bool RefreshAll;
+
+        private bool RefreshAll;
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (feedArticleTitle != null)
-                feedArticleTitle.Height = feedArticleTitle.Width * 0.44;
+            { feedArticleTitle.Height = feedArticleTitle.Width * 0.44; }
             void set()
             {
-                RightSideListView.Padding = Settings.stackPanelMargin;
-                detailList.Padding = new Thickness(0, Settings.PageTitleHeight, 0, PivotItemPanel.ActualHeight + 16);
+                RightSideListView.Padding = SettingHelper.stackPanelMargin;
+                detailList.Padding = new Thickness(0, SettingHelper.PageTitleHeight, 0, PivotItemPanel.ActualHeight + 16);
                 detailListHeight = e?.NewSize.Height ?? Window.Current.Bounds.Height;
                 RightColumnDefinition.Width = new GridLength(1, GridUnitType.Star);
                 MainListView.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Disabled);
@@ -527,7 +556,7 @@ namespace CoolapkUWP.Pages.FeedPages
             else
             {
                 MainListView.Margin = new Thickness(0, 0, 0, PivotItemPanel.ActualHeight + 16);
-                MainListView.Padding = Settings.stackPanelMargin;
+                MainListView.Padding = SettingHelper.stackPanelMargin;
                 PivotItemPanel.Margin = new Thickness(0);
                 detailList.Padding = RightSideListView.Padding = new Thickness(0, 0, 0, 12);
                 detailListHeight = double.NaN;

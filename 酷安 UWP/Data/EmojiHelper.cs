@@ -1,6 +1,6 @@
 ﻿namespace CoolapkUWP.Data
 {
-    internal static class Emojis
+    internal static class EmojiHelper
     {
         public static string[] oldEmojis = new string[]
         {

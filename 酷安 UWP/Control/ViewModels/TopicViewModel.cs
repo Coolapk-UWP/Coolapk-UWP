@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    class TopicViewModel : DyhViewModel
+    internal class TopicViewModel : DyhViewModel
     {
         public TopicViewModel(IJsonValue t) : base(t)
         {
@@ -14,7 +14,7 @@ namespace CoolapkUWP.Control.ViewModels
         public string commentnum { get; private set; }
     }
 
-    class DyhViewModel : Entity
+    internal class DyhViewModel : Entity
     {
         public DyhViewModel(IJsonValue t) : base(t)
         {
@@ -24,7 +24,8 @@ namespace CoolapkUWP.Control.ViewModels
             follownum = token["follownum"].ToString().Replace("\"", string.Empty);
             GetPic(token);
         }
-        async void GetPic(JsonObject token) => logo = await ImageCache.GetImage(ImageType.Icon, token["logo"].GetString());
+
+        private async void GetPic(JsonObject token) => logo = await ImageCache.GetImage(ImageType.Icon, token["logo"].GetString());
         public string url { get; private set; }
         public string title { get; private set; }
         public string follownum { get; private set; }

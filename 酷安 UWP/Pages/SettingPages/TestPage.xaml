@@ -17,7 +17,7 @@
     </Page.Resources>
     <Grid>
         <ScrollViewer>
-            <StackPanel Margin="16,0" Padding="{x:Bind data:Settings.stackPanelMargin}">
+            <StackPanel Margin="16,0" Padding="{x:Bind data:SettingHelper.stackPanelMargin}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />

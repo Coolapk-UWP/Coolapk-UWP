@@ -20,7 +20,7 @@ namespace CoolapkUWP.Control
     //https://www.cnblogs.com/arcsinw/p/8638526.html
     public sealed partial class ShowImageControl : UserControl
     {
-        class ImageData
+        private class ImageData
         {
             public ImageData(ImageType type, string url)
             {
@@ -29,19 +29,20 @@ namespace CoolapkUWP.Control
             }
             public void ChangeType()
             {
-                if (Type == ImageType.SmallAvatar) Type = ImageType.BigAvatar;
-                else if (Type == ImageType.SmallImage) Type = ImageType.OriginImage;
+                if (Type == ImageType.SmallAvatar) { Type = ImageType.BigAvatar; }
+                else if (Type == ImageType.SmallImage) { Type = ImageType.OriginImage; }
             }
             public async Task<ImageSource> GetImage() => await ImageCache.GetImage(Type, Url, true);
             public ImageType Type { get; private set; }
             public string Url { get; set; }
         }
-        Popup popup;
-        List<ImageData> datas = new List<ImageData>();
-        ObservableCollection<ImageSource> Images = new ObservableCollection<ImageSource>();
+
+        private readonly Popup popup;
+        private readonly List<ImageData> datas = new List<ImageData>();
+        private readonly ObservableCollection<ImageSource> Images = new ObservableCollection<ImageSource>();
         public ShowImageControl(Popup popup)
         {
-            this.InitializeComponent();
+            InitializeComponent();
             Height = Window.Current.Bounds.Height;
             Width = Window.Current.Bounds.Width;
             Window.Current.SizeChanged += WindowSizeChanged;
@@ -52,11 +53,13 @@ namespace CoolapkUWP.Control
         public void ShowImage(string url, ImageType type)
         {
             if (url.Substring(url.LastIndexOf('.')).ToLower().Contains("gif"))
+            {
                 if (type == ImageType.SmallImage)
-                    datas.Add(new ImageData(ImageType.OriginImage, url));
+                { datas.Add(new ImageData(ImageType.OriginImage, url)); }
                 else
-                    datas.Add(new ImageData(ImageType.BigAvatar, url));
-            else datas.Add(new ImageData(type, url));
+                { datas.Add(new ImageData(ImageType.BigAvatar, url)); }
+            }
+            else { datas.Add(new ImageData(type, url)); }
             Images.Add(null);
         }
 
@@ -65,17 +68,19 @@ namespace CoolapkUWP.Control
             for (int i = 0; i < urls.Length; i++)
             {
                 if (urls[i].Substring(urls[i].LastIndexOf('.')).ToLower().Contains("gif"))
+                {
                     if (type == ImageType.SmallImage)
-                        datas.Add(new ImageData(ImageType.OriginImage, urls[i]));
-                    else datas.Add(new ImageData(ImageType.BigAvatar, urls[i]));
-                else datas.Add(new ImageData(type, urls[i]));
+                    { datas.Add(new ImageData(ImageType.OriginImage, urls[i])); }
+                    else { datas.Add(new ImageData(ImageType.BigAvatar, urls[i])); }
+                }
+                else { datas.Add(new ImageData(type, urls[i])); }
                 Images.Add(null);
             }
-            Task.Run(async () =>
-            {
-                await Task.Delay(20);
-                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => SFlipView.SelectedIndex = index);
-            });
+            _ = Task.Run(async () =>
+              {
+                  await Task.Delay(20);
+                  await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => SFlipView.SelectedIndex = index);
+              });
         }
 
         private void WindowSizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
@@ -97,23 +102,21 @@ namespace CoolapkUWP.Control
 
         private void ScrollViewerMain_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
-            ScrollViewer ScrollViewerMain = (sender as ScrollViewer);
-            if (ScrollViewerMain.ZoomFactor != 2) ScrollViewerMain.ChangeView(null, null, 2);
-            else ScrollViewerMain.ChangeView(null, null, 1);
+            ScrollViewer ScrollViewerMain = sender as ScrollViewer;
+            _ = ScrollViewerMain.ZoomFactor != 2 ? ScrollViewerMain.ChangeView(null, null, 2) : ScrollViewerMain.ChangeView(null, null, 1);
         }
 
         private void ScrollViewerMain_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
-            ScrollViewer scrollViewer = ((sender as FrameworkElement).Parent as ScrollViewer);
-            scrollViewer.ChangeView(scrollViewer.HorizontalOffset - e.Delta.Translation.X * scrollViewer.ZoomFactor, scrollViewer.VerticalOffset - e.Delta.Translation.Y * scrollViewer.ZoomFactor, null);
+            ScrollViewer scrollViewer = (sender as FrameworkElement).Parent as ScrollViewer;
+            _ = scrollViewer.ChangeView(scrollViewer.HorizontalOffset - e.Delta.Translation.X * scrollViewer.ZoomFactor, scrollViewer.VerticalOffset - e.Delta.Translation.Y * scrollViewer.ZoomFactor, null);
         }
 
         private void SFlipView_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
-            if (datas[SFlipView.SelectedIndex].Type == ImageType.BigAvatar || datas[SFlipView.SelectedIndex].Type == ImageType.OriginImage)
-                ((SFlipView.ContextFlyout as MenuFlyout).Items[0] as MenuFlyoutItem).Visibility = Visibility.Collapsed;
-            else
-                ((SFlipView.ContextFlyout as MenuFlyout).Items[0] as MenuFlyoutItem).Visibility = Visibility.Visible;
+            ((SFlipView.ContextFlyout as MenuFlyout).Items[0] as MenuFlyoutItem).Visibility = datas[SFlipView.SelectedIndex].Type == ImageType.BigAvatar || datas[SFlipView.SelectedIndex].Type == ImageType.OriginImage
+                ? Visibility.Collapsed
+                : Visibility.Visible;
             SFlipView.ContextFlyout.ShowAt(SFlipView);
         }
 
@@ -141,14 +144,16 @@ namespace CoolapkUWP.Control
                     {
                         HttpClient httpClient = new HttpClient();
                         using (Stream fs = await file.OpenStreamForWriteAsync())
-                        using (Stream s = (await (await (await ApplicationData.Current.LocalCacheFolder.GetFolderAsync(datas[SFlipView.SelectedIndex].Type.ToString())).GetFileAsync(Tools.GetMD5(u))).OpenReadAsync()).AsStreamForRead())
+                        using (Stream s = (await (await (await ApplicationData.Current.LocalCacheFolder.GetFolderAsync(datas[SFlipView.SelectedIndex].Type.ToString())).GetFileAsync(UIHelper.GetMD5(u))).OpenReadAsync()).AsStreamForRead())
                             await s.CopyToAsync(fs);
                     }
+                    break;
+                default:
                     break;
             }
         }
 
-        bool a = false;
+        private bool a = false;
         private async void SFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int i = SFlipView.SelectedIndex;

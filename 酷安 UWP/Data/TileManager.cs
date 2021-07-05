@@ -3,7 +3,7 @@ using Windows.UI.Notifications;
 
 namespace CoolapkUWP.Data
 {
-    static class TileManager
+    internal static class TileManager
     {
         public static void SetBadgeNum(double num)
         {
@@ -23,6 +23,7 @@ namespace CoolapkUWP.Data
             int num = 0;
             string[] s = new string[6];
             for (int i = 0; i < nums.Length; i++)
+            {
                 if (nums[i] > 0)
                 {
                     num++;
@@ -34,8 +35,12 @@ namespace CoolapkUWP.Data
                         case 3: s[i] = $"@我的评论:{nums[i]}"; break;
                         case 4: s[i] = $"新回复:{nums[i]}"; break;
                         case 5: s[i] = $"收到的赞:{nums[i]}"; break;
+                        default:
+                            break;
                     }
                 }
+            }
+
             TileUpdater tileUpdateManeger = TileUpdateManager.CreateTileUpdaterForApplication();
             tileUpdateManeger.Clear();
             if (num != 0)
@@ -64,14 +69,20 @@ namespace CoolapkUWP.Data
                     string message1 = string.Empty, message2 = string.Empty;
                     int i = 0;
                     for (int j = 0; i < 6 && j < 3; i++)
+                    {
                         if (!string.IsNullOrEmpty(s[i]))
                         {
                             message1 += $"<text>{s[i]}</text>";
                             j++;
                         }
+                    }
+
                     for (; i < 6; i++)
+                    {
                         if (!string.IsNullOrEmpty(s[i]))
-                            message2 += $"<text>{s[i]}</text>";
+                        { message2 += $"<text>{s[i]}</text>"; }
+                    }
+
                     string tile1 = $@"
 <tile>
     <visual>

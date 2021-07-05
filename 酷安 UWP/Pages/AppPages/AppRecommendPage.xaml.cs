@@ -18,7 +18,7 @@ namespace CoolapkUWP.Pages.AppPages
     {
         public AppRecommendPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -37,14 +37,14 @@ namespace CoolapkUWP.Pages.AppPages
             {
                 //网络信息
                 //LoadNewUpdate(await new HttpClient().GetStringAsync("https://www.coolapk.com/"));
-                Tools.ShowProgressBar();
+                UIHelper.ShowProgressBar();
                 LoadHotApp(await new HttpClient().GetStringAsync("https://www.coolapk.com/apk/recommend"));
                 LoadDeveloperApp(await new HttpClient().GetStringAsync("https://www.coolapk.com/apk/developer"));
                 LoadHotGame(await new HttpClient().GetStringAsync("https://www.coolapk.com/game/"));
                 LoadHotGame(await new HttpClient().GetStringAsync("https://www.coolapk.com/game?p=2"));
                 LoadHotGame(await new HttpClient().GetStringAsync("https://www.coolapk.com/game?p=3"));
             }
-            catch (HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
+            catch (HttpRequestException ex) { UIHelper.ShowHttpExceptionMessage(ex); }
             catch { throw; }
         }
 
@@ -57,7 +57,7 @@ namespace CoolapkUWP.Pages.AppPages
             gamelist.ItemsSource = gameCollection;
 
             //循环添加AppData
-            String bod = Regex.Split(str, @"<div class=""applications"">")[1];
+            string bod = Regex.Split(str, @"<div class=""applications"">")[1];
             for (int i = 0; i < 4; i++)
             {
                 AppData date = new AppData()
@@ -72,23 +72,23 @@ namespace CoolapkUWP.Pages.AppPages
 
 
             //循环添加AppData
-            String body = Regex.Split(str, @"<div class=""game_left_three"">")[1];
-            String[] bodys = Regex.Split(body, @"\n");
+            string body = Regex.Split(str, @"<div class=""game_left_three"">")[1];
+            string[] bodys = Regex.Split(body, @"\n");
             for (int i = 0; i < 9; i++)
             {
                 AppData date = new AppData()
                 {
                     Tag = bodys[i * 15 + 6].Split('"')[1].Split('/')[2],
                     Thumbnail = new Uri(bodys[i * 15 + 6 + 3].Split('"')[3], UriKind.RelativeOrAbsolute),
-                    Title = Tools.ReplaceHtml(bodys[i * 15 + 6 + 5].Split('>')[1].Split('<')[0]),
-                    Describe = Tools.ReplaceHtml(bodys[i * 15 + 6 + 7].Split('>')[1].Split('<')[0])
+                    Title = UIHelper.ReplaceHtml(bodys[i * 15 + 6 + 5].Split('>')[1].Split('<')[0]),
+                    Describe = UIHelper.ReplaceHtml(bodys[i * 15 + 6 + 7].Split('>')[1].Split('<')[0])
                 };
                 gameCollection.Add(date);
             }
 
         }
 
-        private void LoadHotApp(String str)
+        private void LoadHotApp(string str)
         {
             //绑定一个列表
             ObservableCollection<AppData> hotCollection = new ObservableCollection<AppData>();
@@ -96,8 +96,8 @@ namespace CoolapkUWP.Pages.AppPages
 
 
             //循环添加AppData
-            String body = Regex.Split(str, @"<div class=""app_list_left"">")[1];
-            String[] bodys = Regex.Split(body, @"\n");
+            string body = Regex.Split(str, @"<div class=""app_list_left"">")[1];
+            string[] bodys = Regex.Split(body, @"\n");
             for (int i = 0; i < 20; i++)
             {
                 AppData date = new AppData()
@@ -111,7 +111,7 @@ namespace CoolapkUWP.Pages.AppPages
             }
         }
 
-        private void LoadDeveloperApp(String str)
+        private void LoadDeveloperApp(string str)
         {
             //绑定一个列表
             ObservableCollection<AppData> developerCollection = new ObservableCollection<AppData>();
@@ -119,8 +119,8 @@ namespace CoolapkUWP.Pages.AppPages
 
 
             //循环添加AppData
-            String body = Regex.Split(str, @"<div class=""left_nav"">")[1];
-            String[] bodys = Regex.Split(body, @"\n");
+            string body = Regex.Split(str, @"<div class=""left_nav"">")[1];
+            string[] bodys = Regex.Split(body, @"\n");
             for (int i = 0; i < 20; i++)
             {
                 AppData date = new AppData()
@@ -137,20 +137,20 @@ namespace CoolapkUWP.Pages.AppPages
         #endregion
 
         private void Classify_Click(object sender, RoutedEventArgs e)
-            => Tools.Navigate(typeof(SearchPage), new object[] { 3, ((Button)sender).Content.ToString() });
+            => UIHelper.Navigate(typeof(SearchPage), new object[] { 3, ((Button)sender).Content.ToString() });
 
         private void Updateview_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (e.ClickedItem is AppData data)
-                OpenAppPage("https://www.coolapk.com" + data.Tag);
+            { OpenAppPage("https://www.coolapk.com" + data.Tag); }
         }
 
-        public void OpenAppPage(string link) => Tools.Navigate(typeof(AppPage), link);
+        public void OpenAppPage(string link) => UIHelper.Navigate(typeof(AppPage), link);
 
         private void Gamelist_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (e.ClickedItem is AppData date)
-                OpenAppPage("https://www.coolapk.com/apk/" + date.Tag);
+            { OpenAppPage("https://www.coolapk.com/apk/" + date.Tag); }
         }
     }
 }

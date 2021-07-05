@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages
 {
-    enum NotificationPageType
+    internal enum NotificationPageType
     {
         Comment,
         AtMe,
@@ -26,12 +26,14 @@ namespace CoolapkUWP.Pages
         Like,
         Follow,
     }
-    interface INotificationViewModel
+
+    internal interface INotificationViewModel
     {
         double id { get; }
         void Initial(IJsonValue o);
     }
-    class SimpleNotificationViewModel : INotifyPropertyChanged, INotificationViewModel
+
+    internal class SimpleNotificationViewModel : INotifyPropertyChanged, INotificationViewModel
     {
         public ImageSource FromUserAvatar { get; private set; }
         public string FromUserName { get; private set; }
@@ -48,23 +50,24 @@ namespace CoolapkUWP.Pages
             id = token["id"].GetNumber();
             FromUserName = token["fromusername"].GetString();
             FromUserUri = token["url"].GetString();
-            Dateline = Tools.ConvertTime(token["dateline"].GetNumber());
+            Dateline = UIHelper.ConvertTime(token["dateline"].GetNumber());
             GetPic(token["fromUserInfo"].GetObject()["userSmallAvatar"].GetString());
             Regex regex = new Regex("<a.*?>.*?</a>"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
             string s = token["note"].GetString();
             while (regex.IsMatch(s))
             {
-                var h = regex.Match(s);
+                Match h = regex.Match(s);
                 string t = regex3.Match(h.Value).Value.Replace(">", string.Empty);
                 t = t.Replace("<", string.Empty);
                 string tt = regex2.Match(h.Value).Value.Replace("href=\"", string.Empty);
-                if (tt.IndexOf("\"") > 0) tt = tt.Substring(0, tt.IndexOf("\""));
+                if (tt.IndexOf("\"") > 0) { tt = tt.Substring(0, tt.IndexOf("\"")); }
                 Uri = tt;
                 s = s.Replace(h.Value, t);
             }
             Note = s;
         }
-        async void GetPic(string u)
+
+        private async void GetPic(string u)
         {
             if (!string.IsNullOrEmpty(u))
             {
@@ -73,7 +76,8 @@ namespace CoolapkUWP.Pages
             }
         }
     }
-    class LikeNotificationViewModel : INotifyPropertyChanged, INotificationViewModel
+
+    internal class LikeNotificationViewModel : INotifyPropertyChanged, INotificationViewModel
     {
         public ImageSource LikeUserAvatar { get; private set; }
         public string LikeUserName { get; private set; }
@@ -92,13 +96,14 @@ namespace CoolapkUWP.Pages
 
             LikeUserName = token["likeUsername"].GetString();
             LikeUserUri = "/u/" + token["likeUid"].GetNumber();
-            Dateline = Tools.ConvertTime(token["likeTime"].GetNumber());
+            Dateline = UIHelper.ConvertTime(token["likeTime"].GetNumber());
             Uri = token["url"].GetString();
             GetPic(token["likeAvatar"].GetString());
             Title = "赞了你的" + (token.TryGetValue("feedTypeName", out IJsonValue value) ? value.GetString() : token["infoHtml"].GetString());
             FeedMessage = token["message"].GetString();
         }
-        async void GetPic(string u)
+
+        private async void GetPic(string u)
         {
             if (!string.IsNullOrEmpty(u))
             {
@@ -107,7 +112,8 @@ namespace CoolapkUWP.Pages
             }
         }
     }
-    class AtCommentMeNotificationViewModel : INotifyPropertyChanged, INotificationViewModel
+
+    internal class AtCommentMeNotificationViewModel : INotifyPropertyChanged, INotificationViewModel
     {
         public ImageSource UserAvatar { get; private set; }
         public string UserName { get; private set; }
@@ -126,13 +132,14 @@ namespace CoolapkUWP.Pages
 
             UserName = token["username"].GetString();
             UserUri = "/u/" + token["uid"].GetNumber();
-            Dateline = Tools.ConvertTime(token["dateline"].GetNumber());
+            Dateline = UIHelper.ConvertTime(token["dateline"].GetNumber());
             Uri = token["url"].GetString();
             GetPic(token["userAvatar"].GetString());
             Message = (string.IsNullOrEmpty(token["rusername"].GetString()) ? string.Empty : $"回复<a href=\"/u/{token["ruid"].GetNumber()}\">{token["rusername"].GetString()}</a>: ") + token["message"].GetString();
             FeedMessage = (token["extra_title"].GetString());
         }
-        async void GetPic(string u)
+
+        private async void GetPic(string u)
         {
             if (!string.IsNullOrEmpty(u))
             {
@@ -149,10 +156,11 @@ namespace CoolapkUWP.Pages
     {
         ObservableCollection<object> itemCollection = new ObservableCollection<object>();
         NotificationPageType type;
-        public NotificationsPage() => this.InitializeComponent();
-        string uri;
+        public NotificationsPage() => InitializeComponent();
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        private string uri;
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             type = (NotificationPageType)e.Parameter;
@@ -182,11 +190,13 @@ namespace CoolapkUWP.Pages
                     uri = "contactsFollowList";
                     Load<SimpleNotificationViewModel>();
                     break;
+                default:
+                    break;
             }
             void setPageStyle(string t)
             {
-                MainListView.Padding = Settings.stackPanelMargin;
-                FindName(nameof(titleBar));
+                MainListView.Padding = SettingHelper.stackPanelMargin;
+                _ = FindName(nameof(titleBar));
                 titleBar.Title = t;
             }
             await System.Threading.Tasks.Task.Delay(2000);
@@ -197,6 +207,7 @@ namespace CoolapkUWP.Pages
                 {
                     double a = scrollViewer.VerticalOffset;
                     if (a == scrollViewer.ScrollableHeight)
+                    {
                         switch (type)
                         {
                             case NotificationPageType.Comment: Load<SimpleNotificationViewModel>(); break;
@@ -204,7 +215,10 @@ namespace CoolapkUWP.Pages
                             case NotificationPageType.AtCommentMe: Load<AtCommentMeNotificationViewModel>(); break;
                             case NotificationPageType.Like: Load<LikeNotificationViewModel>(); break;
                             case NotificationPageType.Follow: Load<SimpleNotificationViewModel>(); break;
+                            default:
+                                break;
                         }
+                    }
                 }
             };
         }
@@ -215,16 +229,18 @@ namespace CoolapkUWP.Pages
             switch (item.Tag as string)
             {
                 case "atMe":
-                    Tools.Navigate(typeof(NotificationsPage), NotificationPageType.AtMe);
+                    UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.AtMe);
                     break;
                 case "atCommentMe":
-                    Tools.Navigate(typeof(NotificationsPage), NotificationPageType.AtCommentMe);
+                    UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.AtCommentMe);
                     break;
                 case "like":
-                    Tools.Navigate(typeof(NotificationsPage), NotificationPageType.Like);
+                    UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.Like);
                     break;
                 case "follow":
-                    Tools.Navigate(typeof(NotificationsPage), NotificationPageType.Follow);
+                    UIHelper.Navigate(typeof(NotificationsPage), NotificationPageType.Follow);
+                    break;
+                default:
                     break;
             }
         }
@@ -233,36 +249,34 @@ namespace CoolapkUWP.Pages
         {
             if (e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse
                 || (sender is Grid && !(e.OriginalSource is Windows.UI.Xaml.Shapes.Ellipse)))
-                Tools.OpenLink((sender as FrameworkElement).Tag as string);
+            { UIHelper.OpenLink((sender as FrameworkElement).Tag as string); }
         }
 
-        double firstItem, lastItem;
-        int page;
+        private double firstItem, lastItem;
+        private int page;
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
-        async void Load<T>(int p = -1) where T : INotificationViewModel, new()
+        private async void Load<T>(int p = -1) where T : INotificationViewModel, new()
         {
-            Tools.ShowProgressBar();
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/notification/{uri}?page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}"));
+            UIHelper.ShowProgressBar();
+            JsonArray array = UIHelper.GetDataArray(await UIHelper.GetJson($"/notification/{uri}?page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}"));
             if (array != null && array.Count > 0)
             {
                 if (p == 1 || page == 1)
-                    firstItem = array.First().GetObject()["id"].GetNumber();
+                { firstItem = array.First().GetObject()["id"].GetNumber(); }
                 lastItem = array.Last().GetObject()["id"].GetNumber();
-                var d = (from a in itemCollection
+                object[] d = (from a in itemCollection
                          from b in array
                          where (a as INotificationViewModel).id == b.GetObject()["id"].GetNumber()
                          select a).ToArray();
-                foreach (var item in d)
-                    itemCollection.Remove(item);
+                foreach (object item in d)
+                { itemCollection.Remove(item); }
                 for (int i = 0; i < array.Count; i++)
                 {
                     T t = new T();
                     t.Initial(array[i].GetObject());
-                    if (p == -1)
-                        itemCollection.Add(t);
-                    else
-                        itemCollection.Insert(i, t);
+                    if (p == -1) { itemCollection.Add(t); }
+                    else { itemCollection.Insert(i, t); }
                 }
             }
             else
@@ -270,34 +284,31 @@ namespace CoolapkUWP.Pages
                 if (p == -1)
                 {
                     page--;
-                    Tools.ShowMessage("没有更多了");
+                    UIHelper.ShowMessage("没有更多了");
                 }
-                else Tools.ShowMessage("没有新的了");
+                else { UIHelper.ShowMessage("没有新的了"); }
             }
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
 
-        async void Load(int p = -1)
+        private async void Load(int p = -1)
         {
-            Tools.ShowProgressBar();
-            JsonArray array = Tools.GetDataArray(await Tools.GetJson($"/notification/atMeList?page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}"));
+            UIHelper.ShowProgressBar();
+            JsonArray array = UIHelper.GetDataArray(await UIHelper.GetJson($"/notification/atMeList?page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}"));
             if (array != null && array.Count > 0)
             {
                 if (p == 1 || page == 1)
-                    firstItem = array.First().GetObject()["id"].GetNumber();
+                { firstItem = array.First().GetObject()["id"].GetNumber(); }
                 lastItem = array.Last().GetObject()["id"].GetNumber();
-                var d = (from a in itemCollection
+                object[] d = (from a in itemCollection
                          from b in array
                          where (a as FeedViewModel).entityId == b.GetObject()["id"].GetNumber().ToString()
                          select a).ToArray();
-                foreach (var item in d)
-                    itemCollection.Remove(item);
+                foreach (object item in d) { _ = itemCollection.Remove(item); }
                 for (int i = 0; i < array.Count; i++)
                 {
-                    if (p == -1)
-                        itemCollection.Add(new FeedViewModel(array[i]));
-                    else
-                        itemCollection.Insert(i, new FeedViewModel(array[i]));
+                    if (p == -1) { itemCollection.Add(new FeedViewModel(array[i])); }
+                    else { itemCollection.Insert(i, new FeedViewModel(array[i])); }
                 }
             }
             else
@@ -305,11 +316,11 @@ namespace CoolapkUWP.Pages
                 if (p == -1)
                 {
                     page--;
-                    Tools.ShowMessage("没有更多了");
+                    UIHelper.ShowMessage("没有更多了");
                 }
-                else Tools.ShowMessage("没有新的了");
+                else {UIHelper.ShowMessage("没有新的了");}
             }
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
 
         private void MainListView_RefreshRequested(object sender, EventArgs e)
@@ -321,11 +332,13 @@ namespace CoolapkUWP.Pages
                 case NotificationPageType.AtCommentMe: Load<AtCommentMeNotificationViewModel>(1); break;
                 case NotificationPageType.Like: Load<LikeNotificationViewModel>(1); break;
                 case NotificationPageType.Follow: Load<SimpleNotificationViewModel>(1); break;
+                default:
+                    break;
             }
         }
     }
 
-    class TemplateSelector : DataTemplateSelector
+    internal class TemplateSelector : DataTemplateSelector
     {
         public DataTemplate DataTemplate1 { get; set; }
         public DataTemplate DataTemplate2 { get; set; }
@@ -333,10 +346,9 @@ namespace CoolapkUWP.Pages
         public DataTemplate DataTemplate4 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            if (item is FeedViewModel) return DataTemplate1;
-            if (item is LikeNotificationViewModel) return DataTemplate3;
-            if (item is AtCommentMeNotificationViewModel) return DataTemplate4;
-            else return DataTemplate2;
+            return item is FeedViewModel
+                ? DataTemplate1
+                : item is LikeNotificationViewModel ? DataTemplate3 : item is AtCommentMeNotificationViewModel ? DataTemplate4 : DataTemplate2;
         }
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }

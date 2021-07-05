@@ -10,29 +10,30 @@ namespace CoolapkUWP.Control
 {
     public sealed partial class GetUpdateContentDialog : ContentDialog
     {
-        string url;
-        string Body { get; set; }
+        private readonly string url;
+
+        private string Body { get; set; }
         public GetUpdateContentDialog(string url, string body)
         {
-            this.InitializeComponent();
+            InitializeComponent();
             this.url = url;
             Body = body;
         }
 
         private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            await Launcher.LaunchUriAsync(new Uri(url));
+            _ = await Launcher.LaunchUriAsync(new Uri(url));
             Hide();
         }
 
         private async void MarkdownTextBlock_ImageResolving(object sender, ImageResolvingEventArgs e)
         {
-            var deferral = e.GetDeferral();
+            Windows.Foundation.Deferral deferral = e.GetDeferral();
             e.Image = await ImageCache.GetImage(ImageType.OriginImage, e.Url);
             e.Handled = true;
             deferral.Complete();
         }
 
-        private void MarkdownTextBlock_ImageClicked(object sender, LinkClickedEventArgs e) => Tools.ShowImage(e.Link, ImageType.OriginImage);
+        private void MarkdownTextBlock_ImageClicked(object sender, LinkClickedEventArgs e) => UIHelper.ShowImage(e.Link, ImageType.OriginImage);
     }
 }

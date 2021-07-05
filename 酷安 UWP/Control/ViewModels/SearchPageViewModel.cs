@@ -3,11 +3,12 @@ using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    interface ISearchPageViewModel
+    internal interface ISearchPageViewModel
     {
         string GetTitle();
     }
-    class AppViewModel : ISearchPageViewModel
+
+    internal class AppViewModel : ISearchPageViewModel
     {
         public ImageSource Icon { get; set; }
         public string Url { get; set; }
@@ -17,7 +18,8 @@ namespace CoolapkUWP.Control.ViewModels
 
         public string GetTitle() => AppName;
     }
-    class SearchWord : ISearchPageViewModel
+
+    internal class SearchWord : ISearchPageViewModel
     {
         public Symbol Symbol { get; set; }
         public string Title { get; set; }

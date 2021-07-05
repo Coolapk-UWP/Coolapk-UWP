@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using CoolapkUWP.Control.ViewModels;
+﻿using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
 using Microsoft.Toolkit.Uwp.Notifications;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.UI.Notifications;
 
 namespace CoolapkUWP.Control
 {
-    class LiveTileControl
+    internal class LiveTileControl
     {
         private static async Task<JsonObject> GetJson(string uri)
         {
-            string result = await Tools.GetJson(uri);
+            string result = await UIHelper.GetJson(uri);
             return JsonObject.Parse(result);
         }
 

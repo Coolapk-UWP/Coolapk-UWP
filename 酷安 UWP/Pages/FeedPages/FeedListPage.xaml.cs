@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages.FeedPages
 {
-    enum FeedListType
+    internal enum FeedListType
     {
         UserPageList,
         TagPageList,
@@ -28,7 +28,7 @@ namespace CoolapkUWP.Pages.FeedPages
     /// </summary>
     public sealed partial class FeedListPage : Page
     {
-        interface IFeedListDataProvider
+        private interface IFeedListDataProvider
         {
             string Id { get; }
             FeedListType ListType { get; }
@@ -36,27 +36,29 @@ namespace CoolapkUWP.Pages.FeedPages
             Task<List<FeedViewModel>> GetFeeds(int p = -1);
             string GetTitleBarText(object o);
         }
-        interface ICanChangeSelectedIndex : IFeedListDataProvider
+
+        private interface ICanChangeSelectedIndex : IFeedListDataProvider
         {
             int SelectedIndex { get; set; }
             void Reset();
         }
-        class UserPageDataProvider : IFeedListDataProvider
+
+        private class UserPageDataProvider : IFeedListDataProvider
         {
             public string Id { get; private set; }
-            int page;
-            double firstItem, lastItem;
+
+            private int page;
+            private double firstItem, lastItem;
             public FeedListType ListType { get => FeedListType.UserPageList; }
             public UserPageDataProvider(string uid) => Id = uid;
 
             public async Task<object> GetDetail()
             {
-                JsonObject detail = Tools.GetJSonObject(await Tools.GetJson("/user/space?uid=" + Id));
-                if (detail != null)
-                {
-                    return new UserDetail
+                JsonObject detail = UIHelper.GetJSonObject(await UIHelper.GetJson("/user/space?uid=" + Id));
+                return detail != null
+                    ? new UserDetail
                     {
-                        FollowStatus = detail["uid"].GetNumber().ToString() == Settings.GetString("uid") ? string.Empty
+                        FollowStatus = detail["uid"].GetNumber().ToString() == SettingHelper.GetString("uid") ? string.Empty
                                                                                                          : detail["isFollow"].GetNumber() == 0 ? "关注" : "取消关注",
                         UserFaceUrl = detail["userAvatar"].GetString(),
                         UserName = detail["username"].GetString(),
@@ -69,26 +71,25 @@ namespace CoolapkUWP.Pages.FeedPages
                         Gender = detail["gender"].GetNumber() == 1 ? "♂" : (detail["gender"].GetNumber() == 0 ? "♀" : string.Empty),
                         City = $"{detail["province"].GetString()} {detail["city"].GetString()}",
                         Astro = detail["astro"].GetString(),
-                        Logintime = $"{Tools.ConvertTime(detail["logintime"].GetNumber())}活跃",
+                        Logintime = $"{UIHelper.ConvertTime(detail["logintime"].GetNumber())}活跃",
                         FeedNum = detail["feed"].GetNumber(),
                         UserFace = await ImageCache.GetImage(ImageType.SmallAvatar, detail["userSmallAvatar"].GetString()),
                         Background = new BackgroundImageViewModel(detail["cover"].GetString(), ImageType.OriginImage),
-                    };
-                }
-                else return null;
+                    }
+                    : null;
             }
 
             public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
             {
-                if (p == 1 && page == 0) page = 1;
-                JsonArray Root = Tools.GetDataArray(await Tools.GetJson($"/user/feedList?uid={Id}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}"));
+                if (p == 1 && page == 0) { page = 1; }
+                JsonArray Root = UIHelper.GetDataArray(await UIHelper.GetJson($"/user/feedList?uid={Id}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}"));
                 if (!(Root is null) && Root.Count != 0)
                 {
                     if (page == 1 || p == 1)
-                        firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem;
+                    { firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem; }
                     lastItem = Root.Last().GetObject()["id"].GetNumber();
                     List<FeedViewModel> FeedsCollection = new List<FeedViewModel>();
-                    foreach (var i in Root) FeedsCollection.Add(new FeedViewModel(i));
+                    foreach (IJsonValue i in Root) { FeedsCollection.Add(new FeedViewModel(i)); }
                     return FeedsCollection;
                 }
                 else
@@ -100,10 +101,12 @@ namespace CoolapkUWP.Pages.FeedPages
 
             public string GetTitleBarText(object o) => (o as UserDetail).UserName;
         }
-        class TagPageDataProvider : ICanChangeSelectedIndex
+
+        private class TagPageDataProvider : ICanChangeSelectedIndex
         {
             public string Id { get; private set; }
-            int page, _selectedIndex;
+
+            private int page, _selectedIndex;
             public int SelectedIndex
             {
                 get => _selectedIndex;
@@ -113,7 +116,8 @@ namespace CoolapkUWP.Pages.FeedPages
                         _selectedIndex = value;
                 }
             }
-            double firstItem, lastItem;
+
+            private double firstItem, lastItem;
             public FeedListType ListType { get => FeedListType.TagPageList; }
             public TagPageDataProvider(string tag) => Id = tag;
 
@@ -121,10 +125,9 @@ namespace CoolapkUWP.Pages.FeedPages
 
             public async Task<object> GetDetail()
             {
-                JsonObject detail = Tools.GetJSonObject(await Tools.GetJson("/topic/newTagDetail?tag=" + Id));
-                if (detail != null)
-                {
-                    return new TopicDetail
+                JsonObject detail = UIHelper.GetJSonObject(await UIHelper.GetJson("/topic/newTagDetail?tag=" + Id));
+                return detail != null
+                    ? new TopicDetail
                     {
                         Logo = await ImageCache.GetImage(ImageType.Icon, detail["logo"].GetString()),
                         Title = detail["title"].GetString(),
@@ -132,9 +135,8 @@ namespace CoolapkUWP.Pages.FeedPages
                         CommentNum = detail.TryGetValue("commentnum", out IJsonValue tt) ? tt.GetNumber() : detail["rating_total_num"].GetNumber(),
                         Description = detail["description"].GetString(),
                         SelectedIndex = SelectedIndex
-                    };
-                }
-                else return null;
+                    }
+                    : null;
             }
 
             public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
@@ -151,16 +153,18 @@ namespace CoolapkUWP.Pages.FeedPages
                     case 2:
                         sortType = "popular";
                         break;
+                    default:
+                        break;
                 }
-                if (p == 1 && page == 0) page = 1;
-                JsonArray Root = Tools.GetDataArray(await Tools.GetJson($"/topic/tagFeedList?tag={Id}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}&listType={sortType}&blockStatus=0"));
+                if (p == 1 && page == 0) { page = 1; }
+                JsonArray Root = UIHelper.GetDataArray(await UIHelper.GetJson($"/topic/tagFeedList?tag={Id}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}&listType={sortType}&blockStatus=0"));
                 if (!(Root is null) && Root.Count != 0)
                 {
                     if (page == 1 || p == 1)
-                        firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem;
+                    { firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem; }
                     lastItem = Root.Last()?.GetObject()["id"].GetNumber() ?? lastItem;
                     List<FeedViewModel> FeedsCollection = new List<FeedViewModel>();
-                    foreach (var i in Root) FeedsCollection.Add(new FeedViewModel(i));
+                    foreach (IJsonValue i in Root) { FeedsCollection.Add(new FeedViewModel(i)); }
                     return FeedsCollection;
                 }
                 else
@@ -172,10 +176,12 @@ namespace CoolapkUWP.Pages.FeedPages
 
             public string GetTitleBarText(object o) => (o as TopicDetail).Title;
         }
-        class DYHPageDataProvider : ICanChangeSelectedIndex
+
+        private class DYHPageDataProvider : ICanChangeSelectedIndex
         {
             public string Id { get; private set; }
-            int page, _selectedIndex;
+
+            private int page, _selectedIndex;
             public int SelectedIndex
             {
                 get => _selectedIndex;
@@ -185,7 +191,8 @@ namespace CoolapkUWP.Pages.FeedPages
                         _selectedIndex = value;
                 }
             }
-            double firstItem, lastItem;
+
+            private double firstItem, lastItem;
             public FeedListType ListType { get => FeedListType.DYHPageList; }
             public DYHPageDataProvider(string id) => Id = id;
 
@@ -193,7 +200,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
             public async Task<object> GetDetail()
             {
-                JsonObject detail = Tools.GetJSonObject(await Tools.GetJson("/dyh/detail?dyhId=" + Id));
+                JsonObject detail = UIHelper.GetJSonObject(await UIHelper.GetJson("/dyh/detail?dyhId=" + Id));
                 if (detail != null)
                 {
                     bool showUserButton = detail["uid"].GetNumber() != 0;
@@ -211,20 +218,20 @@ namespace CoolapkUWP.Pages.FeedPages
                         ShowComboBox = detail["is_open_discuss"].GetNumber() == 1
                     };
                 }
-                else return null;
+                else { return null; }
             }
 
             public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
             {
-                if (p == 1 && page == 0) page = 1;
-                JsonArray Root = Tools.GetDataArray(await Tools.GetJson($"/dyhArticle/list?dyhId={Id}&type={(SelectedIndex == 0 ? "all" : "square")}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{((lastItem == 0) ? string.Empty : $"&lastItem={lastItem}")}"));
+                if (p == 1 && page == 0) { page = 1; }
+                JsonArray Root = UIHelper.GetDataArray(await UIHelper.GetJson($"/dyhArticle/list?dyhId={Id}&type={(SelectedIndex == 0 ? "all" : "square")}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{((lastItem == 0) ? string.Empty : $"&lastItem={lastItem}")}"));
                 if (!(Root is null) && Root.Count != 0)
                 {
                     if (page == 1 || p == 1)
-                        firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem;
+                    { firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem; }
                     lastItem = Root.Last()?.GetObject()["id"].GetNumber() ?? lastItem;
                     List<FeedViewModel> FeedsCollection = new List<FeedViewModel>();
-                    foreach (var i in Root) FeedsCollection.Add(new FeedViewModel(i));
+                    foreach (IJsonValue i in Root) { FeedsCollection.Add(new FeedViewModel(i)); }
                     return FeedsCollection;
                 }
                 else
@@ -241,7 +248,7 @@ namespace CoolapkUWP.Pages.FeedPages
         ScrollViewer VScrollViewer;
         ObservableCollection<object> itemCollection = new ObservableCollection<object>();
 
-        public FeedListPage() => this.InitializeComponent();
+        public FeedListPage() => InitializeComponent();
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -256,8 +263,8 @@ namespace CoolapkUWP.Pages.FeedPages
                     switch (feedListType)
                     {
                         case FeedListType.UserPageList:
-                            if (str == "0") Frame.GoBack();
-                            else provider = new UserPageDataProvider(str);
+                            if (str == "0") { Frame.GoBack(); }
+                            else { provider = new UserPageDataProvider(str); }
                             titleBar.ComboBoxVisibility = Visibility.Collapsed;
                             break;
                         case FeedListType.TagPageList:
@@ -275,35 +282,39 @@ namespace CoolapkUWP.Pages.FeedPages
                     Refresh();
                 }
             }
-            else Frame.GoBack();
+            else { Frame.GoBack(); }
             if (VScrollViewer is null)
             {
-                Task.Run(async () =>
-                {
-                    await Task.Delay(300);
-                    await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    {
-                        VScrollViewer = VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer;
-                        VScrollViewer.ViewChanged += async (s, ee) =>
-                        {
-                            if (!ee.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
-                            {
-                                Tools.ShowProgressBar();
-                                List<FeedViewModel> feeds = await provider.GetFeeds();
-                                if (feeds != null)
-                                    foreach (var item in feeds)
-                                        itemCollection.Add(item);
-                                Tools.HideProgressBar();
-                            }
-                        };
-                    });
-                });
+                _ = Task.Run(async () =>
+                  {
+                      await Task.Delay(300);
+                      await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                      {
+                          VScrollViewer = VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer;
+                          VScrollViewer.ViewChanged += async (s, ee) =>
+                          {
+                              if (!ee.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
+                              {
+                                  UIHelper.ShowProgressBar();
+                                  List<FeedViewModel> feeds = await provider.GetFeeds();
+                                  if (feeds != null)
+                                  {
+                                      foreach (FeedViewModel item in feeds)
+                                      { itemCollection.Add(item); }
+                                  }
+
+                                  UIHelper.HideProgressBar();
+                              }
+                          };
+                      });
+                  });
             }
         }
-        async void Refresh()
+
+        private async void Refresh()
         {
-            Tools.ShowProgressBar();
-            if (itemCollection.Count > 0) itemCollection.RemoveAt(0);
+            UIHelper.ShowProgressBar();
+            if (itemCollection.Count > 0) { itemCollection.RemoveAt(0); }
             itemCollection.Insert(0, await provider.GetDetail());
             if (itemCollection[0] is DYHDetail detail)
             {
@@ -313,10 +324,13 @@ namespace CoolapkUWP.Pages.FeedPages
 
             List<FeedViewModel> feeds = await provider.GetFeeds(1);
             if (feeds != null)
+            {
                 for (int i = 0; i < feeds.Count; i++)
-                    itemCollection.Insert(i + 1, feeds[i]);
+                { itemCollection.Insert(i + 1, feeds[i]); }
+            }
+
             titleBar.Title = provider.GetTitleBarText(itemCollection[0]);
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
@@ -324,11 +338,13 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             if (sender is FrameworkElement fe)
             {
-                if (fe != e.OriginalSource) return;
+                if (fe != e.OriginalSource) { return; }
                 if (fe.Tag is string s)
+                {
                     if (s == (itemCollection[0] as UserDetail).BackgroundUrl)
-                        Tools.ShowImage(s, ImageType.OriginImage);
-                    else Tools.ShowImage(s, ImageType.SmallAvatar);
+                    { UIHelper.ShowImage(s, ImageType.OriginImage); }
+                    else { UIHelper.ShowImage(s, ImageType.SmallAvatar); }
+                }
             }
         }
 
@@ -338,26 +354,28 @@ namespace CoolapkUWP.Pages.FeedPages
             switch (button.Tag as string)
             {
                 case "follow":
-                    Tools.Navigate(typeof(UserListPage), new object[] { provider.Id, true, titleBar.Title });
+                    UIHelper.Navigate(typeof(UserListPage), new object[] { provider.Id, true, titleBar.Title });
                     break;
                 case "fans":
-                    Tools.Navigate(typeof(UserListPage), new object[] { provider.Id, false, titleBar.Title });
+                    UIHelper.Navigate(typeof(UserListPage), new object[] { provider.Id, false, titleBar.Title });
                     break;
                 case "FollowUser":
                     JsonObject o = null;
                     switch ((itemCollection[0] as UserDetail).FollowStatus)
                     {
                         case "关注":
-                            o = JsonObject.Parse(await Tools.GetJson($"/user/follow?uid={provider.Id}"));
+                            o = JsonObject.Parse(await UIHelper.GetJson($"/user/follow?uid={provider.Id}"));
                             break;
                         case "取消关注":
-                            o = JsonObject.Parse(await Tools.GetJson($"/user/unfollow?uid={provider.Id}"));
+                            o = JsonObject.Parse(await UIHelper.GetJson($"/user/unfollow?uid={provider.Id}"));
+                            break;
+                        default:
                             break;
                     }
                     if (o != null)
                     {
                         if (o.TryGetValue("message", out IJsonValue value))
-                            Tools.ShowMessage($"{value.GetString()}");
+                            UIHelper.ShowMessage($"{value.GetString()}");
                         else
                         {
                             itemCollection.RemoveAt(0);
@@ -366,21 +384,21 @@ namespace CoolapkUWP.Pages.FeedPages
                     }
                     break;
                 default:
-                    Tools.OpenLink(button.Tag as string);
+                    UIHelper.OpenLink(button.Tag as string);
                     break;
             }
         }
 
         private void FeedTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (string.IsNullOrEmpty(provider.Id)) return;
+            if (string.IsNullOrEmpty(provider.Id)) { return; }
             ICanChangeSelectedIndex dataProvider = provider as ICanChangeSelectedIndex;
             dataProvider.SelectedIndex = (sender as ComboBox).SelectedIndex;
             dataProvider.Reset();
             if (itemCollection.Count > 1)
             {
                 for (int i = itemCollection.Count - 1; i > 0; i--)
-                    itemCollection.RemoveAt(i);
+                { itemCollection.RemoveAt(i); }
                 Refresh();
             }
         }
@@ -391,7 +409,8 @@ namespace CoolapkUWP.Pages.FeedPages
             b.Height = e.NewSize.Width <= 400 ? e.NewSize.Width : 400;
         }
     }
-    class UserDetail
+
+    internal class UserDetail
     {
         public string UserFaceUrl;
         public ImageSource UserFace;
@@ -416,7 +435,8 @@ namespace CoolapkUWP.Pages.FeedPages
         public bool Has_City { get => !string.IsNullOrWhiteSpace(City) && !string.IsNullOrEmpty(City); }
         public bool Has_Gender { get => !string.IsNullOrEmpty(Gender); }
     }
-    class TopicDetail
+
+    internal class TopicDetail
     {
         public ImageSource Logo { get; set; }
         public string Title { get; set; }
@@ -425,7 +445,8 @@ namespace CoolapkUWP.Pages.FeedPages
         public string Description { get; set; }
         public int SelectedIndex { get; set; }
     }
-    class DYHDetail
+
+    internal class DYHDetail
     {
         public ImageSource Logo { get; set; }
         public string Title { get; set; }
@@ -438,7 +459,8 @@ namespace CoolapkUWP.Pages.FeedPages
         public int SelectedIndex { get; set; }
         public bool ShowComboBox { get; set; }
     }
-    class TemplateSelector : DataTemplateSelector
+
+    internal class TemplateSelector : DataTemplateSelector
     {
         public DataTemplate DataTemplate1 { get; set; }
         public DataTemplate DataTemplate2 { get; set; }
@@ -446,10 +468,7 @@ namespace CoolapkUWP.Pages.FeedPages
         public DataTemplate DataTemplate4 { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            if (item is UserDetail) return DataTemplate1;
-            else if (item is TopicDetail) return DataTemplate3;
-            else if (item is DYHDetail) return DataTemplate4;
-            else return DataTemplate2;
+            return item is UserDetail ? DataTemplate1 : item is TopicDetail ? DataTemplate3 : item is DYHDetail ? DataTemplate4 : DataTemplate2;
         }
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }

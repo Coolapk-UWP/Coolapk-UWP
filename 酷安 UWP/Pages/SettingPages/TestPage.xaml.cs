@@ -15,36 +15,36 @@ namespace CoolapkUWP.Pages.SettingPages
     {
         public TestPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            Tools.Navigate(typeof(FeedPages.FeedListPage), new object[] { FeedPages.FeedListType.UserPageList, await Tools.GetUserIDByName(uid.Text) });
+            UIHelper.Navigate(typeof(FeedPages.FeedListPage), new object[] { FeedPages.FeedListType.UserPageList, await UIHelper.GetUserIDByName(uid.Text) });
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             if (Frame.CanGoBack)
-                Frame.GoBack();
+            { Frame.GoBack(); }
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            Tools.ShowMessage(message.Text);
+            UIHelper.ShowMessage(message.Text);
         }
 
         private async void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            //Tools.Navigate(typeof(FeedPages.FeedListPage), new object[] { FeedPages.FeedListType.DYHPageList, "1324" });
-            string s = await Tools.GetJson(url.Text);
+            //UIHelper.Navigate(typeof(FeedPages.FeedListPage), new object[] { FeedPages.FeedListType.DYHPageList, "1324" });
+            string s = await UIHelper.GetJson(url.Text);
             System.Diagnostics.Debug.WriteLine(s);
-            await new MessageDialog(s).ShowAsync();
+            _ = await new MessageDialog(s).ShowAsync();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Tools.Navigate(typeof(Pages.BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
+            UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
 
         }
 
@@ -55,7 +55,7 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private void Hyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
         {
-            Application.Current.Exit();
+            Windows.UI.Xaml.Application.Current.Exit();
         }
     }
 }

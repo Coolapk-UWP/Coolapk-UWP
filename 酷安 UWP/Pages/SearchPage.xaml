@@ -19,7 +19,10 @@
     </Page.Resources>
 
     <Grid>
-        <Pivot x:Name="DetailPivot" IsLocked="True" Margin="0,-48,0,0">
+        <Pivot
+            x:Name="DetailPivot"
+            IsLocked="True"
+            Margin="0,-48,0,0">
             <Pivot.ItemContainerStyle>
                 <Style TargetType="PivotItem">
                     <Setter Property="Margin" Value="0"/>
@@ -27,9 +30,16 @@
             </Pivot.ItemContainerStyle>
             <PivotItem>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
-                    <StackPanel Padding="{x:Bind data:Settings.stackPanelMargin}">
-                        <StackPanel Padding="2,4" Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}" Orientation="Horizontal">
-                            <ComboBox x:Name="SearchFeedTypeComboBox" Header="搜索类型" SelectedIndex="0" SelectionChanged="SearchFeedTypeComboBox_SelectionChanged">
+                    <StackPanel Padding="{x:Bind data:SettingHelper.stackPanelMargin}">
+                        <StackPanel
+                            Padding="2,4"
+                            Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}"
+                            Orientation="Horizontal">
+                            <ComboBox
+                                x:Name="SearchFeedTypeComboBox"
+                                Header="搜索类型"
+                                SelectedIndex="0"
+                                SelectionChanged="SearchFeedTypeComboBox_SelectionChanged">
                                 <ComboBoxItem>全部</ComboBoxItem>
                                 <ComboBoxItem>动态</ComboBoxItem>
                                 <ComboBoxItem>图文</ComboBoxItem>
@@ -41,14 +51,22 @@
                                 <ComboBoxItem>二手</ComboBoxItem>
                                 <ComboBoxItem>投票</ComboBoxItem>
                             </ComboBox>
-                            <ComboBox x:Name="SearchFeedSortTypeComboBox" Margin="5,0" Header="顺序" SelectedIndex="0" SelectionChanged="SearchFeedTypeComboBox_SelectionChanged">
+                            <ComboBox
+                                x:Name="SearchFeedSortTypeComboBox"
+                                Margin="5,0"
+                                Header="顺序"
+                                SelectedIndex="0"
+                                SelectionChanged="SearchFeedTypeComboBox_SelectionChanged">
                                 <ComboBoxItem>实时</ComboBoxItem>
                                 <ComboBoxItem>热度</ComboBoxItem>
                                 <ComboBoxItem>评论数</ComboBoxItem>
                             </ComboBox>
                         </StackPanel>
-                        <ListView x:Name="FeedList" Style="{StaticResource ListViewStyle}" ItemTemplate="{StaticResource feed}"
-                                  ScrollViewer.VerticalScrollMode="Disabled">
+                        <ListView
+                            x:Name="FeedList"
+                            Style="{StaticResource ListViewStyle}"
+                            ItemTemplate="{StaticResource feed}"
+                            ScrollViewer.VerticalScrollMode="Disabled">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
@@ -56,7 +74,9 @@
                             </ListView.ItemContainerStyle>
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384"/>
+                                    <control:GridPanel
+                                        CubeInSameHeight="False"
+                                        DesiredColumnWidth="384"/>
                                 </ItemsPanelTemplate>
                             </ListView.ItemsPanel>
                         </ListView>
@@ -65,8 +85,11 @@
             </PivotItem>
             <PivotItem>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
-                    <ListView x:Name="UserList" ItemTemplate="{StaticResource User}" Padding="{x:Bind data:Settings.stackPanelMargin}"
-                          ScrollViewer.VerticalScrollMode="Disabled">
+                    <ListView
+                        x:Name="UserList"
+                        ItemTemplate="{StaticResource User}"
+                        Padding="{x:Bind data:SettingHelper.stackPanelMargin}"
+                        ScrollViewer.VerticalScrollMode="Disabled">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
@@ -74,7 +97,9 @@
                         </ListView.ItemContainerStyle>
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384"/>
+                                <control:GridPanel
+                                    CubeInSameHeight="False"
+                                    DesiredColumnWidth="384"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                     </ListView>
@@ -82,8 +107,11 @@
             </PivotItem>
             <PivotItem>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
-                    <ListView x:Name="TopicList" ItemTemplate="{StaticResource Topic}" Padding="{x:Bind data:Settings.stackPanelMargin}"
-                          ScrollViewer.VerticalScrollMode="Disabled">
+                    <ListView
+                        x:Name="TopicList"
+                        ItemTemplate="{StaticResource Topic}"
+                        Padding="{x:Bind data:SettingHelper.stackPanelMargin}"
+                        ScrollViewer.VerticalScrollMode="Disabled">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
@@ -99,8 +127,12 @@
             </PivotItem>
             <PivotItem>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
-                    <ListView x:Name="AppsResultList" ItemTemplate="{StaticResource app}" Padding="{x:Bind data:Settings.stackPanelMargin}"
-                          ScrollViewer.VerticalScrollMode="Disabled" SelectionChanged="AppResultList_SelectionChanged">
+                    <ListView
+                        x:Name="AppsResultList"
+                        ItemTemplate="{StaticResource app}"
+                        Padding="{x:Bind data:SettingHelper.stackPanelMargin}"
+                        ScrollViewer.VerticalScrollMode="Disabled"
+                        SelectionChanged="AppResultList_SelectionChanged">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
@@ -115,21 +147,44 @@
                 </ScrollViewer>
             </PivotItem>
         </Pivot>
-        <Grid Height="{x:Bind data:Settings.PageTitleHeight}" VerticalAlignment="Top" cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" fcu:Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}">
+        <Grid
+            Height="{x:Bind data:SettingHelper.PageTitleHeight}"
+            VerticalAlignment="Top"
+            cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
+            fcu:Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="48"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="BackButton" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" Click="BackButton_Click" Width="48" 
-                    Height="48" Style="{ThemeResource NavigationBackButtonNormalStyle}"/>
-            <AutoSuggestBox Grid.Column="1" KeyUp="SearchTextBox_KeyUp" x:Name="SearchText" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" Margin="0,0,0,8"
-                            QueryIcon="Find" QuerySubmitted="SearchText_QuerySubmitted" TextChanged="SearchText_TextChanged"/>
-            <ComboBox Grid.Column="2" VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}" SelectedIndex="0" x:Name="SearchTypeComboBox" SelectionChanged="SearchTypeComboBox_SelectionChanged" Margin="0,0,10,8">
+            <Button
+                x:Name="BackButton"
+                VerticalAlignment="{x:Bind data:SettingHelper.titleContentVerticalAlignment}"
+                Click="BackButton_Click"
+                Width="48"
+                Height="48"
+                Style="{ThemeResource NavigationBackButtonNormalStyle}"/>
+            <AutoSuggestBox
+                Grid.Column="1"
+                KeyUp="SearchTextBox_KeyUp"
+                x:Name="SearchText"
+                PlaceholderText="搜索 动态、用户和话题"
+                VerticalAlignment="{x:Bind data:SettingHelper.titleContentVerticalAlignment}"
+                Margin="0,0,0,8"
+                QueryIcon="Find"
+                QuerySubmitted="SearchText_QuerySubmitted"
+                TextChanged="SearchText_TextChanged"/>
+            <ComboBox
+                Grid.Column="2"
+                VerticalAlignment="{x:Bind data:SettingHelper.titleContentVerticalAlignment}"
+                SelectedIndex="0"
+                x:Name="SearchTypeComboBox"
+                SelectionChanged="SearchTypeComboBox_SelectionChanged"
+                Margin="2,0,10,8">
                 <ComboBoxItem>动态</ComboBoxItem>
                 <ComboBoxItem>用户</ComboBoxItem>
                 <ComboBoxItem>话题</ComboBoxItem>
-                <ComboBoxItem>应用游戏</ComboBoxItem>
+                <!--<ComboBoxItem>应用游戏</ComboBoxItem>-->
             </ComboBox>
         </Grid>
     </Grid>

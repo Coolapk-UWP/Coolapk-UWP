@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    class ImageData
+    internal class ImageData
     {
         public string url;
         public BitmapImage Pic { get; set; }

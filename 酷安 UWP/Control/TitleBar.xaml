@@ -14,7 +14,7 @@
 
     <Grid
         x:Name="titleGrid"
-        Height="{x:Bind data:Settings.PageTitleHeight}"
+        Height="{x:Bind data:SettingHelper.PageTitleHeight}"
         VerticalAlignment="Top"
         BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
         BorderThickness="0,0,0,2"
@@ -34,18 +34,18 @@
             Background="Transparent"
             Width="48"
             Height="48"
-            VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}">
+            VerticalAlignment="{x:Bind data:SettingHelper.titleContentVerticalAlignment}">
             <SymbolIcon
                 x:Name="BackButtonIcon"
                 Symbol="Back"/>
         </Button>
         <TextBlock
             Grid.Column="1"
-            Margin="{x:Bind data:Settings.titleTextMargin}"
+            Margin="{x:Bind data:SettingHelper.titleTextMargin}"
             x:Name="title"
             FontSize="20"
             HorizontalAlignment="Left"
-            VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}"/>
+            VerticalAlignment="{x:Bind data:SettingHelper.titleContentVerticalAlignment}"/>
         <!--<Button
             Grid.Column="2"
             Visibility="Collapsed"
@@ -62,6 +62,6 @@
             SelectionChanged="ChangeModeComboBox_SelectionChanged"
             Grid.Column="2"
             Visibility="Collapsed"
-            VerticalAlignment="{x:Bind data:Settings.titleContentVerticalAlignment}"/>
+            VerticalAlignment="{x:Bind data:SettingHelper.titleContentVerticalAlignment}"/>
     </Grid>
 </UserControl>

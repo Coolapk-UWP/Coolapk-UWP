@@ -19,8 +19,12 @@
     </Page.Resources>
 
     <Grid x:Name="MainGrid">
-        <controls:PullToRefreshListView x:Name="MainListView" SelectionMode="None"
-                                        PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新" RefreshRequested="{x:Bind Refresh}">
+        <controls:PullToRefreshListView
+            x:Name="MainListView"
+            SelectionMode="None"
+            PullToRefreshLabel="下拉刷新"
+            ReleaseToRefreshLabel="松手刷新"
+            RefreshRequested="{x:Bind Refresh}">
             <controls:PullToRefreshListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Padding" Value="0"/>
@@ -36,15 +40,23 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <controls:PullToRefreshListView x:Name="detailList" SelectionMode="None" ScrollViewer.VerticalScrollMode="Disabled"
-                                        PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新" Height="{x:Bind detailListHeight,Mode=OneWay}" RefreshRequested="{x:Bind RefreshFeed}">
+                <controls:PullToRefreshListView
+                    x:Name="detailList"
+                    SelectionMode="None"
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    PullToRefreshLabel="下拉刷新"
+                    ReleaseToRefreshLabel="松手刷新"
+                    Height="{x:Bind detailListHeight,Mode=OneWay}"
+                    RefreshRequested="{x:Bind RefreshFeed}">
                     <controls:PullToRefreshListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Padding" Value="0"/>
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         </Style>
                     </controls:PullToRefreshListView.ItemContainerStyle>
-                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
@@ -56,64 +68,170 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <ListViewItem Tag="{x:Bind FeedDetail.turl,Mode=OneWay}" Tapped="StackPanel_Tapped" Background="{ThemeResource SystemControlBackgroundListLowBrush}"
-                                          x:Name="TTitle" x:Load="{x:Bind FeedDetail.showTtitle,Mode=OneWay}" HorizontalContentAlignment="Stretch">
+                        <ListViewItem
+                            Tag="{x:Bind FeedDetail.turl,Mode=OneWay}"
+                            Tapped="StackPanel_Tapped"
+                            Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+                            x:Name="TTitle"
+                            x:Load="{x:Bind FeedDetail.showTtitle,Mode=OneWay}"
+                            HorizontalContentAlignment="Stretch">
                             <Grid HorizontalAlignment="Stretch">
-                                <Image HorizontalAlignment="Left" Width="20" Height="20" Source="{x:Bind FeedDetail.tpic,Mode=OneWay}" />
-                                <TextBlock HorizontalAlignment="Left" Text="{x:Bind FeedDetail.ttitle,Mode=OneWay}" Margin="23,0,0,0"/>
-                                <SymbolIcon Symbol="Forward" HorizontalAlignment="Right"/>
+                                <Border
+                                    Width="32"
+                                    Height="32"
+                                    CornerRadius="4"
+                                    HorizontalAlignment="Left">
+                                    <Image
+                                        Source="{x:Bind FeedDetail.tpic,Mode=OneWay}" />
+                                </Border>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Left"
+                                    Text="{x:Bind FeedDetail.ttitle,Mode=OneWay}"
+                                    Margin="40,0,0,0"/>
+                                <SymbolIcon
+                                    Symbol="Forward"
+                                    HorizontalAlignment="Right"/>
                             </Grid>
                         </ListViewItem>
-                        <ListViewItem Grid.Row="1" Tag="{x:Bind FeedDetail.dyhUrl,Mode=OneWay}" Tapped="StackPanel_Tapped" Background="{ThemeResource SystemControlBackgroundListLowBrush}"
-                                          x:Name="dyhN" x:Load="{x:Bind FeedDetail.show_dyh_name,Mode=OneWay}" HorizontalContentAlignment="Stretch">
+                        <ListViewItem
+                            Grid.Row="1"
+                            Tag="{x:Bind FeedDetail.dyhUrl,Mode=OneWay}"
+                            Tapped="StackPanel_Tapped"
+                            Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+                            x:Name="dyhN"
+                            x:Load="{x:Bind FeedDetail.show_dyh_name,Mode=OneWay}"
+                            HorizontalContentAlignment="Stretch">
                             <Grid HorizontalAlignment="Stretch">
-                                <TextBlock HorizontalAlignment="Left" Text="{x:Bind FeedDetail.dyh_name,Mode=OneWay}" Margin="23,0,0,0"/>
-                                <SymbolIcon Symbol="Forward" HorizontalAlignment="Right"/>
+                                <TextBlock
+                                    HorizontalAlignment="Left"
+                                    Text="{x:Bind FeedDetail.dyh_name,Mode=OneWay}"
+                                    Margin="23,0,0,0"/>
+                                <SymbolIcon
+                                    Symbol="Forward"
+                                    HorizontalAlignment="Right"/>
                             </Grid>
                         </ListViewItem>
-                        <Grid Margin="0,3" Grid.Row="2" x:Name="feedArticleTitle" x:Load="{x:Bind FeedDetail.isFeedArticle,Mode=OneWay}">
-                            <Image x:Name="messageCover" x:Load="{x:Bind FeedDetail.has_message_cover,Mode=OneWay}" Tapped="Image_Tapped" Tag="{x:Bind FeedDetail.message_cover_url,Mode=OneWay}" Source="{x:Bind FeedDetail.message_cover,Mode=OneWay}" Stretch="UniformToFill" />
-                            <Border VerticalAlignment="Bottom" Background="#55000000">
-                                <TextBlock Margin="5" Text="{x:Bind FeedDetail.message_title,Mode=OneWay}" Foreground="White" FontWeight="Black" TextWrapping="Wrap" FontSize="20"/>
+                        <Grid
+                            Margin="0,3"
+                            Grid.Row="2"
+                            x:Name="feedArticleTitle"
+                            x:Load="{x:Bind FeedDetail.isFeedArticle,Mode=OneWay}">
+                            <Image
+                                x:Name="messageCover"
+                                x:Load="{x:Bind FeedDetail.has_message_cover,Mode=OneWay}"
+                                Tapped="Image_Tapped"
+                                Tag="{x:Bind FeedDetail.message_cover_url,Mode=OneWay}"
+                                Source="{x:Bind FeedDetail.message_cover,Mode=OneWay}"
+                                Stretch="UniformToFill" />
+                            <Border
+                                VerticalAlignment="Bottom"
+                                Background="#55000000">
+                                <TextBlock
+                                    Margin="5"
+                                    Text="{x:Bind FeedDetail.message_title,Mode=OneWay}"
+                                    Foreground="White"
+                                    FontWeight="Black"
+                                    TextWrapping="Wrap"
+                                    FontSize="20"/>
                             </Border>
                         </Grid>
-                        <ListViewItem Background="{ThemeResource SystemControlBackgroundListLowBrush}" Grid.Row="2" x:Name="gotoQues" x:Load="{x:Bind FeedDetail.isAnswerFeed,Mode=OneWay}"
-                                          Tapped="StackPanel_Tapped" Tag="{x:Bind FeedDetail.questionUrl,Mode=OneWay}" HorizontalContentAlignment="Stretch">
+                        <ListViewItem
+                            Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+                            Grid.Row="2"
+                            x:Name="gotoQues"
+                            x:Load="{x:Bind FeedDetail.isAnswerFeed,Mode=OneWay}"
+                            Tapped="StackPanel_Tapped"
+                            Tag="{x:Bind FeedDetail.questionUrl,Mode=OneWay}"
+                            HorizontalContentAlignment="Stretch">
                             <Grid VerticalAlignment="Stretch">
-                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                <StackPanel
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
                                     <TextBlock>查看全部</TextBlock>
                                     <TextBlock Text="{x:Bind FeedDetail.questionAnswerNum,Mode=OneWay}"/>
                                     <TextBlock>个回答</TextBlock>
                                 </StackPanel>
-                                <SymbolIcon Symbol="Forward" HorizontalAlignment="Right"/>
+                                <SymbolIcon
+                                    Symbol="Forward"
+                                    HorizontalAlignment="Right"/>
                             </Grid>
                         </ListViewItem>
-                        <StackPanel Grid.Row="3" Orientation="Horizontal">
-                            <Button Click="Button_Click" Style="{StaticResource ButtonRevealStyle}" Tag="{x:Bind FeedDetail.uurl,Mode=OneWay}" 
-                                    Background="{x:Null}" Padding="0" Margin="8">
-                                <Ellipse Width="36" Height="36" HorizontalAlignment="Left">
+                        <StackPanel
+                            Grid.Row="3"
+                            Orientation="Horizontal">
+                            <Button
+                                Click="Button_Click"
+                                Style="{StaticResource ButtonRevealStyle}"
+                                Tag="{x:Bind FeedDetail.uurl,Mode=OneWay}"
+                                Background="{x:Null}"
+                                Padding="0"
+                                Margin="8">
+                                <Ellipse
+                                    Width="36"
+                                    Height="36"
+                                    HorizontalAlignment="Left">
                                     <Ellipse.Fill>
                                         <ImageBrush ImageSource="{x:Bind FeedDetail.userSmallAvatar,Mode=OneWay}"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
                             </Button>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="{x:Bind FeedDetail.username,Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <TextBlock
+                                    Text="{x:Bind FeedDetail.username,Mode=OneWay}"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{x:Bind FeedDetail.dateline,Mode=OneWay}" Foreground="Gray"/>
-                                    <TextBlock Text="{x:Bind FeedDetail.info,Mode=OneWay}" Foreground="Gray" Margin="5,0,0,0"/>
-                                    <TextBlock Text="{x:Bind FeedDetail.device_title,Mode=OneWay}" Foreground="Gray" Margin="5,0,0,0"/>
+                                    <TextBlock
+                                        Text="{x:Bind FeedDetail.dateline,Mode=OneWay}"
+                                        Foreground="Gray"/>
+                                    <TextBlock
+                                        Text="{x:Bind FeedDetail.info,Mode=OneWay}"
+                                        Foreground="Gray"
+                                        Margin="5,0,0,0"/>
+                                    <TextBlock
+                                        Text="{x:Bind FeedDetail.device_title,Mode=OneWay}"
+                                        Foreground="Gray"
+                                        Margin="5,0,0,0"/>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <control:MTextBlock Tag="{x:Bind FeedDetail.feedArticlePics,Mode=OneWay}" Grid.Row="4" Margin="10,2" x:Name="feedArticlePresenter" x:Load="{x:Bind FeedDetail.isFeedArticle,Mode=OneWay}" MessageText="{x:Bind FeedDetail.message_raw_output,Mode=OneWay}"/>
-                        <Grid Grid.Row="4" Margin="10,2" x:Name="feedPresenter" x:Load="{x:Bind FeedDetail.isFeedArticle2,Mode=OneWay}">
+                        <control:MTextBlock
+                            Tag="{x:Bind FeedDetail.feedArticlePics,Mode=OneWay}"
+                            Grid.Row="4"
+                            Margin="10,2"
+                            x:Name="feedArticlePresenter"
+                            x:Load="{x:Bind FeedDetail.isFeedArticle,Mode=OneWay}"
+                            MessageText="{x:Bind FeedDetail.message_raw_output,Mode=OneWay}"/>
+                        <Grid
+                            Grid.Row="4"
+                            Margin="10,2"
+                            x:Name="feedPresenter"
+                            x:Load="{x:Bind FeedDetail.isFeedArticle2,Mode=OneWay}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <control:MTextBlock MessageText="{x:Bind FeedDetail.message,Mode=OneWay}"/>
-                            <GridView ScrollViewer.VerticalScrollMode="Disabled" x:Name="picA" x:Load="{x:Bind FeedDetail.showPicArr,Mode=OneWay}" Grid.Row="1" MinHeight="0" Padding="0" Margin="0,5,0,0" HorizontalContentAlignment="Left" SelectionChanged="GridView_SelectionChanged" Tag="{x:Bind FeedDetail.pics,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.picArr,Mode=OneWay}">
+                            <GridView
+                                ScrollViewer.VerticalScrollMode="Disabled"
+                                x:Name="picA"
+                                x:Load="{x:Bind FeedDetail.showPicArr,Mode=OneWay}"
+                                Grid.Row="1"
+                                MinHeight="0"
+                                Padding="0"
+                                Margin="0,5,0,0"
+                                HorizontalContentAlignment="Left"
+                                SelectionChanged="GridView_SelectionChanged"
+                                Tag="{x:Bind FeedDetail.pics,Mode=OneWay}"
+                                ItemsSource="{x:Bind FeedDetail.picArr,Mode=OneWay}">
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsWrapGrid
+                                            MaximumRowsOrColumns="3"
+                                            Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
                                 <GridView.ItemTemplate>
                                     <DataTemplate x:DataType="viewModel:ImageData">
                                         <Grid
@@ -130,20 +248,29 @@
                                             <StackPanel
                                                 Orientation="Horizontal"
                                                 VerticalAlignment="Bottom"
+                                                HorizontalAlignment="Left">
+                                                <Border
+                                                    x:Name="gif"
+                                                    CornerRadius="0,8,0,0"
+                                                    x:Load="{x:Bind IsGif}"
+                                                    Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                                    <TextBlock
+                                                        Text="GIF"
+                                                        Margin="2,0"/>
+                                                </Border>
+                                            </StackPanel>
+                                            <StackPanel
+                                                Orientation="Horizontal"
+                                                VerticalAlignment="Bottom"
                                                 HorizontalAlignment="Right">
                                                 <Border
                                                     x:Name="longPic"
                                                     CornerRadius="8,0,0,0"
                                                     x:Load="{x:Bind IsLongPic}"
                                                     Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                                                    <TextBlock Text=" 长图 "/>
-                                                </Border>
-                                                <Border
-                                                    x:Name="gif"
-                                                    CornerRadius="8,0,0,0"
-                                                    x:Load="{x:Bind IsGif}"
-                                                    Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                                                    <TextBlock Text=" GIF "/>
+                                                    <TextBlock
+                                                        Text="长图"
+                                                        Margin="2,0"/>
                                                 </Border>
                                             </StackPanel>
                                         </Grid>
@@ -151,36 +278,117 @@
                                 </GridView.ItemTemplate>
                             </GridView>
                         </Grid>
-                        <Grid Grid.Row="5" Padding="10,0" Margin="-10,0" x:Name="sourceF" x:Load="{x:Bind FeedDetail.showSourceFeedGrid,Mode=OneWay}" Background="{ThemeResource SystemControlBackgroundListLowBrush}">
-                            <TextBlock x:Name="sourceF2" x:Load="{x:Bind FeedDetail.showSourceFeed2,Mode=OneWay}" Margin="15">抱歉，该转发已被删除。</TextBlock>
-                            <Grid x:Name="sourceFG" x:Load="{x:Bind FeedDetail.showSourceFeed,Mode=OneWay}">
+                        <Grid
+                            Grid.Row="5"
+                            Padding="10,0"
+                            Margin="-10,0"
+                            x:Name="sourceF"
+                            x:Load="{x:Bind FeedDetail.showSourceFeedGrid,Mode=OneWay}"
+                            Background="{ThemeResource SystemControlBackgroundListLowBrush}">
+                            <TextBlock
+                                x:Name="sourceF2"
+                                x:Load="{x:Bind FeedDetail.showSourceFeed2,Mode=OneWay}"
+                                Margin="15">
+                                抱歉，该转发已被删除。
+                            </TextBlock>
+                            <Grid
+                                x:Name="sourceFG"
+                                x:Load="{x:Bind FeedDetail.showSourceFeed,Mode=OneWay}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Padding="2" Margin="0,0,5,0" Style="{StaticResource ButtonStyle1}" Content="{x:Bind FeedDetail.sourceFeed.username,Mode=OneWay}" Click="Button_Click" Tag="{x:Bind FeedDetail.sourceFeed.uurl,Mode=OneWay}" Background="{x:Null}"/>
-                                    <TextBlock Margin="5,0" Text="{x:Bind FeedDetail.sourceFeed.dateline,Mode=OneWay}" Foreground="Gray" VerticalAlignment="Center"/>
+                                    <Button
+                                        Padding="2"
+                                        Margin="0,0,5,0"
+                                        Style="{StaticResource ButtonStyle1}"
+                                        Content="{x:Bind FeedDetail.sourceFeed.username,Mode=OneWay}"
+                                        Click="Button_Click" Tag="{x:Bind FeedDetail.sourceFeed.uurl,Mode=OneWay}"
+                                        Background="{x:Null}"/>
+                                    <TextBlock
+                                        Margin="5,0"
+                                        Text="{x:Bind FeedDetail.sourceFeed.dateline,Mode=OneWay}"
+                                        Foreground="Gray"
+                                        VerticalAlignment="Center"/>
                                 </StackPanel>
-                                <Grid Grid.Row="1" Tag="{x:Bind FeedDetail.sourceFeed.url,Mode=OneWay}" Tapped="Grid_Tapped" Margin="3">
+                                <Grid
+                                    Grid.Row="1"
+                                    Tag="{x:Bind FeedDetail.sourceFeed.url,Mode=OneWay}"
+                                    Tapped="Grid_Tapped"
+                                    Margin="3">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock FontSize="16" x:Name="sourceMT" x:Load="{x:Bind FeedDetail.sourceFeed.showMessage_title,Mode=OneWay}" FontWeight="Black" TextWrapping="Wrap" Text="{x:Bind FeedDetail.sourceFeed.message_title,Mode=OneWay}"/>
-                                    <control:MTextBlock Grid.Row="1" MessageText="{x:Bind FeedDetail.sourceFeed.message,Mode=OneWay}"/>
-                                    <GridView ScrollViewer.VerticalScrollMode="Disabled" x:Name="sourcePic" Grid.Row="2" HorizontalContentAlignment="Left" MinHeight="0" Padding="0" Margin="0,5,0,0" x:Load="{x:Bind FeedDetail.showPicArr,Mode=OneWay}" Tag="{x:Bind FeedDetail.sourceFeed.pics,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.sourceFeed.picArr,Mode=OneWay}">
+                                    <TextBlock
+                                        FontSize="16"
+                                        x:Name="sourceMT"
+                                        x:Load="{x:Bind FeedDetail.sourceFeed.showMessage_title,Mode=OneWay}"
+                                        FontWeight="Black"
+                                        TextWrapping="Wrap"
+                                        Text="{x:Bind FeedDetail.sourceFeed.message_title,Mode=OneWay}"/>
+                                    <control:MTextBlock
+                                        Grid.Row="1"
+                                        MessageText="{x:Bind FeedDetail.sourceFeed.message,Mode=OneWay}"/>
+                                    <GridView
+                                        ScrollViewer.VerticalScrollMode="Disabled"
+                                        x:Name="sourcePic"
+                                        Grid.Row="2"
+                                        HorizontalContentAlignment="Left"
+                                        MinHeight="0"
+                                        Padding="0"
+                                        Margin="0,5,0,0"
+                                        x:Load="{x:Bind FeedDetail.showPicArr,Mode=OneWay}"
+                                        Tag="{x:Bind FeedDetail.sourceFeed.pics,Mode=OneWay}"
+                                        ItemsSource="{x:Bind FeedDetail.sourceFeed.picArr,Mode=OneWay}">
+                                        <GridView.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <ItemsWrapGrid
+                                                    MaximumRowsOrColumns="3"
+                                                    Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </GridView.ItemsPanel>
                                         <GridView.ItemTemplate>
                                             <DataTemplate x:DataType="viewModel:ImageData">
-                                                <Grid>
-                                                    <Image MaxHeight="70" MaxWidth="70"  MinHeight="0" MinWidth="0" Source="{x:Bind Pic}" Stretch="UniformToFill"/>
-                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-                                                        <Border x:Name="longPic" x:Load="{x:Bind IsLongPic}" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                                                            <TextBlock>长图</TextBlock>
+                                                <Grid
+                                                    CornerRadius="8"
+                                                    BorderThickness="1"
+                                                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
+                                                    <Image
+                                                        MaxHeight="102"
+                                                        MaxWidth="102"
+                                                        MinHeight="0"
+                                                        MinWidth="0"
+                                                        Source="{x:Bind Pic}"
+                                                        Stretch="UniformToFill"/>
+                                                    <StackPanel
+                                                        Orientation="Horizontal"
+                                                        VerticalAlignment="Bottom"
+                                                        HorizontalAlignment="Left">
+                                                        <Border
+                                                            x:Name="gif"
+                                                            CornerRadius="0,8,0,0"
+                                                            x:Load="{x:Bind IsGif}"
+                                                            Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                                            <TextBlock
+                                                                Text="GIF"
+                                                                Margin="2,0"/>
                                                         </Border>
-                                                        <Border x:Name="gif" x:Load="{x:Bind IsGif}" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                                                            <TextBlock>GIF</TextBlock>
+                                                    </StackPanel>
+                                                    <StackPanel
+                                                        Orientation="Horizontal"
+                                                        VerticalAlignment="Bottom"
+                                                        HorizontalAlignment="Right">
+                                                        <Border
+                                                            x:Name="longPic"
+                                                            CornerRadius="8,0,0,0"
+                                                            x:Load="{x:Bind IsLongPic}"
+                                                            Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                                            <TextBlock
+                                                                Text="长图"
+                                                                Margin="2,0"/>
                                                         </Border>
                                                     </StackPanel>
                                                 </Grid>
@@ -190,31 +398,75 @@
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid Grid.Row="6" Tapped="StackPanel_Tapped" Tag="{x:Bind FeedDetail.extra_url,Mode=OneWay}" Background="{ThemeResource SystemControlBackgroundListLowBrush}" x:Name="extraT" x:Load="{x:Bind FeedDetail.showExtra_url,Mode=OneWay}" Margin="0,5,0,0">
+                        <Grid
+                            Grid.Row="6"
+                            Tapped="StackPanel_Tapped"
+                            Tag="{x:Bind FeedDetail.extra_url,Mode=OneWay}"
+                            Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+                            x:Name="extraT"
+                            x:Load="{x:Bind FeedDetail.showExtra_url,Mode=OneWay}"
+                            Margin="0,5,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Border Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                                <Image Width="50" Height="50" Source="{x:Bind FeedDetail.extra_pic,Mode=OneWay}" />
+                            <Border
+                                Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                <Image
+                                    Width="50"
+                                    Height="50"
+                                    Source="{x:Bind FeedDetail.extra_pic,Mode=OneWay}" />
                             </Border>
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5">
-                                <TextBlock Text="{x:Bind FeedDetail.extra_title,Mode=OneWay}" TextWrapping="Wrap"/>
-                                <TextBlock Text="{x:Bind FeedDetail.extra_url2,Mode=OneWay}" Foreground="Gray" TextWrapping="Wrap"/>
+                            <StackPanel
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Stretch"
+                                Margin="5">
+                                <TextBlock
+                                    Text="{x:Bind FeedDetail.extra_title,Mode=OneWay}"
+                                    TextWrapping="Wrap"/>
+                                <TextBlock
+                                    Text="{x:Bind FeedDetail.extra_url2,Mode=OneWay}"
+                                    Foreground="Gray"
+                                    TextWrapping="Wrap"/>
                             </StackPanel>
                         </Grid>
-                        <ListView Grid.Row="7" ScrollViewer.VerticalScrollMode="Disabled" HorizontalContentAlignment="Stretch" Style="{StaticResource ListViewStyle1}" x:Name="relaRLis" x:Load="{x:Bind FeedDetail.showRelationRows,Mode=OneWay}" ItemsSource="{x:Bind FeedDetail.relationRows,Mode=OneWay}">
+                        <ListView
+                            Grid.Row="7"
+                            ScrollViewer.VerticalScrollMode="Disabled"
+                            HorizontalContentAlignment="Stretch"
+                            Style="{StaticResource ListViewStyle1}"
+                            x:Name="relaRLis"
+                            x:Load="{x:Bind FeedDetail.showRelationRows,Mode=OneWay}"
+                            ItemsSource="{x:Bind FeedDetail.relationRows,Mode=OneWay}">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="viewModel:RelationRowsItem">
-                                    <StackPanel Padding="6" Tag="{x:Bind url}" Tapped="StackPanel_Tapped" Orientation="Horizontal" Background="{ThemeResource SystemControlBackgroundListLowBrush}">
-                                        <Image Width="20" Height="20" Source="{x:Bind logo,Mode=OneWay}"/>
-                                        <TextBlock Text="{x:Bind title}" Margin="3,0,0,0"/>
+                                    <StackPanel
+                                        Padding="6"
+                                        Tag="{x:Bind url}"
+                                        Tapped="StackPanel_Tapped"
+                                        Orientation="Horizontal"
+                                        Background="{ThemeResource SystemControlBackgroundListLowBrush}">
+                                        <Image
+                                            Width="20"
+                                            Height="20"
+                                            Source="{x:Bind logo,Mode=OneWay}"/>
+                                        <TextBlock
+                                            Text="{x:Bind title}"
+                                            Margin="3,0,0,0"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                        <StackPanel Grid.Row="8" x:Name="questionDetail" x:Load="{x:Bind FeedDetail.isQuestionFeed,Mode=OneWay}" Orientation="Horizontal" Margin="8,0">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <StackPanel
+                            Grid.Row="8"
+                            x:Name="questionDetail"
+                            x:Load="{x:Bind FeedDetail.isQuestionFeed,Mode=OneWay}"
+                            Orientation="Horizontal"
+                            Margin="8,0">
+                            <StackPanel
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center">
                                 <TextBlock Text="{x:Bind FeedDetail.question_answer_num,Mode=OneWay}"/>
                                 <TextBlock>人回答·</TextBlock>
                                 <TextBlock Text="{x:Bind FeedDetail.question_follow_num,Mode=OneWay}"/>
@@ -228,15 +480,28 @@
                         </StackPanel>
                     </Grid>
                 </controls:PullToRefreshListView>
-                <controls:PullToRefreshListView Grid.Row="1" x:Name="RightSideListView" SelectionMode="None" ScrollViewer.VerticalScrollMode="Disabled"
-                                                PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新" Height="{x:Bind detailListHeight,Mode=OneWay}" RefreshRequested="{x:Bind Refresh}">
+                <controls:PullToRefreshListView
+                    Grid.Row="1"
+                    Margin="-12,0"
+                    x:Name="RightSideListView"
+                    SelectionMode="None"
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    PullToRefreshLabel="下拉刷新"
+                    ReleaseToRefreshLabel="松手刷新"
+                    Height="{x:Bind detailListHeight,Mode=OneWay}"
+                    RefreshRequested="{x:Bind Refresh}">
                     <controls:PullToRefreshListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Padding" Value="0"/>
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         </Style>
                     </controls:PullToRefreshListView.ItemContainerStyle>
-                    <Pivot x:Load="False" Padding="0,-48,0,0" IsLocked="True" x:Name="FeedDetailPivot" SelectionChanged="FeedDetailPivot_SelectionChanged">
+                    <Pivot
+                        x:Load="False"
+                        Padding="0,-48,0,0"
+                        IsLocked="True"
+                        x:Name="FeedDetailPivot"
+                        SelectionChanged="FeedDetailPivot_SelectionChanged">
                         <Pivot.ItemContainerStyle>
                             <Style TargetType="PivotItem">
                                 <Setter Property="Padding" Value="0"/>
@@ -244,15 +509,36 @@
                         </Pivot.ItemContainerStyle>
                         <PivotItem>
                             <StackPanel>
-                                <ListViewItem Style="{StaticResource NoPaddingListViewItem}" x:Name="ChangeHotReplysDisplayModeListViewItem" Template="{StaticResource ListViewItemTemplate1}" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" BorderThickness="2" 
-                                              Tapped="ChangeHotReplysDisplayModeListViewItem_Tapped">
-                                    <StackPanel Orientation="Horizontal" Margin="12,0">
-                                        <TextBlock x:Name="iconText" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text=""/>
-                                        <TextBlock Margin="12,0" VerticalAlignment="Center">热门回复</TextBlock>
+                                <ListViewItem
+                                    Style="{StaticResource NoPaddingListViewItem}"
+                                    x:Name="ChangeHotReplysDisplayModeListViewItem"
+                                    Template="{StaticResource ListViewItemTemplate1}"
+                                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                                    BorderThickness="1"
+                                    Tapped="ChangeHotReplysDisplayModeListViewItem_Tapped">
+                                    <StackPanel
+                                        Orientation="Horizontal"
+                                        Margin="12,0">
+                                        <TextBlock
+                                            x:Name="iconText"
+                                            VerticalAlignment="Center"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            Text=""/>
+                                        <TextBlock
+                                            Margin="12,0"
+                                            VerticalAlignment="Center">
+                                            热门回复
+                                        </TextBlock>
                                     </StackPanel>
                                 </ListViewItem>
-                                <ListView SelectionMode="None" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" ItemsSource="{x:Bind hotReplies}"
-                                          BorderThickness="2" ItemTemplate="{StaticResource feed_reply}" ScrollViewer.VerticalScrollMode="Disabled" x:Name="hotReplyListView">
+                                <ListView
+                                    SelectionMode="None"
+                                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                                    ItemsSource="{x:Bind hotReplies}"
+                                    BorderThickness="1"
+                                    ItemTemplate="{StaticResource feed_reply}"
+                                    ScrollViewer.VerticalScrollMode="Disabled"
+                                    x:Name="hotReplyListView">
                                     <ListView.ItemContainerStyle>
                                         <Style TargetType="ListViewItem">
                                             <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
@@ -260,20 +546,36 @@
                                     </ListView.ItemContainerStyle>
                                     <ListView.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384.0"/>
+                                            <control:GridPanel
+                                                CubeInSameHeight="False"
+                                                DesiredColumnWidth="384.0"/>
                                         </ItemsPanelTemplate>
                                     </ListView.ItemsPanel>
                                 </ListView>
-                                <ListViewItem BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" BorderThickness="2"
-                                              Template="{StaticResource ListViewItemTemplate1}" x:Name="GetMoreHotReplyListViewItem" Tapped="GetMoreHotReplyListViewItem_Tapped">
-                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">加载更多热门回复</TextBlock>
+                                <ListViewItem
+                                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                                    BorderThickness="1"
+                                    Template="{StaticResource ListViewItemTemplate1}"
+                                    x:Name="GetMoreHotReplyListViewItem"
+                                    Tapped="GetMoreHotReplyListViewItem_Tapped">
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center">
+                                        加载更多热门回复
+                                    </TextBlock>
                                 </ListViewItem>
 
-                                <ListView SelectionMode="None" Margin="0,8" ItemTemplate="{StaticResource feed_reply}" ScrollViewer.VerticalScrollMode="Disabled" 
-                                          ItemsSource="{x:Bind replies}">
+                                <ListView
+                                    SelectionMode="None"
+                                    Margin="0,8"
+                                    ItemTemplate="{StaticResource feed_reply}"
+                                    ScrollViewer.VerticalScrollMode="Disabled"
+                                    ItemsSource="{x:Bind replies}">
                                     <ListView.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384.0"/>
+                                            <control:GridPanel
+                                                CubeInSameHeight="False"
+                                                DesiredColumnWidth="384.0"/>
                                         </ItemsPanelTemplate>
                                     </ListView.ItemsPanel>
                                     <ListView.ItemContainerStyle>
@@ -285,27 +587,51 @@
                             </StackPanel>
                         </PivotItem>
                         <PivotItem>
-                            <ListView SelectionMode="None" ScrollViewer.VerticalScrollMode="Disabled" ItemsSource="{x:Bind likes}">
+                            <ListView
+                                SelectionMode="None"
+                                ScrollViewer.VerticalScrollMode="Disabled"
+                                ItemsSource="{x:Bind likes}">
                                 <ListView.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="200"/>
+                                        <control:GridPanel
+                                            CubeInSameHeight="False"
+                                            DesiredColumnWidth="200"/>
                                     </ItemsPanelTemplate>
                                 </ListView.ItemsPanel>
                                 <ListView.ItemContainerStyle>
                                     <Style TargetType="ListViewItem">
-                                        <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
+                                        <Setter
+                                            Property="Template"
+                                            Value="{StaticResource ListViewItemTemplate1}"/>
                                     </Style>
                                 </ListView.ItemContainerStyle>
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="viewModel:UserViewModel">
-                                        <ListViewItem Style="{StaticResource NoPaddingListViewItem}" BorderBrush="{ThemeResource SystemControlBackgroundListLowBrush}" BorderThickness="0,1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Tapped="StackPanel_Tapped" Template="{StaticResource ListViewItemTemplate1}" Tag="{x:Bind url}">
-                                            <StackPanel Orientation="Horizontal" Padding="3" VerticalAlignment="Center">
-                                                <Ellipse Width="30" Height="30" HorizontalAlignment="Left">
+                                        <ListViewItem
+                                            Style="{StaticResource NoPaddingListViewItem}"
+                                            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                                            BorderThickness="1"
+                                            HorizontalContentAlignment="Stretch"
+                                            VerticalContentAlignment="Stretch"
+                                            Tapped="StackPanel_Tapped"
+                                            Template="{StaticResource ListViewItemTemplate1}"
+                                            Tag="{x:Bind url}">
+                                            <StackPanel
+                                                Orientation="Horizontal"
+                                                Padding="3"
+                                                VerticalAlignment="Center">
+                                                <Ellipse
+                                                    Width="30"
+                                                    Height="30"
+                                                    HorizontalAlignment="Left">
                                                     <Ellipse.Fill>
                                                         <ImageBrush ImageSource="{x:Bind UserAvatar}"/>
                                                     </Ellipse.Fill>
                                                 </Ellipse>
-                                                <TextBlock Margin="5,0" Text="{x:Bind UserName}" VerticalAlignment="Center"/>
+                                                <TextBlock
+                                                    Margin="5,0"
+                                                    Text="{x:Bind UserName}"
+                                                    VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </ListViewItem>
                                     </DataTemplate>
@@ -313,10 +639,14 @@
                             </ListView>
                         </PivotItem>
                         <PivotItem>
-                            <ListView SelectionMode="None" ScrollViewer.VerticalScrollMode="Disabled" >
+                            <ListView
+                                SelectionMode="None"
+                                ScrollViewer.VerticalScrollMode="Disabled" >
                                 <ListView.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384.0"/>
+                                        <control:GridPanel
+                                            CubeInSameHeight="False"
+                                            DesiredColumnWidth="384.0"/>
                                     </ItemsPanelTemplate>
                                 </ListView.ItemsPanel>
                                 <ListView.ItemContainerStyle>
@@ -327,17 +657,39 @@
 
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="viewModel:SourceFeedViewModel">
-                                        <ListViewItem Style="{StaticResource NoPaddingListViewItem}" BorderBrush="{ThemeResource SystemControlBackgroundListLowBrush}" BorderThickness="0,1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Template="{StaticResource ListViewItemTemplate1}">
+                                        <ListViewItem
+                                            Style="{StaticResource NoPaddingListViewItem}"
+                                            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                                            BorderThickness="0,1"
+                                            HorizontalContentAlignment="Stretch"
+                                            VerticalContentAlignment="Stretch"
+                                            Template="{StaticResource ListViewItemTemplate1}">
                                             <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="*"/>
                                                     <RowDefinition Height="auto"/>
                                                 </Grid.RowDefinitions>
-                                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                                    <Button Style="{StaticResource ButtonStyle1}" Padding="2" Tag="{x:Bind uurl}" Margin="4,0" Content="{x:Bind username}" VerticalAlignment="Center"/>
-                                                    <TextBlock Text="{x:Bind dateline}" Foreground="Gray" VerticalAlignment="Center"/>
+                                                <StackPanel
+                                                    HorizontalAlignment="Left"
+                                                    Orientation="Horizontal">
+                                                    <Button
+                                                        Style="{StaticResource ButtonStyle1}"
+                                                        Padding="2"
+                                                        Tag="{x:Bind uurl}"
+                                                        Margin="4,0"
+                                                        Content="{x:Bind username}"
+                                                        VerticalAlignment="Center"/>
+                                                    <TextBlock
+                                                        Text="{x:Bind dateline}"
+                                                        Foreground="Gray"
+                                                        VerticalAlignment="Center"/>
                                                 </StackPanel>
-                                                <control:MTextBlock Tag="{x:Bind url}" Tapped="Grid_Tapped" Grid.Row="1" MessageText="{x:Bind message}" Margin="8,0,10,10"/>
+                                                <control:MTextBlock
+                                                    Tag="{x:Bind url}"
+                                                    Tapped="Grid_Tapped"
+                                                    Grid.Row="1"
+                                                    MessageText="{x:Bind message}"
+                                                    Margin="8,0,10,10"/>
                                             </Grid>
                                         </ListViewItem>
                                     </DataTemplate>
@@ -345,11 +697,18 @@
                             </ListView>
                         </PivotItem>
                     </Pivot>
-                    <ListView x:Name="AnswersListView" x:Load="False" ScrollViewer.VerticalScrollMode="Disabled" Style="{StaticResource ListViewStyle}"
-                                  ItemsSource="{x:Bind answers}" ItemTemplate="{StaticResource feed}">
+                    <ListView
+                        x:Name="AnswersListView"
+                        x:Load="False"
+                        ScrollViewer.VerticalScrollMode="Disabled"
+                        Style="{StaticResource ListViewStyle}"
+                        ItemsSource="{x:Bind answers}"
+                        ItemTemplate="{StaticResource feed}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384.0"/>
+                                <control:GridPanel
+                                    CubeInSameHeight="False"
+                                    DesiredColumnWidth="384.0"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                         <ListView.ItemContainerStyle>
@@ -361,8 +720,12 @@
                 </controls:PullToRefreshListView>
             </Grid>
         </controls:PullToRefreshListView>
-        <StackPanel x:Name="PivotItemPanel" Orientation="Horizontal" VerticalAlignment="Bottom" 
-                    Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}" Padding="8,0">
+        <StackPanel
+            x:Name="PivotItemPanel"
+            Orientation="Horizontal"
+            VerticalAlignment="Bottom"
+            Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}"
+            Padding="8,0">
             <Button Style="{StaticResource ButtonStyle1}">
                 写回复
                 <Button.Flyout>
@@ -382,31 +745,61 @@
                     </Flyout>
                 </Button.Flyout>
             </Button>
-            <Button Style="{StaticResource ButtonStyle1}" Click="Button_Click" Tag="MakeLike">点赞</Button>
+            <Button
+                Style="{StaticResource ButtonStyle1}"
+                Click="Button_Click"
+                Tag="MakeLike">
+                点赞
+            </Button>
             <AppBarSeparator />
-            <Button BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}" Style="{StaticResource ButtonStyle1}" 
-                    Click="Button_Click" Tag="reply" x:Name="ToReplyPivotItemButton" BorderThickness="0,0,0,2">
+            <Button
+                BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
+                Style="{StaticResource ButtonStyle1}"
+                Click="Button_Click"
+                Tag="reply"
+                x:Name="ToReplyPivotItemButton"
+                BorderThickness="0,0,0,2">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Symbol="Comment"/>
-                    <TextBlock Margin="3,0" Text="{x:Bind FeedDetail.replynum,Mode=OneWay}"/>
+                    <TextBlock
+                        Margin="3,0"
+                        Text="{x:Bind FeedDetail.replynum,Mode=OneWay}"/>
                 </StackPanel>
             </Button>
-            <Button BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}" BorderThickness="0" 
-                    Style="{StaticResource ButtonStyle1}" Click="Button_Click" Tag="like" x:Name="ToLikePivotItemButton">
+            <Button
+                BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
+                BorderThickness="0"
+                Style="{StaticResource ButtonStyle1}"
+                Click="Button_Click"
+                Tag="like"
+                x:Name="ToLikePivotItemButton">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Symbol="Like"/>
-                    <TextBlock Margin="3,0" Text="{x:Bind FeedDetail.likenum,Mode=OneWay}"/>
+                    <TextBlock
+                        Margin="3,0"
+                        Text="{x:Bind FeedDetail.likenum,Mode=OneWay}"/>
                 </StackPanel>
             </Button>
-            <Button BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}" BorderThickness="0"
-                    Style="{StaticResource ButtonStyle1}" Click="Button_Click" Tag="share" x:Name="ToSharePivotItemButton">
+            <Button
+                BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
+                BorderThickness="0"
+                Style="{StaticResource ButtonStyle1}"
+                Click="Button_Click"
+                Tag="share"
+                x:Name="ToSharePivotItemButton">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Symbol="Share"/>
-                    <TextBlock Margin="3,0" Text="{x:Bind FeedDetail.share_num,Mode=OneWay}"/>
+                    <TextBlock
+                        Margin="3,0"
+                        Text="{x:Bind FeedDetail.share_num,Mode=OneWay}"/>
                 </StackPanel>
             </Button>
         </StackPanel>
-        <control:TitleBar x:Name="TitleBar" BackButtonClick="BackButton_Click" RefreshEvent="{x:Bind Refresh}" ComboBoxItemsSource="{x:Bind comboBoxItems}"
-                          ComboBoxSelectionChange="ChangeFeedSortingComboBox_SelectionChanged"/>
+        <control:TitleBar
+            x:Name="TitleBar"
+            BackButtonClick="BackButton_Click"
+            RefreshEvent="{x:Bind Refresh}"
+            ComboBoxItemsSource="{x:Bind comboBoxItems}"
+            ComboBoxSelectionChange="ChangeFeedSortingComboBox_SelectionChanged"/>
     </Grid>
 </Page>

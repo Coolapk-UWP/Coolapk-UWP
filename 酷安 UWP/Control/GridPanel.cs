@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Control
 {
-    class GridPanel : Panel
+    internal class GridPanel : Panel
     {
         public double DesiredColumnWidth
         {
@@ -29,11 +29,11 @@ namespace CoolapkUWP.Control
             (d as GridPanel).InvalidateArrange();
         }
 
-        int StackCount = 1;
+        private int StackCount = 1;
         protected override Size MeasureOverride(Size availableSize)
         {
             StackCount = (int)(availableSize.Width / DesiredColumnWidth);
-            if (StackCount == 0) StackCount = 1;
+            if (StackCount == 0) { StackCount = 1; }
             Size requestSize = new Size { Width = availableSize.Width };
             List<double> offsetY = new double[StackCount].ToList();
             double offsetY2 = 0;
@@ -48,7 +48,7 @@ namespace CoolapkUWP.Control
                         {
                             Children[i * StackCount + j]?.Measure(new Size(availableSize.Width / StackCount, double.PositiveInfinity));
                             if (Children[i * StackCount + j]?.DesiredSize.Height > height)
-                                height = Children[i * StackCount + j].DesiredSize.Height;
+                            { height = Children[i * StackCount + j].DesiredSize.Height; }
                         }
                         offsetY2 += height;
                     }
@@ -56,22 +56,22 @@ namespace CoolapkUWP.Control
             }
             else
             {
-                foreach (var item in Children)
+                foreach (UIElement item in Children)
                 {
                     if (item is ListViewItem l && l.Content is ViewModels.IndexPageViewModel m && m.entityTemplate == "iconTabLinkGridCard")
                     {
                         int maxIndex = offsetY.IndexOf(offsetY.Max());
                         item.Measure(new Size(availableSize.Width, double.PositiveInfinity));
-                        var itemRequestSize = item.DesiredSize;
+                        Size itemRequestSize = item.DesiredSize;
                         offsetY[maxIndex] += itemRequestSize.Height;
                         for (int i = 0; i < StackCount; i++)
-                            offsetY[i] = offsetY[maxIndex];
+                        { offsetY[i] = offsetY[maxIndex]; }
                     }
                     else
                     {
                         int minIndex = offsetY.IndexOf(offsetY.Min());
                         item.Measure(new Size(availableSize.Width / StackCount, double.PositiveInfinity));
-                        var itemRequestSize = item.DesiredSize;
+                        Size itemRequestSize = item.DesiredSize;
                         offsetY[minIndex] += itemRequestSize.Height;
                     }
                 }
@@ -92,33 +92,41 @@ namespace CoolapkUWP.Control
             if (CubeInSameHeight)
             {
                 if (Children.Count > 0)
+                {
                     for (int i = 0; i < (int)Math.Ceiling((double)Children.Count / StackCount); i++)
                     {
                         double height = 0;
                         for (int j = 0; j < StackCount; j++)
+                        {
                             if (Children[i * StackCount + j]?.DesiredSize.Height > height)
-                                height = Children[i * StackCount + j].DesiredSize.Height;
+                            { height = Children[i * StackCount + j].DesiredSize.Height; }
+                        }
                         for (int j = 0; j < StackCount; j++)
-                            Children[i * StackCount + j]?.Arrange(new Rect(offsetX[j], offsetY2, DesiredSize.Width / StackCount, height));
+                        { Children[i * StackCount + j]?.Arrange(new Rect(offsetX[j], offsetY2, DesiredSize.Width / StackCount, height)); }
                         offsetY2 += height;
                     }
+                }
             }
-            else foreach (var item in Children)
+            else
+            {
+                foreach (UIElement item in Children)
+                {
                     if (item is ListViewItem l && l.Content is ViewModels.IndexPageViewModel m && m.entityTemplate == "iconTabLinkGridCard")
                     {
                         int maxIndex = offsetY.IndexOf(offsetY.Max());
                         item.Arrange(new Rect(0, offsetY[maxIndex], DesiredSize.Width, item.DesiredSize.Height));
                         offsetY[maxIndex] += item.DesiredSize.Height;
                         for (int i = 0; i < StackCount; i++)
-                            offsetY[i] = offsetY[maxIndex];
+                        { offsetY[i] = offsetY[maxIndex]; }
                     }
                     else
                     {
-                        int minIndex = 0;
-                        minIndex = offsetY.IndexOf(offsetY.Min());
+                        int minIndex = offsetY.IndexOf(offsetY.Min());
                         item.Arrange(new Rect(offsetX[minIndex], offsetY[minIndex], DesiredSize.Width / StackCount, item.DesiredSize.Height));
                         offsetY[minIndex] += item.DesiredSize.Height;
                     }
+                }
+            }
             return finalSize;
         }
     }

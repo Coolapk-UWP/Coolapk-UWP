@@ -26,26 +26,26 @@ namespace CoolapkUWP.Pages
     public sealed partial class UserHubPage : Page, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        ImageSource userAvatar;
-        string userName;
-        double followNum;
-        double fansNum;
-        double feedNum;
-        double levelNum;
 
-        int page = 0;
-        List<int> pages = new List<int>();
-        string pageUrl;
-        ObservableCollection<Entity> Collection = new ObservableCollection<Entity>();
-        int index;
-        List<string> urls = new List<string>();
-        ObservableCollection<ObservableCollection<Entity>> Feeds2 = new ObservableCollection<ObservableCollection<Entity>>();
+        private ImageSource userAvatar;
+        private string userName;
+        private double followNum;
+        private double fansNum;
+        private double feedNum;
+        private double levelNum;
+        private int page = 0;
+        private readonly List<int> pages = new List<int>();
+        private string pageUrl;
+        private readonly ObservableCollection<Entity> Collection = new ObservableCollection<Entity>();
+        private int index;
+        private readonly List<string> urls = new List<string>();
+        private readonly ObservableCollection<ObservableCollection<Entity>> Feeds2 = new ObservableCollection<ObservableCollection<Entity>>();
 
         public UserHubPage() => this.InitializeComponent();
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            string uid = Settings.GetString("Uid");
+            string uid = SettingHelper.GetString("Uid");
             if (string.IsNullOrEmpty(uid))
             {
                 LoginButton.Visibility = Visibility.Visible;
@@ -55,9 +55,9 @@ namespace CoolapkUWP.Pages
             {
                 LoginButton.Visibility = Visibility.Collapsed;
                 UserDetailGrid.Visibility = Visibility.Visible;
-                var o = Tools.GetJSonObject(await Tools.GetJson("/user/profile?uid=" + uid));
-                Tools.mainPage.UserAvatar = userAvatar = await ImageCache.GetImage(ImageType.BigAvatar, o["userAvatar"].GetString());
-                Tools.mainPage.UserNames = userName = o["username"].GetString();
+                JsonObject o = UIHelper.GetJSonObject(await UIHelper.GetJson("/user/profile?uid=" + uid));
+                UIHelper.mainPage.UserAvatar = userAvatar = await ImageCache.GetImage(ImageType.BigAvatar, o["userAvatar"].GetString());
+                UIHelper.mainPage.UserNames = userName = o["username"].GetString();
                 feedNum = o["feed"].GetNumber();
                 followNum = o["follow"].GetNumber();
                 fansNum = o["fans"].GetNumber();
@@ -81,23 +81,25 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e) => Tools.Navigate(typeof(BrowserPage), new object[] { true, null });
+        private void LoginButton_Click(object sender, RoutedEventArgs e) => UIHelper.Navigate(typeof(BrowserPage), new object[] { true, null });
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             switch ((sender as FrameworkElement).Tag as string)
             {
                 case "feed":
-                    Tools.Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, Settings.GetString("Uid") });
+                    UIHelper.Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, SettingHelper.GetString("Uid") });
                     break;
                 case "follow":
-                    Tools.Navigate(typeof(UserListPage), new object[] { Settings.GetString("Uid"), true, userName });
+                    UIHelper.Navigate(typeof(UserListPage), new object[] { SettingHelper.GetString("Uid"), true, userName });
                     break;
                 case "fans":
-                    Tools.Navigate(typeof(UserListPage), new object[] { Settings.GetString("Uid"), false, userName });
+                    UIHelper.Navigate(typeof(UserListPage), new object[] { SettingHelper.GetString("Uid"), false, userName });
                     break;
                 case "settings":
-                    Tools.Navigate(typeof(SettingPages.SettingPage));
+                    UIHelper.Navigate(typeof(SettingPages.SettingPage));
+                    break;
+                default:
                     break;
             }
         }
@@ -108,28 +110,30 @@ namespace CoolapkUWP.Pages
             if (!e.IsIntermediate)
             {
                 if (Collection.Count != 0)
+                {
                     if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
-                        GetUrlPage();
+                    { GetUrlPage(); }
+                }
             }
         }
 
-        async void GetUrlPage(int p = -1)
+        private async void GetUrlPage(int p = -1)
         {
             if (index == -1)
             {
                 if (!await GetUrlPage(p == -1 ? ++page : p, pageUrl, Collection))
-                    page--;
+                { page--; }
             }
             else if (p == -1)
             {
                 if (!await GetUrlPage(page = p == -1 ? ++pages[index] : p, urls[index], Feeds2[index]))
-                    pages[index]--;
+                { pages[index]--; }
             }
         }
 
         public void RefreshPage() => GetUrlPage(1);
 
-        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => Tools.OpenLink((sender as FrameworkElement).Tag as string);
+        private void FeedListViewItem_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.OpenLink((sender as FrameworkElement).Tag as string);
 
         private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -139,19 +143,19 @@ namespace CoolapkUWP.Pages
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
             FrameworkElement element = sender as FrameworkElement;
-            if (element.Tag is string s) Tools.OpenLink(s);
+            if (element.Tag is string s) { UIHelper.OpenLink(s); }
             else if (element.Tag is IndexPageViewModel m)
             {
-                if (string.IsNullOrEmpty(m.url)) return;
+                if (string.IsNullOrEmpty(m.url)) { return; }
                 string str = m.url;
                 if (str.IndexOf("/page") == 0)
                 {
                     str = str.Replace("/page", "/page/dataList");
                     str += $"&title={m.title}";
-                    Tools.Navigate(typeof(IndexPage), new object[] { str, false, null });
+                    UIHelper.Navigate(typeof(IndexPage), new object[] { str, false, null });
                 }
-                else if (str.IndexOf('#') == 0) Tools.Navigate(typeof(IndexPage), new object[] { $"{str}&title={m.title}", false, null });
-                else Tools.OpenLink(str);
+                else if (str.IndexOf('#') == 0) { UIHelper.Navigate(typeof(IndexPage), new object[] { $"{str}&title={m.title}", false, null }); }
+                else { UIHelper.OpenLink(str); }
             }
         }
 
@@ -161,11 +165,11 @@ namespace CoolapkUWP.Pages
             if (Feeds2.Count > 0)
             {
                 ObservableCollection<Entity> feeds = Feeds2[0];
-                var needDeleteItems = (from b in feeds
+                Entity[] needDeleteItems = (from b in feeds
                                        where b.entityType == "feed"
                                        select b).ToArray();
-                foreach (var item in needDeleteItems)
-                    feeds.Remove(item);
+                foreach (Entity item in needDeleteItems)
+                { _ = feeds.Remove(item); }
                 urls[0] = $"/page/dataList?url={model.url}&title={model.title}";
                 urls[0] = urls[0].Replace("#", "%23");
                 pages[0] = 0;
@@ -174,11 +178,11 @@ namespace CoolapkUWP.Pages
             else
             {
                 ObservableCollection<Entity> feeds = Collection;
-                var needDeleteItems = (from b in feeds
+                Entity[] needDeleteItems = (from b in feeds
                                        where b.entityType == "topic"
                                        select b).ToArray();
-                foreach (var item in needDeleteItems)
-                    feeds.Remove(item);
+                foreach (Entity item in needDeleteItems)
+                { _ = feeds.Remove(item); }
                 pageUrl = $"/page/dataList?url={model.url}&title={model.title}";
                 pageUrl = pageUrl.Replace("#", "%23");
                 page = 0;
@@ -194,14 +198,14 @@ namespace CoolapkUWP.Pages
             {
                 Entity[] f = element.Tag as Entity[];
                 Style style = new Style(typeof(ListViewItem));
-                style.Setters.Add(new Setter(TemplateProperty, Application.Current.Resources["ListViewItemTemplate1"] as ControlTemplate));
+                style.Setters.Add(new Setter(TemplateProperty, Windows.UI.Xaml.Application.Current.Resources["ListViewItemTemplate1"] as ControlTemplate));
                 for (int j = 0; j < f.Length; j++)
                 {
                     IndexPageViewModel model = f[j] as IndexPageViewModel;
-                    var ff = new ObservableCollection<Entity>();
-                    var l = new ListView
+                    ObservableCollection<Entity> ff = new ObservableCollection<Entity>();
+                    ListView l = new ListView
                     {
-                        Style = Application.Current.Resources["ListViewStyle"] as Style,
+                        Style = Windows.UI.Xaml.Application.Current.Resources["ListViewStyle"] as Style,
                         ItemContainerStyle = style,
                         ItemTemplateSelector = Resources["FTemplateSelector"] as DataTemplateSelector,
                         ItemsSource = ff,
@@ -209,7 +213,7 @@ namespace CoolapkUWP.Pages
                         SelectionMode = ListViewSelectionMode.None
                     };
                     l.SetValue(ScrollViewer.VerticalScrollModeProperty, ScrollMode.Disabled);
-                    var i = new PivotItem
+                    PivotItem i = new PivotItem
                     {
                         Tag = f[j],
                         Content = l,
@@ -219,7 +223,7 @@ namespace CoolapkUWP.Pages
                     pages.Add(1);
                     Feeds2.Add(ff);
                     urls.Add("/page/dataList?url=" + model.url.Replace("#", "%23") + $"&title={model.title}");
-                    if (j == 0) load(element, i);
+                    if (j == 0) { load(element, i); }
                 }
                 return;
             }
@@ -227,7 +231,7 @@ namespace CoolapkUWP.Pages
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e) => load(sender as Pivot);
 
-        void load(Pivot element, PivotItem i = null)
+        private void load(Pivot element, PivotItem i = null)
         {
             PivotItem item = i is null ? element.SelectedItem as PivotItem : i;
             IndexPageViewModel model = item.Tag as IndexPageViewModel;
@@ -239,23 +243,24 @@ namespace CoolapkUWP.Pages
             _ = GetUrlPage(1, u, feeds);
         }
 
-        async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
+        private async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
         {
-            Tools.ShowProgressBar();
-            string s = await Tools.GetJson($"/account/loadConfig?key=my_page_card_config");
-            JsonArray Root = Tools.GetDataArray(s);
+            UIHelper.ShowProgressBar();
+            string s = await UIHelper.GetJson($"/account/loadConfig?key=my_page_card_config");
+            JsonArray Root = UIHelper.GetDataArray(s);
             if (Root != null && Root.Count > 0)
+            {
                 if (page == 1)
                 {
                     int n = 0;
                     if (FeedsCollection.Count > 0)
                     {
-                        var needDeleteItems = (from b in FeedsCollection
+                        Entity[] needDeleteItems = (from b in FeedsCollection
                                                from c in Root
                                                where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
                                                select b).ToArray();
                         foreach (var item in needDeleteItems)
-                            Collection.Remove(item);
+                        { Collection.Remove(item); }
                         n = (from b in FeedsCollection
                              where b.entityFixed
                              select b).Count();
@@ -269,31 +274,33 @@ namespace CoolapkUWP.Pages
                             JsonObject j = JsonObject.Parse(jo["extraData"].GetString());
                             continue;
                         }
-                        if (jo.TryGetValue("entityTemplate", out IJsonValue tt) && tt.GetString() == "fabCard") continue;
+                        if (jo.TryGetValue("entityTemplate", out IJsonValue tt) && tt.GetString() == "fabCard") { continue; }
                         FeedsCollection.Insert(n + k, GetEntity(jo));
                         k++;
                     }
-                    Tools.HideProgressBar();
+                    UIHelper.HideProgressBar();
                     return true;
                 }
                 else
                 {
                     if (Root.Count != 0)
                     {
-                        foreach (var i in Root) FeedsCollection.Add(GetEntity(i.GetObject()));
-                        Tools.HideProgressBar();
+                        foreach (IJsonValue i in Root) { FeedsCollection.Add(GetEntity(i.GetObject())); }
+                        UIHelper.HideProgressBar();
                         return true;
                     }
                     else
                     {
-                        Tools.HideProgressBar();
+                        UIHelper.HideProgressBar();
                         return false;
                     }
                 }
+            }
+
             return false;
         }
 
-        Entity GetEntity(JsonObject token)
+        private Entity GetEntity(JsonObject token)
         {
             switch (token["entityType"].GetString())
             {

@@ -13,11 +13,21 @@ namespace CoolapkUWP.Pages.AppPages
 {
     public sealed partial class AppPage : Page
     {
-        string jstr = "", vmstr = "", dstr = "", vstr, mstr, nstr, iurl, vtstr, rstr, pstr, ddstr;
-        string applink = "";
+        private string jstr = "";
+        private string vmstr = "";
+        private string dstr = "";
+        private string vstr;
+        private string mstr;
+        private string nstr;
+        private string iurl;
+        private string vtstr;
+        private string rstr;
+        private string pstr;
+        private readonly string ddstr;
+        private string applink = "";
         public AppPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void titleBar_Loaded(object sender, RoutedEventArgs e)
@@ -33,19 +43,19 @@ namespace CoolapkUWP.Pages.AppPages
         }
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(applink)) return;
+            if (string.IsNullOrEmpty(applink)) { return; }
             this.Tag = applink;
             try
             {
                 LaunchAppViewLoad(await new HttpClient().GetStringAsync(Tag.ToString()));
             }
-            catch (HttpRequestException ex) { Tools.ShowHttpExceptionMessage(ex); }
+            catch (HttpRequestException ex) { UIHelper.ShowHttpExceptionMessage(ex); }
         }
         private void LaunchAppViewLoad(String str)
         {
-            try { jstr = Tools.ReplaceHtml(Regex.Split(Regex.Split(Regex.Split(str, "应用简介</p>")[1], @"<div class=""apk_left_title_info"">")[1], "</div>")[0].Trim()); } catch (Exception) { }
-            try { vmstr = Tools.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[2], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
-            try { dstr = Tools.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[1], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
+            try { jstr = UIHelper.ReplaceHtml(Regex.Split(Regex.Split(Regex.Split(str, "应用简介</p>")[1], @"<div class=""apk_left_title_info"">")[1], "</div>")[0].Trim()); } catch (Exception) { }
+            try { vmstr = UIHelper.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[2], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
+            try { dstr = UIHelper.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[1], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
             vstr = Regex.Split(str, @"<p class=""detail_app_title"">")[1].Split('>')[1].Split('<')[0].Trim();
             mstr = Regex.Split(str, @"<p class=""apk_topba_message"">")[1].Split('<')[0].Trim().Replace("\n", "").Replace(" ", "");
             nstr = Regex.Split(str, @"<p class=""detail_app_title"">")[1].Split('<')[0].Trim();
@@ -78,11 +88,11 @@ namespace CoolapkUWP.Pages.AppPages
                 AppVMText.Text = dstr;
                 AppDText.Text = "";
             }
-            if (dstr.Contains("更新时间") && dstr.Contains("ROM") && dstr.Contains("名称")) UPanel.Visibility = Visibility.Collapsed;
+            if (dstr.Contains("更新时间") && dstr.Contains("ROM") && dstr.Contains("名称")) { UPanel.Visibility = Visibility.Collapsed; }
 
 
             //加载截图！
-            String images = Regex.Split(Regex.Split(str, @"<div class=""ex-screenshot-thumb-carousel"">")[1], "</div>")[0];
+            string images = Regex.Split(Regex.Split(str, @"<div class=""ex-screenshot-thumb-carousel"">")[1], "</div>")[0];
             String[] imagearray = Regex.Split(images, "<img");
             for (int i = 0; i < imagearray.Length - 1; i++)
             {
@@ -163,7 +173,7 @@ namespace CoolapkUWP.Pages.AppPages
             {
                 KPanel.Visibility = Visibility.Collapsed;
             }*/
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
 
         private void CopyM_Click(object sender, RoutedEventArgs e)
@@ -199,7 +209,7 @@ namespace CoolapkUWP.Pages.AppPages
         private async void GotoUri_Click(object sender, RoutedEventArgs e)
         {
             // Launch the URI
-            var success = await Launcher.LaunchUriAsync(new Uri(applink));
+            _ = await Launcher.LaunchUriAsync(new Uri(applink));
         }
 
         private void ScreenShotView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -219,19 +229,19 @@ namespace CoolapkUWP.Pages.AppPages
         private async void DownloadButton_Click(object sender, RoutedEventArgs e)
         {
             // Download the URI
-            var success = await Launcher.LaunchUriAsync(new Uri(ddstr));
+            _ = await Launcher.LaunchUriAsync(new Uri(ddstr));
         }
 
         private void Report_Click(object sender, RoutedEventArgs e)
         {
-            Tools.Navigate(typeof(BrowserPage), new object[] { false, "https://m.coolapk.com/mp/apk/report?apkname=" + Regex.Split(Tag.ToString(), "/")[4] });
+            UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "https://m.coolapk.com/mp/apk/report?apkname=" + Regex.Split(Tag.ToString(), "/")[4] });
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             if (ScreenShotFlipView.Visibility == Visibility.Visible)
-                CloseFlip_Click();
-            else Frame.GoBack();
+            { CloseFlip_Click(); }
+            else { Frame.GoBack(); }
         }
     }
 }

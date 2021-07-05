@@ -17,11 +17,19 @@
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
-        <controls:PullToRefreshListView ItemTemplate="{StaticResource User}" SelectionMode="None" Padding="{x:Bind data:Settings.stackPanelMargin,Mode=OneWay}"
-                                        PullToRefreshLabel="下拉刷新" ReleaseToRefreshLabel="松手刷新" RefreshRequested="UserList_RefreshRequested" x:Name="UserList">
+        <controls:PullToRefreshListView
+            ItemTemplate="{StaticResource User}"
+            SelectionMode="None"
+            Padding="{x:Bind data:SettingHelper.stackPanelMargin,Mode=OneWay}"
+            PullToRefreshLabel="下拉刷新"
+            ReleaseToRefreshLabel="松手刷新"
+            RefreshRequested="UserList_RefreshRequested"
+            x:Name="UserList">
             <controls:PullToRefreshListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <control:GridPanel CubeInSameHeight="False" DesiredColumnWidth="384"/>
+                    <control:GridPanel
+                        CubeInSameHeight="False"
+                        DesiredColumnWidth="384"/>
                 </ItemsPanelTemplate>
             </controls:PullToRefreshListView.ItemsPanel>
             <controls:PullToRefreshListView.ItemContainerStyle>
@@ -30,6 +38,9 @@
                 </Style>
             </controls:PullToRefreshListView.ItemContainerStyle>
         </controls:PullToRefreshListView>
-        <control:TitleBar x:Name="titleBar" BackButtonClick="TitleBar_BackButtonClick" RefreshEvent="TitleBar_RefreshButtonClick"/>
+        <control:TitleBar
+            x:Name="titleBar"
+            BackButtonClick="TitleBar_BackButtonClick"
+            RefreshEvent="TitleBar_RefreshButtonClick"/>
     </Grid>
 </Page>

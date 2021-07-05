@@ -13,7 +13,7 @@ namespace CoolapkUWP
     /// <summary>
     /// 提供特定于应用程序的行为，以补充默认的应用程序类。
     /// </summary>
-    sealed partial class Application : Windows.UI.Xaml.Application
+    public sealed partial class Application : Windows.UI.Xaml.Application
     {
         /// <summary>
         /// 初始化单一实例应用程序对象。这是执行的创作代码的第一行，
@@ -21,14 +21,13 @@ namespace CoolapkUWP
         /// </summary>
         public Application()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             this.Suspending += OnSuspending;
         }
 
         protected override async void OnActivated(IActivatedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame == null)
+            if (!(Window.Current.Content is Frame rootFrame))
             {
                 rootFrame = new Frame();
                 rootFrame.NavigationFailed += OnNavigationFailed;
@@ -41,35 +40,35 @@ namespace CoolapkUWP
             Window.Current.Activate();
             if (e.Kind == ActivationKind.Protocol)
             {
-                var protocolArgs = (ProtocolActivatedEventArgs)e;
+                ProtocolActivatedEventArgs protocolArgs = (ProtocolActivatedEventArgs)e;
                 switch (protocolArgs.Uri.Host)
                 {
                     case "www.coolapk.com":
-                        Tools.OpenLink(protocolArgs.Uri.AbsolutePath);
+                        UIHelper.OpenLink(protocolArgs.Uri.AbsolutePath);
                         break;
                     case "coolapk.com":
-                        Tools.OpenLink(protocolArgs.Uri.AbsolutePath);
+                        UIHelper.OpenLink(protocolArgs.Uri.AbsolutePath);
                         break;
                     case "www.coolmarket.com":
-                        Tools.OpenLink(protocolArgs.Uri.AbsolutePath);
+                        UIHelper.OpenLink(protocolArgs.Uri.AbsolutePath);
                         break;
                     case "coolmarket.com":
-                        Tools.OpenLink(protocolArgs.Uri.AbsolutePath);
+                        UIHelper.OpenLink(protocolArgs.Uri.AbsolutePath);
                         break;
                     case "http":
-                        Tools.OpenLink(protocolArgs.Uri.Host + ":" + protocolArgs.Uri.AbsolutePath);
+                        UIHelper.OpenLink(protocolArgs.Uri.Host + ":" + protocolArgs.Uri.AbsolutePath);
                         break;
                     case "https":
-                        Tools.OpenLink(protocolArgs.Uri.Host + ":" + protocolArgs.Uri.AbsolutePath);
+                        UIHelper.OpenLink(protocolArgs.Uri.Host + ":" + protocolArgs.Uri.AbsolutePath);
                         break;
                     case "settings":
-                        Tools.Navigate(typeof(SettingPage), false);
+                        UIHelper.Navigate(typeof(SettingPage), false);
                         break;
                     case "flags":
-                        Tools.Navigate(typeof(TestPage));
+                        UIHelper.Navigate(typeof(TestPage));
                         break;
                     default:
-                        Tools.OpenLink("/" + protocolArgs.Uri.Host + protocolArgs.Uri.AbsolutePath);
+                        UIHelper.OpenLink("/" + protocolArgs.Uri.Host + protocolArgs.Uri.AbsolutePath);
                         break;
                 }
             }
@@ -83,17 +82,16 @@ namespace CoolapkUWP
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             RegisterExceptionHandlingSynchronizationContext();
-            this.UnhandledException += Application_UnhandledException;
+            UnhandledException += Application_UnhandledException;
 
-            Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame == null)
+            if (!(Window.Current.Content is Frame rootFrame))
             {
                 rootFrame = new Frame();
                 rootFrame.NavigationFailed += OnNavigationFailed;
                 // 当导航堆栈尚未还原时，导航到第一页，
                 // 并通过将所需信息作为导航参数传入来配置
                 // 参数
-                rootFrame.Navigate(typeof(Pages.MainPage), e.Arguments);
+                _ = rootFrame.Navigate(typeof(Pages.MainPage), e.Arguments);
                 Window.Current.Content = rootFrame;
             }
 
@@ -107,7 +105,7 @@ namespace CoolapkUWP
         /// </summary>
         ///<param name="sender">导航失败的框架</param>
         ///<param name="e">有关导航失败的详细信息</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
@@ -120,8 +118,8 @@ namespace CoolapkUWP
                 if (Window.Current.Content != null)
                 {
                     //await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
-                    Tools.ShowMessage($"{e.Exception.Message}\n{e.Exception.StackTrace}");
-                    Tools.HideProgressBar();
+                    UIHelper.ShowMessage($"{e.Exception.Message}\n{e.Exception.StackTrace}");
+                    UIHelper.HideProgressBar();
                 }
             }
         }
@@ -135,7 +133,7 @@ namespace CoolapkUWP
         /// <param name="e">有关挂起请求的详细信息。</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
-            var deferral = e.SuspendingOperation.GetDeferral();
+            SuspendingDeferral deferral = e.SuspendingOperation.GetDeferral();
             //TODO: 保存应用程序状态并停止任何后台活动
             deferral.Complete();
         }
@@ -151,8 +149,8 @@ namespace CoolapkUWP
                 if (Window.Current.Content != null)
                 {
                     //await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
-                    Tools.ShowMessage($"{e.Exception.Message}\n{e.Exception.StackTrace}");
-                    Tools.HideProgressBar();
+                    UIHelper.ShowMessage($"{e.Exception.Message}\n{e.Exception.StackTrace}");
+                    UIHelper.HideProgressBar();
                 }
             }
         }

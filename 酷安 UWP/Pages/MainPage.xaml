@@ -4,10 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
-    xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:control="using:CoolapkUWP.Control"
-    xmlns:data="using:CoolapkUWP.Data"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     NavigationCacheMode="Required" SizeChanged="Page_SizeChanged"
     Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
@@ -98,21 +95,40 @@
             <muxc:NavigationViewItem Tag="UserHub">
                 <StackPanel Orientation="Horizontal">
                     <Grid>
-                        <FontIcon x:Name="LoginIcon" Glyph="" FontSize="16" HorizontalAlignment="Left" Margin="0,0,0,0"/>
-                        <Ellipse x:Name="UserIcon" Width="20" Height="20" HorizontalAlignment="Left" Margin="-2,2,0,0">
+                        <FontIcon
+                            x:Name="LoginIcon"
+                            Glyph=""
+                            FontSize="16"
+                            HorizontalAlignment="Left"
+                            Margin="0,0,0,0"/>
+                        <Ellipse
+                            x:Name="UserIcon"
+                            Width="20"
+                            Height="20"
+                            HorizontalAlignment="Left"
+                            Margin="-2,2,0,0">
                             <Ellipse.Fill>
                                 <ImageBrush ImageSource="{x:Bind UserAvatar,Mode=OneWay}"/>
                             </Ellipse.Fill>
                         </Ellipse>
                     </Grid>
-                    <TextBlock x:Name="UserName" Margin="11"/>
+                    <TextBlock
+                        x:Name="UserName"
+                        Margin="11"/>
                 </StackPanel>
             </muxc:NavigationViewItem>
         </muxc:NavigationView.FooterMenuItems>
 
         <muxc:NavigationView.AutoSuggestBox>
-            <AutoSuggestBox x:Name="SearchBox" QueryIcon="Find" ItemTemplateSelector="{StaticResource tspl}" MinWidth="180"
-                                TextChanged="AutoSuggestBox_TextChanged" QuerySubmitted="AutoSuggestBox_QuerySubmitted" SuggestionChosen="AutoSuggestBox_SuggestionChosen"/>
+            <AutoSuggestBox
+                x:Name="SearchBox"
+                QueryIcon="Find"
+                ItemTemplateSelector="{StaticResource tspl}"
+                MinWidth="180"
+                PlaceholderText="搜索 动态、用户和话题"
+                TextChanged="AutoSuggestBox_TextChanged"
+                QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                SuggestionChosen="AutoSuggestBox_SuggestionChosen"/>
         </muxc:NavigationView.AutoSuggestBox>
 
         <Frame x:Name="navigationViewFrame" />

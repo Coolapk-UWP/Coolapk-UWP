@@ -6,7 +6,7 @@ using Windows.Data.Json;
 
 namespace CoolapkUWP.Data
 {
-    class NotificationsNum : INotifyPropertyChanged
+    internal class NotificationsNum : INotifyPropertyChanged
     {
         public event EventHandler BadgeNumberChanged;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -27,23 +27,22 @@ namespace CoolapkUWP.Data
         }
 
         public double followNum, messageNum, atMeNum, atCommentMeNum, commentMeNum, feedLikeNum;
-
-        Timer timer;
+        private Timer timer;
 
         public void Initial(JsonObject jo)
         {
             ChangeNumber(jo);
-            timer = new Timer(async (s) => ChangeNumber(Tools.GetJSonObject(await Tools.GetJson("/notification/checkCount"))), string.Empty, 30000, 30000);
+            timer = new Timer(async (s) => ChangeNumber(UIHelper.GetJSonObject(await UIHelper.GetJson("/notification/checkCount"))), string.Empty, 30000, 30000);
         }
 
         public async Task RefreshNotificationsNum(bool isBackground = false)
         {
-            if (!isBackground && timer != null) timer.Dispose();
-            ChangeNumber(Tools.GetJSonObject(await Tools.GetJson("/notification/checkCount", isBackground)));
-            if (!isBackground) timer = new Timer(async (s) => ChangeNumber(Tools.GetJSonObject(await Tools.GetJson("/notification/checkCount"))), string.Empty, 30000, 30000);
+            if (!isBackground && timer != null) { timer.Dispose(); }
+            ChangeNumber(UIHelper.GetJSonObject(await UIHelper.GetJson("/notification/checkCount", isBackground)));
+            if (!isBackground) { timer = new Timer(async (s) => ChangeNumber(UIHelper.GetJSonObject(await UIHelper.GetJson("/notification/checkCount"))), string.Empty, 30000, 30000); }
         }
 
-        void ChangeNumber(JsonObject o)
+        private void ChangeNumber(JsonObject o)
         {
             if (o != null)
             {
@@ -86,7 +85,7 @@ namespace CoolapkUWP.Data
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(feedLikeNum)));
                 }
                 if (numChanged)
-                    TileManager.SetTile(followNum, messageNum, atMeNum, atCommentMeNum, commentMeNum, feedLikeNum);
+                { TileManager.SetTile(followNum, messageNum, atMeNum, atCommentMeNum, commentMeNum, feedLikeNum); }
             }
         }
     }

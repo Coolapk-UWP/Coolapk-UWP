@@ -34,7 +34,7 @@ namespace CoolapkUWP.Control
             get => _messageText;
             set
             {
-                var str = value.Replace("<!--break-->", string.Empty);
+                string str = value.Replace("<!--break-->", string.Empty);
                 if (str != _messageText)
                 {
                     _messageText = str;
@@ -77,17 +77,17 @@ namespace CoolapkUWP.Control
             });
         }
 
-        Dictionary<string, string> uris = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> uris = new Dictionary<string, string>();
         public MTextBlock() => InitializeComponent();
 
         private async void GetTextBlock()
         {
-            var block = new RichTextBlock
+            RichTextBlock block = new RichTextBlock
             {
                 IsTextSelectionEnabled = IsTextSelectionEnabled,
                 TextWrapping = TextWrapping.Wrap,
             };
-            var paragraph = new Paragraph();
+            Paragraph paragraph = new Paragraph();
 
             void NewLine()
             {
@@ -96,9 +96,9 @@ namespace CoolapkUWP.Control
             }
             void AddText(string item) => paragraph.Inlines.Add(new Run { Text = item.Replace("&amp;", "&").Replace("&quot;", "\"") });
 
-            var imageArrayBuider = ImmutableArray.CreateBuilder<ImageData>();
-            var list = await GetStringList(_messageText);
-            foreach (var item in list)
+            ImmutableArray<ImageData>.Builder imageArrayBuider = ImmutableArray.CreateBuilder<ImageData>();
+            ImmutableArray<string> list = await GetStringList(_messageText);
+            foreach (string item in list)
             {
                 if (string.IsNullOrEmpty(item)) { NewLine(); }
                 else
@@ -111,10 +111,10 @@ namespace CoolapkUWP.Control
                                 try { content = item.Substring(item.IndexOf('>') + 1, item.LastIndexOf('<') - item.IndexOf('>') - 1); }
                                 catch (ArgumentOutOfRangeException) { content = ""; }
                                 string href = string.Empty;
-                                var hrefRegex = new Regex("href*?=*?\"(\\S|\\s)+?\"");
+                                Regex hrefRegex = new Regex("href*?=*?\"(\\S|\\s)+?\"");
                                 if (hrefRegex.IsMatch(item))
                                 {
-                                    var match = hrefRegex.Match(item);
+                                    Match match = hrefRegex.Match(item);
                                     href = match.Value.Substring(match.Value.IndexOf('"') + 1, match.Value.LastIndexOf('"') - match.Value.IndexOf('"') - 1);
                                 }
 
@@ -122,7 +122,7 @@ namespace CoolapkUWP.Control
                                 {
                                     NewLine();
 
-                                    var imageModel = new ImageData
+                                    ImageData imageModel = new ImageData
                                     {
                                         Pic = await ImageCache.GetImage(ImageType.SmallImage, href),
                                         url = href
@@ -151,7 +151,7 @@ namespace CoolapkUWP.Control
                                     image.Tapped += (sender, e) =>
                                     {
                                         e.Handled = true;
-                                        Tools.ShowImage(imageModel.url, ImageType.OriginImage);
+                                        UIHelper.ShowImage(imageModel.url, ImageType.OriginImage);
                                     };
 
                                     Grid grid = new Grid();
@@ -266,11 +266,11 @@ namespace CoolapkUWP.Control
                                     {
                                         if (content == "查看图片" && (href.IndexOf("http://image.coolapk.com", StringComparison.Ordinal) == 0 || href.IndexOf("https://image.coolapk.com", StringComparison.Ordinal) == 0))
                                         {
-                                            Tools.ShowImage(href, ImageType.SmallImage);
+                                            UIHelper.ShowImage(href, ImageType.SmallImage);
                                         }
                                         else
                                         {
-                                            Tools.OpenLink(href);
+                                            UIHelper.OpenLink(href);
                                         }
                                     };
 
@@ -282,7 +282,7 @@ namespace CoolapkUWP.Control
                         case '#':
                             {
                                 string s = item.Substring(1, item.Length - 2);
-                                if (Emojis.emojis.Contains(s))
+                                if (EmojiHelper.emojis.Contains(s))
                                 {
                                     InlineUIContainer container = new InlineUIContainer();
                                     Image image = new Image
@@ -300,7 +300,7 @@ namespace CoolapkUWP.Control
                             break;
                         case '[':
                             {
-                                if (Settings.GetBoolen("IsUseOldEmojiMode") && Emojis.oldEmojis.Contains(item))
+                                if (SettingHelper.GetBoolen("IsUseOldEmojiMode") && EmojiHelper.oldEmojis.Contains(item))
                                 {
                                     InlineUIContainer container = new InlineUIContainer();
                                     Image image = new Image
@@ -313,7 +313,7 @@ namespace CoolapkUWP.Control
                                     container.Child = image;
                                     paragraph.Inlines.Add(container);
                                 }
-                                else if (Emojis.emojis.Contains(item))
+                                else if (EmojiHelper.emojis.Contains(item))
                                 {
                                     InlineUIContainer container = new InlineUIContainer();
                                     Image image = new Image
@@ -335,8 +335,8 @@ namespace CoolapkUWP.Control
                 }
             }
 
-            var array = imageArrayBuider.ToImmutable();
-            foreach (var item in array)
+            ImmutableArray<ImageData> array = imageArrayBuider.ToImmutable();
+            foreach (ImageData item in array)
             {
                 item.ContextArray = array;
             }
@@ -360,14 +360,14 @@ namespace CoolapkUWP.Control
         {
             return Task.Run(() =>
             {
-                var link = new Regex("<a(\\S|\\s)*?>(\\S|\\s)*?<*?a*?>");
-                var emojis = new Regex(@"\[\S*?\]|#\(\S*?\)");
-                var buider = ImmutableArray.CreateBuilder<string>();
+                Regex link = new Regex("<a(\\S|\\s)*?>(\\S|\\s)*?<*?a*?>");
+                Regex emojis = new Regex(@"\[\S*?\]|#\(\S*?\)");
+                ImmutableArray<string>.Builder buider = ImmutableArray.CreateBuilder<string>();
 
                 //处理超链接或图文中的图片
                 for (int i = 0; i < text.Length;)
                 {
-                    var matchedValue = link.Match(text, i);
+                    Match matchedValue = link.Match(text, i);
                     int index = (string.IsNullOrEmpty(matchedValue.Value) ? text.Length : text.IndexOf(matchedValue.Value, i, StringComparison.Ordinal)) - i;
                     if (index == 0)
                     {
@@ -381,7 +381,7 @@ namespace CoolapkUWP.Control
                     }
                 }
                 //(IsFeedAuthor ? $"[{loader.GetString("feedAuthorText")}
-                var length = AuthorBorder.Length;
+                int length = AuthorBorder.Length;
                 for (int j = 0; j < buider.Count; j++)
                 {
                     for (int i = 0; i < buider[j].Length;)

@@ -13,12 +13,12 @@ namespace CoolapkUWP.Data
         /// <returns></returns>
         public static ExceptionHandlingSynchronizationContext Register()
         {
-            var syncContext = Current;
+            SynchronizationContext syncContext = Current;
             if (syncContext == null)
-                throw new InvalidOperationException("Ensure a synchronization context exists before calling this method.");
+            { throw new InvalidOperationException("Ensure a synchronization context exists before calling this method."); }
 
 
-            var customSynchronizationContext = syncContext as ExceptionHandlingSynchronizationContext;
+            ExceptionHandlingSynchronizationContext customSynchronizationContext = syncContext as ExceptionHandlingSynchronizationContext;
 
 
             if (customSynchronizationContext == null)
@@ -39,9 +39,9 @@ namespace CoolapkUWP.Data
         public static ExceptionHandlingSynchronizationContext RegisterForFrame(Frame rootFrame)
         {
             if (rootFrame == null)
-                throw new ArgumentNullException("rootFrame");
+            { throw new ArgumentNullException("rootFrame"); }
 
-            var synchronizationContext = Register();
+            ExceptionHandlingSynchronizationContext synchronizationContext = Register();
 
             rootFrame.Navigating += (sender, args) => EnsureContext(synchronizationContext);
             rootFrame.Loaded += (sender, args) => EnsureContext(synchronizationContext);
@@ -52,7 +52,7 @@ namespace CoolapkUWP.Data
         private static void EnsureContext(SynchronizationContext context)
         {
             if (Current != context)
-                SetSynchronizationContext(context);
+            { SetSynchronizationContext(context); }
         }
 
 
@@ -106,7 +106,7 @@ namespace CoolapkUWP.Data
                 catch (Exception ex)
                 {
                     if (!HandleException(ex))
-                        throw;
+                    { throw; }
                 }
             };
         }
@@ -114,9 +114,9 @@ namespace CoolapkUWP.Data
         private bool HandleException(Exception exception)
         {
             if (UnhandledException == null)
-                return false;
+            { return false; }
 
-            var exWrapper = new AysncUnhandledExceptionEventArgs
+            AysncUnhandledExceptionEventArgs exWrapper = new AysncUnhandledExceptionEventArgs
             {
                 Exception = exception
             };
@@ -126,7 +126,7 @@ namespace CoolapkUWP.Data
 #if DEBUG && !DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
             if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
 #endif
-            return exWrapper.Handled;
+            { return exWrapper.Handled; }
         }
 
         public event EventHandler<AysncUnhandledExceptionEventArgs> UnhandledException;

@@ -16,7 +16,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages.SettingPages
 {
-    class CacheSizeViewModel : INotifyPropertyChanged
+    internal class CacheSizeViewModel : INotifyPropertyChanged
     {
         public double Size;
         public string SizeString;
@@ -73,25 +73,25 @@ namespace CoolapkUWP.Pages.SettingPages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            var vs = e.Parameter;
+            object vs = e.Parameter;
             if (!(bool)vs)
             {
                 TitleBar.Visibility = Visibility.Visible;
-                listView.Padding = Settings.stackPanelMargin;
+                listView.Padding = SettingHelper.stackPanelMargin;
             }
-            Tools.ShowProgressBar();
-            IsNoPicsMode.IsOn = Settings.GetBoolen("IsNoPicsMode");
-            IsUseOldEmojiMode.IsOn = Settings.GetBoolen("IsUseOldEmojiMode");
-            IsDarkMode.IsOn = Settings.GetBoolen("IsDarkMode");
-            CheckUpdateWhenLuanching.IsOn = Settings.GetBoolen("CheckUpdateWhenLuanching");
-            IsBackgroundColorFollowSystem.IsOn = Settings.GetBoolen("IsBackgroundColorFollowSystem");
+            UIHelper.ShowProgressBar();
+            IsNoPicsMode.IsOn = SettingHelper.GetBoolen("IsNoPicsMode");
+            IsUseOldEmojiMode.IsOn = SettingHelper.GetBoolen("IsUseOldEmojiMode");
+            IsDarkMode.IsOn = SettingHelper.GetBoolen("IsDarkMode");
+            CheckUpdateWhenLuanching.IsOn = SettingHelper.GetBoolen("CheckUpdateWhenLuanching");
+            IsBackgroundColorFollowSystem.IsOn = SettingHelper.GetBoolen("IsBackgroundColorFollowSystem");
             IsDarkMode.Visibility = IsBackgroundColorFollowSystem.IsOn ? Visibility.Collapsed : Visibility.Visible;
             VersionTextBlock.Text = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
 #if DEBUG
             gotoTestPage.Visibility = Visibility.Visible;
 #endif
             GetCacheSize();
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -100,7 +100,7 @@ namespace CoolapkUWP.Pages.SettingPages
             if (source != null)
             {
                 source.Cancel();
-                Tools.HideProgressBar();
+                UIHelper.HideProgressBar();
             }
         }
 
@@ -109,13 +109,13 @@ namespace CoolapkUWP.Pages.SettingPages
             if (Uri.TryCreate(e.Link, UriKind.Absolute, out Uri link))
             {
                 string str = link.ToString();
-                Tools.OpenLink(str);
+                UIHelper.OpenLink(str);
             }
         }
 
         private async void GetCacheSize()
         {
-            Tools.ShowProgressBar();
+            UIHelper.ShowProgressBar();
             CacheSizeTextBlock.Text = "正在加载……";
             CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = false;
             CacheSizeListView.SelectionMode = ListViewSelectionMode.None;
@@ -135,40 +135,42 @@ namespace CoolapkUWP.Pages.SettingPages
                 }
                 double s = 0;
                 try { s = await ImageCache.GetCacheSize((ImageType)i, source.Token); }
-                catch { Tools.ShowMessage("缓存信息获取失败"); }
+                catch { UIHelper.ShowMessage("缓存信息获取失败"); }
                 size += s;
                 models.Add(new CacheSizeViewModel
                 {
                     TotalSize = s,
                     Size = s,
-                    SizeString = Tools.GetSizeString(s),
+                    SizeString = UIHelper.GetSizeString(s),
                     Title = name,
                     type = (ImageType)i
                 });
                 source = null;
             }
-            CacheSizeTextBlock.Text = Tools.GetSizeString(size);
-            foreach (var item in models)
-                item.TotalSize = size;
+            CacheSizeTextBlock.Text = UIHelper.GetSizeString(size);
+            foreach (CacheSizeViewModel item in models)
+            { item.TotalSize = size; }
             RefreshCacheButton.IsEnabled = true;
             CacheSizeListView.SelectionMode = ListViewSelectionMode.Multiple;
-            Tools.HideProgressBar();
+            UIHelper.HideProgressBar();
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
             ToggleSwitch toggle = sender as ToggleSwitch;
-            Settings.Set(toggle.Name, toggle.IsOn);
+            SettingHelper.Set(toggle.Name, toggle.IsOn);
             switch (toggle.Name)
             {
                 case "IsDarkMode":
-                    Settings.CheckTheme();
+                    SettingHelper.CheckTheme();
                     break;
                 case "IsBackgroundColorFollowSystem":
-                    Settings.Set("IsDarkMode", Settings.uISettings.GetColorValue(UIColorType.Background).Equals(Colors.Black));
-                    Settings.CheckTheme();
-                    IsDarkMode.IsOn = Settings.GetBoolen("IsDarkMode");
+                    SettingHelper.Set("IsDarkMode", SettingHelper.uISettings.GetColorValue(UIColorType.Background).Equals(Colors.Black));
+                    SettingHelper.CheckTheme();
+                    IsDarkMode.IsOn = SettingHelper.GetBoolen("IsDarkMode");
                     IsDarkMode.Visibility = toggle.IsOn ? Visibility.Collapsed : Visibility.Visible;
+                    break;
+                default:
                     break;
             }
         }
@@ -178,11 +180,11 @@ namespace CoolapkUWP.Pages.SettingPages
             Button button = sender as Button;
             switch (button.Tag as string)
             {
-                case "gotoTestPage": Tools.Navigate(typeof(TestPage), null); break;
-                case "checkUpdate": Settings.CheckUpdate(); break;
+                case "gotoTestPage": UIHelper.Navigate(typeof(TestPage), null); break;
+                case "checkUpdate": SettingHelper.CheckUpdate(); break;
                 case "RefreshCache": GetCacheSize(); break;
                 case "logout":
-                    Settings.Logout();
+                    SettingHelper.Logout();
                     if (AccountLogout.Flyout is Flyout flyout_logout)
                     {
                         flyout_logout.Hide();
@@ -193,7 +195,7 @@ namespace CoolapkUWP.Pages.SettingPages
                 case "reset":
                     {
                         ApplicationData.Current.LocalSettings.Values.Clear();
-                        Settings.Logout();
+                        SettingHelper.Logout();
                         if (reset.Flyout is Flyout flyout_reset)
                         {
                             flyout_reset.Hide();
@@ -205,27 +207,27 @@ namespace CoolapkUWP.Pages.SettingPages
                 case "CleanCache":
                     CleanCacheButton.IsEnabled = CleanAllCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = false;
                     CacheSizeTextBlock.Text = "正在处理……";
-                    foreach (var item in CacheSizeListView.SelectedItems)
-                        await ImageCache.CleanCache((item as CacheSizeViewModel).type);
+                    foreach (object item in CacheSizeListView.SelectedItems)
+                    { await ImageCache.CleanCache((item as CacheSizeViewModel).type); }
                     CleanAllCacheButton.IsEnabled = true;
                     GetCacheSize();
                     CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = true;
                     break;
                 case "CleanAllCache":
-                    if (source != null) source.Cancel();
+                    if (source != null) { source.Cancel(); }
                     CleanCacheButton.IsEnabled = CleanAllCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = false;
                     CacheSizeTextBlock.Text = "正在处理……";
                     for (int i = 0; i < 5; i++)
-                        await ImageCache.CleanCache((ImageType)i);
+                    { await ImageCache.CleanCache((ImageType)i); }
                     CleanAllCacheButton.IsEnabled = true;
                     GetCacheSize();
                     CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = true;
                     break;
                 case "AccountSetting":
-                    Tools.Navigate(typeof(BrowserPage), new object[] { false, "https://account.coolapk.com/account/settings" });
+                    UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "https://account.coolapk.com/account/settings" });
                     break;
                 case "MyDevice":
-                    Tools.Navigate(typeof(BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
+                    UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
                     break;
                 default:
                     break;
