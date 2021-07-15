@@ -10,7 +10,6 @@
     xmlns:model="using:CoolapkUWP.Models.Pages.FeedListPageModels"
     xmlns:local="using:CoolapkUWP.Pages.FeedPages"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>

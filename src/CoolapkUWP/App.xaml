@@ -13,8 +13,8 @@
 
             <SolidColorBrush x:Key="GrayText" Color="{ThemeResource SystemColorGrayTextColor}"/>
 
-            <x:Double x:Key="PageTitleHeight">72</x:Double>
-            <Thickness x:Key="StackPanelMargin">0,72,0,0</Thickness>
+            <x:Double x:Key="PageTitleHeight">80</x:Double>
+            <Thickness x:Key="StackPanelMargin">0,80,0,0</Thickness>
             <VerticalAlignment x:Key="TitleContentVerticalAlignment">Bottom</VerticalAlignment>
             <ControlTemplate x:Key="AppListViewItemTemplate" TargetType="ListViewItem">
                 <ListViewItemPresenter

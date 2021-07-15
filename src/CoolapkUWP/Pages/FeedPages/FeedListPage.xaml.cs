@@ -172,9 +172,9 @@ namespace CoolapkUWP.Pages.FeedPages
 
                 case "FollowUser":
                     UriType type =
-                        (provider.Models[0] as UserDetail).FollowStatus == Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage").GetString("follow")
-                            ? UriType.OperateUnfollow
-                            : UriType.OperateFollow;
+                        (provider.Models[0] as UserDetail).FollowStatus == Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage").GetString("unFollow")
+                            ? UriType.OperateFollow
+                            : UriType.OperateUnfollow;
                     _ = await DataHelper.GetDataAsync(
                         UriHelper.GetUri(type, provider.Id),
                         true);

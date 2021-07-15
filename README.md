@@ -27,6 +27,7 @@
   - [使用到的模块](#使用到的模块)
   - [衍生项目](#衍生项目)
   - [鸣谢](#鸣谢)
+  - [Star 数量统计](#star-数量统计)
 
 ## 声明
 1. 本程序是[酷安](https://coolapk.com)的第三方客户端，仅用作学习交流使用，禁止用于商业用途。
@@ -119,3 +120,6 @@
 - Coolapk-kotlin作者[@bjzhou](http://www.coolapk.com/u/528097 "bjzhou")([Github](https://github.com/bjzhou "hinnka"))
 - 以及所有为酷安UWP项目做出贡献的同志们
 - **铺路尚未成功，同志仍需努力！**
+
+## Star 数量统计
+[![Star 数量统计](https://starchart.cc/Tangent-90/Coolapk-UWP.svg)](https://starchart.cc/Tangent-90/Coolapk-UWP "Star 数量统计")

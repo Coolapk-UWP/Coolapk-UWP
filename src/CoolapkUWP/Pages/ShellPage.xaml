@@ -6,7 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="using:CoolapkUWP.Pages"
     xmlns:mtctrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
 
@@ -22,7 +23,7 @@
                     <Frame x:Name="paneFrame" Navigated="paneFrame_Navigated"/>
                     <Button
                         x:Name="goHomeButton"
-                        Margin="0,32,0,0"
+                        Margin="0,36,0,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Click="Button_Click"

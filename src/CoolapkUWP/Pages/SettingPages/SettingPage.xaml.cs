@@ -44,7 +44,7 @@ namespace CoolapkUWP.Pages.SettingPages
         private bool isCheckUpdateButtonEnabled = true;
         private bool showOtherException = Get<bool>(ShowOtherException);
 
-        private static string VersionTextBlockText
+        internal static string VersionTextBlockText
         {
             get
             {

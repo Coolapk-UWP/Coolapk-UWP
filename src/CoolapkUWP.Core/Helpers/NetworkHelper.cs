@@ -214,7 +214,7 @@ namespace CoolapkUWP.Core.Helpers
                 if (res.StatusCode == HttpStatusCode.Found)
                 { NativeUrl = res.Headers["Location"]; }
             }
-            return NativeUrl == null ? ShortUrl.ToString() : NativeUrl;
+            return NativeUrl ?? ShortUrl.ToString();
         }
     }
 }

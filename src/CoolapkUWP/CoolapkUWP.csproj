@@ -198,6 +198,9 @@
     <Compile Include="Pages\AppPages\DevPage.xaml.cs">
       <DependentUpon>DevPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\FeedPages\MessagePage.xaml.cs">
+      <DependentUpon>MessagePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\FeedPages\AdaptivePage.xaml.cs">
       <DependentUpon>AdaptivePage.xaml</DependentUpon>
     </Compile>
@@ -219,6 +222,7 @@
     <Compile Include="Pages\MyPage.xaml.cs">
       <DependentUpon>MyPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\MessagePageViewModel.cs" />
     <Compile Include="ViewModels\FeedDetailListViewModel.cs" />
     <Compile Include="ViewModels\FeedDetailPageViewModel.cs" />
     <Compile Include="ViewModels\FeedListPageViewModel.cs" />
@@ -931,6 +935,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\AppPages\DevPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\FeedPages\MessagePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

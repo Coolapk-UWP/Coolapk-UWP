@@ -6,7 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
     NavigationCacheMode="Required"
     SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
@@ -25,8 +24,7 @@
         IsSettingsVisible="True"
         AlwaysShowHeader="True"
         Header=" "
-        SelectionChanged="NavigationView_SelectionChanged"
-        Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}">
+        SelectionChanged="NavigationView_SelectionChanged">
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">

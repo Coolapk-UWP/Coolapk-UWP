@@ -7,6 +7,10 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Security.Authentication.Web;
+using Windows.Security.Authentication.Web.Core;
+using Windows.Security.Credentials;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -32,6 +36,7 @@ namespace CoolapkUWP.Pages.AppPages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            AccountsSettingsPane.GetForCurrentView().AccountCommandsRequested += BuildPaneAsync;
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -92,6 +97,29 @@ namespace CoolapkUWP.Pages.AppPages
             #region 通知测试
             //MakeLikes(new Uri("https://api.coolapk.com/v6/user/feedList?uid=495798&page=1&isIncludeTop=1"));
             #endregion
+            #region 登录测试
+            AccountsSettingsPane.Show();
+            #endregion
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            AccountsSettingsPane.GetForCurrentView().AccountCommandsRequested -= BuildPaneAsync;
+        }
+
+        private async void BuildPaneAsync(AccountsSettingsPane s, AccountsSettingsPaneCommandsRequestedEventArgs e)
+        {
+            var deferral = e.GetDeferral();
+            var msaProvider = await WebAuthenticationCoreManager.FindAccountProviderAsync("https://login.microsoft.com", "consumers");
+
+            var command = new WebAccountProviderCommand(msaProvider, GetTwitterTokenAsync);
+            deferral.Complete();
+        }
+
+        private async void GetTwitterTokenAsync(WebAccountProviderCommand command)
+        {
+            // Manually handle Twitter login here
+            
         }
 
         protected static async Task<FeedDetailModel> GetFeedDetailAsync(string id)

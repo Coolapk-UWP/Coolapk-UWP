@@ -23,7 +23,7 @@ namespace CoolapkUWP.Helpers
         public const string ShowOtherException = "ShowOtherException";
         public const string IsFirstRun = "IsFirstRun";
 
-        public static T Get<T>(string key) => (T)localSettings.Values[key];
+        public static Type Get<Type>(string key) => (Type)localSettings.Values[key];
 
         public static void Set(string key, object value) => localSettings.Values[key] = value;
 
