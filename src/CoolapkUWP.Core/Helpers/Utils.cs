@@ -38,6 +38,13 @@ namespace CoolapkUWP.Core.Helpers
             }
         }
 
+        public static string GetBase64(string input)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(input);
+            string base64 = Convert.ToBase64String(bytes);
+            return base64;
+        }
+
         public enum TimeIntervalType
         {
             MonthsAgo,

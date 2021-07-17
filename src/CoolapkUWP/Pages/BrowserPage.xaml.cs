@@ -1,7 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using Windows.ApplicationModel.Resources;
-using Windows.Security.ExchangeActiveSyncProvisioning;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -60,12 +60,10 @@ namespace CoolapkUWP.Pages
         }
 
         private void LoadUri(Uri uri)
-
         {
-            EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
             using (Windows.Web.Http.HttpRequestMessage httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(Windows.Web.Http.HttpMethod.Get, uri))
             {
-                httpRequestMessage.Headers.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT 10.0; Win64; x64; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP; " + "10.0)" + " +CoolMarket/11.2-2105201-universal");
+                httpRequestMessage.Headers.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT " + SystemInformation.OperatingSystemVersion.Major + "." + SystemInformation.OperatingSystemVersion.Minor + (SystemInformation.OperatingSystemArchitecture.ToString().Contains("64") ? "; Win64; " : "; Win32; ") + SystemInformation.OperatingSystemArchitecture.ToString().Replace("X", "x") + "; WebView/3.0) (#Build; " + SystemInformation.DeviceManufacturer + "; " + SystemInformation.DeviceModel + "; CoolapkUWP; " + SystemInformation.OperatingSystemVersion + ")" + " +CoolMarket/11.2-2105201-universal");
                 webView.NavigateWithHttpRequestMessage(httpRequestMessage);
                 webView.NavigationStarting += WebView_NavigationStarting;
             }

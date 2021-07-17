@@ -1,7 +1,6 @@
 ﻿using CoolapkUWP.BackgroundTasks;
 using CoolapkUWP.Core.Helpers;
 using System;
-using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;

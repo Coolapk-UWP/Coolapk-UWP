@@ -7,9 +7,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Windows.Security.Authentication.Web;
 using Windows.Security.Authentication.Web.Core;
-using Windows.Security.Credentials;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Notifications;
 using Windows.UI.Xaml;
@@ -119,7 +117,7 @@ namespace CoolapkUWP.Pages.AppPages
         private async void GetTwitterTokenAsync(WebAccountProviderCommand command)
         {
             // Manually handle Twitter login here
-            
+
         }
 
         protected static async Task<FeedDetailModel> GetFeedDetailAsync(string id)

@@ -102,7 +102,7 @@ namespace CoolapkUWP.Controls
             if (item is SourceFeedModel f)
             {
                 return f.IsQuestionFeed ? QuestionFeed : f.ShowMessageTitle ? FeedImageText : f.IsCoolPictuers ? CoolPic :
-                    ((item as SourceFeedModel).EntityForward== "feedGroupListCard" || (item as SourceFeedModel).EntityForward == "feedListCard" || (item as SourceFeedModel).EntityForward == "imageTextGridCard" || (item as SourceFeedModel).EntityForward == "apkListCard" || (item as SourceFeedModel).EntityForward == "textLinkListCard") ? Feed : SmallFeed;
+                    ((item as SourceFeedModel).EntityForward == "feedGroupListCard" || (item as SourceFeedModel).EntityForward == "feedListCard" || (item as SourceFeedModel).EntityForward == "imageTextGridCard" || (item as SourceFeedModel).EntityForward == "apkListCard" || (item as SourceFeedModel).EntityForward == "textLinkListCard") ? Feed : SmallFeed;
             }
             else if (item is UserModel) { return User; }
             else if (item is IndexPageModel)
