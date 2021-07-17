@@ -50,7 +50,7 @@
             Height="24"
             Margin="8,40,8,2"
             IsActive="False"
-            Visibility="Visible"/>
+            Visibility="Collapsed"/>
         <Button
             x:Name="RefreshButton"
             Grid.Column="4"

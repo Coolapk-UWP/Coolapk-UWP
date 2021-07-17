@@ -100,6 +100,7 @@
             <Grid>
                 <StackPanel
                     x:Name="BottomButton"
+                    Margin="0,0,36,0"
                     Orientation="Vertical"
                     Visibility="Collapsed">
                     <muxc:ProgressRing
@@ -120,6 +121,7 @@
                         x:Name="panel"
                         Tag="panel"
                         Click="Button_Click"
+                        Visibility="Collapsed"
                         Style="{StaticResource IconButtonStyle}">
                         <SymbolIcon Symbol="{x:Bind PaneOpenSymbolIcon, Mode=OneWay}"/>
                     </Button>

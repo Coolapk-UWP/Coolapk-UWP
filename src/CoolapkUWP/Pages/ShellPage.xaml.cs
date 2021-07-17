@@ -2,6 +2,7 @@
 using CoolapkUWP.Controls;
 using CoolapkUWP.Helpers;
 using System;
+using System.ComponentModel;
 using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -11,8 +12,27 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages
 {
-    public sealed partial class ShellPage : Page
+    public sealed partial class ShellPage : Page, INotifyPropertyChanged
     {
+        private Symbol paneOpenSymbolIcon = Symbol.OpenPane;
+
+        public Symbol PaneOpenSymbolIcon
+        {
+            get => paneOpenSymbolIcon;
+            private set
+            {
+                paneOpenSymbolIcon = value;
+                RaisePropertyChangedEvent();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        {
+            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
+        }
+
         public ShellPage()
         {
             InitializeComponent();
@@ -28,6 +48,7 @@ namespace CoolapkUWP.Pages
                 {
                     ee.Handled = true;
                     splitView.IsPaneOpen = false;
+                    PaneOpenSymbolIcon = Symbol.ClosePane;
                     UIHelper.IsSplitViewPaneOpen = splitView.IsPaneOpen;
                 }
 
@@ -44,6 +65,7 @@ namespace CoolapkUWP.Pages
             {
                 splitView.IsPaneOpen = e;
                 UIHelper.IsSplitViewPaneOpen = splitView.IsPaneOpen;
+                PaneOpenSymbolIcon = e ? Symbol.OpenPane : Symbol.ClosePane;
             };
 #pragma warning disable 0612
             _ = ImageCacheHelper.CleanOldVersionImageCacheAsync();
@@ -96,6 +118,7 @@ namespace CoolapkUWP.Pages
                 case "panel":
                     splitView.IsPaneOpen = !splitView.IsPaneOpen;
                     UIHelper.IsSplitViewPaneOpen = splitView.IsPaneOpen;
+                    PaneOpenSymbolIcon = splitView.IsPaneOpen ? Symbol.OpenPane : Symbol.ClosePane;
                     break;
 
                 case "home":
@@ -117,6 +140,7 @@ namespace CoolapkUWP.Pages
             bool canOpen = splitView.IsPaneOpen && (e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 960;
 
             splitView.IsPaneOpen = canOpen;
+            PaneOpenSymbolIcon = canOpen ? Symbol.OpenPane : Symbol.ClosePane;
             splitView.OpenPaneLength = Window.Current.Bounds.Width <= 660 ? Window.Current.Bounds.Width : 400;
             UIHelper.IsSplitViewPaneOverlay = splitView.DisplayMode == SplitViewDisplayMode.Overlay;
             UIHelper.IsSplitViewPaneOpen = splitView.IsPaneOpen;
