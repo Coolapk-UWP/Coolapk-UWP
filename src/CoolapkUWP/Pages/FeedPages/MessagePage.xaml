@@ -131,6 +131,19 @@
                 MinWidth="320"
                 MaxWidth="768"
                 ItemTemplateSelector="{StaticResource CardTemplateSelector}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ctrl:GridPanel CubeInSameHeight="False" DesiredColumnWidth="420"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Template" Value="{StaticResource AppListViewItemTemplate}" />
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="Padding" Value="0" />
+                </Style>
+            </ListView.ItemContainerStyle>
         </ListView>
 
         <ctrl:TitleBar
