@@ -8,7 +8,6 @@
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:data="using:CoolapkUWP.Helpers"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>

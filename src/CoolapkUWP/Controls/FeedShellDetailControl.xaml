@@ -144,7 +144,9 @@
                 Stretch="UniformToFill"
                 Tag="{x:Bind FeedDetail.MessageCover, Mode=OneWay}"
                 Tapped="{x:Bind local:FeedShellDetailControl.Image_Tapped}"/>
-            <Border VerticalAlignment="Bottom" CornerRadius="8">
+            <Border
+                VerticalAlignment="Bottom"
+                CornerRadius="0,0,8,8">
                 <Border.Background>
                     <AcrylicBrush
                         BackgroundSource="Backdrop"

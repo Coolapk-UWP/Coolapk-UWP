@@ -9,60 +9,68 @@
     d:DesignHeight="72"
     d:DesignWidth="400"
     mc:Ignorable="d">
-
     <Grid
         x:Name="titleGrid"
-        Margin="0,-4"
-        Height="{StaticResource PageTitleHeight}"
-        VerticalAlignment="Top">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="40"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="40"/>
-        </Grid.ColumnDefinitions>
-        <Button
-            x:Name="BackButton"
-            Grid.Column="0"
-            VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
-            Click="BackButton_Click"
-            Style="{StaticResource IconButtonStyle}">
-            <SymbolIcon Symbol="Back"/>
-        </Button>
-        <TextBlock
-            x:Name="title"
-            Grid.Column="1"
-            Margin="2,9"
-            HorizontalAlignment="Left"
-            VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
-            FontSize="18"/>
-        <ContentPresenter
-            x:Name="userContentPresenter"
-            Grid.Column="2"
-            Height="40"
-            VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"/>
-        <winui:ProgressRing
-            x:Name="progressRing"
-            Grid.Column="3"
-            Width="24"
-            Height="24"
-            Margin="8,40,8,2"
-            IsActive="False"
-            Visibility="Collapsed"/>
-        <Button
-            x:Name="RefreshButton"
-            Grid.Column="4"
-            VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
-            Click="RefreshButton_Click"
-            Style="{StaticResource IconButtonStyle}"
-            Visibility="Collapsed">
-            <SymbolIcon Symbol="Refresh"/>
-        </Button>
+        VerticalAlignment="Top"
+        Height="80">
         <Border
-            x:Name="RightEmpty"
-            Grid.Column="4"
-            Width="40"/>
+            x:Name="TitleBackground"
+            Visibility="Collapsed"
+            Height="{StaticResource PageTitleHeight}"
+            Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}"/>
+        <Grid
+            Margin="0,-4"
+            Height="{StaticResource PageTitleHeight}"
+            VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+            <Button
+                x:Name="BackButton"
+                Grid.Column="0"
+                VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
+                Click="BackButton_Click"
+                Style="{StaticResource IconButtonStyle}">
+                <SymbolIcon Symbol="Back"/>
+            </Button>
+            <TextBlock
+                x:Name="title"
+                Grid.Column="1"
+                Margin="2,9"
+                HorizontalAlignment="Left"
+                VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
+                FontSize="18"/>
+            <ContentPresenter
+                x:Name="userContentPresenter"
+                Grid.Column="2"
+                Height="40"
+                VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"/>
+            <winui:ProgressRing
+                x:Name="progressRing"
+                Grid.Column="3"
+                Width="24"
+                Height="24"
+                Margin="8,40,8,2"
+                IsActive="False"
+                Visibility="Collapsed"/>
+            <Button
+                x:Name="RefreshButton"
+                Grid.Column="4"
+                VerticalAlignment="{StaticResource TitleContentVerticalAlignment}"
+                Click="RefreshButton_Click"
+                Style="{StaticResource IconButtonStyle}"
+                Visibility="Collapsed">
+                <SymbolIcon Symbol="Refresh"/>
+            </Button>
+            <Border
+                x:Name="RightEmpty"
+                Grid.Column="4"
+                Width="40"/>
+        </Grid>
     </Grid>
 </UserControl>

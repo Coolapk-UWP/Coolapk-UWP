@@ -8,7 +8,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:CoolapkUWP.Models"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     NavigationCacheMode="Required"
     SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">

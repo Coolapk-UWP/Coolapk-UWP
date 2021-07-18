@@ -20,6 +20,7 @@ namespace CoolapkUWP.Controls
 
         public Visibility BackButtonVisibility { get => BackButton.Visibility; set => BackButton.Visibility = value; }
         public Visibility RefreshButtonVisibility { get => RefreshButton.Visibility; set => RefreshButton.Visibility = value; }
+        public Visibility BackgroundVisibility { get => TitleBackground.Visibility; set => TitleBackground.Visibility = value; }
 
         public double TitleHeight { get => titleGrid.Height; set => titleGrid.Height = value; }
         public object RightAreaContent { get => userContentPresenter.Content; set => userContentPresenter.Content = value; }

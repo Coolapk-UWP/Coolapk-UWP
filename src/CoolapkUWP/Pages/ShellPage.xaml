@@ -17,7 +17,8 @@
             IsPaneOpen="False"
             OpenPaneLength="400"
             DisplayMode="Inline"
-            PanePlacement="Right">
+            PanePlacement="Right"
+            PaneBackground="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}">
             <SplitView.Pane>
                 <Grid>
                     <Frame x:Name="paneFrame" Navigated="paneFrame_Navigated"/>

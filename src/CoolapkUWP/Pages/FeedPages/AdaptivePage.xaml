@@ -6,8 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
-    xmlns:winui="using:Microsoft.UI.Xaml.Controls" xmlns:model="using:CoolapkUWP.Models"
-    Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    xmlns:model="using:CoolapkUWP.Models"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>

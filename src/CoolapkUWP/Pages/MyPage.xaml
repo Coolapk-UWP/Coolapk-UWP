@@ -10,7 +10,6 @@
     xmlns:model="using:CoolapkUWP.Models"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     NavigationCacheMode="Enabled"
     SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
@@ -159,7 +158,7 @@
 
     <Grid Padding="0,32,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="48"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 

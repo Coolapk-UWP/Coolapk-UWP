@@ -70,12 +70,12 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private static void ListViewItem_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs _)
+        internal static void ListViewItem_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs _)
         {
             Helpers.UIHelper.OpenLinkAsync((sender as FrameworkElement)?.Tag as string);
         }
 
-        private static void ListViewItem_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        internal static void ListViewItem_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
             {

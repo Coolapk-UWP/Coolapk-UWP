@@ -7,7 +7,6 @@
     xmlns:control="using:CoolapkUWP.Controls"
     xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d">
 
     <Page.Resources>
