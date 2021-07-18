@@ -30,7 +30,7 @@
                 ScrollCardWithBackColor="{StaticResource ScrollCardWithBackColor}"
                 Dyh="{StaticResource DYH}"
                 Product="{StaticResource Product}"
-                Feed="{StaticResource feed}"
+                Feed="{StaticResource FeedOld}"
                 App="{StaticResource App}"
                 List="{StaticResource List}"
                 IconLinks="{StaticResource IconLinks}"

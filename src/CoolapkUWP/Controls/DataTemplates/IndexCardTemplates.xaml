@@ -367,7 +367,7 @@
         <ListViewItem
             Margin="8"
             KeyDown="ListViewItem_KeyDown"
-            Style="{StaticResource AppListViewItemStyle}"
+            Style="{StaticResource FixedListViewItemStyle}"
             Tag="{x:Bind Url}"
             Tapped="Grid_Tapped">
             <Grid
@@ -490,7 +490,7 @@
         <ListViewItem
             Margin="4,0"
             KeyDown="ListViewItem_KeyDown"
-            Style="{StaticResource AppListViewItemStyle}"
+            Style="{StaticResource FixedListViewItemStyle}"
             Tag="{x:Bind}"
             Tapped="Grid_Tapped">
             <StackPanel

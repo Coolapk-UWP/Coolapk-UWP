@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.Pages.SettingPages;
+using Microsoft.Toolkit.Uwp.Connectivity;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
@@ -285,11 +286,17 @@ namespace CoolapkUWP
                     break;
 
                 case "CheckUpdate":
-                    new BackgroundTasks.CheckUpdate().Run(args.TaskInstance);
+                    if (NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable)
+                    {
+                        new BackgroundTasks.CheckUpdate().Run(args.TaskInstance);
+                    }
                     break;
 
                 case "LiveTileTask":
-                    new BackgroundTasks.LiveTileTask().Run(args.TaskInstance);
+                    if (NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable)
+                    {
+                        new BackgroundTasks.LiveTileTask().Run(args.TaskInstance);
+                    }
                     break;
 
                 default:
