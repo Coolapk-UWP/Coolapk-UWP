@@ -488,14 +488,13 @@
 
     <DataTemplate x:Key="TextLink" x:DataType="models:IndexPageModel">
         <ListViewItem
-            Margin="4,0"
+            Margin="0"
             KeyDown="ListViewItem_KeyDown"
             Style="{StaticResource FixedListViewItemStyle}"
             Tag="{x:Bind}"
             Tapped="Grid_Tapped">
             <StackPanel
                 Padding="10"
-                CornerRadius="4"
                 Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                 Orientation="Horizontal">
                 <Image

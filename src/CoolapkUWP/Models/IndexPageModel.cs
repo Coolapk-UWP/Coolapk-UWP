@@ -301,20 +301,23 @@ namespace CoolapkUWP.Models
                 ImmutableArray<Entity>.Builder buider = ImmutableArray.CreateBuilder<Entity>();
                 foreach (JObject item in entities as JArray)
                 {
-                    item.Property("entityType").AddAfterSelf(new JProperty("entityForward", EntityTemplate));
-                    switch (item.Value<string>("entityType"))
+                    if (item.TryGetValue("entityType", out JToken entityType))
                     {
-                        case "feed":
-                            buider.Add(new FeedModel(item));
-                            break;
+                        try { item.Property("entityType").AddAfterSelf(new JProperty("entityForward", EntityTemplate)); } catch { }
+                        switch (entityType.ToString())
+                        {
+                            case "feed":
+                                buider.Add(new FeedModel(item));
+                                break;
 
-                        case "user":
-                            buider.Add(new UserModel(item));
-                            break;
+                            case "user":
+                                buider.Add(new UserModel(item));
+                                break;
 
-                        default:
-                            buider.Add(new IndexPageModel(item));
-                            break;
+                            default:
+                                buider.Add(new IndexPageModel(item));
+                                break;
+                        }
                     }
                 }
                 Entities = buider.ToImmutable();

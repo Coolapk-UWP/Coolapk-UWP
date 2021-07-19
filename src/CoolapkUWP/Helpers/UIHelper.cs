@@ -112,26 +112,45 @@ namespace CoolapkUWP.Helpers
                 await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
             }
             else if (popups.Last().Child is StatusGrid statusGrid)
-            { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar()); }
+            {
+                if (!popups.Last().IsOpen)
+                { popups.Last().IsOpen = true; }
+                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar());
+            }
         }
 
         public static async void PausedProgressBar()
         {
+            isShowingProgressBar = true;
             if (!HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
-            { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.PausedProgressBar()); }
+            {
+                if (!popups.Last().IsOpen)
+                { popups.Last().IsOpen = true; }
+                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.PausedProgressBar());
+            }
         }
 
         public static async void ErrorProgressBar()
         {
+            isShowingProgressBar = true;
             if (!HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
-            { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ErrorProgressBar()); }
+            {
+                if (!popups.Last().IsOpen)
+                { popups.Last().IsOpen = true; }
+                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ErrorProgressBar());
+            }
         }
 
         public static async void HideProgressBar()
         {
             isShowingProgressBar = false;
             if (HasStatusBar) { await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync(); }
-            else if (popups.Last().Child is StatusGrid statusGrid) { statusGrid.HideProgressBar(); }
+            else if (popups.Last().Child is StatusGrid statusGrid)
+            {
+                statusGrid.HideProgressBar();
+                if (!isShowingMessage && popups.Last().IsOpen)
+                { popups.Last().IsOpen = false; }
+            }
         }
 
         public static async void StatusBar_ShowMessage(string message)
@@ -163,6 +182,11 @@ namespace CoolapkUWP.Helpers
                         {
                             if (messageList.Count == 0) { statusGrid.Rectangle_PointerExited(); }
                             if (!isShowingProgressBar) { HideProgressBar(); }
+                            if (messageList.Count == 0 && !isShowingProgressBar)
+                            {
+                                if (popups.Last().IsOpen)
+                                { popups.Last().IsOpen = false; }
+                            }
                         });
                     }
                 }
