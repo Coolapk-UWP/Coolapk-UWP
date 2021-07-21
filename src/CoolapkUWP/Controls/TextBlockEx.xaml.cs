@@ -104,15 +104,25 @@ namespace CoolapkUWP.Controls
                     {
                         case '<':
                             {
-                                string content;
-                                try { content = item.Substring(item.IndexOf('>') + 1, item.LastIndexOf('<') - item.IndexOf('>') - 1); }
-                                catch (ArgumentOutOfRangeException) { content = ""; }
-                                string href = string.Empty;
-                                Regex hrefRegex = new Regex("href*?=*?\"(\\S|\\s)+?\"");
-                                if (hrefRegex.IsMatch(item))
+                                string content = string.Empty;
+                                Regex[] contentRegex = new Regex[] { new Regex(@">(.*?)<"), new Regex(@"alt\s*=\s*""(.*?)""") };
+                                if (contentRegex[0].IsMatch(item) && !string.IsNullOrEmpty(contentRegex[0].Match(item).Groups[1].Value))
                                 {
-                                    Match match = hrefRegex.Match(item);
-                                    href = match.Value.Substring(match.Value.IndexOf('"') + 1, match.Value.LastIndexOf('"') - match.Value.IndexOf('"') - 1);
+                                    content = contentRegex[0].Match(item).Groups[1].Value;
+                                }
+                                else if (contentRegex[1].IsMatch(item) && !string.IsNullOrEmpty(contentRegex[1].Match(item).Groups[1].Value))
+                                {
+                                    content = contentRegex[1].Match(item).Groups[1].Value;
+                                }
+                                string href = string.Empty;
+                                Regex[] hrefRegex = new Regex[] { new Regex(@"href\s*=\s*""(.*?)""") ,new Regex(@"src\s*=\s*""(.*?)""") };
+                                if (hrefRegex[0].IsMatch(item) && !string.IsNullOrEmpty(hrefRegex[0].Match(item).Groups[1].Value))
+                                {
+                                    href = hrefRegex[0].Match(item).Groups[1].Value;
+                                }
+                                else if(hrefRegex[1].IsMatch(item) && !string.IsNullOrEmpty(hrefRegex[1].Match(item).Groups[1].Value))
+                                {
+                                    href = hrefRegex[1].Match(item).Groups[1].Value;
                                 }
 
                                 if (item.Contains("t=\"image\"", StringComparison.Ordinal))
@@ -234,6 +244,20 @@ namespace CoolapkUWP.Controls
                                     container.Child = border;
                                     paragraph.Inlines.Add(container);
                                 }
+                                else if(href.Contains("emoticons")&&(href.EndsWith(".png") || href.EndsWith(".jpg") || href.EndsWith(".jpeg") || href.EndsWith(".gif") || href.EndsWith(".bmp") || href.EndsWith(".PNG") || href.EndsWith(".JPG") || href.EndsWith(".JPEG") || href.EndsWith(".GIF") || href.EndsWith(".BMP")))
+                                {
+                                    InlineUIContainer container = new InlineUIContainer();
+
+                                    Image image = new Image
+                                    {
+                                        Height = Width = 20,
+                                        Margin = new Thickness(0, 0, 0, -4),
+                                        Source = new BitmapImage(new Uri(href))
+                                    };
+                                    ToolTipService.SetToolTip(image, new ToolTip { Content = content });
+                                    container.Child = image;
+                                    paragraph.Inlines.Add(container);
+                                }
                                 else
                                 {
                                     Hyperlink hyperlink = new Hyperlink { UnderlineStyle = UnderlineStyle.None };
@@ -260,6 +284,10 @@ namespace CoolapkUWP.Controls
                                         if (content == loader.GetString("seePic") && (href.IndexOf("http://image.coolapk.com", StringComparison.Ordinal) == 0 || href.IndexOf("https://image.coolapk.com", StringComparison.Ordinal) == 0))
                                         {
                                             UIHelper.ShowImage(href, ImageType.SmallImage);
+                                        }
+                                        else if (href.EndsWith(".png") || href.EndsWith(".jpg") || href.EndsWith(".jpeg") || href.EndsWith(".gif") || href.EndsWith(".bmp") || href.EndsWith(".PNG") || href.EndsWith(".JPG") || href.EndsWith(".JPEG") || href.EndsWith(".GIF") || href.EndsWith(".BMP"))
+                                        {
+                                            UIHelper.ShowImage(href, ImageType.OriginImage);
                                         }
                                         else
                                         {
@@ -325,7 +353,7 @@ namespace CoolapkUWP.Controls
         {
             return Task.Run(() =>
             {
-                Regex link = new Regex("<a(\\S|\\s)*?>(\\S|\\s)*?<*?a*?>");
+                Regex link = new Regex(@"<\w+.*?>?.*?<?.*?/[\w|\s]*?>");
                 Regex[] emojis = new Regex[] { new Regex(@"\[\S*?\]"), new Regex(@"#\(\S*?\)") };
                 ImmutableArray<string>.Builder buider = ImmutableArray.CreateBuilder<string>();
 

@@ -201,19 +201,22 @@ namespace CoolapkUWP.Models
                 ImmutableArray<Entity>.Builder buider = ImmutableArray.CreateBuilder<Entity>();
                 foreach (JObject item in entities as JArray)
                 {
-                    switch (item.Value<string>("entityType"))
+                    if (item.TryGetValue("entityType", out JToken entityType))
                     {
-                        case "feed":
-                            buider.Add(new FeedModel(item));
-                            break;
+                        switch (entityType.ToString())
+                        {
+                            case "feed":
+                                buider.Add(new FeedModel(item));
+                                break;
 
-                        case "user":
-                            buider.Add(new UserModel(item));
-                            break;
+                            case "user":
+                                buider.Add(new UserModel(item));
+                                break;
 
-                        default:
-                            buider.Add(new IndexPageModel(item));
-                            break;
+                            default:
+                                buider.Add(new IndexPageModel(item));
+                                break;
+                        }
                     }
                 }
                 Entities = buider.ToImmutable();
@@ -239,10 +242,12 @@ namespace CoolapkUWP.Models
         public EntityType EntitiesType { get; private set; }
         public string Title { get; private set; }
         public string Url { get; private set; }
+        public bool ShowPic { get; private set; }
         public bool ShowTitle { get; private set; }
         public bool ShowEntities { get; private set; }
         public string EntityTemplate { get; private set; }
         public string Description { get; private set; }
+        public BackgroundImageModel Pic { get; private set; }
         public ImmutableArray<Entity> Entities { get; private set; }
 
         public IndexPageHasEntitiesModel(JObject token, EntityType type) : base(token)
@@ -320,10 +325,16 @@ namespace CoolapkUWP.Models
                         }
                     }
                 }
+
                 Entities = buider.ToImmutable();
                 ShowEntities = true;
             }
             else { ShowEntities = false; }
+            if (token.TryGetValue("pic", out JToken pic) && !string.IsNullOrEmpty(pic.ToString()))
+            {
+                Pic = new BackgroundImageModel(pic.ToString(), ImageType.OriginImage);
+            }
+            else { ShowPic = false; }
             ShowTitle = !(string.IsNullOrEmpty(Title) && string.IsNullOrEmpty(Url));
         }
     }
