@@ -129,15 +129,13 @@ namespace CoolapkUWP.Controls
                                 {
                                     NewLine();
 
-                                    ImageModel imageModel = new ImageModel(href, ImageType.SmallImage);
+                                    ImageModel imageModel = new ImageModel(href, ImageType.OriginImage);
                                     imageArrayBuider.Add(imageModel);
 
                                     InlineUIContainer container = new InlineUIContainer();
 
                                     Image image = new Image
                                     {
-                                        MaxHeight = MaxWidth = 400,
-                                        MinHeight = MinWidth = 56,
                                         Stretch = Stretch.Uniform
                                     };
                                     image.SetBinding(Image.SourceProperty, new Binding
@@ -157,57 +155,87 @@ namespace CoolapkUWP.Controls
                                         UIHelper.ShowImage(imageModel);
                                     };
 
-                                    Grid grid = new Grid();
-                                    if (imageModel.IsGif)
+                                    Grid grid = new Grid
                                     {
-                                        StackPanel panel = new StackPanel
-                                        {
-                                            Orientation = Orientation.Horizontal,
-                                            VerticalAlignment = VerticalAlignment.Top,
-                                            HorizontalAlignment = HorizontalAlignment.Right,
-                                            Margin = new Thickness(4)
-                                        };
-                                        Border border1 = new Border
-                                        {
-                                            Child = new TextBlock { Text = loader.GetString("GIF") },
-                                            Background = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0))
-                                        };
+                                        CornerRadius = new CornerRadius(4)
+                                    };
 
-                                        Border border2 = new Border
-                                        {
-                                            Child = new TextBlock { Text = loader.GetString("longPicText") },
-                                            Background = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0))
-                                        };
-                                        border2.SetBinding(VisibilityProperty, new Binding
-                                        {
-                                            Source = imageModel,
-                                            Path = new PropertyPath(nameof(imageModel.IsLongPic)),
-                                            Mode = BindingMode.OneWay,
-                                            Converter = new BoolToVisibilityConverter()
-                                        });
-
-                                        panel.Children.Add(border1);
-                                        grid.Children.Add(image);
-                                        grid.Children.Add(panel);
-                                    }
-                                    else
+                                    StackPanel panel1 = new StackPanel
                                     {
-                                        Border border = new Border
-                                        {
-                                            Child = new TextBlock { Text = loader.GetString("longPicText") },
-                                            Background = new SolidColorBrush(Color.FromArgb(70, 0, 0, 0))
-                                        };
-                                        border.SetBinding(VisibilityProperty, new Binding
-                                        {
-                                            Source = imageModel,
-                                            Path = new PropertyPath(nameof(imageModel.IsLongPic)),
-                                            Mode = BindingMode.OneWay,
-                                            Converter = new BoolToVisibilityConverter()
-                                        });
+                                        Orientation = Orientation.Horizontal,
+                                        VerticalAlignment = VerticalAlignment.Top,
+                                        HorizontalAlignment = HorizontalAlignment.Right
+                                    };
 
-                                        grid.Children.Add(image);
-                                        grid.Children.Add(border);
-                                    }
+                                    StackPanel panel2 = new StackPanel
+                                    {
+                                        Orientation = Orientation.Horizontal,
+                                        VerticalAlignment = VerticalAlignment.Top,
+                                        HorizontalAlignment = HorizontalAlignment.Left
+                                    };
+
+                                    Border border1 = new Border
+                                    {
+                                        CornerRadius = new CornerRadius(0, 0, 4, 0),
+                                        Child = new TextBlock
+                                        {
+                                            Margin = new Thickness(2, 0, 2, 0),
+                                            Text = loader.GetString("GIF")
+                                        },
+                                        Background = new SolidColorBrush(Color.FromArgb(255, 15, 157, 88))
+                                    };
+                                    border1.SetBinding(VisibilityProperty, new Binding
+                                    {
+                                        Source = imageModel,
+                                        Path = new PropertyPath(nameof(imageModel.IsGif)),
+                                        Mode = BindingMode.OneWay,
+                                        Converter = new BoolToVisibilityConverter()
+                                    });
+
+                                    Border border2 = new Border
+                                    {
+                                        CornerRadius = new CornerRadius(0, 0, 0, 4),
+                                        Child = new TextBlock
+                                        {
+                                            Margin = new Thickness(2, 0, 2, 0),
+                                            Text = loader.GetString("longPicText")
+                                        },
+                                        Background = new SolidColorBrush(Color.FromArgb(255, 15, 157, 88))
+                                    };
+                                    border2.SetBinding(VisibilityProperty, new Binding
+                                    {
+                                        Source = imageModel,
+                                        Path = new PropertyPath(nameof(imageModel.IsLongPic)),
+                                        Mode = BindingMode.OneWay,
+                                        Converter = new BoolToVisibilityConverter()
+                                    });
+
+                                    Border border3 = new Border
+                                    {
+                                        CornerRadius = new CornerRadius(0, 0, 0, 4),
+                                        Child = new TextBlock
+                                        {
+                                            Margin = new Thickness(2, 0, 2, 0),
+                                            Text = loader.GetString("widePicText")
+                                        },
+                                        Background = new SolidColorBrush(Color.FromArgb(255, 15, 157, 88))
+                                    };
+                                    border3.SetBinding(VisibilityProperty, new Binding
+                                    {
+                                        Source = imageModel,
+                                        Path = new PropertyPath(nameof(imageModel.IsWidePic)),
+                                        Mode = BindingMode.OneWay,
+                                        Converter = new BoolToVisibilityConverter()
+                                    });
+
+                                    panel2.Children.Add(border1);
+                                    panel1.Children.Add(border2);
+                                    panel1.Children.Add(border3);
+
+                                    grid.Children.Add(image);
+                                    grid.Children.Add(panel2);
+                                    grid.Children.Add(panel1);
+
                                     container.Child = grid;
                                     Paragraph paragraph1 = new Paragraph { TextAlignment = TextAlignment.Center };
                                     paragraph1.Inlines.Add(container);
@@ -247,13 +275,19 @@ namespace CoolapkUWP.Controls
                                 else if(href.Contains("emoticons")&&(href.EndsWith(".png") || href.EndsWith(".jpg") || href.EndsWith(".jpeg") || href.EndsWith(".gif") || href.EndsWith(".bmp") || href.EndsWith(".PNG") || href.EndsWith(".JPG") || href.EndsWith(".JPEG") || href.EndsWith(".GIF") || href.EndsWith(".BMP")))
                                 {
                                     InlineUIContainer container = new InlineUIContainer();
+                                    ImageModel imageModel = new ImageModel(href, ImageType.OriginImage);
 
                                     Image image = new Image
                                     {
                                         Height = Width = 20,
                                         Margin = new Thickness(0, 0, 0, -4),
-                                        Source = new BitmapImage(new Uri(href))
                                     };
+                                    image.SetBinding(Image.SourceProperty, new Binding
+                                    {
+                                        Source = imageModel,
+                                        Path = new PropertyPath(nameof(imageModel.Pic)),
+                                        Mode = BindingMode.OneWay
+                                    });
                                     ToolTipService.SetToolTip(image, new ToolTip { Content = content });
                                     container.Child = image;
                                     paragraph.Inlines.Add(container);
