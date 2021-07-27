@@ -17,7 +17,7 @@
         </StackPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="Apps" x:DataType="models:AppPageMode">
+    <DataTemplate x:Key="Apps" x:DataType="models:AppModel">
         <ListViewItem
             KeyDown="{x:Bind local:OtherDataTemplates.ListViewItem_KeyDown}"
             Tag="{x:Bind Url}"

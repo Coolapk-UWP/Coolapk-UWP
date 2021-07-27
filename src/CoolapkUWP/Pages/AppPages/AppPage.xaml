@@ -1,13 +1,21 @@
 ﻿<Page
     x:Class="CoolapkUWP.Pages.AppPages.AppPage"
     xmlns:ctrl="using:CoolapkUWP.Controls"
+    xmlns:local="using:CoolapkUWP.Pages.AppPages"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Loaded="Page_Loaded"
-    mc:Ignorable="d" Background="{ThemeResource SystemControlBackgroundListLowBrush}">
+    mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <converter:HasValueConverter x:Key="HasValueConverter"/>
+            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid>
         <Grid.Resources>
@@ -24,24 +32,25 @@
                 <Border Height="70"/>
                 <Grid>
                     <Image 
-                        x:Name="AppIconImage" 
-                        x:FieldModifier="Public" 
+                        x:Name="AppIcon"
                         HorizontalAlignment="Left" 
                         Height="60" Margin="20" 
+                        Source="{x:Bind AppModels.Logo.Pic, Mode=OneWay}"
                         VerticalAlignment="Top" Width="60"/>
                     <StackPanel Margin="100,10,0,0">
                         <TextBlock 
-                            x:Name="AppTitleText"
-                            x:FieldModifier="Public"
-                            FontSize="20" HorizontalAlignment="Left" 
-                            TextWrapping="Wrap" VerticalAlignment="Top" 
+                            x:Name="AppTitle"
+                            FontSize="20" HorizontalAlignment="Left"
+                            TextWrapping="Wrap" VerticalAlignment="Top"
+                            Text="{x:Bind AppModels.Title, Mode=OneWay}"
                             Padding="0,0,0,5"/>
                         <TextBlock 
-                            x:Name="AppVText" 
-                            x:FieldModifier="Public" 
-                            Text="" HorizontalAlignment="Left" 
-                            TextWrapping="Wrap" VerticalAlignment="Top" 
-                            Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}" Padding="0,0,0,5"/>
+                            x:Name="AppVersion"
+                            HorizontalAlignment="Left" 
+                            TextWrapping="Wrap" VerticalAlignment="Top"
+                            Text="{x:Bind AppModels.Version, Mode=OneWay}"
+                            Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"
+                            Padding="0,0,0,5"/>
                         <TextBlock 
                             x:Name="AppMText" 
                             x:FieldModifier="Public" 
@@ -60,19 +69,22 @@
                         Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
                     <Button 
                         x:Name="DownloadButton" 
-                        Style="{StaticResource ButtonRevealStyle}" 
+                        Style="{StaticResource AccentButtonStyle}" 
                         Click="DownloadButton_Click" Content="下载" 
                         HorizontalAlignment="Right" VerticalAlignment="Top"
-                        Width="78" BorderThickness="0" 
-                        Background="{ThemeResource SystemControlHighlightListAccentHighBrush}" Visibility="Collapsed"/>
+                        Width="78" BorderThickness="0" Tag="{x:Bind AppModels.DownloadUrl, Mode=OneWay}"
+                        Visibility="{x:Bind AppModels.DownloadUrl, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}"/>
                 </Grid>
-                <Grid Visibility="Collapsed" Margin="0,1,0,0" x:Name="DPanel" Padding="10" >
+                <Grid
+                    Padding="10"
+                    x:Name="DPanel"
+                    Margin="0,1,0,0"
+                    Visibility="{x:Bind AppModels.Description, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
                     <TextBlock 
-                        x:Name="AppDText" 
-                        x:FieldModifier="Public" 
-                        TextWrapping="Wrap" 
-                        Text="" TextAlignment="Center"  
-                        VerticalAlignment="Top"/>
+                        x:Name="AppDescription"
+                        TextWrapping="Wrap"
+                        VerticalAlignment="Top"
+                        Text="{x:Bind AppModels.Description, Mode=OneWay}"/>
                 </Grid>
 
                 <!--大按钮-->
@@ -81,7 +93,8 @@
                     Style="{StaticResource ButtonRevealStyle}" 
                     Background="#504CAF50" BorderThickness="0"  
                     HorizontalContentAlignment="Stretch" 
-                    HorizontalAlignment="Stretch" Click="ViewFeed">
+                    HorizontalAlignment="Stretch" Click="ViewFeed"
+                    Visibility="{x:Bind AppModels.ChangeLog, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock 
@@ -97,58 +110,63 @@
                                 Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
                         </StackPanel>
                         <TextBlock 
-                            x:Name="AppVMText" 
-                            x:FieldModifier="Public" 
-                            Text="" Margin="10,0,10,10" 
+                            x:Name="AppChangeLog"
+                            Margin="10,0,10,10"
+                            Text="{x:Bind AppModels.ChangeLog, Mode=OneWay}"
                             TextWrapping="Wrap" VerticalAlignment="Top"/>
                     </StackPanel>
                 </Button>
-                <ListBox 
+                <ListView
                     x:Name="ScreenShotView" Height="150" 
                     SelectionChanged="ScreenShotView_SelectionChanged" 
                     ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
                     BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}">
-                    <ListBox.ItemsPanel>
+                    <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
+                    </ListView.ItemsPanel>
+                </ListView>
                 <Grid Height="auto" Padding="10" >
-                    <TextBlock 
-                        x:Name="AppJText"
-                        x:FieldModifier="Public"
+                    <controls:MarkdownTextBlock 
+                        x:Name="AppIntroduce"
                         Margin="10"
-                        Text="简介"
-                        TextWrapping="Wrap" 
-                        VerticalAlignment="Top"/>
+                        TextWrapping="Wrap"
+                        VerticalAlignment="Top"
+                        Text="{x:Bind AppModels.Introduce, Mode=OneWay}"/>
                 </Grid>
 
                 <!--<p class="rank_num">-->
-                <Grid Height="auto" Padding="10"  Margin="10,-30">
-                    <TextBlock 
-                        x:Name="AppRText"
-                        x:FieldModifier="Public"
-                        Text="5.0"/>
+                <Grid
+                    Padding="10"
+                    Margin="10,-20">
+                    <TextBlock
+                        Margin="0,1"
+                        x:Name="AppScore"
+                        Text="{x:Bind AppModels.Vote, Mode=OneWay}"/>
                     <StackPanel 
                         Orientation="Horizontal" 
-                        Margin="40,0" 
+                        Margin="30,0" 
                         VerticalAlignment="Top" 
                         HorizontalAlignment="Left">
                         <muxc:RatingControl 
                             x:Name="AppRating" 
                             IsReadOnly="True"
-                            PlaceholderValue="0" 
-                            Margin="0,-3,0,0"/>
+                            Margin="0,-3,0,0"
+                            PlaceholderValue="{x:Bind AppModels.Score, Mode=OneWay}"/>
                     </StackPanel>
-                    <TextBlock 
-                        x:Name="AppPText" 
-                        x:FieldModifier="Public" 
-                        Text="共0人评分" 
-                        Margin="0,30,0,0"/>
+                    <StackPanel
+                        Margin="0,30,0,0"
+                        x:Name="AppVoteCount"
+                        Orientation="Horizontal"
+                        Visibility="{x:Bind AppModels.VoteCount, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
+                        <TextBlock Text="共"/>
+                        <TextBlock Text="{x:Bind AppModels.VoteCount, Mode=OneWay}"/>
+                        <TextBlock Text="人评分"/>
+                    </StackPanel>
                 </Grid>
-                <Grid x:Name="KPanel" Padding="10" >
+                <Grid x:Name="KPanel" Padding="10">
                     <Image 
                         x:Name="AppKImage" 
                         x:FieldModifier="Public" 
@@ -162,7 +180,6 @@
                         FontSize="20" VerticalAlignment="Center" 
                         HorizontalAlignment="Left"/>
                 </Grid>
-
             </StackPanel>
         </ScrollViewer>
 

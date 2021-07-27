@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
+using ReverseMarkdown;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 try
                 {
                     o = JObject.Parse(result);
-                    MarkdownText.Text = CSStoMarkDown(o.TryGetValue("html", out JToken token) ? token.ToString() : o.TryGetValue("description", out JToken desc) ? desc.ToString() : "#网络错误");
+                    MarkdownText.Text = UIHelper.CSStoMarkDown(o.TryGetValue("html", out JToken token) ? token.ToString() : o.TryGetValue("description", out JToken desc) ? desc.ToString() : "#网络错误");
                     TitleBar.Title = o.TryGetValue("title", out JToken Title) ? Title.ToString() : null;
                 }
                 catch
@@ -51,48 +52,6 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             else { Frame.GoBack(); }
             TitleBar.HideProgressRing();
-        }
-
-        public static string CSStoMarkDown(string text)
-        {
-            Regex h1 = new Regex("<h1 style.*?>", RegexOptions.IgnoreCase);
-            Regex h2 = new Regex("<h2 style.*?>", RegexOptions.IgnoreCase);
-            Regex h3 = new Regex("<h3 style.*?>", RegexOptions.IgnoreCase);
-            Regex h4 = new Regex("<h4 style.*?>\n", RegexOptions.IgnoreCase);
-            Regex div = new Regex("<div style.*?>", RegexOptions.IgnoreCase);
-            Regex p = new Regex("<p style.*?>", RegexOptions.IgnoreCase);
-            Regex ul = new Regex("<ul style.*?>", RegexOptions.IgnoreCase);
-            Regex li = new Regex("<li style.*?>", RegexOptions.IgnoreCase);
-            Regex span = new Regex("<span style.*?>", RegexOptions.IgnoreCase);
-
-            text = text.Replace("</h1>", "");
-            text = text.Replace("</h2>", "");
-            text = text.Replace("</h3>", "");
-            text = text.Replace("</h4>", "");
-            text = text.Replace("</div>", "");
-            text = text.Replace("<p>", "");
-            text = text.Replace("</p>", "");
-            text = text.Replace("</ul>", "");
-            text = text.Replace("</li>", "");
-            text = text.Replace("</span>", "**");
-            text = text.Replace("</strong>", "**");
-
-            text = h1.Replace(text, "#");
-            text = h2.Replace(text, "##");
-            text = h3.Replace(text, "###");
-            text = h4.Replace(text, "####");
-            text = text.Replace("<br/>", "  \n");
-            text = text.Replace("<br />", "  \n");
-            text = div.Replace(text, "");
-            text = p.Replace(text, "");
-            text = ul.Replace(text, "");
-            text = li.Replace(text, " - ");
-            text = span.Replace(text, "**");
-            text = text.Replace("<strong>", "**");
-
-            for (int i = 0; i < 20; i++) { text = text.Replace("(" + i.ToString() + ") ", " 1. "); }
-
-            return text;
         }
 
         private async Task Refresh(int p = -1)

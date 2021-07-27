@@ -42,7 +42,7 @@ namespace CoolapkUWP.Controls
             else if (item is DyhModel) { return Dyh; }
             else if (item is ProductModel) { return Product; }
             else if (item is LiveMode) { return LiveTopic; }
-            else if (item is AppPageMode) { return App; }
+            else if (item is AppModel) { return App; }
             else if (item is ListModel) { return List; }
             else if (item is IndexPageMessageCardModel) { return MessageCard; }
             else if (item is IndexPageHasEntitiesModel m)
@@ -179,7 +179,7 @@ namespace CoolapkUWP.Controls
         public DataTemplate SearchWord { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            if (item is AppPageMode) return App;
+            if (item is AppModel) return App;
             return SearchWord;
         }
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
@@ -198,7 +198,7 @@ namespace CoolapkUWP.Controls
                 case "topic": return new TopicModel(jo);
                 case "dyh": return new DyhModel(jo);
                 case "apk":
-                case "appForum": return new AppPageMode(jo);
+                case "appForum": return new AppModel(jo);
                 case "product": return new ProductModel(jo);
                 case "productBrand": return new ListModel(jo);
                 case "entity_type_user_card_manager": return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);

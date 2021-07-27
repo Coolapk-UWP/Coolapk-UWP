@@ -2,6 +2,7 @@
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using Newtonsoft.Json.Linq;
+using ReverseMarkdown;
 using System.ComponentModel;
 
 namespace CoolapkUWP.Models.Pages.FeedListPageModels
@@ -279,7 +280,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             else if (o.TryGetValue("introduce", out JToken introduce) && !string.IsNullOrEmpty(introduce.ToString()))
             {
                 Description = introduce.ToString();
-                Description = HTMLTextPage.CSStoMarkDown(Description);
+                Description = UIHelper.CSStoMarkDown(Description);
             }
             if (o.TryGetValue("commentnum", out JToken commentnum) && !string.IsNullOrEmpty(commentnum.ToString()))
             {

@@ -190,7 +190,7 @@ namespace CoolapkUWP.Pages
                         switch (token.Value<string>("entityType"))
                         {
                             case "apk":
-                                observableCollection.Add(new AppPageMode(token as JObject));
+                                observableCollection.Add(new AppModel(token as JObject));
                                 break;
                             case "searchWord":
                             default:
@@ -204,7 +204,7 @@ namespace CoolapkUWP.Pages
 
         internal static void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            if (args.ChosenSuggestion is AppPageMode app)
+            if (args.ChosenSuggestion is AppModel app)
             {
                 UIHelper.NavigateInSplitPane(typeof(AppPages.AppPage), "https://www.coolapk.com" + app.Url);
             }

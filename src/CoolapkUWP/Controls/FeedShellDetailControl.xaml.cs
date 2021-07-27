@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
@@ -146,7 +147,7 @@ namespace CoolapkUWP.Controls
         {
             // Get the default UserActivityChannel and query it for our UserActivity. If the activity doesn't exist, one is created.
             UserActivityChannel channel = UserActivityChannel.GetDefault();
-            UserActivity userActivity = await channel.GetOrCreateUserActivityAsync(FeedDetail.QRUrl);
+            UserActivity userActivity = await channel.GetOrCreateUserActivityAsync(Utils.GetMD5(FeedDetail.QRUrl));
 
             // Populate required properties
             userActivity.VisualElements.DisplayText = FeedDetail.MessageTitle;

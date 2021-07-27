@@ -247,7 +247,7 @@
         </ListViewItem>
     </DataTemplate>
 
-    <DataTemplate x:Key="App" x:DataType="models:AppPageMode">
+    <DataTemplate x:Key="App" x:DataType="models:AppModel">
         <ListViewItem
             KeyDown="{x:Bind local:OtherDataTemplates.ListViewItem_KeyDown}"
             Style="{StaticResource AppListViewItemStyle}"

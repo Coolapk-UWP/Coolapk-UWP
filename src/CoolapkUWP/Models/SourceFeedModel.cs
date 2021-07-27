@@ -66,7 +66,7 @@ namespace CoolapkUWP.Models
                 if (collection_item_info.TryGetValue("content", out JToken content) && !string.IsNullOrEmpty(content.ToString()))
                 {
                     Message = content.ToString();
-                    Message = HTMLTextPage.CSStoMarkDown(Message);
+                    Message = UIHelper.CSStoMarkDown(Message);
                 }
                 if (collection_item_info.TryGetValue("title", out JToken title) && !string.IsNullOrEmpty(title.ToString()))
                 {
