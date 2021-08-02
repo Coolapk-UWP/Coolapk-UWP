@@ -586,55 +586,5 @@ namespace CoolapkUWP.Helpers
             // And update the badge
             badgeUpdater.Update(badge);
         }
-
-        public static string CSStoMarkDown(string text)
-        {
-            try
-            {
-                Converter converter = new Converter();
-                return converter.Convert(text);
-            }
-            catch
-            {
-                Regex h1 = new Regex(@"<h1.*?>", RegexOptions.IgnoreCase);
-                Regex h2 = new Regex(@"<h2.*?>", RegexOptions.IgnoreCase);
-                Regex h3 = new Regex(@"<h3.*?>", RegexOptions.IgnoreCase);
-                Regex h4 = new Regex(@"<h4.*?>\n", RegexOptions.IgnoreCase);
-                Regex div = new Regex(@"<div.*?>", RegexOptions.IgnoreCase);
-                Regex p = new Regex(@"<p.*?>", RegexOptions.IgnoreCase);
-                Regex ul = new Regex(@"<ul.*?>", RegexOptions.IgnoreCase);
-                Regex li = new Regex(@"<li.*?>", RegexOptions.IgnoreCase);
-                Regex span = new Regex(@"<span.*?>", RegexOptions.IgnoreCase);
-
-                text = text.Replace("</h1>", "");
-                text = text.Replace("</h2>", "");
-                text = text.Replace("</h3>", "");
-                text = text.Replace("</h4>", "");
-                text = text.Replace("</div>", "");
-                text = text.Replace("<p>", "");
-                text = text.Replace("</p>", "");
-                text = text.Replace("</ul>", "");
-                text = text.Replace("</li>", "");
-                text = text.Replace("</span>", "**");
-                text = text.Replace("</strong>", "**");
-
-                text = h1.Replace(text, "#");
-                text = h2.Replace(text, "##");
-                text = h3.Replace(text, "###");
-                text = h4.Replace(text, "####");
-                text = text.Replace("<br/>", "  \n");
-                text = text.Replace("<br />", "  \n");
-                text = div.Replace(text, "");
-                text = p.Replace(text, "");
-                text = ul.Replace(text, "");
-                text = li.Replace(text, " - ");
-                text = span.Replace(text, "**");
-                text = text.Replace("<strong>", "**");
-
-                for (int i = 0; i < 20; i++) { text = text.Replace("(" + i.ToString() + ") ", " 1. "); }
-
-                return text;
-            }
-        }
     }
 }

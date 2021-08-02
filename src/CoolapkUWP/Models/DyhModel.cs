@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Core.Models;
 using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
+using CoolapkUWP.Core.Helpers;
 
 namespace CoolapkUWP.Models
 {
@@ -53,7 +54,7 @@ namespace CoolapkUWP.Models
             }
             else if (o.TryGetValue("hot_num", out JToken hot_num) && !string.IsNullOrEmpty(hot_num.ToString()))
             {
-                Description = hot_num.ToString() + "热度";
+                Description = Utils.GetNumString(double.Parse(hot_num.ToString())) + "热度";
             }
             if (o.TryGetValue("lastupdate", out JToken lastupdate) && !string.IsNullOrEmpty(lastupdate.ToString()))
             {

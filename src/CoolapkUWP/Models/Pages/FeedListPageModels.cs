@@ -281,7 +281,7 @@ namespace CoolapkUWP.Models.Pages.FeedListPageModels
             else if (o.TryGetValue("introduce", out JToken introduce) && !string.IsNullOrEmpty(introduce.ToString()))
             {
                 Description = introduce.ToString();
-                Description = UIHelper.CSStoMarkDown(Description);
+                Description = Utils.CSStoMarkDown(Description);
             }
             if (o.TryGetValue("commentnum", out JToken commentnum) && !string.IsNullOrEmpty(commentnum.ToString()))
             {

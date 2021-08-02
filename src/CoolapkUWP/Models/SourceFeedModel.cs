@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Core.Models;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Core.Models;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using Newtonsoft.Json.Linq;
@@ -66,7 +67,7 @@ namespace CoolapkUWP.Models
                 if (collection_item_info.TryGetValue("content", out JToken content) && !string.IsNullOrEmpty(content.ToString()))
                 {
                     Message = content.ToString();
-                    Message = UIHelper.CSStoMarkDown(Message);
+                    Message = Utils.CSStoMarkDown(Message);
                 }
                 if (collection_item_info.TryGetValue("title", out JToken title) && !string.IsNullOrEmpty(title.ToString()))
                 {

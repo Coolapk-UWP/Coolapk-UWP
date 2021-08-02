@@ -1,8 +1,7 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Helpers;
 using Newtonsoft.Json.Linq;
-using ReverseMarkdown;
 using System;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -41,7 +40,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 try
                 {
                     o = JObject.Parse(result);
-                    MarkdownText.Text = UIHelper.CSStoMarkDown(o.TryGetValue("html", out JToken token) ? token.ToString() : o.TryGetValue("description", out JToken desc) ? desc.ToString() : "#网络错误");
+                    MarkdownText.Text = Utils.CSStoMarkDown(o.TryGetValue("html", out JToken token) ? token.ToString() : o.TryGetValue("description", out JToken desc) ? desc.ToString() : "#网络错误");
                     TitleBar.Title = o.TryGetValue("title", out JToken Title) ? Title.ToString() : null;
                 }
                 catch
