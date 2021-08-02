@@ -23,3 +23,4 @@
 - [QRCoder](https://github.com/codebude/QRCoder)
 - [Metro Log](https://github.com/novotnyllc/MetroLog)
 - [Color Thief](https://github.com/KSemenenko/ColorThief)
+- [ReverseMarkdown](https://github.com/mysticmind/reversemarkdown-net)
