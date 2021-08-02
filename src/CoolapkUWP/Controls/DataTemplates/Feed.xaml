@@ -888,6 +888,7 @@
                             </Button>
                             <StackPanel Margin="8,0" VerticalAlignment="Center">
                                 <TextBlock
+                                    TextTrimming="WordEllipsis"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     IsTextSelectionEnabled="{x:Bind IsCopyEnabled, Mode=OneWay}"
@@ -896,6 +897,7 @@
                                     <TextBlock
                                         x:Name="datelineTxb"
                                         Margin="0,0,5,0"
+                                        TextTrimming="WordEllipsis"
                                         x:Load="{x:Bind ShowDateline}"
                                         Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                                         Text="{x:Bind Dateline}"/>
@@ -912,6 +914,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock
                                                 Margin="0,-2,0,0"
+                                                TextTrimming="WordEllipsis"
                                                 Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                                                 Text="{x:Bind DeviceTitle}"/>
                                         </StackPanel>
@@ -944,15 +947,20 @@
                             <StackPanel Margin="2,0" VerticalAlignment="Center">
                                 <TextBlock
                                     x:Name="dyhnamesta"
+                                    TextTrimming="WordEllipsis"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     x:Load="{x:Bind ShowDyh}"
                                     Text="{x:Bind Dyhname}"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{x:Bind Dateline}"/>
+                                    <TextBlock
+                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                        TextTrimming="WordEllipsis"
+                                        Text="{x:Bind Dateline}"/>
                                     <TextBlock
                                         x:Name="fromInfot"
                                         Margin="5,0,0,0"
+                                        TextTrimming="WordEllipsis"
                                         x:Load="{x:Bind ShowFromInfo}"
                                         Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                                         Tag="{x:Bind Uurl}"

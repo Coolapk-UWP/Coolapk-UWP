@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Core.Models;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Core.Models;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using Newtonsoft.Json.Linq;

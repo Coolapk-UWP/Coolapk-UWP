@@ -200,18 +200,15 @@ namespace CoolapkUWP.Models.Links
                             {
                                 MessageTitle = message_title.ToString();
                             }
-                            ShowPicArr = data.TryGetValue("picArr", out JToken picArr) && (picArr as JArray).Count > 0 && !string.IsNullOrEmpty((picArr as JArray)[0].ToString());
-                            if (picArr != null)
+                            ShowPicArr = data.TryGetValue("picArr", out JToken picArr) && (picArr as JArray).Count > 0 && picArr != null;
+                            if (ShowPicArr)
                             {
-                                if (ShowPicArr)
-                                {
-                                    PicArr = (from item in picArr
-                                              select new ImageModel(item.ToString(), ImageType.Icon)).ToImmutableArray();
+                                PicArr = (from item in picArr
+                                          select new ImageModel(item.ToString(), ImageType.Icon)).ToImmutableArray();
 
-                                    foreach (ImageModel item in PicArr)
-                                    {
-                                        item.ContextArray = PicArr;
-                                    }
+                                foreach (ImageModel item in PicArr)
+                                {
+                                    item.ContextArray = PicArr;
                                 }
                             }
                         }

@@ -7,27 +7,23 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:temp="using:CoolapkUWP.Controls.DataTemplates"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <temp:Pic/>
+            </ResourceDictionary.MergedDictionaries>
             <converter:HasValueConverter x:Key="HasValueConverter"/>
             <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         </ResourceDictionary>
     </Page.Resources>
 
     <Grid>
-        <Grid.Resources>
-            <Storyboard x:Name="EnterStoryboard">
-                <FadeInThemeAnimation Storyboard.TargetName="ScreenShotFlipView"/>
-            </Storyboard>
-            <Storyboard x:Name="ExitStoryboard">
-                <FadeOutThemeAnimation Storyboard.TargetName="ScreenShotFlipView"/>
-            </Storyboard>
-        </Grid.Resources>
-        
-        <ScrollViewer>
+        <ScrollViewer x:Name="scrollViewer">
             <StackPanel>
                 <Border Height="70"/>
                 <Grid>
@@ -51,12 +47,53 @@
                             Text="{x:Bind AppModels.Version, Mode=OneWay}"
                             Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"
                             Padding="0,0,0,5"/>
-                        <TextBlock 
-                            x:Name="AppMText" 
-                            x:FieldModifier="Public" 
-                            Text="" HorizontalAlignment="Left" 
-                            TextWrapping="Wrap" VerticalAlignment="Top" 
-                            Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Visibility="{x:Bind AppModels.CommentNum, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
+                                <TextBlock
+                                    TextWrapping="Wrap"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text="{x:Bind AppModels.CommentNum, Mode=OneWay}" 
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <TextBlock
+                                    Text="人评论"
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                            </StackPanel>
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Visibility="{x:Bind AppModels.FollowNum, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
+                                <TextBlock
+                                    Text=" · "
+                                    TextTrimming="WordEllipsis"
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <TextBlock
+                                    TextTrimming="WordEllipsis"
+                                    Text="{x:Bind AppModels.FollowNum, Mode=OneWay}" 
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <TextBlock
+                                    Text="人关注"
+                                    TextWrapping="Wrap"
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                            </StackPanel>
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Visibility="{x:Bind AppModels.HotNum, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
+                                <TextBlock
+                                    Text=" · "
+                                    TextTrimming="WordEllipsis"
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <TextBlock
+                                    TextTrimming="WordEllipsis"
+                                    Text="{x:Bind AppModels.HotNum, Mode=OneWay}" 
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <TextBlock
+                                    Text="人关注"
+                                    TextWrapping="Wrap"
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                            </StackPanel>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
                 <Grid Margin="0,-10,0,0"  Padding="10" Height="50">
@@ -80,20 +117,23 @@
                     x:Name="DPanel"
                     Margin="0,1,0,0"
                     Visibility="{x:Bind AppModels.Description, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
-                    <TextBlock 
+                    <controls:MarkdownTextBlock 
                         x:Name="AppDescription"
                         TextWrapping="Wrap"
+                        Margin="10,0,10,10"
                         VerticalAlignment="Top"
+                        Background="Transparent"
                         Text="{x:Bind AppModels.Description, Mode=OneWay}"/>
                 </Grid>
 
                 <!--大按钮-->
                 <Button 
-                    x:Name="UPanel" 
-                    Style="{StaticResource ButtonRevealStyle}" 
-                    Background="#504CAF50" BorderThickness="0"  
-                    HorizontalContentAlignment="Stretch" 
+                    x:Name="UPanel"
+                    HorizontalContentAlignment="Stretch"
+                    Style="{StaticResource ButtonRevealStyle}"
+                    Background="#504CAF50" BorderThickness="0"
                     HorizontalAlignment="Stretch" Click="ViewFeed"
+                    Tag="{x:Bind AppModels.EntityID, Mode=OneWay}"
                     Visibility="{x:Bind AppModels.ChangeLog, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
@@ -109,31 +149,43 @@
                                 TextWrapping="Wrap" VerticalAlignment="Top" 
                                 Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
                         </StackPanel>
-                        <TextBlock 
+                        <controls:MarkdownTextBlock
                             x:Name="AppChangeLog"
                             Margin="10,0,10,10"
-                            Text="{x:Bind AppModels.ChangeLog, Mode=OneWay}"
-                            TextWrapping="Wrap" VerticalAlignment="Top"/>
+                            TextWrapping="Wrap"
+                            VerticalAlignment="Top"
+                            Background="Transparent"
+                            IsTextSelectionEnabled="False"
+                            Text="{x:Bind AppModels.ChangeLog, Mode=OneWay}"/>
                     </StackPanel>
                 </Button>
-                <ListView
-                    x:Name="ScreenShotView" Height="150" 
-                    SelectionChanged="ScreenShotView_SelectionChanged" 
-                    ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                <GridView
+                    x:Name="ScreenShotView"
+                    Margin="4,8,4,4"
+                    Padding="0"
+                    HorizontalContentAlignment="Left"
+                    ItemTemplate="{StaticResource Pic}"
+                    ScrollViewer.HorizontalScrollMode="Enabled"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                    BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}">
-                    <ListView.ItemsPanel>
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                    ItemsSource="{x:Bind AppModels.PicArr, Mode=OneWay}"
+                    Visibility="{x:Bind AppModels.ShowPicArr, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                            <ItemsWrapGrid
+                                MaximumRowsOrColumns="1"
+                                Orientation="Vertical"/>
                         </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
+                    </GridView.ItemsPanel>
+                </GridView>
                 <Grid Height="auto" Padding="10" >
                     <controls:MarkdownTextBlock 
                         x:Name="AppIntroduce"
                         Margin="10"
                         TextWrapping="Wrap"
                         VerticalAlignment="Top"
+                        Background="Transparent"
                         Text="{x:Bind AppModels.Introduce, Mode=OneWay}"/>
                 </Grid>
 
@@ -183,28 +235,9 @@
             </StackPanel>
         </ScrollViewer>
 
-        <!--缩略图显示-->
-        <FlipView Visibility="Collapsed" x:Name="ScreenShotFlipView" Margin="0,72,0,0"/>
-        <Rectangle 
-            x:Name="CloseBlock"
-            Margin="0,72,0,0" 
-            Width="40" Height="40"
-            Visibility="Collapsed"
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Top"
-            Fill="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}"/>
-        <Button 
-            x:Name="CloseFlip" 
-            Style="{StaticResource IconButtonStyle}" 
-            Margin="0,72,0,0"
-            Visibility="Collapsed" 
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Top">
-            <SymbolIcon Symbol="Cancel"/>
-        </Button>
-
         <ctrl:TitleBar
             x:Name="titleBar"
+            BackgroundVisibility="Visible"
             BackButtonClicked="BackButton_Click"
             IsBackButtonEnabled="{x:Bind Frame.CanGoBack}"
             RefreshButtonClicked="titleBar_RefreshButtonClicked"
@@ -212,9 +245,10 @@
             <ctrl:TitleBar.RightAreaContent>
                 <StackPanel Orientation="Horizontal">
                     <Button 
-                        Style="{StaticResource IconButtonStyle}"
                         Click="ViewFeed"
-                        ToolTipService.ToolTip="查看评论">
+                        ToolTipService.ToolTip="查看评论"
+                        Style="{StaticResource IconButtonStyle}"
+                        Tag="{x:Bind AppModels.EntityID, Mode=OneWay}">
                         <SymbolIcon Symbol="Comment"/>
                     </Button>
 

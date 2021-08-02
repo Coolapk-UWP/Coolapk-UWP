@@ -5,8 +5,10 @@ using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Data;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
@@ -34,8 +36,8 @@ namespace CoolapkUWP.Pages.AppPages
                 RaisePropertyChangedEvent();
             }
         }
-        private string AppMassage, AppUpdateTime, /*AppDownloadUrl,*/ id;
-        private string AppLink = "";
+        private string AppMassage, AppUpdateTime;
+        private string AppLink;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -47,32 +49,24 @@ namespace CoolapkUWP.Pages.AppPages
         public AppPage()
         {
             InitializeComponent();
-            Rectangle_PointerExited();
-        }
-        public static string ReplaceHtml(string str)
-        {
-            //换行和段落
-            string s = str.Replace("<br>", "\n").Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br/>", "\n").Replace("<p>", "").Replace("</p>", "\n").Replace("&nbsp;", " ").Replace("<br />", "").Replace("<br />", "");
-            //链接彻底删除！
-            while (s.IndexOf("<a", StringComparison.Ordinal) > 0)
-            {
-                s = s.Replace(@"<a href=""" + Regex.Split(Regex.Split(s, @"<a href=""")[1], @""">")[0] + @""">", "");
-                s = s.Replace("</a>", "");
-            }
-            return s;
         }
 
-        private void titleBar_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             //将传过来的数据 类型转换一下
             AppLink = e.Parameter as string;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
             if (string.IsNullOrEmpty(AppLink)) { return; }
+            else { GetAppDetail(); }
+        }
+
+        private async void GetAppDetail()
+        {
+            titleBar.ShowProgressRing();
             (bool isSucceed, string result) = await DataHelper.GetHtmlAsync(new Uri(AppLink), "XMLHttpRequest");
             if (isSucceed && !string.IsNullOrEmpty(result))
             {
@@ -80,58 +74,19 @@ namespace CoolapkUWP.Pages.AppPages
                 AppModels = new AppModel(json);
                 _ = GenerateActivityAsync();
             }
-        }
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            titleBar.ShowProgressRing();
-            if (string.IsNullOrEmpty(AppLink)) { return; }
             (bool HTMLisSucceed, string html) = await DataHelper.GetHtmlAsync(new Uri(AppLink), "com.coolapk.market");
             if (HTMLisSucceed) { LaunchAppViewLoad(html); }
+            titleBar.HideProgressRing();
         }
+
         private void LaunchAppViewLoad(string str)
         {
             #region 小板子的HTML内容获取
-            id = Regex.Split(str, @"onclick=""onDownloadApk")[1].Split('(')[1].Split(')')[0].Trim();
             AppMassage = Regex.Split(str, @"<p class=""apk_topba_message"">")[1].Split('<')[0].Trim().Replace("\n", "").Replace(" ", "");
             AppUpdateTime = Regex.Split(str, "更新时间：")[1].Split('<')[0].Trim();
 
             AppVTText.Text = AppUpdateTime;
-            AppMText.Text = Regex.Split(AppMassage, "/")[2] + " " + Regex.Split(AppMassage, "/")[3] + " ";
             AppXText.Text = Regex.Split(AppMassage, "/")[1] + " · " + Regex.Split(AppMassage, "/")[0];
-
-            //加载截图！
-            string images = Regex.Split(Regex.Split(str, @"<div class=""ex-screenshot-thumb-carousel"">")[1], "</div>")[0];
-            string[] imagearray = Regex.Split(images, "<img");
-            for (int i = 0; i < imagearray.Length - 1; i++)
-            {
-                string imageUrl = imagearray[i + 1].Split('"')[1];
-                if (!imageUrl.Equals(""))
-                {
-                    Image newImage = new Image
-                    {
-                        Height = 100,
-                        //获得图片
-                        Source = new BitmapImage(new Uri(imageUrl, UriKind.RelativeOrAbsolute))
-                    };
-                    //添加到缩略视图
-                    ScreenShotView.Items.Add(newImage);
-                }
-            }
-            images = Regex.Split(Regex.Split(str, @"<div class=""carousel-inner"">")[1], @"<a class=""left carousel-control""")[0];
-            imagearray = Regex.Split(images, "<img");
-            for (int i = 0; i < imagearray.Length - 1; i++)
-            {
-                string imageurl = imagearray[i + 1].Split('"')[1];
-                Image newImage = new Image
-                {
-                    //获得图片
-                    Source = new BitmapImage(new Uri(imageurl, UriKind.RelativeOrAbsolute))
-                };
-                //添加到视图
-                ScreenShotFlipView.Items.Add(newImage);
-            }
-
-
             #endregion
 
             titleBar.HideProgressRing();
@@ -173,7 +128,7 @@ namespace CoolapkUWP.Pages.AppPages
             }
         }
 
-        UserActivitySession _currentActivity;
+        private UserActivitySession _currentActivity;
         private async Task GenerateActivityAsync()
         {
             // Get the default UserActivityChannel and query it for our UserActivity. If the activity doesn't exist, one is created.
@@ -202,56 +157,37 @@ namespace CoolapkUWP.Pages.AppPages
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ScreenShotFlipView.Visibility == Visibility.Visible) { _ = CloseFlip_ClickAsync(); }
-            else { Frame.GoBack(); }
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
         }
-
-        private void ScreenShotView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ScreenShotFlipView.Visibility = Visibility.Visible;
-            ScreenShotView.SelectedIndex = -1;
-            Rectangle_PointerEntered();
-        }
-
-        private async Task CloseFlip_ClickAsync()
-        {
-            Rectangle_PointerExited();
-            await Task.Delay(300);
-            ScreenShotFlipView.Visibility = Visibility.Collapsed;
-        }
-
 
         private void DownloadButton_Click(object sender, RoutedEventArgs e)
         {
             // Download the URI
-            _ = Launcher.LaunchUriAsync(new Uri(NetworkHelper.ExpandShortUrl(new Uri((sender as FrameworkElement).Tag.ToString()))));
+            _ = Launcher.LaunchUriAsync(new Uri((sender as FrameworkElement).Tag.ToString()));
         }
 
         private void ViewFeed(object sender, RoutedEventArgs e)
         {
-            FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, id);
+            FrameworkElement element = sender as FrameworkElement;
+            FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, element.Tag.ToString());
             if (f != null)
             {
                 UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
             }
         }
 
-        //private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
-
         private void titleBar_RefreshButtonClicked(object sender, RoutedEventArgs e)
         {
-            titleBar.ShowProgressRing();
-            titleBar.HideProgressRing();
+            GetAppDetail();
+            _ = scrollViewer.ChangeView(null, 0, null);
         }
 
-        private void Rectangle_PointerEntered()
+        private void titleBar_Loaded(object sender, RoutedEventArgs e)
         {
-            EnterStoryboard.Begin();
-        }
 
-        private void Rectangle_PointerExited()
-        {
-            ExitStoryboard.Begin();
         }
     }
     internal class AppModel : Entity
@@ -264,27 +200,35 @@ namespace CoolapkUWP.Pages.AppPages
         public string EntityID { get; private set; }
         public string Version { get; private set; }
         public string Apksize { get; private set; }
+        public string HotNum { get; private set; }
         public string VoteCount { get; private set; }
         public string FollowNum { get; private set; }
+        public string CommentNum { get; private set; }
         public string DownloadNum { get; private set; }
         public string ChangeLog { get; private set; }
         public string Introduce { get; private set; }
         public string Description { get; private set; }
         public string LastUpdate { get; private set; }
+        public bool ShowPicArr { get; private set; }
         public Models.ImageModel Logo { get; private set; }
+        public ImmutableArray<Models.ImageModel> PicArr { get; private set; }
 
         public AppModel(JObject json) : base(json)
-{
-            if (json.TryGetValue("apkDetailDownloadUrl", out JToken apkDetailDownloadUrl) && !string.IsNullOrEmpty(apkDetailDownloadUrl.ToString()))
-            {
-                DownloadUrl = UIHelper.IsSpecialUser ? apkDetailDownloadUrl.ToString() : string.Empty;
-            }
+        {
             if (json.TryGetValue("dataRow", out JToken v1))
             {
                 JObject dataRow = (JObject)v1;
                 if (dataRow.TryGetValue("logo", out JToken logo) && !string.IsNullOrEmpty(logo.ToString()))
                 {
                     Logo = new Models.ImageModel(logo.ToString(), ImageType.Icon);
+                }
+                if (dataRow.TryGetValue("apkfile", out JToken apkfile) && apkfile.ToString().IndexOf("http") == 0)
+                {
+                    DownloadUrl = UIHelper.IsSpecialUser ? apkfile.ToString() : string.Empty;
+                }
+                else if (json.TryGetValue("apkDetailDownloadUrl", out JToken apkDetailDownloadUrl) && !string.IsNullOrEmpty(apkDetailDownloadUrl.ToString()))
+                {
+                    DownloadUrl = UIHelper.IsSpecialUser ? NetworkHelper.ExpandShortUrl(new Uri(apkDetailDownloadUrl.ToString())) : string.Empty;
                 }
                 if (dataRow.TryGetValue("id", out JToken id) && !string.IsNullOrEmpty(id.ToString()))
                 {
@@ -322,10 +266,6 @@ namespace CoolapkUWP.Pages.AppPages
                 {
                     Apksize = apksize.ToString();
                 }
-                if (dataRow.TryGetValue("voteCount", out JToken voteCount) && !string.IsNullOrEmpty(voteCount.ToString()))
-                {
-                    VoteCount = voteCount.ToString();
-                }
                 if (dataRow.TryGetValue("changelog", out JToken changelog) && !string.IsNullOrEmpty(changelog.ToString()))
                 {
                     ChangeLog = changelog.ToString();
@@ -335,16 +275,56 @@ namespace CoolapkUWP.Pages.AppPages
                     Introduce = introduce.ToString();
                     Introduce = UIHelper.CSStoMarkDown(Introduce);
                 }
-                if (dataRow.TryGetValue("description", out JToken description) && !string.IsNullOrEmpty(description.ToString()))
+                if (dataRow.TryGetValue("remark", out JToken remark) && !string.IsNullOrEmpty(remark.ToString()))
+                {
+                    Description = remark.ToString();
+                    Description = UIHelper.CSStoMarkDown(Description);
+                }
+                else if (dataRow.TryGetValue("description", out JToken description) && !string.IsNullOrEmpty(description.ToString()))
                 {
                     Description = description.ToString();
+                }
+                else if (dataRow.TryGetValue("subtitle", out JToken subtitle) && !string.IsNullOrEmpty(subtitle.ToString()))
+                {
+                    Description = subtitle.ToString();
+                }
+                if (dataRow.TryGetValue("hot_num", out JToken hot_num) && !string.IsNullOrEmpty(hot_num.ToString()))
+                {
+                    HotNum = hot_num.ToString();
+                }
+                if (dataRow.TryGetValue("voteCount", out JToken voteCount) && !string.IsNullOrEmpty(voteCount.ToString()))
+                {
+                    VoteCount = voteCount.ToString();
+                }
+                if (dataRow.TryGetValue("followCount", out JToken followCount) && !string.IsNullOrEmpty(followCount.ToString()))
+                {
+                    FollowNum = followCount.ToString();
+                }
+                if (dataRow.TryGetValue("commentCount", out JToken commentCount) && !string.IsNullOrEmpty(commentCount.ToString()))
+                {
+                    CommentNum = commentCount.ToString();
+                }
+                if (dataRow.TryGetValue("downCount", out JToken downCount) && !string.IsNullOrEmpty(downCount.ToString()))
+                {
+                    DownloadNum = downCount.ToString();
                 }
                 if (ChangeLog == null)
                 {
                     ChangeLog = Description;
                     Description = null;
                 }
+                ShowPicArr = dataRow.TryGetValue("screenList", out JToken screenList) && (screenList as JArray).Count > 0 && screenList != null;
+                if (ShowPicArr)
+                {
+                    PicArr = (from item in screenList
+                              select new Models.ImageModel(item.ToString(), ImageType.OriginImage)).ToImmutableArray();
+
+                    foreach (Models.ImageModel item in PicArr)
+                    {
+                        item.ContextArray = PicArr;
+                    }
+                }
             }
         }
     }
-    }
+}

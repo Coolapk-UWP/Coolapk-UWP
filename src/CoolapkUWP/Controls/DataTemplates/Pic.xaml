@@ -63,5 +63,4 @@
             </Grid>
         </ListViewItem>
     </DataTemplate>
-
 </ResourceDictionary>
