@@ -10,23 +10,23 @@ using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Data
 {
-    internal static class SettingHelper
+    internal static class SettingsHelper
     {
         public static string cookie = string.Empty;
         private static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public static UISettings uISettings => new UISettings();
         public static bool HasStatusBar => Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
         public static double PageTitleHeight => HasStatusBar ? 48 : 80;
-        public static SolidColorBrush SystemAccentColorBrush => Application.Current.Resources.ThemeDictionaries["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
-        public static Thickness titleTextMargin => new Thickness(5, 12, 5, 12);
+        public static SolidColorBrush SystemAccentColorBrush => Windows.UI.Xaml.Application.Current.Resources.ThemeDictionaries["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
         public static Thickness stackPanelMargin => new Thickness(0, PageTitleHeight, 0, 2);
+        public static Thickness ButtonMargin => new Thickness(0, PageTitleHeight - 48, 0, 2);
         public static VerticalAlignment titleContentVerticalAlignment => VerticalAlignment.Bottom;
         public static ElementTheme theme => GetBoolen("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
         public static bool GetBoolen(string key) => (bool)localSettings.Values[key];
         public static string GetString(string key) => localSettings.Values[key] as string;
         public static void Set(string key, object value) => localSettings.Values[key] = value;
 
-        static SettingHelper()
+        static SettingsHelper()
         {
             if (!localSettings.Values.ContainsKey("IsNoPicsMode"))
             { localSettings.Values.Add("IsNoPicsMode", false); }

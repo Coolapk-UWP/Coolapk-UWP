@@ -70,7 +70,7 @@ namespace CoolapkUWP.Pages
 
         private async void CheckLogin()
         {
-            if (await SettingHelper.CheckLoginInfo())
+            if (await SettingsHelper.CheckLoginInfo())
             {
                 Frame.GoBack();
                 UIHelper.ShowMessage("登录成功");

@@ -8,8 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
-    mc:Ignorable="d"
-    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
+    mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -30,7 +29,7 @@
             </Pivot.ItemContainerStyle>
             <PivotItem>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
-                    <StackPanel Padding="{x:Bind data:SettingHelper.stackPanelMargin}">
+                    <StackPanel Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
                         <StackPanel
                             Padding="2,4"
                             Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}"
@@ -88,7 +87,7 @@
                     <ListView
                         x:Name="UserList"
                         ItemTemplate="{StaticResource User}"
-                        Padding="{x:Bind data:SettingHelper.stackPanelMargin}"
+                        Padding="{x:Bind data:SettingsHelper.stackPanelMargin}"
                         ScrollViewer.VerticalScrollMode="Disabled">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
@@ -110,7 +109,7 @@
                     <ListView
                         x:Name="TopicList"
                         ItemTemplate="{StaticResource Topic}"
-                        Padding="{x:Bind data:SettingHelper.stackPanelMargin}"
+                        Padding="{x:Bind data:SettingsHelper.stackPanelMargin}"
                         ScrollViewer.VerticalScrollMode="Disabled">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
@@ -130,7 +129,7 @@
                     <ListView
                         x:Name="AppsResultList"
                         ItemTemplate="{StaticResource app}"
-                        Padding="{x:Bind data:SettingHelper.stackPanelMargin}"
+                        Padding="{x:Bind data:SettingsHelper.stackPanelMargin}"
                         ScrollViewer.VerticalScrollMode="Disabled"
                         SelectionChanged="AppResultList_SelectionChanged">
                         <ListView.ItemContainerStyle>
@@ -148,7 +147,7 @@
             </PivotItem>
         </Pivot>
         <Grid
-            Height="{x:Bind data:SettingHelper.PageTitleHeight}"
+            Height="{x:Bind data:SettingsHelper.PageTitleHeight}"
             VerticalAlignment="Top"
             cu:Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
             fcu:Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}">
@@ -159,7 +158,7 @@
             </Grid.ColumnDefinitions>
             <Button
                 x:Name="BackButton"
-                VerticalAlignment="{x:Bind data:SettingHelper.titleContentVerticalAlignment}"
+                VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"
                 Click="BackButton_Click"
                 Width="48"
                 Height="48"
@@ -169,14 +168,14 @@
                 KeyUp="SearchTextBox_KeyUp"
                 x:Name="SearchText"
                 PlaceholderText="搜索 动态、用户和话题"
-                VerticalAlignment="{x:Bind data:SettingHelper.titleContentVerticalAlignment}"
+                VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"
                 Margin="0,0,0,8"
                 QueryIcon="Find"
                 QuerySubmitted="SearchText_QuerySubmitted"
                 TextChanged="SearchText_TextChanged"/>
             <ComboBox
                 Grid.Column="2"
-                VerticalAlignment="{x:Bind data:SettingHelper.titleContentVerticalAlignment}"
+                VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"
                 SelectedIndex="0"
                 x:Name="SearchTypeComboBox"
                 SelectionChanged="SearchTypeComboBox_SelectionChanged"

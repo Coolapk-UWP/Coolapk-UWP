@@ -22,7 +22,7 @@ namespace CoolapkUWP.Data
         private static readonly BitmapImage whiteNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
         private static readonly BitmapImage darkNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
         static Dictionary<ImageType, StorageFolder> folders = new Dictionary<ImageType, StorageFolder>();
-        internal static BitmapImage NoPic { get => SettingHelper.GetBoolen("IsNoPicsMode") ? darkNoPicMode : whiteNoPicMode; }
+        internal static BitmapImage NoPic { get => SettingsHelper.GetBoolen("IsNoPicsMode") ? darkNoPicMode : whiteNoPicMode; }
 
         private static async Task<StorageFolder> GetFolder(ImageType type)
         {
@@ -62,8 +62,8 @@ namespace CoolapkUWP.Data
         public static async Task<StorageFile> GetImagePath(ImageType type, string url, bool showMessage = false)
         {
             if (url.IndexOf("ms-appx") == 0) { return await StorageFile.GetFileFromApplicationUriAsync(new Uri(url)); }
-            else if (string.IsNullOrEmpty(url) || SettingHelper.GetBoolen("IsNoPicsMode"))
-            { return await StorageFile.GetFileFromApplicationUriAsync(new Uri(SettingHelper.GetBoolen("IsDarkMode") ? "ms-appx:/Assets/img_placeholder_night.png" : "ms-appx:/Assets/img_placeholder.png")); }
+            else if (string.IsNullOrEmpty(url) || SettingsHelper.GetBoolen("IsNoPicsMode"))
+            { return await StorageFile.GetFileFromApplicationUriAsync(new Uri(SettingsHelper.GetBoolen("IsDarkMode") ? "ms-appx:/Assets/img_placeholder_night.png" : "ms-appx:/Assets/img_placeholder.png")); }
             else
             {
                 string fileName = UIHelper.GetMD5(url);
@@ -83,12 +83,12 @@ namespace CoolapkUWP.Data
         }
 
         private static BitmapImage GetLocalImage(string filename) =>
-            (filename is null || SettingHelper.GetBoolen("IsNoPicsMode")) ? (SettingHelper.GetBoolen("IsDarkMode") ? darkNoPicMode : whiteNoPicMode)
+            (filename is null || SettingsHelper.GetBoolen("IsNoPicsMode")) ? (SettingsHelper.GetBoolen("IsDarkMode") ? darkNoPicMode : whiteNoPicMode)
                                                                      : new BitmapImage(new Uri(filename));
 
         private static async Task DownloadImage(StorageFile file, string url, bool showMessage)
         {
-            if (!SettingHelper.GetBoolen("IsNoPicsMode"))
+            if (!SettingsHelper.GetBoolen("IsNoPicsMode"))
             {
                 try
                 {

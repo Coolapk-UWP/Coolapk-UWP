@@ -45,7 +45,7 @@ namespace CoolapkUWP.Pages
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            string uid = SettingHelper.GetString("Uid");
+            string uid = SettingsHelper.GetString("Uid");
             if (string.IsNullOrEmpty(uid))
             {
                 LoginButton.Visibility = Visibility.Visible;
@@ -88,13 +88,13 @@ namespace CoolapkUWP.Pages
             switch ((sender as FrameworkElement).Tag as string)
             {
                 case "feed":
-                    UIHelper.Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, SettingHelper.GetString("Uid") });
+                    UIHelper.Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, SettingsHelper.GetString("Uid") });
                     break;
                 case "follow":
-                    UIHelper.Navigate(typeof(UserListPage), new object[] { SettingHelper.GetString("Uid"), true, userName });
+                    UIHelper.Navigate(typeof(UserListPage), new object[] { SettingsHelper.GetString("Uid"), true, userName });
                     break;
                 case "fans":
-                    UIHelper.Navigate(typeof(UserListPage), new object[] { SettingHelper.GetString("Uid"), false, userName });
+                    UIHelper.Navigate(typeof(UserListPage), new object[] { SettingsHelper.GetString("Uid"), false, userName });
                     break;
                 case "settings":
                     UIHelper.Navigate(typeof(SettingPages.SettingPage));
@@ -166,8 +166,8 @@ namespace CoolapkUWP.Pages
             {
                 ObservableCollection<Entity> feeds = Feeds2[0];
                 Entity[] needDeleteItems = (from b in feeds
-                                       where b.entityType == "feed"
-                                       select b).ToArray();
+                                            where b.entityType == "feed"
+                                            select b).ToArray();
                 foreach (Entity item in needDeleteItems)
                 { _ = feeds.Remove(item); }
                 urls[0] = $"/page/dataList?url={model.url}&title={model.title}";
@@ -179,8 +179,8 @@ namespace CoolapkUWP.Pages
             {
                 ObservableCollection<Entity> feeds = Collection;
                 Entity[] needDeleteItems = (from b in feeds
-                                       where b.entityType == "topic"
-                                       select b).ToArray();
+                                            where b.entityType == "topic"
+                                            select b).ToArray();
                 foreach (Entity item in needDeleteItems)
                 { _ = feeds.Remove(item); }
                 pageUrl = $"/page/dataList?url={model.url}&title={model.title}";
@@ -256,9 +256,9 @@ namespace CoolapkUWP.Pages
                     if (FeedsCollection.Count > 0)
                     {
                         Entity[] needDeleteItems = (from b in FeedsCollection
-                                               from c in Root
-                                               where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
-                                               select b).ToArray();
+                                                    from c in Root
+                                                    where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
+                                                    select b).ToArray();
                         foreach (var item in needDeleteItems)
                         { Collection.Remove(item); }
                         n = (from b in FeedsCollection

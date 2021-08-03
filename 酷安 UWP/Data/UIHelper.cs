@@ -56,9 +56,9 @@ namespace CoolapkUWP.Data
             mClient.DefaultRequestHeaders.Add("X-Api-Version", "9");
             mClient.DefaultRequestHeaders.Add("X-App-Channel", "coolapk");
             mClient.DefaultRequestHeaders.Add("X-App-Mode", "universal");
-            mClient.DefaultRequestHeaders.Add("X-Dark-Mode", SettingHelper.GetBoolen("IsDarkMode") ? "1" : "0");
-            mClient.DefaultRequestHeaders.Add("Cookie", SettingHelper.cookie);
-            Popup popup = new Popup { RequestedTheme = SettingHelper.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
+            mClient.DefaultRequestHeaders.Add("X-Dark-Mode", SettingsHelper.GetBoolen("IsDarkMode") ? "1" : "0");
+            mClient.DefaultRequestHeaders.Add("Cookie", SettingsHelper.cookie);
+            Popup popup = new Popup { RequestedTheme = SettingsHelper.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light };
             StatusGrid statusGrid2 = new StatusGrid();
             popup.Child = statusGrid2;
             popups.Add(popup);
@@ -68,7 +68,7 @@ namespace CoolapkUWP.Data
         #region UI相关
         public static void ShowPopup(Popup popup)
         {
-            popup.RequestedTheme = SettingHelper.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
+            popup.RequestedTheme = SettingsHelper.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
             { popups.Insert(popups.Count - 1, popup); }
             else { popups.Add(popup); }
@@ -86,7 +86,7 @@ namespace CoolapkUWP.Data
         public static async void ShowProgressBar()
         {
             isShowingProgressBar = true;
-            if (SettingHelper.HasStatusBar)
+            if (SettingsHelper.HasStatusBar)
             {
                 StatusBar.GetForCurrentView().ProgressIndicator.ProgressValue = null;
                 await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
@@ -97,20 +97,20 @@ namespace CoolapkUWP.Data
 
         public static async void PausedProgressBar()
         {
-            if (!SettingHelper.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
+            if (!SettingsHelper.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
             { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.PausedProgressBar()); }
         }
 
         public static async void ErrorProgressBar()
         {
-            if (!SettingHelper.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
+            if (!SettingsHelper.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
             { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ErrorProgressBar()); }
         }
 
         public static async void HideProgressBar()
         {
             isShowingProgressBar = false;
-            if (SettingHelper.HasStatusBar && !isShowingMessage) await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
+            if (SettingsHelper.HasStatusBar && !isShowingMessage) await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
             else if (popups.Last().Child is StatusGrid statusGrid) statusGrid.HideProgressBar();
         }
 
@@ -123,7 +123,7 @@ namespace CoolapkUWP.Data
                 while (messageList.Count > 0)
                 {
                     string s = $"[1/{messageList.Count}]{messageList[0]}";
-                    if (SettingHelper.HasStatusBar)
+                    if (SettingsHelper.HasStatusBar)
                     {
                         StatusBar statusBar = StatusBar.GetForCurrentView();
                         statusBar.ProgressIndicator.Text = s;
@@ -184,7 +184,7 @@ namespace CoolapkUWP.Data
             if (string.IsNullOrWhiteSpace(str)) return;
             if (str == "/contacts/fans")
             {
-                Navigate(typeof(UserListPage), new object[] { SettingHelper.GetString("Uid"), false, "我" });
+                Navigate(typeof(UserListPage), new object[] { SettingsHelper.GetString("Uid"), false, "我" });
                 return;
             }
             if (str.Contains('?')) str = str.Substring(0, str.IndexOf('?'));
@@ -275,7 +275,7 @@ namespace CoolapkUWP.Data
                 _ = mClient.DefaultRequestHeaders.Remove("X-App-Token");
                 mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
                 _ = mClient.DefaultRequestHeaders.Remove("Cookie");
-                mClient.DefaultRequestHeaders.Add("Cookie", SettingHelper.cookie);
+                mClient.DefaultRequestHeaders.Add("Cookie", SettingsHelper.cookie);
                 return await mClient.GetStringAsync(new Uri("https://api.coolapk.com/v6" + url));
             }
             catch (HttpRequestException e)
@@ -286,7 +286,7 @@ namespace CoolapkUWP.Data
             catch
             {
                 if (isBackground) return string.Empty;
-                else {throw; }
+                else { throw; }
             }
         }
 
@@ -298,7 +298,7 @@ namespace CoolapkUWP.Data
                 mClient.DefaultRequestHeaders.Remove("X-App-Token");
                 mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
                 mClient.DefaultRequestHeaders.Remove("Cookie");
-                mClient.DefaultRequestHeaders.Add("Cookie", SettingHelper.cookie);
+                mClient.DefaultRequestHeaders.Add("Cookie", SettingsHelper.cookie);
                 HttpResponseMessage a = await mClient.PostAsync(new Uri("https://api.coolapk.com/v6" + url), content);
                 return !(GetJSonObject(await a.Content.ReadAsStringAsync()) is null);
             }

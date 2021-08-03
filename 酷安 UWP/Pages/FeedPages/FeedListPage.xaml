@@ -8,8 +8,8 @@
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:data="using:CoolapkUWP.Data"
-    mc:Ignorable="d"
-    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
+    xmlns:muxm="using:Microsoft.UI.Xaml.Media"
+    mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -33,7 +33,7 @@
                         VerticalAlignment="Bottom"
                         x:Name="UserDetailGrid">
                         <Grid.Background>
-                            <AcrylicBrush
+                            <muxm:AcrylicBrush
                                 BackgroundSource="Backdrop"
                                 TintColor="{x:Bind Background.BackgroundColor, Mode=OneWay}"
                                 FallbackColor="#99000000"
@@ -316,7 +316,7 @@
         <controls:PullToRefreshListView
             ItemsSource="{x:Bind itemCollection}"
             x:Name="listView"
-            Padding="{x:Bind data:SettingHelper.stackPanelMargin}"
+            Padding="{x:Bind data:SettingsHelper.stackPanelMargin}"
             ItemTemplateSelector="{StaticResource tempse}"
             SelectionMode="None"
             PullToRefreshLabel="下拉刷新"

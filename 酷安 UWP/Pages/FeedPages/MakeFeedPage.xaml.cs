@@ -52,7 +52,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             foreach (string item in EmojiHelper.emojis)
             {
-                string u = $"ms-appx:///Assets/Emoji/{item}{(EmojiHelper.oldEmojis.Contains(item) && SettingHelper.GetBoolen("IsUseOldEmojiMode") ? "2" : string.Empty)}.png";
+                string u = $"ms-appx:///Assets/Emoji/{item}{(EmojiHelper.oldEmojis.Contains(item) && SettingsHelper.GetBoolen("IsUseOldEmojiMode") ? "2" : string.Empty)}.png";
                 emojis.Add(new EmojiData { uri = u, emoji = new BitmapImage(new Uri(u)), name = item[0] == '(' ? $"#{item})" : item });
             }
         }

@@ -6,8 +6,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    NavigationCacheMode="Required" SizeChanged="Page_SizeChanged"
-    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
+    NavigationCacheMode="Required"
+    SizeChanged="Page_SizeChanged"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -108,7 +109,7 @@
                             HorizontalAlignment="Left"
                             Margin="-2,2,0,0">
                             <Ellipse.Fill>
-                                <ImageBrush ImageSource="{x:Bind UserAvatar,Mode=OneWay}"/>
+                                <ImageBrush ImageSource="{x:Bind UserAvatar, Mode=OneWay}"/>
                             </Ellipse.Fill>
                         </Ellipse>
                     </Grid>

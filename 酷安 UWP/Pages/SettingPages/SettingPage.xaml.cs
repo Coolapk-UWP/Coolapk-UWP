@@ -77,14 +77,14 @@ namespace CoolapkUWP.Pages.SettingPages
             if (!(bool)vs)
             {
                 TitleBar.Visibility = Visibility.Visible;
-                listView.Padding = SettingHelper.stackPanelMargin;
+                listView.Padding = SettingsHelper.stackPanelMargin;
             }
             UIHelper.ShowProgressBar();
-            IsNoPicsMode.IsOn = SettingHelper.GetBoolen("IsNoPicsMode");
-            IsUseOldEmojiMode.IsOn = SettingHelper.GetBoolen("IsUseOldEmojiMode");
-            IsDarkMode.IsOn = SettingHelper.GetBoolen("IsDarkMode");
-            CheckUpdateWhenLuanching.IsOn = SettingHelper.GetBoolen("CheckUpdateWhenLuanching");
-            IsBackgroundColorFollowSystem.IsOn = SettingHelper.GetBoolen("IsBackgroundColorFollowSystem");
+            IsNoPicsMode.IsOn = SettingsHelper.GetBoolen("IsNoPicsMode");
+            IsUseOldEmojiMode.IsOn = SettingsHelper.GetBoolen("IsUseOldEmojiMode");
+            IsDarkMode.IsOn = SettingsHelper.GetBoolen("IsDarkMode");
+            CheckUpdateWhenLuanching.IsOn = SettingsHelper.GetBoolen("CheckUpdateWhenLuanching");
+            IsBackgroundColorFollowSystem.IsOn = SettingsHelper.GetBoolen("IsBackgroundColorFollowSystem");
             IsDarkMode.Visibility = IsBackgroundColorFollowSystem.IsOn ? Visibility.Collapsed : Visibility.Visible;
             VersionTextBlock.Text = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
 #if DEBUG
@@ -158,16 +158,16 @@ namespace CoolapkUWP.Pages.SettingPages
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
             ToggleSwitch toggle = sender as ToggleSwitch;
-            SettingHelper.Set(toggle.Name, toggle.IsOn);
+            SettingsHelper.Set(toggle.Name, toggle.IsOn);
             switch (toggle.Name)
             {
                 case "IsDarkMode":
-                    SettingHelper.CheckTheme();
+                    SettingsHelper.CheckTheme();
                     break;
                 case "IsBackgroundColorFollowSystem":
-                    SettingHelper.Set("IsDarkMode", SettingHelper.uISettings.GetColorValue(UIColorType.Background).Equals(Colors.Black));
-                    SettingHelper.CheckTheme();
-                    IsDarkMode.IsOn = SettingHelper.GetBoolen("IsDarkMode");
+                    SettingsHelper.Set("IsDarkMode", SettingsHelper.uISettings.GetColorValue(UIColorType.Background).Equals(Colors.Black));
+                    SettingsHelper.CheckTheme();
+                    IsDarkMode.IsOn = SettingsHelper.GetBoolen("IsDarkMode");
                     IsDarkMode.Visibility = toggle.IsOn ? Visibility.Collapsed : Visibility.Visible;
                     break;
                 default:
@@ -181,10 +181,10 @@ namespace CoolapkUWP.Pages.SettingPages
             switch (button.Tag as string)
             {
                 case "gotoTestPage": UIHelper.Navigate(typeof(TestPage), null); break;
-                case "checkUpdate": SettingHelper.CheckUpdate(); break;
+                case "checkUpdate": SettingsHelper.CheckUpdate(); break;
                 case "RefreshCache": GetCacheSize(); break;
                 case "logout":
-                    SettingHelper.Logout();
+                    SettingsHelper.Logout();
                     if (AccountLogout.Flyout is Flyout flyout_logout)
                     {
                         flyout_logout.Hide();
@@ -195,7 +195,7 @@ namespace CoolapkUWP.Pages.SettingPages
                 case "reset":
                     {
                         ApplicationData.Current.LocalSettings.Values.Clear();
-                        SettingHelper.Logout();
+                        SettingsHelper.Logout();
                         if (reset.Flyout is Flyout flyout_reset)
                         {
                             flyout_reset.Hide();

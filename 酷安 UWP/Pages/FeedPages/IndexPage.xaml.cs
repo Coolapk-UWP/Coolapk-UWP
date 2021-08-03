@@ -40,7 +40,7 @@ namespace CoolapkUWP.Pages.FeedPages
             if (!(bool)vs[1])
             {
                 TitleBar.Visibility = Visibility.Visible;
-                listView.Padding = SettingHelper.stackPanelMargin;
+                listView.Padding = SettingsHelper.stackPanelMargin;
             }
             pageUrl = vs[0] as string;
             TitleBar.BackButtonVisibility = Visibility.Visible;
@@ -174,7 +174,7 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 if (Collection.Count != 0)
                 {
-                    if (VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
+                    if (VScrollViewer.VerticalOffset >= VScrollViewer.ScrollableHeight)
                     {
                         //if (string.IsNullOrEmpty(pageUrl)) GetIndexPage(++page);
                         GetUrlPage();

@@ -195,7 +195,7 @@ namespace CoolapkUWP.Pages
             }
             void setPageStyle(string t)
             {
-                MainListView.Padding = SettingHelper.stackPanelMargin;
+                MainListView.Padding = SettingsHelper.stackPanelMargin;
                 _ = FindName(nameof(titleBar));
                 titleBar.Title = t;
             }
@@ -266,9 +266,9 @@ namespace CoolapkUWP.Pages
                 { firstItem = array.First().GetObject()["id"].GetNumber(); }
                 lastItem = array.Last().GetObject()["id"].GetNumber();
                 object[] d = (from a in itemCollection
-                         from b in array
-                         where (a as INotificationViewModel).id == b.GetObject()["id"].GetNumber()
-                         select a).ToArray();
+                              from b in array
+                              where (a as INotificationViewModel).id == b.GetObject()["id"].GetNumber()
+                              select a).ToArray();
                 foreach (object item in d)
                 { itemCollection.Remove(item); }
                 for (int i = 0; i < array.Count; i++)
@@ -301,9 +301,9 @@ namespace CoolapkUWP.Pages
                 { firstItem = array.First().GetObject()["id"].GetNumber(); }
                 lastItem = array.Last().GetObject()["id"].GetNumber();
                 object[] d = (from a in itemCollection
-                         from b in array
-                         where (a as FeedViewModel).entityId == b.GetObject()["id"].GetNumber().ToString()
-                         select a).ToArray();
+                              from b in array
+                              where (a as FeedViewModel).entityId == b.GetObject()["id"].GetNumber().ToString()
+                              select a).ToArray();
                 foreach (object item in d) { _ = itemCollection.Remove(item); }
                 for (int i = 0; i < array.Count; i++)
                 {
@@ -318,7 +318,7 @@ namespace CoolapkUWP.Pages
                     page--;
                     UIHelper.ShowMessage("没有更多了");
                 }
-                else {UIHelper.ShowMessage("没有新的了");}
+                else { UIHelper.ShowMessage("没有新的了"); }
             }
             UIHelper.HideProgressBar();
         }

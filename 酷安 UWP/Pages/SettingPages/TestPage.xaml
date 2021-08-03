@@ -6,8 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
-    mc:Ignorable="d"
-    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
+    mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,7 +16,7 @@
     </Page.Resources>
     <Grid>
         <ScrollViewer>
-            <StackPanel Margin="16,0" Padding="{x:Bind data:SettingHelper.stackPanelMargin}">
+            <StackPanel Margin="16,0" Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />

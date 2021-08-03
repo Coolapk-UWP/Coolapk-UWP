@@ -504,7 +504,7 @@
             </StackPanel>
             <ListView
                 Grid.Row="9"
-                Margin="0,2,0,0"
+                Margin="-11,2,0,0"
                 ScrollViewer.VerticalScrollMode="Disabled"
                 HorizontalContentAlignment="Stretch"
                 Style="{StaticResource ListViewStyle1}"
@@ -519,11 +519,15 @@
                             Padding="6"
                             CornerRadius="4"
                             Orientation="Horizontal"
+                            BorderThickness="1"
+                            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                             Background="{ThemeResource SystemControlBackgroundListLowBrush}">
-                            <Image
-                                Width="20"
-                                Height="20"
-                                Source="{x:Bind logo,Mode=OneWay}"/>
+                            <Border CornerRadius="2">
+                                <Image
+                                    Width="20"
+                                    Height="20"
+                                    Source="{x:Bind logo,Mode=OneWay}"/>
+                            </Border>
                             <TextBlock
                                 Text="{x:Bind title}"
                                 Margin="4,0,0,0"/>

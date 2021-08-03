@@ -8,9 +8,9 @@
     xmlns:viewmodel="using:CoolapkUWP.Control.ViewModels"
     xmlns:converter="using:CoolapkUWP.Data.ValueConverters"
     xmlns:local="using:CoolapkUWP.Pages.FeedPages"
+    xmlns:muxm="using:Microsoft.UI.Xaml.Media"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    mc:Ignorable="d"
-    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
+    mc:Ignorable="d">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -340,7 +340,7 @@
                         </Border.Background>
                         <StackPanel Padding="4">
                             <StackPanel.Background>
-                                <AcrylicBrush
+                                <muxm:AcrylicBrush
                                     BackgroundSource="Backdrop"
                                     FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                                     TintColor="{ThemeResource SystemChromeMediumHighColor}"

@@ -7,8 +7,7 @@
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    mc:Ignorable="d" 
-    Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+    mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -20,7 +19,7 @@
         <controls:PullToRefreshListView
             ItemTemplate="{StaticResource User}"
             SelectionMode="None"
-            Padding="{x:Bind data:SettingHelper.stackPanelMargin,Mode=OneWay}"
+            Padding="{x:Bind data:SettingsHelper.stackPanelMargin,Mode=OneWay}"
             PullToRefreshLabel="下拉刷新"
             ReleaseToRefreshLabel="松手刷新"
             RefreshRequested="UserList_RefreshRequested"

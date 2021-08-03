@@ -3,8 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:cu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
-    xmlns:fcu="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="using:CoolapkUWP.Control"
     xmlns:control="using:CoolapkUWP.Control"
@@ -18,15 +16,13 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid
-        cu:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-        fcu:Background="{ThemeResource SystemControlAcrylicElementBrush}">
+    <Grid Background="{ThemeResource SystemControlAcrylicElementBrush}">
         <controls:PullToRefreshListView
             x:Name="FeedReplyList"
             ItemTemplate="{StaticResource feed_reply}"
             SelectionMode="None"
             RefreshRequested="FeedReplyList_RefreshRequested"
-            Padding="{x:Bind data:SettingHelper.stackPanelMargin}"
+            Padding="{x:Bind data:SettingsHelper.stackPanelMargin}"
             PullToRefreshLabel="下拉刷新"
             ReleaseToRefreshLabel="松手刷新">
             <controls:PullToRefreshListView.ItemsPanel>

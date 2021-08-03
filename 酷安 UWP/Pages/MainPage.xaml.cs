@@ -48,7 +48,7 @@ namespace CoolapkUWP.Pages
         public MainPage()
         {
             InitializeComponent();
-            _ = SettingHelper.CheckLoginInfo();
+            _ = SettingsHelper.CheckLoginInfo();
             UIHelper.notifications.BadgeNumberChanged += (sender, e) =>
             {
                 if (sender is NotificationsNum num) { ChangeBadgeNum(num.BadgeNum); }
@@ -56,10 +56,10 @@ namespace CoolapkUWP.Pages
             ChangeBadgeNum(UIHelper.notifications.BadgeNum);
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
             { Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true; }
-            if (SettingHelper.GetBoolen("CheckUpdateWhenLuanching")) { SettingHelper.CheckUpdate(); }
+            if (SettingsHelper.GetBoolen("CheckUpdateWhenLuanching")) { SettingsHelper.CheckUpdate(); }
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
             {
-                int i = SettingHelper.HasStatusBar ? UIHelper.popups.Count - 1 : UIHelper.popups.Count - 2;
+                int i = SettingsHelper.HasStatusBar ? UIHelper.popups.Count - 1 : UIHelper.popups.Count - 2;
                 if (i >= 0)
                 {
                     ee.Handled = true;
@@ -120,8 +120,11 @@ namespace CoolapkUWP.Pages
             }
             try
             {
-                navigationView.Header = args.SelectedItemContainer.Content;
-                navigationView.PaneTitle = args.SelectedItemContainer.Content.ToString();
+                if (args.SelectedItemContainer.Content != null)
+                {
+                    navigationView.Header = args.SelectedItemContainer.Content;
+                    navigationView.PaneTitle = args.SelectedItemContainer.Content.ToString();
+                }
             }
             catch { }
         }

@@ -17,6 +17,7 @@ namespace CoolapkUWP.Control
         public Visibility ComboBoxVisibility { get => ChangeModeComboBox.Visibility; set => ChangeModeComboBox.Visibility = value; }
         public object ComboBoxItemsSource { set => ChangeModeComboBox.ItemsSource = value; }
         public int ComboBoxSelectedIndex { get => ChangeModeComboBox.SelectedIndex; set => ChangeModeComboBox.SelectedIndex = value; }
+        public object RightAreaContent { get => userContentPresenter.Content; set => userContentPresenter.Content = value; }
 
         public TitleBar() => this.InitializeComponent();
         private void BackButton_Click(object sender, RoutedEventArgs e) => BackButtonClick?.Invoke(sender, e);

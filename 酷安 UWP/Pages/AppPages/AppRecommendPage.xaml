@@ -6,10 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:data="using:CoolapkUWP.Data"
-    mc:Ignorable="d" 
-    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
-    Loaded="Page_Loaded" 
-    >
+    mc:Ignorable="d"
+    Loaded="Page_Loaded" >
 
     <Page.Resources>
         <!--模板-->
@@ -50,7 +48,7 @@
             Margin="0,-48,0,0">
             <PivotItem>
                 <ScrollViewer>
-                    <StackPanel Padding="{x:Bind data:SettingHelper.stackPanelMargin}">
+                    <StackPanel Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
                         <controls:AdaptiveGridView
                             x:Name="hotview"
                             DesiredWidth="120"
@@ -98,7 +96,7 @@
 
             <PivotItem>
                 <ScrollViewer>
-                    <StackPanel Padding="{x:Bind data:SettingHelper.stackPanelMargin}">
+                    <StackPanel Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
                         <Grid VerticalAlignment="Top">
                             <TextBlock
                                 Text="推荐把玩"
@@ -142,7 +140,7 @@
 
             <PivotItem>
                 <ScrollViewer>
-                    <StackPanel Padding="{x:Bind data:SettingHelper.stackPanelMargin}">
+                    <StackPanel Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
                         <TextBlock
                             FontWeight="Black"
                             Text="应用分类"

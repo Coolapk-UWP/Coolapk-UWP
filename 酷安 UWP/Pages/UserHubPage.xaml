@@ -7,9 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:viewmodel="using:CoolapkUWP.Control.ViewModels"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    mc:Ignorable="d"
-    Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}">
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:muxm="using:Microsoft.UI.Xaml.Media"
+    mc:Ignorable="d">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -342,7 +341,7 @@
                         </Border.Background>
                         <StackPanel Padding="4">
                             <StackPanel.Background>
-                                <AcrylicBrush
+                                <muxm:AcrylicBrush
                                     BackgroundSource="Backdrop"
                                     FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                                     TintColor="{ThemeResource SystemChromeMediumHighColor}"

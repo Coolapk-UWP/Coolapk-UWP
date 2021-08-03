@@ -90,9 +90,9 @@ namespace CoolapkUWP.Control.ViewModels
 
         private async void GetImage()
         {
-            if (SettingHelper.GetBoolen("IsNoPicsMode")) { Pic = ImageCache.NoPic; }
+            if (SettingsHelper.GetBoolen("IsNoPicsMode")) { Pic = ImageCache.NoPic; }
             BitmapImage bitmapImage = await ImageCache.GetImage(Type, Uri);
-            if (SettingHelper.GetBoolen("IsNoPicsMode")) { return; }
+            if (SettingsHelper.GetBoolen("IsNoPicsMode")) { return; }
             Pic = bitmapImage;
         }
 
