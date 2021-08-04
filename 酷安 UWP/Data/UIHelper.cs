@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -76,76 +75,76 @@ namespace CoolapkUWP.Data
             popup.IsOpen = true;
         }
 
-#region UI相关
-public static void ShowPopup(Popup popup)
-{
-popup.RequestedTheme = SettingsHelper.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
-if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
-{ popups.Insert(popups.Count - 1, popup); }
-else { popups.Add(popup); }
-popup.IsOpen = true;
-popups.Last().IsOpen = false;
-popups.Last().IsOpen = true;
-}
-public static void Hide(this Popup popup)
-{
-popup.IsOpen = false;
-if (popups.Contains(popup)) { popups.Remove(popup); }
-}
-public static async void ShowProgressBar()
-{
-isShowingProgressBar = true;
-if (SettingsHelper.HasStatusBar)
-{
-StatusBar.GetForCurrentView().ProgressIndicator.ProgressValue = null;
-await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
-}
-else if (popups.Last().Child is StatusGrid statusGrid)
-await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar());
-}
-public static async void PausedProgressBar()
-{
-if (!SettingsHelper.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
-{ await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.PausedProgressBar()); }
-}
-public static async void ErrorProgressBar()
-{
-if (!SettingsHelper.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
-{ await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ErrorProgressBar()); }
-}
-public static async void HideProgressBar()
-{
-isShowingProgressBar = false;
-if (SettingsHelper.HasStatusBar && !isShowingMessage) await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
-else if (popups.Last().Child is StatusGrid statusGrid) statusGrid.HideProgressBar();
-}
-public static async void ShowMessage(string message)
-{
-messageList.Add(message);
-if (!isShowingMessage)
-{
-isShowingMessage = true;
-while (messageList.Count > 0)
-{
-string s = $"[1/{messageList.Count}]{messageList[0]}";
-if (SettingsHelper.HasStatusBar)
-{
-StatusBar statusBar = StatusBar.GetForCurrentView();
-statusBar.ProgressIndicator.Text = s;
-if (isShowingProgressBar) statusBar.ProgressIndicator.ProgressValue = null;
-else statusBar.ProgressIndicator.ProgressValue = 0;
-await statusBar.ProgressIndicator.ShowAsync();
-await Task.Delay(3000);
+        #region UI相关
+        public static void ShowPopup(Popup popup)
+        {
+            popup.RequestedTheme = SettingsHelper.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
+            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
+            { popups.Insert(popups.Count - 1, popup); }
+            else { popups.Add(popup); }
+            popup.IsOpen = true;
+            popups.Last().IsOpen = false;
+            popups.Last().IsOpen = true;
+        }
+        public static void Hide(this Popup popup)
+        {
+            popup.IsOpen = false;
+            if (popups.Contains(popup)) { popups.Remove(popup); }
+        }
+        public static async void ShowProgressBar()
+        {
+            isShowingProgressBar = true;
+            if (SettingsHelper.HasStatusBar)
+            {
+                StatusBar.GetForCurrentView().ProgressIndicator.ProgressValue = null;
+                await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
+            }
+            else if (popups.Last().Child is StatusGrid statusGrid)
+                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar());
+        }
+        public static async void PausedProgressBar()
+        {
+            if (!SettingsHelper.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
+            { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.PausedProgressBar()); }
+        }
+        public static async void ErrorProgressBar()
+        {
+            if (!SettingsHelper.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
+            { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ErrorProgressBar()); }
+        }
+        public static async void HideProgressBar()
+        {
+            isShowingProgressBar = false;
+            if (SettingsHelper.HasStatusBar && !isShowingMessage) await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
+            else if (popups.Last().Child is StatusGrid statusGrid) statusGrid.HideProgressBar();
+        }
+        public static async void ShowMessage(string message)
+        {
+            messageList.Add(message);
+            if (!isShowingMessage)
+            {
+                isShowingMessage = true;
+                while (messageList.Count > 0)
+                {
+                    string s = $"[1/{messageList.Count}]{messageList[0]}";
+                    if (SettingsHelper.HasStatusBar)
+                    {
+                        StatusBar statusBar = StatusBar.GetForCurrentView();
+                        statusBar.ProgressIndicator.Text = s;
+                        if (isShowingProgressBar) statusBar.ProgressIndicator.ProgressValue = null;
+                        else statusBar.ProgressIndicator.ProgressValue = 0;
+                        await statusBar.ProgressIndicator.ShowAsync();
+                        await Task.Delay(3000);
                         if (messageList.Count == 0 && !isShowingProgressBar) await statusBar.ProgressIndicator.HideAsync();
                         statusBar.ProgressIndicator.Text = string.Empty;
                         messageList.RemoveAt(0);
                     }
                     else if (popups.Last().Child is StatusGrid statusGrid)
                     {
-                        await statusGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => statusGrid.ShowMessage(s));
+                        await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowMessage(s));
                         await Task.Delay(3000);
                         messageList.RemoveAt(0);
-                        await statusGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                        await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                         {
                             if (messageList.Count == 0) statusGrid.ShowMessage(string.Empty);
                             if (!isShowingProgressBar) HideProgressBar();
@@ -225,7 +224,7 @@ await Task.Delay(3000);
                 Navigate(typeof(FeedListPage), new object[] { FeedListType.DYHPageList, u });
                 return;
             }
-            else if (str.IndexOf("/apk/") == 0)
+            else if (str.IndexOf("/apk/") == 0 || str.IndexOf("/game/") == 0)
             {
                 string u = "http://www.coolapk.com" + str;
                 Navigate(typeof(Pages.AppPages.AppPage), u);

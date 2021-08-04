@@ -348,7 +348,8 @@
         <ctrl:TitleBar
             x:Name="titleBar"
             Loaded="titleBar_Loaded"
-            BackButtonClick="titleBar_BackButtonClicked">
+            BackButtonClick="titleBar_BackButtonClicked"
+            Title="{x:Bind AppModels.Title, Mode=OneWay}">
             <ctrl:TitleBar.RightAreaContent>
                 <StackPanel Orientation="Horizontal">
                     <Button 

@@ -3,7 +3,6 @@ using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
 using CoolapkUWP.Pages.FeedPages;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

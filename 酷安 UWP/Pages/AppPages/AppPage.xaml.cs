@@ -1,17 +1,12 @@
 ﻿using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
-using CoolapkUWP.Pages.FeedPages;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Net.Http;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.UserActivities;
 using Windows.Data.Json;
@@ -19,7 +14,6 @@ using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages.AppPages
@@ -372,19 +366,19 @@ namespace CoolapkUWP.Pages.AppPages
                 }
                 if (dataRow.TryGetValue("voteCount", out IJsonValue voteCount) && !string.IsNullOrEmpty(voteCount.ToString()))
                 {
-                    VoteCount = voteCount.GetString();
+                    VoteCount = GetValue(voteCount);
                 }
                 if (dataRow.TryGetValue("followCount", out IJsonValue followCount) && !string.IsNullOrEmpty(followCount.ToString()))
                 {
-                    FollowNum = followCount.GetString();
+                    FollowNum = GetValue(followCount);
                 }
                 if (dataRow.TryGetValue("commentCount", out IJsonValue commentCount) && !string.IsNullOrEmpty(commentCount.ToString()))
                 {
-                    CommentNum = commentCount.GetString();
+                    CommentNum = GetValue(commentCount);
                 }
                 if (dataRow.TryGetValue("downCount", out IJsonValue downCount) && !string.IsNullOrEmpty(downCount.ToString()))
                 {
-                    DownloadNum = downCount.GetString();
+                    DownloadNum = GetValue(downCount);
                 }
                 if (dataRow.TryGetValue("pubdate", out IJsonValue pubdate) && !string.IsNullOrEmpty(pubdate.ToString()))
                 {
@@ -473,6 +467,16 @@ namespace CoolapkUWP.Pages.AppPages
         private async void GetPic(IJsonValue item)
         {
             PicArr.Add(new ImageData { Pic = await ImageCache.GetImage(ImageType.OriginImage, item.GetString()), url = item.GetString() });
+        }
+        public static string GetValue(IJsonValue json)
+        {
+            switch(json.GetType().Name)
+            {
+                case "string": return json.GetString();
+                case "double":return json.GetNumber().ToString();
+                case "bool":return json.GetBoolean().ToString();
+                default: return json.ToString().Replace("\"","");
+            }
         }
     }
 }

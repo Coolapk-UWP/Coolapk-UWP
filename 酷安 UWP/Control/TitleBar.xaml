@@ -19,7 +19,7 @@
             Visibility="Visible"
             BorderThickness="0,0,0,1"
             Height="{x:Bind data:SettingsHelper.PageTitleHeight}"
-            BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
+            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
             Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}"/>
         <Grid
             Height="{x:Bind data:SettingsHelper.PageTitleHeight}"
@@ -44,7 +44,7 @@
             </Button>
             <TextBlock
                 Grid.Column="1"
-                Margin="5,12"
+                Margin="5,10"
                 x:Name="title"
                 FontSize="20"
                 HorizontalAlignment="Left"
