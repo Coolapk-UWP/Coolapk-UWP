@@ -1,7 +1,6 @@
 ﻿using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
 using Microsoft.Toolkit.Uwp.Notifications;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.UI.Notifications;
@@ -12,7 +11,7 @@ namespace CoolapkUWP.Control
     {
         private static async Task<JsonObject> GetJson(string uri)
         {
-            string result = await UIHelper.GetJson(uri);
+            string result = await UIHelper.GetJson(uri, true);
             return JsonObject.Parse(result);
         }
 
@@ -48,12 +47,7 @@ namespace CoolapkUWP.Control
         private static TileContent GetTitle(JsonObject token)
         {
             FeedDetailViewModel FeedDetail = new FeedDetailViewModel(token);
-            Regex r = new Regex("<a.*?>", RegexOptions.IgnoreCase);
-            Regex r1 = new Regex("<a.*?/>", RegexOptions.IgnoreCase);
-            Regex r2 = new Regex("</a.*?>", RegexOptions.IgnoreCase);
-            string Message = r.Replace(FeedDetail.message, "");
-            Message = r1.Replace(Message, "");
-            Message = r2.Replace(Message, "");
+            string Message = UIHelper.ReplaceHtml(FeedDetail.message);
             return new TileContent()
             {
                 Visual = new TileVisual()

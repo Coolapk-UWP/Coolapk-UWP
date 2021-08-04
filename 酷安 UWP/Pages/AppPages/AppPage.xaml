@@ -4,204 +4,393 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
-    xmlns:control="using:CoolapkUWP.Control"
+    xmlns:ctrl="using:CoolapkUWP.Control"
+    xmlns:models="using:CoolapkUWP.Control.ViewModels"
+    xmlns:data="using:CoolapkUWP.Data"
+    xmlns:converter="using:CoolapkUWP.Data.ValueConverters"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <converter:HasValueConverter x:Key="HasValueConverter"/>
+            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid>
-        <ScrollViewer>
+        <ScrollViewer x:Name="scrollViewer">
             <StackPanel>
-                <Border Height="70"/>
+                <Border Height="{x:Bind data:SettingsHelper.PageTitleHeight}"/>
                 <Grid>
                     <Image 
-                        x:Name="AppIconImage" 
-                        x:FieldModifier="Public" 
+                        x:Name="AppIcon"
                         HorizontalAlignment="Left" 
-                        Height="60" Margin="20" 
-                        VerticalAlignment="Top" Width="60"/>
+                        Height="60" Width="60" Margin="20" 
+                        Source="{x:Bind AppModels.Logo.Pic, Mode=OneWay}"/>
                     <StackPanel Margin="100,10,0,0">
                         <TextBlock 
-                            x:Name="AppTitleText" 
-                            x:FieldModifier="Public" 
-                            FontSize="20" HorizontalAlignment="Left" 
-                            TextWrapping="Wrap" VerticalAlignment="Top" 
-                            Padding="0,0,0,5"/>
-                        <TextBlock 
-                            x:Name="AppVText" 
-                            x:FieldModifier="Public" 
-                            Text="" HorizontalAlignment="Left" 
-                            TextWrapping="Wrap" VerticalAlignment="Top" 
-                            Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}" Padding="0,0,0,5"/>
-                        <TextBlock 
-                            x:Name="AppMText" 
-                            x:FieldModifier="Public" 
-                            Text="" HorizontalAlignment="Left" 
-                            TextWrapping="Wrap" VerticalAlignment="Top" 
-                            Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}" />
+                            FontSize="20"
+                            x:Name="AppTitle"
+                            Padding="0,0,0,5"
+                            TextTrimming="WordEllipsis"
+                            Text="{x:Bind AppModels.Title, Mode=OneWay}"/>
+                        <StackPanel
+                            Padding="0,0,0,5"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                x:Name="AppVersion" 
+                                TextTrimming="WordEllipsis"
+                                Text="{x:Bind AppModels.Version, Mode=OneWay}"
+                                Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                            <Border
+                                Width="5"
+                                Visibility="{x:Bind AppModels.Version, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}"/>
+                            <TextBlock
+                                TextTrimming="WordEllipsis"
+                                Text="{x:Bind AppModels.ApkRomVersion, Mode=OneWay}"
+                                Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Visibility="{x:Bind AppModels.CommentNum, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
+                                <TextBlock
+                                    TextTrimming="WordEllipsis"
+                                    Text="{x:Bind AppModels.CommentNum, Mode=OneWay}" 
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <TextBlock
+                                    Text="人评论"
+                                    TextTrimming="WordEllipsis"
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <Border Width="5"/>
+                            </StackPanel>
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Visibility="{x:Bind AppModels.FollowNum, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
+                                <TextBlock
+                                    TextTrimming="WordEllipsis"
+                                    Text="{x:Bind AppModels.FollowNum, Mode=OneWay}" 
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <TextBlock
+                                    Text="人关注"
+                                    TextTrimming="WordEllipsis"
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <Border Width="5"/>
+                            </StackPanel>
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Visibility="{x:Bind AppModels.HotNum, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
+                                <TextBlock
+                                    TextTrimming="WordEllipsis"
+                                    Text="{x:Bind AppModels.HotNum, Mode=OneWay}" 
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <TextBlock
+                                    Text="热度"
+                                    TextTrimming="WordEllipsis"
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                            </StackPanel>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
-                <Grid  Padding="10" Height="50">
-                    <TextBlock 
-                        x:Name="AppXText" 
-                        x:FieldModifier="Public" 
-                        Text="" HorizontalAlignment="Left" 
-                        TextWrapping="Wrap" VerticalAlignment="Center" 
-                        Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
-                    <Button 
-                        x:Name="DownloadButton" 
-                        Style="{StaticResource ButtonRevealStyle}" 
-                        Click="DownloadButton_Click" Content="下载" 
+                <Grid Margin="0,-10,0,0"  Padding="10" Height="50">
+                    <StackPanel
+                        Margin="6"
+                        Orientation="Horizontal">
+                        <StackPanel
+                            Orientation="Horizontal"
+                            Visibility="{x:Bind AppModels.DownloadNum, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
+                            <TextBlock
+                                TextTrimming="WordEllipsis"
+                                Text="{x:Bind AppModels.DownloadNum, Mode=OneWay}" 
+                                Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                            <TextBlock
+                                Text="人下载"
+                                TextTrimming="WordEllipsis"
+                                Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                            <Border Width="5"/>
+                        </StackPanel>
+                        <TextBlock
+                            TextTrimming="WordEllipsis"
+                            Text="{x:Bind AppModels.Apksize, Mode=OneWay}"
+                            Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                    </StackPanel>
+                    <Button
+                        Content="下载" 
+                        Click="Button_Click"
+                        x:Name="DownloadButton"
+                        Style="{StaticResource AccentButtonStyle}"
                         HorizontalAlignment="Right" VerticalAlignment="Top"
-                        Width="78" BorderThickness="0" 
-                        Background="{ThemeResource SystemControlHighlightListAccentHighBrush}" Visibility="Collapsed"/>
+                        Width="78" BorderThickness="0" Tag="{x:Bind AppModels.DownloadUrl, Mode=OneWay}"
+                        Visibility="{x:Bind AppModels.DownloadUrl, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}"/>
                 </Grid>
-                <Grid Visibility="Collapsed" Margin="0,1,0,0" x:Name="DPanel" Padding="10" >
+                <Grid
+                    Padding="10"
+                    x:Name="DPanel"
+                    Margin="0,1,0,0"
+                    Visibility="{x:Bind AppModels.Description, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
                     <TextBlock 
-                        x:Name="AppDText" 
-                        x:FieldModifier="Public" 
-                        TextWrapping="Wrap" 
-                        Text="" TextAlignment="Center"  
-                        VerticalAlignment="Top"/>
+                        x:Name="AppDescription"
+                        TextWrapping="Wrap"
+                        Margin="10,0,10,10"
+                        VerticalAlignment="Top"
+                        Text="{x:Bind AppModels.Description, Mode=OneWay}"/>
                 </Grid>
 
                 <!--大按钮-->
                 <Button 
-                    x:Name="UPanel" 
-                    Style="{StaticResource ButtonRevealStyle}" 
-                    Background="#504CAF50" BorderThickness="0"  
-                    HorizontalContentAlignment="Stretch" 
-                    HorizontalAlignment="Stretch">
+                    x:Name="UPanel"
+                    BorderThickness="0"
+                    Click="Button_Click"
+                    Background="#504CAF50"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    Style="{StaticResource ButtonRevealStyle}"
+                    Tag="{x:Bind AppModels.EntityID, Mode=OneWay}"
+                    Visibility="{x:Bind AppModels.ChangeLog, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
                     <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock 
-                                x:Name="AppV2Text" 
-                                x:FieldModifier="Public" 
-                                Text="" Margin="10" 
-                                TextWrapping="Wrap" VerticalAlignment="Top"  />
-                            <TextBlock 
-                                x:Name="AppVTText" 
-                                x:FieldModifier="Public" 
-                                Text="" Margin="10" 
-                                TextWrapping="Wrap" VerticalAlignment="Top" 
-                                Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                        <StackPanel
+                            Margin="10"
+                            Orientation="Horizontal">
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Visibility="{x:Bind AppModels.Version, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
+                                <TextBlock
+                                    Text="版本:"
+                                    TextTrimming="WordEllipsis"
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <TextBlock
+                                    TextTrimming="WordEllipsis"
+                                    Text="{x:Bind AppModels.Version, Mode=OneWay}" 
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <Border Width="5"/>
+                            </StackPanel>
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Visibility="{x:Bind AppModels.Apksize, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
+                                <TextBlock
+                                    Text="大小:"
+                                    TextTrimming="WordEllipsis"
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <TextBlock
+                                    TextTrimming="WordEllipsis"
+                                    Text="{x:Bind AppModels.Apksize, Mode=OneWay}" 
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <Border Width="5"/>
+                            </StackPanel>
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Visibility="{x:Bind AppModels.LastUpdate, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
+                                <TextBlock
+                                    Text="更新时间:"
+                                    TextTrimming="WordEllipsis"
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <TextBlock
+                                    TextTrimming="WordEllipsis"
+                                    Text="{x:Bind AppModels.LastUpdate, Mode=OneWay}" 
+                                    Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+                                <Border Width="5"/>
+                            </StackPanel>
                         </StackPanel>
-                        <TextBlock 
-                            x:Name="AppVMText" 
-                            x:FieldModifier="Public" 
-                            Text="" Margin="10" 
-                            TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBlock
+                            x:Name="AppChangeLog"
+                            Margin="10,0,10,10"
+                            TextWrapping="Wrap"
+                            VerticalAlignment="Top"
+                            IsTextSelectionEnabled="False"
+                            Text="{x:Bind AppModels.ChangeLog, Mode=OneWay}"/>
                     </StackPanel>
                 </Button>
-                <ListBox 
-                    x:Name="ScreenShotView" Height="150" 
-                    SelectionChanged="ScreenShotView_SelectionChanged" 
-                    ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                <GridView
+                    Padding="0"
+                    Margin="4,8,4,4"
+                    Tapped="PicA_Tapped"
+                    x:Name="ScreenShotView"
+                    HorizontalContentAlignment="Left"
+                    Tag="{x:Bind AppModels.Pics, Mode=OneWay}"
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    ScrollViewer.HorizontalScrollMode="Enabled"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                    BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}">
-                    <ListBox.ItemsPanel>
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                    ItemsSource="{x:Bind AppModels.PicArr, Mode=OneWay}"
+                    Visibility="{x:Bind AppModels.ShowPicArr, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                            <ItemsWrapGrid
+                                MaximumRowsOrColumns="1"
+                                Orientation="Vertical"/>
                         </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
-                <Grid Height="auto" Padding="10" >
-                    <TextBlock 
-                        x:Name="AppJText"
-                        x:FieldModifier="Public"
-                        Text="简介"
-                        TextWrapping="Wrap" 
-                        VerticalAlignment="Top" />
+                    </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ImageData">
+                            <Grid
+                                CornerRadius="8"
+                                BorderThickness="1"
+                                BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
+                                <Image
+                                    MaxHeight="180"
+                                    Source="{x:Bind Pic}"
+                                    Stretch="UniformToFill"/>
+                                <StackPanel
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Bottom"
+                                    HorizontalAlignment="Left">
+                                    <Border
+                                        x:Name="gif"
+                                        x:Load="{x:Bind IsGif}"
+                                        CornerRadius="0,8,0,0"
+                                        Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                        <TextBlock
+                                            Margin="2,0"
+                                            Text="GIF"/>
+                                    </Border>
+                                </StackPanel>
+                                <StackPanel
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Bottom"
+                                    HorizontalAlignment="Right">
+                                    <Border
+                                        x:Name="longPic"
+                                        x:Load="{x:Bind IsLongPic}"
+                                        CornerRadius="8,0,0,0"
+                                        Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                        <TextBlock
+                                            Margin="2,0"
+                                            Text="长图"/>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+                <Grid
+                    Height="auto"
+                    Padding="10">
+                    <controls:MarkdownTextBlock 
+                        x:Name="AppIntroduce"
+                        Margin="10"
+                        TextWrapping="Wrap"
+                        VerticalAlignment="Top"
+                        Background="Transparent"
+                        Text="{x:Bind AppModels.Introduce, Mode=OneWay}"/>
                 </Grid>
 
                 <!--<p class="rank_num">-->
-                <Grid Height="auto" Padding="10"  Margin="0,10">
-                    <TextBlock 
-                        x:Name="AppRText"
-                        x:FieldModifier="Public"
-                        Text="5.0" />
+                <Grid
+                    Padding="10"
+                    Margin="10,-20">
+                    <TextBlock
+                        Margin="0,1"
+                        x:Name="AppScore"
+                        Text="{x:Bind AppModels.Vote, Mode=OneWay}"/>
                     <StackPanel 
                         Orientation="Horizontal" 
-                        Margin="40,0" 
+                        Margin="30,0" 
                         VerticalAlignment="Top" 
                         HorizontalAlignment="Left">
                         <muxc:RatingControl 
                             x:Name="AppRating" 
                             IsReadOnly="True"
-                            PlaceholderValue="0" 
-                            Margin="0,-3,0,0" />
+                            Margin="0,-3,0,0"
+                            PlaceholderValue="{x:Bind AppModels.Score, Mode=OneWay}"/>
                     </StackPanel>
-                    <TextBlock 
-                        x:Name="AppPText" 
-                        x:FieldModifier="Public" 
-                        Text="共0人评分" 
-                        Margin="0,30,0,0" />
-                </Grid>
-                <Grid x:Name="KPanel" Padding="10" >
-                    <Image 
-                        x:Name="AppKImage" 
-                        x:FieldModifier="Public" 
-                        HorizontalAlignment="Left" 
-                        Height="60" Margin="5" 
-                        VerticalAlignment="Top" Width="60" />
-                    <TextBlock 
-                        x:Name="AppKNText" 
-                        x:FieldModifier="Public" 
-                        Text="" Margin="70,0,0,0" 
-                        FontSize="20" VerticalAlignment="Center" 
-                        HorizontalAlignment="Left"/>
+                    <StackPanel
+                        Margin="0,30,0,0"
+                        x:Name="AppVoteCount"
+                        Orientation="Horizontal"
+                        Visibility="{x:Bind AppModels.VoteCount, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
+                        <TextBlock Text="共"/>
+                        <TextBlock Text="{x:Bind AppModels.VoteCount, Mode=OneWay}"/>
+                        <TextBlock Text="人评分"/>
+                    </StackPanel>
                 </Grid>
 
+                <StackPanel
+                    Padding="20"
+                    Orientation="Horizontal">
+                    <Button
+                        Padding="0"
+                        Margin="0,4"
+                        x:Name="AppDevUrl"
+                        Click="Button_Click"
+                        Background="Transparent"
+                        Style="{ThemeResource ButtonRevealStyle}"
+                        Tag="{x:Bind AppModels.DeveloperUrl, Mode=OneWay}">
+                        <Ellipse Width="36" Height="36">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{x:Bind AppModels.DeveloperAvatar.Pic, Mode=OneWay}"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </Button>
+                    <StackPanel
+                        Margin="8,0"
+                        VerticalAlignment="Center">
+                        <TextBlock
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            Text="{x:Bind AppModels.DeveloperName, Mode=OneWay}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,5,0"
+                                Text="发布时间:"
+                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                            <TextBlock
+                                Margin="0,0,5,0"
+                                Text="{x:Bind AppModels.PubDate, Mode=OneWay}"
+                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
 
-        <!--顶栏-->
-        <control:TitleBar x:Name="titleBar" BackButtonClick="BackButton_Click"/>
-        <StackPanel 
-                HorizontalAlignment="Right" 
-                VerticalAlignment="Top"
-                Orientation="Horizontal"
-                Margin="0,30,0,0">
-            <Button 
-                    Width="48" Height="48"
-                    Style="{StaticResource ButtonStyle1}"
-                    ToolTipService.ToolTip="更多">
-                <SymbolIcon Symbol="More" />
-                <Button.Flyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem Text="访问网页" Click="GotoUri_Click" Icon="Globe"/>
-                        <MenuFlyoutItem Text="举报" Click="Report_Click" Icon="ReportHacked"/>
-                        <MenuFlyoutSubItem Text="复制" Icon="Copy">
-                            <MenuFlyoutItem Text="简介" Click="CopyM_Click" Tag="0" Icon="List"/>
-                            <MenuFlyoutItem Text="点评" Click="CopyM_Click" Tag="1" Icon="Edit"/>
-                            <MenuFlyoutItem Text="包名" Click="CopyM_Click" Tag="2" Icon="Shop"/>
-                            <MenuFlyoutItem Text="版本号" Click="CopyM_Click" Tag="3" Icon="OpenWith"/>
-                            <MenuFlyoutItem Text="更新日志" Click="CopyM_Click" Tag="4" Icon="Flag"/>
-                        </MenuFlyoutSubItem>
-                    </MenuFlyout>
-                </Button.Flyout>
-            </Button>
-        </StackPanel>
+        <ctrl:TitleBar
+            x:Name="titleBar"
+            Loaded="titleBar_Loaded"
+            BackButtonClick="titleBar_BackButtonClicked">
+            <ctrl:TitleBar.RightAreaContent>
+                <StackPanel Orientation="Horizontal">
+                    <Button 
+                        x:Name="ViewFeed"
+                        Click="Button_Click"
+                        ToolTipService.ToolTip="查看评论"
+                        Style="{StaticResource IconButtonStyle}"
+                        Tag="{x:Bind AppModels.EntityID, Mode=OneWay}">
+                        <SymbolIcon Symbol="Comment"/>
+                    </Button>
 
-        <!--缩略图显示-->
-        <FlipView Visibility="Collapsed" x:Name="ScreenShotFlipView" Margin="0,72,0,0"/>
-        <Rectangle 
-            x:Name="CloseBlock"
-            Margin="0,72,0,0" 
-            Width="40" Height="40"
-            Visibility="Collapsed"
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Top"
-            Fill="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}"/>
-        <Button 
-            x:Name="CloseFlip" 
-            Style="{StaticResource ButtonRevealStyle}" 
-            Margin="0,72,0,0"
-            Width="40" Height="40"
-            Visibility="Collapsed" 
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Top">
-            <SymbolIcon Symbol="Cancel"/>
-        </Button>
+                    <Button
+                        Style="{StaticResource IconButtonStyle}"
+                        ToolTipService.ToolTip="更多">
+                        <SymbolIcon Symbol="More"/>
+                        <Button.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="访问网页" Icon="Globe" x:Name="GotoUri" Click="Button_Click"/>
+                                <MenuFlyoutItem Text="举报" Icon="ReportHacked" x:Name="Report" Click="Button_Click"/>
+                                <MenuFlyoutItem Text="分享" Icon="Link" x:Name="Share" Click="ShowUIButton_Click"/>
+                                <MenuFlyoutSubItem Text="复制" Icon="Copy">
+                                    <MenuFlyoutItem
+                                        Text="简介" Icon="List" x:Name="Introduce" Click="CopyM_Click"
+                                        Visibility="{x:Bind AppModels.Introduce, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}"/>
+                                    <MenuFlyoutItem
+                                        Text="点评" Icon="Edit" x:Name="Description" Click="CopyM_Click"
+                                        Visibility="{x:Bind AppModels.Description, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}"/>
+                                    <MenuFlyoutItem
+                                        Text="包名" Icon="Shop" x:Name="PackageName" Click="CopyM_Click"
+                                        Visibility="{x:Bind AppModels.PackageName, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}"/>
+                                    <MenuFlyoutItem
+                                        Text="版本号" Icon="OpenWith" x:Name="Version" Click="CopyM_Click"
+                                        Visibility="{x:Bind AppModels.Version, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}"/>
+                                    <MenuFlyoutItem
+                                        Text="更新日志" Icon="Flag" x:Name="ChangeLog" Click="CopyM_Click"
+                                        Visibility="{x:Bind AppModels.ChangeLog, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}"/>
+                                </MenuFlyoutSubItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                </StackPanel>
+            </ctrl:TitleBar.RightAreaContent>
+        </ctrl:TitleBar>
     </Grid>
 </Page>

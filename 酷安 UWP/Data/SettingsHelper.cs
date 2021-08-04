@@ -25,6 +25,8 @@ namespace CoolapkUWP.Data
         public static bool GetBoolen(string key) => (bool)localSettings.Values[key];
         public static string GetString(string key) => localSettings.Values[key] as string;
         public static void Set(string key, object value) => localSettings.Values[key] = value;
+        public static bool IsAuthor => ApplicationData.Current.LocalSettings.Values["IsAuthor"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsAuthor"];
+        public static bool IsSpecialUser => (ApplicationData.Current.LocalSettings.Values["IsAuthor"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsAuthor"]) || (ApplicationData.Current.LocalSettings.Values["IsSpecial"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsSpecial"]);
 
         static SettingsHelper()
         {

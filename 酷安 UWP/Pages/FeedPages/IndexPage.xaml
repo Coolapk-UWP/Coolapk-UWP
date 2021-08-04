@@ -8,8 +8,8 @@
     xmlns:viewmodel="using:CoolapkUWP.Control.ViewModels"
     xmlns:converter="using:CoolapkUWP.Data.ValueConverters"
     xmlns:local="using:CoolapkUWP.Pages.FeedPages"
-    xmlns:muxm="using:Microsoft.UI.Xaml.Media"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:muxm="using:Microsoft.UI.Xaml.Media"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -125,7 +125,7 @@
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="imageCard" x:DataType="viewmodel:IndexPageViewModel">
-                <StackPanel>
+                <Grid>
                     <FlipView
                         x:Name="flipView"
                         Margin="8,0"
@@ -144,7 +144,7 @@
                             </DataTemplate>
                         </FlipView.ItemTemplate>
                     </FlipView>
-                </StackPanel>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="textLinkListCard" x:DataType="viewmodel:IndexPageViewModel">
                 <StackPanel>

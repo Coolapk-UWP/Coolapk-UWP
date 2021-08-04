@@ -1,17 +1,24 @@
 ﻿using CoolapkUWP.Control;
 using CoolapkUWP.Pages.FeedPages;
+using Html2Markdown;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.Data.Json;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Security.ExchangeActiveSyncProvisioning;
+using Windows.System.Profile;
+using Windows.System.UserProfile;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -43,13 +50,17 @@ namespace CoolapkUWP.Data
         }
         static UIHelper()
         {
+            CultureInfo Culture = null;
+            ulong version = ulong.Parse(AnalyticsInfo.VersionInfo.DeviceFamilyVersion);
+            try { Culture = GlobalizationPreferences.Languages.Count > 0 ? new CultureInfo(GlobalizationPreferences.Languages.First()) : null; } catch { }
             EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
             mClient = new HttpClient();
-            mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "30");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
             mClient.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
-            mClient.DefaultRequestHeaders.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT 10.0; Win64; x64; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP; " + "10.0)");
+            mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", Culture == null ? "zh-CN" : Culture.ToString());
+            mClient.DefaultRequestHeaders.Add("X-Dark-Mode", Windows.UI.Xaml.Application.Current.RequestedTheme.ToString() == "Dark" ? "1" : "0");
+            mClient.DefaultRequestHeaders.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT " + (ushort)((version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((version & 0x0000FFFF00000000L) >> 32) + (Package.Current.Id.Architecture.ToString().Contains("64") ? "; Win64; " : "; Win32; ") + Package.Current.Id.Architecture.ToString().Replace("X", "x") + "; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP " + Package.Current.Id.Version.ToFormattedString() + "; " + (ushort)((version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((version & 0x0000FFFF00000000L) >> 32) + "." + (ushort)((version & 0x00000000FFFF0000L) >> 16) + "." + (ushort)(version & 0x000000000000FFFFL) + ")");
             mClient.DefaultRequestHeaders.UserAgent.ParseAdd(" +CoolMarket/9.2.2-1905301-universal");
             mClient.DefaultRequestHeaders.Add("X-App-Version", "9.2.2");
             mClient.DefaultRequestHeaders.Add("X-App-Code", "1905301");
@@ -65,72 +76,66 @@ namespace CoolapkUWP.Data
             popup.IsOpen = true;
         }
 
-        #region UI相关
-        public static void ShowPopup(Popup popup)
-        {
-            popup.RequestedTheme = SettingsHelper.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
-            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
-            { popups.Insert(popups.Count - 1, popup); }
-            else { popups.Add(popup); }
-            popup.IsOpen = true;
-            popups.Last().IsOpen = false;
-            popups.Last().IsOpen = true;
-        }
-
-        public static void Hide(this Popup popup)
-        {
-            popup.IsOpen = false;
-            if (popups.Contains(popup)) { popups.Remove(popup); }
-        }
-
-        public static async void ShowProgressBar()
-        {
-            isShowingProgressBar = true;
-            if (SettingsHelper.HasStatusBar)
-            {
-                StatusBar.GetForCurrentView().ProgressIndicator.ProgressValue = null;
-                await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
-            }
-            else if (popups.Last().Child is StatusGrid statusGrid)
-                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar());
-        }
-
-        public static async void PausedProgressBar()
-        {
-            if (!SettingsHelper.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
-            { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.PausedProgressBar()); }
-        }
-
-        public static async void ErrorProgressBar()
-        {
-            if (!SettingsHelper.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
-            { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ErrorProgressBar()); }
-        }
-
-        public static async void HideProgressBar()
-        {
-            isShowingProgressBar = false;
-            if (SettingsHelper.HasStatusBar && !isShowingMessage) await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
-            else if (popups.Last().Child is StatusGrid statusGrid) statusGrid.HideProgressBar();
-        }
-
-        public static async void ShowMessage(string message)
-        {
-            messageList.Add(message);
-            if (!isShowingMessage)
-            {
-                isShowingMessage = true;
-                while (messageList.Count > 0)
-                {
-                    string s = $"[1/{messageList.Count}]{messageList[0]}";
-                    if (SettingsHelper.HasStatusBar)
-                    {
-                        StatusBar statusBar = StatusBar.GetForCurrentView();
-                        statusBar.ProgressIndicator.Text = s;
-                        if (isShowingProgressBar) statusBar.ProgressIndicator.ProgressValue = null;
-                        else statusBar.ProgressIndicator.ProgressValue = 0;
-                        await statusBar.ProgressIndicator.ShowAsync();
-                        await Task.Delay(3000);
+#region UI相关
+public static void ShowPopup(Popup popup)
+{
+popup.RequestedTheme = SettingsHelper.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
+if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
+{ popups.Insert(popups.Count - 1, popup); }
+else { popups.Add(popup); }
+popup.IsOpen = true;
+popups.Last().IsOpen = false;
+popups.Last().IsOpen = true;
+}
+public static void Hide(this Popup popup)
+{
+popup.IsOpen = false;
+if (popups.Contains(popup)) { popups.Remove(popup); }
+}
+public static async void ShowProgressBar()
+{
+isShowingProgressBar = true;
+if (SettingsHelper.HasStatusBar)
+{
+StatusBar.GetForCurrentView().ProgressIndicator.ProgressValue = null;
+await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
+}
+else if (popups.Last().Child is StatusGrid statusGrid)
+await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar());
+}
+public static async void PausedProgressBar()
+{
+if (!SettingsHelper.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
+{ await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.PausedProgressBar()); }
+}
+public static async void ErrorProgressBar()
+{
+if (!SettingsHelper.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
+{ await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ErrorProgressBar()); }
+}
+public static async void HideProgressBar()
+{
+isShowingProgressBar = false;
+if (SettingsHelper.HasStatusBar && !isShowingMessage) await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
+else if (popups.Last().Child is StatusGrid statusGrid) statusGrid.HideProgressBar();
+}
+public static async void ShowMessage(string message)
+{
+messageList.Add(message);
+if (!isShowingMessage)
+{
+isShowingMessage = true;
+while (messageList.Count > 0)
+{
+string s = $"[1/{messageList.Count}]{messageList[0]}";
+if (SettingsHelper.HasStatusBar)
+{
+StatusBar statusBar = StatusBar.GetForCurrentView();
+statusBar.ProgressIndicator.Text = s;
+if (isShowingProgressBar) statusBar.ProgressIndicator.ProgressValue = null;
+else statusBar.ProgressIndicator.ProgressValue = 0;
+await statusBar.ProgressIndicator.ShowAsync();
+await Task.Delay(3000);
                         if (messageList.Count == 0 && !isShowingProgressBar) await statusBar.ProgressIndicator.HideAsync();
                         statusBar.ProgressIndicator.Text = string.Empty;
                         messageList.RemoveAt(0);
@@ -276,16 +281,43 @@ namespace CoolapkUWP.Data
                 mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
                 _ = mClient.DefaultRequestHeaders.Remove("Cookie");
                 mClient.DefaultRequestHeaders.Add("Cookie", SettingsHelper.cookie);
+                _ = mClient.DefaultRequestHeaders.Remove("X-Requested-With");
+                mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
                 return await mClient.GetStringAsync(new Uri("https://api.coolapk.com/v6" + url));
             }
             catch (HttpRequestException e)
             {
-                if (!isBackground) ShowHttpExceptionMessage(e);
+                if (!isBackground) { ShowHttpExceptionMessage(e); }
                 { return string.Empty; }
             }
             catch
             {
-                if (isBackground) return string.Empty;
+                if (isBackground) { return string.Empty; }
+                else { throw; }
+            }
+        }
+
+        public static async Task<string> GetHTML(string url, string Requested, bool isBackground = false)
+        {
+            try
+            {
+                if (url != "/notification/checkCount") { _ = (notifications?.RefreshNotificationsNum()); }
+                _ = mClient.DefaultRequestHeaders.Remove("X-App-Token");
+                mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
+                _ = mClient.DefaultRequestHeaders.Remove("Cookie");
+                mClient.DefaultRequestHeaders.Add("Cookie", SettingsHelper.cookie);
+                _ = mClient.DefaultRequestHeaders.Remove("X-Requested-With");
+                mClient.DefaultRequestHeaders.Add("X-Requested-With", Requested);
+                return await mClient.GetStringAsync(new Uri(url));
+            }
+            catch (HttpRequestException e)
+            {
+                if (!isBackground) { ShowHttpExceptionMessage(e); }
+                { return string.Empty; }
+            }
+            catch
+            {
+                if (isBackground) { return string.Empty; }
                 else { throw; }
             }
         }
@@ -295,10 +327,12 @@ namespace CoolapkUWP.Data
             try
             {
                 if (url != "/notification/checkCount") { notifications?.RefreshNotificationsNum(); }
-                mClient.DefaultRequestHeaders.Remove("X-App-Token");
+                _ = mClient.DefaultRequestHeaders.Remove("X-App-Token");
                 mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
-                mClient.DefaultRequestHeaders.Remove("Cookie");
+                _ = mClient.DefaultRequestHeaders.Remove("Cookie");
                 mClient.DefaultRequestHeaders.Add("Cookie", SettingsHelper.cookie);
+                _ = mClient.DefaultRequestHeaders.Remove("X-Requested-With");
+                mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
                 HttpResponseMessage a = await mClient.PostAsync(new Uri("https://api.coolapk.com/v6" + url), content);
                 return !(GetJSonObject(await a.Content.ReadAsStringAsync()) is null);
             }
@@ -315,8 +349,7 @@ namespace CoolapkUWP.Data
         {
             try
             {
-                if (string.IsNullOrEmpty(json)) return null;
-                { return JsonObject.Parse(json)["data"].GetObject(); }
+                return string.IsNullOrEmpty(json) ? null : JsonObject.Parse(json)["data"].GetObject();
             }
             catch
             {
@@ -330,8 +363,7 @@ namespace CoolapkUWP.Data
         {
             try
             {
-                if (string.IsNullOrEmpty(json)) return null;
-                { return JsonObject.Parse(json)["data"].ToString().Replace("\"", string.Empty); }
+                return string.IsNullOrEmpty(json) ? null : JsonObject.Parse(json)["data"].ToString().Replace("\"", string.Empty);
             }
             catch
             {
@@ -345,8 +377,7 @@ namespace CoolapkUWP.Data
         {
             try
             {
-                if (string.IsNullOrEmpty(json)) return null;
-                { return JsonObject.Parse(json)["data"].GetArray(); }
+                return string.IsNullOrEmpty(json) ? null : JsonObject.Parse(json)["data"].GetArray();
             }
             catch
             {
@@ -371,9 +402,9 @@ namespace CoolapkUWP.Data
         public static string ReplaceHtml(string str)
         {
             //换行和段落
-            string s = str.Replace("<br>", "\n").Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br />", "\n").Replace("<p>", "").Replace("</p>", "\n").Replace("&nbsp;", " ");
+            string s = str.Replace("<br>", "\n").Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br/>", "\n").Replace("<p>", "").Replace("</p>", "\n").Replace("&nbsp;", " ").Replace("<br />", "").Replace("<br />", "");
             //链接彻底删除！
-            while (s.IndexOf("<a") > 0)
+            while (s.IndexOf("<a", StringComparison.Ordinal) > 0)
             {
                 s = s.Replace(@"<a href=""" + Regex.Split(Regex.Split(s, @"<a href=""")[1], @""">")[0] + @""">", "");
                 s = s.Replace("</a>", "");
@@ -431,7 +462,79 @@ namespace CoolapkUWP.Data
                 default:
                     break;
             }
-            return $"{size:N2} {str}";
+            return $"{size:N2}{str}";
+        }
+
+        public static string GetNumString(double num)
+        {
+            string str = string.Empty;
+            if (num < 1000) { }
+            else if (num < 10000)
+            {
+                str = "k";
+                num /= 1000;
+            }
+            else if (num < 10000000)
+            {
+                str = "w";
+                num /= 10000;
+            }
+            else
+            {
+                str = "kw";
+                num /= 10000000;
+            }
+            return $"{num:N2}{str}";
+        }
+
+        public static string CSStoMarkDown(string text)
+        {
+            try
+            {
+                Converter converter = new Converter();
+                return converter.Convert(text);
+            }
+            catch
+            {
+                Regex h1 = new Regex(@"<h1.*?>", RegexOptions.IgnoreCase);
+                Regex h2 = new Regex(@"<h2.*?>", RegexOptions.IgnoreCase);
+                Regex h3 = new Regex(@"<h3.*?>", RegexOptions.IgnoreCase);
+                Regex h4 = new Regex(@"<h4.*?>\n", RegexOptions.IgnoreCase);
+                Regex div = new Regex(@"<div.*?>", RegexOptions.IgnoreCase);
+                Regex p = new Regex(@"<p.*?>", RegexOptions.IgnoreCase);
+                Regex ul = new Regex(@"<ul.*?>", RegexOptions.IgnoreCase);
+                Regex li = new Regex(@"<li.*?>", RegexOptions.IgnoreCase);
+                Regex span = new Regex(@"<span.*?>", RegexOptions.IgnoreCase);
+
+                text = text.Replace("</h1>", "");
+                text = text.Replace("</h2>", "");
+                text = text.Replace("</h3>", "");
+                text = text.Replace("</h4>", "");
+                text = text.Replace("</div>", "");
+                text = text.Replace("<p>", "");
+                text = text.Replace("</p>", "");
+                text = text.Replace("</ul>", "");
+                text = text.Replace("</li>", "");
+                text = text.Replace("</span>", "**");
+                text = text.Replace("</strong>", "**");
+
+                text = h1.Replace(text, "#");
+                text = h2.Replace(text, "##");
+                text = h3.Replace(text, "###");
+                text = h4.Replace(text, "####");
+                text = text.Replace("<br/>", "  \n");
+                text = text.Replace("<br />", "  \n");
+                text = div.Replace(text, "");
+                text = p.Replace(text, "");
+                text = ul.Replace(text, "");
+                text = li.Replace(text, " - ");
+                text = span.Replace(text, "**");
+                text = text.Replace("<strong>", "**");
+
+                for (int i = 0; i < 20; i++) { text = text.Replace("(" + i.ToString() + ") ", " 1. "); }
+
+                return text;
+            }
         }
     }
 }

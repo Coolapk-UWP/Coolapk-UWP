@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -40,6 +41,7 @@ namespace CoolapkUWP.Control
         private readonly Popup popup;
         private readonly List<ImageData> datas = new List<ImageData>();
         private readonly ObservableCollection<ImageSource> Images = new ObservableCollection<ImageSource>();
+
         public ShowImageControl(Popup popup)
         {
             InitializeComponent();
@@ -163,6 +165,8 @@ namespace CoolapkUWP.Control
             }
             a = true;
             Images[i] = await datas[i].GetImage();
+            Regex regex = new Regex(@"[^/]+(?!.*/)");
+            TitleBar.Title = (regex.IsMatch(datas[i].Url) ? regex.Match(datas[i].Url).Value : "查看图片") + " (" + (i + 1).ToString() + "/" + datas.Count.ToString() + ")";
             a = false;
         }
     }

@@ -873,6 +873,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Html2Markdown">
+      <Version>4.0.0.427</Version>
+    </PackageReference>
     <PackageReference Include="ksemenenko.ColorThief">
       <Version>1.1.1.4</Version>
     </PackageReference>

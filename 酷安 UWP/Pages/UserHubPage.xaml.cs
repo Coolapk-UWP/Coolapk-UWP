@@ -3,13 +3,16 @@ using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
 using CoolapkUWP.Pages.FeedPages;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Data.Json;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -33,6 +36,8 @@ namespace CoolapkUWP.Pages
         private double fansNum;
         private double feedNum;
         private double levelNum;
+        private bool IsAuthor;
+        private bool IsSpecial;
         private int page = 0;
         private readonly List<int> pages = new List<int>();
         private string pageUrl;
@@ -58,6 +63,13 @@ namespace CoolapkUWP.Pages
                 JsonObject o = UIHelper.GetJSonObject(await UIHelper.GetJson("/user/profile?uid=" + uid));
                 UIHelper.mainPage.UserAvatar = userAvatar = await ImageCache.GetImage(ImageType.BigAvatar, o["userAvatar"].GetString());
                 UIHelper.mainPage.UserNames = userName = o["username"].GetString();
+                if (o.TryGetValue("entityId", out IJsonValue u))
+                {
+                    FindIsAuthor(u.ToString());
+                    FindIsSpecial(u.ToString());
+                }
+                ApplicationData.Current.LocalSettings.Values["IsAuthor"] = IsAuthor;
+                ApplicationData.Current.LocalSettings.Values["IsSpecial"] = IsSpecial;
                 feedNum = o["feed"].GetNumber();
                 followNum = o["follow"].GetNumber();
                 fansNum = o["fans"].GetNumber();
@@ -318,5 +330,49 @@ namespace CoolapkUWP.Pages
             MTextBlock b = (MTextBlock)sender;
             b.MaxLine = 2;
         }
+
+        #region
+        private static readonly ImmutableArray<string> authors = new string[]
+        {
+            "536381",//wherewhere
+            "695942",//一块小板子
+        }.ToImmutableArray();
+
+        private static readonly ImmutableArray<string> specials = new string[]
+        {
+            "1222543",
+            "1893913",
+            "2134270",
+            "1494629",
+            "3327704",
+            "3591060",
+        }.ToImmutableArray();
+        #endregion
+
+        #region
+        private void FindIsAuthor(string uid)
+        {
+            foreach (string i in authors)
+            {
+                if (uid == i)
+                {
+                    IsAuthor = true;
+                    break;
+                }
+            }
+        }
+
+        private void FindIsSpecial(string uid)
+        {
+            foreach (string i in specials)
+            {
+                if (uid == i)
+                {
+                    IsSpecial = true;
+                    break;
+                }
+            }
+        }
+        #endregion
     }
 }
