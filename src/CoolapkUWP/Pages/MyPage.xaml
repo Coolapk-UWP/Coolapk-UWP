@@ -211,7 +211,7 @@
                             <TextBlock
                                 HorizontalAlignment="Center"
                                 Foreground="White"
-                                MaxLines="2"
+                                MaxLines="1"
                                 Text="{x:Bind Title}"
                                 TextAlignment="Center"
                                 TextTrimming="CharacterEllipsis"

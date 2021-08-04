@@ -3,13 +3,19 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.Security.ExchangeActiveSyncProvisioning;
 using Windows.Storage;
+using Windows.System.Profile;
+using Windows.System.UserProfile;
+using Windows.UI.Xaml;
 
 namespace CoolapkUWP.Core.Helpers
 {
@@ -23,12 +29,18 @@ namespace CoolapkUWP.Core.Helpers
 
         static NetworkHelper()
         {
+            CultureInfo Culture = null;
             string Version = "V11";
+            ulong version = ulong.Parse(AnalyticsInfo.VersionInfo.DeviceFamilyVersion);
+            try { Culture = GlobalizationPreferences.Languages.Count > 0 ? new CultureInfo(GlobalizationPreferences.Languages.First()) : null; } catch { }
             EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
             client.DefaultRequestHeaders.Add("X-Sdk-Int", "30");
-            client.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
+            client.DefaultRequestHeaders.Add("X-App-Mode", "universal");
+            client.DefaultRequestHeaders.Add("X-App-Channel", "coolapk");
             client.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
-            client.DefaultRequestHeaders.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT 10.0; Win64; x64; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP; " + "10.0)");
+            client.DefaultRequestHeaders.Add("X-Sdk-Locale", Culture == null ? "zh-CN" : Culture.ToString());
+            client.DefaultRequestHeaders.Add("X-Dark-Mode", Application.Current.RequestedTheme.ToString() == "Dark" ? "1" : "0");
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT " + (ushort)((version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((version & 0x0000FFFF00000000L) >> 32) + (Package.Current.Id.Architecture.ToString().Contains("64") ? "; Win64; " : "; Win32; ") + Package.Current.Id.Architecture.ToString().Replace("X", "x") + "; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP "+ Package.Current.Id.Version. + "; " + (ushort)((version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((version & 0x0000FFFF00000000L) >> 32) + "." + (ushort)((version & 0x00000000FFFF0000L) >> 16) + "." + (ushort)(version & 0x000000000000FFFFL) + ")");
             if (ApplicationData.Current.LocalSettings.Values["Version"] != null)
             { Version = ApplicationData.Current.LocalSettings.Values["Version"].ToString(); }
             switch (Version)

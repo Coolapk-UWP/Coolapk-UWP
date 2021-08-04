@@ -128,7 +128,6 @@ namespace CoolapkUWP.Models.Controls
         {
             "536381",//wherewhere
             "695942",//一块小板子
-            "0",
         }.ToImmutableArray();
 
         private static readonly ImmutableArray<string> specials = new string[]
@@ -139,7 +138,6 @@ namespace CoolapkUWP.Models.Controls
             "1494629",
             "3327704",
             "3591060",
-            "0",
         }.ToImmutableArray();
         #endregion
 
@@ -177,29 +175,25 @@ namespace CoolapkUWP.Models.Controls
         #region
         private void FindIsAuthor(string uid)
         {
-            int i;
-            for (i = 0; authors[i] != "0"; i++)
+            foreach (string i in authors)
             {
-                if (Is(uid, i))
+                if (uid == i)
                 {
                     IsAuthor = true;
                     break;
                 }
-                else IsAuthor = false;
             }
         }
 
         private void FindIsSpecial(string uid)
         {
-            int i;
-            for (i = 0; specials[i] != "0"; i++)
+            foreach (string i in specials)
             {
-                if (Is(uid, i))
+                if (uid == i)
                 {
                     IsSpecial = true;
                     break;
                 }
-                else IsSpecial = false;
             }
         }
         #endregion
