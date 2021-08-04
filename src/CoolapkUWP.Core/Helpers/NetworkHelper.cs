@@ -40,7 +40,7 @@ namespace CoolapkUWP.Core.Helpers
             client.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
             client.DefaultRequestHeaders.Add("X-Sdk-Locale", Culture == null ? "zh-CN" : Culture.ToString());
             client.DefaultRequestHeaders.Add("X-Dark-Mode", Application.Current.RequestedTheme.ToString() == "Dark" ? "1" : "0");
-            client.DefaultRequestHeaders.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT " + (ushort)((version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((version & 0x0000FFFF00000000L) >> 32) + (Package.Current.Id.Architecture.ToString().Contains("64") ? "; Win64; " : "; Win32; ") + Package.Current.Id.Architecture.ToString().Replace("X", "x") + "; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP "+ Package.Current.Id.Version. + "; " + (ushort)((version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((version & 0x0000FFFF00000000L) >> 32) + "." + (ushort)((version & 0x00000000FFFF0000L) >> 16) + "." + (ushort)(version & 0x000000000000FFFFL) + ")");
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT " + (ushort)((version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((version & 0x0000FFFF00000000L) >> 32) + (Package.Current.Id.Architecture.ToString().Contains("64") ? "; Win64; " : "; Win32; ") + Package.Current.Id.Architecture.ToString().Replace("X", "x") + "; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP "+ Package.Current.Id.Version.ToFormattedString(3) + "; " + (ushort)((version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((version & 0x0000FFFF00000000L) >> 32) + "." + (ushort)((version & 0x00000000FFFF0000L) >> 16) + "." + (ushort)(version & 0x000000000000FFFFL) + ")");
             if (ApplicationData.Current.LocalSettings.Values["Version"] != null)
             { Version = ApplicationData.Current.LocalSettings.Values["Version"].ToString(); }
             switch (Version)
@@ -212,6 +212,25 @@ namespace CoolapkUWP.Core.Helpers
                     throw new CoolapkMessageException(o);
                 }
             }
+        }
+
+        public static string ToFormattedString(this PackageVersion packageVersion, int significance = 4)
+        {
+            switch (significance)
+            {
+                case 4:
+                    return $"{packageVersion.Major}.{packageVersion.Minor}.{packageVersion.Build}.{packageVersion.Revision}";
+                case 3:
+                    return $"{packageVersion.Major}.{packageVersion.Minor}.{packageVersion.Build}";
+                case 2:
+                    return $"{packageVersion.Major}.{packageVersion.Minor}";
+                case 1:
+                    return $"{packageVersion.Major}";
+            }
+
+            string ThrowArgumentOutOfRangeException() => throw new ArgumentOutOfRangeException(nameof(significance), "Value must be a value 1 through 4.");
+
+            return ThrowArgumentOutOfRangeException();
         }
     }
 }

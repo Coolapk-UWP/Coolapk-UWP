@@ -372,9 +372,6 @@ namespace CoolapkUWP.Helpers
         {
             //UIHelper.ShowMessage(str);
 
-#if !DEBUG
-            if (UIHelper.IsAuthor)
-#endif
             string rawstr = str;
 
             if (string.IsNullOrWhiteSpace(str)) { return; }
