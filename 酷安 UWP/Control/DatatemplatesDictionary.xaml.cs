@@ -50,6 +50,9 @@ namespace CoolapkUWP.Control
             FrameworkElement element = sender as FrameworkElement;
             switch (element.Name)
             {
+                case "shareButton":
+                    break;
+
                 case "likeButton":
                     ViewModels.ILike f = element.Tag as ViewModels.ILike;
                     bool isReply = f is ViewModels.FeedReplyViewModel;
@@ -99,7 +102,7 @@ namespace CoolapkUWP.Control
             FrameworkElement element = flyout.Target as FrameworkElement;
             Frame replyFlyoutFrame = flyout.Content as Frame;
             if (replyFlyoutFrame.Content is null)
-            { replyFlyoutFrame.Navigate(typeof(Pages.FeedPages.MakeFeedPage), new object[] { Pages.FeedPages.MakeFeedMode.Reply, element.Tag, flyout }); }
+            { _ = replyFlyoutFrame.Navigate(typeof(Pages.FeedPages.MakeFeedPage), new object[] { Pages.FeedPages.MakeFeedMode.Reply, element.Tag, flyout }); }
         }
 
         private void Flyout_Opened_1(object sender, object e)
@@ -109,6 +112,18 @@ namespace CoolapkUWP.Control
             Frame replyFlyoutFrame = flyout.Content as Frame;
             if (replyFlyoutFrame.Content is null)
             { replyFlyoutFrame.Navigate(typeof(Pages.FeedPages.MakeFeedPage), new object[] { Pages.FeedPages.MakeFeedMode.ReplyReply, ((double)element.Tag).ToString(), flyout }); }
+        }
+
+        private void QRCode_Opened(object sender, object _)
+        {
+            Flyout flyout = (Flyout)sender;
+            if (flyout.Content == null)
+            {
+                flyout.Content = new ShowQRCodeControl
+                {
+                    QRCodeText = (string)flyout.Target.Tag
+                };
+            }
         }
 
         private void repRL_ItemClick(object sender, ItemClickEventArgs e)

@@ -137,7 +137,7 @@ namespace CoolapkUWP.Pages.AppPages
         #endregion
 
         private void Classify_Click(object sender, RoutedEventArgs e)
-            => UIHelper.Navigate(typeof(SearchPage), new object[] { 3, ((Button)sender).Content.ToString() });
+            => UIHelper.Navigate(typeof(SearchPage), new object[] { 0, ((Button)sender).Content.ToString() });
 
         private void Updateview_ItemClick(object sender, ItemClickEventArgs e)
         {

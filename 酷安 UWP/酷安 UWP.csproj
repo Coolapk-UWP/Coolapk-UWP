@@ -118,6 +118,9 @@
     <Compile Include="Control\ReplyDialogPresenter.xaml.cs">
       <DependentUpon>ReplyDialogPresenter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\ShowQRCodeControl.xaml.cs">
+      <DependentUpon>ShowQRCodeControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\StatusGrid.xaml.cs">
       <DependentUpon>StatusGrid.xaml</DependentUpon>
     </Compile>
@@ -795,6 +798,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Control\ShowQRCodeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Control\StatusGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -890,6 +897,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.6.1</Version>
+    </PackageReference>
+    <PackageReference Include="QRCoder">
+      <Version>1.4.1</Version>
     </PackageReference>
     <PackageReference Include="System.ObjectModel">
       <Version>4.3.0</Version>

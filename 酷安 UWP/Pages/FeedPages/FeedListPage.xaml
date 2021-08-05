@@ -337,8 +337,9 @@
         </controls:PullToRefreshListView>
         <control:TitleBar
             x:Name="titleBar"
-            BackButtonClick="TitleBar_BackButtonClick"
             RefreshEvent="{x:Bind Refresh}"
+            RefreshButtonVisibility="Visible"
+            BackButtonClick="TitleBar_BackButtonClick"
             ComboBoxSelectionChange="FeedTypeComboBox_SelectionChanged"/>
     </Grid>
 </Page>

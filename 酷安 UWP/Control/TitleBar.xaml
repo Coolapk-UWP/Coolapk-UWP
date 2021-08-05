@@ -4,7 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:data="using:CoolapkUWP.Data"
+    xmlns:data="using:CoolapkUWP.Data" xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="48"
     d:DesignWidth="400"
@@ -15,8 +15,8 @@
         VerticalAlignment="Top"
         Height="{x:Bind data:SettingsHelper.PageTitleHeight}">
         <Border
-            x:Name="TitleBackground"
             Visibility="Visible"
+            x:Name="TitleBackground"
             BorderThickness="0,0,0,1"
             Height="{x:Bind data:SettingsHelper.PageTitleHeight}"
             BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
@@ -30,6 +30,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Button
                 Margin="0,2"
@@ -39,29 +41,47 @@
                 Style="{StaticResource IconButtonStyle}"
                 VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}">
                 <SymbolIcon
-                    x:Name="BackButtonIcon"
-                    Symbol="Back"/>
+                    Symbol="Back"
+                    x:Name="BackButtonIcon"/>
             </Button>
             <TextBlock
-                Grid.Column="1"
                 Margin="5,10"
-                x:Name="title"
                 FontSize="20"
+                x:Name="title"
+                Grid.Column="1"
                 HorizontalAlignment="Left"
                 VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"/>
             <ComboBox
-                x:Name="ChangeModeComboBox"
-                Margin="8"
-                SelectionChanged="ChangeModeComboBox_SelectionChanged"
+                Margin="2,6"
                 Grid.Column="2"
                 Visibility="Collapsed"
+                x:Name="ChangeModeComboBox"
+                SelectionChanged="ChangeModeComboBox_SelectionChanged"
                 VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"/>
             <ContentPresenter
-                x:Name="userContentPresenter"
-                Grid.Column="3"
                 Height="40"
                 Margin="0,2"
+                Grid.Column="3"
+                x:Name="userContentPresenter"
                 VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"/>
+            <winui:ProgressRing
+                Width="24"
+                Height="24"
+                Grid.Column="4"
+                IsActive="False"
+                Margin="8,40,8,2"
+                x:Name="progressRing"
+                Visibility="Collapsed"/>
+            <Button
+                Margin="0,2"
+                Grid.Column="5"
+                x:Name="RefreshButton"
+                Visibility="Collapsed"
+                Click="RefreshButton_Click"
+                Style="{StaticResource IconButtonStyle}"
+                VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}">
+                <SymbolIcon Symbol="Refresh"/>
+            </Button>
         </Grid>
     </Grid>
 </UserControl>

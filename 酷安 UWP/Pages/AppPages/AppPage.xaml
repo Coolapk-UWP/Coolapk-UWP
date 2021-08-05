@@ -347,6 +347,8 @@
         <ctrl:TitleBar
             x:Name="titleBar"
             Loaded="titleBar_Loaded"
+            RefreshButtonVisibility="Visible"
+            RefreshEvent="titleBar_RefreshButtonClicked"
             BackButtonClick="titleBar_BackButtonClicked"
             Title="{x:Bind AppModels.Title, Mode=OneWay}">
             <ctrl:TitleBar.RightAreaContent>

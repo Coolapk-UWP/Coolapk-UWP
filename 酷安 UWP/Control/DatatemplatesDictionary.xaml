@@ -587,12 +587,13 @@
                 Grid.Row="11"
                 HorizontalAlignment="Left">
                 <Button
-                    Style="{StaticResource FeedOpButtonStyle}"
-                    Padding="8,0"
-                    HorizontalAlignment="Center"
-                    x:Name="likeButton"
                     Tag="{x:Bind}"
-                    Click="FeedButton_Click">
+                    Padding="8,0"
+                    x:Name="likeButton"
+                    Click="FeedButton_Click"
+                    HorizontalAlignment="Center"
+                    ToolTipService.ToolTip="点赞"
+                    Style="{StaticResource FeedOpButtonStyle}">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon
                             Symbol="Like"
@@ -609,10 +610,11 @@
                     </StackPanel>
                 </Button>
                 <Button
-                    Style="{StaticResource FeedOpButtonStyle}"
                     Padding="8,0"
+                    Tag="{x:Bind entityId}"
                     HorizontalAlignment="Center"
-                    Tag="{x:Bind entityId}">
+                    ToolTipService.ToolTip="回复"
+                    Style="{StaticResource FeedOpButtonStyle}">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Comment"/>
                         <TextBlock
@@ -654,9 +656,13 @@
                     </Button.Flyout>
                 </Button>
                 <Button
-                    Style="{StaticResource FeedOpButtonStyle}"
                     Padding="8,0"
-                    HorizontalAlignment="Center">
+                    x:Name="shareButton"
+                    Tag="{x:Bind shareurl}"
+                    Click="FeedButton_Click"
+                    HorizontalAlignment="Center"
+                    ToolTipService.ToolTip="分享"
+                    Style="{StaticResource FeedOpButtonStyle}">
                     <StackPanel
                         Orientation="Horizontal">
                         <SymbolIcon
@@ -665,6 +671,19 @@
                             Margin="3,0"
                             Text="{x:Bind share_num}"/>
                     </StackPanel>
+                    <Button.Flyout>
+                        <Flyout Opened="QRCode_Opened">
+                            <Flyout.FlyoutPresenterStyle>
+                                <Style TargetType="FlyoutPresenter">
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
+                                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+                                    <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
+                                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+                                </Style>
+                            </Flyout.FlyoutPresenterStyle>
+                        </Flyout>
+                    </Button.Flyout>
                 </Button>
             </StackPanel>
         </Grid>
@@ -721,6 +740,7 @@
                         VerticalAlignment="Center"
                         Background="{ThemeResource SystemControlHighlightListAccentHighBrush}"
                         x:Name="isAu"
+                        CornerRadius="4"
                         x:Load="{x:Bind isFeedAuthor}">
                         <Border.Style>
                             <Style TargetType="Border">
@@ -731,7 +751,7 @@
                         </Border.Style>
                         <TextBlock
                             FontSize="12"
-                            Margin="1"
+                            Margin="2,1"
                             Text="楼主"/>
                     </Border>
                 </StackPanel>
@@ -743,18 +763,17 @@
                         Foreground="Gray"
                         VerticalAlignment="Center"/>
                     <TextBlock
-                        VerticalAlignment="Center"
-                        Foreground="Gray"
+                        Text="@"
                         x:Name="At"
-                        x:Load="{x:Bind showRuser}">
-                        @
-                    </TextBlock>
+                        Foreground="Gray"
+                        VerticalAlignment="Center"
+                        x:Load="{x:Bind showRuser}"/>
                     <Button
                         x:Name="Ruser"
                         x:Load="{x:Bind showRuser}"
-                        Style="{StaticResource ButtonStyle1}"
+                        Style="{StaticResource ButtonRevealStyle}"
                         Tapped="OnTapped"
-                        Padding="4"
+                        Padding="0"
                         Tag="{x:Bind rurl}"
                         Background="Transparent"
                         Content="{x:Bind rusername}"/>

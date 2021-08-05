@@ -77,6 +77,7 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 FeedDetail = new FeedDetailViewModel(detail);
                 TitleBar.Title = FeedDetail.title;
+                showQRCodeControl.QRCodeText = FeedDetail.shareurl;
                 if (FeedDetail.isQuestionFeed)
                 {
                     if (answersPage != 0 || answerLastItem != 0) { return; }
@@ -98,6 +99,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     TitleBar.ComboBoxSelectedIndex = 0;
                 }
             }
+            if (string.IsNullOrEmpty(showQRCodeControl.QRCodeText)) { showQRCodeControl.QRCodeText = "https://www.coolapk.com"; }
             UIHelper.HideProgressBar();
         }
 
@@ -159,7 +161,7 @@ namespace CoolapkUWP.Pages.FeedPages
             if ((sender as FrameworkElement).Tag is string s) { UIHelper.OpenLink(s); }
         }
 
-        async void Refresh()
+        private async void Refresh()
         {
             UIHelper.ShowProgressBar();
             if (FeedDetailPivot != null)
@@ -181,8 +183,8 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             else if (AnswersListView != null)
             {
-                if (answerLastItem != 0) return;
-                { RefreshAnswers(1); }
+                if (answerLastItem != 0) { return; }
+                RefreshAnswers(1);
             }
             else
             {
@@ -459,10 +461,10 @@ namespace CoolapkUWP.Pages.FeedPages
                 switch (FeedDetailPivot.SelectedIndex)
                 {
                     case 1:
-                        if (likes.Count == 0) RefreshLikes();
+                        if (likes.Count == 0) { RefreshLikes(); }
                         break;
                     case 2:
-                        if (shares.Count == 0) RefreshShares();
+                        if (shares.Count == 0) { RefreshShares(); }
                         break;
                     default:
                         break;

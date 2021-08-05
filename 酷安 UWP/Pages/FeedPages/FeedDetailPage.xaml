@@ -5,7 +5,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:control="using:CoolapkUWP.Control"
       xmlns:viewModel="using:CoolapkUWP.Control.ViewModels"
-      xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+      xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:muxm="using:Microsoft.UI.Xaml.Media"
       mc:Ignorable="d"
       SizeChanged="Page_SizeChanged">
     <Page.Resources>
@@ -113,6 +113,7 @@
                         <Grid
                             Margin="0,3"
                             Grid.Row="2"
+                            CornerRadius="0,0,8,8"
                             x:Name="feedArticleTitle"
                             x:Load="{x:Bind FeedDetail.isFeedArticle,Mode=OneWay}">
                             <Image
@@ -122,11 +123,16 @@
                                 Tag="{x:Bind FeedDetail.message_cover_url,Mode=OneWay}"
                                 Source="{x:Bind FeedDetail.message_cover,Mode=OneWay}"
                                 Stretch="UniformToFill" />
-                            <Border
-                                VerticalAlignment="Bottom"
-                                Background="#55000000">
+                            <Border VerticalAlignment="Bottom">
+                                <Border.Background>
+                                    <muxm:AcrylicBrush
+                                        BackgroundSource="Backdrop"
+                                        TintColor="#55000000"
+                                        FallbackColor="#55000000"
+                                        TintOpacity="0.6"/>
+                                </Border.Background>
                                 <TextBlock
-                                    Margin="5"
+                                    Margin="8"
                                     Text="{x:Bind FeedDetail.message_title,Mode=OneWay}"
                                     Foreground="White"
                                     FontWeight="Black"
@@ -795,9 +801,34 @@
         </StackPanel>
         <control:TitleBar
             x:Name="TitleBar"
-            BackButtonClick="BackButton_Click"
             RefreshEvent="{x:Bind Refresh}"
+            RefreshButtonVisibility="Visible"
+            BackButtonClick="BackButton_Click"
             ComboBoxItemsSource="{x:Bind comboBoxItems}"
-            ComboBoxSelectionChange="ChangeFeedSortingComboBox_SelectionChanged"/>
+            ComboBoxSelectionChange="ChangeFeedSortingComboBox_SelectionChanged">
+            <control:TitleBar.RightAreaContent>
+                <Button
+                    Style="{StaticResource IconButtonStyle}"
+                    ToolTipService.ToolTip="分享链接">
+                    <Button.Flyout>
+                        <Flyout>
+                            <Flyout.FlyoutPresenterStyle>
+                                <Style TargetType="FlyoutPresenter">
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
+                                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+                                    <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
+                                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                                </Style>
+                            </Flyout.FlyoutPresenterStyle>
+                            <control:ShowQRCodeControl x:Name="showQRCodeControl" />
+                        </Flyout>
+                    </Button.Flyout>
+                    <FontIcon
+                        FontFamily="Segoe MDL2 Assets"
+                        Glyph="&#xED14;" />
+                </Button>
+            </control:TitleBar.RightAreaContent>
+        </control:TitleBar>
     </Grid>
 </Page>

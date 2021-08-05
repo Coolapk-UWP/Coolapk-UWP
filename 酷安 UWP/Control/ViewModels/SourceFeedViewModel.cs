@@ -12,6 +12,9 @@ namespace CoolapkUWP.Control.ViewModels
         {
             JsonObject token = t.GetObject();
             url = token.TryGetValue("url", out IJsonValue json) ? json.GetString() : $"/feed/{token["id"].ToString().Replace("\"", string.Empty)}";
+            shareurl = token.TryGetValue("shareUrl", out IJsonValue shareUrl)&&!string.IsNullOrEmpty(shareUrl.GetString())
+                ? shareUrl.GetString()
+                : "https://www.coolapk.com" + url;
             if (token["entityType"].GetString() != "article")
             {
                 uurl = token["userInfo"].GetObject()["url"].GetString();
@@ -51,6 +54,7 @@ namespace CoolapkUWP.Control.ViewModels
         }
         public string url { get; private set; }
         public string uurl { get; private set; }
+        public string shareurl { get; private set; }
         public string username { get; private set; }
         public string dateline { get; private set; }
         public bool showMessage_title { get; private set; }

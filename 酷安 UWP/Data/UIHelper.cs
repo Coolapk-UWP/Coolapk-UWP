@@ -117,7 +117,7 @@ namespace CoolapkUWP.Data
             isShowingProgressBar = false;
             if (SettingsHelper.HasStatusBar && !isShowingMessage) { await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync(); }
             else if (popups.Last().Child is StatusGrid statusGrid) { statusGrid.HideProgressBar(); }
-            }
+        }
         public static async void ShowMessage(string message)
         {
             messageList.Add(message);
@@ -126,7 +126,7 @@ namespace CoolapkUWP.Data
                 isShowingMessage = true;
                 while (messageList.Count > 0)
                 {
-                    string s = $"[1/{messageList.Count}]{messageList[0]}";
+                    string s = $"[{messageList.Count}]{messageList[0]}";
                     if (SettingsHelper.HasStatusBar)
                     {
                         StatusBar statusBar = StatusBar.GetForCurrentView();
@@ -146,7 +146,7 @@ namespace CoolapkUWP.Data
                         messageList.RemoveAt(0);
                         await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                         {
-                            if (messageList.Count == 0) { statusGrid.ShowMessage(string.Empty); }
+                            if (messageList.Count == 0) { statusGrid.Rectangle_PointerExited(); }
                             if (!isShowingProgressBar) { HideProgressBar(); }
                         });
                     }

@@ -10,17 +10,25 @@
     d:DesignWidth="400">
 
     <Grid
+        Height="27"
         x:Name="statusGrid"
-        Height="32"
         Padding="0,0,140,0"
         VerticalAlignment="Top"
         Background="Transparent">
+        <Grid.Resources>
+            <Storyboard x:Name="EnterStoryboard">
+                <FadeInThemeAnimation Storyboard.TargetName="messageTextBlock"/>
+            </Storyboard>
+            <Storyboard x:Name="ExitStoryboard">
+                <FadeOutThemeAnimation Storyboard.TargetName="messageTextBlock"/>
+            </Storyboard>
+        </Grid.Resources>
         <muxc:ProgressBar
-            Visibility="Collapsed"
             ShowError="False"
             ShowPaused="False"
-            VerticalAlignment="Top"
-            x:Name="statusBar"/>
+            x:Name="statusBar"
+            Visibility="Collapsed"
+            VerticalAlignment="Top"/>
         <TextBlock
             Margin="16,3"
             FontSize="16"

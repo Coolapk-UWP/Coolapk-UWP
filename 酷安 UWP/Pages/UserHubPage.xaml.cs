@@ -35,6 +35,10 @@ namespace CoolapkUWP.Pages
         private double fansNum;
         private double feedNum;
         private double levelNum;
+        private double nextLevelExperience;
+        private double nextLevelPercentage;
+        private string nextLevelNowExperience;
+        private string levelTodayMessage;
         private bool IsAuthor;
         private bool IsSpecial;
         private int page = 0;
@@ -60,8 +64,14 @@ namespace CoolapkUWP.Pages
                 LoginButton.Visibility = Visibility.Collapsed;
                 UserDetailGrid.Visibility = Visibility.Visible;
                 JsonObject o = UIHelper.GetJSonObject(await UIHelper.GetJson("/user/profile?uid=" + uid));
-                UIHelper.mainPage.UserAvatar = userAvatar = await ImageCache.GetImage(ImageType.BigAvatar, o["userAvatar"].GetString());
-                UIHelper.mainPage.UserNames = userName = o["username"].GetString();
+                if (o.TryGetValue("userAvatar", out IJsonValue userAvatarurl) && !string.IsNullOrEmpty(userAvatarurl.GetString()))
+                {
+                    UIHelper.mainPage.UserAvatar = userAvatar = await ImageCache.GetImage(ImageType.BigAvatar, userAvatarurl.GetString());
+                }
+                if (o.TryGetValue("username", out IJsonValue username) && !string.IsNullOrEmpty(username.GetString()))
+                {
+                    UIHelper.mainPage.UserNames = userName = username.GetString();
+                }
                 if (o.TryGetValue("entityId", out IJsonValue u))
                 {
                     FindIsAuthor(u.ToString());
@@ -73,6 +83,10 @@ namespace CoolapkUWP.Pages
                 followNum = o["follow"].GetNumber();
                 fansNum = o["fans"].GetNumber();
                 levelNum = o["level"].GetNumber();
+                nextLevelExperience = o["next_level_experience"].GetNumber();
+                nextLevelPercentage = double.Parse(o["next_level_percentage"].GetString());
+                levelTodayMessage = o["level_today_message"].GetString();
+                nextLevelNowExperience = $"{nextLevelPercentage / 100 * nextLevelExperience:F0}/{nextLevelExperience}";
                 index = -1;
                 GetUrlPage();
                 _ = Task.Run(async () =>
@@ -89,6 +103,10 @@ namespace CoolapkUWP.Pages
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(feedNum)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(followNum)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(levelNum)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(nextLevelExperience)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(nextLevelPercentage)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(levelTodayMessage)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(nextLevelNowExperience)));
             }
         }
 
@@ -98,6 +116,7 @@ namespace CoolapkUWP.Pages
         {
             switch ((sender as FrameworkElement).Tag as string)
             {
+                case "MyFeed":
                 case "feed":
                     UIHelper.Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, SettingsHelper.GetString("Uid") });
                     break;
@@ -315,10 +334,6 @@ namespace CoolapkUWP.Pages
         {
             switch (token["entityType"].GetString())
             {
-                case "feed": return new FeedViewModel(token, pageUrl == "/main/indexV8" ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
-                case "user": return new UserViewModel(token);
-                case "topic": return new TopicViewModel(token);
-                case "dyh": return new DyhViewModel(token);
                 case "card":
                 default: return new IndexPageViewModel(token);
             }
@@ -373,5 +388,10 @@ namespace CoolapkUWP.Pages
             }
         }
         #endregion
+
+        private void LvHelp_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            UIHelper.OpenLink("/feed/18221454");
+        }
     }
 }

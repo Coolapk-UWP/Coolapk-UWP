@@ -15,6 +15,7 @@ namespace CoolapkUWP.Control
             Window.Current.SizeChanged += (s, e) => Width = e.Size.Width + 140;
             if (UIHelper.isShowingProgressBar) { ShowProgressBar(); }
             else { HideProgressBar(); }
+            Rectangle_PointerExited();
         }
 
         public void ShowProgressBar()
@@ -49,6 +50,20 @@ namespace CoolapkUWP.Control
             statusBar.ShowPaused = false;
         }
 
-        public void ShowMessage(string message) => messageTextBlock.Text = message;
+        public void ShowMessage(string message)
+        {
+            messageTextBlock.Text = message;
+            Rectangle_PointerEntered();
+        }
+
+        public void Rectangle_PointerEntered()
+        {
+            EnterStoryboard.Begin();
+        }
+
+        public void Rectangle_PointerExited()
+        {
+            ExitStoryboard.Begin();
+        }
     }
 }

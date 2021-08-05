@@ -16,7 +16,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Background="{ThemeResource SystemControlAcrylicElementBrush}">
+    <Grid Background="{ThemeResource SystemControlChromeLowAcrylicElementBrush}">
         <controls:PullToRefreshListView
             x:Name="FeedReplyList"
             ItemTemplate="{StaticResource feed_reply}"
@@ -27,7 +27,9 @@
             ReleaseToRefreshLabel="松手刷新">
             <controls:PullToRefreshListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <control:GridPanel DesiredColumnWidth="384"/>
+                    <control:GridPanel
+                        CubeInSameHeight="False"
+                        DesiredColumnWidth="384"/>
                 </ItemsPanelTemplate>
             </controls:PullToRefreshListView.ItemsPanel>
             <controls:PullToRefreshListView.ItemContainerStyle>
@@ -40,7 +42,6 @@
         </controls:PullToRefreshListView>
         <local:TitleBar
             x:Name="TitleBar"
-            Title="回复"
-            BackButtonSymbol="Clear"/>
+            Title="回复"/>
     </Grid>
 </Page>
