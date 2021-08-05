@@ -1,5 +1,7 @@
 ﻿using CoolapkUWP.Data;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -36,26 +38,66 @@ namespace CoolapkUWP.Pages.SettingPages
 
         private async void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            //UIHelper.Navigate(typeof(FeedPages.FeedListPage), new object[] { FeedPages.FeedListType.DYHPageList, "1324" });
-            string s = await UIHelper.GetJson(url.Text);
-            System.Diagnostics.Debug.WriteLine(s);
-            _ = await new MessageDialog(s).ShowAsync();
+            Uri uri = ValidateAndGetUri(url.Text);
+            string s = uri == null ? "这不是一个链接" : await UIHelper.GetHTML(uri.ToString(), "XMLHttpRequest");
+            ContentDialog GetJsonDialog = new ContentDialog
+            {
+                Title = url.Text,
+                Content = new ScrollViewer
+                {
+                    Content = new TextBlock
+                    {
+                        Text = ConvertJsonString(s),
+                        IsTextSelectionEnabled = true
+                    }
+                },
+                CloseButtonText = "好的",
+                DefaultButton = ContentDialogButton.Close
+            };
+            _ = await GetJsonDialog.ShowAsync();
+        }
+
+        private static Uri ValidateAndGetUri(string uriString)
+        {
+            Uri uri = null;
+            try
+            {
+                uri = new Uri(uriString);
+            }
+            catch (FormatException)
+            {
+            }
+            return uri;
+        }
+
+        private string ConvertJsonString(string str)
+        {
+            //格式化json字符串
+            JsonSerializer serializer = new JsonSerializer();
+            TextReader tr = new StringReader(str);
+            JsonTextReader jtr = new JsonTextReader(tr);
+            object obj = serializer.Deserialize(jtr);
+            if (obj != null)
+            {
+                StringWriter textWriter = new StringWriter();
+                JsonTextWriter jsonWriter = new JsonTextWriter(textWriter)
+                {
+                    Formatting = Formatting.Indented,
+                    Indentation = 4,
+                    IndentChar = ' '
+                };
+                serializer.Serialize(jsonWriter, obj);
+                return textWriter.ToString();
+            }
+            else
+            {
+                return str;
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            UIHelper.Navigate(typeof(BrowserPage), new object[] { false, "https://m.coolapk.com/mp/do?c=userDevice&m=myDevice" });
-
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Hyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
-        {
-            Windows.UI.Xaml.Application.Current.Exit();
+            UIHelper.Navigate(typeof(AppPages.AppRecommendPage));
         }
     }
 }

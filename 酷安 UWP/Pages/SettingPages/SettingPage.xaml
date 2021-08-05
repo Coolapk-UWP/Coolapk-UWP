@@ -28,7 +28,10 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <controls:HeaderedContentControl Grid.Row="0" Header="内容" Style="{StaticResource HeaderStyle}">
+                    <controls:HeaderedContentControl
+                        Grid.Row="0"
+                        Header="内容"
+                        Style="{StaticResource HeaderStyle}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
@@ -36,30 +39,86 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
-                            <ToggleSwitch x:Name="IsUseOldEmojiMode" Header="使用旧式表情" Toggled="ToggleSwitch_Toggled" Grid.Row="0"/>
-                            <ToggleSwitch x:Name="IsBackgroundColorFollowSystem" Header="背景色跟随系统" Toggled="ToggleSwitch_Toggled" Grid.Row="1"/>
-                            <ToggleSwitch x:Name="IsDarkMode" Header="背景色" Toggled="ToggleSwitch_Toggled"
-                                          OnContent="黑色" OffContent="白色" Grid.Row="2"/>
-                            <ToggleSwitch x:Name="IsNoPicsMode" Header="无图模式" Toggled="ToggleSwitch_Toggled" Grid.Row="3"/>
+                            <ToggleSwitch
+                                x:Name="IsUseOldEmojiMode"
+                                Header="使用旧式表情"
+                                Toggled="ToggleSwitch_Toggled"
+                                Margin="0,4,0,0"
+                                Grid.Row="0"/>
+                            <ToggleSwitch
+                                x:Name="IsBackgroundColorFollowSystem"
+                                Header="背景色跟随系统"
+                                Toggled="ToggleSwitch_Toggled"
+                                Grid.Row="1"/>
+                            <ToggleSwitch
+                                x:Name="IsDarkMode"
+                                Header="背景色"
+                                Toggled="ToggleSwitch_Toggled"
+                                OnContent="黑色"
+                                OffContent="白色"
+                                Grid.Row="2"/>
+                            <ToggleSwitch
+                                x:Name="IsNoPicsMode"
+                                Header="无图模式"
+                                Toggled="ToggleSwitch_Toggled"
+                                Grid.Row="3"/>
                         </Grid>
                     </controls:HeaderedContentControl>
-                    <controls:HeaderedContentControl Grid.Row="1" Header="缓存" Style="{StaticResource HeaderStyle}">
+                    <controls:HeaderedContentControl
+                        Grid.Row="1"
+                        Header="缓存"
+                        Style="{StaticResource HeaderStyle}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
-                            <StackPanel Orientation="Horizontal" Grid.Row="0">
-                                <TextBlock FontSize="{ThemeResource ContentControlFontSize}" VerticalAlignment="Center">图片缓存大小：</TextBlock>
-                                <TextBlock x:Name="CacheSizeTextBlock" FontSize="{ThemeResource ContentControlFontSize}" VerticalAlignment="Center">正在加载……</TextBlock>
-                                <Button x:Name="RefreshCacheButton" Style="{StaticResource ButtonRevealStyle}" Tag="RefreshCache" Click="Button_Click" Padding="0" Margin="8,0,4,0" Background="Transparent" IsEnabled="False">
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Grid.Row="0">
+                                <TextBlock
+                                    FontSize="{ThemeResource ContentControlFontSize}"
+                                    VerticalAlignment="Center">
+                                    图片缓存大小：
+                                </TextBlock>
+                                <TextBlock
+                                    x:Name="CacheSizeTextBlock"
+                                    FontSize="{ThemeResource ContentControlFontSize}"
+                                    VerticalAlignment="Center">
+                                    正在加载……
+                                </TextBlock>
+                                <Button
+                                    x:Name="RefreshCacheButton"
+                                    Tag="RefreshCache"
+                                    Click="Button_Click"
+                                    Padding="0"
+                                    Margin="8,0,4,0"
+                                    Background="Transparent"
+                                    IsEnabled="False">
                                     <SymbolIcon Symbol="Refresh"/>
                                 </Button>
-                                <Button x:Name="CleanCacheButton" Tag="CleanCache" Click="Button_Click" IsEnabled="False" Style="{StaticResource ButtonRevealStyle}">清除</Button>
-                                <Button x:Name="CleanAllCacheButton" Tag="CleanAllCache" Click="Button_Click" Style="{StaticResource ButtonRevealStyle}" Margin="2">清除全部</Button>
+                                <Button
+                                    x:Name="CleanCacheButton"
+                                    Tag="CleanCache"
+                                    Click="Button_Click"
+                                    IsEnabled="False">
+                                    清除
+                                </Button>
+                                <Button
+                                    x:Name="CleanAllCacheButton"
+                                    Tag="CleanAllCache"
+                                    Click="Button_Click"
+                                    Margin="2">
+                                    清除全部
+                                </Button>
                             </StackPanel>
-                            <ListView x:Name="CacheSizeListView" SelectionMode="Multiple" ItemsSource="{x:Bind models}" 
-                          SelectionChanged="CacheSizeListView_SelectionChanged" ScrollViewer.VerticalScrollMode="Disabled" Grid.Row="1">
+                            <ListView
+                                x:Name="CacheSizeListView"
+                                SelectionMode="Multiple"
+                                ItemsSource="{x:Bind models}"
+                                SelectionChanged="CacheSizeListView_SelectionChanged"
+                                ScrollViewer.VerticalScrollMode="Disabled"
+                                Grid.Row="1">
                                 <ListView.ItemContainerStyle>
                                     <Style TargetType="ListViewItem">
                                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -71,7 +130,9 @@
                                             <StackPanel>
                                                 <TextBlock Text="{x:Bind Title}"/>
                                                 <TextBlock Text="{x:Bind SizeString}"/>
-                                                <muxc:ProgressBar Maximum="{x:Bind TotalSize,Mode=OneWay}" Value="{x:Bind Size}"/>
+                                                <muxc:ProgressBar
+                                                    Maximum="{x:Bind TotalSize,Mode=OneWay}"
+                                                    Value="{x:Bind Size}"/>
                                             </StackPanel>
                                         </ListViewItem>
                                     </DataTemplate>
@@ -79,7 +140,10 @@
                             </ListView>
                         </Grid>
                     </controls:HeaderedContentControl>
-                    <controls:HeaderedContentControl Grid.Row="2" Header="账户" Style="{StaticResource HeaderStyle}">
+                    <controls:HeaderedContentControl
+                        Grid.Row="2"
+                        Header="账户"
+                        Style="{StaticResource HeaderStyle}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
@@ -87,29 +151,75 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
-                            <TextBlock FontSize="{ThemeResource ContentControlFontSize}" VerticalAlignment="Center" Grid.Row="0">账号管理</TextBlock>
-                            <StackPanel Orientation="Horizontal" Grid.Row="1">
-                                <Button Tag="AccountSetting" Click="Button_Click" Grid.Row="6" Style="{StaticResource ButtonRevealStyle}">账户设置</Button>
-                                <Button Tag="MyDevice" Click="Button_Click" Grid.Row="7" Margin="2" Style="{StaticResource ButtonRevealStyle}">我的机型</Button>
+                            <TextBlock
+                                FontSize="{ThemeResource ContentControlFontSize}"
+                                VerticalAlignment="Center"
+                                Padding="0,4"
+                                Grid.Row="0">
+                                账号管理
+                            </TextBlock>
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Grid.Row="1">
+                                <Button
+                                    Tag="AccountSetting"
+                                    Click="Button_Click"
+                                    Grid.Row="6">
+                                    账户设置
+                                </Button>
+                                <Button
+                                    Tag="MyDevice"
+                                    Click="Button_Click"
+                                    Grid.Row="7"
+                                    Margin="2">
+                                    我的机型
+                                </Button>
                             </StackPanel>
-                            <TextBlock FontSize="{ThemeResource ContentControlFontSize}" VerticalAlignment="Center" Grid.Row="2">登录管理</TextBlock>
-                            <StackPanel Orientation="Horizontal" Grid.Row="3">
-                                <Button x:Name="AccountLogout" Content="退出登录" Grid.Row="6" Style="{StaticResource ButtonRevealStyle}">
+                            <TextBlock
+                                FontSize="{ThemeResource ContentControlFontSize}"
+                                VerticalAlignment="Center"
+                                Padding="0,4"
+                                Grid.Row="2">
+                                登录管理
+                            </TextBlock>
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Grid.Row="3">
+                                <Button
+                                    x:Name="AccountLogout"
+                                    Content="退出登录"
+                                    Grid.Row="6">
                                     <Button.Flyout>
                                         <Flyout>
                                             <StackPanel>
-                                                <TextBlock Text="您确定要退出登录吗" Style="{ThemeResource BaseTextBlockStyle}" Margin="0,0,0,12" />
-                                                <Button Content="确定退出" Style="{StaticResource ButtonRevealStyle}" Click="Button_Click" Tag="logout" />
+                                                <TextBlock
+                                                    Text="您确定要退出登录吗"
+                                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                                    Margin="0,0,0,12"/>
+                                                <Button
+                                                    Content="确定退出"
+                                                    Click="Button_Click"
+                                                    Tag="logout" />
                                             </StackPanel>
                                         </Flyout>
                                     </Button.Flyout>
                                 </Button>
-                                <Button x:Name="reset" Grid.Row="7" Content="恢复默认设置" Style="{StaticResource ButtonRevealStyle}" Margin="2">
+                                <Button
+                                    x:Name="reset"
+                                    Grid.Row="7"
+                                    Content="恢复默认设置"
+                                    Margin="2">
                                     <Button.Flyout>
                                         <Flyout>
                                             <StackPanel>
-                                                <TextBlock Text="进行此操作会同时退出登录，您确定吗？" Style="{ThemeResource BaseTextBlockStyle}" Margin="0,0,0,12" />
-                                                <Button Content="恢复默认" Style="{StaticResource ButtonRevealStyle}" Click="Button_Click" Tag="reset" />
+                                                <TextBlock
+                                                    Text="进行此操作会同时退出登录，您确定吗？"
+                                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                                    Margin="0,0,0,12" />
+                                                <Button
+                                                    Content="恢复默认"
+                                                    Click="Button_Click"
+                                                    Tag="reset" />
                                             </StackPanel>
                                         </Flyout>
                                     </Button.Flyout>
@@ -117,25 +227,59 @@
                             </StackPanel>
                         </Grid>
                     </controls:HeaderedContentControl>
-                    <controls:HeaderedContentControl Grid.Row="3" Header="更新" Style="{StaticResource HeaderStyle}">
+                    <controls:HeaderedContentControl
+                        Grid.Row="3"
+                        Header="更新"
+                        Style="{StaticResource HeaderStyle}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
-                            <StackPanel Orientation="Horizontal" Grid.Row="0">
-                                <TextBlock FontSize="{ThemeResource ContentControlFontSize}" VerticalAlignment="Center">版本：</TextBlock>
-                                <TextBlock x:Name="VersionTextBlock" FontSize="{ThemeResource ContentControlFontSize}" VerticalAlignment="Center"/>
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Grid.Row="0">
+                                <TextBlock
+                                    FontSize="{ThemeResource ContentControlFontSize}"
+                                    VerticalAlignment="Center"
+                                    Padding="0,4">
+                                    版本：
+                                </TextBlock>
+                                <TextBlock
+                                    x:Name="VersionTextBlock"
+                                    FontSize="{ThemeResource ContentControlFontSize}"
+                                    VerticalAlignment="Center"/>
                             </StackPanel>
-                            <ToggleSwitch x:Name="CheckUpdateWhenLuanching" Header="启动时检查更新" Toggled="ToggleSwitch_Toggled" Grid.Row="1"/>
-                            <StackPanel Orientation="Horizontal" Grid.Row="2">
-                                <Button Tag="checkUpdate" Click="Button_Click" Grid.Row="6" Style="{StaticResource ButtonRevealStyle}">检查更新</Button>
-                                <Button Tag="gotoTestPage" Click="Button_Click" Visibility="Visible" Grid.Row="7" x:Name="gotoTestPage" Content="前往测试页面" Margin="2" Style="{StaticResource ButtonRevealStyle}"/>
+                            <ToggleSwitch
+                                x:Name="CheckUpdateWhenLuanching"
+                                Header="启动时检查更新"
+                                Toggled="ToggleSwitch_Toggled"
+                                Grid.Row="1"/>
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Grid.Row="2">
+                                <Button
+                                    Tag="checkUpdate"
+                                    Click="Button_Click"
+                                    Grid.Row="6">
+                                    检查更新
+                                </Button>
+                                <Button
+                                    Tag="gotoTestPage"
+                                    Click="Button_Click"
+                                    Visibility="Visible"
+                                    Grid.Row="7"
+                                    x:Name="gotoTestPage"
+                                    Content="前往测试页面"
+                                    Margin="2"/>
                             </StackPanel>
                         </Grid>
                     </controls:HeaderedContentControl>
-                    <controls:HeaderedContentControl Grid.Row="4" Header="关于" Style="{StaticResource HeaderStyle}">
+                    <controls:HeaderedContentControl
+                        Grid.Row="4"
+                        Header="关于"
+                        Style="{StaticResource HeaderStyle}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
@@ -152,6 +296,10 @@
                 </Grid>
             </StackPanel>
         </ScrollViewer>
-        <control:TitleBar x:Name="TitleBar" Title="设置" Visibility="Collapsed" BackButtonClick="TitleBar_BackButtonClick"/>
+        <control:TitleBar
+            x:Name="TitleBar"
+            Title="设置"
+            Visibility="Collapsed"
+            BackButtonClick="TitleBar_BackButtonClick"/>
     </Grid>
 </Page>

@@ -38,26 +38,17 @@
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <TextBox Header="输入UID" x:Name="uid" Grid.Row="0" Margin="0,2"/>
-                    <Button Click="Button_Click" Grid.Row="1" Margin="0,2" Style="{StaticResource ButtonRevealStyle}">前往</Button>
-                    <TextBox Header="输入URL" x:Name="url" Grid.Row="2" Margin="0,2"></TextBox>
-                    <Button Click="Button_Click_5" Grid.Row="3" Margin="0,2" Style="{StaticResource ButtonRevealStyle}">获取</Button>
+                    <Button Click="Button_Click" Grid.Row="1" Margin="0,2" Content="前往"/>
+                    <TextBox Header="输入URL" x:Name="url" Grid.Row="2" Margin="0,2"/>
+                    <Button Click="Button_Click_5" Grid.Row="3" Margin="0,2" Content="获取"/>
                     <TextBox Header="通知测试" x:Name="message" Grid.Row="4" Margin="0,2"/>
-                    <Button Click="Button_Click_4" Grid.Row="5" Margin="0,2" Style="{StaticResource ButtonRevealStyle}">显示</Button>
-                    <Button Click="Button_Click_1" Grid.Row="6" Margin="0,2" Style="{StaticResource ButtonRevealStyle}">前往登录页面</Button>
-                    <RichTextBlock TextWrapping="Wrap" Grid.Row="7" Margin="0,2">
-                        <Paragraph>
-                            <Run>这里是文本</Run>
-                            <InlineUIContainer>
-                                <Image Source="/Assets/Emoji/(斗鸡眼滑稽.png" Height="20" Width="20" Margin="-1,0,0,-4" ToolTipService.ToolTip=""/>
-                            </InlineUIContainer>
-                            <Hyperlink Click="Hyperlink_Click">
-                                <Run Text="这里是链接"/>
-                            </Hyperlink>
-                        </Paragraph>
-                    </RichTextBlock>
+                    <Button Click="Button_Click_4" Grid.Row="5" Margin="0,2" Content="显示"/>
+                    <TextBox Header="测试MTextBlock" x:Name="text" Grid.Row="6" Margin="0,2"/>
+                    <control:MTextBlock Grid.Row="7" Margin="0,2" MessageText="{x:Bind Path=text.Text, Mode=OneWay}"/>
+                    <Button Grid.Row="8" Click="Button_Click_1" Content="打开App页面"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>
-        <control:TitleBar BackButtonClick="Button_Click_3"/>
+        <control:TitleBar Title="测试页面" BackButtonClick="Button_Click_3"/>
     </Grid>
 </Page>

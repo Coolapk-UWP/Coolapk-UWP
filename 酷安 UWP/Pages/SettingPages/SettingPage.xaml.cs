@@ -60,10 +60,8 @@ namespace CoolapkUWP.Pages.SettingPages
 - [Coolapk-kotlin](https://github.com/bjzhou/Coolapk-kotlin)
 - [UWP Community Toolkit](https://github.com/Microsoft/UWPCommunityToolkit/)
 - [Win UI](https://github.com/microsoft/microsoft-ui-xaml)
-- [Json.NET](https://www.newtonsoft.com/json)
-- [QRCoder](https://github.com/codebude/QRCoder)
-- [Metro Log](https://github.com/novotnyllc/MetroLog)
 - [Color Thief](https://github.com/KSemenenko/ColorThief)
+- [Html2Markdown](https://github.com/baynezy/Html2Markdown)
 ";
         }
 

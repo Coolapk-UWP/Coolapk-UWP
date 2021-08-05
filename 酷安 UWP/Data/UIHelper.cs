@@ -79,7 +79,7 @@ namespace CoolapkUWP.Data
         public static void ShowPopup(Popup popup)
         {
             popup.RequestedTheme = SettingsHelper.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
-            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
+            if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
             { popups.Insert(popups.Count - 1, popup); }
             else { popups.Add(popup); }
             popup.IsOpen = true;
@@ -100,7 +100,7 @@ namespace CoolapkUWP.Data
                 await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
             }
             else if (popups.Last().Child is StatusGrid statusGrid)
-                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar());
+            { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar()); }
         }
         public static async void PausedProgressBar()
         {
@@ -115,9 +115,9 @@ namespace CoolapkUWP.Data
         public static async void HideProgressBar()
         {
             isShowingProgressBar = false;
-            if (SettingsHelper.HasStatusBar && !isShowingMessage) await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
-            else if (popups.Last().Child is StatusGrid statusGrid) statusGrid.HideProgressBar();
-        }
+            if (SettingsHelper.HasStatusBar && !isShowingMessage) { await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync(); }
+            else if (popups.Last().Child is StatusGrid statusGrid) { statusGrid.HideProgressBar(); }
+            }
         public static async void ShowMessage(string message)
         {
             messageList.Add(message);
@@ -131,11 +131,11 @@ namespace CoolapkUWP.Data
                     {
                         StatusBar statusBar = StatusBar.GetForCurrentView();
                         statusBar.ProgressIndicator.Text = s;
-                        if (isShowingProgressBar) statusBar.ProgressIndicator.ProgressValue = null;
-                        else statusBar.ProgressIndicator.ProgressValue = 0;
+                        if (isShowingProgressBar) { statusBar.ProgressIndicator.ProgressValue = null; }
+                        else { statusBar.ProgressIndicator.ProgressValue = 0; }
                         await statusBar.ProgressIndicator.ShowAsync();
                         await Task.Delay(3000);
-                        if (messageList.Count == 0 && !isShowingProgressBar) await statusBar.ProgressIndicator.HideAsync();
+                        if (messageList.Count == 0 && !isShowingProgressBar) { await statusBar.ProgressIndicator.HideAsync(); }
                         statusBar.ProgressIndicator.Text = string.Empty;
                         messageList.RemoveAt(0);
                     }
@@ -146,8 +146,8 @@ namespace CoolapkUWP.Data
                         messageList.RemoveAt(0);
                         await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                         {
-                            if (messageList.Count == 0) statusGrid.ShowMessage(string.Empty);
-                            if (!isShowingProgressBar) HideProgressBar();
+                            if (messageList.Count == 0) { statusGrid.ShowMessage(string.Empty); }
+                            if (!isShowingProgressBar) { HideProgressBar(); }
                         });
                     }
                 }
@@ -158,9 +158,9 @@ namespace CoolapkUWP.Data
         public static void ShowHttpExceptionMessage(HttpRequestException e)
         {
             if (e.Message.IndexOfAny(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }) != -1)
-                ShowMessage($"服务器错误： {e.Message.Replace("Response status code does not indicate success: ", string.Empty)}");
-            else if (e.Message == "An error occurred while sending the request.") ShowMessage("无法连接网络。");
-            else ShowMessage($"请检查网络连接。 {e.Message}");
+            { ShowMessage($"服务器错误： {e.Message.Replace("Response status code does not indicate success: ", string.Empty)}"); }
+            else if (e.Message == "An error occurred while sending the request.") { ShowMessage("无法连接网络。"); }
+            else { ShowMessage($"请检查网络连接。 {e.Message}"); }
         }
 
         public static void ShowImage(string url, ImageType type)
@@ -181,7 +181,11 @@ namespace CoolapkUWP.Data
             ShowPopup(popup);
         }
 
-        public static void Navigate(Type pageType, object e = null) => mainPage?.Frame.Navigate(pageType, e);
+        public static void Navigate(Type pageType, object e = null)
+        {
+            mainPage?.Frame.Navigate(pageType, e);
+            HideProgressBar();
+        }
 
         public static async void OpenLink(string str)
         {
@@ -191,9 +195,9 @@ namespace CoolapkUWP.Data
                 Navigate(typeof(UserListPage), new object[] { SettingsHelper.GetString("Uid"), false, "我" });
                 return;
             }
-            if (str.Contains('?')) str = str.Substring(0, str.IndexOf('?'));
-            if (str.Contains('%')) str = str.Substring(0, str.IndexOf('%'));
-            if (str.Contains('&')) str = str.Substring(0, str.IndexOf('&'));
+            if (str.Contains('?')) { str = str.Substring(0, str.IndexOf('?')); }
+            if (str.Contains('%')) { str = str.Substring(0, str.IndexOf('%')); }
+            if (str.Contains('&')) { str = str.Substring(0, str.IndexOf('&')); }
             if (str == "https://m.coolapk.com/mp/user/communitySpecification")
             {
                 Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
@@ -201,9 +205,8 @@ namespace CoolapkUWP.Data
             else if (str.IndexOf("/u/") == 0)
             {
                 string u = str.Replace("/u/", string.Empty);
-                if (int.TryParse(u, out int uu))
-                    Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, u });
-                else Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, await GetUserIDByName(u) });
+                if (int.TryParse(u, out _)) { Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, u }); }
+                else { Navigate(typeof(FeedListPage), new object[] { FeedListType.UserPageList, await GetUserIDByName(u) }); }
                 return;
             }
             else if (str.IndexOf("/feed/") == 0)
@@ -232,16 +235,14 @@ namespace CoolapkUWP.Data
             }
             else if (str.IndexOf("https") == 0)
             {
-                if (str.Contains("coolapk.com"))
-                    OpenLink(str.Replace("https://www.coolapk.com", string.Empty));
-                else Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
+                if (str.Contains("coolapk.com")) { OpenLink(str.Replace("https://www.coolapk.com", string.Empty)); }
+                else { Navigate(typeof(Pages.BrowserPage), new object[] { false, str }); }
                 return;
             }
             else if (str.IndexOf("http") == 0)
             {
-                if (str.Contains("coolapk.com"))
-                    OpenLink(str.Replace("http://www.coolapk.com", string.Empty));
-                else Navigate(typeof(Pages.BrowserPage), new object[] { false, str });
+                if (str.Contains("coolapk.com")) { OpenLink(str.Replace("http://www.coolapk.com", string.Empty)); }
+                else { Navigate(typeof(Pages.BrowserPage), new object[] { false, str }); }
                 return;
             }
         }
@@ -312,7 +313,7 @@ namespace CoolapkUWP.Data
             catch (HttpRequestException e)
             {
                 if (!isBackground) { ShowHttpExceptionMessage(e); }
-                { return string.Empty; }
+                return string.Empty;
             }
             catch
             {

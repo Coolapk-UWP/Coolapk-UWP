@@ -17,9 +17,18 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="48"/>
         </Grid.RowDefinitions>
-        <RichEditBox x:Name="InputBox" AcceptsReturn="True" TextWrapping="Wrap" ContextMenuOpening="InputBox_ContextMenuOpening"/>
-        <CommandBar Height="48" Grid.Row="1">
-            <AppBarButton Icon="Emoji2" Label="插入表情">
+        <RichEditBox
+            x:Name="InputBox"
+            AcceptsReturn="True"
+            TextWrapping="Wrap"
+            ContextMenuOpening="InputBox_ContextMenuOpening"/>
+        <CommandBar
+            Height="48"
+            Grid.Row="1">
+            <AppBarButton
+                Icon="Emoji2"
+                Label="插入表情"
+                AllowFocusOnInteraction="True">
                 <Button.Flyout>
                     <Flyout Opened="Flyout_Opened">
                         <Flyout.FlyoutPresenterStyle>
@@ -32,17 +41,29 @@
                                 <Setter Property="Background" Value="{ThemeResource SystemControlChromeLowAcrylicElementBrush}"/>
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
-                        <GridView SelectionMode="None" ItemClick="GridView_ItemClick" IsItemClickEnabled="True" Padding="0,32,0,0">
+                        <GridView
+                            SelectionMode="None"
+                            ItemClick="GridView_ItemClick"
+                            IsItemClickEnabled="True"
+                            Padding="0,32,0,0">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="local:EmojiData">
-                                    <Image Width="24" Height="24" Margin="2" Source="{x:Bind emoji}"/>
+                                    <Image
+                                        Width="24"
+                                        Height="24"
+                                        Margin="2"
+                                        Source="{x:Bind emoji}"/>
                                 </DataTemplate>
                             </GridView.ItemTemplate>
                         </GridView>
                     </Flyout>
                 </Button.Flyout>
             </AppBarButton>
-            <AppBarButton Icon="Send" Label="发送" Click="Button_Click"/>
+            <AppBarButton
+                Icon="Send"
+                Label="发送"
+                Click="Button_Click"
+                AllowFocusOnInteraction="True"/>
         </CommandBar>
     </Grid>
 </Page>

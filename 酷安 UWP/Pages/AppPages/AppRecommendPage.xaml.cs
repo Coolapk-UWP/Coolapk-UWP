@@ -152,5 +152,11 @@ namespace CoolapkUWP.Pages.AppPages
             if (e.ClickedItem is AppData date)
             { OpenAppPage("https://www.coolapk.com/apk/" + date.Tag); }
         }
+
+        private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            { Frame.GoBack(); }
+        }
     }
 }

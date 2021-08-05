@@ -470,13 +470,16 @@ namespace CoolapkUWP.Pages.AppPages
         }
         public static string GetValue(IJsonValue json)
         {
-            switch(json.GetType().Name)
+            string str =json.ToString();
+            if (str.StartsWith("\""))
             {
-                case "string": return json.GetString();
-                case "double":return json.GetNumber().ToString();
-                case "bool":return json.GetBoolean().ToString();
-                default: return json.ToString().Replace("\"","");
+                str = str.Substring(1);
             }
+            if (str.EndsWith("\""))
+            {
+                str = str.Remove(str.Length - 1);
+            }
+            return str;
         }
     }
 }

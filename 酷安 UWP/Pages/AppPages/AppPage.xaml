@@ -23,7 +23,7 @@
         <ScrollViewer x:Name="scrollViewer">
             <StackPanel>
                 <Border Height="{x:Bind data:SettingsHelper.PageTitleHeight}"/>
-                <Grid>
+                <Grid Margin="2,0">
                     <Image 
                         x:Name="AppIcon"
                         HorizontalAlignment="Left" 
@@ -94,9 +94,8 @@
                         </StackPanel>
                     </StackPanel>
                 </Grid>
-                <Grid Margin="0,-10,0,0"  Padding="10" Height="50">
+                <Grid Margin="20,0" Height="50">
                     <StackPanel
-                        Margin="6"
                         Orientation="Horizontal">
                         <StackPanel
                             Orientation="Horizontal"
@@ -117,6 +116,7 @@
                             Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
                     </StackPanel>
                     <Button
+                        Margin="0,-5,0,0"
                         Content="下载" 
                         Click="Button_Click"
                         x:Name="DownloadButton"
@@ -126,14 +126,13 @@
                         Visibility="{x:Bind AppModels.DownloadUrl, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}"/>
                 </Grid>
                 <Grid
-                    Padding="10"
                     x:Name="DPanel"
-                    Margin="0,1,0,0"
+                    Margin="10,-25,10,0"
                     Visibility="{x:Bind AppModels.Description, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='string'}">
                     <TextBlock 
                         x:Name="AppDescription"
                         TextWrapping="Wrap"
-                        Margin="10,0,10,10"
+                        Margin="10"
                         VerticalAlignment="Top"
                         Text="{x:Bind AppModels.Description, Mode=OneWay}"/>
                 </Grid>

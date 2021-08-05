@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:data="using:CoolapkUWP.Data"
+    xmlns:data="using:CoolapkUWP.Data" xmlns:control="using:CoolapkUWP.Control"
     mc:Ignorable="d"
     Loaded="Page_Loaded" >
 
@@ -14,7 +14,8 @@
         <DataTemplate x:Key="GridViewDataTemplate" >
             <Grid
                 Height="90"
-                Padding="4">
+                Padding="4"
+                CornerRadius="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
@@ -26,16 +27,19 @@
                 <TextBlock
                     Text="{Binding Title}"
                     Grid.Row="1"
+                    MaxLines="1"
                     FontSize="14"
                     FontWeight="SemiBold"
-                    HorizontalAlignment="Center"/>
+                    HorizontalAlignment="Center"
+                    TextTrimming="CharacterEllipsis"/>
                 <TextBlock
                     Text="{Binding Describe}"
                     Grid.Row="2"
+                    MaxLines="1"
                     FontSize="12"
-                    TextWrapping="Wrap"
                     FontWeight="Medium"
                     HorizontalAlignment="Center"
+                    TextTrimming="CharacterEllipsis"
                     Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
             </Grid>
         </DataTemplate>
@@ -45,10 +49,10 @@
         <!--主体-->
         <Pivot
             x:Name="Pivot1"
-            Margin="0,-48,0,0">
-            <PivotItem>
+            Padding="{x:Bind data:SettingsHelper.ButtonMargin}">
+            <PivotItem Header="应用">
                 <ScrollViewer>
-                    <StackPanel Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
+                    <StackPanel>
                         <controls:AdaptiveGridView
                             x:Name="hotview"
                             DesiredWidth="120"
@@ -56,7 +60,7 @@
                             ItemClick="Updateview_ItemClick"
                             HorizontalAlignment="Stretch"
                             SelectionMode="None"
-                            Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
+                            CornerRadius="8"
                             ItemTemplate="{StaticResource GridViewDataTemplate}">
                             <controls:AdaptiveGridView.Header>
                                 <TextBlock
@@ -77,7 +81,7 @@
                             ItemClick="Updateview_ItemClick"
                             HorizontalAlignment="Stretch"
                             SelectionMode="None"
-                            Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
+                            CornerRadius="8"
                             ItemTemplate="{StaticResource GridViewDataTemplate}">
                             <controls:AdaptiveGridView.Header>
                                 <TextBlock
@@ -94,9 +98,9 @@
                 </ScrollViewer>
             </PivotItem>
 
-            <PivotItem>
+            <PivotItem Header="游戏">
                 <ScrollViewer>
-                    <StackPanel Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
+                    <StackPanel>
                         <Grid VerticalAlignment="Top">
                             <TextBlock
                                 Text="推荐把玩"
@@ -138,9 +142,9 @@
                 </ScrollViewer>
             </PivotItem>
 
-            <PivotItem>
+            <PivotItem Header="分类">
                 <ScrollViewer>
-                    <StackPanel Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
+                    <StackPanel>
                         <TextBlock
                             FontWeight="Black"
                             Text="应用分类"
@@ -586,5 +590,6 @@
                 </ScrollViewer>
             </PivotItem>
         </Pivot>
+        <control:TitleBar Title="应用游戏" BackButtonClick="TitleBar_BackButtonClick"/>
     </Grid>
 </Page>

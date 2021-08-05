@@ -75,15 +75,15 @@
                     <Button.Flyout>
                         <MenuFlyout>
                             <MenuFlyoutItem
-                            Icon="Pictures"
-                            Tag="origin"
-                            Click="MenuFlyoutItem_Click">
+                                Icon="Pictures"
+                                Tag="origin"
+                                Click="MenuFlyoutItem_Click">
                                 查看原图
                             </MenuFlyoutItem>
                             <MenuFlyoutItem
-                            Icon="SaveLocal"
-                            Tag="save"
-                            Click="MenuFlyoutItem_Click">
+                                Icon="SaveLocal"
+                                Tag="save"
+                                Click="MenuFlyoutItem_Click">
                                 保存图片
                             </MenuFlyoutItem>
                         </MenuFlyout>
