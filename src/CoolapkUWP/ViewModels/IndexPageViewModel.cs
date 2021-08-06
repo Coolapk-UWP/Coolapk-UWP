@@ -113,7 +113,7 @@ namespace CoolapkUWP.ViewModels.IndexPage
                             case "textCard":
                             case "hot":
                             case "messageCard": return new IndexPageMessageCardModel(jo);
-                            //case "refreshCard": return new IndexPageOperationCardModel(jo, OperationType.Refresh);
+                            case "refreshCard": return new IndexPageOperationCardModel(jo, OperationType.Refresh);
                             case "unLoginCard": return new IndexPageOperationCardModel(jo, OperationType.Login);
                             case "titleCard": return new IndexPageOperationCardModel(jo, OperationType.ShowTitle);
                             case "iconTabLinkGridCard": return new IndexPageHasEntitiesModel(jo, EntityType.TabLink);
