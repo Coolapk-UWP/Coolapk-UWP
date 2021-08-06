@@ -23,7 +23,6 @@
         <Pivot
             x:Name="detailPivot"
             Margin="0,-48,0,0"
-            Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
             SelectionChanged="DetailPivot_SelectionChanged">
             <Pivot.ItemContainerStyle>
                 <Style TargetType="PivotItem">
@@ -31,9 +30,13 @@
                 </Style>
             </Pivot.ItemContainerStyle>
             <PivotItem>
-                <ScrollViewer x:Name="scrollViewer0" ViewChanged="ScrollViewer_ViewChanged">
+                <ScrollViewer
+                    x:Name="scrollViewer0"
+                    ViewChanged="ScrollViewer_ViewChanged">
                     <StackPanel Padding="{StaticResource StackPanelMargin}">
-                        <StackPanel Margin="8" Orientation="Horizontal">
+                        <StackPanel
+                            Margin="8"
+                            Orientation="Horizontal">
                             <ComboBox
                                 x:Name="SearchFeedTypeComboBox"
                                 Header="搜索类型"
@@ -61,21 +64,31 @@
                                 <ComboBoxItem>评论数</ComboBoxItem>
                             </ComboBox>
                         </StackPanel>
-                        <winui:ItemsRepeater x:Name="FeedList" ItemTemplate="{StaticResource feed}"/>
+                        <winui:ItemsRepeater
+                            x:Name="FeedList"
+                            ItemTemplate="{StaticResource feed}"/>
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>
             <PivotItem>
-                <ScrollViewer x:Name="scrollViewer1" ViewChanged="ScrollViewer_ViewChanged">
+                <ScrollViewer
+                    x:Name="scrollViewer1"
+                    ViewChanged="ScrollViewer_ViewChanged">
                     <Border Padding="{StaticResource StackPanelMargin}">
-                        <winui:ItemsRepeater x:Name="UserList" ItemTemplate="{StaticResource User}"/>
+                        <winui:ItemsRepeater
+                            x:Name="UserList"
+                            ItemTemplate="{StaticResource User}"/>
                     </Border>
                 </ScrollViewer>
             </PivotItem>
             <PivotItem>
-                <ScrollViewer x:Name="scrollViewer2" ViewChanged="ScrollViewer_ViewChanged">
+                <ScrollViewer
+                    x:Name="scrollViewer2"
+                    ViewChanged="ScrollViewer_ViewChanged">
                     <Border Padding="{StaticResource StackPanelMargin}">
-                        <winui:ItemsRepeater x:Name="TopicList" ItemTemplate="{StaticResource Topic}"/>
+                        <winui:ItemsRepeater
+                            x:Name="TopicList"
+                            ItemTemplate="{StaticResource Topic}"/>
                     </Border>
                 </ScrollViewer>
             </PivotItem>
