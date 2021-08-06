@@ -155,14 +155,13 @@
 
             <DataTemplate x:Key="textLink" x:DataType="model:IndexPageModel">
                 <ListViewItem
-                    Margin="4,0"
+                    Margin="8,0"
                     KeyDown="ListViewItem_KeyDown"
                     Style="{StaticResource AppListViewItemStyle}"
                     Tag="{x:Bind Url}"
                     Tapped="ListViewItem_Tapped">
                     <StackPanel
                         Padding="10"
-                        Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
                         Orientation="Horizontal">
                         <Image
                             Width="20"
