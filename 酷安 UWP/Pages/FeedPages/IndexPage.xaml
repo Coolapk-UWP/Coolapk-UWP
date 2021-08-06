@@ -215,14 +215,10 @@
             </DataTemplate>
             <DataTemplate x:Key="messageCard" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem
-                    Style="{StaticResource NoAnimationListViewItem}"
-                    BorderThickness="1"
-                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                    Margin="15,0">
-                    <TextBlock
+                    Style="{StaticResource NoAnimationListViewItem}">
+                    <control:MTextBlock
                         Margin="5"
-                        TextWrapping="Wrap"
-                        Text="{x:Bind description}"/>
+                        MessageText="{x:Bind description}"/>
                 </ListViewItem>
             </DataTemplate>
             <DataTemplate x:Key="iconTabLinkGridCard" x:DataType="viewmodel:IndexPageViewModel">
@@ -579,7 +575,8 @@
         <control:TitleBar
             x:Name="TitleBar"
             Visibility="Collapsed"
-            BackButtonClick="TitleBar_BackButtonClick"
-            RefreshEvent="{x:Bind RefreshPage}"/>
+            RefreshButtonVisibility="Visible"
+            RefreshEvent="{x:Bind RefreshPage}"
+            BackButtonClick="TitleBar_BackButtonClick"/>
     </Grid>
 </Page>

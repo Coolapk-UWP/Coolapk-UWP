@@ -15,33 +15,35 @@
             x:Name="webView"/>
         <control:TitleBar
             x:Name="titleBar"
-            BackButtonClick="BackButton_Click"/>
-        <StackPanel
-            Orientation="Horizontal"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Height="{x:Bind data:SettingsHelper.PageTitleHeight}">
-            <Button
-                Background="Transparent"
-                Style="{StaticResource ButtonRevealStyle}"
-                Height="48"
-                Click="{x:Bind CheckLogin}"
-                VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"
-                x:Name="TryLoginButton">
-                尝试获取token
-                <ToolTipService.ToolTip>
-                    <ToolTip Content="如果登录成功而没有自动返回上一页，请点这里"/>
-                </ToolTipService.ToolTip>
-            </Button>
-            <Button
-                Background="Transparent"
-                Style="{StaticResource BottomNavButtonStyle}"
-                Height="48"
-                Click="GotoSystemBrowserButton_Click"
-                VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"
-                x:Name="GotoSystemBrowserButton">
-                在浏览器中打开
-            </Button>
-        </StackPanel>
+            BackButtonClick="BackButton_Click">
+            <control:TitleBar.RightAreaContent>
+                <StackPanel
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top">
+                    <Button
+                        Background="Transparent"
+                        Style="{StaticResource ButtonRevealStyle}"
+                        Height="40"
+                        Click="{x:Bind CheckLogin}"
+                        VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"
+                        x:Name="TryLoginButton">
+                        尝试获取token
+                        <ToolTipService.ToolTip>
+                            <ToolTip Content="如果登录成功而没有自动返回上一页，请点这里"/>
+                        </ToolTipService.ToolTip>
+                    </Button>
+                    <Button
+                        Background="Transparent"
+                        Style="{StaticResource ButtonRevealStyle}"
+                        Height="40"
+                        Click="GotoSystemBrowserButton_Click"
+                        VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"
+                        x:Name="GotoSystemBrowserButton">
+                        在浏览器中打开
+                    </Button>
+                </StackPanel>
+            </control:TitleBar.RightAreaContent>
+        </control:TitleBar>
     </Grid>
 </Page>

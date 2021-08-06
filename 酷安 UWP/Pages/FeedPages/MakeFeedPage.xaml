@@ -34,6 +34,7 @@
                         <Flyout.FlyoutPresenterStyle>
                             <Style TargetType="FlyoutPresenter">
                                 <Setter Property="Padding" Value="0"/>
+                                <Setter Property="MaxHeight" Value="320"/>
                                 <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
                                 <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
                                 <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
@@ -44,15 +45,15 @@
                         <GridView
                             SelectionMode="None"
                             ItemClick="GridView_ItemClick"
-                            IsItemClickEnabled="True"
-                            Padding="0,32,0,0">
+                            IsItemClickEnabled="True">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="local:EmojiData">
                                     <Image
-                                        Width="24"
-                                        Height="24"
+                                        Width="36"
+                                        Height="36"
                                         Margin="2"
-                                        Source="{x:Bind emoji}"/>
+                                        Source="{x:Bind emoji}"
+                                        ToolTipService.ToolTip="{x:Bind name}"/>
                                 </DataTemplate>
                             </GridView.ItemTemplate>
                         </GridView>

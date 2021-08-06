@@ -44,8 +44,8 @@
                     <TextBox Header="通知测试" x:Name="message" Grid.Row="4" Margin="0,2"/>
                     <Button Click="Button_Click_4" Grid.Row="5" Margin="0,2" Content="显示"/>
                     <TextBox Header="测试MTextBlock" x:Name="text" Grid.Row="6" Margin="0,2"/>
-                    <control:MTextBlock Grid.Row="7" Margin="0,2" MessageText="{x:Bind Path=text.Text, Mode=OneWay}"/>
-                    <Button Grid.Row="8" Click="Button_Click_1" Content="打开App页面"/>
+                    <Button Grid.Row="7" Click="Button_Click_1" Content="打开App页面"/>
+                    <control:MTextBlock Grid.Row="8" Margin="0,2" MessageText="{x:Bind Path=text.Text, Mode=OneWay}"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

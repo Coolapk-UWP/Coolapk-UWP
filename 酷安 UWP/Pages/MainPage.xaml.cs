@@ -125,8 +125,17 @@ namespace CoolapkUWP.Pages
                     navigationView.Header = args.SelectedItemContainer.Content;
                     navigationView.PaneTitle = args.SelectedItemContainer.Content.ToString();
                 }
+                else
+                {
+                    navigationView.Header = "酷安UWP";
+                    navigationView.PaneTitle = " ";
+                }
             }
-            catch { }
+            catch
+            {
+                navigationView.Header = "酷安UWP";
+                navigationView.PaneTitle = " ";
+            }
         }
 
         #region 搜索框相关

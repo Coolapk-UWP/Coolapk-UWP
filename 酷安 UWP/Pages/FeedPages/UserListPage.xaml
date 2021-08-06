@@ -39,6 +39,7 @@
         </controls:PullToRefreshListView>
         <control:TitleBar
             x:Name="titleBar"
+            RefreshButtonVisibility="Visible"
             BackButtonClick="TitleBar_BackButtonClick"
             RefreshEvent="TitleBar_RefreshButtonClick"/>
     </Grid>
