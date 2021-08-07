@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoolapkUWP.Control;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
@@ -51,6 +52,15 @@ namespace CoolapkUWP.Data
             CheckTheme();
         }
 
+        private static bool IsDarkTheme()
+        {
+            if (theme == ElementTheme.Default)
+            {
+                return Application.Current.RequestedTheme == ApplicationTheme.Dark;
+            }
+            return theme == ElementTheme.Dark;
+        }
+
         public static async void CheckUpdate()
         {
             try
@@ -85,53 +95,37 @@ namespace CoolapkUWP.Data
                 foreach (Windows.UI.Xaml.Controls.Primitives.Popup item in UIHelper.popups)
                 { item.RequestedTheme = theme; }
 
-                Color? BackColor, ForeColor, ButtonForeInactiveColor, ButtonBackPressedColor;
-                BackColor = ForeColor = ButtonBackPressedColor = ButtonForeInactiveColor = null;
-                switch (theme)
-                {
-                    case ElementTheme.Light:
-                        BackColor = Color.FromArgb(255, 242, 242, 242);
-                        ForeColor = Colors.Black;
-                        ButtonForeInactiveColor = Color.FromArgb(255, 50, 50, 50);
-                        ButtonBackPressedColor = Color.FromArgb(255, 200, 200, 200);
-                        break;
-                    case ElementTheme.Dark:
-                        BackColor = Color.FromArgb(255, 23, 23, 23);
-                        ForeColor = Colors.White;
-                        ButtonForeInactiveColor = Color.FromArgb(255, 200, 200, 200);
-                        ButtonBackPressedColor = Color.FromArgb(255, 50, 50, 50);
-                        break;
-                    case ElementTheme.Default:
-                        break;
-                }
+                bool IsDark = IsDarkTheme();
+                SolidColorBrush AccentColor = (SolidColorBrush)Windows.UI.Xaml.Application.Current.Resources["SystemControlBackgroundAccentBrush"];
+
                 if (HasStatusBar)
                 {
-                    if (theme == ElementTheme.Default)
+                    if (IsDark)
                     {
                         StatusBar statusBar = StatusBar.GetForCurrentView();
+                        statusBar.BackgroundColor = AccentColor.Color;
+                        statusBar.ForegroundColor = Colors.White;
                         statusBar.BackgroundOpacity = 0; // 透明度
                     }
                     else
                     {
                         StatusBar statusBar = StatusBar.GetForCurrentView();
+                        statusBar.BackgroundColor = AccentColor.Color;
+                        statusBar.ForegroundColor = Colors.Black;
                         statusBar.BackgroundOpacity = 0; // 透明度
-                        statusBar.BackgroundColor = BackColor;
-                        statusBar.ForegroundColor = ForeColor;
                     }
                 }
-                else if (theme == ElementTheme.Default)
+                else if (IsDark)
                 {
                     ApplicationViewTitleBar view = ApplicationView.GetForCurrentView().TitleBar;
                     view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
+                    view.ButtonForegroundColor = Colors.White;
                 }
                 else
                 {
                     ApplicationViewTitleBar view = ApplicationView.GetForCurrentView().TitleBar;
                     view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
-                    view.ForegroundColor = view.ButtonForegroundColor = view.ButtonHoverForegroundColor = view.ButtonPressedForegroundColor = ForeColor;
-                    view.InactiveForegroundColor = view.ButtonInactiveForegroundColor = ButtonForeInactiveColor;
-                    view.ButtonHoverBackgroundColor = BackColor;
-                    view.ButtonPressedBackgroundColor = ButtonBackPressedColor;
+                    view.ButtonForegroundColor = Colors.Black;
                 }
             }
         }
