@@ -20,6 +20,11 @@
     </Page.Resources>
 
     <Grid>
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <ScrollViewer x:Name="scrollViewer">
             <StackPanel>
                 <Border Height="{x:Bind data:SettingsHelper.PageTitleHeight}"/>

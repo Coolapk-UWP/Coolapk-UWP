@@ -9,6 +9,11 @@
     mc:Ignorable="d" >
 
     <Grid>
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <WebView
             Margin="{x:Bind data:SettingsHelper.stackPanelMargin}"
             NavigationCompleted="WebView_NavigationCompleted"

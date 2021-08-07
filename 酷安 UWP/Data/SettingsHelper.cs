@@ -38,7 +38,7 @@ namespace CoolapkUWP.Data
             if (!localSettings.Values.ContainsKey("IsDarkMode"))
             { localSettings.Values.Add("IsDarkMode", false); }
             if (!localSettings.Values.ContainsKey("CheckUpdateWhenLuanching"))
-            { localSettings.Values.Add("CheckUpdateWhenLuanching", true); }
+            { localSettings.Values.Add("CheckUpdateWhenLuanching", false); }
             if (!localSettings.Values.ContainsKey("IsBackgroundColorFollowSystem"))
             { localSettings.Values.Add("IsBackgroundColorFollowSystem", true); }
             if (localSettings.Values.ContainsKey("UserName"))
@@ -52,32 +52,31 @@ namespace CoolapkUWP.Data
             CheckTheme();
         }
 
-        private static bool IsDarkTheme()
+        public static bool IsDarkTheme()
         {
             if (theme == ElementTheme.Default)
             {
-                return Application.Current.RequestedTheme == ApplicationTheme.Dark;
+                return Windows.UI.Xaml.Application.Current.RequestedTheme == ApplicationTheme.Dark;
             }
             return theme == ElementTheme.Dark;
         }
 
-        public static async void CheckUpdate()
+        public static async Task CheckUpdate()
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0;)");
                     Windows.Data.Json.JsonObject keys;
-                    try { keys = Windows.Data.Json.JsonObject.Parse(await client.GetStringAsync("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest")); }
-                    catch { keys = Windows.Data.Json.JsonObject.Parse(await client.GetStringAsync("https://v2.kkpp.cc/repos/Tangent-90/Coolapk-UWP/releases/latest")); }
+                    try { keys = Windows.Data.Json.JsonObject.Parse(await UIHelper.GetHTML("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest")); }
+                    catch { keys = Windows.Data.Json.JsonObject.Parse(await UIHelper.GetHTML("https://v2.kkpp.cc/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest")); }
                     string[] ver = keys["tag_name"].GetString().Replace("v", string.Empty).Split('.');
                     if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major
                         || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
                         || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
                     {
-                        Control.GetUpdateContentDialog dialog = new Control.GetUpdateContentDialog(keys["html_url"].GetString(), keys["body"].GetString()) { RequestedTheme = theme };
-                        _ = await dialog.ShowAsync();
+                        GetUpdateContentDialog dialog = new GetUpdateContentDialog(keys["html_url"].GetString(), keys["body"].GetString()) { RequestedTheme = theme };
+                        _ = dialog.ShowAsync();
                     }
                     else { UIHelper.ShowMessage("当前无可用更新。"); }
                 }

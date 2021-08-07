@@ -15,6 +15,11 @@
         x:Name="titleGrid"
         VerticalAlignment="Top"
         Height="{x:Bind data:SettingsHelper.PageTitleHeight}">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <Border
             Visibility="Visible"
             x:Name="TitleBackground"

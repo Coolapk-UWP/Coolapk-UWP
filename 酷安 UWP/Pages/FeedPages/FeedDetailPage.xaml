@@ -18,6 +18,11 @@
     </Page.Resources>
 
     <Grid x:Name="MainGrid">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <controls:PullToRefreshListView
             x:Name="MainListView"
             SelectionMode="None"

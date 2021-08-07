@@ -17,6 +17,11 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Background="{ThemeResource SystemControlChromeLowAcrylicElementBrush}">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <controls:PullToRefreshListView
             x:Name="FeedReplyList"
             ItemTemplate="{StaticResource feed_reply}"

@@ -15,6 +15,11 @@
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <ScrollViewer>
             <StackPanel Margin="16,0" Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
                 <Grid>

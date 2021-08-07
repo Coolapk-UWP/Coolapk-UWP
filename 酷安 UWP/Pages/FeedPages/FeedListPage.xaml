@@ -313,6 +313,11 @@
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <controls:PullToRefreshListView
             ItemsSource="{x:Bind itemCollection}"
             x:Name="listView"

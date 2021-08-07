@@ -78,7 +78,7 @@ namespace CoolapkUWP.Data
         #region UI相关
         public static void ShowPopup(Popup popup)
         {
-            popup.RequestedTheme = SettingsHelper.GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light;
+            popup.RequestedTheme = SettingsHelper.IsDarkTheme() ? ElementTheme.Dark : ElementTheme.Light;
             if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
             { popups.Insert(popups.Count - 1, popup); }
             else { popups.Add(popup); }

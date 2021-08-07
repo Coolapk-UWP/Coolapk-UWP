@@ -316,6 +316,11 @@
 
     <ScrollViewer>
         <StackPanel Padding="0">
+            <StackPanel.ChildrenTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition/>
+                </TransitionCollection>
+            </StackPanel.ChildrenTransitions>
             <Grid
                 x:Name="UserDetailGrid"
                 Margin="0,20,0,0">

@@ -13,6 +13,11 @@
         CornerRadius="8"
         Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
         BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="48"/>

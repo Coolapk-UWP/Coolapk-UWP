@@ -15,6 +15,11 @@
         Padding="0,0,140,0"
         VerticalAlignment="Top"
         Background="Transparent">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <Grid.Resources>
             <Storyboard x:Name="EnterStoryboard">
                 <FadeInThemeAnimation Storyboard.TargetName="messageTextBlock"/>

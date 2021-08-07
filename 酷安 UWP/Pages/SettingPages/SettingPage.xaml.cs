@@ -173,13 +173,20 @@ namespace CoolapkUWP.Pages.SettingPages
             }
         }
 
+        private async void CheckUpdate()
+        {
+            IsCheckUpdate.Visibility = Visibility.Visible;
+            await SettingsHelper.CheckUpdate();
+            IsCheckUpdate.Visibility = Visibility.Collapsed;
+        }
+
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             switch (button.Tag as string)
             {
                 case "gotoTestPage": UIHelper.Navigate(typeof(TestPage), null); break;
-                case "checkUpdate": SettingsHelper.CheckUpdate(); break;
+                case "checkUpdate": CheckUpdate(); break;
                 case "RefreshCache": GetCacheSize(); break;
                 case "logout":
                     SettingsHelper.Logout();

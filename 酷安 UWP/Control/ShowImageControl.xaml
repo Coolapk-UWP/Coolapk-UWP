@@ -12,6 +12,11 @@
     d:DesignWidth="400">
 
     <Grid KeyUp="UserControl_KeyUp">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <FlipView
             Padding="{x:Bind data:SettingsHelper.stackPanelMargin}"
             ScrollViewer.IsZoomChainingEnabled="True"

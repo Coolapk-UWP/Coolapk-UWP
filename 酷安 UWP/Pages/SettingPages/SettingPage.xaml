@@ -18,6 +18,11 @@
     </Page.Resources>
 
     <Grid>
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <ScrollViewer>
             <StackPanel x:Name="listView" Margin="16,0">
                 <Grid>
@@ -251,11 +256,21 @@
                                     FontSize="{ThemeResource ContentControlFontSize}"
                                     VerticalAlignment="Center"/>
                             </StackPanel>
-                            <ToggleSwitch
-                                x:Name="CheckUpdateWhenLuanching"
-                                Header="启动时检查更新"
-                                Toggled="ToggleSwitch_Toggled"
-                                Grid.Row="1"/>
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Grid.Row="1">
+                                <ToggleSwitch
+                                    Header="启动时检查更新"
+                                    Toggled="ToggleSwitch_Toggled"
+                                    x:Name="CheckUpdateWhenLuanching"/>
+                                <muxc:ProgressRing
+                                    Width="20"
+                                    Height="20"
+                                    IsActive="True"
+                                    Margin="-120,22,0,0"
+                                    Visibility="Collapsed"
+                                    x:Name="IsCheckUpdate"/>
+                            </StackPanel>
                             <StackPanel
                                 Orientation="Horizontal"
                                 Grid.Row="2">

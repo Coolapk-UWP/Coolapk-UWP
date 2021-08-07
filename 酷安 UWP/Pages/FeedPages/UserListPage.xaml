@@ -16,6 +16,11 @@
         </ResourceDictionary>
     </Page.Resources>
     <Grid>
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <controls:PullToRefreshListView
             ItemTemplate="{StaticResource User}"
             SelectionMode="None"
