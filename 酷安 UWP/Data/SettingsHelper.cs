@@ -101,13 +101,28 @@ namespace CoolapkUWP.Data
                         ButtonForeInactiveColor = Color.FromArgb(255, 200, 200, 200);
                         ButtonBackPressedColor = Color.FromArgb(255, 50, 50, 50);
                         break;
+                    case ElementTheme.Default:
+                        break;
                 }
                 if (HasStatusBar)
                 {
-                    StatusBar statusBar = StatusBar.GetForCurrentView();
-                    statusBar.BackgroundOpacity = 0; // 透明度
-                    statusBar.BackgroundColor = BackColor;
-                    statusBar.ForegroundColor = ForeColor;
+                    if (theme == ElementTheme.Default)
+                    {
+                        StatusBar statusBar = StatusBar.GetForCurrentView();
+                        statusBar.BackgroundOpacity = 0; // 透明度
+                    }
+                    else
+                    {
+                        StatusBar statusBar = StatusBar.GetForCurrentView();
+                        statusBar.BackgroundOpacity = 0; // 透明度
+                        statusBar.BackgroundColor = BackColor;
+                        statusBar.ForegroundColor = ForeColor;
+                    }
+                }
+                else if (theme == ElementTheme.Default)
+                {
+                    ApplicationViewTitleBar view = ApplicationView.GetForCurrentView().TitleBar;
+                    view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
                 }
                 else
                 {

@@ -12,7 +12,7 @@ namespace CoolapkUWP.Control.ViewModels
         {
             JsonObject token = t.GetObject();
             url = token.TryGetValue("url", out IJsonValue json) ? json.GetString() : $"/feed/{token["id"].ToString().Replace("\"", string.Empty)}";
-            shareurl = token.TryGetValue("shareUrl", out IJsonValue shareUrl)&&!string.IsNullOrEmpty(shareUrl.GetString())
+            shareurl = token.TryGetValue("shareUrl", out IJsonValue shareUrl) && !string.IsNullOrEmpty(shareUrl.GetString())
                 ? shareUrl.GetString()
                 : "https://www.coolapk.com" + url;
             if (token["entityType"].GetString() != "article")

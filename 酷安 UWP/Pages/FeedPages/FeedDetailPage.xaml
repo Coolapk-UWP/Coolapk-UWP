@@ -5,7 +5,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:control="using:CoolapkUWP.Control"
       xmlns:viewModel="using:CoolapkUWP.Control.ViewModels"
-      xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:muxm="using:Microsoft.UI.Xaml.Media"
+      xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+      xmlns:muxm="using:Microsoft.UI.Xaml.Media"
       mc:Ignorable="d"
       SizeChanged="Page_SizeChanged">
     <Page.Resources>

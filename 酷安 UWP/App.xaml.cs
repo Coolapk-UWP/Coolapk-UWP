@@ -4,6 +4,8 @@ using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -34,6 +36,8 @@ namespace CoolapkUWP
                 // 当导航堆栈尚未还原时，导航到第一页，
                 // 并通过将所需信息作为导航参数传入来配置
                 // 参数
+                ApplicationViewTitleBar view = ApplicationView.GetForCurrentView().TitleBar;
+                view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
                 _ = rootFrame.Navigate(typeof(Pages.MainPage));
                 Window.Current.Content = rootFrame;
             }
@@ -91,6 +95,8 @@ namespace CoolapkUWP
                 // 当导航堆栈尚未还原时，导航到第一页，
                 // 并通过将所需信息作为导航参数传入来配置
                 // 参数
+                ApplicationViewTitleBar view = ApplicationView.GetForCurrentView().TitleBar;
+                view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
                 _ = rootFrame.Navigate(typeof(Pages.MainPage), e.Arguments);
                 Window.Current.Content = rootFrame;
             }

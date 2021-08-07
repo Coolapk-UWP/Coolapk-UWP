@@ -469,7 +469,7 @@ namespace CoolapkUWP.Pages.AppPages
         }
         public static string GetValue(IJsonValue json)
         {
-            string str =json.ToString();
+            string str = json.ToString();
             if (str.StartsWith("\""))
             {
                 str = str.Substring(1);

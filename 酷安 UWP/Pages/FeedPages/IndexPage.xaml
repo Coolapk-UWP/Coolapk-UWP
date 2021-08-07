@@ -127,20 +127,21 @@
             <DataTemplate x:Key="imageCard" x:DataType="viewmodel:IndexPageViewModel">
                 <Grid>
                     <FlipView
-                        x:Name="flipView"
                         Margin="8,0"
-                        CornerRadius="8"
+                        x:Name="flipView"
                         Background="Transparent"
                         ItemsSource="{x:Bind entities}"
                         SizeChanged="{x:Bind local:IndexPage.FlipView_SizeChanged}">
                         <FlipView.ItemTemplate>
                             <DataTemplate x:DataType="viewmodel:IndexPageViewModel">
-                                <Image
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Source="{x:Bind pic, Mode=OneWay}"
-                                    Tag="{x:Bind}"
-                                    Tapped="Grid_Tapped"/>
+                                <Border CornerRadius="8">
+                                    <Image
+                                        Tag="{x:Bind}"
+                                        Tapped="Grid_Tapped"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Source="{x:Bind pic, Mode=OneWay}"/>
+                                </Border>
                             </DataTemplate>
                         </FlipView.ItemTemplate>
                     </FlipView>

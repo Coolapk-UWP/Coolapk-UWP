@@ -2,9 +2,9 @@
     x:Class="CoolapkUWP.Control.DatatemplatesDictionary"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Windows10version1809="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:control="using:CoolapkUWP.Control"
-    xmlns:models="using:CoolapkUWP.Control.ViewModels"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls">
+    xmlns:models="using:CoolapkUWP.Control.ViewModels">
 
     <Style
         x:Key="FeedOpButtonStyle"
@@ -536,16 +536,16 @@
                 </ListView.ItemTemplate>
             </ListView>
             <ListView
-                ScrollViewer.VerticalScrollMode="Disabled"
-                Style="{StaticResource ListViewStyle}"
                 Grid.Row="10"
                 BorderThickness="1"
-                CornerRadius="8"
-                ItemsSource="{x:Bind replyRows}"
                 x:Name="repRL"
                 ItemClick="repRL_ItemClick"
                 IsItemClickEnabled="True"
                 x:Load="{x:Bind showReplyRows}"
+                ItemsSource="{x:Bind replyRows}"
+                Windows10version1809:CornerRadius="8"
+                Style="{StaticResource ListViewStyle}"
+                ScrollViewer.VerticalScrollMode="Disabled"
                 Background="{ThemeResource SystemControlBackgroundListLowBrush}"
                 BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
                 <ListView.ItemContainerStyle>
@@ -910,18 +910,18 @@
                     Tag="{x:Bind}"/>
             </StackPanel>
             <ListView
+                Grid.Row="3"
                 Grid.Column="1"
                 Margin="0,4,8,8"
-                CornerRadius="8"
-                BorderThickness="1"
-                Background="{ThemeResource SystemControlBackgroundListLowBrush}"
-                BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
-                ScrollViewer.VerticalScrollMode="Disabled"
                 x:Name="replyRows"
+                BorderThickness="1"
                 x:Load="{x:Bind showreplyRows}"
-                Grid.Row="3"
+                ItemsSource="{x:Bind replyRows}"
+                Windows10version1809:CornerRadius="8"
                 Style="{StaticResource ListViewStyle}"
-                ItemsSource="{x:Bind replyRows}">
+                ScrollViewer.VerticalScrollMode="Disabled"
+                Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+                BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter

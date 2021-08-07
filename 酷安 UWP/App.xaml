@@ -12,12 +12,14 @@
             </ResourceDictionary.MergedDictionaries>
             
             <ControlTemplate x:Key="ListViewItemTemplate1" TargetType="ListViewItem">
-                <ListViewItemPresenter x:Name="Root" PressedBackground="Transparent" 
-                                   PlaceholderBackground="Transparent" 
-                                   PointerOverBackground="Transparent" 
-                                   SelectedBackground="Transparent" 
-                                   SelectedPressedBackground="Transparent" 
-                                   SelectedPointerOverBackground="Transparent"/>
+                <ListViewItemPresenter
+                    x:Name="Root"
+                    PressedBackground="Transparent"
+                    PlaceholderBackground="Transparent"
+                    PointerOverBackground="Transparent"
+                    SelectedBackground="Transparent"
+                    SelectedPressedBackground="Transparent"
+                    SelectedPointerOverBackground="Transparent"/>
             </ControlTemplate>
 
             <SolidColorBrush x:Key="GrayText" Color="{ThemeResource SystemColorGrayTextColor}" />

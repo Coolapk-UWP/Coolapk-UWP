@@ -60,7 +60,6 @@
                             ItemClick="Updateview_ItemClick"
                             HorizontalAlignment="Stretch"
                             SelectionMode="None"
-                            CornerRadius="8"
                             ItemTemplate="{StaticResource GridViewDataTemplate}">
                             <controls:AdaptiveGridView.Header>
                                 <TextBlock
@@ -81,7 +80,6 @@
                             ItemClick="Updateview_ItemClick"
                             HorizontalAlignment="Stretch"
                             SelectionMode="None"
-                            CornerRadius="8"
                             ItemTemplate="{StaticResource GridViewDataTemplate}">
                             <controls:AdaptiveGridView.Header>
                                 <TextBlock
