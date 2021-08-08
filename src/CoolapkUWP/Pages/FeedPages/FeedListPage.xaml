@@ -304,12 +304,62 @@
                     </StackPanel>
                 </Grid>
             </DataTemplate>
+            <DataTemplate x:Key="ProductDetail" x:DataType="local:ProductDetail">
+                <Grid
+                    x:Name="DetailGrid"
+                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
+                    BorderThickness="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Border
+                        Width="80"
+                        Height="80"
+                        Margin="20,10"
+                        CornerRadius="8"
+                        Background="White"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left">
+                        <Image
+                            x:Name="Logo"
+                            Source="{x:Bind Logo,Mode=OneWay}"/>
+                    </Border>
+                    <StackPanel
+                        Grid.Column="1"
+                        VerticalAlignment="Center">
+                        <TextBlock
+                            FontSize="20"
+                            FontWeight="Black"
+                            Text="{x:Bind Title}"/>
+                        <controls:MarkdownTextBlock
+                            TextWrapping="Wrap"
+                            Background="Transparent"
+                            Text="{x:Bind Description}"/>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            Margin="0,5">
+                            <TextBlock Text="{x:Bind FollowNum}"/>
+                            <TextBlock>关注</TextBlock>
+                            <TextBlock
+                                Margin="5,0,0,0"
+                                Text="{x:Bind CommentNum}"/>
+                            <TextBlock>热度</TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
             <local:TemplateSelector
                 x:Key="tempse"
-                DataTemplate1="{StaticResource UserDetail}"
-                DataTemplate2="{StaticResource feed}"
-                DataTemplate3="{StaticResource TopicDetail}"
-                DataTemplate4="{StaticResource DYHDetail}"/>
+                Feed="{StaticResource feed}"
+                DYHDetail="{StaticResource DYHDetail}"
+                UserDetail="{StaticResource UserDetail}"
+                TopicDetail="{StaticResource TopicDetail}"
+                ProductDetail="{StaticResource ProductDetail}"/>
         </ResourceDictionary>
     </Page.Resources>
     <Grid>

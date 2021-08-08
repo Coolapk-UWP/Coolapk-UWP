@@ -206,19 +206,21 @@ namespace CoolapkUWP.Pages
 
         #region toIndexPage
         private void ChangeBadgeNum(double num)
-            => Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                                                                 {
-                                                                     if (num > 0)
-                                                                     {
-                                                                         NotifyStatus.Glyph = "";// ED0C
-                                                                         Notify.Content = num.ToString() + "个通知";
-                                                                     }
-                                                                     else
-                                                                     {
-                                                                         NotifyStatus.Glyph = "";// ED0D
-                                                                         Notify.Content = "通知";
-                                                                     }
-                                                                 });
+        {
+            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                if (num > 0)
+                {
+                    NotifyStatus.Glyph = "";// ED0C
+                    Notify.Content = num.ToString() + "个通知";
+                }
+                else
+                {
+                    NotifyStatus.Glyph = "";// ED0D
+                    Notify.Content = "通知";
+                }
+            });
+        }
         #endregion
 
         private async void RegisterBackgroundTask()

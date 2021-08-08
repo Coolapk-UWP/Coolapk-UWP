@@ -51,7 +51,6 @@
                     <TextBox Header="测试MTextBlock" x:Name="text" Grid.Row="6" Margin="0,2"/>
                     <Button Grid.Row="7" Click="Button_Click_1" Content="打开App页面"/>
                     <control:MTextBlock Grid.Row="8" Margin="0,2" MessageText="{x:Bind Path=text.Text, Mode=OneWay}"/>
-                    <Border Width="100" Height="100" Background="{StaticResource SystemChromeMediumLowColor}"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

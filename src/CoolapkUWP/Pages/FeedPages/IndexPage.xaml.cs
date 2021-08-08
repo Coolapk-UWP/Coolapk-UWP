@@ -52,7 +52,7 @@ namespace CoolapkUWP.Pages.FeedPages
                   await Task.Delay(1000);
                   await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                   {
-                      (VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer).ViewChanged += this.ScrollViewer_ViewChanged;
+                      try { (VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer).ViewChanged += this.ScrollViewer_ViewChanged; } catch { }
                   });
               });
         }

@@ -189,7 +189,7 @@ namespace CoolapkUWP.Data
 
         public static async void OpenLink(string str)
         {
-            if (string.IsNullOrWhiteSpace(str)) return;
+            if (string.IsNullOrWhiteSpace(str)) { return; }
             if (str == "/contacts/fans")
             {
                 Navigate(typeof(UserListPage), new object[] { SettingsHelper.GetString("Uid"), false, "我" });
@@ -225,6 +225,12 @@ namespace CoolapkUWP.Data
             {
                 string u = str.Replace("/dyh/", string.Empty);
                 Navigate(typeof(FeedListPage), new object[] { FeedListType.DYHPageList, u });
+                return;
+            }
+            else if (str.IndexOf("/product/") == 0)
+            {
+                string u = str.Replace("/product/", string.Empty);
+                Navigate(typeof(FeedListPage), new object[] { FeedListType.ProductPageList, u });
                 return;
             }
             else if (str.IndexOf("/apk/") == 0 || str.IndexOf("/game/") == 0)
@@ -485,6 +491,21 @@ namespace CoolapkUWP.Data
                 num /= 10000000;
             }
             return $"{num:N2}{str}";
+        }
+
+
+        public static string GetValue(IJsonValue json)
+        {
+            string str = json.ToString();
+            if (str.StartsWith("\""))
+            {
+                str = str.Substring(1);
+            }
+            if (str.EndsWith("\""))
+            {
+                str = str.Remove(str.Length - 1);
+            }
+            return str;
         }
 
         public static string CSStoMarkDown(string text)

@@ -365,19 +365,19 @@ namespace CoolapkUWP.Pages.AppPages
                 }
                 if (dataRow.TryGetValue("voteCount", out IJsonValue voteCount) && !string.IsNullOrEmpty(voteCount.ToString()))
                 {
-                    VoteCount = GetValue(voteCount);
+                    VoteCount = UIHelper.GetValue(voteCount);
                 }
                 if (dataRow.TryGetValue("followCount", out IJsonValue followCount) && !string.IsNullOrEmpty(followCount.ToString()))
                 {
-                    FollowNum = GetValue(followCount);
+                    FollowNum = UIHelper.GetValue(followCount);
                 }
                 if (dataRow.TryGetValue("commentCount", out IJsonValue commentCount) && !string.IsNullOrEmpty(commentCount.ToString()))
                 {
-                    CommentNum = GetValue(commentCount);
+                    CommentNum = UIHelper.GetValue(commentCount);
                 }
                 if (dataRow.TryGetValue("downCount", out IJsonValue downCount) && !string.IsNullOrEmpty(downCount.ToString()))
                 {
-                    DownloadNum = GetValue(downCount);
+                    DownloadNum = UIHelper.GetValue(downCount);
                 }
                 if (dataRow.TryGetValue("pubdate", out IJsonValue pubdate) && !string.IsNullOrEmpty(pubdate.ToString()))
                 {
@@ -466,19 +466,6 @@ namespace CoolapkUWP.Pages.AppPages
         private async void GetPic(IJsonValue item)
         {
             PicArr.Add(new ImageData { Pic = await ImageCache.GetImage(ImageType.OriginImage, item.GetString()), url = item.GetString() });
-        }
-        public static string GetValue(IJsonValue json)
-        {
-            string str = json.ToString();
-            if (str.StartsWith("\""))
-            {
-                str = str.Substring(1);
-            }
-            if (str.EndsWith("\""))
-            {
-                str = str.Remove(str.Length - 1);
-            }
-            return str;
         }
     }
 }

@@ -19,6 +19,7 @@ namespace CoolapkUWP.Pages.FeedPages
 {
     internal enum FeedListType
     {
+        ProductPageList,
         UserPageList,
         TagPageList,
         DYHPageList
@@ -113,7 +114,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 set
                 {
                     if (value > -1)
-                        _selectedIndex = value;
+                    { _selectedIndex = value; }
                 }
             }
 
@@ -188,7 +189,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 set
                 {
                     if (value > -1)
-                        _selectedIndex = value;
+                    { _selectedIndex = value; }
                 }
             }
 
@@ -244,6 +245,81 @@ namespace CoolapkUWP.Pages.FeedPages
             public string GetTitleBarText(object o) => (o as DYHDetail).Title;
         }
 
+        private class ProductPageDataProvider : ICanChangeSelectedIndex
+        {
+            public string Id { get; private set; }
+
+            private int page, _selectedIndex;
+            public int SelectedIndex
+            {
+                get => _selectedIndex;
+                set
+                {
+                    if (value > -1)
+                    { _selectedIndex = value; }
+                }
+            }
+
+            private double firstItem, lastItem;
+            public FeedListType ListType { get => FeedListType.ProductPageList; }
+            public ProductPageDataProvider(string id) => Id = id;
+
+            public void Reset() => firstItem = lastItem = page = 0;
+
+            public async Task<object> GetDetail()
+            {
+                JsonObject detail = UIHelper.GetJSonObject(await UIHelper.GetJson("/product/detail?id=" + Id));
+                return detail != null
+                    ? new ProductDetail
+                    {
+                        Title = detail["title"].GetString(),
+                        FollowNum = detail["follow_num"].GetNumber(),
+                        CommentNum = UIHelper.GetValue(detail["hot_num_txt"]),
+                        Description = UIHelper.CSStoMarkDown(detail["description"].GetString()),
+                        Logo = await ImageCache.GetImage(ImageType.Icon, detail["logo"].GetString()),
+                        SelectedIndex = SelectedIndex
+                    }
+                    : null;
+            }
+
+            public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
+            {
+                string sortType = "feed";
+                switch (SelectedIndex)
+                {
+                    case 0:
+                        sortType = "feed";
+                        break;
+                    case 1:
+                        sortType = "answer";
+                        break;
+                    case 2:
+                        sortType = "article";
+                        break;
+                    default:
+                        break;
+                }
+                if (p == 1 && page == 0) { page = 1; }
+                JsonArray Root = UIHelper.GetDataArray(await UIHelper.GetJson($"/page/dataList?url=/page?url=/product/feedList?type={sortType}&id={Id}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{((lastItem == 0) ? string.Empty : $"&lastItem={lastItem}")}"));
+                if (!(Root is null) && Root.Count != 0)
+                {
+                    if (page == 1 || p == 1)
+                    { firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem; }
+                    lastItem = Root.Last()?.GetObject()["id"].GetNumber() ?? lastItem;
+                    List<FeedViewModel> FeedsCollection = new List<FeedViewModel>();
+                    foreach (IJsonValue i in Root) { FeedsCollection.Add(new FeedViewModel(i)); }
+                    return FeedsCollection;
+                }
+                else
+                {
+                    page--;
+                    return null;
+                }
+            }
+
+            public string GetTitleBarText(object o) => (o as ProductDetail).Title;
+        }
+
         IFeedListDataProvider provider;
         ScrollViewer VScrollViewer;
         ObservableCollection<object> itemCollection = new ObservableCollection<object>();
@@ -277,6 +353,11 @@ namespace CoolapkUWP.Pages.FeedPages
                             provider = new DYHPageDataProvider(str);
                             titleBar.ComboBoxVisibility = Visibility.Collapsed;
                             titleBar.ComboBoxItemsSource = new string[] { "精选", "广场" };
+                            break;
+                        case FeedListType.ProductPageList:
+                            provider = new ProductPageDataProvider(str);
+                            titleBar.ComboBoxVisibility = Visibility.Visible;
+                            titleBar.ComboBoxItemsSource = new string[] { "讨论", "问答", "图文" };
                             break;
                     }
                     Refresh();
@@ -316,10 +397,14 @@ namespace CoolapkUWP.Pages.FeedPages
             UIHelper.ShowProgressBar();
             if (itemCollection.Count > 0) { itemCollection.RemoveAt(0); }
             itemCollection.Insert(0, await provider.GetDetail());
-            if (itemCollection[0] is DYHDetail detail)
+            if (itemCollection[0] is DYHDetail DYHDetail)
             {
-                titleBar.ComboBoxSelectedIndex = detail.SelectedIndex;
-                titleBar.ComboBoxVisibility = detail.ShowComboBox ? Visibility.Visible : Visibility.Collapsed;
+                titleBar.ComboBoxSelectedIndex = DYHDetail.SelectedIndex;
+                titleBar.ComboBoxVisibility = DYHDetail.ShowComboBox ? Visibility.Visible : Visibility.Collapsed;
+            }
+            if (itemCollection[0] is ProductDetail ProductDetail)
+            {
+                titleBar.ComboBoxSelectedIndex = ProductDetail.SelectedIndex;
             }
 
             List<FeedViewModel> feeds = await provider.GetFeeds(1);
@@ -460,15 +545,26 @@ namespace CoolapkUWP.Pages.FeedPages
         public bool ShowComboBox { get; set; }
     }
 
+    internal class ProductDetail
+    {
+        public ImageSource Logo { get; set; }
+        public string Title { get; set; }
+        public double FollowNum { get; set; }
+        public string CommentNum { get; set; }
+        public string Description { get; set; }
+        public int SelectedIndex { get; set; }
+    }
+
     internal class TemplateSelector : DataTemplateSelector
     {
-        public DataTemplate DataTemplate1 { get; set; }
-        public DataTemplate DataTemplate2 { get; set; }
-        public DataTemplate DataTemplate3 { get; set; }
-        public DataTemplate DataTemplate4 { get; set; }
+        public DataTemplate Feed { get; set; }
+        public DataTemplate DYHDetail { get; set; }
+        public DataTemplate UserDetail { get; set; }
+        public DataTemplate TopicDetail { get; set; }
+        public DataTemplate ProductDetail { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            return item is UserDetail ? DataTemplate1 : item is TopicDetail ? DataTemplate3 : item is DYHDetail ? DataTemplate4 : DataTemplate2;
+            return item is UserDetail ? UserDetail : item is TopicDetail ? TopicDetail : item is DYHDetail ? DYHDetail : item is ProductDetail ? ProductDetail : Feed;
         }
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }

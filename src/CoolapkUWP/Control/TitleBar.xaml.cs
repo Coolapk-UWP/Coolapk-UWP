@@ -26,10 +26,16 @@ namespace CoolapkUWP.Control
         private void RefreshButton_Click(object sender, RoutedEventArgs e) => RefreshEvent?.Invoke(sender, e);
         private void BackButton_Click(object sender, RoutedEventArgs e) => BackButtonClick?.Invoke(sender, e);
         private void ChangeModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => ComboBoxSelectionChange?.Invoke(sender, e);
+        
         private void titleGrid_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             if (e.OriginalSource is Grid || (e.OriginalSource is TextBlock a && a == title))
             { RefreshEvent?.Invoke(sender, e); }
+        }
+
+        private void UserControl_SizeChanged(object _, SizeChangedEventArgs _1)
+        {
+            RefreshButton.Visibility = Window.Current.Bounds.Width <= 360 ? Visibility.Collapsed : RefreshButtonVisibility;
         }
     }
 }
