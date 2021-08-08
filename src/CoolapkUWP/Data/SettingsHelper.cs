@@ -95,21 +95,21 @@ namespace CoolapkUWP.Data
                 { item.RequestedTheme = theme; }
 
                 bool IsDark = IsDarkTheme();
-                SolidColorBrush AccentColor = (SolidColorBrush)Windows.UI.Xaml.Application.Current.Resources["SystemControlBackgroundAccentBrush"];
+                Color AccentColor = (Color)Windows.UI.Xaml.Application.Current.Resources["SystemChromeMediumLowColor"];
 
                 if (HasStatusBar)
                 {
                     if (IsDark)
                     {
                         StatusBar statusBar = StatusBar.GetForCurrentView();
-                        statusBar.BackgroundColor = AccentColor.Color;
+                        statusBar.BackgroundColor = AccentColor;
                         statusBar.ForegroundColor = Colors.White;
                         statusBar.BackgroundOpacity = 0; // 透明度
                     }
                     else
                     {
                         StatusBar statusBar = StatusBar.GetForCurrentView();
-                        statusBar.BackgroundColor = AccentColor.Color;
+                        statusBar.BackgroundColor = AccentColor;
                         statusBar.ForegroundColor = Colors.Black;
                         statusBar.BackgroundOpacity = 0; // 透明度
                     }

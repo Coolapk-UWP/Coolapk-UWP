@@ -507,10 +507,11 @@
             <Button
                 Height="160"
                 x:Name="LoginButton"
-                Style="{StaticResource ButtonRevealStyle}"
                 Visibility="Collapsed"
                 Click="LoginButton_Click"
-                HorizontalAlignment="Stretch">
+                Background="Transparent"
+                HorizontalAlignment="Stretch"
+                Style="{StaticResource ButtonRevealStyle}">
                 点击登录
             </Button>
             <ListViewItem
