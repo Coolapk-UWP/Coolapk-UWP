@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Control.ViewModels;
+﻿using CoolapkUWP.Control;
+using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
 using CoolapkUWP.Pages.FeedPages;
 using System;
@@ -56,7 +57,7 @@ namespace CoolapkUWP.Pages
             ChangeBadgeNum(UIHelper.notifications.BadgeNum);
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
             { Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true; }
-            if (SettingsHelper.GetBoolen("CheckUpdateWhenLuanching")) { SettingsHelper.CheckUpdate(); }
+            if (SettingsHelper.GetBoolen("CheckUpdateWhenLuanching")) { _ = SettingsHelper.CheckUpdate(); }
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
             {
                 int i = SettingsHelper.HasStatusBar ? UIHelper.popups.Count - 1 : UIHelper.popups.Count - 2;
@@ -76,6 +77,7 @@ namespace CoolapkUWP.Pages
             UIHelper.mainPage = this;
             navigationView.SelectedItem = navigationView.MenuItems[1];
             RegisterBackgroundTask();
+            LiveTileControl.UpdateTile();
         }
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)

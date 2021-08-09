@@ -76,8 +76,8 @@
                                     Click="Button_Click"
                                     Tag="follow"
                                     Padding="0"
-                                    Style="{StaticResource ButtonStyle1}"
-                                    Background="{x:Null}">
+                                    Background="{x:Null}"
+                                    Style="{StaticResource ButtonRevealStyle}">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock
                                             Foreground="White"
@@ -94,8 +94,8 @@
                                     Tag="fans"
                                     Padding="0"
                                     Margin="5,0,0,0"
-                                    Style="{StaticResource ButtonStyle1}"
-                                    Background="{x:Null}">
+                                    Background="{x:Null}"
+                                    Style="{StaticResource ButtonRevealStyle}">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock
                                             Margin="0,0,3,0"

@@ -1,9 +1,13 @@
-﻿using CoolapkUWP.Data;
+﻿using CoolapkUWP.Control;
+using CoolapkUWP.Data;
 using CoolapkUWP.Pages.SettingPages;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -159,6 +163,82 @@ namespace CoolapkUWP
                     UIHelper.HideProgressBar();
                 }
             }
+        }
+
+        private static async void RegisterBackgroundTask()
+        {
+            #region CheckUpdate
+            //const string CheckUpdate = "CheckUpdate";
+
+            //// Check for background access (optional)
+            //await BackgroundExecutionManager.RequestAccessAsync();
+
+            //// Register (Single Process)
+            //BackgroundTaskRegistration _CheckUpdate = BackgroundTaskHelper.Register(CheckUpdate, new TimeTrigger(1440, false), true);
+            #endregion
+
+            #region LiveTileTask
+            const string LiveTileTask = "LiveTileTask";
+
+            // Check for background access (optional)
+            await BackgroundExecutionManager.RequestAccessAsync();
+
+            // Register (Single Process)
+            BackgroundTaskRegistration _LiveTileTask = BackgroundTaskHelper.Register(LiveTileTask, new TimeTrigger(15, false), true);
+            #endregion
+
+            #region ToastBackgroundTask
+            const string ToastBackgroundTask = "ToastBackgroundTask";
+
+            // If background task is already registered, do nothing
+            if (BackgroundTaskRegistration.AllTasks.Any(i => i.Value.Name.Equals(ToastBackgroundTask)))
+                return;
+
+            // Otherwise request access
+            BackgroundAccessStatus status = await BackgroundExecutionManager.RequestAccessAsync();
+
+            // Create the background task
+            BackgroundTaskBuilder builder = new BackgroundTaskBuilder()
+            {
+                Name = ToastBackgroundTask
+            };
+
+            // Assign the toast action trigger
+            builder.SetTrigger(new ToastNotificationActionTrigger());
+
+            // And register the task
+            BackgroundTaskRegistration registration = builder.Register();
+            #endregion
+        }
+
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            base.OnBackgroundActivated(args);
+
+            BackgroundTaskDeferral deferral = args.TaskInstance.GetDeferral();
+
+            switch (args.TaskInstance.Task.Name)
+            {
+                //case "ToastBackgroundTask":
+                //    if (args.TaskInstance.TriggerDetails is ToastNotificationActionTriggerDetail details)
+                //    {
+                //        ToastArguments arguments = ToastArguments.Parse(details.Argument);
+                //        ValueSet userInput = details.UserInput;
+
+                //        // Perform tasks
+                //    }
+                //    break;
+
+                case "LiveTileTask":
+                        new LiveTileControl().Run(args.TaskInstance);
+                    break;
+
+                default:
+                    deferral.Complete();
+                    break;
+            }
+
+            deferral.Complete();
         }
     }
 }

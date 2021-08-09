@@ -43,14 +43,16 @@
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <TextBox Header="输入UID" x:Name="uid" Grid.Row="0" Margin="0,2"/>
-                    <Button Click="Button_Click" Grid.Row="1" Margin="0,2" Content="前往"/>
+                    <Button Click="Button_Click" Style="{StaticResource ButtonRevealStyle}" Grid.Row="1" Margin="0,2" Content="前往"/>
                     <TextBox Header="输入URL" x:Name="url" Grid.Row="2" Margin="0,2"/>
-                    <Button Click="Button_Click_5" Grid.Row="3" Margin="0,2" Content="获取"/>
+                    <Button Click="Button_Click_5" Style="{StaticResource ButtonRevealStyle}" Grid.Row="3" Margin="0,2" Content="获取"/>
                     <TextBox Header="通知测试" x:Name="message" Grid.Row="4" Margin="0,2"/>
-                    <Button Click="Button_Click_4" Grid.Row="5" Margin="0,2" Content="显示"/>
-                    <TextBox Header="测试MTextBlock" x:Name="text" Grid.Row="6" Margin="0,2"/>
-                    <Button Grid.Row="7" Click="Button_Click_1" Content="打开App页面"/>
-                    <control:MTextBlock Grid.Row="8" Margin="0,2" MessageText="{x:Bind Path=text.Text, Mode=OneWay}"/>
+                    <Button Click="Button_Click_4" Style="{StaticResource ButtonRevealStyle}" Grid.Row="5" Margin="0,2" Content="显示"/>
+                    <TextBox x:Name="tile" Header="修改动态磁贴源" Grid.Row="6" Margin="0,2"/>
+                    <Button Click="Button_Click_2" Style="{StaticResource ButtonRevealStyle}" Grid.Row="7" Margin="0.2">保存</Button>
+                    <TextBox Header="测试MTextBlock" x:Name="text" Grid.Row="8" Margin="0,2"/>
+                    <Button Click="Button_Click_1" Style="{StaticResource ButtonRevealStyle}" Grid.Row="9" Content="打开App页面"/>
+                    <control:MTextBlock Grid.Row="10" Margin="0,2" MessageText="{x:Bind Path=text.Text, Mode=OneWay}"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

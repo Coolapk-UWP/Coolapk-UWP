@@ -1,7 +1,9 @@
-﻿using CoolapkUWP.Data;
+﻿using CoolapkUWP.Control;
+using CoolapkUWP.Data;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -17,6 +19,7 @@ namespace CoolapkUWP.Pages.SettingPages
         public TestPage()
         {
             InitializeComponent();
+            tile.Text = ApplicationData.Current.LocalSettings.Values["TileUrl"].ToString();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -97,6 +100,12 @@ namespace CoolapkUWP.Pages.SettingPages
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             UIHelper.Navigate(typeof(AppPages.AppRecommendPage));
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            ApplicationData.Current.LocalSettings.Values["TileUrl"] = tile.Text;
+            LiveTileControl.UpdateTile();
         }
     }
 }

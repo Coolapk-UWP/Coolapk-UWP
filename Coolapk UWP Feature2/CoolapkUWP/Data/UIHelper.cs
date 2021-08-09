@@ -410,11 +410,12 @@ namespace CoolapkUWP.Data
             //换行和段落
             string s = str.Replace("<br>", "\n").Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br/>", "\n").Replace("<p>", "").Replace("</p>", "\n").Replace("&nbsp;", " ").Replace("<br />", "").Replace("<br />", "");
             //链接彻底删除！
-            while (s.IndexOf("<a", StringComparison.Ordinal) > 0)
-            {
-                s = s.Replace(@"<a href=""" + Regex.Split(Regex.Split(s, @"<a href=""")[1], @""">")[0] + @""">", "");
-                s = s.Replace("</a>", "");
-            }
+            Regex a = new Regex("<a.*?>", RegexOptions.IgnoreCase);
+            Regex a1 = new Regex("<a.*?/>", RegexOptions.IgnoreCase);
+            Regex a2 = new Regex("</a.*?>", RegexOptions.IgnoreCase);
+            s = a.Replace(s, "");
+            s = a1.Replace(s, "");
+            s = a2.Replace(s, "");
             return s;
         }
 

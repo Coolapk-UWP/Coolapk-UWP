@@ -285,113 +285,113 @@ namespace CoolapkUWP.Pages.AppPages
             if (json.TryGetValue("dataRow", out IJsonValue v1) && !string.IsNullOrEmpty(v1.ToString()))
             {
                 JsonObject dataRow = v1.GetObject();
-                if (dataRow.TryGetValue("logo", out IJsonValue logo) && !string.IsNullOrEmpty(logo.ToString()))
+                if (dataRow.TryGetValue("logo", out IJsonValue logo) && !string.IsNullOrEmpty(logo.GetString()))
                 {
                     Logo = new BackgroundImageViewModel(logo.GetString(), ImageType.Icon);
                 }
-                if (dataRow.TryGetValue("apkfile", out IJsonValue apkfile) && apkfile.ToString().IndexOf("http") == 0)
+                if (dataRow.TryGetValue("apkfile", out IJsonValue apkfile) && apkfile.GetString().IndexOf("http") == 0)
                 {
                     DownloadUrl = SettingsHelper.IsSpecialUser ? apkfile.GetString() : string.Empty;
                 }
-                else if (json.TryGetValue("apkDetailDownloadUrl", out IJsonValue apkDetailDownloadUrl) && !string.IsNullOrEmpty(apkDetailDownloadUrl.ToString()))
+                else if (json.TryGetValue("apkDetailDownloadUrl", out IJsonValue apkDetailDownloadUrl) && !string.IsNullOrEmpty(apkDetailDownloadUrl.GetString()))
                 {
                     DownloadUrl = SettingsHelper.IsSpecialUser ? apkDetailDownloadUrl.GetString() : string.Empty;
                 }
-                if (dataRow.TryGetValue("id", out IJsonValue id) && !string.IsNullOrEmpty(id.ToString()))
+                if (dataRow.TryGetValue("id", out IJsonValue id) && !string.IsNullOrEmpty(id.GetNumber().ToString()))
                 {
                     EntityID = id.GetNumber().ToString();
                 }
-                if (dataRow.TryGetValue("title", out IJsonValue title) && !string.IsNullOrEmpty(title.ToString()))
+                if (dataRow.TryGetValue("title", out IJsonValue title) && !string.IsNullOrEmpty(title.GetString()))
                 {
                     Title = title.GetString();
                 }
-                else if (dataRow.TryGetValue("shorttitle", out IJsonValue shorttitle) && !string.IsNullOrEmpty(shorttitle.ToString()))
+                else if (dataRow.TryGetValue("shorttitle", out IJsonValue shorttitle) && !string.IsNullOrEmpty(shorttitle.GetString()))
                 {
                     Title = shorttitle.GetString();
                 }
-                if (dataRow.TryGetValue("score_v10", out IJsonValue score_v10) && !string.IsNullOrEmpty(score_v10.ToString()))
+                if (dataRow.TryGetValue("score_v10", out IJsonValue score_v10) && !string.IsNullOrEmpty(score_v10.GetNumber().ToString()))
                 {
                     Vote = score_v10.GetNumber().ToString();
                 }
-                if (dataRow.TryGetValue("votescore_v10", out IJsonValue votescore_v10) && !string.IsNullOrEmpty(votescore_v10.ToString()))
+                if (dataRow.TryGetValue("votescore_v10", out IJsonValue votescore_v10) && !string.IsNullOrEmpty(votescore_v10.GetNumber().ToString()))
                 {
                     Score = votescore_v10.GetNumber() / 2;
                 }
-                if (dataRow.TryGetValue("version", out IJsonValue version) && !string.IsNullOrEmpty(version.ToString()))
+                if (dataRow.TryGetValue("version", out IJsonValue version) && !string.IsNullOrEmpty(version.GetString()))
                 {
                     Version = version.GetString();
                 }
-                else if (dataRow.TryGetValue("apkversionname", out IJsonValue apkversionname) && !string.IsNullOrEmpty(apkversionname.ToString()))
+                else if (dataRow.TryGetValue("apkversionname", out IJsonValue apkversionname) && !string.IsNullOrEmpty(apkversionname.GetString()))
                 {
                     Version = apkversionname.GetString();
                 }
-                else if (dataRow.TryGetValue("apkversioncode", out IJsonValue apkversioncode) && !string.IsNullOrEmpty(apkversioncode.ToString()))
+                else if (dataRow.TryGetValue("apkversioncode", out IJsonValue apkversioncode) && !string.IsNullOrEmpty(apkversioncode.GetString()))
                 {
                     Version = apkversioncode.GetString();
                 }
-                if (dataRow.TryGetValue("apklength", out IJsonValue apklength) && !string.IsNullOrEmpty(apklength.ToString()))
+                if (dataRow.TryGetValue("apklength", out IJsonValue apklength) && !string.IsNullOrEmpty(apklength.GetNumber().ToString()))
                 {
                     Apksize = UIHelper.GetSizeString(apklength.GetNumber());
                 }
-                else if (dataRow.TryGetValue("apksize", out IJsonValue apksize) && !string.IsNullOrEmpty(apksize.ToString()))
+                else if (dataRow.TryGetValue("apksize", out IJsonValue apksize) && !string.IsNullOrEmpty(apksize.GetString()))
                 {
                     Apksize = apksize.GetString();
                 }
-                if (dataRow.TryGetValue("changelog", out IJsonValue changelog) && !string.IsNullOrEmpty(changelog.ToString()))
+                if (dataRow.TryGetValue("changelog", out IJsonValue changelog) && !string.IsNullOrEmpty(changelog.GetString()))
                 {
                     ChangeLog = changelog.GetString();
                 }
-                if (dataRow.TryGetValue("introduce", out IJsonValue introduce) && !string.IsNullOrEmpty(introduce.ToString()))
+                if (dataRow.TryGetValue("introduce", out IJsonValue introduce) && !string.IsNullOrEmpty(introduce.GetString()))
                 {
                     Introduce = introduce.GetString();
                     Introduce = UIHelper.CSStoMarkDown(Introduce);
                 }
-                if (dataRow.TryGetValue("description", out IJsonValue description) && !string.IsNullOrEmpty(description.ToString()))
+                if (dataRow.TryGetValue("description", out IJsonValue description) && !string.IsNullOrEmpty(description.GetString()))
                 {
                     Description = description.GetString();
                 }
-                else if (dataRow.TryGetValue("subtitle", out IJsonValue subtitle) && !string.IsNullOrEmpty(subtitle.ToString()))
+                else if (dataRow.TryGetValue("subtitle", out IJsonValue subtitle) && !string.IsNullOrEmpty(subtitle.GetString()))
                 {
                     Description = subtitle.GetString();
                 }
-                else if (dataRow.TryGetValue("remark", out IJsonValue remark) && !string.IsNullOrEmpty(remark.ToString()))
+                else if (dataRow.TryGetValue("remark", out IJsonValue remark) && !string.IsNullOrEmpty(remark.GetString()))
                 {
                     Description = remark.GetString();
                     Description = UIHelper.ReplaceHtml(Description);
                 }
-                if (dataRow.TryGetValue("hot_num", out IJsonValue hot_num) && !string.IsNullOrEmpty(hot_num.ToString()))
+                if (dataRow.TryGetValue("hot_num", out IJsonValue hot_num) && !string.IsNullOrEmpty(hot_num.GetNumber().ToString()))
                 {
                     HotNum = UIHelper.GetNumString(hot_num.GetNumber());
                 }
-                if (dataRow.TryGetValue("voteCount", out IJsonValue voteCount) && !string.IsNullOrEmpty(voteCount.ToString()))
+                if (dataRow.TryGetValue("voteCount", out IJsonValue voteCount) && !string.IsNullOrEmpty(UIHelper.GetValue(voteCount)))
                 {
                     VoteCount = UIHelper.GetValue(voteCount);
                 }
-                if (dataRow.TryGetValue("followCount", out IJsonValue followCount) && !string.IsNullOrEmpty(followCount.ToString()))
+                if (dataRow.TryGetValue("followCount", out IJsonValue followCount) && !string.IsNullOrEmpty(UIHelper.GetValue(followCount)))
                 {
                     FollowNum = UIHelper.GetValue(followCount);
                 }
-                if (dataRow.TryGetValue("commentCount", out IJsonValue commentCount) && !string.IsNullOrEmpty(commentCount.ToString()))
+                if (dataRow.TryGetValue("commentCount", out IJsonValue commentCount) && !string.IsNullOrEmpty(UIHelper.GetValue(commentCount)))
                 {
                     CommentNum = UIHelper.GetValue(commentCount);
                 }
-                if (dataRow.TryGetValue("downCount", out IJsonValue downCount) && !string.IsNullOrEmpty(downCount.ToString()))
+                if (dataRow.TryGetValue("downCount", out IJsonValue downCount) && !string.IsNullOrEmpty(UIHelper.GetValue(downCount)))
                 {
                     DownloadNum = UIHelper.GetValue(downCount);
                 }
-                if (dataRow.TryGetValue("pubdate", out IJsonValue pubdate) && !string.IsNullOrEmpty(pubdate.ToString()))
+                if (dataRow.TryGetValue("pubdate", out IJsonValue pubdate) && !string.IsNullOrEmpty(pubdate.GetNumber().ToString()))
                 {
                     PubDate = UIHelper.ConvertTime(pubdate.GetNumber());
                 }
-                if (dataRow.TryGetValue("lastupdate", out IJsonValue lastupdate) && !string.IsNullOrEmpty(lastupdate.ToString()))
+                if (dataRow.TryGetValue("lastupdate", out IJsonValue lastupdate) && !string.IsNullOrEmpty(lastupdate.GetNumber().ToString()))
                 {
                     LastUpdate = UIHelper.ConvertTime(lastupdate.GetNumber());
                 }
-                if (dataRow.TryGetValue("apkRomVersion", out IJsonValue apkRomVersion) && !string.IsNullOrEmpty(apkRomVersion.ToString()))
+                if (dataRow.TryGetValue("apkRomVersion", out IJsonValue apkRomVersion) && !string.IsNullOrEmpty(apkRomVersion.GetString()))
                 {
                     ApkRomVersion = "Android " + apkRomVersion.GetString();
                 }
-                if (dataRow.TryGetValue("packageName", out IJsonValue packageName) && !string.IsNullOrEmpty(packageName.ToString()))
+                if (dataRow.TryGetValue("packageName", out IJsonValue packageName) && !string.IsNullOrEmpty(packageName.GetString()))
                 {
                     PackageName = packageName.GetString();
                 }
@@ -410,51 +410,51 @@ namespace CoolapkUWP.Pages.AppPages
                         GetPic(item);
                     }
                 }
-                if (dataRow.TryGetValue("developerProfile", out IJsonValue v2) && !string.IsNullOrEmpty(v2.ToString()))
+                if (dataRow.TryGetValue("developerProfile", out IJsonValue v2) && !string.IsNullOrEmpty(v2.GetObject().ToString()))
                 {
                     JsonObject developerProfile = v2.GetObject();
-                    if (developerProfile.TryGetValue("username", out IJsonValue username) && !string.IsNullOrEmpty(username.ToString()))
+                    if (developerProfile.TryGetValue("username", out IJsonValue username) && !string.IsNullOrEmpty(username.GetString()))
                     {
                         DeveloperName = username.GetString();
                     }
-                    if (developerProfile.TryGetValue("userAvatar", out IJsonValue userAvatar) && !string.IsNullOrEmpty(userAvatar.ToString()))
+                    if (developerProfile.TryGetValue("userAvatar", out IJsonValue userAvatar) && !string.IsNullOrEmpty(userAvatar.GetString()))
                     {
                         DeveloperAvatar = new BackgroundImageViewModel(userAvatar.GetString(), ImageType.BigAvatar);
                     }
-                    if (developerProfile.TryGetValue("uid", out IJsonValue uid) && !string.IsNullOrEmpty(uid.ToString()))
+                    if (developerProfile.TryGetValue("uid", out IJsonValue uid) && !string.IsNullOrEmpty(uid.GetNumber().ToString()))
                     {
-                        DeveloperUrl = "/u/" + uid.GetString();
+                        DeveloperUrl = "/u/" + uid.GetNumber().ToString();
                     }
                 }
                 if (string.IsNullOrEmpty(DeveloperName) || DeveloperAvatar == null)
                 {
-                    if (dataRow.TryGetValue("developername", out IJsonValue developername) && !string.IsNullOrEmpty(developername.ToString()))
+                    if (dataRow.TryGetValue("developername", out IJsonValue developername) && !string.IsNullOrEmpty(developername.GetString()))
                     {
                         DeveloperName = developername.GetString();
                     }
-                    else if (dataRow.TryGetValue("updatername", out IJsonValue updatername) && !string.IsNullOrEmpty(updatername.ToString()))
+                    else if (dataRow.TryGetValue("updatername", out IJsonValue updatername) && !string.IsNullOrEmpty(updatername.GetString()))
                     {
                         DeveloperName = updatername.GetString();
                     }
-                    else if (dataRow.TryGetValue("creatorname", out IJsonValue creatorname) && !string.IsNullOrEmpty(creatorname.ToString()))
+                    else if (dataRow.TryGetValue("creatorname", out IJsonValue creatorname) && !string.IsNullOrEmpty(creatorname.GetString()))
                     {
                         DeveloperName = creatorname.GetString();
                     }
-                    if (dataRow.TryGetValue("developerurl", out IJsonValue developerurl) && !string.IsNullOrEmpty(developerurl.ToString()))
+                    if (dataRow.TryGetValue("developerurl", out IJsonValue developerurl) && !string.IsNullOrEmpty(developerurl.GetString()))
                     {
                         DeveloperUrl = developerurl.GetString();
                     }
-                    else if (dataRow.TryGetValue("developeruid", out IJsonValue developeruid) && !string.IsNullOrEmpty(developeruid.ToString()) && int.Parse(developeruid.ToString()) != 0)
+                    else if (dataRow.TryGetValue("developeruid", out IJsonValue developeruid) && !string.IsNullOrEmpty(developeruid.GetNumber().ToString()) && developeruid.GetNumber() != 0)
                     {
-                        DeveloperUrl = "/u/" + developeruid.GetString();
+                        DeveloperUrl = "/u/" + developeruid.GetNumber().ToString();
                     }
-                    else if (dataRow.TryGetValue("updateruid", out IJsonValue updateruid) && !string.IsNullOrEmpty(updateruid.ToString()) && int.Parse(updateruid.ToString()) != 0)
+                    else if (dataRow.TryGetValue("updateruid", out IJsonValue updateruid) && !string.IsNullOrEmpty(updateruid.GetNumber().ToString()) && updateruid.GetNumber() != 0)
                     {
-                        DeveloperUrl = "/u/" + updateruid.GetString();
+                        DeveloperUrl = "/u/" + updateruid.GetNumber().ToString();
                     }
-                    else if (dataRow.TryGetValue("creatoruid", out IJsonValue creatoruid) && !string.IsNullOrEmpty(creatoruid.ToString()) && int.Parse(creatoruid.ToString()) != 0)
+                    else if (dataRow.TryGetValue("creatoruid", out IJsonValue creatoruid) && !string.IsNullOrEmpty(creatoruid.GetNumber().ToString()) && creatoruid.GetNumber() != 0)
                     {
-                        DeveloperUrl = "/u/" + creatoruid.GetString();
+                        DeveloperUrl = "/u/" + creatoruid.GetNumber().ToString();
                     }
                     if (DeveloperAvatar == null)
                     {

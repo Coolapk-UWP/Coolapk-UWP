@@ -48,7 +48,17 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             public string Id { get; private set; }
 
-            private int page;
+            private int page, _selectedIndex;
+            public int SelectedIndex
+            {
+                get => _selectedIndex;
+                set
+                {
+                    if (value > -1)
+                    { _selectedIndex = value; }
+                }
+            }
+
             private double firstItem, lastItem;
             public FeedListType ListType { get => FeedListType.UserPageList; }
             public UserPageDataProvider(string uid) => Id = uid;
@@ -59,8 +69,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 return detail != null
                     ? new UserDetail
                     {
-                        FollowStatus = detail["uid"].GetNumber().ToString() == SettingsHelper.GetString("uid") ? string.Empty
-                                                                                                         : detail["isFollow"].GetNumber() == 0 ? "关注" : "取消关注",
+                        FollowStatus = detail["uid"].GetNumber().ToString() == SettingsHelper.GetString("uid") ? string.Empty : detail["isFollow"].GetNumber() == 0 ? "关注" : "取消关注",
                         UserFaceUrl = detail["userAvatar"].GetString(),
                         UserName = detail["username"].GetString(),
                         FollowNum = detail["follow"].GetNumber(),
@@ -76,14 +85,30 @@ namespace CoolapkUWP.Pages.FeedPages
                         FeedNum = detail["feed"].GetNumber(),
                         UserFace = await ImageCache.GetImage(ImageType.SmallAvatar, detail["userSmallAvatar"].GetString()),
                         Background = new BackgroundImageViewModel(detail["cover"].GetString(), ImageType.OriginImage),
+                        SelectedIndex = SelectedIndex,
                     }
                     : null;
             }
 
             public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
             {
+                string sortType = "feed";
+                switch (SelectedIndex)
+                {
+                    case 0:
+                        sortType = "feed";
+                        break;
+                    case 1:
+                        sortType = "htmlFeed";
+                        break;
+                    case 2:
+                        sortType = "questionAndAnswer";
+                        break;
+                    default:
+                        break;
+                }
                 if (p == 1 && page == 0) { page = 1; }
-                JsonArray Root = UIHelper.GetDataArray(await UIHelper.GetJson($"/user/feedList?uid={Id}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}"));
+                JsonArray Root = UIHelper.GetDataArray(await UIHelper.GetJson($"/user/{sortType}List?uid={Id}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}"));
                 if (!(Root is null) && Root.Count != 0)
                 {
                     if (page == 1 || p == 1)
@@ -142,7 +167,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
             public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
             {
-                string sortType = string.Empty;
+                string sortType = "lastupdate_desc";
                 switch (SelectedIndex)
                 {
                     case 0:
@@ -335,13 +360,15 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 if (feedListType != provider?.ListType || (feedListType == provider?.ListType && str != provider.Id))
                 {
-                    if (itemCollection.Count > 0) itemCollection.Clear();
+                    if (itemCollection.Count > 0) { itemCollection.Clear(); }
                     switch (feedListType)
                     {
                         case FeedListType.UserPageList:
                             if (str == "0") { Frame.GoBack(); }
                             else { provider = new UserPageDataProvider(str); }
                             titleBar.ComboBoxVisibility = Visibility.Collapsed;
+                            //titleBar.ComboBoxItemsSource = new string[] { "动态", "问答", "图文" };
+                            titleBar.ComboBoxSelectedIndex = 0;
                             break;
                         case FeedListType.TagPageList:
                             provider = new TagPageDataProvider(str);
@@ -358,6 +385,7 @@ namespace CoolapkUWP.Pages.FeedPages
                             provider = new ProductPageDataProvider(str);
                             titleBar.ComboBoxVisibility = Visibility.Visible;
                             titleBar.ComboBoxItemsSource = new string[] { "讨论", "问答", "图文" };
+                            titleBar.ComboBoxSelectedIndex = 0;
                             break;
                     }
                     Refresh();
@@ -401,10 +429,6 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 titleBar.ComboBoxSelectedIndex = DYHDetail.SelectedIndex;
                 titleBar.ComboBoxVisibility = DYHDetail.ShowComboBox ? Visibility.Visible : Visibility.Collapsed;
-            }
-            if (itemCollection[0] is ProductDetail ProductDetail)
-            {
-                titleBar.ComboBoxSelectedIndex = ProductDetail.SelectedIndex;
             }
 
             List<FeedViewModel> feeds = await provider.GetFeeds(1);
@@ -460,7 +484,9 @@ namespace CoolapkUWP.Pages.FeedPages
                     if (o != null)
                     {
                         if (o.TryGetValue("message", out IJsonValue value))
+                        {
                             UIHelper.ShowMessage($"{value.GetString()}");
+                        }
                         else
                         {
                             itemCollection.RemoveAt(0);
@@ -506,13 +532,14 @@ namespace CoolapkUWP.Pages.FeedPages
         public double Level;
         public string Bio;
         public string BackgroundUrl;
-        public BackgroundImageViewModel Background;
         public string Verify_title;
         public string Gender;
         public string City;
         public string Astro;
         public string Logintime;
         public string FollowStatus;
+        public BackgroundImageViewModel Background;
+        public int SelectedIndex { get; set; }
         public bool ShowFollowStatus { get => !string.IsNullOrEmpty(FollowStatus); }
         public bool Has_bio { get => !string.IsNullOrEmpty(Bio); }
         public bool Has_verify_title { get => !string.IsNullOrEmpty(Verify_title); }
