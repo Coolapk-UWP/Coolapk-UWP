@@ -247,24 +247,24 @@
                                 <GridView.ItemTemplate>
                                     <DataTemplate x:DataType="viewModel:ImageData">
                                         <Grid
-                                            Windows10version1809:CornerRadius="8"
+                                            Width="102"
+                                            Height="102"
+                                            CornerRadius="8"
                                             BorderThickness="1"
                                             BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
-                                            <Image
-                                                MaxHeight="102"
-                                                MaxWidth="102"
-                                                MinHeight="0"
-                                                MinWidth="0"
-                                                Source="{x:Bind Pic}"
-                                                Stretch="UniformToFill"/>
+                                            <Grid.Background>
+                                                <ImageBrush
+                                                    ImageSource="{x:Bind Pic}"
+                                                    Stretch="UniformToFill"/>
+                                            </Grid.Background>
                                             <StackPanel
                                                 Orientation="Horizontal"
                                                 VerticalAlignment="Bottom"
                                                 HorizontalAlignment="Left">
                                                 <Border
                                                     x:Name="gif"
+                                                    CornerRadius="0,8,0,0"
                                                     x:Load="{x:Bind IsGif}"
-                                                    Windows10version1809:CornerRadius="0,8,0,0"
                                                     Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                                                     <TextBlock
                                                         Text="GIF"
@@ -277,8 +277,8 @@
                                                 HorizontalAlignment="Right">
                                                 <Border
                                                     x:Name="longPic"
+                                                    CornerRadius="8,0,0,0"
                                                     x:Load="{x:Bind IsLongPic}"
-                                                    Windows10version1809:CornerRadius="8,0,0,0"
                                                     Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                                                     <TextBlock
                                                         Text="长图"
@@ -365,24 +365,24 @@
                                         <GridView.ItemTemplate>
                                             <DataTemplate x:DataType="viewModel:ImageData">
                                                 <Grid
-                                                    Windows10version1809:CornerRadius="8"
+                                                    Width="102"
+                                                    Height="102"
+                                                    CornerRadius="8"
                                                     BorderThickness="1"
                                                     BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
-                                                    <Image
-                                                        MaxHeight="102"
-                                                        MaxWidth="102"
-                                                        MinHeight="0"
-                                                        MinWidth="0"
-                                                        Source="{x:Bind Pic}"
-                                                        Stretch="UniformToFill"/>
+                                                    <Grid.Background>
+                                                        <ImageBrush
+                                                            ImageSource="{x:Bind Pic}"
+                                                            Stretch="UniformToFill"/>
+                                                    </Grid.Background>
                                                     <StackPanel
                                                         Orientation="Horizontal"
                                                         VerticalAlignment="Bottom"
                                                         HorizontalAlignment="Left">
                                                         <Border
                                                             x:Name="gif"
+                                                            CornerRadius="0,8,0,0"
                                                             x:Load="{x:Bind IsGif}"
-                                                            Windows10version1809:CornerRadius="0,8,0,0"
                                                             Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                                                             <TextBlock
                                                                 Text="GIF"
@@ -395,8 +395,8 @@
                                                         HorizontalAlignment="Right">
                                                         <Border
                                                             x:Name="longPic"
+                                                            CornerRadius="8,0,0,0"
                                                             x:Load="{x:Bind IsLongPic}"
-                                                            Windows10version1809:CornerRadius="8,0,0,0"
                                                             Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                                                             <TextBlock
                                                                 Text="长图"

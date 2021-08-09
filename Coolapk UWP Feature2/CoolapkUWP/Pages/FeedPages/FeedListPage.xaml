@@ -30,6 +30,7 @@
                     </Border.Background>
                     <Grid
                         Padding="0,4"
+                        CornerRadius="0,0,8,8"
                         VerticalAlignment="Bottom"
                         x:Name="UserDetailGrid">
                         <Grid.Background>
