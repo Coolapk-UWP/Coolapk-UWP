@@ -290,8 +290,8 @@
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="models:ImageData">
                         <Grid
-                            CornerRadius="8"
                             BorderThickness="1"
+                            Windows10version1809:CornerRadius="8"
                             BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
                             <Image
                                 Height="102"
@@ -305,7 +305,7 @@
                                 <Border
                                     x:Name="gif"
                                     x:Load="{x:Bind IsGif}"
-                                    CornerRadius="0,8,0,0"
+                                    Windows10version1809:CornerRadius="0,8,0,0"
                                     Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                                     <TextBlock
                                         Margin="2,0"
@@ -319,7 +319,7 @@
                                 <Border
                                     x:Name="longPic"
                                     x:Load="{x:Bind IsLongPic}"
-                                    CornerRadius="8,0,0,0"
+                                    Windows10version1809:CornerRadius="8,0,0,0"
                                     Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                                     <TextBlock
                                         Margin="2,0"
@@ -411,8 +411,8 @@
                         <GridView.ItemTemplate>
                             <DataTemplate x:DataType="models:ImageData">
                                 <Grid
-                                    CornerRadius="8"
                                     BorderThickness="1"
+                                    Windows10version1809:CornerRadius="8"
                                     BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
                                     <Image
                                         MaxHeight="102"
@@ -427,15 +427,15 @@
                                         HorizontalAlignment="Right">
                                         <Border
                                             x:Name="longPic"
-                                            CornerRadius="8,0,0,0"
                                             x:Load="{x:Bind IsLongPic}"
+                                            Windows10version1809:CornerRadius="8,0,0,0"
                                             Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                                             <TextBlock Text=" 长图 "/>
                                         </Border>
                                         <Border
                                             x:Name="gif"
-                                            CornerRadius="8,0,0,0"
                                             x:Load="{x:Bind IsGif}"
+                                            Windows10version1809:CornerRadius="8,0,0,0"
                                             Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                                             <TextBlock Text=" GIF "/>
                                         </Border>
@@ -566,9 +566,9 @@
                         <StackPanel Tag="{x:Bind id}">
                             <Border
                                 Margin="0,0"
-                                CornerRadius="0,0,8,0"
-                                Background="{ThemeResource SystemControlHighlightListAccentHighBrush}"
-                                HorizontalAlignment="Left">
+                                HorizontalAlignment="Left"
+                                Windows10version1809:CornerRadius="0,0,8,0"
+                                Background="{ThemeResource SystemControlHighlightListAccentHighBrush}">
                                 <TextBlock
                                     Margin="2,1"
                                     Text="{x:Bind extraFlag}" />
