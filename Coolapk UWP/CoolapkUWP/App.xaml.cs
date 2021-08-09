@@ -12,8 +12,10 @@ using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Notifications;
 using Windows.UI.StartScreen;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -36,6 +38,8 @@ namespace CoolapkUWP
                 rootFrame = new Frame();
                 Window.Current.Content = rootFrame;
             }
+            ApplicationViewTitleBar view = ApplicationView.GetForCurrentView().TitleBar;
+            view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
             _ = rootFrame.Navigate(typeof(Pages.ShellPage));
             bool isSupported = JumpList.IsSupported();
             if (isSupported)
@@ -107,6 +111,8 @@ namespace CoolapkUWP
             {
                 rootFrame = new Frame();
                 rootFrame.NavigationFailed += OnNavigationFailed;
+                ApplicationViewTitleBar view = ApplicationView.GetForCurrentView().TitleBar;
+                view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
                 // 当导航堆栈尚未还原时，导航到第一页，并通过将所需信息作为导航参数传入来配置参数
                 rootFrame.Navigate(typeof(Pages.ShellPage), e.Arguments);
                 Window.Current.Content = rootFrame;
