@@ -368,7 +368,7 @@ namespace CoolapkUWP.Pages.FeedPages
                             else { provider = new UserPageDataProvider(str); }
                             titleBar.ComboBoxVisibility = Visibility.Collapsed;
                             //titleBar.ComboBoxItemsSource = new string[] { "动态", "问答", "图文" };
-                            titleBar.ComboBoxSelectedIndex = 0;
+                            //titleBar.ComboBoxSelectedIndex = 0;
                             break;
                         case FeedListType.TagPageList:
                             provider = new TagPageDataProvider(str);

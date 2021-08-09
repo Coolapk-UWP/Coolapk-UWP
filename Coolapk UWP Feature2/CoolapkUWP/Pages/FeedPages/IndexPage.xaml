@@ -136,14 +136,12 @@
                         SizeChanged="{x:Bind local:IndexPage.FlipView_SizeChanged}">
                         <FlipView.ItemTemplate>
                             <DataTemplate x:DataType="viewmodel:IndexPageViewModel">
-                                <Border CornerRadius="8">
-                                    <Image
-                                        Tag="{x:Bind}"
-                                        Tapped="Grid_Tapped"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"
-                                        Source="{x:Bind pic, Mode=OneWay}"/>
-                                </Border>
+                                <Image
+                                    Tag="{x:Bind}"
+                                    Tapped="Grid_Tapped"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Source="{x:Bind pic, Mode=OneWay}"/>
                             </DataTemplate>
                         </FlipView.ItemTemplate>
                     </FlipView>
@@ -308,7 +306,9 @@
                         Width="40"
                         Height="40"
                         CornerRadius="4">
-                        <Image Source="{x:Bind pic,Mode=OneWay}"/>
+                        <Border.Background>
+                            <ImageBrush ImageSource="{x:Bind pic,Mode=OneWay}"/>
+                        </Border.Background>
                     </Border>
                     <TextBlock
                         Margin="0,2"
@@ -337,7 +337,9 @@
                                 ImageSource="{x:Bind pic, Mode=OneWay}"
                                 Stretch="Fill" />
                         </Border.Background>
-                        <StackPanel Padding="4">
+                        <StackPanel
+                            Padding="4"
+                            CornerRadius="8">
                             <StackPanel.Background>
                                 <muxm:AcrylicBrush
                                     BackgroundSource="Backdrop"
@@ -351,7 +353,9 @@
                                 Height="36"
                                 Margin="4"
                                 CornerRadius="4">
-                                <Image Source="{x:Bind pic, Mode=OneWay}"/>
+                                <Border.Background>
+                                    <ImageBrush ImageSource="{x:Bind pic, Mode=OneWay}"/>
+                                </Border.Background>
                             </Border>
 
                             <TextBlock
@@ -394,6 +398,7 @@
                         </Border.Background>
                         <StackPanel
                             Padding="4"
+                            CornerRadius="8"
                             VerticalAlignment="Bottom"
                             Background="{ThemeResource SystemControlChromeLowAcrylicElementBrush}">
 
@@ -425,9 +430,13 @@
                         Margin="0,10"
                         Height="118"
                         Width="260">
-                        <Image
-                            Source="{x:Bind pic,Mode=OneWay}"
-                            Stretch="UniformToFill"/>
+                        <Border CornerRadius="8">
+                            <Border.Background>
+                                <ImageBrush
+                                    ImageSource="{x:Bind pic,Mode=OneWay}"
+                                    Stretch="UniformToFill"/>
+                            </Border.Background>
+                        </Border>
                         <StackPanel
                             Margin="0,32,0,0"
                             Padding="0,4"

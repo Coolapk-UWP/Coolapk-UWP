@@ -88,8 +88,10 @@
                                     Height="32"
                                     CornerRadius="4"
                                     HorizontalAlignment="Left">
-                                    <Image
-                                        Source="{x:Bind FeedDetail.tpic,Mode=OneWay}" />
+                                    <Border.Background>
+                                        <ImageBrush
+                                            ImageSource="{x:Bind FeedDetail.tpic,Mode=OneWay}"/>
+                                    </Border.Background>
                                 </Border>
                                 <TextBlock
                                     VerticalAlignment="Center"

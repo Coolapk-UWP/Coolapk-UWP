@@ -13,7 +13,7 @@
         Margin="0,4"
         BorderThickness="1"
         CornerRadius="8"
-        Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
+        Background="{ThemeResource SystemControlChromeLowAcrylicElementBrush}"
         BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
         <Grid.ChildrenTransitions>
             <TransitionCollection>

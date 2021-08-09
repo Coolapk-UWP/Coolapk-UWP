@@ -533,11 +533,13 @@
                             BorderThickness="1"
                             BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
                             Background="{ThemeResource SystemControlBackgroundListLowBrush}">
-                            <Border CornerRadius="2">
-                                <Image
-                                    Width="20"
-                                    Height="20"
-                                    Source="{x:Bind logo,Mode=OneWay}"/>
+                            <Border
+                                Width="20"
+                                Height="20"
+                                CornerRadius="2">
+                                <Border.Background>
+                                    <ImageBrush ImageSource="{x:Bind logo,Mode=OneWay}"/>
+                                </Border.Background>
                             </Border>
                             <TextBlock
                                 Text="{x:Bind title}"

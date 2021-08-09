@@ -49,8 +49,8 @@
 
             <DataTemplate x:Key="Card" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem
-                    BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-                    BorderThickness="2"
+                    BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+                    BorderThickness="1"
                     Padding="4"
                     HorizontalContentAlignment="Stretch"
                     Style="{StaticResource NoAnimationListViewItem}">
@@ -136,28 +136,10 @@
             </DataTemplate>
             <DataTemplate x:Key="messageCard" x:DataType="viewmodel:IndexPageViewModel">
                 <ListViewItem
-                    Style="{StaticResource NoAnimationListViewItem}"
-                    BorderThickness="2"
-                    BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
-                    Margin="15,0">
-                    <TextBlock
+                    Style="{StaticResource NoAnimationListViewItem}">
+                    <control:MTextBlock
                         Margin="5"
-                        TextWrapping="Wrap"
-                        Text="{x:Bind description}"/>
-                </ListViewItem>
-            </DataTemplate>
-            <DataTemplate x:Key="iconTabLinkGridCard" x:DataType="viewmodel:IndexPageViewModel">
-                <ListViewItem Style="{StaticResource NoAnimationListViewItem}">
-                    <Pivot
-                        Tag="{x:Bind entities}"
-                        SelectionChanged="Pivot_SelectionChanged"
-                        Loaded="Pivot_Loaded">
-                        <Pivot.ItemContainerStyle>
-                            <Style TargetType="PivotItem">
-                                <Setter Property="Margin" Value="0"/>
-                            </Style>
-                        </Pivot.ItemContainerStyle>
-                    </Pivot>
+                        MessageText="{x:Bind description}"/>
                 </ListViewItem>
             </DataTemplate>
             <!--三级-->
@@ -186,10 +168,10 @@
                 <ListViewItem
                     MaxWidth="72"
                     Margin="4,0"
-                    Tag="{x:Bind url}"
-                    Tapped="Grid_Tapped"
-                    VerticalContentAlignment="Top"
                     Style="{StaticResource NoPaddingListViewItem}"
+                    VerticalContentAlignment="Top"
+                    Tapped="Grid_Tapped"
+                    Tag="{x:Bind url}"
                     Template="{StaticResource ListViewItemTemplate1}">
                     <Border
                         BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
@@ -200,7 +182,9 @@
                                 ImageSource="{x:Bind pic, Mode=OneWay}"
                                 Stretch="Fill" />
                         </Border.Background>
-                        <StackPanel Padding="4">
+                        <StackPanel
+                            Padding="4"
+                            CornerRadius="8">
                             <StackPanel.Background>
                                 <muxm:AcrylicBrush
                                     BackgroundSource="Backdrop"
@@ -214,7 +198,9 @@
                                 Height="36"
                                 Margin="4"
                                 CornerRadius="4">
-                                <Image Source="{x:Bind pic, Mode=OneWay}"/>
+                                <Border.Background>
+                                    <ImageBrush ImageSource="{x:Bind pic, Mode=OneWay}"/>
+                                </Border.Background>
                             </Border>
 
                             <TextBlock
@@ -235,6 +221,7 @@
                                 TextAlignment="Center"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="Wrap"/>
+
                         </StackPanel>
                     </Border>
                 </ListViewItem>
@@ -283,15 +270,18 @@
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Border
-                            Grid.RowSpan="2"
+                            Width="40"
+                            Height="40"
                             Margin="8,0"
-                            HorizontalAlignment="Left"
+                            Grid.RowSpan="2"
+                            CornerRadius="8"
                             VerticalAlignment="Top"
-                            CornerRadius="8">
-                            <Image
-                                Width="40"
-                                Height="40"
-                                Source="{x:Bind pic, Mode=OneWay}"/>
+                            HorizontalAlignment="Left">
+                            <Border.Background>
+                                <ImageBrush
+                                    ImageSource="{x:Bind pic, Mode=OneWay}"
+                                    Stretch="UniformToFill"/>
+                            </Border.Background>
                         </Border>
 
                         <TextBlock

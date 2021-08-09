@@ -328,9 +328,15 @@
                         Background="White"
                         VerticalAlignment="Top"
                         HorizontalAlignment="Left">
-                        <Image
-                            x:Name="Logo"
-                            Source="{x:Bind Logo,Mode=OneWay}"/>
+                        <Border
+                            Width="80"
+                            Height="80">
+                            <Border.Background>
+                                <ImageBrush
+                                    x:Name="Logo"
+                                    ImageSource="{x:Bind Logo,Mode=OneWay}"/>
+                            </Border.Background>
+                        </Border>
                     </Border>
                     <StackPanel
                         Grid.Column="1"
