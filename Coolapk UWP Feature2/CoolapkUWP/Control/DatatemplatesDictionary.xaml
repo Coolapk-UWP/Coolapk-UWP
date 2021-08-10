@@ -203,6 +203,10 @@
                             Text="{x:Bind device_title}"
                             Foreground="Gray"
                             Margin="5,0,0,0"/>
+                        <TextBlock
+                            Text="{x:Bind ChangeTitle}"
+                            Foreground="Gray"
+                            Margin="5,0,0,0"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -246,6 +250,10 @@
                             Tag="{x:Bind uurl}"
                             x:Name="fromInfot"
                             x:Load="{x:Bind showFromInfo}"
+                            Foreground="Gray"
+                            Margin="5,0,0,0"/>
+                        <TextBlock
+                            Text="{x:Bind ChangeTitle}"
                             Foreground="Gray"
                             Margin="5,0,0,0"/>
                     </StackPanel>

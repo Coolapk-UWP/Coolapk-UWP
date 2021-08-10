@@ -94,8 +94,8 @@ namespace CoolapkUWP.Pages.AppPages
                         //FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, id);
                         //if (f != null)
                         //{
-                        //    Frame.GoBack();
-                        //    UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
+                        Frame.GoBack();
+                            //UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
                         //}
                     }
                 }
@@ -404,11 +404,7 @@ namespace CoolapkUWP.Pages.AppPages
                 if (ShowPicArr)
                 {
                     PicArr = new ObservableCollection<ImageData>();
-                    foreach (IJsonValue item in screenList.GetArray())
-                    {
-                        Pics.Add(item.GetString());
-                        GetPic(item);
-                    }
+                    GetPic(screenList);
                 }
                 if (dataRow.TryGetValue("developerProfile", out IJsonValue v2) && !string.IsNullOrEmpty(v2.GetObject().ToString()))
                 {
@@ -463,9 +459,13 @@ namespace CoolapkUWP.Pages.AppPages
                 }
             }
         }
-        private async void GetPic(IJsonValue item)
+        private async void GetPic(IJsonValue screenList)
         {
-            PicArr.Add(new ImageData { Pic = await ImageCache.GetImage(ImageType.OriginImage, item.GetString()), url = item.GetString() });
+            foreach (IJsonValue item in screenList.GetArray())
+            {
+                Pics.Add(item.GetString());
+                PicArr.Add(new ImageData { Pic = await ImageCache.GetImage(ImageType.OriginImage, item.GetString()), url = item.GetString() });
+            }
         }
     }
 }

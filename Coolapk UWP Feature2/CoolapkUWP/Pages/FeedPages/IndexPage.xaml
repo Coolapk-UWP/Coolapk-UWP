@@ -133,6 +133,7 @@
                         x:Name="flipView"
                         Background="Transparent"
                         ItemsSource="{x:Bind entities}"
+                        Loaded="{x:Bind local:IndexPage.FlipView_Loaded}"
                         SizeChanged="{x:Bind local:IndexPage.FlipView_SizeChanged}">
                         <FlipView.ItemTemplate>
                             <DataTemplate x:DataType="viewmodel:IndexPageViewModel">

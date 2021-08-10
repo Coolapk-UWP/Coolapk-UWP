@@ -64,6 +64,13 @@ namespace CoolapkUWP.Control.ViewModels
                 }
             }
 
+            double ChangeCount = token.TryGetValue("change_count", out IJsonValue change_count) || change_count != null
+                ? change_count.GetNumber()
+                : token.TryGetValue("isModified", out IJsonValue isModified)
+                ? isModified.GetNumber()
+                : 0;
+            ChangeTitle = ChangeCount == 0 ? null : "已编辑" + ChangeCount + "次";
+
             showRelationRows = (token.TryGetValue("location", out IJsonValue valuelocation) && !string.IsNullOrEmpty(valuelocation.GetString()))
                                | (token.TryGetValue("ttitle", out IJsonValue valuettitle) && !string.IsNullOrEmpty(valuettitle.GetString()))
                                | (token.TryGetValue("dyh_name", out IJsonValue valuedyh) && !string.IsNullOrEmpty(valuedyh.GetString()))
@@ -117,6 +124,7 @@ namespace CoolapkUWP.Control.ViewModels
         public string dyhurl { get; private set; }
         public string dyhname { get; private set; }
         public string fromInfo { get; private set; }
+        public string ChangeTitle { get; private set; }
         public ImageSource dyhlogo
         {
             get => dyhlogo1;

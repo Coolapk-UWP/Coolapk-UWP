@@ -20,38 +20,44 @@ namespace CoolapkUWP.Control.ViewModels
                 uurl = token["userInfo"].GetObject()["url"].GetString();
                 username = token["userInfo"].GetObject()["username"].GetString();
                 dateline = UIHelper.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
-                message = token["message"].GetString();
+                message = token["message"].GetString().Replace("<a href=\"\">查看更多</a>", "<a href=\"" + url + "\">查看更多</a>");
                 message_title = token.TryGetValue("message_title", out IJsonValue j) ? j.GetString() : string.Empty;
             }
             else
             {
                 dateline = UIHelper.ConvertTime(token["digest_time"].GetNumber());
-                message = token["message"].GetString().Substring(0, 120) + "……<a href=\"\">查看更多</a>";
+                message = message.Contains("</a>") ? token["message"].GetString().Substring(0, 200) + "...<a href=\"" + url + "\">查看更多</a>" : message + "...<a href=\"" + url + "\">查看更多</a>";
                 message_title = token["title"].GetString();
             }
             showMessage_title = !string.IsNullOrEmpty(message_title);
-            showPicArr = token.TryGetValue("picArr", out IJsonValue value) && value.GetArray().Count > 0 && !string.IsNullOrEmpty(value.GetArray()[0].GetString());
-            GetPic(token);
-        }
-
-        private async void GetPic(JsonObject token)
-        {
+            showPicArr = token.TryGetValue("picArr", out IJsonValue value) && value.GetArray().Count > 0 && !string.IsNullOrEmpty(value.GetArray().ToString());
             if (showPicArr)
             {
                 picArr = new ObservableCollection<ImageData>();
-                foreach (IJsonValue item in token["picArr"].GetArray())
-                {
-                    pics.Add(item.GetString());
-                    picArr.Add(new ImageData { Pic = await ImageCache.GetImage(ImageType.SmallImage, item.GetString()), url = item.GetString() });
-                }
+                GetPicArr(value);
             }
             if (token.TryGetValue("pic", out IJsonValue value1) && !string.IsNullOrEmpty(value1.GetString()))
             {
                 havePic = true;
-                pic = await ImageCache.GetImage(ImageType.SmallImage, value1.GetString());
                 picUrl = value1.GetString();
+                GetPic(picUrl);
             }
         }
+
+        private async void GetPicArr(IJsonValue value)
+        {
+            foreach (IJsonValue item in value.GetArray())
+            {
+                pics.Add(item.GetString());
+                picArr.Add(new ImageData { Pic = await ImageCache.GetImage(ImageType.SmallImage, item.GetString()), url = item.GetString() });
+            }
+        }
+
+        private async void GetPic(string picUrl)
+        {
+            pic = await ImageCache.GetImage(ImageType.SmallImage, picUrl);
+        }
+
         public string url { get; private set; }
         public string uurl { get; private set; }
         public string shareurl { get; private set; }

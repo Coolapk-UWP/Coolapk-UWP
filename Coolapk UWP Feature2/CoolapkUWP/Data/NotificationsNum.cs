@@ -20,7 +20,7 @@ namespace CoolapkUWP.Data
                 if (value != badgeNum)
                 {
                     badgeNum = value;
-                    TileManager.SetBadgeNum(value);
+                    TileManager.SetBadgeNumber(value.ToString());
                     BadgeNumberChanged?.Invoke(this, null);
                 }
             }
@@ -76,7 +76,7 @@ namespace CoolapkUWP.Data
                 {
                     commentMeNum = o["commentme"].GetNumber();
                     numChanged = true;
-                    //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(commentMeNum)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(commentMeNum)));
                 }
                 if (o["feedlike"].GetNumber() != feedLikeNum)
                 {
@@ -84,8 +84,10 @@ namespace CoolapkUWP.Data
                     numChanged = true;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(feedLikeNum)));
                 }
-                if (numChanged)
-                { TileManager.SetTile(followNum, messageNum, atMeNum, atCommentMeNum, commentMeNum, feedLikeNum); }
+                //if (numChanged)
+                //{
+                //    TileManager.SetTile(followNum, messageNum, atMeNum, atCommentMeNum, commentMeNum, feedLikeNum);
+                //}
             }
         }
     }

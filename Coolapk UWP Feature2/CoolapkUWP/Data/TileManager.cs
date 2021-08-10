@@ -5,16 +5,20 @@ namespace CoolapkUWP.Data
 {
     internal static class TileManager
     {
-        public static void SetBadgeNum(double num)
+        public static void SetBadgeNumber(string badgeGlyphValue)
         {
-            BadgeUpdater badgeUpdater = BadgeUpdateManager.CreateBadgeUpdaterForApplication();
-            badgeUpdater.Clear();
-            if (num != 0)
-            {
-                XmlDocument xml = new XmlDocument();
-                xml.LoadXml($"<badge value=\"{num}\"/>");
-                badgeUpdater.Update(new BadgeNotification(xml));
-            }
+            // Get the blank badge XML payload for a badge number
+            XmlDocument badgeXml = BadgeUpdateManager.GetTemplateContent(BadgeTemplateType.BadgeNumber);
+            // Set the value of the badge in the XML to our number
+            XmlElement badgeElement = badgeXml.SelectSingleNode("/badge") as XmlElement;
+            badgeElement.SetAttribute("value", badgeGlyphValue);
+            // Create the badge notification
+            BadgeNotification badge = new BadgeNotification(badgeXml);
+            // Create the badge updater for the application
+            BadgeUpdater badgeUpdater =
+                BadgeUpdateManager.CreateBadgeUpdaterForApplication();
+            // And update the badge
+            badgeUpdater.Update(badge);
         }
 
         /// <param name="nums">顺序 follow, message, atme, atcommentme, commentme, feedlike</param>
@@ -35,8 +39,7 @@ namespace CoolapkUWP.Data
                         case 3: s[i] = $"@我的评论:{nums[i]}"; break;
                         case 4: s[i] = $"新回复:{nums[i]}"; break;
                         case 5: s[i] = $"收到的赞:{nums[i]}"; break;
-                        default:
-                            break;
+                        default: break;
                     }
                 }
             }

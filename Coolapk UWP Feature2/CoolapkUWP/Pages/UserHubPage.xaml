@@ -270,18 +270,15 @@
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Border
-                            Width="40"
-                            Height="40"
-                            Margin="8,0"
                             Grid.RowSpan="2"
-                            CornerRadius="8"
+                            Margin="8,0"
+                            HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Left">
-                            <Border.Background>
-                                <ImageBrush
-                                    ImageSource="{x:Bind pic, Mode=OneWay}"
-                                    Stretch="UniformToFill"/>
-                            </Border.Background>
+                            CornerRadius="8">
+                            <Image
+                                Width="40"
+                                Height="40"
+                                Source="{x:Bind pic, Mode=OneWay}"/>
                         </Border>
 
                         <TextBlock
