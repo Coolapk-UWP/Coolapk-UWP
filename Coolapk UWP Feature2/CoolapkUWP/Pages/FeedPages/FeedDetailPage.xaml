@@ -835,9 +835,7 @@
                             <control:ShowQRCodeControl x:Name="showQRCodeControl" />
                         </Flyout>
                     </Button.Flyout>
-                    <FontIcon
-                        FontFamily="Segoe MDL2 Assets"
-                        Glyph="&#xED14;" />
+                    <SymbolIcon Symbol="Share"/>
                 </Button>
             </control:TitleBar.RightAreaContent>
         </control:TitleBar>

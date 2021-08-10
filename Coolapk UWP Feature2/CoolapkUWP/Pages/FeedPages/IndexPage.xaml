@@ -137,12 +137,14 @@
                         SizeChanged="{x:Bind local:IndexPage.FlipView_SizeChanged}">
                         <FlipView.ItemTemplate>
                             <DataTemplate x:DataType="viewmodel:IndexPageViewModel">
-                                <Image
-                                    Tag="{x:Bind}"
-                                    Tapped="Grid_Tapped"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center"
-                                    Source="{x:Bind pic, Mode=OneWay}"/>
+                                <Border CornerRadius="8">
+                                    <Image
+                                        Tag="{x:Bind}"
+                                        Tapped="Grid_Tapped"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Source="{x:Bind pic, Mode=OneWay}"/>
+                                </Border>
                             </DataTemplate>
                         </FlipView.ItemTemplate>
                     </FlipView>

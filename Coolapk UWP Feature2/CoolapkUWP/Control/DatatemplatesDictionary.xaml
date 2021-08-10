@@ -803,7 +803,7 @@
             <Grid
                 Grid.Column="1"
                 Grid.Row="1"
-                Margin="0,4,8,12">
+                Margin="0,4,8,4">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>

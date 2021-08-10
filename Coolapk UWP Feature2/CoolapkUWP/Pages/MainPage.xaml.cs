@@ -57,7 +57,7 @@ namespace CoolapkUWP.Pages
             ChangeBadgeNum(UIHelper.notifications.BadgeNum);
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
             { Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true; }
-            if (SettingsHelper.GetBoolen("CheckUpdateWhenLuanching")) { _ = SettingsHelper.CheckUpdate(); }
+            if (SettingsHelper.GetBoolen("CheckUpdateWhenLuanching")) { _ = SettingsHelper.CheckUpdate(true); }
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, ee) =>
             {
                 int i = SettingsHelper.HasStatusBar ? UIHelper.popups.Count - 1 : UIHelper.popups.Count - 2;

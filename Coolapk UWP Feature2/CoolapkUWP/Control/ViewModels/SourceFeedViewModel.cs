@@ -30,7 +30,7 @@ namespace CoolapkUWP.Control.ViewModels
                 message_title = token["title"].GetString();
             }
             showMessage_title = !string.IsNullOrEmpty(message_title);
-            showPicArr = token.TryGetValue("picArr", out IJsonValue value) && value.GetArray().Count > 0 && !string.IsNullOrEmpty(value.GetArray().ToString());
+            showPicArr = token.TryGetValue("picArr", out IJsonValue value) && value.GetArray().Count > 0 && !string.IsNullOrEmpty(value.GetArray()[0].GetString());
             if (showPicArr)
             {
                 picArr = new ObservableCollection<ImageData>();

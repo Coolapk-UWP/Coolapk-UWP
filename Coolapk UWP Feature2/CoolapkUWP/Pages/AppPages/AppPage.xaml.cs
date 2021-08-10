@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
+using CoolapkUWP.Pages.FeedPages;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -90,13 +91,9 @@ namespace CoolapkUWP.Pages.AppPages
                     Regex regex = new Regex(@"https://www.coolapk.com/\w+/(\d+)");
                     if (regex.IsMatch(AppLink) && !string.IsNullOrEmpty(regex.Match(AppLink).Groups[1].Value))
                     {
-                        //string id = regex.Match(AppLink).Groups[1].Value;
-                        //FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, id);
-                        //if (f != null)
-                        //{
+                        string id = regex.Match(AppLink).Groups[1].Value;
                         Frame.GoBack();
-                            //UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
-                        //}
+                        UIHelper.Navigate(typeof(FeedListPage), new object[] { FeedListType.APPPageList, id });
                     }
                 }
             }
@@ -203,12 +200,7 @@ namespace CoolapkUWP.Pages.AppPages
 
                 case "UPanel":
                 case "ViewFeed":
-                    //FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, element.Tag.ToString());
-                    //if (f != null)
-                    //{
-                    //    UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
-                    //}
-                    UIHelper.ShowMessage("暂不支持");
+                    UIHelper.Navigate(typeof(FeedListPage), new object[] { FeedListType.APPPageList, element.Tag.ToString() });
                     break;
 
                 case "DownloadButton":

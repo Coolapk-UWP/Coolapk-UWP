@@ -22,7 +22,8 @@ namespace CoolapkUWP.Pages.FeedPages
         ProductPageList,
         UserPageList,
         TagPageList,
-        DYHPageList
+        DYHPageList,
+        APPPageList
     }
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
@@ -44,7 +45,7 @@ namespace CoolapkUWP.Pages.FeedPages
             void Reset();
         }
 
-        private class UserPageDataProvider : IFeedListDataProvider
+        private class UserPageDataProvider : ICanChangeSelectedIndex
         {
             public string Id { get; private set; }
 
@@ -62,6 +63,8 @@ namespace CoolapkUWP.Pages.FeedPages
             private double firstItem, lastItem;
             public FeedListType ListType { get => FeedListType.UserPageList; }
             public UserPageDataProvider(string uid) => Id = uid;
+
+            public void Reset() => firstItem = lastItem = page = 0;
 
             public async Task<object> GetDetail()
             {
@@ -300,7 +303,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         Title = detail["title"].GetString(),
                         FollowNum = detail["follow_num"].GetNumber(),
                         CommentNum = UIHelper.GetValue(detail["hot_num_txt"]),
-                        Description = UIHelper.CSStoMarkDown(detail["description"].GetString()),
+                        Description = detail["description"].GetString(),
                         Logo = await ImageCache.GetImage(ImageType.Icon, detail["logo"].GetString()),
                         SelectedIndex = SelectedIndex
                     }
@@ -345,6 +348,80 @@ namespace CoolapkUWP.Pages.FeedPages
             public string GetTitleBarText(object o) => (o as ProductDetail).Title;
         }
 
+        private class APPPageDataProvider : ICanChangeSelectedIndex
+        {
+            public string Id { get; private set; }
+
+            private int page, _selectedIndex;
+            public int SelectedIndex
+            {
+                get => _selectedIndex;
+                set
+                {
+                    if (value > -1)
+                    { _selectedIndex = value; }
+                }
+            }
+
+            private double firstItem, lastItem;
+            public FeedListType ListType { get => FeedListType.APPPageList; }
+            public APPPageDataProvider(string id) => Id = id;
+
+            public void Reset() => firstItem = lastItem = page = 0;
+
+            public async Task<object> GetDetail()
+            {
+                JsonObject detail = UIHelper.GetJSonObject(await UIHelper.GetJson($"/apk/detail?id={Id}&installed=0"));
+                return detail != null
+                    ? new APPDetail
+                    {
+                        Title = detail["title"].GetString(),
+                        FollowNum = detail["follownum"].GetNumber(),
+                        CommentNum = UIHelper.GetValue(detail["commentnum"]),
+                        Description = detail["description"].GetString(),
+                        Logo = await ImageCache.GetImage(ImageType.Icon, detail["logo"].GetString())
+                    }
+                    : null;
+            }
+
+            public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
+            {
+                string sortType = "lastupdate_desc";
+                switch (SelectedIndex)
+                {
+                    case 0:
+                        sortType = "lastupdate_desc";
+                        break;
+                    case 1:
+                        sortType = "dateline_desc";
+                        break;
+                    case 2:
+                        sortType = "popular";
+                        break;
+                    default:
+                        break;
+                }
+                if (p == 1 && page == 0) { page = 1; }
+                JsonArray Root = UIHelper.GetDataArray(await UIHelper.GetJson($"/page/dataList?url=%23/feed/apkCommentList?isIncludeTop=1&id={Id}&sort={sortType}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{((lastItem == 0) ? string.Empty : $"&lastItem={lastItem}")}"));
+                if (!(Root is null) && Root.Count != 0)
+                {
+                    if (page == 1 || p == 1)
+                    { firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem; }
+                    lastItem = Root.Last()?.GetObject()["id"].GetNumber() ?? lastItem;
+                    List<FeedViewModel> FeedsCollection = new List<FeedViewModel>();
+                    foreach (IJsonValue i in Root) { FeedsCollection.Add(new FeedViewModel(i)); }
+                    return FeedsCollection;
+                }
+                else
+                {
+                    page--;
+                    return null;
+                }
+            }
+
+            public string GetTitleBarText(object o) => (o as APPDetail).Title;
+        }
+
         IFeedListDataProvider provider;
         ScrollViewer VScrollViewer;
         ObservableCollection<object> itemCollection = new ObservableCollection<object>();
@@ -366,9 +443,9 @@ namespace CoolapkUWP.Pages.FeedPages
                         case FeedListType.UserPageList:
                             if (str == "0") { Frame.GoBack(); }
                             else { provider = new UserPageDataProvider(str); }
-                            titleBar.ComboBoxVisibility = Visibility.Collapsed;
-                            //titleBar.ComboBoxItemsSource = new string[] { "动态", "问答", "图文" };
-                            //titleBar.ComboBoxSelectedIndex = 0;
+                            titleBar.ComboBoxVisibility = Visibility.Visible;
+                            titleBar.ComboBoxItemsSource = new string[] { "动态", "图文", "问答" };
+                            titleBar.ComboBoxSelectedIndex = 0;
                             break;
                         case FeedListType.TagPageList:
                             provider = new TagPageDataProvider(str);
@@ -380,6 +457,12 @@ namespace CoolapkUWP.Pages.FeedPages
                             provider = new DYHPageDataProvider(str);
                             titleBar.ComboBoxVisibility = Visibility.Collapsed;
                             titleBar.ComboBoxItemsSource = new string[] { "精选", "广场" };
+                            break;
+                        case FeedListType.APPPageList:
+                            provider = new APPPageDataProvider(str);
+                            titleBar.ComboBoxVisibility = Visibility.Visible;
+                            titleBar.ComboBoxItemsSource = new string[] { "最近回复", "按时间排序", "按热度排序" };
+                            titleBar.ComboBoxSelectedIndex = 0;
                             break;
                         case FeedListType.ProductPageList:
                             provider = new ProductPageDataProvider(str);
@@ -582,16 +665,27 @@ namespace CoolapkUWP.Pages.FeedPages
         public int SelectedIndex { get; set; }
     }
 
+    internal class APPDetail
+    {
+        public ImageSource Logo { get; set; }
+        public string Title { get; set; }
+        public double FollowNum { get; set; }
+        public string CommentNum { get; set; }
+        public string Description { get; set; }
+        public int SelectedIndex { get; set; }
+    }
+
     internal class TemplateSelector : DataTemplateSelector
     {
         public DataTemplate Feed { get; set; }
+        public DataTemplate APPDetail { get; set; }
         public DataTemplate DYHDetail { get; set; }
         public DataTemplate UserDetail { get; set; }
         public DataTemplate TopicDetail { get; set; }
         public DataTemplate ProductDetail { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            return item is UserDetail ? UserDetail : item is TopicDetail ? TopicDetail : item is DYHDetail ? DYHDetail : item is ProductDetail ? ProductDetail : Feed;
+            return item is UserDetail ? UserDetail : item is TopicDetail ? TopicDetail : item is DYHDetail ? DYHDetail : item is ProductDetail ? ProductDetail : item is APPDetail ? APPDetail : Feed;
         }
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }

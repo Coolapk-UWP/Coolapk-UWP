@@ -69,7 +69,7 @@ namespace CoolapkUWP.Control
         {
             for (int i = 0; i < urls.Length; i++)
             {
-                if (urls[i].Substring(urls[i].LastIndexOf('.')).ToLower().Contains("gif"))
+                if (urls[i].EndsWith(".gif") || urls[i].EndsWith(".GIF"))
                 {
                     if (type == ImageType.SmallImage)
                     { datas.Add(new ImageData(ImageType.OriginImage, urls[i])); }

@@ -240,7 +240,7 @@
                         Width="260">
                         <Image
                             Source="{x:Bind pic,Mode=OneWay}"
-                            Stretch="Uniform"/>
+                            Stretch="UniformToFill"/>
                         <Grid
                             VerticalAlignment="Bottom"
                             Background="#70000000">
@@ -270,15 +270,18 @@
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Border
-                            Grid.RowSpan="2"
+                            Width="40"
+                            Height="40"
                             Margin="8,0"
-                            HorizontalAlignment="Left"
+                            Grid.RowSpan="2"
+                            CornerRadius="8"
                             VerticalAlignment="Top"
-                            CornerRadius="8">
-                            <Image
-                                Width="40"
-                                Height="40"
-                                Source="{x:Bind pic, Mode=OneWay}"/>
+                            HorizontalAlignment="Left">
+                            <Border.Background>
+                                <ImageBrush
+                                    ImageSource="{x:Bind pic, Mode=OneWay}"
+                                    Stretch="UniformToFill"/>
+                            </Border.Background>
                         </Border>
 
                         <TextBlock

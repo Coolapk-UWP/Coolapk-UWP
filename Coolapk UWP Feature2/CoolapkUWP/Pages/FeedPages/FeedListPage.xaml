@@ -307,6 +307,61 @@
                     </StackPanel>
                 </Grid>
             </DataTemplate>
+            <DataTemplate x:Key="APPDetail" x:DataType="local:APPDetail">
+                <Grid
+                    x:Name="DetailGrid"
+                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
+                    BorderThickness="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Border
+                        Width="80"
+                        Height="80"
+                        Margin="20,10"
+                        CornerRadius="8"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left">
+                        <Border
+                            Width="80"
+                            Height="80">
+                            <Border.Background>
+                                <ImageBrush
+                                    x:Name="Logo"
+                                    ImageSource="{x:Bind Logo,Mode=OneWay}"/>
+                            </Border.Background>
+                        </Border>
+                    </Border>
+                    <StackPanel
+                        Grid.Column="1"
+                        VerticalAlignment="Center">
+                        <TextBlock
+                            FontSize="20"
+                            FontWeight="Black"
+                            Text="{x:Bind Title}"/>
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            TextWrapping="Wrap"
+                            Text="{x:Bind Description}"/>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            Margin="0,5">
+                            <TextBlock Text="{x:Bind FollowNum}"/>
+                            <TextBlock>关注</TextBlock>
+                            <TextBlock
+                                Margin="5,0,0,0"
+                                Text="{x:Bind CommentNum}"/>
+                            <TextBlock>评论</TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
             <DataTemplate x:Key="ProductDetail" x:DataType="local:ProductDetail">
                 <Grid
                     x:Name="DetailGrid"
@@ -345,9 +400,10 @@
                             FontSize="20"
                             FontWeight="Black"
                             Text="{x:Bind Title}"/>
-                        <controls:MarkdownTextBlock
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
                             TextWrapping="Wrap"
-                            Background="Transparent"
                             Text="{x:Bind Description}"/>
                         <StackPanel
                             Orientation="Horizontal"
@@ -365,6 +421,7 @@
             <local:TemplateSelector
                 x:Key="tempse"
                 Feed="{StaticResource feed}"
+                APPDetail="{StaticResource APPDetail}"
                 DYHDetail="{StaticResource DYHDetail}"
                 UserDetail="{StaticResource UserDetail}"
                 TopicDetail="{StaticResource TopicDetail}"

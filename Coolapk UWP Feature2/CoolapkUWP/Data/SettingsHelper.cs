@@ -61,15 +61,15 @@ namespace CoolapkUWP.Data
             return theme == ElementTheme.Dark;
         }
 
-        public static async Task CheckUpdate()
+        public static async Task CheckUpdate(bool IsBackground = false)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
                     Windows.Data.Json.JsonObject keys;
-                    try { keys = Windows.Data.Json.JsonObject.Parse(await UIHelper.GetHTML("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest")); }
-                    catch { keys = Windows.Data.Json.JsonObject.Parse(await UIHelper.GetHTML("https://v2.kkpp.cc/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest")); }
+                    try { keys = Windows.Data.Json.JsonObject.Parse(await UIHelper.GetHTML("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest", true)); }
+                    catch { keys = Windows.Data.Json.JsonObject.Parse(await UIHelper.GetHTML("https://v2.kkpp.cc/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest", true)); }
                     string[] ver = keys["tag_name"].GetString().Replace("v", string.Empty).Split('.');
                     if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major
                         || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
@@ -78,7 +78,7 @@ namespace CoolapkUWP.Data
                         GetUpdateContentDialog dialog = new GetUpdateContentDialog(keys["html_url"].GetString(), keys["body"].GetString()) { RequestedTheme = theme };
                         _ = dialog.ShowAsync();
                     }
-                    else { UIHelper.ShowMessage("当前无可用更新。"); }
+                    else if (!IsBackground) { UIHelper.ShowMessage("当前无可用更新。"); }
                 }
             }
             catch (HttpRequestException ex) { UIHelper.ShowHttpExceptionMessage(ex); }
