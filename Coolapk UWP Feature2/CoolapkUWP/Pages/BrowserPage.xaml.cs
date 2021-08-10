@@ -36,21 +36,25 @@ namespace CoolapkUWP.Pages
             base.OnNavigatedTo(e);
             object[] vs = e.Parameter as object[];
             IsLoginPage = (bool)vs[0];
+            UIHelper.ShowProgressBar();
             if (IsLoginPage)
-            { webView.Source = new Uri("https://account.coolapk.com/auth/loginByCoolapk"); }
+            {
+                webView.Navigate(new Uri("https://account.coolapk.com/auth/loginByCoolapk"));
+            }
             else if (!string.IsNullOrEmpty(vs[1] as string))
             {
                 url = vs[1] as string;
-                LoadUri(url);
+                webView.Navigate(new Uri(url));
             }
         }
 
-        private void LoadUri(string uri)
+        private void LoadUri(Uri uri)
         {
-            using (Windows.Web.Http.HttpRequestMessage httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(Windows.Web.Http.HttpMethod.Get, new Uri(uri)))
+            using (Windows.Web.Http.HttpRequestMessage httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(Windows.Web.Http.HttpMethod.Get, uri))
             {
                 httpRequestMessage.Headers.UserAgent.ParseAdd(UIHelper.mClient.DefaultRequestHeaders.UserAgent.ToString());
                 webView.NavigateWithHttpRequestMessage(httpRequestMessage);
+                webView.NavigationStarting += WebView_NavigationStarting;
             }
         }
 
@@ -60,6 +64,14 @@ namespace CoolapkUWP.Pages
             else if (args.Uri.AbsoluteUri == "https://account.coolapk.com/auth/loginByCoolapk")
             { IsLoginPage = true; }
             titleBar.Title = sender.DocumentTitle;
+            UIHelper.HideProgressBar();
+        }
+
+        private void WebView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        {
+            webView.NavigationStarting -= WebView_NavigationStarting;
+            args.Cancel = true;
+            LoadUri(args.Uri);
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
@@ -76,6 +88,13 @@ namespace CoolapkUWP.Pages
                 webView.Navigate(new Uri("https://account.coolapk.com/auth/loginByCoolapk"));
                 UIHelper.ShowMessage("没有获取到token，请尝试重新登录");
             }
+        }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            UIHelper.ShowProgressBar();
+            webView.Refresh();
+            UIHelper.HideProgressBar();
         }
 
         private async void GotoSystemBrowserButton_Click(object sender, RoutedEventArgs e)

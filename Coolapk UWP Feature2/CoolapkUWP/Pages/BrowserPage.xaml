@@ -19,9 +19,12 @@
         <WebView
             Margin="{x:Bind data:SettingsHelper.stackPanelMargin}"
             NavigationCompleted="WebView_NavigationCompleted"
+            NavigationStarting="WebView_NavigationStarting"
             x:Name="webView"/>
         <control:TitleBar
             x:Name="titleBar"
+            RefreshEvent="Refresh_Click"
+            RefreshButtonVisibility="Visible"
             BackButtonClick="BackButton_Click">
             <control:TitleBar.RightAreaContent>
                 <StackPanel

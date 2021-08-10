@@ -32,8 +32,7 @@
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger
-                        MinWindowWidth="{x:Bind navigationView.CompactModeThresholdWidth}" />
+                        <AdaptiveTrigger MinWindowWidth="{x:Bind navigationView.CompactModeThresholdWidth}"/>
                     </VisualState.StateTriggers>
 
                     <VisualState.Setters>
@@ -122,12 +121,12 @@
 
         <muxc:NavigationView.AutoSuggestBox>
             <AutoSuggestBox
-                x:Name="SearchBox"
-                QueryIcon="Find"
-                ItemTemplateSelector="{StaticResource tspl}"
                 MinWidth="180"
+                QueryIcon="Find"
+                x:Name="SearchBox"
                 PlaceholderText="搜索 动态、用户和话题"
                 TextChanged="AutoSuggestBox_TextChanged"
+                ItemTemplateSelector="{StaticResource tspl}"
                 QuerySubmitted="AutoSuggestBox_QuerySubmitted"
                 SuggestionChosen="AutoSuggestBox_SuggestionChosen"/>
         </muxc:NavigationView.AutoSuggestBox>
