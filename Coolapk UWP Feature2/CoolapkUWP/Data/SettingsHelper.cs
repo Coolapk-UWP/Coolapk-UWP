@@ -17,7 +17,7 @@ namespace CoolapkUWP.Data
         private static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public static UISettings uISettings => new UISettings();
         public static bool HasStatusBar => Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
-        public static double PageTitleHeight => HasStatusBar ? 48 : 80;
+        public static double PageTitleHeight => HasStatusBar ? 40 : 80;
         public static SolidColorBrush SystemAccentColorBrush => Windows.UI.Xaml.Application.Current.Resources.ThemeDictionaries["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
         public static Thickness stackPanelMargin => new Thickness(0, PageTitleHeight, 0, 2);
         public static Thickness ButtonMargin => new Thickness(0, PageTitleHeight - 48, 0, 2);
@@ -95,23 +95,23 @@ namespace CoolapkUWP.Data
                 { item.RequestedTheme = theme; }
 
                 bool IsDark = IsDarkTheme();
-                Color AccentColor = (Color)Windows.UI.Xaml.Application.Current.Resources["SystemChromeMediumLowColor"];
+                Microsoft.UI.Xaml.Media.AcrylicBrush AccentColor = (Microsoft.UI.Xaml.Media.AcrylicBrush)Windows.UI.Xaml.Application.Current.Resources["SystemControlChromeMediumLowAcrylicElementMediumBrush"];
 
                 if (HasStatusBar)
                 {
                     if (IsDark)
                     {
                         StatusBar statusBar = StatusBar.GetForCurrentView();
-                        statusBar.BackgroundColor = AccentColor;
+                        statusBar.BackgroundColor = AccentColor.FallbackColor;
                         statusBar.ForegroundColor = Colors.White;
-                        statusBar.BackgroundOpacity = 0; // 透明度
+                        statusBar.BackgroundOpacity = 1; // 透明度
                     }
                     else
                     {
                         StatusBar statusBar = StatusBar.GetForCurrentView();
-                        statusBar.BackgroundColor = AccentColor;
+                        statusBar.BackgroundColor = AccentColor.FallbackColor;
                         statusBar.ForegroundColor = Colors.Black;
-                        statusBar.BackgroundOpacity = 0; // 透明度
+                        statusBar.BackgroundOpacity = 1; // 透明度
                     }
                 }
                 else if (IsDark)

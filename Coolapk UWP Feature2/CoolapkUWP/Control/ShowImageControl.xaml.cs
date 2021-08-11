@@ -45,6 +45,7 @@ namespace CoolapkUWP.Control
         public ShowImageControl(Popup popup)
         {
             InitializeComponent();
+            ShowImageGrid.Margin = SettingsHelper.HasStatusBar ? new Thickness(0, 24, 0, 0) : new Thickness(0, 0, 0, 0);
             Height = Window.Current.Bounds.Height;
             Width = Window.Current.Bounds.Width;
             Window.Current.SizeChanged += WindowSizeChanged;
