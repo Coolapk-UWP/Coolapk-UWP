@@ -99,57 +99,67 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             UIHelper.ShowProgressBar();
             string s = await UIHelper.GetJson($"{url}{(url.Contains("?") ? "&" : "?")}page={page}");
-            JsonArray Root = UIHelper.GetDataArray(s);
-            if (Root != null && Root.Count > 0)
+            if (string.IsNullOrEmpty(s))
             {
-                if (page == 1)
+                UIHelper.ErrorProgressBar();
+                return true;
+            }
+            else
+            {
+                JsonArray Root = UIHelper.GetDataArray(s);
+                if (Root != null && Root.Count > 0)
                 {
-                    int n = 0;
-                    if (FeedsCollection.Count > 0)
+                    if (page == 1)
                     {
-                        Entity[] needDeleteItems = (from b in FeedsCollection
-                                                    from c in Root
-                                                    where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
-                                                    select b).ToArray();
-                        foreach (Entity item in needDeleteItems) { Collection.Remove(item); }
-                        n = (from b in FeedsCollection
-                             where b.entityFixed
-                             select b).Count();
-                    }
-                    int k = 0;
-                    for (int i = 0; i < Root.Count; i++)
-                    {
-                        JsonObject jo = Root[i].GetObject();
-                        if (index == -1 && jo.TryGetValue("entityTemplate", out IJsonValue t) && t?.GetString() == "configCard")
+                        int n = 0;
+                        if (FeedsCollection.Count > 0)
                         {
-                            JsonObject j = JsonObject.Parse(jo["extraData"].GetString());
-                            TitleBar.Title = j["pageTitle"].GetString();
-                            continue;
+                            Entity[] needDeleteItems = (from b in FeedsCollection
+                                                        from c in Root
+                                                        where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
+                                                        select b).ToArray();
+                            foreach (Entity item in needDeleteItems) { Collection.Remove(item); }
+                            n = (from b in FeedsCollection
+                                 where b.entityFixed
+                                 select b).Count();
                         }
-                        if (jo.TryGetValue("entityTemplate", out IJsonValue tt) && tt.GetString() == "fabCard") { continue; }
-                        FeedsCollection.Insert(n + k, GetEntity(jo));
-                        k++;
-                    }
-                    UIHelper.HideProgressBar();
-                    return true;
-                }
-                else
-                {
-                    if (Root.Count != 0)
-                    {
-                        foreach (IJsonValue i in Root) { FeedsCollection.Add(GetEntity(i.GetObject())); }
+                        int k = 0;
+                        for (int i = 0; i < Root.Count; i++)
+                        {
+                            JsonObject jo = Root[i].GetObject();
+                            if (index == -1 && jo.TryGetValue("entityTemplate", out IJsonValue t) && t?.GetString() == "configCard")
+                            {
+                                JsonObject j = JsonObject.Parse(jo["extraData"].GetString());
+                                TitleBar.Title = j["pageTitle"].GetString();
+                                continue;
+                            }
+                            if (jo.TryGetValue("entityTemplate", out IJsonValue tt) && tt.GetString() == "fabCard") { continue; }
+                            FeedsCollection.Insert(n + k, GetEntity(jo));
+                            k++;
+                        }
                         UIHelper.HideProgressBar();
                         return true;
                     }
                     else
                     {
-                        UIHelper.HideProgressBar();
-                        return false;
+                        if (Root.Count != 0)
+                        {
+                            foreach (IJsonValue i in Root) { FeedsCollection.Add(GetEntity(i.GetObject())); }
+                            UIHelper.HideProgressBar();
+                            return true;
+                        }
+                        else
+                        {
+                            UIHelper.HideProgressBar();
+                            return false;
+                        }
                     }
                 }
+                else
+                {
+                    return false;
+                }
             }
-
-            return false;
         }
 
         private Entity GetEntity(JsonObject token)

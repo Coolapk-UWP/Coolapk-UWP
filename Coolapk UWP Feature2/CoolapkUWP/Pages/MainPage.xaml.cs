@@ -39,7 +39,7 @@ namespace CoolapkUWP.Pages
             get => userNames;
             set
             {
-                if (value == null) { value = "个人中心"; }
+                if (value == null) { value = "登录"; }
                 userNames = value;
                 UserName.Text = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserNames)));
@@ -85,8 +85,11 @@ namespace CoolapkUWP.Pages
             ApplicationView view = ApplicationView.GetForCurrentView();
             bool isInFullScreenMode = view.IsFullScreenMode;
             navigationView.Margin = !(navigationView.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top) && (isInFullScreenMode || view.ViewMode == ApplicationViewMode.CompactOverlay)
-                ? new Thickness(0, 32, 0, 0)
-                : new Thickness(0, 0, 0, 0);
+                                    ? new Thickness(0, 32, 0, 0)
+                                    : new Thickness(0, 0, 0, 0);
+            MakeFeed.Content = navigationView.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top
+                ? Window.Current.Bounds.Width >= 800 ? "发动态" : null
+                : "发动态";
         }
 
         private void NavigationView_SelectionChanged(muxc.NavigationView sender, muxc.NavigationViewSelectionChangedEventArgs args)
@@ -129,14 +132,14 @@ namespace CoolapkUWP.Pages
                 }
                 else
                 {
-                    navigationView.Header = "酷安UWP";
-                    navigationView.PaneTitle = " ";
+                    navigationView.Header = " ";
+                    navigationView.PaneTitle = "酷安UWP";
                 }
             }
             catch
             {
-                navigationView.Header = "酷安UWP";
-                navigationView.PaneTitle = " ";
+                navigationView.Header = " ";
+                navigationView.PaneTitle = "酷安UWP";
             }
         }
 

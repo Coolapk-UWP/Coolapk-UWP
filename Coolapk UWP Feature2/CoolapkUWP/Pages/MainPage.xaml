@@ -20,11 +20,11 @@
     </Page.Resources>
 
     <muxc:NavigationView
+        PaneTitle="酷安UWP"
         x:Name="navigationView"
-        IsBackButtonVisible="Collapsed"
-        IsSettingsVisible="True"
         AlwaysShowHeader="True"
-        Header=" "
+        IsSettingsVisible="True"
+        IsBackButtonVisible="Collapsed"
         SelectionChanged="NavigationView_SelectionChanged"
         Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}">
 
@@ -36,13 +36,13 @@
                     </VisualState.StateTriggers>
 
                     <VisualState.Setters>
-                        <Setter Target="navigationView.PaneDisplayMode" Value="Top"/>
                         <Setter Target="navigationView.AlwaysShowHeader" Value="False"/>
                         <Setter Target="LoginIcon.HorizontalAlignment" Value="Center"/>
+                        <Setter Target="navigationView.PaneDisplayMode" Value="Top"/>
                         <Setter Target="UserName.Visibility" Value="Collapsed"/>
                         <Setter Target="LoginIcon.Margin" Value="0"/>
-                        <Setter Target="UserIcon.Width" Value="24"/>
                         <Setter Target="UserIcon.Height" Value="24"/>
+                        <Setter Target="UserIcon.Width" Value="24"/>
                         <Setter Target="UserIcon.Margin" Value="0"/>
                     </VisualState.Setters>
                 </VisualState>
@@ -86,7 +86,7 @@
         </muxc:NavigationView.MenuItems>
 
         <muxc:NavigationView.FooterMenuItems>
-            <muxc:NavigationViewItem Content="发动态" Tag="MakeFeed" Icon="Add"/>
+            <muxc:NavigationViewItem x:Name="MakeFeed" Content="发动态" Tag="MakeFeed" Icon="Add"/>
             <muxc:NavigationViewItem x:Name="Notify" Content="通知" Tag="Notification">
                 <muxc:NavigationViewItem.Icon>
                     <FontIcon x:Name="NotifyStatus"/>

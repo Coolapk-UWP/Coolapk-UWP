@@ -42,6 +42,10 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             Uri uri = ValidateAndGetUri(url.Text);
             string s = uri == null ? "这不是一个链接" : await UIHelper.GetHTML(uri.ToString(), "XMLHttpRequest");
+            if (string.IsNullOrEmpty(s))
+            {
+                s = "网络错误";
+            }
             ContentDialog GetJsonDialog = new ContentDialog
             {
                 Title = url.Text,
@@ -78,7 +82,8 @@ namespace CoolapkUWP.Pages.SettingPages
             JsonSerializer serializer = new JsonSerializer();
             TextReader tr = new StringReader(str);
             JsonTextReader jtr = new JsonTextReader(tr);
-            object obj = serializer.Deserialize(jtr);
+            object obj = null;
+            try { obj = serializer.Deserialize(jtr); } catch { }
             if (obj != null)
             {
                 StringWriter textWriter = new StringWriter();

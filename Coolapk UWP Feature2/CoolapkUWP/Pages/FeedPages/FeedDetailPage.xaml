@@ -129,11 +129,11 @@
                             x:Load="{x:Bind FeedDetail.isFeedArticle,Mode=OneWay}">
                             <Image
                                 x:Name="messageCover"
-                                x:Load="{x:Bind FeedDetail.has_message_cover,Mode=OneWay}"
                                 Tapped="Image_Tapped"
-                                Tag="{x:Bind FeedDetail.message_cover_url,Mode=OneWay}"
+                                Stretch="UniformToFill"
                                 Source="{x:Bind FeedDetail.message_cover,Mode=OneWay}"
-                                Stretch="UniformToFill" />
+                                Tag="{x:Bind FeedDetail.message_cover_url,Mode=OneWay}"
+                                x:Load="{x:Bind FeedDetail.has_message_cover,Mode=OneWay}"/>
                             <Border VerticalAlignment="Bottom">
                                 <Border.Background>
                                     <muxm:AcrylicBrush

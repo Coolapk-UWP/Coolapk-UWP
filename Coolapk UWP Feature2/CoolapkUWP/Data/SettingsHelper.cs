@@ -8,6 +8,7 @@ using Windows.Storage;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Data
@@ -177,21 +178,34 @@ namespace CoolapkUWP.Data
                     cookie = $"uid={uid}; username={userName}; token={token}";
                     Set("Uid", uid);
                     JsonObject json = UIHelper.GetJSonObject(await UIHelper.GetJson("/account/checkLoginInfo"));
-                    if (json.TryGetValue("notifyCount", out IJsonValue notifyCount) && !string.IsNullOrEmpty(notifyCount.GetObject().ToString()))
+                    if (json != null)
                     {
-                        UIHelper.notifications.Initial(notifyCount.GetObject());
+                        if (json.TryGetValue("notifyCount", out IJsonValue notifyCount) && !string.IsNullOrEmpty(notifyCount.GetObject().ToString()))
+                        {
+                            UIHelper.notifications.Initial(notifyCount.GetObject());
+                        }
+                        if (json.TryGetValue("userAvatar", out IJsonValue userAvatar) && !string.IsNullOrEmpty(userAvatar.GetString()))
+                        {
+                            UIHelper.mainPage.UserAvatar = await ImageCache.GetImage(ImageType.BigAvatar, userAvatar.GetString());
+                        }
+                        if (json.TryGetValue("username", out IJsonValue username) && !string.IsNullOrEmpty(username.GetString()))
+                        {
+                            UIHelper.mainPage.UserNames = username.GetString();
+                        }
                     }
-                    if (json.TryGetValue("userAvatar", out IJsonValue userAvatar) && !string.IsNullOrEmpty(userAvatar.GetString()))
+                    else
                     {
-                        UIHelper.mainPage.UserAvatar = await ImageCache.GetImage(ImageType.BigAvatar, userAvatar.GetString());
-                    }
-                    if (json.TryGetValue("username", out IJsonValue username) && !string.IsNullOrEmpty(username.GetString()))
-                    {
-                        UIHelper.mainPage.UserNames = username.GetString();
+                        UIHelper.mainPage.UserAvatar = ImageCache.NoPic;
+                        UIHelper.mainPage.UserNames = "网络错误";
                     }
                     return true;
                 }
-                else { return false; }
+                else
+                {
+                    UIHelper.mainPage.UserAvatar = null;
+                    UIHelper.mainPage.UserNames = "登录";
+                    return false;
+                }
             }
         }
 

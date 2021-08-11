@@ -139,16 +139,23 @@ namespace CoolapkUWP.Data
                         statusBar.ProgressIndicator.Text = string.Empty;
                         messageList.RemoveAt(0);
                     }
-                    else if (popups.Last().Child is StatusGrid statusGrid)
+                    else
                     {
-                        await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowMessage(s));
-                        await Task.Delay(3000);
-                        messageList.RemoveAt(0);
-                        await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        try
                         {
-                            if (messageList.Count == 0) { statusGrid.Rectangle_PointerExited(); }
-                            if (!isShowingProgressBar) { HideProgressBar(); }
-                        });
+                            if (popups.Last().Child is StatusGrid statusGrid)
+                            {
+                                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowMessage(s));
+                                await Task.Delay(3000);
+                                messageList.RemoveAt(0);
+                                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                                {
+                                    if (messageList.Count == 0) { statusGrid.Rectangle_PointerExited(); }
+                                    if (!isShowingProgressBar) { HideProgressBar(); }
+                                });
+                            }
+                        }
+                        catch { }
                     }
                 }
                 isShowingMessage = false;
@@ -183,7 +190,7 @@ namespace CoolapkUWP.Data
 
         public static void Navigate(Type pageType, object e = null)
         {
-            mainPage?.Frame.Navigate(pageType, e);
+            _ = (mainPage?.Frame.Navigate(pageType, e));
             HideProgressBar();
         }
 

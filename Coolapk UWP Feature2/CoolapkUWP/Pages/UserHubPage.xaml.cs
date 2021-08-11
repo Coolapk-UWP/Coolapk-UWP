@@ -39,6 +39,7 @@ namespace CoolapkUWP.Pages
         private double nextLevelPercentage;
         private string nextLevelNowExperience;
         private string levelTodayMessage;
+        private string leveldetailurl;
         private bool IsAuthor;
         private bool IsSpecial;
         private int page = 0;
@@ -64,49 +65,86 @@ namespace CoolapkUWP.Pages
                 LoginButton.Visibility = Visibility.Collapsed;
                 UserDetailGrid.Visibility = Visibility.Visible;
                 JsonObject o = UIHelper.GetJSonObject(await UIHelper.GetJson("/user/profile?uid=" + uid));
-                if (o.TryGetValue("userAvatar", out IJsonValue userAvatarurl) && !string.IsNullOrEmpty(userAvatarurl.GetString()))
+                if (o != null)
                 {
-                    UIHelper.mainPage.UserAvatar = userAvatar = await ImageCache.GetImage(ImageType.BigAvatar, userAvatarurl.GetString());
+                    if (o.TryGetValue("userAvatar", out IJsonValue userAvatarurl) && !string.IsNullOrEmpty(userAvatarurl.GetString()))
+                    {
+                        UIHelper.mainPage.UserAvatar = userAvatar = await ImageCache.GetImage(ImageType.BigAvatar, userAvatarurl.GetString());
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(userAvatar)));
+                    }
+                    if (o.TryGetValue("username", out IJsonValue username) && !string.IsNullOrEmpty(username.GetString()))
+                    {
+                        UIHelper.mainPage.UserNames = userName = username.GetString();
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(userName)));
+                    }
+                    if (o.TryGetValue("entityId", out IJsonValue entityId))
+                    {
+                        FindIsAuthor(entityId.ToString());
+                        FindIsSpecial(entityId.ToString());
+                        ApplicationData.Current.LocalSettings.Values["IsAuthor"] = IsAuthor;
+                        ApplicationData.Current.LocalSettings.Values["IsSpecial"] = IsSpecial;
+                    }
+                    if (o.TryGetValue("feed", out IJsonValue feed) && !string.IsNullOrEmpty(feed.GetNumber().ToString()))
+                    {
+                        feedNum = feed.GetNumber();
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(feedNum)));
+                    }
+                    if (o.TryGetValue("follow", out IJsonValue follow) && !string.IsNullOrEmpty(follow.GetNumber().ToString()))
+                    {
+                        followNum = follow.GetNumber();
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(followNum)));
+                    }
+                    if (o.TryGetValue("fans", out IJsonValue fans) && !string.IsNullOrEmpty(fans.GetNumber().ToString()))
+                    {
+                        fansNum = fans.GetNumber();
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(fansNum)));
+                    }
+                    if (o.TryGetValue("level", out IJsonValue level) && !string.IsNullOrEmpty(level.GetNumber().ToString()))
+                    {
+                        levelNum = level.GetNumber();
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(levelNum)));
+                    }
+                    if (o.TryGetValue("next_level_experience", out IJsonValue next_level_experience) && !string.IsNullOrEmpty(next_level_experience.GetNumber().ToString()))
+                    {
+                        nextLevelExperience = next_level_experience.GetNumber();
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(nextLevelExperience)));
+                    }
+                    if (o.TryGetValue("next_level_percentage", out IJsonValue next_level_percentage) && !string.IsNullOrEmpty(next_level_percentage.GetString()))
+                    {
+                        nextLevelPercentage = double.Parse(next_level_percentage.GetString());
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(nextLevelPercentage)));
+                    }
+                    if (o.TryGetValue("level_today_message", out IJsonValue level_today_message) && !string.IsNullOrEmpty(level_today_message.GetString()))
+                    {
+                        levelTodayMessage = level_today_message.GetString();
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(levelTodayMessage)));
+                    }
+                    if (o.TryGetValue("level_detail_url", out IJsonValue level_detail_url) && !string.IsNullOrEmpty(level_detail_url.GetString()))
+                    {
+                        leveldetailurl = level_detail_url.GetString();
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(leveldetailurl)));
+                    }
+                    nextLevelNowExperience = $"{nextLevelPercentage / 100 * nextLevelExperience:F0}/{nextLevelExperience}";
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(nextLevelNowExperience)));
                 }
-                if (o.TryGetValue("username", out IJsonValue username) && !string.IsNullOrEmpty(username.GetString()))
+                else
                 {
-                    UIHelper.mainPage.UserNames = userName = username.GetString();
+                    UIHelper.mainPage.UserAvatar = userAvatar = ImageCache.NoPic;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(userAvatar)));
+                    UIHelper.mainPage.UserNames = userName = "网络错误";
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(userName)));
+
                 }
-                if (o.TryGetValue("entityId", out IJsonValue u))
-                {
-                    FindIsAuthor(u.ToString());
-                    FindIsSpecial(u.ToString());
-                }
-                ApplicationData.Current.LocalSettings.Values["IsAuthor"] = IsAuthor;
-                ApplicationData.Current.LocalSettings.Values["IsSpecial"] = IsSpecial;
-                feedNum = o["feed"].GetNumber();
-                followNum = o["follow"].GetNumber();
-                fansNum = o["fans"].GetNumber();
-                levelNum = o["level"].GetNumber();
-                nextLevelExperience = o["next_level_experience"].GetNumber();
-                nextLevelPercentage = double.Parse(o["next_level_percentage"].GetString());
-                levelTodayMessage = o["level_today_message"].GetString();
-                nextLevelNowExperience = $"{nextLevelPercentage / 100 * nextLevelExperience:F0}/{nextLevelExperience}";
                 index = -1;
                 GetUrlPage();
                 _ = Task.Run(async () =>
-                  {
-                      await Task.Delay(1000);
-                      await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                      {
-                          (VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
-                      });
-                  });
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(userAvatar)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(userName)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(fansNum)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(feedNum)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(followNum)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(levelNum)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(nextLevelExperience)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(nextLevelPercentage)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(levelTodayMessage)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(nextLevelNowExperience)));
+                {
+                    await Task.Delay(1000);
+                    await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        (VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
+                    });
+                });
             }
         }
 
@@ -276,58 +314,68 @@ namespace CoolapkUWP.Pages
         private async Task<bool> GetUrlPage(int page, string url, ObservableCollection<Entity> FeedsCollection)
         {
             UIHelper.ShowProgressBar();
-            string s = await UIHelper.GetJson($"/account/loadConfig?key=my_page_card_config");
-            JsonArray Root = UIHelper.GetDataArray(s);
-            if (Root != null && Root.Count > 0)
+            string s = await UIHelper.GetJson("/account/loadConfig?key=my_page_card_config");
+            if (string.IsNullOrEmpty(s))
             {
-                if (page == 1)
+                UIHelper.ErrorProgressBar();
+                return true;
+            }
+            else
+            {
+                JsonArray Root = UIHelper.GetDataArray(s);
+                if (Root != null && Root.Count > 0)
                 {
-                    int n = 0;
-                    if (FeedsCollection.Count > 0)
+                    if (page == 1)
                     {
-                        Entity[] needDeleteItems = (from b in FeedsCollection
-                                                    from c in Root
-                                                    where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
-                                                    select b).ToArray();
-                        foreach (var item in needDeleteItems)
-                        { Collection.Remove(item); }
-                        n = (from b in FeedsCollection
-                             where b.entityFixed
-                             select b).Count();
-                    }
-                    int k = 0;
-                    for (int i = 0; i < Root.Count; i++)
-                    {
-                        JsonObject jo = Root[i].GetObject();
-                        if (index == -1 && jo.TryGetValue("entityTemplate", out IJsonValue t) && t?.GetString() == "configCard")
+                        int n = 0;
+                        if (FeedsCollection.Count > 0)
                         {
-                            JsonObject j = JsonObject.Parse(jo["extraData"].GetString());
-                            continue;
+                            Entity[] needDeleteItems = (from b in FeedsCollection
+                                                        from c in Root
+                                                        where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
+                                                        select b).ToArray();
+                            foreach (Entity item in needDeleteItems)
+                            { _ = Collection.Remove(item); }
+                            n = (from b in FeedsCollection
+                                 where b.entityFixed
+                                 select b).Count();
                         }
-                        if (jo.TryGetValue("entityTemplate", out IJsonValue tt) && tt.GetString() == "fabCard") { continue; }
-                        FeedsCollection.Insert(n + k, GetEntity(jo));
-                        k++;
-                    }
-                    UIHelper.HideProgressBar();
-                    return true;
-                }
-                else
-                {
-                    if (Root.Count != 0)
-                    {
-                        foreach (IJsonValue i in Root) { FeedsCollection.Add(GetEntity(i.GetObject())); }
+                        int k = 0;
+                        for (int i = 0; i < Root.Count; i++)
+                        {
+                            JsonObject jo = Root[i].GetObject();
+                            if (index == -1 && jo.TryGetValue("entityTemplate", out IJsonValue t) && t?.GetString() == "configCard")
+                            {
+                                JsonObject j = JsonObject.Parse(jo["extraData"].GetString());
+                                continue;
+                            }
+                            if (jo.TryGetValue("entityTemplate", out IJsonValue tt) && tt.GetString() == "fabCard") { continue; }
+                            FeedsCollection.Insert(n + k, GetEntity(jo));
+                            k++;
+                        }
                         UIHelper.HideProgressBar();
                         return true;
                     }
                     else
                     {
-                        UIHelper.HideProgressBar();
-                        return false;
+                        if (Root.Count != 0)
+                        {
+                            foreach (IJsonValue i in Root) { FeedsCollection.Add(GetEntity(i.GetObject())); }
+                            UIHelper.HideProgressBar();
+                            return true;
+                        }
+                        else
+                        {
+                            UIHelper.HideProgressBar();
+                            return false;
+                        }
                     }
                 }
+                else
+                {
+                    return false;
+                }
             }
-
-            return false;
         }
 
         private Entity GetEntity(JsonObject token)
@@ -391,7 +439,9 @@ namespace CoolapkUWP.Pages
 
         private void LvHelp_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            UIHelper.OpenLink("/feed/18221454");
+            FrameworkElement element = sender as FrameworkElement;
+            string Url = string.IsNullOrEmpty(element.Tag.ToString()) ? "/feed/18221454" : element.Tag.ToString();
+            UIHelper.OpenLink(Url);
         }
     }
 }

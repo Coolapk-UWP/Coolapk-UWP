@@ -154,7 +154,10 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void BackButton_Click(object sender, RoutedEventArgs e) => Frame.GoBack();
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.GoBack();
+        }
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -214,7 +217,7 @@ namespace CoolapkUWP.Pages.FeedPages
                                               where a.id == b.GetObject()["id"].GetNumber()
                                               select a).ToArray();
                     foreach (FeedReplyViewModel item in d)
-                    { hotReplies.Remove(item); }
+                    { _ = hotReplies.Remove(item); }
                     for (int i = 0; i < array.Count; i++)
                     { hotReplies.Insert(i, new FeedReplyViewModel(array[i])); }
                     hotReplyFirstItem = array.First().GetObject()["id"].GetNumber();

@@ -87,7 +87,7 @@ namespace CoolapkUWP.Control.ViewModels
         private async void GetPic()
         {
             if (has_message_cover)
-            { message_cover = await ImageCache.GetImage(ImageType.SmallImage, message_cover_url); }
+            { message_cover = await ImageCache.GetImage(ImageType.OriginImage, message_cover_url); }
             if (showTtitle)
             { tpic = await ImageCache.GetImage(ImageType.Icon, tpicUrl); }
             if (showRelationRows)

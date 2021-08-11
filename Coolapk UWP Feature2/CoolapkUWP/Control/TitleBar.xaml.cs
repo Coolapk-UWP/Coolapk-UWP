@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using CoolapkUWP.Data;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
@@ -24,9 +25,14 @@ namespace CoolapkUWP.Control
 
         public TitleBar() => this.InitializeComponent();
         private void RefreshButton_Click(object sender, RoutedEventArgs e) => RefreshEvent?.Invoke(sender, e);
-        private void BackButton_Click(object sender, RoutedEventArgs e) => BackButtonClick?.Invoke(sender, e);
         private void ChangeModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => ComboBoxSelectionChange?.Invoke(sender, e);
-        
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            BackButtonClick?.Invoke(sender, e);
+            UIHelper.HideProgressBar();
+        }
+
         private void titleGrid_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             if (e.OriginalSource is Grid || (e.OriginalSource is TextBlock a && a == title))

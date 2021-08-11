@@ -19,10 +19,10 @@ namespace CoolapkUWP.Data
 
     internal static class ImageCache
     {
-        private static readonly BitmapImage whiteNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
-        private static readonly BitmapImage darkNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
+        private static readonly BitmapImage whiteNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/NoPic/img_placeholder.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
+        private static readonly BitmapImage darkNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/NoPic/img_placeholder_night.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
         private static readonly Dictionary<ImageType, StorageFolder> folders = new Dictionary<ImageType, StorageFolder>();
-        internal static BitmapImage NoPic { get => SettingsHelper.IsDarkTheme() ? darkNoPicMode : whiteNoPicMode; }
+        public static BitmapImage NoPic { get => SettingsHelper.IsDarkTheme() ? darkNoPicMode : whiteNoPicMode; }
 
         private static async Task<StorageFolder> GetFolder(ImageType type)
         {
@@ -63,7 +63,7 @@ namespace CoolapkUWP.Data
         {
             if (url.IndexOf("ms-appx") == 0) { return await StorageFile.GetFileFromApplicationUriAsync(new Uri(url)); }
             else if (string.IsNullOrEmpty(url) || SettingsHelper.GetBoolen("IsNoPicsMode"))
-            { return await StorageFile.GetFileFromApplicationUriAsync(new Uri(SettingsHelper.IsDarkTheme() ? "ms-appx:/Assets/img_placeholder_night.png" : "ms-appx:/Assets/img_placeholder.png")); }
+            { return await StorageFile.GetFileFromApplicationUriAsync(new Uri(SettingsHelper.IsDarkTheme() ? "ms-appx:/Assets/NoPic/img_placeholder_night.png" : "ms-appx:/Assets/NoPic/img_placeholder.png")); }
             else
             {
                 string fileName = UIHelper.GetMD5(url);
@@ -83,7 +83,7 @@ namespace CoolapkUWP.Data
         }
 
         private static BitmapImage GetLocalImage(string filename) =>
-            (filename is null || SettingsHelper.GetBoolen("IsNoPicsMode")) ? (SettingsHelper.IsDarkTheme() ? darkNoPicMode : whiteNoPicMode) : new BitmapImage(new Uri(filename));
+            (filename is null || SettingsHelper.GetBoolen("IsNoPicsMode")) ? NoPic : new BitmapImage(new Uri(filename));
 
         private static async Task DownloadImage(StorageFile file, string url, bool showMessage)
         {

@@ -370,7 +370,9 @@
                         Grid.Row="1"
                         Width="240"
                         Margin="100,0,0,0"
+                        Tapped="LvHelp_Tapped"
                         HorizontalAlignment="Left"
+                        Tag="{x:Bind leveldetailurl, Mode=OneWay}"
                         Value="{x:Bind nextLevelPercentage, Mode=OneWay}"/>
 
                     <StackPanel
@@ -391,15 +393,6 @@
                             VerticalAlignment="Center"
                             Text="{x:Bind nextLevelNowExperience, Mode=OneWay}"/>
                     </StackPanel>
-
-                    <ListViewItem
-                        Grid.Row="1"
-                        Margin="100,0,0,0"
-                        Tag="LvHelp"
-                        Tapped="LvHelp_Tapped"
-                        Background="Transparent"
-                        Height="1px">
-                    </ListViewItem>
 
                     <TextBlock
                         Grid.Row="3"
