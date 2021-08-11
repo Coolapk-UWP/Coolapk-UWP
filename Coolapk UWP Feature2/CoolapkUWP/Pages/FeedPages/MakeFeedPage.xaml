@@ -3,10 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Windows11version2104="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 14)"
+    xmlns:Windows11version2204="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 14)"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="using:CoolapkUWP.Pages.FeedPages"
-    Windows11version2104:Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
+    Windows11version2204:Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d">
 
     <Grid
@@ -49,21 +49,47 @@
                                 <Setter Property="Background" Value="{ThemeResource SystemControlChromeLowAcrylicElementBrush}"/>
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
-                        <GridView
-                            SelectionMode="None"
-                            ItemClick="GridView_ItemClick"
-                            IsItemClickEnabled="True">
-                            <GridView.ItemTemplate>
-                                <DataTemplate x:DataType="local:EmojiData">
-                                    <Image
-                                        Width="36"
-                                        Height="36"
-                                        Margin="2"
-                                        Source="{x:Bind emoji}"
-                                        ToolTipService.ToolTip="{x:Bind name}"/>
-                                </DataTemplate>
-                            </GridView.ItemTemplate>
-                        </GridView>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <AutoSuggestBox
+                                Margin="8"
+                                PlaceholderText="搜索表情……"
+                                QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                                SuggestionChosen="{x:Bind local:MakeFeedPage.AutoSuggestBox_SuggestionChosen}"
+                                TextChanged="AutoSuggestBox_TextChanged">
+                                <AutoSuggestBox.ItemTemplate>
+                                    <DataTemplate x:DataType="local:EmojiData">
+                                        <StackPanel Padding="8,4" Orientation="Horizontal">
+                                            <Image
+                                                Width="24"
+                                                Height="24"
+                                                Source="{x:Bind emoji, Mode=OneWay}"/>
+                                            <TextBlock Margin="4,0" Text="{x:Bind name}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </AutoSuggestBox.ItemTemplate>
+                            </AutoSuggestBox>
+                            <GridView
+                                Grid.Row="1"
+                                x:Name="EmojiView"
+                                SelectionMode="None"
+                                ItemClick="GridView_ItemClick"
+                                IsItemClickEnabled="True">
+                                <GridView.ItemTemplate>
+                                    <DataTemplate x:DataType="local:EmojiData">
+                                        <Image
+                                            Width="36"
+                                            Margin="2"
+                                            Height="36"
+                                            Source="{x:Bind emoji}"
+                                            ToolTipService.ToolTip="{x:Bind name}"/>
+                                    </DataTemplate>
+                                </GridView.ItemTemplate>
+                            </GridView>
+                        </Grid>
                     </Flyout>
                 </Button.Flyout>
             </AppBarButton>

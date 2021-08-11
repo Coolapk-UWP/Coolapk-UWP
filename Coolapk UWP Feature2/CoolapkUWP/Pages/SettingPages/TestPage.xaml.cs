@@ -2,7 +2,9 @@
 using CoolapkUWP.Data;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -19,6 +21,7 @@ namespace CoolapkUWP.Pages.SettingPages
         public TestPage()
         {
             InitializeComponent();
+            test();
             tile.Text = ApplicationData.Current.LocalSettings.Values["TileUrl"].ToString();
         }
 
@@ -111,6 +114,62 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             ApplicationData.Current.LocalSettings.Values["TileUrl"] = tile.Text;
             LiveTileControl.UpdateTile();
+        }
+
+        private void test()
+        {
+            List<string> b;
+            string emojis = string.Empty;
+            b = EmojiHelper.normal.ToList();
+            foreach (var item in EmojiHelper.coolcoins)
+            {
+                if (!b.Contains(item))
+                { b.Add(item); }
+            }
+            foreach (var item in EmojiHelper.funny)
+            {
+                if (!b.Contains(item))
+                { b.Add(item); }
+            }
+            foreach (var item in EmojiHelper.doge)
+            {
+                if (!b.Contains(item))
+                { b.Add(item); }
+            }
+            foreach (var item in EmojiHelper.tradition)
+            {
+                if (!b.Contains(item))
+                { b.Add(item); }
+            }
+            foreach (var item in EmojiHelper.classic)
+            {
+                if (!b.Contains(item))
+                { b.Add(item); }
+            }
+            foreach (var item in EmojiHelper.emojis)
+            {
+                if (!b.Contains(item))
+                { b.Add(item); }
+            }
+            foreach (var item in b)
+            {
+                emojis += $"\"{item}\",\n"; 
+            }
+            ContentDialog GetJsonDialog = new ContentDialog
+            {
+                Title = $"{b.ToArray().Length}/{EmojiHelper.emojis.Length}",
+                Content = new ScrollViewer
+                {
+                    Content = new TextBlock
+                    {
+                        Text = emojis,
+                        IsTextSelectionEnabled = true
+                    }
+                },
+                CloseButtonText = "好的",
+                DefaultButton = ContentDialogButton.Close
+            };
+            _ = GetJsonDialog.ShowAsync();
         }
     }
 }

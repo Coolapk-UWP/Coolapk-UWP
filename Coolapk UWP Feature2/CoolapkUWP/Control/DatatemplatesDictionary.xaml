@@ -132,9 +132,9 @@
     <DataTemplate x:DataType="models:FeedViewModel" x:Key="feed">
         <Grid
             MaxWidth="800"
-            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+            Padding="12,4"
             BorderThickness="1"
-            Padding="12,4">
+            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>

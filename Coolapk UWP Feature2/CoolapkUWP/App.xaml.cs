@@ -2,8 +2,8 @@
 using CoolapkUWP.Data;
 using CoolapkUWP.Pages.SettingPages;
 using Microsoft.Toolkit.Uwp.Helpers;
+using Microsoft.Toolkit.Uwp.Connectivity;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -13,6 +13,8 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using CoolapkUWP.Pages;
+using System.Linq;
 
 namespace CoolapkUWP
 {
@@ -102,13 +104,40 @@ namespace CoolapkUWP
                 // 参数
                 ApplicationViewTitleBar view = ApplicationView.GetForCurrentView().TitleBar;
                 view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
-                _ = rootFrame.Navigate(typeof(Pages.MainPage), e.Arguments);
+                _ = rootFrame.Navigate(typeof(MainPage), e.Arguments);
                 Window.Current.Content = rootFrame;
+                if (e.Arguments != null)
+                {
+                    switch (e.Arguments)
+                    {
+                        case "search":
+                            UIHelper.Navigate(typeof(SearchPage));
+                            break;
+                        case "settings":
+                            UIHelper.Navigate(typeof(SettingPage));
+                            break;
+                        case "test":
+                            UIHelper.Navigate(typeof(TestPage));
+                            break;
+                        default:
+                            UIHelper.OpenLink(e.Arguments);
+                            break;
+                    }
+                }
+                else if (e.TileActivatedInfo != null)
+                {
+                    if (e.TileActivatedInfo.RecentlyShownNotifications.Count > 0)
+                    {
+                        // Get arguments from the notifications that were recently displayed
+                        string[] allArgs = e.TileActivatedInfo.RecentlyShownNotifications
+                        .Select(i => i.Arguments)
+                        .ToArray();
+                        UIHelper.OpenLink(allArgs[0]);
+                    }
+                }
             }
-
             // 确保当前窗口处于活动状态
             Window.Current.Activate();
-
         }
 
         /// <summary>
@@ -188,7 +217,10 @@ namespace CoolapkUWP
             switch (args.TaskInstance.Task.Name)
             {
                 case "LiveTileTask":
+                    if (NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable)
+                    {
                         new LiveTileControl().Run(args.TaskInstance);
+                    }
                     break;
 
                 default:
