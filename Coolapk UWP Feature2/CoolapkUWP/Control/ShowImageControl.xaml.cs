@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -45,7 +46,7 @@ namespace CoolapkUWP.Control
         public ShowImageControl(Popup popup)
         {
             InitializeComponent();
-            ShowImageGrid.Margin = SettingsHelper.HasStatusBar ? new Thickness(0, 24, 0, 0) : new Thickness(0, 0, 0, 0);
+            ShowImageGrid.Margin = SettingsHelper.HasStatusBar ? ApplicationView.GetForCurrentView().Orientation == ApplicationViewOrientation.Portrait ? new Thickness(0, 24, 0, 0) : new Thickness(40, 0, 0, 0) : new Thickness(0, 0, 0, 0);
             Height = Window.Current.Bounds.Height;
             Width = Window.Current.Bounds.Width;
             Window.Current.SizeChanged += WindowSizeChanged;

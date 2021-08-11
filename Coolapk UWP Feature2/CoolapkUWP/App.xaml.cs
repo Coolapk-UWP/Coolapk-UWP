@@ -91,6 +91,7 @@ namespace CoolapkUWP
         {
             RegisterExceptionHandlingSynchronizationContext();
             UnhandledException += Application_UnhandledException;
+            RegisterBackgroundTask();
 
             if (!(Window.Current.Content is Frame rootFrame))
             {
@@ -167,16 +168,6 @@ namespace CoolapkUWP
 
         private static async void RegisterBackgroundTask()
         {
-            #region CheckUpdate
-            //const string CheckUpdate = "CheckUpdate";
-
-            //// Check for background access (optional)
-            //await BackgroundExecutionManager.RequestAccessAsync();
-
-            //// Register (Single Process)
-            //BackgroundTaskRegistration _CheckUpdate = BackgroundTaskHelper.Register(CheckUpdate, new TimeTrigger(1440, false), true);
-            #endregion
-
             #region LiveTileTask
             const string LiveTileTask = "LiveTileTask";
 
@@ -185,29 +176,6 @@ namespace CoolapkUWP
 
             // Register (Single Process)
             BackgroundTaskRegistration _LiveTileTask = BackgroundTaskHelper.Register(LiveTileTask, new TimeTrigger(15, false), true);
-            #endregion
-
-            #region ToastBackgroundTask
-            const string ToastBackgroundTask = "ToastBackgroundTask";
-
-            // If background task is already registered, do nothing
-            if (BackgroundTaskRegistration.AllTasks.Any(i => i.Value.Name.Equals(ToastBackgroundTask)))
-                return;
-
-            // Otherwise request access
-            BackgroundAccessStatus status = await BackgroundExecutionManager.RequestAccessAsync();
-
-            // Create the background task
-            BackgroundTaskBuilder builder = new BackgroundTaskBuilder()
-            {
-                Name = ToastBackgroundTask
-            };
-
-            // Assign the toast action trigger
-            builder.SetTrigger(new ToastNotificationActionTrigger());
-
-            // And register the task
-            BackgroundTaskRegistration registration = builder.Register();
             #endregion
         }
 
@@ -219,16 +187,6 @@ namespace CoolapkUWP
 
             switch (args.TaskInstance.Task.Name)
             {
-                //case "ToastBackgroundTask":
-                //    if (args.TaskInstance.TriggerDetails is ToastNotificationActionTriggerDetail details)
-                //    {
-                //        ToastArguments arguments = ToastArguments.Parse(details.Argument);
-                //        ValueSet userInput = details.UserInput;
-
-                //        // Perform tasks
-                //    }
-                //    break;
-
                 case "LiveTileTask":
                         new LiveTileControl().Run(args.TaskInstance);
                     break;

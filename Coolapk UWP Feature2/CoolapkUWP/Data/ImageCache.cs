@@ -21,7 +21,7 @@ namespace CoolapkUWP.Data
     {
         private static readonly BitmapImage whiteNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
         private static readonly BitmapImage darkNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/img_placeholder_night.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
-        static Dictionary<ImageType, StorageFolder> folders = new Dictionary<ImageType, StorageFolder>();
+        private static readonly Dictionary<ImageType, StorageFolder> folders = new Dictionary<ImageType, StorageFolder>();
         internal static BitmapImage NoPic { get => SettingsHelper.IsDarkTheme() ? darkNoPicMode : whiteNoPicMode; }
 
         private static async Task<StorageFolder> GetFolder(ImageType type)
