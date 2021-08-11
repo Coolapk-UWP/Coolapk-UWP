@@ -95,23 +95,44 @@ namespace CoolapkUWP.Data
                 { item.RequestedTheme = theme; }
 
                 bool IsDark = IsDarkTheme();
-                Microsoft.UI.Xaml.Media.AcrylicBrush AccentColor = (Microsoft.UI.Xaml.Media.AcrylicBrush)Windows.UI.Xaml.Application.Current.Resources["SystemControlChromeMediumLowAcrylicElementMediumBrush"];
 
                 if (HasStatusBar)
                 {
-                    if (IsDark)
+                    try
                     {
-                        StatusBar statusBar = StatusBar.GetForCurrentView();
-                        statusBar.BackgroundColor = AccentColor.FallbackColor;
-                        statusBar.ForegroundColor = Colors.White;
-                        statusBar.BackgroundOpacity = 1; // 透明度
+                        Microsoft.UI.Xaml.Media.AcrylicBrush AccentColor = (Microsoft.UI.Xaml.Media.AcrylicBrush)Windows.UI.Xaml.Application.Current.Resources["SystemControlChromeMediumLowAcrylicElementMediumBrush"];
+                        if (IsDark)
+                        {
+                            StatusBar statusBar = StatusBar.GetForCurrentView();
+                            statusBar.BackgroundColor = AccentColor.FallbackColor;
+                            statusBar.ForegroundColor = Colors.White;
+                            statusBar.BackgroundOpacity = 1; // 透明度
+                        }
+                        else
+                        {
+                            StatusBar statusBar = StatusBar.GetForCurrentView();
+                            statusBar.BackgroundColor = AccentColor.FallbackColor;
+                            statusBar.ForegroundColor = Colors.Black;
+                            statusBar.BackgroundOpacity = 1; // 透明度
+                        }
                     }
-                    else
+                    catch
                     {
-                        StatusBar statusBar = StatusBar.GetForCurrentView();
-                        statusBar.BackgroundColor = AccentColor.FallbackColor;
-                        statusBar.ForegroundColor = Colors.Black;
-                        statusBar.BackgroundOpacity = 1; // 透明度
+                        AcrylicBrush AccentColor = (AcrylicBrush)Windows.UI.Xaml.Application.Current.Resources["SystemControlChromeMediumLowAcrylicElementMediumBrush"];
+                        if (IsDark)
+                        {
+                            StatusBar statusBar = StatusBar.GetForCurrentView();
+                            statusBar.BackgroundColor = AccentColor.FallbackColor;
+                            statusBar.ForegroundColor = Colors.White;
+                            statusBar.BackgroundOpacity = 1; // 透明度
+                        }
+                        else
+                        {
+                            StatusBar statusBar = StatusBar.GetForCurrentView();
+                            statusBar.BackgroundColor = AccentColor.FallbackColor;
+                            statusBar.ForegroundColor = Colors.Black;
+                            statusBar.BackgroundOpacity = 1; // 透明度
+                        }
                     }
                 }
                 else if (IsDark)
