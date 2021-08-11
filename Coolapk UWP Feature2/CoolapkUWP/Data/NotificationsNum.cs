@@ -46,44 +46,41 @@ namespace CoolapkUWP.Data
         {
             if (o != null)
             {
-                if (o.TryGetValue("badge", out IJsonValue badge) && !string.IsNullOrEmpty(badge.GetNumber().ToString()))
-                {
-                    BadgeNum = badge.GetNumber();
-                }
+                BadgeNum = o["badge"].GetNumber();
                 bool numChanged = false;
-                if (o.TryGetValue("contacts_follow", out IJsonValue contacts_follow) && contacts_follow.GetNumber() != followNum)
+                if (o["contacts_follow"].GetNumber() != followNum)
                 {
-                    followNum = contacts_follow.GetNumber();
+                    followNum = o["contacts_follow"].GetNumber();
                     numChanged = true;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(followNum)));
                 }
-                if (o.TryGetValue("message", out IJsonValue message) && message.GetNumber() != messageNum)
+                if (o["message"].GetNumber() != messageNum)
                 {
-                    messageNum = message.GetNumber();
+                    messageNum = o["message"].GetNumber();
                     numChanged = true;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(messageNum)));
                 }
-                if (o.TryGetValue("atme", out IJsonValue atme) && atme.GetNumber() != atMeNum)
+                if (o["atme"].GetNumber() != atMeNum)
                 {
-                    atMeNum = atme.GetNumber();
+                    atMeNum = o["atme"].GetNumber();
                     numChanged = true;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(atMeNum)));
                 }
-                if (o.TryGetValue("atcommentme", out IJsonValue atcommentme) && atcommentme.GetNumber() != atCommentMeNum)
+                if (o["atcommentme"].GetNumber() != atCommentMeNum)
                 {
-                    atCommentMeNum = atcommentme.GetNumber();
+                    atCommentMeNum = o["atcommentme"].GetNumber();
                     numChanged = true;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(atCommentMeNum)));
                 }
-                if (o.TryGetValue("commentme", out IJsonValue commentme) && commentme.GetNumber() != commentMeNum)
+                if (o["commentme"].GetNumber() != commentMeNum)
                 {
-                    commentMeNum = commentme.GetNumber();
+                    commentMeNum = o["commentme"].GetNumber();
                     numChanged = true;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(commentMeNum)));
                 }
-                if (o.TryGetValue("feedlike", out IJsonValue feedlike) && feedlike.GetNumber() != feedLikeNum)
+                if (o["feedlike"].GetNumber() != feedLikeNum)
                 {
-                    feedLikeNum = feedlike.GetNumber();
+                    feedLikeNum = o["feedlike"].GetNumber();
                     numChanged = true;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(feedLikeNum)));
                 }

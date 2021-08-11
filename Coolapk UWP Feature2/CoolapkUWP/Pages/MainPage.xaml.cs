@@ -241,7 +241,7 @@ namespace CoolapkUWP.Pages
                 TaskEntryPoint = typeof(BackgroundTask).FullName
             };
             taskBuilder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
-            taskBuilder.SetTrigger(new TimeTrigger(15, false));
+            taskBuilder.SetTrigger(new TimeTrigger(30, false));
             _ = taskBuilder.Register();
         }
     }
