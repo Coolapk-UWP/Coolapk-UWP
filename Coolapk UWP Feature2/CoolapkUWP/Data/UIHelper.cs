@@ -282,7 +282,7 @@ namespace CoolapkUWP.Data
         {
             try
             {
-                if (url != "/notification/checkCount") { _ = (notifications?.RefreshNotificationsNum()); }
+                if (url == "/notification/checkCount") { _ = (notifications?.RefreshNotificationsNum()); }
                 _ = mClient.DefaultRequestHeaders.Remove("X-App-Token");
                 mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
                 _ = mClient.DefaultRequestHeaders.Remove("Cookie");
@@ -307,7 +307,7 @@ namespace CoolapkUWP.Data
         {
             try
             {
-                if (url != "/notification/checkCount") { _ = (notifications?.RefreshNotificationsNum()); }
+                if (url == "https://api.coolapk.com/v6/notification/checkCount") { _ = (notifications?.RefreshNotificationsNum()); }
                 _ = mClient.DefaultRequestHeaders.Remove("X-App-Token");
                 mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
                 _ = mClient.DefaultRequestHeaders.Remove("Cookie");
@@ -332,7 +332,7 @@ namespace CoolapkUWP.Data
         {
             try
             {
-                if (url != "/notification/checkCount") { notifications?.RefreshNotificationsNum(); }
+                if (url == "/notification/checkCount") { _ = (notifications?.RefreshNotificationsNum()); }
                 _ = mClient.DefaultRequestHeaders.Remove("X-App-Token");
                 mClient.DefaultRequestHeaders.Add("X-App-Token", GetCoolapkAppToken());
                 _ = mClient.DefaultRequestHeaders.Remove("Cookie");

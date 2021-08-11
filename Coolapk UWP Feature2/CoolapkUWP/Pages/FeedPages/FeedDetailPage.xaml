@@ -3,13 +3,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Windows11version2104="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 14)"
+    xmlns:Windows11version2204="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 14)"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:viewModel="using:CoolapkUWP.Control.ViewModels"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:muxm="using:Microsoft.UI.Xaml.Media"
-    Windows11version2104:Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
+    Windows11version2204:Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d"
     SizeChanged="Page_SizeChanged">
     <Page.Resources>

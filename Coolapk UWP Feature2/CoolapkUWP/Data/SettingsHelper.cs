@@ -3,6 +3,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.Data.Json;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.ViewManagement;
@@ -67,9 +68,9 @@ namespace CoolapkUWP.Data
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    Windows.Data.Json.JsonObject keys;
-                    try { keys = Windows.Data.Json.JsonObject.Parse(await UIHelper.GetHTML("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest", true)); }
-                    catch { keys = Windows.Data.Json.JsonObject.Parse(await UIHelper.GetHTML("https://v2.kkpp.cc/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest", true)); }
+                    JsonObject keys;
+                    try { keys = JsonObject.Parse(await UIHelper.GetHTML("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest", true)); }
+                    catch { keys = JsonObject.Parse(await UIHelper.GetHTML("https://v2.kkpp.cc/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest", true)); }
                     string[] ver = keys["tag_name"].GetString().Replace("v", string.Empty).Split('.');
                     if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major
                         || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
@@ -175,10 +176,19 @@ namespace CoolapkUWP.Data
                 {
                     cookie = $"uid={uid}; username={userName}; token={token}";
                     Set("Uid", uid);
-                    Windows.Data.Json.JsonObject o = UIHelper.GetJSonObject(await UIHelper.GetJson("/account/checkLoginInfo"));
-                    UIHelper.notifications.Initial(o);
-                    UIHelper.mainPage.UserAvatar = await ImageCache.GetImage(ImageType.BigAvatar, o["userAvatar"].GetString());
-                    UIHelper.mainPage.UserNames = o["username"].GetString();
+                    JsonObject json = UIHelper.GetJSonObject(await UIHelper.GetJson("/account/checkLoginInfo"));
+                    if (json.TryGetValue("notifyCount", out IJsonValue notifyCount) && !string.IsNullOrEmpty(notifyCount.GetObject().ToString()))
+                    {
+                        UIHelper.notifications.Initial(notifyCount.GetObject());
+                    }
+                    if (json.TryGetValue("userAvatar", out IJsonValue userAvatar) && !string.IsNullOrEmpty(userAvatar.GetString()))
+                    {
+                        UIHelper.mainPage.UserAvatar = await ImageCache.GetImage(ImageType.BigAvatar, userAvatar.GetString());
+                    }
+                    if (json.TryGetValue("username", out IJsonValue username) && !string.IsNullOrEmpty(username.GetString()))
+                    {
+                        UIHelper.mainPage.UserNames = username.GetString();
+                    }
                     return true;
                 }
                 else { return false; }

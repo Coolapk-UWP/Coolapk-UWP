@@ -102,7 +102,7 @@ namespace CoolapkUWP.Pages.SettingPages
             }
         }
 
-        private async void MarkdownText_LinkClicked(object sender, LinkClickedEventArgs e)
+        private void MarkdownText_LinkClicked(object sender, LinkClickedEventArgs e)
         {
             if (Uri.TryCreate(e.Link, UriKind.Absolute, out Uri link))
             {
