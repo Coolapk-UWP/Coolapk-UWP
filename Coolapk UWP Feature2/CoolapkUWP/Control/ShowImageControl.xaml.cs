@@ -46,7 +46,7 @@ namespace CoolapkUWP.Control
         public ShowImageControl(Popup popup)
         {
             InitializeComponent();
-            ShowImageGrid.Margin = SettingsHelper.HasStatusBar ? ApplicationView.GetForCurrentView().Orientation == ApplicationViewOrientation.Portrait ? new Thickness(0, 24, 0, 0) : new Thickness(40, 0, 0, 0) : new Thickness(0, 0, 0, 0);
+            ShowImageGrid.Margin = SettingsHelper.HasStatusBar ? ApplicationView.GetForCurrentView().Orientation == ApplicationViewOrientation.Portrait ? new Thickness(0, 24, 0, 0) : new Thickness(44, 0, 0, 0) : new Thickness(0, 0, 0, 0);
             Height = Window.Current.Bounds.Height;
             Width = Window.Current.Bounds.Width;
             Window.Current.SizeChanged += WindowSizeChanged;
@@ -56,7 +56,7 @@ namespace CoolapkUWP.Control
 
         public void ShowImage(string url, ImageType type)
         {
-            if (url.Substring(url.LastIndexOf('.')).ToLower().Contains("gif"))
+            if (url.EndsWith(".gif") || url.EndsWith(".GIF"))
             {
                 if (type == ImageType.SmallImage)
                 { datas.Add(new ImageData(ImageType.OriginImage, url)); }
@@ -81,10 +81,10 @@ namespace CoolapkUWP.Control
                 Images.Add(null);
             }
             _ = Task.Run(async () =>
-              {
-                  await Task.Delay(20);
-                  await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => SFlipView.SelectedIndex = index);
-              });
+            {
+                await Task.Delay(20);
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => SFlipView.SelectedIndex = index);
+            });
         }
 
         private void WindowSizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
@@ -161,12 +161,9 @@ namespace CoolapkUWP.Control
         private async void SFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int i = SFlipView.SelectedIndex;
-            if (i == -1 || a)
-            {
-                return;
-            }
+            if (i == -1 || a) { return; }
             a = true;
-            Images[i] = await datas[i].GetImage();
+            try { Images[i] = await datas[i].GetImage(); } catch { }
             Regex regex = new Regex(@"[^/]+(?!.*/)");
             TitleBar.Title = (regex.IsMatch(datas[i].Url) ? regex.Match(datas[i].Url).Value : "查看图片") + " (" + (i + 1).ToString() + "/" + datas.Count.ToString() + ")";
             a = false;
