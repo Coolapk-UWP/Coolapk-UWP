@@ -26,8 +26,8 @@
         </Grid.RowDefinitions>
         <RichEditBox
             x:Name="InputBox"
-            AcceptsReturn="True"
             TextWrapping="Wrap"
+            AcceptsReturn="True"
             ContextMenuOpening="InputBox_ContextMenuOpening"/>
         <CommandBar
             Height="48"
@@ -57,17 +57,21 @@
                             <AutoSuggestBox
                                 Margin="8"
                                 PlaceholderText="搜索表情……"
+                                TextChanged="AutoSuggestBox_TextChanged"
                                 QuerySubmitted="AutoSuggestBox_QuerySubmitted"
-                                SuggestionChosen="{x:Bind local:MakeFeedPage.AutoSuggestBox_SuggestionChosen}"
-                                TextChanged="AutoSuggestBox_TextChanged">
+                                SuggestionChosen="{x:Bind local:MakeFeedPage.AutoSuggestBox_SuggestionChosen}">
                                 <AutoSuggestBox.ItemTemplate>
                                     <DataTemplate x:DataType="local:EmojiData">
-                                        <StackPanel Padding="8,4" Orientation="Horizontal">
+                                        <StackPanel
+                                            Padding="8,4"
+                                            Orientation="Horizontal">
                                             <Image
                                                 Width="24"
                                                 Height="24"
                                                 Source="{x:Bind emoji, Mode=OneWay}"/>
-                                            <TextBlock Margin="4,0" Text="{x:Bind name}"/>
+                                            <TextBlock
+                                                Margin="4,0"
+                                                Text="{x:Bind name}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </AutoSuggestBox.ItemTemplate>
@@ -76,8 +80,8 @@
                                 Grid.Row="1"
                                 x:Name="EmojiView"
                                 SelectionMode="None"
-                                ItemClick="GridView_ItemClick"
-                                IsItemClickEnabled="True">
+                                IsItemClickEnabled="True"
+                                ItemClick="GridView_ItemClick">
                                 <GridView.ItemTemplate>
                                     <DataTemplate x:DataType="local:EmojiData">
                                         <Image
