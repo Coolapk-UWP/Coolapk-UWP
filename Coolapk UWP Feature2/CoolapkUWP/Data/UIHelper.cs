@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Control;
+using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.FeedPages;
 using Html2Markdown;
 using Microsoft.Toolkit.Uwp.Helpers;
@@ -22,6 +23,7 @@ using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace CoolapkUWP.Data
 {
@@ -29,12 +31,20 @@ namespace CoolapkUWP.Data
     {
         public static HttpClient mClient;
         public static NotificationsNum notifications = new NotificationsNum();
-        public static Pages.MainPage mainPage = null;
+        public static MainPage mainPage = null;
         public static List<Popup> popups = new List<Popup>();
         private static readonly ObservableCollection<string> messageList = new ObservableCollection<string>();
         private static bool isShowingMessage;
         public static bool isShowingProgressBar;
         private static CoreDispatcher shellDispatcher;
+
+        public enum NavigationThemeTransition
+        {
+            Default,
+            Entrance,
+            DrillIn,
+            Suppress
+        }
 
         public static CoreDispatcher ShellDispatcher
         {
@@ -131,8 +141,7 @@ namespace CoolapkUWP.Data
                     {
                         StatusBar statusBar = StatusBar.GetForCurrentView();
                         statusBar.ProgressIndicator.Text = s;
-                        if (isShowingProgressBar) { statusBar.ProgressIndicator.ProgressValue = null; }
-                        else { statusBar.ProgressIndicator.ProgressValue = 0; }
+                        statusBar.ProgressIndicator.ProgressValue = isShowingProgressBar ? null : (double?)0;
                         await statusBar.ProgressIndicator.ShowAsync();
                         await Task.Delay(3000);
                         if (messageList.Count == 0 && !isShowingProgressBar) { await statusBar.ProgressIndicator.HideAsync(); }
@@ -172,25 +181,32 @@ namespace CoolapkUWP.Data
 
         public static void ShowImage(string url, ImageType type)
         {
-            Popup popup = new Popup();
-            ShowImageControl control = new ShowImageControl(popup);
-            control.ShowImage(url, type);
-            popup.Child = control;
-            ShowPopup(popup);
+            Navigate(typeof(ShowImagePage), new object[] { url, type }, NavigationThemeTransition.DrillIn);
         }
 
         public static void ShowImages(string[] urls, int index)
         {
-            Popup popup = new Popup();
-            ShowImageControl control = new ShowImageControl(popup);
-            control.ShowImages(urls, ImageType.SmallImage, index);
-            popup.Child = control;
-            ShowPopup(popup);
+            Navigate(typeof(ShowImagePage), new object[] { urls, ImageType.SmallImage, index }, NavigationThemeTransition.DrillIn);
         }
 
-        public static void Navigate(Type pageType, object e = null)
+        public static void Navigate(Type pageType, object e = null, NavigationThemeTransition Type = NavigationThemeTransition.Default)
         {
-            _ = (mainPage?.Frame.Navigate(pageType, e));
+            switch (Type)
+            {
+                case NavigationThemeTransition.DrillIn:
+                    _ = (mainPage?.Frame.Navigate(pageType, e, new DrillInNavigationTransitionInfo()));
+                    break;
+                case NavigationThemeTransition.Entrance:
+                    _ = (mainPage?.Frame.Navigate(pageType, e, new EntranceNavigationTransitionInfo()));
+                    break;
+                case NavigationThemeTransition.Suppress:
+                    _ = (mainPage?.Frame.Navigate(pageType, e, new SuppressNavigationTransitionInfo()));
+                    break;
+                case NavigationThemeTransition.Default:
+                default:
+                    _ = (mainPage?.Frame.Navigate(pageType, e, new DrillInNavigationTransitionInfo()));
+                    break;
+            }
             HideProgressBar();
         }
 

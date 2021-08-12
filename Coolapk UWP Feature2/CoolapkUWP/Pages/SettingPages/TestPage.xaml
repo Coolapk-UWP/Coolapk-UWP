@@ -50,11 +50,13 @@
                     <Button Click="Button_Click_5" Grid.Row="3" Margin="0,2" Content="获取"/>
                     <TextBox Header="通知测试" x:Name="message" Grid.Row="4" Margin="0,2"/>
                     <Button Click="Button_Click_4" Grid.Row="5" Margin="0,2" Content="显示"/>
-                    <TextBox x:Name="tile" Header="修改动态磁贴源" Grid.Row="6" Margin="0,2"/>
-                    <Button Click="Button_Click_2" Grid.Row="7" Margin="0.2">保存</Button>
-                    <TextBox Header="测试MTextBlock" x:Name="text" Grid.Row="8" Margin="0,2"/>
-                    <Button Click="Button_Click_1" Grid.Row="9" Margin="0,2" Content="打开App页面"/>
-                    <control:MTextBlock Grid.Row="10" Margin="0,2" MessageText="{x:Bind Path=text.Text, Mode=OneWay}"/>
+                    <TextBox Header="查看图片" x:Name="image" Grid.Row="6" Margin="0,2"/>
+                    <Button Click="Button_Click_6" Grid.Row="7" Margin="0,2" Content="查看"/>
+                    <TextBox x:Name="tile" Header="修改动态磁贴源" Grid.Row="8" Margin="0,2"/>
+                    <Button Click="Button_Click_2" Grid.Row="9" Margin="0.2" Content="保存"/>
+                    <TextBox Header="测试MTextBlock" x:Name="text" Grid.Row="10" Margin="0,2"/>
+                    <Button Click="Button_Click_1" Grid.Row="11" Margin="0,2" Content="打开App页面"/>
+                    <control:MTextBlock Grid.Row="12" Margin="0,2" MessageText="{x:Bind Path=text.Text, Mode=OneWay}"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

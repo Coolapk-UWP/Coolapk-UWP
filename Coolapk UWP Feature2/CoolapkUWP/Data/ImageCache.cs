@@ -19,8 +19,9 @@ namespace CoolapkUWP.Data
 
     internal static class ImageCache
     {
-        private static readonly BitmapImage whiteNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/NoPic/img_placeholder.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
-        private static readonly BitmapImage darkNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/NoPic/img_placeholder_night.png")) { DecodePixelHeight = 100, DecodePixelWidth = 100 };
+        private static readonly BitmapImage whiteNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/NoPic/img_placeholder.png")) { DecodePixelHeight = 768, DecodePixelWidth = 768 };
+        private static readonly BitmapImage darkNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/NoPic/img_placeholder_night.png")) { DecodePixelHeight = 768, DecodePixelWidth = 768 };
+        public static readonly BitmapImage imageempty = new BitmapImage(new Uri("ms-appx:/Assets/NoPic/image_empty.png")) { DecodePixelHeight = 768, DecodePixelWidth = 768 };
         private static readonly Dictionary<ImageType, StorageFolder> folders = new Dictionary<ImageType, StorageFolder>();
         public static BitmapImage NoPic { get => SettingsHelper.IsDarkTheme() ? darkNoPicMode : whiteNoPicMode; }
 

@@ -85,12 +85,12 @@ namespace CoolapkUWP.Control
                         using (DataWriter writer = new DataWriter(stream.GetOutputStreamAt(0)))
                         {
                             writer.WriteBytes(qrCodeImageBmp);
-                            await writer.StoreAsync();
+                            _ = await writer.StoreAsync();
                         }
                         BitmapImage image = new BitmapImage();
                         await image.SetSourceAsync(stream);
 
-                        qrCodeImage.Source = image;
+                        qrCodeImage.ImageSource = image;
                     }
                 }
             }

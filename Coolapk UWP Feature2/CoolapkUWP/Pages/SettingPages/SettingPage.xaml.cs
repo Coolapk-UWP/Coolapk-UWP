@@ -72,7 +72,7 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             base.OnNavigatedTo(e);
             object vs = e.Parameter;
-            if (!(bool)vs)
+            if (vs is bool && !(bool)vs)
             {
                 TitleBar.Visibility = Visibility.Visible;
                 listView.Padding = SettingsHelper.stackPanelMargin;
@@ -193,9 +193,8 @@ namespace CoolapkUWP.Pages.SettingPages
                     if (AccountLogout.Flyout is Flyout flyout_logout)
                     {
                         flyout_logout.Hide();
+                        UIHelper.ShowMessage("已注销");
                     }
-                    _ = Frame.Navigate(typeof(SettingPage));
-                    Frame.GoBack();
                     break;
                 case "reset":
                     {

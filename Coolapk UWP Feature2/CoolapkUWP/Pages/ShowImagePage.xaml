@@ -1,5 +1,5 @@
-﻿<UserControl
-    x:Class="CoolapkUWP.Control.ShowImageControl"
+﻿<Page
+    x:Class="CoolapkUWP.Pages.ShowImagePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,33 +8,32 @@
     xmlns:data="using:CoolapkUWP.Data"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
-    <Grid
-        x:Name="ShowImageGrid"
-        KeyUp="UserControl_KeyUp">
+    <Grid x:Name="ShowImageGrid">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
             </TransitionCollection>
         </Grid.ChildrenTransitions>
         <FlipView
-            Padding="{x:Bind data:SettingsHelper.stackPanelMargin}"
-            ScrollViewer.IsZoomChainingEnabled="True"
-            ScrollViewer.BringIntoViewOnFocusChange="False"
             x:Name="SFlipView"
             ItemsSource="{x:Bind Images}"
             RightTapped="SFlipView_RightTapped"
-            SelectionChanged="SFlipView_SelectionChanged">
+            ScrollViewer.IsZoomChainingEnabled="True"
+            SelectionChanged="SFlipView_SelectionChanged"
+            ScrollViewer.BringIntoViewOnFocusChange="False"
+            Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
             <FlipView.ContextFlyout>
                 <MenuFlyout>
                     <MenuFlyoutItem
-                        Icon="Pictures"
                         Tag="origin"
+                        Icon="Pictures"
+                        x:Name="RightOrigin"
                         Click="MenuFlyoutItem_Click">
                         查看原图
                     </MenuFlyoutItem>
                     <MenuFlyoutItem
-                        Icon="SaveLocal"
                         Tag="save"
+                        Icon="SaveLocal"
                         Click="MenuFlyoutItem_Click">
                         保存图片
                     </MenuFlyoutItem>
@@ -43,19 +42,20 @@
             <FlipView.ItemTemplate>
                 <DataTemplate x:DataType="ImageSource">
                     <ScrollViewer
-                        x:Name="ScrollViewerMain"
                         ZoomMode="Enabled"
                         MinZoomFactor="0.5"
-                        HorizontalScrollBarVisibility="Hidden"
+                        x:Name="ScrollViewerMain"
                         VerticalScrollBarVisibility="Hidden"
+                        HorizontalScrollBarVisibility="Hidden"
                         DoubleTapped="ScrollViewerMain_DoubleTapped">
                         <Image
                             Source="{x:Bind}"
-                            MaxWidth="{Binding Path=ViewportWidth,ElementName=ScrollViewerMain}"
-                            MaxHeight="{Binding Path=ViewportHeight,ElementName=ScrollViewerMain}"
-                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
                             ManipulationMode="TranslateX,TranslateY"
-                            ManipulationDelta="ScrollViewerMain_ManipulationDelta"/>
+                            ManipulationDelta="ScrollViewerMain_ManipulationDelta"
+                            MaxWidth="{Binding Path=ViewportWidth,ElementName=ScrollViewerMain}"
+                            MaxHeight="{Binding Path=ViewportHeight,ElementName=ScrollViewerMain}"/>
                     </ScrollViewer>
                 </DataTemplate>
             </FlipView.ItemTemplate>
@@ -74,20 +74,21 @@
             BackButtonClick="CloseFlip_Click">
             <control:TitleBar.RightAreaContent>
                 <Button
-                    Style="{StaticResource IconButtonStyle}"
-                    ToolTipService.ToolTip="更多">
+                    ToolTipService.ToolTip="更多"
+                    Style="{StaticResource IconButtonStyle}">
                     <SymbolIcon Symbol="More"/>
                     <Button.Flyout>
                         <MenuFlyout>
                             <MenuFlyoutItem
-                                Icon="Pictures"
                                 Tag="origin"
+                                Icon="Pictures"
+                                x:Name="TitleOrigin"
                                 Click="MenuFlyoutItem_Click">
                                 查看原图
                             </MenuFlyoutItem>
                             <MenuFlyoutItem
-                                Icon="SaveLocal"
                                 Tag="save"
+                                Icon="SaveLocal"
                                 Click="MenuFlyoutItem_Click">
                                 保存图片
                             </MenuFlyoutItem>
@@ -97,4 +98,4 @@
             </control:TitleBar.RightAreaContent>
         </control:TitleBar>
     </Grid>
-</UserControl>
+</Page>

@@ -21,7 +21,6 @@ namespace CoolapkUWP.Pages.SettingPages
         public TestPage()
         {
             InitializeComponent();
-            test();
             tile.Text = ApplicationData.Current.LocalSettings.Values["TileUrl"].ToString();
         }
 
@@ -170,6 +169,11 @@ namespace CoolapkUWP.Pages.SettingPages
                 DefaultButton = ContentDialogButton.Close
             };
             _ = GetJsonDialog.ShowAsync();
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            UIHelper.ShowImage(image.Text, ImageType.OriginImage);
         }
     }
 }

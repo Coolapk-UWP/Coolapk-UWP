@@ -94,7 +94,7 @@ namespace CoolapkUWP.Control
                 block.Blocks.Add(paragraph);
                 paragraph = new Paragraph();
             }
-            void AddText(string item) => paragraph.Inlines.Add(new Run { Text = item.Replace("&amp;", "&").Replace("&quot;", "\"") });
+            void AddText(string item) => paragraph.Inlines.Add(new Run { Text = item.Replace("&amp;", "&").Replace("&#039;", "'").Replace("&quot;", "\"") });
 
             ImmutableArray<ImageData>.Builder imageArrayBuider = ImmutableArray.CreateBuilder<ImageData>();
             ImmutableArray<string> list = await GetStringList(_messageText);
@@ -225,7 +225,7 @@ namespace CoolapkUWP.Control
                                         TextAlignment = TextAlignment.Center,
                                         Foreground = Windows.UI.Xaml.Application.Current.Resources["GrayText"] as SolidColorBrush
                                     };
-                                    Run run = new Run { Text = content.Replace("&amp;", "&").Replace("<br/>", "\n") };
+                                    Run run = new Run { Text = content.Replace("&amp;", "&").Replace("&#039;", "'").Replace("<br/>", "\n") };
                                     paragraph2.Inlines.Add(run);
                                     block.Blocks.Add(paragraph2);
                                 }
@@ -294,7 +294,7 @@ namespace CoolapkUWP.Control
                                         Run run2 = new Run { Text = "\uE158", FontFamily = new FontFamily("Segoe MDL2 Assets") };
                                         hyperlink.Inlines.Add(run2);
                                     }
-                                    Run run = new Run { Text = content.Replace("&amp;", "&") };
+                                    Run run = new Run { Text = content.Replace("&amp;", "&").Replace("&#039;", "'") };
                                     hyperlink.Inlines.Add(run);
                                     hyperlink.Click += (sender, e) =>
                                     {

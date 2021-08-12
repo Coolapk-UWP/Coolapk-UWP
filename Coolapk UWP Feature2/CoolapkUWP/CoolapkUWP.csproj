@@ -194,6 +194,9 @@
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ShowImagePage.xaml.cs">
+      <DependentUpon>ShowImagePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\UserHubPage.xaml.cs">
       <DependentUpon>UserHubPage.xaml</DependentUpon>
     </Compile>
@@ -736,6 +739,7 @@
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\NoPic\image_empty.png" />
     <Content Include="Assets\NoPic\img_placeholder.png" />
     <Content Include="Assets\NoPic\img_placeholder_night.png" />
     <Content Include="Assets\SmallTile.scale-100.png" />
@@ -871,6 +875,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\FeedPages\UserListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ShowImagePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

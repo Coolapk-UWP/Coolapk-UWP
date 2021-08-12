@@ -202,6 +202,7 @@ namespace CoolapkUWP.Data
                 }
                 else
                 {
+                    await Task.Delay(1);//等待一下
                     UIHelper.mainPage.UserAvatar = null;
                     UIHelper.mainPage.UserNames = "登录";
                     return false;

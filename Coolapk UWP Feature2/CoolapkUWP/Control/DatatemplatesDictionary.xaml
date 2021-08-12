@@ -652,30 +652,15 @@
                         <Flyout Opened="Flyout_Opened">
                             <Flyout.FlyoutPresenterStyle>
                                 <Style TargetType="FlyoutPresenter">
-                                    <Setter
-                                        Property="Padding"
-                                        Value="0"/>
-                                    <Setter
-                                        Property="ScrollViewer.VerticalScrollMode"
-                                        Value="Disabled"/>
-                                    <Setter
-                                        Property="ScrollViewer.VerticalScrollBarVisibility"
-                                        Value="Disabled"/>
-                                    <Setter
-                                        Property="ScrollViewer.HorizontalScrollMode"
-                                        Value="Disabled"/>
-                                    <Setter
-                                        Property="ScrollViewer.HorizontalScrollBarVisibility"
-                                        Value="Disabled"/>
-                                    <Setter
-                                        Property="MinWidth"
-                                        Value="300"/>
-                                    <Setter
-                                        Property="MinHeight"
-                                        Value="200"/>
-                                    <Setter
-                                        Property="Background"
-                                        Value="Transparent"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="MinWidth" Value="300"/>
+                                    <Setter Property="MinHeight" Value="200"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
+                                    <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
+                                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+                                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
                                 </Style>
                             </Flyout.FlyoutPresenterStyle>
                             <Frame x:Name="replyFlyoutFrame"/>
@@ -703,9 +688,11 @@
                             <Flyout.FlyoutPresenterStyle>
                                 <Style TargetType="FlyoutPresenter">
                                     <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Background" Value="Transparent"/>
                                     <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
-                                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
                                     <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
+                                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
                                     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
                                 </Style>
                             </Flyout.FlyoutPresenterStyle>
