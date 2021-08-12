@@ -68,7 +68,7 @@
                 <Grid
                     Padding="4,0"
                     BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
-                    BorderThickness="2"
+                    BorderThickness="1"
                     Tapped="Ellipse_Tapped"
                     Tag="{x:Bind Uri}"
                     Background="Transparent">

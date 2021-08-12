@@ -385,7 +385,6 @@ namespace CoolapkUWP.Control
 
             Content = mainContent = block;
 
-            await Task.Delay(20);
             if (MaxLine > 0)
             {
                 block.MaxLines = MaxLine;

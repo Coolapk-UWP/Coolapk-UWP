@@ -47,24 +47,55 @@ namespace CoolapkUWP.Pages
         public void Initial(IJsonValue o)
         {
             JsonObject token = o.GetObject();
-            id = token["id"].GetNumber();
-            FromUserName = token["fromusername"].GetString();
-            FromUserUri = token["url"].GetString();
-            Dateline = UIHelper.ConvertTime(token["dateline"].GetNumber());
-            GetPic(token["fromUserInfo"].GetObject()["userSmallAvatar"].GetString());
-            Regex regex = new Regex("<a.*?>.*?</a>"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
-            string s = token["note"].GetString();
-            while (regex.IsMatch(s))
+
+            if (token.TryGetValue("id", out IJsonValue Id))
             {
-                Match h = regex.Match(s);
-                string t = regex3.Match(h.Value).Value.Replace(">", string.Empty);
-                t = t.Replace("<", string.Empty);
-                string tt = regex2.Match(h.Value).Value.Replace("href=\"", string.Empty);
-                if (tt.IndexOf("\"") > 0) { tt = tt.Substring(0, tt.IndexOf("\"")); }
-                Uri = tt;
-                s = s.Replace(h.Value, t);
+                id = Id.GetNumber();
             }
-            Note = s;
+            if (token.TryGetValue("fromusername", out IJsonValue fromusername))
+            {
+                FromUserName = fromusername.GetString();
+            }
+            if (token.TryGetValue("url", out IJsonValue url))
+            {
+                FromUserUri = url.GetString();
+            }
+            if (token.TryGetValue("dateline", out IJsonValue dateline))
+            {
+                Dateline = UIHelper.ConvertTime(dateline.GetNumber());
+            }
+            string note = token["note"].GetString();
+            Regex regex = new Regex("<a.*?>.*?</a>"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
+            while (regex.IsMatch(note))
+            {
+                Match link = regex.Match(note);
+                string content = regex3.Match(link.Value).Value.Replace(">", string.Empty);
+                content = content.Replace("<", string.Empty);
+                string href = regex2.Match(link.Value).Value.Replace("href=\"", string.Empty);
+                if (href.IndexOf("\"", StringComparison.Ordinal) > 0)
+                {
+                    href = href.Substring(0, href.IndexOf("\"", StringComparison.Ordinal));
+                }
+                Uri = href;
+                note = note.Replace(link.Value, content);
+            }
+            Note = note;
+            if (token.TryGetValue("fromUserInfo", out IJsonValue v1))
+            {
+                JsonObject fromUserInfo = v1.GetObject();
+                if (fromUserInfo.TryGetValue("userSmallAvatar", out IJsonValue userSmallAvatar))
+                {
+                    GetPic(userSmallAvatar.GetString());
+                }
+            }
+            else if (token.TryGetValue("fromUserAvatar", out IJsonValue fromUserAvatar))
+            {
+                GetPic(fromUserAvatar.GetString());
+            }
+            if (SettingsHelper.IsSpecialUser && token.TryGetValue("block_status", out IJsonValue block_status) && block_status.GetNumber() != 0)
+            { Dateline += " [已折叠]"; }
+            if (token.TryGetValue("status", out IJsonValue status) && status.GetNumber() == -1)
+            { Dateline += " [仅自己可见]"; }
         }
 
         private async void GetPic(string u)
