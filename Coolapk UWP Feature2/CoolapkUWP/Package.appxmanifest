@@ -16,21 +16,21 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="酷安_UWP.App">
       <uap:VisualElements DisplayName="酷安" Description="一个基于UWP平台的酷安客户端(Feature2通道)" BackgroundColor="transparent" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png">
-        <uap:DefaultTile  Square71x71Logo="Assets\SmallTile.png" Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\LargeTile.png">
+        <uap:DefaultTile Square71x71Logo="Assets\SmallTile.png" Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\LargeTile.png">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="square150x150Logo" />
             <uap:ShowOn Tile="wide310x150Logo" />
             <uap:ShowOn Tile="square310x310Logo" />
           </uap:ShowNameOnTiles>
         </uap:DefaultTile>
-        <uap:SplashScreen BackgroundColor="transparent"  Image="Assets\SplashScreen.png"/>
+        <uap:SplashScreen BackgroundColor="transparent" Image="Assets\SplashScreen.png" />
         <uap:InitialRotationPreference>
           <uap:Rotation Preference="portrait" />
           <uap:Rotation Preference="landscape" />
+          <uap:Rotation Preference="portraitFlipped" />
           <uap:Rotation Preference="landscapeFlipped" />
-          <uap:Rotation Preference="portraitFlipped"/>
         </uap:InitialRotationPreference>
-        <uap:LockScreen Notification="badgeAndTileText"  BadgeLogo="Assets\BadgeLogo.png"/>
+        <uap:LockScreen Notification="badgeAndTileText" BadgeLogo="Assets\BadgeLogo.png" />
       </uap:VisualElements>
       <Extensions>
         <Extension Category="windows.backgroundTasks" EntryPoint="CoolapkUWP.Data.BackgroundTask">
