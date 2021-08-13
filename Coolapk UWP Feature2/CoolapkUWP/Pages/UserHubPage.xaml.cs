@@ -69,7 +69,7 @@ namespace CoolapkUWP.Pages
                 {
                     if (o.TryGetValue("userAvatar", out IJsonValue userAvatarurl) && !string.IsNullOrEmpty(userAvatarurl.GetString()))
                     {
-                        UIHelper.mainPage.UserAvatar = userAvatar = await ImageCache.GetImage(ImageType.BigAvatar, userAvatarurl.GetString());
+                        UIHelper.mainPage.UserAvatar = userAvatar = ImageCache.defaultNoAvatarUrl.Contains(userAvatarurl.GetString()) ? ImageCache.NoPic : await ImageCache.GetImage(ImageType.BigAvatar, userAvatarurl.GetString());
                         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(userAvatar)));
                     }
                     if (o.TryGetValue("username", out IJsonValue username) && !string.IsNullOrEmpty(username.GetString()))
@@ -79,9 +79,9 @@ namespace CoolapkUWP.Pages
                     }
                     if (o.TryGetValue("entityId", out IJsonValue entityId))
                     {
-                        FindIsAuthor(entityId.ToString());
-                        FindIsSpecial(entityId.ToString());
+                        IsAuthor = authors.Contains(entityId.GetNumber());
                         ApplicationData.Current.LocalSettings.Values["IsAuthor"] = IsAuthor;
+                        IsSpecial = specials.Contains(entityId.GetNumber());
                         ApplicationData.Current.LocalSettings.Values["IsSpecial"] = IsSpecial;
                     }
                     if (o.TryGetValue("feed", out IJsonValue feed) && !string.IsNullOrEmpty(feed.GetNumber().ToString()))
@@ -394,47 +394,21 @@ namespace CoolapkUWP.Pages
         }
 
         #region
-        private static readonly ImmutableArray<string> authors = new string[]
+        private static readonly ImmutableArray<double> authors = new double[]
         {
-            "536381",//wherewhere
-            "695942",//一块小板子
+            536381,//wherewhere
+            695942,//一块小板子
         }.ToImmutableArray();
 
-        private static readonly ImmutableArray<string> specials = new string[]
+        private static readonly ImmutableArray<double> specials = new double[]
         {
-            "1222543",
-            "1893913",
-            "2134270",
-            "1494629",
-            "3327704",
-            "3591060",
+            1222543,
+            1893913,
+            2134270,
+            1494629,
+            3327704,
+            3591060,
         }.ToImmutableArray();
-        #endregion
-
-        #region
-        private void FindIsAuthor(string uid)
-        {
-            foreach (string i in authors)
-            {
-                if (uid == i)
-                {
-                    IsAuthor = true;
-                    break;
-                }
-            }
-        }
-
-        private void FindIsSpecial(string uid)
-        {
-            foreach (string i in specials)
-            {
-                if (uid == i)
-                {
-                    IsSpecial = true;
-                    break;
-                }
-            }
-        }
         #endregion
 
         private void LvHelp_Tapped(object sender, TappedRoutedEventArgs e)

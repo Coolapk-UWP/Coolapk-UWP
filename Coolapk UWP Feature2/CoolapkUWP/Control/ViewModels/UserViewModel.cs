@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Data;
+using System.Linq;
 using Windows.Data.Json;
 
 namespace CoolapkUWP.Control.ViewModels
@@ -23,7 +24,7 @@ namespace CoolapkUWP.Control.ViewModels
             GetPic(UserAvatarUrl);
         }
 
-        private async void GetPic(string UserAvatarUrl) => UserAvatar = await ImageCache.GetImage(ImageType.SmallAvatar, UserAvatarUrl);
+        private async void GetPic(string UserAvatarUrl) => UserAvatar = ImageCache.defaultNoAvatarUrl.Contains(UserAvatarUrl) ? ImageCache.NoPic : await ImageCache.GetImage(ImageType.SmallAvatar, UserAvatarUrl);
         public string url { get; private set; }
         public string UserAvatarUrl { get; private set; }
         public string UserName { get; private set; }

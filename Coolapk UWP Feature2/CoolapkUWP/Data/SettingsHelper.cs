@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Control;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
@@ -186,7 +187,7 @@ namespace CoolapkUWP.Data
                         }
                         if (json.TryGetValue("userAvatar", out IJsonValue userAvatar) && !string.IsNullOrEmpty(userAvatar.GetString()))
                         {
-                            UIHelper.mainPage.UserAvatar = await ImageCache.GetImage(ImageType.BigAvatar, userAvatar.GetString());
+                            UIHelper.mainPage.UserAvatar = ImageCache.defaultNoAvatarUrl.Contains(userAvatar.GetString()) ? ImageCache.NoPic : await ImageCache.GetImage(ImageType.BigAvatar, userAvatar.GetString());
                         }
                         if (json.TryGetValue("username", out IJsonValue username) && !string.IsNullOrEmpty(username.GetString()))
                         {

@@ -143,6 +143,7 @@
     <Compile Include="Data\NotificationsNum.cs" />
     <Compile Include="Data\TileManager.cs" />
     <Compile Include="Data\ValueConverters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Data\ValueConverters\NoPicToNullConverter.cs" />
     <Compile Include="Data\ValueConverters\HasValueConverter.cs" />
     <Compile Include="Data\ValueConverters\TrueToFalseConverter.cs" />
     <Compile Include="Pages\AppPages\AppRecommendPage.xaml.cs">

@@ -24,6 +24,7 @@ namespace CoolapkUWP.Data
         public static readonly BitmapImage imageempty = new BitmapImage(new Uri("ms-appx:/Assets/NoPic/image_empty.png")) { DecodePixelHeight = 768, DecodePixelWidth = 768 };
         private static readonly Dictionary<ImageType, StorageFolder> folders = new Dictionary<ImageType, StorageFolder>();
         public static BitmapImage NoPic { get => SettingsHelper.IsDarkTheme() ? darkNoPicMode : whiteNoPicMode; }
+        public static readonly string[] defaultNoAvatarUrl = { "http://avatar.coolapk.com/images/avatar_small.gif", "http://avatar.coolapk.com/images/avatar_middle.gif", "http://avatar.coolapk.com/images/avatar_big.gif" };
 
         private static async Task<StorageFolder> GetFolder(ImageType type)
         {

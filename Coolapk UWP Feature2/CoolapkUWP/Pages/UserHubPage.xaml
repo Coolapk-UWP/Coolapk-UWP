@@ -10,7 +10,7 @@
     xmlns:local="using:CoolapkUWP.Pages"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    xmlns:muxm="using:Microsoft.UI.Xaml.Media"
+    xmlns:muxm="using:Microsoft.UI.Xaml.Media" xmlns:converter="using:CoolapkUWP.Data.ValueConverters"
     Windows11version2204:Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d">
 
@@ -19,6 +19,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <control:DatatemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
+            <converter:NoPicToNullConverter x:Key="NoPicToNullConverter"/>
 
             <Style
                 x:Key="NaviItemStyle"
@@ -333,17 +334,16 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Ellipse
-                        Grid.RowSpan="3"
+                    
+                    <winui:PersonPicture
                         Width="56"
                         Height="56"
                         Margin="24,8"
+                        Grid.RowSpan="3"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{x:Bind userAvatar, Mode=OneWay}"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
+                        VerticalAlignment="Center"
+                        DisplayName="{x:Bind userName, Mode=OneWay}"
+                        ProfilePicture="{x:Bind userAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
 
                     <Button
                         Grid.RowSpan="3"

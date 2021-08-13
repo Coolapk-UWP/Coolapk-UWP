@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Control"
+    xmlns:converter="using:CoolapkUWP.Data.ValueConverters"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     NavigationCacheMode="Required"
     SizeChanged="Page_SizeChanged"
@@ -16,6 +17,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <control:DatatemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
+            <converter:NoPicToNullConverter x:Key="NoPicToNullConverter"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -37,10 +39,8 @@
 
                     <VisualState.Setters>
                         <Setter Target="navigationView.AlwaysShowHeader" Value="False"/>
-                        <Setter Target="LoginIcon.HorizontalAlignment" Value="Center"/>
                         <Setter Target="navigationView.PaneDisplayMode" Value="Top"/>
                         <Setter Target="UserName.Visibility" Value="Collapsed"/>
-                        <Setter Target="LoginIcon.Margin" Value="0"/>
                         <Setter Target="UserIcon.Height" Value="24"/>
                         <Setter Target="UserIcon.Width" Value="24"/>
                         <Setter Target="UserIcon.Margin" Value="0"/>
@@ -93,28 +93,21 @@
                 </muxc:NavigationViewItem.Icon>
             </muxc:NavigationViewItem>
             <muxc:NavigationViewItem Tag="UserHub">
-                <StackPanel Orientation="Horizontal">
-                    <Grid>
-                        <FontIcon
-                            x:Name="LoginIcon"
-                            Glyph=""
-                            FontSize="16"
-                            HorizontalAlignment="Left"
-                            Margin="0,0,0,0"/>
-                        <Ellipse
-                            x:Name="UserIcon"
-                            Width="20"
-                            Height="20"
-                            HorizontalAlignment="Left"
-                            Margin="-2,2,0,0">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="{x:Bind UserAvatar, Mode=OneWay}"/>
-                            </Ellipse.Fill>
-                        </Ellipse>
-                    </Grid>
+                <StackPanel
+                    Height="40"
+                    Orientation="Horizontal">
+                    <muxc:PersonPicture
+                        Width="20"
+                        Height="20"
+                        x:Name="UserIcon"
+                        Margin="-2,0,0,0"
+                        HorizontalAlignment="Left"
+                        DisplayName="{x:Bind UserName, Mode=OneWay}"
+                        ProfilePicture="{x:Bind UserAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
                     <TextBlock
+                        Margin="14,10"
                         x:Name="UserName"
-                        Margin="14"/>
+                        Text="{x:Bind UserNames, Mode=OneWay}"/>
                 </StackPanel>
             </muxc:NavigationViewItem>
         </muxc:NavigationView.FooterMenuItems>

@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Windows10version1809="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:control="using:CoolapkUWP.Control"
-    xmlns:models="using:CoolapkUWP.Control.ViewModels">
+    xmlns:models="using:CoolapkUWP.Control.ViewModels"
+    xmlns:converter="using:CoolapkUWP.Data.ValueConverters" xmlns:winui="using:Microsoft.UI.Xaml.Controls">
 
     <Style
         x:Key="FeedOpButtonStyle"
@@ -16,15 +17,17 @@
         <Setter Property="Grid.Row" Value="10"/>
     </Style>
 
+    <converter:NoPicToNullConverter x:Key="NoPicToNullConverter"/>
+
     <DataTemplate x:Key="null"/>
 
     <DataTemplate x:Key="Topic" x:DataType="models:TopicViewModel">
         <ListViewItem
             Padding="4"
-            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-            BorderThickness="1"
+            Tapped="OnTapped"
             Tag="{x:Bind url}"
-            Tapped="OnTapped">
+            BorderThickness="1"
+            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="56"/>
@@ -34,17 +37,15 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <Ellipse
+                <winui:PersonPicture
                     Width="40"
                     Height="40"
-                    Grid.RowSpan="2"
-                    HorizontalAlignment="Left"
                     Margin="8,0"
-                    VerticalAlignment="Top">
-                    <Ellipse.Fill>
-                        <ImageBrush ImageSource="{x:Bind logo,Mode=OneWay}"/>
-                    </Ellipse.Fill>
-                </Ellipse>
+                    Grid.RowSpan="2"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Left"
+                    DisplayName="{x:Bind title}"
+                    ProfilePicture="{x:Bind logo, Mode=OneWay}"/>
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="1"
@@ -96,17 +97,15 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Ellipse
+                <winui:PersonPicture
+                    Margin="8"
                     Width="40"
                     Height="40"
                     Grid.RowSpan="2"
+                    VerticalAlignment="Top"
                     HorizontalAlignment="Left"
-                    Margin="8"
-                    VerticalAlignment="Top">
-                    <Ellipse.Fill>
-                        <ImageBrush ImageSource="{x:Bind logo,Mode=OneWay}"/>
-                    </Ellipse.Fill>
-                </Ellipse>
+                    DisplayName="{x:Bind title}"
+                    ProfilePicture="{x:Bind logo, Mode=OneWay}"/>
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="1"
@@ -151,8 +150,8 @@
             </Grid.RowDefinitions>
             <StackPanel
                 x:Name="StickUp"
-                x:Load="{x:Bind isStickTop}"
-                Orientation="Horizontal">
+                Orientation="Horizontal"
+                x:Load="{x:Bind isStickTop}">
                 <SymbolIcon
                     Foreground="Red"
                     Symbol="Upload"/>
@@ -163,46 +162,46 @@
                 </TextBlock>
             </StackPanel>
             <StackPanel
-                x:Name="userb"
-                x:Load="{x:Bind showUser}"
                 Grid.Row="1"
-                Orientation="Horizontal">
+                x:Name="userb"
+                Orientation="Horizontal"
+                x:Load="{x:Bind showUser}">
                 <Button
+                    Padding="0"
+                    Margin="0,4"
                     Tapped="OnTapped"
-                    Style="{StaticResource ButtonRevealStyle}"
                     Tag="{x:Bind uurl}"
                     Background="Transparent"
-                    Padding="0"
-                    Margin="0,4">
-                    <Ellipse
+                    Style="{StaticResource ButtonRevealStyle}">
+                    <winui:PersonPicture
                         Width="36"
-                        Height="36">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{x:Bind userSmallAvatar,Mode=OneWay}"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
+                        Height="36"
+                        DisplayName="{x:Bind username}"
+                        ProfilePicture="{x:Bind userSmallAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
                 </Button>
                 <StackPanel
                     Margin="8,0"
                     VerticalAlignment="Center">
                     <TextBlock
+                        Tapped="OnTapped"
+                        Tag="{x:Bind uurl}"
+                        VerticalAlignment="Top"
                         Text="{x:Bind username}"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"/>
+                        HorizontalAlignment="Left"/>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
-                            Tag="{x:Bind url}"
-                            Tapped="OnTapped"
-                            Text="{x:Bind dateline}"
-                            x:Name="datelineTxb"
-                            x:Load="{x:Bind showDateline}"
                             Margin="0,0,5,0"
-                            Foreground="Gray"/>
-                        <TextBlock
-                            Tag="{x:Bind url}"
                             Tapped="OnTapped"
-                            Text="{x:Bind info}"
-                            Foreground="Gray"/>
+                            Tag="{x:Bind url}"
+                            Foreground="Gray"
+                            x:Name="datelineTxb"
+                            Text="{x:Bind dateline}"
+                            x:Load="{x:Bind showDateline}"/>
+                        <TextBlock
+                            Tapped="OnTapped"
+                            Tag="{x:Bind url}"
+                            Foreground="Gray"
+                            Text="{x:Bind info}"/>
                         <TextBlock
                             Text="{x:Bind device_title}"
                             Foreground="Gray"
@@ -215,32 +214,32 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel
-                x:Name="dyhb"
-                x:Load="{x:Bind showUser2}"
                 Grid.Row="1"
-                Orientation="Horizontal">
+                x:Name="dyhb"
+                Orientation="Horizontal"
+                x:Load="{x:Bind showUser2}">
                 <Button
-                    Tapped="OnTapped"
-                    Style="{StaticResource ButtonStyle1}"
-                    Tag="{x:Bind dyhurl}"
                     x:Name="dyhlogo"
+                    Tapped="OnTapped"
+                    Tag="{x:Bind dyhurl}"
                     x:Load="{x:Bind showDyh}"
-                    Background="Transparent">
-                    <Ellipse
+                    Background="Transparent"
+                    Style="{StaticResource ButtonStyle1}">
+                    <winui:PersonPicture
                         Width="40"
                         Height="40"
-                        HorizontalAlignment="Left" >
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{x:Bind dyhlogo,Mode=OneWay}"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
+                        HorizontalAlignment="Left"
+                        DisplayName="{x:Bind dyhname}"
+                        ProfilePicture="{x:Bind dyhlogo, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
                 </Button>
                 <StackPanel
                     VerticalAlignment="Center"
                     Margin="2,0">
                     <TextBlock
-                        Text="{x:Bind dyhname}"
+                        Tapped="OnTapped"
                         x:Name="dyhnamesta"
+                        Tag="{x:Bind dyhurl}"
+                        Text="{x:Bind dyhname}"
                         x:Load="{x:Bind showDyh}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"/>
@@ -347,18 +346,18 @@
                 </GridView.ItemTemplate>
             </GridView>
             <Grid
-                Padding="10,0"
                 Margin="4"
                 Grid.Row="5"
-                BorderThickness="1"
+                Padding="10,0"
                 CornerRadius="8"
                 x:Name="sourceF"
+                BorderThickness="1"
                 x:Load="{x:Bind showSourceFeedGrid}"
                 Background="{ThemeResource SystemControlBackgroundListLowBrush}"
                 BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
                 <TextBlock
-                    x:Name="sourceF2"
                     x:Load="{x:Bind showSourceFeed2}"
+                    x:Name="sourceF2"
                     Margin="15">
                     抱歉，该转发已被删除。
                 </TextBlock>
@@ -721,22 +720,20 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button
-                Grid.RowSpan="4"
                 Padding="0"
                 Margin="4,6,8,0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                Style="{StaticResource ButtonRevealStyle}"
+                Grid.RowSpan="4"
                 Tapped="OnTapped"
                 Tag="{x:Bind uurl}"
-                Background="Transparent">
-                <Ellipse
+                VerticalAlignment="Top"
+                Background="Transparent"
+                HorizontalAlignment="Center"
+                Style="{StaticResource ButtonRevealStyle}">
+                <winui:PersonPicture
                     Width="36"
-                    Height="36">
-                    <Ellipse.Fill>
-                        <ImageBrush ImageSource="{x:Bind userSmallAvatar,Mode=OneWay}"/>
-                    </Ellipse.Fill>
-                </Ellipse>
+                    Height="36"
+                    DisplayName="{x:Bind username}"
+                    ProfilePicture="{x:Bind userSmallAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
             </Button>
             <StackPanel
                 Grid.Column="1"
@@ -1050,13 +1047,14 @@
     </DataTemplate>
     <!--#endregion-->
     <DataTemplate x:Key="User" x:DataType="models:UserViewModel">
-        <ListViewItem Style="{StaticResource NoPaddingListViewItem}"
-                      HorizontalContentAlignment="Stretch"
-                      BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-                      BorderThickness="1"
-                      Template="{StaticResource ListViewItemTemplate1}" 
-                      Tapped="OnTapped"
-                      Tag="{x:Bind url}">
+        <ListViewItem
+            Tapped="OnTapped"
+            Tag="{x:Bind url}"
+            BorderThickness="1"
+            HorizontalContentAlignment="Stretch"
+            Style="{StaticResource NoPaddingListViewItem}"
+            Template="{StaticResource ListViewItemTemplate1}"
+            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
             <Grid Margin="4,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="56"/>
@@ -1067,17 +1065,15 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <Ellipse
+                <winui:PersonPicture
                     Width="40"
+                    Margin="8"
                     Height="40"
                     Grid.RowSpan="3"
+                    VerticalAlignment="Top"
                     HorizontalAlignment="Left"
-                    Margin="8"
-                    VerticalAlignment="Top">
-                    <Ellipse.Fill>
-                        <ImageBrush ImageSource="{x:Bind UserAvatar,Mode=OneWay}"/>
-                    </Ellipse.Fill>
-                </Ellipse>
+                    DisplayName="{x:Bind UserName}"
+                    ProfilePicture="{x:Bind UserAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="1"

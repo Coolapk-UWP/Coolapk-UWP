@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Data;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Windows.Data.Json;
 using Windows.UI.Xaml.Media;
 
@@ -42,7 +43,7 @@ namespace CoolapkUWP.Control.ViewModels
                 };
             }
             if (!string.IsNullOrEmpty(userSmallAvatarUrl))
-            { userSmallAvatar = await ImageCache.GetImage(ImageType.SmallAvatar, userSmallAvatarUrl); }
+            { userSmallAvatar = ImageCache.defaultNoAvatarUrl.Contains(userSmallAvatarUrl) ? ImageCache.NoPic : await ImageCache.GetImage(ImageType.SmallAvatar, userSmallAvatarUrl); }
         }
 
         private readonly string userSmallAvatarUrl;

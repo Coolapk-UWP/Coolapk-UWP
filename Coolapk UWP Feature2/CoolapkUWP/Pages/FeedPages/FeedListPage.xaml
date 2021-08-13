@@ -9,7 +9,7 @@
     xmlns:data="using:CoolapkUWP.Data"
     xmlns:local="using:CoolapkUWP.Pages.FeedPages"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:muxm="using:Microsoft.UI.Xaml.Media"
+    xmlns:muxm="using:Microsoft.UI.Xaml.Media" xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Windows11version2204:Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d">
     <Page.Resources>
@@ -46,18 +46,16 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Ellipse
+                        <winui:PersonPicture
                             Width="56"
                             Height="56"
                             Margin="10,8"
                             VerticalAlignment="Top"
                             HorizontalAlignment="Left"
+                            Tag="{x:Bind UserFaceUrl}"
+                            DisplayName="{x:Bind UserName}"
                             Tapped="UserDetailBorder_Tapped"
-                            Tag="{x:Bind UserFaceUrl}">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="{x:Bind UserFace,Mode=OneWay}"/>
-                            </Ellipse.Fill>
-                        </Ellipse>
+                            ProfilePicture="{x:Bind UserFace, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
                         <StackPanel
                             Margin="0,0,5,3"
                             Grid.Column="1">
@@ -290,13 +288,11 @@
                                 Click="Button_Click"
                                 Style="{StaticResource ButtonStyle1}">
                                 <StackPanel Orientation="Horizontal">
-                                    <Ellipse
+                                    <winui:PersonPicture
                                         Width="20"
-                                        Height="20">
-                                        <Ellipse.Fill>
-                                            <ImageBrush ImageSource="{x:Bind UserAvatar,Mode=OneWay}"/>
-                                        </Ellipse.Fill>
-                                    </Ellipse>
+                                        Height="20"
+                                        DisplayName="{x:Bind UserName}"
+                                        ProfilePicture="{x:Bind UserAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
                                     <TextBlock
                                         Margin="5,0"
                                         Text="{x:Bind UserName}"

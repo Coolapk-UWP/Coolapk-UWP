@@ -7,8 +7,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
+    xmlns:converter="using:CoolapkUWP.Data.ValueConverters"
     xmlns:local="using:CoolapkUWP.Pages"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Windows11version2204:Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d">
     <Page.Resources>
@@ -16,14 +18,13 @@
             <ResourceDictionary.MergedDictionaries>
                 <control:DatatemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
+            <converter:NoPicToNullConverter x:Key="NoPicToNullConverter"/>
             <DataTemplate x:Key="Reply" x:DataType="local:SimpleNotificationViewModel">
                 <Grid
-                    Padding="4,0"
-                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
+                    Padding="4"
                     BorderThickness="1"
-                    Tapped="Ellipse_Tapped"
-                    Tag="{x:Bind Uri}"
-                    Background="Transparent">
+                    Background="Transparent"
+                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="56"/>
                         <ColumnDefinition Width="*"/>
@@ -32,146 +33,225 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Ellipse
-                        Width="40"
-                        Height="40"
+                    <Button
+                        Margin="4"
+                        Padding="0"
                         Grid.RowSpan="2"
-                        HorizontalAlignment="Left"
-                        Margin="8"
+                        Tapped="OnTapped"
                         VerticalAlignment="Top"
-                        Tapped="Ellipse_Tapped"
-                        Tag="{x:Bind FromUserUri}">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{x:Bind FromUserAvatar,Mode=OneWay}"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
+                        Background="Transparent"
+                        HorizontalAlignment="Left"
+                        Tag="{x:Bind FromUserUri}"
+                        Style="{StaticResource ButtonRevealStyle}">
+                        <winui:PersonPicture
+                            Width="40"
+                            Height="40"
+                            HorizontalAlignment="Left"
+                            DisplayName="{x:Bind FromUserName}"
+                            ProfilePicture="{x:Bind FromUserAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
+                    </Button>
                     <StackPanel
-                        Orientation="Horizontal"
                         Grid.Row="0"
                         Grid.Column="1"
-                        Padding="0,4,0,0">
-                        <TextBlock Text="{x:Bind FromUserName}"/>
+                        Padding="0,4,0,0"
+                        Orientation="Horizontal">
                         <TextBlock
-                            Text="{x:Bind Dateline}"
+                            Tapped="OnTapped"
+                            Tag="{x:Bind FromUserUri}"
+                            Text="{x:Bind FromUserName}"/>
+                        <TextBlock
+                            Margin="8,0,0,0"
+                            Tapped="OnTapped"
+                            Tag="{x:Bind Uri}"
                             Foreground="Gray"
-                            Margin="8,0,0,0"/>
+                            Text="{x:Bind Dateline}"/>
                     </StackPanel>
                     <control:MTextBlock
-                        Padding="0,0,0,4"
                         Grid.Row="2"
                         Grid.Column="1"
-                        Foreground="Gray"
+                        Tapped="OnTapped"
+                        Tag="{x:Bind Uri}"
                         MessageText="{x:Bind Note}"/>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="Like" x:DataType="local:LikeNotificationViewModel">
                 <Grid
-                    Padding="4,0"
-                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
+                    Padding="4"
                     BorderThickness="1"
-                    Tapped="Ellipse_Tapped"
-                    Tag="{x:Bind Uri}"
-                    Background="Transparent">
+                    Background="Transparent"
+                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
                         <Button
-                            Padding="0"
                             Margin="4"
-                            HorizontalAlignment="Center"
+                            Padding="0"
+                            Tapped="OnTapped"
                             VerticalAlignment="Top"
-                            Style="{StaticResource ButtonStyle1}"
-                            Tapped="Ellipse_Tapped"
+                            Background="Transparent"
                             Tag="{x:Bind LikeUserUri}"
-                            Background="Transparent">
+                            HorizontalAlignment="Center"
+                            Style="{StaticResource ButtonRevealStyle}">
                             <StackPanel Orientation="Horizontal">
-                                <Ellipse
+                                <winui:PersonPicture
                                     Width="20"
-                                    Height="20">
-                                    <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{x:Bind LikeUserAvatar,Mode=OneWay}"/>
-                                    </Ellipse.Fill>
-                                </Ellipse>
+                                    Height="20"
+                                    DisplayName="{x:Bind LikeUserName}"
+                                    ProfilePicture="{x:Bind LikeUserAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
                                 <TextBlock
                                     Margin="4,0,0,0"
                                     Text="{x:Bind LikeUserName}"/>
                             </StackPanel>
                         </Button>
                         <TextBlock
-                            Text="{x:Bind Dateline}"
+                            Margin="8,4"
+                            Tapped="OnTapped"
+                            Tag="{x:Bind Uri}"
                             Foreground="Gray"
-                            IsTextSelectionEnabled="False"
-                            Margin="8,4"/>
+                            Text="{x:Bind Dateline}"
+                            IsTextSelectionEnabled="False"/>
                     </StackPanel>
                     <StackPanel
                         Grid.Row="1"
                         Margin="6,0">
-                        <TextBlock Text="{x:Bind Title}"/>
-                        <control:MTextBlock
-                            Padding="0,0,0,4"
-                            Foreground="Gray"
-                            MessageText="{x:Bind FeedMessage}"/>
+                        <TextBlock
+                            Tapped="OnTapped"
+                            Tag="{x:Bind Uri}"
+                            Text="{x:Bind Title}"/>
+                        <Border
+                            Margin="-5,2"
+                            CornerRadius="8"
+                            BorderThickness="1"
+                            Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+                            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
+                            <control:MTextBlock
+                                Margin="5"
+                                Tapped="OnTapped"
+                                Tag="{x:Bind Uri}"
+                                MessageText="{x:Bind FeedMessage}"/>
+                        </Border>
                     </StackPanel>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="Message" x:DataType="local:MessageNotificationModel">
+                <Grid
+                    Padding="4"
+                    BorderThickness="1"
+                    Background="Transparent"
+                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="56"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Button
+                        Margin="4"
+                        Padding="0"
+                        Grid.RowSpan="2"
+                        Tapped="OnTapped"
+                        Tag="{x:Bind UserUri}"
+                        VerticalAlignment="Top"
+                        Background="Transparent"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource ButtonRevealStyle}">
+                        <winui:PersonPicture
+                            Width="40"
+                            Height="40"
+                            DisplayName="{x:Bind UserName}"
+                            ProfilePicture="{x:Bind UserAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
+                    </Button>
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Padding="0,4,0,0"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            Tapped="OnTapped"
+                            Tag="{x:Bind UserUri}"
+                            Text="{x:Bind UserName}"/>
+                        <TextBlock
+                            Text="{x:Bind Dateline}"
+                            Foreground="Gray"
+                            Margin="8,0,0,0"/>
+                    </StackPanel>
+                    <control:MTextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        MessageText="{x:Bind FeedMessage}"/>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="AtCommentMe" x:DataType="local:AtCommentMeNotificationViewModel">
                 <Grid
-                    Padding="4,0"
-                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
+                    Padding="4"
                     BorderThickness="1"
-                    Tapped="Ellipse_Tapped"
-                    Tag="{x:Bind Uri}"
-                    Background="Transparent">
+                    Background="Transparent"
+                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
                         <Button
-                            Padding="0"
                             Margin="4"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            Style="{StaticResource ButtonStyle1}"
-                            Tapped="Ellipse_Tapped"
+                            Padding="0"
                             Tag="{x:Bind UserUri}"
-                            Background="Transparent">
+                            VerticalAlignment="Top"
+                            Tapped="Ellipse_Tapped"
+                            Background="Transparent"
+                            HorizontalAlignment="Center"
+                            Style="{StaticResource ButtonRevealStyle}">
                             <StackPanel Orientation="Horizontal">
-                                <Ellipse
+                                <winui:PersonPicture
                                     Width="20"
-                                    Height="20">
-                                    <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{x:Bind UserAvatar,Mode=OneWay}"/>
-                                    </Ellipse.Fill>
-                                </Ellipse>
+                                    Height="20"
+                                    DisplayName="{x:Bind UserName}"
+                                    ProfilePicture="{x:Bind UserAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
                                 <TextBlock
                                     Margin="4,0,0,0"
                                     Text="{x:Bind UserName}"/>
                             </StackPanel>
                         </Button>
                         <TextBlock
-                            Text="{x:Bind Dateline}"
+                            Margin="8,4"
+                            Tapped="OnTapped"
+                            Tag="{x:Bind Uri}"
                             Foreground="Gray"
-                            Margin="8,4"/>
+                            Text="{x:Bind Dateline}"/>
                     </StackPanel>
                     <StackPanel
                         Grid.Row="1"
                         Padding="6,0,6,8">
-                        <control:MTextBlock MessageText="{x:Bind Message}"/>
                         <control:MTextBlock
-                            Foreground="Gray"
-                            MessageText="{x:Bind FeedMessage}"/>
+                            Tapped="OnTapped"
+                            Tag="{x:Bind Uri}"
+                            MessageText="{x:Bind Message}"/>
+                        <Border
+                            Margin="-5,0"
+                            CornerRadius="8"
+                            BorderThickness="1"
+                            Background="{ThemeResource SystemControlBackgroundListLowBrush}"
+                            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}">
+                            <control:MTextBlock
+                                Margin="5,2,5,5"
+                                Tapped="OnTapped"
+                                Tag="{x:Bind Uri}"
+                                MessageText="{x:Bind FeedMessage}"/>
+                        </Border>
                     </StackPanel>
                 </Grid>
             </DataTemplate>
             <local:TemplateSelector
                 x:Key="temse"
-                DataTemplate1="{StaticResource feed}"
-                DataTemplate2="{StaticResource Reply}"
-                DataTemplate3="{StaticResource Like}"
-                DataTemplate4="{StaticResource AtCommentMe}"/>
+                FeedViewModel="{StaticResource feed}"
+                LikeNotificationViewModel="{StaticResource Like}"
+                MessageNotificationModel="{StaticResource Message}"
+                SimpleNotificationViewModel="{StaticResource Reply}"
+                AtCommentMeNotificationViewModel="{StaticResource AtCommentMe}"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -182,11 +262,11 @@
             </TransitionCollection>
         </Grid.ChildrenTransitions>
         <controls:PullToRefreshListView
-            x:Name="MainListView"
             SelectionMode="None"
-            RefreshRequested="MainListView_RefreshRequested"
+            x:Name="MainListView"
             PullToRefreshLabel="下拉刷新"
-            ReleaseToRefreshLabel="松手刷新">
+            ReleaseToRefreshLabel="松手刷新"
+            RefreshRequested="MainListView_RefreshRequested">
             <controls:PullToRefreshListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Padding" Value="0"/>
@@ -198,8 +278,8 @@
                 x:Load="False">
                 <ListView
                     IsItemClickEnabled="True"
-                    ScrollViewer.VerticalScrollMode="Disabled"
-                    ItemClick="ListView_ItemClick">
+                    ItemClick="ListView_ItemClick"
+                    ScrollViewer.VerticalScrollMode="Disabled">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <control:GridPanel
@@ -232,7 +312,7 @@
                         Orientation="Horizontal"
                         Margin="8,0"
                         Tag="atCommentMe">
-                        <SymbolIcon Symbol="Account"/>
+                        <SymbolIcon Symbol="Comment"/>
                         <TextBlock
                             VerticalAlignment="Center"
                             Margin="8,0">
@@ -277,7 +357,7 @@
                         Orientation="Horizontal"
                         Margin="8,0"
                         Tag="message">
-                        <SymbolIcon Symbol="Comment"/>
+                        <SymbolIcon Symbol="Mail"/>
                         <TextBlock
                             VerticalAlignment="Center"
                             Margin="8,0">
@@ -313,8 +393,8 @@
             </ListViewItem>
         </controls:PullToRefreshListView>
         <control:TitleBar
-            x:Name="titleBar"
             x:Load="False"
+            x:Name="titleBar"
             BackButtonClick="TitleBar_BackButtonClick"/>
     </Grid>
 </Page>

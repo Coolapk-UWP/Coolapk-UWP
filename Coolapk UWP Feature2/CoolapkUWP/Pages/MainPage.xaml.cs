@@ -41,7 +41,6 @@ namespace CoolapkUWP.Pages
             {
                 if (value == null) { value = "登录"; }
                 userNames = value;
-                UserName.Text = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserNames)));
             }
         }
@@ -50,10 +49,7 @@ namespace CoolapkUWP.Pages
         {
             InitializeComponent();
             _ = SettingsHelper.CheckLoginInfo();
-            UIHelper.notifications.BadgeNumberChanged += (sender, e) =>
-            {
-                if (sender is NotificationsNum num) { ChangeBadgeNum(num.BadgeNum); }
-            };
+            UIHelper.notifications.BadgeNumberChanged += (sender, e) => { if (sender is NotificationsNum num) { ChangeBadgeNum(num.BadgeNum); } };
             ChangeBadgeNum(UIHelper.notifications.BadgeNum);
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
             { Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true; }

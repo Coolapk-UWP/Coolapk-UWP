@@ -55,8 +55,12 @@ namespace CoolapkUWP.Pages.FeedPages
                   await Task.Delay(300);
                   await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                   {
-                      (VisualTree.FindDescendantByName(MainListView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
-                      (VisualTree.FindDescendantByName(RightSideListView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
+                      try
+                      {
+                          (VisualTree.FindDescendantByName(MainListView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
+                          (VisualTree.FindDescendantByName(RightSideListView, "ScrollViewer") as ScrollViewer).ViewChanged += ScrollViewer_ViewChanged;
+                      }
+                      catch { }
                   });
               });
         }

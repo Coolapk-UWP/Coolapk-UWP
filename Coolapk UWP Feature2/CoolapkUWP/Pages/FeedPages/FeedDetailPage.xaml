@@ -8,7 +8,7 @@
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:viewModel="using:CoolapkUWP.Control.ViewModels"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:muxm="using:Microsoft.UI.Xaml.Media"
+    xmlns:muxm="using:Microsoft.UI.Xaml.Media" xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Windows11version2204:Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d"
     SizeChanged="Page_SizeChanged">
@@ -176,26 +176,26 @@
                             Grid.Row="3"
                             Orientation="Horizontal">
                             <Button
-                                Click="Button_Click"
-                                Style="{StaticResource ButtonRevealStyle}"
-                                Tag="{x:Bind FeedDetail.uurl,Mode=OneWay}"
-                                Background="{x:Null}"
+                                Margin="8"
                                 Padding="0"
-                                Margin="8">
-                                <Ellipse
+                                Click="Button_Click"
+                                Background="{x:Null}"
+                                Style="{StaticResource ButtonRevealStyle}"
+                                Tag="{x:Bind FeedDetail.uurl,Mode=OneWay}">
+                                <winui:PersonPicture
                                     Width="36"
                                     Height="36"
-                                    HorizontalAlignment="Left">
-                                    <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{x:Bind FeedDetail.userSmallAvatar,Mode=OneWay}"/>
-                                    </Ellipse.Fill>
-                                </Ellipse>
+                                    HorizontalAlignment="Left"
+                                    DisplayName="{x:Bind FeedDetail.username}"
+                                    ProfilePicture="{x:Bind FeedDetail.userSmallAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
                             </Button>
                             <StackPanel VerticalAlignment="Center">
                                 <TextBlock
-                                    Text="{x:Bind FeedDetail.username,Mode=OneWay}"
+                                    Tapped="Grid_Tapped"
+                                    VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"/>
+                                    Tag="{x:Bind FeedDetail.uurl,Mode=OneWay}"
+                                    Text="{x:Bind FeedDetail.username,Mode=OneWay}"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock
                                         Text="{x:Bind FeedDetail.dateline,Mode=OneWay}"
@@ -632,17 +632,15 @@
                                             Template="{StaticResource ListViewItemTemplate1}"
                                             Tag="{x:Bind url}">
                                             <StackPanel
-                                                Orientation="Horizontal"
                                                 Padding="3"
+                                                Orientation="Horizontal"
                                                 VerticalAlignment="Center">
-                                                <Ellipse
+                                                <winui:PersonPicture
                                                     Width="30"
                                                     Height="30"
-                                                    HorizontalAlignment="Left">
-                                                    <Ellipse.Fill>
-                                                        <ImageBrush ImageSource="{x:Bind UserAvatar}"/>
-                                                    </Ellipse.Fill>
-                                                </Ellipse>
+                                                    HorizontalAlignment="Left"
+                                                    DisplayName="{x:Bind UserName}"
+                                                    ProfilePicture="{x:Bind UserAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
                                                 <TextBlock
                                                     Margin="5,0"
                                                     Text="{x:Bind UserName}"

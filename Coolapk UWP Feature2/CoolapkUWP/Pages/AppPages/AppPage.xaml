@@ -324,11 +324,11 @@
                         Background="Transparent"
                         Style="{ThemeResource ButtonRevealStyle}"
                         Tag="{x:Bind AppModels.DeveloperUrl, Mode=OneWay}">
-                        <Ellipse Width="36" Height="36">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="{x:Bind AppModels.DeveloperAvatar.Pic, Mode=OneWay}"/>
-                            </Ellipse.Fill>
-                        </Ellipse>
+                        <muxc:PersonPicture
+                            Width="36"
+                            Height="36"
+                            DisplayName="{x:Bind AppModels.DeveloperName, Mode=OneWay}"
+                            ProfilePicture="{x:Bind AppModels.DeveloperAvatar.Pic, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
                     </Button>
                     <StackPanel
                         Margin="8,0"
