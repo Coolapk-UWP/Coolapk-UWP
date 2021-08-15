@@ -54,9 +54,11 @@
                     <Button Click="Button_Click_6" Grid.Row="7" Margin="0,2" Content="查看"/>
                     <TextBox x:Name="tile" Header="修改动态磁贴源" Grid.Row="8" Margin="0,2" KeyDown="tile_KeyDown"/>
                     <Button Click="Button_Click_2" Grid.Row="9" Margin="0.2" Content="保存"/>
-                    <TextBox Header="测试MTextBlock" x:Name="text" Grid.Row="10" Margin="0,2"/>
-                    <Button Click="Button_Click_1" Grid.Row="11" Margin="0,2" Content="打开App页面"/>
-                    <control:MTextBlock Grid.Row="12" Margin="0,2" MessageText="{x:Bind Path=text.Text, Mode=OneWay}"/>
+                    <TextBox x:Name="contact" Header="测试联系人卡片" Grid.Row="10" Margin="0,2" KeyDown="contact_KeyDown"/>
+                    <Button Click="OnUserClickShowContactCard" Grid.Row="11" Margin="0.2" Content="生成"/>
+                    <TextBox Header="测试MTextBlock" x:Name="text" Grid.Row="12" Margin="0,2"/>
+                    <Button Click="Button_Click_1" Grid.Row="13" Margin="0,2" Content="打开App页面"/>
+                    <control:MTextBlock Grid.Row="14" Margin="0,2" MessageText="{x:Bind Path=text.Text, Mode=OneWay}"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

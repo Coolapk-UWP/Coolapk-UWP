@@ -1,13 +1,19 @@
 ﻿using CoolapkUWP.Control;
+using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Windows.ApplicationModel.Contacts;
+using Windows.Data.Json;
+using Windows.Foundation;
 using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -104,6 +110,90 @@ namespace CoolapkUWP.Pages.SettingPages
             LiveTileControl.UpdateTile();
         }
 
+        // Gets the rectangle of the element 
+        public static Rect GetElementRect(FrameworkElement element)
+        {
+            // Passing "null" means set to root element. 
+            GeneralTransform elementTransform = element.TransformToVisual(null);
+            Rect rect = elementTransform.TransformBounds(new Rect(0, 0, element.ActualWidth, element.ActualHeight));
+            return rect;
+        }
+
+        // Display a contact in response to an event
+        private async void OnUserClickShowContactCard(object sender, RoutedEventArgs e)
+        {
+            string str = await UIHelper.GetJson("/user/profile?uid=" + await UIHelper.GetUserIDByName(contact.Text));
+            if (!string.IsNullOrEmpty(str))
+            {
+                JsonObject json = UIHelper.GetJSonObject(str);
+                if (json != null)
+                {
+                    UserViewModel UserModel = new UserViewModel(json);
+                    if (ContactManager.IsShowContactCardSupported())
+                    {
+                        Rect selectionRect = GetElementRect((FrameworkElement)sender);
+
+                        // Retrieve the contact to display
+                        Contact contact = new Contact();
+                        if (!string.IsNullOrEmpty(UserModel.Email))
+                        {
+                            ContactEmail email = new ContactEmail
+                            {
+                                Kind = ContactEmailKind.Personal,
+                                Address = UserModel.Email
+                            };
+                            contact.Emails.Add(email);
+                        }
+                        if (!string.IsNullOrEmpty(UserModel.City))
+                        {
+                            ContactAddress address = new ContactAddress
+                            {
+                                Locality = UserModel.City
+                            };
+                            contact.Addresses.Add(address);
+                        }
+                        if (!string.IsNullOrEmpty(UserModel.Mobile))
+                        {
+                            ContactPhone phone = new ContactPhone
+                            {
+                                Number = UserModel.Mobile,
+                                Kind = ContactPhoneKind.Mobile
+                            };
+                            contact.Phones.Add(phone);
+                        }
+                        ContactDate date = new ContactDate();
+                        if (!string.IsNullOrEmpty(UserModel.BirthYear))
+                        {
+                            date.Year = int.Parse(UserModel.BirthYear);
+                        }
+                        if (!string.IsNullOrEmpty(UserModel.BirthMonth))
+                        {
+                            date.Month = uint.Parse(UserModel.BirthMonth);
+                        }
+                        if (!string.IsNullOrEmpty(UserModel.BirthDay))
+                        {
+                            date.Day = uint.Parse(UserModel.BirthDay);
+                        }
+                        if (date != null)
+                        {
+                            date.Kind = ContactDateKind.Birthday;
+                            contact.ImportantDates.Add(date);
+                        }
+                        if (!string.IsNullOrEmpty(UserModel.UserName))
+                        {
+                            contact.Name = UserModel.UserName;
+                        }
+                        if (!string.IsNullOrEmpty(UserModel.Bio))
+                        {
+                            contact.Notes = UserModel.Bio;
+                        }
+
+                        ContactManager.ShowContactCard(contact, selectionRect, Placement.Default);
+                    }
+                }
+            }
+        }
+
         private void EmojisTest()
         {
             List<string> b;
@@ -197,6 +287,14 @@ namespace CoolapkUWP.Pages.SettingPages
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
                 Button_Click_2(sender, e);
+            }
+        }
+
+        private void contact_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                OnUserClickShowContactCard(sender, e);
             }
         }
 
