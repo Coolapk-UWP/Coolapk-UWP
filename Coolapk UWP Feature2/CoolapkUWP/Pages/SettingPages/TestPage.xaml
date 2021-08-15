@@ -44,15 +44,15 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <TextBox Header="输入UID" x:Name="uid" Grid.Row="0" Margin="0,2"/>
+                    <TextBox Header="输入UID" x:Name="uid" Grid.Row="0" Margin="0,2" KeyDown="uid_KeyDown"/>
                     <Button Click="Button_Click" Grid.Row="1" Margin="0,2" Content="前往"/>
-                    <TextBox Header="输入URL" x:Name="url" Grid.Row="2" Margin="0,2"/>
+                    <TextBox Header="输入URL" x:Name="url" Grid.Row="2" Margin="0,2" KeyDown="url_KeyDown"/>
                     <Button Click="Button_Click_5" Grid.Row="3" Margin="0,2" Content="获取"/>
-                    <TextBox Header="通知测试" x:Name="message" Grid.Row="4" Margin="0,2"/>
+                    <TextBox Header="通知测试" x:Name="message" Grid.Row="4" Margin="0,2" KeyDown="message_KeyDown"/>
                     <Button Click="Button_Click_4" Grid.Row="5" Margin="0,2" Content="显示"/>
-                    <TextBox Header="查看图片" x:Name="image" Grid.Row="6" Margin="0,2"/>
+                    <TextBox Header="查看图片" x:Name="image" Grid.Row="6" Margin="0,2" KeyDown="image_KeyDown"/>
                     <Button Click="Button_Click_6" Grid.Row="7" Margin="0,2" Content="查看"/>
-                    <TextBox x:Name="tile" Header="修改动态磁贴源" Grid.Row="8" Margin="0,2"/>
+                    <TextBox x:Name="tile" Header="修改动态磁贴源" Grid.Row="8" Margin="0,2" KeyDown="tile_KeyDown"/>
                     <Button Click="Button_Click_2" Grid.Row="9" Margin="0.2" Content="保存"/>
                     <TextBox Header="测试MTextBlock" x:Name="text" Grid.Row="10" Margin="0,2"/>
                     <Button Click="Button_Click_1" Grid.Row="11" Margin="0,2" Content="打开App页面"/>

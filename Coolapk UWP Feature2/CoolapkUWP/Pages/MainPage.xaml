@@ -102,7 +102,7 @@
                         x:Name="UserIcon"
                         Margin="-2,0,0,0"
                         HorizontalAlignment="Left"
-                        DisplayName="{x:Bind UserName, Mode=OneWay}"
+                        DisplayName="{x:Bind UserNames, Mode=OneWay}"
                         ProfilePicture="{x:Bind UserAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
                     <TextBlock
                         Margin="14,10"
@@ -114,9 +114,9 @@
 
         <muxc:NavigationView.AutoSuggestBox>
             <AutoSuggestBox
-                MinWidth="180"
                 QueryIcon="Find"
                 x:Name="SearchBox"
+                KeyDown="SearchBox_KeyDown"
                 PlaceholderText="搜索 动态、用户和话题"
                 TextChanged="AutoSuggestBox_TextChanged"
                 ItemTemplateSelector="{StaticResource tspl}"

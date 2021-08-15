@@ -192,7 +192,7 @@ namespace CoolapkUWP.Pages
         #endregion
         private void SearchTextBox_KeyUp(object sender, KeyRoutedEventArgs e)
         {
-            if (e.Key == Windows.System.VirtualKey.Enter) { SearchText_QuerySubmitted(null, null); }
+            if (e.Key == Windows.System.VirtualKey.Enter) { SearchText_QuerySubmitted(sender as AutoSuggestBox, null); }
         }
 
         private void StartSearch()
@@ -262,9 +262,49 @@ namespace CoolapkUWP.Pages
             StartSearch();
         }
 
-        private void SearchText_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        private async void SearchText_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                JsonArray array = UIHelper.GetDataArray(await UIHelper.GetJson($"/search/suggestSearchWordsNew?searchValue={sender.Text}&type=app"));
+                if (array != null && array.Count > 0)
+                {
+                    ObservableCollection<object> observableCollection = new ObservableCollection<object>();
+                    sender.ItemsSource = observableCollection;
+                    foreach (IJsonValue ite in array)
+                    {
+                        JsonObject item = ite.GetObject();
+                        switch (item["entityType"].GetString())
+                        {
+                            case "apk":
+                                observableCollection.Add(new AppViewModel
+                                {
+                                    AppName = item["title"].GetString(),
+                                    DownloadNum = $"{item["score"].GetString()}分 {item["downCount"].ToString().Replace("\"", string.Empty)}下载",
+                                    Url = item["url"].GetString(),
+                                    Icon = await ImageCache.GetImage(ImageType.Icon, item["logo"].GetString()),
+                                    Size = item["apksize"].GetString(),
+                                });
+                                break;
+                            case "searchWord":
+                            default:
+                                Symbol s = Symbol.Find;
+                                if (item["logo"].GetString().Contains("cube")) { s = Symbol.Shop; }
+                                else if (item["logo"].GetString().Contains("xitongguanli")) { s = Symbol.AllApps; }
+                                observableCollection.Add(new SearchWord { Symbol = s, Title = item["title"].GetString() });
+                                break;
+                        }
+                    }
+                }
+            }
+        }
 
+        private void SearchText_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                SearchText_QuerySubmitted(sender as AutoSuggestBox, null);
+            }
         }
     }
 }

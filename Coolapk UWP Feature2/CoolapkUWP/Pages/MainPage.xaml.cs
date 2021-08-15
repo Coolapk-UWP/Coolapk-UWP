@@ -176,6 +176,7 @@ namespace CoolapkUWP.Pages
                 }
             }
         }
+
         private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             if (args.ChosenSuggestion is AppViewModel app)
@@ -185,7 +186,7 @@ namespace CoolapkUWP.Pages
                 switch (word.Symbol)
                 {
                     case Symbol.Shop:
-                        UIHelper.Navigate(typeof(SearchPage), new object[] { 3, word.GetTitle() });
+                        UIHelper.Navigate(typeof(SearchPage), new object[] { 0, word.GetTitle() });
                         break;
                     case Symbol.Contact:
                         UIHelper.Navigate(typeof(SearchPage), new object[] { 1, word.GetTitle() });
@@ -199,9 +200,22 @@ namespace CoolapkUWP.Pages
             }
             else if (args.ChosenSuggestion is null) { UIHelper.Navigate(typeof(SearchPage), new object[] { 0, sender.Text }); }
         }
+
         private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            if (args.SelectedItem is ISearchPageViewModel m) { sender.Text = m.GetTitle(); }
+            if (args.SelectedItem is ISearchPageViewModel m)
+            {
+                string str = m.GetTitle();
+                //SearchBox.Text = str;
+            }
+        }
+
+        private void SearchBox_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                AutoSuggestBox_QuerySubmitted(sender as AutoSuggestBox, null);
+            }
         }
         #endregion
 

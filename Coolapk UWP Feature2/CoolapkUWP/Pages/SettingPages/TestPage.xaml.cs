@@ -24,20 +24,10 @@ namespace CoolapkUWP.Pages.SettingPages
             tile.Text = ApplicationData.Current.LocalSettings.Values["TileUrl"].ToString();
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            UIHelper.Navigate(typeof(FeedPages.FeedListPage), new object[] { FeedPages.FeedListType.UserPageList, await UIHelper.GetUserIDByName(uid.Text) });
-        }
-
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             if (Frame.CanGoBack)
             { Frame.GoBack(); }
-        }
-
-        private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
-            UIHelper.ShowMessage(message.Text);
         }
 
         private async void Button_Click_5(object sender, RoutedEventArgs e)
@@ -57,7 +47,11 @@ namespace CoolapkUWP.Pages.SettingPages
                     {
                         Text = ConvertJsonString(s),
                         IsTextSelectionEnabled = true
-                    }
+                    },
+                    VerticalScrollMode = ScrollMode.Enabled,
+                    HorizontalScrollMode = ScrollMode.Enabled,
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
                 },
                 CloseButtonText = "好的",
                 DefaultButton = ContentDialogButton.Close
@@ -104,55 +98,50 @@ namespace CoolapkUWP.Pages.SettingPages
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            UIHelper.Navigate(typeof(AppPages.AppRecommendPage));
-        }
-
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             ApplicationData.Current.LocalSettings.Values["TileUrl"] = tile.Text;
             LiveTileControl.UpdateTile();
         }
 
-        private void test()
+        private void EmojisTest()
         {
             List<string> b;
             string emojis = string.Empty;
             b = EmojiHelper.normal.ToList();
-            foreach (var item in EmojiHelper.coolcoins)
+            foreach (string item in EmojiHelper.coolcoins)
             {
                 if (!b.Contains(item))
                 { b.Add(item); }
             }
-            foreach (var item in EmojiHelper.funny)
+            foreach (string item in EmojiHelper.funny)
             {
                 if (!b.Contains(item))
                 { b.Add(item); }
             }
-            foreach (var item in EmojiHelper.doge)
+            foreach (string item in EmojiHelper.doge)
             {
                 if (!b.Contains(item))
                 { b.Add(item); }
             }
-            foreach (var item in EmojiHelper.tradition)
+            foreach (string item in EmojiHelper.tradition)
             {
                 if (!b.Contains(item))
                 { b.Add(item); }
             }
-            foreach (var item in EmojiHelper.classic)
+            foreach (string item in EmojiHelper.classic)
             {
                 if (!b.Contains(item))
                 { b.Add(item); }
             }
-            foreach (var item in EmojiHelper.emojis)
+            foreach (string item in EmojiHelper.emojis)
             {
                 if (!b.Contains(item))
                 { b.Add(item); }
             }
-            foreach (var item in b)
+            foreach (string item in b)
             {
-                emojis += $"\"{item}\",\n"; 
+                emojis += $"\"{item}\",\n";
             }
             ContentDialog GetJsonDialog = new ContentDialog
             {
@@ -171,9 +160,52 @@ namespace CoolapkUWP.Pages.SettingPages
             _ = GetJsonDialog.ShowAsync();
         }
 
-        private void Button_Click_6(object sender, RoutedEventArgs e)
+        private void uid_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
-            UIHelper.ShowImage(image.Text, ImageType.OriginImage);
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                Button_Click(sender, e);
+            }
         }
+
+        private void url_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                Button_Click_5(sender, e);
+            }
+        }
+
+        private void message_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                Button_Click_4(sender, e);
+            }
+        }
+
+        private void image_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                Button_Click_6(sender, e);
+            }
+        }
+
+        private void tile_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                Button_Click_2(sender, e);
+            }
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e) => UIHelper.Navigate(typeof(FeedPages.FeedListPage), new object[] { FeedPages.FeedListType.UserPageList, await UIHelper.GetUserIDByName(uid.Text) });
+
+        private void Button_Click_1(object sender, RoutedEventArgs e) => UIHelper.Navigate(typeof(AppPages.AppRecommendPage));
+
+        private void Button_Click_4(object sender, RoutedEventArgs e) => UIHelper.ShowMessage(message.Text);
+
+        private void Button_Click_6(object sender, RoutedEventArgs e) => UIHelper.ShowImage(image.Text, ImageType.OriginImage);
     }
 }

@@ -14,7 +14,7 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="酷安_UWP.App">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Coolapk_UWP.App">
       <uap:VisualElements DisplayName="酷安" Description="一个基于UWP平台的酷安客户端(Feature2通道)" BackgroundColor="transparent" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png">
         <uap:DefaultTile Square71x71Logo="Assets\SmallTile.png" Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\LargeTile.png">
           <uap:ShowNameOnTiles>

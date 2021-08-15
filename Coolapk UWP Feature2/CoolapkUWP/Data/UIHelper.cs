@@ -452,10 +452,27 @@ namespace CoolapkUWP.Data
 
             try
             {
-                string uid = await new HttpClient().GetStringAsync("https://www.coolapk.com/n/" + name);
-                uid = uid.Split(new string[] { "coolmarket://www.coolapk.com/u/" }, StringSplitOptions.RemoveEmptyEntries)[1];
-                uid = uid.Split(new string[] { @"""" }, StringSplitOptions.RemoveEmptyEntries)[0];
-                return uid;
+                string str = await GetHTML("https://www.coolapk.com/n/" + name, "XMLHttpRequest");
+                JsonObject json = null;
+                if (!string.IsNullOrEmpty(str))
+                {
+                    json = JsonObject.Parse(str);
+                    if (json.TryGetValue("dataRow", out IJsonValue v) && !string.IsNullOrEmpty(v.GetObject().ToString()))
+                    {
+                        JsonObject dataRow = v.GetObject();
+                        return dataRow.TryGetValue("uid", out IJsonValue uid) && !string.IsNullOrEmpty(uid.GetNumber().ToString())
+                            ? uid.GetNumber().ToString()
+                            : "0";
+                    }
+                    else
+                    {
+                        return "0";
+                    }
+                }
+                else
+                {
+                    return "0";
+                }
             }
             catch (HttpRequestException e)
             {
