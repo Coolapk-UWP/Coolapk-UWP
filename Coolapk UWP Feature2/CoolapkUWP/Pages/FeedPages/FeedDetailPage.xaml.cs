@@ -80,7 +80,7 @@ namespace CoolapkUWP.Pages.FeedPages
             if (detail != null)
             {
                 FeedDetail = new FeedDetailViewModel(detail);
-                TitleBar.Title = FeedDetail.title;
+                TitleBar.Title = FeedDetail.Title;
                 showQRCodeControl.QRCodeText = FeedDetail.shareurl;
                 if (FeedDetail.isQuestionFeed)
                 {
@@ -343,7 +343,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     { likeLastItem = array.Last().GetObject()["uid"].GetNumber(); }
                     UserViewModel[] d = (from a in likes
                                          from b in array
-                                         where a.url == b.GetObject()["url"].GetString()
+                                         where a.Url == b.GetObject()["url"].GetString()
                                          select a).ToArray();
                     foreach (UserViewModel item in d)
                     { likes.Remove(item); }
@@ -550,13 +550,13 @@ namespace CoolapkUWP.Pages.FeedPages
                 RefreshAll = false;
                 replyFlyoutFrame.Width = (double)Application.Current.Resources["FlyoutThemeMaxWidth"];
             }
-            if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 768 && !(FeedDetail?.isFeedArticle ?? false))
+            if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 768 && !(FeedDetail?.IsFeedArticle ?? false))
             {
                 LeftColumnDefinition.Width = new GridLength(384);
                 set();
                 PivotItemPanel.Margin = new Thickness(0, 0, Window.Current.Bounds.Width - 384, 0);
             }
-            else if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 1024 && (FeedDetail?.isFeedArticle ?? false))
+            else if ((e?.NewSize.Width ?? Window.Current.Bounds.Width) >= 1024 && (FeedDetail?.IsFeedArticle ?? false))
             {
                 LeftColumnDefinition.Width = new GridLength(640);
                 set();

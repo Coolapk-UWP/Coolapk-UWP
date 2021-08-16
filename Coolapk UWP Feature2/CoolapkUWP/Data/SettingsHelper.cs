@@ -6,32 +6,38 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Data.Json;
 using Windows.Storage;
+using Windows.System.Profile;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Data
 {
     internal static class SettingsHelper
     {
-        public static string cookie = string.Empty;
+        public static ulong version = ulong.Parse(AnalyticsInfo.VersionInfo.DeviceFamilyVersion);
         private static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-        public static UISettings uISettings => new UISettings();
-        public static bool HasStatusBar => Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
+
+        public static string cookie = string.Empty;
+        public static string GetString(string key) => localSettings.Values[key] as string;
+
         public static double PageTitleHeight => HasStatusBar ? 40 : 80;
-        public static SolidColorBrush SystemAccentColorBrush => Windows.UI.Xaml.Application.Current.Resources.ThemeDictionaries["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
         public static Thickness stackPanelMargin => new Thickness(0, PageTitleHeight, 0, 2);
         public static Thickness ButtonMargin => new Thickness(0, PageTitleHeight - 48, 0, 2);
-        public static VerticalAlignment titleContentVerticalAlignment => VerticalAlignment.Bottom;
-        public static ElementTheme theme => GetBoolen("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
+
         public static bool GetBoolen(string key) => (bool)localSettings.Values[key];
-        public static string GetString(string key) => localSettings.Values[key] as string;
-        public static void Set(string key, object value) => localSettings.Values[key] = value;
+        public static bool HasStatusBar => Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
         public static bool IsAuthor => ApplicationData.Current.LocalSettings.Values["IsAuthor"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsAuthor"];
         public static bool IsSpecialUser => (ApplicationData.Current.LocalSettings.Values["IsAuthor"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsAuthor"]) || (ApplicationData.Current.LocalSettings.Values["IsSpecial"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsSpecial"]);
-
+        
+        public static UISettings uISettings => new UISettings();
+        public static void Set(string key, object value) => localSettings.Values[key] = value;
+        public static ushort WindowsVersion = (ushort)((version & 0x00000000FFFF0000L) >> 16);
+        public static VerticalAlignment titleContentVerticalAlignment => VerticalAlignment.Bottom;
+        public static ElementTheme theme => GetBoolen("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
+        public static SolidColorBrush SystemAccentColorBrush => Windows.UI.Xaml.Application.Current.Resources.ThemeDictionaries["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
+        
         static SettingsHelper()
         {
             if (!localSettings.Values.ContainsKey("IsNoPicsMode"))
@@ -66,25 +72,32 @@ namespace CoolapkUWP.Data
 
         public static async Task CheckUpdate(bool IsBackground = false)
         {
-            try
+            if (WindowsVersion < 16266)
             {
-                using (HttpClient client = new HttpClient())
+                try
                 {
-                    JsonObject keys;
-                    try { keys = JsonObject.Parse(await UIHelper.GetHTML("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest", true)); }
-                    catch { keys = JsonObject.Parse(await UIHelper.GetHTML("https://v2.kkpp.cc/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest", true)); }
-                    string[] ver = keys["tag_name"].GetString().Replace("v", string.Empty).Split('.');
-                    if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major
-                        || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
-                        || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
+                    using (HttpClient client = new HttpClient())
                     {
-                        GetUpdateContentDialog dialog = new GetUpdateContentDialog(keys["html_url"].GetString(), keys["body"].GetString()) { RequestedTheme = theme };
-                        _ = dialog.ShowAsync();
+                        JsonObject keys;
+                        try { keys = JsonObject.Parse(await UIHelper.GetHTML("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest", true)); }
+                        catch { keys = JsonObject.Parse(await UIHelper.GetHTML("https://v2.kkpp.cc/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest", true)); }
+                        string[] ver = keys["tag_name"].GetString().Replace("v", string.Empty).Split('.');
+                        if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major
+                            || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
+                            || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
+                        {
+                            GetUpdateContentDialog dialog = new GetUpdateContentDialog(keys["html_url"].GetString(), keys["body"].GetString()) { RequestedTheme = theme };
+                            _ = dialog.ShowAsync();
+                        }
+                        else if (!IsBackground) { UIHelper.ShowMessage("当前无可用更新。"); }
                     }
-                    else if (!IsBackground) { UIHelper.ShowMessage("当前无可用更新。"); }
                 }
+                catch (HttpRequestException ex) { UIHelper.ShowHttpExceptionMessage(ex); }
             }
-            catch (HttpRequestException ex) { UIHelper.ShowHttpExceptionMessage(ex); }
+            else if (!IsBackground)
+            {
+                UIHelper.ShowMessage($"正式版通道不再支持 Build {WindowsVersion}，请前往 Github 下载 Feature2 更新");
+            }
         }
 
         public static async void CheckTheme()

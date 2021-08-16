@@ -161,6 +161,14 @@ namespace CoolapkUWP.Pages.SettingPages
                             };
                             contact.Phones.Add(phone);
                         }
+                        if (!string.IsNullOrEmpty(UserModel.Url))
+                        {
+                            ContactWebsite website = new ContactWebsite
+                            {
+                                Uri = new Uri("https://www.coolapk.com" + UserModel.Url)
+                            };
+                            contact.Websites.Add(website);
+                        }
                         ContactDate date = new ContactDate();
                         if (!string.IsNullOrEmpty(UserModel.BirthYear))
                         {

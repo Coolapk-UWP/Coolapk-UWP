@@ -1,7 +1,6 @@
 ﻿using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
 using Microsoft.Toolkit.Uwp.Notifications;
-using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Data.Json;
@@ -207,14 +206,13 @@ namespace CoolapkUWP.Control
         private static TileContent GetUserTitle(JsonObject token)
         {
             UserViewModel UserDetail = new UserViewModel(token);
-            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
             return new TileContent()
             {
                 Visual = new TileVisual()
                 {
                     Branding = TileBranding.NameAndLogo,
                     DisplayName = UserDetail.UserName,
-                    Arguments = UserDetail.url,
+                    Arguments = UserDetail.Url,
 
                     TileMedium = new TileBinding()
                     {
@@ -236,7 +234,7 @@ namespace CoolapkUWP.Control
 
                                 new AdaptiveText()
                                 {
-                                    Text = UserDetail.FollowNum + loader.GetString("follow") + UserDetail.FansNum + loader.GetString("fan") + UserDetail.LoginTime + loader.GetString("active"),
+                                    Text = UserDetail.FollowNum + "关注" + UserDetail.FansNum + "粉丝" + UserDetail.LoginTime + "活跃",
                                     HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                 },
 
@@ -290,7 +288,7 @@ namespace CoolapkUWP.Control
 
                                                 new AdaptiveText()
                                                 {
-                                                    Text = UserDetail.FollowNum + loader.GetString("follow") + UserDetail.FansNum + loader.GetString("fan") + UserDetail.LoginTime + loader.GetString("active"),
+                                                    Text = UserDetail.FollowNum + "关注" + UserDetail.FansNum + "粉丝" + UserDetail.LoginTime + "活跃",
                                                     HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                                 },
 
@@ -357,7 +355,7 @@ namespace CoolapkUWP.Control
 
                                 new AdaptiveText()
                                 {
-                                    Text = UserDetail.FollowNum + loader.GetString("follow") + UserDetail.FansNum + loader.GetString("fan") + UserDetail.LoginTime + loader.GetString("active"),
+                                    Text = UserDetail.FollowNum + "关注" + UserDetail.FansNum + "粉丝" + UserDetail.LoginTime + "活跃",
                                     HintStyle = AdaptiveTextStyle.CaptionSubtle,
                                 },
 

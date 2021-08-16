@@ -62,6 +62,10 @@ namespace CoolapkUWP.Control.ViewModels
             {
                 subTitle = description.GetString();
             }
+            else if (token.TryGetValue("commentnum", out IJsonValue commentnum) && !string.IsNullOrEmpty(commentnum.GetNumber().ToString()))
+            {
+                subTitle = UIHelper.GetNumString(commentnum.GetNumber()) + "评论";
+            }
             if (token.TryGetValue("description", out IJsonValue v4) && v4.ValueType == JsonValueType.String)
             {
                 hasDescription = !string.IsNullOrEmpty(v4.GetString());

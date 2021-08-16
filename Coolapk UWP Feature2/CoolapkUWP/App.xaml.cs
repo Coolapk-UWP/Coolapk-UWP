@@ -1,9 +1,11 @@
 ﻿using CoolapkUWP.Control;
 using CoolapkUWP.Data;
+using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.SettingPages;
-using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.Connectivity;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -13,8 +15,6 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using CoolapkUWP.Pages;
-using System.Linq;
 
 namespace CoolapkUWP
 {
@@ -33,7 +33,7 @@ namespace CoolapkUWP
             this.Suspending += OnSuspending;
         }
 
-        protected override async void OnActivated(IActivatedEventArgs e)
+        protected override void OnActivated(IActivatedEventArgs e)
         {
             if (!(Window.Current.Content is Frame rootFrame))
             {
@@ -44,7 +44,7 @@ namespace CoolapkUWP
                 // 参数
                 ApplicationViewTitleBar view = ApplicationView.GetForCurrentView().TitleBar;
                 view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
-                _ = rootFrame.Navigate(typeof(Pages.MainPage));
+                _ = rootFrame.Navigate(typeof(MainPage));
                 Window.Current.Content = rootFrame;
             }
             Window.Current.Activate();
@@ -150,14 +150,13 @@ namespace CoolapkUWP
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
-        private async void Application_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void Application_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             e.Handled = true;
             if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
             {
                 if (Window.Current.Content != null)
                 {
-                    //await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
                     UIHelper.ShowMessage($"{e.Exception.Message}\n{e.Exception.StackTrace}");
                     UIHelper.HideProgressBar();
                 }
@@ -181,14 +180,13 @@ namespace CoolapkUWP
         private void RegisterExceptionHandlingSynchronizationContext()
             => ExceptionHandlingSynchronizationContext.Register().UnhandledException += SynchronizationContext_UnhandledException;
 
-        private async void SynchronizationContext_UnhandledException(object sender, AysncUnhandledExceptionEventArgs e)
+        private void SynchronizationContext_UnhandledException(object sender, AysncUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
             if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
             {
                 if (Window.Current.Content != null)
                 {
-                    //await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
                     UIHelper.ShowMessage($"{e.Exception.Message}\n{e.Exception.StackTrace}");
                     UIHelper.HideProgressBar();
                 }
@@ -198,13 +196,16 @@ namespace CoolapkUWP
         private static async void RegisterBackgroundTask()
         {
             #region LiveTileTask
-            const string LiveTileTask = "LiveTileTask";
+            if (SettingsHelper.WindowsVersion < 22000)
+            {
+                const string LiveTileTask = "LiveTileTask";
 
-            // Check for background access (optional)
-            await BackgroundExecutionManager.RequestAccessAsync();
+                // Check for background access (optional)
+                _ = await BackgroundExecutionManager.RequestAccessAsync();
 
-            // Register (Single Process)
-            BackgroundTaskRegistration _LiveTileTask = BackgroundTaskHelper.Register(LiveTileTask, new TimeTrigger(15, false), true);
+                // Register (Single Process)
+                _ = BackgroundTaskHelper.Register(LiveTileTask, new TimeTrigger(15, false), true);
+            }
             #endregion
         }
 

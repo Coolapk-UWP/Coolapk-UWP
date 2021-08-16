@@ -407,7 +407,7 @@ namespace CoolapkUWP.Pages
             {
                 json = await UIHelper.GetJson($"/notification/{uri}?page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}");
             }
-            
+
             if (!string.IsNullOrEmpty(json))
             {
                 JsonArray array = UIHelper.GetDataArray(json);

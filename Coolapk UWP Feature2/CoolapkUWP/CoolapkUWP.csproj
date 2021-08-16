@@ -137,6 +137,7 @@
     <Compile Include="Control\ViewModels\SimpleFeedReplyViewModel.cs" />
     <Compile Include="Control\ViewModels\SourceFeedViewModel.cs" />
     <Compile Include="Control\GridPanel.cs" />
+    <Compile Include="Control\ViewModels\ProductViewModel.cs" />
     <Compile Include="Data\BackgroundTask.cs" />
     <Compile Include="Data\EmojiHelper.cs" />
     <Compile Include="Data\ImageCache.cs" />

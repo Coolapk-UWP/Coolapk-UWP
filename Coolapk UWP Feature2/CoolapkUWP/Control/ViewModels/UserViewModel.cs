@@ -6,12 +6,39 @@ namespace CoolapkUWP.Control.ViewModels
 {
     internal class UserViewModel : Entity
     {
+        public string Url { get; private set; }
+        public string Bio { get; private set; }
+        public string Uid { get; private set; }
+        public string City { get; private set; }
+        public string Email { get; private set; }
+        public string Mobile { get; private set; }
+        public string FansNum { get; private set; }
+        public string UserName { get; private set; }
+        public string BirthDay { get; private set; }
+        public string FollowNum { get; private set; }
+        public string LoginTime { get; private set; }
+        public string BirthYear { get; private set; }
+        public string BirthMonth { get; private set; }
+        public string UserAvatarUrl { get; private set; }
+        public BackgroundImageViewModel Background { get; private set; }
+
+        private Windows.UI.Xaml.Media.ImageSource userAvatar;
+        public Windows.UI.Xaml.Media.ImageSource UserAvatar
+        {
+            get => userAvatar;
+            private set
+            {
+                userAvatar = value;
+                Changed(this, nameof(UserAvatar));
+            }
+        }
+
         public UserViewModel(IJsonValue t) : base(t)
         {
             JsonObject token = t.GetObject();
-            if (token.TryGetValue("url", out IJsonValue Url))
+            if (token.TryGetValue("url", out IJsonValue url))
             {
-                url = Url.GetString();
+                Url = url.GetString();
             }
             if (token.TryGetValue("username", out IJsonValue username))
             {
@@ -56,7 +83,7 @@ namespace CoolapkUWP.Control.ViewModels
             }
             if (token.TryGetValue("uid", out IJsonValue uid))
             {
-                Uid = uid.GetNumber().ToString();
+                Uid = UIHelper.GetValue(uid);
             }
             if (token.TryGetValue("mobile", out IJsonValue mobile))
             {
@@ -77,32 +104,5 @@ namespace CoolapkUWP.Control.ViewModels
         }
 
         private async void GetPic(string UserAvatarUrl) => UserAvatar = ImageCache.defaultNoAvatarUrl.Contains(UserAvatarUrl) ? ImageCache.NoPic : await ImageCache.GetImage(ImageType.SmallAvatar, UserAvatarUrl);
-
-        public string url { get; private set; }
-        public string Bio { get; private set; }
-        public string Uid { get; private set; }
-        public string City { get; private set; }
-        public string Email { get; private set; }
-        public string Mobile { get; private set; }
-        public string FansNum { get; private set; }
-        public string UserName { get; private set; }
-        public string BirthDay { get; private set; }
-        public string FollowNum { get; private set; }
-        public string LoginTime { get; private set; }
-        public string BirthYear { get; private set; }
-        public string BirthMonth { get; private set; }
-        public string UserAvatarUrl { get; private set; }
-        public BackgroundImageViewModel Background { get; private set; }
-
-        private Windows.UI.Xaml.Media.ImageSource userAvatar;
-        public Windows.UI.Xaml.Media.ImageSource UserAvatar
-        {
-            get => userAvatar;
-            private set
-            {
-                userAvatar = value;
-                Changed(this, nameof(UserAvatar));
-            }
-        }
     }
 }

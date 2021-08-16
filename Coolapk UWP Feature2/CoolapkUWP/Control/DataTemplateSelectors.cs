@@ -6,80 +6,80 @@ namespace CoolapkUWP.Control
 {
     public class FirstTemplateSelector : DataTemplateSelector
     {
+        public DataTemplate DYH { get; set; }
         public DataTemplate Feed { get; set; }
         public DataTemplate Card { get; set; }
         public DataTemplate User { get; set; }
         public DataTemplate Topic { get; set; }
-        public DataTemplate DYH { get; set; }
+        public DataTemplate Product { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            return item is FeedViewModel
-                ? Feed
-                : item is UserViewModel ? User : item is TopicViewModel ? Topic : item is DyhViewModel ? DYH : Card;
+            return item is FeedViewModel ? Feed : item is UserViewModel ? User : item is TopicViewModel ? Topic : item is DyhViewModel ? DYH : item is ProductViewModel ? Product : Card;
         }
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
     public class SecondTemplateSelector : DataTemplateSelector
     {
         public DataTemplate Null { get; set; }
-        public DataTemplate DataTemplate1 { get; set; }
-        public DataTemplate ImageTextScrollCard { get; set; }
+        public DataTemplate ImageCard { get; set; }
         public DataTemplate MessageCard { get; set; }
         public DataTemplate RefreshCard { get; set; }
+        public DataTemplate DataTemplate1 { get; set; }
         public DataTemplate TextLinkListCard { get; set; }
         public DataTemplate IconLinkGridCard { get; set; }
-        public DataTemplate IconTabLinkGridCard { get; set; }
         public DataTemplate SelectorLinkCard { get; set; }
-        public DataTemplate ImageCard { get; set; }
+        public DataTemplate IconTabLinkGridCard { get; set; }
+        public DataTemplate ImageTextScrollCard { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             switch ((item as IndexPageViewModel).entityTemplate)
             {
-                default: return Null;
-                case "imageTextGridCard":
-                case "imageSquareScrollCard":
-                case "iconScrollCard":
-                case "imageTextScrollCard":
-                case "colorfulFatScrollCard":
-                case "colorfulScrollCard":
-                case "iconLongTitleGridCard":
-                case "feedScrollCard": return ImageTextScrollCard;
-                case "textCard":
                 case "hot":
+                case "textCard":
                 case "messageCard": return MessageCard;
                 case "refreshCard": return RefreshCard;
-                case "feedGroupListCard":
-                case "iconListCard":
-                case "textLinkListCard": return TextLinkListCard;
+                case "headCard":
+                case "imageCard":
+                case "iconButtonGridCard":
+                case "imageCarouselCard_1": return ImageCard;
+                case "selectorLinkCard": return SelectorLinkCard;
                 case "iconGridCard":
                 case "iconMiniGridCard":
-                case "iconMiniLinkGridCard":
-                case "iconLinkGridCard": return IconLinkGridCard;
+                case "iconLinkGridCard":
+                case "iconMiniLinkGridCard": return IconLinkGridCard;
                 case "iconTabLinkGridCard": return IconTabLinkGridCard;
-                case "selectorLinkCard": return SelectorLinkCard;
-                case "headCard":
-                case "iconButtonGridCard":
-                case "imageCarouselCard_1":
-                case "imageCard": return ImageCard;
+                case "iconListCard":
+                case "textLinkListCard":
+                case "feedGroupListCard":
+                case "feedCoolPictureGridCard": return TextLinkListCard;
+                case "iconScrollCard":
+                case "feedScrollCard":
+                case "imageTextGridCard":
+                case "colorfulScrollCard":
+                case "imageTextScrollCard":
+                case "colorfulFatScrollCard":
+                case "imageSquareScrollCard":
+                case "iconLongTitleGridCard": return ImageTextScrollCard;
+                default: return Null;
             }
         }
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
     public class ThirdTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate Null { get; set; }
-        public DataTemplate Image { get; set; }
-        public DataTemplate IconLink { get; set; }
-        public DataTemplate Feed { get; set; }
         public DataTemplate Dyh { get; set; }
+        public DataTemplate Null { get; set; }
+        public DataTemplate User { get; set; }
+        public DataTemplate Feed { get; set; }
+        public DataTemplate Image { get; set; }
         public DataTemplate Topic { get; set; }
-        public DataTemplate FeedArticle { get; set; }
+        public DataTemplate Histroy { get; set; }
         public DataTemplate Question { get; set; }
         public DataTemplate TextLink { get; set; }
-        public DataTemplate User { get; set; }
-        public DataTemplate ImageSquare { get; set; }
+        public DataTemplate IconLink { get; set; }
         public DataTemplate TextImage { get; set; }
-        public DataTemplate Histroy { get; set; }
+        public DataTemplate FeedArticle { get; set; }
+        public DataTemplate ImageSquare { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
             if (item is FeedViewModel f)
@@ -92,24 +92,24 @@ namespace CoolapkUWP.Control
                 switch ((item as IndexPageViewModel).entityType)
                 {
                     case "image_1": return Image;
-                    case "icon":
-                    case "iconMiniLink":
-                    case "iconMini":
-                    case "iconLink": return IconLink;
-                    case "product":
-                    case "recentHistory":
-                    case "IconLink":
-                    case "apk":
-                    case "appForum":
-                    case "dyh": return Dyh;
-                    case "picCategory":
-                    case "entity":
-                    case "topic": return Topic;
                     case "textLink": return TextLink;
-                    case "imageSquare": return ImageSquare;
+                    case "dyh":
+                    case "apk":
+                    case "product":
+                    case "appForum":
+                    case "IconLink":
+                    case "recentHistory": return Dyh;
+                    case "topic":
+                    case "entity":
+                    case "picCategory": return Topic;
+                    case "history":
+                    case "collection": return Histroy;
                     case "imageText": return TextImage;
-                    case "collection":
-                    case "history": return Histroy;
+                    case "icon":
+                    case "iconMini":
+                    case "iconLink":
+                    case "iconMiniLink": return IconLink;
+                    case "imageSquare": return ImageSquare;
                     default: return Null;
                 }
             }

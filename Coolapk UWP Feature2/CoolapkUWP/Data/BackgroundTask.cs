@@ -1,4 +1,4 @@
-﻿using CoolapkUWP.Control;
+﻿using Microsoft.Toolkit.Uwp.Connectivity;
 using Windows.ApplicationModel.Background;
 
 namespace CoolapkUWP.Data
@@ -8,7 +8,10 @@ namespace CoolapkUWP.Data
         public async void Run(IBackgroundTaskInstance taskInstance)
         {
             BackgroundTaskDeferral deferral = taskInstance.GetDeferral();
-            await new NotificationsNum().RefreshNotificationsNum(true);
+            if (NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable)
+            {
+                await new NotificationsNum().RefreshNotificationsNum(true);
+            }
             deferral.Complete();
         }
     }

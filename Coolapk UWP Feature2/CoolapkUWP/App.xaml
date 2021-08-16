@@ -22,7 +22,7 @@
                     SelectedPointerOverBackground="Transparent"/>
             </ControlTemplate>
 
-            <SolidColorBrush x:Key="GrayText" Color="{ThemeResource SystemColorGrayTextColor}" />
+            <SolidColorBrush x:Key="GrayText" Color="{ThemeResource SystemColorGrayTextColor}"/>
 
             <Style x:Key="NoPaddingListViewItem" TargetType="ListViewItem">
                 <Setter Property="Padding" Value="0"/>

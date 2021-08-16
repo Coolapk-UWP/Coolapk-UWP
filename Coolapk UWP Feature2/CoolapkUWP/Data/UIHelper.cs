@@ -21,7 +21,6 @@ using Windows.System.Profile;
 using Windows.System.UserProfile;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media.Animation;
 
@@ -30,13 +29,13 @@ namespace CoolapkUWP.Data
     internal static class UIHelper
     {
         public static HttpClient mClient;
-        public static NotificationsNum notifications = new NotificationsNum();
-        public static MainPage mainPage = null;
-        public static List<Popup> popups = new List<Popup>();
-        private static readonly ObservableCollection<string> messageList = new ObservableCollection<string>();
         private static bool isShowingMessage;
+        public static MainPage mainPage = null;
         public static bool isShowingProgressBar;
         private static CoreDispatcher shellDispatcher;
+        public static List<Popup> popups = new List<Popup>();
+        public static NotificationsNum notifications = new NotificationsNum();
+        private static readonly ObservableCollection<string> messageList = new ObservableCollection<string>();
 
         public enum NavigationThemeTransition
         {
@@ -57,10 +56,10 @@ namespace CoolapkUWP.Data
                 }
             }
         }
+
         static UIHelper()
         {
             CultureInfo Culture = null;
-            ulong version = ulong.Parse(AnalyticsInfo.VersionInfo.DeviceFamilyVersion);
             try { Culture = GlobalizationPreferences.Languages.Count > 0 ? new CultureInfo(GlobalizationPreferences.Languages.First()) : null; } catch { }
             EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
             mClient = new HttpClient();
@@ -69,7 +68,7 @@ namespace CoolapkUWP.Data
             mClient.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", Culture == null ? "zh-CN" : Culture.ToString());
             mClient.DefaultRequestHeaders.Add("X-Dark-Mode", Windows.UI.Xaml.Application.Current.RequestedTheme.ToString() == "Dark" ? "1" : "0");
-            mClient.DefaultRequestHeaders.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT " + (ushort)((version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((version & 0x0000FFFF00000000L) >> 32) + (Package.Current.Id.Architecture.ToString().Contains("64") ? "; Win64; " : "; Win32; ") + Package.Current.Id.Architecture.ToString().Replace("X", "x") + "; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP " + Package.Current.Id.Version.ToFormattedString() + "; " + (ushort)((version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((version & 0x0000FFFF00000000L) >> 32) + "." + (ushort)((version & 0x00000000FFFF0000L) >> 16) + "." + (ushort)(version & 0x000000000000FFFFL) + ")");
+            mClient.DefaultRequestHeaders.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT " + (ushort)((SettingsHelper.version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((SettingsHelper.version & 0x0000FFFF00000000L) >> 32) + (Package.Current.Id.Architecture.ToString().Contains("64") ? "; Win64; " : "; Win32; ") + Package.Current.Id.Architecture.ToString().Replace("X", "x") + "; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP " + Package.Current.Id.Version.ToFormattedString() + "; " + (ushort)((SettingsHelper.version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((SettingsHelper.version & 0x0000FFFF00000000L) >> 32) + "." + (ushort)((SettingsHelper.version & 0x00000000FFFF0000L) >> 16) + "." + (ushort)(SettingsHelper.version & 0x000000000000FFFFL) + ")");
             mClient.DefaultRequestHeaders.UserAgent.ParseAdd(" +CoolMarket/9.2.2-1905301-universal");
             mClient.DefaultRequestHeaders.Add("X-App-Version", "9.2.2");
             mClient.DefaultRequestHeaders.Add("X-App-Code", "1905301");
@@ -96,11 +95,13 @@ namespace CoolapkUWP.Data
             popups.Last().IsOpen = false;
             popups.Last().IsOpen = true;
         }
+
         public static void Hide(this Popup popup)
         {
             popup.IsOpen = false;
             if (popups.Contains(popup)) { _ = popups.Remove(popup); }
         }
+
         public static async void ShowProgressBar()
         {
             isShowingProgressBar = true;
@@ -112,22 +113,26 @@ namespace CoolapkUWP.Data
             else if (popups.Last().Child is StatusGrid statusGrid)
             { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar()); }
         }
+
         public static async void PausedProgressBar()
         {
             if (!SettingsHelper.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
             { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.PausedProgressBar()); }
         }
+
         public static async void ErrorProgressBar()
         {
             if (!SettingsHelper.HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
             { await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ErrorProgressBar()); }
         }
+
         public static async void HideProgressBar()
         {
             isShowingProgressBar = false;
             if (SettingsHelper.HasStatusBar && !isShowingMessage) { await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync(); }
             else if (popups.Last().Child is StatusGrid statusGrid) { statusGrid.HideProgressBar(); }
         }
+
         public static async void ShowMessage(string message)
         {
             messageList.Add(message);
@@ -514,8 +519,11 @@ namespace CoolapkUWP.Data
 
         public static string GetNumString(double num)
         {
-            string str = string.Empty;
-            if (num < 1000) { }
+            string str;
+            if (num < 1000)
+            {
+                return num.ToString();
+            }
             else if (num < 10000)
             {
                 str = "k";

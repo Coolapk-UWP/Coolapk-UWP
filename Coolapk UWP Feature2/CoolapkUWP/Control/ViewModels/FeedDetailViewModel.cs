@@ -8,137 +8,233 @@ namespace CoolapkUWP.Control.ViewModels
 {
     internal class FeedDetailViewModel : FeedViewModelBase
     {
+        public bool ShowTtitle { get; private set; }
+        public bool ShowDyhName { get; private set; }
+        public bool IsAnswerFeed { get; private set; }
+        public bool IsFeedArticle { get; private set; }
+        public bool HasMessageCover { get; private set; }
+        public bool ShowRelationRows { get; private set; }
+        public bool NotFeedArticle { get => !IsFeedArticle; }
+
+        private ImageSource tpic;
+        private ImageSource dyhpic;
+        private ImageSource messagecover;
+
+        private readonly string tpicUrl;
+        public string Turl { get; private set; }
+        public string Title { get; private set; }
+        public string Ttitle { get; private set; }
+        public string DyhUrl { get; private set; }
+        public string DyhName { get; private set; }
+        public string ShareNum { get; private set; }
+        public string DyhSubtitle { get; private set; }
+        public string QuestionUrl { get; private set; }
+        public string MessageCoverUrl { get; private set; }
+        public string MessageRawOutput { get; private set; }
+        public string QuestionAnswerNum { get; private set; }
+
+        public RelationRowsItem[] RelationRows { get; private set; }
+        public List<string> FeedArticlePics { get; private set; } = new List<string>();
+
+        public ImageSource MessageCover
+        {
+            get => messagecover;
+            private set
+            {
+                messagecover = value;
+                Changed(this, nameof(MessageCover));
+            }
+        }
+
+        public ImageSource Tpic
+        {
+            get => tpic;
+            private set
+            {
+                tpic = value;
+                Changed(this, nameof(Tpic));
+            }
+        }
+
+        public ImageSource DyhPic
+        {
+            get => dyhpic;
+            private set
+            {
+                dyhpic = value;
+                Changed(this, nameof(DyhPic));
+            }
+        }
+
         public FeedDetailViewModel(IJsonValue t) : base(t)
         {
             JsonObject token = t.GetObject();
-            title = token["title"].GetString();
-            if (token["entityType"].GetString() != "article")
+
+            if (token.TryGetValue("title", out IJsonValue title))
             {
-                if (token.TryGetValue("share_num", out IJsonValue s))
-                { share_num = s.ToString().Replace("\"", string.Empty); }
-                if (token["feedType"].GetString() == "feedArticle")
-                { isFeedArticle = true; }
-                if (isFeedArticle)
+                Title = title.GetString();
+            }
+
+            if (token.TryGetValue("entityType", out IJsonValue entityType) && entityType.GetString() != "article")
+            {
+                if (token.TryGetValue("share_num", out IJsonValue share_num))
                 {
-                    has_message_cover = token.TryGetValue("message_cover", out IJsonValue value) && !string.IsNullOrEmpty(value.GetString());
-                    if (has_message_cover)
-                    { message_cover_url = value.GetString(); }
-                    JsonArray array = JsonArray.Parse(token["message_raw_output"].GetString());
-                    message_raw_output = string.Empty;
-                    StringBuilder builder = new StringBuilder();
-                    foreach (IJsonValue i in array)
+                    ShareNum = share_num.GetNumber().ToString();
+                }
+                if (token.TryGetValue("feedType", out IJsonValue feedType) && feedType.GetString() == "feedArticle")
+                {
+                    IsFeedArticle = true;
+                    if (token.TryGetValue("message_cover", out IJsonValue message_cover) && !string.IsNullOrEmpty(message_cover.GetString()))
                     {
-                        JsonObject item = i.GetObject();
-                        if (item["type"].GetString() == "text")
-                        { _ = builder.Append(item["message"].GetString()); }
-                        else if (item["type"].GetString() == "image")
+                        HasMessageCover = true;
+                        MessageCoverUrl = message_cover.GetString();
+                        GetCover(MessageCoverUrl);
+                    }
+                    if (token.TryGetValue("message_raw_output", out IJsonValue message_raw_output))
+                    {
+                        JsonArray array = JsonArray.Parse(message_raw_output.GetString());
+                        MessageRawOutput = string.Empty;
+                        StringBuilder builder = new StringBuilder();
+                        foreach (IJsonValue item in array)
                         {
-                            string description = string.IsNullOrEmpty(item["description"].GetString()) ? string.Empty : item["description"].GetString();
-                            string uri = item["url"].GetString();
-                            _ = builder.Append($"\n<a t=\"image\" href=\"{uri}\">{description}</a>\n");
-                            feedArticlePics.Add(uri);
+                            if (item.GetObject().TryGetValue("type", out IJsonValue type))
+                            {
+                                switch (type.GetString())
+                                {
+                                    case "text":
+                                        if (item.GetObject().TryGetValue("message", out IJsonValue message))
+                                        {
+                                            _ = builder.Append(message.GetString());
+                                        }
+                                        break;
+
+                                    case "image":
+                                        string description = item.GetObject().TryGetValue("description", out IJsonValue des) && !string.IsNullOrEmpty(des.GetString()) ? des.GetString() : string.Empty;
+                                        string uri = item.GetObject().TryGetValue("url", out IJsonValue url) && !string.IsNullOrEmpty(url.GetString()) ? url.GetString() : string.Empty;
+                                        _ = builder.Append($"\n<a t=\"image\" href=\"{uri}\">{description}</a>\n");
+                                        break;
+                                }
+                            }
+                        }
+                        MessageRawOutput = builder.ToString();
+                    }
+                }
+                else if (feedType.GetString() == "answer")
+                {
+                    IsAnswerFeed = true;
+                    if (token.TryGetValue("extraData", out IJsonValue v1))
+                    {
+                        JsonObject extraData = JsonObject.Parse(v1.GetString());
+                        if (extraData.TryGetValue("questionAnswerNum", out IJsonValue questionAnswerNum))
+                        {
+                            QuestionAnswerNum = questionAnswerNum.GetNumber().ToString();
+                        }
+                        if (extraData.TryGetValue("questionUrl", out IJsonValue questionUrl))
+                        {
+                            QuestionUrl = questionUrl.GetString();
                         }
                     }
-                    message_raw_output = builder.ToString();
-                }
-                if (token["feedType"].GetString() == "answer")
-                { isAnswerFeed = true; }
-                if (isAnswerFeed)
-                {
-                    JsonObject j = JsonObject.Parse(token["extraData"].GetString());
-                    questionAnswerNum = j["questionAnswerNum"].GetNumber().ToString();
-                    questionUrl = j["questionUrl"].GetString();
                 }
             }
-            showTtitle = token.TryGetValue("ttitle", out IJsonValue valuettitle) && !string.IsNullOrEmpty(valuettitle.GetString());
-            if (showTtitle)
+
+            if (token.TryGetValue("targetRow", out IJsonValue v) && !string.IsNullOrEmpty(v.GetObject().ToString()))
             {
-                ttitle = valuettitle.GetString();
-                turl = token["turl"].GetString();
-                tpicUrl = token["tpic"].GetString();
-            }
-            show_dyh_name = token.TryGetValue("dyh_name", out IJsonValue valuedyh) && !string.IsNullOrEmpty(valuedyh.GetString());
-            if (show_dyh_name)
-            {
-                dyh_name = valuedyh.GetString();
-                dyhUrl = $"/dyh/{token["dyh_id"].GetNumber()}";
-            }
-            showRelationRows = (token.TryGetValue("location", out IJsonValue valuelocation) && !string.IsNullOrEmpty(valuelocation.GetString()))
-                               | (token.TryGetValue("relationRows", out IJsonValue valuerelationRows) && (valuerelationRows.GetArray() ?? new JsonArray()).Count > 0);
-            if (showRelationRows)
-            {
-                List<RelationRowsItem> vs = new List<RelationRowsItem>();
-                if (valuelocation != null && !string.IsNullOrEmpty(valuelocation.GetString()))
-                { vs.Add(new RelationRowsItem { title = valuelocation.GetString() }); }
-                if (valuerelationRows != null)
+                ShowDyhName = true;
+                JsonObject targetRow = v.GetObject();
+                if (targetRow.TryGetValue("logo", out IJsonValue logo))
                 {
-                    foreach (IJsonValue i in valuerelationRows.GetArray())
+                    GetDyhPic(logo.GetString());
+                }
+                if (targetRow.TryGetValue("title", out IJsonValue dyhtitle))
+                {
+                    DyhName = dyhtitle.GetString();
+                }
+                if (targetRow.TryGetValue("url", out IJsonValue url))
+                {
+                    DyhUrl = url.GetString();
+                }
+                if (targetRow.TryGetValue("subTitle", out IJsonValue subTitle))
+                {
+                    DyhSubtitle = subTitle.GetString();
+                }
+            }
+
+            if (token.TryGetValue("ttitle", out IJsonValue valuettitle) && !ShowDyhName && !string.IsNullOrEmpty(valuettitle.GetString()))
+            {
+                ShowTtitle = true;
+                Ttitle = valuettitle.GetString();
+                if (token.TryGetValue("turl", out IJsonValue turi))
+                {
+                    Turl = turi.GetString();
+                }
+                if (token.TryGetValue("tpic", out IJsonValue tpicurl))
+                {
+                    tpicUrl = tpicurl.GetString();
+                    GetTpic(tpicUrl);
+                }
+            }
+
+            List<RelationRowsItem> Rows = new List<RelationRowsItem>();
+
+            if (token.TryGetValue("location", out IJsonValue location) && !string.IsNullOrEmpty(location.GetString()))
+            {
+                ShowRelationRows = true;
+                if (location != null && !string.IsNullOrEmpty(location.GetString()))
+                {
+                    Rows.Add(new RelationRowsItem
                     {
-                        JsonObject item = i.GetObject();
-                        vs.Add(new RelationRowsItem { title = item["title"].GetString(), url = item["url"].GetString(), logoUrl = item["logo"].GetString() });
+                        title = location.GetString(),
+                        logoUrl = "https://www.microsoft.com/design/fluent/assets/images/icon-app-maps@2x.png"
+                    });
+                }
+            }
+
+            if (token.TryGetValue("relationRows", out IJsonValue relationRows) && (relationRows.GetArray() ?? new JsonArray()).Count > 0)
+            {
+                ShowRelationRows = true;
+                if (relationRows != null)
+                {
+                    foreach (IJsonValue item in relationRows.GetArray())
+                    {
+                        Rows.Add(new RelationRowsItem
+                        {
+                            title = item.GetObject().TryGetValue("title", out IJsonValue rowstitle) ? rowstitle.GetString() : string.Empty,
+                            url = item.GetObject().TryGetValue("url", out IJsonValue url) ? url.GetString() : string.Empty,
+                            logoUrl = item.GetObject().TryGetValue("logo", out IJsonValue logo) ? logo.GetString() : string.Empty
+                        });
                     }
                 }
-                if (vs.Count == 0) { showRelationRows = false; }
-                relationRows = vs.ToArray();
             }
-            GetPic();
-        }
 
-        private async void GetPic()
-        {
-            if (has_message_cover)
-            { message_cover = await ImageCache.GetImage(ImageType.OriginImage, message_cover_url); }
-            if (showTtitle)
-            { tpic = await ImageCache.GetImage(ImageType.Icon, tpicUrl); }
-            if (showRelationRows)
+            if (Rows.Count >= 0)
             {
-                foreach (RelationRowsItem item in relationRows)
-                {
-                    if (!string.IsNullOrEmpty(item.logoUrl))
-                    { item.logo = await ImageCache.GetImage(ImageType.Icon, item.logoUrl); }
-                }
+                ShowRelationRows = true;
+                RelationRows = Rows.ToArray();
+                GetRowPic();
             }
         }
 
-        string tpicUrl;
-        private ImageSource tpic1;
-        private ImageSource message_cover1;
-        public List<string> feedArticlePics { get; private set; } = new List<string>();
-        public new string share_num { get; private set; }
-        public bool isFeedArticle { get; private set; }
-        public bool isFeedArticle2 { get => !isFeedArticle; }
-        public bool has_message_cover { get; private set; }
-        public string message_cover_url { get; private set; }
-        public ImageSource message_cover
+        private async void GetDyhPic(string logo)
         {
-            get => message_cover1;
-            private set
+            DyhPic = await ImageCache.GetImage(ImageType.Icon, logo);
+        }
+
+        private async void GetCover(string message_cover)
+        {
+            DyhPic = await ImageCache.GetImage(ImageType.OriginImage, message_cover);
+        }
+
+        private async void GetTpic(string tpicurl)
+        {
+            Tpic = await ImageCache.GetImage(ImageType.Icon, tpicurl);
+        }
+
+        private async void GetRowPic()
+        {
+            foreach (RelationRowsItem item in RelationRows)
             {
-                message_cover1 = value;
-                Changed(this, nameof(message_cover));
+                item.logo = !string.IsNullOrEmpty(item.logoUrl) ? await ImageCache.GetImage(ImageType.Icon, item.logoUrl) : ImageCache.NoPic;
             }
         }
-        public string message_raw_output { get; private set; }
-        public bool showTtitle { get; private set; }
-        public string turl { get; private set; }
-        public string ttitle { get; private set; }
-        public ImageSource tpic
-        {
-            get => tpic1;
-            private set
-            {
-                tpic1 = value;
-                Changed(this, nameof(tpic));
-            }
-        }
-        public bool show_dyh_name { get; private set; }
-        public string dyhUrl { get; private set; }
-        public string dyh_name { get; private set; }
-        public bool isAnswerFeed { get; private set; }
-        public string questionUrl { get; private set; }
-        public string title { get; private set; }
-        public string questionAnswerNum { get; private set; }
-        public bool showRelationRows { get; private set; }
-        public RelationRowsItem[] relationRows { get; private set; }
     }
 }

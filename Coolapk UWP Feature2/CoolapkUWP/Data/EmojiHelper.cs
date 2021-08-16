@@ -72,7 +72,7 @@
             "[阴险]",
             "[难过]"
         };
-#endregion
+        #endregion
 
         #region 全部
         public static string[] emojis = new string[]

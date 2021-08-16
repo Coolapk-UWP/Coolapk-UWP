@@ -36,7 +36,6 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             base.OnNavigatedTo(e);
             object[] vs = e.Parameter as object[];
-            //initialPage = vs[2] as InitialPage;
             if (!(bool)vs[1])
             {
                 TitleBar.Visibility = Visibility.Visible;
@@ -73,6 +72,7 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 uri = uri.Replace("/page", "/page/dataList");
             }
+
             return uri.Replace("#", "%23");
         }
 
@@ -166,10 +166,11 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             switch (token["entityType"].GetString())
             {
+                case "dyh": return new DyhViewModel(token);
                 case "feed": return new FeedViewModel(token, pageUrl == "/main/indexV8" ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
                 case "user": return new UserViewModel(token);
                 case "topic": return new TopicViewModel(token);
-                case "dyh": return new DyhViewModel(token);
+                case "product": return new ProductViewModel(token);
                 case "card":
                 default: return new IndexPageViewModel(token);
             }
@@ -307,7 +308,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     ObservableCollection<Entity> ff = new ObservableCollection<Entity>();
                     ListView l = new ListView
                     {
-                        Style = Application.Current.Resources["ListViewStyle"] as Style,
+                        Style = Windows.UI.Xaml.Application.Current.Resources["ListViewStyle"] as Style,
                         ItemContainerStyle = style,
                         ItemTemplateSelector = Resources["FTemplateSelector"] as DataTemplateSelector,
                         ItemsSource = ff,
