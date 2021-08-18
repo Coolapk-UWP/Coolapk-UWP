@@ -11,7 +11,6 @@
     d:DesignWidth="400"
     SizeChanged="UserControl_SizeChanged"
     Tapped="titleGrid_Tapped">
-
     <Grid
         x:Name="titleGrid"
         VerticalAlignment="Top"
@@ -21,6 +20,7 @@
                 <EntranceThemeTransition/>
             </TransitionCollection>
         </Grid.ChildrenTransitions>
+        
         <Border
             Visibility="Visible"
             x:Name="TitleBackground"
@@ -28,6 +28,7 @@
             Height="{x:Bind data:SettingsHelper.PageTitleHeight}"
             BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
             Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}"/>
+        
         <Grid
             Height="{x:Bind data:SettingsHelper.PageTitleHeight}"
             VerticalAlignment="Top"
@@ -40,17 +41,19 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
+            
             <Button
                 Margin="0,2"
                 Grid.Column="0"
                 x:Name="BackButton"
                 Click="BackButton_Click"
                 Style="{StaticResource IconButtonStyle}"
-                VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}">
+                VerticalAlignment="{x:Bind data:SettingsHelper.TitleContentVerticalAlignment}">
                 <SymbolIcon
                     Symbol="Back"
                     x:Name="BackButtonIcon"/>
             </Button>
+            
             <TextBlock
                 Margin="5,10"
                 FontSize="20"
@@ -58,20 +61,23 @@
                 Grid.Column="1"
                 HorizontalAlignment="Left"
                 TextTrimming="CharacterEllipsis"
-                VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"/>
+                VerticalAlignment="{x:Bind data:SettingsHelper.TitleContentVerticalAlignment}"/>
+            
             <ComboBox
                 Margin="2,6"
                 Grid.Column="2"
                 Visibility="Collapsed"
                 x:Name="ChangeModeComboBox"
                 SelectionChanged="ChangeModeComboBox_SelectionChanged"
-                VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"/>
+                VerticalAlignment="{x:Bind data:SettingsHelper.TitleContentVerticalAlignment}"/>
+            
             <ContentPresenter
                 Height="40"
                 Margin="0,2"
                 Grid.Column="3"
                 x:Name="userContentPresenter"
-                VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"/>
+                VerticalAlignment="{x:Bind data:SettingsHelper.TitleContentVerticalAlignment}"/>
+            
             <winui:ProgressRing
                 Width="24"
                 Height="24"
@@ -80,6 +86,7 @@
                 Margin="8,40,8,2"
                 x:Name="progressRing"
                 Visibility="Collapsed"/>
+            
             <Button
                 Margin="0,2"
                 Grid.Column="5"
@@ -87,7 +94,7 @@
                 Visibility="Collapsed"
                 Click="RefreshButton_Click"
                 Style="{StaticResource IconButtonStyle}"
-                VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}">
+                VerticalAlignment="{x:Bind data:SettingsHelper.TitleContentVerticalAlignment}">
                 <SymbolIcon Symbol="Refresh"/>
             </Button>
         </Grid>

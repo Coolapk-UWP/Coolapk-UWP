@@ -34,7 +34,7 @@
             </Pivot.ItemContainerStyle>
             <PivotItem>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged">
-                    <StackPanel Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
+                    <StackPanel Padding="{x:Bind data:SettingsHelper.StackPanelMargin}">
                         <StackPanel
                             Padding="8,4"
                             Orientation="Horizontal">
@@ -91,7 +91,7 @@
                     <ListView
                         x:Name="UserList"
                         ItemTemplate="{StaticResource User}"
-                        Padding="{x:Bind data:SettingsHelper.stackPanelMargin}"
+                        Padding="{x:Bind data:SettingsHelper.StackPanelMargin}"
                         ScrollViewer.VerticalScrollMode="Disabled">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
@@ -114,7 +114,7 @@
                         x:Name="TopicList"
                         ItemTemplate="{StaticResource Topic}"
                         ScrollViewer.VerticalScrollMode="Disabled"
-                        Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
+                        Padding="{x:Bind data:SettingsHelper.StackPanelMargin}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
@@ -137,7 +137,7 @@
                         ItemTemplate="{StaticResource app}"
                         ScrollViewer.VerticalScrollMode="Disabled"
                         SelectionChanged="AppResultList_SelectionChanged"
-                        Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
+                        Padding="{x:Bind data:SettingsHelper.StackPanelMargin}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
@@ -169,7 +169,7 @@
                 x:Name="BackButton"
                 Click="BackButton_Click"
                 Style="{ThemeResource NavigationBackButtonNormalStyle}"
-                VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"/>
+                VerticalAlignment="{x:Bind data:SettingsHelper.TitleContentVerticalAlignment}"/>
             <AutoSuggestBox
                 Grid.Column="1"
                 QueryIcon="Find"
@@ -181,14 +181,14 @@
                 TextChanged="SearchText_TextChanged"
                 QuerySubmitted="SearchText_QuerySubmitted"
                 ItemTemplateSelector="{StaticResource tspl}"
-                VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}"/>
+                VerticalAlignment="{x:Bind data:SettingsHelper.TitleContentVerticalAlignment}"/>
             <ComboBox
                 Grid.Column="2"
                 SelectedIndex="0"
                 Margin="2,0,10,8"
                 x:Name="SearchTypeComboBox"
                 SelectionChanged="SearchTypeComboBox_SelectionChanged"
-                VerticalAlignment="{x:Bind data:SettingsHelper.titleContentVerticalAlignment}">
+                VerticalAlignment="{x:Bind data:SettingsHelper.TitleContentVerticalAlignment}">
                 <ComboBoxItem>动态</ComboBoxItem>
                 <ComboBoxItem>用户</ComboBoxItem>
                 <ComboBoxItem>话题</ComboBoxItem>

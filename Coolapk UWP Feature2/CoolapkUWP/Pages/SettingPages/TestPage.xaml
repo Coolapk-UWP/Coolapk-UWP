@@ -16,14 +16,16 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
+    
     <Grid>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
             </TransitionCollection>
         </Grid.ChildrenTransitions>
+        
         <ScrollViewer>
-            <StackPanel Margin="16,0" Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
+            <StackPanel Margin="16,0" Padding="{x:Bind data:SettingsHelper.StackPanelMargin}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
@@ -62,6 +64,7 @@
                 </Grid>
             </StackPanel>
         </ScrollViewer>
+        
         <control:TitleBar Title="测试页面" BackButtonClick="Button_Click_3"/>
     </Grid>
 </Page>

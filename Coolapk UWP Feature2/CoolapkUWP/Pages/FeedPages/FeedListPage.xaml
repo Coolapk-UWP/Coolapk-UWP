@@ -9,7 +9,8 @@
     xmlns:data="using:CoolapkUWP.Data"
     xmlns:local="using:CoolapkUWP.Pages.FeedPages"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:muxm="using:Microsoft.UI.Xaml.Media" xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    xmlns:muxm="using:Microsoft.UI.Xaml.Media"
     Windows11version2204:Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d">
     <Page.Resources>
@@ -17,205 +18,218 @@
             <ResourceDictionary.MergedDictionaries>
                 <control:DatatemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
+            
             <DataTemplate x:Key="UserDetail" x:DataType="local:UserDetail">
                 <Border
-                    x:Name="UserDetailBorder"
                     Margin="8"
                     CornerRadius="8"
+                    x:Name="UserDetailBorder"
                     Tag="{x:Bind BackgroundUrl}"
                     Tapped="UserDetailBorder_Tapped"
                     SizeChanged="{x:Bind local:FeedListPage.UserDetailBorder_SizeChanged}">
                     <Border.Background>
                         <ImageBrush
-                            ImageSource="{x:Bind Background.Pic,Mode=OneWay}"
-                            Stretch="UniformToFill"/>
+                            Stretch="UniformToFill"
+                            ImageSource="{x:Bind Background.Pic, Mode=OneWay}"/>
                     </Border.Background>
+                    
                     <Grid
                         Padding="0,4"
                         CornerRadius="0,0,8,8"
-                        VerticalAlignment="Bottom"
-                        x:Name="UserDetailGrid">
+                        x:Name="UserDetailGrid"
+                        VerticalAlignment="Bottom">
                         <Grid.Background>
                             <muxm:AcrylicBrush
-                                BackgroundSource="Backdrop"
-                                TintColor="{x:Bind Background.BackgroundColor, Mode=OneWay}"
+                                TintOpacity="0.6"
                                 FallbackColor="#99000000"
-                                TintOpacity="0.6"/>
+                                BackgroundSource="Backdrop"
+                                TintColor="{x:Bind Background.BackgroundColor, Mode=OneWay}"/>
                         </Grid.Background>
+                        
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
+                        
                         <winui:PersonPicture
                             Width="56"
                             Height="56"
                             Margin="10,8"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Left"
                             Tag="{x:Bind UserFaceUrl}"
+                            HorizontalAlignment="Left"
                             DisplayName="{x:Bind UserName}"
                             Tapped="UserDetailBorder_Tapped"
                             ProfilePicture="{x:Bind UserFace, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
+                        
                         <StackPanel
-                            Margin="0,0,5,3"
-                            Grid.Column="1">
+                            Grid.Column="1"
+                            Margin="0,0,5,3">
                             <TextBlock
-                                Foreground="White"
-                                Text="{x:Bind UserName}"
-                                FontWeight="Bold"
                                 FontSize="20"
-                                Margin="0,0,12,0"/>
-                            <TextBlock
-                                x:Name="verify_title"
-                                x:Load="{x:Bind Has_verify_title}"
-                                Text="{x:Bind Verify_title}"
+                                Margin="0,0,12,0"
+                                FontWeight="Bold"
                                 Foreground="White"
+                                Text="{x:Bind UserName}"/>
+                            
+                            <TextBlock
                                 FontSize="14"
-                                TextWrapping="Wrap"/>
+                                TextWrapping="Wrap"
+                                Foreground="White"
+                                x:Name="verify_title"
+                                Text="{x:Bind Verify_title}"
+                                x:Load="{x:Bind Has_verify_title}"/>
+                            
                             <StackPanel Orientation="Horizontal">
                                 <Button
-                                    Click="Button_Click"
-                                    Tag="follow"
                                     Padding="0"
+                                    Tag="follow"
+                                    Click="Button_Click"
                                     Background="{x:Null}"
                                     Style="{StaticResource ButtonRevealStyle}">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock
-                                            Foreground="White"
                                             Margin="0,0,3,0"
                                             FontWeight="Bold"
+                                            Foreground="White"
                                             Text="{x:Bind FollowNum}"/>
                                         <TextBlock
-                                            Foreground="White"
-                                            Text="关注"/>
+                                            Text="关注"
+                                            Foreground="White"/>
                                     </StackPanel>
                                 </Button>
                                 <Button
-                                    Click="Button_Click"
                                     Tag="fans"
                                     Padding="0"
                                     Margin="5,0,0,0"
+                                    Click="Button_Click"
                                     Background="{x:Null}"
                                     Style="{StaticResource ButtonRevealStyle}">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock
                                             Margin="0,0,3,0"
-                                            Foreground="White"
                                             FontWeight="Bold"
+                                            Foreground="White"
                                             Text="{x:Bind FansNum}"/>
                                         <TextBlock
-                                            Foreground="White"
-                                            Text="粉丝"/>
+                                            Text="粉丝"
+                                            Foreground="White"/>
                                     </StackPanel>
                                 </Button>
                                 <TextBlock
+                                    Text="Lv."
                                     Margin="10,0,3,0"
                                     Foreground="White"
-                                    Text="Lv."
                                     VerticalAlignment="Center"/>
                                 <TextBlock
                                     Name="level"
-                                    Foreground="White"
-                                    Text="{x:Bind Level}"
                                     FontWeight="Bold"
                                     TextWrapping="Wrap"
+                                    Foreground="White"
+                                    Text="{x:Bind Level}"
                                     VerticalAlignment="Center"/>
                             </StackPanel>
+                            
                             <TextBlock
                                 x:Name="bio"
-                                x:Load="{x:Bind Has_bio}"
-                                Text="{x:Bind Bio}"
-                                Foreground="White"
                                 FontSize="14"
-                                TextWrapping="Wrap"/>
+                                Text="{x:Bind Bio}"
+                                TextWrapping="Wrap"
+                                Foreground="White"
+                                x:Load="{x:Bind Has_bio}"/>
+                            
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock
+                                    Margin="2,0"
+                                    FontSize="12"
                                     x:Name="gender"
-                                    x:Load="{x:Bind Has_Gender}"
+                                    TextWrapping="Wrap"
+                                    Foreground="White"
                                     Text="{x:Bind Gender}"
-                                    Foreground="White"
-                                    FontSize="12"
-                                    Margin="2,0"
-                                    TextWrapping="Wrap"/>
+                                    x:Load="{x:Bind Has_Gender}"/>
                                 <TextBlock
+                                    Margin="2,0"
                                     x:Name="city"
-                                    x:Load="{x:Bind Has_City}"
+                                    FontSize="12"
+                                    TextWrapping="Wrap"
+                                    Foreground="White"
                                     Text="{x:Bind City}"
-                                    Foreground="White"
-                                    FontSize="12"
-                                    Margin="2,0"
-                                    TextWrapping="Wrap"/>
+                                    x:Load="{x:Bind Has_City}"/>
                                 <TextBlock
+                                    Margin="2,0"
+                                    FontSize="12"
                                     x:Name="astro"
-                                    x:Load="{x:Bind Has_Astro}"
+                                    TextWrapping="Wrap"
+                                    Foreground="White"
                                     Text="{x:Bind Astro}"
-                                    Foreground="White"
-                                    FontSize="12"
-                                    Margin="2,0"
-                                    TextWrapping="Wrap"/>
+                                    x:Load="{x:Bind Has_Astro}"/>
                                 <TextBlock
-                                    Text="{x:Bind Logintime}"
-                                    Foreground="White"
-                                    FontSize="12"
                                     Margin="2,0"
-                                    TextWrapping="Wrap"/>
+                                    FontSize="12"
+                                    TextWrapping="Wrap"
+                                    Foreground="White"
+                                    Text="{x:Bind Logintime}"/>
                             </StackPanel>
+                            
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock
                                     FontSize="16"
-                                    Foreground="White">
-                                    全部动态(
-                                </TextBlock>
+                                    Text="全部动态("
+                                    Foreground="White"/>
                                 <TextBlock
                                     FontSize="16"
                                     Foreground="White"
                                     Text="{x:Bind FeedNum}"/>
                                 <TextBlock
+                                    Text=")"
                                     FontSize="16"
-                                    Foreground="White">
-                                    )
-                                </TextBlock>
+                                    Foreground="White"/>
                             </StackPanel>
                         </StackPanel>
+                        
                         <Button
-                            Grid.Column="1"
-                            Padding="2"
-                            BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
-                            Background="Transparent"
-                            Style="{StaticResource ButtonStyle1}"
-                            Content="{x:Bind FollowStatus}"
-                            Click="Button_Click"
-                            Tag="FollowUser"
                             Margin="4"
+                            Padding="2"
+                            Grid.Column="1"
+                            Tag="FollowUser"
+                            Foreground="White"
+                            Click="Button_Click"
                             x:Name="FollowButton"
-                            x:Load="{x:Bind ShowFollowStatus}"
-                            HorizontalAlignment="Right"
                             VerticalAlignment="Top"
-                            Foreground="White"/>
+                            Background="Transparent"
+                            HorizontalAlignment="Right"
+                            Content="{x:Bind FollowStatus}"
+                            x:Load="{x:Bind ShowFollowStatus}"
+                            Style="{StaticResource ButtonRevealStyle}"
+                            BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"/>
                     </Grid>
                 </Border>
             </DataTemplate>
+            
             <DataTemplate x:Key="TopicDetail" x:DataType="local:TopicDetail">
                 <Grid
                     x:Name="DetailGrid"
-                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
-                    BorderThickness="1">
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
+                    
                     <Image
-                        x:Name="Logo"
                         Width="80"
                         Height="80"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
+                        x:Name="Logo"
                         Margin="20,10"
-                        Source="{x:Bind Logo,Mode=OneWay}"/>
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        Source="{x:Bind Logo, Mode=OneWay}"/>
+                    
                     <StackPanel
                         Grid.Column="1"
                         VerticalAlignment="Center">
@@ -227,38 +241,39 @@
                             TextWrapping="Wrap"
                             Text="{x:Bind Description}"/>
                         <StackPanel
-                            Orientation="Horizontal"
-                            Margin="0,5">
+                            Margin="0,5"
+                            Orientation="Horizontal">
                             <TextBlock Text="{x:Bind FollowNum}"/>
-                            <TextBlock>关注</TextBlock>
-                            <TextBlock
-                                Margin="5,0,0,0"
-                                Text="{x:Bind CommentNum}"/>
-                            <TextBlock>讨论</TextBlock>
+                            <TextBlock Text="关注"/>
+                            <TextBlock Margin="5,0,0,0" Text="{x:Bind CommentNum}"/>
+                            <TextBlock Text="讨论"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
             </DataTemplate>
+            
             <DataTemplate x:Key="DYHDetail" x:DataType="local:DYHDetail">
                 <Grid
                     x:Name="DetailGrid"
-                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
-                    BorderThickness="1">
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    
                     <Image
-                        x:Name="Logo"
                         Width="80"
                         Height="80"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
                         Margin="20"
-                        Source="{x:Bind Logo,Mode=OneWay}"/>
+                        x:Name="Logo"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        Source="{x:Bind Logo, Mode=OneWay}"/>
+                    
                     <StackPanel
-                        Grid.Column="1"
-                        Margin="0,14">
+                        Margin="0,14"
+                        Grid.Column="1">
                         <TextBlock
                             FontSize="20"
                             FontWeight="Black"
@@ -269,24 +284,23 @@
                             TextWrapping="Wrap"
                             Text="{x:Bind Description}"/>
                         <StackPanel
-                            Orientation="Horizontal"
-                            Margin="0,5">
+                            Margin="0,5"
+                            Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,0,2"
                                 Text="{x:Bind FollowNum}"
                                 VerticalAlignment="Center"/>
                             <TextBlock
+                                Text="订阅"
                                 Margin="0,0,10,2"
-                                VerticalAlignment="Center">
-                                订阅
-                            </TextBlock>
+                                VerticalAlignment="Center"/>
                             <Button
                                 Padding="0"
                                 x:Name="showUser"
-                                x:Load="{x:Bind ShowUserButton}"
                                 Tag="{x:Bind Url}"
                                 Click="Button_Click"
-                                Style="{StaticResource ButtonStyle1}">
+                                x:Load="{x:Bind ShowUserButton}"
+                                Style="{StaticResource ButtonRevealStyle}">
                                 <StackPanel Orientation="Horizontal">
                                     <winui:PersonPicture
                                         Width="20"
@@ -295,27 +309,30 @@
                                         ProfilePicture="{x:Bind UserAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
                                     <TextBlock
                                         Margin="5,0"
-                                        Text="{x:Bind UserName}"
-                                        VerticalAlignment="Top"/>
+                                        VerticalAlignment="Top"
+                                        Text="{x:Bind UserName}"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
             </DataTemplate>
+            
             <DataTemplate x:Key="APPDetail" x:DataType="local:APPDetail">
                 <Grid
                     x:Name="DetailGrid"
-                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
-                    BorderThickness="1">
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
+                    
                     <Border
                         Width="80"
                         Height="80"
@@ -329,10 +346,11 @@
                             <Border.Background>
                                 <ImageBrush
                                     x:Name="Logo"
-                                    ImageSource="{x:Bind Logo,Mode=OneWay}"/>
+                                    ImageSource="{x:Bind Logo, Mode=OneWay}"/>
                             </Border.Background>
                         </Border>
                     </Border>
+                    
                     <StackPanel
                         Grid.Column="1"
                         VerticalAlignment="Center">
@@ -349,28 +367,29 @@
                             Orientation="Horizontal"
                             Margin="0,5">
                             <TextBlock Text="{x:Bind FollowNum}"/>
-                            <TextBlock>关注</TextBlock>
-                            <TextBlock
-                                Margin="5,0,0,0"
-                                Text="{x:Bind CommentNum}"/>
-                            <TextBlock>评论</TextBlock>
+                            <TextBlock Text="关注"/>
+                            <TextBlock Margin="5,0,0,0" Text="{x:Bind CommentNum}"/>
+                            <TextBlock Text="评论"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
             </DataTemplate>
+            
             <DataTemplate x:Key="ProductDetail" x:DataType="local:ProductDetail">
                 <Grid
                     x:Name="DetailGrid"
-                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}"
-                    BorderThickness="1">
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
+                    
                     <Border
                         Width="80"
                         Height="80"
@@ -385,10 +404,11 @@
                             <Border.Background>
                                 <ImageBrush
                                     x:Name="Logo"
-                                    ImageSource="{x:Bind Logo,Mode=OneWay}"/>
+                                    ImageSource="{x:Bind Logo, Mode=OneWay}"/>
                             </Border.Background>
                         </Border>
                     </Border>
+                    
                     <StackPanel
                         Grid.Column="1"
                         VerticalAlignment="Center">
@@ -405,15 +425,14 @@
                             Orientation="Horizontal"
                             Margin="0,5">
                             <TextBlock Text="{x:Bind FollowNum}"/>
-                            <TextBlock>关注</TextBlock>
-                            <TextBlock
-                                Margin="5,0,0,0"
-                                Text="{x:Bind CommentNum}"/>
-                            <TextBlock>热度</TextBlock>
+                            <TextBlock Text="关注"/>
+                            <TextBlock Margin="5,0,0,0" Text="{x:Bind CommentNum}"/>
+                            <TextBlock Text="热度"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
             </DataTemplate>
+            
             <local:TemplateSelector
                 x:Key="tempse"
                 Feed="{StaticResource feed}"
@@ -430,15 +449,16 @@
                 <EntranceThemeTransition/>
             </TransitionCollection>
         </Grid.ChildrenTransitions>
+        
         <controls:PullToRefreshListView
-            ItemsSource="{x:Bind itemCollection}"
             x:Name="listView"
-            Padding="{x:Bind data:SettingsHelper.stackPanelMargin}"
-            ItemTemplateSelector="{StaticResource tempse}"
             SelectionMode="None"
             PullToRefreshLabel="下拉刷新"
             ReleaseToRefreshLabel="松手刷新"
-            RefreshRequested="{x:Bind Refresh}">
+            RefreshRequested="{x:Bind Refresh}"
+            ItemsSource="{x:Bind itemCollection}"
+            ItemTemplateSelector="{StaticResource tempse}"
+            Padding="{x:Bind data:SettingsHelper.StackPanelMargin}">
             <controls:PullToRefreshListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <control:GridPanel
@@ -446,12 +466,14 @@
                         DesiredColumnWidth="384.0"/>
                 </ItemsPanelTemplate>
             </controls:PullToRefreshListView.ItemsPanel>
+            
             <controls:PullToRefreshListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Template" Value="{StaticResource ListViewItemTemplate1}"/>
                 </Style>
             </controls:PullToRefreshListView.ItemContainerStyle>
         </controls:PullToRefreshListView>
+        
         <control:TitleBar
             x:Name="titleBar"
             RefreshEvent="{x:Bind Refresh}"

@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.UI;
@@ -72,12 +73,11 @@ namespace CoolapkUWP.Pages.SettingPages
         {
             base.OnNavigatedTo(e);
             object vs = e.Parameter;
-            if (vs is bool && !(bool)vs)
+            if (vs is bool boolean && !boolean)
             {
                 TitleBar.Visibility = Visibility.Visible;
-                listView.Padding = SettingsHelper.stackPanelMargin;
+                listView.Padding = SettingsHelper.StackPanelMargin;
             }
-            UIHelper.ShowProgressBar();
             IsNoPicsMode.IsOn = SettingsHelper.GetBoolen("IsNoPicsMode");
             IsUseOldEmojiMode.IsOn = SettingsHelper.GetBoolen("IsUseOldEmojiMode");
             IsDarkMode.IsOn = SettingsHelper.GetBoolen("IsDarkMode");
@@ -88,8 +88,7 @@ namespace CoolapkUWP.Pages.SettingPages
 #if DEBUG
             gotoTestPage.Visibility = Visibility.Visible;
 #endif
-            GetCacheSize();
-            UIHelper.HideProgressBar();
+            _ = GetCacheSize();
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -98,11 +97,10 @@ namespace CoolapkUWP.Pages.SettingPages
             if (source != null)
             {
                 source.Cancel();
-                UIHelper.HideProgressBar();
             }
         }
 
-        private async void MarkdownText_LinkClicked(object sender, LinkClickedEventArgs e)
+        private void MarkdownText_LinkClicked(object sender, LinkClickedEventArgs e)
         {
             if (Uri.TryCreate(e.Link, UriKind.Absolute, out Uri link))
             {
@@ -111,9 +109,10 @@ namespace CoolapkUWP.Pages.SettingPages
             }
         }
 
-        private async void GetCacheSize()
+        private async Task GetCacheSize()
         {
-            UIHelper.ShowProgressBar();
+            RefreshIcon.Visibility = Visibility.Collapsed;
+            IsRefreshCache.Visibility = Visibility.Visible;
             CacheSizeTextBlock.Text = "正在加载……";
             CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = false;
             CacheSizeListView.SelectionMode = ListViewSelectionMode.None;
@@ -150,7 +149,8 @@ namespace CoolapkUWP.Pages.SettingPages
             { item.TotalSize = size; }
             RefreshCacheButton.IsEnabled = true;
             CacheSizeListView.SelectionMode = ListViewSelectionMode.Multiple;
-            UIHelper.HideProgressBar();
+            IsRefreshCache.Visibility = Visibility.Collapsed;
+            RefreshIcon.Visibility = Visibility.Visible;
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
@@ -163,7 +163,7 @@ namespace CoolapkUWP.Pages.SettingPages
                     SettingsHelper.CheckTheme();
                     break;
                 case "IsBackgroundColorFollowSystem":
-                    SettingsHelper.Set("IsDarkMode", SettingsHelper.uISettings.GetColorValue(UIColorType.Background).Equals(Colors.Black));
+                    SettingsHelper.Set("IsDarkMode", SettingsHelper.UISetting.GetColorValue(UIColorType.Background).Equals(Colors.Black));
                     SettingsHelper.CheckTheme();
                     IsDarkMode.IsOn = SettingsHelper.GetBoolen("IsDarkMode");
                     IsDarkMode.Visibility = toggle.IsOn ? Visibility.Collapsed : Visibility.Visible;
@@ -187,7 +187,7 @@ namespace CoolapkUWP.Pages.SettingPages
             {
                 case "gotoTestPage": UIHelper.Navigate(typeof(TestPage), null); break;
                 case "checkUpdate": CheckUpdate(); break;
-                case "RefreshCache": GetCacheSize(); break;
+                case "RefreshCache": _ = GetCacheSize(); break;
                 case "logout":
                     SettingsHelper.Logout();
                     if (AccountLogout.Flyout is Flyout flyout_logout)
@@ -210,21 +210,31 @@ namespace CoolapkUWP.Pages.SettingPages
                     break;
                 case "CleanCache":
                     CleanCacheButton.IsEnabled = CleanAllCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = false;
+                    RefreshIcon.Visibility = Visibility.Collapsed;
+                    IsRefreshCache.Visibility = Visibility.Visible;
+                    CacheSizeListView.SelectionMode = ListViewSelectionMode.None;
                     CacheSizeTextBlock.Text = "正在处理……";
                     foreach (object item in CacheSizeListView.SelectedItems)
                     { await ImageCache.CleanCache((item as CacheSizeViewModel).type); }
                     CleanAllCacheButton.IsEnabled = true;
-                    GetCacheSize();
+                    await GetCacheSize();
+                    IsRefreshCache.Visibility = Visibility.Collapsed;
+                    RefreshIcon.Visibility = Visibility.Visible;
                     CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = true;
                     break;
                 case "CleanAllCache":
                     if (source != null) { source.Cancel(); }
                     CleanCacheButton.IsEnabled = CleanAllCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = false;
+                    RefreshIcon.Visibility = Visibility.Collapsed;
+                    IsRefreshCache.Visibility = Visibility.Visible;
+                    CacheSizeListView.SelectionMode = ListViewSelectionMode.None;
                     CacheSizeTextBlock.Text = "正在处理……";
                     for (int i = 0; i < 5; i++)
                     { await ImageCache.CleanCache((ImageType)i); }
                     CleanAllCacheButton.IsEnabled = true;
-                    GetCacheSize();
+                    await GetCacheSize();
+                    IsRefreshCache.Visibility = Visibility.Collapsed;
+                    RefreshIcon.Visibility = Visibility.Visible;
                     CleanCacheButton.IsEnabled = RefreshCacheButton.IsEnabled = true;
                     break;
                 case "AccountSetting":

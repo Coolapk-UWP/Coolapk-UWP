@@ -534,7 +534,7 @@ namespace CoolapkUWP.Pages.FeedPages
             { feedArticleTitle.Height = feedArticleTitle.Width * 0.44; }
             void set()
             {
-                RightSideListView.Padding = SettingsHelper.stackPanelMargin;
+                RightSideListView.Padding = SettingsHelper.StackPanelMargin;
                 detailList.Padding = new Thickness(0, SettingsHelper.PageTitleHeight, 0, PivotItemPanel.ActualHeight + 16);
                 detailListHeight = e?.NewSize.Height ?? Window.Current.Bounds.Height;
                 RightColumnDefinition.Width = new GridLength(1, GridUnitType.Star);
@@ -565,7 +565,7 @@ namespace CoolapkUWP.Pages.FeedPages
             else
             {
                 MainListView.Margin = new Thickness(0, 0, 0, PivotItemPanel.ActualHeight + 16);
-                MainListView.Padding = SettingsHelper.stackPanelMargin;
+                MainListView.Padding = SettingsHelper.StackPanelMargin;
                 PivotItemPanel.Margin = new Thickness(0);
                 detailList.Padding = RightSideListView.Padding = new Thickness(0, 0, 0, 12);
                 detailListHeight = double.NaN;

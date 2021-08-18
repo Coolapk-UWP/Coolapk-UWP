@@ -77,7 +77,7 @@ namespace CoolapkUWP.Data
             mClient.DefaultRequestHeaders.Add("X-App-Mode", "universal");
             mClient.DefaultRequestHeaders.Add("X-Dark-Mode", SettingsHelper.IsDarkTheme() ? "1" : "0");
             mClient.DefaultRequestHeaders.Add("Cookie", SettingsHelper.cookie);
-            Popup popup = new Popup { RequestedTheme = SettingsHelper.theme };
+            Popup popup = new Popup { RequestedTheme = SettingsHelper.Theme };
             StatusGrid statusGrid2 = new StatusGrid();
             popup.Child = statusGrid2;
             popups.Add(popup);
@@ -87,7 +87,7 @@ namespace CoolapkUWP.Data
         #region UI相关
         public static void ShowPopup(Popup popup)
         {
-            popup.RequestedTheme = SettingsHelper.theme;
+            popup.RequestedTheme = SettingsHelper.Theme;
             if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
             { popups.Insert(popups.Count - 1, popup); }
             else { popups.Add(popup); }

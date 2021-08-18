@@ -108,7 +108,18 @@
                                     Background="Transparent"
                                     x:Name="RefreshCacheButton"
                                     Style="{StaticResource ButtonRevealStyle}">
-                                    <SymbolIcon Symbol="Refresh"/>
+                                    <Grid>
+                                        <SymbolIcon
+                                            Symbol="Refresh"
+                                            x:Name="RefreshIcon"
+                                            Visibility="Collapsed"/>
+                                        <muxc:ProgressRing
+                                            Width="20"
+                                            Height="20"
+                                            IsActive="True"
+                                            Visibility="Visible"
+                                            x:Name="IsRefreshCache"/>
+                                    </Grid>
                                 </Button>
                                 <Button
                                     Content="清除"
@@ -123,19 +134,13 @@
                                     Click="Button_Click"
                                     x:Name="CleanAllCacheButton"/>
                             </StackPanel>
-                            
+
                             <ListView
                                 Grid.Row="1"
                                 x:Name="CacheSizeListView"
                                 ItemsSource="{x:Bind models}"
                                 ScrollViewer.VerticalScrollMode="Disabled"
                                 SelectionChanged="CacheSizeListView_SelectionChanged">
-                                <ListView.ItemContainerStyle>
-                                    <Style TargetType="ListViewItem">
-                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                    </Style>
-                                </ListView.ItemContainerStyle>
-                                
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="local:CacheSizeViewModel">
                                         <ListViewItem HorizontalContentAlignment="Stretch">

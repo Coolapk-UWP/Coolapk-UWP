@@ -16,50 +16,51 @@
                 <EntranceThemeTransition/>
             </TransitionCollection>
         </Grid.ChildrenTransitions>
+        
         <FlipView
-            Padding="{x:Bind data:SettingsHelper.stackPanelMargin}"
-            ScrollViewer.IsZoomChainingEnabled="True"
-            ScrollViewer.BringIntoViewOnFocusChange="False"
             x:Name="SFlipView"
             ItemsSource="{x:Bind Images}"
             RightTapped="SFlipView_RightTapped"
-            SelectionChanged="SFlipView_SelectionChanged">
+            ScrollViewer.IsZoomChainingEnabled="True"
+            SelectionChanged="SFlipView_SelectionChanged"
+            ScrollViewer.BringIntoViewOnFocusChange="False"
+            Padding="{x:Bind data:SettingsHelper.StackPanelMargin}">
             <FlipView.ContextFlyout>
                 <MenuFlyout>
                     <MenuFlyoutItem
-                        Icon="Pictures"
                         Tag="origin"
-                        Click="MenuFlyoutItem_Click">
-                        查看原图
-                    </MenuFlyoutItem>
+                        Text="查看原图"
+                        Icon="Pictures"
+                        Click="MenuFlyoutItem_Click"/>
                     <MenuFlyoutItem
-                        Icon="SaveLocal"
                         Tag="save"
-                        Click="MenuFlyoutItem_Click">
-                        保存图片
-                    </MenuFlyoutItem>
+                        Text="保存图片"
+                        Icon="SaveLocal"
+                        Click="MenuFlyoutItem_Click"/>
                 </MenuFlyout>
             </FlipView.ContextFlyout>
+            
             <FlipView.ItemTemplate>
                 <DataTemplate x:DataType="ImageSource">
                     <ScrollViewer
-                        x:Name="ScrollViewerMain"
                         ZoomMode="Enabled"
                         MinZoomFactor="0.5"
-                        HorizontalScrollBarVisibility="Hidden"
+                        x:Name="ScrollViewerMain"
                         VerticalScrollBarVisibility="Hidden"
+                        HorizontalScrollBarVisibility="Hidden"
                         DoubleTapped="ScrollViewerMain_DoubleTapped">
                         <Image
                             Source="{x:Bind}"
-                            MaxWidth="{Binding Path=ViewportWidth,ElementName=ScrollViewerMain}"
-                            MaxHeight="{Binding Path=ViewportHeight,ElementName=ScrollViewerMain}"
-                            HorizontalAlignment="Center" VerticalAlignment="Center"
                             ManipulationMode="TranslateX,TranslateY"
-                            ManipulationDelta="ScrollViewerMain_ManipulationDelta"/>
+                            ManipulationDelta="ScrollViewerMain_ManipulationDelta"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                            MaxWidth="{Binding Path=ViewportWidth, ElementName=ScrollViewerMain}"
+                            MaxHeight="{Binding Path=ViewportHeight, ElementName=ScrollViewerMain}"/>
                     </ScrollViewer>
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
+        
         <muxc:PipsPager
             Margin="0,4"
             x:Name="FlipViewPipsPager"
@@ -68,29 +69,28 @@
             NumberOfPages="{x:Bind Images.Count}"
             SelectedPageIndex="{x:Bind Path=SFlipView.SelectedIndex, Mode=OneWay}">
         </muxc:PipsPager>
+        
         <control:TitleBar
             x:Name="TitleBar"
             Visibility="Visible"
             BackButtonClick="CloseFlip_Click">
             <control:TitleBar.RightAreaContent>
                 <Button
-                    Style="{StaticResource IconButtonStyle}"
-                    ToolTipService.ToolTip="更多">
+                    ToolTipService.ToolTip="更多"
+                    Style="{StaticResource IconButtonStyle}">
                     <SymbolIcon Symbol="More"/>
                     <Button.Flyout>
                         <MenuFlyout>
                             <MenuFlyoutItem
-                                Icon="Pictures"
                                 Tag="origin"
-                                Click="MenuFlyoutItem_Click">
-                                查看原图
-                            </MenuFlyoutItem>
+                                Text="查看原图"
+                                Icon="Pictures"
+                                Click="MenuFlyoutItem_Click"/>
                             <MenuFlyoutItem
-                                Icon="SaveLocal"
                                 Tag="save"
-                                Click="MenuFlyoutItem_Click">
-                                保存图片
-                            </MenuFlyoutItem>
+                                Text="保存图片"
+                                Icon="SaveLocal"
+                                Click="MenuFlyoutItem_Click"/>
                         </MenuFlyout>
                     </Button.Flyout>
                 </Button>

@@ -128,10 +128,8 @@ namespace CoolapkUWP.Data
 
         public static async Task CleanCache(ImageType type)
         {
-            UIHelper.ShowProgressBar();
             await (await GetFolder(type)).DeleteAsync();
             _ = await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync(type.ToString());
-            UIHelper.HideProgressBar();
         }
     }
 }

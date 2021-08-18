@@ -39,7 +39,7 @@ namespace CoolapkUWP.Pages.FeedPages
             if (!(bool)vs[1])
             {
                 TitleBar.Visibility = Visibility.Visible;
-                listView.Padding = SettingsHelper.stackPanelMargin;
+                listView.Padding = SettingsHelper.StackPanelMargin;
             }
             pageUrl = vs[0] as string;
             TitleBar.BackButtonVisibility = Visibility.Visible;

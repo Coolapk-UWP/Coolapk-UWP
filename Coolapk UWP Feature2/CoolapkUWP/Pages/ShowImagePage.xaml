@@ -14,6 +14,7 @@
                 <EntranceThemeTransition/>
             </TransitionCollection>
         </Grid.ChildrenTransitions>
+        
         <FlipView
             x:Name="SFlipView"
             ItemsSource="{x:Bind Images}"
@@ -21,24 +22,23 @@
             ScrollViewer.IsZoomChainingEnabled="True"
             SelectionChanged="SFlipView_SelectionChanged"
             ScrollViewer.BringIntoViewOnFocusChange="False"
-            Padding="{x:Bind data:SettingsHelper.stackPanelMargin}">
+            Padding="{x:Bind data:SettingsHelper.StackPanelMargin}">
             <FlipView.ContextFlyout>
                 <MenuFlyout>
                     <MenuFlyoutItem
                         Tag="origin"
+                        Text="查看原图"
                         Icon="Pictures"
                         x:Name="RightOrigin"
-                        Click="MenuFlyoutItem_Click">
-                        查看原图
-                    </MenuFlyoutItem>
+                        Click="MenuFlyoutItem_Click"/>
                     <MenuFlyoutItem
                         Tag="save"
+                        Text="保存图片"
                         Icon="SaveLocal"
-                        Click="MenuFlyoutItem_Click">
-                        保存图片
-                    </MenuFlyoutItem>
+                        Click="MenuFlyoutItem_Click"/>
                 </MenuFlyout>
             </FlipView.ContextFlyout>
+            
             <FlipView.ItemTemplate>
                 <DataTemplate x:DataType="ImageSource">
                     <ScrollViewer
@@ -54,12 +54,13 @@
                             HorizontalAlignment="Center"
                             ManipulationMode="TranslateX,TranslateY"
                             ManipulationDelta="ScrollViewerMain_ManipulationDelta"
-                            MaxWidth="{Binding Path=ViewportWidth,ElementName=ScrollViewerMain}"
-                            MaxHeight="{Binding Path=ViewportHeight,ElementName=ScrollViewerMain}"/>
+                            MaxWidth="{Binding Path=ViewportWidth, ElementName=ScrollViewerMain}"
+                            MaxHeight="{Binding Path=ViewportHeight, ElementName=ScrollViewerMain}"/>
                     </ScrollViewer>
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
+        
         <muxc:PipsPager
             Margin="0,4"
             x:Name="FlipViewPipsPager"
@@ -68,6 +69,7 @@
             NumberOfPages="{x:Bind Images.Count}"
             SelectedPageIndex="{x:Bind Path=SFlipView.SelectedIndex, Mode=OneWay}">
         </muxc:PipsPager>
+        
         <control:TitleBar
             x:Name="TitleBar"
             Visibility="Visible"
@@ -81,17 +83,15 @@
                         <MenuFlyout>
                             <MenuFlyoutItem
                                 Tag="origin"
+                                Text="查看原图"
                                 Icon="Pictures"
                                 x:Name="TitleOrigin"
-                                Click="MenuFlyoutItem_Click">
-                                查看原图
-                            </MenuFlyoutItem>
+                                Click="MenuFlyoutItem_Click"/>
                             <MenuFlyoutItem
                                 Tag="save"
+                                Text="保存图片"
                                 Icon="SaveLocal"
-                                Click="MenuFlyoutItem_Click">
-                                保存图片
-                            </MenuFlyoutItem>
+                                Click="MenuFlyoutItem_Click"/>
                         </MenuFlyout>
                     </Button.Flyout>
                 </Button>

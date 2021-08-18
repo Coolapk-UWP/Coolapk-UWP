@@ -23,7 +23,7 @@ namespace CoolapkUWP.Data
         public static string GetString(string key) => localSettings.Values[key] as string;
 
         public static double PageTitleHeight => HasStatusBar ? 40 : 80;
-        public static Thickness stackPanelMargin => new Thickness(0, PageTitleHeight, 0, 2);
+        public static Thickness StackPanelMargin => new Thickness(0, PageTitleHeight, 0, 2);
         public static Thickness ButtonMargin => new Thickness(0, PageTitleHeight - 48, 0, 2);
 
         public static bool GetBoolen(string key) => (bool)localSettings.Values[key];
@@ -31,11 +31,11 @@ namespace CoolapkUWP.Data
         public static bool IsAuthor => ApplicationData.Current.LocalSettings.Values["IsAuthor"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsAuthor"];
         public static bool IsSpecialUser => (ApplicationData.Current.LocalSettings.Values["IsAuthor"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsAuthor"]) || (ApplicationData.Current.LocalSettings.Values["IsSpecial"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsSpecial"]);
         
-        public static UISettings uISettings => new UISettings();
+        public static UISettings UISetting => new UISettings();
         public static void Set(string key, object value) => localSettings.Values[key] = value;
-        public static ushort WindowsVersion = (ushort)((version & 0x00000000FFFF0000L) >> 16);
-        public static VerticalAlignment titleContentVerticalAlignment => VerticalAlignment.Bottom;
-        public static ElementTheme theme => GetBoolen("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
+        public static double WindowsVersion = double.Parse($"{(ushort)((version & 0x00000000FFFF0000L) >> 16)}.{(ushort)(SettingsHelper.version & 0x000000000000FFFFL)}");
+        public static VerticalAlignment TitleContentVerticalAlignment => VerticalAlignment.Bottom;
+        public static ElementTheme Theme => GetBoolen("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (GetBoolen("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
         public static SolidColorBrush SystemAccentColorBrush => Windows.UI.Xaml.Application.Current.Resources.ThemeDictionaries["SystemControlBackgroundAccentBrush"] as SolidColorBrush;
         
         static SettingsHelper()
@@ -63,16 +63,16 @@ namespace CoolapkUWP.Data
 
         public static bool IsDarkTheme()
         {
-            if (theme == ElementTheme.Default)
+            if (Theme == ElementTheme.Default)
             {
                 return Windows.UI.Xaml.Application.Current.RequestedTheme == ApplicationTheme.Dark;
             }
-            return theme == ElementTheme.Dark;
+            return Theme == ElementTheme.Dark;
         }
 
         public static async Task CheckUpdate(bool IsBackground = false)
         {
-            if (WindowsVersion < 16266)
+            if (WindowsVersion > 16266)
             {
                 try
                 {
@@ -86,7 +86,7 @@ namespace CoolapkUWP.Data
                             || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
                             || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) == Package.Current.Id.Version.Minor && ushort.Parse(ver[2]) > Package.Current.Id.Version.Build))
                         {
-                            GetUpdateContentDialog dialog = new GetUpdateContentDialog(keys["html_url"].GetString(), keys["body"].GetString()) { RequestedTheme = theme };
+                            GetUpdateContentDialog dialog = new GetUpdateContentDialog(keys["html_url"].GetString(), keys["body"].GetString()) { RequestedTheme = Theme };
                             _ = dialog.ShowAsync();
                         }
                         else if (!IsBackground) { UIHelper.ShowMessage("当前无可用更新。"); }
@@ -106,9 +106,9 @@ namespace CoolapkUWP.Data
             { await Task.Delay(100); }
             if (Window.Current.Content is FrameworkElement frameworkElement)
             {
-                frameworkElement.RequestedTheme = theme;
+                frameworkElement.RequestedTheme = Theme;
                 foreach (Windows.UI.Xaml.Controls.Primitives.Popup item in UIHelper.popups)
-                { item.RequestedTheme = theme; }
+                { item.RequestedTheme = Theme; }
 
                 bool IsDark = IsDarkTheme();
 

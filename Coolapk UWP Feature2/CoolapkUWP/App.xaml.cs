@@ -196,7 +196,7 @@ namespace CoolapkUWP
         private static async void RegisterBackgroundTask()
         {
             #region LiveTileTask
-            if (SettingsHelper.WindowsVersion < 22000)
+            if (SettingsHelper.WindowsVersion <= 22000.51)
             {
                 const string LiveTileTask = "LiveTileTask";
 

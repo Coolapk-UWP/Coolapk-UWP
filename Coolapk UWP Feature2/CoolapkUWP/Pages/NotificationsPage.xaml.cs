@@ -322,7 +322,7 @@ namespace CoolapkUWP.Pages
             }
             void setPageStyle(string t)
             {
-                MainListView.Padding = SettingsHelper.stackPanelMargin;
+                MainListView.Padding = SettingsHelper.StackPanelMargin;
                 _ = FindName(nameof(titleBar));
                 titleBar.Title = t;
             }
