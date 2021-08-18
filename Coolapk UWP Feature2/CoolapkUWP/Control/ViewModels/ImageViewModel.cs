@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Control.ViewModels
 {
-    internal class BackgroundImageViewModel : INotifyPropertyChanged
+    internal class ImageViewModel : INotifyPropertyChanged
     {
         private WeakReference<BitmapImage> pic;
         private static readonly Windows.UI.Color fallbackColor = Windows.UI.Color.FromArgb(0x99, 0, 0, 0);
@@ -61,7 +61,7 @@ namespace CoolapkUWP.Control.ViewModels
 
         public ImageType Type { get; }
 
-        public BackgroundImageViewModel(string uri, ImageType type)
+        public ImageViewModel(string uri, ImageType type)
         {
             Uri = uri;
             Type = type;

@@ -40,7 +40,7 @@ namespace CoolapkUWP.Control
         {
             void ChangeLikeStatus(ViewModels.ILike f, FrameworkElement button, bool isLike)
             {
-                f.liked = isLike;
+                f.Liked = isLike;
                 if (button.FindName("like1") is SymbolIcon symbolIcon1)
                 { symbolIcon1.Visibility = isLike ? Visibility.Visible : Visibility.Collapsed; }
                 if (button.FindName("like2") is SymbolIcon symbolIcon2)
@@ -56,12 +56,12 @@ namespace CoolapkUWP.Control
                 case "likeButton":
                     ViewModels.ILike f = element.Tag as ViewModels.ILike;
                     bool isReply = f is ViewModels.FeedReplyViewModel;
-                    if (f.liked)
+                    if (f.Liked)
                     {
                         string s = await UIHelper.GetJson($"/feed/unlike{(isReply ? "Reply" : string.Empty)}?id={f.id}&detail=0");
                         if (isReply)
                         {
-                            f.likenum = UIHelper.GetObjectStrigInJson(s);
+                            f.Likenum = UIHelper.GetObjectStrigInJson(s);
                             ChangeLikeStatus(f, element, false);
                         }
                         else
@@ -69,7 +69,7 @@ namespace CoolapkUWP.Control
                             JsonObject o = UIHelper.GetJSonObject(s);
                             if (o != null)
                             {
-                                f.likenum = o["count"].GetNumber().ToString();
+                                f.Likenum = o["count"].GetNumber().ToString();
                                 ChangeLikeStatus(f, element, false);
                             }
                         }
@@ -79,7 +79,7 @@ namespace CoolapkUWP.Control
                         string s = await UIHelper.GetJson($"/feed/like{(isReply ? "Reply" : string.Empty)}?id={f.id}&detail=0");
                         if (isReply)
                         {
-                            f.likenum = UIHelper.GetObjectStrigInJson(s);
+                            f.Likenum = UIHelper.GetObjectStrigInJson(s);
                             ChangeLikeStatus(f, element, true);
                         }
                         else
@@ -87,7 +87,7 @@ namespace CoolapkUWP.Control
                             JsonObject o = UIHelper.GetJSonObject(s);
                             if (o != null)
                             {
-                                f.likenum = o["count"].GetNumber().ToString();
+                                f.Likenum = o["count"].GetNumber().ToString();
                                 ChangeLikeStatus(f, element, true);
                             }
                         }

@@ -89,7 +89,7 @@ namespace CoolapkUWP.Control
             else if (item is UserViewModel) { return User; }
             else
             {
-                switch ((item as IndexPageViewModel).entityType)
+                switch ((item as IndexPageViewModel).EntityType)
                 {
                     case "image_1": return Image;
                     case "textLink": return TextLink;

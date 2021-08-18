@@ -116,11 +116,11 @@ namespace CoolapkUWP.Pages.FeedPages
                         {
                             Entity[] needDeleteItems = (from b in FeedsCollection
                                                         from c in Root
-                                                        where b.entityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
+                                                        where b.EntityId == c.GetObject()["entityId"].ToString().Replace("\"", string.Empty)
                                                         select b).ToArray();
                             foreach (Entity item in needDeleteItems) { Collection.Remove(item); }
                             n = (from b in FeedsCollection
-                                 where b.entityFixed
+                                 where b.EntityFixed
                                  select b).Count();
                         }
                         int k = 0;
@@ -263,7 +263,7 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 ObservableCollection<Entity> feeds = Feeds2[0];
                 Entity[] needDeleteItems = (from b in feeds
-                                            where b.entityType == "feed"
+                                            where b.EntityType == "feed"
                                             select b).ToArray();
                 foreach (Entity item in needDeleteItems) { feeds.Remove(item); }
                 urls[0] = $"/page/dataList?url={model.url}&title={model.title}";
@@ -275,7 +275,7 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 ObservableCollection<Entity> feeds = Collection;
                 Entity[] needDeleteItems = (from b in feeds
-                                            where b.entityType == "topic"
+                                            where b.EntityType == "topic"
                                             select b).ToArray();
                 foreach (Entity item in needDeleteItems) { feeds.Remove(item); }
                 pageUrl = $"/page/dataList?url={model.url}&title={model.title}";

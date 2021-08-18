@@ -267,8 +267,8 @@ namespace CoolapkUWP.Pages.AppPages
         public string DeveloperName { get; private set; }
         public string DeveloperUrl { get; private set; }
         public bool ShowPicArr { get; private set; }
-        public BackgroundImageViewModel Logo { get; private set; }
-        public BackgroundImageViewModel DeveloperAvatar { get; private set; }
+        public ImageViewModel Logo { get; private set; }
+        public ImageViewModel DeveloperAvatar { get; private set; }
         public List<string> Pics { get; private set; } = new List<string>();
         public ObservableCollection<ImageData> PicArr { get; private set; }
 
@@ -279,7 +279,7 @@ namespace CoolapkUWP.Pages.AppPages
                 JsonObject dataRow = v1.GetObject();
                 if (dataRow.TryGetValue("logo", out IJsonValue logo) && !string.IsNullOrEmpty(logo.GetString()))
                 {
-                    Logo = new BackgroundImageViewModel(logo.GetString(), ImageType.Icon);
+                    Logo = new ImageViewModel(logo.GetString(), ImageType.Icon);
                 }
                 if (dataRow.TryGetValue("apkfile", out IJsonValue apkfile) && apkfile.GetString().IndexOf("http") == 0)
                 {
@@ -407,7 +407,7 @@ namespace CoolapkUWP.Pages.AppPages
                     }
                     if (developerProfile.TryGetValue("userAvatar", out IJsonValue userAvatar) && !string.IsNullOrEmpty(userAvatar.GetString()))
                     {
-                        DeveloperAvatar = new BackgroundImageViewModel(userAvatar.GetString(), ImageType.BigAvatar);
+                        DeveloperAvatar = new ImageViewModel(userAvatar.GetString(), ImageType.BigAvatar);
                     }
                     if (developerProfile.TryGetValue("uid", out IJsonValue uid) && !string.IsNullOrEmpty(uid.GetNumber().ToString()))
                     {

@@ -12,7 +12,7 @@ namespace CoolapkUWP.Control.ViewModels
         public string Description { get; private set; }
         public string Commentnum { get; private set; }
         public string LastUpdate { get; private set; }
-        public BackgroundImageViewModel Logo { get; private set; }
+        public ImageViewModel Logo { get; private set; }
 
         public ProductViewModel(IJsonValue o) : base(o)
         {
@@ -31,7 +31,7 @@ namespace CoolapkUWP.Control.ViewModels
             }
             if (token.TryGetValue("logo", out IJsonValue logo))
             {
-                Logo = new BackgroundImageViewModel(logo.GetString(), ImageType.Icon);
+                Logo = new ImageViewModel(logo.GetString(), ImageType.Icon);
             }
             if (token.TryGetValue("feed_comment_num", out IJsonValue feed_comment_num))
             {

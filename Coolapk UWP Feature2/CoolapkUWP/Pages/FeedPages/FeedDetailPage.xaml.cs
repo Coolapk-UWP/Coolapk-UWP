@@ -131,14 +131,14 @@ namespace CoolapkUWP.Pages.FeedPages
                     TitleBar.ComboBoxVisibility = Visibility.Collapsed;
                     break;
                 case "MakeLike":
-                    if (FeedDetail.liked)
+                    if (FeedDetail.Liked)
                     {
                         JsonObject o = UIHelper.GetJSonObject(await UIHelper.GetJson($"/feed/unlike?id={feedId}&detail=0"));
                         if (o != null)
                         {
-                            FeedDetail.likenum = o["count"].GetNumber().ToString();
+                            FeedDetail.Likenum = o["count"].GetNumber().ToString();
                             (sender as Button).Content = "点赞";
-                            FeedDetail.liked = false;
+                            FeedDetail.Liked = false;
                         }
                     }
                     else
@@ -146,9 +146,9 @@ namespace CoolapkUWP.Pages.FeedPages
                         JsonObject o = UIHelper.GetJSonObject(await UIHelper.GetJson($"/feed/like?id={feedId}&detail=0"));
                         if (o != null)
                         {
-                            FeedDetail.likenum = o["count"].GetNumber().ToString();
+                            FeedDetail.Likenum = o["count"].GetNumber().ToString();
                             (sender as Button).Content = "已点赞";
-                            FeedDetail.liked = true;
+                            FeedDetail.Liked = true;
                         }
                     }
                     break;
@@ -218,7 +218,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     FeedReplyViewModel[] d = (from a in hotReplies
                                               from b in array
-                                              where a.id == b.GetObject()["id"].GetNumber()
+                                              where a.Id == b.GetObject()["id"].GetNumber()
                                               select a).ToArray();
                     foreach (FeedReplyViewModel item in d)
                     { _ = hotReplies.Remove(item); }
@@ -274,7 +274,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 {
                     FeedReplyViewModel[] d = (from a in replies
                                               from b in array
-                                              where a.id == b.GetObject()["id"].GetNumber()
+                                              where a.Id == b.GetObject()["id"].GetNumber()
                                               select a).ToArray();
                     foreach (FeedReplyViewModel item in d)
                     { replies.Remove(item); }

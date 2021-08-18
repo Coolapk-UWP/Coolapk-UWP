@@ -4,34 +4,55 @@ namespace CoolapkUWP.Control.ViewModels
 {
     internal class SimpleFeedReplyViewModel
     {
+        public double Id { get; private set; }
+
+        public string Uurl { get; private set; }
+        public string PicUrl { get; private set; }
+        public string Message { get; private set; }
+        public string Username { get; private set; }
+        public string ReplyUrl { get; private set; }
+        public string ReplyUsername { get; private set; }
+
+        public bool ShowPic { get; private set; }
+        public bool IsFeedAuthor { get; private set; }
+        public bool ShowReplyUser { get => !string.IsNullOrEmpty(ReplyUsername); }
+
         public SimpleFeedReplyViewModel(IJsonValue t)
         {
             JsonObject token = t.GetObject();
-            id = token["id"].GetNumber();
-            uurl = $"/u/{token["uid"].GetNumber()}";
-            username = token["username"].GetString();
-            isFeedAuthor = token["isFeedAuthor"].GetNumber() == 1;
-            rurl = $"/u/{token["ruid"].GetNumber()}";
-            rusername = token["rusername"].GetString();
-            message = showRuser
-                ? $"<a href=\"{uurl}\">{username}{(isFeedAuthor ? "(楼主)" : string.Empty)}</a>@<a href=\"{rurl}\">{rusername}</a>:{token["message"].GetString()}"
-                : $"<a href=\"{uurl}\">{username}{(isFeedAuthor ? "(楼主)" : string.Empty)}</a>:{token["message"].GetString()}";
-            showPic = token.TryGetValue("pic", out IJsonValue value) && !string.IsNullOrEmpty(value.GetString());
-            if (showPic)
+            if (token.TryGetValue("id", out IJsonValue id))
             {
-                picUrl = value.GetString();
-                message += $" <a href=\"{picUrl}\">查看图片</a>";
+                Id = id.GetNumber();
+            }
+            if (token.TryGetValue("uid", out IJsonValue uid))
+            {
+                Uurl = $"/u/{uid.GetNumber()}";
+            }
+            if (token.TryGetValue("username", out IJsonValue username))
+            {
+                Username = username.GetString();
+            }
+            if (token.TryGetValue("isFeedAuthor", out IJsonValue isFeedAuthor) && isFeedAuthor.GetNumber() == 1)
+            {
+                IsFeedAuthor = true;
+            }
+            if (token.TryGetValue("ruid", out IJsonValue ruid))
+            {
+                ReplyUrl = $"/u/{ruid.GetNumber()}";
+            }
+            if (token.TryGetValue("rusername", out IJsonValue rusername))
+            {
+                ReplyUsername = rusername.GetString();
+            }
+            Message = ShowReplyUser
+                ? $"<a href=\"{Uurl}\">{username}{(IsFeedAuthor ? "(楼主)" : string.Empty)}</a>@<a href=\"{ReplyUrl}\">{ReplyUsername}</a>:{(token.TryGetValue("message", out IJsonValue message) ? message.GetString() : string.Empty)}"
+                : $"<a href=\"{Uurl}\">{username}{(IsFeedAuthor ? "(楼主)" : string.Empty)}</a>:{(token.TryGetValue("message", out message) ? message.GetString() : string.Empty)}";
+            if (token.TryGetValue("pic", out IJsonValue pic) && !string.IsNullOrEmpty(pic.GetString()))
+            {
+                ShowPic = true;
+                PicUrl = pic.GetString();
+                Message += $" <a href=\"{PicUrl}\">查看图片</a>";
             }
         }
-        public bool showRuser { get => !string.IsNullOrEmpty(rusername); }
-        public string rusername { get; private set; }
-        public string rurl { get; private set; }
-        public double id { get; private set; }
-        public string uurl { get; private set; }
-        public string username { get; private set; }
-        public string message { get; private set; }
-        public bool isFeedAuthor { get; private set; }
-        public bool showPic { get; private set; }
-        public string picUrl { get; private set; }
     }
 }

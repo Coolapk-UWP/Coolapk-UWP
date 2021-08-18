@@ -127,7 +127,7 @@
     <Compile Include="Control\TitleBar.xaml.cs">
       <DependentUpon>TitleBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\ViewModels\BackgroundImageViewModel.cs" />
+    <Compile Include="Control\ViewModels\ImageViewModel.cs" />
     <Compile Include="Control\ViewModels\Entity.cs" />
     <Compile Include="Control\ViewModels\FeedReplyViewModel.cs" />
     <Compile Include="Control\ViewModels\FeedViewModelBase.cs" />

@@ -548,16 +548,16 @@
                         <SymbolIcon
                             Symbol="Like"
                             x:Name="like1"
-                            x:Load="{x:Bind liked}"
+                            x:Load="{x:Bind Liked}"
                             Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"/>
                         <TextBlock
                             Margin="3,0"
-                            Text="{x:Bind likenum,Mode=OneWay}"/>
+                            Text="{x:Bind Likenum,Mode=OneWay}"/>
                     </StackPanel>
                 </Button>
                 <Button
                     Padding="8,0"
-                    Tag="{x:Bind entityId}"
+                    Tag="{x:Bind EntityId}"
                     HorizontalAlignment="Center"
                     ToolTipService.ToolTip="回复"
                     Style="{StaticResource FeedOpButtonStyle}">
@@ -646,7 +646,7 @@
                 Margin="4,6,8,0"
                 Grid.RowSpan="4"
                 Tapped="OnTapped"
-                Tag="{x:Bind uurl}"
+                Tag="{x:Bind Uurl}"
                 VerticalAlignment="Top"
                 Background="Transparent"
                 HorizontalAlignment="Center"
@@ -654,8 +654,8 @@
                 <winui:PersonPicture
                     Width="36"
                     Height="36"
-                    DisplayName="{x:Bind username}"
-                    ProfilePicture="{x:Bind userSmallAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
+                    DisplayName="{x:Bind Username}"
+                    ProfilePicture="{x:Bind UserSmallAvatar, Mode=OneWay, Converter={StaticResource NoPicToNullConverter}}"/>
             </Button>
             
             <StackPanel
@@ -666,15 +666,15 @@
                         Padding="0"
                         Margin="0,4"
                         Tapped="OnTapped"
-                        Tag="{x:Bind uurl}"
+                        Tag="{x:Bind Uurl}"
                         Background="Transparent"
-                        Content="{x:Bind username}"
+                        Content="{x:Bind Username}"
                         Style="{StaticResource ButtonRevealStyle}"/>
                     <Border
                         x:Name="isAu"
                         CornerRadius="4"
                         VerticalAlignment="Center"
-                        x:Load="{x:Bind isFeedAuthor}"
+                        x:Load="{x:Bind IsFeedAuthor}"
                         Background="{ThemeResource SystemControlHighlightListAccentHighBrush}">
                         <Border.Style>
                             <Style TargetType="Border">
@@ -694,22 +694,22 @@
                     Orientation="Horizontal">
                     <TextBlock
                         Foreground="Gray"
-                        Text="{x:Bind dateline}"
+                        Text="{x:Bind Dateline}"
                         VerticalAlignment="Center"/>
                     <TextBlock
                         Text="@"
                         x:Name="At"
                         Foreground="Gray"
                         VerticalAlignment="Center"
-                        x:Load="{x:Bind showRuser}"/>
+                        x:Load="{x:Bind ShowReplyUser}"/>
                     <Button
                         Padding="0"
                         x:Name="Ruser"
                         Tapped="OnTapped"
-                        Tag="{x:Bind rurl}"
+                        Tag="{x:Bind ReplyUrl}"
                         Background="Transparent"
-                        x:Load="{x:Bind showRuser}"
-                        Content="{x:Bind rusername}"
+                        x:Load="{x:Bind ShowReplyUser}"
+                        Content="{x:Bind ReplyUsername}"
                         Style="{StaticResource ButtonRevealStyle}"/>
                 </StackPanel>
             </StackPanel>
@@ -723,7 +723,7 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 
-                <control:MTextBlock MessageText="{x:Bind message}"/>
+                <control:MTextBlock MessageText="{x:Bind Message}"/>
                 
                 <Grid
                     Width="102"
@@ -734,14 +734,14 @@
                     CornerRadius="8"
                     BorderThickness="1"
                     Tapped="Image_Tapped"
-                    Tag="{x:Bind picUrl}"
-                    x:Load="{x:Bind showPic}"
+                    Tag="{x:Bind PicUrl}"
+                    x:Load="{x:Bind ShowPic}"
                     HorizontalAlignment="Left"
                     BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
                     <Grid.Background>
                         <ImageBrush
                             Stretch="UniformToFill"
-                            ImageSource="{x:Bind pic.Pic,Mode=OneWay}"/>
+                            ImageSource="{x:Bind Pic.Pic,Mode=OneWay}"/>
                     </Grid.Background>
                     
                     <StackPanel
@@ -751,7 +751,7 @@
                         <Border
                             x:Name="gif"
                             CornerRadius="0,8,0,0"
-                            x:Load="{x:Bind pic.IsGif}"
+                            x:Load="{x:Bind Pic.IsGif}"
                             Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                             <TextBlock
                                 Text="GIF"
@@ -766,7 +766,7 @@
                         <Border
                             x:Name="longPic"
                             CornerRadius="8,0,0,0"
-                            x:Load="{x:Bind pic.IsLongPic}"
+                            x:Load="{x:Bind Pic.IsLongPic}"
                             Background="{ThemeResource SystemControlBackgroundAccentBrush}">
                             <TextBlock
                                 Text="长图"
@@ -793,20 +793,20 @@
                         <SymbolIcon
                             Symbol="Like"
                             x:Name="like2"
-                            x:Load="{x:Bind liked2}"/>
+                            x:Load="{x:Bind Liked2}"/>
                         <SymbolIcon
                             Symbol="Like"
                             x:Name="like1"
-                            x:Load="{x:Bind liked}"
+                            x:Load="{x:Bind Liked}"
                             Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"/>
                         <TextBlock
                             Margin="3,0"
-                            Text="{x:Bind likenum,Mode=OneWay}"/>
+                            Text="{x:Bind Likenum,Mode=OneWay}"/>
                     </StackPanel>
                 </Button>
                 <Button
                     Padding="8,0"
-                    Tag="{x:Bind id}"
+                    Tag="{x:Bind Id}"
                     Background="Transparent"
                     HorizontalAlignment="Center"
                     Style="{StaticResource FeedOpButtonStyle}">
@@ -814,7 +814,7 @@
                         <SymbolIcon Symbol="Comment"/>
                         <TextBlock
                             Margin="3,0"
-                            Text="{x:Bind replynum}"/>
+                            Text="{x:Bind Replynum}"/>
                     </StackPanel>
                     <Button.Flyout>
                         <Flyout Opened="Flyout_Opened_1">
@@ -853,8 +853,8 @@
                 Margin="0,4,8,8"
                 x:Name="replyRows"
                 BorderThickness="1"
-                x:Load="{x:Bind showreplyRows}"
-                ItemsSource="{x:Bind replyRows}"
+                x:Load="{x:Bind ShowReplyRows}"
+                ItemsSource="{x:Bind ReplyRows}"
                 Windows10version1809:CornerRadius="8"
                 Style="{StaticResource ListViewStyle}"
                 ScrollViewer.VerticalScrollMode="Disabled"
@@ -879,7 +879,7 @@
                         Tag="{x:Bind}"
                         x:Name="replyRowsMore"
                         Tapped="replyRowsItem_Tapped"
-                        x:Load="{x:Bind showreplyRowsMore}"
+                        x:Load="{x:Bind ShowReplyRowsMore}"
                         Style="{StaticResource NoPaddingListViewItem}"
                         Template="{StaticResource ListViewItemTemplate1}">
                         <StackPanel
@@ -891,7 +891,7 @@
                                 Foreground="Gray"/>
                             <TextBlock
                                 Foreground="Gray"
-                                Text="{x:Bind replynum}"/>
+                                Text="{x:Bind Replynum}"/>
                             <TextBlock
                                 Text=")"
                                 Foreground="Gray"/>
@@ -904,7 +904,7 @@
                         <control:MTextBlock
                             Margin="4,0"
                             VerticalAlignment="Center"
-                            MessageText="{x:Bind message}"/>
+                            MessageText="{x:Bind Message}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

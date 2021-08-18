@@ -8,8 +8,8 @@ namespace CoolapkUWP.Control.ViewModels
 {
     internal interface ILike
     {
-        string likenum { get; set; }
-        bool liked { get; set; }
+        string Likenum { get; set; }
+        bool Liked { get; set; }
         string id { get; }
     }
 
@@ -20,7 +20,7 @@ namespace CoolapkUWP.Control.ViewModels
             JsonObject token = t.GetObject();
             if (token.TryGetValue("info", out IJsonValue value1))
             { info = value1.GetString(); }
-            likenum = token["likenum"].ToString().Replace("\"", string.Empty);
+            Likenum = token["likenum"].ToString().Replace("\"", string.Empty);
             replynum = token["replynum"].ToString().Replace("\"", string.Empty);
             share_num = token["forwardnum"].ToString().Replace("\"", string.Empty);
             if (token["entityType"].GetString() != "article")
@@ -53,7 +53,7 @@ namespace CoolapkUWP.Control.ViewModels
                 device_title = token["device_title"].GetString();
             }
             //else showUser = false;
-            liked = token["extra_fromApi"].GetString() != "V11_HOME_TAB_NEWS"
+            Liked = token["extra_fromApi"].GetString() != "V11_HOME_TAB_NEWS"
                 && token.TryGetValue("userAction", out IJsonValue v) && v.GetObject()["like"].GetNumber() == 1;
             GetPic();
         }
@@ -88,7 +88,7 @@ namespace CoolapkUWP.Control.ViewModels
         public string question_follow_num { get; private set; }
         public bool showUser { get; private set; } = true;
         public bool showUser2 { get => !showUser; }
-        public string likenum
+        public string Likenum
         {
             get => likenum1;
             set
@@ -98,8 +98,8 @@ namespace CoolapkUWP.Control.ViewModels
             }
         }
         public string replynum { get; private set; }
-        public bool liked { get; set; }
-        public bool liked2 { get => !liked; }
+        public bool Liked { get; set; }
+        public bool liked2 { get => !Liked; }
         public ImageSource extra_pic
         {
             get => extra_pic1;
@@ -119,6 +119,6 @@ namespace CoolapkUWP.Control.ViewModels
             }
         }
 
-        public string id => entityId;
+        public string id => EntityId;
     }
 }

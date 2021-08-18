@@ -20,7 +20,7 @@ namespace CoolapkUWP.Control.ViewModels
         public string BirthYear { get; private set; }
         public string BirthMonth { get; private set; }
         public string UserAvatarUrl { get; private set; }
-        public BackgroundImageViewModel Background { get; private set; }
+        public ImageViewModel Background { get; private set; }
 
         private Windows.UI.Xaml.Media.ImageSource userAvatar;
         public Windows.UI.Xaml.Media.ImageSource UserAvatar
@@ -46,7 +46,7 @@ namespace CoolapkUWP.Control.ViewModels
             }
             if (token.TryGetValue("cover", out IJsonValue cover))
             {
-                Background = new BackgroundImageViewModel(cover.GetString(), ImageType.OriginImage);
+                Background = new ImageViewModel(cover.GetString(), ImageType.OriginImage);
             }
             if (token.TryGetValue("fans", out IJsonValue fans))
             {

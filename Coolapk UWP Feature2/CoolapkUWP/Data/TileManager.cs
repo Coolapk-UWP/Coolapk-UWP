@@ -21,7 +21,7 @@ namespace CoolapkUWP.Data
             badgeUpdater.Update(badge);
         }
 
-        /// <param name="nums">顺序 follow, message, atme, atcommentme, commentme, feedlike</param>
+        /// <param name="nums">顺序 follow, Message, atme, atcommentme, commentme, feedlike</param>
         public static void SetTile(params double[] nums)
         {
             int num = 0;

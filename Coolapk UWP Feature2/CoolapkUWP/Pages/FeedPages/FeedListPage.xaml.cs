@@ -87,7 +87,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         Logintime = $"{UIHelper.ConvertTime(detail["logintime"].GetNumber())}活跃",
                         FeedNum = detail["feed"].GetNumber(),
                         UserFace = await ImageCache.GetImage(ImageType.SmallAvatar, detail["userSmallAvatar"].GetString()),
-                        Background = new BackgroundImageViewModel(detail["cover"].GetString(), ImageType.OriginImage),
+                        Background = new ImageViewModel(detail["cover"].GetString(), ImageType.OriginImage),
                         SelectedIndex = SelectedIndex,
                     }
                     : null;
@@ -621,7 +621,7 @@ namespace CoolapkUWP.Pages.FeedPages
         public string Astro;
         public string Logintime;
         public string FollowStatus;
-        public BackgroundImageViewModel Background;
+        public ImageViewModel Background;
         public int SelectedIndex { get; set; }
         public bool ShowFollowStatus { get => !string.IsNullOrEmpty(FollowStatus); }
         public bool Has_bio { get => !string.IsNullOrEmpty(Bio); }

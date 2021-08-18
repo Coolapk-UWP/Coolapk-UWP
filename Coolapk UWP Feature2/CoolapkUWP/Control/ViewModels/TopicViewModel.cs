@@ -11,7 +11,7 @@ namespace CoolapkUWP.Control.ViewModels
         public string Description { get; private set; }
         public string Commentnum { get; private set; }
         public string LastUpdate { get; private set; }
-        public BackgroundImageViewModel Logo { get; private set; }
+        public ImageViewModel Logo { get; private set; }
 
         public DyhViewModel(IJsonValue t) : base(t)
         {
@@ -38,7 +38,7 @@ namespace CoolapkUWP.Control.ViewModels
             }
             if (token.TryGetValue("logo", out IJsonValue logo) && !string.IsNullOrEmpty(logo.GetString()))
             {
-                Logo = new BackgroundImageViewModel(logo.GetString(), ImageType.Icon);
+                Logo = new ImageViewModel(logo.GetString(), ImageType.Icon);
             }
             if (token.TryGetValue("newsnum", out IJsonValue newsnum) && !string.IsNullOrEmpty(newsnum.GetNumber().ToString()))
             {

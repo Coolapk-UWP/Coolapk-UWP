@@ -889,7 +889,7 @@
                     <SymbolIcon Symbol="Like"/>
                     <TextBlock
                         Margin="3,0"
-                        Text="{x:Bind FeedDetail.likenum,Mode=OneWay}"/>
+                        Text="{x:Bind FeedDetail.Likenum, Mode=OneWay}"/>
                 </StackPanel>
             </Button>
 

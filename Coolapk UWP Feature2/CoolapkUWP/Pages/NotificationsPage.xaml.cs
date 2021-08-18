@@ -461,7 +461,7 @@ namespace CoolapkUWP.Pages
                     lastItem = array.Last().GetObject()["id"].GetNumber();
                     object[] d = (from a in itemCollection
                                   from b in array
-                                  where (a as FeedViewModel).entityId == b.GetObject()["id"].GetNumber().ToString()
+                                  where (a as FeedViewModel).EntityId == b.GetObject()["id"].GetNumber().ToString()
                                   select a).ToArray();
                     foreach (object item in d) { _ = itemCollection.Remove(item); }
                     for (int i = 0; i < array.Count; i++)

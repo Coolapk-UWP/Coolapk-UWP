@@ -5,19 +5,32 @@ namespace CoolapkUWP.Control.ViewModels
 {
     internal class Entity : INotifyPropertyChanged
     {
+        public string EntityId { get; private set; }
+        public bool EntityFixed { get; private set; }
+        public string EntityType { get; private set; }
+
         public Entity(IJsonValue t)
         {
             JsonObject token = t.GetObject();
-            if (token.TryGetValue("entityId", out IJsonValue value1)) { entityId = value1.ToString().Replace("\"", string.Empty); }
-            if (token.TryGetValue("entityType", out IJsonValue value2)) { entityType = value2.GetString(); }
-            if (token.TryGetValue("entityFixed", out IJsonValue value) && value.GetNumber() == 1) { entityFixed = true; }
+            if (token.TryGetValue("entityId", out IJsonValue entityId))
+            {
+                EntityId = entityId.ToString().Replace("\"", string.Empty);
+            }
+            if (token.TryGetValue("entityType", out IJsonValue entityType))
+            {
+                EntityType = entityType.GetString();
+            }
+            if (token.TryGetValue("entityFixed", out IJsonValue entityFixed) && entityFixed.GetNumber() == 1)
+            {
+                EntityFixed = true;
+            }
         }
-        public string entityId { get; private set; }
-        public bool entityFixed { get; private set; }
-        public string entityType { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        internal void Changed(object s, string n) => PropertyChanged?.Invoke(s, new PropertyChangedEventArgs(n));
+        internal void Changed(object s, string n)
+        {
+            PropertyChanged?.Invoke(s, new PropertyChangedEventArgs(n));
+        }
     }
 }
