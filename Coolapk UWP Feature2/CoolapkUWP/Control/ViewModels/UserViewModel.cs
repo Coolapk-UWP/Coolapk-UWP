@@ -62,7 +62,7 @@ namespace CoolapkUWP.Control.ViewModels
             }
             if (token.TryGetValue("logintime", out IJsonValue logintime))
             {
-                LoginTime = UIHelper.ConvertTime(double.Parse(logintime.ToString().Replace("\"", string.Empty))) + "活跃";
+                LoginTime = $"{double.Parse(logintime.ToString().Replace("\"", string.Empty)).ConvertTime()}活跃";
             }
             if (token.TryGetValue("userAvatar", out IJsonValue userAvatar))
             {
@@ -83,7 +83,7 @@ namespace CoolapkUWP.Control.ViewModels
             }
             if (token.TryGetValue("uid", out IJsonValue uid))
             {
-                Uid = UIHelper.GetValue(uid);
+                Uid = uid.GetValue();
             }
             if (token.TryGetValue("mobile", out IJsonValue mobile))
             {

@@ -422,7 +422,7 @@ namespace CoolapkUWP.Data
         }
 
 
-        public static string ConvertTime(double timestr)
+        public static string ConvertTime(this double timestr)
         {
             DateTime time = new DateTime(1970, 1, 1).ToLocalTime().Add(new TimeSpan(Convert.ToInt64(timestr) * 10000000));
             TimeSpan temptime = DateTime.Now.Subtract(time);
@@ -433,7 +433,7 @@ namespace CoolapkUWP.Data
                 : temptime.Hours > 0 ? $"{temptime.Hours}小时前" : temptime.Minutes > 0 ? $"{temptime.Minutes}分钟前" : "刚刚";
         }
 
-        public static string ReplaceHtml(string str)
+        public static string ReplaceHtml(this string str)
         {
             //换行和段落
             string s = str.Replace("<br>", "\n").Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br/>", "\n").Replace("<p>", "").Replace("</p>", "\n").Replace("&nbsp;", " ").Replace("<br />", "").Replace("<br />", "");
@@ -487,7 +487,7 @@ namespace CoolapkUWP.Data
             }
         }
 
-        public static string GetSizeString(double size)
+        public static string GetSizeString(this double size)
         {
             int index = 0;
             while (true)
@@ -517,7 +517,7 @@ namespace CoolapkUWP.Data
             return $"{size:N2}{str}";
         }
 
-        public static string GetNumString(double num)
+        public static string GetNumString(this double num)
         {
             string str;
             if (num < 1000)
@@ -543,21 +543,31 @@ namespace CoolapkUWP.Data
         }
 
 
-        public static string GetValue(IJsonValue json)
+        public static string GetValue(this IJsonValue json)
         {
-            string str = json.ToString();
-            if (str.StartsWith("\""))
+            switch (json.ValueType)
             {
-                str = str.Substring(1);
+                case JsonValueType.Null: return string.Empty;
+                case JsonValueType.String: return json.GetString();
+                case JsonValueType.Array: return json.GetArray().ToString();
+                case JsonValueType.Number: return json.GetNumber().ToString();
+                case JsonValueType.Object: return json.GetObject().ToString();
+                case JsonValueType.Boolean: return json.GetBoolean().ToString();
+                default:
+                    string str = json.ToString();
+                    if (str.StartsWith("\""))
+                    {
+                        str = str.Substring(1);
+                    }
+                    if (str.EndsWith("\""))
+                    {
+                        str = str.Remove(str.Length - 1);
+                    }
+                    return str;
             }
-            if (str.EndsWith("\""))
-            {
-                str = str.Remove(str.Length - 1);
-            }
-            return str;
         }
 
-        public static string CSStoMarkDown(string text)
+        public static string CSStoMarkDown(this string text)
         {
             try
             {

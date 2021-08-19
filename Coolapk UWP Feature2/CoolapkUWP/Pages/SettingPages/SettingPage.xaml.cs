@@ -138,13 +138,13 @@ namespace CoolapkUWP.Pages.SettingPages
                 {
                     TotalSize = s,
                     Size = s,
-                    SizeString = UIHelper.GetSizeString(s),
+                    SizeString = s.GetSizeString(),
                     Title = name,
                     type = (ImageType)i
                 });
                 source = null;
             }
-            CacheSizeTextBlock.Text = UIHelper.GetSizeString(size);
+            CacheSizeTextBlock.Text = size.GetSizeString();
             foreach (CacheSizeViewModel item in models)
             { item.TotalSize = size; }
             RefreshCacheButton.IsEnabled = true;

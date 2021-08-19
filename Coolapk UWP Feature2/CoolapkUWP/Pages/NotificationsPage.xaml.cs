@@ -63,7 +63,7 @@ namespace CoolapkUWP.Pages
             }
             if (token.TryGetValue("dateline", out IJsonValue dateline))
             {
-                Dateline = UIHelper.ConvertTime(dateline.GetNumber());
+                Dateline = dateline.GetNumber().ConvertTime();
             }
             string note = token["note"].GetString();
             Regex regex = new Regex("<a.*?>.*?</a>"), regex2 = new Regex("href=\".*"), regex3 = new Regex(">.*<");
@@ -134,11 +134,11 @@ namespace CoolapkUWP.Pages
             }
             if (token.TryGetValue("likeUid", out IJsonValue likeUid))
             {
-                LikeUserUri = "/u/" + likeUid.GetNumber();
+                LikeUserUri = $"/u/{likeUid.GetNumber()}";
             }
             if (token.TryGetValue("likeTime", out IJsonValue likeTime))
             {
-                Dateline = UIHelper.ConvertTime(likeTime.GetNumber());
+                Dateline = likeTime.GetNumber().ConvertTime();
             }
             if (token.TryGetValue("url", out IJsonValue url))
             {
@@ -150,11 +150,11 @@ namespace CoolapkUWP.Pages
             }
             if (token.TryGetValue("feedTypeName", out IJsonValue feedTypeName))
             {
-                Title = "赞了你的" + feedTypeName.GetString();
+                Title = $"赞了你的{feedTypeName.GetString()}";
             }
             else if (token.TryGetValue("infoHtml", out IJsonValue infoHtml))
             {
-                Title = "赞了你的" + infoHtml.GetString();
+                Title = $"赞了你的{infoHtml.GetString()}";
             }
             if (token.TryGetValue("message", out IJsonValue message))
             {
@@ -190,8 +190,8 @@ namespace CoolapkUWP.Pages
             id = token["id"].GetNumber();
 
             UserName = token["username"].GetString();
-            UserUri = "/u/" + token["uid"].GetNumber();
-            Dateline = UIHelper.ConvertTime(token["dateline"].GetNumber());
+            UserUri = $"/u/{token["uid"].GetNumber()}";
+            Dateline = token["dateline"].GetNumber().ConvertTime();
             Uri = token["url"].GetString();
             GetPic(token["userAvatar"].GetString());
             Message = (string.IsNullOrEmpty(token["rusername"].GetString()) ? string.Empty : $"回复<a href=\"/u/{token["ruid"].GetNumber()}\">{token["rusername"].GetString()}</a>: ") + token["message"].GetString();
@@ -225,11 +225,11 @@ namespace CoolapkUWP.Pages
             if (token.TryGetValue("id", out IJsonValue Id))
             {
                 id = Id.GetNumber();
-                UserUri = "/u/" + id;
+                UserUri = $"/u/{id}";
             }
             if (token.TryGetValue("dateline", out IJsonValue dateline))
             {
-                Dateline = UIHelper.ConvertTime(dateline.GetNumber());
+                Dateline = dateline.GetNumber().ConvertTime();
             }
             if (token.TryGetValue("messageUserInfo", out IJsonValue v1))
             {
@@ -257,7 +257,7 @@ namespace CoolapkUWP.Pages
             }
             if (token.TryGetValue("is_top", out IJsonValue is_top) && is_top.GetNumber() == 1)
             {
-                Dateline += " " + "[置顶]";
+                Dateline += " [置顶]";
             }
         }
 

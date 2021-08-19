@@ -62,7 +62,7 @@ namespace CoolapkUWP.Control.ViewModels
             JsonObject token = t.GetObject();
             if (token.TryGetValue("dateline", out IJsonValue dateline))
             {
-                Dateline = UIHelper.ConvertTime(dateline.GetNumber());
+                Dateline = dateline.GetNumber().ConvertTime();
             }
             if (token.TryGetValue("message", out IJsonValue message))
             {

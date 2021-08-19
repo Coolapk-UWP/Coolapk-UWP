@@ -30,11 +30,11 @@ namespace CoolapkUWP.Control.ViewModels
             }
             if (token.TryGetValue("follownum", out IJsonValue follownum) && !string.IsNullOrEmpty(follownum.GetNumber().ToString()))
             {
-                Follownum = UIHelper.GetNumString(follownum.GetNumber());
+                Follownum = follownum.GetNumber().GetNumString();
             }
             else if (token.TryGetValue("follow_num", out IJsonValue follow_num) && !string.IsNullOrEmpty(follow_num.GetNumber().ToString()))
             {
-                Follownum = UIHelper.GetNumString(follow_num.GetNumber());
+                Follownum = follow_num.GetNumber().GetNumString();
             }
             if (token.TryGetValue("logo", out IJsonValue logo) && !string.IsNullOrEmpty(logo.GetString()))
             {
@@ -46,7 +46,7 @@ namespace CoolapkUWP.Control.ViewModels
             }
             else if (token.TryGetValue("commentnum", out IJsonValue commentnum) && !string.IsNullOrEmpty(commentnum.GetNumber().ToString()))
             {
-                Commentnum = UIHelper.GetNumString(commentnum.GetNumber());
+                Commentnum = commentnum.GetNumber().GetNumString();
             }
             else if (token.TryGetValue("rating_total_num", out IJsonValue rating_total_num) && !string.IsNullOrEmpty(rating_total_num.GetNumber().ToString()))
             {
@@ -62,7 +62,7 @@ namespace CoolapkUWP.Control.ViewModels
             }
             else if (token.TryGetValue("username", out IJsonValue username) && !string.IsNullOrEmpty(username.GetString()))
             {
-                Description = "作者：" + username.GetString();
+                Description = $"作者：{username.GetString()}";
             }
             else if (token.TryGetValue("rss_type", out IJsonValue rss_type) && !string.IsNullOrEmpty(rss_type.GetString()))
             {
@@ -70,7 +70,7 @@ namespace CoolapkUWP.Control.ViewModels
             }
             else if (token.TryGetValue("hot_num", out IJsonValue hot_num) && !string.IsNullOrEmpty(hot_num.GetNumber().ToString()))
             {
-                Description = UIHelper.GetNumString(hot_num.GetNumber()) + "热度";
+                Description = $"{hot_num.GetNumber().GetNumString()}热度";
             }
             else if (token.TryGetValue("keywords", out IJsonValue keywords) && !string.IsNullOrEmpty(keywords.ToString()))
             {
@@ -78,19 +78,19 @@ namespace CoolapkUWP.Control.ViewModels
             }
             if (token.TryGetValue("lastupdate", out IJsonValue lastupdate) && !string.IsNullOrEmpty(lastupdate.GetNumber().ToString()))
             {
-                LastUpdate = UIHelper.ConvertTime(lastupdate.GetNumber());
+                LastUpdate = lastupdate.GetNumber().ConvertTime();
             }
             else if (token.TryGetValue("update_time", out IJsonValue update_time) && !string.IsNullOrEmpty(update_time.GetNumber().ToString()))
             {
-                LastUpdate = UIHelper.ConvertTime(update_time.GetNumber());
+                LastUpdate = update_time.GetNumber().ConvertTime();
             }
             else if (token.TryGetValue("sell_time", out IJsonValue sell_time) && !string.IsNullOrEmpty(sell_time.GetNumber().ToString()))
             {
-                LastUpdate = UIHelper.ConvertTime(sell_time.GetNumber());
+                LastUpdate = sell_time.GetNumber().ConvertTime();
             }
             else if (token.TryGetValue("create_time", out IJsonValue create_time) && !string.IsNullOrEmpty(create_time.GetNumber().ToString()))
             {
-                LastUpdate = UIHelper.ConvertTime(create_time.GetNumber());
+                LastUpdate = create_time.GetNumber().ConvertTime();
             }
         }
     }

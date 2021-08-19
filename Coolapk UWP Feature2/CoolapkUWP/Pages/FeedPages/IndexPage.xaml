@@ -476,8 +476,6 @@
                     Style="{StaticResource NoPaddingListViewItem}"
                     Template="{StaticResource ListViewItemTemplate1}">
                     <Grid
-                        Width="260"
-                        Height="118"
                         Margin="0,10"
                         CornerRadius="8"
                         BorderThickness="1"

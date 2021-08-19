@@ -323,7 +323,7 @@ namespace CoolapkUWP.Pages.AppPages
                 }
                 if (dataRow.TryGetValue("apklength", out IJsonValue apklength) && !string.IsNullOrEmpty(apklength.GetNumber().ToString()))
                 {
-                    Apksize = UIHelper.GetSizeString(apklength.GetNumber());
+                    Apksize = apklength.GetNumber().GetSizeString();
                 }
                 else if (dataRow.TryGetValue("apksize", out IJsonValue apksize) && !string.IsNullOrEmpty(apksize.GetString()))
                 {
@@ -336,7 +336,7 @@ namespace CoolapkUWP.Pages.AppPages
                 if (dataRow.TryGetValue("introduce", out IJsonValue introduce) && !string.IsNullOrEmpty(introduce.GetString()))
                 {
                     Introduce = introduce.GetString();
-                    Introduce = UIHelper.CSStoMarkDown(Introduce);
+                    Introduce = Introduce.CSStoMarkDown();
                 }
                 if (dataRow.TryGetValue("description", out IJsonValue description) && !string.IsNullOrEmpty(description.GetString()))
                 {
@@ -349,35 +349,35 @@ namespace CoolapkUWP.Pages.AppPages
                 else if (dataRow.TryGetValue("remark", out IJsonValue remark) && !string.IsNullOrEmpty(remark.GetString()))
                 {
                     Description = remark.GetString();
-                    Description = UIHelper.ReplaceHtml(Description);
+                    Description = Description.ReplaceHtml();
                 }
                 if (dataRow.TryGetValue("hot_num", out IJsonValue hot_num) && !string.IsNullOrEmpty(hot_num.GetNumber().ToString()))
                 {
-                    HotNum = UIHelper.GetNumString(hot_num.GetNumber());
+                    HotNum = hot_num.GetNumber().GetNumString();
                 }
-                if (dataRow.TryGetValue("voteCount", out IJsonValue voteCount) && !string.IsNullOrEmpty(UIHelper.GetValue(voteCount)))
+                if (dataRow.TryGetValue("voteCount", out IJsonValue voteCount) && !string.IsNullOrEmpty(voteCount.GetValue()))
                 {
-                    VoteCount = UIHelper.GetValue(voteCount);
+                    VoteCount = voteCount.GetValue();
                 }
-                if (dataRow.TryGetValue("followCount", out IJsonValue followCount) && !string.IsNullOrEmpty(UIHelper.GetValue(followCount)))
+                if (dataRow.TryGetValue("followCount", out IJsonValue followCount) && !string.IsNullOrEmpty(followCount.GetValue()))
                 {
-                    FollowNum = UIHelper.GetValue(followCount);
+                    FollowNum = followCount.GetValue();
                 }
-                if (dataRow.TryGetValue("commentCount", out IJsonValue commentCount) && !string.IsNullOrEmpty(UIHelper.GetValue(commentCount)))
+                if (dataRow.TryGetValue("commentCount", out IJsonValue commentCount) && !string.IsNullOrEmpty(commentCount.GetValue()))
                 {
-                    CommentNum = UIHelper.GetValue(commentCount);
+                    CommentNum = commentCount.GetValue();
                 }
-                if (dataRow.TryGetValue("downCount", out IJsonValue downCount) && !string.IsNullOrEmpty(UIHelper.GetValue(downCount)))
+                if (dataRow.TryGetValue("downCount", out IJsonValue downCount) && !string.IsNullOrEmpty(downCount.GetValue()))
                 {
-                    DownloadNum = UIHelper.GetValue(downCount);
+                    DownloadNum = downCount.GetValue();
                 }
                 if (dataRow.TryGetValue("pubdate", out IJsonValue pubdate) && !string.IsNullOrEmpty(pubdate.GetNumber().ToString()))
                 {
-                    PubDate = UIHelper.ConvertTime(pubdate.GetNumber());
+                    PubDate = pubdate.GetNumber().ConvertTime();
                 }
                 if (dataRow.TryGetValue("lastupdate", out IJsonValue lastupdate) && !string.IsNullOrEmpty(lastupdate.GetNumber().ToString()))
                 {
-                    LastUpdate = UIHelper.ConvertTime(lastupdate.GetNumber());
+                    LastUpdate = lastupdate.GetNumber().ConvertTime();
                 }
                 if (dataRow.TryGetValue("apkRomVersion", out IJsonValue apkRomVersion) && !string.IsNullOrEmpty(apkRomVersion.GetString()))
                 {

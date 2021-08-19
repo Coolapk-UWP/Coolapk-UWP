@@ -84,7 +84,7 @@ namespace CoolapkUWP.Pages.FeedPages
                         Gender = detail["gender"].GetNumber() == 1 ? "♂" : (detail["gender"].GetNumber() == 0 ? "♀" : string.Empty),
                         City = $"{detail["province"].GetString()} {detail["city"].GetString()}",
                         Astro = detail["astro"].GetString(),
-                        Logintime = $"{UIHelper.ConvertTime(detail["logintime"].GetNumber())}活跃",
+                        Logintime = $"{detail["logintime"].GetNumber().ConvertTime()}活跃",
                         FeedNum = detail["feed"].GetNumber(),
                         UserFace = await ImageCache.GetImage(ImageType.SmallAvatar, detail["userSmallAvatar"].GetString()),
                         Background = new ImageViewModel(detail["cover"].GetString(), ImageType.OriginImage),
@@ -302,7 +302,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     {
                         Title = detail["title"].GetString(),
                         FollowNum = detail["follow_num"].GetNumber(),
-                        CommentNum = UIHelper.GetValue(detail["hot_num_txt"]),
+                        CommentNum = detail["hot_num_txt"].GetValue(),
                         Description = detail["description"].GetString(),
                         Logo = await ImageCache.GetImage(ImageType.Icon, detail["logo"].GetString()),
                         SelectedIndex = SelectedIndex
@@ -377,7 +377,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     {
                         Title = detail["title"].GetString(),
                         FollowNum = detail["follownum"].GetNumber(),
-                        CommentNum = UIHelper.GetValue(detail["commentnum"]),
+                        CommentNum = detail["commentnum"].GetValue(),
                         Description = detail["description"].GetString(),
                         Logo = await ImageCache.GetImage(ImageType.Icon, detail["logo"].GetString())
                     }

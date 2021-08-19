@@ -83,7 +83,7 @@ namespace CoolapkUWP.Control
         private static TileContent GetFeedTitle(JsonObject token)
         {
             FeedDetailViewModel FeedDetail = new FeedDetailViewModel(token);
-            string Message = UIHelper.ReplaceHtml(FeedDetail.message);
+            string Message = FeedDetail.message.ReplaceHtml();
             return new TileContent()
             {
                 Visual = new TileVisual()

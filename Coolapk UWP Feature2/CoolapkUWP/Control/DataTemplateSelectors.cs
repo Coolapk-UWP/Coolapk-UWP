@@ -49,12 +49,14 @@ namespace CoolapkUWP.Control
                 case "iconMiniLinkGridCard": return IconLinkGridCard;
                 case "iconTabLinkGridCard": return IconTabLinkGridCard;
                 case "iconListCard":
+                case "imageScaleCard":
                 case "textLinkListCard":
                 case "feedGroupListCard":
+                case "imageTextGridCard":
                 case "feedCoolPictureGridCard": return TextLinkListCard;
+                case "apkImageCard":
                 case "iconScrollCard":
                 case "feedScrollCard":
-                case "imageTextGridCard":
                 case "colorfulScrollCard":
                 case "imageTextScrollCard":
                 case "colorfulFatScrollCard":
@@ -92,7 +94,6 @@ namespace CoolapkUWP.Control
                 switch ((item as IndexPageViewModel).EntityType)
                 {
                     case "image_1": return Image;
-                    case "textLink": return TextLink;
                     case "dyh":
                     case "apk":
                     case "product":
@@ -105,6 +106,8 @@ namespace CoolapkUWP.Control
                     case "history":
                     case "collection": return Histroy;
                     case "imageText": return TextImage;
+                    case "textLink":
+                    case "imageScale": return TextLink;
                     case "icon":
                     case "iconMini":
                     case "iconLink":

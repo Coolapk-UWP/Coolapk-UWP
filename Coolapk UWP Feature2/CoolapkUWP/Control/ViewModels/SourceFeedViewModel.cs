@@ -19,13 +19,13 @@ namespace CoolapkUWP.Control.ViewModels
             {
                 uurl = token["userInfo"].GetObject()["url"].GetString();
                 username = token["userInfo"].GetObject()["username"].GetString();
-                dateline = UIHelper.ConvertTime(double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)));
+                dateline = double.Parse(token["dateline"].ToString().Replace("\"", string.Empty)).ConvertTime();
                 message = token["message"].GetString().Replace("<a href=\"\">查看更多</a>", "<a href=\"" + url + "\">查看更多</a>");
                 message_title = token.TryGetValue("message_title", out IJsonValue j) ? j.GetString() : string.Empty;
             }
             else
             {
-                dateline = UIHelper.ConvertTime(token["digest_time"].GetNumber());
+                dateline = token["digest_time"].GetNumber().ConvertTime();
                 message = message.Contains("</a>") ? token["message"].GetString().Substring(0, 200) + "...<a href=\"" + url + "\">查看更多</a>" : message + "...<a href=\"" + url + "\">查看更多</a>";
                 message_title = token["title"].GetString();
             }
