@@ -115,12 +115,13 @@ namespace CoolapkUWP.Pages.AppPages
                     case "PackageName": dp.SetText(AppModels.PackageName); break;
                     case "Version": dp.SetText(AppModels.Version); break;
                     case "ChangeLog": dp.SetText(AppModels.ChangeLog); break;
+                    default: break;
                 }
                 Clipboard.SetContent(dp);
             }
         }
 
-        void FeedPage_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        private void FeedPage_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
             Uri shareLinkString = ValidateAndGetUri(AppLink);
             if (shareLinkString != null)
@@ -156,7 +157,7 @@ namespace CoolapkUWP.Pages.AppPages
             return uri;
         }
 
-        protected void ShowUIButton_Click(object sender, RoutedEventArgs e)
+        private void ShowUIButton_Click(object sender, RoutedEventArgs e)
         {
             DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
             dataTransferManager.DataRequested -= FeedPage_DataRequested;
@@ -218,7 +219,7 @@ namespace CoolapkUWP.Pages.AppPages
             if (sender is GridView view)
             {
                 if (view.SelectedIndex > -1 && view.Tag is List<string> ss)
-                { UIHelper.ShowImages(ss.ToArray(), view.SelectedIndex); }
+                { UIHelper.ShowImages(ss.ToArray(), view.SelectedIndex, ImageType.OriginImage); }
                 view.SelectedIndex = -1;
             }
         }

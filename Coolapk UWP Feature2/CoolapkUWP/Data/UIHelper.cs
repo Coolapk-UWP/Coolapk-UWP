@@ -189,9 +189,9 @@ namespace CoolapkUWP.Data
             Navigate(typeof(ShowImagePage), new object[] { url, type }, NavigationThemeTransition.DrillIn);
         }
 
-        public static void ShowImages(string[] urls, int index)
+        public static void ShowImages(string[] urls, int index, ImageType type = ImageType.SmallImage)
         {
-            Navigate(typeof(ShowImagePage), new object[] { urls, ImageType.SmallImage, index }, NavigationThemeTransition.DrillIn);
+            Navigate(typeof(ShowImagePage), new object[] { urls, type, index }, NavigationThemeTransition.DrillIn);
         }
 
         public static void Navigate(Type pageType, object e = null, NavigationThemeTransition Type = NavigationThemeTransition.Default)

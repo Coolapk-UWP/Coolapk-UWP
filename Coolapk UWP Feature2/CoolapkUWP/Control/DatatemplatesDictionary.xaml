@@ -512,7 +512,7 @@
                             <Border
                                 Margin="0,0"
                                 HorizontalAlignment="Left"
-                                Windows10version1809:CornerRadius="0,0,8,0"
+                                Windows10version1809:CornerRadius="8,0,8,0"
                                 Background="{ThemeResource SystemControlHighlightListAccentHighBrush}">
                                 <TextBlock
                                     Margin="2,1"

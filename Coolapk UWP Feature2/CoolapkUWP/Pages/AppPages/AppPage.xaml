@@ -371,8 +371,8 @@
                     </Button>
 
                     <Button
-                        Style="{StaticResource IconButtonStyle}"
-                        ToolTipService.ToolTip="更多">
+                        ToolTipService.ToolTip="更多"
+                        Style="{StaticResource IconButtonStyle}">
                         <SymbolIcon Symbol="More"/>
                         <Button.Flyout>
                             <MenuFlyout>
