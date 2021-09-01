@@ -104,7 +104,7 @@ namespace CoolapkUWP.Pages
                             case NotificationPageType.AtCommentMe: Load<AtCommentMeNotificationModel>(); break;
                             default: break;
                         }
-                        VScrollViewer.ChangeView(null, VScrollViewer.VerticalOffset - 1, null);
+                        _ = VScrollViewer.ChangeView(null, VScrollViewer.VerticalOffset - 1, null);
                     }
                 }
             }

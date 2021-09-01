@@ -175,7 +175,7 @@ namespace CoolapkUWP.Models.Pages
             Uri = token["url"].GetString();
             GetPic(token["userAvatar"].GetString());
             Message = (string.IsNullOrEmpty(token["rusername"].GetString()) ? string.Empty : $"回复<a href=\"/u/{token["ruid"].GetNumber()}\">{token["rusername"].GetString()}</a>: ") + token["message"].GetString();
-            FeedMessage = (token["extra_title"].GetString());
+            FeedMessage = token["extra_title"].GetString();
         }
 
         private async void GetPic(string u)

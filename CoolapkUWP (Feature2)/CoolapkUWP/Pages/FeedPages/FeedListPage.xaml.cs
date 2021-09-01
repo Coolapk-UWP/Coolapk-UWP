@@ -6,14 +6,11 @@ using CoolapkUWP.ViewModels;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -236,7 +233,7 @@ namespace CoolapkUWP.Pages.FeedPages
     }
 
     /// <summary>
-    /// Provide list of Minecraft Download Versions. <br/>
+    /// Provide list of Feeds. <br/>
     /// You can bind this ds to ItemSource to enable incremental loading ,
     /// or call LoadMoreItemsAsync to load more.
     /// </summary>

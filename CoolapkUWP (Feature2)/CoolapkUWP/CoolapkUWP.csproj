@@ -111,41 +111,41 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\LiveTileControl.cs" />
-    <Compile Include="Control\MTextBlock.xaml.cs">
+    <Compile Include="Helpers\BackgroundTasks\LiveTileControl.cs" />
+    <Compile Include="Controls\MTextBlock.xaml.cs">
       <DependentUpon>MTextBlock.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\ReplyDialogPresenter.xaml.cs">
+    <Compile Include="Controls\Popups\ReplyDialogPresenter.xaml.cs">
       <DependentUpon>ReplyDialogPresenter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\ShowQRCodeControl.xaml.cs">
+    <Compile Include="Controls\Popups\ShowQRCodeControl.xaml.cs">
       <DependentUpon>ShowQRCodeControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\StatusGrid.xaml.cs">
+    <Compile Include="Controls\StatusGrid.xaml.cs">
       <DependentUpon>StatusGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\TitleBar.xaml.cs">
+    <Compile Include="Controls\TitleBar.xaml.cs">
       <DependentUpon>TitleBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\ViewModels\ImageViewModel.cs" />
-    <Compile Include="Control\ViewModels\Entity.cs" />
-    <Compile Include="Control\ViewModels\FeedReplyViewModel.cs" />
-    <Compile Include="Control\ViewModels\FeedViewModelBase.cs" />
-    <Compile Include="Control\ViewModels\FeedDetailViewModel.cs" />
-    <Compile Include="Control\ViewModels\ImageData.cs" />
-    <Compile Include="Control\ViewModels\IndexPageViewModel.cs" />
-    <Compile Include="Control\ViewModels\SimpleFeedReplyViewModel.cs" />
-    <Compile Include="Control\ViewModels\SourceFeedViewModel.cs" />
-    <Compile Include="Control\GridPanel.cs" />
-    <Compile Include="Control\ViewModels\ProductViewModel.cs" />
-    <Compile Include="Helpers\BackgroundTask.cs" />
+    <Compile Include="Models\Images\ImageViewModel.cs" />
+    <Compile Include="Models\Entity.cs" />
+    <Compile Include="Models\Feeds\FeedReplyViewModel.cs" />
+    <Compile Include="Models\Feeds\FeedViewModelBase.cs" />
+    <Compile Include="Models\Feeds\FeedDetailViewModel.cs" />
+    <Compile Include="Models\Images\ImageData.cs" />
+    <Compile Include="Models\Pages\IndexPageViewModel.cs" />
+    <Compile Include="Models\Feeds\SimpleFeedReplyViewModel.cs" />
+    <Compile Include="Models\Feeds\SourceFeedViewModel.cs" />
+    <Compile Include="Controls\GridPanel.cs" />
+    <Compile Include="Models\Cards\ProductViewModel.cs" />
+    <Compile Include="Helpers\BackgroundTasks\BackgroundTask.cs" />
     <Compile Include="Helpers\DataHelpers\DataSourceBase.cs" />
     <Compile Include="Helpers\DataHelpers\IncrementalLoadingBase.cs" />
     <Compile Include="Helpers\EmojiHelper.cs" />
     <Compile Include="Helpers\Exceptions\ExceptionHandlingSynchronizationContext.cs" />
     <Compile Include="Helpers\ImageCache.cs" />
-    <Compile Include="Helpers\NotificationsNum.cs" />
-    <Compile Include="Helpers\TileManager.cs" />
+    <Compile Include="Helpers\BackgroundTasks\NotificationsNum.cs" />
+    <Compile Include="Helpers\BackgroundTasks\TileManager.cs" />
     <Compile Include="Helpers\ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\NoPicToNullConverter.cs" />
     <Compile Include="Helpers\ValueConverters\HasValueConverter.cs" />
@@ -155,21 +155,21 @@
     <Compile Include="Pages\AppPages\AppRecommendPage.xaml.cs">
       <DependentUpon>AppRecommendPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\DatatemplatesDictionary.xaml.cs" />
-    <Compile Include="Control\ViewModels\FeedViewModel.cs" />
-    <Compile Include="Control\ViewModels\SearchPageViewModel.cs" />
-    <Compile Include="Control\ViewModels\TopicViewModel.cs" />
-    <Compile Include="Control\ViewModels\UserViewModel.cs" />
+    <Compile Include="Controls\DataTemplates\DatatemplatesDictionary.xaml.cs" />
+    <Compile Include="Models\Feeds\FeedViewModel.cs" />
+    <Compile Include="Models\Pages\SearchPageViewModel.cs" />
+    <Compile Include="Models\Cards\TopicViewModel.cs" />
+    <Compile Include="Models\Cards\UserViewModel.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Helpers\ExceptionCatcher.cs" />
-    <Compile Include="Control\GetUpdateContentDialog.xaml.cs">
+    <Compile Include="Controls\Dialogs\GetUpdateContentDialog.xaml.cs">
       <DependentUpon>GetUpdateContentDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\DataTemplateSelectors.cs" />
+    <Compile Include="Controls\DataTemplates\DataTemplateSelectors.cs" />
     <Compile Include="Pages\FeedPages\FeedListPage.xaml.cs">
       <DependentUpon>FeedListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\ShowImageControl.xaml.cs">
+    <Compile Include="Controls\Popups\ShowImageControl.xaml.cs">
       <DependentUpon>ShowImageControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\FeedPages\MakeFeedPage.xaml.cs">
@@ -216,6 +216,7 @@
     </Compile>
     <Compile Include="ViewModels\FeedListPageViewModel.cs" />
     <Compile Include="ViewModels\Interfaces.cs" />
+    <Compile Include="ViewModels\NotificationsPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -803,23 +804,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Control\MTextBlock.xaml">
+    <Page Include="Controls\MTextBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\ReplyDialogPresenter.xaml">
+    <Page Include="Controls\Popups\ReplyDialogPresenter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\ShowQRCodeControl.xaml">
+    <Page Include="Controls\Popups\ShowQRCodeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\StatusGrid.xaml">
+    <Page Include="Controls\StatusGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\TitleBar.xaml">
+    <Page Include="Controls\TitleBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -827,11 +828,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\GetUpdateContentDialog.xaml">
+    <Page Include="Controls\Dialogs\GetUpdateContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\DatatemplatesDictionary.xaml">
+    <Page Include="Controls\DataTemplates\DatatemplatesDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -839,7 +840,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Control\ShowImageControl.xaml">
+    <Page Include="Controls\Popups\ShowImageControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -930,6 +931,7 @@
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
