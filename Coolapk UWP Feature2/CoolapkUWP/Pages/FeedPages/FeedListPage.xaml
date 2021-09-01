@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="using:CoolapkUWP.Control"
     xmlns:data="using:CoolapkUWP.Data"
+    xmlns:pages="using:CoolapkUWP.Models.Pages"
     xmlns:local="using:CoolapkUWP.Pages.FeedPages"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
@@ -18,8 +19,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <control:DatatemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
-            
-            <DataTemplate x:Key="UserDetail" x:DataType="local:UserDetail">
+
+            <DataTemplate x:Key="UserDetail" x:DataType="pages:UserDetail">
                 <Border
                     Margin="8"
                     CornerRadius="8"
@@ -205,8 +206,8 @@
                     </Grid>
                 </Border>
             </DataTemplate>
-            
-            <DataTemplate x:Key="TopicDetail" x:DataType="local:TopicDetail">
+
+            <DataTemplate x:Key="TopicDetail" x:DataType="pages:TopicDetail">
                 <Grid
                     x:Name="DetailGrid"
                     BorderThickness="1"
@@ -251,8 +252,8 @@
                     </StackPanel>
                 </Grid>
             </DataTemplate>
-            
-            <DataTemplate x:Key="DYHDetail" x:DataType="local:DYHDetail">
+
+            <DataTemplate x:Key="DYHDetail" x:DataType="pages:DYHDetail">
                 <Grid
                     x:Name="DetailGrid"
                     BorderThickness="1"
@@ -317,8 +318,8 @@
                     </StackPanel>
                 </Grid>
             </DataTemplate>
-            
-            <DataTemplate x:Key="APPDetail" x:DataType="local:APPDetail">
+
+            <DataTemplate x:Key="APPDetail" x:DataType="pages:APPDetail">
                 <Grid
                     x:Name="DetailGrid"
                     BorderThickness="1"
@@ -375,7 +376,7 @@
                 </Grid>
             </DataTemplate>
             
-            <DataTemplate x:Key="ProductDetail" x:DataType="local:ProductDetail">
+            <DataTemplate x:Key="ProductDetail" x:DataType="pages:ProductDetail">
                 <Grid
                     x:Name="DetailGrid"
                     BorderThickness="1"
@@ -451,13 +452,15 @@
         </Grid.ChildrenTransitions>
         
         <controls:PullToRefreshListView
-            x:Name="listView"
+            x:Name="ListView"
             SelectionMode="None"
+            Loaded="ListView_Loaded"
             PullToRefreshLabel="下拉刷新"
             ReleaseToRefreshLabel="松手刷新"
-            RefreshRequested="{x:Bind Refresh}"
-            ItemsSource="{x:Bind itemCollection}"
+            RefreshRequested="ListView_RefreshRequested"
+            ItemsSource="{x:Bind FeedListDS, Mode=OneWay}"
             ItemTemplateSelector="{StaticResource tempse}"
+            ScrollViewer.IsDeferredScrollingEnabled="True"
             Padding="{x:Bind data:SettingsHelper.StackPanelMargin}">
             <controls:PullToRefreshListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -475,10 +478,11 @@
         </controls:PullToRefreshListView>
         
         <control:TitleBar
-            x:Name="titleBar"
-            RefreshEvent="{x:Bind Refresh}"
+            x:Name="TitleBar"
             RefreshButtonVisibility="Visible"
+            RefreshEvent="TitleBar_RefreshEvent"
             BackButtonClick="TitleBar_BackButtonClick"
+            Title="{x:Bind FeedListDS.Title, Mode=OneWay}"
             ComboBoxSelectionChange="FeedTypeComboBox_SelectionChanged"/>
     </Grid>
 </Page>

@@ -10,7 +10,7 @@
     xmlns:converter="using:CoolapkUWP.Data.ValueConverters"
     xmlns:local="using:CoolapkUWP.Pages"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls" xmlns:pages="using:CoolapkUWP.Models.Pages"
     Windows11version2204:Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"
     mc:Ignorable="d">
     <Page.Resources>
@@ -19,7 +19,7 @@
                 <control:DatatemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
             <converter:NoPicToNullConverter x:Key="NoPicToNullConverter"/>
-            <DataTemplate x:Key="Reply" x:DataType="local:SimpleNotificationViewModel">
+            <DataTemplate x:Key="Reply" x:DataType="pages:SimpleNotificationModel">
                 <Grid
                     Padding="4"
                     BorderThickness="1"
@@ -74,7 +74,7 @@
                         MessageText="{x:Bind Note}"/>
                 </Grid>
             </DataTemplate>
-            <DataTemplate x:Key="Like" x:DataType="local:LikeNotificationViewModel">
+            <DataTemplate x:Key="Like" x:DataType="pages:LikeNotificationModel">
                 <Grid
                     Padding="4"
                     BorderThickness="1"
@@ -135,7 +135,7 @@
                     </StackPanel>
                 </Grid>
             </DataTemplate>
-            <DataTemplate x:Key="Message" x:DataType="local:MessageNotificationModel">
+            <DataTemplate x:Key="Message" x:DataType="pages:MessageNotificationModel">
                 <Grid
                     Padding="4"
                     BorderThickness="1"
@@ -185,7 +185,7 @@
                         MessageText="{x:Bind FeedMessage}"/>
                 </Grid>
             </DataTemplate>
-            <DataTemplate x:Key="AtCommentMe" x:DataType="local:AtCommentMeNotificationViewModel">
+            <DataTemplate x:Key="AtCommentMe" x:DataType="pages:AtCommentMeNotificationModel">
                 <Grid
                     Padding="4"
                     BorderThickness="1"

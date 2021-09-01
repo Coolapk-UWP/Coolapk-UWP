@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Control;
 using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.FeedPages;
+using CoolapkUWP.ViewModels;
 using Html2Markdown;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;

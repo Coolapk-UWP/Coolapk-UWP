@@ -138,15 +138,20 @@
     <Compile Include="Control\ViewModels\SourceFeedViewModel.cs" />
     <Compile Include="Control\GridPanel.cs" />
     <Compile Include="Control\ViewModels\ProductViewModel.cs" />
-    <Compile Include="Data\BackgroundTask.cs" />
-    <Compile Include="Data\EmojiHelper.cs" />
-    <Compile Include="Data\ImageCache.cs" />
-    <Compile Include="Data\NotificationsNum.cs" />
-    <Compile Include="Data\TileManager.cs" />
-    <Compile Include="Data\ValueConverters\BoolToVisibilityConverter.cs" />
-    <Compile Include="Data\ValueConverters\NoPicToNullConverter.cs" />
-    <Compile Include="Data\ValueConverters\HasValueConverter.cs" />
-    <Compile Include="Data\ValueConverters\TrueToFalseConverter.cs" />
+    <Compile Include="Helpers\BackgroundTask.cs" />
+    <Compile Include="Helpers\DataHelpers\DataSourceBase.cs" />
+    <Compile Include="Helpers\DataHelpers\IncrementalLoadingBase.cs" />
+    <Compile Include="Helpers\EmojiHelper.cs" />
+    <Compile Include="Helpers\Exceptions\ExceptionHandlingSynchronizationContext.cs" />
+    <Compile Include="Helpers\ImageCache.cs" />
+    <Compile Include="Helpers\NotificationsNum.cs" />
+    <Compile Include="Helpers\TileManager.cs" />
+    <Compile Include="Helpers\ValueConverters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Helpers\ValueConverters\NoPicToNullConverter.cs" />
+    <Compile Include="Helpers\ValueConverters\HasValueConverter.cs" />
+    <Compile Include="Helpers\ValueConverters\TrueToFalseConverter.cs" />
+    <Compile Include="Models\Pages\FeedListPageModel.cs" />
+    <Compile Include="Models\Pages\NotificationsPageModel.cs" />
     <Compile Include="Pages\AppPages\AppRecommendPage.xaml.cs">
       <DependentUpon>AppRecommendPage.xaml</DependentUpon>
     </Compile>
@@ -155,8 +160,8 @@
     <Compile Include="Control\ViewModels\SearchPageViewModel.cs" />
     <Compile Include="Control\ViewModels\TopicViewModel.cs" />
     <Compile Include="Control\ViewModels\UserViewModel.cs" />
-    <Compile Include="Data\SettingsHelper.cs" />
-    <Compile Include="Data\ExceptionCatcher.cs" />
+    <Compile Include="Helpers\SettingsHelper.cs" />
+    <Compile Include="Helpers\ExceptionCatcher.cs" />
     <Compile Include="Control\GetUpdateContentDialog.xaml.cs">
       <DependentUpon>GetUpdateContentDialog.xaml</DependentUpon>
     </Compile>
@@ -188,11 +193,11 @@
     <Compile Include="Pages\AppPages\AppPage.xaml.cs">
       <DependentUpon>AppPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Data\AppData.cs" />
+    <Compile Include="Helpers\AppData.cs" />
     <Compile Include="Pages\SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Data\UIHelper.cs" />
+    <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -209,6 +214,8 @@
     <Compile Include="Pages\FeedPages\UserListPage.xaml.cs">
       <DependentUpon>UserListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\FeedListPageViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

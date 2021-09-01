@@ -1,5 +1,8 @@
 ﻿using CoolapkUWP.Control.ViewModels;
 using CoolapkUWP.Data;
+using CoolapkUWP.Helpers.DataHelpers;
+using CoolapkUWP.Models.Pages;
+using CoolapkUWP.ViewModels;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Collections.Generic;
@@ -17,414 +20,13 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP.Pages.FeedPages
 {
-    internal enum FeedListType
-    {
-        ProductPageList,
-        UserPageList,
-        TagPageList,
-        DYHPageList,
-        APPPageList
-    }
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
     public sealed partial class FeedListPage : Page
     {
-        private interface IFeedListDataProvider
-        {
-            string Id { get; }
-            FeedListType ListType { get; }
-            Task<object> GetDetail();
-            Task<List<FeedViewModel>> GetFeeds(int p = -1);
-            string GetTitleBarText(object o);
-        }
-
-        private interface ICanChangeSelectedIndex : IFeedListDataProvider
-        {
-            int SelectedIndex { get; set; }
-            void Reset();
-        }
-
-        private class UserPageDataProvider : ICanChangeSelectedIndex
-        {
-            public string Id { get; private set; }
-
-            private int page, _selectedIndex;
-            public int SelectedIndex
-            {
-                get => _selectedIndex;
-                set
-                {
-                    if (value > -1)
-                    { _selectedIndex = value; }
-                }
-            }
-
-            private double firstItem, lastItem;
-            public FeedListType ListType { get => FeedListType.UserPageList; }
-            public UserPageDataProvider(string uid) => Id = uid;
-
-            public void Reset() => firstItem = lastItem = page = 0;
-
-            public async Task<object> GetDetail()
-            {
-                JsonObject detail = UIHelper.GetJSonObject(await UIHelper.GetJson("/user/space?uid=" + Id));
-                return detail != null
-                    ? new UserDetail
-                    {
-                        FollowStatus = detail["uid"].GetNumber().ToString() == SettingsHelper.GetString("uid") ? string.Empty : detail["isFollow"].GetNumber() == 0 ? "关注" : "取消关注",
-                        UserFaceUrl = detail["userAvatar"].GetString(),
-                        UserName = detail["username"].GetString(),
-                        FollowNum = detail["follow"].GetNumber(),
-                        FansNum = detail["fans"].GetNumber(),
-                        Level = detail["level"].GetNumber(),
-                        Bio = detail["bio"].GetString(),
-                        BackgroundUrl = detail["cover"].GetString(),
-                        Verify_title = detail["verify_title"].GetString(),
-                        Gender = detail["gender"].GetNumber() == 1 ? "♂" : (detail["gender"].GetNumber() == 0 ? "♀" : string.Empty),
-                        City = $"{detail["province"].GetString()} {detail["city"].GetString()}",
-                        Astro = detail["astro"].GetString(),
-                        Logintime = $"{detail["logintime"].GetNumber().ConvertTime()}活跃",
-                        FeedNum = detail["feed"].GetNumber(),
-                        UserFace = await ImageCache.GetImage(ImageType.SmallAvatar, detail["userSmallAvatar"].GetString()),
-                        Background = new ImageViewModel(detail["cover"].GetString(), ImageType.OriginImage),
-                        SelectedIndex = SelectedIndex,
-                    }
-                    : null;
-            }
-
-            public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
-            {
-                string sortType = "feed";
-                switch (SelectedIndex)
-                {
-                    case 0:
-                        sortType = "feed";
-                        break;
-                    case 1:
-                        sortType = "htmlFeed";
-                        break;
-                    case 2:
-                        sortType = "questionAndAnswer";
-                        break;
-                    default:
-                        break;
-                }
-                if (p == 1 && page == 0) { page = 1; }
-                JsonArray Root = UIHelper.GetDataArray(await UIHelper.GetJson($"/user/{sortType}List?uid={Id}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}"));
-                if (!(Root is null) && Root.Count != 0)
-                {
-                    if (page == 1 || p == 1)
-                    { firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem; }
-                    lastItem = Root.Last().GetObject()["id"].GetNumber();
-                    List<FeedViewModel> FeedsCollection = new List<FeedViewModel>();
-                    foreach (IJsonValue i in Root) { FeedsCollection.Add(new FeedViewModel(i)); }
-                    return FeedsCollection;
-                }
-                else
-                {
-                    page--;
-                    return null;
-                }
-            }
-
-            public string GetTitleBarText(object o) => (o as UserDetail).UserName;
-        }
-
-        private class TagPageDataProvider : ICanChangeSelectedIndex
-        {
-            public string Id { get; private set; }
-
-            private int page, _selectedIndex;
-            public int SelectedIndex
-            {
-                get => _selectedIndex;
-                set
-                {
-                    if (value > -1)
-                    { _selectedIndex = value; }
-                }
-            }
-
-            private double firstItem, lastItem;
-            public FeedListType ListType { get => FeedListType.TagPageList; }
-            public TagPageDataProvider(string tag) => Id = tag;
-
-            public void Reset() => firstItem = lastItem = page = 0;
-
-            public async Task<object> GetDetail()
-            {
-                JsonObject detail = UIHelper.GetJSonObject(await UIHelper.GetJson("/topic/newTagDetail?tag=" + Id));
-                return detail != null
-                    ? new TopicDetail
-                    {
-                        Logo = await ImageCache.GetImage(ImageType.Icon, detail["logo"].GetString()),
-                        Title = detail["title"].GetString(),
-                        FollowNum = detail.TryGetValue("follownum", out IJsonValue t) ? t.GetNumber() : detail["follow_num"].GetNumber(),
-                        CommentNum = detail.TryGetValue("commentnum", out IJsonValue tt) ? tt.GetNumber() : detail["rating_total_num"].GetNumber(),
-                        Description = detail["description"].GetString(),
-                        SelectedIndex = SelectedIndex
-                    }
-                    : null;
-            }
-
-            public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
-            {
-                string sortType = "lastupdate_desc";
-                switch (SelectedIndex)
-                {
-                    case 0:
-                        sortType = "lastupdate_desc";
-                        break;
-                    case 1:
-                        sortType = "dateline_desc";
-                        break;
-                    case 2:
-                        sortType = "popular";
-                        break;
-                    default:
-                        break;
-                }
-                if (p == 1 && page == 0) { page = 1; }
-                JsonArray Root = UIHelper.GetDataArray(await UIHelper.GetJson($"/topic/tagFeedList?tag={Id}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{(lastItem == 0 ? string.Empty : $"&lastItem={lastItem}")}&listType={sortType}&blockStatus=0"));
-                if (!(Root is null) && Root.Count != 0)
-                {
-                    if (page == 1 || p == 1)
-                    { firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem; }
-                    lastItem = Root.Last()?.GetObject()["id"].GetNumber() ?? lastItem;
-                    List<FeedViewModel> FeedsCollection = new List<FeedViewModel>();
-                    foreach (IJsonValue i in Root) { FeedsCollection.Add(new FeedViewModel(i)); }
-                    return FeedsCollection;
-                }
-                else
-                {
-                    page--;
-                    return null;
-                }
-            }
-
-            public string GetTitleBarText(object o) => (o as TopicDetail).Title;
-        }
-
-        private class DYHPageDataProvider : ICanChangeSelectedIndex
-        {
-            public string Id { get; private set; }
-
-            private int page, _selectedIndex;
-            public int SelectedIndex
-            {
-                get => _selectedIndex;
-                set
-                {
-                    if (value > -1)
-                    { _selectedIndex = value; }
-                }
-            }
-
-            private double firstItem, lastItem;
-            public FeedListType ListType { get => FeedListType.DYHPageList; }
-            public DYHPageDataProvider(string id) => Id = id;
-
-            public void Reset() => firstItem = lastItem = page = 0;
-
-            public async Task<object> GetDetail()
-            {
-                JsonObject detail = UIHelper.GetJSonObject(await UIHelper.GetJson("/dyh/detail?dyhId=" + Id));
-                if (detail != null)
-                {
-                    bool showUserButton = detail["uid"].GetNumber() != 0;
-                    return new DYHDetail
-                    {
-                        Logo = await ImageCache.GetImage(ImageType.Icon, detail["logo"].GetString()),
-                        Title = detail["title"].GetString(),
-                        Description = detail["description"].GetString(),
-                        FollowNum = detail["follownum"].GetNumber(),
-                        ShowUserButton = showUserButton,
-                        Url = showUserButton ? detail["userInfo"].GetObject()["url"].GetString() : string.Empty,
-                        UserName = showUserButton ? detail["userInfo"].GetObject()["username"].GetString() : string.Empty,
-                        UserAvatar = showUserButton ? await ImageCache.GetImage(ImageType.SmallAvatar, detail["userInfo"].GetObject()["userSmallAvatar"].ToString().Replace("\"", string.Empty)) : null,
-                        SelectedIndex = SelectedIndex,
-                        ShowComboBox = detail["is_open_discuss"].GetNumber() == 1
-                    };
-                }
-                else { return null; }
-            }
-
-            public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
-            {
-                if (p == 1 && page == 0) { page = 1; }
-                JsonArray Root = UIHelper.GetDataArray(await UIHelper.GetJson($"/dyhArticle/list?dyhId={Id}&type={(SelectedIndex == 0 ? "all" : "square")}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{((lastItem == 0) ? string.Empty : $"&lastItem={lastItem}")}"));
-                if (!(Root is null) && Root.Count != 0)
-                {
-                    if (page == 1 || p == 1)
-                    { firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem; }
-                    lastItem = Root.Last()?.GetObject()["id"].GetNumber() ?? lastItem;
-                    List<FeedViewModel> FeedsCollection = new List<FeedViewModel>();
-                    foreach (IJsonValue i in Root) { FeedsCollection.Add(new FeedViewModel(i)); }
-                    return FeedsCollection;
-                }
-                else
-                {
-                    page--;
-                    return null;
-                }
-            }
-
-            public string GetTitleBarText(object o) => (o as DYHDetail).Title;
-        }
-
-        private class ProductPageDataProvider : ICanChangeSelectedIndex
-        {
-            public string Id { get; private set; }
-
-            private int page, _selectedIndex;
-            public int SelectedIndex
-            {
-                get => _selectedIndex;
-                set
-                {
-                    if (value > -1)
-                    { _selectedIndex = value; }
-                }
-            }
-
-            private double firstItem, lastItem;
-            public FeedListType ListType { get => FeedListType.ProductPageList; }
-            public ProductPageDataProvider(string id) => Id = id;
-
-            public void Reset() => firstItem = lastItem = page = 0;
-
-            public async Task<object> GetDetail()
-            {
-                JsonObject detail = UIHelper.GetJSonObject(await UIHelper.GetJson("/product/detail?id=" + Id));
-                return detail != null
-                    ? new ProductDetail
-                    {
-                        Title = detail["title"].GetString(),
-                        FollowNum = detail["follow_num"].GetNumber(),
-                        CommentNum = detail["hot_num_txt"].GetValue(),
-                        Description = detail["description"].GetString(),
-                        Logo = await ImageCache.GetImage(ImageType.Icon, detail["logo"].GetString()),
-                        SelectedIndex = SelectedIndex
-                    }
-                    : null;
-            }
-
-            public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
-            {
-                string sortType = "feed";
-                switch (SelectedIndex)
-                {
-                    case 0:
-                        sortType = "feed";
-                        break;
-                    case 1:
-                        sortType = "answer";
-                        break;
-                    case 2:
-                        sortType = "article";
-                        break;
-                    default:
-                        break;
-                }
-                if (p == 1 && page == 0) { page = 1; }
-                JsonArray Root = UIHelper.GetDataArray(await UIHelper.GetJson($"/page/dataList?url=/page?url=/product/feedList?type={sortType}&id={Id}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{((lastItem == 0) ? string.Empty : $"&lastItem={lastItem}")}"));
-                if (!(Root is null) && Root.Count != 0)
-                {
-                    if (page == 1 || p == 1)
-                    { firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem; }
-                    lastItem = Root.Last()?.GetObject()["id"].GetNumber() ?? lastItem;
-                    List<FeedViewModel> FeedsCollection = new List<FeedViewModel>();
-                    foreach (IJsonValue i in Root) { FeedsCollection.Add(new FeedViewModel(i)); }
-                    return FeedsCollection;
-                }
-                else
-                {
-                    page--;
-                    return null;
-                }
-            }
-
-            public string GetTitleBarText(object o) => (o as ProductDetail).Title;
-        }
-
-        private class APPPageDataProvider : ICanChangeSelectedIndex
-        {
-            public string Id { get; private set; }
-
-            private int page, _selectedIndex;
-            public int SelectedIndex
-            {
-                get => _selectedIndex;
-                set
-                {
-                    if (value > -1)
-                    { _selectedIndex = value; }
-                }
-            }
-
-            private double firstItem, lastItem;
-            public FeedListType ListType { get => FeedListType.APPPageList; }
-            public APPPageDataProvider(string id) => Id = id;
-
-            public void Reset() => firstItem = lastItem = page = 0;
-
-            public async Task<object> GetDetail()
-            {
-                JsonObject detail = UIHelper.GetJSonObject(await UIHelper.GetJson($"/apk/detail?id={Id}&installed=0"));
-                return detail != null
-                    ? new APPDetail
-                    {
-                        Title = detail["title"].GetString(),
-                        FollowNum = detail["follownum"].GetNumber(),
-                        CommentNum = detail["commentnum"].GetValue(),
-                        Description = detail["description"].GetString(),
-                        Logo = await ImageCache.GetImage(ImageType.Icon, detail["logo"].GetString())
-                    }
-                    : null;
-            }
-
-            public async Task<List<FeedViewModel>> GetFeeds(int p = -1)
-            {
-                string sortType = "lastupdate_desc";
-                switch (SelectedIndex)
-                {
-                    case 0:
-                        sortType = "lastupdate_desc";
-                        break;
-                    case 1:
-                        sortType = "dateline_desc";
-                        break;
-                    case 2:
-                        sortType = "popular";
-                        break;
-                    default:
-                        break;
-                }
-                if (p == 1 && page == 0) { page = 1; }
-                JsonArray Root = UIHelper.GetDataArray(await UIHelper.GetJson($"/page/dataList?url=%23/feed/apkCommentList?isIncludeTop=1&id={Id}&sort={sortType}&page={(p == -1 ? ++page : p)}{(firstItem == 0 ? string.Empty : $"&firstItem={firstItem}")}{((lastItem == 0) ? string.Empty : $"&lastItem={lastItem}")}"));
-                if (!(Root is null) && Root.Count != 0)
-                {
-                    if (page == 1 || p == 1)
-                    { firstItem = Root.First()?.GetObject()["id"].GetNumber() ?? firstItem; }
-                    lastItem = Root.Last()?.GetObject()["id"].GetNumber() ?? lastItem;
-                    List<FeedViewModel> FeedsCollection = new List<FeedViewModel>();
-                    foreach (IJsonValue i in Root) { FeedsCollection.Add(new FeedViewModel(i)); }
-                    return FeedsCollection;
-                }
-                else
-                {
-                    page--;
-                    return null;
-                }
-            }
-
-            public string GetTitleBarText(object o) => (o as APPDetail).Title;
-        }
-
-        IFeedListDataProvider provider;
-        ScrollViewer VScrollViewer;
-        ObservableCollection<object> itemCollection = new ObservableCollection<object>();
+        private FeedListDS FeedListDS;
+        private IFeedListDataProvider Provider;
 
         public FeedListPage() => InitializeComponent();
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -432,98 +34,101 @@ namespace CoolapkUWP.Pages.FeedPages
             base.OnNavigatedTo(e);
             object[] vs = e.Parameter as object[];
             string str = vs[1] as string;
-            FeedListType feedListType = (FeedListType)vs[0];
+            FeedListType FeedListType = (FeedListType)vs[0];
             if (!string.IsNullOrEmpty(str))
             {
-                if (feedListType != provider?.ListType || (feedListType == provider?.ListType && str != provider.Id))
+                if (FeedListType != Provider?.ListType || (FeedListType == Provider?.ListType && str != Provider.Id))
                 {
-                    if (itemCollection.Count > 0) { itemCollection.Clear(); }
-                    switch (feedListType)
+                    switch (FeedListType)
                     {
                         case FeedListType.UserPageList:
                             if (str == "0") { Frame.GoBack(); }
-                            else { provider = new UserPageDataProvider(str); }
-                            titleBar.ComboBoxVisibility = Visibility.Visible;
-                            titleBar.ComboBoxItemsSource = new string[] { "动态", "图文", "问答" };
-                            titleBar.ComboBoxSelectedIndex = 0;
+                            else { Provider = new UserPageDataProvider(str); }
+                            TitleBar.ComboBoxVisibility = Visibility.Visible;
+                            TitleBar.ComboBoxItemsSource = new string[] { "动态", "图文", "问答" };
+                            TitleBar.ComboBoxSelectedIndex = 0;
                             break;
                         case FeedListType.TagPageList:
-                            provider = new TagPageDataProvider(str);
-                            titleBar.ComboBoxVisibility = Visibility.Visible;
-                            titleBar.ComboBoxItemsSource = new string[] { "最近回复", "按时间排序", "按热度排序" };
-                            titleBar.ComboBoxSelectedIndex = 0;
+                            Provider = new TagPageDataProvider(str);
+                            TitleBar.ComboBoxVisibility = Visibility.Visible;
+                            TitleBar.ComboBoxItemsSource = new string[] { "最近回复", "按时间排序", "按热度排序" };
+                            TitleBar.ComboBoxSelectedIndex = 0;
                             break;
                         case FeedListType.DYHPageList:
-                            provider = new DYHPageDataProvider(str);
-                            titleBar.ComboBoxVisibility = Visibility.Collapsed;
-                            titleBar.ComboBoxItemsSource = new string[] { "精选", "广场" };
+                            Provider = new DYHPageDataProvider(str);
+                            TitleBar.ComboBoxVisibility = Visibility.Collapsed;
+                            TitleBar.ComboBoxItemsSource = new string[] { "精选", "广场" };
                             break;
                         case FeedListType.APPPageList:
-                            provider = new APPPageDataProvider(str);
-                            titleBar.ComboBoxVisibility = Visibility.Visible;
-                            titleBar.ComboBoxItemsSource = new string[] { "最近回复", "按时间排序", "按热度排序" };
-                            titleBar.ComboBoxSelectedIndex = 0;
+                            Provider = new APPPageDataProvider(str);
+                            TitleBar.ComboBoxVisibility = Visibility.Visible;
+                            TitleBar.ComboBoxItemsSource = new string[] { "最近回复", "按时间排序", "按热度排序" };
+                            TitleBar.ComboBoxSelectedIndex = 0;
                             break;
                         case FeedListType.ProductPageList:
-                            provider = new ProductPageDataProvider(str);
-                            titleBar.ComboBoxVisibility = Visibility.Visible;
-                            titleBar.ComboBoxItemsSource = new string[] { "讨论", "问答", "图文" };
-                            titleBar.ComboBoxSelectedIndex = 0;
+                            Provider = new ProductPageDataProvider(str);
+                            TitleBar.ComboBoxVisibility = Visibility.Visible;
+                            TitleBar.ComboBoxItemsSource = new string[] { "讨论", "问答", "图文" };
+                            TitleBar.ComboBoxSelectedIndex = 0;
+                            break;
+                        default:
                             break;
                     }
-                    Refresh();
+                    FeedListDS = new FeedListDS(Provider);
+                    Refresh(-2);
                 }
             }
             else { Frame.GoBack(); }
-            if (VScrollViewer is null)
-            {
-                _ = Task.Run(async () =>
-                  {
-                      await Task.Delay(300);
-                      await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                      {
-                          VScrollViewer = VisualTree.FindDescendantByName(listView, "ScrollViewer") as ScrollViewer;
-                          VScrollViewer.ViewChanged += async (s, ee) =>
-                          {
-                              if (!ee.IsIntermediate && VScrollViewer.VerticalOffset == VScrollViewer.ScrollableHeight)
-                              {
-                                  UIHelper.ShowProgressBar();
-                                  List<FeedViewModel> feeds = await provider.GetFeeds();
-                                  if (feeds != null)
-                                  {
-                                      foreach (FeedViewModel item in feeds)
-                                      { itemCollection.Add(item); }
-                                  }
-
-                                  UIHelper.HideProgressBar();
-                              }
-                          };
-                      });
-                  });
-            }
         }
 
-        private async void Refresh()
+        private void ListView_Loaded(object sender, RoutedEventArgs e)
+        {
+            _ = Task.Run(async () =>
+            {
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    ScrollViewer ScrollViewer = VisualTree.FindDescendantByName(ListView, "ScrollViewer") as ScrollViewer;
+                    ScrollViewer.ViewChanged += (s, ee) =>
+                    {
+                        if (!ee.IsIntermediate && ScrollViewer.VerticalOffset == ScrollViewer.ScrollableHeight)
+                        {
+                            Refresh();
+                        }
+                    };
+                });
+            });
+        }
+
+        private async void Refresh(int p = -1)
         {
             UIHelper.ShowProgressBar();
-            if (itemCollection.Count > 0) { itemCollection.RemoveAt(0); }
-            itemCollection.Insert(0, await provider.GetDetail());
-            if (itemCollection[0] is DYHDetail DYHDetail)
+            switch (p)
             {
-                titleBar.ComboBoxSelectedIndex = DYHDetail.SelectedIndex;
-                titleBar.ComboBoxVisibility = DYHDetail.ShowComboBox ? Visibility.Visible : Visibility.Collapsed;
+                case -1:
+                    _ = await FeedListDS.LoadMoreItemsAsync(20);
+                    break;
+                case -2:
+                    await FeedListDS.Refresh();
+                    if (FeedListDS[0] is DYHDetail DYHDetail)
+                    {
+                        TitleBar.ComboBoxSelectedIndex = DYHDetail.SelectedIndex;
+                        TitleBar.ComboBoxVisibility = DYHDetail.ShowComboBox ? Visibility.Visible : Visibility.Collapsed;
+                    }
+                    break;
+                case -3:
+                    if (FeedListDS.Count > 1)
+                    {
+                        for (int i = FeedListDS.Count - 1; i > 0; i--)
+                        { FeedListDS.RemoveAt(i); }
+                        _ = await FeedListDS.LoadMoreItemsAsync(20);
+                    }
+                    break;
+                default:
+                    break;
             }
-
-            List<FeedViewModel> feeds = await provider.GetFeeds(1);
-            if (feeds != null)
-            {
-                for (int i = 0; i < feeds.Count; i++)
-                { itemCollection.Insert(i + 1, feeds[i]); }
-            }
-
-            titleBar.Title = provider.GetTitleBarText(itemCollection[0]);
             UIHelper.HideProgressBar();
         }
+
         private void TitleBar_BackButtonClick(object sender, RoutedEventArgs e) => Frame.GoBack();
 
         private void UserDetailBorder_Tapped(object sender, TappedRoutedEventArgs e)
@@ -533,7 +138,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 if (fe != e.OriginalSource) { return; }
                 if (fe.Tag is string s)
                 {
-                    if (s == (itemCollection[0] as UserDetail).BackgroundUrl)
+                    if (s == (FeedListDS[0] as UserDetail).BackgroundUrl)
                     { UIHelper.ShowImage(s, ImageType.OriginImage); }
                     else { UIHelper.ShowImage(s, ImageType.SmallAvatar); }
                 }
@@ -546,20 +151,20 @@ namespace CoolapkUWP.Pages.FeedPages
             switch (button.Tag as string)
             {
                 case "follow":
-                    UIHelper.Navigate(typeof(UserListPage), new object[] { provider.Id, true, titleBar.Title });
+                    UIHelper.Navigate(typeof(UserListPage), new object[] { Provider.Id, true, TitleBar.Title });
                     break;
                 case "fans":
-                    UIHelper.Navigate(typeof(UserListPage), new object[] { provider.Id, false, titleBar.Title });
+                    UIHelper.Navigate(typeof(UserListPage), new object[] { Provider.Id, false, TitleBar.Title });
                     break;
                 case "FollowUser":
                     JsonObject o = null;
-                    switch ((itemCollection[0] as UserDetail).FollowStatus)
+                    switch ((FeedListDS[0] as UserDetail).FollowStatus)
                     {
                         case "关注":
-                            o = JsonObject.Parse(await UIHelper.GetJson($"/user/follow?uid={provider.Id}"));
+                            o = JsonObject.Parse(await UIHelper.GetJson($"/user/follow?uid={Provider.Id}"));
                             break;
                         case "取消关注":
-                            o = JsonObject.Parse(await UIHelper.GetJson($"/user/unfollow?uid={provider.Id}"));
+                            o = JsonObject.Parse(await UIHelper.GetJson($"/user/unfollow?uid={Provider.Id}"));
                             break;
                         default:
                             break;
@@ -572,8 +177,8 @@ namespace CoolapkUWP.Pages.FeedPages
                         }
                         else
                         {
-                            itemCollection.RemoveAt(0);
-                            itemCollection.Insert(0, await provider.GetDetail());
+                            FeedListDS.RemoveAt(0);
+                            FeedListDS.Insert(0, await Provider.GetDetail());
                         }
                     }
                     break;
@@ -585,15 +190,13 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void FeedTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (string.IsNullOrEmpty(provider.Id)) { return; }
-            ICanChangeSelectedIndex dataProvider = provider as ICanChangeSelectedIndex;
-            dataProvider.SelectedIndex = (sender as ComboBox).SelectedIndex;
-            dataProvider.Reset();
-            if (itemCollection.Count > 1)
+            if (string.IsNullOrEmpty(Provider.Id)) { return; }
+            if (FeedListDS != null)
             {
-                for (int i = itemCollection.Count - 1; i > 0; i--)
-                { itemCollection.RemoveAt(i); }
-                Refresh();
+                ICanChangeSelectedIndex dataProvider = FeedListDS._provider as ICanChangeSelectedIndex;
+                dataProvider.SelectedIndex = (sender as ComboBox).SelectedIndex;
+                dataProvider.Reset();
+                Refresh(-3);
             }
         }
 
@@ -602,77 +205,19 @@ namespace CoolapkUWP.Pages.FeedPages
             Border b = sender as Border;
             b.Height = e.NewSize.Width <= 400 ? e.NewSize.Width : 400;
         }
+
+        private void ListView_RefreshRequested(object sender, EventArgs e) => Refresh(-2);
+
+        private void TitleBar_RefreshEvent(object sender, RoutedEventArgs e) => Refresh(-2);
     }
 
-    internal class UserDetail
+    internal enum FeedListType
     {
-        public string UserFaceUrl;
-        public ImageSource UserFace;
-        public string UserName;
-        public double FollowNum;
-        public double FansNum;
-        public double FeedNum;
-        public double Level;
-        public string Bio;
-        public string BackgroundUrl;
-        public string Verify_title;
-        public string Gender;
-        public string City;
-        public string Astro;
-        public string Logintime;
-        public string FollowStatus;
-        public ImageViewModel Background;
-        public int SelectedIndex { get; set; }
-        public bool ShowFollowStatus { get => !string.IsNullOrEmpty(FollowStatus); }
-        public bool Has_bio { get => !string.IsNullOrEmpty(Bio); }
-        public bool Has_verify_title { get => !string.IsNullOrEmpty(Verify_title); }
-        public bool Has_Astro { get => !string.IsNullOrEmpty(Astro); }
-        public bool Has_City { get => !string.IsNullOrWhiteSpace(City) && !string.IsNullOrEmpty(City); }
-        public bool Has_Gender { get => !string.IsNullOrEmpty(Gender); }
-    }
-
-    internal class TopicDetail
-    {
-        public ImageSource Logo { get; set; }
-        public string Title { get; set; }
-        public double FollowNum { get; set; }
-        public double CommentNum { get; set; }
-        public string Description { get; set; }
-        public int SelectedIndex { get; set; }
-    }
-
-    internal class DYHDetail
-    {
-        public ImageSource Logo { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public double FollowNum { get; set; }
-        public bool ShowUserButton { get; set; }
-        public string Url { get; set; }
-        public string UserName { get; set; }
-        public ImageSource UserAvatar { get; set; }
-        public int SelectedIndex { get; set; }
-        public bool ShowComboBox { get; set; }
-    }
-
-    internal class ProductDetail
-    {
-        public ImageSource Logo { get; set; }
-        public string Title { get; set; }
-        public double FollowNum { get; set; }
-        public string CommentNum { get; set; }
-        public string Description { get; set; }
-        public int SelectedIndex { get; set; }
-    }
-
-    internal class APPDetail
-    {
-        public ImageSource Logo { get; set; }
-        public string Title { get; set; }
-        public double FollowNum { get; set; }
-        public string CommentNum { get; set; }
-        public string Description { get; set; }
-        public int SelectedIndex { get; set; }
+        ProductPageList,
+        UserPageList,
+        TagPageList,
+        DYHPageList,
+        APPPageList
     }
 
     internal class TemplateSelector : DataTemplateSelector
@@ -688,5 +233,53 @@ namespace CoolapkUWP.Pages.FeedPages
             return item is UserDetail ? UserDetail : item is TopicDetail ? TopicDetail : item is DYHDetail ? DYHDetail : item is ProductDetail ? ProductDetail : item is APPDetail ? APPDetail : Feed;
         }
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
+    }
+
+    /// <summary>
+    /// Provide list of Minecraft Download Versions. <br/>
+    /// You can bind this ds to ItemSource to enable incremental loading ,
+    /// or call LoadMoreItemsAsync to load more.
+    /// </summary>
+    internal class FeedListDS : DataSourceBase<object>
+    {
+        public string Title;
+        public IFeedListDataProvider _provider;
+
+        internal FeedListDS(IFeedListDataProvider provider)
+        {
+            _provider = provider;
+        }
+
+        protected async override Task<IList<object>> LoadItemsAsync(uint count)
+        {
+            List<object> Items = new List<object>();
+            if (_currentPage == 1)
+            {
+                object Header = await _provider.GetDetail();
+                Title = _provider.GetTitleBarText(Header);
+                Items.Insert(0, Header);
+            }
+            List<FeedViewModel> Feeds = await _provider.GetFeeds(_currentPage - 1);
+            if (Feeds != null)
+            {
+                foreach (FeedViewModel item in Feeds)
+                { Items.Add(item); }
+            }
+            return Items;
+        }
+
+        protected override void AddItems(IList<object> items)
+        {
+            if (items != null)
+            {
+                foreach (object news in items)
+                {
+                    if (news != null)
+                    {
+                        Add(news);
+                    }
+                }
+            }
+        }
     }
 }
