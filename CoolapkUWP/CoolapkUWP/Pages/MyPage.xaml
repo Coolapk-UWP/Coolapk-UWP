@@ -175,7 +175,7 @@
                 <ColumnDefinition x:Name="Column0"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="44"/>
+                <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
 
@@ -209,22 +209,23 @@
                 Visibility="Collapsed"/>
 
             <Button
+                Width="40"
                 Grid.Column="3"
-                Width="44"
-                HorizontalAlignment="Right"
+                Tag="Notifications"
                 Click="Button_Click"
-                Style="{ThemeResource IconButtonStyle}"
-                Tag="Notifications">
-                <StackPanel Orientation="Horizontal">
+                HorizontalAlignment="Right"
+                Style="{ThemeResource IconButtonStyle}">
+                <Grid>
                     <FontIcon
-                        FontFamily="Segoe MDL2 Assets"
                         FontSize="20"
+                        FontFamily="Segoe MDL2 Assets"
                         Glyph="{x:Bind BadgeIconGlyph, Mode=OneWay}"/>
-                    <TextBlock
-                        Margin="4,0,0,0"
-                        VerticalAlignment="Bottom"
-                        Text="{x:Bind BadgeNum.ToString(), Mode=OneWay}"/>
-                </StackPanel>
+                    <winui:InfoBadge
+                        Margin="-5,-5"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Value="{x:Bind BadgeNum, Mode=OneWay}"/>
+                </Grid>
             </Button>
 
             <Button

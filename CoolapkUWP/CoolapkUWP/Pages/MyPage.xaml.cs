@@ -24,7 +24,7 @@ namespace CoolapkUWP.Pages
 
         private ViewModels.MyPage.ViewMode provider;
 
-        private double badgeNum;
+        private int badgeNum;
         private string badgeIconGlyph = "\uED0D";
         private Visibility logoutButtonVisibility;
 
@@ -38,7 +38,7 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private double BadgeNum
+        private int BadgeNum
         {
             get => badgeNum;
             set
@@ -241,7 +241,7 @@ namespace CoolapkUWP.Pages
         private void ChangeBadgeNum(double num) =>
             _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                BadgeNum = num;
+                BadgeNum = (int)num;
                 UIHelper.SetBadgeNumber(num.ToString());
                 BadgeIconGlyph = num > 0 ? "\uED0C" : "\uED0D";
             });
