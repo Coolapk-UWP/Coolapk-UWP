@@ -8,11 +8,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolapkUWP", "Coolapk UWP\CoolapkUWP\CoolapkUWP.csproj", "{C770F8CE-4188-4D93-80CB-DACAC2F94D95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolapkUWP", "CoolapkUWP\CoolapkUWP\CoolapkUWP.csproj", "{C770F8CE-4188-4D93-80CB-DACAC2F94D95}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolapkUWP.Core", "Coolapk UWP\CoolapkUWP.Core\CoolapkUWP.Core.csproj", "{C882EE3C-7CE6-4E43-82F0-26FE312753E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolapkUWP.Core", "CoolapkUWP\CoolapkUWP.Core\CoolapkUWP.Core.csproj", "{C882EE3C-7CE6-4E43-82F0-26FE312753E4}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "CoolapkUWP.Core.Test", "Coolapk UWP\CoolapkUWP.Core.Test\CoolapkUWP.Core.Test.fsproj", "{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "CoolapkUWP.Core.Test", "CoolapkUWP\CoolapkUWP.Core.Test\CoolapkUWP.Core.Test.fsproj", "{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
