@@ -8,16 +8,21 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
+		Debug|ARM64 = Debug|ARM64
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|ARM = Release|ARM
+		Release|ARM64 = Release|ARM64
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Debug|ARM.ActiveCfg = Debug|ARMCoolapkUWP (Feature2)
-		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Debug|ARM.Build.0 = Debug|ARM
-		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Debug|ARM.Deploy.0 = Debug|ARM
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Debug|ARM.Build.0 = Debug|Any CPU
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Debug|ARM.Deploy.0 = Debug|Any CPU
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Debug|ARM64.Build.0 = Debug|ARM64
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Debug|ARM64.Deploy.0 = Debug|ARM64
 		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Debug|x64.ActiveCfg = Debug|x64
 		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Debug|x64.Build.0 = Debug|x64
 		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Debug|x64.Deploy.0 = Debug|x64
@@ -27,6 +32,9 @@ Global
 		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|ARM.ActiveCfg = Release|ARM
 		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|ARM.Build.0 = Release|ARM
 		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|ARM.Deploy.0 = Release|ARM
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|ARM64.ActiveCfg = Release|ARM64
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|ARM64.Build.0 = Release|ARM64
+		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|ARM64.Deploy.0 = Release|ARM64
 		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x64.ActiveCfg = Release|x64
 		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x64.Build.0 = Release|x64
 		{C770F8CE-4188-4D93-80CB-DACAC2F94D95}.Release|x64.Deploy.0 = Release|x64
