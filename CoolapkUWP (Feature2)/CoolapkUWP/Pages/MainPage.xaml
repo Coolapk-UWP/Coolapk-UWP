@@ -91,6 +91,9 @@
                 <muxc:NavigationViewItem.Icon>
                     <FontIcon x:Name="NotifyStatus"/>
                 </muxc:NavigationViewItem.Icon>
+                <muxc:NavigationViewItem.InfoBadge>
+                    <muxc:InfoBadge x:Name="NotifyNum"/>
+                </muxc:NavigationViewItem.InfoBadge>
             </muxc:NavigationViewItem>
             <muxc:NavigationViewItem Tag="UserHub">
                 <StackPanel

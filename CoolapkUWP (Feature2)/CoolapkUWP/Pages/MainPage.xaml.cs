@@ -223,12 +223,12 @@ namespace CoolapkUWP.Pages
                 if (num > 0)
                 {
                     NotifyStatus.Glyph = "";// ED0C
-                    Notify.Content = num.ToString() + "个通知";
+                    NotifyNum.Value = (int)num;
                 }
                 else
                 {
                     NotifyStatus.Glyph = "";// ED0D
-                    Notify.Content = "通知";
+                    NotifyNum.Value = 0;
                 }
             });
         }
