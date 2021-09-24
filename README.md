@@ -39,7 +39,7 @@
 1. 夜间模式
 2. 登录/点赞
 3. 浏览动态/图文/问答/通知
-4. 更多内容请自行发掘<img alt="流汗滑稽" src="./src/CoolapkUWP/Assets/Emoji/1259.png" width="20px" />
+4. 更多内容请自行发掘<img alt="流汗滑稽" src="./CoolapkUWP/CoolapkUWP/Assets/Emoji/1259.png" width="20px" />
 
 ## 如何安装应用
 ### 最低需求
