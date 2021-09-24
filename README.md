@@ -36,7 +36,7 @@
 4. 应用内检查更新
 5. 登录/发帖/回复/点赞
 6. 浏览应用/动态/图文/问答/通知
-7. 更多内容请自行发掘<img alt="流汗滑稽" src="./酷安 UWP/Assets/Emoji/(流汗滑稽.png" width="20px" />
+7. 更多内容请自行发掘<img alt="流汗滑稽" src="./CoolapkUWP (Feature2)/CoolapkUWP/Assets/Emoji/(流汗滑稽.png" width="20px" />
 
 ## 支持的语言
 中文
