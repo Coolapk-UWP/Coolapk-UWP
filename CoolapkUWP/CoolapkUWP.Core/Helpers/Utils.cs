@@ -276,7 +276,6 @@ namespace CoolapkUWP.Core.Helpers
         public static async Task<(bool isSucceed, JToken result)> GetDataAsync(Uri uri, bool forceRefresh, IEnumerable<(string, string)> cookies)
         {
             string json;
-            json = await NetworkHelper.GetSrtingAsync(uri, cookies);
             if (forceRefresh || !responseCache.ContainsKey(uri))
             {
                 json = await NetworkHelper.GetSrtingAsync(uri, cookies);

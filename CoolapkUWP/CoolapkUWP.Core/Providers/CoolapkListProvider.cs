@@ -181,8 +181,6 @@ namespace CoolapkUWP.Core.Providers
                 page--;
                 Utils.ShowInAppMessage(_messageType);
             }
-
-            await Task.Delay(1000);
         }
     }
 }
