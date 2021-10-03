@@ -79,8 +79,8 @@ namespace CoolapkUWP.Data
                     using (HttpClient client = new HttpClient())
                     {
                         JsonObject keys;
-                        try { keys = JsonObject.Parse(await UIHelper.GetHTML("https://api.github.com/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest", true)); }
-                        catch { keys = JsonObject.Parse(await UIHelper.GetHTML("https://v2.kkpp.cc/repos/Tangent-90/Coolapk-UWP/releases/latest", "XMLHttpRequest", true)); }
+                        try { keys = JsonObject.Parse(await UIHelper.GetHTML("https://api.github.com/repos/Coolapk-UWP/Coolapk-UWP/releases/latest", "XMLHttpRequest", true)); }
+                        catch { keys = JsonObject.Parse(await UIHelper.GetHTML("https://v2.kkpp.cc/repos/Coolapk-UWP/Coolapk-UWP/releases/latest", "XMLHttpRequest", true)); }
                         string[] ver = keys["tag_name"].GetString().Replace("v", string.Empty).Split('.');
                         if (ushort.Parse(ver[0]) > Package.Current.Id.Version.Major
                             || (ushort.Parse(ver[0]) == Package.Current.Id.Version.Major && ushort.Parse(ver[1]) > Package.Current.Id.Version.Minor)
