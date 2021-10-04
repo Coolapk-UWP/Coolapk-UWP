@@ -2,7 +2,7 @@
 using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -256,9 +256,10 @@ namespace CoolapkUWP.Helpers
         public static bool IsOriginSource(object source, object originalSource)
         {
             var r = false;
-            if (VisualTree.FindAscendant(originalSource as DependencyObject, typeof(Button)) == null && VisualTree.FindAscendant(originalSource as DependencyObject, typeof(AppBarButton)) == null && originalSource.GetType() != typeof(Button) && originalSource.GetType() != typeof(AppBarButton) && originalSource.GetType() != typeof(RichEditBox))
+            if (!(originalSource is DependencyObject depSource)) return false;
+            if (depSource.FindAscendant(typeof(Button)) == null && depSource.FindAscendant(typeof(AppBarButton)) == null && originalSource.GetType() != typeof(Button) && originalSource.GetType() != typeof(AppBarButton) && originalSource.GetType() != typeof(RichEditBox))
             {
-                r = source == VisualTree.FindAscendant(originalSource as DependencyObject, source.GetType());
+                r = source == depSource.FindAscendant(source.GetType());
             }
             return source == originalSource || r;
         }

@@ -1,6 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Microsoft.Toolkit.Uwp.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -42,7 +42,7 @@ namespace CoolapkUWP.Controls.DataTemplates
             switch (element.Name)
             {
                 case "makeReplyButton":
-                    var item = Microsoft.Toolkit.Uwp.UI.Extensions.VisualTree.FindAscendant<ListViewItem>(element);
+                    var item = element.FindAscendant<ListViewItem>();
                     var ctrl = item.FindName("makeFeed") as MakeFeedControl;
                     ctrl.Visibility = ctrl.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
                     DisabledCopy();
@@ -102,7 +102,7 @@ namespace CoolapkUWP.Controls.DataTemplates
         internal static void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var uc = sender as UserControl;
-            var bp = uc.FindChildByName("btnsPanel") as StackPanel;
+            var bp = uc.FindChild("btnsPanel") as StackPanel;
             var width = e is null ? uc.Width : e.NewSize.Width;
             bp.SetValue(Grid.RowProperty, width > 524 ? 0 : 4);
         }

@@ -1,9 +1,10 @@
 ﻿using CoolapkUWP.Helpers;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -265,7 +266,7 @@ namespace CoolapkUWP.Pages
         private void ResetDegree(int index)
         {
             Storyboard storyboard = null;
-            var images = SFlipView.FindDescendants<Image>();
+            var images = SFlipView.FindDescendants().OfType<Image>();
             foreach (var item in images)
             {
                 if (item.DataContext != imageModels[index]) { continue; }
@@ -329,7 +330,7 @@ namespace CoolapkUWP.Pages
 
         private void OperateWithScrollViewers(Action<ScrollViewer> action)
         {
-            var views = VisualTree.FindDescendants<ScrollViewer>(SFlipView);
+            var views = SFlipView.FindDescendants().OfType<ScrollViewer>();
             int n = 0;
             foreach (var item in views)
             {
@@ -396,7 +397,7 @@ namespace CoolapkUWP.Pages
                     if (SFlipView.SelectedIndex == -1 || SFlipView.Items.Count == 0) { return; }
 
                     Storyboard storyboard = null;
-                    var images = SFlipView.FindDescendants<Image>();
+                    var images = SFlipView.FindDescendants().OfType<Image>();
                     foreach (var item in images)
                     {
                         if (item.DataContext != imageModels[SFlipView.SelectedIndex]) { continue; }
