@@ -117,8 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="title" xml:space="preserve">
-    <value>回复({0})</value>
-    <comment>{0}表示数量</comment>
+  <data name="BackButton.Content" xml:space="preserve">
+    <value>尝试获取token</value>
+  </data>
+  <data name="BackButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>如果登录成功后没有自动返回上一页，请点这里</value>
+  </data>
+  <data name="CannotGetToken" xml:space="preserve">
+    <value>没有获取到token，请尝试重新登录</value>
+  </data>
+  <data name="LoginSuccessfully" xml:space="preserve">
+    <value>登录成功</value>
+  </data>
+  <data name="OpenInBrowserButton.Content" xml:space="preserve">
+    <value>在浏览器中打开</value>
   </data>
 </root>
