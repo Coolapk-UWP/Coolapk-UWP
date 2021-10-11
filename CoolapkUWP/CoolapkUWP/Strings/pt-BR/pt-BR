@@ -117,22 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="dateline_desc" xml:space="preserve">
-    <value>按时间排序</value>
-  </data>
-  <data name="isFromAuthor" xml:space="preserve">
-    <value>只看楼主</value>
-  </data>
-  <data name="lastupdate_desc" xml:space="preserve">
-    <value>最近回复</value>
-  </data>
-  <data name="like" xml:space="preserve">
-    <value>按点赞排序</value>
-  </data>
-  <data name="noMoreAnswer" xml:space="preserve">
-    <value>没有更多回答了</value>
-  </data>
-  <data name="popular" xml:space="preserve">
-    <value>按热度排序</value>
+  <data name="title" xml:space="preserve">
+    <value>回复({0})</value>
+    <comment>{0}表示数量</comment>
   </data>
 </root>
