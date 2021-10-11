@@ -117,16 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="editBox.PlaceholderText" xml:space="preserve">
-    <value>分享你的想法……</value>
+  <data name="AtMe.Text" xml:space="preserve">
+    <value>@我的动态</value>
   </data>
-  <data name="emojiButton.Label" xml:space="preserve">
-    <value>插入表情</value>
+  <data name="AtMeComment.Text" xml:space="preserve">
+    <value>@我的评论</value>
   </data>
-  <data name="sendButton.Label" xml:space="preserve">
-    <value>发送</value>
+  <data name="AtMeCommentText" xml:space="preserve">
+    <value>@我的评论</value>
   </data>
-  <data name="sendSuccessed" xml:space="preserve">
-    <value>发送成功</value>
+  <data name="AtMeText" xml:space="preserve">
+    <value>@我的动态</value>
+  </data>
+  <data name="Followed.Text" xml:space="preserve">
+    <value>好友关注</value>
+  </data>
+  <data name="FollowedText" xml:space="preserve">
+    <value>好友关注</value>
+  </data>
+  <data name="Liked.Text" xml:space="preserve">
+    <value>我收到的赞</value>
+  </data>
+  <data name="LikedText" xml:space="preserve">
+    <value>我收到的赞</value>
+  </data>
+  <data name="Message.Text" xml:space="preserve">
+    <value>私信</value>
+  </data>
+  <data name="MessageText" xml:space="preserve">
+    <value>私信</value>
+  </data>
+  <data name="noMore" xml:space="preserve">
+    <value>没有更多了</value>
+  </data>
+  <data name="noNew" xml:space="preserve">
+    <value>没有新的了</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>通知</value>
   </data>
 </root>
