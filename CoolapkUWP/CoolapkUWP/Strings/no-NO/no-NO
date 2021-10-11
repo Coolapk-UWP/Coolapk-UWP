@@ -117,31 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BackButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>上一张</value>
+  <data name="AtMe.Text" xml:space="preserve">
+    <value>@我的动态</value>
   </data>
-  <data name="CopyMenuUri.Text" xml:space="preserve">
-    <value>复制链接</value>
+  <data name="AtMeComment.Text" xml:space="preserve">
+    <value>@我的评论</value>
   </data>
-  <data name="ForwardButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>下一张</value>
+  <data name="AtMeCommentText" xml:space="preserve">
+    <value>@我的评论</value>
   </data>
-  <data name="GetOriginButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>查看原图</value>
+  <data name="AtMeText" xml:space="preserve">
+    <value>@我的动态</value>
   </data>
-  <data name="GetOriginMenuItem.Text" xml:space="preserve">
-    <value>查看原图</value>
+  <data name="Followed.Text" xml:space="preserve">
+    <value>好友关注</value>
   </data>
-  <data name="SaveButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>保存图片</value>
+  <data name="FollowedText" xml:space="preserve">
+    <value>好友关注</value>
   </data>
-  <data name="SaveMenuItem.Text" xml:space="preserve">
-    <value>保存图片</value>
+  <data name="Liked.Text" xml:space="preserve">
+    <value>我收到的赞</value>
   </data>
-  <data name="ZoomInButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>放大</value>
+  <data name="LikedText" xml:space="preserve">
+    <value>我收到的赞</value>
   </data>
-  <data name="ZoomOutButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>缩小</value>
+  <data name="Message.Text" xml:space="preserve">
+    <value>私信</value>
+  </data>
+  <data name="MessageText" xml:space="preserve">
+    <value>私信</value>
+  </data>
+  <data name="noMore" xml:space="preserve">
+    <value>没有更多了</value>
+  </data>
+  <data name="noNew" xml:space="preserve">
+    <value>没有新的了</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>通知</value>
   </data>
 </root>
