@@ -117,88 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountLogout.Content" xml:space="preserve">
-    <value>退出登录</value>
+  <data name="all.Content" xml:space="preserve">
+    <value>全部关注</value>
   </data>
-  <data name="AccountLogoutConfirm.Content" xml:space="preserve">
-    <value>确定退出</value>
+  <data name="apk.Content" xml:space="preserve">
+    <value>应用关注</value>
   </data>
-  <data name="AccountLogoutTitle.Text" xml:space="preserve">
-    <value>你确定要退出登录吗？</value>
+  <data name="circle.Content" xml:space="preserve">
+    <value>好友关注</value>
   </data>
-  <data name="AccountSetting.Content" xml:space="preserve">
-    <value>账户设置</value>
+  <data name="product.Content" xml:space="preserve">
+    <value>数码关注</value>
   </data>
-  <data name="AccountSettingsHeader.Header" xml:space="preserve">
-    <value>账户</value>
+  <data name="question.Content" xml:space="preserve">
+    <value>问题关注</value>
   </data>
-  <data name="CheckUpdate.Content" xml:space="preserve">
-    <value>检查更新</value>
+  <data name="topic.Content" xml:space="preserve">
+    <value>话题关注</value>
   </data>
-  <data name="CheckUpdateWhenLuanchingCheckBox.Content" xml:space="preserve">
-    <value>启动时检查更新</value>
+  <data name="V10_CHANNEL_SJB.Content" xml:space="preserve">
+    <value>手机</value>
   </data>
-  <data name="CleanCacheButton.Content" xml:space="preserve">
-    <value>清除图像缓存</value>
+  <data name="V10_CHANNEL_SMB_TOP.Content" xml:space="preserve">
+    <value>排行榜</value>
   </data>
-  <data name="ContentSettingsHeader.Header" xml:space="preserve">
-    <value>内容</value>
+  <data name="V10_DIGITAL_HOME.Content" xml:space="preserve">
+    <value>数码</value>
   </data>
-  <data name="DisplayOriginPictureCheckBox.Content" xml:space="preserve">
-    <value>显示大图时默认加载原图</value>
+  <data name="V10_MARKET_HOME.Content" xml:space="preserve">
+    <value>精选</value>
   </data>
-  <data name="FeedbackLink.Content" xml:space="preserve">
-    <value>在GitHub上反馈</value>
+  <data name="V10_MARKET_RANK.Content" xml:space="preserve">
+    <value>排行</value>
   </data>
-  <data name="LogFolderLink.Content" xml:space="preserve">
-    <value>打开日志文件夹</value>
+  <data name="V11_DIGITAL_PRODUCT_LIST.Content" xml:space="preserve">
+    <value>数码库</value>
   </data>
-  <data name="MessageDialogContent" xml:space="preserve">
-    <value>进行此操作会同时退出登录，你确定吗？</value>
+  <data name="V11_DISCOVERY_SECOND_HAND.Content" xml:space="preserve">
+    <value>二手</value>
   </data>
-  <data name="MessageDialogTitle" xml:space="preserve">
-    <value>提示</value>
+  <data name="V11_FIND_COOLPIC.Content" xml:space="preserve">
+    <value>酷图</value>
   </data>
-  <data name="MyDevice.Content" xml:space="preserve">
-    <value>我的机型</value>
+  <data name="V11_FIND_DYH.Content" xml:space="preserve">
+    <value>看看号</value>
   </data>
-  <data name="NoPicsModeCheckBox.Header" xml:space="preserve">
-    <value>无图模式</value>
+  <data name="V11_FIND_GOODS.Content" xml:space="preserve">
+    <value>酷品</value>
   </data>
-  <data name="OthersSettingsHeader.Header" xml:space="preserve">
-    <value>其他</value>
+  <data name="V11_FIND_GOOD_GOODS_HOME.Content" xml:space="preserve">
+    <value>好物</value>
   </data>
-  <data name="ResetSettings.Content" xml:space="preserve">
-    <value>恢复默认设置</value>
+  <data name="V11_HOME_TAB_NEWS.Content" xml:space="preserve">
+    <value>快讯</value>
   </data>
-  <data name="ResetSettingsConfirm.Content" xml:space="preserve">
-    <value>恢复默认</value>
+  <data name="V11_ZHUANTI_EARPHONE.Content" xml:space="preserve">
+    <value>耳机</value>
   </data>
-  <data name="ResetSettingsTitle.Text" xml:space="preserve">
-    <value>进行此操作会同时退出登录，你确定吗？</value>
+  <data name="V8_HUODONG_XIANLIAO_20210409.Content" xml:space="preserve">
+    <value>闲聊</value>
   </data>
-  <data name="ShowOtherExceptionCheckBox.Content" xml:space="preserve">
-    <value>显示运行过程中出现的未知错误</value>
+  <data name="V8_MARKET_ALBUM.Content" xml:space="preserve">
+    <value>应用集</value>
   </data>
-  <data name="ThemeMode.Header" xml:space="preserve">
-    <value>主题模式</value>
+  <data name="V8_MARKET_APP.Content" xml:space="preserve">
+    <value>应用</value>
   </data>
-  <data name="ThemeModeDark.Content" xml:space="preserve">
-    <value>暗</value>
+  <data name="V8_MARKET_GAME.Content" xml:space="preserve">
+    <value>游戏</value>
   </data>
-  <data name="ThemeModeDefault.Content" xml:space="preserve">
-    <value>使用系统设置</value>
+  <data name="V9_HOME_TAB_FOLLOW.Content" xml:space="preserve">
+    <value>关注</value>
   </data>
-  <data name="ThemeModeLight.Content" xml:space="preserve">
-    <value>亮</value>
+  <data name="V9_HOME_TAB_HEADLINE.Content" xml:space="preserve">
+    <value>头条</value>
   </data>
-  <data name="Title.Title" xml:space="preserve">
-    <value>设置</value>
+  <data name="V9_HOME_TAB_LIVE.Content" xml:space="preserve">
+    <value>直播</value>
   </data>
-  <data name="UpdateSettingsHeader.Header" xml:space="preserve">
-    <value>更新</value>
+  <data name="V9_HOME_TAB_RANKING.Content" xml:space="preserve">
+    <value>热榜</value>
   </data>
-  <data name="UseOldEmojiModeCheckBox.Content" xml:space="preserve">
-    <value>使用旧表情</value>
+  <data name="V9_HOME_TAB_SHIPIN.Content" xml:space="preserve">
+    <value>视频</value>
+  </data>
+  <data name="V9_HOME_TAB_TOPIC.Content" xml:space="preserve">
+    <value>话题</value>
+  </data>
+  <data name="V9_HOME_TAB_WENDA.Content" xml:space="preserve">
+    <value>问答</value>
   </data>
 </root>
