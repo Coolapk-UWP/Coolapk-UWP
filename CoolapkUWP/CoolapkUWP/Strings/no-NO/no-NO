@@ -117,7 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Title.Title" xml:space="preserve">
-    <value>设置</value>
+  <data name="BackButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>上一张</value>
+  </data>
+  <data name="CopyMenuUri.Text" xml:space="preserve">
+    <value>复制链接</value>
+  </data>
+  <data name="ForwardButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>下一张</value>
+  </data>
+  <data name="GetOriginButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>查看原图</value>
+  </data>
+  <data name="GetOriginMenuItem.Text" xml:space="preserve">
+    <value>查看原图</value>
+  </data>
+  <data name="SaveButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>保存图片</value>
+  </data>
+  <data name="SaveMenuItem.Text" xml:space="preserve">
+    <value>保存图片</value>
+  </data>
+  <data name="ZoomInButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>放大</value>
+  </data>
+  <data name="ZoomOutButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>缩小</value>
   </data>
 </root>
