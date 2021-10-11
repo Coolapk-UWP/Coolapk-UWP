@@ -117,31 +117,47 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BackButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>上一张</value>
+  <data name="AppDescription" xml:space="preserve">
+    <value>一个基于UWP平台的酷安客户端</value>
   </data>
-  <data name="CopyMenuUri.Text" xml:space="preserve">
-    <value>复制链接</value>
+  <data name="AppName" xml:space="preserve">
+    <value>酷安</value>
   </data>
-  <data name="ForwardButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>下一张</value>
+  <data name="ExceptionThrown" xml:space="preserve">
+    <value>程序出现了错误……</value>
   </data>
-  <data name="GetOriginButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>查看原图</value>
+  <data name="GotoGithub" xml:space="preserve">
+    <value>前往Github</value>
   </data>
-  <data name="GetOriginMenuItem.Text" xml:space="preserve">
-    <value>查看原图</value>
+  <data name="HasUpdate" xml:space="preserve">
+    <value>程序更新了v({0}.{1}.{2} -&gt; {3})。</value>
+    <comment>{0}.{1}.{2}和{3} 表示版本号</comment>
   </data>
-  <data name="SaveButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>保存图片</value>
+  <data name="HasUpdateTitle" xml:space="preserve">
+    <value>检查到了更新</value>
   </data>
-  <data name="SaveMenuItem.Text" xml:space="preserve">
-    <value>保存图片</value>
+  <data name="ImageLoadError" xml:space="preserve">
+    <value>图片加载失败</value>
   </data>
-  <data name="ZoomInButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>放大</value>
+  <data name="IndexPageError" xml:space="preserve">
+    <value>主页加载失败</value>
   </data>
-  <data name="ZoomOutButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>缩小</value>
+  <data name="MyPageError" xml:space="preserve">
+    <value>个人页面加载失败</value>
+  </data>
+  <data name="NetworkError" xml:space="preserve">
+    <value>无法连接到网络</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="NoUpdate" xml:space="preserve">
+    <value>当前无可用更新。</value>
+  </data>
+  <data name="UserNameError" xml:space="preserve">
+    <value>请输入用户名</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>是</value>
   </data>
 </root>
