@@ -117,22 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="changeHistory" xml:space="preserve">
-    <value>编辑记录</value>
+  <data name="Copy.Text" xml:space="preserve">
+    <value>自由复制</value>
   </data>
-  <data name="feed" xml:space="preserve">
-    <value>动态</value>
+  <data name="feedAuthor.Text" xml:space="preserve">
+    <value>楼主</value>
   </data>
-  <data name="FeedInfo" xml:space="preserve">
-    <value>动态</value>
+  <data name="feedAuthorText" xml:space="preserve">
+    <value>楼主</value>
   </data>
-  <data name="htmlFeed" xml:space="preserve">
-    <value>图文</value>
+  <data name="GIF" xml:space="preserve">
+    <value>GIF</value>
   </data>
-  <data name="questionAndAnswer" xml:space="preserve">
-    <value>问答</value>
+  <data name="longPic.Text" xml:space="preserve">
+    <value>长图</value>
   </data>
-  <data name="UserFeed" xml:space="preserve">
-    <value>我的</value>
+  <data name="longPicText" xml:space="preserve">
+    <value>长图</value>
+  </data>
+  <data name="QR.Text" xml:space="preserve">
+    <value>二维码</value>
+  </data>
+  <data name="readmore" xml:space="preserve">
+    <value>查看更多</value>
+  </data>
+  <data name="report.Text" xml:space="preserve">
+    <value>举报</value>
+  </data>
+  <data name="seeAll.Text" xml:space="preserve">
+    <value>查看全部回复</value>
+  </data>
+  <data name="seePic" xml:space="preserve">
+    <value>查看图片</value>
+  </data>
+  <data name="Share.Text" xml:space="preserve">
+    <value>分享</value>
+  </data>
+  <data name="sourceFeedNotFount.Text" xml:space="preserve">
+    <value>抱歉，该转发已被删除。</value>
+  </data>
+  <data name="stickUp.Text" xml:space="preserve">
+    <value>置顶</value>
+  </data>
+  <data name="widePic.Text" xml:space="preserve">
+    <value>宽图</value>
+  </data>
+  <data name="widePicText" xml:space="preserve">
+    <value>宽图</value>
   </data>
 </root>
