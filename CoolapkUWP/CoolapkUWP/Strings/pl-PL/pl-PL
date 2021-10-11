@@ -117,13 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="answerNum.Text" xml:space="preserve">
-    <value>回答</value>
-  </data>
-  <data name="followerNum.Text" xml:space="preserve">
-    <value>关注</value>
-  </data>
-  <data name="seeAll.Text" xml:space="preserve">
-    <value>查看全部回答</value>
+  <data name="title" xml:space="preserve">
+    <value>回复({0})</value>
+    <comment>{0}表示数量</comment>
   </data>
 </root>
