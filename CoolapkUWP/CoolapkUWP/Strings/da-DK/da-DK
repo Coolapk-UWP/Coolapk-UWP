@@ -117,94 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="all.Content" xml:space="preserve">
-    <value>全部关注</value>
-  </data>
-  <data name="apk.Content" xml:space="preserve">
-    <value>应用关注</value>
-  </data>
-  <data name="circle.Content" xml:space="preserve">
-    <value>好友关注</value>
-  </data>
-  <data name="product.Content" xml:space="preserve">
-    <value>数码关注</value>
-  </data>
-  <data name="question.Content" xml:space="preserve">
-    <value>问题关注</value>
-  </data>
-  <data name="topic.Content" xml:space="preserve">
-    <value>话题关注</value>
-  </data>
-  <data name="V10_CHANNEL_SJB.Content" xml:space="preserve">
-    <value>手机</value>
-  </data>
-  <data name="V10_CHANNEL_SMB_TOP.Content" xml:space="preserve">
-    <value>排行榜</value>
-  </data>
-  <data name="V10_DIGITAL_HOME.Content" xml:space="preserve">
-    <value>数码</value>
-  </data>
-  <data name="V10_MARKET_HOME.Content" xml:space="preserve">
-    <value>精选</value>
-  </data>
-  <data name="V10_MARKET_RANK.Content" xml:space="preserve">
-    <value>排行</value>
-  </data>
-  <data name="V11_DIGITAL_PRODUCT_LIST.Content" xml:space="preserve">
-    <value>数码库</value>
-  </data>
-  <data name="V11_DISCOVERY_SECOND_HAND.Content" xml:space="preserve">
-    <value>二手</value>
-  </data>
-  <data name="V11_FIND_COOLPIC.Content" xml:space="preserve">
-    <value>酷图</value>
-  </data>
-  <data name="V11_FIND_DYH.Content" xml:space="preserve">
-    <value>看看号</value>
-  </data>
-  <data name="V11_FIND_GOODS.Content" xml:space="preserve">
-    <value>酷品</value>
-  </data>
-  <data name="V11_FIND_GOOD_GOODS_HOME.Content" xml:space="preserve">
-    <value>好物</value>
-  </data>
-  <data name="V11_HOME_TAB_NEWS.Content" xml:space="preserve">
-    <value>快讯</value>
-  </data>
-  <data name="V11_ZHUANTI_EARPHONE.Content" xml:space="preserve">
-    <value>耳机</value>
-  </data>
-  <data name="V8_HUODONG_XIANLIAO_20210409.Content" xml:space="preserve">
-    <value>闲聊</value>
-  </data>
-  <data name="V8_MARKET_ALBUM.Content" xml:space="preserve">
-    <value>应用集</value>
-  </data>
-  <data name="V8_MARKET_APP.Content" xml:space="preserve">
-    <value>应用</value>
-  </data>
-  <data name="V8_MARKET_GAME.Content" xml:space="preserve">
-    <value>游戏</value>
-  </data>
-  <data name="V9_HOME_TAB_FOLLOW.Content" xml:space="preserve">
-    <value>关注</value>
-  </data>
-  <data name="V9_HOME_TAB_HEADLINE.Content" xml:space="preserve">
-    <value>头条</value>
-  </data>
-  <data name="V9_HOME_TAB_LIVE.Content" xml:space="preserve">
-    <value>直播</value>
-  </data>
-  <data name="V9_HOME_TAB_RANKING.Content" xml:space="preserve">
-    <value>热榜</value>
-  </data>
-  <data name="V9_HOME_TAB_SHIPIN.Content" xml:space="preserve">
-    <value>视频</value>
-  </data>
-  <data name="V9_HOME_TAB_TOPIC.Content" xml:space="preserve">
-    <value>话题</value>
-  </data>
-  <data name="V9_HOME_TAB_WENDA.Content" xml:space="preserve">
-    <value>问答</value>
+  <data name="about.Text" xml:space="preserve">
+    <value>#### 欢迎使用酷安 UWP！
+
+##### 声明
+
+1. 本程序是[酷安](https://coolapk.com)的第三方客户端，仅用作学习交流使用，禁止用于商业用途。
+2. 本程序是开源软件，因此，在使用时请确保程序是来自[本Github仓库](https://github.com/Tangent-90/Coolapk-UWP)，以确保您的数据安全。
+3. 若程序来源无异常，程序运行过程中您的所有数据都仅用于与酷安的服务器交流或储存于本地，开发者不会窃取您的任何数据。但即便如此，也请注意使用环境的安全性。
+4. 若您对[酷安](https://coolapk.com)如何处理您的数据存在疑虑，请访问[酷安用户服务协议](https://m.coolapk.com/mp/user/agreement)、[酷安隐私保护政策](https://m.coolapk.com/mp/user/privacy)、[酷安二手安全条约](https://m.coolapk.com/mp/user/ershouAgreement)。
+
+##### 鸣谢
+
+|                                       贡献                                     |                作者               |
+| ----------------------------------------------------------------------------- | -------------------------------- |
+| [原作(CoolApk-UWP)](https://github.com/oboard/CoolApk-UWP)                     | [oboard](https://github.com/oboard)|
+| [Token获取方法(CoolapkTokenCrack)](https://github.com/ZCKun/CoolapkTokenCrack) | [ZCKun](https://github.com/ZCKun/)|
+
+##### 引用及参考
+
+- [Coolapk-kotlin](https://github.com/bjzhou/Coolapk-kotlin)
+- [UWP Community Toolkit](https://github.com/Microsoft/UWPCommunityToolkit/)
+- [Win UI](https://github.com/microsoft/microsoft-ui-xaml)
+- [Json.NET](https://www.newtonsoft.com/json)
+- [QRCoder](https://github.com/codebude/QRCoder)
+- [Metro Log](https://github.com/novotnyllc/MetroLog)
+- [Color Thief](https://github.com/KSemenenko/ColorThief)
+- [ReverseMarkdown](https://github.com/mysticmind/reversemarkdown-net)</value>
   </data>
 </root>
