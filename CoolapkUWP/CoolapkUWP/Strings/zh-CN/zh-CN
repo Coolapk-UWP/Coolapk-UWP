@@ -117,88 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountLogout.Content" xml:space="preserve">
-    <value>退出登录</value>
+  <data name="AtMe.Text" xml:space="preserve">
+    <value>@我的动态</value>
   </data>
-  <data name="AccountLogoutConfirm.Content" xml:space="preserve">
-    <value>确定退出</value>
+  <data name="AtMeComment.Text" xml:space="preserve">
+    <value>@我的评论</value>
   </data>
-  <data name="AccountLogoutTitle.Text" xml:space="preserve">
-    <value>你确定要退出登录吗？</value>
+  <data name="AtMeCommentText" xml:space="preserve">
+    <value>@我的评论</value>
   </data>
-  <data name="AccountSetting.Content" xml:space="preserve">
-    <value>账户设置</value>
+  <data name="AtMeText" xml:space="preserve">
+    <value>@我的动态</value>
   </data>
-  <data name="AccountSettingsHeader.Header" xml:space="preserve">
-    <value>账户</value>
+  <data name="Followed.Text" xml:space="preserve">
+    <value>好友关注</value>
   </data>
-  <data name="CheckUpdate.Content" xml:space="preserve">
-    <value>检查更新</value>
+  <data name="FollowedText" xml:space="preserve">
+    <value>好友关注</value>
   </data>
-  <data name="CheckUpdateWhenLuanchingCheckBox.Content" xml:space="preserve">
-    <value>启动时检查更新</value>
+  <data name="Liked.Text" xml:space="preserve">
+    <value>我收到的赞</value>
   </data>
-  <data name="CleanCacheButton.Content" xml:space="preserve">
-    <value>清除图像缓存</value>
+  <data name="LikedText" xml:space="preserve">
+    <value>我收到的赞</value>
   </data>
-  <data name="ContentSettingsHeader.Header" xml:space="preserve">
-    <value>内容</value>
+  <data name="Message.Text" xml:space="preserve">
+    <value>私信</value>
   </data>
-  <data name="DisplayOriginPictureCheckBox.Content" xml:space="preserve">
-    <value>显示大图时默认加载原图</value>
+  <data name="MessageText" xml:space="preserve">
+    <value>私信</value>
   </data>
-  <data name="FeedbackLink.Content" xml:space="preserve">
-    <value>在GitHub上反馈</value>
+  <data name="noMore" xml:space="preserve">
+    <value>没有更多了</value>
   </data>
-  <data name="LogFolderLink.Content" xml:space="preserve">
-    <value>打开日志文件夹</value>
+  <data name="noNew" xml:space="preserve">
+    <value>没有新的了</value>
   </data>
-  <data name="MessageDialogContent" xml:space="preserve">
-    <value>进行此操作会同时退出登录，你确定吗？</value>
-  </data>
-  <data name="MessageDialogTitle" xml:space="preserve">
-    <value>提示</value>
-  </data>
-  <data name="MyDevice.Content" xml:space="preserve">
-    <value>我的机型</value>
-  </data>
-  <data name="NoPicsModeCheckBox.Header" xml:space="preserve">
-    <value>无图模式</value>
-  </data>
-  <data name="OthersSettingsHeader.Header" xml:space="preserve">
-    <value>其他</value>
-  </data>
-  <data name="ResetSettings.Content" xml:space="preserve">
-    <value>恢复默认设置</value>
-  </data>
-  <data name="ResetSettingsConfirm.Content" xml:space="preserve">
-    <value>恢复默认</value>
-  </data>
-  <data name="ResetSettingsTitle.Text" xml:space="preserve">
-    <value>进行此操作会同时退出登录，你确定吗？</value>
-  </data>
-  <data name="ShowOtherExceptionCheckBox.Content" xml:space="preserve">
-    <value>显示运行过程中出现的未知错误</value>
-  </data>
-  <data name="ThemeMode.Header" xml:space="preserve">
-    <value>主题模式</value>
-  </data>
-  <data name="ThemeModeDark.Content" xml:space="preserve">
-    <value>暗</value>
-  </data>
-  <data name="ThemeModeDefault.Content" xml:space="preserve">
-    <value>使用系统设置</value>
-  </data>
-  <data name="ThemeModeLight.Content" xml:space="preserve">
-    <value>亮</value>
-  </data>
-  <data name="Title.Title" xml:space="preserve">
-    <value>设置</value>
-  </data>
-  <data name="UpdateSettingsHeader.Header" xml:space="preserve">
-    <value>更新</value>
-  </data>
-  <data name="UseOldEmojiModeCheckBox.Content" xml:space="preserve">
-    <value>使用旧表情</value>
+  <data name="notification" xml:space="preserve">
+    <value>通知</value>
   </data>
 </root>
