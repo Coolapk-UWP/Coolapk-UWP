@@ -5,14 +5,13 @@
 
 trigger:
 - master
-- feature2
 
 pool:
   vmImage: 'windows-latest'
 
 variables:
   solution: '*.sln'
-  buildPlatform: 'x86|x64|ARM'
+  buildPlatform: 'x86|x64|ARM|ARM64'
   buildConfiguration: 'Release'
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
 
