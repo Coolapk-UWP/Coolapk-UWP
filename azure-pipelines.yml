@@ -16,6 +16,12 @@ variables:
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
 
 steps:
+- task: DownloadSecureFile@1
+  name: signingCert
+  displayName: 'Download CA certificate'
+  inputs:
+    secureFile: 'where.pfx'
+
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
@@ -27,7 +33,13 @@ steps:
     platform: 'x86'
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
-    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=SideloadOnly /p:AppxPackageSigningEnabled=false'
+    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)"
+                  /p:AppxPackageDir="$(appxPackageDir)"
+                  /p:AppxBundle=Always
+                  /p:UapAppxPackageBuildMode=SideloadOnly
+                  /p:AppxPackageSigningEnabled=true
+                  /p:PackageCertificateThumbprint="0CDF4A03E9BE9DD789894BB3C7AD3DEDECD9AB25"
+                  /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"'
 
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
