@@ -18,6 +18,7 @@
                 <control:DatatemplatesDictionary/>
             </ResourceDictionary.MergedDictionaries>
             <converter:NoPicToNullConverter x:Key="NoPicToNullConverter"/>
+            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -92,7 +93,9 @@
                     <FontIcon x:Name="NotifyStatus"/>
                 </muxc:NavigationViewItem.Icon>
                 <muxc:NavigationViewItem.InfoBadge>
-                    <muxc:InfoBadge x:Name="NotifyNum"/>
+                    <muxc:InfoBadge
+                        x:Name="NotifyNum"
+                        Visibility="{Binding RelativeSource={RelativeSource Self}, Path=Value, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='int'}"/>
                 </muxc:NavigationViewItem.InfoBadge>
             </muxc:NavigationViewItem>
             <muxc:NavigationViewItem Tag="UserHub">

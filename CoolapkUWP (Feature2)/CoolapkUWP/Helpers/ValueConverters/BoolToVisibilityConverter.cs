@@ -12,8 +12,9 @@ namespace CoolapkUWP.Data.ValueConverters
         {
             switch ((string)parameter)
             {
-                case "string": return !string.IsNullOrEmpty((string)value) ? Visibility.Visible : Visibility.Collapsed; ;
-                case "entity array": return !((ImmutableArray<Entity>)value).IsDefaultOrEmpty ? Visibility.Visible : Visibility.Collapsed; ;
+                case "int": return (int)value != 0 ? Visibility.Visible : Visibility.Collapsed;
+                case "string": return !string.IsNullOrEmpty((string)value) ? Visibility.Visible : Visibility.Collapsed;
+                case "entity array": return !((ImmutableArray<Entity>)value).IsDefaultOrEmpty ? Visibility.Visible : Visibility.Collapsed;
                 default: return value is bool ? (bool)value ? Visibility.Visible : Visibility.Collapsed : value != null ? Visibility.Visible : Visibility.Collapsed;
             }
         }

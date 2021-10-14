@@ -72,7 +72,7 @@ namespace CoolapkUWP.Data
 
         public static async Task CheckUpdate(bool IsBackground = false)
         {
-            if (WindowsVersion > 16266)
+            if (WindowsVersion >= 16266)
             {
                 try
                 {

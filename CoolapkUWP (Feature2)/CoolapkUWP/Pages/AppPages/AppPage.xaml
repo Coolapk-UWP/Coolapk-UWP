@@ -18,6 +18,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <converter:HasValueConverter x:Key="HasValueConverter"/>
+            <converter:NoPicToNullConverter x:Key="NoPicToNullConverter"/>
             <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         </ResourceDictionary>
     </Page.Resources>
