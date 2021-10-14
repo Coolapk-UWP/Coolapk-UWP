@@ -38,7 +38,7 @@ steps:
                   /p:AppxBundle=Always
                   /p:UapAppxPackageBuildMode=SideloadOnly
                   /p:AppxPackageSigningEnabled=true
-                  /p:PackageCertificateThumbprint="0CDF4A03E9BE9DD789894BB3C7AD3DEDECD9AB25"
+                  /p:PackageCertificateThumbprint="08EC48F7C16F48D2BDCCC87CCA39070CFDBB15C4"
                   /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"'
 
 - task: CopyFiles@2
