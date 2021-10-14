@@ -5,6 +5,8 @@
 
 基于[@一块小板子](http://www.coolapk.com/u/695942 "一块小板子")的源码([Github](https://github.com/oboard/CoolApk-UWP "oboard"))
 
+[![Build Status](https://dev.azure.com/wherewhere/Coolapk-UWP/_apis/build/status/Coolapk-UWP.Coolapk-UWP?branchName=master)](https://dev.azure.com/wherewhere/Coolapk-UWP/_build/latest?definitionId=2&branchName=master)
+
 <a href="https://github.com/Tangent-90/Coolapk-UWP/blob/master/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/Tangent-90/Coolapk-UWP.svg?label=License&style=flat-square"></a>
 <a href="https://github.com/Tangent-90/Coolapk-UWP/issues"><img alt="GitHub" src="https://img.shields.io/github/issues/Tangent-90/Coolapk-UWP.svg?label=Issues&style=flat-square"></a>
 <a href="https://github.com/Tangent-90/Coolapk-UWP/stargazers"><img alt="GitHub" src="https://img.shields.io/github/stars/Tangent-90/Coolapk-UWP.svg?label=Stars&style=flat-square"></a>
