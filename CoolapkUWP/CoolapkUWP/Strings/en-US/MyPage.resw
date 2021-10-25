@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FeedText.Text" xml:space="preserve">
-    <value>动态</value>
+    <value>Feed</value>
   </data>
   <data name="FollowerText.Text" xml:space="preserve">
-    <value>粉丝</value>
+    <value>Fans</value>
   </data>
   <data name="FollowText.Text" xml:space="preserve">
-    <value>关注</value>
+    <value>My follows</value>
   </data>
   <data name="Login.Text" xml:space="preserve">
-    <value>登录</value>
+    <value>Login</value>
   </data>
   <data name="Logout.Text" xml:space="preserve">
-    <value>退出登录</value>
+    <value>Logout</value>
   </data>
   <data name="Search.PlaceholderText" xml:space="preserve">
     <value>搜索 动态、用户、话题</value>
   </data>
   <data name="Setting.Text" xml:space="preserve">
-    <value>设置</value>
+    <value>Settings</value>
   </data>
 </root>
