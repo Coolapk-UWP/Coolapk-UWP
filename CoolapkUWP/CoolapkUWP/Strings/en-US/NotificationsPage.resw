@@ -118,42 +118,42 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AtMe.Text" xml:space="preserve">
-    <value>@我的动态</value>
+    <value>@me feeds</value>
   </data>
   <data name="AtMeComment.Text" xml:space="preserve">
-    <value>@我的评论</value>
+    <value>@me comments</value>
   </data>
   <data name="AtMeCommentText" xml:space="preserve">
-    <value>@我的评论</value>
+    <value>@me comments</value>
   </data>
   <data name="AtMeText" xml:space="preserve">
-    <value>@我的动态</value>
+    <value>@me feeds</value>
   </data>
   <data name="Followed.Text" xml:space="preserve">
-    <value>好友关注</value>
+    <value>Follows</value>
   </data>
   <data name="FollowedText" xml:space="preserve">
-    <value>好友关注</value>
+    <value>Follows</value>
   </data>
   <data name="Liked.Text" xml:space="preserve">
-    <value>我收到的赞</value>
+    <value>Received likes</value>
   </data>
   <data name="LikedText" xml:space="preserve">
-    <value>我收到的赞</value>
+    <value>Received likes</value>
   </data>
   <data name="Message.Text" xml:space="preserve">
-    <value>私信</value>
+    <value>PM</value>
   </data>
   <data name="MessageText" xml:space="preserve">
     <value>私信</value>
   </data>
   <data name="noMore" xml:space="preserve">
-    <value>没有更多了</value>
+    <value>No more</value>
   </data>
   <data name="noNew" xml:space="preserve">
-    <value>没有新的了</value>
+    <value>No news</value>
   </data>
   <data name="notification" xml:space="preserve">
-    <value>通知</value>
+    <value>Notification</value>
   </data>
 </root>
