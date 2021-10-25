@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="answerNum.Text" xml:space="preserve">
-    <value>回答</value>
+    <value>Answers</value>
   </data>
   <data name="followerNum.Text" xml:space="preserve">
-    <value>关注</value>
+    <value>Follow</value>
   </data>
   <data name="seeAll.Text" xml:space="preserve">
-    <value>查看全部回答</value>
+    <value>View all</value>
   </data>
 </root>
