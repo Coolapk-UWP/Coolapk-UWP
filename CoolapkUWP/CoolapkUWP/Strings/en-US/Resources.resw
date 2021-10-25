@@ -118,26 +118,26 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDescription" xml:space="preserve">
-    <value>一个基于UWP平台的酷安客户端</value>
+    <value>An unofficial Coolapk UWP Program. Based on @oboard. Written by @Tangent-90. Assist by @wherewhere</value>
   </data>
   <data name="AppName" xml:space="preserve">
-    <value>酷安</value>
+    <value>Coolapk UWP</value>
   </data>
   <data name="ExceptionThrown" xml:space="preserve">
-    <value>程序出现了错误……</value>
+    <value>There was an error with the program…</value>
   </data>
   <data name="GotoGithub" xml:space="preserve">
-    <value>前往Github</value>
+    <value>Go to Github</value>
   </data>
   <data name="HasUpdate" xml:space="preserve">
-    <value>程序更新了v({0}.{1}.{2} -&gt; {3})。</value>
+    <value>Update to v({0}.{1}.{2} -&gt; {3})。</value>
     <comment>{0}.{1}.{2}和{3} 表示版本号</comment>
   </data>
   <data name="HasUpdateTitle" xml:space="preserve">
     <value>检查到了更新</value>
   </data>
   <data name="ImageLoadError" xml:space="preserve">
-    <value>图片加载失败</value>
+    <value>Picture failed to load</value>
   </data>
   <data name="IndexPageError" xml:space="preserve">
     <value>主页加载失败</value>
@@ -146,18 +146,18 @@
     <value>个人页面加载失败</value>
   </data>
   <data name="NetworkError" xml:space="preserve">
-    <value>无法连接到网络</value>
+    <value>Network exception</value>
   </data>
   <data name="No" xml:space="preserve">
-    <value>否</value>
+    <value>No</value>
   </data>
   <data name="NoUpdate" xml:space="preserve">
-    <value>当前无可用更新。</value>
+    <value>No update</value>
   </data>
   <data name="UserNameError" xml:space="preserve">
-    <value>请输入用户名</value>
+    <value>Please enter your username</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>是</value>
+    <value>Yes</value>
   </data>
 </root>
