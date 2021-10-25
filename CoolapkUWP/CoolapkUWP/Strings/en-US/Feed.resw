@@ -118,22 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Copy.Text" xml:space="preserve">
-    <value>自由复制</value>
+    <value>Free copy</value>
   </data>
   <data name="feedAuthor.Text" xml:space="preserve">
-    <value>楼主</value>
+    <value>Author</value>
   </data>
   <data name="feedAuthorText" xml:space="preserve">
-    <value>楼主</value>
+    <value>Author</value>
   </data>
   <data name="GIF" xml:space="preserve">
     <value>GIF</value>
   </data>
   <data name="longPic.Text" xml:space="preserve">
-    <value>长图</value>
+    <value>Long picture</value>
   </data>
   <data name="longPicText" xml:space="preserve">
-    <value>长图</value>
+    <value>Long picture</value>
   </data>
   <data name="QR.Text" xml:space="preserve">
     <value>二维码</value>
@@ -142,22 +142,22 @@
     <value>查看更多</value>
   </data>
   <data name="report.Text" xml:space="preserve">
-    <value>举报</value>
+    <value>Report</value>
   </data>
   <data name="seeAll.Text" xml:space="preserve">
-    <value>查看全部回复</value>
+    <value>View more</value>
   </data>
   <data name="seePic" xml:space="preserve">
-    <value>查看图片</value>
+    <value>View picture</value>
   </data>
   <data name="Share.Text" xml:space="preserve">
     <value>分享</value>
   </data>
   <data name="sourceFeedNotFount.Text" xml:space="preserve">
-    <value>抱歉，该转发已被删除。</value>
+    <value>Sorry, this feed has been deleted.</value>
   </data>
   <data name="stickUp.Text" xml:space="preserve">
-    <value>置顶</value>
+    <value>Pin</value>
   </data>
   <data name="widePic.Text" xml:space="preserve">
     <value>宽图</value>
