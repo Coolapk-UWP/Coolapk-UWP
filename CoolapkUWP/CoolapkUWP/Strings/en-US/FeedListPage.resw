@@ -121,55 +121,55 @@
     <value>活跃</value>
   </data>
   <data name="all" xml:space="preserve">
-    <value>精选</value>
+    <value>Featured</value>
   </data>
   <data name="answer" xml:space="preserve">
-    <value>问答</value>
+    <value>Q&amp;A</value>
   </data>
   <data name="article" xml:space="preserve">
-    <value>图文</value>
+    <value>Article</value>
   </data>
   <data name="block_status-1" xml:space="preserve">
-    <value>[黑号]</value>
+    <value>[Blocked]</value>
   </data>
   <data name="block_status2" xml:space="preserve">
-    <value>[已限流]</value>
+    <value>[Current limited]</value>
   </data>
   <data name="Comment.Text" xml:space="preserve">
-    <value>讨论</value>
+    <value>Comment</value>
   </data>
   <data name="Commentnum.Text" xml:space="preserve">
     <value>讨论</value>
   </data>
   <data name="dateline_desc" xml:space="preserve">
-    <value>按时间排序</value>
+    <value>Sort by time</value>
   </data>
   <data name="DownloadNum.Text" xml:space="preserve">
-    <value>下载</value>
+    <value>Download</value>
   </data>
   <data name="fan" xml:space="preserve">
     <value>粉丝</value>
   </data>
   <data name="FanandFollow" xml:space="preserve">
-    <value>已互粉</value>
+    <value>Mutual fans</value>
   </data>
   <data name="FanbutnotFollow" xml:space="preserve">
     <value>关注</value>
   </data>
   <data name="Fans.Text" xml:space="preserve">
-    <value>粉丝</value>
+    <value>Fans</value>
   </data>
   <data name="feed" xml:space="preserve">
     <value>动态</value>
   </data>
   <data name="Feeds.Text" xml:space="preserve">
-    <value>动态</value>
+    <value>Feeds</value>
   </data>
   <data name="follow" xml:space="preserve">
-    <value>关注</value>
+    <value>Follows</value>
   </data>
   <data name="FollowNum.Text" xml:space="preserve">
-    <value>关注</value>
+    <value>Follows</value>
   </data>
   <data name="hot" xml:space="preserve">
     <value>热门</value>
@@ -184,7 +184,7 @@
     <value>图文</value>
   </data>
   <data name="inBlackList" xml:space="preserve">
-    <value>已拉黑</value>
+    <value>In Blacklist</value>
   </data>
   <data name="isBlack" xml:space="preserve">
     <value></value>
@@ -199,7 +199,7 @@
     <value></value>
   </data>
   <data name="lastupdate_desc" xml:space="preserve">
-    <value>最近回复</value>
+    <value>Recent Comments</value>
   </data>
   <data name="newest" xml:space="preserve">
     <value>最新</value>
@@ -211,30 +211,30 @@
     <value></value>
   </data>
   <data name="popular" xml:space="preserve">
-    <value>按热度排序</value>
+    <value>Sort by popularity</value>
   </data>
   <data name="product_num" xml:space="preserve">
     <value>个机型</value>
   </data>
   <data name="questionAndAnswer" xml:space="preserve">
-    <value>问答</value>
+    <value>Q%A</value>
   </data>
   <data name="release_time" xml:space="preserve">
     <value>发布日期：</value>
   </data>
   <data name="square" xml:space="preserve">
-    <value>广场</value>
+    <value>Square</value>
   </data>
   <data name="status-1" xml:space="preserve">
-    <value>[已锁定]</value>
+    <value>[Locked]</value>
   </data>
   <data name="status1" xml:space="preserve">
-    <value>[半黑号]</value>
+    <value>[Half blocked]</value>
   </data>
   <data name="Subscribed.Text" xml:space="preserve">
-    <value>订阅</value>
+    <value>Subscribe</value>
   </data>
   <data name="unFollow" xml:space="preserve">
-    <value>已关注</value>
+    <value>Followed</value>
   </data>
 </root>
