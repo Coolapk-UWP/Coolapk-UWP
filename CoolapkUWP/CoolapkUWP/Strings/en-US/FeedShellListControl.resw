@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="getHotReply.Text" xml:space="preserve">
-    <value>查看更多热门回复</value>
+    <value>See more hot replies</value>
   </data>
   <data name="hotReply.Text" xml:space="preserve">
-    <value>热门回复</value>
+    <value>Hot reply</value>
   </data>
   <data name="hotReplyText" xml:space="preserve">
-    <value>热门回复</value>
+    <value>Hot reply</value>
   </data>
   <data name="noMoreHotReply" xml:space="preserve">
-    <value>没有更多热门回复了</value>
+    <value>No more hot replies</value>
   </data>
   <data name="noMoreLikeUser" xml:space="preserve">
-    <value>没有更多点赞用户了</value>
+    <value>No more likes</value>
   </data>
   <data name="noMoreReply" xml:space="preserve">
-    <value>没有更多回复了</value>
+    <value>No more replies</value>
   </data>
   <data name="noMoreShare" xml:space="preserve">
-    <value>没有更多转发了</value>
+    <value>No more forwards</value>
   </data>
 </root>
