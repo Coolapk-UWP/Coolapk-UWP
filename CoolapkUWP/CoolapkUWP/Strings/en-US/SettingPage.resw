@@ -127,49 +127,49 @@
     <value>你确定要退出登录吗？</value>
   </data>
   <data name="AccountSetting.Content" xml:space="preserve">
-    <value>账户设置</value>
+    <value>Account Settings</value>
   </data>
   <data name="AccountSettingsHeader.Header" xml:space="preserve">
     <value>账户</value>
   </data>
   <data name="CheckUpdate.Content" xml:space="preserve">
-    <value>检查更新</value>
+    <value>Check for updates</value>
   </data>
   <data name="CheckUpdateWhenLuanchingCheckBox.Content" xml:space="preserve">
-    <value>启动时检查更新</value>
+    <value>Check for updates at startup</value>
   </data>
   <data name="CleanCacheButton.Content" xml:space="preserve">
-    <value>清除图像缓存</value>
+    <value>Clear image cache</value>
   </data>
   <data name="ContentSettingsHeader.Header" xml:space="preserve">
-    <value>内容</value>
+    <value>Content</value>
   </data>
   <data name="DisplayOriginPictureCheckBox.Content" xml:space="preserve">
-    <value>显示大图时默认加载原图</value>
+    <value>Load original by default when displaying a large picture</value>
   </data>
   <data name="FeedbackLink.Content" xml:space="preserve">
-    <value>在GitHub上反馈</value>
+    <value>Feedback on GitHub</value>
   </data>
   <data name="LogFolderLink.Content" xml:space="preserve">
-    <value>打开日志文件夹</value>
+    <value>Open log folder</value>
   </data>
   <data name="MessageDialogContent" xml:space="preserve">
-    <value>进行此操作会同时退出登录，你确定吗？</value>
+    <value>Doing this will also sign out, are you sure?</value>
   </data>
   <data name="MessageDialogTitle" xml:space="preserve">
-    <value>提示</value>
+    <value>Attention</value>
   </data>
   <data name="MyDevice.Content" xml:space="preserve">
     <value>我的机型</value>
   </data>
   <data name="NoPicsModeCheckBox.Header" xml:space="preserve">
-    <value>无图模式</value>
+    <value>No Picture Mode</value>
   </data>
   <data name="OthersSettingsHeader.Header" xml:space="preserve">
-    <value>其他</value>
+    <value>Others</value>
   </data>
   <data name="ResetSettings.Content" xml:space="preserve">
-    <value>恢复默认设置</value>
+    <value>Reset settings</value>
   </data>
   <data name="ResetSettingsConfirm.Content" xml:space="preserve">
     <value>恢复默认</value>
@@ -178,27 +178,27 @@
     <value>进行此操作会同时退出登录，你确定吗？</value>
   </data>
   <data name="ShowOtherExceptionCheckBox.Content" xml:space="preserve">
-    <value>显示运行过程中出现的未知错误</value>
+    <value>Show unknown errors that occurred during operation</value>
   </data>
   <data name="ThemeMode.Header" xml:space="preserve">
-    <value>主题模式</value>
+    <value>Theme Mode</value>
   </data>
   <data name="ThemeModeDark.Content" xml:space="preserve">
-    <value>暗</value>
+    <value>Dark</value>
   </data>
   <data name="ThemeModeDefault.Content" xml:space="preserve">
-    <value>使用系统设置</value>
+    <value>Use system setting</value>
   </data>
   <data name="ThemeModeLight.Content" xml:space="preserve">
-    <value>亮</value>
+    <value>Light</value>
   </data>
   <data name="Title.Title" xml:space="preserve">
-    <value>设置</value>
+    <value>Settings</value>
   </data>
   <data name="UpdateSettingsHeader.Header" xml:space="preserve">
-    <value>更新</value>
+    <value>Update</value>
   </data>
   <data name="UseOldEmojiModeCheckBox.Content" xml:space="preserve">
-    <value>使用旧表情</value>
+    <value>Use Classical Emoji</value>
   </data>
 </root>
