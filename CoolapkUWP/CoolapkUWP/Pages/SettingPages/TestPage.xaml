@@ -111,6 +111,7 @@
                             <x:String>V9</x:String>
                             <x:String>V10</x:String>
                             <x:String>V11</x:String>
+                            <x:String>V12</x:String>
                             <x:String>小程序</x:String>
                         </ComboBox>
                         <StackPanel Orientation="Horizontal" Grid.Row="14" Margin="2" VerticalAlignment="Top" HorizontalAlignment="Left">
