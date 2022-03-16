@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolapkUWP", "CoolapkUWP\Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolapkUWP.Core", "CoolapkUWP\CoolapkUWP.Core\CoolapkUWP.Core.csproj", "{C882EE3C-7CE6-4E43-82F0-26FE312753E4}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "CoolapkUWP.Core.Test", "CoolapkUWP\CoolapkUWP.Core.Test\CoolapkUWP.Core.Test.fsproj", "{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,26 +67,6 @@ Global
 		{C882EE3C-7CE6-4E43-82F0-26FE312753E4}.Release|x64.Build.0 = Release|Any CPU
 		{C882EE3C-7CE6-4E43-82F0-26FE312753E4}.Release|x86.ActiveCfg = Release|Any CPU
 		{C882EE3C-7CE6-4E43-82F0-26FE312753E4}.Release|x86.Build.0 = Release|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Debug|ARM.Build.0 = Debug|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Debug|x64.Build.0 = Debug|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Debug|x86.Build.0 = Debug|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Release|ARM.ActiveCfg = Release|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Release|ARM.Build.0 = Release|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Release|ARM64.Build.0 = Release|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Release|x64.ActiveCfg = Release|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Release|x64.Build.0 = Release|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Release|x86.ActiveCfg = Release|Any CPU
-		{3B1BE7D0-2547-4BEC-AF0D-25015C17034C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
