@@ -1,0 +1,116 @@
+name: Bug report
+description: Create a report to help us improve
+title: "Bug title"
+labels: [bug]
+body:
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Describe the bug
+      description: Please enter a short, clear description of the bug.
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Steps to reproduce the bug
+      description: Please provide any required setup and steps to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: Please provide a description of what you expected to happen
+  - type: textarea
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots here to help explain your problem
+  - type: dropdown
+    validations:
+      required: true
+    attributes:
+      label: App version
+      description: Specify the version of Coolapk UWP you're using.
+      options:
+        - "2.1.39"
+        - "2.1.38"
+        - "2.0.37"
+        - "2.0.36"
+        - "2.0.35"
+        - "2.0.34"
+        - "2.0.33"
+        - "2.0.32"
+        - "2.0.31"
+        - "2.0.30"
+        - "2.0.30 DEV2"
+        - "2.0.30 DEV1"
+        - "2.0.29"
+        - "2.0.28"
+        - "1.1.27"
+        - "1.1.26"
+        - "1.1.25"
+        - "1.0.25"
+        - "1.0.24 Feature2"
+        - "1.0.24"
+        - "1.0.23"
+        - "0.1.22"
+        - "0.1.21"
+        - "0.1.20"
+        - "0.1.19"
+        - "0.1.18"
+        - "0.1.17"
+        - "0.1.16"
+        - "0.0.15"
+        - "0.0.14"
+        - "0.0.13"
+        - "0.0.12"
+        - "0.0.11"
+        - "0.0.10"
+        - "0.0.9"
+        - "0.0.8"
+        - "0.0.7"
+        - "0.0.6"
+        - "0.0.5"
+        - "0.0.4"
+        - "0.0.3"
+        - "0.0.2"
+        - "0.0.1"
+  - type: dropdown
+    validations:
+      required: true
+    attributes:
+      label: Windows version
+      description: Which Windows versions did you see the issue on?
+      options:
+        - "Insider Build (xxxxx)"
+        - "Windows 11 version 22H2 (25169)"
+        - "Windows 11 version 21H2 (22000)"
+        - "Windows 10 version 21H2 (19044, November 2021 Update)"
+        - "Windows 10 version 21H1 (19043, May 2021 Update)"
+        - "Windows 10 version 20H2 (19042, October 2020 Update)"
+        - "Windows 10 version 2004 (19041, May 2020 Update)"
+        - "Windows 10 version 1909 (18363, November 2019 Update)"
+        - "Windows 10 version 1903 (18362, May 2019 Update)"
+        - "Windows 10 version 1809 (17763, October 2018 Update)"
+        - "Windows 10 version 1803 (17134, April 2018 Update)"
+        - "Windows 10 version 1709 (16299, Fall Creators Update)"
+        - "Windows 10 version 1709 (15254, Fall Creators Update)"
+        - "Windows 10 version 1703 (15063, Creators Update)"
+  - type: dropdown
+    validations:
+      required: true
+    attributes:
+      label: Device
+      description: Which Devices did you see the issue on?
+      options:
+        - "Desktop"
+        - "Mobile"
+        - "Xbox"
+        - "Hololens"
+        - "Hub"
+        - "IOT"
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: Enter any other applicable info here
