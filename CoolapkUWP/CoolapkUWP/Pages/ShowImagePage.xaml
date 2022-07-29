@@ -1,37 +1,37 @@
 ﻿<Page
     x:Class="CoolapkUWP.Pages.ShowImagePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
-    xmlns:local="using:CoolapkUWP.Pages"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:converter="using:CoolapkUWP.Helpers.ValueConverters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:CoolapkUWP.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     winui:BackdropMaterial.ApplyToRootOrPageBackground="True"
     KeyUp="Page_KeyUp"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <Style
             x:Key="IconButtonStyle2"
             BasedOn="{StaticResource ButtonRevealStyle}"
             TargetType="Button">
-            <Setter Property="Height" Value="32"/>
-            <Setter Property="Width" Value="32"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Width" Value="32" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="0" />
         </Style>
     </Page.Resources>
 
     <Grid>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
-                <EntranceThemeTransition/>
+                <EntranceThemeTransition />
             </TransitionCollection>
         </Grid.ChildrenTransitions>
-        
+
         <FlipView
             x:Name="SFlipView"
             Background="Transparent"
@@ -47,17 +47,17 @@
                         Click="Button_Click"
                         Icon="Pictures"
                         Tag="origin"
-                        Visibility="{x:Bind IsOriginButtonEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        Visibility="{x:Bind IsOriginButtonEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                     <MenuFlyoutItem
                         x:Uid="/ShowImagePage/SaveMenuItem"
                         Click="Button_Click"
                         Icon="Save"
-                        Tag="save"/>
+                        Tag="save" />
                     <MenuFlyoutItem
                         x:Uid="/ShowImagePage/CopyMenuUri"
                         Click="Button_Click"
                         Icon="Copy"
-                        Tag="uri"/>
+                        Tag="uri" />
                 </MenuFlyout>
             </FlipView.ContextFlyout>
             <FlipView.ItemTemplate>
@@ -86,7 +86,7 @@
                                     RenderTransformOrigin="0.5,0.5"
                                     Source="{x:Bind Pic, Mode=OneWay}">
                                     <Image.RenderTransform>
-                                        <CompositeTransform/>
+                                        <CompositeTransform />
                                     </Image.RenderTransform>
                                     <Image.Resources>
                                         <Storyboard x:Name="storyboard">
@@ -95,7 +95,7 @@
                                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)"
                                                 From="-90"
                                                 To="0"
-                                                Duration="0:0:0.1"/>
+                                                Duration="0:0:0.1" />
                                         </Storyboard>
                                     </Image.Resources>
                                 </Image>
@@ -106,7 +106,7 @@
                         <winui:ProgressRing
                             Width="60"
                             Height="60"
-                            IsActive="{x:Bind IsProgressRingActived, Mode=OneWay}"/>
+                            IsActive="{x:Bind IsProgressRingActived, Mode=OneWay}" />
                     </Grid>
                 </DataTemplate>
             </FlipView.ItemTemplate>
@@ -116,7 +116,7 @@
             x:Name="titleBorder"
             Height="32"
             VerticalAlignment="Top"
-            Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"/>
+            Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" />
 
         <StackPanel
             HorizontalAlignment="Center"
@@ -129,7 +129,7 @@
                 Click="Button_Click"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="zoomIn">
-                <SymbolIcon Symbol="ZoomIn"/>
+                <SymbolIcon Symbol="ZoomIn" />
             </Button>
 
             <Button
@@ -138,7 +138,7 @@
                 Click="Button_Click"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="zoomOut">
-                <SymbolIcon Symbol="ZoomOut"/>
+                <SymbolIcon Symbol="ZoomOut" />
             </Button>
 
             <Button
@@ -146,20 +146,20 @@
                 Click="Button_Click"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="rotate">
-                <SymbolIcon Symbol="Rotate"/>
+                <SymbolIcon Symbol="Rotate" />
             </Button>
 
             <TextBlock
                 Margin="12,0,0,0"
                 VerticalAlignment="Center"
-                Text="{x:Bind SelectedIndex, Mode=OneWay}"/>
+                Text="{x:Bind SelectedIndex, Mode=OneWay}" />
 
-            <TextBlock VerticalAlignment="Center" Text="/"/>
+            <TextBlock VerticalAlignment="Center" Text="/" />
 
             <TextBlock
                 Margin="0,0,12,0"
                 VerticalAlignment="Center"
-                Text="{x:Bind imageModels.Count, Mode=OneWay}"/>
+                Text="{x:Bind imageModels.Count, Mode=OneWay}" />
 
             <Button
                 x:Uid="/ShowImagePage/SaveButton"
@@ -167,7 +167,7 @@
                 Click="Button_Click"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="save">
-                <SymbolIcon Symbol="Save"/>
+                <SymbolIcon Symbol="Save" />
             </Button>
 
             <Button
@@ -177,10 +177,10 @@
                 IsEnabled="{x:Bind IsOriginButtonEnabled, Mode=OneWay}"
                 Style="{StaticResource IconButtonStyle2}"
                 Tag="origin">
-                <SymbolIcon Symbol="Pictures"/>
+                <SymbolIcon Symbol="Pictures" />
             </Button>
         </StackPanel>
 
-        <controls:InAppNotification x:Name="notify"/>
+        <controls:InAppNotification x:Name="notify" />
     </Grid>
 </Page>

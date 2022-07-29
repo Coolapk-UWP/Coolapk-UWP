@@ -1,5 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Microsoft.Toolkit.Uwp.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 
@@ -14,7 +14,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         internal static void OnTapped(object sender, TappedRoutedEventArgs e)
         {
-            if (((FrameworkElement)sender).FindAscendantByName("searchPivot") == null)
+            if (((FrameworkElement)sender).FindAscendant("searchPivot") == null)
             {
                 UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
             }

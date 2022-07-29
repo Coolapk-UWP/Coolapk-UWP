@@ -2,7 +2,7 @@
 using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Microsoft.Toolkit.Uwp.UI;
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -132,7 +132,7 @@ namespace CoolapkUWP.Controls.DataTemplates
         internal static void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             UserControl uc = sender as UserControl;
-            StackPanel bp = uc.FindChildByName("btnsPanel") as StackPanel;
+            StackPanel bp = uc.FindChild("btnsPanel") as StackPanel;
             double width = e is null ? uc.Width : e.NewSize.Width;
             bp.SetValue(Grid.RowProperty, width > 600 ? 1 : 10);
         }

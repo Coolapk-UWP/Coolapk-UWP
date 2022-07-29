@@ -63,7 +63,7 @@ namespace CoolapkUWP.Pages
         {
             using (Windows.Web.Http.HttpRequestMessage httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(Windows.Web.Http.HttpMethod.Get, uri))
             {
-                httpRequestMessage.Headers.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT " + SystemInformation.OperatingSystemVersion.Major + "." + SystemInformation.OperatingSystemVersion.Minor + (SystemInformation.OperatingSystemArchitecture.ToString().Contains("64") ? "; Win64; " : "; Win32; ") + SystemInformation.OperatingSystemArchitecture.ToString().Replace("X", "x") + "; WebView/3.0) (#Build; " + SystemInformation.DeviceManufacturer + "; " + SystemInformation.DeviceModel + "; CoolapkUWP; " + SystemInformation.OperatingSystemVersion + ")" + " +CoolMarket/11.2-2105201-universal");
+                httpRequestMessage.Headers.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT " + SystemInformation.Instance.OperatingSystemVersion.Major + "." + SystemInformation.Instance.OperatingSystemVersion.Minor + (SystemInformation.Instance.OperatingSystemArchitecture.ToString().Contains("64") ? "; Win64; " : "; Win32; ") + SystemInformation.Instance.OperatingSystemArchitecture.ToString().Replace("X", "x") + "; WebView/3.0) (#Build; " + SystemInformation.Instance.DeviceManufacturer + "; " + SystemInformation.Instance.DeviceModel + "; CoolapkUWP; " + SystemInformation.Instance.OperatingSystemVersion + ")" + " +CoolMarket/11.2-2105201-universal");
                 webView.NavigateWithHttpRequestMessage(httpRequestMessage);
                 webView.NavigationStarting += WebView_NavigationStarting;
             }
