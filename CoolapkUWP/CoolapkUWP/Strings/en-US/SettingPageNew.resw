@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Title.Title" xml:space="preserve">
-    <value>设置</value>
+    <value>Settings</value>
   </data>
 </root>
