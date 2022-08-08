@@ -118,19 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccountLogout.Content" xml:space="preserve">
-    <value>退出登录</value>
+    <value>Logout</value>
   </data>
   <data name="AccountLogoutConfirm.Content" xml:space="preserve">
-    <value>确定退出</value>
+    <value>Confirm log out</value>
   </data>
   <data name="AccountLogoutTitle.Text" xml:space="preserve">
-    <value>你确定要退出登录吗？</value>
+    <value>Are you sure you want to log out?</value>
   </data>
   <data name="AccountSetting.Content" xml:space="preserve">
     <value>Account Settings</value>
   </data>
   <data name="AccountSettingsHeader.Header" xml:space="preserve">
-    <value>账户</value>
+    <value>Account</value>
   </data>
   <data name="CheckUpdate.Content" xml:space="preserve">
     <value>Check for updates</value>
@@ -160,7 +160,7 @@
     <value>Attention</value>
   </data>
   <data name="MyDevice.Content" xml:space="preserve">
-    <value>我的机型</value>
+    <value>My Device Model</value>
   </data>
   <data name="NoPicsModeCheckBox.Header" xml:space="preserve">
     <value>No Picture Mode</value>
@@ -172,10 +172,10 @@
     <value>Reset settings</value>
   </data>
   <data name="ResetSettingsConfirm.Content" xml:space="preserve">
-    <value>恢复默认</value>
+    <value>Reset To Default</value>
   </data>
   <data name="ResetSettingsTitle.Text" xml:space="preserve">
-    <value>进行此操作会同时退出登录，你确定吗？</value>
+    <value>Doing this will also sign out, are you sure?</value>
   </data>
   <data name="ShowOtherExceptionCheckBox.Content" xml:space="preserve">
     <value>Show unknown errors that occurred during operation</value>
