@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -120,14 +120,35 @@
   <data name="all" xml:space="preserve">
     <value>Select</value>
   </data>
+  <data name="answer" xml:space="preserve">
+    <value>Q&amp;A</value>
+  </data>
+  <data name="article" xml:space="preserve">
+    <value>Article</value>
+  </data>
+  <data name="block_status-1" xml:space="preserve">
+    <value>[Blocked]</value>
+  </data>
+  <data name="block_status2" xml:space="preserve">
+    <value>[Current limited]</value>
+  </data>
   <data name="Comment.Text" xml:space="preserve">
     <value>Discuss</value>
   </data>
   <data name="dateline_desc" xml:space="preserve">
     <value>Sort by time</value>
   </data>
+  <data name="FanandFollow" xml:space="preserve">
+    <value>Mutual fans</value>
+  </data>
+  <data name="FanbutnotFollow" xml:space="preserve">
+    <value>Follows</value>
+  </data>
   <data name="Fans.Text" xml:space="preserve">
     <value>Fans</value>
+  </data>
+  <data name="feed" xml:space="preserve">
+    <value>Feeds</value>
   </data>
   <data name="Feeds.Text" xml:space="preserve">
     <value>Feeds</value>
@@ -138,14 +159,53 @@
   <data name="FollowNum.Text" xml:space="preserve">
     <value>Follows</value>
   </data>
+  <data name="hot" xml:space="preserve">
+    <value>Popular</value>
+  </data>
+  <data name="HotNumTXT.Text" xml:space="preserve">
+    <value>Hot</value>
+  </data>
+  <data name="htmlFeed" xml:space="preserve">
+    <value>Article</value>
+  </data>
+  <data name="inBlackList" xml:space="preserve">
+    <value>In Blacklist</value>
+  </data>
+  <data name="isBlack" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="isFan" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="isFollow" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="isfriend" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="lastupdate_desc" xml:space="preserve">
     <value>Recent Comments</value>
+  </data>
+  <data name="newest" xml:space="preserve">
+    <value>Most Recent</value>
+  </data>
+  <data name="notFan" xml:space="preserve">
+    <value></value>
   </data>
   <data name="popular" xml:space="preserve">
     <value>Sort by population</value>
   </data>
+  <data name="questionAndAnswer" xml:space="preserve">
+    <value>Q&amp;A</value>
+  </data>
   <data name="square" xml:space="preserve">
     <value>Hall</value>
+  </data>
+  <data name="status-1" xml:space="preserve">
+    <value>[Locked]</value>
+  </data>
+  <data name="status1" xml:space="preserve">
+    <value>[Half blocked]</value>
   </data>
   <data name="Subscribed.Text" xml:space="preserve">
     <value>Subscript</value>

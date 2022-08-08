@@ -117,22 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="dateline_desc" xml:space="preserve">
-    <value>Sort by time</value>
+  <data name="changeHistory" xml:space="preserve">
+    <value>Edit history</value>
   </data>
-  <data name="isFromAuthor" xml:space="preserve">
-    <value>Only author</value>
+  <data name="feed" xml:space="preserve">
+    <value>Feeds</value>
   </data>
-  <data name="lastupdate_desc" xml:space="preserve">
-    <value>Recent Comments</value>
+  <data name="FeedInfo" xml:space="preserve">
+    <value>Feeds</value>
   </data>
-  <data name="like" xml:space="preserve">
-    <value>Sort by like</value>
+  <data name="htmlFeed" xml:space="preserve">
+    <value>Article</value>
   </data>
-  <data name="noMoreAnswer" xml:space="preserve">
-    <value>No more replies</value>
+  <data name="questionAndAnswer" xml:space="preserve">
+    <value>Q&amp;A</value>
   </data>
-  <data name="popular" xml:space="preserve">
-    <value>Sort by population</value>
+  <data name="UserFeed" xml:space="preserve">
+    <value>My</value>
   </data>
 </root>
