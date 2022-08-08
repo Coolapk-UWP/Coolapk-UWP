@@ -118,21 +118,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="changeHistory" xml:space="preserve">
-    <value>编辑记录</value>
+    <value>Edit history</value>
   </data>
   <data name="feed" xml:space="preserve">
-    <value>动态</value>
+    <value>Feeds</value>
   </data>
   <data name="FeedInfo" xml:space="preserve">
-    <value>动态</value>
+    <value>Feeds</value>
   </data>
   <data name="htmlFeed" xml:space="preserve">
-    <value>图文</value>
+    <value>Article</value>
   </data>
   <data name="questionAndAnswer" xml:space="preserve">
-    <value>问答</value>
+    <value>Q&amp;A</value>
   </data>
   <data name="UserFeed" xml:space="preserve">
-    <value>我的</value>
+    <value>My</value>
   </data>
 </root>
