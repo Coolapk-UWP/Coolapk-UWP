@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="active" xml:space="preserve">
-    <value>活跃</value>
+    <value>Active</value>
   </data>
   <data name="all" xml:space="preserve">
     <value>Featured</value>
@@ -139,7 +139,7 @@
     <value>Comment</value>
   </data>
   <data name="Commentnum.Text" xml:space="preserve">
-    <value>讨论</value>
+    <value>Comment</value>
   </data>
   <data name="dateline_desc" xml:space="preserve">
     <value>Sort by time</value>
@@ -148,19 +148,19 @@
     <value>Download</value>
   </data>
   <data name="fan" xml:space="preserve">
-    <value>粉丝</value>
+    <value>Fans</value>
   </data>
   <data name="FanandFollow" xml:space="preserve">
     <value>Mutual fans</value>
   </data>
   <data name="FanbutnotFollow" xml:space="preserve">
-    <value>关注</value>
+    <value>Follows</value>
   </data>
   <data name="Fans.Text" xml:space="preserve">
     <value>Fans</value>
   </data>
   <data name="feed" xml:space="preserve">
-    <value>动态</value>
+    <value>Feeds</value>
   </data>
   <data name="Feeds.Text" xml:space="preserve">
     <value>Feeds</value>
@@ -172,16 +172,16 @@
     <value>Follows</value>
   </data>
   <data name="hot" xml:space="preserve">
-    <value>热门</value>
+    <value>Popular</value>
   </data>
   <data name="HotNum" xml:space="preserve">
-    <value>热度</value>
+    <value>Hot</value>
   </data>
   <data name="HotNumTXT.Text" xml:space="preserve">
-    <value>热度</value>
+    <value>Hot</value>
   </data>
   <data name="htmlFeed" xml:space="preserve">
-    <value>图文</value>
+    <value>Article</value>
   </data>
   <data name="inBlackList" xml:space="preserve">
     <value>In Blacklist</value>
@@ -202,10 +202,10 @@
     <value>Recent Comments</value>
   </data>
   <data name="newest" xml:space="preserve">
-    <value>最新</value>
+    <value>Most Recent</value>
   </data>
   <data name="NewsNum.Text" xml:space="preserve">
-    <value>新闻</value>
+    <value>News</value>
   </data>
   <data name="notFan" xml:space="preserve">
     <value></value>
@@ -214,13 +214,13 @@
     <value>Sort by popularity</value>
   </data>
   <data name="product_num" xml:space="preserve">
-    <value>个机型</value>
+    <value> Machine types</value>
   </data>
   <data name="questionAndAnswer" xml:space="preserve">
     <value>Q%A</value>
   </data>
   <data name="release_time" xml:space="preserve">
-    <value>发布日期：</value>
+    <value>Release Date: </value>
   </data>
   <data name="square" xml:space="preserve">
     <value>Square</value>

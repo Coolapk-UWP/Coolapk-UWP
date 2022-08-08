@@ -133,7 +133,7 @@
     <value>Logout</value>
   </data>
   <data name="Search.PlaceholderText" xml:space="preserve">
-    <value>搜索 动态、用户、话题</value>
+    <value>Searching Feeds, Users, Topics</value>
   </data>
   <data name="Setting.Text" xml:space="preserve">
     <value>Settings</value>

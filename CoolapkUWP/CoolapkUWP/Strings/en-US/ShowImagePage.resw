@@ -121,7 +121,7 @@
     <value>Previous</value>
   </data>
   <data name="CopyMenuUri.Text" xml:space="preserve">
-    <value>复制链接</value>
+    <value>Copy Link</value>
   </data>
   <data name="ForwardButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Next</value>

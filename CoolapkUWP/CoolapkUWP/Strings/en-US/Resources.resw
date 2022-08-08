@@ -134,16 +134,16 @@
     <comment>{0}.{1}.{2}和{3} 表示版本号</comment>
   </data>
   <data name="HasUpdateTitle" xml:space="preserve">
-    <value>检查到了更新</value>
+    <value>Update Checked</value>
   </data>
   <data name="ImageLoadError" xml:space="preserve">
     <value>Picture failed to load</value>
   </data>
   <data name="IndexPageError" xml:space="preserve">
-    <value>主页加载失败</value>
+    <value>Home Page load failure</value>
   </data>
   <data name="MyPageError" xml:space="preserve">
-    <value>个人页面加载失败</value>
+    <value>Personal Page load failure</value>
   </data>
   <data name="NetworkError" xml:space="preserve">
     <value>Network exception</value>
