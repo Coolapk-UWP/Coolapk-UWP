@@ -145,7 +145,7 @@
     <value>PM</value>
   </data>
   <data name="MessageText" xml:space="preserve">
-    <value>私信</value>
+    <value>PM</value>
   </data>
   <data name="noMore" xml:space="preserve">
     <value>No more</value>
