@@ -136,10 +136,10 @@
     <value>Long picture</value>
   </data>
   <data name="QR.Text" xml:space="preserve">
-    <value>二维码</value>
+    <value>QR Code</value>
   </data>
   <data name="readmore" xml:space="preserve">
-    <value>查看更多</value>
+    <value>See more</value>
   </data>
   <data name="report.Text" xml:space="preserve">
     <value>Report</value>
@@ -151,7 +151,7 @@
     <value>View picture</value>
   </data>
   <data name="Share.Text" xml:space="preserve">
-    <value>分享</value>
+    <value>Share</value>
   </data>
   <data name="sourceFeedNotFount.Text" xml:space="preserve">
     <value>Sorry, this feed has been deleted.</value>
@@ -160,9 +160,9 @@
     <value>Pin</value>
   </data>
   <data name="widePic.Text" xml:space="preserve">
-    <value>宽图</value>
+    <value>Wide picture</value>
   </data>
   <data name="widePicText" xml:space="preserve">
-    <value>宽图</value>
+    <value>Wide picture</value>
   </data>
 </root>
