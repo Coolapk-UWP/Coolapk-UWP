@@ -206,6 +206,15 @@ namespace CoolapkUWP.Helpers
             ShowImageWindow(model);
         }
 
+        public static bool IsDarkTheme()
+        {
+            if (SettingsHelper.Theme == ElementTheme.Default)
+            {
+                return Application.Current.RequestedTheme == ApplicationTheme.Dark;
+            }
+            return SettingsHelper.Theme == ElementTheme.Dark;
+        }
+
         public static async void CheckTheme()
         {
             while (Window.Current?.Content is null)
@@ -225,9 +234,9 @@ namespace CoolapkUWP.Helpers
 
                 Color? BackColor, ForeColor, ButtonForeInactiveColor, ButtonBackPressedColor;
                 BackColor = ForeColor = ButtonBackPressedColor = ButtonForeInactiveColor = null;
-                switch (SettingsHelper.Theme)
+                switch (IsDarkTheme())
                 {
-                    case ElementTheme.Light:
+                    case false:
                         BackColor = Color.FromArgb(255, 242, 242, 242);
                         ForeColor = Colors.Black;
                         ButtonForeInactiveColor = Color.FromArgb(255, 50, 50, 50);
@@ -235,7 +244,7 @@ namespace CoolapkUWP.Helpers
                         SettingsHelper.UiSettingChanged.Invoke(UiSettingChangedType.LightMode);
                         break;
 
-                    case ElementTheme.Dark:
+                    case true:
                         BackColor = Color.FromArgb(255, 23, 23, 23);
                         ForeColor = Colors.White;
                         ButtonForeInactiveColor = Color.FromArgb(255, 200, 200, 200);

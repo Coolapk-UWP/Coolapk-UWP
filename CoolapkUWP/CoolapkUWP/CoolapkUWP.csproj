@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CoolapkUWP</RootNamespace>
     <AssemblyName>CoolapkUWP</AssemblyName>
-    <DefaultLanguage>zh-Hans</DefaultLanguage>
+    <DefaultLanguage>zh-CN</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22621.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
@@ -1034,39 +1034,39 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\zh-Hans\SettingPageNew.resw" />
-    <PRIResource Include="Strings\en\ShowImagePage.resw" />
-    <PRIResource Include="Strings\en\SettingPage.resw" />
-    <PRIResource Include="Strings\en\Resources.resw" />
-    <PRIResource Include="Strings\en\NotificationsPage.resw" />
-    <PRIResource Include="Strings\en\MyPage.resw" />
-    <PRIResource Include="Strings\en\MakeFeedControl.resw" />
-    <PRIResource Include="Strings\en\IndexPage.resw" />
-    <PRIResource Include="Strings\en\FeedShellPage.resw" />
-    <PRIResource Include="Strings\en\FeedShellListControl.resw" />
-    <PRIResource Include="Strings\en\FeedShellDetailControl.resw" />
-    <PRIResource Include="Strings\en\FeedRepliesPage.resw" />
-    <PRIResource Include="Strings\en\FeedListPage.resw" />
-    <PRIResource Include="Strings\en\Feed.resw" />
-    <PRIResource Include="Strings\en\BrowserPage.resw" />
-    <PRIResource Include="Strings\zh-Hans\FeedShellDetailControl.resw" />
-    <PRIResource Include="Strings\zh-Hans\FeedShellListControl.resw" />
-    <PRIResource Include="Strings\zh-Hans\MakeFeedControl.resw" />
-    <PRIResource Include="Strings\zh-Hans\Feed.resw" />
-    <PRIResource Include="Strings\zh-Hans\IndexPage.resw" />
-    <PRIResource Include="Strings\zh-Hans\FeedShellPage.resw" />
-    <PRIResource Include="Strings\zh-Hans\FeedRepliesPage.resw" />
-    <PRIResource Include="Strings\zh-Hans\FeedListPage.resw" />
-    <PRIResource Include="Strings\zh-Hans\NotificationsPage.resw" />
-    <PRIResource Include="Strings\zh-Hans\ShowImagePage.resw" />
+    <PRIResource Include="Strings\zh-CN\SettingPageNew.resw" />
+    <PRIResource Include="Strings\en-US\ShowImagePage.resw" />
+    <PRIResource Include="Strings\en-US\SettingPage.resw" />
+    <PRIResource Include="Strings\en-US\Resources.resw" />
+    <PRIResource Include="Strings\en-US\NotificationsPage.resw" />
+    <PRIResource Include="Strings\en-US\MyPage.resw" />
+    <PRIResource Include="Strings\en-US\MakeFeedControl.resw" />
+    <PRIResource Include="Strings\en-US\IndexPage.resw" />
+    <PRIResource Include="Strings\en-US\FeedShellPage.resw" />
+    <PRIResource Include="Strings\en-US\FeedShellListControl.resw" />
+    <PRIResource Include="Strings\en-US\FeedShellDetailControl.resw" />
+    <PRIResource Include="Strings\en-US\FeedRepliesPage.resw" />
+    <PRIResource Include="Strings\en-US\FeedListPage.resw" />
+    <PRIResource Include="Strings\en-US\Feed.resw" />
+    <PRIResource Include="Strings\en-US\BrowserPage.resw" />
+    <PRIResource Include="Strings\zh-CN\FeedShellDetailControl.resw" />
+    <PRIResource Include="Strings\zh-CN\FeedShellListControl.resw" />
+    <PRIResource Include="Strings\zh-CN\MakeFeedControl.resw" />
+    <PRIResource Include="Strings\zh-CN\Feed.resw" />
+    <PRIResource Include="Strings\zh-CN\IndexPage.resw" />
+    <PRIResource Include="Strings\zh-CN\FeedShellPage.resw" />
+    <PRIResource Include="Strings\zh-CN\FeedRepliesPage.resw" />
+    <PRIResource Include="Strings\zh-CN\FeedListPage.resw" />
+    <PRIResource Include="Strings\zh-CN\NotificationsPage.resw" />
+    <PRIResource Include="Strings\zh-CN\ShowImagePage.resw" />
     <PRIResource Include="Assets\EmojiData\OldEmojiId.resw" />
     <PRIResource Include="Assets\EmojiData\EmojiId.resw" />
-    <PRIResource Include="Strings\zh-Hans\BrowserPage.resw" />
-    <PRIResource Include="Strings\zh-Hans\MyPage.resw" />
-    <PRIResource Include="Strings\zh-Hans\SettingPage.resw">
+    <PRIResource Include="Strings\zh-CN\BrowserPage.resw" />
+    <PRIResource Include="Strings\zh-CN\MyPage.resw" />
+    <PRIResource Include="Strings\zh-CN\SettingPage.resw">
       <SubType>Designer</SubType>
     </PRIResource>
-    <PRIResource Include="Strings\zh-Hans\Resources.resw" />
+    <PRIResource Include="Strings\zh-CN\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoolapkUWP.Core\CoolapkUWP.Core.csproj">
@@ -1075,7 +1075,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\zh-Hans\AdaptivePage.resw" />
+    <PRIResource Include="Strings\zh-CN\AdaptivePage.resw" />
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="WindowsMobile, Version=10.0.22621.0">

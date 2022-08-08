@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Resources;
+using Windows.Foundation.Metadata;
+using Windows.Security.Authorization.AppCapabilityAccess;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -83,6 +85,7 @@ namespace CoolapkUWP
         /// <param name="e"> 有关启动请求和过程的详细信息。 </param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            RequestWifiAccess();
             RegisterExceptionHandlingSynchronizationContext();
             this.UnhandledException += Application_UnhandledException;
 
@@ -188,6 +191,22 @@ namespace CoolapkUWP
 #endif
                     );
                     SettingsHelper.logManager.GetLogger("UnhandledException").Error($"\n{e.Exception.Message}\n{e.Exception.HResult}\n{e.Exception.StackTrace}");
+                }
+            }
+        }
+
+        private async void RequestWifiAccess()
+        {
+            if (ApiInformation.IsMethodPresent("Windows.Security.Authorization.AppCapabilityAccess.AppCapability", "Create"))
+            {
+                var wifiData = AppCapability.Create("wifiData");
+                switch (wifiData.CheckAccess())
+                {
+                    case AppCapabilityAccessStatus.DeniedByUser:
+                    case AppCapabilityAccessStatus.DeniedBySystem:
+                        // Do something
+                        await AppCapability.Create("wifiData").RequestAccessAsync();
+                        break;
                 }
             }
         }
