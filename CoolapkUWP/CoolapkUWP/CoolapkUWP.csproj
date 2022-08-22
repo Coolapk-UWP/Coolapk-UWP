@@ -10,6 +10,7 @@
     <RootNamespace>CoolapkUWP</RootNamespace>
     <AssemblyName>CoolapkUWP</AssemblyName>
     <DefaultLanguage>zh-CN</DefaultLanguage>
+    <LangVersion>latest</LangVersion>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22621.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
@@ -17,8 +18,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <PackageCertificateKeyFile>
-    </PackageCertificateKeyFile>
+    <PackageCertificateKeyFile></PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
     <AppxBundle>Always</AppxBundle>
@@ -47,7 +47,6 @@
     <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
-    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -60,7 +59,32 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
-    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
+    <OutputPath>bin\ARM64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;LOAD_MAIN_PAGE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -1089,36 +1113,7 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\ARM64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS</DefineConstants>
-    <NoWarn>;2008</NoWarn>
-    <NoStdLib>true</NoStdLib>
-    <DebugType>full</DebugType>
-    <PlatformTarget>ARM64</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
-    <OutputPath>bin\ARM64\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;LOAD_MAIN_PAGE</DefineConstants>
-    <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
-    <NoStdLib>true</NoStdLib>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>ARM64</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
+    <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
