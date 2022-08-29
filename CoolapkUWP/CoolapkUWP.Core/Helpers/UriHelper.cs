@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Windows.Storage;
 
 namespace CoolapkUWP.Core.Helpers
 {
@@ -60,14 +61,17 @@ namespace CoolapkUWP.Core.Helpers
     [DebuggerStepThrough]
     public static class UriHelper
     {
+        private static bool IsUseAPI2 => ApplicationData.Current.LocalSettings.Values["IsUseAPI2"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsUseAPI2"];
+
         public static readonly Uri CoolapkUri = new Uri("https://coolapk.com");
         public static readonly Uri BaseUri = new Uri("https://api.coolapk.com");
+        public static readonly Uri Base2Uri = new Uri("https://api2.coolapk.com");
         public static readonly Uri DevUri = new Uri("https://developer.coolapk.com");
 
         public static Uri GetUri(UriType type, params object[] args)
         {
             var u = string.Format(GetTemplate(type), args);
-            return new Uri(BaseUri, u);
+            return new Uri(IsUseAPI2 ? Base2Uri : BaseUri, u);
         }
 
         public static Uri GetDevUri(UriType type, params object[] args)

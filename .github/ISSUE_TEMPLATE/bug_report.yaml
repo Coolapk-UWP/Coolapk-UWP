@@ -84,7 +84,7 @@ body:
       description: Which Windows versions did you see the issue on?
       options:
         - "Insider Build (xxxxx)"
-        - "Windows 11 version 22H2 (25169)"
+        - "Windows 11 version 22H2 (22621)"
         - "Windows 11 version 21H2 (22000)"
         - "Windows 10 version 21H2 (19044, November 2021 Update)"
         - "Windows 10 version 21H1 (19043, May 2021 Update)"

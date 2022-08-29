@@ -19,6 +19,7 @@ namespace CoolapkUWP.Helpers
         public const string IsNoPicsMode = "IsNoPicsMode";
         public const string IsUseOldEmojiMode = "IsUseOldEmojiMode";
         public const string IsDarkMode = "IsDarkMode";
+        public const string IsUseAPI2 = "IsUseAPI2";
         public const string CheckUpdateWhenLuanching = "CheckUpdateWhenLuanching";
         public const string IsBackgroundColorFollowSystem = "IsBackgroundColorFollowSystem";
         public const string Uid = "Uid";
@@ -62,6 +63,10 @@ namespace CoolapkUWP.Helpers
             if (!localSettings.Values.ContainsKey(IsDarkMode))
             {
                 localSettings.Values.Add(IsDarkMode, false);
+            }
+            if (!localSettings.Values.ContainsKey(IsUseAPI2))
+            {
+                localSettings.Values.Add(IsUseAPI2, true);
             }
             if (!localSettings.Values.ContainsKey(CheckUpdateWhenLuanching))
             {

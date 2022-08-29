@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Core.Helpers;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
 using Microsoft.Toolkit.Uwp.Notifications;
@@ -19,6 +20,18 @@ namespace CoolapkUWP.Pages.SettingPages
     {
         private string Url = "/feed/";
         private int i;
+
+        internal bool IsUseAPI2
+        {
+            get => SettingsHelper.Get<bool>(SettingsHelper.IsUseAPI2);
+            set
+            {
+                if (IsUseAPI2 != value)
+                {
+                    SettingsHelper.Set(SettingsHelper.IsUseAPI2, value);
+                }
+            }
+        }
 
         public TestPage()
         {

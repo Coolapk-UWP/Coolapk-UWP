@@ -1,10 +1,10 @@
 ﻿<Page
     x:Class="CoolapkUWP.Pages.ShellPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:CoolapkUWP.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mtctrl="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     SizeChanged="Page_SizeChanged"
@@ -13,9 +13,9 @@
     <Grid>
         <SplitView
             x:Name="splitView"
+            DisplayMode="Inline"
             IsPaneOpen="False"
             OpenPaneLength="400"
-            DisplayMode="Inline"
             PanePlacement="Right">
             <SplitView.Pane>
                 <Grid>
@@ -48,31 +48,31 @@
         </SplitView>
 
         <mtctrl:InAppNotification x:Name="AppNotification" StackMode="StackInFront" />
-        
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0"/>
+                        <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="splitView.DisplayMode" Value="Overlay"/>
+                        <Setter Target="splitView.DisplayMode" Value="Overlay" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="400"/>
+                        <AdaptiveTrigger MinWindowWidth="400" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="splitView.DisplayMode" Value="Overlay"/>
+                        <Setter Target="splitView.DisplayMode" Value="Overlay" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="960"/>
+                        <AdaptiveTrigger MinWindowWidth="960" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="splitView.IsPaneOpen" Value="True"/>
+                        <Setter Target="splitView.IsPaneOpen" Value="True" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

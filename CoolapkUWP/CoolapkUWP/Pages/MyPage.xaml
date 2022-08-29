@@ -160,9 +160,7 @@
                     Style="{StaticResource AppListViewItemStyle}"
                     Tag="{x:Bind Url}"
                     Tapped="ListViewItem_Tapped">
-                    <StackPanel
-                        Padding="10"
-                        Orientation="Horizontal">
+                    <StackPanel Padding="10" Orientation="Horizontal">
                         <Image
                             Width="20"
                             Height="20"
@@ -300,6 +298,7 @@
                 Margin="8,0"
                 VerticalAlignment="Center"
                 ItemTemplate="{StaticResource searchWord}"
+                PlaceholderText="搜索 动态、用户、话题"
                 QueryIcon="Find"
                 QuerySubmitted="{x:Bind local:MyPage.AutoSuggestBox_QuerySubmitted}"
                 SuggestionChosen="{x:Bind local:MyPage.AutoSuggestBox_SuggestionChosen}"
@@ -396,11 +395,10 @@
                         Margin="24,8"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Tag="MyFeed"
-                        Click="Button_Click"
                         Background="Transparent"
-                        Style="{StaticResource ButtonRevealStyle}">
-                    </Button>
+                        Click="Button_Click"
+                        Style="{StaticResource ButtonRevealStyle}"
+                        Tag="MyFeed" />
 
                     <TextBlock
                         Grid.Row="0"
@@ -435,16 +433,15 @@
                             VerticalAlignment="Center"
                             Text="{Binding NextLevelNowExperience, Mode=OneWay}" />
                     </StackPanel>
-                    
+
                     <ListViewItem
                         Grid.Row="1"
+                        Height="1px"
                         Margin="90,0,0,0"
+                        Background="Transparent"
                         KeyDown="ListViewItem_KeyDown"
                         Tag="LvHelp"
-                        Tapped="ListViewItem_Tapped"
-                        Background="Transparent"
-                        Height="1px">
-                    </ListViewItem>
+                        Tapped="ListViewItem_Tapped" />
 
                     <TextBlock
                         Grid.Row="3"
