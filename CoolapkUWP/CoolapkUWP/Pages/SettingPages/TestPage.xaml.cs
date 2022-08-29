@@ -21,6 +21,18 @@ namespace CoolapkUWP.Pages.SettingPages
         private string Url = "/feed/";
         private int i;
 
+        internal bool IsUseAPI2
+        {
+            get => SettingsHelper.Get<bool>(SettingsHelper.IsUseAPI2);
+            set
+            {
+                if (IsUseAPI2 != value)
+                {
+                    SettingsHelper.Set(SettingsHelper.IsUseAPI2, value);
+                }
+            }
+        }
+
         public TestPage()
         {
             InitializeComponent();
@@ -29,7 +41,8 @@ namespace CoolapkUWP.Pages.SettingPages
             //loader.GetString("?")
             //    );
             comboBoxVersion.SelectedValue = ApplicationData.Current.LocalSettings.Values["Version"];
-            tile.Text = ApplicationData.Current.LocalSettings.Values["TileUrl"].ToString();
+            if (ApplicationData.Current.LocalSettings.Values["TileUrl"] != null)
+            { tile.Text = ApplicationData.Current.LocalSettings.Values["TileUrl"].ToString(); }
             makelike.Text = "https://api.coolapk.com/v6/user/feedList?uid=536381&page=1&isIncludeTop=1";
         }
 
