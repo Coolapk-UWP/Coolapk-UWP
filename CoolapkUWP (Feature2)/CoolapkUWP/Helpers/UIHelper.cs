@@ -70,9 +70,9 @@ namespace CoolapkUWP.Data
             mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", Culture == null ? "zh-CN" : Culture.ToString());
             mClient.DefaultRequestHeaders.Add("X-Dark-Mode", Windows.UI.Xaml.Application.Current.RequestedTheme.ToString() == "Dark" ? "1" : "0");
             mClient.DefaultRequestHeaders.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT " + (ushort)((SettingsHelper.version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((SettingsHelper.version & 0x0000FFFF00000000L) >> 32) + (Package.Current.Id.Architecture.ToString().Contains("64") ? "; Win64; " : "; Win32; ") + Package.Current.Id.Architecture.ToString().Replace("X", "x") + "; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP " + Package.Current.Id.Version.ToFormattedString() + "; " + (ushort)((SettingsHelper.version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((SettingsHelper.version & 0x0000FFFF00000000L) >> 32) + "." + (ushort)((SettingsHelper.version & 0x00000000FFFF0000L) >> 16) + "." + (ushort)(SettingsHelper.version & 0x000000000000FFFFL) + ")");
-            mClient.DefaultRequestHeaders.UserAgent.ParseAdd(" +CoolMarket/9.2.2-1905301-universal");
-            mClient.DefaultRequestHeaders.Add("X-App-Version", "9.2.2");
-            mClient.DefaultRequestHeaders.Add("X-App-Code", "1905301");
+            mClient.DefaultRequestHeaders.UserAgent.ParseAdd(" +CoolMarket/9.6.3-1910291-universal");
+            mClient.DefaultRequestHeaders.Add("X-App-Version", "9.6.3");
+            mClient.DefaultRequestHeaders.Add("X-App-Code", "1910291");
             mClient.DefaultRequestHeaders.Add("X-Api-Version", "9");
             mClient.DefaultRequestHeaders.Add("X-App-Channel", "coolapk");
             mClient.DefaultRequestHeaders.Add("X-App-Mode", "universal");
@@ -318,7 +318,7 @@ namespace CoolapkUWP.Data
                 mClient.DefaultRequestHeaders.Add("Cookie", SettingsHelper.cookie);
                 _ = mClient.DefaultRequestHeaders.Remove("X-Requested-With");
                 mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
-                return await mClient.GetStringAsync(new Uri("https://api.coolapk.com/v6" + url));
+                return await mClient.GetStringAsync(new Uri("https://api2.coolapk.com/v6" + url));
             }
             catch (HttpRequestException e)
             {
@@ -368,7 +368,7 @@ namespace CoolapkUWP.Data
                 mClient.DefaultRequestHeaders.Add("Cookie", SettingsHelper.cookie);
                 _ = mClient.DefaultRequestHeaders.Remove("X-Requested-With");
                 mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
-                HttpResponseMessage a = await mClient.PostAsync(new Uri("https://api.coolapk.com/v6" + url), content);
+                HttpResponseMessage a = await mClient.PostAsync(new Uri("https://api2.coolapk.com/v6" + url), content);
                 return !(GetJSonObject(await a.Content.ReadAsStringAsync()) is null);
             }
             catch (HttpRequestException e)
