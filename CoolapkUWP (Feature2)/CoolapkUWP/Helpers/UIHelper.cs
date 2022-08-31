@@ -1,7 +1,6 @@
 ﻿using CoolapkUWP.Control;
 using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.FeedPages;
-using CoolapkUWP.ViewModels;
 using Html2Markdown;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
@@ -30,6 +29,7 @@ namespace CoolapkUWP.Data
     internal static class UIHelper
     {
         public static HttpClient mClient;
+        private static TokenCreater token;
         private static bool isShowingMessage;
         public static MainPage mainPage = null;
         public static bool isShowingProgressBar;
@@ -60,22 +60,23 @@ namespace CoolapkUWP.Data
 
         static UIHelper()
         {
-            CultureInfo Culture = null;
-            try { Culture = GlobalizationPreferences.Languages.Count > 0 ? new CultureInfo(GlobalizationPreferences.Languages.First()) : null; } catch { }
             EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
+            TokenVersion TokenVersion = SettingsHelper.Get<TokenVersion>("TokenVersion");
+            string Culture = GlobalizationPreferences.Languages.Any() ? new CultureInfo(GlobalizationPreferences.Languages.FirstOrDefault()).ToString() : "zh-CN";
+            token = new TokenCreater(TokenVersion);
             mClient = new HttpClient();
             mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "30");
             mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
             mClient.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
-            mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", Culture == null ? "zh-CN" : Culture.ToString());
-            mClient.DefaultRequestHeaders.Add("X-Dark-Mode", Windows.UI.Xaml.Application.Current.RequestedTheme.ToString() == "Dark" ? "1" : "0");
-            mClient.DefaultRequestHeaders.UserAgent.ParseAdd("Dalvik/2.1.0 (Windows NT " + (ushort)((SettingsHelper.version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((SettingsHelper.version & 0x0000FFFF00000000L) >> 32) + (Package.Current.Id.Architecture.ToString().Contains("64") ? "; Win64; " : "; Win32; ") + Package.Current.Id.Architecture.ToString().Replace("X", "x") + "; WebView/3.0) (#Build; " + deviceInfo.SystemManufacturer + "; " + deviceInfo.SystemProductName + "; CoolapkUWP " + Package.Current.Id.Version.ToFormattedString() + "; " + (ushort)((SettingsHelper.version & 0xFFFF000000000000L) >> 48) + "." + (ushort)((SettingsHelper.version & 0x0000FFFF00000000L) >> 32) + "." + (ushort)((SettingsHelper.version & 0x00000000FFFF0000L) >> 16) + "." + (ushort)(SettingsHelper.version & 0x000000000000FFFFL) + ")");
+            mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", Culture);
+            mClient.DefaultRequestHeaders.UserAgent.ParseAdd($"Dalvik/2.1.0 (Windows NT {(ushort)((SettingsHelper.version & 0xFFFF000000000000L) >> 48)}.{(ushort)((SettingsHelper.version & 0x0000FFFF00000000L) >> 32)}; Win32; {Package.Current.Id.Architecture.ToString().Replace("X", "x")}; WebView/3.0) (#Build; {deviceInfo.SystemManufacturer}; {deviceInfo.SystemProductName}; CoolapkUWP {Package.Current.Id.Version.ToFormattedString()}; {(ushort)((SettingsHelper.version & 0xFFFF000000000000L) >> 48)}.{(ushort)((SettingsHelper.version & 0x0000FFFF00000000L) >> 32)}.{(ushort)((SettingsHelper.version & 0x00000000FFFF0000L) >> 16)}.{(ushort)(SettingsHelper.version & 0x000000000000FFFFL)})");
             mClient.DefaultRequestHeaders.UserAgent.ParseAdd(" +CoolMarket/9.6.3-1910291-universal");
             mClient.DefaultRequestHeaders.Add("X-App-Version", "9.6.3");
             mClient.DefaultRequestHeaders.Add("X-App-Code", "1910291");
             mClient.DefaultRequestHeaders.Add("X-Api-Version", "9");
             mClient.DefaultRequestHeaders.Add("X-App-Channel", "coolapk");
             mClient.DefaultRequestHeaders.Add("X-App-Mode", "universal");
+            mClient.DefaultRequestHeaders.Add("X-App-Device", TokenCreater.DeviceCode);
             mClient.DefaultRequestHeaders.Add("X-Dark-Mode", SettingsHelper.IsDarkTheme() ? "1" : "0");
             mClient.DefaultRequestHeaders.Add("Cookie", SettingsHelper.cookie);
             Popup popup = new Popup { RequestedTheme = SettingsHelper.Theme };
@@ -284,7 +285,7 @@ namespace CoolapkUWP.Data
         #endregion
 
         //来源：https://blog.csdn.net/lindexi_gd/article/details/48951849
-        public static string GetMD5(string inputString)
+        public static string GetMD5(this string inputString)
         {
             CryptographicHash objHash = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5).CreateHash();
             objHash.Append(CryptographicBuffer.ConvertStringToBinary(inputString, BinaryStringEncoding.Utf8));
@@ -292,20 +293,22 @@ namespace CoolapkUWP.Data
             return CryptographicBuffer.EncodeToHexString(buffHash1);
         }
 
-        //https://github.com/ZCKun/CoolapkTokenCrack
-        private static string GetCoolapkAppToken()
+        public static string GetBase64(this string input, bool israw = false)
         {
-            string DEVICE_ID = Guid.NewGuid().ToString();
-            long UnixDate = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
-            string t = UnixDate.ToString();
-            string hex_t = "0x" + string.Format("{0:x}", UnixDate);
-            // 时间戳加密
-            string md5_t = GetMD5(t);
-            string a = "token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?" + md5_t + "$" + DEVICE_ID + "&com.coolapk.market";
-            string md5_a = GetMD5(Convert.ToBase64String(Encoding.UTF8.GetBytes(a)));
-            string token = md5_a + DEVICE_ID + hex_t;
-            return token;
+            byte[] bytes = Encoding.UTF8.GetBytes(input);
+            string result = Convert.ToBase64String(bytes);
+            if (israw) { result = result.Replace("=", ""); }
+            return result;
         }
+
+        public static string Reverse(this string text)
+        {
+            char[] charArray = text.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
+
+        private static string GetCoolapkAppToken() => token.GetToken();
 
         public static async Task<string> GetJson(string url, bool isBackground = false)
         {

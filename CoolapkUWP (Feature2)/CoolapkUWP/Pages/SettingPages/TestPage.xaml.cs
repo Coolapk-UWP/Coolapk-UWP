@@ -24,6 +24,18 @@ namespace CoolapkUWP.Pages.SettingPages
     /// </summary>
     public sealed partial class TestPage : Page
     {
+        internal bool IsUseTokenV2
+        {
+            get => SettingsHelper.Get<TokenVersion>("TokenVersion") == TokenVersion.TokenV2;
+            set
+            {
+                if (IsUseTokenV2 != value)
+                {
+                    SettingsHelper.Set("TokenVersion", (int)(value ? TokenVersion.TokenV2 : TokenVersion.TokenV1));
+                }
+            }
+        }
+
         public TestPage()
         {
             InitializeComponent();

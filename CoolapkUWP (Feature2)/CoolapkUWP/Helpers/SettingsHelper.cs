@@ -32,6 +32,7 @@ namespace CoolapkUWP.Data
         public static bool IsSpecialUser => (ApplicationData.Current.LocalSettings.Values["IsAuthor"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsAuthor"]) || (ApplicationData.Current.LocalSettings.Values["IsSpecial"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsSpecial"]);
         
         public static UISettings UISetting => new UISettings();
+        public static Type Get<Type>(string key) => (Type)localSettings.Values[key];
         public static void Set(string key, object value) => localSettings.Values[key] = value;
         public static double WindowsVersion = double.Parse($"{(ushort)((version & 0x00000000FFFF0000L) >> 16)}.{(ushort)(SettingsHelper.version & 0x000000000000FFFFL)}");
         public static VerticalAlignment TitleContentVerticalAlignment => VerticalAlignment.Bottom;
@@ -46,6 +47,8 @@ namespace CoolapkUWP.Data
             { localSettings.Values.Add("IsUseOldEmojiMode", false); }
             if (!localSettings.Values.ContainsKey("IsDarkMode"))
             { localSettings.Values.Add("IsDarkMode", false); }
+            if (!localSettings.Values.ContainsKey("TokenVersion"))
+            { localSettings.Values.Add("TokenVersion", (int)TokenVersion.TokenV2); }
             if (!localSettings.Values.ContainsKey("CheckUpdateWhenLuanching"))
             { localSettings.Values.Add("CheckUpdateWhenLuanching", false); }
             if (!localSettings.Values.ContainsKey("IsBackgroundColorFollowSystem"))
