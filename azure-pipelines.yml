@@ -30,7 +30,7 @@ steps:
 
 - task: VSBuild@1
   inputs:
-    platform: 'x86'
+    platform: 'x64'
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
     msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)"
@@ -41,13 +41,6 @@ steps:
                   /p:PackageCertificateThumbprint="0CDF4A03E9BE9DD789894BB3C7AD3DEDECD9AB25"
                   /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"
                   /p:PackageCertificatePassword="$(Password)"'
-
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: '**\bin\$(BuildConfiguration)\**'
-    TargetFolder: '$(build.artifactstagingdirectory)'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
