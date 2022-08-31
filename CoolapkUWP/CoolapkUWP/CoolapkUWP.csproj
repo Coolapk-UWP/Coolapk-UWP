@@ -1095,20 +1095,6 @@
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\zh-CN\SettingPageNew.resw" />
-    <PRIResource Include="Strings\en\ShowImagePage.resw" />
-    <PRIResource Include="Strings\en\SettingPage.resw" />
-    <PRIResource Include="Strings\en\Resources.resw" />
-    <PRIResource Include="Strings\en\NotificationsPage.resw" />
-    <PRIResource Include="Strings\en\MyPage.resw" />
-    <PRIResource Include="Strings\en\MakeFeedControl.resw" />
-    <PRIResource Include="Strings\en\IndexPage.resw" />
-    <PRIResource Include="Strings\en\FeedShellPage.resw" />
-    <PRIResource Include="Strings\en\FeedShellListControl.resw" />
-    <PRIResource Include="Strings\en\FeedShellDetailControl.resw" />
-    <PRIResource Include="Strings\en\FeedRepliesPage.resw" />
-    <PRIResource Include="Strings\en\FeedListPage.resw" />
-    <PRIResource Include="Strings\en\Feed.resw" />
-    <PRIResource Include="Strings\en\BrowserPage.resw" />
     <PRIResource Include="Strings\zh-CN\FeedShellDetailControl.resw" />
     <PRIResource Include="Strings\zh-CN\FeedShellListControl.resw" />
     <PRIResource Include="Strings\zh-CN\MakeFeedControl.resw" />
@@ -1143,11 +1129,64 @@
   <ItemGroup>
     <PRIResource Include="Strings\zh-CN\MainPage.resw" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\AdaptivePage.resw" />
+  </ItemGroup>
   <ItemGroup>
     <SDKReference Include="WindowsMobile, Version=10.0.22621.0">
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\BrowserPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\Feed.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\FeedListPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\FeedRepliesPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\FeedShellDetailControl.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\FeedShellListControl.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\FeedShellPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\IndexPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\MainPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\MakeFeedControl.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\MarkDown.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\MyPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\NotificationsPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\SettingPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\SettingPageNew.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\ShowImagePage.resw" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

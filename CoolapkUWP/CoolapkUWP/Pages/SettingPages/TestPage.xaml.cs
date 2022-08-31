@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.BackgroundTasks;
+using CoolapkUWP.Core.Helpers;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedListPage;
@@ -29,6 +30,18 @@ namespace CoolapkUWP.Pages.SettingPages
                 if (IsUseAPI2 != value)
                 {
                     SettingsHelper.Set(SettingsHelper.IsUseAPI2, value);
+                }
+            }
+        }
+
+        internal bool IsUseTokenV2
+        {
+            get => SettingsHelper.Get<TokenVersion>(SettingsHelper.TokenVersion) == TokenVersion.TokenV2;
+            set
+            {
+                if (IsUseTokenV2 != value)
+                {
+                    SettingsHelper.Set(SettingsHelper.TokenVersion, (int)(value ? TokenVersion.TokenV2 : TokenVersion.TokenV1));
                 }
             }
         }
