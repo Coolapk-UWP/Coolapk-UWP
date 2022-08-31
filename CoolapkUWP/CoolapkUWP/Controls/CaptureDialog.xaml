@@ -9,6 +9,7 @@
     PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
     PrimaryButtonText="确定"
     SecondaryButtonText="取消"
+    Style="{StaticResource DefaultContentDialogStyle}"
     mc:Ignorable="d">
 
     <Grid>
