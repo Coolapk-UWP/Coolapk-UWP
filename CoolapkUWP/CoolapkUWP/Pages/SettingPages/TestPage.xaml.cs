@@ -33,6 +33,18 @@ namespace CoolapkUWP.Pages.SettingPages
             }
         }
 
+        internal bool IsUseTokenV2
+        {
+            get => SettingsHelper.Get<TokenVersion>(SettingsHelper.TokenVersion) == TokenVersion.TokenV2;
+            set
+            {
+                if (IsUseTokenV2 != value)
+                {
+                    SettingsHelper.Set(SettingsHelper.TokenVersion, (int)(value ? TokenVersion.TokenV2 : TokenVersion.TokenV1));
+                }
+            }
+        }
+
         public TestPage()
         {
             InitializeComponent();

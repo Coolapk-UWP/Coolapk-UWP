@@ -28,7 +28,7 @@ namespace CoolapkUWP.Core.Helpers
             NeedShowInAppMessageEvent?.Invoke(null, (type, message));
         }
 
-        public static string GetMD5(string input)
+        public static string GetMD5(this string input)
         {
             using (var md5 = MD5.Create())
             {
@@ -36,6 +36,21 @@ namespace CoolapkUWP.Core.Helpers
                 var r2 = BitConverter.ToString(r1).ToLowerInvariant();
                 return r2.Replace("-", "");
             }
+        }
+
+        public static string GetBase64(this string input, bool israw = false)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(input);
+            string result = Convert.ToBase64String(bytes);
+            if (israw) { result = result.Replace("=", ""); }
+            return result;
+        }
+
+        public static string Reverse(this string text)
+        {
+            char[] charArray = text.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
         }
 
         public enum TimeIntervalType
@@ -72,7 +87,7 @@ namespace CoolapkUWP.Core.Helpers
             }
         }
 
-        public static double ConvertDateTimeToUnixTimeStamp(DateTime time)
+        public static double ConvertDateTimeToUnixTimeStamp(this DateTime time)
         {
             return Math.Round(
                 time.ToUniversalTime()
