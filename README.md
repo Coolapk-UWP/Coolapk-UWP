@@ -7,11 +7,11 @@
 
 [![Build Status](https://dev.azure.com/wherewhere/Coolapk-UWP/_apis/build/status/Coolapk-UWP.Coolapk-UWP?branchName=feature2)](https://dev.azure.com/wherewhere/Coolapk-UWP/_build/latest?definitionId=2&branchName=feature2)
 
-<a href="https://github.com/Tangent-90/Coolapk-UWP/blob/master/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/Tangent-90/Coolapk-UWP.svg?label=License&style=flat-square"></a>
-<a href="https://github.com/Tangent-90/Coolapk-UWP/issues"><img alt="GitHub" src="https://img.shields.io/github/issues/Tangent-90/Coolapk-UWP.svg?label=Issues&style=flat-square"></a>
-<a href="https://github.com/Tangent-90/Coolapk-UWP/stargazers"><img alt="GitHub" src="https://img.shields.io/github/stars/Tangent-90/Coolapk-UWP.svg?label=Stars&style=flat-square"></a>
+<a href="https://github.com/Coolapk-UWP/Coolapk-UWP/blob/master/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/Coolapk-UWP/Coolapk-UWP.svg?label=License&style=flat-square"></a>
+<a href="https://github.com/Coolapk-UWP/Coolapk-UWP/issues"><img alt="GitHub" src="https://img.shields.io/github/issues/Coolapk-UWP/Coolapk-UWP.svg?label=Issues&style=flat-square"></a>
+<a href="https://github.com/Coolapk-UWP/Coolapk-UWP/stargazers"><img alt="GitHub" src="https://img.shields.io/github/stars/Coolapk-UWP/Coolapk-UWP.svg?label=Stars&style=flat-square"></a>
 
-<a href="https://github.com/Tangent-90/Coolapk-UWP/releases/latest"><img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/Tangent-90/Coolapk-UWP/total.svg?label=DOWNLOAD&logo=github&style=for-the-badge"></a>
+<a href="https://github.com/Coolapk-UWP/Coolapk-UWP/releases/latest"><img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/Coolapk-UWP/Coolapk-UWP/total.svg?label=DOWNLOAD&logo=github&style=for-the-badge"></a>
 <a href=""><img alt="Baidu Netdisk" src="https://img.shields.io/badge/download-%e5%af%86%e7%a0%81%ef%bc%9alIIl-magenta.svg?label=%e4%b8%8b%e8%bd%bd&logo=baidu&style=for-the-badge"></a>
 
 ## 目录
@@ -48,14 +48,14 @@
 - 至少100MB的空余储存空间(用于储存安装包与安装应用)
 
 ### 使用应用安装脚本安装应用
-- 下载并解压最新的[安装包`(UWP_x.x.x.0_Debug_Test.rar)`](https://github.com/Tangent-90/Coolapk-UWP/releases/latest)
+- 下载并解压最新的[安装包`(UWP_x.x.x.0_Debug_Test.rar)`](https://github.com/Coolapk-UWP/Coolapk-UWP/releases/latest)
 - 如果没有应用安装脚本，下载[`Install.ps1`](Install.ps1)到目标目录
 ![Install.ps1](Images/Guides/Snipaste_2019-10-12_22-49-11.png)
 - 右击`Install.ps1`，选择“使用PowerShell运行”
 - 应用安装脚本将会引导您完成此过程的剩余部分
 
 ### 使用应用安装程序安装应用
-- 下载并解压最新的[安装包`(UWP_x.x.x.0_Debug_Test.rar)`](https://github.com/Tangent-90/Coolapk-UWP/releases/latest)
+- 下载并解压最新的[安装包`(UWP_x.x.x.0_Debug_Test.rar)`](https://github.com/Coolapk-UWP/Coolapk-UWP/releases/latest)
 - [开启旁加载模式](https://www.windowscentral.com/how-enable-windows-10-sideload-apps-outside-store)
   - 如果您想开发UWP应用，您可以开启[开发人员模式](https://docs.microsoft.com/zh-cn/windows/uwp/get-started/enable-your-device-for-development)，**对于大多数不需要做UWP开发的用户来说，开发人员模式是没有必要的**
 - 安装`Dependencies`文件夹下的适用于您的设备的所有依赖包
@@ -69,7 +69,7 @@
 ![安装](Images/Guides/Snipaste_2019-10-13_12-42-40.png)
 
 ### 更新应用
-- 下载并解压最新的[安装包`(UWP_x.x.x.0_x86_x64_arm_Debug.appxbundle)`](https://github.com/Tangent-90/Coolapk-UWP/releases/latest)
+- 下载并解压最新的[安装包`(UWP_x.x.x.0_x86_x64_arm_Debug.appxbundle)`](https://github.com/Coolapk-UWP/Coolapk-UWP/releases/latest)
 - 双击`*.appxbundle`，单击安装，坐和放宽
 ![安装](Images/Guides/Snipaste_2019-10-13_16-01-09.png)
 
