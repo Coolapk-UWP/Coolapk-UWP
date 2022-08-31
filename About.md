@@ -9,10 +9,11 @@
 
 ##### 鸣谢
 
-|                                       贡献                                     |                作者               |
-| ----------------------------------------------------------------------------- | -------------------------------- |
-| [原作(CoolApk-UWP)](https://github.com/oboard/CoolApk-UWP)                     | [oboard](https://github.com/oboard)|
-| [Token获取方法(CoolapkTokenCrack)](https://github.com/ZCKun/CoolapkTokenCrack) | [ZCKun](https://github.com/ZCKun/)|
+|                                          贡献                                        |                      作者                      |
+| ------------------------------------------------------------------------------------ | ---------------------------------------------- |
+| [原作(CoolApk-UWP)](https://github.com/oboard/CoolApk-UWP)                           | [oboard](https://github.com/oboard)            |
+| [Token获取方法(CoolapkTokenCrack)](https://github.com/ZCKun/CoolapkTokenCrack)        | [ZCKun](https://github.com/ZCKun)              |
+| [TokenV2获取方法(CoolapkTokenV2)](https://github.com/XiaoMengXinX/FuckCoolapkTokenV2) | [XiaoMengXinX](https://github.com/XiaoMengXinX)|
 
 ##### 引用及参考
 
@@ -21,3 +22,4 @@
 - [Win UI](https://github.com/microsoft/microsoft-ui-xaml)
 - [Color Thief](https://github.com/KSemenenko/ColorThief)
 - [Html2Markdown](https://github.com/baynezy/Html2Markdown)
+- [Bcrypt.Net](https://github.com/BcryptNet/bcrypt.net)

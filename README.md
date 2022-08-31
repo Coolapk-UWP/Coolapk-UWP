@@ -102,6 +102,7 @@
 - [Win UI](https://github.com/microsoft/microsoft-ui-xaml)
 - [Color Thief](https://github.com/KSemenenko/ColorThief)
 - [Html2Markdown](https://github.com/baynezy/Html2Markdown)
+- [Bcrypt.Net](https://github.com/BcryptNet/bcrypt.net)
 
 ## 衍生项目
 - [Coolapk-API-Collect](https://github.com/wherewhere/Coolapk-API-Collect "Coolapk-API-Collect")
