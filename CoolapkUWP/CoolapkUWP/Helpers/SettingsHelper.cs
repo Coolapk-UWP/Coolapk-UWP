@@ -1,9 +1,12 @@
 ﻿using CoolapkUWP.BackgroundTasks;
 using CoolapkUWP.Core.Helpers;
+using Newtonsoft.Json.Linq;
 using System;
 using Windows.Storage;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.Web.Http;
+using Windows.Web.Http.Filters;
 
 namespace CoolapkUWP.Helpers
 {
@@ -11,7 +14,6 @@ namespace CoolapkUWP.Helpers
     {
         [Obsolete] public const string DefaultFollowPageIndex = "DefaultFollowPageIndex";
         [Obsolete] public const string UserAvatar = "UserAvatar";
-        [Obsolete] public const string UserName = "UserName";
         public const string IsNoPicsMode = "IsNoPicsMode";
         public const string IsUseOldEmojiMode = "IsUseOldEmojiMode";
         public const string IsDarkMode = "IsDarkMode";
@@ -20,6 +22,8 @@ namespace CoolapkUWP.Helpers
         public const string CheckUpdateWhenLuanching = "CheckUpdateWhenLuanching";
         public const string IsBackgroundColorFollowSystem = "IsBackgroundColorFollowSystem";
         public const string Uid = "Uid";
+        public const string UserName = "UserName";
+        public const string Token = "Token";
         public const string IsDisplayOriginPicture = "IsDisplayOriginPicture";
         public const string ShowOtherException = "ShowOtherException";
         public const string IsFirstRun = "IsFirstRun";
@@ -34,10 +38,6 @@ namespace CoolapkUWP.Helpers
             if (localSettings.Values.ContainsKey(DefaultFollowPageIndex))
             {
                 _ = localSettings.Values.Remove(DefaultFollowPageIndex);
-            }
-            if (localSettings.Values.ContainsKey(UserName))
-            {
-                _ = localSettings.Values.Remove(UserName);
             }
             if (localSettings.Values.ContainsKey(UserAvatar))
             {
@@ -89,6 +89,14 @@ namespace CoolapkUWP.Helpers
             {
                 localSettings.Values.Add(Uid, string.Empty);
             }
+            if (!localSettings.Values.ContainsKey(UserName))
+            {
+                localSettings.Values.Add(UserName, string.Empty);
+            }
+            if (!localSettings.Values.ContainsKey(Token))
+            {
+                localSettings.Values.Add(Token, string.Empty);
+            }
         }
     }
 
@@ -125,65 +133,86 @@ namespace CoolapkUWP.Helpers
             }
         }
 
+        public static bool LoginIn() => LoginIn(Get<string>(Uid), Get<string>(UserName), Get<string>(Token));
+
+        public static bool LoginIn(string Uid, string UserName, string Token)
+        {
+            using (HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter())
+            {
+                HttpCookieManager cookieManager = filter.CookieManager;
+                HttpCookie uid = new HttpCookie("uid", ".coolapk.com", "/");
+                HttpCookie username = new HttpCookie("username", ".coolapk.com", "/");
+                HttpCookie token = new HttpCookie("token", ".coolapk.com", "/");
+                uid.Value = Uid;
+                username.Value = UserName;
+                token.Value = Token;
+                var Expires = DateTime.UtcNow.AddDays(365);
+                uid.Expires = username.Expires = token.Expires = Expires;
+                cookieManager.SetCookie(uid);
+                cookieManager.SetCookie(username);
+                cookieManager.SetCookie(token);
+                return CheckLoginInfo();
+            }
+        }
+
         public static bool CheckLoginInfo()
         {
-            try
+            using (HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter())
             {
-                using (Windows.Web.Http.Filters.HttpBaseProtocolFilter filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
+                HttpCookieManager cookieManager = filter.CookieManager;
+                string uid = string.Empty, token = string.Empty, userName = string.Empty;
+                foreach (HttpCookie item in cookieManager.GetCookies(UriHelper.CoolapkUri))
                 {
-                    Windows.Web.Http.HttpCookieManager cookieManager = filter.CookieManager;
-                    string uid = string.Empty, token = string.Empty, userName = string.Empty;
-                    foreach (Windows.Web.Http.HttpCookie item in cookieManager.GetCookies(new Uri("http://coolapk.com")))
+                    switch (item.Name)
                     {
-                        switch (item.Name)
-                        {
-                            case "uid":
-                                uid = item.Value;
-                                break;
+                        case "uid":
+                            uid = item.Value;
+                            break;
 
-                            case "username":
-                                userName = item.Value;
-                                break;
+                        case "username":
+                            userName = item.Value;
+                            break;
 
-                            case "token":
-                                token = item.Value;
-                                break;
+                        case "token":
+                            token = item.Value;
+                            break;
 
-                            default:
-                                break;
-                        }
-                    }
-
-                    if (string.IsNullOrEmpty(uid) || string.IsNullOrEmpty(token) || string.IsNullOrEmpty(userName))
-                    {
-                        Logout();
-                        return false;
-                    }
-                    else
-                    {
-                        Set(Uid, uid);
-
-                        UIHelper.NotificationNums.Initial();
-                        LiveTileTask.UpdateTile();
-
-                        return true;
+                        default:
+                            break;
                     }
                 }
+
+                if (string.IsNullOrEmpty(uid) || string.IsNullOrEmpty(token) || string.IsNullOrEmpty(userName))
+                {
+                    Logout();
+                    return false;
+                }
+                else
+                {
+                    Set(Uid, uid);
+                    Set(UserName, userName);
+                    Set(Token, token);
+
+                    UIHelper.NotificationNums.Initial();
+                    LiveTileTask.UpdateTile();
+
+                    return true;
+                }
             }
-            catch { throw; }
         }
 
         public static void Logout()
         {
-            using (Windows.Web.Http.Filters.HttpBaseProtocolFilter filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter())
+            using (HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter())
             {
-                Windows.Web.Http.HttpCookieManager cookieManager = filter.CookieManager;
-                foreach (Windows.Web.Http.HttpCookie item in cookieManager.GetCookies(UriHelper.BaseUri))
+                HttpCookieManager cookieManager = filter.CookieManager;
+                foreach (HttpCookie item in cookieManager.GetCookies(UriHelper.BaseUri))
                 {
                     cookieManager.DeleteCookie(item);
                 }
             }
             Set(Uid, string.Empty);
+            Set(UserName, string.Empty);
             UIHelper.NotificationNums.ClearNums();
         }
     }

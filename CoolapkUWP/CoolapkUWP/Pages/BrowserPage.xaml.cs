@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Controls;
+using CoolapkUWP.Helpers;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using Windows.ApplicationModel.Resources;
@@ -130,6 +131,14 @@ namespace CoolapkUWP.Pages
         private void tryLoginButton_Click(object sender, RoutedEventArgs e)
         {
             CheckLogin();
+        }
+
+        private async void manualLoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            var Dialog = new LoginDialog();
+            _ = await Dialog.ShowAsync();
+            if (Frame.CanGoBack) { Frame.GoBack(); }
+            UIHelper.NavigateInSplitPane(typeof(MyPage), new ViewModels.MyPage.ViewMode());
         }
     }
 }

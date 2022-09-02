@@ -164,6 +164,9 @@
       <DependentUpon>FeedShellListControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="BackgroundTasks\LiveTileTask.cs" />
+    <Compile Include="Controls\LoginDialog.xaml.cs">
+      <DependentUpon>LoginDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MakeFeedControl.xaml.cs">
       <DependentUpon>MakeFeedControl.xaml</DependentUpon>
     </Compile>
@@ -928,6 +931,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\FeedShellListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\LoginDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
