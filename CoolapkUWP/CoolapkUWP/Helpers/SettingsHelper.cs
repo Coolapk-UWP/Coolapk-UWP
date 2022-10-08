@@ -1,7 +1,10 @@
 ﻿using CoolapkUWP.BackgroundTasks;
 using CoolapkUWP.Core.Helpers;
+using Microsoft.Toolkit.Uwp.Helpers;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -12,95 +15,83 @@ namespace CoolapkUWP.Helpers
 {
     internal static partial class SettingsHelper
     {
-        [Obsolete] public const string DefaultFollowPageIndex = "DefaultFollowPageIndex";
-        [Obsolete] public const string UserAvatar = "UserAvatar";
-        public const string IsNoPicsMode = "IsNoPicsMode";
-        public const string IsUseOldEmojiMode = "IsUseOldEmojiMode";
-        public const string IsDarkMode = "IsDarkMode";
+        public const string Uid = "Uid";
+        public const string Token = "Token";
+        public const string UserName = "UserName";
         public const string IsUseAPI2 = "IsUseAPI2";
+        public const string IsDarkMode = "IsDarkMode";
+        public const string IsFirstRun = "IsFirstRun";
+        public const string IsNoPicsMode = "IsNoPicsMode";
         public const string TokenVersion = "TokenVersion";
+        public const string IsUseOldEmojiMode = "IsUseOldEmojiMode";
+        public const string ShowOtherException = "ShowOtherException";
+        public const string IsDisplayOriginPicture = "IsDisplayOriginPicture";
         public const string CheckUpdateWhenLuanching = "CheckUpdateWhenLuanching";
         public const string IsBackgroundColorFollowSystem = "IsBackgroundColorFollowSystem";
-        public const string Uid = "Uid";
-        public const string UserName = "UserName";
-        public const string Token = "Token";
-        public const string IsDisplayOriginPicture = "IsDisplayOriginPicture";
-        public const string ShowOtherException = "ShowOtherException";
-        public const string IsFirstRun = "IsFirstRun";
 
-        public static Type Get<Type>(string key) => (Type)localSettings.Values[key];
-
-        public static void Set(string key, object value) => localSettings.Values[key] = value;
+        public static Type Get<Type>(string key) => LocalObject.Read<Type>(key);
+        public static void Set<Type>(string key, Type value) => LocalObject.Save(key, value);
+        public static void SetFile<Type>(string key, Type value) => LocalObject.CreateFileAsync(key, value);
+        public static async Task<Type> GetFile<Type>(string key) => await LocalObject.ReadFileAsync<Type>(key);
 
         public static void SetDefaultSettings()
         {
-#pragma warning disable CS0612 // 类型或成员已过时
-            if (localSettings.Values.ContainsKey(DefaultFollowPageIndex))
+            if (!LocalObject.KeyExists(Uid))
             {
-                _ = localSettings.Values.Remove(DefaultFollowPageIndex);
+                LocalObject.Save(Uid, string.Empty);
             }
-            if (localSettings.Values.ContainsKey(UserAvatar))
+            if (!LocalObject.KeyExists(Token))
             {
-                _ = localSettings.Values.Remove(UserAvatar);
+                LocalObject.Save(Token, string.Empty);
             }
-#pragma warning restore CS0612
-
-            if (!localSettings.Values.ContainsKey(ShowOtherException))
+            if (!LocalObject.KeyExists(UserName))
             {
-                localSettings.Values.Add(ShowOtherException, true);
+                LocalObject.Save(UserName, string.Empty);
             }
-            if (!localSettings.Values.ContainsKey(IsNoPicsMode))
+            if (!LocalObject.KeyExists(IsUseAPI2))
             {
-                localSettings.Values.Add(IsNoPicsMode, false);
+                LocalObject.Save(IsUseAPI2, true);
             }
-            if (!localSettings.Values.ContainsKey(IsUseOldEmojiMode))
+            if (!LocalObject.KeyExists(IsFirstRun))
             {
-                localSettings.Values.Add(IsUseOldEmojiMode, false);
+                LocalObject.Save(IsFirstRun, true);
             }
-            if (!localSettings.Values.ContainsKey(IsDarkMode))
+            if (!LocalObject.KeyExists(IsDarkMode))
             {
-                localSettings.Values.Add(IsDarkMode, false);
+                LocalObject.Save(IsDarkMode, false);
             }
-            if (!localSettings.Values.ContainsKey(IsUseAPI2))
+            if (!LocalObject.KeyExists(IsNoPicsMode))
             {
-                localSettings.Values.Add(IsUseAPI2, true);
+                LocalObject.Save(IsNoPicsMode, false);
             }
-            if (!localSettings.Values.ContainsKey(TokenVersion))
+            if (!LocalObject.KeyExists(TokenVersion))
             {
-                localSettings.Values.Add(TokenVersion, (int)Core.Helpers.TokenVersion.TokenV2);
+                LocalObject.Save(TokenVersion, Core.Helpers.TokenVersion.TokenV2);
             }
-            if (!localSettings.Values.ContainsKey(CheckUpdateWhenLuanching))
+            if (!LocalObject.KeyExists(IsUseOldEmojiMode))
             {
-                localSettings.Values.Add(CheckUpdateWhenLuanching, true);
+                LocalObject.Save(IsUseOldEmojiMode, false);
             }
-            if (!localSettings.Values.ContainsKey(IsBackgroundColorFollowSystem))
+            if (!LocalObject.KeyExists(ShowOtherException))
             {
-                localSettings.Values.Add(IsBackgroundColorFollowSystem, true);
+                LocalObject.Save(ShowOtherException, true);
             }
-            if (!localSettings.Values.ContainsKey(IsDisplayOriginPicture))
+            if (!LocalObject.KeyExists(IsDisplayOriginPicture))
             {
-                localSettings.Values.Add(IsDisplayOriginPicture, false);
+                LocalObject.Save(IsDisplayOriginPicture, false);
             }
-            if (!localSettings.Values.ContainsKey(IsFirstRun))
+            if (!LocalObject.KeyExists(CheckUpdateWhenLuanching))
             {
-                localSettings.Values.Add(IsFirstRun, true);
+                LocalObject.Save(CheckUpdateWhenLuanching, true);
             }
-            if (!localSettings.Values.ContainsKey(Uid))
+            if (!LocalObject.KeyExists(IsBackgroundColorFollowSystem))
             {
-                localSettings.Values.Add(Uid, string.Empty);
-            }
-            if (!localSettings.Values.ContainsKey(UserName))
-            {
-                localSettings.Values.Add(UserName, string.Empty);
-            }
-            if (!localSettings.Values.ContainsKey(Token))
-            {
-                localSettings.Values.Add(Token, string.Empty);
+                LocalObject.Save(IsBackgroundColorFollowSystem, true);
             }
         }
     }
 
-    internal enum UiSettingChangedType
+    internal enum UISettingChangedType
     {
         LightMode,
         DarkMode,
@@ -109,17 +100,17 @@ namespace CoolapkUWP.Helpers
 
     internal static partial class SettingsHelper
     {
-        private static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+        private static readonly ApplicationDataStorageHelper LocalObject = ApplicationDataStorageHelper.GetCurrent(new SystemTextJsonObjectSerializer());
         public static readonly MetroLog.ILogManager logManager = MetroLog.LogManagerFactory.CreateLogManager();
-        public static readonly UISettings uiSettings = new UISettings();
+        public static readonly UISettings UISettings = new UISettings();
         public static ElementTheme Theme => Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
-        public static Core.WeakEvent<UiSettingChangedType> UiSettingChanged { get; } = new Core.WeakEvent<UiSettingChangedType>();
+        public static Core.WeakEvent<UISettingChangedType> UISettingChanged { get; } = new Core.WeakEvent<UISettingChangedType>();
 
         static SettingsHelper()
         {
             SetDefaultSettings();
-            SetBackgroundTheme(uiSettings, null);
-            uiSettings.ColorValuesChanged += SetBackgroundTheme;
+            SetBackgroundTheme(UISettings, null);
+            UISettings.ColorValuesChanged += SetBackgroundTheme;
             UIHelper.CheckTheme();
         }
 
@@ -129,7 +120,7 @@ namespace CoolapkUWP.Helpers
             {
                 bool value = o.GetColorValue(UIColorType.Background) == Windows.UI.Colors.Black;
                 Set(IsDarkMode, value);
-                UiSettingChanged.Invoke(value ? UiSettingChangedType.DarkMode : UiSettingChangedType.LightMode);
+                UISettingChanged.Invoke(value ? UISettingChangedType.DarkMode : UISettingChangedType.LightMode);
             }
         }
 
@@ -215,5 +206,15 @@ namespace CoolapkUWP.Helpers
             Set(UserName, string.Empty);
             UIHelper.NotificationNums.ClearNums();
         }
+    }
+
+    public class SystemTextJsonObjectSerializer : Microsoft.Toolkit.Helpers.IObjectSerializer
+    {
+        // Specify your serialization settings
+        private readonly JsonSerializerSettings settings = new JsonSerializerSettings();
+
+        string Microsoft.Toolkit.Helpers.IObjectSerializer.Serialize<T>(T value) => JsonConvert.SerializeObject(value, typeof(T), Formatting.Indented, settings);
+
+        public T Deserialize<T>(string value) => JsonConvert.DeserializeObject<T>(value, settings);
     }
 }

@@ -63,7 +63,7 @@ namespace CoolapkUWP.Pages.SettingPages
                 Set(IsNoPicsMode, value);
                 isNoPicsMode = Get<bool>(IsNoPicsMode);
                 RaisePropertyChangedEvent();
-                UiSettingChanged?.Invoke(UiSettingChangedType.NoPicChanged);
+                UISettingChanged?.Invoke(UISettingChangedType.NoPicChanged);
             }
         }
 
@@ -120,7 +120,7 @@ namespace CoolapkUWP.Pages.SettingPages
                 Set(IsBackgroundColorFollowSystem, value);
                 isBackgroundColorFollowSystem = Get<bool>(IsBackgroundColorFollowSystem);
                 RaisePropertyChangedEvent();
-                IsDarkMode2 = uiSettings.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background).Equals(Windows.UI.Colors.Black);
+                IsDarkMode2 = UISettings.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background).Equals(Windows.UI.Colors.Black);
             }
         }
 
@@ -251,7 +251,7 @@ namespace CoolapkUWP.Pages.SettingPages
                     break;
                 case 2:
                     IsBackgroundColorFollowSystem2 = true;
-                    UiSettingChanged?.Invoke(IsDarkMode2 ? UiSettingChangedType.DarkMode : UiSettingChangedType.LightMode);
+                    UISettingChanged?.Invoke(IsDarkMode2 ? UISettingChangedType.DarkMode : UISettingChangedType.LightMode);
                     break;
                 default:
                     break;

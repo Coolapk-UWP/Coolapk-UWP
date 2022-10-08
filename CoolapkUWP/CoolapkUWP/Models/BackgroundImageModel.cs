@@ -65,12 +65,12 @@ namespace CoolapkUWP.Models
         {
             Uri = uri;
             Type = type;
-            SettingsHelper.UiSettingChanged.Add(mode =>
+            SettingsHelper.UISettingChanged.Add(mode =>
             {
                 switch (mode)
                 {
-                    case UiSettingChangedType.LightMode:
-                    case UiSettingChangedType.DarkMode:
+                    case UISettingChangedType.LightMode:
+                    case UISettingChangedType.DarkMode:
                         _ = UIHelper.ShellDispatcher?.RunAsync(
                             Windows.UI.Core.CoreDispatcherPriority.Normal,
                             () =>
@@ -87,7 +87,7 @@ namespace CoolapkUWP.Models
 
                         break;
 
-                    case UiSettingChangedType.NoPicChanged:
+                    case UISettingChangedType.NoPicChanged:
                         GetImage();
                         break;
                 }
