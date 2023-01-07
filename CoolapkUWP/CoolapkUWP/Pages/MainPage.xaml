@@ -1,127 +1,124 @@
 ﻿<Page
     x:Class="CoolapkUWP.Pages.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:controls="using:CoolapkUWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:CoolapkUWP.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    NavigationCacheMode="Required"
-    SizeChanged="Page_SizeChanged"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
-
-    <muxc:NavigationView
-        x:Name="navigationView"
-        IsBackButtonVisible="Collapsed"
-        IsTitleBarAutoPaddingEnabled="False"
-        IsSettingsVisible="True"
-        AlwaysShowHeader="True"
-        Header=" "
-        SelectionChanged="NavigationView_SelectionChanged">
-
+    <Grid>
+        <Grid
+            x:Name="AppTitleBar"
+            Height="48"
+            VerticalAlignment="Top"
+            Background="Transparent"
+            Canvas.ZIndex="1"
+            IsHitTestVisible="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="72" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="40" />
+            </Grid.ColumnDefinitions>
+            <Grid x:Name="AppTitle">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Viewbox
+                    Width="24"
+                    Height="24"
+                    Margin="0,0,16,0"
+                    VerticalAlignment="Center">
+                    <muxc:ImageIcon Source="ms-appx:///Assets/StoreLogo.png" />
+                </Viewbox>
+                <TextBlock
+                    x:Name="AppTitleText"
+                    Grid.Column="1"
+                    Margin="0,0,16,2"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource CaptionTextBlockStyle}"
+                    Text="Coolapk"
+                    TextTrimming="CharacterEllipsis"
+                    TextWrapping="NoWrap" />
+            </Grid>
+        </Grid>
+        <muxc:NavigationView
+            x:Name="NavigationView"
+            BackRequested="NavigationView_BackRequested"
+            DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
+            IsBackEnabled="True"
+            IsSettingsVisible="False"
+            IsTitleBarAutoPaddingEnabled="False"
+            Loaded="NavigationView_Loaded"
+            SelectionChanged="NavigationView_SelectionChanged">
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem Content="首页" Tag="Home">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE80F;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="数码" Tag="Test">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8EA;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="发现" Tag="Test">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE707;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+            </muxc:NavigationView.MenuItems>
+            <muxc:NavigationView.FooterMenuItems>
+                <muxc:NavigationViewItem Content="通知" Tag="Test">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8BD;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="设置" Tag="settings">
+                    <muxc:NavigationViewItem.Icon>
+                        <muxc:AnimatedIcon>
+                            <muxc:AnimatedIcon.Source>
+                                <animatedvisuals:AnimatedSettingsVisualSource />
+                            </muxc:AnimatedIcon.Source>
+                            <muxc:AnimatedIcon.FallbackIconSource>
+                                <muxc:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE713;" />
+                            </muxc:AnimatedIcon.FallbackIconSource>
+                        </muxc:AnimatedIcon>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+            </muxc:NavigationView.FooterMenuItems>
+            <Frame x:Name="NavigationViewFrame" x:FieldModifier="public" />
+        </muxc:NavigationView>
+        <muxc:ProgressBar
+            x:Name="ProgressBar"
+            Grid.ColumnSpan="2"
+            VerticalAlignment="Top"
+            Background="Transparent"
+            IsIndeterminate="False" />
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="VisualStateGroup">
+            <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger
-                            MinWindowWidth="{x:Bind navigationView.CompactModeThresholdWidth}"/>
+                        <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
-
                     <VisualState.Setters>
-                        <Setter Target="BottomButton.Orientation" Value="Horizontal"/>
-                        <Setter Target="BottomButton.Visibility" Value="Visible"/>
-                        <Setter Target="navigationView.Margin" Value="0,32,0,0"/>
-                        <Setter Target="navigationView.PaneDisplayMode" Value="Top"/>
-                        <Setter Target="navigationView.AlwaysShowHeader" Value="False"/>
-                        <Setter Target="navigationView.IsSettingsVisible" Value="False"/>
+                        <Setter Target="NavigationView.PaneDisplayMode" Value="Top" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{x:Bind NavigationView.CompactModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NavigationView.PaneDisplayMode" Value="Auto" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-
-        <muxc:NavigationView.MenuItems>
-
-            <muxc:NavigationViewItem x:Uid="/MainPage/V9_HOME_TAB_FOLLOW" Tag="V9_HOME_TAB_FOLLOW">
-                <muxc:NavigationViewItem.MenuItems>
-                    <muxc:NavigationViewItem x:Uid="/MainPage/all" Tag="V9_HOME_TAB_FOLLOW"/>
-                    <muxc:NavigationViewItem x:Uid="/MainPage/circle" Tag="circle"/>
-                    <muxc:NavigationViewItem x:Uid="/MainPage/apk" Tag="apk"/>
-                    <muxc:NavigationViewItem x:Uid="/MainPage/topic" Tag="topic"/>
-                    <muxc:NavigationViewItem x:Uid="/MainPage/question" Tag="question"/>
-                    <muxc:NavigationViewItem x:Uid="/MainPage/product" Tag="product"/>
-                </muxc:NavigationViewItem.MenuItems>
-            </muxc:NavigationViewItem>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V9_HOME_TAB_HEADLINE" Tag="V9_HOME_TAB_HEADLINE"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V9_HOME_TAB_RANKING" Tag="V9_HOME_TAB_RANKING"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V11_HOME_TAB_NEWS" Tag="V11_HOME_TAB_NEWS"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V8_HUODONG_XIANLIAO_20210409" Tag="V8_HUODONG_XIANLIAO_20210409"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V9_HOME_TAB_TOPIC" Tag="V9_HOME_TAB_TOPIC"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V9_HOME_TAB_LIVE" Tag="V9_HOME_TAB_LIVE"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V9_HOME_TAB_SHIPIN" Tag="V9_HOME_TAB_SHIPIN"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V9_HOME_TAB_WENDA" Tag="V9_HOME_TAB_WENDA"/>
-
-            <muxc:NavigationViewItemSeparator/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V11_FIND_COOLPIC" Tag="V11_FIND_COOLPIC"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V11_FIND_GOODS" Tag="V11_FIND_GOODS" Visibility="Collapsed"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V11_FIND_GOOD_GOODS_HOME" Tag="V11_FIND_GOOD_GOODS_HOME"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V11_DISCOVERY_SECOND_HAND" Tag="V11_DISCOVERY_SECOND_HAND" Visibility="Collapsed"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V11_FIND_DYH" Tag="V11_FIND_DYH"/>
-
-            <muxc:NavigationViewItemSeparator/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V11_DIGITAL_PRODUCT_LIST" Tag="V11_DIGITAL_PRODUCT_LIST" Visibility="Collapsed"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V10_DIGITAL_HOME" Tag="V10_DIGITAL_HOME"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V10_CHANNEL_SJB" Tag="V10_CHANNEL_SJB"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V11_ZHUANTI_EARPHONE" Tag="V11_ZHUANTI_EARPHONE"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V10_CHANNEL_SMB_TOP" Tag="V10_CHANNEL_SMB_TOP"/>
-
-            <muxc:NavigationViewItemSeparator/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V10_MARKET_HOME" Tag="V10_MARKET_HOME"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V8_MARKET_APP" Tag="V8_MARKET_APP"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V8_MARKET_GAME" Tag="V8_MARKET_GAME"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V8_MARKET_ALBUM" Tag="V8_MARKET_ALBUM" Visibility="Collapsed"/>
-            <muxc:NavigationViewItem x:Uid="/MainPage/V10_MARKET_RANK" Tag="V10_MARKET_RANK"/>
-
-        </muxc:NavigationView.MenuItems>
-
-        <!--<muxc:NavigationView.MenuItemTemplate>
-            <DataTemplate x:DataType="model:MenuItem">
-                <muxc:NavigationViewItem Content="{x:Bind Title}" MenuItemsSource="{x:Bind Entities}"/>
-            </DataTemplate>
-        </muxc:NavigationView.MenuItemTemplate>-->
-
-        <muxc:NavigationView.PaneFooter>
-            <Grid>
-                <StackPanel
-                    x:Name="BottomButton"
-                    Margin="0,0,36,0"
-                    Orientation="Vertical"
-                    Visibility="Collapsed">
-                    <muxc:ProgressRing
-                        x:Name="progressRing"
-                        Width="24"
-                        Height="24"
-                        Margin="8,0"
-                        Visibility="Collapsed"
-                        IsActive="True"/>
-                    <Button
-                        x:Name="Refresh"
-                        Tag="Refresh"
-                        Click="Button_Click"
-                        Style="{StaticResource IconButtonStyle}">
-                        <SymbolIcon Symbol="Refresh"/>
-                    </Button>
-                    <Button
-                        x:Name="panel"
-                        Tag="panel"
-                        Click="Button_Click"
-                        Visibility="Collapsed"
-                        Style="{StaticResource IconButtonStyle}">
-                        <SymbolIcon Symbol="{x:Bind PaneOpenSymbolIcon, Mode=OneWay}"/>
-                    </Button>
-                </StackPanel>
-            </Grid>
-        </muxc:NavigationView.PaneFooter>
-
-        <Frame x:Name="navigationViewFrame"/>
-
-    </muxc:NavigationView>
+    </Grid>
 </Page>

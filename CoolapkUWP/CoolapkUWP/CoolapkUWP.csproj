@@ -4,13 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{C770F8CE-4188-4D93-80CB-DACAC2F94D95}</ProjectGuid>
+    <ProjectGuid>{E1F78B65-FBAE-40FD-B1A7-C4264AD53875}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CoolapkUWP</RootNamespace>
     <AssemblyName>CoolapkUWP</AssemblyName>
     <DefaultLanguage>zh-CN</DefaultLanguage>
-    <LangVersion>latest</LangVersion>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22621.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
@@ -18,26 +17,13 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <PackageCertificateKeyFile>
-    </PackageCertificateKeyFile>
-    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-    <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
-    <AppxBundle>Always</AppxBundle>
-    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
-    <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-arm64;win10-arm64-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
-    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <GenerateTestArtifacts>True</GenerateTestArtifacts>
-    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>0BFC20EF753C6F027EA97A14C211B35AE34AC440</PackageCertificateThumbprint>
-    <AppInstallerUpdateFrequency>0</AppInstallerUpdateFrequency>
-    <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
-    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <AppInstallerUri>https://raw.fastgit.org/Tangent-90/Coolapk-UWP/screenshots/Appxbundle/CoolapkUWP.appxbundle</AppInstallerUri>
+    <PackageCertificateThumbprint>0CDF4A03E9BE9DD789894BB3C7AD3DEDECD9AB25</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>bin\Master\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
@@ -45,13 +31,10 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
-    <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;LOAD_MAIN_PAGE</DefineConstants>
+    <OutputPath>bin\Master\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -61,35 +44,9 @@
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\ARM64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS</DefineConstants>
-    <NoWarn>;2008</NoWarn>
-    <NoStdLib>true</NoStdLib>
-    <DebugType>full</DebugType>
-    <PlatformTarget>ARM64</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
-    <OutputPath>bin\ARM64\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;LOAD_MAIN_PAGE</DefineConstants>
-    <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
-    <NoStdLib>true</NoStdLib>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>ARM64</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <OutputPath>bin\Master\ARM\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
@@ -99,8 +56,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
-    <OutputPath>bin\ARM\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;LOAD_MAIN_PAGE</DefineConstants>
+    <OutputPath>bin\Master\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -110,9 +67,33 @@
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Master\ARM64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
+    <OutputPath>bin\Master\ARM64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>bin\Master\x64\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
@@ -120,12 +101,10 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;LOAD_MAIN_PAGE</DefineConstants>
+    <OutputPath>bin\Master\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -135,169 +114,87 @@
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BackgroundTasks\CheckUpdate.cs" />
-    <Compile Include="BackgroundTasks\MakeLikeTask.cs" />
-    <Compile Include="Controls\AboutControl.xaml.cs">
-      <DependentUpon>AboutControl.xaml</DependentUpon>
+    <Compile Include="Common\HtmlToText.cs" />
+    <Compile Include="Common\TokenCreater.cs" />
+    <Compile Include="Common\WeakEvent.cs" />
+    <Compile Include="Controls\DataTemplates\DataTemplateSelectors.cs" />
+    <Compile Include="Controls\DataTemplates\Feeds.xaml.cs">
+      <DependentUpon>Feeds.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\AboutDialog.xaml.cs">
-      <DependentUpon>AboutDialog.xaml</DependentUpon>
+    <Compile Include="Controls\DataTemplates\IndexCardTemplates.xaml.cs">
+      <DependentUpon>IndexCardTemplates.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CaptureDialog.xaml.cs">
-      <DependentUpon>CaptureDialog.xaml</DependentUpon>
+    <Compile Include="Controls\DataTemplates\OtherDatatemplates.xaml.cs">
+      <DependentUpon>OtherDatatemplates.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DataTemplates\Feed.xaml.cs" />
-    <Compile Include="Controls\DataTemplates\FeedReply.xaml.cs" />
-    <Compile Include="Controls\DataTemplates\NotificationTemplates.xaml.cs" />
-    <Compile Include="Controls\DataTemplates\IndexCardTemplates.xaml.cs" />
-    <Compile Include="Controls\DataTemplates\Pic.xaml.cs" />
-    <Compile Include="Controls\DataTemplates\RelationRowsItem.xaml.cs" />
-    <Compile Include="Controls\DataTemplates\SearchWord.xaml.cs" />
-    <Compile Include="Controls\FeedShellDetailControl.xaml.cs">
-      <DependentUpon>FeedShellDetailControl.xaml</DependentUpon>
+    <Compile Include="Controls\DataTemplates\Pic.xaml.cs">
+      <DependentUpon>Pic.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FeedShellListControl.xaml.cs">
-      <DependentUpon>FeedShellListControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="BackgroundTasks\LiveTileTask.cs" />
-    <Compile Include="Controls\LoginDialog.xaml.cs">
-      <DependentUpon>LoginDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\MakeFeedControl.xaml.cs">
-      <DependentUpon>MakeFeedControl.xaml</DependentUpon>
+    <Compile Include="Controls\DataTemplates\SearchWord.xaml.cs">
+      <DependentUpon>SearchWord.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ShowQRCodeControl.xaml.cs">
       <DependentUpon>ShowQRCodeControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\StatusGrid.xaml.cs">
-      <DependentUpon>StatusGrid.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\StackPanel.cs" />
     <Compile Include="Controls\TextBlockEx.xaml.cs">
       <DependentUpon>TextBlockEx.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TitleBar.xaml.cs">
-      <DependentUpon>TitleBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Helpers\EmojiTypeHelper.cs" />
-    <Compile Include="Helpers\NotificationsNum.cs" />
-    <Compile Include="Helpers\ValueConverters\BoolToVisibilityConverter.cs" />
-    <Compile Include="Helpers\ValueConverters\HasValueConverter.cs" />
-    <Compile Include="Helpers\ValueConverters\TrueToFalseConverter.cs" />
-    <Compile Include="Models\BackgroundImageModel.cs" />
-    <Compile Include="Models\Controls\MakeFeedControlModel.cs" />
-    <Compile Include="Models\Controls\UserHubModel.cs" />
-    <Compile Include="Models\Links\SourceFeedModel.cs" />
-    <Compile Include="Models\LiveModel.cs" />
-    <Compile Include="Models\DyhModel.cs" />
-    <Compile Include="Models\FeedReplyModel.cs" />
-    <Compile Include="Models\FeedModelBase.cs" />
-    <Compile Include="Models\FeedDetailModel.cs" />
-    <Compile Include="Models\HistoryModel.cs" />
-    <Compile Include="Models\Interfaces.cs" />
-    <Compile Include="Models\ImageModel.cs" />
-    <Compile Include="Models\IndexPageModel.cs" />
-    <Compile Include="Models\Pages\FeedListPageModels.cs" />
-    <Compile Include="Models\Pages\NotificationsPageModels.cs" />
-    <Compile Include="Models\ProductModel.cs" />
-    <Compile Include="Models\SimpleFeedReplyModel.cs" />
-    <Compile Include="Models\SourceFeedModel.cs" />
-    <Compile Include="Controls\GridPanel.cs" />
+    <Compile Include="Helpers\Converters\FontSizeToLineHeight.cs" />
+    <Compile Include="Helpers\Converters\HTMLToTextConverter.cs" />
+    <Compile Include="Helpers\DataHelper.cs" />
+    <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Helpers\EmojiHelper.cs" />
     <Compile Include="Helpers\ImageCacheHelper.cs" />
-    <Compile Include="Controls\DataTemplates\OtherDataTemplates.xaml.cs" />
-    <Compile Include="Models\FeedModel.cs" />
-    <Compile Include="Models\SearchPageModel.cs" />
-    <Compile Include="Models\TopicModel.cs" />
-    <Compile Include="Models\AppModel.cs" />
-    <Compile Include="Models\ListModel.cs" />
-    <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Helpers\NetworkHelper.cs" />
+    <Compile Include="Helpers\RequestHelper.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
-    <Compile Include="Helpers\ExceptionCatcher.cs" />
-    <Compile Include="Controls\DataTemplateSelectors.cs" />
+    <Compile Include="Helpers\ThemeHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
-    <Compile Include="Models\MenuItemModel.cs" />
-    <Compile Include="Pages\AppPages\AppPage.xaml.cs">
-      <DependentUpon>AppPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\AppPages\DevPage.xaml.cs">
-      <DependentUpon>DevPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\FeedPages\MessagePage.xaml.cs">
-      <DependentUpon>MessagePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\FeedPages\AdaptivePage.xaml.cs">
-      <DependentUpon>AdaptivePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\FeedPages\FeedRepliesPage.xaml.cs">
-      <DependentUpon>FeedRepliesPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\FeedPages\HistoryPage.xaml.cs">
-      <DependentUpon>HistoryPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\FeedPages\HTMLTextPage.xaml.cs">
-      <DependentUpon>HTMLTextPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\MainPageV7.xaml.cs">
-      <DependentUpon>MainPageV7.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\ShowImagePage.xaml.cs">
-      <DependentUpon>ShowImagePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\MyPage.xaml.cs">
-      <DependentUpon>MyPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\MessagePageViewModel.cs" />
-    <Compile Include="ViewModels\FeedDetailListViewModel.cs" />
-    <Compile Include="ViewModels\FeedDetailPageViewModel.cs" />
-    <Compile Include="ViewModels\FeedListPageViewModel.cs" />
-    <Compile Include="Pages\FeedPages\FeedListPage.xaml.cs">
-      <DependentUpon>FeedListPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\FeedPages\NotificationsPage.xaml.cs">
-      <DependentUpon>NotificationsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\SettingPages\TestPage.xaml.cs">
-      <DependentUpon>TestPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\FeedPages\FeedShellPage.xaml.cs">
-      <DependentUpon>FeedShellPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Helpers\UriHelper.cs" />
+    <Compile Include="Models\CollectionModel.cs" />
+    <Compile Include="Models\Entity.cs" />
+    <Compile Include="Models\Exceptions\CoolapkMessageException.cs" />
+    <Compile Include="Models\Exceptions\UserNameErrorException.cs" />
+    <Compile Include="Models\Feeds\FeedDetailModel.cs" />
+    <Compile Include="Models\Feeds\FeedModel.cs" />
+    <Compile Include="Models\Feeds\FeedModelBase.cs" />
+    <Compile Include="Models\Feeds\FeedReplyModel.cs" />
+    <Compile Include="Models\Feeds\SourceFeedModel.cs" />
+    <Compile Include="Models\Feeds\SourceFeedReplyModel.cs" />
+    <Compile Include="Models\HistoryModel.cs" />
+    <Compile Include="Models\Images\ImageModel.cs" />
+    <Compile Include="Models\IndexPageModel.cs" />
+    <Compile Include="Models\Interfaces.cs" />
+    <Compile Include="Models\Pages\FeedListPageModels.cs" />
+    <Compile Include="Models\SearchWord.cs" />
+    <Compile Include="Models\TopicModel.cs" />
+    <Compile Include="Models\Update\SystemVersionInfo.cs" />
+    <Compile Include="Models\Update\UpdateInfo.cs" />
+    <Compile Include="Models\Upload\UploadFileFragment.cs" />
+    <Compile Include="Models\Users\ContactModel.cs" />
+    <Compile Include="Models\Users\UserAction.cs" />
+    <Compile Include="Models\Users\UserModel.cs" />
     <Compile Include="Pages\FeedPages\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\BrowserPage.xaml.cs">
-      <DependentUpon>BrowserPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\FeedPages\SearchingPage.xaml.cs">
-      <DependentUpon>SearchingPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ShellPage.xaml.cs">
-      <DependentUpon>ShellPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Pages\SettingPages\SettingPage.xaml.cs">
-      <DependentUpon>SettingPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\FeedPages\UserListPage.xaml.cs">
-      <DependentUpon>UserListPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\AdaptivePageViewModel.cs" />
-    <Compile Include="ViewModels\FeedRepliesPageViewModel.cs" />
-    <Compile Include="ViewModels\IndexPageViewModel.cs" />
+    <Compile Include="ViewModels\DataSource\DataSourceBase.cs" />
+    <Compile Include="ViewModels\DataSource\EntityItemSourse.cs" />
+    <Compile Include="ViewModels\DataSource\IncrementalLoadingBase.cs" />
+    <Compile Include="ViewModels\FeedPages\IndexViewModel.cs" />
     <Compile Include="ViewModels\Interfaces.cs" />
-    <Compile Include="ViewModels\MyPageViewMode.cs" />
-    <Compile Include="ViewModels\NotificationsPageViewModel.cs" />
-    <Compile Include="ViewModels\SearchPageViewModel.cs" />
-    <Compile Include="ViewModels\HistoryPageViewModel.cs" />
-    <Compile Include="ViewModels\UserListPageViewModel.cs" />
+    <Compile Include="ViewModels\Providers\CoolapkListProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -310,530 +207,529 @@
     <Content Include="Assets\BadgeLogo.scale-150.png" />
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\BadgeLogo.scale-400.png" />
-    <Content Include="Assets\Emoji\0000.png" />
-    <Content Include="Assets\Emoji\0001.png" />
-    <Content Include="Assets\Emoji\0002.png" />
-    <Content Include="Assets\Emoji\0003.png" />
-    <Content Include="Assets\Emoji\0004.png" />
-    <Content Include="Assets\Emoji\0005.png" />
-    <Content Include="Assets\Emoji\0006.png" />
-    <Content Include="Assets\Emoji\0007.png" />
-    <Content Include="Assets\Emoji\0008.png" />
-    <Content Include="Assets\Emoji\0009.png" />
-    <Content Include="Assets\Emoji\0010.png" />
-    <Content Include="Assets\Emoji\0011.png" />
-    <Content Include="Assets\Emoji\0012.png" />
-    <Content Include="Assets\Emoji\0013.png" />
-    <Content Include="Assets\Emoji\0014.png" />
-    <Content Include="Assets\Emoji\0015.png" />
-    <Content Include="Assets\Emoji\0016.png" />
-    <Content Include="Assets\Emoji\0017.png" />
-    <Content Include="Assets\Emoji\0018.png" />
-    <Content Include="Assets\Emoji\0019.png" />
-    <Content Include="Assets\Emoji\0020.png" />
-    <Content Include="Assets\Emoji\0021.png" />
-    <Content Include="Assets\Emoji\0022.png" />
-    <Content Include="Assets\Emoji\0023.png" />
-    <Content Include="Assets\Emoji\0024.png" />
-    <Content Include="Assets\Emoji\0025.png" />
-    <Content Include="Assets\Emoji\0026.png" />
-    <Content Include="Assets\Emoji\0027.png" />
-    <Content Include="Assets\Emoji\0028.png" />
-    <Content Include="Assets\Emoji\0029.png" />
-    <Content Include="Assets\Emoji\0030.png" />
-    <Content Include="Assets\Emoji\0031.png" />
-    <Content Include="Assets\Emoji\0032.png" />
-    <Content Include="Assets\Emoji\0033.png" />
-    <Content Include="Assets\Emoji\0034.png" />
-    <Content Include="Assets\Emoji\0035.png" />
-    <Content Include="Assets\Emoji\0036.png" />
-    <Content Include="Assets\Emoji\0037.png" />
-    <Content Include="Assets\Emoji\0038.png" />
-    <Content Include="Assets\Emoji\0039.png" />
-    <Content Include="Assets\Emoji\0040.png" />
-    <Content Include="Assets\Emoji\0041.png" />
-    <Content Include="Assets\Emoji\0042.png" />
-    <Content Include="Assets\Emoji\0043.png" />
-    <Content Include="Assets\Emoji\0044.png" />
-    <Content Include="Assets\Emoji\0045.png" />
-    <Content Include="Assets\Emoji\0046.png" />
-    <Content Include="Assets\Emoji\0047.png" />
-    <Content Include="Assets\Emoji\0048.png" />
-    <Content Include="Assets\Emoji\0049.png" />
-    <Content Include="Assets\Emoji\0050.png" />
-    <Content Include="Assets\Emoji\0051.png" />
-    <Content Include="Assets\Emoji\0052.png" />
-    <Content Include="Assets\Emoji\0053.png" />
-    <Content Include="Assets\Emoji\0054.png" />
-    <Content Include="Assets\Emoji\0055.png" />
-    <Content Include="Assets\Emoji\0056.png" />
-    <Content Include="Assets\Emoji\0057.png" />
-    <Content Include="Assets\Emoji\0058.png" />
-    <Content Include="Assets\Emoji\0059.png" />
-    <Content Include="Assets\Emoji\0060.png" />
-    <Content Include="Assets\Emoji\0061.png" />
-    <Content Include="Assets\Emoji\0062.png" />
-    <Content Include="Assets\Emoji\0063.png" />
-    <Content Include="Assets\Emoji\0064.png" />
-    <Content Include="Assets\Emoji\0065.png" />
-    <Content Include="Assets\Emoji\0066.png" />
-    <Content Include="Assets\Emoji\0067.png" />
-    <Content Include="Assets\Emoji\0068.png" />
-    <Content Include="Assets\Emoji\0069.png" />
-    <Content Include="Assets\Emoji\0070.png" />
-    <Content Include="Assets\Emoji\0071.png" />
-    <Content Include="Assets\Emoji\0072.png" />
-    <Content Include="Assets\Emoji\0073.png" />
-    <Content Include="Assets\Emoji\0074.png" />
-    <Content Include="Assets\Emoji\0075.png" />
-    <Content Include="Assets\Emoji\0076.png" />
-    <Content Include="Assets\Emoji\0077.png" />
-    <Content Include="Assets\Emoji\0078.png" />
-    <Content Include="Assets\Emoji\0079.png" />
-    <Content Include="Assets\Emoji\0080.png" />
-    <Content Include="Assets\Emoji\0081.png" />
-    <Content Include="Assets\Emoji\0082.png" />
-    <Content Include="Assets\Emoji\0083.png" />
-    <Content Include="Assets\Emoji\0084.png" />
-    <Content Include="Assets\Emoji\0085.png" />
-    <Content Include="Assets\Emoji\0086.png" />
-    <Content Include="Assets\Emoji\0087.png" />
-    <Content Include="Assets\Emoji\0088.png" />
-    <Content Include="Assets\Emoji\0089.png" />
-    <Content Include="Assets\Emoji\0090.png" />
-    <Content Include="Assets\Emoji\0091.png" />
-    <Content Include="Assets\Emoji\0092.png" />
-    <Content Include="Assets\Emoji\0999.png" />
-    <Content Include="Assets\Emoji\1000.png" />
-    <Content Include="Assets\Emoji\1001.png" />
-    <Content Include="Assets\Emoji\1002.png" />
-    <Content Include="Assets\Emoji\1003.png" />
-    <Content Include="Assets\Emoji\1004.png" />
-    <Content Include="Assets\Emoji\1005.png" />
-    <Content Include="Assets\Emoji\1006.png" />
-    <Content Include="Assets\Emoji\1007.png" />
-    <Content Include="Assets\Emoji\1008.png" />
-    <Content Include="Assets\Emoji\1009.png" />
-    <Content Include="Assets\Emoji\1010.png" />
-    <Content Include="Assets\Emoji\1011.png" />
-    <Content Include="Assets\Emoji\1012.png" />
-    <Content Include="Assets\Emoji\1013.png" />
-    <Content Include="Assets\Emoji\1014.png" />
-    <Content Include="Assets\Emoji\1015.png" />
-    <Content Include="Assets\Emoji\1016.png" />
-    <Content Include="Assets\Emoji\1017.png" />
-    <Content Include="Assets\Emoji\1018.png" />
-    <Content Include="Assets\Emoji\1019.png" />
-    <Content Include="Assets\Emoji\1020.png" />
-    <Content Include="Assets\Emoji\1021.png" />
-    <Content Include="Assets\Emoji\1022.png" />
-    <Content Include="Assets\Emoji\1023.png" />
-    <Content Include="Assets\Emoji\1024.png" />
-    <Content Include="Assets\Emoji\1025.png" />
-    <Content Include="Assets\Emoji\1026.png" />
-    <Content Include="Assets\Emoji\1027.png" />
-    <Content Include="Assets\Emoji\1028.png" />
-    <Content Include="Assets\Emoji\1029.png" />
-    <Content Include="Assets\Emoji\1030.png" />
-    <Content Include="Assets\Emoji\1031.png" />
-    <Content Include="Assets\Emoji\1032.png" />
-    <Content Include="Assets\Emoji\1033.png" />
-    <Content Include="Assets\Emoji\1034.png" />
-    <Content Include="Assets\Emoji\1035.png" />
-    <Content Include="Assets\Emoji\1036.png" />
-    <Content Include="Assets\Emoji\1037.png" />
-    <Content Include="Assets\Emoji\1038.png" />
-    <Content Include="Assets\Emoji\1039.png" />
-    <Content Include="Assets\Emoji\1040.png" />
-    <Content Include="Assets\Emoji\1041.png" />
-    <Content Include="Assets\Emoji\1042.png" />
-    <Content Include="Assets\Emoji\1043.png" />
-    <Content Include="Assets\Emoji\1044.png" />
-    <Content Include="Assets\Emoji\1045.png" />
-    <Content Include="Assets\Emoji\1046.png" />
-    <Content Include="Assets\Emoji\1047.png" />
-    <Content Include="Assets\Emoji\1048.png" />
-    <Content Include="Assets\Emoji\1049.png" />
-    <Content Include="Assets\Emoji\1050.png" />
-    <Content Include="Assets\Emoji\1051.png" />
-    <Content Include="Assets\Emoji\1052.png" />
-    <Content Include="Assets\Emoji\1053.png" />
-    <Content Include="Assets\Emoji\1054.png" />
-    <Content Include="Assets\Emoji\1055.png" />
-    <Content Include="Assets\Emoji\1056.png" />
-    <Content Include="Assets\Emoji\1057.png" />
-    <Content Include="Assets\Emoji\1058.png" />
-    <Content Include="Assets\Emoji\1059.png" />
-    <Content Include="Assets\Emoji\1060.png" />
-    <Content Include="Assets\Emoji\1061.png" />
-    <Content Include="Assets\Emoji\1062.png" />
-    <Content Include="Assets\Emoji\1063.png" />
-    <Content Include="Assets\Emoji\1064.png" />
-    <Content Include="Assets\Emoji\1065.png" />
-    <Content Include="Assets\Emoji\1066.png" />
-    <Content Include="Assets\Emoji\1067.png" />
-    <Content Include="Assets\Emoji\1068.png" />
-    <Content Include="Assets\Emoji\1069.png" />
-    <Content Include="Assets\Emoji\1070.png" />
-    <Content Include="Assets\Emoji\1071.png" />
-    <Content Include="Assets\Emoji\1072.png" />
-    <Content Include="Assets\Emoji\1073.png" />
-    <Content Include="Assets\Emoji\1074.png" />
-    <Content Include="Assets\Emoji\1075.png" />
-    <Content Include="Assets\Emoji\1076.png" />
-    <Content Include="Assets\Emoji\1077.png" />
-    <Content Include="Assets\Emoji\1078.png" />
-    <Content Include="Assets\Emoji\1079.png" />
-    <Content Include="Assets\Emoji\1080.png" />
-    <Content Include="Assets\Emoji\1081.png" />
-    <Content Include="Assets\Emoji\1082.png" />
-    <Content Include="Assets\Emoji\1083.png" />
-    <Content Include="Assets\Emoji\1084.png" />
-    <Content Include="Assets\Emoji\1085.png" />
-    <Content Include="Assets\Emoji\1086.png" />
-    <Content Include="Assets\Emoji\1087.png" />
-    <Content Include="Assets\Emoji\1088.png" />
-    <Content Include="Assets\Emoji\1089.png" />
-    <Content Include="Assets\Emoji\1090.png" />
-    <Content Include="Assets\Emoji\1091.png" />
-    <Content Include="Assets\Emoji\1092.png" />
-    <Content Include="Assets\Emoji\1093.png" />
-    <Content Include="Assets\Emoji\1094.png" />
-    <Content Include="Assets\Emoji\1095.png" />
-    <Content Include="Assets\Emoji\1096.png" />
-    <Content Include="Assets\Emoji\1097.png" />
-    <Content Include="Assets\Emoji\1098.png" />
-    <Content Include="Assets\Emoji\1099.png" />
-    <Content Include="Assets\Emoji\1100.png" />
-    <Content Include="Assets\Emoji\1101.png" />
-    <Content Include="Assets\Emoji\1102.png" />
-    <Content Include="Assets\Emoji\1103.png" />
-    <Content Include="Assets\Emoji\1104.png" />
-    <Content Include="Assets\Emoji\1105.png" />
-    <Content Include="Assets\Emoji\1106.png" />
-    <Content Include="Assets\Emoji\1107.png" />
-    <Content Include="Assets\Emoji\1108.png" />
-    <Content Include="Assets\Emoji\1109.png" />
-    <Content Include="Assets\Emoji\1110.png" />
-    <Content Include="Assets\Emoji\1111.png" />
-    <Content Include="Assets\Emoji\1112.png" />
-    <Content Include="Assets\Emoji\1113.png" />
-    <Content Include="Assets\Emoji\1114.png" />
-    <Content Include="Assets\Emoji\1115.png" />
-    <Content Include="Assets\Emoji\1116.png" />
-    <Content Include="Assets\Emoji\1117.png" />
-    <Content Include="Assets\Emoji\1118.png" />
-    <Content Include="Assets\Emoji\1119.png" />
-    <Content Include="Assets\Emoji\1120.png" />
-    <Content Include="Assets\Emoji\1121.png" />
-    <Content Include="Assets\Emoji\1122.png" />
-    <Content Include="Assets\Emoji\1123.png" />
-    <Content Include="Assets\Emoji\1124.png" />
-    <Content Include="Assets\Emoji\1125.png" />
-    <Content Include="Assets\Emoji\1126.png" />
-    <Content Include="Assets\Emoji\1127.png" />
-    <Content Include="Assets\Emoji\1128.png" />
-    <Content Include="Assets\Emoji\1129.png" />
-    <Content Include="Assets\Emoji\1130.png" />
-    <Content Include="Assets\Emoji\1131.png" />
-    <Content Include="Assets\Emoji\1132.png" />
-    <Content Include="Assets\Emoji\1133.png" />
-    <Content Include="Assets\Emoji\1134.png" />
-    <Content Include="Assets\Emoji\1135.png" />
-    <Content Include="Assets\Emoji\1136.png" />
-    <Content Include="Assets\Emoji\1137.png" />
-    <Content Include="Assets\Emoji\1138.png" />
-    <Content Include="Assets\Emoji\1139.png" />
-    <Content Include="Assets\Emoji\1140.png" />
-    <Content Include="Assets\Emoji\1141.png" />
-    <Content Include="Assets\Emoji\1142.png" />
-    <Content Include="Assets\Emoji\1143.png" />
-    <Content Include="Assets\Emoji\1144.png" />
-    <Content Include="Assets\Emoji\1145.png" />
-    <Content Include="Assets\Emoji\1146.png" />
-    <Content Include="Assets\Emoji\1147.png" />
-    <Content Include="Assets\Emoji\1148.png" />
-    <Content Include="Assets\Emoji\1149.png" />
-    <Content Include="Assets\Emoji\1150.png" />
-    <Content Include="Assets\Emoji\1151.png" />
-    <Content Include="Assets\Emoji\1152.png" />
-    <Content Include="Assets\Emoji\1153.png" />
-    <Content Include="Assets\Emoji\1154.png" />
-    <Content Include="Assets\Emoji\1155.png" />
-    <Content Include="Assets\Emoji\1156.png" />
-    <Content Include="Assets\Emoji\1157.png" />
-    <Content Include="Assets\Emoji\1158.png" />
-    <Content Include="Assets\Emoji\1159.png" />
-    <Content Include="Assets\Emoji\1160.png" />
-    <Content Include="Assets\Emoji\1161.png" />
-    <Content Include="Assets\Emoji\1162.png" />
-    <Content Include="Assets\Emoji\1163.png" />
-    <Content Include="Assets\Emoji\1164.png" />
-    <Content Include="Assets\Emoji\1165.png" />
-    <Content Include="Assets\Emoji\1166.png" />
-    <Content Include="Assets\Emoji\1167.png" />
-    <Content Include="Assets\Emoji\1168.png" />
-    <Content Include="Assets\Emoji\1169.png" />
-    <Content Include="Assets\Emoji\1170.png" />
-    <Content Include="Assets\Emoji\1171.png" />
-    <Content Include="Assets\Emoji\1172.png" />
-    <Content Include="Assets\Emoji\1173.png" />
-    <Content Include="Assets\Emoji\1174.png" />
-    <Content Include="Assets\Emoji\1175.png" />
-    <Content Include="Assets\Emoji\1176.png" />
-    <Content Include="Assets\Emoji\1177.png" />
-    <Content Include="Assets\Emoji\1178.png" />
-    <Content Include="Assets\Emoji\1179.png" />
-    <Content Include="Assets\Emoji\1180.png" />
-    <Content Include="Assets\Emoji\1181.png" />
-    <Content Include="Assets\Emoji\1182.png" />
-    <Content Include="Assets\Emoji\1183.png" />
-    <Content Include="Assets\Emoji\1184.png" />
-    <Content Include="Assets\Emoji\1185.png" />
-    <Content Include="Assets\Emoji\1186.png" />
-    <Content Include="Assets\Emoji\1187.png" />
-    <Content Include="Assets\Emoji\1188.png" />
-    <Content Include="Assets\Emoji\1189.png" />
-    <Content Include="Assets\Emoji\1190.png" />
-    <Content Include="Assets\Emoji\1191.png" />
-    <Content Include="Assets\Emoji\1192.png" />
-    <Content Include="Assets\Emoji\1193.png" />
-    <Content Include="Assets\Emoji\1194.png" />
-    <Content Include="Assets\Emoji\1195.png" />
-    <Content Include="Assets\Emoji\1196.png" />
-    <Content Include="Assets\Emoji\1197.png" />
-    <Content Include="Assets\Emoji\1198.png" />
-    <Content Include="Assets\Emoji\1199.png" />
-    <Content Include="Assets\Emoji\1200.png" />
-    <Content Include="Assets\Emoji\1201.png" />
-    <Content Include="Assets\Emoji\1202.png" />
-    <Content Include="Assets\Emoji\1203.png" />
-    <Content Include="Assets\Emoji\1204.png" />
-    <Content Include="Assets\Emoji\1205.png" />
-    <Content Include="Assets\Emoji\1206.png" />
-    <Content Include="Assets\Emoji\1207.png" />
-    <Content Include="Assets\Emoji\1208.png" />
-    <Content Include="Assets\Emoji\1209.png" />
-    <Content Include="Assets\Emoji\1210.png" />
-    <Content Include="Assets\Emoji\1211.png" />
-    <Content Include="Assets\Emoji\1212.png" />
-    <Content Include="Assets\Emoji\1213.png" />
-    <Content Include="Assets\Emoji\1214.png" />
-    <Content Include="Assets\Emoji\1215.png" />
-    <Content Include="Assets\Emoji\1216.png" />
-    <Content Include="Assets\Emoji\1217.png" />
-    <Content Include="Assets\Emoji\1218.png" />
-    <Content Include="Assets\Emoji\1219.png" />
-    <Content Include="Assets\Emoji\1220.png" />
-    <Content Include="Assets\Emoji\1221.png" />
-    <Content Include="Assets\Emoji\1222.png" />
-    <Content Include="Assets\Emoji\1223.png" />
-    <Content Include="Assets\Emoji\1224.png" />
-    <Content Include="Assets\Emoji\1225.png" />
-    <Content Include="Assets\Emoji\1226.png" />
-    <Content Include="Assets\Emoji\1227.png" />
-    <Content Include="Assets\Emoji\1228.png" />
-    <Content Include="Assets\Emoji\1229.png" />
-    <Content Include="Assets\Emoji\1230.png" />
-    <Content Include="Assets\Emoji\1231.png" />
-    <Content Include="Assets\Emoji\1232.png" />
-    <Content Include="Assets\Emoji\1233.png" />
-    <Content Include="Assets\Emoji\1234.png" />
-    <Content Include="Assets\Emoji\1235.png" />
-    <Content Include="Assets\Emoji\1236.png" />
-    <Content Include="Assets\Emoji\1237.png" />
-    <Content Include="Assets\Emoji\1238.png" />
-    <Content Include="Assets\Emoji\1239.png" />
-    <Content Include="Assets\Emoji\1240.png" />
-    <Content Include="Assets\Emoji\1241.png" />
-    <Content Include="Assets\Emoji\1242.png" />
-    <Content Include="Assets\Emoji\1243.png" />
-    <Content Include="Assets\Emoji\1244.png" />
-    <Content Include="Assets\Emoji\1245.png" />
-    <Content Include="Assets\Emoji\1246.png" />
-    <Content Include="Assets\Emoji\1247.png" />
-    <Content Include="Assets\Emoji\1248.png" />
-    <Content Include="Assets\Emoji\1249.png" />
-    <Content Include="Assets\Emoji\1250.png" />
-    <Content Include="Assets\Emoji\1251.png" />
-    <Content Include="Assets\Emoji\1252.png" />
-    <Content Include="Assets\Emoji\1253.png" />
-    <Content Include="Assets\Emoji\1254.png" />
-    <Content Include="Assets\Emoji\1255.png" />
-    <Content Include="Assets\Emoji\1256.png" />
-    <Content Include="Assets\Emoji\1257.png" />
-    <Content Include="Assets\Emoji\1258.png" />
-    <Content Include="Assets\Emoji\1259.png" />
-    <Content Include="Assets\Emoji\1260.png" />
-    <Content Include="Assets\Emoji\1261.png" />
-    <Content Include="Assets\Emoji\1262.png" />
-    <Content Include="Assets\Emoji\1263.png" />
-    <Content Include="Assets\Emoji\1264.png" />
-    <Content Include="Assets\Emoji\1265.png" />
-    <Content Include="Assets\Emoji\1266.png" />
-    <Content Include="Assets\Emoji\1267.png" />
-    <Content Include="Assets\Emoji\1268.png" />
-    <Content Include="Assets\Emoji\1269.png" />
-    <Content Include="Assets\Emoji\1270.png" />
-    <Content Include="Assets\Emoji\1271.png" />
-    <Content Include="Assets\Emoji\1272.png" />
-    <Content Include="Assets\Emoji\1273.png" />
-    <Content Include="Assets\Emoji\1274.png" />
-    <Content Include="Assets\Emoji\1275.png" />
-    <Content Include="Assets\Emoji\1276.png" />
-    <Content Include="Assets\Emoji\1277.png" />
-    <Content Include="Assets\Emoji\1278.png" />
-    <Content Include="Assets\Emoji\1279.png" />
-    <Content Include="Assets\Emoji\1280.png" />
-    <Content Include="Assets\Emoji\1281.png" />
-    <Content Include="Assets\Emoji\1282.png" />
-    <Content Include="Assets\Emoji\1283.png" />
-    <Content Include="Assets\Emoji\1284.png" />
-    <Content Include="Assets\Emoji\1285.png" />
-    <Content Include="Assets\Emoji\1286.png" />
-    <Content Include="Assets\Emoji\1287.png" />
-    <Content Include="Assets\Emoji\1288.png" />
-    <Content Include="Assets\Emoji\1289.png" />
-    <Content Include="Assets\Emoji\1290.png" />
-    <Content Include="Assets\Emoji\1291.png" />
-    <Content Include="Assets\Emoji\1292.png" />
-    <Content Include="Assets\Emoji\1293.png" />
-    <Content Include="Assets\Emoji\1294.png" />
-    <Content Include="Assets\Emoji\1295.png" />
-    <Content Include="Assets\Emoji\1296.png" />
-    <Content Include="Assets\Emoji\1297.png" />
-    <Content Include="Assets\Emoji\1298.png" />
-    <Content Include="Assets\Emoji\1299.png" />
-    <Content Include="Assets\Emoji\1300.png" />
-    <Content Include="Assets\Emoji\1301.png" />
-    <Content Include="Assets\Emoji\1302.png" />
-    <Content Include="Assets\Emoji\1303.png" />
-    <Content Include="Assets\Emoji\1304.png" />
-    <Content Include="Assets\Emoji\1305.png" />
-    <Content Include="Assets\Emoji\1306.png" />
-    <Content Include="Assets\Emoji\1307.png" />
-    <Content Include="Assets\Emoji\1308.png" />
-    <Content Include="Assets\Emoji\1309.png" />
-    <Content Include="Assets\Emoji\1310.png" />
-    <Content Include="Assets\Emoji\1311.png" />
-    <Content Include="Assets\Emoji\1312.png" />
-    <Content Include="Assets\Emoji\1313.png" />
-    <Content Include="Assets\Emoji\1314.png" />
-    <Content Include="Assets\Emoji\1315.png" />
-    <Content Include="Assets\Emoji\1316.png" />
-    <Content Include="Assets\Emoji\1317.png" />
-    <Content Include="Assets\Emoji\1318.png" />
-    <Content Include="Assets\Emoji\1319.png" />
-    <Content Include="Assets\Emoji\1320.png" />
-    <Content Include="Assets\Emoji\1321.png" />
-    <Content Include="Assets\Emoji\1322.png" />
-    <Content Include="Assets\Emoji\1323.png" />
-    <Content Include="Assets\Emoji\1324.png" />
-    <Content Include="Assets\Emoji\1325.png" />
-    <Content Include="Assets\Emoji\1326.png" />
-    <Content Include="Assets\Emoji\1327.png" />
-    <Content Include="Assets\Emoji\1328.png" />
-    <Content Include="Assets\Emoji\1329.png" />
-    <Content Include="Assets\Emoji\1330.png" />
-    <Content Include="Assets\Emoji\1331.png" />
-    <Content Include="Assets\Emoji\1332.png" />
-    <Content Include="Assets\Emoji\1333.png" />
-    <Content Include="Assets\Emoji\1334.png" />
-    <Content Include="Assets\Emoji\1335.png" />
-    <Content Include="Assets\Emoji\1336.png" />
-    <Content Include="Assets\Emoji\1337.png" />
-    <Content Include="Assets\Emoji\1338.png" />
-    <Content Include="Assets\Emoji\1339.png" />
-    <Content Include="Assets\Emoji\1340.png" />
-    <Content Include="Assets\Emoji\1341.png" />
-    <Content Include="Assets\Emoji\1342.png" />
-    <Content Include="Assets\Emoji\1343.png" />
-    <Content Include="Assets\Emoji\1344.png" />
-    <Content Include="Assets\Emoji\1345.png" />
-    <Content Include="Assets\Emoji\1346.png" />
-    <Content Include="Assets\Emoji\1347.png" />
-    <Content Include="Assets\Emoji\1348.png" />
-    <Content Include="Assets\Emoji\1349.png" />
-    <Content Include="Assets\Emoji\1350.png" />
-    <Content Include="Assets\Emoji\1351.png" />
-    <Content Include="Assets\Emoji\1352.png" />
-    <Content Include="Assets\Emoji\1353.png" />
-    <Content Include="Assets\Emoji\1354.png" />
-    <Content Include="Assets\Emoji\2002.png" />
-    <Content Include="Assets\Emoji\2004.png" />
-    <Content Include="Assets\Emoji\2009.png" />
-    <Content Include="Assets\Emoji\2014.png" />
-    <Content Include="Assets\Emoji\2022.png" />
-    <Content Include="Assets\Emoji\2024.png" />
-    <Content Include="Assets\Emoji\2121.png" />
-    <Content Include="Assets\Emoji\2123.png" />
-    <Content Include="Assets\Emoji\2127.png" />
-    <Content Include="Assets\Emoji\2128.png" />
-    <Content Include="Assets\Emoji\2130.png" />
-    <Content Include="Assets\Emoji\2134.png" />
-    <Content Include="Assets\Emoji\2135.png" />
-    <Content Include="Assets\Emoji\2138.png" />
-    <Content Include="Assets\Emoji\2139.png" />
-    <Content Include="Assets\Emoji\2146.png" />
-    <Content Include="Assets\Emoji\2157.png" />
-    <Content Include="Assets\Emoji\2177.png" />
-    <Content Include="Assets\Emoji\2179.png" />
-    <Content Include="Assets\Emoji\2183.png" />
-    <Content Include="Assets\Emoji\2190.png" />
-    <Content Include="Assets\Emoji\2192.png" />
-    <Content Include="Assets\Emoji\2198.png" />
-    <Content Include="Assets\Emoji\2199.png" />
-    <Content Include="Assets\Emoji\2203.png" />
-    <Content Include="Assets\Emoji\2208.png" />
-    <Content Include="Assets\Emoji\2211.png" />
-    <Content Include="Assets\Emoji\2212.png" />
-    <Content Include="Assets\Emoji\2215.png" />
-    <Content Include="Assets\Emoji\2216.png" />
-    <Content Include="Assets\Emoji\2222.png" />
-    <Content Include="Assets\Emoji\2225.png" />
-    <Content Include="Assets\Emoji\2250.png" />
-    <Content Include="Assets\Emoji\2254.png" />
-    <Content Include="Assets\Emoji\2260.png" />
-    <Content Include="Assets\Emoji\2267.png" />
-    <Content Include="Assets\Emoji\2271.png" />
-    <Content Include="Assets\Emoji\2273.png" />
-    <Content Include="Assets\Emoji\2274.png" />
-    <Content Include="Assets\Emoji\2276.png" />
-    <Content Include="Assets\Emoji\2277.png" />
-    <Content Include="Assets\Emoji\2280.png" />
-    <Content Include="Assets\Emoji\2290.png" />
-    <Content Include="Assets\Emoji\2294.png" />
-    <Content Include="Assets\Emoji\2295.png" />
-    <Content Include="Assets\Emoji\2305.png" />
-    <Content Include="Assets\Emoji\2306.png" />
-    <Content Include="Assets\Emoji\2311.png" />
-    <Content Include="Assets\Emoji\2312.png" />
-    <Content Include="Assets\Emoji\2314.png" />
-    <Content Include="Assets\Emoji\2315.png" />
-    <Content Include="Assets\Emoji\2316.png" />
-    <Content Include="Assets\Emoji\2317.png" />
-    <Content Include="Assets\Emoji\2319.png" />
-    <Content Include="Assets\Emoji\2321.png" />
-    <Content Include="Assets\Emoji\2322.png" />
-    <Content Include="Assets\Emoji\2323.png" />
-    <Content Include="Assets\Emoji\2324.png" />
-    <Content Include="Assets\Emoji\2326.png" />
-    <Content Include="Assets\Emoji\2328.png" />
-    <Content Include="Assets\Emoji\2329.png" />
-    <Content Include="Assets\Emoji\2330.png" />
-    <Content Include="Assets\Emoji\2331.png" />
-    <Content Include="Assets\Emoji\2332.png" />
-    <Content Include="Assets\Emoji\2336.png" />
-    <Content Include="Assets\Emoji\2337.png" />
-    <Content Include="Assets\Icons\ic_search_green_24dp.png" />
-    <Content Include="Assets\Icons\ic_settings_white_24dp.png" />
-    <Content Include="Assets\img_placeholder.png" />
-    <Content Include="Assets\img_placeholder_night.png" />
+    <Content Include="Assets\Emoji\%28cos滑稽.png" />
+    <Content Include="Assets\Emoji\%28haha.png" />
+    <Content Include="Assets\Emoji\%28OK.png" />
+    <Content Include="Assets\Emoji\%28sofa.png" />
+    <Content Include="Assets\Emoji\%28what.png" />
+    <Content Include="Assets\Emoji\%28三道杠.png" />
+    <Content Include="Assets\Emoji\%28不高兴.png" />
+    <Content Include="Assets\Emoji\%28乖.png" />
+    <Content Include="Assets\Emoji\%28传统滑稽.png" />
+    <Content Include="Assets\Emoji\%28你懂的.png" />
+    <Content Include="Assets\Emoji\%28便便.png" />
+    <Content Include="Assets\Emoji\%28冷.png" />
+    <Content Include="Assets\Emoji\%28勉强.png" />
+    <Content Include="Assets\Emoji\%28受虐滑稽.png" />
+    <Content Include="Assets\Emoji\%28吃瓜.png" />
+    <Content Include="Assets\Emoji\%28吐.png" />
+    <Content Include="Assets\Emoji\%28吐舌.png" />
+    <Content Include="Assets\Emoji\%28呀咩爹.png" />
+    <Content Include="Assets\Emoji\%28呵呵.png" />
+    <Content Include="Assets\Emoji\%28呼~.png" />
+    <Content Include="Assets\Emoji\%28咦.png" />
+    <Content Include="Assets\Emoji\%28哈哈.png" />
+    <Content Include="Assets\Emoji\%28哼.png" />
+    <Content Include="Assets\Emoji\%28啊.png" />
+    <Content Include="Assets\Emoji\%28喝酒.png" />
+    <Content Include="Assets\Emoji\%28喷.png" />
+    <Content Include="Assets\Emoji\%28嘿嘿嘿.png" />
+    <Content Include="Assets\Emoji\%28噗.png" />
+    <Content Include="Assets\Emoji\%28困成狗.png" />
+    <Content Include="Assets\Emoji\%28墨镜滑稽.png" />
+    <Content Include="Assets\Emoji\%28大拇指.png" />
+    <Content Include="Assets\Emoji\%28太开心.png" />
+    <Content Include="Assets\Emoji\%28太阳.png" />
+    <Content Include="Assets\Emoji\%28委屈.png" />
+    <Content Include="Assets\Emoji\%28小乖.png" />
+    <Content Include="Assets\Emoji\%28小嘴滑稽.png" />
+    <Content Include="Assets\Emoji\%28小红脸.png" />
+    <Content Include="Assets\Emoji\%28开心.png" />
+    <Content Include="Assets\Emoji\%28弱.png" />
+    <Content Include="Assets\Emoji\%28彩虹.png" />
+    <Content Include="Assets\Emoji\%28微微一笑.png" />
+    <Content Include="Assets\Emoji\%28心碎.png" />
+    <Content Include="Assets\Emoji\%28怒.png" />
+    <Content Include="Assets\Emoji\%28惊哭.png" />
+    <Content Include="Assets\Emoji\%28惊讶.png" />
+    <Content Include="Assets\Emoji\%28懒得理.png" />
+    <Content Include="Assets\Emoji\%28托腮.png" />
+    <Content Include="Assets\Emoji\%28挖鼻.png" />
+    <Content Include="Assets\Emoji\%28捂嘴笑.png" />
+    <Content Include="Assets\Emoji\%28摊手.png" />
+    <Content Include="Assets\Emoji\%28斗鸡眼滑稽.png" />
+    <Content Include="Assets\Emoji\%28星星月亮.png" />
+    <Content Include="Assets\Emoji\%28暗中观察.png" />
+    <Content Include="Assets\Emoji\%28柯基暗中观察.png" />
+    <Content Include="Assets\Emoji\%28欢呼.png" />
+    <Content Include="Assets\Emoji\%28汗.png" />
+    <Content Include="Assets\Emoji\%28泪.png" />
+    <Content Include="Assets\Emoji\%28流汗滑稽.png" />
+    <Content Include="Assets\Emoji\%28滑稽.png" />
+    <Content Include="Assets\Emoji\%28滑稽炸.png" />
+    <Content Include="Assets\Emoji\%28灯泡.png" />
+    <Content Include="Assets\Emoji\%28爱心.png" />
+    <Content Include="Assets\Emoji\%28犀利.png" />
+    <Content Include="Assets\Emoji\%28狂汗.png" />
+    <Content Include="Assets\Emoji\%28玫瑰.png" />
+    <Content Include="Assets\Emoji\%28疑问.png" />
+    <Content Include="Assets\Emoji\%28真棒.png" />
+    <Content Include="Assets\Emoji\%28睡觉.png" />
+    <Content Include="Assets\Emoji\%28礼物.png" />
+    <Content Include="Assets\Emoji\%28稽滑.png" />
+    <Content Include="Assets\Emoji\%28突然兴奋.png" />
+    <Content Include="Assets\Emoji\%28笑尿.png" />
+    <Content Include="Assets\Emoji\%28笑眼.png" />
+    <Content Include="Assets\Emoji\%28紧张.png" />
+    <Content Include="Assets\Emoji\%28红领巾.png" />
+    <Content Include="Assets\Emoji\%28纸巾.png" />
+    <Content Include="Assets\Emoji\%28胜利.png" />
+    <Content Include="Assets\Emoji\%28花心.png" />
+    <Content Include="Assets\Emoji\%28茶杯.png" />
+    <Content Include="Assets\Emoji\%28药丸.png" />
+    <Content Include="Assets\Emoji\%28蛋糕.png" />
+    <Content Include="Assets\Emoji\%28蜡烛.png" />
+    <Content Include="Assets\Emoji\%28鄙视.png" />
+    <Content Include="Assets\Emoji\%28酷.png" />
+    <Content Include="Assets\Emoji\%28酸爽.png" />
+    <Content Include="Assets\Emoji\%28钱.png" />
+    <Content Include="Assets\Emoji\%28钱币.png" />
+    <Content Include="Assets\Emoji\%28阴险.png" />
+    <Content Include="Assets\Emoji\%28音乐.png" />
+    <Content Include="Assets\Emoji\%28香蕉.png" />
+    <Content Include="Assets\Emoji\%28黑头瞪眼.png" />
+    <Content Include="Assets\Emoji\%28黑头高兴.png" />
+    <Content Include="Assets\Emoji\%28黑线.png" />
+    <Content Include="Assets\Emoji\[Blob滑稽].png" />
+    <Content Include="Assets\Emoji\[cos滑稽].png" />
+    <Content Include="Assets\Emoji\[doge].png" />
+    <Content Include="Assets\Emoji\[doge]2.png" />
+    <Content Include="Assets\Emoji\[doge互粉].png" />
+    <Content Include="Assets\Emoji\[doge原谅ta].png" />
+    <Content Include="Assets\Emoji\[doge原谅ta]2.png" />
+    <Content Include="Assets\Emoji\[doge口罩].png" />
+    <Content Include="Assets\Emoji\[doge吃惊].png" />
+    <Content Include="Assets\Emoji\[doge吃瓜].png" />
+    <Content Include="Assets\Emoji\[doge告辞].png" />
+    <Content Include="Assets\Emoji\[doge呵斥].png" />
+    <Content Include="Assets\Emoji\[doge呵斥]2.png" />
+    <Content Include="Assets\Emoji\[doge并不简单].png" />
+    <Content Include="Assets\Emoji\[doge期待].png" />
+    <Content Include="Assets\Emoji\[doge汗].png" />
+    <Content Include="Assets\Emoji\[doge疑问].png" />
+    <Content Include="Assets\Emoji\[doge笑哭].png" />
+    <Content Include="Assets\Emoji\[doge笑哭]2.png" />
+    <Content Include="Assets\Emoji\[doge装酷].png" />
+    <Content Include="Assets\Emoji\[doge酷].png" />
+    <Content Include="Assets\Emoji\[doge问号].png" />
+    <Content Include="Assets\Emoji\[doge飞吻].png" />
+    <Content Include="Assets\Emoji\[dw哭].png" />
+    <Content Include="Assets\Emoji\[Google滑稽].png" />
+    <Content Include="Assets\Emoji\[NO].png" />
+    <Content Include="Assets\Emoji\[ok].png" />
+    <Content Include="Assets\Emoji\[OK]2.png" />
+    <Content Include="Assets\Emoji\[py交易].png" />
+    <Content Include="Assets\Emoji\[qqdoge].png" />
+    <Content Include="Assets\Emoji\[qqdoge]2.png" />
+    <Content Include="Assets\Emoji\[SegoeUI滑稽].png" />
+    <Content Include="Assets\Emoji\[t耐克嘴].png" />
+    <Content Include="Assets\Emoji\[wpy交易].png" />
+    <Content Include="Assets\Emoji\[wv5].png" />
+    <Content Include="Assets\Emoji\[ww亲亲].png" />
+    <Content Include="Assets\Emoji\[w→_→].png" />
+    <Content Include="Assets\Emoji\[w互粉].png" />
+    <Content Include="Assets\Emoji\[w偷笑].png" />
+    <Content Include="Assets\Emoji\[w傻眼].png" />
+    <Content Include="Assets\Emoji\[w兔子].png" />
+    <Content Include="Assets\Emoji\[w再见].png" />
+    <Content Include="Assets\Emoji\[w压岁钱].png" />
+    <Content Include="Assets\Emoji\[w可怜].png" />
+    <Content Include="Assets\Emoji\[w可爱].png" />
+    <Content Include="Assets\Emoji\[w右哼哼].png" />
+    <Content Include="Assets\Emoji\[w吃惊].png" />
+    <Content Include="Assets\Emoji\[w吃瓜].png" />
+    <Content Include="Assets\Emoji\[w吐].png" />
+    <Content Include="Assets\Emoji\[w呵呵].png" />
+    <Content Include="Assets\Emoji\[w哆啦a梦吃惊].png" />
+    <Content Include="Assets\Emoji\[w哆啦a梦笑].png" />
+    <Content Include="Assets\Emoji\[w哆啦a梦色].png" />
+    <Content Include="Assets\Emoji\[w哈哈].png" />
+    <Content Include="Assets\Emoji\[w哭].png" />
+    <Content Include="Assets\Emoji\[w哼].png" />
+    <Content Include="Assets\Emoji\[w啤酒鸡腿].png" />
+    <Content Include="Assets\Emoji\[w喜].png" />
+    <Content Include="Assets\Emoji\[w嘘].png" />
+    <Content Include="Assets\Emoji\[w嘻嘻].png" />
+    <Content Include="Assets\Emoji\[w嘿嘿嘿].png" />
+    <Content Include="Assets\Emoji\[w囧].png" />
+    <Content Include="Assets\Emoji\[w困].png" />
+    <Content Include="Assets\Emoji\[w太开心].png" />
+    <Content Include="Assets\Emoji\[w失望].png" />
+    <Content Include="Assets\Emoji\[w奥特曼].png" />
+    <Content Include="Assets\Emoji\[w女孩儿].png" />
+    <Content Include="Assets\Emoji\[w委屈].png" />
+    <Content Include="Assets\Emoji\[w定].png" />
+    <Content Include="Assets\Emoji\[w害羞].png" />
+    <Content Include="Assets\Emoji\[w小样儿].png" />
+    <Content Include="Assets\Emoji\[w左哼哼].png" />
+    <Content Include="Assets\Emoji\[w左哼哼哭].png" />
+    <Content Include="Assets\Emoji\[w帅].png" />
+    <Content Include="Assets\Emoji\[w干杯].png" />
+    <Content Include="Assets\Emoji\[w并不简单].png" />
+    <Content Include="Assets\Emoji\[w广而告之].png" />
+    <Content Include="Assets\Emoji\[w怒~].png" />
+    <Content Include="Assets\Emoji\[w怒骂].png" />
+    <Content Include="Assets\Emoji\[w思考].png" />
+    <Content Include="Assets\Emoji\[w急眼].png" />
+    <Content Include="Assets\Emoji\[w悲伤].png" />
+    <Content Include="Assets\Emoji\[w感冒].png" />
+    <Content Include="Assets\Emoji\[w懒得理你].png" />
+    <Content Include="Assets\Emoji\[w我美吗].png" />
+    <Content Include="Assets\Emoji\[w打哈欠].png" />
+    <Content Include="Assets\Emoji\[w打脸].png" />
+    <Content Include="Assets\Emoji\[w抓狂].png" />
+    <Content Include="Assets\Emoji\[w拜拜].png" />
+    <Content Include="Assets\Emoji\[w挖鼻屎].png" />
+    <Content Include="Assets\Emoji\[w捂脸哭].png" />
+    <Content Include="Assets\Emoji\[w摊手].png" />
+    <Content Include="Assets\Emoji\[w操练].png" />
+    <Content Include="Assets\Emoji\[w新浪].png" />
+    <Content Include="Assets\Emoji\[w旅行].png" />
+    <Content Include="Assets\Emoji\[w晕].png" />
+    <Content Include="Assets\Emoji\[w熊猫].png" />
+    <Content Include="Assets\Emoji\[w爱你].png" />
+    <Content Include="Assets\Emoji\[w猪头].png" />
+    <Content Include="Assets\Emoji\[w生病].png" />
+    <Content Include="Assets\Emoji\[w男孩儿].png" />
+    <Content Include="Assets\Emoji\[w疑问].png" />
+    <Content Include="Assets\Emoji\[w睡觉].png" />
+    <Content Include="Assets\Emoji\[w神兽].png" />
+    <Content Include="Assets\Emoji\[w神马].png" />
+    <Content Include="Assets\Emoji\[w笑哭].png" />
+    <Content Include="Assets\Emoji\[w累].png" />
+    <Content Include="Assets\Emoji\[w织毛衣].png" />
+    <Content Include="Assets\Emoji\[w给力].png" />
+    <Content Include="Assets\Emoji\[w肥皂].png" />
+    <Content Include="Assets\Emoji\[w舔].png" />
+    <Content Include="Assets\Emoji\[w花心].png" />
+    <Content Include="Assets\Emoji\[w萌].png" />
+    <Content Include="Assets\Emoji\[w蛋糕].png" />
+    <Content Include="Assets\Emoji\[w调皮].png" />
+    <Content Include="Assets\Emoji\[w跪了].png" />
+    <Content Include="Assets\Emoji\[w鄙视].png" />
+    <Content Include="Assets\Emoji\[w酷].png" />
+    <Content Include="Assets\Emoji\[w酷币].png" />
+    <Content Include="Assets\Emoji\[w钱].png" />
+    <Content Include="Assets\Emoji\[w闭嘴].png" />
+    <Content Include="Assets\Emoji\[w阴险].png" />
+    <Content Include="Assets\Emoji\[w馋嘴].png" />
+    <Content Include="Assets\Emoji\[w黑线].png" />
+    <Content Include="Assets\Emoji\[w鼓掌].png" />
+    <Content Include="Assets\Emoji\[yyds].png" />
+    <Content Include="Assets\Emoji\[下次一定].png" />
+    <Content Include="Assets\Emoji\[不开心].png" />
+    <Content Include="Assets\Emoji\[乒乓].png" />
+    <Content Include="Assets\Emoji\[二哈].png" />
+    <Content Include="Assets\Emoji\[二哈]2.png" />
+    <Content Include="Assets\Emoji\[二哈盯].png" />
+    <Content Include="Assets\Emoji\[亲亲].png" />
+    <Content Include="Assets\Emoji\[亲亲]2.png" />
+    <Content Include="Assets\Emoji\[便便].png" />
+    <Content Include="Assets\Emoji\[假笑].png" />
+    <Content Include="Assets\Emoji\[偷看].png" />
+    <Content Include="Assets\Emoji\[傲慢].png" />
+    <Content Include="Assets\Emoji\[傲慢]2.png" />
+    <Content Include="Assets\Emoji\[再见].png" />
+    <Content Include="Assets\Emoji\[再见]2.png" />
+    <Content Include="Assets\Emoji\[冷汗].png" />
+    <Content Include="Assets\Emoji\[凋谢].png" />
+    <Content Include="Assets\Emoji\[凋谢]2.png" />
+    <Content Include="Assets\Emoji\[刀].png" />
+    <Content Include="Assets\Emoji\[列文虎克].png" />
+    <Content Include="Assets\Emoji\[勾引].png" />
+    <Content Include="Assets\Emoji\[卖萌].png" />
+    <Content Include="Assets\Emoji\[发呆].png" />
+    <Content Include="Assets\Emoji\[发呆]2.png" />
+    <Content Include="Assets\Emoji\[发怒].png" />
+    <Content Include="Assets\Emoji\[发怒]2.png" />
+    <Content Include="Assets\Emoji\[发抖].png" />
+    <Content Include="Assets\Emoji\[受虐滑稽].png" />
+    <Content Include="Assets\Emoji\[可怜].png" />
+    <Content Include="Assets\Emoji\[可怜]2.png" />
+    <Content Include="Assets\Emoji\[可爱].png" />
+    <Content Include="Assets\Emoji\[可爱]2.png" />
+    <Content Include="Assets\Emoji\[右哼哼].png" />
+    <Content Include="Assets\Emoji\[吃瓜].png" />
+    <Content Include="Assets\Emoji\[吐].png" />
+    <Content Include="Assets\Emoji\[吐舌].png" />
+    <Content Include="Assets\Emoji\[吓].png" />
+    <Content Include="Assets\Emoji\[呲牙].png" />
+    <Content Include="Assets\Emoji\[呵呵].png" />
+    <Content Include="Assets\Emoji\[呵呵]2.png" />
+    <Content Include="Assets\Emoji\[咒骂].png" />
+    <Content Include="Assets\Emoji\[咖啡].png" />
+    <Content Include="Assets\Emoji\[哈哈].png" />
+    <Content Include="Assets\Emoji\[哈哈哈].png" />
+    <Content Include="Assets\Emoji\[哈欠].png" />
+    <Content Include="Assets\Emoji\[哦吼吼].png" />
+    <Content Include="Assets\Emoji\[哼唧].png" />
+    <Content Include="Assets\Emoji\[啤酒].png" />
+    <Content Include="Assets\Emoji\[喝茶].png" />
+    <Content Include="Assets\Emoji\[喝酒].png" />
+    <Content Include="Assets\Emoji\[喵喵].png" />
+    <Content Include="Assets\Emoji\[喵喵]2.png" />
+    <Content Include="Assets\Emoji\[喵喵互粉].png" />
+    <Content Include="Assets\Emoji\[喵喵再见].png" />
+    <Content Include="Assets\Emoji\[喵喵原谅ta].png" />
+    <Content Include="Assets\Emoji\[喵喵口罩].png" />
+    <Content Include="Assets\Emoji\[喵喵吃惊].png" />
+    <Content Include="Assets\Emoji\[喵喵吃瓜].png" />
+    <Content Include="Assets\Emoji\[喵喵告辞].png" />
+    <Content Include="Assets\Emoji\[喵喵呵斥].png" />
+    <Content Include="Assets\Emoji\[喵喵并不简单].png" />
+    <Content Include="Assets\Emoji\[喵喵期待].png" />
+    <Content Include="Assets\Emoji\[喵喵汗].png" />
+    <Content Include="Assets\Emoji\[喵喵疑问].png" />
+    <Content Include="Assets\Emoji\[喵喵笑哭].png" />
+    <Content Include="Assets\Emoji\[喵喵装酷].png" />
+    <Content Include="Assets\Emoji\[喵喵鄙视].png" />
+    <Content Include="Assets\Emoji\[喵喵酷].png" />
+    <Content Include="Assets\Emoji\[喵喵问号].png" />
+    <Content Include="Assets\Emoji\[喵喵飞吻].png" />
+    <Content Include="Assets\Emoji\[喷].png" />
+    <Content Include="Assets\Emoji\[喷血].png" />
+    <Content Include="Assets\Emoji\[喷血]2.png" />
+    <Content Include="Assets\Emoji\[嘘].png" />
+    <Content Include="Assets\Emoji\[嘿哈].png" />
+    <Content Include="Assets\Emoji\[嘿哈]2.png" />
+    <Content Include="Assets\Emoji\[嘿嘿].png" />
+    <Content Include="Assets\Emoji\[噗].png" />
+    <Content Include="Assets\Emoji\[困].png" />
+    <Content Include="Assets\Emoji\[坏笑].png" />
+    <Content Include="Assets\Emoji\[坏笑]2.png" />
+    <Content Include="Assets\Emoji\[墨镜滑稽].png" />
+    <Content Include="Assets\Emoji\[夏阁艾迪剑].png" />
+    <Content Include="Assets\Emoji\[大兵].png" />
+    <Content Include="Assets\Emoji\[大哭].png" />
+    <Content Include="Assets\Emoji\[太阳].png" />
+    <Content Include="Assets\Emoji\[头条通知书].png" />
+    <Content Include="Assets\Emoji\[奋斗].png" />
+    <Content Include="Assets\Emoji\[奸笑].png" />
+    <Content Include="Assets\Emoji\[委屈].png" />
+    <Content Include="Assets\Emoji\[委屈]2.png" />
+    <Content Include="Assets\Emoji\[害怕].png" />
+    <Content Include="Assets\Emoji\[害羞].png" />
+    <Content Include="Assets\Emoji\[害羞]2.png" />
+    <Content Include="Assets\Emoji\[小嘴滑稽].png" />
+    <Content Include="Assets\Emoji\[小纠结].png" />
+    <Content Include="Assets\Emoji\[尴尬].png" />
+    <Content Include="Assets\Emoji\[左哼哼].png" />
+    <Content Include="Assets\Emoji\[差劲].png" />
+    <Content Include="Assets\Emoji\[幽灵].png" />
+    <Content Include="Assets\Emoji\[弱].png" />
+    <Content Include="Assets\Emoji\[弱]2.png" />
+    <Content Include="Assets\Emoji\[强].png" />
+    <Content Include="Assets\Emoji\[强]2.png" />
+    <Content Include="Assets\Emoji\[得意].png" />
+    <Content Include="Assets\Emoji\[微微一笑].png" />
+    <Content Include="Assets\Emoji\[微笑].png" />
+    <Content Include="Assets\Emoji\[心碎].png" />
+    <Content Include="Assets\Emoji\[心碎]2.png" />
+    <Content Include="Assets\Emoji\[快哭了].png" />
+    <Content Include="Assets\Emoji\[怄火].png" />
+    <Content Include="Assets\Emoji\[惊喜].png" />
+    <Content Include="Assets\Emoji\[惊恐].png" />
+    <Content Include="Assets\Emoji\[惊讶].png" />
+    <Content Include="Assets\Emoji\[惊讶]2.png" />
+    <Content Include="Assets\Emoji\[感知不强].png" />
+    <Content Include="Assets\Emoji\[憨笑].png" />
+    <Content Include="Assets\Emoji\[懒得理].png" />
+    <Content Include="Assets\Emoji\[我最美].png" />
+    <Content Include="Assets\Emoji\[我最美]2.png" />
+    <Content Include="Assets\Emoji\[托腮].png" />
+    <Content Include="Assets\Emoji\[托腮]2.png" />
+    <Content Include="Assets\Emoji\[抓狂].png" />
+    <Content Include="Assets\Emoji\[折磨].png" />
+    <Content Include="Assets\Emoji\[抠鼻].png" />
+    <Content Include="Assets\Emoji\[抠鼻]2.png" />
+    <Content Include="Assets\Emoji\[抱拳].png" />
+    <Content Include="Assets\Emoji\[抱拳]2.png" />
+    <Content Include="Assets\Emoji\[拥抱].png" />
+    <Content Include="Assets\Emoji\[拳头].png" />
+    <Content Include="Assets\Emoji\[挑眉坏笑].png" />
+    <Content Include="Assets\Emoji\[挨打].png" />
+    <Content Include="Assets\Emoji\[捂嘴笑].png" />
+    <Content Include="Assets\Emoji\[捂脸].png" />
+    <Content Include="Assets\Emoji\[捂脸]2.png" />
+    <Content Include="Assets\Emoji\[掩面笑].png" />
+    <Content Include="Assets\Emoji\[握手].png" />
+    <Content Include="Assets\Emoji\[撇嘴].png" />
+    <Content Include="Assets\Emoji\[撇嘴]2.png" />
+    <Content Include="Assets\Emoji\[擦汗].png" />
+    <Content Include="Assets\Emoji\[敲打].png" />
+    <Content Include="Assets\Emoji\[斗鸡眼滑稽].png" />
+    <Content Include="Assets\Emoji\[斜眼笑].png" />
+    <Content Include="Assets\Emoji\[新币1分].png" />
+    <Content Include="Assets\Emoji\[新酷币1%24].png" />
+    <Content Include="Assets\Emoji\[新酷币100块].png" />
+    <Content Include="Assets\Emoji\[新酷币10块].png" />
+    <Content Include="Assets\Emoji\[新酷币1€].png" />
+    <Content Include="Assets\Emoji\[新酷币1块].png" />
+    <Content Include="Assets\Emoji\[新酷币1毛].png" />
+    <Content Include="Assets\Emoji\[新酷币2%24].png" />
+    <Content Include="Assets\Emoji\[新酷币20块].png" />
+    <Content Include="Assets\Emoji\[新酷币2€].png" />
+    <Content Include="Assets\Emoji\[新酷币2分].png" />
+    <Content Include="Assets\Emoji\[新酷币2块].png" />
+    <Content Include="Assets\Emoji\[新酷币2毛].png" />
+    <Content Include="Assets\Emoji\[新酷币5%24].png" />
+    <Content Include="Assets\Emoji\[新酷币50块].png" />
+    <Content Include="Assets\Emoji\[新酷币5€].png" />
+    <Content Include="Assets\Emoji\[新酷币5分].png" />
+    <Content Include="Assets\Emoji\[新酷币5块].png" />
+    <Content Include="Assets\Emoji\[新酷币5毛].png" />
+    <Content Include="Assets\Emoji\[新酷币].png" />
+    <Content Include="Assets\Emoji\[无奈].png" />
+    <Content Include="Assets\Emoji\[无奈]2.png" />
+    <Content Include="Assets\Emoji\[无语].png" />
+    <Content Include="Assets\Emoji\[晕].png" />
+    <Content Include="Assets\Emoji\[月亮].png" />
+    <Content Include="Assets\Emoji\[机智].png" />
+    <Content Include="Assets\Emoji\[机智]2.png" />
+    <Content Include="Assets\Emoji\[欢呼].png" />
+    <Content Include="Assets\Emoji\[汗].png" />
+    <Content Include="Assets\Emoji\[泪奔].png" />
+    <Content Include="Assets\Emoji\[流汗].png" />
+    <Content Include="Assets\Emoji\[流汗滑稽].png" />
+    <Content Include="Assets\Emoji\[流泪].png" />
+    <Content Include="Assets\Emoji\[流泪]2.png" />
+    <Content Include="Assets\Emoji\[滑稽].png" />
+    <Content Include="Assets\Emoji\[火把].png" />
+    <Content Include="Assets\Emoji\[灰色酷币].png" />
+    <Content Include="Assets\Emoji\[炸弹].png" />
+    <Content Include="Assets\Emoji\[爆怒].png" />
+    <Content Include="Assets\Emoji\[爱你].png" />
+    <Content Include="Assets\Emoji\[爱心].png" />
+    <Content Include="Assets\Emoji\[爱心]2.png" />
+    <Content Include="Assets\Emoji\[爱情].png" />
+    <Content Include="Assets\Emoji\[牛啤].png" />
+    <Content Include="Assets\Emoji\[猪头].png" />
+    <Content Include="Assets\Emoji\[玫瑰].png" />
+    <Content Include="Assets\Emoji\[玫瑰]2.png" />
+    <Content Include="Assets\Emoji\[瓢虫].png" />
+    <Content Include="Assets\Emoji\[疑问].png" />
+    <Content Include="Assets\Emoji\[疑问]2.png" />
+    <Content Include="Assets\Emoji\[白眼].png" />
+    <Content Include="Assets\Emoji\[白眼]2.png" />
+    <Content Include="Assets\Emoji\[白纹酷币].png" />
+    <Content Include="Assets\Emoji\[皱眉].png" />
+    <Content Include="Assets\Emoji\[皱眉]2.png" />
+    <Content Include="Assets\Emoji\[真正的音乐].png" />
+    <Content Include="Assets\Emoji\[睡].png" />
+    <Content Include="Assets\Emoji\[睡]2.png" />
+    <Content Include="Assets\Emoji\[示爱].png" />
+    <Content Include="Assets\Emoji\[礼物].png" />
+    <Content Include="Assets\Emoji\[笑哭].png" />
+    <Content Include="Assets\Emoji\[笑哭]2.png" />
+    <Content Include="Assets\Emoji\[笑哭再见].png" />
+    <Content Include="Assets\Emoji\[笑眼].png" />
+    <Content Include="Assets\Emoji\[篮球].png" />
+    <Content Include="Assets\Emoji\[糗大了].png" />
+    <Content Include="Assets\Emoji\[红药丸].png" />
+    <Content Include="Assets\Emoji\[给我整一个].png" />
+    <Content Include="Assets\Emoji\[绿帽].png" />
+    <Content Include="Assets\Emoji\[绿色酷币].png" />
+    <Content Include="Assets\Emoji\[绿药丸].png" />
+    <Content Include="Assets\Emoji\[耐克嘴].png" />
+    <Content Include="Assets\Emoji\[耶].png" />
+    <Content Include="Assets\Emoji\[耶]2.png" />
+    <Content Include="Assets\Emoji\[胜利].png" />
+    <Content Include="Assets\Emoji\[舒服].png" />
+    <Content Include="Assets\Emoji\[舔].png" />
+    <Content Include="Assets\Emoji\[色].png" />
+    <Content Include="Assets\Emoji\[色]2.png" />
+    <Content Include="Assets\Emoji\[菜刀].png" />
+    <Content Include="Assets\Emoji\[菜刀]2.png" />
+    <Content Include="Assets\Emoji\[蛋糕].png" />
+    <Content Include="Assets\Emoji\[表面哭泣].png" />
+    <Content Include="Assets\Emoji\[表面开心].png" />
+    <Content Include="Assets\Emoji\[衰].png" />
+    <Content Include="Assets\Emoji\[西瓜].png" />
+    <Content Include="Assets\Emoji\[调皮].png" />
+    <Content Include="Assets\Emoji\[足球].png" />
+    <Content Include="Assets\Emoji\[跳跳].png" />
+    <Content Include="Assets\Emoji\[转圈].png" />
+    <Content Include="Assets\Emoji\[鄙视].png" />
+    <Content Include="Assets\Emoji\[鄙视]2.png" />
+    <Content Include="Assets\Emoji\[酷].png" />
+    <Content Include="Assets\Emoji\[酷]2.png" />
+    <Content Include="Assets\Emoji\[酷安].png" />
+    <Content Include="Assets\Emoji\[酷安土豆].png" />
+    <Content Include="Assets\Emoji\[酷安绿帽].png" />
+    <Content Include="Assets\Emoji\[酷安钓鱼].png" />
+    <Content Include="Assets\Emoji\[酷币1%24].png" />
+    <Content Include="Assets\Emoji\[酷币100块].png" />
+    <Content Include="Assets\Emoji\[酷币100块]2.png" />
+    <Content Include="Assets\Emoji\[酷币10块].png" />
+    <Content Include="Assets\Emoji\[酷币10块]2.png" />
+    <Content Include="Assets\Emoji\[酷币1].png" />
+    <Content Include="Assets\Emoji\[酷币1€].png" />
+    <Content Include="Assets\Emoji\[酷币1€]2.png" />
+    <Content Include="Assets\Emoji\[酷币1分].png" />
+    <Content Include="Assets\Emoji\[酷币1分]2.png" />
+    <Content Include="Assets\Emoji\[酷币1块].png" />
+    <Content Include="Assets\Emoji\[酷币1块]2.png" />
+    <Content Include="Assets\Emoji\[酷币1毛].png" />
+    <Content Include="Assets\Emoji\[酷币1毛]2.png" />
+    <Content Include="Assets\Emoji\[酷币2%24].png" />
+    <Content Include="Assets\Emoji\[酷币20块].png" />
+    <Content Include="Assets\Emoji\[酷币20块]2.png" />
+    <Content Include="Assets\Emoji\[酷币2].png" />
+    <Content Include="Assets\Emoji\[酷币2€].png" />
+    <Content Include="Assets\Emoji\[酷币2€]2.png" />
+    <Content Include="Assets\Emoji\[酷币2分].png" />
+    <Content Include="Assets\Emoji\[酷币2分]2.png" />
+    <Content Include="Assets\Emoji\[酷币2块].png" />
+    <Content Include="Assets\Emoji\[酷币2块]2.png" />
+    <Content Include="Assets\Emoji\[酷币2毛].png" />
+    <Content Include="Assets\Emoji\[酷币2毛]2.png" />
+    <Content Include="Assets\Emoji\[酷币5%24].png" />
+    <Content Include="Assets\Emoji\[酷币50块].png" />
+    <Content Include="Assets\Emoji\[酷币50块]2.png" />
+    <Content Include="Assets\Emoji\[酷币5].png" />
+    <Content Include="Assets\Emoji\[酷币5€].png" />
+    <Content Include="Assets\Emoji\[酷币5€]2.png" />
+    <Content Include="Assets\Emoji\[酷币5分].png" />
+    <Content Include="Assets\Emoji\[酷币5分]2.png" />
+    <Content Include="Assets\Emoji\[酷币5块].png" />
+    <Content Include="Assets\Emoji\[酷币5块]2.png" />
+    <Content Include="Assets\Emoji\[酷币5毛].png" />
+    <Content Include="Assets\Emoji\[酷币5毛]2.png" />
+    <Content Include="Assets\Emoji\[酷币].png" />
+    <Content Include="Assets\Emoji\[酷币]2.png" />
+    <Content Include="Assets\Emoji\[酷币空].png" />
+    <Content Include="Assets\Emoji\[针不戳].png" />
+    <Content Include="Assets\Emoji\[闪电].png" />
+    <Content Include="Assets\Emoji\[闭嘴].png" />
+    <Content Include="Assets\Emoji\[阴险].png" />
+    <Content Include="Assets\Emoji\[阴险]2.png" />
+    <Content Include="Assets\Emoji\[难过].png" />
+    <Content Include="Assets\Emoji\[难过]2.png" />
+    <Content Include="Assets\Emoji\[飞吻].png" />
+    <Content Include="Assets\Emoji\[饥饿].png" />
+    <Content Include="Assets\Emoji\[饭].png" />
+    <Content Include="Assets\Emoji\[骚扰].png" />
+    <Content Include="Assets\Emoji\[骷髅].png" />
+    <Content Include="Assets\Emoji\[黑线].png" />
+    <Content Include="Assets\Emoji\[鼓掌].png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\NoPic\image_empty.png" />
+    <Content Include="Assets\NoPic\img_placeholder.png" />
+    <Content Include="Assets\NoPic\img_placeholder_night.png" />
     <Content Include="Assets\SmallTile.scale-100.png" />
     <Content Include="Assets\SmallTile.scale-125.png" />
     <Content Include="Assets\SmallTile.scale-150.png" />
@@ -842,10 +738,12 @@
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-125.png" />
     <Content Include="Assets\SplashScreen.scale-150.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-400.png" />
     <Content Include="Assets\Square150x150Logo.scale-100.png" />
     <Content Include="Assets\Square150x150Logo.scale-125.png" />
     <Content Include="Assets\Square150x150Logo.scale-150.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-400.png" />
     <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
     <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
@@ -859,9 +757,11 @@
     <Content Include="Assets\Square44x44Logo.scale-100.png" />
     <Content Include="Assets\Square44x44Logo.scale-125.png" />
     <Content Include="Assets\Square44x44Logo.scale-150.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-400.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-16.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-256.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-32.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-48.png" />
@@ -873,40 +773,16 @@
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="Properties\Default.rd.xml" />
-    <Content Include="Assets\SplashScreen.scale-200.png" />
-    <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\AboutControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\AboutDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\CaptureDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\DataTemplates\Feed.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\DataTemplates\FeedReply.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\DataTemplates\NotificationTemplates.xaml">
+    <Page Include="Controls\DataTemplates\Feeds.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -914,111 +790,39 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\DataTemplates\Pic.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\DataTemplates\OtherDatatemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\DataTemplates\RelationRowsItem.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\DataTemplates\Pic.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\DataTemplates\SearchWord.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\FeedShellDetailControl.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\NavigationView\NavigationBackButton.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\FeedShellListControl.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\NavigationView\NavigationView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\LoginDialog.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\NavigationView\NavigationView_Themeresources.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\MakeFeedControl.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ShowQRCodeControl.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\StatusGrid.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TextBlockEx.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\TitleBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\DataTemplates\OtherDataTemplates.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\AppPages\AppPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\AppPages\DevPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\FeedPages\MessagePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\FeedPages\FeedListPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\FeedPages\AdaptivePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\FeedPages\FeedRepliesPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\FeedPages\HistoryPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\FeedPages\HTMLTextPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\FeedPages\NotificationsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\MainPageV7.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\SettingPages\TestPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\FeedPages\FeedShellPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\FeedPages\IndexPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\BrowserPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\FeedPages\SearchingPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1026,39 +830,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\SettingPages\SettingPage.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Themes\Color.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\FeedPages\UserListPage.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\ShellPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\ShowImagePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\MyPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next">
+      <Version>4.0.3</Version>
+    </PackageReference>
     <PackageReference Include="HtmlAgilityPack">
       <Version>1.11.46</Version>
     </PackageReference>
-    <PackageReference Include="ksemenenko.ColorThief">
-      <Version>1.1.1.4</Version>
-    </PackageReference>
     <PackageReference Include="MetroLog">
       <Version>1.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions">
-      <Version>2.2.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
@@ -1075,11 +860,8 @@
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
       <Version>7.1.3</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
-      <Version>7.1.3</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.1</Version>
+      <Version>2.8.2</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
@@ -1087,123 +869,26 @@
     <PackageReference Include="QRCoder">
       <Version>1.4.3</Version>
     </PackageReference>
-    <PackageReference Include="System.Collections.Immutable">
-      <Version>7.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.ObjectModel">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Xml.XPath.XDocument">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="Win2D.uwp">
-      <Version>1.26.0</Version>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\SettingPageNew.resw" />
-    <PRIResource Include="Strings\zh-CN\FeedShellDetailControl.resw" />
-    <PRIResource Include="Strings\zh-CN\FeedShellListControl.resw" />
-    <PRIResource Include="Strings\zh-CN\MakeFeedControl.resw" />
     <PRIResource Include="Strings\zh-CN\Feed.resw" />
-    <PRIResource Include="Strings\zh-CN\IndexPage.resw" />
-    <PRIResource Include="Strings\zh-CN\FeedShellPage.resw" />
-    <PRIResource Include="Strings\zh-CN\FeedRepliesPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
     <PRIResource Include="Strings\zh-CN\FeedListPage.resw" />
-    <PRIResource Include="Strings\zh-CN\NotificationsPage.resw" />
-    <PRIResource Include="Strings\zh-CN\ShowImagePage.resw" />
-    <PRIResource Include="Assets\EmojiData\OldEmojiId.resw" />
-    <PRIResource Include="Assets\EmojiData\EmojiId.resw" />
-    <PRIResource Include="Strings\zh-CN\BrowserPage.resw" />
-    <PRIResource Include="Strings\zh-CN\MyPage.resw" />
-    <PRIResource Include="Strings\zh-CN\SettingPage.resw">
-      <SubType>Designer</SubType>
-    </PRIResource>
-    <PRIResource Include="Strings\zh-CN\Resources.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CoolapkUWP.Core\CoolapkUWP.Core.csproj">
-      <Project>{63245854-fce4-4173-bb78-b0890f47851d}</Project>
-      <Name>CoolapkUWP.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\AdaptivePage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\MarkDown.resw" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\zh-CN\MainPage.resw" />
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\en-US\AdaptivePage.resw" />
+    <PRIResource Include="Strings\zh-CN\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="WindowsMobile, Version=10.0.22621.0">
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\BrowserPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\Feed.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\FeedListPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\FeedRepliesPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\FeedShellDetailControl.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\FeedShellListControl.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\FeedShellPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\IndexPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\MainPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\MakeFeedControl.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\MarkDown.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\MyPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\NotificationsPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\Resources.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\SettingPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\SettingPageNew.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\ShowImagePage.resw" />
-  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,34 +1,4 @@
 ﻿[*.cs]
 
-# CA1062: 验证公共方法的参数
-dotnet_diagnostic.CA1062.severity = suggestion
-
-# CA2007: 考虑对等待的任务调用 ConfigureAwait
-dotnet_diagnostic.CA2007.severity = suggestion
-
-# CA1032: 实现标准异常构造函数
-dotnet_diagnostic.CA1032.severity = suggestion
-
-# CA1056: URI属性不应该是字符串
-dotnet_diagnostic.CA1056.severity = suggestion
-
-# CA1819: 属性不应返回数组
-dotnet_diagnostic.CA1819.severity = suggestion
-
-# IDE0008: 使用显式类型
-csharp_style_var_when_type_is_apparent = false:silent
-
-# IDE0008: 使用显式类型
-csharp_style_var_for_built_in_types = false:silent
-
-# IDE0008: 使用显式类型
-csharp_style_var_elsewhere = false:silent
-
-# CA1305: 指定 IFormatProvider
-dotnet_diagnostic.CA1305.severity = suggestion
-
-# CA1031: 不捕获常规异常类型
-dotnet_diagnostic.CA1031.severity = suggestion
-
-# CA5351: 不要使用损坏的加密算法
-dotnet_diagnostic.CA5351.severity = suggestion
+# CS0618: 类型或成员已过时
+dotnet_diagnostic.CS0618.severity = none

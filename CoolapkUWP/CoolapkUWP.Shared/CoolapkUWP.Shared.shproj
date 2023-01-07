@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>6279c845-92f8-4333-ab99-3d213163593c</ProjectGuid>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.Common.Default.props" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.Common.props" />
+  <PropertyGroup />
+  <Import Project="CoolapkUWP.Shared.projitems" Label="Shared" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.CSharp.targets" />
+  <ItemGroup>
+    <_Globbed_Compile Remove="Common\HtmlToText.cs" />
+    <_Globbed_Compile Remove="Common\TokenCreater.cs" />
+    <_Globbed_Compile Remove="Controls\ShowQRCodeControl.xaml.cs" />
+    <_Globbed_Compile Remove="Controls\TextBlockEx.xaml.cs" />
+    <_Globbed_Compile Remove="Helpers\Converters\FontSizeToLineHeight.cs" />
+    <_Globbed_Compile Remove="Helpers\Converters\HTMLToTextConverter.cs" />
+    <_Globbed_Compile Remove="Helpers\DataHelper.cs" />
+    <_Globbed_Compile Remove="Helpers\DateHelper.cs" />
+    <_Globbed_Compile Remove="Helpers\EmojiHelper.cs" />
+    <_Globbed_Compile Remove="Helpers\ImageCacheHelper.cs" />
+    <_Globbed_Compile Remove="Helpers\NetworkHelper.cs" />
+    <_Globbed_Compile Remove="Helpers\RequestHelper.cs" />
+    <_Globbed_Compile Remove="Helpers\SettingsHelper.cs" />
+    <_Globbed_Compile Remove="Helpers\ThemeHelper.cs" />
+    <_Globbed_Compile Remove="Helpers\UIHelper.cs" />
+    <_Globbed_Compile Remove="Helpers\UriHelper.cs" />
+    <_Globbed_Compile Remove="Helpers\WeakEvent.cs" />
+    <_Globbed_Compile Remove="Models\Entity.cs" />
+    <_Globbed_Compile Remove="Pages\IndexPage.xaml.cs" />
+    <_Globbed_Compile Remove="Pages\MainPage.xaml.cs" />
+    <_Globbed_Compile Remove="ViewModels\FeedPages\IndexViewModel.cs" />
+    <_Globbed_Compile Remove="ViewModels\Interfaces.cs" />
+    <_Globbed_Compile Remove="ViewModels\Providers\CoolapkListProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <_Globbed_Content Remove="Assets\BadgeLogo.scale-100.png" />
+    <_Globbed_Content Remove="Assets\BadgeLogo.scale-125.png" />
+    <_Globbed_Content Remove="Assets\BadgeLogo.scale-150.png" />
+    <_Globbed_Content Remove="Assets\BadgeLogo.scale-200.png" />
+    <_Globbed_Content Remove="Assets\BadgeLogo.scale-400.png" />
+    <_Globbed_Content Remove="Assets\img_placeholder.png" />
+    <_Globbed_Content Remove="Assets\img_placeholder_night.png" />
+    <_Globbed_Content Remove="Assets\LargeTile.scale-100.png" />
+    <_Globbed_Content Remove="Assets\LargeTile.scale-125.png" />
+    <_Globbed_Content Remove="Assets\LargeTile.scale-150.png" />
+    <_Globbed_Content Remove="Assets\LargeTile.scale-200.png" />
+    <_Globbed_Content Remove="Assets\LargeTile.scale-400.png" />
+    <_Globbed_Content Remove="Assets\SmallTile.scale-100.png" />
+    <_Globbed_Content Remove="Assets\SmallTile.scale-125.png" />
+    <_Globbed_Content Remove="Assets\SmallTile.scale-150.png" />
+    <_Globbed_Content Remove="Assets\SmallTile.scale-200.png" />
+    <_Globbed_Content Remove="Assets\SmallTile.scale-400.png" />
+    <_Globbed_Content Remove="Assets\SplashScreen.scale-100.png" />
+    <_Globbed_Content Remove="Assets\SplashScreen.scale-125.png" />
+    <_Globbed_Content Remove="Assets\SplashScreen.scale-150.png" />
+    <_Globbed_Content Remove="Assets\SplashScreen.scale-200.png" />
+    <_Globbed_Content Remove="Assets\SplashScreen.scale-400.png" />
+    <_Globbed_Content Remove="Assets\Square150x150Logo.scale-100.png" />
+    <_Globbed_Content Remove="Assets\Square150x150Logo.scale-125.png" />
+    <_Globbed_Content Remove="Assets\Square150x150Logo.scale-150.png" />
+    <_Globbed_Content Remove="Assets\Square150x150Logo.scale-200.png" />
+    <_Globbed_Content Remove="Assets\Square150x150Logo.scale-400.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-32.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.altform-unplated_targetsize-16.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.altform-unplated_targetsize-256.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.altform-unplated_targetsize-32.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.altform-unplated_targetsize-48.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.scale-100.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.scale-125.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.scale-150.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.scale-200.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.scale-400.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.targetsize-16.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.targetsize-24.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.targetsize-256.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.targetsize-32.png" />
+    <_Globbed_Content Remove="Assets\Square44x44Logo.targetsize-48.png" />
+    <_Globbed_Content Remove="Assets\StoreLogo.scale-100.png" />
+    <_Globbed_Content Remove="Assets\StoreLogo.scale-125.png" />
+    <_Globbed_Content Remove="Assets\StoreLogo.scale-150.png" />
+    <_Globbed_Content Remove="Assets\StoreLogo.scale-200.png" />
+    <_Globbed_Content Remove="Assets\StoreLogo.scale-400.png" />
+    <_Globbed_Content Remove="Assets\Wide310x150Logo.scale-100.png" />
+    <_Globbed_Content Remove="Assets\Wide310x150Logo.scale-125.png" />
+    <_Globbed_Content Remove="Assets\Wide310x150Logo.scale-150.png" />
+    <_Globbed_Content Remove="Assets\Wide310x150Logo.scale-200.png" />
+    <_Globbed_Content Remove="Assets\Wide310x150Logo.scale-400.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <_Globbed_PRIResource Remove="Strings\zh-CN\Feed.resw" />
+    <_Globbed_PRIResource Remove="Strings\zh-CN\FeedListPage.resw" />
+    <_Globbed_PRIResource Remove="Strings\zh-CN\MainPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <_Globbled_Page Remove="Controls\NavigationView\NavigationBackButton.xaml" />
+    <_Globbled_Page Remove="Controls\NavigationView\NavigationView.xaml" />
+    <_Globbled_Page Remove="Controls\NavigationView\NavigationView_Themeresources.xaml" />
+    <_Globbled_Page Remove="Controls\ShowQRCodeControl.xaml" />
+    <_Globbled_Page Remove="Controls\TextBlockEx.xaml" />
+    <_Globbled_Page Remove="Pages\IndexPage.xaml" />
+    <_Globbled_Page Remove="Pages\MainPage.xaml" />
+    <_Globbled_Page Remove="Themes\Color.xaml" />
+    <_Globbled_Page Remove="Themes\Generic.xaml" />
+  </ItemGroup>
+</Project>

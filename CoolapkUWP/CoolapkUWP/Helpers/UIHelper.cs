@@ -1,584 +1,202 @@
-﻿using CoolapkUWP.Controls;
-using CoolapkUWP.Pages;
-using CoolapkUWP.Pages.FeedPages;
-using CoolapkUWP.ViewModels.FeedListPage;
-using Microsoft.Toolkit.Uwp.UI;
+﻿using Microsoft.Toolkit.Uwp.UI;
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using CoolapkUWP.Pages;
 using Windows.ApplicationModel.Core;
-using Windows.ApplicationModel.Resources;
-using Windows.Data.Xml.Dom;
-using Windows.Storage;
-using Windows.UI;
+using Windows.Foundation.Metadata;
+using Windows.System;
 using Windows.UI.Core;
-using Windows.UI.Notifications;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media.Animation;
-using InAppNotify = Microsoft.Toolkit.Uwp.UI.Controls.InAppNotification;
+using System.Net.Http;
+using Windows.ApplicationModel.Resources;
+using Windows.UI.Notifications;
+using Windows.Data.Xml.Dom;
 
 namespace CoolapkUWP.Helpers
 {
-    [DebuggerStepThrough]
     internal static partial class UIHelper
     {
-        public static event EventHandler<bool> IsSplitViewPaneOpenedChanged;
-        public static event EventHandler<bool> NeedMainPageProgressRing;
-        public static event EventHandler RequireIndexPageRefresh;
-        public static void ShowSplitView() => IsSplitViewPaneOpenedChanged?.Invoke(null, true);
-        public static void HideSplitView() => IsSplitViewPaneOpenedChanged?.Invoke(null, false);
-        public static void ShowMainPageProgressRing() => NeedMainPageProgressRing?.Invoke(null, true);
-        public static void HideMainPageProgressRing() => NeedMainPageProgressRing?.Invoke(null, false);
-        public static void RefreshIndexPage() => RequireIndexPageRefresh?.Invoke(null, null);
-    }
+        public const int Duration = 3000;
+        public static bool IsShowingProgressBar, IsShowingMessage;
+        public static bool HasTitleBar => !CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar;
+        public static bool HasStatusBar => ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
+        private static readonly ObservableCollection<string> MessageList = new ObservableCollection<string>();
 
-    internal static partial class UIHelper
-    {
-        public const int duration = 3000;
-        private static bool isShowingMessage;
-        public static bool isShowingProgressBar;
-        public static bool IsAuthor => ApplicationData.Current.LocalSettings.Values["IsAuthor"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsAuthor"];
-        public static bool IsSpecialUser => (ApplicationData.Current.LocalSettings.Values["IsAuthor"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsAuthor"]) || ApplicationData.Current.LocalSettings.Values["IsSpecial"] != null && (bool)ApplicationData.Current.LocalSettings.Values["IsSpecial"];
-        private static InAppNotify inAppNotification;
         private static CoreDispatcher shellDispatcher;
-        public static List<Popup> popups = new List<Popup>();
-        private static readonly ObservableCollection<string> messageList = new ObservableCollection<string>();
-        public static bool HasStatusBar => Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
-
         public static CoreDispatcher ShellDispatcher
         {
             get => shellDispatcher;
             set
             {
-                if (shellDispatcher == null)
+                if (shellDispatcher != value)
                 {
                     shellDispatcher = value;
                 }
             }
         }
 
-        public static InAppNotify InAppNotification
-        {
-            get => inAppNotification;
-            set
-            {
-                if (inAppNotification == null)
-                {
-                    inAppNotification = value;
-                }
-            }
-        }
-
-        /// <summary> 用于记录各种通知的数量。 </summary>
-        public static NotificationNums NotificationNums { get; } = new NotificationNums();
-
-        public static void ShowMessage(string message)
-        {
-            _ = InAppNotification?.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-              {
-                  InAppNotification?.Show(message, duration);
-              });
-        }
-
-        public static void ShowPopup(Popup popup)
-        {
-            popup.RequestedTheme = SettingsHelper.Get<bool>("IsBackgroundColorFollowSystem") ? ElementTheme.Default : (SettingsHelper.Get<bool>("IsDarkMode") ? ElementTheme.Dark : ElementTheme.Light);
-            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop") { popups.Insert(popups.Count - 1, popup); }
-            else { popups.Add(popup); }
-            popup.IsOpen = true;
-            popups.Last().IsOpen = false;
-            popups.Last().IsOpen = true;
-        }
-
-        public static void Hide(this Popup popup)
-        {
-            popup.IsOpen = false;
-            if (popups.Contains(popup)) { popups.Remove(popup); }
-        }
-
         public static async void ShowProgressBar()
         {
-            isShowingProgressBar = true;
+            IsShowingProgressBar = true;
             if (HasStatusBar)
             {
+                MainPage?.HideProgressBar();
                 StatusBar.GetForCurrentView().ProgressIndicator.ProgressValue = null;
                 await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
             }
-            else if (popups.Last().Child is StatusGrid statusGrid)
+            else
             {
-                if (!popups.Last().IsOpen)
-                { popups.Last().IsOpen = true; }
-                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowProgressBar());
+                MainPage?.ShowProgressBar();
+            }
+        }
+
+        public static async void ShowProgressBar(double value = 0)
+        {
+            IsShowingProgressBar = true;
+            if (HasStatusBar)
+            {
+                MainPage?.HideProgressBar();
+                StatusBar.GetForCurrentView().ProgressIndicator.ProgressValue = value * 0.01;
+                await StatusBar.GetForCurrentView().ProgressIndicator.ShowAsync();
+            }
+            else
+            {
+                MainPage?.ShowProgressBar(value);
             }
         }
 
         public static async void PausedProgressBar()
         {
-            isShowingProgressBar = true;
-            if (!HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
+            IsShowingProgressBar = true;
+            if (HasStatusBar)
             {
-                if (!popups.Last().IsOpen)
-                { popups.Last().IsOpen = true; }
-                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.PausedProgressBar());
+                await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
             }
+            MainPage?.PausedProgressBar();
         }
 
         public static async void ErrorProgressBar()
         {
-            isShowingProgressBar = true;
-            if (!HasStatusBar && popups.Last().Child is StatusGrid statusGrid)
+            IsShowingProgressBar = true;
+            if (HasStatusBar)
             {
-                if (!popups.Last().IsOpen)
-                { popups.Last().IsOpen = true; }
-                await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ErrorProgressBar());
+                await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
             }
+            MainPage?.ErrorProgressBar();
         }
 
         public static async void HideProgressBar()
         {
-            isShowingProgressBar = false;
-            if (HasStatusBar) { await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync(); }
-            else if (popups.Last().Child is StatusGrid statusGrid)
+            IsShowingProgressBar = false;
+            if (HasStatusBar)
             {
-                statusGrid.HideProgressBar();
-                if (!isShowingMessage && popups.Last().IsOpen)
-                { popups.Last().IsOpen = false; }
+                await StatusBar.GetForCurrentView().ProgressIndicator.HideAsync();
             }
+            MainPage?.HideProgressBar();
         }
 
-        public static async void StatusBar_ShowMessage(string message)
+        public static async void ShowMessage(string message)
         {
-            messageList.Add(message);
-            if (!isShowingMessage)
+            MessageList.Add(message);
+            if (!IsShowingMessage)
             {
-                isShowingMessage = true;
-                while (messageList.Count > 0)
+                IsShowingMessage = true;
+                while (MessageList.Count > 0)
                 {
-                    string s = $"[{messageList.Count}] {messageList[0]}";
                     if (HasStatusBar)
                     {
                         StatusBar statusBar = StatusBar.GetForCurrentView();
-                        statusBar.ProgressIndicator.Text = s;
-                        statusBar.ProgressIndicator.ProgressValue = isShowingProgressBar ? null : (double?)0;
-                        await statusBar.ProgressIndicator.ShowAsync();
-                        await Task.Delay(3000);
-                        if (messageList.Count == 0 && !isShowingProgressBar) { await statusBar.ProgressIndicator.HideAsync(); }
-                        statusBar.ProgressIndicator.Text = string.Empty;
-                        messageList.RemoveAt(0);
-                    }
-                    else if (popups.Last().Child is StatusGrid statusGrid)
-                    {
-                        await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => statusGrid.ShowMessage(s));
-                        await Task.Delay(3000);
-                        messageList.RemoveAt(0);
-                        await statusGrid.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        if (!string.IsNullOrEmpty(MessageList[0]))
                         {
-                            if (messageList.Count == 0) { statusGrid.Rectangle_PointerExited(); }
-                            if (!isShowingProgressBar) { HideProgressBar(); }
-                            if (messageList.Count == 0 && !isShowingProgressBar)
-                            {
-                                if (popups.Last().IsOpen)
-                                { popups.Last().IsOpen = false; }
-                            }
-                        });
+                            statusBar.ProgressIndicator.Text = $"[{MessageList.Count}] {MessageList[0].Replace("\n", " ")}";
+                            statusBar.ProgressIndicator.ProgressValue = IsShowingProgressBar ? null : (double?)0;
+                            await statusBar.ProgressIndicator.ShowAsync();
+                            await Task.Delay(Duration);
+                        }
+                        MessageList.RemoveAt(0);
+                        if (MessageList.Count == 0 && !IsShowingProgressBar) { await statusBar.ProgressIndicator.HideAsync(); }
+                        statusBar.ProgressIndicator.Text = string.Empty;
+                    }
+                    else if (MainPage != null)
+                    {
+                        if (!string.IsNullOrEmpty(MessageList[0]))
+                        {
+                            string messages = $"[{MessageList.Count}] {MessageList[0].Replace("\n", " ")}";
+                            MainPage.ShowMessage(messages);
+                            await Task.Delay(Duration);
+                        }
+                        MessageList.RemoveAt(0);
+                        if (MessageList.Count == 0)
+                        {
+                            MainPage.ShowMessage();
+                        }
                     }
                 }
-                isShowingMessage = false;
+                IsShowingMessage = false;
             }
         }
 
-        private static async void ShowImageWindow(object args)
+        public static void ShowInAppMessage(MessageType type, string message = null)
         {
-            CoreApplicationView applicationView = CoreApplication.CreateNewView();
-            int viewId = 0;
-            await applicationView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            switch (type)
             {
-                Frame frame = new Frame();
-                frame.Navigate(typeof(ShowImagePage), args);
-                Window.Current.Content = frame;
-                Window.Current.Activate();
-                ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("Feed");
-                ApplicationView.GetForCurrentView().Title = loader.GetString("seePic");
-
-                viewId = ApplicationView.GetForCurrentView().Id;
-            });
-
-            bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(viewId);
-        }
-
-        public static void ShowImage(string url, ImageType type)
-        {
-            ShowImageWindow(new object[] { url, type });
-        }
-
-        public static void ShowImage(Models.ImageModel model)
-        {
-            ShowImageWindow(model);
-        }
-
-        public static bool IsDarkTheme(ElementTheme theme)
-        {
-            if (theme == ElementTheme.Default)
-            {
-                return Windows.UI.Xaml.Application.Current.RequestedTheme == ApplicationTheme.Dark;
+                case MessageType.Message:
+                    ShowMessage(message);
+                    break;
+                default:
+                    ShowMessage(type.ConvertMessageTypeToMessage());
+                    break;
             }
-            return theme == ElementTheme.Dark;
         }
 
-        public static async void CheckTheme()
+        public static void ShowHttpExceptionMessage(HttpRequestException e)
         {
-            while (Window.Current?.Content is null)
-            {
-                await Task.Delay(100);
-            }
-
-            if (Window.Current.Content is FrameworkElement frameworkElement)
-            {
-                foreach (CoreApplicationView item in CoreApplication.Views)
-                {
-                    await item.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                    {
-                        (Window.Current.Content as FrameworkElement).RequestedTheme = SettingsHelper.Theme;
-                    });
-                }
-
-                bool IsDark = IsDarkTheme(SettingsHelper.Theme);
-                Color AccentColor = (Color)Windows.UI.Xaml.Application.Current.Resources["SystemChromeMediumLowColor"];
-
-                if (HasStatusBar)
-                {
-                    if (IsDark)
-                    {
-                        StatusBar statusBar = StatusBar.GetForCurrentView();
-                        statusBar.BackgroundColor = AccentColor;
-                        statusBar.ForegroundColor = Colors.White;
-                        statusBar.BackgroundOpacity = 0; // 透明度
-                    }
-                    else
-                    {
-                        StatusBar statusBar = StatusBar.GetForCurrentView();
-                        statusBar.BackgroundColor = AccentColor;
-                        statusBar.ForegroundColor = Colors.Black;
-                        statusBar.BackgroundOpacity = 0; // 透明度
-                    }
-                }
-                else if (IsDark)
-                {
-                    ApplicationViewTitleBar view = ApplicationView.GetForCurrentView().TitleBar;
-                    view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
-                    view.ButtonForegroundColor = Colors.White;
-                }
-                else
-                {
-                    ApplicationViewTitleBar view = ApplicationView.GetForCurrentView().TitleBar;
-                    view.ButtonBackgroundColor = view.InactiveBackgroundColor = view.ButtonInactiveBackgroundColor = Colors.Transparent;
-                    view.ButtonForegroundColor = Colors.Black;
-                }
-            }
+            if (e.Message.IndexOfAny(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }) != -1)
+            { ShowInAppMessage(MessageType.Message, $"服务器错误： {e.Message.Replace("Response status code does not indicate success: ", string.Empty)}"); }
+            else if (e.Message == "An error occurred while sending the request.") { ShowInAppMessage(MessageType.Message, "无法连接网络。"); }
+            else { ShowInAppMessage(MessageType.Message, $"请检查网络连接。 {e.Message}"); }
         }
 
         public static bool IsOriginSource(object source, object originalSource)
         {
             bool r = false;
-            if ((originalSource as DependencyObject).FindAscendant<Button>() == null && (originalSource as DependencyObject).FindAscendant<AppBarButton>() == null && originalSource.GetType() != typeof(Button) && originalSource.GetType() != typeof(AppBarButton) && originalSource.GetType() != typeof(RichEditBox))
+            DependencyObject DependencyObject = originalSource as DependencyObject;
+            if (DependencyObject.FindAscendant<Button>() == null && DependencyObject.FindAscendant<AppBarButton>() == null && originalSource.GetType() != typeof(Button) && originalSource.GetType() != typeof(AppBarButton) && originalSource.GetType() != typeof(RichEditBox))
             {
-                r = source == (originalSource as DependencyObject).FindAscendant(source.GetType());
+                if (source is FrameworkElement FrameworkElement)
+                {
+                    r = source == DependencyObject.FindAscendant(FrameworkElement.Name);
+                }
             }
             return source == originalSource || r;
         }
 
-        public static string ConvertMessageTypeToMessage(Core.Helpers.MessageType type)
+        public static string ConvertMessageTypeToMessage(this MessageType type)
         {
             switch (type)
             {
-                case Core.Helpers.MessageType.NoMore:
-                    return ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("noMore");
+                case MessageType.NoMore:
+                    return ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("NoMore");
 
-                case Core.Helpers.MessageType.NoMoreReply:
-                    return ResourceLoader.GetForViewIndependentUse("FeedShellListControl").GetString("noMoreReply");
+                case MessageType.NoMoreShare:
+                    return ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("NoMoreShare");
 
-                case Core.Helpers.MessageType.NoMoreLikeUser:
-                    return ResourceLoader.GetForViewIndependentUse("FeedShellListControl").GetString("noMoreLikeUser");
+                case MessageType.NoMoreReply:
+                    return ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("NoMoreReply");
 
-                case Core.Helpers.MessageType.NoMoreShare:
-                    return ResourceLoader.GetForViewIndependentUse("FeedShellListControl").GetString("noMoreShare");
+                case MessageType.NoMoreHotReply:
+                    return ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("NoMoreHotReply");
 
-                case Core.Helpers.MessageType.NoMoreHotReply:
-                    return ResourceLoader.GetForViewIndependentUse("FeedShellListControl").GetString("noMoreHotReply");
+                case MessageType.NoMoreLikeUser:
+                    return ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("NoMoreLikeUser");
 
                 default: return string.Empty;
-            }
-        }
-    }
-
-    internal static partial class UIHelper
-    {
-        public static bool isSplitViewPaneOverlay;
-        public static bool isSplitViewPaneOpen;
-        private static Frame mainFrame;
-        private static Frame paneFrame;
-
-        public static bool IsSplitViewPaneOverlay
-        {
-            get => isSplitViewPaneOverlay;
-            set => isSplitViewPaneOverlay = value;
-        }
-
-        public static bool IsSplitViewPaneOpen
-        {
-            get => isSplitViewPaneOpen;
-            set => isSplitViewPaneOpen = value;
-        }
-
-        public static Frame MainFrame
-        {
-            get => mainFrame;
-            set
-            {
-                if (mainFrame == null)
-                {
-                    mainFrame = value;
-                }
-            }
-        }
-
-        public static Frame PaneFrame
-        {
-            get => paneFrame;
-            set
-            {
-                if (paneFrame == null)
-                {
-                    paneFrame = value;
-                }
-            }
-        }
-
-        public static void Navigate(Type pageType, object e = null)
-        {
-            _ = (mainFrame?.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-              {
-                  _ = (mainFrame?.Navigate(pageType, e, new EntranceNavigationTransitionInfo()));
-              }));
-            if (IsSplitViewPaneOverlay) { HideSplitView(); }
-        }
-
-        public static void NavigateInSplitPane(Type pageType, object e = null)
-        {
-            paneFrame?.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                IsSplitViewPaneOpenedChanged?.Invoke(null, true);
-                paneFrame?.Navigate(pageType, e, new EntranceNavigationTransitionInfo());
-            });
-        }
-
-        private static readonly ImmutableArray<string> routes = new string[]
-        {
-            "/page?",
-            "/u/",
-            "/feed/",
-            "/picture/",
-            "/question/",
-            "/t/",
-            "t/",
-            "/dyh/",
-            "/collection/",
-            "http://image.coolapk.com/",
-            "https",
-            "http",
-            "www.coolapk.com",
-            "/product/",
-            "/game/",
-            "/apk/",
-        }.ToImmutableArray();
-
-        private static bool IsFirst(this string str, int i) => str.IndexOf(routes[i], StringComparison.Ordinal) == 0;
-
-        private static string Replace(this string str, int oldText)
-        {
-            return oldText == -1
-                ? str.Replace("https://www.coolapk.com", string.Empty, StringComparison.Ordinal)
-                : oldText == -2
-                    ? str.Replace("http://www.coolapk.com", string.Empty, StringComparison.Ordinal)
-                    : oldText == -3
-                                    ? str.Replace("www.coolapk.com", string.Empty, StringComparison.Ordinal)
-                                    : oldText < 0 ? throw new Exception($"i = {oldText}") : str.Replace(routes[oldText], string.Empty, StringComparison.Ordinal);
-        }
-
-        public static async void OpenLinkAsync(string str)
-        {
-            string rawstr = str;
-
-            if (string.IsNullOrWhiteSpace(str)) { return; }
-
-            if (str == "/contacts/fans")
-            {
-                NavigateInSplitPane(typeof(UserListPage), new ViewModels.UserListPage.ViewModel(SettingsHelper.Get<string>(SettingsHelper.Uid), false, "我"));
-                return;
-            }
-            else if (str == "/user/myFollowList")
-            {
-                NavigateInSplitPane(typeof(UserListPage), new ViewModels.UserListPage.ViewModel(SettingsHelper.Get<string>(SettingsHelper.Uid), true, "我"));
-                return;
-            }
-
-            int i = 0;
-            if (str.IsFirst(i++))
-            {
-                string u = str.Replace(i - 1);
-                Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(u, true));
-            }
-            else if (str.Contains("/feed/changeHistoryDetail"))
-            {
-                Navigate(typeof(FeedShellPage), new ViewModels.FeedDetailPage.FeedViewModel(str.Replace(2)));
-            }
-
-            if (str.Contains('?')) { str = str.Substring(0, str.IndexOf('?')); }
-            if (str.Contains('%')) { str = str.Substring(0, str.IndexOf('%')); }
-            if (str.Contains('&')) { str = str.Substring(0, str.IndexOf('&')); }
-
-            if (str.IndexOf("ithome://", StringComparison.Ordinal) == 0)
-            {
-                await Windows.System.Launcher.LaunchUriAsync(new Uri(str));
-            }
-            else if (str.IsFirst(i++))
-            {
-                string u = str.Replace(i - 1);
-                string uid = int.TryParse(u, out _) ? u : await Core.Helpers.NetworkHelper.GetUserIDByNameAsync(u);
-                FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.UserPageList, uid);
-                if (f != null)
-                {
-                    NavigateInSplitPane(typeof(FeedListPage), f);
-                }
-            }
-            else if (str.IsFirst(i++) || str.IsFirst(i++))
-            {
-                if (str == "/feed/writer") { ShowMessage("暂不支持"); }
-                else { Navigate(typeof(FeedShellPage), new ViewModels.FeedDetailPage.FeedViewModel(str.Replace(i - 1))); }
-            }
-            else if (str.IsFirst(i++))
-            {
-                Navigate(typeof(FeedShellPage), new ViewModels.FeedDetailPage.QuestionViewModel(str.Replace(i - 1)));
-            }
-            else if (str.IsFirst(i++) || str.IsFirst(i++))
-            {
-                string u = str.Replace(i - 1);
-                FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.TagPageList, u);
-                if (f != null)
-                {
-                    NavigateInSplitPane(typeof(FeedListPage), f);
-                }
-            }
-            else if (str.IsFirst(i++))
-            {
-                string u = str.Replace(i - 1);
-                FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.DyhPageList, u);
-                if (f != null)
-                {
-                    NavigateInSplitPane(typeof(FeedListPage), f);
-                }
-            }
-            else if (str.IsFirst(i++))
-            {
-                string u = str.Replace(i - 1);
-                FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.CollectionPageList, u);
-                if (f != null)
-                {
-                    NavigateInSplitPane(typeof(FeedListPage), f);
-                }
-            }
-            else if (str.IsFirst(i++))
-            {
-                ShowImage(str, ImageType.SmallImage);
-            }
-            else if (str == "https://m.coolapk.com/mp/user/communitySpecification")
-            {
-                NavigateInSplitPane(typeof(HTMLTextPage), str);
-            }
-            else if (str.IsFirst(i++))
-            {
-                if (str.Contains("coolapk.com", StringComparison.Ordinal))
-                {
-                    OpenLinkAsync(str.Replace(-1));
-                }
-                else
-                {
-                    Navigate(typeof(BrowserPage), new object[] { false, str });
-                }
-            }
-            else if (str.IsFirst(i++))
-            {
-                if (str.Contains("coolapk.com", StringComparison.Ordinal))
-                {
-                    OpenLinkAsync(str.Replace(-2));
-                }
-                else
-                {
-                    Navigate(typeof(BrowserPage), new object[] { false, str });
-                }
-            }
-            else if (str.IsFirst(i++))
-            {
-                OpenLinkAsync(str.Replace(-3));
-            }
-            else if (str.IsFirst(i++))
-            {
-                string u = str.Replace(i - 1);
-                if (str.Contains("/product/categoryList"))
-                {
-                    Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(str, true));
-                }
-                else
-                {
-                    FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.ProductPageList, u);
-                    if (f != null)
-                    {
-                        NavigateInSplitPane(typeof(FeedListPage), f);
-                    }
-                }
-            }
-            else if (str.IsFirst(i++))
-            {
-                NavigateInSplitPane(typeof(Pages.AppPages.AppPage), "https://www.coolapk.com" + str);
-                //string u = str.Replace(i - 1);
-                ////UIHelper.ShowMessage(u);
-                //var f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, u);
-                //if (f != null)
-                //{
-                //    UIHelper.ShowMessage(u);
-                //    NavigateInSplitPane(typeof(FeedListPage), f);
-                //}
-            }
-            else if (str.IsFirst(i++))
-            {
-                NavigateInSplitPane(typeof(Pages.AppPages.AppPage), "https://www.coolapk.com" + str);
-                //string u = str.Replace(i - 1);
-                //var f = FeedListPageViewModelBase.GetProvider(FeedListType.AppPageList, u);
-                //if (f != null)
-                //{
-                //    UIHelper.ShowMessage(u);
-                //    NavigateInSplitPane(typeof(FeedListPage), f);
-                //}
-            }
-            //else
-            //{
-            //    string u = str.Substring(1);
-            //    u = u.Substring(u.IndexOf('/') + 1);
-            //    Navigate(typeof(FeedDetailPage), u);
-            //}
-            else
-            {
-#if !DEBUG
-            if (UIHelper.IsAuthor)
-#endif
-                Navigate(typeof(IndexPage), new ViewModels.IndexPage.ViewModel(rawstr, true));
             }
         }
 
@@ -598,5 +216,140 @@ namespace CoolapkUWP.Helpers
             // And update the badge
             badgeUpdater.Update(badge);
         }
+    }
+
+    public enum NavigationThemeTransition
+    {
+        Default,
+        Entrance,
+        DrillIn,
+        Suppress
+    }
+
+    internal static partial class UIHelper
+    {
+        public static MainPage MainPage;
+
+        public static void Navigate(Type pageType, object e = null, NavigationThemeTransition Type = NavigationThemeTransition.Default)
+        {
+            switch (Type)
+            {
+                case NavigationThemeTransition.DrillIn:
+                    _ = (MainPage?.NavigationViewFrame.Navigate(pageType, e, new DrillInNavigationTransitionInfo()));
+                    break;
+                case NavigationThemeTransition.Entrance:
+                    _ = (MainPage?.NavigationViewFrame.Navigate(pageType, e, new EntranceNavigationTransitionInfo()));
+                    break;
+                case NavigationThemeTransition.Suppress:
+                    _ = (MainPage?.NavigationViewFrame.Navigate(pageType, e, new SuppressNavigationTransitionInfo()));
+                    break;
+                case NavigationThemeTransition.Default:
+                    _ = (MainPage?.NavigationViewFrame.Navigate(pageType, e));
+                    break;
+                default:
+                    _ = (MainPage?.NavigationViewFrame.Navigate(pageType, e));
+                    break;
+            }
+        }
+
+        private static readonly ImmutableArray<string> routes = new string[]
+        {
+            "/u/",
+            "/feed/",
+            "/picture/",
+            "/t/",
+            "t/",
+            "http://image.coolapk.com/",
+            "https",
+            "http",
+            "www.coolapk.com",
+        }.ToImmutableArray();
+
+        private static bool IsFirst(this string str, int i) => str.IndexOf(routes[i], StringComparison.Ordinal) == 0;
+
+        private static string Replace(this string str, int oldText)
+        {
+            return oldText == -1
+                ? str.Replace("https://www.coolapk.com", string.Empty)
+                : oldText == -2
+                    ? str.Replace("http://www.coolapk.com", string.Empty)
+                    : oldText == -3
+                        ? str.Replace("www.coolapk.com", string.Empty)
+                        : oldText < 0
+                            ? throw new Exception($"i = {oldText}")
+                            : str.Replace(routes[oldText], string.Empty);
+        }
+
+        public static async void OpenLinkAsync(string str)
+        {
+            string rawstr = str;
+            if (string.IsNullOrWhiteSpace(str)) { return; }
+            int i = 0;
+            if (str.IsFirst(i++))
+            {
+                string u = str.Replace(i - 1);
+                string uid = int.TryParse(u, out _) ? u : (await NetworkHelper.GetUserInfoByNameAsync(u)).UID;
+                //FeedListViewModel f = FeedListViewModel.GetProvider(FeedListType.UserPageList, uid);
+                //if (f != null)
+                //{
+                //    Navigate(typeof(FeedListPage), f);
+                //}
+            }
+            else if (str.IsFirst(i++) || str.IsFirst(i++))
+            {
+                if (str == "/feed/writer") { ShowMessage("暂不支持"); }
+                //else { Navigate(typeof(FeedShellPage), new FeedDetailViewModel(str.Replace(i - 1))); }
+            }
+            else if (str.IsFirst(i++) || str.IsFirst(i++))
+            {
+                string u = str.Replace(i - 1);
+                if (u.Contains("?type=")) { u = u.Substring(0, u.IndexOf('?')); }
+                //FeedListViewModel f = FeedListViewModel.GetProvider(FeedListType.TagPageList, u);
+                //if (f != null)
+                //{
+                //    Navigate(typeof(FeedListPage), f);
+                //}
+            }
+            else if (str.IsFirst(i++))
+            {
+                //ShowImage(new ImageModel(str, ImageType.SmallImage));
+            }
+            else if (str.IsFirst(i++))
+            {
+                if (str.Contains("coolapk.com"))
+                {
+                    OpenLinkAsync(str.Replace(-1));
+                }
+                else
+                {
+                    //Navigate(typeof(BrowserPage), new object[] { false, str });
+                }
+            }
+            else if (str.IsFirst(i++))
+            {
+                if (str.Contains("coolapk.com"))
+                {
+                    OpenLinkAsync(str.Replace(-2));
+                }
+                else
+                {
+                    //Navigate(typeof(BrowserPage), new object[] { false, str });
+                }
+            }
+            else if (str.IsFirst(i++))
+            {
+                OpenLinkAsync(str.Replace(-3));
+            }
+        }
+    }
+
+    public enum MessageType
+    {
+        Message,
+        NoMore,
+        NoMoreReply,
+        NoMoreLikeUser,
+        NoMoreShare,
+        NoMoreHotReply,
     }
 }

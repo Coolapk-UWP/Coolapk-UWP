@@ -1,18 +1,19 @@
 ﻿using CoolapkUWP.Helpers;
 using Microsoft.Toolkit.Uwp.UI;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Input;
+
+//https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
 namespace CoolapkUWP.Controls.DataTemplates
 {
-    public partial class OtherDataTemplates : ResourceDictionary
+    public sealed partial class OtherDatatemplates : ResourceDictionary
     {
-        public OtherDataTemplates()
+        public OtherDatatemplates()
         {
             InitializeComponent();
         }
 
-        internal static void OnTapped(object sender, TappedRoutedEventArgs e)
+        private void OnTapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             if (((FrameworkElement)sender).FindAscendant("searchPivot") == null)
             {
@@ -20,7 +21,7 @@ namespace CoolapkUWP.Controls.DataTemplates
             }
         }
 
-        internal static void ListViewItem_KeyDown(object sender, KeyRoutedEventArgs e)
+        private void OnKeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter || e.Key == Windows.System.VirtualKey.Space)
             {

@@ -1,0 +1,33 @@
+﻿<Page
+    x:Class="CoolapkUWP.Pages.FeedPages.IndexPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <templates:Feeds />
+                <templates:IndexCardTemplates />
+                <templates:OtherDatatemplates />
+            </ResourceDictionary.MergedDictionaries>
+            <templates:CardTemplateSelector
+                x:Key="CardTemplateSelector"
+                Feed="{StaticResource FeedDefaultTemplate}"
+                FeedReply="{StaticResource FeedReplyDefaultTemplate}"
+                Images="{StaticResource ImageCardDefaultTemplate}"
+                List="{StaticResource ListDefaultTemplate}"
+                Others="{StaticResource Null}" />
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid>
+        <ListView
+            x:Name="ListView"
+            ItemContainerStyle="{StaticResource DefaultCardItemStyle}"
+            ItemTemplateSelector="{StaticResource CardTemplateSelector}"
+            ItemsSource="{Binding}"
+            ShowsScrollingPlaceholders="False" />
+    </Grid>
+</Page>

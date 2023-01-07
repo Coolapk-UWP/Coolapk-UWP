@@ -1,51 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="Tangent90.CoolapkUWP" Publisher="CN=where" Version="2.1.39.0" />
-  <mp:PhoneIdentity PhoneProductId="4e59c59e-ae78-4038-adad-d6ec7bb47191" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
+  IgnorableNamespaces="uap uap5 mp">
+
+  <Identity
+    Name="wherewhere.CoolapkUWP"
+    Publisher="CN=where"
+    Version="0.0.1.0" />
+
+  <mp:PhoneIdentity PhoneProductId="e34e65e9-8e7e-48e0-ae8a-a5ddb9981bab" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+
   <Properties>
-    <DisplayName>ms-resource:AppName</DisplayName>
-    <PublisherDisplayName>Tangent-90</PublisherDisplayName>
+    <DisplayName>CoolapkUWP</DisplayName>
+    <PublisherDisplayName>wherewhere</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
+
   <Dependencies>
     <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
   </Dependencies>
+
   <Resources>
-    <Resource Language="x-generate" />
+    <Resource Language="x-generate"/>
   </Resources>
+
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="CoolapkUWP.App">
-      <uap:VisualElements Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" BackgroundColor="transparent" DisplayName="ms-resource:AppName" Description="ms-resource:AppDescription">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\LargeTile.png" Square71x71Logo="Assets\SmallTile.png">
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="CoolapkUWP.App">
+      <uap:VisualElements
+		  DisplayName="ms-resource:AppName"
+		  Square150x150Logo="Assets\Square150x150Logo.png"
+		  Square44x44Logo="Assets\Square44x44Logo.png"
+		  Description="ms-resource:AppDescription"
+		  BackgroundColor="transparent">
+        <uap:DefaultTile
+			Wide310x150Logo="Assets\Wide310x150Logo.png"
+			Square71x71Logo="Assets\SmallTile.png"
+			Square310x310Logo="Assets\LargeTile.png">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="square150x150Logo" />
             <uap:ShowOn Tile="wide310x150Logo" />
             <uap:ShowOn Tile="square310x310Logo" />
           </uap:ShowNameOnTiles>
         </uap:DefaultTile>
-        <uap:SplashScreen Image="Assets\SplashScreen.png"  BackgroundColor="transparent"/>
+        <uap:SplashScreen Image="Assets\SplashScreen.png" uap5:Optional="true" />
         <uap:InitialRotationPreference>
           <uap:Rotation Preference="portrait" />
           <uap:Rotation Preference="landscape" />
+          <uap:Rotation Preference="portraitFlipped" />
           <uap:Rotation Preference="landscapeFlipped" />
-          <uap:Rotation Preference="portraitFlipped"/>
         </uap:InitialRotationPreference>
-        <uap:LockScreen Notification="badgeAndTileText" BadgeLogo="Assets\BadgeLogo.png"/>
       </uap:VisualElements>
-      <Extensions>
-        <uap:Extension Category="windows.protocol">
-          <uap:Protocol Name="coolmarket">
-            <uap:DisplayName>酷市场网页跳转</uap:DisplayName>
-          </uap:Protocol>
-        </uap:Extension>
-        <uap:Extension Category="windows.protocol">
-          <uap:Protocol Name="coolapk">
-            <uap:DisplayName>酷安网页跳转</uap:DisplayName>
-          </uap:Protocol>
-        </uap:Extension>
-      </Extensions>
     </Application>
   </Applications>
+
   <Capabilities>
     <Capability Name="internetClient" />
   </Capabilities>
