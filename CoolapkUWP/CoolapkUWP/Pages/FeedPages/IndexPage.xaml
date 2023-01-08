@@ -4,31 +4,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     mc:Ignorable="d">
-    <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <templates:Feeds />
-                <templates:IndexCardTemplates />
-                <templates:OtherDatatemplates />
-            </ResourceDictionary.MergedDictionaries>
-            <templates:CardTemplateSelector
-                x:Key="CardTemplateSelector"
-                Feed="{StaticResource FeedDefaultTemplate}"
-                FeedReply="{StaticResource FeedReplyDefaultTemplate}"
-                Images="{StaticResource ImageCardDefaultTemplate}"
-                List="{StaticResource ListDefaultTemplate}"
-                Others="{StaticResource Null}" />
-        </ResourceDictionary>
-    </Page.Resources>
-    <Grid>
-        <ListView
-            x:Name="ListView"
-            ItemContainerStyle="{StaticResource DefaultCardItemStyle}"
-            ItemTemplateSelector="{StaticResource CardTemplateSelector}"
-            ItemsSource="{Binding}"
-            ShowsScrollingPlaceholders="False"
-            Style="{StaticResource DefaultCardListViewStyle}" />
-    </Grid>
+    <Pivot
+        x:Name="Pivot"
+        Loaded="Pivot_Loaded"
+        SelectionChanged="Pivot_SelectionChanged">
+        <Pivot.RightHeader>
+            <Button
+                x:Name="RefreshButton"
+                VerticalAlignment="Center"
+                Content="&#xE72C;"
+                Style="{StaticResource NavigationIconButtonNormalStyle}" />
+        </Pivot.RightHeader>
+    </Pivot>
 </Page>

@@ -1,39 +1,42 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Controls.DataTemplates;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
-using CoolapkUWP.Models.Feeds;
 using CoolapkUWP.ViewModels.DataSource;
 using CoolapkUWP.ViewModels.Providers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Resources;
-using static CoolapkUWP.Models.Feeds.FeedModel;
 
 namespace CoolapkUWP.ViewModels.FeedPages
 {
-    internal class IndexViewModel : DataSourceBase<Entity>, IViewModel
+    public class AdaptiveViewModel : DataSourceBase<Entity>, IViewModel
     {
         private readonly string Uri;
+        private readonly List<Type> EntityTypes;
         protected bool IsInitPage => Uri == "/main/init";
         protected bool IsIndexPage => !Uri.Contains("?");
         protected bool IsHotFeedPage => Uri == "/main/indexV8" || Uri == "/main/index";
 
-        internal bool ShowTitleBar { get; }
         private readonly CoolapkListProvider Provider;
 
         public string Title { get; protected set; }
         public double[] VerticalOffsets { get; set; } = new double[1];
 
-        internal IndexViewModel(string uri, bool showTitleBar = true)
+        internal AdaptiveViewModel(string uri, List<Type> types = null)
         {
             Uri = GetUri(uri);
-            ShowTitleBar = showTitleBar;
-            Title = ResourceLoader.GetForCurrentView("MainPage").GetString("Home");
+            EntityTypes = types;
             Provider = new CoolapkListProvider(
                 (p, _, __) => UriHelper.GetUri(UriType.GetIndexPage, Uri, IsIndexPage ? "?" : "&", p),
                 GetEntities,
                 "entityId");
+        }
+
+        internal AdaptiveViewModel(CoolapkListProvider provider, List<Type> types = null)
+        {
+            Provider = provider;
+            EntityTypes = types;
         }
 
         public async Task Refresh(bool reset = false)
@@ -80,7 +83,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
             {
                 foreach (JObject item in jo.Value<JArray>("entities"))
                 {
-                    Entity entity = GetEntity(item, IsHotFeedPage);
+                    Entity entity = EntityTemplateSelector.GetEntity(item, IsHotFeedPage);
                     if (entity != null)
                     {
                         yield return entity;
@@ -89,30 +92,9 @@ namespace CoolapkUWP.ViewModels.FeedPages
             }
             else
             {
-                yield return GetEntity(jo, IsHotFeedPage);
+                yield return EntityTemplateSelector.GetEntity(jo, IsHotFeedPage);
             }
             yield break;
-        }
-
-        private static Entity GetEntity(JObject jo, bool isHotFeedPage = false)
-        {
-            switch (jo.Value<string>("entityType"))
-            {
-                case "feed":
-                case "discovery": return new FeedModel(jo, isHotFeedPage ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
-                default:
-                    if (jo.TryGetValue("entityTemplate", out JToken entityTemplate) && !string.IsNullOrEmpty(entityTemplate.ToString()))
-                    {
-                        switch (entityTemplate.ToString())
-                        {
-                            case "headCard":
-                            case "imageCard":
-                            case "imageCarouselCard_1": return new IndexPageHasEntitiesModel(jo, EntityType.Image);
-                            default: return null;
-                        }
-                    }
-                    return null;
-            }
         }
 
         protected override async Task<IList<Entity>> LoadItemsAsync(uint count)
@@ -135,8 +117,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 foreach (Entity item in items)
                 {
                     if (item is NullModel) { continue; }
-                    Add(item);
-                    InvokeProgressChanged(item, items);
+                    if (EntityTypes == null || EntityTypes.Contains(item.GetType())) { Add(item); }
                 }
             }
         }

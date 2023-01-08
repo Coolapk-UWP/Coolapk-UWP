@@ -4,12 +4,11 @@
     xmlns:contract4Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,4)"
     xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,7)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,7)"
-    xmlns:local="using:Microsoft.UI.Xaml.Controls"
-    xmlns:primitives="using:Microsoft.UI.Xaml.Controls.Primitives">
+    xmlns:local="using:Microsoft.UI.Xaml.Controls">
 
     <Thickness x:Key="NavigationViewHeaderMargin">0</Thickness>
     <Thickness x:Key="NavigationViewMinimalHeaderMargin">0,48,0,0</Thickness>
-    <Thickness x:Key="NavigationViewTopHeaderMargin">0,48,0,0</Thickness>
+    <Thickness x:Key="NavigationViewTopHeaderMargin">0,40,0,0</Thickness>
     <Thickness x:Key="NavigationViewItemInnerHeaderMargin">0</Thickness>
     <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
     <Thickness x:Key="NavigationViewButtonHolderGridMargin">0</Thickness>

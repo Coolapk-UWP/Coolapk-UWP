@@ -1,9 +1,13 @@
-﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.ViewModels.FeedPages;
-using System;
-using System.Threading.Tasks;
+﻿using CoolapkUWP.ViewModels.FeedPages;
+using System.Collections.ObjectModel;
+using Windows.ApplicationModel.Resources;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+
+#if FEATURE2
+using GalaSoft.MvvmLight.Command;
+#endif
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -14,38 +18,52 @@ namespace CoolapkUWP.Pages.FeedPages
     /// </summary>
     public sealed partial class IndexPage : Page
     {
-        private IndexViewModel Provider;
+        private static int PivotIndex = 0;
 
         public IndexPage() => InitializeComponent();
-
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            if (e.Parameter is IndexViewModel ViewModel)
-            {
-                Provider = ViewModel;
-                DataContext = Provider;
-                Provider.OnLoadMoreStarted += UIHelper.ShowProgressBar;
-                Provider.OnLoadMoreCompleted += UIHelper.HideProgressBar;
-                await Refresh(true);
-            }
-            else
-            {
-                //TitleBar.Title = ResourceLoader.GetForCurrentView("MainPage").GetString("Home");
-            }
-        }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
-            Provider.OnLoadMoreStarted -= UIHelper.ShowProgressBar;
-            Provider.OnLoadMoreCompleted -= UIHelper.HideProgressBar;
+            PivotIndex = Pivot.SelectedIndex;
         }
 
-        private async Task Refresh(bool reset = false) => await Provider.Refresh(reset);
+        private void Pivot_Loaded(object sender, RoutedEventArgs e)
+        {
+            Pivot.ItemsSource = GetMainItems();
+            Pivot.SelectedIndex = PivotIndex;
+        }
 
-        //private void TitleBar_RefreshEvent(TitleBar sender, object e) => _ = Refresh(true);
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            PivotItem MenuItem = Pivot.SelectedItem as PivotItem;
+            if ((Pivot.SelectedItem as PivotItem).Content is Frame Frame && Frame.Content is null)
+            {
+                string url = MenuItem.Tag.ToString() == "V9_HOME_TAB_HEADLINE"
+                    ? "/main/indexV8"
+                    : MenuItem.Tag.ToString() == "V11_FIND_DYH"
+                        ? "/user/dyhSubscribe"
+                        : $"/page?url={MenuItem.Tag}";
+                Frame.Navigate(typeof(AdaptivePage), new AdaptiveViewModel(url));
+                RelayCommand RefreshButtonCommand = new RelayCommand(async () => await (Frame.Content as AdaptivePage).Refresh(true));
+                RefreshButton.Command = RefreshButtonCommand;
+            }
+            else if ((Pivot.SelectedItem as PivotItem).Content is Frame __ && __.Content is AdaptivePage AdaptivePage)
+            {
+                RelayCommand RefreshButtonCommand = new RelayCommand(async () => await AdaptivePage.Refresh(true));
+                RefreshButton.Command = RefreshButtonCommand;
+            }
+        }
 
-        private async void ListView_RefreshRequested(object sender, EventArgs e) => await Refresh(true);
+        public static ObservableCollection<PivotItem> GetMainItems()
+        {
+            ResourceLoader loader = ResourceLoader.GetForCurrentView("IndexPage");
+            ObservableCollection<PivotItem> items = new ObservableCollection<PivotItem>
+            {
+                new PivotItem() { Tag = "V9_HOME_TAB_HEADLINE", Header = loader.GetString("V9_HOME_TAB_HEADLINE"), Content = new Frame() },
+                new PivotItem() { Tag = "V9_HOME_TAB_RANKING", Header = loader.GetString("V9_HOME_TAB_RANKING"), Content = new Frame() },
+            };
+            return items;
+        }
     }
 }

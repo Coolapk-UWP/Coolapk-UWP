@@ -79,7 +79,7 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8BD;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem Content="设置" Tag="settings">
+                <muxc:NavigationViewItem Content="设置" Tag="Settings">
                     <muxc:NavigationViewItem.Icon>
                         <muxc:AnimatedIcon>
                             <muxc:AnimatedIcon.Source>

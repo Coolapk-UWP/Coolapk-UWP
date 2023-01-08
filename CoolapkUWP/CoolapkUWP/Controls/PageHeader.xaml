@@ -1,0 +1,60 @@
+﻿<UserControl
+    x:Class="CoolapkUWP.Controls.PageHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="Transparent"
+    FontSize="24"
+    Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+    mc:Ignorable="d">
+    <Grid>
+        <Rectangle x:Name="NarrowBackground" Visibility="Collapsed" />
+
+        <Rectangle
+            x:Name="WideBackground"
+            Fill="{x:Bind Background, Mode=OneWay}"
+            Opacity="{x:Bind BackgroundColorOpacity, Mode=OneWay}" />
+
+        <Grid
+            x:Name="HeaderRoot"
+            Padding="{x:Bind Padding, Mode=OneWay}"
+            VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid
+                x:Name="PageTitle"
+                Height="44"
+                VerticalAlignment="Top"
+                Background="Transparent">
+                <Canvas x:Name="ShadowHost" Opacity="{x:Bind ShadowOpacity, Mode=OneWay}" />
+                <TextBlock
+                    x:Name="TitleTextBlock"
+                    VerticalAlignment="Center"
+                    FontSize="{x:Bind FontSize, Mode=OneWay}"
+                    Foreground="{x:Bind Foreground, Mode=OneWay}"
+                    Style="{StaticResource TitleTextBlockStyle}"
+                    Text="{x:Bind Title, Mode=OneWay}"
+                    TextTrimming="CharacterEllipsis"
+                    TextWrapping="NoWrap" />
+            </Grid>
+            <Border
+                x:Name="CommandBarBorder"
+                Grid.Column="1"
+                VerticalAlignment="Top" />
+        </Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="TitleForegroundStates">
+                <VisualState x:Name="DefaultForeground" />
+                <VisualState x:Name="AlternateForeground">
+                    <VisualState.Setters>
+                        <Setter Target="TitleTextBlock.Foreground" Value="Transparent" />
+                        <Setter Target="ShadowHost.Opacity" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</UserControl>

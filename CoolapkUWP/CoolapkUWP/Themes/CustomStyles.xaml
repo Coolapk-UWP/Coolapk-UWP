@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ms-appx:///Themes/Color.xaml" />
+        <ResourceDictionary Source="ms-appx:///Styles/Pivot.xaml" />
+        <ResourceDictionary Source="ms-appx:///Styles/Button.xaml" />
+        <ResourceDictionary Source="ms-appx:///Styles/ListView.xaml" />
+        <ResourceDictionary Source="ms-appx:///Styles/TextBlock.xaml" />
+        <ResourceDictionary Source="ms-appx:///Controls/NavigationView/NavigationView.xaml" />
+        <ResourceDictionary Source="ms-appx:///Controls/NavigationView/NavigationView_Themeresources.xaml" />
+        <ResourceDictionary Source="ms-appx:///Controls/NavigationView/NavigationBackButton.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <x:Double x:Key="SettingActionControlMinWidth">240</x:Double>
+</ResourceDictionary>

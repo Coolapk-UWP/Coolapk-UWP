@@ -28,6 +28,7 @@ using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels;
 using CoolapkUWP.ViewModels.FeedPages;
+using CoolapkUWP.Pages.SettingsPages;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -40,9 +41,10 @@ namespace CoolapkUWP.Pages
     {
         public Action NavigationViewLoaded { get; set; }
         
-        private readonly List<(string Tag, Type Page, IViewModel ViewModel)> _pages = new List<(string Tag, Type Page, IViewModel ViewModel)>
+        private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
         {
-            ("Home", typeof(IndexPage), new IndexViewModel("/main/indexV8")),
+            ("Home", typeof(IndexPage)),
+            ("Settings", typeof(SettingsPage)),
         };
 
         public MainPage()
@@ -81,16 +83,9 @@ namespace CoolapkUWP.Pages
         private void NavigationView_Navigate(string NavItemTag, NavigationTransitionInfo TransitionInfo, object vs = null)
         {
             Type _page = null;
-            if (NavItemTag == "settings")
-            {
-                //_page = typeof(SettingsPage);
-            }
-            else
-            {
-                (string Tag, Type Page, IViewModel ViewModel) item = _pages.FirstOrDefault(p => p.Tag.Equals(NavItemTag, StringComparison.Ordinal));
-                _page = item.Page;
-                vs = item.ViewModel;
-            }
+
+            (string Tag, Type Page) item = _pages.FirstOrDefault(p => p.Tag.Equals(NavItemTag, StringComparison.Ordinal));
+            _page = item.Page;
             // Get the page type before navigation so you can prevent duplicate
             // entries in the backstack.
             Type PreNavPageType = NavigationViewFrame.CurrentSourcePageType;
@@ -106,11 +101,7 @@ namespace CoolapkUWP.Pages
 
         private void NavigationView_SelectionChanged(muxc.NavigationView sender, muxc.NavigationViewSelectionChangedEventArgs args)
         {
-            if (args.IsSettingsSelected)
-            {
-                //_ = NavigationViewFrame.Navigate(typeof(SettingsPage), null, args.RecommendedNavigationTransitionInfo);
-            }
-            else if (args.SelectedItemContainer != null)
+            if (args.SelectedItemContainer != null)
             {
                 string NavItemTag = args.SelectedItemContainer.Tag.ToString();
                 NavigationView_Navigate(NavItemTag, args.RecommendedNavigationTransitionInfo);
@@ -135,28 +126,9 @@ namespace CoolapkUWP.Pages
         private void On_Navigated(object _, NavigationEventArgs e)
         {
             NavigationView.IsBackEnabled = NavigationViewFrame.CanGoBack;
-            //if (NavigationViewFrame.SourcePageType == typeof(SettingsPage))
-            //{
-            //    // SettingsItem is not part of NavView.MenuItems, and doesn't have a Tag.
-            //    NavigationView.SelectedItem = (muxc.NavigationViewItem)NavigationView.SettingsItem;
-            //    SetTitle("设置");
-            //}
-            //else if (NavigationViewFrame.SourcePageType == typeof(FeedShellPage))
-            //{
-            //    SetTitle("动态");
-            //}
-            //else if (NavigationViewFrame.SourcePageType == typeof(FeedListPage))
-            //{
-            //    SetTitle("论坛");
-            //}
-            //else if (NavigationViewFrame.SourcePageType == typeof(TestPage))
-            //{
-            //    SetTitle("测试");
-            //}
-            //else
             if (NavigationViewFrame.SourcePageType != null)
             {
-                (string Tag, Type Page, IViewModel ViewModel) item = _pages.FirstOrDefault(p => p.Page == e.SourcePageType);
+                (string Tag, Type Page) item = _pages.FirstOrDefault(p => p.Page == e.SourcePageType);
                 try
                 {
                     NavigationView.SelectedItem = NavigationView.MenuItems
