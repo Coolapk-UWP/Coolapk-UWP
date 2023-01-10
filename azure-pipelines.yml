@@ -6,7 +6,7 @@
 trigger:
   branches:
     include:
-      - dev-where
+      - revived
   paths:
     include:
       - CoolapkUWP/**
@@ -14,7 +14,7 @@ trigger:
 pr:
   branches:
     include:
-      - dev-where
+      - revived
   paths:
     include:
       - CoolapkUWP/**
@@ -24,7 +24,8 @@ pool:
 
 variables:
   solution: '*.sln'
-  buildPlatform: 'x86|x64|ARM|ARM64'
+  buildProject: '**/CoolapkUWP/*.Feature2.csproj'
+  buildPlatform: 'x86|x64|ARM'
   buildConfiguration: 'Release'
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
 
@@ -35,13 +36,13 @@ steps:
   inputs:
     secureFile: 'where.pfx'
 
-- task: MSBuild@1
+- task: VSBuild@1
   displayName: 'Restore Solution'
   inputs:
     platform: 'x64'
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
-    msbuildArguments: '/t:restore'
+    msbuildArgs: '/t:restore'
     msbuildArchitecture: 'x64'
     maximumCpuCount: true
 
