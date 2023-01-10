@@ -13,7 +13,6 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageOutputPath>$(RepositoryDirectory)bin\nupkg</PackageOutputPath>
         <GenerateLibraryLayout Condition="$(IsUwpProject)">true</GenerateLibraryLayout>
-        <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
       </PropertyGroup>
     </When>
     <Otherwise>

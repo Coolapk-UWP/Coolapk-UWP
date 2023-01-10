@@ -24,7 +24,6 @@ pool:
 
 variables:
   solution: '*.sln'
-  buildProject: '**/CoolapkUWP/*.Feature2.csproj'
   buildPlatform: 'x86|x64|ARM'
   buildConfiguration: 'Release'
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
