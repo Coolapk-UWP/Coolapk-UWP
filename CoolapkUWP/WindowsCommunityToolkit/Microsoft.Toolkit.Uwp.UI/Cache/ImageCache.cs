@@ -2,13 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.Storage;
-using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Microsoft.Toolkit.Uwp.UI
@@ -34,17 +36,17 @@ namespace Microsoft.Toolkit.Uwp.UI
         public static ImageCache Instance => _instance ?? (_instance = new ImageCache());
 
         /// <summary>
-        /// Gets or sets which DispatcherQueue is used to dispatch UI updates.
+        /// Gets or sets which CoreDispatcher is used to dispatch UI updates.
         /// </summary>
-        public DispatcherQueue DispatcherQueue { get; set; }
+        public CoreDispatcher Dispatcher { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageCache"/> class.
         /// </summary>
-        /// <param name="dispatcherQueue">The DispatcherQueue that should be used to dispatch UI updates, or null if this is being called from the UI thread.</param>
-        public ImageCache(DispatcherQueue dispatcherQueue = null)
+        /// <param name="dispatcher">The CoreDispatcher that should be used to dispatch UI updates, or null if this is being called from the UI thread.</param>
+        public ImageCache(CoreDispatcher dispatcher = null)
         {
-            DispatcherQueue = dispatcherQueue ?? DispatcherQueue.GetForCurrentThread();
+            Dispatcher = dispatcher ?? CoreApplication.MainView.Dispatcher;
             _extendedPropertyNames.Add(DateAccessedProperty);
         }
 
@@ -61,7 +63,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                 throw new FileNotFoundException();
             }
 
-            return await DispatcherQueue.EnqueueAsync(async () =>
+            return await Dispatcher.AwaitableRunAsync(async () =>
             {
                 BitmapImage image = new BitmapImage();
 

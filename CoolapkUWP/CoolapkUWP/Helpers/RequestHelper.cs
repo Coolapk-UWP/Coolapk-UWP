@@ -60,8 +60,9 @@ namespace CoolapkUWP.Helpers
                 if (string.IsNullOrEmpty(jsons)) { return (false, null); }
                 JObject o;
                 try { o = JObject.Parse(jsons); }
-                catch
+                catch (Exception ex)
                 {
+                    SettingsHelper.LogManager.GetLogger(nameof(RequestHelper)).Error(ex.ExceptionToMessage(), ex);
                     UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
                     return (false, null);
                 }
@@ -207,8 +208,9 @@ namespace CoolapkUWP.Helpers
                 if (string.IsNullOrEmpty(jsons)) { return (false, null); }
                 JObject o;
                 try { o = JObject.Parse(jsons); }
-                catch
+                catch (Exception ex)
                 {
+                    SettingsHelper.LogManager.GetLogger(nameof(RequestHelper)).Error(ex.ExceptionToMessage(), ex);
                     UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
                     return (false, null);
                 }

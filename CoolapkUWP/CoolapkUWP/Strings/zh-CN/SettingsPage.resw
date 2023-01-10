@@ -171,4 +171,34 @@
   <data name="GoToTestPage.Header" xml:space="preserve">
     <value>前往测试页面</value>
   </data>
+  <data name="TranslateLink.Content" xml:space="preserve">
+    <value>翻译</value>
+  </data>
+  <data name="FeedbackLink.Content" xml:space="preserve">
+    <value>反馈</value>
+  </data>
+  <data name="LogFolderLink.Content" xml:space="preserve">
+    <value>日志</value>
+  </data>
+  <data name="ReleaseNotes.Content" xml:space="preserve">
+    <value>发行说明</value>
+  </data>
+  <data name="GoToUpdate.Content" xml:space="preserve">
+    <value>前往更新</value>
+  </data>
+  <data name="LastChecked.Text" xml:space="preserve">
+    <value>上次检查时间: </value>
+  </data>
+  <data name="AboutSettingsHeader.Header" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="CheckFailed" xml:space="preserve">
+    <value>检查失败</value>
+  </data>
+  <data name="CheckingUpdates.Text" xml:space="preserve">
+    <value>正在检查更新……</value>
+  </data>
+  <data name="CheckUpdates.Content" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
 </root>

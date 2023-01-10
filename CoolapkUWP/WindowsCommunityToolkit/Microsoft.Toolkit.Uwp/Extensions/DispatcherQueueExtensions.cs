@@ -5,6 +5,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.Foundation.Metadata;
 using Windows.System;
 
@@ -15,6 +16,7 @@ namespace Microsoft.Toolkit.Uwp
     /// <summary>
     /// Helpers for executing code in a <see cref="DispatcherQueue"/>.
     /// </summary>
+    [ContractVersion(typeof(UniversalApiContract), 327680)]
     public static class DispatcherQueueExtensions
     {
         /// <summary>

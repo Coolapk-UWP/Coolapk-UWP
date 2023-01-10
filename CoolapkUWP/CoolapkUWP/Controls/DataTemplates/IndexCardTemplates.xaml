@@ -2,10 +2,17 @@
     x:Class="CoolapkUWP.Controls.DataTemplates.IndexCardTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,7)"
     xmlns:control="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:CoolapkUWP.Models"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:primitives="using:Microsoft.UI.Xaml.Controls.Primitives"
     mc:Ignorable="d">
+
+    <!--  一级卡片  -->
+
     <DataTemplate x:Key="ImageCardDefaultTemplate">
         <Grid>
             <Grid.RowDefinitions>
@@ -14,6 +21,7 @@
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Grid
+                x:Name="TitleGrid"
                 Grid.Row="0"
                 Height="40"
                 Margin="12,0"
@@ -37,26 +45,31 @@
                     Symbol="Forward"
                     Visibility="{Binding Url, Converter={StaticResource StringVisibilityConverter}}" />
             </Grid>
-            <FlipView
-                x:Name="FlipView"
-                Grid.Row="1"
-                Background="Transparent"
-                ItemsSource="{Binding Entities}"
-                Loaded="FlipView_Loaded"
-                SizeChanged="FlipView_SizeChanged"
-                Visibility="{Binding Entities, Converter={StaticResource CollectionVisibilityConverter}}">
-                <FlipView.ItemTemplate>
-                    <DataTemplate>
-                        <Image
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            CanDrag="True"
-                            Source="{Binding Pic.Pic, Mode=OneWay}" />
-                    </DataTemplate>
-                </FlipView.ItemTemplate>
-            </FlipView>
             <Border
-                x:Name="des"
+                Grid.Row="1"
+                CornerRadius="8"
+                Visibility="{Binding Entities, Converter={StaticResource CollectionVisibilityConverter}}">
+                <FlipView
+                    x:Name="FlipView"
+                    contract7Present:CornerRadius="8"
+                    Background="Transparent"
+                    ItemsSource="{Binding Entities}"
+                    Loaded="FlipView_Loaded"
+                    SizeChanged="FlipView_SizeChanged">
+                    <FlipView.ItemTemplate>
+                        <DataTemplate>
+                            <Image
+                                x:Name="Picture"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                CanDrag="True"
+                                Source="{Binding Pic.Pic, Mode=OneWay}" />
+                        </DataTemplate>
+                    </FlipView.ItemTemplate>
+                </FlipView>
+            </Border>
+            <Border
+                x:Name="SubTitleBorder"
                 Grid.Row="2"
                 Margin="8"
                 Padding="8,4,8,8"
@@ -67,4 +80,50 @@
             </Border>
         </Grid>
     </DataTemplate>
+
+    <DataTemplate x:Key="IconLinksDefaultTemplate">
+        <Border
+            Margin="8"
+            HorizontalAlignment="Stretch"
+            CornerRadius="8">
+            <muxc:ItemsRepeater
+                x:Name="EntitiesRepeater"
+                HorizontalAlignment="Center"
+                ItemsSource="{Binding Entities}">
+                <muxc:ItemsRepeater.Layout>
+                    <primitives:ColumnMajorUniformToLargestGridLayout
+                        ColumnSpacing="8"
+                        MaxColumns="5"
+                        RowSpacing="8" />
+                </muxc:ItemsRepeater.Layout>
+                <muxc:ItemsRepeater.ItemTemplate>
+                    <DataTemplate x:DataType="models:IndexPageModel">
+                        <Button
+                            x:Name="Root"
+                            MinWidth="64"
+                            Padding="4"
+                            HorizontalAlignment="Stretch"
+                            Background="Transparent"
+                            Style="{ThemeResource ButtonRevealStyle}"
+                            Tag="{Binding}">
+                            <control:StackPanel HorizontalAlignment="Stretch" Spacing="2">
+                                <Border
+                                    Width="40"
+                                    Height="40"
+                                    CornerRadius="4">
+                                    <Image Source="{Binding Pic.Pic, Mode=OneWay}" />
+                                </Border>
+                                <TextBlock
+                                    x:Name="TitleText"
+                                    HorizontalAlignment="Center"
+                                    MaxLines="1"
+                                    Text="{Binding Title}" />
+                            </control:StackPanel>
+                        </Button>
+                    </DataTemplate>
+                </muxc:ItemsRepeater.ItemTemplate>
+            </muxc:ItemsRepeater>
+        </Border>
+    </DataTemplate>
+
 </ResourceDictionary>

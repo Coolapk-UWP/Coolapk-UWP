@@ -17,6 +17,7 @@ using System.Net.Http;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
+using System.Text;
 
 namespace CoolapkUWP.Helpers
 {
@@ -215,6 +216,17 @@ namespace CoolapkUWP.Helpers
                 BadgeUpdateManager.CreateBadgeUpdaterForApplication();
             // And update the badge
             badgeUpdater.Update(badge);
+        }
+
+        public static string ExceptionToMessage(this Exception ex)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append('\n');
+            if (!string.IsNullOrWhiteSpace(ex.Message)) { builder.AppendLine($"Message: {ex.Message}"); }
+            builder.AppendLine($"HResult: {ex.HResult} (0x{Convert.ToString(ex.HResult, 16)})");
+            if (!string.IsNullOrWhiteSpace(ex.StackTrace)) { builder.AppendLine(ex.StackTrace); }
+            if (!string.IsNullOrWhiteSpace(ex.HelpLink)) { builder.Append($"HelperLink: {ex.HelpLink}"); }
+            return builder.ToString();
         }
     }
 

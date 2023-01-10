@@ -3,8 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CoolapkUWP.Controls"
+    xmlns:cwuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:settingspages="using:CoolapkUWP.ViewModels.SettingsPages"
     d:DataContext="{d:DesignInstance Type=settingspages:SettingsViewModel}"
     mc:Ignorable="d">
@@ -45,6 +47,99 @@
                             <ToggleSwitch IsOn="{Binding IsNoPicsMode, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
                         </controls:Setting.ActionContent>
                     </controls:Setting>
+                </controls:SettingsGroup>
+                <controls:SettingsGroup x:Uid="/SettingsPage/AboutSettingsHeader">
+                    <controls:SettingExpander>
+                        <controls:SettingExpander.Header>
+                            <controls:Setting Header="{Binding VersionTextBlockText}" Icon="&#xE117;">
+                                <controls:Setting.Description>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Style="{StaticResource SecondaryTextStyle}" TextWrapping="WrapWholeWords">
+                                            <Run x:Uid="/SettingsPage/LastChecked" />
+                                            <Run Text="{Binding UpdateDate, Mode=OneWay}" />
+                                        </TextBlock>
+                                        <ScrollViewer
+                                            Margin="0,2,0,0"
+                                            HorizontalScrollBarVisibility="Auto"
+                                            VerticalScrollBarVisibility="Disabled">
+                                            <StackPanel Orientation="Horizontal">
+                                                <HyperlinkButton
+                                                    x:Uid="/SettingsPage/FeedbackLink"
+                                                    Margin="0,0,2,0"
+                                                    NavigateUri="https://github.com/Coolapk-UWP/Coolapk-UWP/issues"
+                                                    ToolTipService.ToolTip="{Binding NavigateUri, RelativeSource={RelativeSource Mode=Self}}" />
+                                                <HyperlinkButton
+                                                    x:Uid="/SettingsPage/LogFolderLink"
+                                                    Margin="2,0"
+                                                    Click="HyperlinkButton_Click"
+                                                    Tag="LogFolder" />
+                                                <HyperlinkButton
+                                                    x:Uid="/SettingsPage/TranslateLink"
+                                                    Margin="2,0"
+                                                    NavigateUri="https://crowdin.com/project/CoolapkUWP"
+                                                    ToolTipService.ToolTip="{Binding NavigateUri, RelativeSource={RelativeSource Mode=Self}}" />
+                                                <HyperlinkButton
+                                                    x:Uid="/SettingsPage/ReleaseNotes"
+                                                    Margin="2,0"
+                                                    NavigateUri="https://github.com/Coolapk-UWP/Coolapk-UWP/releases/latest"
+                                                    ToolTipService.ToolTip="{Binding NavigateUri, RelativeSource={RelativeSource Mode=Self}}" />
+                                            </StackPanel>
+                                        </ScrollViewer>
+                                    </StackPanel>
+                                </controls:Setting.Description>
+                                <controls:Setting.ActionContent>
+                                    <controls:StackPanel
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal"
+                                        Spacing="18">
+                                        <ProgressRing
+                                            Width="24"
+                                            Height="24"
+                                            Visibility="{Binding CheckingUpdate, Mode=OneWay}" />
+                                        <TextBlock
+                                            x:Uid="/SettingsPage/CheckingUpdates"
+                                            VerticalAlignment="Center"
+                                            FontWeight="SemiBold"
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Visibility="{Binding CheckingUpdate, Mode=OneWay}" />
+                                        <Button
+                                            x:Name="Update"
+                                            x:Uid="/SettingsPage/CheckUpdates"
+                                            HorizontalAlignment="Right"
+                                            Click="Button_Click"
+                                            Tag="CheckUpdate"
+                                            Visibility="{Binding CheckingUpdate, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
+                                    </controls:StackPanel>
+                                </controls:Setting.ActionContent>
+                            </controls:Setting>
+                        </controls:SettingExpander.Header>
+                        <controls:SettingExpander.Content>
+                            <Grid Style="{StaticResource ExpanderContentGridStyle}">
+                                <cwuc:MarkdownTextBlock
+                                    HorizontalAlignment="Left"
+                                    Background="Transparent"
+                                    LinkClicked="MarkdownText_LinkClicked"
+                                    Text="{Binding AboutTextBlockText}" />
+                            </Grid>
+                        </controls:SettingExpander.Content>
+                    </controls:SettingExpander>
+                    <muxc:InfoBar
+                        x:Name="UpdateState"
+                        Title="{Binding UpdateStateTitle}"
+                        IsClosable="True"
+                        IsOpen="{Binding UpdateStateIsOpen}"
+                        Message="{Binding UpdateStateMessage}"
+                        Severity="{Binding UpdateStateSeverity}">
+                        <muxc:InfoBar.ActionButton>
+                            <Button
+                                x:Name="GotoUpdate"
+                                x:Uid="/SettingsPage/GoToUpdate"
+                                HorizontalAlignment="Right"
+                                Click="GotoUpdate_Click"
+                                Tag="{Binding GotoUpdateTag}"
+                                Visibility="{Binding GotoUpdateVisibility}" />
+                        </muxc:InfoBar.ActionButton>
+                    </muxc:InfoBar>
                 </controls:SettingsGroup>
                 <controls:SettingsGroup x:Uid="/SettingsPage/OthersSettingsHeader">
                     <controls:Setting x:Uid="/SettingsPage/ShowOtherExceptionSettings" Icon="&#xE90F;">

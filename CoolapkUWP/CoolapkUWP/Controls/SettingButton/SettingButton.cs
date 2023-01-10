@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Controls;
 
@@ -11,7 +10,8 @@ namespace CoolapkUWP.Controls
     {
         public SettingButton()
         {
-            DefaultStyleKey = typeof(SettingButton);
+            DefaultStyleKey = typeof(Button);
+            Style = (Style)Application.Current.Resources["SettingButtonStyle"];
             _ = RegisterPropertyChangedCallback(ContentProperty, OnContentChanged);
         }
 
@@ -23,8 +23,7 @@ namespace CoolapkUWP.Controls
                 if (self.Content.GetType() == typeof(Setting))
                 {
                     Setting selfSetting = (Setting)self.Content;
-                    ResourceDictionary Resource = new ResourceDictionary { Source = new Uri("ms-appx:///Controls/SettingButton/SettingButton.xaml") };
-                    selfSetting.Style = (Style)Resource["ButtonContentSettingStyle"];
+                    selfSetting.Style = (Style)Application.Current.Resources["ButtonContentSettingStyle"];
 
                     if (!string.IsNullOrEmpty(selfSetting.Header))
                     {

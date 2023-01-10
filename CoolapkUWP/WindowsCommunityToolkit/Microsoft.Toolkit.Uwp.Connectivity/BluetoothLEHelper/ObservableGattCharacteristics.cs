@@ -2,16 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Bluetooth.GenericAttributeProfile;
 using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
-using Windows.System;
+using Windows.UI.Core;
 
 namespace Microsoft.Toolkit.Uwp.Connectivity
 {
@@ -112,19 +114,19 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
         private string _value;
 
         /// <summary>
-        /// Gets or sets which DispatcherQueue is used to dispatch UI updates.
+        /// Gets or sets which CoreDispatcher is used to dispatch UI updates.
         /// </summary>
-        public DispatcherQueue DispatcherQueue { get; set; }
+        public CoreDispatcher Dispatcher { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ObservableGattCharacteristics"/> class.
         /// </summary>
         /// <param name="characteristic">The characteristic.</param>
         /// <param name="parent">The parent.</param>
-        /// <param name="dispatcherQueue">The DispatcherQueue that should be used to dispatch UI updates, or null if this is being called from the UI thread.</param>
-        public ObservableGattCharacteristics(GattCharacteristic characteristic, ObservableGattDeviceService parent, DispatcherQueue dispatcherQueue = null)
+        /// <param name="dispatcher">The CoreDispatcher that should be used to dispatch UI updates, or null if this is being called from the UI thread.</param>
+        public ObservableGattCharacteristics(GattCharacteristic characteristic, ObservableGattDeviceService parent, CoreDispatcher dispatcher = null)
         {
-            DispatcherQueue = dispatcherQueue ?? DispatcherQueue.GetForCurrentThread();
+            Dispatcher = dispatcher ?? CoreApplication.MainView.Dispatcher;
 
             Characteristic = characteristic;
             Parent = parent;
@@ -476,7 +478,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
         /// <param name="args">The <see cref="GattValueChangedEventArgs"/> instance containing the event data.</param>
         private async void Characteristic_ValueChanged(GattCharacteristic sender, GattValueChangedEventArgs args)
         {
-            await DispatcherQueue.EnqueueAsync(() => { SetValue(args.CharacteristicValue); }, DispatcherQueuePriority.Normal);
+            await Dispatcher.AwaitableRunAsync(() => { SetValue(args.CharacteristicValue); }, CoreDispatcherPriority.Normal);
         }
 
         /// <summary>

@@ -1,8 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ms-appx:///Controls/Setting/Setting.xaml" />
-        <ResourceDictionary Source="ms-appx:///Controls/SettingButton/SettingButton.xaml" />
         <ResourceDictionary Source="ms-appx:///Controls/SettingsGroup/SettingsGroup.xaml" />
-        <ResourceDictionary Source="ms-appx:///Controls/SettingExpander/SettingExpander.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

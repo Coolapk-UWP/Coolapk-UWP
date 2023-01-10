@@ -6,8 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Windows.System;
+using Windows.ApplicationModel.Core;
 using Windows.System.RemoteSystems;
+using Windows.UI.Core;
 
 namespace Microsoft.Toolkit.Uwp.Helpers
 {
@@ -24,17 +25,17 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         private RemoteSystemWatcher _remoteSystemWatcher;
 
         /// <summary>
-        /// Gets or sets which DispatcherQueue is used to dispatch UI updates.
+        /// Gets or sets which CoreDispatcher is used to dispatch UI updates.
         /// </summary>
-        public DispatcherQueue DispatcherQueue { get; set; }
+        public CoreDispatcher Dispatcher { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RemoteDeviceHelper"/> class.
         /// </summary>
-        /// <param name="dispatcherQueue">The DispatcherQueue that should be used to dispatch UI updates, or null if this is being called from the UI thread.</param>
-        public RemoteDeviceHelper(DispatcherQueue dispatcherQueue = null)
+        /// <param name="dispatcher">The CoreDispatcher that should be used to dispatch UI updates, or null if this is being called from the UI thread.</param>
+        public RemoteDeviceHelper(CoreDispatcher dispatcher = null)
         {
-            DispatcherQueue = dispatcherQueue ?? DispatcherQueue.GetForCurrentThread();
+            Dispatcher = dispatcher ?? CoreApplication.MainView.Dispatcher;
             RemoteSystems = new ObservableCollection<RemoteSystem>();
             GenerateSystems();
         }
@@ -43,10 +44,10 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// Initializes a new instance of the <see cref="RemoteDeviceHelper"/> class.
         /// </summary>
         /// <param name="filter">Initiate Enumeration with specific RemoteSystemKind with Filters</param>
-        /// <param name="dispatcherQueue">The DispatcherQueue that should be used to dispatch UI updates, or null if this is being called from the UI thread.</param>
-        public RemoteDeviceHelper(List<IRemoteSystemFilter> filter, DispatcherQueue dispatcherQueue = null)
+        /// <param name="dispatcher">The CoreDispatcher that should be used to dispatch UI updates, or null if this is being called from the UI thread.</param>
+        public RemoteDeviceHelper(List<IRemoteSystemFilter> filter, CoreDispatcher dispatcher = null)
         {
-            DispatcherQueue = dispatcherQueue ?? DispatcherQueue.GetForCurrentThread();
+            Dispatcher = dispatcher ?? CoreApplication.MainView.Dispatcher;
             RemoteSystems = new ObservableCollection<RemoteSystem>();
             GenerateSystemsWithFilterAsync(filter);
         }
@@ -84,7 +85,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
 
         private async void RemoteSystemWatcher_RemoteSystemUpdated(RemoteSystemWatcher sender, RemoteSystemUpdatedEventArgs args)
         {
-            await DispatcherQueue.EnqueueAsync(() =>
+            await Dispatcher.AwaitableRunAsync(() =>
             {
                 RemoteSystems.Remove(RemoteSystems.First(a => a.Id == args.RemoteSystem.Id));
                 RemoteSystems.Add(args.RemoteSystem);
@@ -93,7 +94,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
 
         private async void RemoteSystemWatcher_RemoteSystemRemoved(RemoteSystemWatcher sender, RemoteSystemRemovedEventArgs args)
         {
-            await DispatcherQueue.EnqueueAsync(() =>
+            await Dispatcher.AwaitableRunAsync(() =>
             {
                 RemoteSystems.Remove(RemoteSystems.First(a => a.Id == args.RemoteSystemId));
             });
@@ -101,7 +102,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
 
         private async void RemoteSystemWatcher_RemoteSystemAdded(RemoteSystemWatcher sender, RemoteSystemAddedEventArgs args)
         {
-            await DispatcherQueue.EnqueueAsync(() =>
+            await Dispatcher.AwaitableRunAsync(() =>
             {
                 RemoteSystems.Add(args.RemoteSystem);
             });

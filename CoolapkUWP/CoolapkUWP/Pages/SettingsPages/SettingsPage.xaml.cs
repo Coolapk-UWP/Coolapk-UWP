@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.ViewModels.SettingsPages;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -73,5 +74,9 @@ namespace CoolapkUWP.Pages.SettingsPages
                     break;
             }
         }
+
+        private void GotoUpdate_Click(object sender, RoutedEventArgs e) => _ = Launcher.LaunchUriAsync(new Uri((sender as FrameworkElement).Tag.ToString()));
+
+        private void MarkdownText_LinkClicked(object sender, LinkClickedEventArgs e) => _ = Launcher.LaunchUriAsync(new Uri(e.Link));
     }
 }

@@ -343,6 +343,7 @@ namespace CoolapkUWP.Helpers
             }
             catch (Exception ex)
             {
+                SettingsHelper.LogManager.GetLogger(nameof(TipsRectangleHelper)).Error(ex.ExceptionToMessage(), ex);
                 Debug.WriteLine(ex.Message);
                 Debug.WriteLine(ex.StackTrace);
             }

@@ -16,16 +16,6 @@
 
     <converters:HTMLToTextConverter x:Key="HTMLToTextConverter" />
 
-    <Style
-        x:Key="FeedOpButtonStyle"
-        BasedOn="{StaticResource DefaultButtonStyle}"
-        TargetType="Button">
-        <Setter Property="Height" Value="34" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-    </Style>
-
     <DataTemplate x:Key="FeedDefaultTemplate">
         <UserControl
             x:Name="Root"

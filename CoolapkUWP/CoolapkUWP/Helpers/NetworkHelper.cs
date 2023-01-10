@@ -209,11 +209,13 @@ namespace CoolapkUWP.Helpers
             }
             catch (HttpRequestException e)
             {
+                SettingsHelper.LogManager.GetLogger(nameof(ImageCacheHelper)).Error(e.ExceptionToMessage(), e);
                 if (!isBackground) { UIHelper.ShowHttpExceptionMessage(e); }
                 return null;
             }
-            catch
+            catch (Exception ex)
             {
+                SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Error(ex.ExceptionToMessage(), ex);
                 return null;
             }
         }
@@ -227,11 +229,13 @@ namespace CoolapkUWP.Helpers
             }
             catch (HttpRequestException e)
             {
+                SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Error(e.ExceptionToMessage(), e);
                 if (!isBackground) { UIHelper.ShowHttpExceptionMessage(e); }
                 return null;
             }
-            catch
+            catch (Exception ex)
             {
+                SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Error(ex.ExceptionToMessage(), ex);
                 return null;
             }
         }
@@ -245,11 +249,13 @@ namespace CoolapkUWP.Helpers
             }
             catch (HttpRequestException e)
             {
+                SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Error(e.ExceptionToMessage(), e);
                 if (!isBackground) { UIHelper.ShowHttpExceptionMessage(e); }
                 return null;
             }
-            catch
+            catch (Exception ex)
             {
+                SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Error(ex.ExceptionToMessage(), ex);
                 return null;
             }
         }
@@ -303,11 +309,13 @@ namespace CoolapkUWP.Helpers
             }
             catch (HttpRequestException e)
             {
+                SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Error(e.ExceptionToMessage(), e);
                 UIHelper.ShowHttpExceptionMessage(e);
                 return result;
             }
             catch (Exception ex)
             {
+                SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Error(ex.ExceptionToMessage(), ex);
                 if (string.IsNullOrWhiteSpace(str)) { throw ex; }
                 JObject o = JObject.Parse(str);
                 if (o == null) { throw ex; }
@@ -341,8 +349,9 @@ namespace CoolapkUWP.Helpers
             {
                 uri = new Uri(uriString);
             }
-            catch (FormatException)
+            catch (FormatException ex)
             {
+                SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Warn(ex.ExceptionToMessage(), ex);
             }
             return uri;
         }

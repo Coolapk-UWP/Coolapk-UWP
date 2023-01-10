@@ -2,9 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
+using Windows.ApplicationModel.Core;
 using Windows.Networking.Connectivity;
-using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 
 namespace Microsoft.Toolkit.Uwp.UI.Triggers
@@ -14,14 +16,14 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
     /// </summary>
     public class NetworkConnectionStateTrigger : StateTriggerBase
     {
-        private DispatcherQueue _dispatcherQueue;
+        private CoreDispatcher _dispatcher;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NetworkConnectionStateTrigger"/> class.
         /// </summary>
         public NetworkConnectionStateTrigger()
         {
-            _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+            _dispatcher = CoreApplication.MainView.Dispatcher;
             var weakEvent =
                 new WeakEventListener<NetworkConnectionStateTrigger, object>(this)
                 {
@@ -34,7 +36,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
 
         private void NetworkInformation_NetworkStatusChanged(object sender)
         {
-            _ = _dispatcherQueue.EnqueueAsync(UpdateState, DispatcherQueuePriority.Normal);
+            _ = _dispatcher.AwaitableRunAsync(UpdateState, CoreDispatcherPriority.Normal);
         }
 
         private void UpdateState()

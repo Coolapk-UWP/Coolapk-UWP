@@ -11,7 +11,8 @@ namespace CoolapkUWP.Controls
     {
         public SettingExpander()
         {
-            DefaultStyleKey = typeof(SettingExpander);
+            DefaultStyleKey = typeof(Expander);
+            Style = (Style)Application.Current.Resources["SettingExpanderStyle"];
             _ = RegisterPropertyChangedCallback(HeaderProperty, OnHeaderChanged);
         }
 
@@ -23,8 +24,7 @@ namespace CoolapkUWP.Controls
                 if (self.Header.GetType() == typeof(Setting))
                 {
                     Setting selfSetting = (Setting)self.Header;
-                    ResourceDictionary Resource = new ResourceDictionary { Source = new Uri("ms-appx:///Controls/SettingExpander/SettingExpander.xaml") };
-                    selfSetting.Style = (Style)Resource["ExpanderHeaderSettingStyle"];
+                    selfSetting.Style = (Style)Application.Current.Resources["ExpanderHeaderSettingStyle"];
 
                     if (!string.IsNullOrEmpty(selfSetting.Header))
                     {

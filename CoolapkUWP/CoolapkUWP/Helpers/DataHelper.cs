@@ -107,8 +107,9 @@ namespace CoolapkUWP.Helpers
                 HtmlToText HtmlToText = new HtmlToText();
                 return HtmlToText.Convert(str);
             }
-            catch
+            catch (Exception ex)
             {
+                SettingsHelper.LogManager.GetLogger(nameof(DataHelper)).Warn(ex.ExceptionToMessage(), ex);
                 //换行和段落
                 string s = str.Replace("<br>", "\n").Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br/>", "\n").Replace("<p>", "").Replace("</p>", "\n").Replace("&nbsp;", " ").Replace("<br />", "").Replace("<br />", "");
                 //链接彻底删除！
@@ -127,24 +128,27 @@ namespace CoolapkUWP.Helpers
             JsonSerializer serializer = new JsonSerializer();
             TextReader tr = new StringReader(str);
             JsonTextReader jtr = new JsonTextReader(tr);
-            object obj = null;
-            try { obj = serializer.Deserialize(jtr); } catch { }
-            if (obj != null)
+            try
             {
-                StringWriter textWriter = new StringWriter();
-                JsonTextWriter jsonWriter = new JsonTextWriter(textWriter)
+                object obj = serializer.Deserialize(jtr);
+                if (obj != null)
                 {
-                    Formatting = Formatting.Indented,
-                    Indentation = 4,
-                    IndentChar = ' '
-                };
-                serializer.Serialize(jsonWriter, obj);
-                return textWriter.ToString();
+                    StringWriter textWriter = new StringWriter();
+                    JsonTextWriter jsonWriter = new JsonTextWriter(textWriter)
+                    {
+                        Formatting = Formatting.Indented,
+                        Indentation = 4,
+                        IndentChar = ' '
+                    };
+                    serializer.Serialize(jsonWriter, obj);
+                    return textWriter.ToString();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return str;
+                SettingsHelper.LogManager.GetLogger(nameof(DataHelper)).Error(ex.ExceptionToMessage(), ex);
             }
+            return str;
         }
 
         public static IBuffer GetBuffer(this IRandomAccessStream randomStream)

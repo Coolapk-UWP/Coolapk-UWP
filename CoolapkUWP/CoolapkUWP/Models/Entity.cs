@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CoolapkUWP.Helpers;
+using Newtonsoft.Json.Linq;
 using System;
 
 namespace CoolapkUWP.Models
@@ -24,8 +25,9 @@ namespace CoolapkUWP.Models
                 {
                     EntityID = entityId.ToObject<int>();
                 }
-                catch
+                catch (Exception ex)
                 {
+                    SettingsHelper.LogManager.GetLogger(nameof(Entity)).Warn(ex.ExceptionToMessage(), ex);
                     EntityIDText = entityId.ToString();
                 }
             }

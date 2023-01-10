@@ -2,11 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
-using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 
@@ -46,9 +48,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Helpers
         public bool IsHighContrast { get; set; }
 
         /// <summary>
-        /// Gets or sets which DispatcherQueue is used to dispatch UI updates.
+        /// Gets or sets which CoreDispatcher is used to dispatch UI updates.
         /// </summary>
-        public DispatcherQueue DispatcherQueue { get; set; }
+        public CoreDispatcher Dispatcher { get; set; }
 
         /// <summary>
         /// An event that fires if the Theme changes.
@@ -61,13 +63,13 @@ namespace Microsoft.Toolkit.Uwp.UI.Helpers
         /// <summary>
         /// Initializes a new instance of the <see cref="ThemeListener"/> class.
         /// </summary>
-        /// <param name="dispatcherQueue">The DispatcherQueue that should be used to dispatch UI updates, or null if this is being called from the UI thread.</param>
-        public ThemeListener(DispatcherQueue dispatcherQueue = null)
+        /// <param name="dispatcher">The CoreDispatcher that should be used to dispatch UI updates, or null if this is being called from the UI thread.</param>
+        public ThemeListener(CoreDispatcher dispatcher = null)
         {
             CurrentTheme = Application.Current.RequestedTheme;
             IsHighContrast = _accessible.HighContrast;
 
-            DispatcherQueue = dispatcherQueue ?? DispatcherQueue.GetForCurrentThread();
+            Dispatcher = dispatcher ?? CoreApplication.MainView.Dispatcher;
 
             _accessible.HighContrastChanged += Accessible_HighContrastChanged;
             _settings.ColorValuesChanged += Settings_ColorValuesChanged;
@@ -95,13 +97,13 @@ namespace Microsoft.Toolkit.Uwp.UI.Helpers
         }
 
         /// <summary>
-        /// Dispatches an update for the public properties and the firing of <see cref="ThemeChanged"/> on <see cref="DispatcherQueue"/>.
+        /// Dispatches an update for the public properties and the firing of <see cref="ThemeChanged"/> on <see cref="CoreDispatcher"/>.
         /// </summary>
         /// <returns>A <see cref="Task"/> that indicates when the dispatching has completed.</returns>
         internal Task OnThemePropertyChangedAsync()
         {
             // Getting called off thread, so we need to dispatch to request value.
-            return DispatcherQueue.EnqueueAsync(
+            return Dispatcher.AwaitableRunAsync(
                 () =>
                 {
                     // TODO: This doesn't stop the multiple calls if we're in our faked 'White' HighContrast Mode below.
@@ -114,10 +116,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Helpers
 
                         UpdateProperties();
                     }
-                }, DispatcherQueuePriority.Normal);
+                }, CoreDispatcherPriority.Normal);
         }
 
-        private void CoreWindow_Activated(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.WindowActivatedEventArgs args)
+        private void CoreWindow_Activated(CoreWindow sender, WindowActivatedEventArgs args)
         {
             if (CurrentTheme != Application.Current.RequestedTheme ||
                 IsHighContrast != _accessible.HighContrast)

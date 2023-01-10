@@ -3,6 +3,7 @@ using CoolapkUWP.Models.Feeds;
 using CoolapkUWP.Models.Images;
 using CoolapkUWP.Models.Users;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Immutable;
 
 namespace CoolapkUWP.Models
@@ -322,7 +323,8 @@ namespace CoolapkUWP.Models
                 {
                     if (item.TryGetValue("entityType", out JToken entityType))
                     {
-                        try { item.Property("entityType").AddAfterSelf(new JProperty("entityForward", EntityTemplate)); } catch { }
+                        try { item.Property("entityType").AddAfterSelf(new JProperty("entityForward", EntityTemplate)); }
+                        catch (Exception ex) { SettingsHelper.LogManager.GetLogger(nameof(IndexPageModel)).Warn(ex.ExceptionToMessage(), ex); }
                         switch (entityType.ToString())
                         {
                             case "feed":

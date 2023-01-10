@@ -6,8 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.Graphics.Printing;
-using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Printing;
@@ -97,19 +98,19 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         private PrintHelperOptions _defaultPrintHelperOptions;
 
         /// <summary>
-        /// Gets or sets which DispatcherQueue is used to dispatch UI updates.
+        /// Gets or sets which CoreDispatcher is used to dispatch UI updates.
         /// </summary>
-        public DispatcherQueue DispatcherQueue { get; set; }
+        public CoreDispatcher Dispatcher { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PrintHelper"/> class.
         /// </summary>
         /// <param name="canvasContainer">XAML panel used to attach printing canvas. Can be hidden in your UI with Opacity = 0 for instance</param>
         /// <param name="defaultPrintHelperOptions">Default settings for the print tasks</param>
-        /// <param name="dispatcherQueue">The DispatcherQueue that should be used to dispatch UI updates, or null if this is being called from the UI thread.</param>
-        public PrintHelper(Panel canvasContainer, PrintHelperOptions defaultPrintHelperOptions = null, DispatcherQueue dispatcherQueue = null)
+        /// <param name="dispatcher">The CoreDispatcher that should be used to dispatch UI updates, or null if this is being called from the UI thread.</param>
+        public PrintHelper(Panel canvasContainer, PrintHelperOptions defaultPrintHelperOptions = null, CoreDispatcher dispatcher = null)
         {
-            DispatcherQueue = dispatcherQueue ?? DispatcherQueue.GetForCurrentThread();
+            Dispatcher = dispatcher ?? CoreApplication.MainView.Dispatcher;
 
             if (canvasContainer == null)
             {
@@ -205,7 +206,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
             }
 
             _printCanvas = null;
-            DispatcherQueue.EnqueueAsync(() =>
+            Dispatcher.AwaitableRunAsync(() =>
             {
                 _printDocument.Paginate -= CreatePrintPreviewPages;
                 _printDocument.GetPreviewPage -= GetPrintPreviewPage;
@@ -229,7 +230,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         {
             if (!_directPrint)
             {
-                await DispatcherQueue.EnqueueAsync(() =>
+                await Dispatcher.AwaitableRunAsync(() =>
                 {
                     _canvasContainer.Children.Remove(_printCanvas);
                     _printCanvas.Children.Clear();
@@ -262,7 +263,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 printTask.Completed += async (s, args) =>
                 {
                     // Notify the user when the print operation fails.
-                    await DispatcherQueue.EnqueueAsync(
+                    await Dispatcher.AwaitableRunAsync(
                         async () =>
                         {
                             foreach (var element in _stateBags.Keys)
@@ -288,7 +289,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                                     OnPrintSucceeded?.Invoke();
                                     break;
                             }
-                        }, DispatcherQueuePriority.Normal);
+                        }, CoreDispatcherPriority.Normal);
                 };
 
                 sourceRequested.SetSource(_printDocumentSource);
@@ -480,7 +481,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
             // Save state
             if (!_stateBags.ContainsKey(element))
             {
-                var stateBag = new PrintHelperStateBag(DispatcherQueue);
+                var stateBag = new PrintHelperStateBag(Dispatcher);
                 stateBag.Capture(element);
                 _stateBags.Add(element, stateBag);
             }
@@ -515,7 +516,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
             element.Margin = new Thickness(marginWidth / 2, marginHeight / 2, marginWidth / 2, marginHeight / 2);
             page.Content = element;
 
-            return DispatcherQueue.EnqueueAsync(
+            return Dispatcher.AwaitableRunAsync(
                 () =>
                 {
                     // Add the (newly created) page to the print canvas which is part of the visual tree and force it to go
@@ -526,12 +527,12 @@ namespace Microsoft.Toolkit.Uwp.Helpers
 
                     // Add the page to the page preview collection
                     _printPreviewPages.Add(page);
-                }, DispatcherQueuePriority.High);
+                }, CoreDispatcherPriority.High);
         }
 
         private Task ClearPageCache()
         {
-            return DispatcherQueue.EnqueueAsync(() =>
+            return Dispatcher.AwaitableRunAsync(() =>
             {
                 if (!_directPrint)
                 {

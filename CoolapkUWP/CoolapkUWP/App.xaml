@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls">
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:converter="using:CoolapkUWP.Helpers.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -12,7 +12,7 @@
                 <ResourceDictionary Source="ms-appx:///Themes/CustomStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!--  Add resources here  -->
-            
+
             <!--  Breakpoints  -->
             <x:Double x:Key="Breakpoint640Plus">641</x:Double>
 
@@ -21,9 +21,9 @@
 
             <CornerRadius x:Key="ControlCornerRadius">4</CornerRadius>
             <CornerRadius x:Key="OverlayCornerRadius">4</CornerRadius>
-            
+
             <FontFamily x:Key="SymbolThemeFontFamily">Segoe Fluent Icons,Segoe MDL2 Assets,Segoe UI Symbol</FontFamily>
-            
+
             <Style
                 x:Key="IconButtonStyle"
                 BasedOn="{StaticResource DefaultButtonStyle}"
@@ -34,7 +34,7 @@
                 <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="Background" Value="Transparent" />
             </Style>
-            
+
             <Style
                 x:Key="FeedOpButtonStyle"
                 BasedOn="{StaticResource DefaultButtonStyle}"
@@ -44,12 +44,15 @@
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
             </Style>
-            
+
             <converters:StringFormatConverter x:Key="StringFormatConverter" />
             <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converters:StringVisibilityConverter x:Key="StringVisibilityConverter" />
             <converters:CollectionVisibilityConverter x:Key="CollectionVisibilityConverter" />
+
+            <converter:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <converter:CollectionToBoolConverter x:Key="CollectionToBoolConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

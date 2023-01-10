@@ -1,21 +1,20 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Helpers.Exceptions;
+using CoolapkUWP.Models.Exceptions;
 using CoolapkUWP.Pages;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.ApplicationModel.Resources;
+using Windows.Foundation.Metadata;
+using Windows.Security.Authorization.AppCapabilityAccess;
+using Windows.System.Profile;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace CoolapkUWP
@@ -31,8 +30,13 @@ namespace CoolapkUWP
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
+            UnhandledException += Application_UnhandledException;
+            if (ApiInformation.IsEnumNamedValuePresent("Windows.UI.Xaml.FocusVisualKind", "Reveal"))
+            {
+                FocusVisualKind = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Xbox" ? FocusVisualKind.Reveal : FocusVisualKind.HighVisibility;
+            }
         }
 
         /// <summary>
@@ -42,11 +46,12 @@ namespace CoolapkUWP
         /// <param name="e">有关启动请求和过程的详细信息。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
+            RequestWifiAccess();
+            RegisterExceptionHandlingSynchronizationContext();
 
             // 不要在窗口已包含内容时重复应用程序初始化，
             // 只需确保窗口处于活动状态
-            if (rootFrame == null)
+            if (!(Window.Current.Content is Frame rootFrame))
             {
                 // 创建要充当导航上下文的框架，并导航到第一页
                 rootFrame = new Frame();
@@ -100,6 +105,65 @@ namespace CoolapkUWP
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: 保存应用程序状态并停止任何后台活动
             deferral.Complete();
+        }
+
+        private async void RequestWifiAccess()
+        {
+            if (ApiInformation.IsMethodPresent("Windows.Security.Authorization.AppCapabilityAccess.AppCapability", "Create"))
+            {
+                AppCapability wifiData = AppCapability.Create("wifiData");
+                switch (wifiData.CheckAccess())
+                {
+                    case AppCapabilityAccessStatus.DeniedByUser:
+                    case AppCapabilityAccessStatus.DeniedBySystem:
+                        // Do something
+                        await AppCapability.Create("wifiData").RequestAccessAsync();
+                        break;
+                }
+            }
+        }
+
+        private void Application_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            if (!(!SettingsHelper.Get<bool>(SettingsHelper.ShowOtherException) || e.Exception is TaskCanceledException || e.Exception is OperationCanceledException))
+            {
+                ResourceLoader loader = ResourceLoader.GetForViewIndependentUse();
+                UIHelper.ShowMessage($"{(string.IsNullOrEmpty(e.Exception.Message) ? loader.GetString("ExceptionThrown") : e.Exception.Message)} (0x{Convert.ToString(e.Exception.HResult, 16)})");
+            }
+            SettingsHelper.LogManager.GetLogger("Unhandled Exception - Application").Error(e.Exception.ExceptionToMessage(), e.Exception);
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// Should be called from OnActivated and OnLaunched
+        /// </summary>
+        private void RegisterExceptionHandlingSynchronizationContext()
+        {
+            ExceptionHandlingSynchronizationContext
+                .Register()
+                .UnhandledException += SynchronizationContext_UnhandledException;
+        }
+
+        private void SynchronizationContext_UnhandledException(object sender, Helpers.Exceptions.UnhandledExceptionEventArgs e)
+        {
+            if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
+            {
+                ResourceLoader loader = ResourceLoader.GetForViewIndependentUse();
+                if (e.Exception is HttpRequestException || (e.Exception.HResult <= -2147012721 && e.Exception.HResult >= -2147012895))
+                {
+                    UIHelper.ShowMessage($"{loader.GetString("NetworkError")}(0x{Convert.ToString(e.Exception.HResult, 16)})");
+                }
+                else if (e.Exception is CoolapkMessageException)
+                {
+                    UIHelper.ShowMessage(e.Exception.Message);
+                }
+                else if (SettingsHelper.Get<bool>(SettingsHelper.ShowOtherException))
+                {
+                    UIHelper.ShowMessage($"{(string.IsNullOrEmpty(e.Exception.Message) ? loader.GetString("ExceptionThrown") : e.Exception.Message)} (0x{Convert.ToString(e.Exception.HResult, 16)})");
+                }
+            }
+            SettingsHelper.LogManager.GetLogger("Unhandled Exception - SynchronizationContext").Error(e.Exception.ExceptionToMessage(), e.Exception);
+            e.Handled = true;
         }
     }
 }

@@ -2,16 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Bluetooth.Advertisement;
 using Windows.Devices.Enumeration;
-using Windows.System;
+using Windows.UI.Core;
 
 namespace Microsoft.Toolkit.Uwp.Connectivity
 {
@@ -53,17 +55,17 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
         private BluetoothAdapter _adapter;
 
         /// <summary>
-        /// Gets or sets which DispatcherQueue is used to dispatch UI updates.
+        /// Gets or sets which CoreDispatcher is used to dispatch UI updates.
         /// </summary>
-        public DispatcherQueue DispatcherQueue { get; set; }
+        public CoreDispatcher Dispatcher { get; set; }
 
         /// <summary>
         /// Prevents a default instance of the <see cref="BluetoothLEHelper" /> class from being created.
         /// </summary>
-        /// <param name="dispatcherQueue">The DispatcherQueue that should be used to dispatch UI updates, or null if this is being called from the UI thread.</param>
-        private BluetoothLEHelper(DispatcherQueue dispatcherQueue = null)
+        /// <param name="dispatcher">The CoreDispatcher that should be used to dispatch UI updates, or null if this is being called from the UI thread.</param>
+        private BluetoothLEHelper(CoreDispatcher dispatcher = null)
         {
-            DispatcherQueue = dispatcherQueue ?? DispatcherQueue.GetForCurrentThread();
+            Dispatcher = dispatcher ?? CoreApplication.MainView.Dispatcher;
 
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             Init();
@@ -196,7 +198,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
         /// <param name="args">The advertisement.</param>
         private async void AdvertisementWatcher_Received(BluetoothLEAdvertisementWatcher sender, BluetoothLEAdvertisementReceivedEventArgs args)
         {
-            await DispatcherQueue.EnqueueAsync(
+            await Dispatcher.AwaitableRunAsync(
                 () =>
                 {
                     if (_readerWriterLockSlim.TryEnterReadLock(TimeSpan.FromSeconds(1)))
@@ -211,7 +213,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
 
                         _readerWriterLockSlim.ExitReadLock();
                     }
-                }, DispatcherQueuePriority.Normal);
+                }, CoreDispatcherPriority.Normal);
         }
 
         /// <summary>
@@ -280,7 +282,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
             // Protect against race condition if the task runs after the app stopped the deviceWatcher.
             if (sender == _deviceWatcher)
             {
-                await DispatcherQueue.EnqueueAsync(
+                await Dispatcher.AwaitableRunAsync(
                     () =>
                     {
                         if (_readerWriterLockSlim.TryEnterWriteLock(TimeSpan.FromSeconds(1)))
@@ -293,7 +295,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
 
                             _readerWriterLockSlim.ExitWriteLock();
                         }
-                    }, DispatcherQueuePriority.Normal);
+                    }, CoreDispatcherPriority.Normal);
             }
         }
 
@@ -322,7 +324,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
             // Make sure device name isn't blank or already present in the list.
             if (!string.IsNullOrEmpty(deviceInfo?.Name))
             {
-                var device = new ObservableBluetoothLEDevice(deviceInfo, DispatcherQueue);
+                var device = new ObservableBluetoothLEDevice(deviceInfo, Dispatcher);
                 var connectable = (device.DeviceInfo.Properties.Keys.Contains("System.Devices.Aep.Bluetooth.Le.IsConnectable") &&
                                         (bool)device.DeviceInfo.Properties["System.Devices.Aep.Bluetooth.Le.IsConnectable"]) ||
                                         (device.DeviceInfo.Properties.Keys.Contains("System.Devices.Aep.IsConnected") &&
@@ -330,7 +332,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
 
                 if (connectable)
                 {
-                    await DispatcherQueue.EnqueueAsync(
+                    await Dispatcher.AwaitableRunAsync(
                         () =>
                         {
                             if (_readerWriterLockSlim.TryEnterWriteLock(TimeSpan.FromSeconds(1)))
@@ -342,7 +344,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
 
                                 _readerWriterLockSlim.ExitWriteLock();
                             }
-                        }, DispatcherQueuePriority.Normal);
+                        }, CoreDispatcherPriority.Normal);
 
                     return;
                 }

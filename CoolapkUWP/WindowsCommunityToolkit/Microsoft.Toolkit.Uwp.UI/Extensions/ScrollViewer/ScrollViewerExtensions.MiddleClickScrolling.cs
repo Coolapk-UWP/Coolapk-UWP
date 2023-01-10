@@ -2,11 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Threading;
+using Windows.ApplicationModel.Core;
 using Windows.Devices.Input;
 using Windows.Foundation;
-using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
@@ -91,7 +92,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <summary>
         /// Function to set default value and subscribe to events
         /// </summary>
-        private static void SubscribeMiddleClickScrolling(DispatcherQueue dispatcherQueue)
+        private static void SubscribeMiddleClickScrolling(CoreDispatcher dispatcher)
         {
             _isPressed = true;
             _isMoved = false;
@@ -102,7 +103,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             _isCursorAvailable = IsCursorResourceAvailable();
 
             _timer?.Dispose();
-            _timer = new Timer(Scroll, dispatcherQueue, 5, 5);
+            _timer = new Timer(Scroll, dispatcher, 5, 5);
 
             Window.Current.CoreWindow.PointerMoved -= CoreWindow_PointerMoved;
             Window.Current.CoreWindow.PointerReleased -= CoreWindow_PointerReleased;
@@ -136,8 +137,8 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="state">Default param for <see cref="Timer"/>. In this function it will be `null`</param>
         private static void Scroll(object state)
         {
-            var dispatcherQueue = state as DispatcherQueue;
-            if (dispatcherQueue == null)
+            var dispatcher = state as CoreDispatcher;
+            if (dispatcher == null)
             {
                 return;
             }
@@ -145,7 +146,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             var offsetX = _currentPosition.X - _startPosition.X;
             var offsetY = _currentPosition.Y - _startPosition.Y;
 
-            SetCursorType(dispatcherQueue, offsetX, offsetY);
+            SetCursorType(dispatcher, offsetX, offsetY);
 
             if (Math.Abs(offsetX) > _threshold || Math.Abs(offsetY) > _threshold)
             {
@@ -161,7 +162,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                 offsetX = offsetX > _maxSpeed ? _maxSpeed : offsetX;
                 offsetY = offsetY > _maxSpeed ? _maxSpeed : offsetY;
 
-                dispatcherQueue.EnqueueAsync(() => _scrollViewer?.ChangeView(_scrollViewer.HorizontalOffset + offsetX, _scrollViewer.VerticalOffset + offsetY, null, true));
+                dispatcher.AwaitableRunAsync(() => _scrollViewer?.ChangeView(_scrollViewer.HorizontalOffset + offsetX, _scrollViewer.VerticalOffset + offsetY, null, true));
             }
         }
 
@@ -194,7 +195,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                 // SubscribeMiddle if middle button is pressed
                 if (pointerPoint.Properties.IsMiddleButtonPressed)
                 {
-                    SubscribeMiddleClickScrolling(DispatcherQueue.GetForCurrentThread());
+                    SubscribeMiddleClickScrolling(CoreApplication.MainView.Dispatcher);
 
                     _startPosition = Window.Current.CoreWindow.PointerPosition;
                     _currentPosition = Window.Current.CoreWindow.PointerPosition;
@@ -246,7 +247,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                 Window.Current.CoreWindow.PointerPressed -= CoreWindow_PointerPressed;
                 Window.Current.CoreWindow.PointerPressed += CoreWindow_PointerPressed;
 
-                SetCursorType(DispatcherQueue.GetForCurrentThread(), 0, 0);
+                SetCursorType(CoreApplication.MainView.Dispatcher, 0, 0);
             }
             else
             {
@@ -274,7 +275,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             UnsubscribeMiddleClickScrolling();
         }
 
-        private static void SetCursorType(DispatcherQueue dispatcherQueue, double offsetX, double offsetY)
+        private static void SetCursorType(CoreDispatcher dispatcher, double offsetX, double offsetY)
         {
             if (!_isCursorAvailable)
             {
@@ -322,7 +323,7 @@ namespace Microsoft.Toolkit.Uwp.UI
 
             if (_oldCursorID != cursorID)
             {
-                dispatcherQueue.EnqueueAsync(() => Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Custom, cursorID));
+                dispatcher.AwaitableRunAsync(() => Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Custom, cursorID));
 
                 _oldCursorID = cursorID;
             }
