@@ -5,10 +5,12 @@
     xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:cwuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:interopservices="using:System.Runtime.InteropServices"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:settingspages="using:CoolapkUWP.ViewModels.SettingsPages"
     d:DataContext="{d:DesignInstance Type=settingspages:SettingsViewModel}"
+    NavigationCacheMode="Required"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
@@ -92,7 +94,7 @@
                                         VerticalAlignment="Center"
                                         Orientation="Horizontal"
                                         Spacing="18">
-                                        <ProgressRing
+                                        <muxc:ProgressRing
                                             Width="24"
                                             Height="24"
                                             Visibility="{Binding CheckingUpdate, Mode=OneWay}" />
@@ -137,14 +139,122 @@
                                 HorizontalAlignment="Right"
                                 Click="GotoUpdate_Click"
                                 Tag="{Binding GotoUpdateTag}"
+                                ToolTipService.ToolTip="{Binding GotoUpdateTag}"
                                 Visibility="{Binding GotoUpdateVisibility}" />
                         </muxc:InfoBar.ActionButton>
                     </muxc:InfoBar>
+                    <controls:SettingExpander>
+                        <controls:SettingExpander.Header>
+                            <controls:Setting x:Uid="/SettingsPage/FrameworkSettings" Icon="&#xE950;" />
+                        </controls:SettingExpander.Header>
+                        <controls:SettingExpander.Content>
+                            <Grid Style="{StaticResource ExpanderContentGridStyle}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock
+                                    x:Uid="/SettingsPage/FrameworkTextBlock"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Padding="0,0,0,8"
+                                    Foreground="{ThemeResource CardPrimaryForegroundBrush}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Padding="32,0,0,8"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="{x:Bind interopservices:RuntimeInformation.FrameworkDescription}"
+                                    TextWrapping="WrapWholeWords" />
+
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Padding="0,0,0,8"
+                                    Foreground="{ThemeResource CardPrimaryForegroundBrush}"
+                                    Text="Community Toolkit" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Padding="32,0,0,8"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="{Binding ToolkitVersion}"
+                                    TextWrapping="WrapWholeWords" />
+
+                                <TextBlock
+                                    x:Uid="/SettingsPage/DeviceFamilyTextBlock"
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Padding="0,0,0,8"
+                                    Foreground="{ThemeResource CardPrimaryForegroundBrush}" />
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Padding="32,0,0,8"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="{Binding DeviceFamily}"
+                                    TextWrapping="WrapWholeWords" />
+
+                                <TextBlock
+                                    x:Uid="/SettingsPage/OSPlatformTextBlock"
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    Padding="0,0,0,8"
+                                    Foreground="{ThemeResource CardPrimaryForegroundBrush}" />
+                                <TextBlock
+                                    Grid.Row="3"
+                                    Grid.Column="1"
+                                    Padding="32,0,0,8"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="{x:Bind interopservices:RuntimeInformation.OSDescription}"
+                                    TextWrapping="WrapWholeWords" />
+
+                                <TextBlock
+                                    x:Uid="/SettingsPage/OSArchitectureTextBlock"
+                                    Grid.Row="4"
+                                    Grid.Column="0"
+                                    Padding="0,0,0,8"
+                                    Foreground="{ThemeResource CardPrimaryForegroundBrush}" />
+                                <TextBlock
+                                    Grid.Row="4"
+                                    Grid.Column="1"
+                                    Padding="32,0,0,8"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="{x:Bind interopservices:RuntimeInformation.OSArchitecture}"
+                                    TextWrapping="WrapWholeWords" />
+                            </Grid>
+                        </controls:SettingExpander.Content>
+                    </controls:SettingExpander>
                 </controls:SettingsGroup>
                 <controls:SettingsGroup x:Uid="/SettingsPage/OthersSettingsHeader">
                     <controls:Setting x:Uid="/SettingsPage/ShowOtherExceptionSettings" Icon="&#xE90F;">
                         <controls:Setting.ActionContent>
                             <ToggleSwitch IsOn="{Binding ShowOtherException, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
+                        </controls:Setting.ActionContent>
+                    </controls:Setting>
+                    <controls:Setting x:Uid="/SettingsPage/CleanCacheSettings" Icon="&#xEA99;">
+                        <controls:Setting.ActionContent>
+                            <StackPanel Orientation="Horizontal">
+                                <muxc:ProgressRing
+                                    Width="24"
+                                    Height="24"
+                                    Margin="8,0"
+                                    HorizontalAlignment="Left"
+                                    IsActive="{Binding IsCleanCache, Mode=OneWay}" />
+                                <Button
+                                    x:Uid="/SettingsPage/CleanCacheButton"
+                                    Click="Button_Click"
+                                    IsEnabled="{Binding IsCleanCache, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
+                                    Tag="CleanCache" />
+                            </StackPanel>
                         </controls:Setting.ActionContent>
                     </controls:Setting>
                     <controls:Setting x:Uid="/SettingsPage/ResetSettings" Icon="&#xE777;">

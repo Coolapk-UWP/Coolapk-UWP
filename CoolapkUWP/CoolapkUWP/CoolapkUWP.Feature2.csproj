@@ -173,6 +173,7 @@
     <Compile Include="Helpers\ThemeHelper.cs" />
     <Compile Include="Helpers\TipsRectangleHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
+    <Compile Include="Helpers\UpdateHelper.cs" />
     <Compile Include="Helpers\UriHelper.cs" />
     <Compile Include="Models\CollectionModel.cs" />
     <Compile Include="Models\Entity.cs" />
@@ -199,6 +200,12 @@
     <Compile Include="Models\Users\UserModel.cs" />
     <Compile Include="Pages\FeedPages\AdaptivePage.xaml.cs">
       <DependentUpon>AdaptivePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\FeedPages\CirclePage.xaml.cs">
+      <DependentUpon>CirclePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\FeedPages\FindPage.xaml.cs">
+      <DependentUpon>FindPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\FeedPages\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
@@ -818,9 +825,6 @@
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.7.3</Version>
     </PackageReference>
-    <PackageReference Include="MvvmLightLibs">
-      <Version>5.4.1.1</Version>
-    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
@@ -904,6 +908,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\PageHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\FeedPages\CirclePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\FeedPages\FindPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -999,6 +1011,12 @@
     <PRIResource Include="Strings\zh-CN\SettingsPage.resw">
       <SubType>Designer</SubType>
     </PRIResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\zh-CN\CirclePage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\zh-CN\FindPage.resw" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

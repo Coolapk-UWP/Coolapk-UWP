@@ -1,14 +1,12 @@
 ﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Pages.SettingsPages;
+using CoolapkUWP.Models.Update;
 using Microsoft.UI.Xaml.Controls;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Resources;
+using Windows.System.Profile;
 using Windows.UI.Xaml;
 
 namespace CoolapkUWP.ViewModels.SettingsPages
@@ -16,8 +14,11 @@ namespace CoolapkUWP.ViewModels.SettingsPages
     public class SettingsViewModel : INotifyPropertyChanged
     {
         public static SettingsViewModel Caches;
+        private readonly ResourceLoader _loader = ResourceLoader.GetForViewIndependentUse("SettingsPage");
 
-        public static string SDKVersion => Assembly.Load(new AssemblyName("Windows.Foundation.UniversalApiContract")).GetName().Version.ToString();
+        public static string DeviceFamily => AnalyticsInfo.VersionInfo.DeviceFamily.Replace('.', ' ');
+
+        public static string ToolkitVersion => Assembly.Load(new AssemblyName("Microsoft.Toolkit.Uwp")).GetName().Version.ToString();
 
         public DateTime UpdateDate
         {
@@ -65,6 +66,20 @@ namespace CoolapkUWP.ViewModels.SettingsPages
                 if (ShowOtherException != value)
                 {
                     SettingsHelper.Set(SettingsHelper.ShowOtherException, value);
+                }
+            }
+        }
+
+        private bool isCleanCache;
+        public bool IsCleanCache
+        {
+            get => isCleanCache;
+            set
+            {
+                if (isCleanCache != value)
+                {
+                    isCleanCache = value;
+                    RaisePropertyChangedEvent();
                 }
             }
         }
@@ -193,11 +208,58 @@ namespace CoolapkUWP.ViewModels.SettingsPages
             get
             {
                 string ver = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
-                string name = Package.Current.DisplayName;
+                string name = ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安";
                 return $"{name} v{ver}";
             }
         }
 
         public SettingsViewModel() => Caches = this;
+
+        public async void CleanCache()
+        {
+            IsCleanCache = true;
+            await ImageCacheHelper.CleanCacheAsync();
+            IsCleanCache = false;
+        }
+
+        public async void CheckUpdate()
+        {
+            CheckingUpdate = true;
+            UpdateInfo info = null;
+            try
+            {
+                info = await UpdateHelper.CheckUpdateAsync("Paving-Base", "APK-Installer");
+            }
+            catch (Exception ex)
+            {
+                UpdateStateIsOpen = true;
+                UpdateStateMessage = ex.Message;
+                UpdateStateSeverity = InfoBarSeverity.Error;
+                GotoUpdateVisibility = Visibility.Collapsed;
+                UpdateStateTitle = _loader.GetString("CheckFailed");
+                SettingsHelper.LogManager.GetLogger(nameof(SettingsViewModel)).Error(ex.ExceptionToMessage(), ex);
+            }
+            if (info != null)
+            {
+                if (info.IsExistNewVersion)
+                {
+                    UpdateStateIsOpen = true;
+                    GotoUpdateTag = info.ReleaseUrl;
+                    GotoUpdateVisibility = Visibility.Visible;
+                    UpdateStateSeverity = InfoBarSeverity.Warning;
+                    UpdateStateTitle = _loader.GetString("FindUpdate");
+                    UpdateStateMessage = $"{VersionTextBlockText} -> {info.TagName}";
+                }
+                else
+                {
+                    UpdateStateIsOpen = true;
+                    GotoUpdateVisibility = Visibility.Collapsed;
+                    UpdateStateSeverity = InfoBarSeverity.Success;
+                    UpdateStateTitle = _loader.GetString("UpToDate");
+                }
+            }
+            UpdateDate = DateTime.Now;
+            CheckingUpdate = false;
+        }
     }
 }

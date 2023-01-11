@@ -44,6 +44,7 @@ namespace CoolapkUWP.Pages
         private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
         {
             ("Home", typeof(IndexPage)),
+            ("Circle", typeof(CirclePage)),
             ("Settings", typeof(SettingsPage)),
         };
 
@@ -244,7 +245,7 @@ namespace CoolapkUWP.Pages
         {
             if (CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar)
             {
-                AppTitleText.Text = message ?? ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安 Lite";
+                AppTitleText.Text = message ?? ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安";
             }
             else
             {
@@ -253,21 +254,5 @@ namespace CoolapkUWP.Pages
         }
 
         #endregion
-
-        private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        {
-            if (sender.Text != null)
-            {
-                NavigationView_Navigate("Find", null, new object[] { sender.Text });
-            }
-        }
-
-        private void AutoSuggestBox_KeyDown(object sender, KeyRoutedEventArgs e)
-        {
-            if (e.Key == Windows.System.VirtualKey.Enter)
-            {
-                AutoSuggestBox_QuerySubmitted(sender as AutoSuggestBox, null);
-            }
-        }
     }
 }

@@ -140,10 +140,7 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        internal static Task CleanCacheAsync()
-        {
-            return ImageCache.Instance.ClearAsync();
-        }
+        internal static Task CleanCacheAsync() => ImageCache.Instance.ClearAsync();
     }
 
     internal static partial class ImageCacheHelper

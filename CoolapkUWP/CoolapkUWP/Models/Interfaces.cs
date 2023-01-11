@@ -11,27 +11,21 @@ namespace CoolapkUWP.Models
         BitmapImage Pic { get; }
     }
 
-    public interface IList
+    public interface IHasTitle
     {
         string Url { get; }
         string Title { get; }
+    }
+
+    public interface IHasDescription : IHasTitle
+    {
         ImageModel Pic { get; }
         string Description { get; }
     }
 
-    public interface IHasUriAndTitle
+    public interface IHasSubtitle : IHasDescription
     {
-        string Url { get; }
-        string Title { get; }
-    }
-
-    public interface IListWithSubtitle
-    {
-        string Url { get; }
-        string Title { get; }
-        ImageModel Pic { get; }
         string SubTitle { get; }
-        string Description { get; }
     }
 
     public interface ICanCopy

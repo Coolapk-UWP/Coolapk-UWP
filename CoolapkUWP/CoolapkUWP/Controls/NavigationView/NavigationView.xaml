@@ -265,6 +265,10 @@
                                         BorderBrush="{ThemeResource NavigationViewContentGridBorderBrush}"
                                         BorderThickness="{ThemeResource NavigationViewContentGridBorderThickness}"
                                         CornerRadius="{ThemeResource NavigationViewContentGridCornerRadius}">
+                                        <contract7Present:Grid.BackgroundTransition>
+                                            <contract7Present:BrushTransition />
+                                        </contract7Present:Grid.BackgroundTransition>
+
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
@@ -314,6 +318,9 @@
                                 contract4Present:XYFocusKeyboardNavigation="Enabled"
                                 Background="{ThemeResource NavigationViewTopPaneBackground}"
                                 Canvas.ZIndex="1">
+                                <contract7Present:StackPanel.BackgroundTransition>
+                                    <contract7Present:BrushTransition />
+                                </contract7Present:StackPanel.BackgroundTransition>
 
                                 <Grid
                                     x:Name="TopNavTopPadding"

@@ -472,4 +472,31 @@
             </Grid>
         </UserControl>
     </DataTemplate>
+
+    <DataTemplate x:Key="FeedImageTextTemplate">
+        <Grid
+            Width="260"
+            Height="118"
+            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+            CornerRadius="8"
+            Tapped="OnTapped">
+            <Grid.Background>
+                <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+            </Grid.Background>
+            <Border
+                VerticalAlignment="Bottom"
+                Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                CornerRadius="8,8,0,0">
+                <TextBlock
+                    Margin="8"
+                    FontSize="16"
+                    Foreground="White"
+                    MaxLines="1"
+                    Text="{Binding MessageTitle}"
+                    TextTrimming="WordEllipsis"
+                    TextWrapping="Wrap" />
+            </Border>
+        </Grid>
+    </DataTemplate>
+
 </ResourceDictionary>

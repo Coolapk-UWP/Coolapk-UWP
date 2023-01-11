@@ -18,6 +18,8 @@ using Windows.ApplicationModel.Resources;
 using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
 using System.Text;
+using CoolapkUWP.Pages.FeedPages;
+using CoolapkUWP.ViewModels.FeedPages;
 
 namespace CoolapkUWP.Helpers
 {
@@ -266,6 +268,7 @@ namespace CoolapkUWP.Helpers
 
         private static readonly ImmutableArray<string> routes = new string[]
         {
+            "/page?",
             "/u/",
             "/feed/",
             "/picture/",
@@ -298,6 +301,11 @@ namespace CoolapkUWP.Helpers
             if (string.IsNullOrWhiteSpace(str)) { return; }
             int i = 0;
             if (str.IsFirst(i++))
+            {
+                string u = str.Replace(i - 1);
+                Navigate(typeof(AdaptivePage), new AdaptiveViewModel(u));
+            }
+            else if (str.IsFirst(i++))
             {
                 string u = str.Replace(i - 1);
                 string uid = int.TryParse(u, out _) ? u : (await NetworkHelper.GetUserInfoByNameAsync(u)).UID;

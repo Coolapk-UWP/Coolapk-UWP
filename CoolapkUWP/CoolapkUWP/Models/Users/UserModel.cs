@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace CoolapkUWP.Models.Users
 {
-    public class UserModel : Entity, IListWithSubtitle
+    public class UserModel : Entity, IHasSubtitle
     {
         public int UID { get; private set; }
         public int Level { get; private set; }

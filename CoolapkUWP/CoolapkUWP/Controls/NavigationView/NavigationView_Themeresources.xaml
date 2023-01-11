@@ -30,9 +30,14 @@
                         Margin="{TemplateBinding Padding}"
                         Background="{TemplateBinding Background}"
                         CornerRadius="{ThemeResource OverlayCornerRadius}">
+                        <contract7Present:Grid.BackgroundTransition>
+                            <contract7Present:BrushTransition Duration="0:0:0.083" />
+                        </contract7Present:Grid.BackgroundTransition>
+
                         <Grid.ChildrenTransitions>
                             <ReorderThemeTransition />
                         </Grid.ChildrenTransitions>
+
                         <local:AnimatedIcon
                             x:Name="Icon"
                             Width="16"
@@ -100,6 +105,9 @@
                         Margin="{ThemeResource NavigationViewItemOnTopMargin}"
                         Background="{TemplateBinding Background}"
                         CornerRadius="{ThemeResource OverlayCornerRadius}">
+                        <contract7Present:Grid.BackgroundTransition>
+                            <contract7Present:BrushTransition Duration="0:0:0.083" />
+                        </contract7Present:Grid.BackgroundTransition>
                         <Viewbox
                             x:Name="IconBox"
                             Grid.Row="1"
@@ -171,6 +179,10 @@
                         Background="{TemplateBinding Background}"
                         Control.IsTemplateFocusTarget="True"
                         CornerRadius="{ThemeResource OverlayCornerRadius}">
+                        <contract7Present:Grid.BackgroundTransition>
+                            <contract7Present:BrushTransition Duration="0:0:0.083" />
+                        </contract7Present:Grid.BackgroundTransition>
+
                         <Grid x:Name="PresenterContentRootGrid">
                             <!--  Wrap SelectionIndicator in a grid so that its offset is 0,0 - this enables the offset animation.  -->
                             <Border
@@ -348,6 +360,9 @@
                         Background="{TemplateBinding Background}"
                         Control.IsTemplateFocusTarget="True"
                         CornerRadius="{ThemeResource ControlCornerRadius}">
+                        <contract7Present:Grid.BackgroundTransition>
+                            <contract7Present:BrushTransition Duration="0:0:0.083" />
+                        </contract7Present:Grid.BackgroundTransition>
                         <Grid
                             x:Name="ContentGrid"
                             MinWidth="{ThemeResource NavigationViewItemOnTopMinWidth}"
@@ -512,6 +527,9 @@
                         Background="{TemplateBinding Background}"
                         Control.IsTemplateFocusTarget="True"
                         CornerRadius="{ThemeResource ControlCornerRadius}">
+                        <contract7Present:Grid.BackgroundTransition>
+                            <contract7Present:BrushTransition Duration="0:0:0.083" />
+                        </contract7Present:Grid.BackgroundTransition>
                         <Grid
                             x:Name="ContentGrid"
                             MinWidth="{ThemeResource NavigationViewItemOnTopMinWidth}"

@@ -5,10 +5,11 @@ using CoolapkUWP.Models.Users;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Immutable;
+using Windows.ApplicationModel.Resources;
 
 namespace CoolapkUWP.Models
 {
-    internal class IndexPageModel : Entity, IList
+    internal class IndexPageModel : Entity, IHasDescription
     {
         public string Url { get; private set; }
         public string Title { get; private set; }
@@ -20,7 +21,7 @@ namespace CoolapkUWP.Models
 
         public IndexPageModel(JObject token) : base(token)
         {
-            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("FeedListPage");
+            ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("FeedListPage");
 
             if (token.TryGetValue("entityTemplate", out JToken entityTemplate))
             {
@@ -217,9 +218,13 @@ namespace CoolapkUWP.Models
                                 buider.Add(new FeedModel(item));
                                 break;
 
-                            //case "user":
-                            //    buider.Add(new UserModel(item));
-                            //    break;
+                            case "user":
+                                buider.Add(new UserModel(item));
+                                break;
+
+                            case "collection":
+                                buider.Add(new CollectionModel(item));
+                                break;
 
                             default:
                                 buider.Add(new IndexPageModel(item));
@@ -243,11 +248,11 @@ namespace CoolapkUWP.Models
         TabLink,
         IconLink,
         TextLinks,
-        ScrollLink,
+        GridLink,
         SelectorLink,
     }
 
-    internal class IndexPageHasEntitiesModel : Entity, IList
+    internal class IndexPageHasEntitiesModel : Entity, IHasDescription
     {
         public string Url { get; private set; }
         public string Title { get; private set; }
@@ -335,6 +340,10 @@ namespace CoolapkUWP.Models
                                 buider.Add(new UserModel(item));
                                 break;
 
+                            case "collection":
+                                buider.Add(new CollectionModel(item));
+                                break;
+
                             default:
                                 buider.Add(new IndexPageModel(item));
                                 break;
@@ -350,6 +359,7 @@ namespace CoolapkUWP.Models
             if (token.TryGetValue("pic", out JToken pic) && !string.IsNullOrEmpty(pic.ToString()))
             {
                 Pic = new ImageModel(pic.ToString(), ImageType.OriginImage);
+                ShowPic = true;
             }
             else { ShowPic = false; }
 
@@ -366,7 +376,7 @@ namespace CoolapkUWP.Models
         ShowTitle,
     }
 
-    internal class IndexPageOperationCardModel : Entity, IHasUriAndTitle
+    internal class IndexPageOperationCardModel : Entity, IHasTitle
     {
         public string Url { get; private set; }
         public string Title { get; private set; }

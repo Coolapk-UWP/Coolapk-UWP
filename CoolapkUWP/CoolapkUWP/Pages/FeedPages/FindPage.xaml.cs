@@ -1,27 +1,35 @@
 ﻿using CoolapkUWP.ViewModels.FeedPages;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
+using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
+// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
 namespace CoolapkUWP.Pages.FeedPages
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class IndexPage : Page
+    public sealed partial class FindPage : Page
     {
         private static int PivotIndex = 0;
 
         private Action Refresh;
 
-        public IndexPage() => InitializeComponent();
+        public FindPage() => InitializeComponent();
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
@@ -56,17 +64,16 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public static ObservableCollection<PivotItem> GetMainItems()
         {
-            ResourceLoader loader = ResourceLoader.GetForCurrentView("IndexPage");
+            ResourceLoader loader = ResourceLoader.GetForCurrentView("FindPage");
             ObservableCollection<PivotItem> items = new ObservableCollection<PivotItem>
             {
-                new PivotItem() { Tag = "V9_HOME_TAB_HEADLINE", Header = loader.GetString("V9_HOME_TAB_HEADLINE"), Content = new Frame() },
-                new PivotItem() { Tag = "V9_HOME_TAB_WENDA", Header = loader.GetString("V9_HOME_TAB_WENDA"), Content = new Frame() },
-                new PivotItem() { Tag = "V11_FIND_COOLPIC", Header = loader.GetString("V11_FIND_COOLPIC"), Content = new Frame() },
-                new PivotItem() { Tag = "V11_FIND_DYH", Header = loader.GetString("V11_FIND_DYH"), Content = new Frame() },
-                new PivotItem() { Tag = "V9_HOME_TAB_RANKING", Header = loader.GetString("V9_HOME_TAB_RANKING"), Content = new Frame() },
-                new PivotItem() { Tag = "V11_HOME_TAB_NEWS", Header = loader.GetString("V11_HOME_TAB_NEWS"), Content = new Frame() },
-                new PivotItem() { Tag = "V11_HOME_TAB_JC", Header = loader.GetString("V11_HOME_TAB_JC"), Content = new Frame() },
-                new PivotItem() { Tag = "V11_HOME_MEIHUA", Header = loader.GetString("V11_HOME_MEIHUA"), Content = new Frame() },
+                new PivotItem() { Tag = "V11_HOME_NEW", Header = loader.GetString("V11_HOME_NEW"), Content = new Frame() },
+                new PivotItem() { Tag = "V9_HOME_TAB_SHIPIN", Header = loader.GetString("V9_HOME_TAB_SHIPIN"), Content = new Frame() },
+                new PivotItem() { Tag = "V11_HOME_CAR", Header = loader.GetString("V11_FIND_CAR"), Content = new Frame() },
+                new PivotItem() { Tag = "V10_DIGITAL_HOME", Header = loader.GetString("V10_DIGITAL_HOME"), Content = new Frame() },
+                new PivotItem() { Tag = "V10_CHANNEL_SJB", Header = loader.GetString("V10_CHANNEL_SJB"), Content = new Frame() },
+                new PivotItem() { Tag = "V11_ZHUANTI_EARPHONE", Header = loader.GetString("V11_ZHUANTI_EARPHONE"), Content = new Frame() },
+                new PivotItem() { Tag = "V11_FIND_GOOD_GOODS_HOME", Header = loader.GetString("V11_FIND_GOOD_GOODS_HOME"), Content = new Frame() },
             };
             return items;
         }

@@ -19,10 +19,17 @@
                 x:Key="CardTemplateSelector"
                 Feed="{StaticResource FeedDefaultTemplate}"
                 FeedReply="{StaticResource FeedReplyDefaultTemplate}"
-                IconLinks="{StaticResource IconLinksDefaultTemplate}"
-                Images="{StaticResource ImageCardDefaultTemplate}"
+                GridScrollCard="{StaticResource GridScrollCardTemplate}"
+                IconLinks="{StaticResource IconLinksTemplate}"
+                ImageTextScrollCard="{StaticResource ImageTextScrollCardTemplate}"
+                Images="{StaticResource ImageCardTemplate}"
                 List="{StaticResource ListDefaultTemplate}"
-                Others="{StaticResource Null}" />
+                ListWithSubtitle="{StaticResource ListWithSubtitleDefaultTemplate}"
+                LoginCard="{StaticResource LoginCardTemplate}"
+                MessageCard="{StaticResource MessageCardTemplate}"
+                Others="{StaticResource Empty}"
+                RefreshCard="{StaticResource RefreshCardTemplate}"
+                TitleCard="{StaticResource TitleCardTemplate}" />
         </ResourceDictionary>
     </Page.Resources>
     <muxc:RefreshContainer RefreshRequested="RefreshContainer_RefreshRequested">

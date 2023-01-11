@@ -15,12 +15,19 @@ namespace CoolapkUWP.Models.Feeds
         public string Dateline { get; private set; }
         public string ShareUrl { get; private set; }
         public UserModel UserInfo { get; private set; }
+        public string MessageTitle { get; private set; }
+        public string EntityForward { get; private set; }
         public UserAction UserAction { get; private set; }
         public string FeedType { get; private set; } = "feed";
         public ImmutableArray<ImageModel> PicArr { get; private set; } = ImmutableArray<ImageModel>.Empty;
 
         public SourceFeedModel(JObject token) : base(token)
         {
+            if (token.TryGetValue("entityForward", out JToken entityForward))
+            {
+                EntityForward = entityForward.ToString();
+            }
+
             if (token.TryGetValue("url", out JToken uri) && !string.IsNullOrEmpty(uri.ToString()))
             {
                 Url = uri.ToString();
@@ -62,6 +69,11 @@ namespace CoolapkUWP.Models.Feeds
             if (token.TryGetValue("message", out JToken message))
             {
                 Message = message.ToString();
+            }
+
+            if (token.TryGetValue("message_title", out JToken message_title))
+            {
+                MessageTitle = message_title.ToString();
             }
 
             if (token.TryGetValue("feedType", out JToken feedType))

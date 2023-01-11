@@ -166,7 +166,7 @@
     <value>您确定要重置应用吗？</value>
   </data>
   <data name="GoToTestPage.Description" xml:space="preserve">
-    <value>前往用于测试的页面</value>
+    <value>前往用于测试的页面。</value>
   </data>
   <data name="GoToTestPage.Header" xml:space="preserve">
     <value>前往测试页面</value>
@@ -200,5 +200,38 @@
   </data>
   <data name="CheckUpdates.Content" xml:space="preserve">
     <value>检查更新</value>
+  </data>
+  <data name="FindUpdate" xml:space="preserve">
+    <value>找到新的更新</value>
+  </data>
+  <data name="UpToDate" xml:space="preserve">
+    <value>最新</value>
+  </data>
+  <data name="FrameworkSettings.Description" xml:space="preserve">
+    <value>关于此应用程序框架的信息。</value>
+  </data>
+  <data name="FrameworkSettings.Header" xml:space="preserve">
+    <value>框架信息</value>
+  </data>
+  <data name="FrameworkTextBlock.Text" xml:space="preserve">
+    <value>框架</value>
+  </data>
+  <data name="OSArchitectureTextBlock.Text" xml:space="preserve">
+    <value>操作系统架构</value>
+  </data>
+  <data name="OSPlatformTextBlock.Text" xml:space="preserve">
+    <value>操作系统平台</value>
+  </data>
+  <data name="DeviceFamilyTextBlock.Text" xml:space="preserve">
+    <value>设备类型</value>
+  </data>
+  <data name="CleanCacheButton.Content" xml:space="preserve">
+    <value>清理</value>
+  </data>
+  <data name="CleanCacheSettings.Description" xml:space="preserve">
+    <value>清理图片缓存。</value>
+  </data>
+  <data name="CleanCacheSettings.Header" xml:space="preserve">
+    <value>清理缓存</value>
   </data>
 </root>

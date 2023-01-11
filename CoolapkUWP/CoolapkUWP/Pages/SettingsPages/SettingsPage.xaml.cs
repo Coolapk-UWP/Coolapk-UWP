@@ -55,6 +55,12 @@ namespace CoolapkUWP.Pages.SettingsPages
                 case "TestPage":
                     _ = Frame.Navigate(typeof(TestPage));
                     break;
+                case "CleanCache":
+                    Provider.CleanCache();
+                    break;
+                case "CheckUpdate":
+                    Provider.CheckUpdate();
+                    break;
                 default:
                     break;
             }

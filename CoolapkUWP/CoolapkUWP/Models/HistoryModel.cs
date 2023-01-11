@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 
 namespace CoolapkUWP.Models
 {
-    public class HistoryModel : Entity, IList
+    public class HistoryModel : Entity, IHasDescription
     {
         public string Url { get; private set; }
         public string Title { get; private set; }
