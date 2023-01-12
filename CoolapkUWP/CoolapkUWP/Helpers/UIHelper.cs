@@ -1,25 +1,25 @@
-﻿using Microsoft.Toolkit.Uwp.UI;
+﻿using CoolapkUWP.Pages;
+using CoolapkUWP.Pages.BrowserPages;
+using CoolapkUWP.Pages.FeedPages;
+using CoolapkUWP.ViewModels.BrowserPages;
+using CoolapkUWP.ViewModels.FeedPages;
+using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
-using CoolapkUWP.Pages;
 using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.Resources;
+using Windows.Data.Xml.Dom;
 using Windows.Foundation.Metadata;
-using Windows.System;
 using Windows.UI.Core;
+using Windows.UI.Notifications;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
-using System.Net.Http;
-using Windows.ApplicationModel.Resources;
-using Windows.UI.Notifications;
-using Windows.Data.Xml.Dom;
-using System.Text;
-using CoolapkUWP.Pages.FeedPages;
-using CoolapkUWP.ViewModels.FeedPages;
 
 namespace CoolapkUWP.Helpers
 {
@@ -342,7 +342,7 @@ namespace CoolapkUWP.Helpers
                 }
                 else
                 {
-                    //Navigate(typeof(BrowserPage), new object[] { false, str });
+                    Navigate(typeof(BrowserPage), new BrowserViewModel(str));
                 }
             }
             else if (str.IsFirst(i++))
@@ -353,7 +353,7 @@ namespace CoolapkUWP.Helpers
                 }
                 else
                 {
-                    //Navigate(typeof(BrowserPage), new object[] { false, str });
+                    Navigate(typeof(BrowserPage), new BrowserViewModel(str));
                 }
             }
             else if (str.IsFirst(i++))

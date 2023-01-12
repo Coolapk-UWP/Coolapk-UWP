@@ -1,5 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Pages.BrowserPages;
+using CoolapkUWP.ViewModels.BrowserPages;
 using Microsoft.Toolkit.Uwp.UI;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
@@ -60,7 +62,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
                 case "ReportButton":
                     DisabledCopy();
-                    //UIHelper.Navigate(typeof(Pages.BrowserPage), new object[] { false, element.Tag.ToString() });
+                    UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel(element.Tag.ToString()));
                     break;
 
                 case "ShareButton":

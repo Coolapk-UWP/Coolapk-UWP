@@ -258,54 +258,57 @@
                                 </SplitView.Pane>
 
                                 <SplitView.Content>
-                                    <Grid
-                                        x:Name="ContentGrid"
+                                    <Border
+                                        x:Name="ContentBorder"
                                         Margin="{ThemeResource NavigationViewContentMargin}"
-                                        Background="{ThemeResource NavigationViewContentBackground}"
-                                        BorderBrush="{ThemeResource NavigationViewContentGridBorderBrush}"
-                                        BorderThickness="{ThemeResource NavigationViewContentGridBorderThickness}"
                                         CornerRadius="{ThemeResource NavigationViewContentGridCornerRadius}">
-                                        <contract7Present:Grid.BackgroundTransition>
-                                            <contract7Present:BrushTransition />
-                                        </contract7Present:Grid.BackgroundTransition>
-
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="*" />
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-
                                         <Grid
-                                            x:Name="ContentTopPadding"
-                                            Grid.ColumnSpan="2"
-                                            Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.TopPadding}"
-                                            Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.LeftPaneVisibility}" />
+                                            x:Name="ContentGrid"
+                                            Background="{ThemeResource NavigationViewContentBackground}"
+                                            BorderBrush="{ThemeResource NavigationViewContentGridBorderBrush}"
+                                            BorderThickness="{ThemeResource NavigationViewContentGridBorderThickness}">
+                                            <contract7Present:Grid.BackgroundTransition>
+                                                <contract7Present:BrushTransition />
+                                            </contract7Present:Grid.BackgroundTransition>
 
-                                        <Grid x:Name="ContentLeftPadding" Grid.Row="1" />
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
 
-                                        <ContentControl
-                                            x:Name="HeaderContent"
-                                            Grid.Row="1"
-                                            Grid.Column="1"
-                                            HorizontalContentAlignment="Stretch"
-                                            VerticalContentAlignment="Stretch"
-                                            Content="{TemplateBinding Header}"
-                                            ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                            IsTabStop="False"
-                                            Style="{StaticResource NavigationViewTitleHeaderContentControlTextStyle}" />
+                                            <Grid
+                                                x:Name="ContentTopPadding"
+                                                Grid.ColumnSpan="2"
+                                                Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.TopPadding}"
+                                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.LeftPaneVisibility}" />
 
-                                        <ContentPresenter
-                                            x:Name="ContentPresenter"
-                                            Grid.Row="2"
-                                            Grid.ColumnSpan="2"
-                                            Margin="{ThemeResource NavigationViewContentPresenterMargin}"
-                                            AutomationProperties.LandmarkType="Main"
-                                            Content="{TemplateBinding Content}" />
-                                    </Grid>
+                                            <Grid x:Name="ContentLeftPadding" Grid.Row="1" />
+
+                                            <ContentControl
+                                                x:Name="HeaderContent"
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                HorizontalContentAlignment="Stretch"
+                                                VerticalContentAlignment="Stretch"
+                                                Content="{TemplateBinding Header}"
+                                                ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                                IsTabStop="False"
+                                                Style="{StaticResource NavigationViewTitleHeaderContentControlTextStyle}" />
+
+                                            <ContentPresenter
+                                                x:Name="ContentPresenter"
+                                                Grid.Row="2"
+                                                Grid.ColumnSpan="2"
+                                                Margin="{ThemeResource NavigationViewContentPresenterMargin}"
+                                                AutomationProperties.LandmarkType="Main"
+                                                Content="{TemplateBinding Content}" />
+                                        </Grid>
+                                    </Border>
                                 </SplitView.Content>
                             </SplitView>
 
@@ -532,8 +535,8 @@
                                     <VisualState.Setters>
                                         <Setter Target="HeaderContent.Margin" Value="{ThemeResource NavigationViewMinimalHeaderMargin}" />
                                         <Setter Target="ContentGrid.BorderThickness" Value="{ThemeResource NavigationViewMinimalContentGridBorderThickness}" />
-                                        <Setter Target="ContentGrid.CornerRadius" Value="{ThemeResource NavigationViewMinimalContentGridCornerRadius}" />
-                                        <Setter Target="ContentGrid.Margin" Value="{ThemeResource NavigationViewMinimalContentMargin}" />
+                                        <Setter Target="ContentBorder.CornerRadius" Value="{ThemeResource NavigationViewMinimalContentGridCornerRadius}" />
+                                        <Setter Target="ContentBorder.Margin" Value="{ThemeResource NavigationViewMinimalContentMargin}" />
                                     </VisualState.Setters>
                                 </VisualState>
 
@@ -541,8 +544,8 @@
                                     <VisualState.Setters>
                                         <Setter Target="HeaderContent.Margin" Value="{ThemeResource NavigationViewTopHeaderMargin}" />
                                         <Setter Target="ContentGrid.BorderThickness" Value="{ThemeResource TopNavigationViewContentGridBorderThickness}" />
-                                        <Setter Target="ContentGrid.CornerRadius" Value="{ThemeResource TopNavigationViewContentGridCornerRadius}" />
-                                        <Setter Target="ContentGrid.Margin" Value="{ThemeResource TopNavigationViewContentMargin}" />
+                                        <Setter Target="ContentBorder.CornerRadius" Value="{ThemeResource TopNavigationViewContentGridCornerRadius}" />
+                                        <Setter Target="ContentBorder.Margin" Value="{ThemeResource TopNavigationViewContentMargin}" />
                                     </VisualState.Setters>
                                 </VisualState>
 
@@ -550,8 +553,8 @@
                                     <VisualState.Setters>
                                         <Setter Target="HeaderContent.Margin" Value="{ThemeResource NavigationViewMinimalHeaderMargin}" />
                                         <Setter Target="ContentGrid.BorderThickness" Value="{ThemeResource NavigationViewMinimalContentGridBorderThickness}" />
-                                        <Setter Target="ContentGrid.CornerRadius" Value="{ThemeResource NavigationViewMinimalContentGridCornerRadius}" />
-                                        <Setter Target="ContentGrid.Margin" Value="{ThemeResource NavigationViewMinimalContentMargin}" />
+                                        <Setter Target="ContentBorder.CornerRadius" Value="{ThemeResource NavigationViewMinimalContentGridCornerRadius}" />
+                                        <Setter Target="ContentBorder.Margin" Value="{ThemeResource NavigationViewMinimalContentMargin}" />
                                     </VisualState.Setters>
                                 </VisualState>
                             </VisualStateGroup>

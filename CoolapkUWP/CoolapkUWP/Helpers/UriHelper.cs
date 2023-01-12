@@ -80,6 +80,8 @@ namespace CoolapkUWP.Helpers
         public static readonly Uri DevUri = new Uri("https://developer.coolapk.com");
         public static readonly Uri BilibiliUri = new Uri("https://api.vc.bilibili.com");
 
+        public const string LoginUri = "https://account.coolapk.com/auth/loginByCoolapk";
+
         public static Uri GetUri(UriType type, params object[] args)
         {
             string u = string.Format(GetTemplate(type), args);

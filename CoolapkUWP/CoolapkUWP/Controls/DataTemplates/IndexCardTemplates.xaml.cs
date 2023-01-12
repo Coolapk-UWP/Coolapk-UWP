@@ -1,7 +1,9 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels;
+using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
 using System;
 using System.Collections;
@@ -107,12 +109,11 @@ namespace CoolapkUWP.Controls.DataTemplates
             {
                 if (string.IsNullOrEmpty(u.Url) || u.Url == "/topic/quickList?quickType=list") { return; }
                 string str = u.Url;
-                //if (str == "Login")
-                //{
-                //    UIHelper.Navigate(typeof(BrowserPage), new object[] { true, null });
-                //}
-                //else
-                if (str.IndexOf("/page", StringComparison.Ordinal) == 0)
+                if (str == "Login")
+                {
+                    UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel(UriHelper.LoginUri));
+                }
+                else if (str.IndexOf("/page", StringComparison.Ordinal) == 0)
                 {
                     str = str.Replace("/page", "/page/dataList");
                     str += $"&title={u.Title}";

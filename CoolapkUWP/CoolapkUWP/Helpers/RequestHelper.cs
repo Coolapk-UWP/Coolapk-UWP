@@ -25,178 +25,37 @@ namespace CoolapkUWP.Helpers
     public static class RequestHelper
     {
         private static bool IsInternetAvailable => mtuc.NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable;
-        private static readonly Dictionary<Uri, Dictionary<int, (DateTime date, string data)>> ResponseCache = new Dictionary<Uri, Dictionary<int, (DateTime, string)>>();
         private static readonly object locker = new object();
 
-        internal static readonly Timer CleanCacheTimer = new Timer(o =>
+        public static async Task<(bool isSucceed, JToken result)> GetDataAsync(Uri uri, bool isBackground = false)
         {
-            if (IsInternetAvailable)
+            string results = await NetworkHelper.GetStringAsync(uri, NetworkHelper.GetCoolapkCookies(uri), "XMLHttpRequest", isBackground);
+            if (string.IsNullOrEmpty(results)) { return (false, null); }
+            JObject token;
+            try { token = JObject.Parse(results); }
+            catch (Exception ex)
             {
-                DateTime now = DateTime.Now;
-                lock (locker)
-                {
-                    foreach (KeyValuePair<Uri, Dictionary<int, (DateTime date, string data)>> i in ResponseCache)
-                    {
-                        int[] needDelete = (from j in i.Value
-                                            where (now - j.Value.date).TotalMinutes > 2
-                                            select j.Key).ToArray();
-                        foreach (int item in needDelete)
-                        {
-                            _ = ResponseCache[i.Key].Remove(item);
-                        }
-                    }
-                }
+                SettingsHelper.LogManager.GetLogger(nameof(RequestHelper)).Error(ex.ExceptionToMessage(), ex);
+                UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
+                return (false, null);
             }
-        }, null, TimeSpan.FromMinutes(2), TimeSpan.FromMinutes(2));
-
-        public static async Task<(bool isSucceed, JToken result)> GetDataAsync(Uri uri, bool isBackground = false, bool forceRefresh = true)
-        {
-            string json = string.Empty;
-            (int page, Uri uri) info = uri.GetPage();
-            (bool isSucceed, JToken result) result;
-
-            (bool isSucceed, JToken result) GetResult(string jsons)
+            if (!token.TryGetValue("data", out JToken data) && token.TryGetValue("message", out JToken message))
             {
-                if (string.IsNullOrEmpty(jsons)) { return (false, null); }
-                JObject o;
-                try { o = JObject.Parse(jsons); }
-                catch (Exception ex)
-                {
-                    SettingsHelper.LogManager.GetLogger(nameof(RequestHelper)).Error(ex.ExceptionToMessage(), ex);
-                    UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
-                    return (false, null);
-                }
-                if (!o.TryGetValue("data", out JToken token) && o.TryGetValue("message", out JToken message))
-                {
-                    UIHelper.ShowInAppMessage(MessageType.Message, message.ToString());
-                    return (false, null);
-                }
-                else { return (token != null && !string.IsNullOrEmpty(token.ToString()), token); }
+                UIHelper.ShowInAppMessage(MessageType.Message, message.ToString());
+                return (false, null);
             }
-
-            void ReadCache()
-            {
-                lock (locker)
-                {
-                    json = ResponseCache[info.uri][info.page].data;
-                }
-                result = GetResult(json);
-            }
-
-            void WriteCache()
-            {
-                lock (locker)
-                {
-                    if (!ResponseCache.ContainsKey(info.uri))
-                    {
-                        ResponseCache.Add(info.uri, new Dictionary<int, (DateTime date, string data)>());
-                    }
-                    if (!ResponseCache[info.uri].ContainsKey(info.page))
-                    {
-                        ResponseCache[info.uri].Add(info.page, (DateTime.Now, json));
-                    }
-                    else
-                    {
-                        ResponseCache[info.uri][info.page] = (DateTime.Now, json);
-                    }
-                }
-            }
-
-            if (forceRefresh && IsInternetAvailable)
-            {
-                lock (locker)
-                {
-                    ResponseCache.Remove(info.uri);
-                }
-            }
-
-            bool isCached = false;
-
-            lock (locker)
-            {
-                isCached = ResponseCache.ContainsKey(info.uri)
-                && ResponseCache[info.uri].ContainsKey(info.page)
-                && (!IsInternetAvailable || (DateTime.Now - ResponseCache[info.uri][info.page].date).TotalMinutes <= 2);
-            }
-
-            if (!isCached)
-            {
-                json = await NetworkHelper.GetStringAsync(uri, NetworkHelper.GetCoolapkCookies(uri), "XMLHttpRequest", isBackground);
-                result = GetResult(json);
-                if (!result.isSucceed) { return result; }
-                WriteCache();
-            }
-            else
-            {
-                ReadCache();
-            }
-            return result;
+            else { return (data != null && !string.IsNullOrWhiteSpace(data.ToString()), data); }
         }
 
         public static async Task<(bool isSucceed, string result)> GetStringAsync(Uri uri, bool isBackground = false, bool forceRefresh = true)
         {
-            string json = string.Empty;
-            (int page, Uri uri) info = uri.GetPage();
-            (bool isSucceed, string result) result;
-
-            (bool isSucceed, string result) GetResult()
+            string results = await NetworkHelper.GetStringAsync(uri, NetworkHelper.GetCoolapkCookies(uri), "XMLHttpRequest", isBackground);
+            if (string.IsNullOrWhiteSpace(results))
             {
-                if (string.IsNullOrEmpty(json))
-                {
-                    UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
-                    return (false, null);
-                }
-                else { return (true, json); }
+                UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
+                return (false, results);
             }
-
-            if (forceRefresh && IsInternetAvailable)
-            {
-                lock (locker)
-                {
-                    ResponseCache.Remove(info.uri);
-                }
-            }
-
-            bool isCached = false;
-
-            lock (locker)
-            {
-                isCached = ResponseCache.ContainsKey(info.uri)
-                && ResponseCache[info.uri].ContainsKey(info.page)
-                && (!IsInternetAvailable || (DateTime.Now - ResponseCache[info.uri][info.page].date).TotalMinutes <= 2);
-            }
-
-            if (!isCached)
-            {
-                json = await NetworkHelper.GetStringAsync(uri, NetworkHelper.GetCoolapkCookies(uri), "XMLHttpRequest", isBackground);
-                result = GetResult();
-                if (!result.isSucceed) { return result; }
-                lock (locker)
-                {
-                    if (!ResponseCache.ContainsKey(info.uri))
-                    {
-                        ResponseCache.Add(info.uri, new Dictionary<int, (DateTime date, string data)>());
-                    }
-                    if (!ResponseCache[info.uri].ContainsKey(info.page))
-                    {
-                        ResponseCache[info.uri].Add(info.page, (DateTime.Now, json));
-                    }
-                    else
-                    {
-                        ResponseCache[info.uri][info.page] = (DateTime.Now, json);
-                    }
-                }
-            }
-            else
-            {
-                lock (locker)
-                {
-                    json = ResponseCache[info.uri][info.page].data;
-                }
-                result = GetResult();
-                if (!result.isSucceed) { return result; }
-            }
-            return result;
+            else { return (true, results); }
         }
 
         public static async Task<(bool isSucceed, JToken result)> PostDataAsync(Uri uri, HttpContent content = null, bool isBackground = false)
@@ -382,7 +241,7 @@ namespace CoolapkUWP.Helpers
 
         public static async Task<bool> CheckLogin()
         {
-            (bool isSucceed, _) = await GetDataAsync(UriHelper.GetUri(UriType.CheckLoginInfo), true, true);
+            (bool isSucceed, _) = await GetDataAsync(UriHelper.GetUri(UriType.CheckLoginInfo), true);
             return isSucceed;
         }
     }
