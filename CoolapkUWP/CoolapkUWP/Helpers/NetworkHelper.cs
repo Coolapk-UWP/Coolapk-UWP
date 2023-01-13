@@ -30,9 +30,9 @@ namespace CoolapkUWP.Helpers
 
         static NetworkHelper()
         {
-            SetLoginCookie();
-            SetRequestHeaders();
             ThemeHelper.UISettingChanged.Add((arg) => Client.DefaultRequestHeaders.ReplaceDarkMode());
+            SetRequestHeaders();
+            SetLoginCookie();
         }
 
         public static void SetLoginCookie()
@@ -56,6 +56,7 @@ namespace CoolapkUWP.Helpers
                     cookieManager.SetCookie(username);
                     cookieManager.SetCookie(token);
                 }
+                SettingsHelper.InvokeLoginChanged(Uid, true);
             }
         }
 

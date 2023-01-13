@@ -97,6 +97,8 @@ namespace CoolapkUWP.Helpers
 
         static SettingsHelper() => SetDefaultSettings();
 
+        public static void InvokeLoginChanged(string sender, bool args) => LoginChanged?.Invoke(sender, args);
+
         public static async Task<bool> Login()
         {
             using (HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter())
@@ -130,7 +132,7 @@ namespace CoolapkUWP.Helpers
                     Set(Uid, uid);
                     Set(Token, token);
                     Set(UserName, userName);
-                    LoginChanged?.Invoke(uid, true);
+                    InvokeLoginChanged(uid, true);
                     return true;
                 }
             }
@@ -158,7 +160,7 @@ namespace CoolapkUWP.Helpers
                     Set(SettingsHelper.Uid, Uid);
                     Set(SettingsHelper.Token, Token);
                     Set(SettingsHelper.UserName, UserName);
-                    LoginChanged?.Invoke(Uid, true);
+                    InvokeLoginChanged(Uid, true);
                     return true;
                 }
                 else
@@ -210,7 +212,7 @@ namespace CoolapkUWP.Helpers
             Set(Uid, string.Empty);
             Set(Token, string.Empty);
             Set(UserName, string.Empty);
-            LoginChanged?.Invoke(string.Empty, false);
+            InvokeLoginChanged(string.Empty, false);
         }
     }
 

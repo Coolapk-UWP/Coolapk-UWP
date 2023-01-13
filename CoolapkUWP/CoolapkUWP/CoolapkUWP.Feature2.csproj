@@ -174,6 +174,7 @@
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Helpers\EmojiHelper.cs" />
     <Compile Include="Helpers\ImageCacheHelper.cs" />
+    <Compile Include="Helpers\LanguageHelper.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
     <Compile Include="Helpers\RequestHelper.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
@@ -1035,6 +1036,9 @@
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\zh-CN\BrowserPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\About\About.zh-CN.md" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

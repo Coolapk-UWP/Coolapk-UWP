@@ -8,6 +8,9 @@
     NavigationCacheMode="Required"
     mc:Ignorable="d">
     <Grid>
-        <WebView x:Name="WebView" />
+        <WebView
+            x:Name="WebView"
+            NavigationCompleted="WebView_NavigationCompleted"
+            NavigationStarting="WebView_NavigationStarting" />
     </Grid>
 </Page>

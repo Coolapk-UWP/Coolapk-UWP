@@ -1,34 +1,25 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Pages.FeedPages;
+using CoolapkUWP.Pages.SettingsPages;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.ComponentModel;
 using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
-using Windows.ApplicationModel;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
+using Windows.Phone.UI.Input;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using muxc = Microsoft.UI.Xaml.Controls;
-using Windows.Phone.UI.Input;
-using CoolapkUWP.Helpers;
-using CoolapkUWP.Pages.FeedPages;
-using CoolapkUWP.ViewModels;
-using CoolapkUWP.ViewModels.FeedPages;
-using CoolapkUWP.Pages.SettingsPages;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -37,16 +28,49 @@ namespace CoolapkUWP.Pages
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
-        public Action NavigationViewLoaded { get; set; }
-        
+        private string _userName;
+        public string UserName
+        {
+            get => _userName;
+            set
+            {
+                if (_userName != value)
+                {
+                    _userName = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
+        private ImageSource _userAvatar;
+        public ImageSource UserAvatar
+        {
+            get => _userAvatar;
+            set
+            {
+                if (_userAvatar != value)
+                {
+                    _userAvatar = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
         private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
         {
             ("Home", typeof(IndexPage)),
             ("Circle", typeof(CirclePage)),
             ("Settings", typeof(SettingsPage)),
         };
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        {
+            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
+        }
 
         public MainPage()
         {
@@ -61,7 +85,9 @@ namespace CoolapkUWP.Pages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            Window.Current.SetTitleBar(AppTitleBar);
+            OnLoginChanged(string.Empty, true);
+            Window.Current.SetTitleBar(DragRegion);
+            SettingsHelper.LoginChanged += OnLoginChanged;
             SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
             if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
             {
@@ -77,8 +103,6 @@ namespace CoolapkUWP.Pages
             // Add handler for ContentFrame navigation.
             NavigationViewFrame.Navigated += On_Navigated;
             NavigationView.SelectedItem = NavigationView.MenuItems[0];
-            // Delay necessary to ensure NavigationView visual state can match navigation
-            _ = Task.Delay(500).ContinueWith(_ => NavigationViewLoaded?.Invoke(), TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void NavigationView_Navigate(string NavItemTag, NavigationTransitionInfo TransitionInfo, object vs = null)
@@ -152,33 +176,39 @@ namespace CoolapkUWP.Pages
 
         private void NavigationViewControl_DisplayModeChanged(muxc.NavigationView sender, muxc.NavigationViewDisplayModeChangedEventArgs args)
         {
-            if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.UIElement", "TranslationTransition"))
-            {
-                AppTitleBar.TranslationTransition = new Vector3Transition();
+            LeftPaddingColumn.Width = sender.DisplayMode == muxc.NavigationViewDisplayMode.Minimal &&
+                sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed &&
+                sender.PaneDisplayMode != muxc.NavigationViewPaneDisplayMode.Top
+                ? new GridLength((48 * 2) - 8)
+                : new GridLength(48);
+        }
 
-                AppTitleBar.Translation = sender.DisplayMode == muxc.NavigationViewDisplayMode.Minimal &&
-                    sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed &&
-                    sender.PaneDisplayMode != muxc.NavigationViewPaneDisplayMode.Top
-                    ? new System.Numerics.Vector3(((float)48 * 2) - 8, 0, 0)
-                    : new System.Numerics.Vector3(48, 0, 0);
+        private void OnLoginChanged(string sender, bool args) => SetUserAvatar(args);
+
+        private async void SetUserAvatar(bool isLogin)
+        {
+            if (isLogin && await SettingsHelper.CheckLoginAsync())
+            {
+                string UID = SettingsHelper.Get<string>(SettingsHelper.Uid);
+                if (!string.IsNullOrEmpty(UID))
+                {
+                    (string UID, string UserName, string UserAvatar) results = await NetworkHelper.GetUserInfoByNameAsync(UID);
+                    if (results.UID != UID) { return; }
+                    UserName = results.UserName;
+                    UserAvatar = new BitmapImage(new Uri(results.UserAvatar));
+                }
             }
             else
             {
-                Thickness currMargin = AppTitleBar.Margin;
-
-                AppTitleBar.Margin = sender.DisplayMode == muxc.NavigationViewDisplayMode.Minimal &&
-                    sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed &&
-                    sender.PaneDisplayMode != muxc.NavigationViewPaneDisplayMode.Top
-                    ? new Thickness((48 * 2) - 8, currMargin.Top, currMargin.Right, currMargin.Bottom)
-                    : new Thickness(48, currMargin.Top, currMargin.Right, currMargin.Bottom);
+                UserName = null;
+                UserAvatar = null;
             }
         }
 
         private void UpdateAppTitle(CoreApplicationViewTitleBar coreTitleBar)
         {
             //ensure the custom title bar does not overlap window caption controls
-            Thickness currMargin = AppTitleBar.Margin;
-            AppTitleBar.Margin = new Thickness(currMargin.Left, currMargin.Top, coreTitleBar.SystemOverlayRightInset, currMargin.Bottom);
+            RightPaddingColumn.Width = new GridLength(coreTitleBar.SystemOverlayRightInset);
         }
 
         private void System_BackRequested(object sender, BackRequestedEventArgs e)

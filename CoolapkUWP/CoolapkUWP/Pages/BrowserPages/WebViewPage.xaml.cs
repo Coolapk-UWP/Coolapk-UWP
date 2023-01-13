@@ -55,9 +55,12 @@ namespace CoolapkUWP.Pages.BrowserPages
         private void WebView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
         {
             UIHelper.ShowProgressBar();
-            //WebView.NavigationStarting -= WebView_NavigationStarting;
-            //args.Cancel = true;
-            //LoadUri(args.Uri);
+            if (args.Uri.Host.Contains("coolapk"))
+            {
+                WebView.NavigationStarting -= WebView_NavigationStarting;
+                args.Cancel = true;
+                LoadUri(args.Uri);
+            }
         }
 
         private void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)

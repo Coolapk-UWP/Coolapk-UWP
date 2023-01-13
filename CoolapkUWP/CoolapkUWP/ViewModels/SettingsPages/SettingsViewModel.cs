@@ -1,11 +1,14 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Update;
+using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.ComponentModel;
 using System.Reflection;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Resources;
+using Windows.Storage;
 using Windows.System.Profile;
 using Windows.UI.Xaml;
 
@@ -209,11 +212,27 @@ namespace CoolapkUWP.ViewModels.SettingsPages
             {
                 string ver = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
                 string name = ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安";
+                GetAboutTextBlockText();
                 return $"{name} v{ver}";
             }
         }
 
         public SettingsViewModel() => Caches = this;
+
+        private async void GetAboutTextBlockText()
+        {
+            await Task.Run(async () =>
+            {
+                string langcode = LanguageHelper.GetPrimaryLanguage();
+                Uri dataUri = new Uri($"ms-appx:///Assets/About/About.{langcode}.md");
+                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
+                if (file != null)
+                {
+                    string markdown = await FileIO.ReadTextAsync(file);
+                    _ = DispatcherHelper.ExecuteOnUIThreadAsync(() => AboutTextBlockText = markdown);
+                }
+            });
+        }
 
         public async void CleanCache()
         {
