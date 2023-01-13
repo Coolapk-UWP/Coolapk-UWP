@@ -8,8 +8,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 
-#nullable enable
-
 namespace Microsoft.Toolkit.Uwp.UI
 {
     /// <inheritdoc cref="TextBoxExtensions"/>
@@ -29,9 +27,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// </summary>
         /// <param name="textBox">The target <see cref="TextBox"/> control.</param>
         /// <returns>The value of <see cref="SurfaceDialOptionsProperty"/> for <paramref name="textBox"/>.</returns>
-        public static SurfaceDialOptions? GetSurfaceDialOptions(TextBox textBox)
+        public static SurfaceDialOptions GetSurfaceDialOptions(TextBox textBox)
         {
-            return (SurfaceDialOptions?)textBox.GetValue(SurfaceDialOptionsProperty);
+            return (SurfaceDialOptions)textBox.GetValue(SurfaceDialOptionsProperty);
         }
 
         /// <summary>
@@ -39,7 +37,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// </summary>
         /// <param name="textBox">The target <see cref="TextBox"/> control.</param>
         /// <param name="value">The value to set the property to.</param>
-        public static void SetSurfaceDialOptions(TextBox textBox, SurfaceDialOptions? value)
+        public static void SetSurfaceDialOptions(TextBox textBox, SurfaceDialOptions value)
         {
             textBox.SetValue(SurfaceDialOptionsProperty, value);
         }
@@ -55,18 +53,18 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <summary>
         /// The Surface Dial controller instance itself.
         /// </summary>
-        private static RadialController? _controller;
+        private static RadialController _controller;
 
         /// <summary>
         /// A default menu item that will be used for this to function.
         /// It will automatically be cleaned up when you move away from the <see cref="TextBox"/>, and created on Focus.
         /// </summary>
-        private static RadialControllerMenuItem? _stepTextMenuItem;
+        private static RadialControllerMenuItem _stepTextMenuItem;
 
         /// <summary>
         /// The textbox itself needed to reference the current <see cref="TextBox"/> that is being modified.
         /// </summary>
-        private static TextBox? _textBox;
+        private static TextBox _textBox;
 
         /// <summary>
         /// Gets or sets the controller for the Surface Dial.
@@ -78,7 +76,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             get
             {
-                return _controller ??= RadialController.CreateForCurrentView();
+                return _controller = _controller ?? RadialController.CreateForCurrentView();
             }
             set => _controller = value;
         }
@@ -98,7 +96,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             }
 
             string text = _textBox.Text;
-            SurfaceDialOptions? options = GetSurfaceDialOptions(_textBox) ?? SurfaceDialOptions.Default;
+            SurfaceDialOptions options = GetSurfaceDialOptions(_textBox) ?? SurfaceDialOptions.Default;
 
             if (double.TryParse(text, out double number))
             {
@@ -131,18 +129,18 @@ namespace Microsoft.Toolkit.Uwp.UI
                 return;
             }
 
-            if (d is not TextBox textBox)
+            if (!(d is TextBox textBox))
             {
                 return;
             }
 
             // Initialize our RadialController once.
-            _controller ??= RadialController.CreateForCurrentView();
+            _controller = _controller ?? RadialController.CreateForCurrentView();
 
             textBox.GotFocus -= TextBox_GotFocus_SurfaceDial;
             textBox.LostFocus -= TextBox_LostFocus_SurfaceDial;
 
-            if (e.NewValue is not null)
+            if (e.NewValue != null)
             {
                 textBox.GotFocus += TextBox_GotFocus_SurfaceDial;
                 textBox.LostFocus += TextBox_LostFocus_SurfaceDial;
@@ -162,9 +160,9 @@ namespace Microsoft.Toolkit.Uwp.UI
                 return;
             }
 
-            SurfaceDialOptions? options = GetSurfaceDialOptions(_textBox) ?? SurfaceDialOptions.Default;
+            SurfaceDialOptions options = GetSurfaceDialOptions(_textBox) ?? SurfaceDialOptions.Default;
 
-            if (_stepTextMenuItem is not null)
+            if (_stepTextMenuItem != null)
             {
                 _controller.Menu.Items.Remove(_stepTextMenuItem);
             }
@@ -202,9 +200,9 @@ namespace Microsoft.Toolkit.Uwp.UI
             _controller.RotationChanged -= Controller_RotationChanged;
             _controller.ButtonClicked -= Controller_ButtonClicked;
 
-            SurfaceDialOptions? options = GetSurfaceDialOptions(_textBox) ?? SurfaceDialOptions.Default;
+            SurfaceDialOptions options = GetSurfaceDialOptions(_textBox) ?? SurfaceDialOptions.Default;
 
-            _stepTextMenuItem ??= RadialControllerMenuItem.CreateFromKnownIcon("Step Text Box", options.Icon);
+            _stepTextMenuItem = _stepTextMenuItem ?? RadialControllerMenuItem.CreateFromKnownIcon("Step Text Box", options.Icon);
 
             _controller.Menu.Items.Add(_stepTextMenuItem);
             _controller.Menu.SelectMenuItem(_stepTextMenuItem);

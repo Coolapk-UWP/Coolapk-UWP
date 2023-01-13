@@ -552,15 +552,13 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             CompositionGetValueStatus result = GetVisual(element).Properties.TryGetVector3("Translation", out Vector3 translation);
 
-            return result switch
-            {
+            return result == CompositionGetValueStatus.Succeeded
                 // The ("G", CultureInfo.InvariantCulture) combination produces a string with the default numeric
                 // formatting style, and using ',' as component separator, so that the resulting text can safely
                 // be parsed back if needed with the StringExtensions.ToVector3(string) extension, which uses
                 // the invariant culture mode by default so that the syntax will always match that from XAML.
-                CompositionGetValueStatus.Succeeded => translation.ToString("G", CultureInfo.InvariantCulture),
-                _ => "<0, 0, 0>"
-            };
+                ? translation.ToString("G", CultureInfo.InvariantCulture)
+                : "<0, 0, 0>";
         }
 
         private static void SetTranslationForElement(string value, UIElement element)

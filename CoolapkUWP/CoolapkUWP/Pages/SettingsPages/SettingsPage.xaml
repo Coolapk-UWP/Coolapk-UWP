@@ -5,6 +5,7 @@
     xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:cwuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:Microsoft.Toolkit.Uwp.Helpers"
     xmlns:interopservices="using:System.Runtime.InteropServices"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
@@ -214,7 +215,7 @@
                                     Grid.Column="1"
                                     Padding="32,0,0,8"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="{x:Bind interopservices:RuntimeInformation.OSDescription}"
+                                    Text="{x:Bind helpers:SystemInformation.Instance.OperatingSystemVersion}"
                                     TextWrapping="WrapWholeWords" />
 
                                 <TextBlock

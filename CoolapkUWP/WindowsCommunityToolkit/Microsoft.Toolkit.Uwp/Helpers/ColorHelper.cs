@@ -120,8 +120,8 @@ namespace Microsoft.Toolkit.Uwp.Helpers
 
             return ThrowFormatException();
 
-            static void ThrowArgumentException() => throw new ArgumentException("The parameter \"colorString\" must not be null or empty.");
-            static Color ThrowFormatException() => throw new FormatException("The parameter \"colorString\" is not a recognized Color format.");
+            void ThrowArgumentException() => throw new ArgumentException("The parameter \"colorString\" must not be null or empty.");
+            Color ThrowFormatException() => throw new FormatException("The parameter \"colorString\" is not a recognized Color format.");
         }
 
         /// <summary>

@@ -51,7 +51,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Helpers
 
             return taskCompletionSource.Task;
 
-            static void ThrowArgumentNullException() => throw new ArgumentNullException("The parameter \"action\" must not be null.");
+            void ThrowArgumentNullException() => throw new ArgumentNullException("The parameter \"action\" must not be null.");
         }
     }
 }

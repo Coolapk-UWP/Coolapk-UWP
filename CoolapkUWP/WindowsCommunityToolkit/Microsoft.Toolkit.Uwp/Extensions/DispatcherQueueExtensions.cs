@@ -9,8 +9,6 @@ using Windows.Foundation;
 using Windows.Foundation.Metadata;
 using Windows.System;
 
-#nullable enable
-
 namespace Microsoft.Toolkit.Uwp
 {
     /// <summary>
@@ -52,15 +50,15 @@ namespace Microsoft.Toolkit.Uwp
                 }
             }
 
-            static Task TryEnqueueAsync(DispatcherQueue dispatcher, Action function, DispatcherQueuePriority priority)
+            Task TryEnqueueAsync(DispatcherQueue _dispatcher, Action _function, DispatcherQueuePriority _priority)
             {
-                var taskCompletionSource = new TaskCompletionSource<object?>();
+                var taskCompletionSource = new TaskCompletionSource<object>();
 
-                if (!dispatcher.TryEnqueue(priority, () =>
+                if (!_dispatcher.TryEnqueue(_priority, () =>
                 {
                     try
                     {
-                        function();
+                        _function();
 
                         taskCompletionSource.SetResult(null);
                     }
@@ -103,15 +101,15 @@ namespace Microsoft.Toolkit.Uwp
                 }
             }
 
-            static Task<T> TryEnqueueAsync(DispatcherQueue dispatcher, Func<T> function, DispatcherQueuePriority priority)
+            Task<T> TryEnqueueAsync(DispatcherQueue _dispatcher, Func<T> _function, DispatcherQueuePriority _priority)
             {
                 var taskCompletionSource = new TaskCompletionSource<T>();
 
-                if (!dispatcher.TryEnqueue(priority, () =>
+                if (!_dispatcher.TryEnqueue(_priority, () =>
                 {
                     try
                     {
-                        taskCompletionSource.SetResult(function());
+                        taskCompletionSource.SetResult(_function());
                     }
                     catch (Exception e)
                     {
@@ -160,15 +158,15 @@ namespace Microsoft.Toolkit.Uwp
                 }
             }
 
-            static Task TryEnqueueAsync(DispatcherQueue dispatcher, Func<Task> function, DispatcherQueuePriority priority)
+            Task TryEnqueueAsync(DispatcherQueue _dispatcher, Func<Task> _function, DispatcherQueuePriority _priority)
             {
-                var taskCompletionSource = new TaskCompletionSource<object?>();
+                var taskCompletionSource = new TaskCompletionSource<object>();
 
-                if (!dispatcher.TryEnqueue(priority, async () =>
+                if (!_dispatcher.TryEnqueue(_priority, async () =>
                 {
                     try
                     {
-                        if (function() is Task awaitableResult)
+                        if (_function() is Task awaitableResult)
                         {
                             await awaitableResult.ConfigureAwait(false);
 
@@ -223,15 +221,15 @@ namespace Microsoft.Toolkit.Uwp
                 }
             }
 
-            static Task<T> TryEnqueueAsync(DispatcherQueue dispatcher, Func<Task<T>> function, DispatcherQueuePriority priority)
+            Task<T> TryEnqueueAsync(DispatcherQueue _dispatcher, Func<Task<T>> _function, DispatcherQueuePriority _priority)
             {
                 var taskCompletionSource = new TaskCompletionSource<T>();
 
-                if (!dispatcher.TryEnqueue(priority, async () =>
+                if (!_dispatcher.TryEnqueue(_priority, async () =>
                 {
                     try
                     {
-                        if (function() is Task<T> awaitableResult)
+                        if (_function() is Task<T> awaitableResult)
                         {
                             var result = await awaitableResult.ConfigureAwait(false);
 

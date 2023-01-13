@@ -15,7 +15,6 @@
             x:Name="AppTitleBar"
             Height="48"
             VerticalAlignment="Top"
-            Background="Transparent"
             Canvas.ZIndex="1"
             IsHitTestVisible="True">
             <Grid.ColumnDefinitions>
@@ -26,7 +25,9 @@
                 <ColumnDefinition x:Name="RightPaddingColumn" Width="0" />
             </Grid.ColumnDefinitions>
             <Grid.ChildrenTransitions>
-                <ReorderThemeTransition />
+                <TransitionCollection>
+                    <ReorderThemeTransition />
+                </TransitionCollection>
             </Grid.ChildrenTransitions>
             <Grid
                 x:Name="DragRegion"
@@ -56,7 +57,10 @@
                     TextTrimming="CharacterEllipsis"
                     TextWrapping="NoWrap" />
             </Grid>
-            <Grid Grid.Column="3" HorizontalAlignment="Left">
+            <Grid
+                Grid.Column="3"
+                Margin="10,0"
+                HorizontalAlignment="Left">
                 <Button Style="{StaticResource ProfileButtonStyle}">
                     <muxc:PersonPicture
                         Width="28"
@@ -129,6 +133,7 @@
                         <Setter Target="NavigationView.PaneDisplayMode" Value="Top" />
                     </VisualState.Setters>
                 </VisualState>
+
                 <VisualState>
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="{x:Bind NavigationView.CompactModeThresholdWidth}" />
@@ -137,6 +142,7 @@
                         <Setter Target="NavigationView.PaneDisplayMode" Value="Auto" />
                     </VisualState.Setters>
                 </VisualState>
+
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
     </Grid>

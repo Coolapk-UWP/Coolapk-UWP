@@ -220,7 +220,7 @@
     <value>操作系统架构</value>
   </data>
   <data name="OSPlatformTextBlock.Text" xml:space="preserve">
-    <value>操作系统平台</value>
+    <value>操作系统版本</value>
   </data>
   <data name="DeviceFamilyTextBlock.Text" xml:space="preserve">
     <value>设备类型</value>

@@ -33,7 +33,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
 
             return ThrowNotSupportedException();
 
-            static T ThrowNotSupportedException() => throw new NotSupportedException("This serializer can only handle primitive types and strings. Please implement your own IObjectSerializer for more complex scenarios.");
+            T ThrowNotSupportedException() => throw new NotSupportedException("This serializer can only handle primitive types and strings. Please implement your own IObjectSerializer for more complex scenarios.");
         }
 
         /// <summary>

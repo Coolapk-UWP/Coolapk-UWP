@@ -30,7 +30,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>Multiplied Matrix</returns>
         public static Matrix Multiply(this Matrix matrix1, Matrix matrix2)
         {
-            return new(
+            return new Matrix(
                 (matrix1.M11 * matrix2.M11) + (matrix1.M12 * matrix2.M21),
                 (matrix1.M11 * matrix2.M12) + (matrix1.M12 * matrix2.M22),
                 (matrix1.M21 * matrix2.M11) + (matrix1.M22 * matrix2.M21),
@@ -47,7 +47,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The rounded matrix.</returns>
         public static Matrix Round(this Matrix matrix, int decimalsAfterRound)
         {
-            return new(
+            return new Matrix(
                 Math.Round(matrix.M11, decimalsAfterRound),
                 Math.Round(matrix.M12, decimalsAfterRound),
                 Math.Round(matrix.M21, decimalsAfterRound),
@@ -127,7 +127,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>Translated Matrix.</returns>
         public static Matrix Translate(this Matrix matrix, double offsetX, double offsetY)
         {
-            return new(matrix.M11, matrix.M12, matrix.M21, matrix.M22, matrix.OffsetX + offsetX, matrix.OffsetY + offsetY);
+            return new Matrix(matrix.M11, matrix.M12, matrix.M21, matrix.M22, matrix.OffsetX + offsetX, matrix.OffsetY + offsetY);
         }
 
         private static Matrix CreateRotationRadians(double angle)
@@ -142,22 +142,22 @@ namespace Microsoft.Toolkit.Uwp.UI
             var dx = (centerX * (1.0 - cos)) + (centerY * sin);
             var dy = (centerY * (1.0 - cos)) - (centerX * sin);
 
-            return new(cos, sin, -sin, cos, dx, dy);
+            return new Matrix(cos, sin, -sin, cos, dx, dy);
         }
 
         private static Matrix CreateScaling(double scaleX, double scaleY)
         {
-            return new(scaleX, 0, 0, scaleY, 0, 0);
+            return new Matrix(scaleX, 0, 0, scaleY, 0, 0);
         }
 
         private static Matrix CreateScaling(double scaleX, double scaleY, double centerX, double centerY)
         {
-            return new(scaleX, 0, 0, scaleY, centerX - (scaleX * centerX), centerY - (scaleY * centerY));
+            return new Matrix(scaleX, 0, 0, scaleY, centerX - (scaleX * centerX), centerY - (scaleY * centerY));
         }
 
         private static Matrix CreateSkewRadians(double skewX, double skewY)
         {
-            return new(1.0, Math.Tan(skewY), Math.Tan(skewX), 1.0, 0.0, 0.0);
+            return new Matrix(1.0, Math.Tan(skewY), Math.Tan(skewX), 1.0, 0.0, 0.0);
         }
     }
 }

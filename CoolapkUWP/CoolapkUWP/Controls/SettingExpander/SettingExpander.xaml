@@ -41,8 +41,6 @@
     </Style>
 
     <!--  Setting expander style  -->
-    <Style BasedOn="{StaticResource SettingExpanderStyle}" TargetType="muxc:Expander" />
-
     <Style x:Key="SettingExpanderStyle" TargetType="muxc:Expander">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

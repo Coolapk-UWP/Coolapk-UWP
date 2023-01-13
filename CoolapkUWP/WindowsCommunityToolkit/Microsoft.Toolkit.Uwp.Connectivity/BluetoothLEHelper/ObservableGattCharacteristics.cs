@@ -152,12 +152,12 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
             {
                 if (_characteristic != value)
                 {
-                    if (value is not null)
+                    if (value != null)
                     {
                         value.ValueChanged += Characteristic_ValueChanged;
                     }
 
-                    if (_characteristic is not null)
+                    if (_characteristic != null)
                     {
                         _characteristic.ValueChanged -= Characteristic_ValueChanged;
                     }

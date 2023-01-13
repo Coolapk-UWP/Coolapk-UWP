@@ -461,7 +461,7 @@
             <StackPanel
                 Padding="4"
                 VerticalAlignment="Bottom"
-                CornerRadius="1">
+                CornerRadius="0,0,8,8">
                 <StackPanel.Background>
                     <media:AcrylicBrush
                         BackgroundSource="Backdrop"
@@ -507,7 +507,9 @@
                     Height="36"
                     Margin="4"
                     CornerRadius="4">
-                    <Image Source="{Binding Pic.Pic, Mode=OneWay}" />
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                    </Border.Background>
                 </Border>
                 <TextBlock
                     HorizontalAlignment="Center"

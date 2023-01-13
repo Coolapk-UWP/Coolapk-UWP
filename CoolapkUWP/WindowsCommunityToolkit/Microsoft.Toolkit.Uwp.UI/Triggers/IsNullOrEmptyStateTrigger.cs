@@ -49,7 +49,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
             {
                 var weakEvent = new WeakEventListener<IsNullOrEmptyStateTrigger, object, NotifyCollectionChangedEventArgs>(obj)
                 {
-                    OnEventAction = static (instance, source, args) => instance.SetActive(IsNullOrEmpty(source)),
+                    OnEventAction = (instance, source, args) => instance.SetActive(IsNullOrEmpty(source)),
                     OnDetachAction = (weakEventListener) => valNotifyCollection.CollectionChanged -= weakEventListener.OnEvent
                 };
 
@@ -63,7 +63,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
             {
                 var weakEvent = new WeakEventListener<IsNullOrEmptyStateTrigger, object, IVectorChangedEventArgs>(obj)
                 {
-                    OnEventAction = static (instance, source, args) => instance.SetActive(IsNullOrEmpty(source)),
+                    OnEventAction = (instance, source, args) => instance.SetActive(IsNullOrEmpty(source)),
                     OnDetachAction = (weakEventListener) => valObservableVector.VectorChanged -= weakEventListener.OnEvent
                 };
 
@@ -77,7 +77,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
             {
                 var weakEvent = new WeakEventListener<IsNullOrEmptyStateTrigger, object, IMapChangedEventArgs<object>>(obj)
                 {
-                    OnEventAction = static (instance, source, args) => instance.SetActive(IsNullOrEmpty(source)),
+                    OnEventAction = (instance, source, args) => instance.SetActive(IsNullOrEmpty(source)),
                     OnDetachAction = (weakEventListener) => valObservableMap.MapChanged -= weakEventListener.OnEvent
                 };
 

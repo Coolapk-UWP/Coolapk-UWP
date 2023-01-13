@@ -40,7 +40,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                 {
                     if (float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out float x))
                     {
-                        return new(x);
+                        return new Vector2(x);
                     }
                 }
                 else
@@ -52,7 +52,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                         if (float.TryParse(values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out float x) &&
                             float.TryParse(values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float y))
                         {
-                            return new(x, y);
+                            return new Vector2(x, y);
                         }
                     }
                 }
@@ -60,7 +60,7 @@ namespace Microsoft.Toolkit.Uwp.UI
 
             return Throw(text);
 
-            static Vector2 Throw(string text) => throw new FormatException($"Cannot convert \"{text}\" to {nameof(Vector2)}. Use the format \"float, float\"");
+            Vector2 Throw(string _text) => throw new FormatException($"Cannot convert \"{_text}\" to {nameof(Vector2)}. Use the format \"float, float\"");
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                 {
                     if (float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out float x))
                     {
-                        return new(x);
+                        return new Vector3(x);
                     }
                 }
                 else
@@ -100,19 +100,19 @@ namespace Microsoft.Toolkit.Uwp.UI
                             float.TryParse(values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float y) &&
                             float.TryParse(values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float z))
                         {
-                            return new(x, y, z);
+                            return new Vector3(x, y, z);
                         }
                     }
                     else if (values.Length == 2)
                     {
-                        return new(text.ToVector2(), 0);
+                        return new Vector3(text.ToVector2(), 0);
                     }
                 }
             }
 
             return Throw(text);
 
-            static Vector3 Throw(string text) => throw new FormatException($"Cannot convert \"{text}\" to {nameof(Vector3)}. Use the format \"float, float, float\"");
+            Vector3 Throw(string _text) => throw new FormatException($"Cannot convert \"{_text}\" to {nameof(Vector3)}. Use the format \"float, float, float\"");
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                 {
                     if (float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out float x))
                     {
-                        return new(x);
+                        return new Vector4(x);
                     }
                 }
                 else
@@ -153,23 +153,23 @@ namespace Microsoft.Toolkit.Uwp.UI
                             float.TryParse(values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float z) &&
                             float.TryParse(values[3], NumberStyles.Float, CultureInfo.InvariantCulture, out float w))
                         {
-                            return new(x, y, z, w);
+                            return new Vector4(x, y, z, w);
                         }
                     }
                     else if (values.Length == 3)
                     {
-                        return new(text.ToVector3(), 0);
+                        return new Vector4(text.ToVector3(), 0);
                     }
                     else if (values.Length == 2)
                     {
-                        return new(text.ToVector2(), 0, 0);
+                        return new Vector4(text.ToVector2(), 0, 0);
                     }
                 }
             }
 
             return Throw(text);
 
-            static Vector4 Throw(string text) => throw new FormatException($"Cannot convert \"{text}\" to {nameof(Vector4)}. Use the format \"float, float, float, float\"");
+            Vector4 Throw(string _text) => throw new FormatException($"Cannot convert \"{_text}\" to {nameof(Vector4)}. Use the format \"float, float, float, float\"");
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             if (text.Length == 0)
             {
-                return new();
+                return new Quaternion();
             }
             else
             {
@@ -200,14 +200,14 @@ namespace Microsoft.Toolkit.Uwp.UI
                         float.TryParse(values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float z) &&
                         float.TryParse(values[3], NumberStyles.Float, CultureInfo.InvariantCulture, out float w))
                     {
-                        return new(x, y, z, w);
+                        return new Quaternion(x, y, z, w);
                     }
                 }
             }
 
             return Throw(text);
 
-            static Quaternion Throw(string text) => throw new FormatException($"Cannot convert \"{text}\" to {nameof(Quaternion)}. Use the format \"float, float, float, float\"");
+            Quaternion Throw(string _text) => throw new FormatException($"Cannot convert \"{_text}\" to {nameof(Quaternion)}. Use the format \"float, float, float, float\"");
         }
 
         /// <summary>

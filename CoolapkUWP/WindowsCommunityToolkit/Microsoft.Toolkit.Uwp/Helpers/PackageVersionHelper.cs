@@ -35,7 +35,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                     return $"{packageVersion.Major}";
             }
 
-            static string ThrowArgumentOutOfRangeException() => throw new ArgumentOutOfRangeException(nameof(significance), "Value must be a value 1 through 4.");
+            string ThrowArgumentOutOfRangeException() => throw new ArgumentOutOfRangeException(nameof(significance), "Value must be a value 1 through 4.");
 
             return ThrowArgumentOutOfRangeException();
         }

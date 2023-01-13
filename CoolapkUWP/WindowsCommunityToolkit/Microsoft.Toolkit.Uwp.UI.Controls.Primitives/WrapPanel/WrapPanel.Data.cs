@@ -58,12 +58,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
             public UvMeasure Size { get; set; }
 
-            public Rect ToRect(Orientation orientation) => orientation switch
-            {
-                Orientation.Vertical => new Rect(Position.V, Position.U, Size.V, Size.U),
-                Orientation.Horizontal => new Rect(Position.U, Position.V, Size.U, Size.V),
-                _ => ThrowArgumentException()
-            };
+            public Rect ToRect(Orientation orientation) =>
+                orientation == Orientation.Vertical ? new Rect(Position.V, Position.U, Size.V, Size.U) :
+                orientation == Orientation.Horizontal ? new Rect(Position.U, Position.V, Size.U, Size.V) :
+                ThrowArgumentException();
 
             private static Rect ThrowArgumentException() => throw new ArgumentException("The input orientation is not valid.");
         }

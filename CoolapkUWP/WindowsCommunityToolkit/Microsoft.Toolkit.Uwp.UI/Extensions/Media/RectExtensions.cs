@@ -35,7 +35,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             double right = Math.Max(Math.Max(leftTop.X, rightTop.X), Math.Max(leftBottom.X, rightBottom.X));
             double bottom = Math.Max(Math.Max(leftTop.Y, rightTop.Y), Math.Max(leftBottom.Y, rightBottom.Y));
 
-            return new(left, top, right - left, bottom - top);
+            return new Rect(left, top, right - left, bottom - top);
         }
     }
 }

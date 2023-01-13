@@ -17,7 +17,7 @@
   <PropertyGroup>
     <Features>Strict</Features>
     <Nullable>Disable</Nullable>
-    <LangVersion>Latest</LangVersion>
+    <LangVersion>7.3</LangVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
     <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>

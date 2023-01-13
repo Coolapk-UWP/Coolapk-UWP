@@ -486,7 +486,7 @@
             <Border
                 VerticalAlignment="Bottom"
                 Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                CornerRadius="8,8,0,0">
+                CornerRadius="0,0,8,8">
                 <TextBlock
                     Margin="8"
                     FontSize="16"

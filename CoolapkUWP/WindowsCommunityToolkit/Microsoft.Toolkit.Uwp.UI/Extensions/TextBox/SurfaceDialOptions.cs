@@ -16,7 +16,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <summary>
         /// Gets an internal cached instance to avoid allocations from <see cref="TextBoxExtensions"/>.
         /// </summary>
-        internal static SurfaceDialOptions Default { get; } = new();
+        internal static SurfaceDialOptions Default { get; } = new SurfaceDialOptions();
 
         /// <summary>
         /// Gets or sets the default icon of the menu item that gets added.

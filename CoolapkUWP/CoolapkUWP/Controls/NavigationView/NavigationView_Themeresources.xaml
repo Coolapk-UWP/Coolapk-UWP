@@ -35,7 +35,9 @@
                         </contract7Present:Grid.BackgroundTransition>
 
                         <Grid.ChildrenTransitions>
-                            <ReorderThemeTransition />
+                            <TransitionCollection>
+                                <ReorderThemeTransition />
+                            </TransitionCollection>
                         </Grid.ChildrenTransitions>
 
                         <local:AnimatedIcon
@@ -205,7 +207,9 @@
                                 MinHeight="{ThemeResource NavigationViewItemOnLeftMinHeight}"
                                 HorizontalAlignment="Stretch">
                                 <Grid.ChildrenTransitions>
-                                    <ReorderThemeTransition />
+                                    <TransitionCollection>
+                                        <ReorderThemeTransition />
+                                    </TransitionCollection>
                                 </Grid.ChildrenTransitions>
 
                                 <Grid.RowDefinitions>
@@ -368,7 +372,9 @@
                             MinWidth="{ThemeResource NavigationViewItemOnTopMinWidth}"
                             VerticalAlignment="Stretch">
                             <Grid.ChildrenTransitions>
-                                <ReorderThemeTransition />
+                                <TransitionCollection>
+                                    <ReorderThemeTransition />
+                                </TransitionCollection>
                             </Grid.ChildrenTransitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
@@ -535,7 +541,9 @@
                             MinWidth="{ThemeResource NavigationViewItemOnTopMinWidth}"
                             MinHeight="{ThemeResource NavigationViewItemOnLeftMinHeight}">
                             <Grid.ChildrenTransitions>
-                                <ReorderThemeTransition />
+                                <TransitionCollection>
+                                    <ReorderThemeTransition />
+                                </TransitionCollection>
                             </Grid.ChildrenTransitions>
                             <Viewbox
                                 x:Name="IconBox"

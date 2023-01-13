@@ -20,8 +20,6 @@
     </Style>
 
     <!--  Setting button style  -->
-    <Style BasedOn="{StaticResource SettingButtonStyle}" TargetType="controls:SettingButton" />
-
     <Style
         x:Key="SettingButtonStyle"
         BasedOn="{StaticResource DefaultButtonStyle}"

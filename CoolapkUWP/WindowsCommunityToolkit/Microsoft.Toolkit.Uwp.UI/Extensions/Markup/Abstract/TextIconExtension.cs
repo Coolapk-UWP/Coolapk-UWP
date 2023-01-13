@@ -27,7 +27,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// </summary>
         protected static FontFamily SymbolThemeFontFamily
         {
-            get => symbolThemeFontFamily ??= new FontFamily("Segoe Fluent Icons,Segoe MDL2 Assets");
+            get => symbolThemeFontFamily = symbolThemeFontFamily ?? new FontFamily("Segoe Fluent Icons,Segoe MDL2 Assets");
         }
 
         /// <summary>

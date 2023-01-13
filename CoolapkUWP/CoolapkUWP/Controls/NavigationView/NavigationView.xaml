@@ -298,6 +298,7 @@
                                                 Content="{TemplateBinding Header}"
                                                 ContentTemplate="{TemplateBinding HeaderTemplate}"
                                                 IsTabStop="False"
+                                                Margin="0"
                                                 Style="{StaticResource NavigationViewTitleHeaderContentControlTextStyle}" />
 
                                             <ContentPresenter

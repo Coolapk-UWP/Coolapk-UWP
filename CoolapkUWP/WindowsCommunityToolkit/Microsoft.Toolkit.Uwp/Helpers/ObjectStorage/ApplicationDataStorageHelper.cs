@@ -11,8 +11,6 @@ using Microsoft.Toolkit.Helpers;
 using Windows.Storage;
 using Windows.System;
 
-#nullable enable
-
 namespace Microsoft.Toolkit.Uwp.Helpers
 {
     /// <summary>
@@ -25,7 +23,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// </summary>
         /// <param name="appData">The data store to interact with.</param>
         /// <param name="objectSerializer">Serializer for converting stored values. Defaults to <see cref="Toolkit.Helpers.SystemSerializer"/>.</param>
-        public ApplicationDataStorageHelper(ApplicationData appData, Toolkit.Helpers.IObjectSerializer? objectSerializer = null)
+        public ApplicationDataStorageHelper(ApplicationData appData, Toolkit.Helpers.IObjectSerializer objectSerializer = null)
         {
             AppData = appData ?? throw new ArgumentNullException(nameof(appData));
             Serializer = objectSerializer ?? new Toolkit.Helpers.SystemSerializer();
@@ -56,7 +54,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// </summary>
         /// <param name="objectSerializer">Serializer for converting stored values. Defaults to <see cref="Toolkit.Helpers.SystemSerializer"/>.</param>
         /// <returns>A new instance of ApplicationDataStorageHelper.</returns>
-        public static ApplicationDataStorageHelper GetCurrent(Toolkit.Helpers.IObjectSerializer? objectSerializer = null)
+        public static ApplicationDataStorageHelper GetCurrent(Toolkit.Helpers.IObjectSerializer objectSerializer = null)
         {
             var appData = ApplicationData.Current;
             return new ApplicationDataStorageHelper(appData, objectSerializer);
@@ -68,7 +66,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <param name="user">App data user owner.</param>
         /// <param name="objectSerializer">Serializer for converting stored values. Defaults to <see cref="SystemSerializer"/>.</param>
         /// <returns>A new instance of ApplicationDataStorageHelper.</returns>
-        public static async Task<ApplicationDataStorageHelper> GetForUserAsync(User user, Toolkit.Helpers.IObjectSerializer? objectSerializer = null)
+        public static async Task<ApplicationDataStorageHelper> GetForUserAsync(User user, Toolkit.Helpers.IObjectSerializer objectSerializer = null)
         {
             var appData = await ApplicationData.GetForUserAsync(user);
             return new ApplicationDataStorageHelper(appData, objectSerializer);
@@ -91,7 +89,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <param name="key">Key of the object.</param>
         /// <param name="default">Default value of the object.</param>
         /// <returns>The TValue object.</returns>
-        public T? Read<T>(string key, T? @default = default)
+        public T Read<T>(string key, T @default = default)
         {
             if (Settings.Values.TryGetValue(key, out var valueObj) && valueObj is string valueString)
             {
@@ -102,7 +100,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         }
 
         /// <inheritdoc />
-        public bool TryRead<T>(string key, out T? value)
+        public bool TryRead<T>(string key, out T value)
         {
             if (Settings.Values.TryGetValue(key, out var valueObj) && valueObj is string valueString)
             {
@@ -140,7 +138,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <returns>True if a value exists.</returns>
         public bool KeyExists(string compositeKey, string key)
         {
-            if (TryRead(compositeKey, out ApplicationDataCompositeValue? composite) && composite != null)
+            if (TryRead(compositeKey, out ApplicationDataCompositeValue composite) && composite != null)
             {
                 return composite.ContainsKey(key);
             }
@@ -156,9 +154,9 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <param name="key">Key of the object.</param>
         /// <param name="value">The value of the object retrieved.</param>
         /// <returns>The T object.</returns>
-        public bool TryRead<T>(string compositeKey, string key, out T? value)
+        public bool TryRead<T>(string compositeKey, string key, out T value)
         {
-            if (TryRead(compositeKey, out ApplicationDataCompositeValue? composite) && composite != null)
+            if (TryRead(compositeKey, out ApplicationDataCompositeValue composite) && composite != null)
             {
                 string compositeValue = (string)composite[key];
                 if (compositeValue != null)
@@ -180,9 +178,9 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <param name="key">Key of the object.</param>
         /// <param name="default">Default value of the object.</param>
         /// <returns>The T object.</returns>
-        public T? Read<T>(string compositeKey, string key, T? @default = default)
+        public T Read<T>(string compositeKey, string key, T @default = default)
         {
-            if (TryRead(compositeKey, out ApplicationDataCompositeValue? composite) && composite != null)
+            if (TryRead(compositeKey, out ApplicationDataCompositeValue composite) && composite != null)
             {
                 if (composite.TryGetValue(key, out object valueObj) && valueObj is string value)
                 {
@@ -203,7 +201,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <param name="values">Objects to save.</param>
         public void Save<T>(string compositeKey, IDictionary<string, T> values)
         {
-            if (TryRead(compositeKey, out ApplicationDataCompositeValue? composite) && composite != null)
+            if (TryRead(compositeKey, out ApplicationDataCompositeValue composite) && composite != null)
             {
                 foreach (KeyValuePair<string, T> setting in values)
                 {
@@ -237,7 +235,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <returns>A boolean indicator of success.</returns>
         public bool TryDelete(string compositeKey, string key)
         {
-            if (TryRead(compositeKey, out ApplicationDataCompositeValue? composite) && composite != null)
+            if (TryRead(compositeKey, out ApplicationDataCompositeValue composite) && composite != null)
             {
                 return composite.Remove(key);
             }
@@ -246,7 +244,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         }
 
         /// <inheritdoc />
-        public Task<T?> ReadFileAsync<T>(string filePath, T? @default = default)
+        public Task<T> ReadFileAsync<T>(string filePath, T @default = default)
         {
             return ReadFileAsync<T>(Folder, filePath, @default);
         }
@@ -281,7 +279,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
             return TryRenameItemAsync(Folder, itemPath, newName);
         }
 
-        private async Task<T?> ReadFileAsync<T>(StorageFolder folder, string filePath, T? @default = default)
+        private async Task<T> ReadFileAsync<T>(StorageFolder folder, string filePath, T @default = default)
         {
             string value = await StorageFileHelper.ReadTextFromFileAsync(folder, NormalizePath(filePath));
             return (value != null) ? Serializer.Deserialize<T>(value) : @default;

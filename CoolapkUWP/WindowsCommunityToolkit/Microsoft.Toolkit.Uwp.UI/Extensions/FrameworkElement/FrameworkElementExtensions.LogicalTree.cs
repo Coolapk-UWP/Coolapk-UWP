@@ -10,8 +10,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Markup;
 
-#nullable enable
-
 namespace Microsoft.Toolkit.Uwp.UI
 {
     /// <inheritdoc cref="FrameworkElementExtensions"/>
@@ -24,9 +22,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="name">The name of the element to look for.</param>
         /// <param name="comparisonType">The comparison type to use to match <paramref name="name"/>.</param>
         /// <returns>The child that was found, or <see langword="null"/>.</returns>
-        public static FrameworkElement? FindChild(this FrameworkElement element, string name, StringComparison comparisonType = StringComparison.Ordinal)
+        public static FrameworkElement FindChild(this FrameworkElement element, string name, StringComparison comparisonType = StringComparison.Ordinal)
         {
-            PredicateByName predicateByName = new(name, comparisonType);
+            PredicateByName predicateByName = new PredicateByName(name, comparisonType);
 
             return FindChild<FrameworkElement, PredicateByName>(element, ref predicateByName);
         }
@@ -37,8 +35,8 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <typeparam name="T">The type of elements to match.</typeparam>
         /// <param name="element">The root element.</param>
         /// <returns>The child that was found, or <see langword="null"/>.</returns>
-        public static T? FindChild<T>(this FrameworkElement element)
-            where T : notnull, FrameworkElement
+        public static T FindChild<T>(this FrameworkElement element)
+            where T : FrameworkElement
         {
             PredicateByAny<T> predicateByAny = default;
 
@@ -51,9 +49,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="element">The root element.</param>
         /// <param name="type">The type of element to match.</param>
         /// <returns>The child that was found, or <see langword="null"/>.</returns>
-        public static FrameworkElement? FindChild(this FrameworkElement element, Type type)
+        public static FrameworkElement FindChild(this FrameworkElement element, Type type)
         {
-            PredicateByType predicateByType = new(type);
+            PredicateByType predicateByType = new PredicateByType(type);
 
             return FindChild<FrameworkElement, PredicateByType>(element, ref predicateByType);
         }
@@ -65,10 +63,10 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="element">The root element.</param>
         /// <param name="predicate">The predicatee to use to match the child nodes.</param>
         /// <returns>The child that was found, or <see langword="null"/>.</returns>
-        public static T? FindChild<T>(this FrameworkElement element, Func<T, bool> predicate)
-            where T : notnull, FrameworkElement
+        public static T FindChild<T>(this FrameworkElement element, Func<T, bool> predicate)
+            where T : FrameworkElement
         {
-            PredicateByFunc<T> predicateByFunc = new(predicate);
+            PredicateByFunc<T> predicateByFunc = new PredicateByFunc<T>(predicate);
 
             return FindChild<T, PredicateByFunc<T>>(element, ref predicateByFunc);
         }
@@ -82,10 +80,10 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="state">The state to give as input to <paramref name="predicate"/>.</param>
         /// <param name="predicate">The predicatee to use to match the child nodes.</param>
         /// <returns>The child that was found, or <see langword="null"/>.</returns>
-        public static T? FindChild<T, TState>(this FrameworkElement element, TState state, Func<T, TState, bool> predicate)
-            where T : notnull, FrameworkElement
+        public static T FindChild<T, TState>(this FrameworkElement element, TState state, Func<T, TState, bool> predicate)
+            where T : FrameworkElement
         {
-            PredicateByFunc<T, TState> predicateByFunc = new(state, predicate);
+            PredicateByFunc<T, TState> predicateByFunc = new PredicateByFunc<T, TState>(state, predicate);
 
             return FindChild<T, PredicateByFunc<T, TState>>(element, ref predicateByFunc);
         }
@@ -98,8 +96,8 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="element">The root element.</param>
         /// <param name="predicate">The predicatee to use to match the child nodes.</param>
         /// <returns>The child that was found, or <see langword="null"/>.</returns>
-        private static T? FindChild<T, TPredicate>(this FrameworkElement element, ref TPredicate predicate)
-            where T : notnull, FrameworkElement
+        private static T FindChild<T, TPredicate>(this FrameworkElement element, ref TPredicate predicate)
+            where T : FrameworkElement
             where TPredicate : struct, IPredicate<T>
         {
             // Jump label to manually optimize the tail recursive paths for elements with a single
@@ -111,7 +109,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             {
                 foreach (UIElement child in panel.Children)
                 {
-                    if (child is not FrameworkElement current)
+                    if (!(child is FrameworkElement current))
                     {
                         continue;
                     }
@@ -121,9 +119,9 @@ namespace Microsoft.Toolkit.Uwp.UI
                         return result;
                     }
 
-                    T? descendant = FindChild<T, TPredicate>(current, ref predicate);
+                    T descendant = FindChild<T, TPredicate>(current, ref predicate);
 
-                    if (descendant is not null)
+                    if (descendant != null)
                     {
                         return descendant;
                     }
@@ -133,7 +131,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             {
                 foreach (object item in itemsControl.Items)
                 {
-                    if (item is not FrameworkElement current)
+                    if (!(item is FrameworkElement current))
                     {
                         continue;
                     }
@@ -143,9 +141,9 @@ namespace Microsoft.Toolkit.Uwp.UI
                         return result;
                     }
 
-                    T? descendant = FindChild<T, TPredicate>(current, ref predicate);
+                    T descendant = FindChild<T, TPredicate>(current, ref predicate);
 
-                    if (descendant is not null)
+                    if (descendant != null)
                     {
                         return descendant;
                     }
@@ -248,7 +246,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="name">The name of the element to look for.</param>
         /// <param name="comparisonType">The comparison type to use to match <paramref name="name"/>.</param>
         /// <returns>The child (or self) that was found, or <see langword="null"/>.</returns>
-        public static FrameworkElement? FindChildOrSelf(this FrameworkElement element, string name, StringComparison comparisonType = StringComparison.Ordinal)
+        public static FrameworkElement FindChildOrSelf(this FrameworkElement element, string name, StringComparison comparisonType = StringComparison.Ordinal)
         {
             if (name.Equals(element.Name, comparisonType))
             {
@@ -264,8 +262,8 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <typeparam name="T">The type of elements to match.</typeparam>
         /// <param name="element">The root element.</param>
         /// <returns>The child (or self) that was found, or <see langword="null"/>.</returns>
-        public static T? FindChildOrSelf<T>(this FrameworkElement element)
-            where T : notnull, FrameworkElement
+        public static T FindChildOrSelf<T>(this FrameworkElement element)
+            where T : FrameworkElement
         {
             if (element is T result)
             {
@@ -281,7 +279,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="element">The root element.</param>
         /// <param name="type">The type of element to match.</param>
         /// <returns>The child (or self) that was found, or <see langword="null"/>.</returns>
-        public static FrameworkElement? FindChildOrSelf(this FrameworkElement element, Type type)
+        public static FrameworkElement FindChildOrSelf(this FrameworkElement element, Type type)
         {
             if (element.GetType() == type)
             {
@@ -298,8 +296,8 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="element">The root element.</param>
         /// <param name="predicate">The predicatee to use to match the child nodes.</param>
         /// <returns>The child (or self) that was found, or <see langword="null"/>.</returns>
-        public static T? FindChildOrSelf<T>(this FrameworkElement element, Func<T, bool> predicate)
-            where T : notnull, FrameworkElement
+        public static T FindChildOrSelf<T>(this FrameworkElement element, Func<T, bool> predicate)
+            where T : FrameworkElement
         {
             if (element is T result && predicate(result))
             {
@@ -318,8 +316,8 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="state">The state to give as input to <paramref name="predicate"/>.</param>
         /// <param name="predicate">The predicatee to use to match the child nodes.</param>
         /// <returns>The child (or self) that was found, or <see langword="null"/>.</returns>
-        public static T? FindChildOrSelf<T, TState>(this FrameworkElement element, TState state, Func<T, TState, bool> predicate)
-            where T : notnull, FrameworkElement
+        public static T FindChildOrSelf<T, TState>(this FrameworkElement element, TState state, Func<T, TState, bool> predicate)
+            where T : FrameworkElement
         {
             if (element is T result && predicate(result, state))
             {
@@ -349,7 +347,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             {
                 foreach (UIElement child in panel.Children)
                 {
-                    if (child is not FrameworkElement current)
+                    if (!(child is FrameworkElement current))
                     {
                         continue;
                     }
@@ -366,7 +364,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             {
                 foreach (object item in itemsControl.Items)
                 {
-                    if (item is not FrameworkElement current)
+                    if (!(item is FrameworkElement current))
                     {
                         continue;
                     }
@@ -451,9 +449,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="name">The name of the element to look for.</param>
         /// <param name="comparisonType">The comparison type to use to match <paramref name="name"/>.</param>
         /// <returns>The parent that was found, or <see langword="null"/>.</returns>
-        public static FrameworkElement? FindParent(this FrameworkElement element, string name, StringComparison comparisonType = StringComparison.Ordinal)
+        public static FrameworkElement FindParent(this FrameworkElement element, string name, StringComparison comparisonType = StringComparison.Ordinal)
         {
-            PredicateByName predicateByName = new(name, comparisonType);
+            PredicateByName predicateByName = new PredicateByName(name, comparisonType);
 
             return FindParent<FrameworkElement, PredicateByName>(element, ref predicateByName);
         }
@@ -464,8 +462,8 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <typeparam name="T">The type of elements to match.</typeparam>
         /// <param name="element">The starting element.</param>
         /// <returns>The parent that was found, or <see langword="null"/>.</returns>
-        public static T? FindParent<T>(this FrameworkElement element)
-            where T : notnull, FrameworkElement
+        public static T FindParent<T>(this FrameworkElement element)
+            where T : FrameworkElement
         {
             PredicateByAny<T> predicateByAny = default;
 
@@ -478,9 +476,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="element">The starting element.</param>
         /// <param name="type">The type of element to match.</param>
         /// <returns>The parent that was found, or <see langword="null"/>.</returns>
-        public static FrameworkElement? FindParent(this FrameworkElement element, Type type)
+        public static FrameworkElement FindParent(this FrameworkElement element, Type type)
         {
-            PredicateByType predicateByType = new(type);
+            PredicateByType predicateByType = new PredicateByType(type);
 
             return FindParent<FrameworkElement, PredicateByType>(element, ref predicateByType);
         }
@@ -492,10 +490,10 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="element">The starting element.</param>
         /// <param name="predicate">The predicatee to use to match the parent nodes.</param>
         /// <returns>The parent that was found, or <see langword="null"/>.</returns>
-        public static T? FindParent<T>(this FrameworkElement element, Func<T, bool> predicate)
-            where T : notnull, FrameworkElement
+        public static T FindParent<T>(this FrameworkElement element, Func<T, bool> predicate)
+            where T : FrameworkElement
         {
-            PredicateByFunc<T> predicateByFunc = new(predicate);
+            PredicateByFunc<T> predicateByFunc = new PredicateByFunc<T>(predicate);
 
             return FindParent<T, PredicateByFunc<T>>(element, ref predicateByFunc);
         }
@@ -509,10 +507,10 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="state">The state to give as input to <paramref name="predicate"/>.</param>
         /// <param name="predicate">The predicatee to use to match the parent nodes.</param>
         /// <returns>The parent that was found, or <see langword="null"/>.</returns>
-        public static T? FindParent<T, TState>(this FrameworkElement element, TState state, Func<T, TState, bool> predicate)
-            where T : notnull, FrameworkElement
+        public static T FindParent<T, TState>(this FrameworkElement element, TState state, Func<T, TState, bool> predicate)
+            where T : FrameworkElement
         {
-            PredicateByFunc<T, TState> predicateByFunc = new(state, predicate);
+            PredicateByFunc<T, TState> predicateByFunc = new PredicateByFunc<T, TState>(state, predicate);
 
             return FindParent<T, PredicateByFunc<T, TState>>(element, ref predicateByFunc);
         }
@@ -525,13 +523,13 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="element">The starting element.</param>
         /// <param name="predicate">The predicatee to use to match the parent nodes.</param>
         /// <returns>The parent that was found, or <see langword="null"/>.</returns>
-        private static T? FindParent<T, TPredicate>(this FrameworkElement element, ref TPredicate predicate)
-            where T : notnull, FrameworkElement
+        private static T FindParent<T, TPredicate>(this FrameworkElement element, ref TPredicate predicate)
+            where T : FrameworkElement
             where TPredicate : struct, IPredicate<T>
         {
             while (true)
             {
-                if (element.Parent is not FrameworkElement parent)
+                if (!(element.Parent is FrameworkElement parent))
                 {
                     return null;
                 }
@@ -552,7 +550,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="name">The name of the element to look for.</param>
         /// <param name="comparisonType">The comparison type to use to match <paramref name="name"/>.</param>
         /// <returns>The parent (or self) that was found, or <see langword="null"/>.</returns>
-        public static FrameworkElement? FindParentOrSelf(this FrameworkElement element, string name, StringComparison comparisonType = StringComparison.Ordinal)
+        public static FrameworkElement FindParentOrSelf(this FrameworkElement element, string name, StringComparison comparisonType = StringComparison.Ordinal)
         {
             if (name.Equals(element.Name, comparisonType))
             {
@@ -568,8 +566,8 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <typeparam name="T">The type of elements to match.</typeparam>
         /// <param name="element">The starting element.</param>
         /// <returns>The parent (or self) that was found, or <see langword="null"/>.</returns>
-        public static T? FindParentOrSelf<T>(this FrameworkElement element)
-            where T : notnull, FrameworkElement
+        public static T FindParentOrSelf<T>(this FrameworkElement element)
+            where T : FrameworkElement
         {
             if (element is T result)
             {
@@ -585,7 +583,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="element">The starting element.</param>
         /// <param name="type">The type of element to match.</param>
         /// <returns>The parent (or self) that was found, or <see langword="null"/>.</returns>
-        public static FrameworkElement? FindParentOrSelf(this FrameworkElement element, Type type)
+        public static FrameworkElement FindParentOrSelf(this FrameworkElement element, Type type)
         {
             if (element.GetType() == type)
             {
@@ -602,8 +600,8 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="element">The starting element.</param>
         /// <param name="predicate">The predicatee to use to match the parent nodes.</param>
         /// <returns>The parent (or self) that was found, or <see langword="null"/>.</returns>
-        public static T? FindParentOrSelf<T>(this FrameworkElement element, Func<T, bool> predicate)
-            where T : notnull, FrameworkElement
+        public static T FindParentOrSelf<T>(this FrameworkElement element, Func<T, bool> predicate)
+            where T : FrameworkElement
         {
             if (element is T result && predicate(result))
             {
@@ -622,8 +620,8 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="state">The state to give as input to <paramref name="predicate"/>.</param>
         /// <param name="predicate">The predicatee to use to match the parent nodes.</param>
         /// <returns>The parent (or self) that was found, or <see langword="null"/>.</returns>
-        public static T? FindParentOrSelf<T, TState>(this FrameworkElement element, TState state, Func<T, TState, bool> predicate)
-            where T : notnull, FrameworkElement
+        public static T FindParentOrSelf<T, TState>(this FrameworkElement element, TState state, Func<T, TState, bool> predicate)
+            where T : FrameworkElement
         {
             if (element is T result && predicate(result, state))
             {
@@ -649,7 +647,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             while (true)
             {
-                if (element.Parent is not FrameworkElement parent)
+                if (!(element.Parent is FrameworkElement parent))
                 {
                     yield break;
                 }
@@ -665,12 +663,12 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// </summary>
         /// <param name="element">The parent element.</param>
         /// <returns>The retrieved content control, or <see langword="null"/> if not available.</returns>
-        public static UIElement? GetContentControl(this FrameworkElement element)
+        public static UIElement GetContentControl(this FrameworkElement element)
         {
             Type type = element.GetType();
-            TypeInfo? typeInfo = type.GetTypeInfo();
+            TypeInfo typeInfo = type.GetTypeInfo();
 
-            while (typeInfo is not null)
+            while (typeInfo != null)
             {
                 // We need to manually explore the custom attributes this way as the target one
                 // is not returned by any of the other available GetCustomAttribute<T> APIs.
@@ -679,7 +677,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                     if (attribute.AttributeType == typeof(ContentPropertyAttribute))
                     {
                         string propertyName = (string)attribute.NamedArguments[0].TypedValue.Value;
-                        PropertyInfo? propertyInfo = type.GetProperty(propertyName);
+                        PropertyInfo propertyInfo = type.GetProperty(propertyName);
 
                         return propertyInfo?.GetValue(element) as UIElement;
                     }
@@ -705,12 +703,12 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <exception cref="Exception">Thrown when no resource is found with the specified key.</exception>
         public static object FindResource(this FrameworkElement element, object resourceKey)
         {
-            if (TryFindResource(element, resourceKey, out object? value))
+            if (TryFindResource(element, resourceKey, out object value))
             {
-                return value!;
+                return value;
             }
 
-            static object Throw(object resourceKey) => throw new KeyNotFoundException($"No resource was found with the key \"{resourceKey}\"");
+            object Throw(object _resourceKey) => throw new KeyNotFoundException($"No resource was found with the key \"{_resourceKey}\"");
 
             return Throw(resourceKey);
         }
@@ -726,11 +724,11 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="element">The <see cref="FrameworkElement"/> to start searching for the target resource.</param>
         /// <param name="resourceKey">The resource key to search for.</param>
         /// <returns>The requested resource, or <see langword="null"/> if it wasn't found.</returns>
-        public static object? TryFindResource(this FrameworkElement element, object resourceKey)
+        public static object TryFindResource(this FrameworkElement element, object resourceKey)
         {
-            object? value = null;
+            object value = null;
 
-            FrameworkElement? current = element;
+            FrameworkElement current = element;
 
             // Look in our dictionary and then walk-up parents. We use a do-while loop here
             // so that an implicit NRE will be thrown at the first iteration in case the
@@ -744,7 +742,7 @@ namespace Microsoft.Toolkit.Uwp.UI
 
                 current = current.Parent as FrameworkElement;
             }
-            while (current is not null);
+            while (current != null);
 
             // Finally try application resources
             _ = Application.Current?.Resources?.TryGetValue(resourceKey, out value);
@@ -764,9 +762,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="resourceKey">The resource key to search for.</param>
         /// <param name="value">The resulting value, if present.</param>
         /// <returns>Whether or not a value with the specified key has been found.</returns>
-        public static bool TryFindResource(this FrameworkElement element, object resourceKey, out object? value)
+        public static bool TryFindResource(this FrameworkElement element, object resourceKey, out object value)
         {
-            return (value = TryFindResource(element, resourceKey)) is not null;
+            return (value = TryFindResource(element, resourceKey)) != null;
         }
     }
 }

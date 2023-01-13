@@ -63,7 +63,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
 
             OperatingSystemArchitecture = Package.Current.Id.Architecture;
 
-            EasClientDeviceInformation deviceInfo = new();
+            EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
 
             OperatingSystem = deviceInfo.OperatingSystem;
             DeviceManufacturer = deviceInfo.SystemManufacturer;
@@ -79,7 +79,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <summary>
         /// Gets the unique instance of <see cref="SystemInformation"/>.
         /// </summary>
-        public static SystemInformation Instance { get; } = new();
+        public static SystemInformation Instance { get; } = new SystemInformation();
 
         /// <summary>
         /// Gets the application's name.
@@ -218,7 +218,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                     var subSessionLength = DateTime.UtcNow.Subtract(_sessionStart).Ticks;
                     var uptimeSoFar = _settingsStorage.Read<long>(nameof(AppUptime));
 
-                    return new(uptimeSoFar + subSessionLength);
+                    return new TimeSpan(uptimeSoFar + subSessionLength);
                 }
 
                 return TimeSpan.MinValue;
@@ -256,7 +256,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <param name="xamlRoot">The XamlRoot object from your visual tree.</param>
         public void TrackAppUse(IActivatedEventArgs args, XamlRoot xamlRoot = null)
         {
-            if (args.PreviousExecutionState is ApplicationExecutionState.ClosedByUser or ApplicationExecutionState.NotRunning)
+            if (args.PreviousExecutionState == ApplicationExecutionState.ClosedByUser || args.PreviousExecutionState == ApplicationExecutionState.NotRunning)
             {
                 LaunchCount = _settingsStorage.Read<long>(nameof(LaunchCount)) + 1;
                 TotalLaunchCount = _settingsStorage.Read<long>(nameof(TotalLaunchCount)) + 1;
