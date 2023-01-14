@@ -191,9 +191,10 @@ namespace CoolapkUWP.Controls
                                 Hyperlink hyperlink = new Hyperlink { UnderlineStyle = UnderlineStyle.None };
                                 if (!string.IsNullOrEmpty(href))
                                 {
+                                    hyperlink.Click += (sender, e) => UIHelper.OpenLinkAsync(href);
                                     ToolTipService.SetToolTip(hyperlink, new ToolTip { Content = href });
                                 }
-                                if (content.IndexOf('@') != 0 && content.IndexOf('#') != 0 && !(type == "user-detail"))
+                                if (!content.StartsWith("@") && !content.StartsWith("#") && !(type == "user-detail"))
                                 {
                                     Run run2 = new Run { Text = "\uE167", FontFamily = (FontFamily)Application.Current.Resources["SymbolThemeFontFamily"] };
                                     hyperlink.Inlines.Add(run2);
@@ -203,10 +204,6 @@ namespace CoolapkUWP.Controls
                                     content = "查看图片";
                                     Run run2 = new Run { Text = "\uE158", FontFamily = (FontFamily)Application.Current.Resources["SymbolThemeFontFamily"] };
                                     hyperlink.Inlines.Add(run2);
-                                }
-                                else
-                                {
-                                    hyperlink.Click += (sender, e) => UIHelper.OpenLinkAsync(href);
                                 }
                                 Run run3 = new Run { Text = WebUtility.HtmlDecode(content) };
                                 hyperlink.Inlines.Add(run3);

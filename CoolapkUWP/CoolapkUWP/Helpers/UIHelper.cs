@@ -318,7 +318,7 @@ namespace CoolapkUWP.Helpers
             else if (str.IsFirst(i++) || str.IsFirst(i++))
             {
                 if (str == "/feed/writer") { ShowMessage("暂不支持"); }
-                //else { Navigate(typeof(FeedShellPage), new FeedDetailViewModel(str.Replace(i - 1))); }
+                else { Navigate(typeof(FeedShellPage), new FeedDetailViewModel(str.Replace(i - 1))); }
             }
             else if (str.IsFirst(i++) || str.IsFirst(i++))
             {

@@ -4,8 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Background="Transparent"
+    Background="{ThemeResource SystemControlTransparentBrush}"
     FontSize="24"
+    FontWeight="SemiLight"
     Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
     mc:Ignorable="d">
     <Grid>
@@ -28,22 +29,25 @@
                 x:Name="PageTitle"
                 Height="44"
                 VerticalAlignment="Top"
-                Background="Transparent">
+                Background="{ThemeResource SystemControlTransparentBrush}">
                 <Canvas x:Name="ShadowHost" Opacity="{x:Bind ShadowOpacity, Mode=OneWay}" />
                 <TextBlock
                     x:Name="TitleTextBlock"
                     VerticalAlignment="Center"
                     FontSize="{x:Bind FontSize, Mode=OneWay}"
+                    FontWeight="{x:Bind FontWeight, Mode=OneWay}"
                     Foreground="{x:Bind Foreground, Mode=OneWay}"
                     Style="{StaticResource TitleTextBlockStyle}"
                     Text="{x:Bind Title, Mode=OneWay}"
                     TextTrimming="CharacterEllipsis"
                     TextWrapping="NoWrap" />
             </Grid>
-            <Border
-                x:Name="CommandBarBorder"
+            <ContentPresenter
+                x:Name="CustomContentPresenter"
                 Grid.Column="1"
-                VerticalAlignment="Top" />
+                HorizontalAlignment="Stretch"
+                Content="{x:Bind CustomContent}"
+                FontSize="{StaticResource ContentControlFontSize}" />
         </Grid>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="TitleForegroundStates">

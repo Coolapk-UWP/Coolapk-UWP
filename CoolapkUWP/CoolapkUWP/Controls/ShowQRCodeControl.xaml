@@ -9,27 +9,30 @@
     mc:Ignorable="d">
 
     <StackPanel>
-        <Grid Padding="0">
+        <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TextBlock
                 Grid.Row="0"
                 Margin="0,12"
                 HorizontalAlignment="Center"
                 Text="点按二维码分享链接" />
-            <Image
-                x:Name="QRCodeImage"
+            <Border
                 Grid.Row="1"
                 Width="200"
                 Height="200"
                 Margin="4"
-                CanDrag="True" />
+                CornerRadius="4">
+                <Border.Background>
+                    <ImageBrush x:Name="QRCodeImage" Stretch="UniformToFill" />
+                </Border.Background>
+            </Border>
             <Button
                 Grid.Row="1"
                 Width="200"

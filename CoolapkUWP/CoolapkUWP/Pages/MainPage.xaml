@@ -33,7 +33,7 @@
                 x:Name="DragRegion"
                 Grid.Column="1"
                 Grid.ColumnSpan="3"
-                Background="Transparent" />
+                Background="{ThemeResource SystemControlTransparentBrush}" />
             <Grid x:Name="AppTitle" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -121,7 +121,7 @@
             x:Name="ProgressBar"
             Grid.ColumnSpan="2"
             VerticalAlignment="Top"
-            Background="Transparent"
+            Background="{ThemeResource SystemControlTransparentBrush}"
             IsIndeterminate="False" />
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>

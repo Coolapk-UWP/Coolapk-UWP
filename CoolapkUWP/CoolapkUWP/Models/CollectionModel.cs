@@ -12,17 +12,11 @@ namespace CoolapkUWP.Models
         public string Title { get; private set; }
         public ImageModel Cover { get; private set; }
         public string Description { get; private set; }
-        public string EntityForward { get; private set; }
 
         public ImageModel Pic => Cover;
 
         public CollectionModel(JObject token) : base(token)
         {
-            if (token.TryGetValue("entityForward", out JToken entityForward))
-            {
-                EntityForward = entityForward.ToString();
-            }
-
             if (token.TryGetValue("id", out JToken id))
             {
                 ID = id.ToObject<int>();

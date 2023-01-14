@@ -58,9 +58,11 @@ namespace CoolapkUWP.Controls.DataTemplates
     public sealed class ItemTemplateSelector : DataTemplateSelector
     {
         public DataTemplate Feed { get; set; }
+        public DataTemplate User { get; set; }
         public DataTemplate List { get; set; }
         public DataTemplate Empty { get; set; }
         public DataTemplate IconLink { get; set; }
+        public DataTemplate MiniUser { get; set; }
         public DataTemplate FeedReply { get; set; }
         public DataTemplate MiniIconLink { get; set; }
         public DataTemplate FeedImageText { get; set; }
@@ -69,11 +71,15 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            if (item is SourceFeedModel feed)
+            if (item is UserModel user)
+            {
+                return user.EntityForward == "iconScrollCard" ? MiniUser : User;
+            }
+            else if (item is SourceFeedModel feed)
             {
                 return feed.EntityForward == "imageTextScrollCard" ? FeedImageText : Feed;
             }
-            if (item is CollectionModel collection)
+            else if (item is CollectionModel collection)
             {
                 return collection.EntityForward == "iconMiniGridCard" ? MiniIconLink : List;
             }

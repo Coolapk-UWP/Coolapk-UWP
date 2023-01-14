@@ -14,14 +14,22 @@ using Windows.UI.Xaml;
 
 namespace CoolapkUWP.ViewModels.SettingsPages
 {
-    public class SettingsViewModel : INotifyPropertyChanged
+    public class SettingsViewModel : IViewModel
     {
         public static SettingsViewModel Caches;
         private readonly ResourceLoader _loader = ResourceLoader.GetForViewIndependentUse("SettingsPage");
 
+        public string Title => _loader.GetString("Title");
+
         public static string DeviceFamily => AnalyticsInfo.VersionInfo.DeviceFamily.Replace('.', ' ');
 
         public static string ToolkitVersion => Assembly.Load(new AssemblyName("Microsoft.Toolkit.Uwp")).GetName().Version.ToString();
+
+        public bool IsLogin
+        {
+            get => !string.IsNullOrEmpty(SettingsHelper.Get<string>(SettingsHelper.Uid));
+            set => RaisePropertyChangedEvent();
+        }
 
         public DateTime UpdateDate
         {
@@ -280,5 +288,7 @@ namespace CoolapkUWP.ViewModels.SettingsPages
             UpdateDate = DateTime.Now;
             CheckingUpdate = false;
         }
+
+        public Task Refresh(bool reset) => throw new NotImplementedException();
     }
 }

@@ -18,7 +18,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <controls:PageHeader x:Name="HeaderControl" Title="设置" />
+        <controls:PageHeader x:Name="HeaderControl" Title="{Binding Title}" />
         <ScrollViewer
             Grid.Row="1"
             HorizontalScrollBarVisibility="Disabled"
@@ -49,6 +49,32 @@
                         <controls:Setting.ActionContent>
                             <ToggleSwitch IsOn="{Binding IsNoPicsMode, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
                         </controls:Setting.ActionContent>
+                    </controls:Setting>
+                </controls:SettingsGroup>
+                <controls:SettingsGroup
+                    x:Name="AccountSettingsHeader"
+                    x:Uid="/SettingsPage/AccountSettingsHeader"
+                    x:Load="{x:Bind Provider.IsLogin, Mode=OneWay}">
+                    <controls:SettingButton Click="Button_Click" Tag="AccountSetting">
+                        <controls:Setting x:Uid="/SettingsPage/AccountSettings" Icon="&#xEF58;" />
+                    </controls:SettingButton>
+                    <controls:Setting x:Uid="/SettingsPage/LogoutSettings" Icon="&#xF3B1;">
+                        <Button x:Name="AccountLogout" x:Uid="/SettingsPage/LogoutSettingsButton">
+                            <Button.Flyout>
+                                <Flyout>
+                                    <StackPanel>
+                                        <TextBlock
+                                            x:Uid="/SettingsPage/AccountLogoutTitle"
+                                            Margin="0,0,0,12"
+                                            Style="{ThemeResource BaseTextBlockStyle}" />
+                                        <Button
+                                            x:Uid="/SettingsPage/AccountLogoutConfirm"
+                                            Click="Button_Click"
+                                            Tag="AccountLogout" />
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
                     </controls:Setting>
                 </controls:SettingsGroup>
                 <controls:SettingsGroup x:Uid="/SettingsPage/AboutSettingsHeader">
@@ -96,22 +122,24 @@
                                         Orientation="Horizontal"
                                         Spacing="18">
                                         <muxc:ProgressRing
+                                            x:Name="CheckingUpdateRing"
                                             Width="24"
                                             Height="24"
-                                            Visibility="{Binding CheckingUpdate, Mode=OneWay}" />
+                                            x:Load="{x:Bind Provider.CheckingUpdate, Mode=OneWay}" />
                                         <TextBlock
+                                            x:Name="CheckingUpdateText"
                                             x:Uid="/SettingsPage/CheckingUpdates"
                                             VerticalAlignment="Center"
+                                            x:Load="{x:Bind Provider.CheckingUpdate, Mode=OneWay}"
                                             FontWeight="SemiBold"
-                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                            Visibility="{Binding CheckingUpdate, Mode=OneWay}" />
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                                         <Button
-                                            x:Name="Update"
+                                            x:Name="UpdateButton"
                                             x:Uid="/SettingsPage/CheckUpdates"
                                             HorizontalAlignment="Right"
+                                            x:Load="{x:Bind Provider.CheckingUpdate, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                                             Click="Button_Click"
-                                            Tag="CheckUpdate"
-                                            Visibility="{Binding CheckingUpdate, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
+                                            Tag="CheckUpdate" />
                                     </controls:StackPanel>
                                 </controls:Setting.ActionContent>
                             </controls:Setting>
@@ -120,7 +148,7 @@
                             <Grid Style="{StaticResource ExpanderContentGridStyle}">
                                 <cwuc:MarkdownTextBlock
                                     HorizontalAlignment="Left"
-                                    Background="Transparent"
+                                    Background="{ThemeResource SystemControlTransparentBrush}"
                                     LinkClicked="MarkdownText_LinkClicked"
                                     Text="{Binding AboutTextBlockText}" />
                             </Grid>
@@ -135,7 +163,6 @@
                         Severity="{Binding UpdateStateSeverity}">
                         <muxc:InfoBar.ActionButton>
                             <Button
-                                x:Name="GotoUpdate"
                                 x:Uid="/SettingsPage/GoToUpdate"
                                 HorizontalAlignment="Right"
                                 Click="GotoUpdate_Click"

@@ -15,7 +15,6 @@ namespace CoolapkUWP.Models
         public string Title { get; private set; }
         public string SubTitle { get; private set; }
         public string Description { get; private set; }
-        public string EntityForward { get; private set; }
         public string EntityTemplate { get; private set; }
         public ImageModel Pic { get; private set; }
 
@@ -26,11 +25,6 @@ namespace CoolapkUWP.Models
             if (token.TryGetValue("entityTemplate", out JToken entityTemplate))
             {
                 EntityTemplate = entityTemplate.ToString();
-            }
-
-            if (token.TryGetValue("entityForward", out JToken entityForward))
-            {
-                EntityForward = entityForward.ToString();
             }
 
             if (token.TryGetValue("title", out JToken title))

@@ -1,25 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using Windows.UI;
 using Windows.UI.Composition;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Hosting;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Markup;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
 namespace CoolapkUWP.Controls
 {
+    [ContentProperty(Name = "CustomContent")]
     public sealed partial class PageHeader : UserControl
     {
         public object Title
@@ -34,6 +24,18 @@ namespace CoolapkUWP.Controls
                 typeof(object),
                 typeof(PageHeader),
                 new PropertyMetadata(null));
+
+        public object CustomContent
+        {
+            get => GetValue(CustomContentProperty);
+            set => SetValue(CustomContentProperty, value);
+        }
+
+        public static readonly DependencyProperty CustomContentProperty = DependencyProperty.Register(
+            "CustomContent",
+            typeof(object),
+            typeof(PageHeader),
+            null);
 
         public double BackgroundColorOpacity
         {

@@ -26,7 +26,7 @@
             <UserControl.Resources>
                 <Flyout x:Key="QRCodeFlyout">
                     <Flyout.FlyoutPresenterStyle>
-                        <Style TargetType="FlyoutPresenter">
+                        <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
                             <Setter Property="Padding" Value="0" />
                             <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
                             <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
@@ -38,7 +38,7 @@
                 </Flyout>
                 <Flyout x:Key="ReplyFlyout">
                     <Flyout.FlyoutPresenterStyle>
-                        <Style TargetType="FlyoutPresenter">
+                        <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
                             <Setter Property="Padding" Value="0" />
                             <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
                             <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
@@ -89,7 +89,7 @@
                 Padding="8,4"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
-                Background="Transparent"
+                Background="{ThemeResource SystemControlTransparentBrush}"
                 ContextFlyout="{StaticResource MoreFlyout}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -123,7 +123,7 @@
                     <Button
                         Margin="0,4"
                         Padding="0"
-                        Background="Transparent"
+                        Background="{ThemeResource SystemControlTransparentBrush}"
                         Click="Button_Click"
                         Style="{StaticResource ButtonRevealStyle}"
                         Tag="{Binding UserInfo.Url}">
@@ -255,7 +255,7 @@
             <UserControl.Resources>
                 <Flyout x:Key="ReplyFlyout">
                     <Flyout.FlyoutPresenterStyle>
-                        <Style TargetType="FlyoutPresenter">
+                        <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
                             <Setter Property="Padding" Value="0" />
                             <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
                             <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
@@ -302,7 +302,7 @@
                 Padding="8,4"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
-                Background="Transparent"
+                Background="{ThemeResource SystemControlTransparentBrush}"
                 ContextFlyout="{StaticResource MoreFlyout}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -320,14 +320,15 @@
                     <Button
                         Margin="0,4"
                         Padding="0"
-                        Background="Transparent"
+                        Background="{ThemeResource SystemControlTransparentBrush}"
                         Click="Button_Click"
+                        Style="{StaticResource ButtonRevealStyle}"
                         Tag="{Binding UserInfo.Url}">
-                        <Ellipse Width="36" Height="36">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="{Binding UserInfo.UserAvatar.Pic, Mode=OneWay}" />
-                            </Ellipse.Fill>
-                        </Ellipse>
+                        <muxc:PersonPicture
+                            Width="36"
+                            Height="36"
+                            DisplayName="{Binding UserInfo.UserName}"
+                            ProfilePicture="{Binding UserInfo.UserAvatar.Pic, Mode=OneWay}" />
                     </Button>
                     <StackPanel Margin="8,0" VerticalAlignment="Center">
                         <StackPanel
@@ -363,7 +364,7 @@
                             <Button
                                 x:Name="Ruser"
                                 Padding="0"
-                                Background="Transparent"
+                                Background="{ThemeResource SystemControlTransparentBrush}"
                                 Content="{Binding Rusername}"
                                 Foreground="{ThemeResource SystemAccentColor}"
                                 Tag="{Binding Rurl}"
@@ -477,7 +478,8 @@
         <Grid
             Width="260"
             Height="118"
-            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+            BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}"
+            BorderThickness="1"
             CornerRadius="8"
             Tapped="OnTapped">
             <Grid.Background>

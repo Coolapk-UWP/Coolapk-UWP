@@ -135,6 +135,7 @@
     </Compile>
     <Compile Include="Common\ExceptionHandling.cs" />
     <Compile Include="Common\HtmlToText.cs" />
+    <Compile Include="Common\ScrollProgressProvider.cs" />
     <Compile Include="Common\TokenCreater.cs" />
     <Compile Include="Common\WeakEvent.cs" />
     <Compile Include="Controls\DataTemplates\DataTemplateSelectors.cs" />
@@ -153,9 +154,17 @@
     <Compile Include="Controls\DataTemplates\SearchWord.xaml.cs">
       <DependentUpon>SearchWord.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\FeedShellDetailControl.xaml.cs">
+      <DependentUpon>FeedShellDetailControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FeedShellListControl.xaml.cs">
+      <DependentUpon>FeedShellListControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PageHeader.xaml.cs">
       <DependentUpon>PageHeader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PivotHeader\IShyHeader.cs" />
+    <Compile Include="Controls\PivotHeader\PivotHeader.cs" />
     <Compile Include="Controls\SettingButton\SettingButton.cs" />
     <Compile Include="Controls\SettingExpander\SettingExpander.cs" />
     <Compile Include="Controls\SettingsGroup\SettingsGroup.cs" />
@@ -163,10 +172,12 @@
     <Compile Include="Controls\ShowQRCodeControl.xaml.cs">
       <DependentUpon>ShowQRCodeControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ShyHeaderListView\ShyHeaderListView.cs" />
     <Compile Include="Controls\StackPanel.cs" />
     <Compile Include="Controls\TextBlockEx.xaml.cs">
       <DependentUpon>TextBlockEx.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Controls\WebViewHelper.cs" />
     <Compile Include="Helpers\Converters\CollectionToBoolConverter.cs" />
     <Compile Include="Helpers\Converters\FontSizeToLineHeight.cs" />
     <Compile Include="Helpers\Converters\HTMLToTextConverter.cs" />
@@ -216,6 +227,9 @@
     <Compile Include="Pages\FeedPages\CirclePage.xaml.cs">
       <DependentUpon>CirclePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\FeedPages\FeedShellPage.xaml.cs">
+      <DependentUpon>FeedShellPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\FeedPages\FindPage.xaml.cs">
       <DependentUpon>FindPage.xaml</DependentUpon>
     </Compile>
@@ -237,6 +251,7 @@
     <Compile Include="ViewModels\DataSource\EntityItemSourse.cs" />
     <Compile Include="ViewModels\DataSource\IncrementalLoadingBase.cs" />
     <Compile Include="ViewModels\FeedPages\AdaptiveViewModel.cs" />
+    <Compile Include="ViewModels\FeedPages\FeedShellViewModel.cs" />
     <Compile Include="ViewModels\Interfaces.cs" />
     <Compile Include="ViewModels\Providers\CoolapkListProvider.cs" />
     <Compile Include="ViewModels\SettingsPages\SettingsViewModel.cs" />
@@ -908,6 +923,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\FeedShellDetailControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\FeedShellListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\NavigationView\NavigationBackButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -924,11 +947,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\PivotHeader\PivotHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ShyHeaderListView\ShyHeaderListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\BrowserPages\WebViewPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\FeedPages\CirclePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\FeedPages\FeedShellPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1040,6 +1075,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\About\About.zh-CN.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\zh-CN\FeedShellPage.resw" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

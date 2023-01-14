@@ -60,6 +60,7 @@ namespace CoolapkUWP.Pages
 
         private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
         {
+            ("Find", typeof(FindPage)),
             ("Home", typeof(IndexPage)),
             ("Circle", typeof(CirclePage)),
             ("Settings", typeof(SettingsPage)),

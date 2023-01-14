@@ -1,10 +1,13 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Pages.BrowserPages;
+using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.SettingsPages;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -60,6 +63,17 @@ namespace CoolapkUWP.Pages.SettingsPages
                     break;
                 case "CheckUpdate":
                     Provider.CheckUpdate();
+                    break;
+                case "AccountLogout":
+                    SettingsHelper.Logout();
+                    if (AccountLogout.Flyout is Flyout flyout_logout)
+                    {
+                        flyout_logout.Hide();
+                    }
+                    Provider.IsLogin = false;
+                    break;
+                case "AccountSetting":
+                    _ = Frame.Navigate(typeof(BrowserPage), new BrowserViewModel("https://account.coolapk.com/account/settings"));
                     break;
                 default:
                     break;

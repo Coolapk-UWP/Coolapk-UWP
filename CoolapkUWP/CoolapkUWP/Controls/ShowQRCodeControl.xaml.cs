@@ -29,6 +29,8 @@ namespace CoolapkUWP.Controls
             (d as ShowQRCodeControl).RefreshQRCode();
         }
 
+        public ShowQRCodeControl() => InitializeComponent();
+
         private void ShowUIButton_Click(object sender, RoutedEventArgs e)
         {
             DataPackage dataPackage = new DataPackage();
@@ -74,15 +76,10 @@ namespace CoolapkUWP.Controls
                         BitmapImage image = new BitmapImage();
                         await image.SetSourceAsync(stream);
 
-                        QRCodeImage.Source = image;
+                        QRCodeImage.ImageSource = image;
                     }
                 }
             }
-        }
-
-        public ShowQRCodeControl()
-        {
-            InitializeComponent();
         }
     }
 }

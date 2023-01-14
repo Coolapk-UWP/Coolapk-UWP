@@ -155,6 +155,7 @@
     <Compile Include="Controls\TextBlockEx.xaml.cs">
       <DependentUpon>TextBlockEx.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Controls\WebView2Helper.cs" />
     <Compile Include="Helpers\Converters\CollectionToBoolConverter.cs" />
     <Compile Include="Helpers\Converters\FontSizeToLineHeight.cs" />
     <Compile Include="Helpers\Converters\HTMLToTextConverter.cs" />
@@ -163,12 +164,14 @@
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Helpers\EmojiHelper.cs" />
     <Compile Include="Helpers\ImageCacheHelper.cs" />
+    <Compile Include="Helpers\LanguageHelper.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
     <Compile Include="Helpers\RequestHelper.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Helpers\ThemeHelper.cs" />
     <Compile Include="Helpers\TipsRectangleHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
+    <Compile Include="Helpers\UpdateHelper.cs" />
     <Compile Include="Helpers\UriHelper.cs" />
     <Compile Include="Models\CollectionModel.cs" />
     <Compile Include="Models\Entity.cs" />
@@ -193,8 +196,17 @@
     <Compile Include="Models\Users\ContactModel.cs" />
     <Compile Include="Models\Users\UserAction.cs" />
     <Compile Include="Models\Users\UserModel.cs" />
+    <Compile Include="Pages\BrowserPages\WebView2Page.xaml.cs">
+      <DependentUpon>WebView2Page.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\FeedPages\AdaptivePage.xaml.cs">
       <DependentUpon>AdaptivePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\FeedPages\CirclePage.xaml.cs">
+      <DependentUpon>CirclePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\FeedPages\FindPage.xaml.cs">
+      <DependentUpon>FindPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\FeedPages\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
@@ -209,6 +221,7 @@
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\BrowserPages\BrowserViewModel.cs" />
     <Compile Include="ViewModels\DataSource\DataSourceBase.cs" />
     <Compile Include="ViewModels\DataSource\EntityItemSourse.cs" />
     <Compile Include="ViewModels\DataSource\IncrementalLoadingBase.cs" />
@@ -863,7 +876,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\BrowserPages\WebView2Page.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\FeedPages\AdaptivePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\FeedPages\CirclePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\FeedPages\FindPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -975,6 +1000,15 @@
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\zh-CN\IndexPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\zh-CN\BrowserPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\zh-CN\CirclePage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\zh-CN\FindPage.resw" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

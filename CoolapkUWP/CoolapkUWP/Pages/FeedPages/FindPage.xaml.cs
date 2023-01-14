@@ -69,7 +69,7 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 new PivotItem() { Tag = "V11_HOME_NEW", Header = loader.GetString("V11_HOME_NEW"), Content = new Frame() },
                 new PivotItem() { Tag = "V9_HOME_TAB_SHIPIN", Header = loader.GetString("V9_HOME_TAB_SHIPIN"), Content = new Frame() },
-                new PivotItem() { Tag = "V11_HOME_CAR", Header = loader.GetString("V11_FIND_CAR"), Content = new Frame() },
+                new PivotItem() { Tag = "V11_HOME_CAR", Header = loader.GetString("V11_HOME_CAR"), Content = new Frame() },
                 new PivotItem() { Tag = "V10_DIGITAL_HOME", Header = loader.GetString("V10_DIGITAL_HOME"), Content = new Frame() },
                 new PivotItem() { Tag = "V10_CHANNEL_SJB", Header = loader.GetString("V10_CHANNEL_SJB"), Content = new Frame() },
                 new PivotItem() { Tag = "V11_ZHUANTI_EARPHONE", Header = loader.GetString("V11_ZHUANTI_EARPHONE"), Content = new Frame() },

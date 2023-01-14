@@ -29,7 +29,9 @@
         List="{StaticResource ListDefaultTemplate}"
         ListWithSubtitle="{StaticResource ListWithSubtitleDefaultTemplate}"
         MiniIconLink="{StaticResource MiniIconLinkTemplate}"
-        SquareLinkCard="{StaticResource SquareLinkCardTemplate}" />
+        MiniUser="{StaticResource MiniUserTemplate}"
+        SquareLinkCard="{StaticResource SquareLinkCardTemplate}"
+        User="{StaticResource ListDefaultTemplate}" />
 
     <!--  一级卡片  -->
 
@@ -40,6 +42,7 @@
             Height="40"
             Margin="12,0"
             HorizontalAlignment="Stretch"
+            Background="{ThemeResource SystemControlTransparentBrush}"
             KeyDown="Grid_KeyDown"
             Tag="{Binding}"
             Tapped="Grid_Tapped">
@@ -79,6 +82,7 @@
         <Grid
             Margin="12,0"
             HorizontalAlignment="Center"
+            Background="{ThemeResource SystemControlTransparentBrush}"
             KeyDown="Grid_KeyDown"
             Tag="{Binding}"
             Tapped="Grid_Tapped">
@@ -107,6 +111,7 @@
         <Grid
             Margin="12,0"
             HorizontalAlignment="Center"
+            Background="{ThemeResource SystemControlTransparentBrush}"
             KeyDown="Grid_KeyDown"
             Tag="{Binding}"
             Tapped="Grid_Tapped">
@@ -155,6 +160,7 @@
                 Height="40"
                 Margin="12,0"
                 HorizontalAlignment="Stretch"
+                Background="{ThemeResource SystemControlTransparentBrush}"
                 Visibility="{Binding Title, Converter={StaticResource StringVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -185,7 +191,7 @@
                 <FlipView
                     x:Name="FlipView"
                     contract7Present:CornerRadius="8"
-                    Background="Transparent"
+                    Background="{ThemeResource SystemControlTransparentBrush}"
                     ItemsSource="{Binding Entities}"
                     Loaded="FlipView_Loaded"
                     SizeChanged="FlipView_SizeChanged">
@@ -232,6 +238,7 @@
         <Border
             Margin="8"
             HorizontalAlignment="Stretch"
+            Background="{ThemeResource SystemControlTransparentBrush}"
             CornerRadius="8"
             KeyDown="Grid_KeyDown"
             Tag="{Binding}"
@@ -253,7 +260,7 @@
                             MinWidth="64"
                             Padding="4"
                             HorizontalAlignment="Stretch"
-                            Background="Transparent"
+                            Background="{ThemeResource SystemControlTransparentBrush}"
                             Click="Button_Click"
                             Style="{ThemeResource ButtonRevealStyle}"
                             Tag="{Binding}">
@@ -322,6 +329,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid
                 x:Name="TitleGrid"
@@ -329,6 +337,7 @@
                 Height="40"
                 Margin="12,0"
                 HorizontalAlignment="Stretch"
+                Background="{ThemeResource SystemControlTransparentBrush}"
                 Tag="{Binding}"
                 Tapped="Grid_Tapped"
                 Visibility="{Binding ShowTitle, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -362,6 +371,11 @@
                     Glyph="&#xE72A;"
                     Visibility="{Binding Url, Converter={StaticResource StringVisibilityConverter}}" />
             </Grid>
+            <Border
+                Grid.Row="1"
+                Height="8"
+                HorizontalAlignment="Stretch"
+                Visibility="{Binding ShowTitle, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
             <muxc:ItemsRepeater
                 Grid.Row="2"
                 Margin="8,0,8,8"
@@ -384,6 +398,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid
                 x:Name="TitleGrid"
@@ -391,6 +406,7 @@
                 Height="40"
                 Margin="12,0"
                 HorizontalAlignment="Stretch"
+                Background="{ThemeResource SystemControlTransparentBrush}"
                 Tag="{Binding}"
                 Tapped="Grid_Tapped"
                 Visibility="{Binding ShowTitle, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -424,9 +440,14 @@
                     Glyph="&#xE72A;"
                     Visibility="{Binding Url, Converter={StaticResource StringVisibilityConverter}}" />
             </Grid>
+            <Border
+                Grid.Row="1"
+                Height="8"
+                HorizontalAlignment="Stretch"
+                Visibility="{Binding ShowTitle, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
             <muxc:ItemsRepeaterScrollHost
                 x:Name="EntitiesHost"
-                Grid.Row="1"
+                Grid.Row="2"
                 Visibility="{Binding ShowEntities, Converter={StaticResource BoolToVisibilityConverter}}">
                 <ScrollViewer
                     Padding="8,0,8,8"
@@ -449,7 +470,7 @@
         <Border
             Width="86"
             Height="86"
-            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+            BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}"
             BorderThickness="1"
             CornerRadius="8"
             KeyDown="Grid_KeyDown"
@@ -458,17 +479,17 @@
             <Border.Background>
                 <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
             </Border.Background>
-            <StackPanel
+            <Grid
                 Padding="4"
                 VerticalAlignment="Bottom"
                 CornerRadius="0,0,8,8">
-                <StackPanel.Background>
+                <Grid.Background>
                     <media:AcrylicBrush
                         BackgroundSource="Backdrop"
                         FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                         TintColor="{ThemeResource SystemChromeMediumHighColor}"
                         TintOpacity="0" />
-                </StackPanel.Background>
+                </Grid.Background>
                 <TextBlock
                     Margin="2"
                     HorizontalAlignment="Center"
@@ -478,14 +499,14 @@
                     TextAlignment="Center"
                     TextTrimming="CharacterEllipsis"
                     TextWrapping="Wrap" />
-            </StackPanel>
+            </Grid>
         </Border>
     </DataTemplate>
 
     <DataTemplate x:Key="IconLinkTemplate">
         <Border
             Width="86"
-            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
+            BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}"
             BorderThickness="1"
             CornerRadius="8"
             KeyDown="Grid_KeyDown"
@@ -534,15 +555,47 @@
         </Border>
     </DataTemplate>
 
-    <DataTemplate x:Key="MiniIconLinkTemplate" x:DataType="models:IndexPageModel">
-        <Border
+    <DataTemplate x:Key="MiniUserTemplate">
+        <Button
+            Width="86"
+            Background="{ThemeResource SystemControlTransparentBrush}"
+            Click="Button_Click"
+            Style="{ThemeResource ButtonRevealStyle}"
+            Tag="{Binding}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Ellipse
+                    Grid.Row="0"
+                    Width="36"
+                    Height="36"
+                    Margin="8"
+                    HorizontalAlignment="Center">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" />
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock
+                    Grid.Row="1"
+                    Text="{Binding Title}"
+                    TextAlignment="Center"
+                    TextTrimming="CharacterEllipsis" />
+            </Grid>
+        </Button>
+    </DataTemplate>
+
+    <DataTemplate x:Key="MiniIconLinkTemplate">
+        <Button
             Width="124"
-            BorderBrush="{ThemeResource SystemControlBackgroundListLowRevealBorderBrush}"
-            BorderThickness="1"
-            CornerRadius="4"
-            KeyDown="Grid_KeyDown"
-            Tag="{Binding}"
-            Tapped="Grid_Tapped">
+            MinHeight="0"
+            Padding="0"
+            HorizontalContentAlignment="Left"
+            Background="{ThemeResource SystemControlTransparentBrush}"
+            Click="Button_Click"
+            Style="{ThemeResource ButtonRevealStyle}"
+            Tag="{Binding}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -560,12 +613,13 @@
                 </Border>
                 <TextBlock
                     Grid.Column="1"
+                    Margin="0,0,0,2"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Text="{Binding Title}"
                     TextTrimming="CharacterEllipsis" />
             </Grid>
-        </Border>
+        </Button>
     </DataTemplate>
 
 </ResourceDictionary>

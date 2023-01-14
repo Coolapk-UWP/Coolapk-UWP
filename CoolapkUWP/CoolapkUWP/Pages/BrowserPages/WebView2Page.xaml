@@ -5,6 +5,7 @@
     xmlns:browserpages="using:CoolapkUWP.ViewModels.BrowserPages"
     xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=browserpages:BrowserViewModel}"
     NavigationCacheMode="Required"
@@ -22,19 +23,17 @@
             FontWeight="Normal">
             <controls:StackPanel Orientation="Horizontal" Spacing="2">
                 <Button
-                    x:Name="GotoSystemBrowserButton"
                     x:Uid="/BrowserPage/OpenInBrowserButton"
                     VerticalAlignment="Center"
-                    x:Load="{x:Bind Provider.IsLoginPage, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                     Click="GotoSystemBrowserButton_Click"
-                    Style="{StaticResource FeedOpButtonStyle}" />
+                    Style="{StaticResource FeedOpButtonStyle}"
+                    Visibility="{Binding IsLoginPage, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
                 <Button
-                    x:Name="TryLoginButton"
                     x:Uid="/BrowserPage/BackButton"
                     VerticalAlignment="Center"
-                    x:Load="{x:Bind Provider.IsLoginPage, Mode=OneWay}"
                     Click="TryLoginButton_Click"
-                    Style="{StaticResource FeedOpButtonStyle}" />
+                    Style="{StaticResource FeedOpButtonStyle}"
+                    Visibility="{Binding IsLoginPage, Converter={StaticResource BoolToVisibilityConverter}}" />
                 <Button
                     x:Name="RefreshButton"
                     Margin="-8,0,0,0"
@@ -44,7 +43,7 @@
                     Style="{StaticResource NavigationIconButtonNormalStyle}" />
             </controls:StackPanel>
         </controls:PageHeader>
-        <WebView
+        <muxc:WebView2
             x:Name="WebView"
             Grid.Row="1"
             NavigationCompleted="WebView_NavigationCompleted"

@@ -3,13 +3,13 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
-using Windows.UI.Xaml.Controls;
-using static QRCoder.PayloadGenerator;
 
 namespace CoolapkUWP.ViewModels.BrowserPages
 {
     internal class BrowserViewModel : IViewModel
     {
+        private readonly ResourceLoader _loader = ResourceLoader.GetForViewIndependentUse("BrowserPage");
+
         private string title;
         public string Title
         {
@@ -64,6 +64,7 @@ namespace CoolapkUWP.ViewModels.BrowserPages
             if (!url.Contains("://")) { url = $"https://{url}"; }
             Uri = NetworkHelper.ValidateAndGetUri(url);
             IsLoginPage = url == UriHelper.LoginUri;
+            Title = _loader.GetString("Title");
         }
 
         public Task Refresh(bool reset) => throw new NotImplementedException();

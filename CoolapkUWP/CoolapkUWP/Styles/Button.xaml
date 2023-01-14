@@ -258,16 +258,17 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
                         <ContentPresenter
                             x:Name="HeaderContentPresenter"
-                            Grid.Row="0"
-                            Margin="{ThemeResource ToggleSwitchTopHeaderMargin}"
-                            VerticalAlignment="Top"
+                            Grid.Column="0"
+                            Margin="0,0,4,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
                             x:DeferLoadStrategy="Lazy"
                             AutomationProperties.AccessibilityView="Raw"
                             Content="{TemplateBinding Header}"
@@ -277,9 +278,9 @@
                             TextWrapping="Wrap"
                             Visibility="Collapsed" />
                         <Grid
-                            Grid.Row="1"
+                            Grid.Column="1"
                             HorizontalAlignment="Right"
-                            VerticalAlignment="Top">
+                            VerticalAlignment="Center">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="{ThemeResource ToggleSwitchPreContentMargin}" />
