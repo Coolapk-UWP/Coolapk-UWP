@@ -513,7 +513,7 @@
             <Border.Background>
                 <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="Fill" />
             </Border.Background>
-            <StackPanel Padding="4">
+            <StackPanel Padding="4" CornerRadius="8">
                 <StackPanel.Background>
                     <media:AcrylicBrush
                         BackgroundSource="Backdrop"

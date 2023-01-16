@@ -78,7 +78,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         {
             if (string.IsNullOrEmpty(id)) { throw new ArgumentException(nameof(id)); }
             FeedDetailModel detail = await GetFeedDetailAsync(id);
-            return detail != null ? (FeedShellViewModel)new FeedDetailViewModel(id) : null;
+            return detail != null ? new FeedDetailViewModel(id) : null;
         }
 
         protected static async Task<FeedDetailModel> GetFeedDetailAsync(string id)

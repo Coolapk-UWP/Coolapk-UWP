@@ -5,7 +5,8 @@
     xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,7)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,7)"
     xmlns:controls="using:CoolapkUWP.Controls"
-    xmlns:local="using:Microsoft.UI.Xaml.Controls">
+    xmlns:local="using:Microsoft.UI.Xaml.Controls"
+    xmlns:primitives="using:Microsoft.UI.Xaml.Controls.Primitives">
 
     <Thickness x:Key="NavigationViewHeaderMargin">0</Thickness>
     <Thickness x:Key="NavigationViewMinimalHeaderMargin">0,48,0,0</Thickness>
@@ -447,7 +448,10 @@
                                                         VerticalScrollMode="Auto">
                                                         <local:ItemsRepeater x:Name="TopNavMenuItemsOverflowHost" AutomationProperties.AccessibilityView="Content">
                                                             <local:ItemsRepeater.Layout>
-                                                                <local:UniformGridLayout MinColumnSpacing="4" MinRowSpacing="4" />
+                                                                <primitives:ColumnMajorUniformToLargestGridLayout
+                                                                    ColumnSpacing="4"
+                                                                    MaxColumns="2147483647"
+                                                                    RowSpacing="4" />
                                                             </local:ItemsRepeater.Layout>
                                                         </local:ItemsRepeater>
                                                     </ScrollViewer>
