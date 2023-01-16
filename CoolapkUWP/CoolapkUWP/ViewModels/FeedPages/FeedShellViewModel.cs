@@ -25,8 +25,11 @@ namespace CoolapkUWP.ViewModels.FeedPages
             get => title;
             protected set
             {
-                title = value;
-                RaisePropertyChangedEvent();
+                if (title != value)
+                {
+                    title = value;
+                    RaisePropertyChangedEvent();
+                }
             }
         }
 
@@ -36,8 +39,11 @@ namespace CoolapkUWP.ViewModels.FeedPages
             get => feedDetail;
             protected set
             {
-                feedDetail = value;
-                RaisePropertyChangedEvent();
+                if (feedDetail != value)
+                {
+                    feedDetail = value;
+                    RaisePropertyChangedEvent();
+                }
             }
         }
 
@@ -47,8 +53,11 @@ namespace CoolapkUWP.ViewModels.FeedPages
             get => itemSource;
             protected set
             {
-                itemSource = value;
-                RaisePropertyChangedEvent();
+                if (itemSource != value)
+                {
+                    itemSource = value;
+                    RaisePropertyChangedEvent();
+                }
             }
         }
 
@@ -150,9 +159,12 @@ namespace CoolapkUWP.ViewModels.FeedPages
             get => toggleIsOn;
             set
             {
-                toggleIsOn = value;
-                SetProvider();
-                RaisePropertyChangedEvent();
+                if (toggleIsOn != value)
+                {
+                    toggleIsOn = value;
+                    SetProvider();
+                    RaisePropertyChangedEvent();
+                }
             }
         }
 
@@ -162,9 +174,12 @@ namespace CoolapkUWP.ViewModels.FeedPages
             get => replyListType;
             set
             {
-                replyListType = value;
-                SetProvider();
-                RaisePropertyChangedEvent();
+                if (replyListType != value)
+                {
+                    replyListType = value;
+                    SetProvider();
+                    RaisePropertyChangedEvent();
+                }
             }
         }
 
@@ -174,13 +189,16 @@ namespace CoolapkUWP.ViewModels.FeedPages
             get => comboBoxSelectedIndex;
             set
             {
-                comboBoxSelectedIndex = value;
-                SetComboBoxSelectedIndex(value);
-                RaisePropertyChangedEvent();
+                if (comboBoxSelectedIndex != value)
+                {
+                    comboBoxSelectedIndex = value;
+                    SetComboBoxSelectedIndex(value);
+                    RaisePropertyChangedEvent();
+                }
             }
         }
 
-        public new event PropertyChangedEventHandler PropertyChanged;
+        protected override event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
@@ -215,9 +233,9 @@ namespace CoolapkUWP.ViewModels.FeedPages
             await Refresh(true);
         }
 
-        private IEnumerable<Entity> GetEntities(JObject jo)
+        private IEnumerable<Entity> GetEntities(JObject json)
         {
-            yield return new FeedReplyModel(jo);
+            yield return new FeedReplyModel(json);
         }
 
         public void SetComboBoxSelectedIndex(int value)
@@ -258,9 +276,9 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 "uid");
         }
 
-        private IEnumerable<Entity> GetEntities(JObject jo)
+        private IEnumerable<Entity> GetEntities(JObject json)
         {
-            yield return new UserModel(jo);
+            yield return new UserModel(json);
         }
     }
 
@@ -282,9 +300,9 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 "id");
         }
 
-        private IEnumerable<Entity> GetEntities(JObject jo)
+        private IEnumerable<Entity> GetEntities(JObject json)
         {
-            yield return new FeedModel(jo);
+            yield return new FeedModel(json);
         }
     }
 }

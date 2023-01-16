@@ -165,6 +165,9 @@
     </Compile>
     <Compile Include="Controls\PivotHeader\IShyHeader.cs" />
     <Compile Include="Controls\PivotHeader\PivotHeader.cs" />
+    <Compile Include="Controls\ProfileFlyoutControl.xaml.cs">
+      <DependentUpon>ProfileFlyoutControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SettingButton\SettingButton.cs" />
     <Compile Include="Controls\SettingExpander\SettingExpander.cs" />
     <Compile Include="Controls\SettingsGroup\SettingsGroup.cs" />
@@ -177,6 +180,8 @@
     <Compile Include="Controls\TextBlockEx.xaml.cs">
       <DependentUpon>TextBlockEx.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WebViewContentControl\WebViewContentControl.cs" />
+    <Compile Include="Controls\WebViewContentControl\WebViewContentControlTemplateSettings.cs" />
     <Compile Include="Helpers\Controls\WebViewHelper.cs" />
     <Compile Include="Helpers\Converters\CollectionToBoolConverter.cs" />
     <Compile Include="Helpers\Converters\FontSizeToLineHeight.cs" />
@@ -195,6 +200,7 @@
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Helpers\UpdateHelper.cs" />
     <Compile Include="Helpers\UriHelper.cs" />
+    <Compile Include="Helpers\VisualStateHelper.cs" />
     <Compile Include="Models\CollectionModel.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\Exceptions\CoolapkMessageException.cs" />
@@ -210,6 +216,7 @@
     <Compile Include="Models\IndexPageModel.cs" />
     <Compile Include="Models\Interfaces.cs" />
     <Compile Include="Models\Pages\FeedListPageModels.cs" />
+    <Compile Include="Models\Pages\ProfileDetailModel.cs" />
     <Compile Include="Models\SearchWord.cs" />
     <Compile Include="Models\TopicModel.cs" />
     <Compile Include="Models\Update\SystemVersionInfo.cs" />
@@ -252,6 +259,7 @@
     <Compile Include="ViewModels\DataSource\IncrementalLoadingBase.cs" />
     <Compile Include="ViewModels\FeedPages\AdaptiveViewModel.cs" />
     <Compile Include="ViewModels\FeedPages\FeedShellViewModel.cs" />
+    <Compile Include="ViewModels\FeedPages\ProfileFlyoutViewModel.cs" />
     <Compile Include="ViewModels\Interfaces.cs" />
     <Compile Include="ViewModels\Providers\CoolapkListProvider.cs" />
     <Compile Include="ViewModels\SettingsPages\SettingsViewModel.cs" />
@@ -951,9 +959,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\ProfileFlyoutControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ShyHeaderListView\ShyHeaderListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\WebViewContentControl\WebViewContentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\BrowserPages\WebViewPage.xaml">
       <SubType>Designer</SubType>
@@ -1079,6 +1095,7 @@
   <ItemGroup>
     <PRIResource Include="Strings\zh-CN\FeedShellPage.resw" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

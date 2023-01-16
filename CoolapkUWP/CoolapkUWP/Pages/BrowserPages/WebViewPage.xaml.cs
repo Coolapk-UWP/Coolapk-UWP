@@ -1,5 +1,9 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkLite.Helpers;
+using CoolapkUWP.Controls;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.ViewModels.BrowserPages;
+using MetroLog.Targets;
+using Microsoft.Toolkit.Uwp.UI;
 using System;
 using Windows.ApplicationModel.Resources;
 using Windows.System;
@@ -7,6 +11,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
+using muxc = Microsoft.UI.Xaml.Controls;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -24,12 +29,19 @@ namespace CoolapkUWP.Pages.BrowserPages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            UIHelper.MainPage.FindDescendant<WebViewContentControl>().IsWebView = true;
             if (e.Parameter is BrowserViewModel ViewModel)
             {
                 Provider = ViewModel;
                 DataContext = Provider;
                 WebView.Navigate(Provider.Uri);
             }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            UIHelper.MainPage.FindDescendant<WebViewContentControl>().IsWebView = false;
         }
 
         private void LoadUri(Uri uri)

@@ -1,6 +1,8 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.ViewModels.FeedPages;
+using Microsoft.Toolkit.Uwp.UI;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using muxc = Microsoft.UI.Xaml.Controls;
@@ -38,7 +40,15 @@ namespace CoolapkUWP.Pages.FeedPages
             Provider.OnLoadMoreCompleted -= UIHelper.HideProgressBar;
         }
 
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            Page page = this.FindAscendant<Page>();
+            Provider.IsShowTitle = page is MainPage;
+        }
+
         public async Task Refresh(bool reset = false) => await Provider.Refresh(reset);
+
+        private async void RefreshButton_Click(object sender, RoutedEventArgs e) => await Refresh(true);
 
         private async void RefreshContainer_RefreshRequested(muxc.RefreshContainer sender, muxc.RefreshRequestedEventArgs args) => await Refresh(true);
     }

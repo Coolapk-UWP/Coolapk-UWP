@@ -4,44 +4,39 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Width="208"
-    Height="250"
     mc:Ignorable="d">
-
-    <StackPanel>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <TextBlock
-                Grid.Row="0"
-                Margin="0,12"
-                HorizontalAlignment="Center"
-                Text="点按二维码分享链接" />
-            <Border
-                Grid.Row="1"
-                Width="200"
-                Height="200"
-                Margin="4"
-                CornerRadius="4">
-                <Border.Background>
-                    <ImageBrush x:Name="QRCodeImage" Stretch="UniformToFill" />
-                </Border.Background>
-            </Border>
-            <Button
-                Grid.Row="1"
-                Width="200"
-                Height="200"
-                Margin="4"
-                Background="Transparent"
-                Click="ShowUIButton_Click"
-                Tag="ShareFeed"
-                ToolTipService.ToolTip="{x:Bind QRCodeText, Mode=OneWay}" />
-        </Grid>
-    </StackPanel>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Grid.Row="0"
+            Margin="0,12"
+            HorizontalAlignment="Center"
+            Text="点按二维码分享链接" />
+        <Border
+            Grid.Row="1"
+            Width="200"
+            Height="200"
+            Margin="4"
+            CornerRadius="4">
+            <Border.Background>
+                <ImageBrush x:Name="QRCodeImage" Stretch="UniformToFill" />
+            </Border.Background>
+        </Border>
+        <Button
+            Grid.Row="1"
+            Width="200"
+            Height="200"
+            Margin="4"
+            Background="Transparent"
+            Click="ShowUIButton_Click"
+            Tag="ShareFeed"
+            ToolTipService.ToolTip="{x:Bind QRCodeText, Mode=OneWay}" />
+    </Grid>
 </UserControl>

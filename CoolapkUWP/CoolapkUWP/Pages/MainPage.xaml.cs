@@ -94,6 +94,7 @@ namespace CoolapkUWP.Pages
             {
                 HardwareButtons.BackPressed += System_BackPressed;
             }
+            AppTitleText.Text = ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安";
             CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged += (s, _) => UpdateAppTitle(s);
         }
 

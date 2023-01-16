@@ -35,7 +35,11 @@ namespace CoolapkUWP.Helpers
         }
 
         public static readonly DependencyProperty TokenProperty =
-            DependencyProperty.RegisterAttached("Token", typeof(string), typeof(TipsRectangleHelper), new PropertyMetadata(null));
+            DependencyProperty.RegisterAttached(
+                "Token",
+                typeof(string),
+                typeof(TipsRectangleHelper),
+                new PropertyMetadata(null));
 
         public static bool GetIsEnable(FrameworkElement obj)
         {
@@ -48,7 +52,11 @@ namespace CoolapkUWP.Helpers
         }
 
         public static readonly DependencyProperty IsEnableProperty =
-            DependencyProperty.RegisterAttached("IsEnable", typeof(bool), typeof(TipsRectangleHelper), new PropertyMetadata(true));
+            DependencyProperty.RegisterAttached(
+                "IsEnable",
+                typeof(bool),
+                typeof(TipsRectangleHelper),
+                new PropertyMetadata(true));
 
         public static TipsRectangleServiceStates GetState(FrameworkElement obj)
         {
@@ -61,7 +69,11 @@ namespace CoolapkUWP.Helpers
         }
 
         public static readonly DependencyProperty StateProperty =
-            DependencyProperty.RegisterAttached("State", typeof(TipsRectangleServiceStates), typeof(TipsRectangleHelper), new PropertyMetadata(TipsRectangleServiceStates.None, StatePropertyChanged));
+            DependencyProperty.RegisterAttached(
+                "State",
+                typeof(TipsRectangleServiceStates),
+                typeof(TipsRectangleHelper),
+                new PropertyMetadata(TipsRectangleServiceStates.None, StatePropertyChanged));
 
         public static TipsRectangleServiceConfig GetConfig(DependencyObject obj)
         {
@@ -74,7 +86,11 @@ namespace CoolapkUWP.Helpers
         }
 
         public static readonly DependencyProperty ConfigProperty =
-            DependencyProperty.RegisterAttached("Config", typeof(TipsRectangleServiceConfig), typeof(TipsRectangleHelper), new PropertyMetadata(TipsRectangleServiceConfig.Default));
+            DependencyProperty.RegisterAttached(
+                "Config",
+                typeof(TipsRectangleServiceConfig),
+                typeof(TipsRectangleHelper),
+                new PropertyMetadata(TipsRectangleServiceConfig.Default));
 
         public static string GetTipTargetName(DependencyObject obj)
         {
@@ -87,7 +103,11 @@ namespace CoolapkUWP.Helpers
         }
 
         public static readonly DependencyProperty TipTargetNameProperty =
-            DependencyProperty.RegisterAttached("TipTargetName", typeof(string), typeof(TipsRectangleHelper), new PropertyMetadata(null, TipTargetNamePropertyChanged));
+            DependencyProperty.RegisterAttached(
+                "TipTargetName",
+                typeof(string),
+                typeof(TipsRectangleHelper),
+                new PropertyMetadata(null, TipTargetNamePropertyChanged));
 
         private static void StatePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

@@ -11,6 +11,7 @@ namespace CoolapkUWP.Controls.DataTemplates
     public sealed class CardTemplateSelector : DataTemplateSelector
     {
         public DataTemplate Feed { get; set; }
+        public DataTemplate User { get; set; }
         public DataTemplate List { get; set; }
         public DataTemplate Images { get; set; }
         public DataTemplate Others { get; set; }
@@ -26,6 +27,7 @@ namespace CoolapkUWP.Controls.DataTemplates
         protected override DataTemplate SelectTemplateCore(object item)
         {
             if (item is FeedModel) { return Feed; }
+            else if (item is UserModel) { return User; }
             else if (item is FeedReplyModel) { return FeedReply; }
             else if (item is IndexPageMessageCardModel) { return MessageCard; }
             else if (item is IndexPageHasEntitiesModel IndexPageHasEntitiesModel)

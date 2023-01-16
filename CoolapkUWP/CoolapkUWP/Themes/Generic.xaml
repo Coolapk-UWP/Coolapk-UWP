@@ -4,5 +4,6 @@
         <ResourceDictionary Source="ms-appx:///Controls/PivotHeader/PivotHeader.xaml" />
         <ResourceDictionary Source="ms-appx:///Controls/SettingsGroup/SettingsGroup.xaml" />
         <ResourceDictionary Source="ms-appx:///Controls/ShyHeaderListView/ShyHeaderListView.xaml" />
+        <ResourceDictionary Source="ms-appx:///Controls/WebViewContentControl/WebViewContentControl.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

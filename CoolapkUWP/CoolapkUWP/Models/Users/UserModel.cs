@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Models.Images;
+﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Models.Images;
 using Newtonsoft.Json.Linq;
 
 namespace CoolapkUWP.Models.Users
@@ -10,7 +11,6 @@ namespace CoolapkUWP.Models.Users
         public int Status { get; private set; }
         public int RegDate { get; private set; }
         public int FansNum { get; private set; }
-        public int LoginTime { get; private set; }
         public int FollowNum { get; private set; }
         public int Experience { get; private set; }
         public int BlockStatus { get; private set; }
@@ -18,6 +18,7 @@ namespace CoolapkUWP.Models.Users
         public string Bio { get; private set; }
         public string UserName { get; private set; }
         public string SubTitle { get; private set; }
+        public string LoginTime { get; private set; }
         public string Description { get; private set; }
 
         public ImageModel Cover { get; private set; }
@@ -74,7 +75,7 @@ namespace CoolapkUWP.Models.Users
 
             if (token.TryGetValue("logintime", out JToken logintime))
             {
-                LoginTime = logintime.ToObject<int>();
+                LoginTime = logintime.ToObject<double>().ConvertUnixTimeStampToReadable();
             }
 
             if (token.TryGetValue("follow", out JToken follow))

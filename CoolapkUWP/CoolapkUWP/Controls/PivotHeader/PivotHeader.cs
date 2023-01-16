@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -61,7 +62,7 @@ namespace CoolapkUWP.Controls
         private void SetPivot()
         {
             if (Pivot == null) { return; }
-            SetBinding(SelectedIndexProperty, new Binding()
+            SetBinding(SelectedIndexProperty, new Binding
             {
                 Source = Pivot,
                 Mode = BindingMode.TwoWay,
@@ -76,10 +77,7 @@ namespace CoolapkUWP.Controls
 
         private async void HidePivotHeader()
         {
-            if (cts != null)
-            {
-                cts.Cancel();
-            }
+            cts?.Cancel();
 
             cts = new CancellationTokenSource(TimeSpan.FromSeconds(20));
             PivotPanel PivotPanel = (PivotPanel)await WaitForLoaded(Pivot, () => Pivot?.FindDescendant<PivotPanel>() as FrameworkElement, c => c != null, cts.Token);
@@ -125,8 +123,7 @@ namespace CoolapkUWP.Controls
                 return null;
             }
 
-            Grid grid = VisualTreeHelper.GetChild(container, 0) as Grid;
-            return grid == null ? null : grid.FindName("Indicator") as Rectangle;
+            return !(VisualTreeHelper.GetChild(container, 0) is Grid grid) ? null : grid.FindName("Indicator") as Rectangle;
         }
 
         private async Task<T> WaitForLoaded<T>(FrameworkElement element, Func<T> func, Predicate<T> pre, CancellationToken cancellationToken)
@@ -191,10 +188,10 @@ namespace CoolapkUWP.Controls
 
         private void TryStartAnimationWithScale(FrameworkElement newIndicator, FrameworkElement oldIndicator)
         {
-            Windows.UI.Composition.Compositor compositor = Window.Current.Compositor;
+            Compositor compositor = Window.Current.Compositor;
 
-            Windows.UI.Composition.Visual old_target = ElementCompositionPreview.GetElementVisual(oldIndicator);
-            Windows.UI.Composition.Visual new_target = ElementCompositionPreview.GetElementVisual(newIndicator);
+            Visual old_target = ElementCompositionPreview.GetElementVisual(oldIndicator);
+            Visual new_target = ElementCompositionPreview.GetElementVisual(newIndicator);
 
             old_target.Offset = Vector3.Zero;
             old_target.CenterPoint = Vector3.Zero;
@@ -235,12 +232,12 @@ namespace CoolapkUWP.Controls
 
             TimeSpan duration = TimeSpan.FromSeconds(0.6d);
 
-            Windows.UI.Composition.CubicBezierEasingFunction standard = compositor.CreateCubicBezierEasingFunction(new Vector2(0.8f, 0.0f), new Vector2(0.2f, 1.0f));
+            CubicBezierEasingFunction standard = compositor.CreateCubicBezierEasingFunction(new Vector2(0.8f, 0.0f), new Vector2(0.2f, 1.0f));
 
-            Windows.UI.Composition.StepEasingFunction singleStep = compositor.CreateStepEasingFunction();
+            StepEasingFunction singleStep = compositor.CreateStepEasingFunction();
             singleStep.IsFinalStepSingleFrame = true;
 
-            Windows.UI.Composition.Vector3KeyFrameAnimation centerAnimation = compositor.CreateVector3KeyFrameAnimation();
+            Vector3KeyFrameAnimation centerAnimation = compositor.CreateVector3KeyFrameAnimation();
             centerAnimation.InsertExpressionKeyFrame(0f, "Vector3(startx,starty,0f)", singleStep);
             centerAnimation.InsertExpressionKeyFrame(0.333f, "Vector3(endx,endy,0f)", singleStep);
             centerAnimation.SetScalarParameter("startx", startx);
@@ -249,13 +246,13 @@ namespace CoolapkUWP.Controls
             centerAnimation.SetScalarParameter("endy", endy);
             centerAnimation.Duration = duration;
 
-            Windows.UI.Composition.Vector2KeyFrameAnimation offsetAnimation = compositor.CreateVector2KeyFrameAnimation();
+            Vector2KeyFrameAnimation offsetAnimation = compositor.CreateVector2KeyFrameAnimation();
             offsetAnimation.InsertExpressionKeyFrame(0f, "-oldOffset", singleStep);
             offsetAnimation.InsertExpressionKeyFrame(0.333f, "This.StartingValue", singleStep);
             offsetAnimation.SetVector2Parameter("oldOffset", oldOffset);
             offsetAnimation.Duration = duration;
 
-            Windows.UI.Composition.Vector2KeyFrameAnimation scaleAnimation = compositor.CreateVector2KeyFrameAnimation();
+            Vector2KeyFrameAnimation scaleAnimation = compositor.CreateVector2KeyFrameAnimation();
             scaleAnimation.InsertExpressionKeyFrame(0f, "oldScale", standard);
             scaleAnimation.InsertExpressionKeyFrame(0.333f, "(target.Size + abs(oldOffset)) / target.Size",
                 compositor.CreateCubicBezierEasingFunction(c_frame1point1, c_frame1point2));

@@ -167,8 +167,8 @@ namespace CoolapkUWP.Models.Users
         private void OnFollowChanged()
         {
             ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("FeedListPage");
-            FollowGlyph = FollowAuthor ? AuthorFollowYou ? loader.GetString("unfollowFanGlyph") : loader.GetString("unfollowGlyph")
-                        : AuthorFollowYou ? loader.GetString("followFanGlyph") : loader.GetString("followGlyph");
+            FollowGlyph = FollowAuthor ? AuthorFollowYou ? "\uE8EE" : "\uE8FB"
+                        : AuthorFollowYou ? "\uE97A" : "\uE710";
             FollowStatus = FollowAuthor ? AuthorFollowYou ? loader.GetString("unfollowFan") : loader.GetString("unfollow")
                         : AuthorFollowYou ? loader.GetString("followFan") : loader.GetString("follow");
         }

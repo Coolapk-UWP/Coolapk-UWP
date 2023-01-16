@@ -2,11 +2,15 @@
     x:Class="CoolapkUWP.Pages.FeedPages.AdaptivePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:feedpages="using:CoolapkUWP.ViewModels.FeedPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
+    d:DataContext="{d:DesignInstance Type=feedpages:AdaptiveViewModel}"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
@@ -29,17 +33,42 @@
                 MessageCard="{StaticResource MessageCardTemplate}"
                 Others="{StaticResource Empty}"
                 RefreshCard="{StaticResource RefreshCardTemplate}"
-                TitleCard="{StaticResource TitleCardTemplate}" />
+                TitleCard="{StaticResource TitleCardTemplate}"
+                User="{StaticResource UserTemplate}" />
         </ResourceDictionary>
     </Page.Resources>
-    <muxc:RefreshContainer RefreshRequested="RefreshContainer_RefreshRequested">
-        <ListView
-            x:Name="ListView"
-            ui:ListViewExtensions.ItemContainerStretchDirection="Horizontal"
-            ItemContainerStyle="{StaticResource DefaultCardItemStyle}"
-            ItemTemplateSelector="{StaticResource CardTemplateSelector}"
-            ItemsSource="{Binding}"
-            ShowsScrollingPlaceholders="False"
-            Style="{StaticResource DefaultCardListViewStyle}" />
-    </muxc:RefreshContainer>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <controls:PageHeader
+            x:Name="HeaderControl"
+            Title="{Binding Title}"
+            Margin="18,0,0,0"
+            x:Load="{x:Bind Provider.IsShowTitle, Mode=OneWay}"
+            FontSize="{StaticResource ContentControlFontSize}"
+            FontWeight="Normal">
+            <Button
+                x:Name="RefreshButton"
+                Margin="-8,0,0,0"
+                VerticalAlignment="Center"
+                Click="RefreshButton_Click"
+                Content="&#xE72C;"
+                Style="{StaticResource NavigationIconButtonNormalStyle}" />
+        </controls:PageHeader>
+        <muxc:RefreshContainer
+            x:Name="RefreshContainer"
+            Grid.Row="1"
+            RefreshRequested="RefreshContainer_RefreshRequested">
+            <ListView
+                x:Name="ListView"
+                ui:ListViewExtensions.ItemContainerStretchDirection="Horizontal"
+                ItemContainerStyle="{StaticResource DefaultCardItemStyle}"
+                ItemTemplateSelector="{StaticResource CardTemplateSelector}"
+                ItemsSource="{Binding}"
+                ShowsScrollingPlaceholders="False"
+                Style="{StaticResource DefaultCardListViewStyle}" />
+        </muxc:RefreshContainer>
+    </Grid>
 </Page>

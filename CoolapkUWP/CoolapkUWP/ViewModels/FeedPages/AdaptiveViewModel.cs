@@ -6,6 +6,7 @@ using CoolapkUWP.ViewModels.Providers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace CoolapkUWP.ViewModels.FeedPages
@@ -20,8 +21,40 @@ namespace CoolapkUWP.ViewModels.FeedPages
 
         private readonly CoolapkListProvider Provider;
 
-        public string Title { get; protected set; }
-        public double[] VerticalOffsets { get; set; } = new double[1];
+        private string title = string.Empty;
+        public string Title
+        {
+            get => title;
+            protected set
+            {
+                if (title != value)
+                {
+                    title = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
+        private bool isShowTitle;
+        public bool IsShowTitle
+        {
+            get => isShowTitle;
+            set
+            {
+                if (isShowTitle != value)
+                {
+                    isShowTitle = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
+        protected override event PropertyChangedEventHandler PropertyChanged;
+
+        protected void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        {
+            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
+        }
 
         internal AdaptiveViewModel(string uri, List<Type> types = null)
         {
@@ -75,20 +108,20 @@ namespace CoolapkUWP.ViewModels.FeedPages
             return uri.Replace("#", "%23");
         }
 
-        private IEnumerable<Entity> GetEntities(JObject jo)
+        private IEnumerable<Entity> GetEntities(JObject json)
         {
-            if (jo.TryGetValue("entityTemplate", out JToken t) && t?.ToString() == "configCard")
+            if (json.TryGetValue("entityTemplate", out JToken t) && t?.ToString() == "configCard")
             {
-                JObject j = JObject.Parse(jo.Value<string>("extraData"));
+                JObject j = JObject.Parse(json.Value<string>("extraData"));
                 Title = j.Value<string>("pageTitle");
                 yield return null;
             }
-            else if (jo.TryGetValue("entityTemplate", out JToken tt) && tt?.ToString() == "fabCard") { yield return null; }
+            else if (json.TryGetValue("entityTemplate", out JToken tt) && tt?.ToString() == "fabCard") { yield return null; }
             else if (tt?.ToString() == "feedCoolPictureGridCard")
             {
-                foreach (JObject item in jo.Value<JArray>("entities"))
+                foreach (JToken item in json.Value<JArray>("entities"))
                 {
-                    Entity entity = EntityTemplateSelector.GetEntity(item, IsHotFeedPage);
+                    Entity entity = EntityTemplateSelector.GetEntity((JObject)item, IsHotFeedPage);
                     if (entity != null)
                     {
                         yield return entity;
@@ -97,7 +130,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
             }
             else
             {
-                yield return EntityTemplateSelector.GetEntity(jo, IsHotFeedPage);
+                yield return EntityTemplateSelector.GetEntity(json, IsHotFeedPage);
             }
             yield break;
         }

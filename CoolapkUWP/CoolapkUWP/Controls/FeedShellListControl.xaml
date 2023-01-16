@@ -6,8 +6,6 @@
     xmlns:local="using:CoolapkUWP.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
-    d:DesignHeight="300"
-    d:DesignWidth="400"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -19,7 +17,8 @@
                 x:Key="CardTemplateSelector"
                 Feed="{StaticResource FeedDefaultTemplate}"
                 FeedReply="{StaticResource FeedReplyDefaultTemplate}"
-                Others="{StaticResource Empty}" />
+                Others="{StaticResource Empty}"
+                User="{StaticResource UserTemplate}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <local:ShyHeaderListView
