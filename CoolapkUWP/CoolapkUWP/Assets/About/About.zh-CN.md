@@ -10,7 +10,6 @@
 感谢 [Crowdin](https://crowdin.com/project/CoolapkUWP "Crowdin") 翻译者的支持。 如果翻译出现了什么问题，欢迎前来纠正。 并且请认真对待翻译。 您所写的一切将会被全世界阅读。
 
 ##### 鸣谢
-
 |                                          贡献                                        |                      作者                      |
 | ------------------------------------------------------------------------------------ | ---------------------------------------------- |
 | [原作(CoolApk-UWP)](https://github.com/oboard/CoolApk-UWP)                           | [oboard](https://github.com/oboard)            |

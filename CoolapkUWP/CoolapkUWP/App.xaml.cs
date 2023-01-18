@@ -4,7 +4,6 @@ using CoolapkUWP.Models.Exceptions;
 using CoolapkUWP.Pages;
 using System;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -49,9 +48,11 @@ namespace CoolapkUWP
             RequestWifiAccess();
             RegisterExceptionHandlingSynchronizationContext();
 
+            MainWindow = Window.Current;
+
             // 不要在窗口已包含内容时重复应用程序初始化，
             // 只需确保窗口处于活动状态
-            if (!(Window.Current.Content is Frame rootFrame))
+            if (!(MainWindow.Content is Frame rootFrame))
             {
                 // 创建要充当导航上下文的框架，并导航到第一页
                 rootFrame = new Frame();
@@ -64,7 +65,7 @@ namespace CoolapkUWP
                 }
 
                 // 将框架放在当前窗口中
-                Window.Current.Content = rootFrame;
+                MainWindow.Content = rootFrame;
             }
 
             if (e.PrelaunchActivated == false)
@@ -79,7 +80,7 @@ namespace CoolapkUWP
                 }
                 ThemeHelper.Initialize();
                 // 确保当前窗口处于活动状态
-                Window.Current.Activate();
+                MainWindow.Activate();
             }
         }
 
@@ -165,5 +166,7 @@ namespace CoolapkUWP
             SettingsHelper.LogManager.GetLogger("Unhandled Exception - SynchronizationContext").Error(e.Exception.ExceptionToMessage(), e.Exception);
             e.Handled = true;
         }
+
+        public static Window MainWindow { get; private set; }
     }
 }

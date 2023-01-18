@@ -43,7 +43,7 @@ namespace CoolapkUWP.Pages.SettingsPages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            switch ((sender as FrameworkElement).Tag as string)
+            switch ((sender as FrameworkElement).Tag.ToString())
             {
                 case "Reset":
                     ApplicationData.Current.LocalSettings.Values.Clear();
@@ -82,7 +82,7 @@ namespace CoolapkUWP.Pages.SettingsPages
 
         private async void HyperlinkButton_Click(object sender, RoutedEventArgs e)
         {
-            switch ((sender as FrameworkElement).Tag as string)
+            switch ((sender as FrameworkElement).Tag.ToString())
             {
                 case "LogFolder":
                     _ = await Launcher.LaunchFolderAsync(await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists));

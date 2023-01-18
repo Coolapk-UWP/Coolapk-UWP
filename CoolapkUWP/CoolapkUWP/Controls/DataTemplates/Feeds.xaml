@@ -5,7 +5,6 @@
     xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:converters="using:CoolapkUWP.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:helpers="using:CoolapkUWP.Helpers"
     xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
@@ -125,7 +124,7 @@
                         Padding="0"
                         Background="{ThemeResource SystemControlTransparentBrush}"
                         Click="Button_Click"
-                        Style="{StaticResource ButtonRevealStyle}"
+                        Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding UserInfo.Url}">
                         <muxc:PersonPicture
                             Width="36"
@@ -155,15 +154,17 @@
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel
+                <controls:StackPanel
                     x:Name="BtnsPanel"
                     Grid.Row="1"
                     HorizontalAlignment="Right"
-                    Orientation="Horizontal">
+                    Orientation="Horizontal"
+                    Spacing="2">
                     <Button
                         x:Name="LikeButton"
+                        Height="32"
                         Click="FeedButton_Click"
-                        Style="{StaticResource FeedOpButtonStyle}"
+                        Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding}"
                         ToolTipService.ToolTip="点赞"
                         Visibility="{Binding ShowLikes, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -182,9 +183,10 @@
                     </Button>
                     <Button
                         x:Name="MakeReplyButton"
+                        Height="32"
                         Click="FeedButton_Click"
                         Flyout="{StaticResource ReplyFlyout}"
-                        Style="{StaticResource FeedOpButtonStyle}"
+                        Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding}"
                         ToolTipService.ToolTip="回复"
                         Visibility="{Binding ShowLikes, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -198,9 +200,10 @@
                     </Button>
                     <Button
                         x:Name="ShareButton"
+                        Height="32"
                         Click="FeedButton_Click"
                         Flyout="{StaticResource QRCodeFlyout}"
-                        Style="{StaticResource FeedOpButtonStyle}"
+                        Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding ShareUrl}"
                         ToolTipService.ToolTip="分享"
                         Visibility="{Binding ShowLikes, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -214,12 +217,13 @@
                     </Button>
                     <Button
                         x:Name="MoreButton"
+                        Height="32"
                         Flyout="{StaticResource MoreFlyout}"
-                        Style="{StaticResource FeedOpButtonStyle}"
+                        Style="{StaticResource TransparentButtonStyle}"
                         ToolTipService.ToolTip="更多">
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE10C;" />
                     </Button>
-                </StackPanel>
+                </controls:StackPanel>
                 <controls:TextBlockEx
                     x:Name="Message"
                     Grid.Row="3"
@@ -322,7 +326,7 @@
                         Padding="0"
                         Background="{ThemeResource SystemControlTransparentBrush}"
                         Click="Button_Click"
-                        Style="{StaticResource ButtonRevealStyle}"
+                        Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding UserInfo.Url}">
                         <muxc:PersonPicture
                             Width="36"
@@ -372,35 +376,42 @@
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel
+                <controls:StackPanel
                     x:Name="BtnsPanel"
                     Grid.Row="1"
                     HorizontalAlignment="Right"
-                    Orientation="Horizontal">
+                    Orientation="Horizontal"
+                    Spacing="2">
                     <Button
                         x:Name="LikeButton"
+                        Height="32"
                         Click="FeedButton_Click"
-                        Style="{StaticResource FeedOpButtonStyle}"
+                        Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding}"
                         ToolTipService.ToolTip="点赞">
                         <StackPanel Orientation="Horizontal">
-                            <SymbolIcon
+                            <FontIcon
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
                                 Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"
-                                Symbol="Like"
+                                Glyph="&#xE8E1;"
                                 Visibility="{Binding Liked, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            <SymbolIcon Symbol="Like" Visibility="{Binding Liked, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
+                            <FontIcon
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                Glyph="&#xE8E1;"
+                                Visibility="{Binding Liked, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
                             <TextBlock Margin="8,0,0,0" Text="{Binding LikeNum}" />
                         </StackPanel>
                     </Button>
                     <Button
                         x:Name="MakeReplyButton"
+                        Height="32"
                         Click="FeedButton_Click"
                         Flyout="{StaticResource ReplyFlyout}"
-                        Style="{StaticResource FeedOpButtonStyle}"
+                        Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding}"
                         ToolTipService.ToolTip="回复">
                         <StackPanel Orientation="Horizontal">
-                            <SymbolIcon Symbol="Comment" />
+                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE90A;" />
                             <TextBlock
                                 Margin="8,0,0,0"
                                 VerticalAlignment="Center"
@@ -409,12 +420,13 @@
                     </Button>
                     <Button
                         x:Name="MoreButton"
+                        Height="32"
                         Flyout="{StaticResource MoreFlyout}"
-                        Style="{StaticResource FeedOpButtonStyle}"
+                        Style="{StaticResource TransparentButtonStyle}"
                         ToolTipService.ToolTip="更多">
-                        <SymbolIcon Symbol="More" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE10C;" />
                     </Button>
-                </StackPanel>
+                </controls:StackPanel>
                 <controls:TextBlockEx
                     x:Name="Message"
                     Grid.Row="3"

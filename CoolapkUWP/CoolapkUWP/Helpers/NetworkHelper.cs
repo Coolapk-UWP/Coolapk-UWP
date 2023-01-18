@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Security.ExchangeActiveSyncProvisioning;
@@ -157,21 +158,21 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        private static void ReplaceDarkMode(this System.Net.Http.Headers.HttpRequestHeaders headers)
+        private static async void ReplaceDarkMode(this HttpRequestHeaders headers)
         {
             const string name = "X-Dark-Mode";
             _ = headers.Remove(name);
-            headers.Add(name, ThemeHelper.IsDarkTheme() ? "1" : "0");
+            headers.Add(name, await ThemeHelper.IsDarkThemeAsync() ? "1" : "0");
         }
 
-        private static void ReplaceAppToken(this System.Net.Http.Headers.HttpRequestHeaders headers)
+        private static void ReplaceAppToken(this HttpRequestHeaders headers)
         {
             const string name = "X-App-Token";
             _ = headers.Remove(name);
             headers.Add(name, token.GetToken());
         }
 
-        private static void ReplaceRequested(this System.Net.Http.Headers.HttpRequestHeaders headers, string request)
+        private static void ReplaceRequested(this HttpRequestHeaders headers, string request)
         {
             const string name = "X-Requested-With";
             _ = headers.Remove(name);

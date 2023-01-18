@@ -28,11 +28,11 @@
                 ImageTextScrollCard="{StaticResource ImageTextScrollCardTemplate}"
                 Images="{StaticResource ImageCardTemplate}"
                 List="{StaticResource ListDefaultTemplate}"
-                ListWithSubtitle="{StaticResource ListWithSubtitleDefaultTemplate}"
                 LoginCard="{StaticResource LoginCardTemplate}"
                 MessageCard="{StaticResource MessageCardTemplate}"
                 Others="{StaticResource Empty}"
                 RefreshCard="{StaticResource RefreshCardTemplate}"
+                SubtitleList="{StaticResource SubtitleListDefaultTemplate}"
                 TitleCard="{StaticResource TitleCardTemplate}"
                 User="{StaticResource UserTemplate}" />
         </ResourceDictionary>

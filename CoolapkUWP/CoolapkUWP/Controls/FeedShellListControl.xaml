@@ -69,7 +69,10 @@
                     Visibility="Collapsed" />
                 <Button
                     x:Name="RefreshButton"
-                    Margin="-8,0,0,0"
+                    Width="32"
+                    Height="32"
+                    Margin="0,0,4,0"
+                    Padding="0"
                     VerticalAlignment="Center"
                     Click="RefreshButton_Click"
                     Content="&#xE72C;"

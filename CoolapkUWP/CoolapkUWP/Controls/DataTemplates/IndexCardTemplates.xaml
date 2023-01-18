@@ -25,10 +25,10 @@
         FeedReply="{StaticResource FeedReplyDefaultTemplate}"
         IconLink="{StaticResource IconLinkTemplate}"
         List="{StaticResource ListDefaultTemplate}"
-        ListWithSubtitle="{StaticResource ListWithSubtitleDefaultTemplate}"
         MiniIconLink="{StaticResource MiniIconLinkTemplate}"
         MiniUser="{StaticResource MiniUserTemplate}"
         SquareLinkCard="{StaticResource SquareLinkCardTemplate}"
+        SubtitleList="{StaticResource SubtitleListDefaultTemplate}"
         User="{StaticResource ListDefaultTemplate}" />
 
     <!--  一级卡片  -->
@@ -182,7 +182,7 @@
                     Glyph="&#xE72A;"
                     Visibility="{Binding Url, Converter={StaticResource StringVisibilityConverter}}" />
             </Grid>
-            <Border
+            <Grid
                 Grid.Row="1"
                 CornerRadius="8"
                 Visibility="{Binding ShowEntities, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -207,7 +207,24 @@
                         </DataTemplate>
                     </FlipView.ItemTemplate>
                 </FlipView>
-            </Border>
+                <Border
+                    Margin="4"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    CornerRadius="6">
+                    <Border.Background>
+                        <media:AcrylicBrush
+                            BackgroundSource="Backdrop"
+                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintOpacity="0" />
+                    </Border.Background>
+                    <muxc:PipsPager
+                        Margin="2,0"
+                        NumberOfPages="{Binding Entities, Converter={StaticResource CollectionCountConverter}}"
+                        SelectedPageIndex="{Binding SelectedIndex, ElementName=FlipView, Mode=TwoWay}" />
+                </Border>
+            </Grid>
             <Border
                 Grid.Row="2"
                 CornerRadius="8"
@@ -260,7 +277,7 @@
                             HorizontalAlignment="Stretch"
                             Background="{ThemeResource SystemControlTransparentBrush}"
                             Click="Button_Click"
-                            Style="{ThemeResource ButtonRevealStyle}"
+                            Style="{ThemeResource TransparentButtonStyle}"
                             Tag="{Binding}">
                             <control:StackPanel HorizontalAlignment="Stretch" Spacing="2">
                                 <Border
@@ -558,7 +575,7 @@
             Width="86"
             Background="{ThemeResource SystemControlTransparentBrush}"
             Click="Button_Click"
-            Style="{ThemeResource ButtonRevealStyle}"
+            Style="{ThemeResource TransparentButtonStyle}"
             Tag="{Binding}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -592,7 +609,7 @@
             HorizontalContentAlignment="Left"
             Background="{ThemeResource SystemControlTransparentBrush}"
             Click="Button_Click"
-            Style="{ThemeResource ButtonRevealStyle}"
+            Style="{ThemeResource TransparentButtonStyle}"
             Tag="{Binding}">
             <Grid>
                 <Grid.ColumnDefinitions>

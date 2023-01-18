@@ -118,7 +118,7 @@ namespace CoolapkUWP.Controls
                                             {
                                                 Source = this,
                                                 Mode = BindingMode.OneWay,
-                                                Converter = new FontSizeToLineHeight(),
+                                                Converter = new FontSizeToHeightConverter(),
                                                 Path = new PropertyPath(nameof(FontSize))
                                             });
                                             container.Child = viewbox;
@@ -144,7 +144,7 @@ namespace CoolapkUWP.Controls
                                             {
                                                 Source = this,
                                                 Mode = BindingMode.OneWay,
-                                                Converter = new FontSizeToLineHeight(),
+                                                Converter = new FontSizeToHeightConverter(),
                                                 Path = new PropertyPath(nameof(FontSize))
                                             });
                                             container.Child = viewbox;
@@ -165,7 +165,7 @@ namespace CoolapkUWP.Controls
                                             {
                                                 Source = this,
                                                 Mode = BindingMode.OneWay,
-                                                Converter = new FontSizeToLineHeight(),
+                                                Converter = new FontSizeToHeightConverter(),
                                                 Path = new PropertyPath(nameof(FontSize))
                                             });
                                             container.Child = viewbox;
@@ -244,7 +244,7 @@ namespace CoolapkUWP.Controls
                                     {
                                         Source = this,
                                         Mode = BindingMode.OneWay,
-                                        Converter = new FontSizeToLineHeight(),
+                                        Converter = new FontSizeToHeightConverter(),
                                         Path = new PropertyPath(nameof(FontSize))
                                     });
                                     container.Child = viewbox;

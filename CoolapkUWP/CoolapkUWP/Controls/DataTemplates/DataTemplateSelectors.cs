@@ -21,8 +21,8 @@ namespace CoolapkUWP.Controls.DataTemplates
         public DataTemplate TitleCard { get; set; }
         public DataTemplate RefreshCard { get; set; }
         public DataTemplate MessageCard { get; set; }
+        public DataTemplate SubtitleList { get; set; }
         public DataTemplate GridScrollCard { get; set; }
-        public DataTemplate ListWithSubtitle { get; set; }
         public DataTemplate ImageTextScrollCard { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
         {
@@ -52,7 +52,7 @@ namespace CoolapkUWP.Controls.DataTemplates
                 }
             }
             else if (item is IHasDescription) { return List; }
-            else if (item is IHasSubtitle) { return ListWithSubtitle; }
+            else if (item is IHasSubtitle) { return SubtitleList; }
             else { return Others; }
         }
     }
@@ -67,9 +67,9 @@ namespace CoolapkUWP.Controls.DataTemplates
         public DataTemplate MiniUser { get; set; }
         public DataTemplate FeedReply { get; set; }
         public DataTemplate MiniIconLink { get; set; }
+        public DataTemplate SubtitleList { get; set; }
         public DataTemplate FeedImageText { get; set; }
         public DataTemplate SquareLinkCard { get; set; }
-        public DataTemplate ListWithSubtitle { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
@@ -114,7 +114,7 @@ namespace CoolapkUWP.Controls.DataTemplates
                 }
             }
             else if (item is IHasDescription) { return List; }
-            else if (item is IHasSubtitle) { return ListWithSubtitle; }
+            else if (item is IHasSubtitle) { return SubtitleList; }
             else { return Empty; }
         }
     }

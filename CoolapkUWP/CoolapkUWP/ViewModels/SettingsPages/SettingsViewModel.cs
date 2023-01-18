@@ -255,7 +255,7 @@ namespace CoolapkUWP.ViewModels.SettingsPages
             UpdateInfo info = null;
             try
             {
-                info = await UpdateHelper.CheckUpdateAsync("Paving-Base", "APK-Installer");
+                info = await UpdateHelper.CheckUpdateAsync("Coolapk-UWP", "Coolapk-UWP");
             }
             catch (Exception ex)
             {

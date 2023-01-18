@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Common;
 using Microsoft.Toolkit.Uwp.Helpers;
+using System.Threading.Tasks;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
@@ -27,7 +28,7 @@ namespace CoolapkUWP.Helpers
         {
             get
             {
-                if (Window.Current.Content is FrameworkElement rootElement)
+                if (CurrentApplicationWindow.Content is FrameworkElement rootElement)
                 {
                     if (rootElement.RequestedTheme != ElementTheme.Default)
                     {
@@ -46,11 +47,11 @@ namespace CoolapkUWP.Helpers
         {
             get
             {
-                return Window.Current.Content is FrameworkElement rootElement ? rootElement.RequestedTheme : ElementTheme.Default;
+                return CurrentApplicationWindow.Content is FrameworkElement rootElement ? rootElement.RequestedTheme : ElementTheme.Default;
             }
             set
             {
-                if (Window.Current.Content is FrameworkElement rootElement)
+                if (CurrentApplicationWindow.Content is FrameworkElement rootElement)
                 {
                     rootElement.RequestedTheme = value;
                 }
@@ -64,7 +65,7 @@ namespace CoolapkUWP.Helpers
         public static void Initialize()
         {
             // Save reference as this might be null when the user is in another app
-            CurrentApplicationWindow = Window.Current;
+            CurrentApplicationWindow = Window.Current ?? App.MainWindow;
             RootTheme = SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme);
 
             // Registering to color changes, thus we notice when user changes theme system wide
@@ -72,19 +73,37 @@ namespace CoolapkUWP.Helpers
             UISettings.ColorValuesChanged += UiSettings_ColorValuesChanged;
         }
 
-        private static void UiSettings_ColorValuesChanged(UISettings sender, object args)
+        private static async void UiSettings_ColorValuesChanged(UISettings sender, object args)
         {
             // Make sure we have a reference to our window so we dispatch a UI change
             if (CurrentApplicationWindow != null)
             {
                 // Dispatch on UI thread so that we have a current appbar to access and change
                 _ = CurrentApplicationWindow.Dispatcher.AwaitableRunAsync(UpdateSystemCaptionButtonColors, CoreDispatcherPriority.High);
+                UISettingChangedType type = await CurrentApplicationWindow.Dispatcher.AwaitableRunAsync(()=>IsDarkTheme() ? UISettingChangedType.DarkMode : UISettingChangedType.LightMode, CoreDispatcherPriority.High);
+                UISettingChanged.Invoke(type);
             }
-            UISettingChanged.Invoke(IsDarkTheme() ? UISettingChangedType.DarkMode : UISettingChangedType.LightMode);
         }
 
         public static bool IsDarkTheme()
         {
+            return RootTheme == ElementTheme.Default
+                ? Application.Current.RequestedTheme == ApplicationTheme.Dark
+                : RootTheme == ElementTheme.Dark;
+        }
+
+        public static async Task<bool> IsDarkThemeAsync()
+        {
+            // Make sure we have a reference to our window so we dispatch a UI change
+            if (CurrentApplicationWindow != null)
+            {
+                // Dispatch on UI thread so that we have a current appbar to access and change
+                return await CurrentApplicationWindow.Dispatcher.AwaitableRunAsync(
+                    () => RootTheme == ElementTheme.Default
+                        ? Application.Current.RequestedTheme == ApplicationTheme.Dark
+                        : RootTheme == ElementTheme.Dark,
+                    CoreDispatcherPriority.High);
+            }
             return RootTheme == ElementTheme.Default
                 ? Application.Current.RequestedTheme == ApplicationTheme.Dark
                 : RootTheme == ElementTheme.Dark;

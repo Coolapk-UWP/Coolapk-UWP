@@ -43,7 +43,7 @@
                         HorizontalAlignment="Left"
                         Background="{ThemeResource SystemControlTransparentBrush}"
                         Click="Button_Click"
-                        Style="{StaticResource ButtonRevealStyle}"
+                        Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding UserInfo.Url}">
                         <muxc:PersonPicture
                             Width="36"
@@ -78,9 +78,10 @@
                     <Button
                         x:Name="FollowButton"
                         Grid.Column="2"
+                        Height="32"
                         HorizontalAlignment="Right"
                         Click="Button_Click"
-                        Style="{StaticResource FeedOpButtonStyle}"
+                        Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding}"
                         ToolTipService.ToolTip="{x:Bind FollowStatus.Text, Mode=OneWay}">
                         <StackPanel Orientation="Horizontal">

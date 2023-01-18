@@ -5,7 +5,6 @@
     xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:feedpages="using:CoolapkUWP.ViewModels.FeedPages"
-    xmlns:local="using:CoolapkUWP.Pages.FeedPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     d:DataContext="{d:DesignInstance Type=feedpages:FeedShellViewModel}"
@@ -87,12 +86,16 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Bottom">
                         <StackPanel HorizontalAlignment="Left" />
-                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <controls:StackPanel
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal"
+                            Spacing="2">
                             <Button
                                 x:Name="ReplyButton"
+                                Height="32"
                                 Click="FeedButton_Click"
                                 Flyout="{StaticResource ReplyFlyout}"
-                                Style="{StaticResource FeedOpButtonStyle}"
+                                Style="{StaticResource TransparentButtonStyle}"
                                 Tag="{Binding FeedDetail}"
                                 ToolTipService.ToolTip="回复">
                                 <StackPanel Orientation="Horizontal">
@@ -100,13 +103,14 @@
                                     <TextBlock
                                         Margin="8,0,0,0"
                                         VerticalAlignment="Center"
-                                        Text="{Binding FeedDetail.ReplyNum}" />
+                                        Text="{Binding FeedDetail.ReplyNum, FallbackValue='0'}" />
                                 </StackPanel>
                             </Button>
                             <Button
                                 x:Name="LikeButton"
+                                Height="32"
                                 Click="FeedButton_Click"
-                                Style="{StaticResource FeedOpButtonStyle}"
+                                Style="{StaticResource TransparentButtonStyle}"
                                 Tag="{Binding FeedDetail}"
                                 ToolTipService.ToolTip="点赞">
                                 <StackPanel Orientation="Horizontal">
@@ -114,7 +118,7 @@
                                         FontFamily="{StaticResource SymbolThemeFontFamily}"
                                         Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"
                                         Glyph="&#xE8E1;"
-                                        Visibility="{Binding FeedDetail.Liked, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        Visibility="{Binding FeedDetail.Liked, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}" />
                                     <FontIcon
                                         FontFamily="{StaticResource SymbolThemeFontFamily}"
                                         Glyph="&#xE8E1;"
@@ -122,13 +126,14 @@
                                     <TextBlock
                                         Margin="8,0,0,0"
                                         VerticalAlignment="Center"
-                                        Text="{Binding FeedDetail.LikeNum}" />
+                                        Text="{Binding FeedDetail.LikeNum, FallbackValue='0'}" />
                                 </StackPanel>
                             </Button>
                             <Button
                                 x:Name="StarButton"
+                                Height="32"
                                 Click="FeedButton_Click"
-                                Style="{StaticResource FeedOpButtonStyle}"
+                                Style="{StaticResource TransparentButtonStyle}"
                                 Tag="{Binding FeedDetail}"
                                 ToolTipService.ToolTip="收藏">
                                 <StackPanel Orientation="Horizontal">
@@ -136,7 +141,7 @@
                                         FontFamily="{StaticResource SymbolThemeFontFamily}"
                                         Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"
                                         Glyph="&#xE734;"
-                                        Visibility="{Binding FeedDetail.Stared, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        Visibility="{Binding FeedDetail.Stared, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}" />
                                     <FontIcon
                                         FontFamily="{StaticResource SymbolThemeFontFamily}"
                                         Glyph="&#xE734;"
@@ -144,14 +149,15 @@
                                     <TextBlock
                                         Margin="8,0,0,0"
                                         VerticalAlignment="Center"
-                                        Text="{Binding FeedDetail.StarNum}" />
+                                        Text="{Binding FeedDetail.StarNum, FallbackValue='0'}" />
                                 </StackPanel>
                             </Button>
                             <Button
                                 x:Name="ShareButton"
+                                Height="32"
                                 Click="FeedButton_Click"
                                 Flyout="{StaticResource QRCodeFlyout}"
-                                Style="{StaticResource FeedOpButtonStyle}"
+                                Style="{StaticResource TransparentButtonStyle}"
                                 Tag="{Binding FeedDetail.ShareUrl}"
                                 ToolTipService.ToolTip="分享">
                                 <StackPanel Orientation="Horizontal">
@@ -159,10 +165,10 @@
                                     <TextBlock
                                         Margin="8,0,0,0"
                                         VerticalAlignment="Center"
-                                        Text="{Binding FeedDetail.ShareNum}" />
+                                        Text="{Binding FeedDetail.ShareNum, FallbackValue='0'}" />
                                 </StackPanel>
                             </Button>
-                        </StackPanel>
+                        </controls:StackPanel>
                     </Grid>
                 </Grid>
             </muxc:TwoPaneView.Pane1>

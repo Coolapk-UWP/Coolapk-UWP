@@ -4,6 +4,7 @@ using CoolapkUWP.Models.Images;
 using CoolapkUWP.Models.Users;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Windows.ApplicationModel.Resources;
 
@@ -153,7 +154,7 @@ namespace CoolapkUWP.Models
         public string Title { get; private set; }
         public bool ShowEntities { get; private set; }
         public string Description { get; private set; }
-        public ImmutableArray<Entity> Entities { get; private set; }
+        public ImmutableArray<Entity> Entities { get; private set; } = ImmutableArray<Entity>.Empty;
 
         public IndexPageMessageCardModel(JObject token) : base(token)
         {
@@ -257,7 +258,7 @@ namespace CoolapkUWP.Models
         public string Description { get; private set; }
         public string EntityTemplate { get; private set; }
         public EntityType EntitiesType { get; private set; }
-        public ImmutableArray<Entity> Entities { get; private set; }
+        public ImmutableArray<Entity> Entities { get; private set; } = ImmutableArray<Entity>.Empty;
 
         public IndexPageHasEntitiesModel(JObject token, EntityType type) : base(token)
         {

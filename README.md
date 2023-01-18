@@ -7,12 +7,12 @@
 
 [![Build Status](https://dev.azure.com/wherewhere/Coolapk-UWP/_apis/build/status/Coolapk-UWP.Coolapk-UWP?branchName=dev-where)](https://dev.azure.com/wherewhere/Coolapk-UWP/_build/latest?definitionId=2&branchName=dev-where)
 
-<a href="https://github.com/Coolapk-UWP/Coolapk-UWP/blob/master/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/Coolapk-UWP/Coolapk-UWP.svg?label=License&style=flat-square"></a>
-<a href="https://github.com/Coolapk-UWP/Coolapk-UWP/issues"><img alt="GitHub" src="https://img.shields.io/github/issues/Coolapk-UWP/Coolapk-UWP.svg?label=Issues&style=flat-square"></a>
-<a href="https://github.com/Coolapk-UWP/Coolapk-UWP/stargazers"><img alt="GitHub" src="https://img.shields.io/github/stars/Coolapk-UWP/Coolapk-UWP.svg?label=Stars&style=flat-square"></a>
+[![LICENSE](https://img.shields.io/github/license/Coolapk-UWP/Coolapk-UWP.svg?label=License&style=flat-square)](https://github.com/Coolapk-UWP/Coolapk-UWP/blob/master/LICENSE "LICENSE")
+[![Issues](https://img.shields.io/github/issues/Coolapk-UWP/Coolapk-UWP.svg?label=Issues&style=flat-square)](https://github.com/Coolapk-UWP/Coolapk-UWP/issues "Issues")
+[![Stargazers](https://img.shields.io/github/stars/Coolapk-UWP/Coolapk-UWP.svg?label=Stars&style=flat-square)](https://github.com/Coolapk-UWP/Coolapk-UWP/stargazers "Stargazers")
 
-<a href="https://github.com/Coolapk-UWP/Coolapk-UWP/releases/latest"><img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/Coolapk-UWP/Coolapk-UWP/total.svg?label=DOWNLOAD&logo=github&style=for-the-badge"></a>
-<a href=""><img alt="Baidu Netdisk" src="https://img.shields.io/badge/download-%e5%af%86%e7%a0%81%ef%bc%9alIIl-magenta.svg?label=%e4%b8%8b%e8%bd%bd&logo=baidu&style=for-the-badge"></a>
+[![GitHub All Releases](https://img.shields.io/github/downloads/Coolapk-UWP/Coolapk-UWP/total.svg?label=DOWNLOAD&logo=github&style=for-the-badge)](https://github.com/Coolapk-UWP/Coolapk-UWP/releases/latest "GitHub All Releases")
+[![Baidu Netdisk](https://img.shields.io/badge/download-%e5%af%86%e7%a0%81%ef%bc%9alIIl-magenta.svg?label=%e4%b8%8b%e8%bd%bd&logo=baidu&style=for-the-badge)](https://pan.baidu.com/s/1Wjy-CUfjm0sOHCKLwQEALQ "Baidu Netdisk")
 
 ## 目录
 - [Coolapk UWP](#coolapk-uwp)
@@ -41,12 +41,12 @@
 1. 夜间模式
 2. 登录/点赞
 3. 浏览动态/图文/问答/通知
-4. 更多内容请自行发掘<img alt="流汗滑稽" src="./CoolapkUWP/CoolapkUWP/Assets/Emoji/1259.png" width="20px" />
+4. 更多内容请自行发掘<img alt="流汗滑稽" src="./CoolapkUWP/CoolapkUWP/Assets/Emoji/(流汗滑稽.png" width="20px" />
 
 ## 如何安装应用
 ### 最低需求
 - Windows 10 Build ~~15063~~ 17763及以上
-- 设备需支持ARM/x86/x64
+- 设备需支持ARM/ARM64/x86/x64
 - Feature2分支支持Windows 10 Build 15035及以上
 - 至少100MB的空余储存空间(用于储存安装包与安装应用)
 
@@ -106,14 +106,12 @@
 ![问答](Images/Screenshots/Snipaste_2021-08-06_09-27-48.png)
 
 ## 使用到的模块
-- [Coolapk-kotlin](https://github.com/bjzhou/Coolapk-kotlin "Coolapk-kotlin")
-- [UWP Community Toolkit](https://github.com/Microsoft/UWPCommunityToolkit "UWP Community Toolkit")
-- [Win UI](https://github.com/microsoft/microsoft-ui-xaml "Win UI")
-- [Json.NET](https://www.newtonsoft.com/json "Json.NET")
-- [QRCoder](https://github.com/codebude/QRCoder "QRCoder")
-- [Metro Log](https://github.com/novotnyllc/MetroLog "Metro Log")
-- [Color Thief](https://github.com/KSemenenko/ColorThief "Color Thief")
-- [Bcrypt.Net](https://github.com/BcryptNet/bcrypt.net "Bcrypt.Net")
+- [QRCoder](https://github.com/codebude/QRCoder)
+- [MetroLog](https://github.com/novotnyllc/MetroLog)
+- [Bcrypt.Net](https://github.com/BcryptNet/bcrypt.net)
+- [Windows UI](https://github.com/microsoft/microsoft-ui-xaml "Windows UI")
+- [Newtonsoft Json](https://www.newtonsoft.com/json)
+- [Windows Community Toolkit](https://github.com/CommunityToolkit/WindowsCommunityToolkit "Windows Community Toolkit")
 
 ## 衍生项目
 - [Coolapk-API-Collect](https://github.com/wherewhere/Coolapk-API-Collect "Coolapk-API-Collect")

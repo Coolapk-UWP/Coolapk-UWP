@@ -109,7 +109,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="ListWithSubtitleDefaultTemplate">
+    <DataTemplate x:Key="SubtitleListDefaultTemplate">
         <Grid
             Padding="0,8"
             KeyDown="OnKeyDown"

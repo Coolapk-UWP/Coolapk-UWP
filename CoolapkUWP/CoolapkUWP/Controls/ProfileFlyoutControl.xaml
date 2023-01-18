@@ -93,7 +93,8 @@
                 x:Load="{x:Bind Provider.IsLogin, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                 Click="Button_Click"
                 Content="&#xE78B;"
-                Style="{StaticResource NavigationIconButtonNormalStyle}" />
+                Style="{StaticResource NavigationIconButtonNormalStyle}"
+                Tag="LoginButton" />
         </Grid>
         <Grid
             x:Name="ButtonGrid"
@@ -111,6 +112,7 @@
                 VerticalAlignment="Stretch"
                 contract7NotPresent:Loaded="Button_Loaded"
                 contract7Present:CornerRadius="4,0,0,4"
+                Click="Button_Click"
                 Tag="FeedsButton">
                 <StackPanel>
                     <TextBlock

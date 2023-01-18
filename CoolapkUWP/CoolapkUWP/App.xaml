@@ -31,8 +31,7 @@
             <converters:StringVisibilityConverter x:Key="StringVisibilityConverter" />
             <converters:CollectionVisibilityConverter x:Key="CollectionVisibilityConverter" />
 
-            <converter:StringToBoolConverter x:Key="StringToBoolConverter" />
-            <converter:CollectionToBoolConverter x:Key="CollectionToBoolConverter" />
+            <converter:CollectionCountConverter x:Key="CollectionCountConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

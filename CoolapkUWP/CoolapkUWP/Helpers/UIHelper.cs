@@ -309,11 +309,11 @@ namespace CoolapkUWP.Helpers
             {
                 string u = str.Replace(i - 1);
                 string uid = int.TryParse(u, out _) ? u : (await NetworkHelper.GetUserInfoByNameAsync(u)).UID;
-                //FeedListViewModel f = FeedListViewModel.GetProvider(FeedListType.UserPageList, uid);
-                //if (f != null)
-                //{
-                //    Navigate(typeof(FeedListPage), f);
-                //}
+                FeedListViewModel f = FeedListViewModel.GetProvider(FeedListType.UserPageList, uid);
+                if (f != null)
+                {
+                    Navigate(typeof(FeedListPage), f);
+                }
             }
             else if (str.IsFirst(i++) || str.IsFirst(i++))
             {
@@ -324,11 +324,11 @@ namespace CoolapkUWP.Helpers
             {
                 string u = str.Replace(i - 1);
                 if (u.Contains("?type=")) { u = u.Substring(0, u.IndexOf('?')); }
-                //FeedListViewModel f = FeedListViewModel.GetProvider(FeedListType.TagPageList, u);
-                //if (f != null)
-                //{
-                //    Navigate(typeof(FeedListPage), f);
-                //}
+                FeedListViewModel f = FeedListViewModel.GetProvider(FeedListType.TagPageList, u);
+                if (f != null)
+                {
+                    Navigate(typeof(FeedListPage), f);
+                }
             }
             else if (str.IsFirst(i++))
             {

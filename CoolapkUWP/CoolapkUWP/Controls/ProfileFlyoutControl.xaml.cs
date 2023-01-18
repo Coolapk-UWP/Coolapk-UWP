@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.BrowserPages;
+using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.UI;
@@ -23,8 +24,11 @@ namespace CoolapkUWP.Controls
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            switch ((sender as FrameworkElement).Name)
+            switch ((sender as FrameworkElement).Tag.ToString())
             {
+                case "FeedsButton":
+                    UIHelper.Navigate(typeof(FeedListPage), FeedListViewModel.GetProvider(FeedListType.TagPageList, Provider.ProfileDetail.EntityID.ToString()));
+                    break;
                 case "LoginButton":
                     UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel(UriHelper.LoginUri));
                     break;
