@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace CoolapkUWP.Models.Feeds
 {
-    public class FeedModelBase : SourceFeedModel, INotifyPropertyChanged, ICanFollowModel, ICanChangeLikeModel, ICanChangeReplyNum, ICanChangeStarModel, ICanCopy
+    public class FeedModelBase : SourceFeedModel, INotifyPropertyChanged, ICanFollow, ICanLike, ICanReply, ICanStar, ICanCopy
     {
         private int likeNum;
         public int LikeNum

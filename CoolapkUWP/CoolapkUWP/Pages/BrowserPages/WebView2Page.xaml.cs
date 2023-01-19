@@ -36,6 +36,12 @@ namespace CoolapkUWP.Pages.BrowserPages
             }
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            WebView.Close();
+        }
+
         private void WebView_NavigationStarting(WebView2 sender, CoreWebView2NavigationStartingEventArgs args)
         {
             UIHelper.ShowProgressBar();

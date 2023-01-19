@@ -47,9 +47,9 @@ namespace CoolapkUWP.Helpers
             else { return (data != null && !string.IsNullOrWhiteSpace(data.ToString()), data); }
         }
 
-        public static async Task<(bool isSucceed, string result)> GetStringAsync(Uri uri, bool isBackground = false, bool forceRefresh = true)
+        public static async Task<(bool isSucceed, string result)> GetStringAsync(Uri uri, string request = "com.coolapk.market", bool isBackground = false)
         {
-            string results = await NetworkHelper.GetStringAsync(uri, NetworkHelper.GetCoolapkCookies(uri), "XMLHttpRequest", isBackground);
+            string results = await NetworkHelper.GetStringAsync(uri, NetworkHelper.GetCoolapkCookies(uri), request, isBackground);
             if (string.IsNullOrWhiteSpace(results))
             {
                 UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
@@ -153,7 +153,7 @@ namespace CoolapkUWP.Helpers
         }
 #pragma warning restore 0612
 
-        public static async Task ChangeLikeAsync(this ICanChangeLikeModel model, CoreDispatcher dispatcher)
+        public static async Task ChangeLikeAsync(this ICanLike model, CoreDispatcher dispatcher)
         {
             if (model == null) { return; }
 
@@ -185,7 +185,7 @@ namespace CoolapkUWP.Helpers
             });
         }
 
-        public static async void ChangeFollow(this ICanFollowModel model, CoreDispatcher dispatcher)
+        public static async void ChangeFollow(this ICanFollow model, CoreDispatcher dispatcher)
         {
             UriType type = model.Followed ? UriType.OperateUnfollow : UriType.OperateFollow;
 

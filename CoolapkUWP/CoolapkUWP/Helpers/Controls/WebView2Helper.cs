@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
+using Windows.UI;
 using Windows.UI.Xaml;
 
 namespace CoolapkUWP.Helpers
@@ -29,8 +30,22 @@ namespace CoolapkUWP.Helpers
         private static void OnIsEnableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             WebView2 element = (WebView2)d;
-            if (GetIsEnable(element)) { element.NavigationCompleted += OnNavigationCompleted; }
-            else { element.NavigationCompleted -= OnNavigationCompleted; }
+            if (GetIsEnable(element))
+            {
+                element.SizeChanged += OnSizeChanged;
+                element.NavigationCompleted += OnNavigationCompleted;
+            }
+            else
+            {
+                element.SizeChanged -= OnSizeChanged;
+                element.NavigationCompleted -= OnNavigationCompleted;
+            }
+        }
+
+        private static void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            bool isVerticalStretch = GetIsVerticalStretch((WebView2)sender);
+            UpdateIsVerticalStretch((WebView2)sender, isVerticalStretch);
         }
 
         private static void OnNavigationCompleted(WebView2 sender, CoreWebView2NavigationCompletedEventArgs args)
@@ -131,6 +146,77 @@ namespace CoolapkUWP.Helpers
                 else { element.MinHeight = 0; }
             }
             catch { }
+        }
+
+        #endregion
+
+        #region DefaultBackgroundColor
+
+        public static Color GetDefaultBackgroundColor(WebView2 element)
+        {
+            return (Color)element.GetValue(DefaultBackgroundColorProperty);
+        }
+
+        public static void SetDefaultBackgroundColor(WebView2 element, Color value)
+        {
+            element.SetValue(DefaultBackgroundColorProperty, value);
+        }
+
+        public static readonly DependencyProperty DefaultBackgroundColorProperty =
+            DependencyProperty.RegisterAttached(
+                "DefaultBackgroundColor",
+                typeof(Color),
+                typeof(WebViewHelper),
+                new PropertyMetadata(null, OnDefaultBackgroundColorChanged));
+
+        private static void OnDefaultBackgroundColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            WebView2 element = (WebView2)d;
+            if (element.CoreWebView2 == null)
+            {
+                Color color = GetDefaultBackgroundColor(element);
+                string hex = $"{Convert.ToString(color.A, 16)}{Convert.ToString(color.R, 16)}{Convert.ToString(color.G, 16)}{Convert.ToString(color.B, 16)}";
+                Environment.SetEnvironmentVariable("WEBVIEW2_DEFAULT_BACKGROUND_COLOR", hex);
+            }
+        }
+
+        #endregion
+
+        #region HTML
+
+        public static string GetHTML(WebView2 element)
+        {
+            return (string)element.GetValue(HTMLProperty);
+        }
+
+        public static void SetHTML(WebView2 element, string value)
+        {
+            element.SetValue(HTMLProperty, value);
+        }
+
+        public static readonly DependencyProperty HTMLProperty =
+            DependencyProperty.RegisterAttached(
+                "HTML",
+                typeof(string),
+                typeof(WebViewHelper),
+                new PropertyMetadata(null, OnHTMLChanged));
+
+        private static void OnHTMLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            WebView2 element = (WebView2)d;
+            if (element.IsLoaded)
+            {
+                string html = GetHTML(element);
+                element.NavigateToString(html);
+            }
+            else
+            {
+                element.Loaded += (sender, args) =>
+                {
+                    string html = GetHTML(element);
+                    element.NavigateToString(html);
+                };
+            }
         }
 
         #endregion

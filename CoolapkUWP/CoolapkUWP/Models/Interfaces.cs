@@ -33,29 +33,29 @@ namespace CoolapkUWP.Models
         bool IsCopyEnabled { get; set; }
     }
 
-    public interface ICanFollowModel
-    {
-        int UID { get; }
-        bool Followed { get; set; }
-    }
-
-    public interface ICanChangeReplyNum
-    {
-        int ID { get; }
-        int ReplyNum { get; set; }
-    }
-
-    public interface ICanChangeLikeModel
+    public interface ICanLike
     {
         int ID { get; }
         bool Liked { get; set; }
         int LikeNum { get; set; }
     }
 
-    public interface ICanChangeStarModel
+    public interface ICanStar
     {
         int ID { get; }
         bool Stared { get; set; }
         int StarNum { get; set; }
+    }
+
+    public interface ICanReply
+    {
+        int ID { get; }
+        int ReplyNum { get; set; }
+    }
+
+    public interface ICanFollow
+    {
+        int UID { get; }
+        bool Followed { get; set; }
     }
 }

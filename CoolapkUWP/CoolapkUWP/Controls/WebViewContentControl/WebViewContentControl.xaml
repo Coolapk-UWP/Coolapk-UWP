@@ -7,13 +7,12 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="local:WebViewContentControl">
-                        <Border x:Name="OuterBorder" CornerRadius="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=TemplateSettings.OuterCornerRadius}">
+                        <Border x:Name="OuterBorder">
                             <Border
                                 x:Name="InnerBorder"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=TemplateSettings.InnerCornerRadius}">
+                                BorderThickness="{TemplateBinding BorderThickness}">
                                 <ContentPresenter
                                     Padding="{TemplateBinding Padding}"
                                     Content="{TemplateBinding Content}"

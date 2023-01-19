@@ -6,7 +6,7 @@ using Windows.ApplicationModel.Resources;
 
 namespace CoolapkUWP.ViewModels.BrowserPages
 {
-    internal class BrowserViewModel : IViewModel
+    public class BrowserViewModel : IViewModel
     {
         private readonly ResourceLoader _loader = ResourceLoader.GetForViewIndependentUse("BrowserPage");
 

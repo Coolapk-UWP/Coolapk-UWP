@@ -5,8 +5,9 @@
     xmlns:browserpages="using:CoolapkUWP.ViewModels.BrowserPages"
     xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:helpers="using:CoolapkUWP.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     d:DataContext="{d:DesignInstance Type=browserpages:BrowserViewModel}"
     NavigationCacheMode="Required"
     mc:Ignorable="d">
@@ -23,17 +24,21 @@
             FontWeight="Normal">
             <controls:StackPanel Orientation="Horizontal" Spacing="2">
                 <Button
+                    x:Name="GotoSystemBrowserButton"
                     x:Uid="/BrowserPage/OpenInBrowserButton"
+                    Height="32"
                     VerticalAlignment="Center"
+                    x:Load="{x:Bind Provider.IsLoginPage, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                     Click="GotoSystemBrowserButton_Click"
-                    Style="{StaticResource FeedOpButtonStyle}"
-                    Visibility="{Binding IsLoginPage, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
+                    Style="{StaticResource TransparentButtonStyle}" />
                 <Button
+                    x:Name="TryLoginButton"
                     x:Uid="/BrowserPage/BackButton"
+                    Height="32"
                     VerticalAlignment="Center"
+                    x:Load="{x:Bind Provider.IsLoginPage, Mode=OneWay}"
                     Click="TryLoginButton_Click"
-                    Style="{StaticResource FeedOpButtonStyle}"
-                    Visibility="{Binding IsLoginPage, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    Style="{StaticResource TransparentButtonStyle}" />
                 <Button
                     x:Name="RefreshButton"
                     Margin="-8,0,0,0"
@@ -46,6 +51,7 @@
         <muxc:WebView2
             x:Name="WebView"
             Grid.Row="1"
+            helpers:WebViewHelper.DefaultBackgroundColor="White"
             NavigationCompleted="WebView_NavigationCompleted"
             NavigationStarting="WebView_NavigationStarting" />
     </Grid>

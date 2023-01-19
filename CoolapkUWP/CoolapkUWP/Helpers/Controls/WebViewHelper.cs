@@ -28,8 +28,22 @@ namespace CoolapkUWP.Helpers
         private static void OnIsEnableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             WebView element = (WebView)d;
-            if (GetIsEnable(element)) { element.NavigationCompleted += OnNavigationCompleted; }
-            else { element.NavigationCompleted -= OnNavigationCompleted; }
+            if (GetIsEnable(element))
+            {
+                element.SizeChanged += OnSizeChanged;
+                element.NavigationCompleted += OnNavigationCompleted;
+            }
+            else
+            {
+                element.SizeChanged -= OnSizeChanged;
+                element.NavigationCompleted -= OnNavigationCompleted;
+            }
+        }
+
+        private static void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            bool isVerticalStretch = GetIsVerticalStretch((WebView)sender);
+            UpdateIsVerticalStretch((WebView)sender, isVerticalStretch);
         }
 
         private static void OnNavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
@@ -130,6 +144,45 @@ namespace CoolapkUWP.Helpers
                 else { element.MinHeight = 0; }
             }
             catch { }
+        }
+
+        #endregion
+
+        #region HTML
+
+        public static string GetHTML(WebView element)
+        {
+            return (string)element.GetValue(HTMLProperty);
+        }
+
+        public static void SetHTML(WebView element, string value)
+        {
+            element.SetValue(HTMLProperty, value);
+        }
+
+        public static readonly DependencyProperty HTMLProperty =
+            DependencyProperty.RegisterAttached(
+                "HTML",
+                typeof(string),
+                typeof(WebViewHelper),
+                new PropertyMetadata(null, OnHTMLChanged));
+
+        private static void OnHTMLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            WebView element = (WebView)d;
+            if (element.IsLoaded)
+            {
+                string html = GetHTML(element);
+                element.NavigateToString(html);
+            }
+            else
+            {
+                element.Loaded += (sender, args) =>
+                {
+                    string html = GetHTML(element);
+                    element.NavigateToString(html);
+                };
+            }
         }
 
         #endregion

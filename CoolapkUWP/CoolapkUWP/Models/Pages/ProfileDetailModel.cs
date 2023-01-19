@@ -1,11 +1,10 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Images;
 using Newtonsoft.Json.Linq;
-using System.ComponentModel;
 
 namespace CoolapkUWP.Models.Pages
 {
-    public class ProfileDetailModel : Entity, INotifyPropertyChanged
+    public class ProfileDetailModel : Entity
     {
         public ImageModel UserAvatar { get; private set; }
         public string Url { get; private set; }
@@ -18,16 +17,6 @@ namespace CoolapkUWP.Models.Pages
         public double NextLevelExperience { get; private set; }
         public double NextLevelPercentage { get; private set; }
         public string NextLevelNowExperience { get; private set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
-        {
-            if (name != null)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-            }
-        }
 
         public ProfileDetailModel(JObject token) : base(token)
         {

@@ -297,7 +297,6 @@ namespace CoolapkUWP.Helpers
 
         public static async void OpenLinkAsync(string str)
         {
-            string rawstr = str;
             if (string.IsNullOrWhiteSpace(str)) { return; }
             int i = 0;
             if (str.IsFirst(i++))
@@ -333,6 +332,10 @@ namespace CoolapkUWP.Helpers
             else if (str.IsFirst(i++))
             {
                 //ShowImage(new ImageModel(str, ImageType.SmallImage));
+            }
+            else if (str.Contains("mp/user"))
+            {
+                Navigate(typeof(HTMLPage), new HTMLViewModel(str));
             }
             else if (str.IsFirst(i++))
             {

@@ -43,7 +43,7 @@ namespace CoolapkUWP.Models
             }
             else if (token.TryGetValue("hot_num_txt", out JToken hot_num_txt) && !string.IsNullOrEmpty(hot_num_txt.ToString()))
             {
-                SubTitle = hot_num_txt.ToString() + loader.GetString("HotNum");
+                SubTitle = $"{hot_num_txt.ToString()}{loader.GetString("HotNum")}";
             }
             else if (token.TryGetValue("link_tag", out JToken link_tag) && !string.IsNullOrEmpty(link_tag.ToString()))
             {
@@ -71,7 +71,7 @@ namespace CoolapkUWP.Models
             }
             else if (token.TryGetValue("product_num", out JToken product_num) && !string.IsNullOrEmpty(product_num.ToString()))
             {
-                SubTitle = product_num.ToString() + loader.GetString("product_num");
+                SubTitle = $"{product_num.ToString()}{loader.GetString("ProductNum")}";
             }
             else if (token.TryGetValue("description", out JToken description))
             {
@@ -93,7 +93,7 @@ namespace CoolapkUWP.Models
             }
             else if (token.TryGetValue("release_time", out JToken release_time) && !string.IsNullOrEmpty(release_time.ToString()))
             {
-                Description = loader.GetString("release_time") + release_time.ToString();
+                Description = $"{loader.GetString("ReleaseTime")}{release_time.ToString()}";
             }
             else if (token.TryGetValue("link_tag", out JToken link_tag) && !string.IsNullOrEmpty(link_tag.ToString()))
             {
@@ -101,7 +101,7 @@ namespace CoolapkUWP.Models
             }
             else if (token.TryGetValue("hot_num_txt", out JToken hot_num_txt) && !string.IsNullOrEmpty(hot_num_txt.ToString()))
             {
-                Description = hot_num_txt.ToString() + loader.GetString("HotNum");
+                Description = $"{hot_num_txt.ToString()}{loader.GetString("HotNum")}";
             }
             else if (token.TryGetValue("keywords", out JToken keywords) && !string.IsNullOrEmpty(keywords.ToString()))
             {
@@ -169,7 +169,7 @@ namespace CoolapkUWP.Models
             }
             else if (token.TryGetValue("release_time", out JToken release_time) && !string.IsNullOrEmpty(release_time.ToString()))
             {
-                Description = "发布日期：" + release_time.ToString();
+                Description = $"发布日期：{release_time.ToString()}";
             }
             else if (token.TryGetValue("link_tag", out JToken link_tag) && !string.IsNullOrEmpty(link_tag.ToString()))
             {
@@ -177,7 +177,7 @@ namespace CoolapkUWP.Models
             }
             else if (token.TryGetValue("hot_num_txt", out JToken hot_num_txt) && !string.IsNullOrEmpty(hot_num_txt.ToString()))
             {
-                Description = hot_num_txt.ToString() + "热度";
+                Description = $"{hot_num_txt.ToString()}热度";
             }
             else if (token.TryGetValue("keywords", out JToken keywords) && !string.IsNullOrEmpty(keywords.ToString()))
             {

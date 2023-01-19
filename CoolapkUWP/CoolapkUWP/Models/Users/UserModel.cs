@@ -50,7 +50,7 @@ namespace CoolapkUWP.Models.Users
 
             if (token.TryGetValue("cover", out JToken cover))
             {
-                Cover = new ImageModel(cover.ToString(), Helpers.ImageType.OriginImage);
+                Cover = new ImageModel(cover.ToString(), ImageType.OriginImage);
             }
 
             if (token.TryGetValue("status", out JToken status))
@@ -75,7 +75,7 @@ namespace CoolapkUWP.Models.Users
 
             if (token.TryGetValue("logintime", out JToken logintime))
             {
-                LoginTime = logintime.ToObject<double>().ConvertUnixTimeStampToReadable();
+                LoginTime = $"{logintime.ToObject<double>().ConvertUnixTimeStampToReadable()}活跃";
             }
 
             if (token.TryGetValue("follow", out JToken follow))
@@ -90,7 +90,7 @@ namespace CoolapkUWP.Models.Users
 
             if (token.TryGetValue("userAvatar", out JToken userAvatar))
             {
-                UserAvatar = new ImageModel(userAvatar.ToString(), Helpers.ImageType.OriginImage);
+                UserAvatar = new ImageModel(userAvatar.ToString(), ImageType.OriginImage);
             }
 
             if (token.TryGetValue("block_status", out JToken block_status))

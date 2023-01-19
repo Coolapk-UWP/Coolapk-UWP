@@ -181,7 +181,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel($"https://m.coolapk.com/mp/do?c=user&m=report&id={ID}"));
             }
 
-            protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as UserDetail).UserName;
+            protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as UserDetail)?.UserName;
 
             public override async Task<FeedListDetailBase> GetDetail()
             {
@@ -260,7 +260,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 }
             }
 
-            protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as TopicDetail).Title;
+            protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as TopicDetail)?.Title;
 
             public override async Task<FeedListDetailBase> GetDetail()
             {

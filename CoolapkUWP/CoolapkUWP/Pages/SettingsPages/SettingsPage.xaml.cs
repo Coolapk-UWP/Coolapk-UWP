@@ -4,21 +4,10 @@ using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.SettingsPages;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -95,8 +84,18 @@ namespace CoolapkUWP.Pages.SettingsPages
             }
         }
 
-        private void GotoUpdate_Click(object sender, RoutedEventArgs e) => _ = Launcher.LaunchUriAsync(new Uri((sender as FrameworkElement).Tag.ToString()));
+        private void MarkdownText_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            if (e.Link.Contains("mp/user"))
+            {
+                _ = Frame.Navigate(typeof(HTMLPage), new HTMLViewModel(e.Link));
+            }
+            else
+            {
+                _ = Launcher.LaunchUriAsync(new Uri(e.Link));
+            }
+        }
 
-        private void MarkdownText_LinkClicked(object sender, LinkClickedEventArgs e) => _ = Launcher.LaunchUriAsync(new Uri(e.Link));
+        private void GotoUpdate_Click(object sender, RoutedEventArgs e) => _ = Launcher.LaunchUriAsync(new Uri((sender as FrameworkElement).Tag.ToString()));
     }
 }

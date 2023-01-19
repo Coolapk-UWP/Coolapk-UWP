@@ -85,18 +85,16 @@
                         Tag="{Binding}"
                         ToolTipService.ToolTip="{x:Bind FollowStatus.Text, Mode=OneWay}">
                         <StackPanel Orientation="Horizontal">
-                            <StackPanel Orientation="Horizontal">
-                                <FontIcon
-                                    VerticalAlignment="Center"
-                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                    FontSize="15"
-                                    Glyph="{Binding UserAction.FollowGlyph}" />
-                                <TextBlock
-                                    x:Name="FollowStatus"
-                                    Margin="8,0,0,0"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding UserAction.FollowStatus}" />
-                            </StackPanel>
+                            <FontIcon
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                FontSize="15"
+                                Glyph="{Binding UserAction.FollowGlyph}" />
+                            <TextBlock
+                                x:Name="FollowStatus"
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="{Binding UserAction.FollowStatus}" />
                         </StackPanel>
                     </Button>
                 </Grid>

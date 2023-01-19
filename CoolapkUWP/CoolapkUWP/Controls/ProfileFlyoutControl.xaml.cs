@@ -27,7 +27,7 @@ namespace CoolapkUWP.Controls
             switch ((sender as FrameworkElement).Tag.ToString())
             {
                 case "FeedsButton":
-                    UIHelper.Navigate(typeof(FeedListPage), FeedListViewModel.GetProvider(FeedListType.TagPageList, Provider.ProfileDetail.EntityID.ToString()));
+                    UIHelper.Navigate(typeof(FeedListPage), FeedListViewModel.GetProvider(FeedListType.UserPageList, Provider.ProfileDetail.EntityID.ToString()));
                     break;
                 case "LoginButton":
                     UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel(UriHelper.LoginUri));

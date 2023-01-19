@@ -48,7 +48,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public async Task Refresh(bool reset = false) => await Provider.Refresh(reset);
 
-        private async void RefreshButton_Click(object sender, RoutedEventArgs e) => await Refresh(true);
+        private void RefreshButton_Click(object sender, RoutedEventArgs e) => _ = Refresh(true);
 
         private async void RefreshContainer_RefreshRequested(muxc.RefreshContainer sender, muxc.RefreshRequestedEventArgs args) => await Refresh(true);
     }

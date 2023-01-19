@@ -267,7 +267,7 @@
                                         Background="{ThemeResource NavigationViewContentBackground}"
                                         BorderBrush="{ThemeResource NavigationViewContentGridBorderBrush}"
                                         BorderThickness="{ThemeResource NavigationViewContentGridBorderThickness}"
-                                        CornerRadius="{ThemeResource NavigationViewContentGridCornerRadius}">
+                                        ContentCornerRadius="{ThemeResource NavigationViewContentGridCornerRadius}">
                                         <Grid>
                                             <contract7Present:Grid.BackgroundTransition>
                                                 <contract7Present:BrushTransition />
@@ -541,7 +541,7 @@
                                     <VisualState.Setters>
                                         <Setter Target="HeaderContent.Margin" Value="{ThemeResource NavigationViewMinimalHeaderMargin}" />
                                         <Setter Target="ContentGrid.BorderThickness" Value="{ThemeResource NavigationViewMinimalContentGridBorderThickness}" />
-                                        <Setter Target="ContentGrid.CornerRadius" Value="{ThemeResource NavigationViewMinimalContentGridCornerRadius}" />
+                                        <Setter Target="ContentGrid.ContentCornerRadius" Value="{ThemeResource NavigationViewMinimalContentGridCornerRadius}" />
                                         <Setter Target="ContentGrid.Margin" Value="{ThemeResource NavigationViewMinimalContentMargin}" />
                                     </VisualState.Setters>
                                 </VisualState>
@@ -550,7 +550,7 @@
                                     <VisualState.Setters>
                                         <Setter Target="HeaderContent.Margin" Value="{ThemeResource NavigationViewTopHeaderMargin}" />
                                         <Setter Target="ContentGrid.BorderThickness" Value="{ThemeResource TopNavigationViewContentGridBorderThickness}" />
-                                        <Setter Target="ContentGrid.CornerRadius" Value="{ThemeResource TopNavigationViewContentGridCornerRadius}" />
+                                        <Setter Target="ContentGrid.ContentCornerRadius" Value="{ThemeResource TopNavigationViewContentGridCornerRadius}" />
                                         <Setter Target="ContentGrid.Margin" Value="{ThemeResource TopNavigationViewContentMargin}" />
                                     </VisualState.Setters>
                                 </VisualState>
@@ -559,7 +559,7 @@
                                     <VisualState.Setters>
                                         <Setter Target="HeaderContent.Margin" Value="{ThemeResource NavigationViewMinimalHeaderMargin}" />
                                         <Setter Target="ContentGrid.BorderThickness" Value="{ThemeResource NavigationViewMinimalContentGridBorderThickness}" />
-                                        <Setter Target="ContentGrid.CornerRadius" Value="{ThemeResource NavigationViewMinimalContentGridCornerRadius}" />
+                                        <Setter Target="ContentGrid.ContentCornerRadius" Value="{ThemeResource NavigationViewMinimalContentGridCornerRadius}" />
                                         <Setter Target="ContentGrid.Margin" Value="{ThemeResource NavigationViewMinimalContentMargin}" />
                                     </VisualState.Setters>
                                 </VisualState>

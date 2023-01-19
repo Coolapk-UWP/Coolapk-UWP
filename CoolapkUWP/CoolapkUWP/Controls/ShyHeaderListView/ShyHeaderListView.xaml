@@ -107,7 +107,16 @@
                         </ScrollViewer>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup>
-                                <VisualState x:Name="OnThreshold" />
+                                <VisualState x:Name="OnThreshold">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="TopHeader" Storyboard.TargetProperty="Opacity">
+                                            <SplineDoubleKeyFrame
+                                                KeySpline="{StaticResource ControlFastOutSlowInKeySpline}"
+                                                KeyTime="{StaticResource ControlFasterAnimationDuration}"
+                                                Value="0" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
                                 <VisualState x:Name="BeforeThreshold">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderGrid" Storyboard.TargetProperty="Background">

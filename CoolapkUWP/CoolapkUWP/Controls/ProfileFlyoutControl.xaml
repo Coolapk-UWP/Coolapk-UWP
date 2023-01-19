@@ -133,6 +133,7 @@
                 VerticalAlignment="Stretch"
                 contract7NotPresent:Loaded="Button_Loaded"
                 contract7Present:CornerRadius="0"
+                BorderThickness="0,1"
                 Tag="FollowsButton">
                 <StackPanel>
                     <TextBlock

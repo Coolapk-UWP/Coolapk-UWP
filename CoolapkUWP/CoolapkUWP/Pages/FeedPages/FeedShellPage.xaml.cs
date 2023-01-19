@@ -66,7 +66,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
                 case "LikeButton":
                     DisabledCopy();
-                    await RequestHelper.ChangeLikeAsync(element.Tag as ICanChangeLikeModel, element.Dispatcher);
+                    await RequestHelper.ChangeLikeAsync(element.Tag as ICanLike, element.Dispatcher);
                     break;
 
                 case "ReportButton":

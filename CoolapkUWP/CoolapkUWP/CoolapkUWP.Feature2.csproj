@@ -181,7 +181,6 @@
       <DependentUpon>TextBlockEx.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WebViewContentControl\WebViewContentControl.cs" />
-    <Compile Include="Controls\WebViewContentControl\WebViewContentControlTemplateSettings.cs" />
     <Compile Include="Helpers\Controls\WebViewHelper.cs" />
     <Compile Include="Helpers\Converters\CollectionCountConverter.cs" />
     <Compile Include="Helpers\Converters\CollectionToBoolConverter.cs" />
@@ -226,6 +225,9 @@
     <Compile Include="Models\Users\ContactModel.cs" />
     <Compile Include="Models\Users\UserAction.cs" />
     <Compile Include="Models\Users\UserModel.cs" />
+    <Compile Include="Pages\BrowserPages\HTMLPage.xaml.cs">
+      <DependentUpon>HTMLPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\BrowserPages\WebViewPage.xaml.cs">
       <DependentUpon>WebViewPage.xaml</DependentUpon>
     </Compile>
@@ -258,6 +260,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.Feature2.cs" />
     <Compile Include="ViewModels\BrowserPages\BrowserViewModel.cs" />
+    <Compile Include="ViewModels\BrowserPages\HTMLViewModel.cs" />
     <Compile Include="ViewModels\DataSource\DataSourceBase.cs" />
     <Compile Include="ViewModels\DataSource\EntityItemSourse.cs" />
     <Compile Include="ViewModels\DataSource\IncrementalLoadingBase.cs" />
@@ -843,6 +846,10 @@
     <Content Include="Assets\StoreLogo.scale-150.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
+    <Content Include="Assets\WebView\HTMLView.css" />
+    <Content Include="Assets\WebView\HTMLView.Dark.css" />
+    <Content Include="Assets\WebView\HTMLView.html" />
+    <Content Include="Assets\WebView\HTMLView.Light.css" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
@@ -973,6 +980,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\WebViewContentControl\WebViewContentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\BrowserPages\HTMLPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
