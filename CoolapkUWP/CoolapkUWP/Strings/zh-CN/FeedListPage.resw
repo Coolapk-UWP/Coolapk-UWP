@@ -210,13 +210,19 @@
   <data name="Status1" xml:space="preserve">
     <value>[半黑号]</value>
   </data>
-  <data name="Subscribed.Text" xml:space="preserve">
+  <data name="Subscribe" xml:space="preserve">
     <value>订阅</value>
+  </data>
+  <data name="SubscribeNum" xml:space="preserve">
+    <value>人订阅</value>
   </data>
   <data name="Unfollow" xml:space="preserve">
     <value>已关注</value>
   </data>
   <data name="UnfollowFan" xml:space="preserve">
     <value>已互关</value>
+  </data>
+  <data name="Unsubscribe" xml:space="preserve">
+    <value>已订阅</value>
   </data>
 </root>

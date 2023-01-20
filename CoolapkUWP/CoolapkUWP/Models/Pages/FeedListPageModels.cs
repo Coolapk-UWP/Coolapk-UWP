@@ -2,6 +2,7 @@
 using CoolapkUWP.Models.Images;
 using CoolapkUWP.Models.Users;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
@@ -202,6 +203,8 @@ namespace CoolapkUWP.Models.Pages
 
     internal class TopicDetail : FeedListDetailBase
     {
+        public ImageModel Logo { get; private set; }
+
         public string Title { get; private set; }
         public string HotNum { get; private set; }
         public string FollowNum { get; private set; }
@@ -209,8 +212,6 @@ namespace CoolapkUWP.Models.Pages
         public string Description { get; private set; }
         public string FollowGlyph { get; private set; }
         public string FollowStatus { get; private set; }
-
-        public ImageModel Logo { get; private set; }
 
         public ImmutableArray<UserModel> FollowUsers { get; private set; } = ImmutableArray<UserModel>.Empty;
 
@@ -266,9 +267,270 @@ namespace CoolapkUWP.Models.Pages
                     .Where(x => x != null)
                     .ToImmutableArray();
             }
-
         }
 
         public override string ToString() => $"{Title} - {Description}";
+    }
+
+    internal class DyhDetail : FeedListDetailBase
+    {
+        public string Title { get; private set; }
+        public string UserName { get; private set; }
+        public string FollowNum { get; private set; }
+        public string Description { get; private set; }
+        public string FollowGlyph { get; private set; }
+        public string FollowStatus { get; private set; }
+
+        public ImageModel Logo { get; private set; }
+        public ImageModel UserAvatar { get; private set; }
+
+        internal DyhDetail(JObject token) : base(token)
+        {
+            ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("FeedListPage");
+
+            if (token.TryGetValue("title", out JToken title))
+            {
+                Title = title.ToString();
+            }
+
+            if (token.TryGetValue("author", out JToken author))
+            {
+                UserName = author.ToString();
+            }
+
+            if (token.TryGetValue("follownum", out JToken follownum))
+            {
+                FollowNum = $"{follownum}{loader.GetString("SubscribeNum")}";
+            }
+
+            if (token.TryGetValue("description", out JToken description))
+            {
+                Description = description.ToString();
+            }
+
+            if (token.TryGetValue("userAction", out JToken userAction) && ((JObject)userAction).TryGetValue("follow", out JToken follow))
+            {
+                FollowStatus = follow.ToObject<int>() == 0 ? loader.GetString("Subscribe") : loader.GetString("Unsubscribe");
+                FollowGlyph = follow.ToObject<int>() == 0 ? "\uE710" : "\uE8FB";
+            }
+
+            if (token.TryGetValue("logo", out JToken logo))
+            {
+                Logo = new ImageModel(logo.ToString(), ImageType.Icon);
+            }
+
+            if (token.TryGetValue("userAvatar", out JToken userAvatar))
+            {
+                UserAvatar = new ImageModel(userAvatar.ToString(), ImageType.BigAvatar);
+            }
+        }
+
+        internal class ProductDetail : FeedListDetailBase
+        {
+            public int Star1Count { get; private set; }
+            public int Star2Count { get; private set; }
+            public int Star3Count { get; private set; }
+            public int Star4Count { get; private set; }
+            public int Star5Count { get; private set; }
+            public int OwnerStar1Count { get; private set; }
+            public int OwnerStar2Count { get; private set; }
+            public int OwnerStar3Count { get; private set; }
+            public int OwnerStar4Count { get; private set; }
+            public int OwnerStar5Count { get; private set; }
+
+            public string Title { get; private set; }
+            public string HotNum { get; private set; }
+            public string StarCount { get; private set; }
+            public string FollowNum { get; private set; }
+            public string CommentNum { get; private set; }
+            public string RatingCount { get; private set; }
+            public string Description { get; private set; }
+            public string FollowGlyph { get; private set; }
+            public string FollowStatus { get; private set; }
+
+            public double OwnerScore { get; private set; }
+            public double RatingScore { get; private set; }
+            public double Star1Percent { get; private set; }
+            public double Star2Percent { get; private set; }
+            public double Star3Percent { get; private set; }
+            public double Star4Percent { get; private set; }
+            public double Star5Percent { get; private set; }
+            public double OwnerStar1Percent { get; private set; }
+            public double OwnerStar2Percent { get; private set; }
+            public double OwnerStar3Percent { get; private set; }
+            public double OwnerStar4Percent { get; private set; }
+            public double OwnerStar5Percent { get; private set; }
+
+            public ImageModel Logo { get; private set; }
+
+            public ImmutableArray<string> TagArr { get; private set; } = ImmutableArray<string>.Empty;
+
+            public ImmutableArray<UserModel> FollowUsers { get; private set; } = ImmutableArray<UserModel>.Empty;
+
+            public ImmutableArray<ImageModel> CoverArr { get; private set; } = ImmutableArray<ImageModel>.Empty;
+
+            internal ProductDetail(JObject token) : base(token)
+            {
+                ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("FeedListPage");
+
+                int MaxStarCount = 0, MaxOwnerStarCount = 0;
+
+                if (token.TryGetValue("star_1_count", out JToken star_1_count))
+                {
+                    Star1Count = star_1_count.ToObject<int>();
+                    MaxStarCount = Math.Max(Star1Count, MaxStarCount);
+                }
+
+                if (token.TryGetValue("star_2_count", out JToken star_2_count))
+                {
+                    Star2Count = star_2_count.ToObject<int>();
+                    MaxStarCount = Math.Max(Star2Count, MaxStarCount);
+                }
+
+                if (token.TryGetValue("star_3_count", out JToken star_3_count))
+                {
+                    Star3Count = star_3_count.ToObject<int>();
+                    MaxStarCount = Math.Max(Star3Count, MaxStarCount);
+                }
+
+                if (token.TryGetValue("star_4_count", out JToken star_4_count))
+                {
+                    Star4Count = star_4_count.ToObject<int>();
+                    MaxStarCount = Math.Max(Star4Count, MaxStarCount);
+                }
+
+                if (token.TryGetValue("star_5_count", out JToken star_5_count))
+                {
+                    Star5Count = star_5_count.ToObject<int>();
+                    MaxStarCount = Math.Max(Star5Count, MaxStarCount);
+                }
+
+                if (token.TryGetValue("owner_star_1_count", out JToken owner_star_1_count))
+                {
+                    OwnerStar1Count = owner_star_1_count.ToObject<int>();
+                    MaxOwnerStarCount = Math.Max(OwnerStar1Count, MaxOwnerStarCount);
+                }
+
+                if (token.TryGetValue("owner_star_2_count", out JToken owner_star_2_count))
+                {
+                    OwnerStar2Count = owner_star_2_count.ToObject<int>();
+                    MaxOwnerStarCount = Math.Max(OwnerStar2Count, MaxOwnerStarCount);
+                }
+
+                if (token.TryGetValue("owner_star_3_count", out JToken owner_star_3_count))
+                {
+                    OwnerStar3Count = owner_star_3_count.ToObject<int>();
+                    MaxOwnerStarCount = Math.Max(OwnerStar3Count, MaxOwnerStarCount);
+                }
+
+                if (token.TryGetValue("owner_star_4_count", out JToken owner_star_4_count))
+                {
+                    OwnerStar4Count = owner_star_4_count.ToObject<int>();
+                    MaxOwnerStarCount = Math.Max(OwnerStar4Count, MaxOwnerStarCount);
+                }
+
+                if (token.TryGetValue("owner_star_5_count", out JToken owner_star_5_count))
+                {
+                    OwnerStar5Count = owner_star_5_count.ToObject<int>();
+                    MaxOwnerStarCount = Math.Max(OwnerStar5Count, MaxOwnerStarCount);
+                }
+
+                Star1Percent = Star1Count * 100 / MaxStarCount;
+                Star2Percent = Star2Count * 100 / MaxStarCount;
+                Star3Percent = Star3Count * 100 / MaxStarCount;
+                Star4Percent = Star4Count * 100 / MaxStarCount;
+                Star5Percent = Star5Count * 100 / MaxStarCount;
+
+                OwnerStar1Percent = OwnerStar1Count * 100 / MaxOwnerStarCount;
+                OwnerStar2Percent = OwnerStar2Count * 100 / MaxOwnerStarCount;
+                OwnerStar3Percent = OwnerStar3Count * 100 / MaxOwnerStarCount;
+                OwnerStar4Percent = OwnerStar4Count * 100 / MaxOwnerStarCount;
+                OwnerStar5Percent = OwnerStar5Count * 100 / MaxOwnerStarCount;
+
+                if (token.TryGetValue("title", out JToken title))
+                {
+                    Title = title.ToString();
+                }
+
+                if (token.TryGetValue("hot_num_txt", out JToken hot_num_text))
+                {
+                    HotNum = $"{hot_num_text}{loader.GetString("HotNum")}";
+                }
+
+                if (token.TryGetValue("star_total_count", out JToken star_total_count))
+                {
+                    StarCount = $"{star_total_count}位酷友打分";
+                }
+
+                if (token.TryGetValue("follow_num_txt", out JToken follownum_text))
+                {
+                    FollowNum = $"{follownum_text}{loader.GetString("Follow")}";
+                }
+
+                if (token.TryGetValue("feed_comment_num_txt", out JToken commentnum_text))
+                {
+                    CommentNum = $"{commentnum_text}{loader.GetString("CommentNum")}";
+                }
+
+                if (token.TryGetValue("rating_total_num", out JToken rating_total_num))
+                {
+                    RatingCount = $"{rating_total_num}位机主打分";
+                }
+
+                if (token.TryGetValue("description", out JToken description))
+                {
+                    Description = description.ToString();
+                }
+
+                if (token.TryGetValue("userAction", out JToken userAction) && ((JObject)userAction).TryGetValue("follow", out JToken follow))
+                {
+                    FollowStatus = follow.ToObject<int>() == 0 ? loader.GetString("Follow") : loader.GetString("UnFollow");
+                    FollowGlyph = follow.ToObject<int>() == 0 ? "\uE710" : "\uE8FB";
+                }
+
+                if (token.TryGetValue("owner_star_average_score", out JToken owner_star_average_score))
+                {
+                    OwnerScore = owner_star_average_score.ToObject<double>();
+                }
+
+                if (token.TryGetValue("rating_average_score", out JToken rating_average_score))
+                {
+                    RatingScore = rating_average_score.ToObject<double>();
+                }
+
+                if (token.TryGetValue("logo", out JToken logo))
+                {
+                    Logo = new ImageModel(logo.ToString(), ImageType.Icon);
+                }
+
+                if (token.TryGetValue("tagArr", out JToken tagArr) && (tagArr as JArray).Count > 0)
+                {
+                    TagArr = tagArr.Select(x => x.ToString()).ToImmutableArray();
+                }
+
+                if (token.TryGetValue("recent_follow_list", out JToken recent_follow_list) && (recent_follow_list as JArray).Count > 0)
+                {
+                    FollowUsers = recent_follow_list.Select(
+                        x => ((JObject)x).TryGetValue("userInfo", out JToken userInfo)
+                            ? new UserModel((JObject)userInfo) : null)
+                        .Where(x => x != null)
+                        .ToImmutableArray();
+                }
+
+                if (token.TryGetValue("coverArr", out JToken coverArr) && (coverArr as JArray).Count > 0)
+                {
+                    CoverArr = coverArr.Select(
+                        x => !string.IsNullOrEmpty(x.ToString())
+                            ? new ImageModel(x.ToString(), ImageType.SmallImage) : null)
+                        .Where(x => x != null)
+                        .ToImmutableArray();
+
+                    foreach (ImageModel item in CoverArr)
+                    {
+                        item.ContextArray = CoverArr;
+                    }
+                }
+            }
+        }
     }
 }

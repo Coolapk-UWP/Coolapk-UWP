@@ -497,7 +497,9 @@
             <Grid
                 Padding="4"
                 VerticalAlignment="Bottom"
-                CornerRadius="0,0,8,8">
+                CornerRadius="0,0,8,8"
+                Tag="{Binding}"
+                Tapped="Grid_Tapped">
                 <Grid.Background>
                     <media:AcrylicBrush
                         BackgroundSource="Backdrop"
@@ -542,7 +544,9 @@
                     Width="36"
                     Height="36"
                     Margin="4"
-                    CornerRadius="4">
+                    CornerRadius="4"
+                    Tag="{Binding}"
+                    Tapped="Grid_Tapped">
                     <Border.Background>
                         <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                     </Border.Background>
@@ -550,7 +554,6 @@
                 <TextBlock
                     HorizontalAlignment="Center"
                     MaxLines="1"
-                    RequestedTheme="Dark"
                     Text="{Binding Title}"
                     TextAlignment="Center"
                     TextTrimming="CharacterEllipsis"
@@ -560,7 +563,6 @@
                     HorizontalAlignment="Center"
                     Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                     MaxLines="1"
-                    RequestedTheme="Dark"
                     Text="{Binding SubTitle}"
                     TextAlignment="Center"
                     TextTrimming="CharacterEllipsis"

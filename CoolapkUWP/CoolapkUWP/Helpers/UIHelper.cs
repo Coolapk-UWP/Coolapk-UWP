@@ -274,6 +274,8 @@ namespace CoolapkUWP.Helpers
             "/picture/",
             "/t/",
             "t/",
+            "/dyh/",
+            "/product/",
             "http://image.coolapk.com/",
             "https",
             "http",
@@ -327,6 +329,31 @@ namespace CoolapkUWP.Helpers
                 if (f != null)
                 {
                     Navigate(typeof(FeedListPage), f);
+                }
+            }
+            else if (str.IsFirst(i++))
+            {
+                string u = str.Replace(i - 1);
+                FeedListViewModel f = FeedListViewModel.GetProvider(FeedListType.DyhPageList, u);
+                if (f != null)
+                {
+                    Navigate(typeof(FeedListPage), f);
+                }
+            }
+            else if (str.IsFirst(i++))
+            {
+                string u = str.Replace(i - 1);
+                if (str.Contains("/product/categoryList"))
+                {
+                    Navigate(typeof(AdaptivePage), new AdaptiveViewModel(str));
+                }
+                else
+                {
+                    FeedListViewModel f = FeedListViewModel.GetProvider(FeedListType.ProductPageList, u);
+                    if (f != null)
+                    {
+                        Navigate(typeof(FeedListPage), f);
+                    }
                 }
             }
             else if (str.IsFirst(i++))

@@ -1,5 +1,7 @@
-﻿using CoolapkUWP.ViewModels.DataSource;
+﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.ViewModels.DataSource;
 using CoolapkUWP.ViewModels.FeedPages;
+using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
@@ -55,6 +57,65 @@ namespace CoolapkUWP.Pages.FeedPages
             if (ListView.ItemsSource is EntityItemSourse entities)
             {
                 _ = entities.Refresh(true);
+            }
+        }
+
+        private void FlipView_SizeChanged(object sender, SizeChangedEventArgs e) => (sender as FrameworkElement).MaxHeight = e.NewSize.Width / 2;
+
+        private void FlipView_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
+            {
+                if ((sender as FrameworkElement).Parent is FrameworkElement parent)
+                { parent.Visibility = Visibility.Collapsed; }
+            }
+            else
+            {
+                FlipView view = sender as FlipView;
+                view.MaxHeight = view.ActualWidth / 3;
+                DispatcherTimer timer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromSeconds(20)
+                };
+                timer.Tick += (o, a) =>
+                {
+                    if (view.SelectedIndex != -1)
+                    {
+                        if (view.SelectedIndex + 1 >= view.Items.Count)
+                        {
+                            while (view.SelectedIndex > 0)
+                            {
+                                view.SelectedIndex -= 1;
+                            }
+                        }
+                        else
+                        {
+                            view.SelectedIndex += 1;
+                        }
+                    }
+                };
+                view.Unloaded += (_, __) => timer.Stop();
+                timer.Start();
+            }
+        }
+
+        private void Button_Loaded(object sender, RoutedEventArgs e)
+        {
+            FrameworkElement element = sender as FrameworkElement;
+            ContentPresenter content = element.FindDescendant<ContentPresenter>();
+            if (content != null)
+            {
+                switch (element.Name)
+                {
+                    case "OnlyOwnerButton":
+                        content.CornerRadius = new CornerRadius(4, 0, 0, 4);
+                        break;
+                    case "SeeAllButton":
+                        content.CornerRadius = new CornerRadius(0, 4, 4, 0);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -118,14 +179,19 @@ namespace CoolapkUWP.Pages.FeedPages
     internal class DetailTemplateSelector : DataTemplateSelector
     {
         public DataTemplate Others { get; set; }
+        public DataTemplate DyhDetail { get; set; }
         public DataTemplate UserDetail { get; set; }
         public DataTemplate TopicDetail { get; set; }
+        public DataTemplate ProductDetail { get; set; }
+
         protected override DataTemplate SelectTemplateCore(object item)
         {
             switch (item.GetType().Name)
             {
+                case "DyhDetail": return DyhDetail;
                 case "UserDetail": return UserDetail;
                 case "TopicDetail": return TopicDetail;
+                case "ProductDetail": return ProductDetail;
                 default: return Others;
             }
         }

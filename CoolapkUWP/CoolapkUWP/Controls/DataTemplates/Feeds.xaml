@@ -493,6 +493,7 @@
             BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}"
             BorderThickness="1"
             CornerRadius="8"
+            Tag="{Binding Url}"
             Tapped="OnTapped">
             <Grid.Background>
                 <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
@@ -500,11 +501,12 @@
             <Border
                 VerticalAlignment="Bottom"
                 Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                CornerRadius="0,0,8,8">
+                CornerRadius="0,0,8,8"
+                Tag="{Binding Url}"
+                Tapped="OnTapped">
                 <TextBlock
                     Margin="8"
                     FontSize="16"
-                    Foreground="White"
                     MaxLines="1"
                     Text="{Binding MessageTitle}"
                     TextTrimming="WordEllipsis"

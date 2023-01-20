@@ -186,6 +186,7 @@
     <Compile Include="Helpers\Converters\CollectionToBoolConverter.cs" />
     <Compile Include="Helpers\Converters\FontSizeToLineHeight.cs" />
     <Compile Include="Helpers\Converters\HTMLToTextConverter.cs" />
+    <Compile Include="Helpers\Converters\NumMultConverter.cs" />
     <Compile Include="Helpers\Converters\StringToBoolConverter.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Helpers\DateHelper.cs" />

@@ -5,17 +5,17 @@ using Windows.UI.Xaml.Markup;
 
 namespace CoolapkUWP.Helpers.Converters
 {
-    public class FontSizeToHeightConverter : IValueConverter
+    public class NumMultConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            object result = System.Convert.ToDouble(value) * 4 / 3;
+            double result = System.Convert.ToDouble(value) * System.Convert.ToDouble(parameter);
             return targetType.IsInstanceOfType(result) ? result : XamlBindingHelper.ConvertValue(targetType, result);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            object result = System.Convert.ToDouble(value) * 3 / 4;
+            double result = System.Convert.ToDouble(value) / System.Convert.ToDouble(parameter);
             return targetType.IsInstanceOfType(result) ? result : XamlBindingHelper.ConvertValue(targetType, result);
         }
     }
