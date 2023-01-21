@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Controls.DataTemplates;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Models.Users;
 using CoolapkUWP.ViewModels.DataSource;
 using CoolapkUWP.ViewModels.Providers;
 using Newtonsoft.Json.Linq;
@@ -70,6 +71,24 @@ namespace CoolapkUWP.ViewModels.FeedPages
         {
             Provider = provider;
             EntityTypes = types;
+        }
+
+        public static AdaptiveViewModel GetUserListProvider(string uid, bool isFollowList, string name)
+        {
+            if (string.IsNullOrEmpty(uid)) { throw new ArgumentException(nameof(uid)); }
+            return new AdaptiveViewModel(
+                new CoolapkListProvider(
+                    (p, firstItem, lastItem) =>
+                        UriHelper.GetUri(
+                            UriType.GetUserList,
+                            isFollowList ? "followList" : "fansList",
+                            uid,
+                            p,
+                            string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
+                    (o) => new Entity[] { new UserModel((JObject)(isFollowList ? o["fUserInfo"] : o["userInfo"])) },
+                    "fuid"))
+            { Title = $"{name}的{(isFollowList ? "关注" : "粉丝")}" };
         }
 
         public async Task Refresh(bool reset = false)

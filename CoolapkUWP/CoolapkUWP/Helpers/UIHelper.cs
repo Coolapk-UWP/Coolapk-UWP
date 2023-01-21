@@ -300,6 +300,18 @@ namespace CoolapkUWP.Helpers
         public static async void OpenLinkAsync(string str)
         {
             if (string.IsNullOrWhiteSpace(str)) { return; }
+
+            if (str == "/contacts/fans")
+            {
+                Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(SettingsHelper.Get<string>(SettingsHelper.Uid), false, "我"));
+                return;
+            }
+            else if (str == "/user/myFollowList")
+            {
+                Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(SettingsHelper.Get<string>(SettingsHelper.Uid), true, "我"));
+                return;
+            }
+
             int i = 0;
             if (str.IsFirst(i++))
             {

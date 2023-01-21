@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Windows.UI.Xaml;
 
-namespace CoolapkLite.Helpers
+namespace CoolapkUWP.Helpers
 {
     public static class VisualStateHelper
     {

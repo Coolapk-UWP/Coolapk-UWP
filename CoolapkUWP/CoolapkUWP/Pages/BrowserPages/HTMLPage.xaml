@@ -28,7 +28,8 @@
                 helpers:WebViewHelper.HTML="{Binding HTML}"
                 helpers:WebViewHelper.IsEnable="True"
                 helpers:WebViewHelper.IsVerticalStretch="True"
-                DefaultBackgroundColor="Transparent" />
+                DefaultBackgroundColor="Transparent"
+                NavigationStarting="WebView_NavigationStarting" />
         </ScrollViewer>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="LayoutVisualStates">

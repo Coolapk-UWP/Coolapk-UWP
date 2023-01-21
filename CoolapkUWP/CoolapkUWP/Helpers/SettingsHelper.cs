@@ -15,6 +15,7 @@ namespace CoolapkUWP.Helpers
     {
         public const string Uid = "Uid";
         public const string Token = "Token";
+        public const string TileUrl = "TileUrl";
         public const string UserName = "UserName";
         public const string IsUseAPI2 = "IsUseAPI2";
         public const string IsFirstRun = "IsFirstRun";
@@ -41,6 +42,10 @@ namespace CoolapkUWP.Helpers
             if (!LocalObject.KeyExists(Token))
             {
                 LocalObject.Save(Token, string.Empty);
+            }
+            if (!LocalObject.KeyExists(TileUrl))
+            {
+                LocalObject.Save(TileUrl, "https://api.coolapk.com/v6/page/dataList?url=V9_HOME_TAB_FOLLOW&type=circle");
             }
             if (!LocalObject.KeyExists(UserName))
             {

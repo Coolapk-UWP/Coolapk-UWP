@@ -6,6 +6,7 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Cryptography;
 using Windows.ApplicationModel.Resources;
 
 namespace CoolapkUWP.Models.Pages
@@ -274,6 +275,7 @@ namespace CoolapkUWP.Models.Pages
 
     internal class DyhDetail : FeedListDetailBase
     {
+        public string Uurl { get; private set; }
         public string Title { get; private set; }
         public string UserName { get; private set; }
         public string FollowNum { get; private set; }
@@ -287,6 +289,11 @@ namespace CoolapkUWP.Models.Pages
         internal DyhDetail(JObject token) : base(token)
         {
             ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("FeedListPage");
+
+            if (token.TryGetValue("uid", out JToken uid))
+            {
+                Uurl = $"/u/{uid}";
+            }
 
             if (token.TryGetValue("title", out JToken title))
             {

@@ -1,20 +1,28 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.BackgroundTasks;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Helpers.Exceptions;
 using CoolapkUWP.Models.Exceptions;
 using CoolapkUWP.Pages;
+using Microsoft.Toolkit.Uwp.Helpers;
+using Microsoft.Toolkit.Uwp.Notifications;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
+using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
 using Windows.Security.Authorization.AppCapabilityAccess;
 using Windows.System.Profile;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using NetworkHelper = Microsoft.Toolkit.Uwp.Connectivity.NetworkHelper;
 
 namespace CoolapkUWP
 {
@@ -46,6 +54,7 @@ namespace CoolapkUWP
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             RequestWifiAccess();
+            RegisterBackgroundTask();
             RegisterExceptionHandlingSynchronizationContext();
 
             MainWindow = Window.Current;
@@ -165,6 +174,99 @@ namespace CoolapkUWP
             }
             SettingsHelper.LogManager.GetLogger("Unhandled Exception - SynchronizationContext").Error(e.Exception.ExceptionToMessage(), e.Exception);
             e.Handled = true;
+        }
+
+        private static async void RegisterBackgroundTask()
+        {
+            // Check for background access (optional)
+            await BackgroundExecutionManager.RequestAccessAsync();
+
+            RegisterLiveTileTask();
+            RegisterNotificationsTask();
+            RegisterToastBackgroundTask();
+
+            void RegisterLiveTileTask()
+            {
+                const string LiveTileTask = "LiveTileTask";
+
+                // If background task is already registered, do nothing
+                if (BackgroundTaskRegistration.AllTasks.Any(i => i.Value.Name.Equals(LiveTileTask)))
+                { return; }
+
+                // Register (Single Process)
+                BackgroundTaskRegistration _LiveTileTask = BackgroundTaskHelper.Register(LiveTileTask, new TimeTrigger(15, false), true);
+            }
+
+            void RegisterNotificationsTask()
+            {
+                const string NotificationsTask = "NotificationsTask";
+
+                // If background task is already registered, do nothing
+                if (BackgroundTaskRegistration.AllTasks.Any(i => i.Value.Name.Equals(NotificationsTask)))
+                { return; }
+
+                // Register (Single Process)
+                BackgroundTaskRegistration _NotificationsTask = BackgroundTaskHelper.Register(NotificationsTask, new TimeTrigger(15, false), true);
+            }
+
+            void RegisterToastBackgroundTask()
+            {
+                const string ToastBackgroundTask = "ToastBackgroundTask";
+
+                // If background task is already registered, do nothing
+                if (BackgroundTaskRegistration.AllTasks.Any(i => i.Value.Name.Equals(ToastBackgroundTask)))
+                { return; }
+
+                // Create the background task
+                BackgroundTaskBuilder builder = new BackgroundTaskBuilder
+                { Name = ToastBackgroundTask };
+
+                // Assign the toast action trigger
+                builder.SetTrigger(new ToastNotificationActionTrigger());
+
+                // And register the task
+                BackgroundTaskRegistration registration = builder.Register();
+            }
+        }
+
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            base.OnBackgroundActivated(args);
+
+            BackgroundTaskDeferral deferral = args.TaskInstance.GetDeferral();
+
+            switch (args.TaskInstance.Task.Name)
+            {
+                case "LiveTileTask":
+                    if (NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable)
+                    {
+                        LiveTileTask.Instance?.Run(args.TaskInstance);
+                    }
+                    break;
+
+                case "NotificationsTask":
+                    if (NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable)
+                    {
+                        NotificationsTask.Instance?.Run(args.TaskInstance);
+                    }
+                    break;
+
+                case "ToastBackgroundTask":
+                    if (args.TaskInstance.TriggerDetails is ToastNotificationActionTriggerDetail details)
+                    {
+                        ToastArguments arguments = ToastArguments.Parse(details.Argument);
+                        ValueSet userInput = details.UserInput;
+
+                        // Perform tasks
+                    }
+                    break;
+
+                default:
+                    deferral.Complete();
+                    break;
+            }
+
+            deferral.Complete();
         }
 
         public static Window MainWindow { get; private set; }

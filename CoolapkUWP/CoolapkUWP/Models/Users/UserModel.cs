@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Images;
 using Newtonsoft.Json.Linq;
+using Windows.ApplicationModel.Resources;
 
 namespace CoolapkUWP.Models.Users
 {
@@ -10,15 +11,15 @@ namespace CoolapkUWP.Models.Users
         public int Level { get; private set; }
         public int Status { get; private set; }
         public int RegDate { get; private set; }
-        public int FansNum { get; private set; }
-        public int FollowNum { get; private set; }
         public int Experience { get; private set; }
         public int BlockStatus { get; private set; }
 
         public string Bio { get; private set; }
+        public string FansNum { get; private set; }
         public string UserName { get; private set; }
         public string SubTitle { get; private set; }
         public string LoginTime { get; private set; }
+        public string FollowNum { get; private set; }
         public string Description { get; private set; }
 
         public ImageModel Cover { get; private set; }
@@ -33,6 +34,8 @@ namespace CoolapkUWP.Models.Users
         {
             if (token == null) { return; }
 
+            ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("FeedListPage");
+
             if (token.TryGetValue("uid", out JToken uid))
             {
                 UID = uid.ToObject<int>();
@@ -41,6 +44,11 @@ namespace CoolapkUWP.Models.Users
             if (token.TryGetValue("bio", out JToken bio))
             {
                 Bio = bio.ToString();
+            }
+
+            if (token.TryGetValue("fans", out JToken fans))
+            {
+                FansNum = $"{fans.ToObject<int>()}{loader.GetString("Fan")}";
             }
 
             if (token.TryGetValue("level", out JToken level))
@@ -63,11 +71,6 @@ namespace CoolapkUWP.Models.Users
                 RegDate = regdate.ToObject<int>();
             }
 
-            if (token.TryGetValue("fans", out JToken fans))
-            {
-                FansNum = fans.ToObject<int>();
-            }
-
             if (token.TryGetValue("username", out JToken username))
             {
                 UserName = username.ToString();
@@ -80,7 +83,7 @@ namespace CoolapkUWP.Models.Users
 
             if (token.TryGetValue("follow", out JToken follow))
             {
-                FollowNum = follow.ToObject<int>();
+                FollowNum = $"{follow.ToObject<int>()}{loader.GetString("Follow")}";
             }
 
             if (token.TryGetValue("experience", out JToken experience))

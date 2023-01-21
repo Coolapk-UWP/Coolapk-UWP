@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.BackgroundTasks;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.Pages.SettingsPages;
 using Microsoft.UI.Xaml.Controls;
@@ -58,6 +59,20 @@ namespace CoolapkUWP.Pages
             }
         }
 
+        private NotificationsTask _notificationsTask;
+        public NotificationsTask NotificationsTask
+        {
+            get => _notificationsTask;
+            set
+            {
+                if (_notificationsTask != value)
+                {
+                    _notificationsTask = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
         private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
         {
             ("Find", typeof(FindPage)),
@@ -77,8 +92,10 @@ namespace CoolapkUWP.Pages
         {
             InitializeComponent();
             UIHelper.MainPage = this;
-            //LiveTileTask.UpdateTile();
+            LiveTileTask.Instance?.UpdateTile();
             UIHelper.ShellDispatcher = Dispatcher;
+            NotificationsTask.Instance?.GetNums();
+            NotificationsTask = NotificationsTask.Instance;
             //if (SettingsHelper.Get<bool>(SettingsHelper.CheckUpdateWhenLuanching)) { _ = CheckUpdate.CheckUpdateAsync(false, false); }
             if (ApiInformation.IsMethodPresent("Windows.UI.Composition.Compositor", "TryCreateBlurredWallpaperBackdropBrush")) { BackdropMaterial.SetApplyToRootOrPageBackground(this, true); }
         }
@@ -89,11 +106,11 @@ namespace CoolapkUWP.Pages
             OnLoginChanged(string.Empty, true);
             Window.Current.SetTitleBar(DragRegion);
             SettingsHelper.LoginChanged += OnLoginChanged;
-            SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
             if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
             {
                 HardwareButtons.BackPressed += System_BackPressed;
             }
+            SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
             AppTitleText.Text = ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安";
             CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged += (s, _) => UpdateAppTitle(s);
         }

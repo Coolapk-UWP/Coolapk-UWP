@@ -133,6 +133,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BackgroundTasks\LiveTileTask.cs" />
+    <Compile Include="BackgroundTasks\NotificationsTask.cs" />
     <Compile Include="Common\ExceptionHandling.cs" />
     <Compile Include="Common\HtmlToText.cs" />
     <Compile Include="Common\ScrollProgressProvider.cs" />

@@ -124,9 +124,10 @@
                                 </TextBlock>
                                 <Button
                                     Padding="0"
+                                    Click="Button_Click"
                                     FontSize="16"
                                     Style="{StaticResource TransparentButtonStyle}"
-                                    Tag="Follow">
+                                    Tag="FollowsButton">
                                     <TextBlock>
                                         <Run FontWeight="Bold" Text="{Binding FollowNum}" />
                                         <Run x:Uid="/FeedListPage/FollowNum" FontWeight="Thin" />
@@ -134,9 +135,10 @@
                                 </Button>
                                 <Button
                                     Padding="0"
+                                    Click="Button_Click"
                                     FontSize="16"
                                     Style="{StaticResource TransparentButtonStyle}"
-                                    Tag="Fans">
+                                    Tag="FansButton">
                                     <TextBlock>
                                         <Run FontWeight="Bold" Text="{Binding FansNum}" />
                                         <Run x:Uid="/FeedListPage/FansNum" FontWeight="Thin" />
@@ -146,6 +148,8 @@
                             <control:StackPanel Orientation="Horizontal" Spacing="4">
                                 <Border
                                     Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1"
                                     CornerRadius="4"
                                     Visibility="{Binding Gender, Converter={StaticResource StringVisibilityConverter}}">
                                     <TextBlock
@@ -155,6 +159,8 @@
                                 </Border>
                                 <Border
                                     Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1"
                                     CornerRadius="4"
                                     Visibility="{Binding City, Converter={StaticResource StringVisibilityConverter}}">
                                     <TextBlock
@@ -164,6 +170,8 @@
                                 </Border>
                                 <Border
                                     Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1"
                                     CornerRadius="4"
                                     Visibility="{Binding Astro, Converter={StaticResource StringVisibilityConverter}}">
                                     <TextBlock
@@ -173,6 +181,8 @@
                                 </Border>
                                 <Border
                                     Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1"
                                     CornerRadius="4"
                                     Visibility="{Binding BlockStatus, Converter={StaticResource StringVisibilityConverter}}">
                                     <TextBlock
@@ -235,6 +245,7 @@
                                                     DisplayName="{Binding UserName}"
                                                     ProfilePicture="{Binding UserAvatar.Pic, Mode=OneWay}"
                                                     Tag="{Binding Url}"
+                                                    Tapped="On_Tapped"
                                                     ToolTipService.ToolTip="{Binding UserName}" />
                                             </DataTemplate>
                                         </muxc:ItemsRepeater.ItemTemplate>
@@ -308,7 +319,10 @@
                                     FontSize="12"
                                     FontWeight="Thin"
                                     Text="{Binding FollowNum}" />
-                                <Grid>
+                                <Grid
+                                    Background="{ThemeResource SystemControlTransparentBrush}"
+                                    Tag="{Binding Uurl}"
+                                    Tapped="On_Tapped">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
@@ -449,6 +463,7 @@
                                                         DisplayName="{Binding UserName}"
                                                         ProfilePicture="{Binding UserAvatar.Pic, Mode=OneWay}"
                                                         Tag="{Binding Url}"
+                                                        Tapped="On_Tapped"
                                                         ToolTipService.ToolTip="{Binding UserName}" />
                                                 </DataTemplate>
                                             </muxc:ItemsRepeater.ItemTemplate>

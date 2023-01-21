@@ -117,6 +117,9 @@
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8BD;" />
                     </muxc:NavigationViewItem.Icon>
+                    <muxc:NavigationViewItem.InfoBadge>
+                        <muxc:InfoBadge Value="{x:Bind NotificationsTask.BadgeNum, Mode=OneWay}" />
+                    </muxc:NavigationViewItem.InfoBadge>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItem Content="设置" Tag="Settings">
                     <muxc:NavigationViewItem.Icon>

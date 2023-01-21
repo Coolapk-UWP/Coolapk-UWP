@@ -1,4 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Pages.BrowserPages;
+using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.DataSource;
 using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.UI;
@@ -6,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using TwoPaneView = Microsoft.UI.Xaml.Controls.TwoPaneView;
 using TwoPaneViewMode = Microsoft.UI.Xaml.Controls.TwoPaneViewMode;
@@ -118,6 +121,23 @@ namespace CoolapkUWP.Pages.FeedPages
                 }
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            switch ((sender as FrameworkElement).Tag.ToString())
+            {
+                case "FollowsButton":
+                    UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(Provider.ID, true, Provider.Title));
+                    break;
+                case "FansButton":
+                    UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(Provider.ID, false, Provider.Title));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void On_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e) => _ = Refresh(true);
 

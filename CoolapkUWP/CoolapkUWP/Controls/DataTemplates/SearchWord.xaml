@@ -6,71 +6,12 @@
     xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <local:SearchTemplateSelector
-        x:Key="SearchWordSelector"
-        App="{StaticResource Apps}"
-        SearchWord="{StaticResource SearchWord}" />
+    <local:SearchTemplateSelector x:Key="SearchWordSelector" SearchWord="{StaticResource SearchWord}" />
 
     <DataTemplate x:Key="SearchWord">
         <StackPanel Orientation="Horizontal">
             <SymbolIcon Symbol="{Binding Symbol}" />
             <TextBlock Margin="10,0" Text="{Binding Title}" />
         </StackPanel>
-    </DataTemplate>
-
-    <DataTemplate x:Key="Apps">
-        <ListViewItem Tag="{Binding Url}">
-            <Grid Padding="-10,8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="56" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <Ellipse
-                    Grid.RowSpan="3"
-                    Width="40"
-                    Height="40"
-                    Margin="8"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top">
-                    <Ellipse.Fill>
-                        <ImageBrush ImageSource="{Binding Logo.Pic, Mode=OneWay}" />
-                    </Ellipse.Fill>
-                </Ellipse>
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Text="{Binding Title}" />
-                <StackPanel
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Orientation="Horizontal">
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{Binding FollowNum}" />
-                    <TextBlock
-                        x:Uid="/FeedListPage/FollowNum"
-                        Margin="0,0,5,0"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{Binding DownloadNum}" />
-                    <TextBlock
-                        x:Uid="/FeedListPage/DownloadNum"
-                        Margin="0,0,5,0"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
-                    <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{Binding LastUpdate}" />
-                </StackPanel>
-                <TextBlock
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                    MaxLines="2"
-                    Text="{Binding Introduce}"
-                    TextWrapping="Wrap" />
-            </Grid>
-        </ListViewItem>
     </DataTemplate>
 </ResourceDictionary>

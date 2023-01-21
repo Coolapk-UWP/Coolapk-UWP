@@ -38,6 +38,15 @@ namespace CoolapkUWP.Pages.BrowserPages
             UIHelper.MainPage.FindDescendant<WebViewContentControl>().IsWebView = false;
         }
 
+        private void WebView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        {
+            if (args.Uri != null)
+            {
+                args.Cancel = true;
+                UIHelper.OpenLinkAsync(args.Uri.AbsoluteUri);
+            }
+        }
+
         public async Task Refresh(bool reset = false) => await Provider.Refresh(reset);
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e) => _ = Refresh(true);

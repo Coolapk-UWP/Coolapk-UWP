@@ -48,11 +48,7 @@
                 MaxLines="1"
                 TextTrimming="CharacterEllipsis">
                 <Run Text="{Binding FollowNum}" />
-                <Run x:Uid="/FeedListPage/FollowNum" />
-                <Run Text=" " />
                 <Run Text="{Binding FansNum}" />
-                <Run x:Uid="/FeedListPage/FansNum" />
-                <Run Text=" " />
                 <Run Text="{Binding LoginTime}" />
             </TextBlock>
             <TextBlock

@@ -28,7 +28,7 @@ namespace CoolapkUWP.Helpers
         {
             get
             {
-                if (CurrentApplicationWindow.Content is FrameworkElement rootElement)
+                if (CurrentApplicationWindow?.Content is FrameworkElement rootElement)
                 {
                     if (rootElement.RequestedTheme != ElementTheme.Default)
                     {
@@ -47,11 +47,11 @@ namespace CoolapkUWP.Helpers
         {
             get
             {
-                return CurrentApplicationWindow.Content is FrameworkElement rootElement ? rootElement.RequestedTheme : ElementTheme.Default;
+                return CurrentApplicationWindow?.Content is FrameworkElement rootElement ? rootElement.RequestedTheme : ElementTheme.Default;
             }
             set
             {
-                if (CurrentApplicationWindow.Content is FrameworkElement rootElement)
+                if (CurrentApplicationWindow?.Content is FrameworkElement rootElement)
                 {
                     rootElement.RequestedTheme = value;
                 }
