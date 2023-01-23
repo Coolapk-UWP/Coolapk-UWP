@@ -78,7 +78,7 @@ namespace CoolapkUWP.Models
 
             if (token.TryGetValue("lastupdate", out JToken lastupdate) && !string.IsNullOrEmpty(lastupdate.ToString()))
             {
-                LastUpdate = DateHelper.ConvertUnixTimeStampToReadable(token.Value<int>("lastupdate"));
+                LastUpdate = lastupdate.ToObject<long>().ConvertUnixTimeStampToReadable();
             }
         }
 

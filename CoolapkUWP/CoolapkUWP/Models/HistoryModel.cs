@@ -33,7 +33,7 @@ namespace CoolapkUWP.Models
             }
             else if (token.TryGetValue("dateline", out JToken dateline))
             {
-                Description = double.Parse(dateline.ToString()).ConvertUnixTimeStampToReadable();
+                Description = dateline.ToObject<long>().ConvertUnixTimeStampToReadable();
             }
 
             if (token.TryGetValue("logo", out JToken logo))

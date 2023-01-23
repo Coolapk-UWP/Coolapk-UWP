@@ -18,18 +18,23 @@
                 <templates:Feeds />
                 <templates:IndexCardTemplates />
                 <templates:OtherDatatemplates />
+                <templates:NotificationTemplates />
             </ResourceDictionary.MergedDictionaries>
             <templates:CardTemplateSelector
                 x:Key="CardTemplateSelector"
+                AtCommentMe="{StaticResource AtCommentMeCardTemplate}"
+                CommentMe="{StaticResource SimpleNotificationCardTemplate}"
                 Feed="{StaticResource FeedDefaultTemplate}"
                 FeedReply="{StaticResource FeedReplyDefaultTemplate}"
                 GridScrollCard="{StaticResource GridScrollCardTemplate}"
                 IconLinks="{StaticResource IconLinksTemplate}"
                 ImageTextScrollCard="{StaticResource ImageTextScrollCardTemplate}"
                 Images="{StaticResource ImageCardTemplate}"
+                LikeNotify="{StaticResource LikeNotificationCardTemplate}"
                 List="{StaticResource ListDefaultTemplate}"
                 LoginCard="{StaticResource LoginCardTemplate}"
                 MessageCard="{StaticResource MessageCardTemplate}"
+                MessageNotify="{StaticResource MessageNotificationCardTemplate}"
                 Others="{StaticResource Empty}"
                 RefreshCard="{StaticResource RefreshCardTemplate}"
                 SubtitleList="{StaticResource SubtitleListDefaultTemplate}"

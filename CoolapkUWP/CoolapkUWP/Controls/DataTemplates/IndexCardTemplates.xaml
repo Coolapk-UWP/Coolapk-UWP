@@ -36,7 +36,6 @@
     <DataTemplate x:Key="TitleCardTemplate">
         <Grid
             x:Name="TitleGrid"
-            Grid.Row="0"
             Height="40"
             Margin="12,0"
             HorizontalAlignment="Stretch"

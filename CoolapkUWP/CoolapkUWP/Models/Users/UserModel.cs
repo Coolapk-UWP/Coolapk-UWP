@@ -78,7 +78,7 @@ namespace CoolapkUWP.Models.Users
 
             if (token.TryGetValue("logintime", out JToken logintime))
             {
-                LoginTime = $"{logintime.ToObject<double>().ConvertUnixTimeStampToReadable()}活跃";
+                LoginTime = $"{logintime.ToObject<long>().ConvertUnixTimeStampToReadable()}活跃";
             }
 
             if (token.TryGetValue("follow", out JToken follow))

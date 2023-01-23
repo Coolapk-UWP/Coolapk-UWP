@@ -1,12 +1,16 @@
 ﻿using CoolapkUWP.BackgroundTasks;
 using CoolapkUWP.Helpers;
+using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.Pages.SettingsPages;
 using Microsoft.UI.Xaml.Controls;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Xml.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
@@ -79,6 +83,7 @@ namespace CoolapkUWP.Pages
             ("Home", typeof(IndexPage)),
             ("Circle", typeof(CirclePage)),
             ("Settings", typeof(SettingsPage)),
+            ("Notifications", typeof(NotificationsPage))
         };
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -96,7 +101,7 @@ namespace CoolapkUWP.Pages
             UIHelper.ShellDispatcher = Dispatcher;
             NotificationsTask.Instance?.GetNums();
             NotificationsTask = NotificationsTask.Instance;
-            //if (SettingsHelper.Get<bool>(SettingsHelper.CheckUpdateWhenLuanching)) { _ = CheckUpdate.CheckUpdateAsync(false, false); }
+            NavigationView.RegisterPropertyChangedCallback(muxc.NavigationView.IsBackButtonVisibleProperty, new DependencyPropertyChangedCallback(OnIsBackButtonVisibleChanged));
             if (ApiInformation.IsMethodPresent("Windows.UI.Composition.Compositor", "TryCreateBlurredWallpaperBackdropBrush")) { BackdropMaterial.SetApplyToRootOrPageBackground(this, true); }
         }
 
@@ -116,6 +121,33 @@ namespace CoolapkUWP.Pages
         }
 
         public string GetAppTitleFromSystem => Package.Current.DisplayName;
+
+        private void OnIsBackButtonVisibleChanged(DependencyObject sender, DependencyProperty dp)
+        {
+            if (sender is muxc.NavigationView element)
+            {
+                LeftPaddingColumn.Width = element.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top
+                    ? element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
+                        ? new GridLength(48) : new GridLength(16)
+                        : element.DisplayMode == muxc.NavigationViewDisplayMode.Minimal
+                            ? element.IsPaneToggleButtonVisible
+                                ? element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
+                                ? new GridLength((48 * 2) - 8) : new GridLength(48)
+                                    : element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
+                                    ? new GridLength(48) : new GridLength(16)
+                                        : element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
+                                        ? new GridLength(48) : new GridLength(16);
+
+                if (element.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top)
+                {
+                    NavigationViewPaneHeader.Height = 0;
+                }
+                else if (element.DisplayMode != muxc.NavigationViewDisplayMode.Minimal)
+                {
+                    NavigationViewPaneHeader.Height = element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed ? 0 : 40;
+                }
+            }
+        }
 
         private void NavigationView_Loaded(object sender, RoutedEventArgs e)
         {
@@ -170,6 +202,9 @@ namespace CoolapkUWP.Pages
         private void On_Navigated(object _, NavigationEventArgs e)
         {
             NavigationView.IsBackEnabled = NavigationViewFrame.CanGoBack;
+            NavigationView.IsBackButtonVisible = NavigationViewFrame.CanGoBack
+                ? muxc.NavigationViewBackButtonVisible.Visible
+                : muxc.NavigationViewBackButtonVisible.Collapsed;
             if (NavigationViewFrame.SourcePageType != null)
             {
                 (string Tag, Type Page) item = _pages.FirstOrDefault(p => p.Page == e.SourcePageType);
@@ -195,11 +230,26 @@ namespace CoolapkUWP.Pages
 
         private void NavigationViewControl_DisplayModeChanged(muxc.NavigationView sender, muxc.NavigationViewDisplayModeChangedEventArgs args)
         {
-            LeftPaddingColumn.Width = sender.DisplayMode == muxc.NavigationViewDisplayMode.Minimal &&
-                sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed &&
-                sender.PaneDisplayMode != muxc.NavigationViewPaneDisplayMode.Top
-                ? new GridLength((48 * 2) - 8)
-                : new GridLength(48);
+            LeftPaddingColumn.Width = sender.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top
+                ? sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
+                    ? new GridLength(48) : new GridLength(16)
+                    : sender.DisplayMode == muxc.NavigationViewDisplayMode.Minimal
+                        ? sender.IsPaneToggleButtonVisible
+                            ? sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
+                            ? new GridLength((48 * 2) - 8) : new GridLength(48)
+                                : sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
+                                ? new GridLength(48) : new GridLength(16)
+                                    : sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
+                                    ? new GridLength(48) : new GridLength(16);
+
+            if (sender.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top)
+            {
+                NavigationViewPaneHeader.Height = 0;
+            }
+            else if (sender.DisplayMode != muxc.NavigationViewDisplayMode.Minimal)
+            {
+                NavigationViewPaneHeader.Height = sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed ? 0 : 40;
+            }
         }
 
         private void OnLoginChanged(string sender, bool args) => SetUserAvatar(args);
@@ -245,6 +295,61 @@ namespace CoolapkUWP.Pages
                 e.Handled = TryGoBack();
             }
         }
+
+        #region 搜索框
+
+        private async void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                (bool isSucceed, JToken result) = await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.SearchWords, sender.Text), true);
+                if (isSucceed && result != null && result is JArray array && array.Count > 0)
+                {
+                    ObservableCollection<object> observableCollection = new ObservableCollection<object>();
+                    sender.ItemsSource = observableCollection;
+                    foreach (JToken token in array)
+                    {
+                        switch (token.Value<string>("entityType"))
+                        {
+                            case "apk":
+                                observableCollection.Add(new SearchWord(token as JObject));
+                                break;
+                            case "searchWord":
+                            default:
+                                observableCollection.Add(new SearchWord(token as JObject));
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            //if (args.ChosenSuggestion is AppModel app)
+            //{
+            //    UIHelper.NavigateInSplitPane(typeof(AppPages.AppPage), "https://www.coolapk.com" + app.Url);
+            //}
+            //else
+            //if (args.ChosenSuggestion is SearchWord word)
+            //{
+            //    HamburgerMenuFrame.Navigate(typeof(SearchingPage), new SearchingViewModel(word.ToString()));
+            //}
+            //else if (args.ChosenSuggestion is null)
+            //{
+            //    HamburgerMenuFrame.Navigate(typeof(SearchingPage), new SearchingViewModel(sender.Text));
+            //}
+        }
+
+        private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            if (args.SelectedItem is SearchWord searchWord)
+            {
+                sender.Text = searchWord.ToString();
+            }
+        }
+
+        #endregion
 
         #region 状态栏
 

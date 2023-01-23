@@ -144,6 +144,10 @@
                                         <Run x:Uid="/FeedListPage/FansNum" FontWeight="Thin" />
                                     </TextBlock>
                                 </Button>
+                                <TextBlock FontSize="16">
+                                    <Run FontWeight="Bold" Text="{Binding FeedNum}" />
+                                    <Run x:Uid="/FeedListPage/FeedsNum" FontWeight="Thin" />
+                                </TextBlock>
                             </control:StackPanel>
                             <control:StackPanel Orientation="Horizontal" Spacing="4">
                                 <Border

@@ -1,0 +1,189 @@
+﻿<ResourceDictionary
+    x:Class="CoolapkUWP.Controls.DataTemplates.NotificationTemplates"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:control="using:CoolapkUWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
+    mc:Ignorable="d">
+    <ResourceDictionary.MergedDictionaries>
+        <templates:Feeds />
+    </ResourceDictionary.MergedDictionaries>
+
+    <DataTemplate x:Key="SimpleNotificationCardTemplate">
+        <Grid
+            Padding="8"
+            Background="{ThemeResource SystemControlTransparentBrush}"
+            KeyDown="OnKeyDown"
+            Tag="{Binding Url}"
+            Tapped="OnTapped">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="48" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <muxc:PersonPicture
+                Grid.RowSpan="2"
+                Width="40"
+                Height="40"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                DisplayName="{Binding UserName}"
+                ProfilePicture="{Binding UserAvatar.Pic, Mode=OneWay}"
+                Tag="{Binding UserUrl}"
+                Tapped="OnTapped" />
+            <TextBlock Grid.Row="0" Grid.Column="1">
+                <Run Text="{Binding UserName}" />
+                <Run Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{Binding Dateline}" />
+            </TextBlock>
+            <control:TextBlockEx
+                Grid.Row="2"
+                Grid.Column="1"
+                Padding="0,0,0,4"
+                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                Text="{Binding Note}" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="AtCommentMeCardTemplate">
+        <Grid
+            Padding="8"
+            Background="{ThemeResource SystemControlTransparentBrush}"
+            KeyDown="OnKeyDown"
+            Tag="{Binding Url}"
+            Tapped="OnTapped">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    Margin="4"
+                    Padding="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Click="Button_Click"
+                    Style="{StaticResource TransparentButtonStyle}"
+                    Tag="{Binding UserUrl}">
+                    <StackPanel Orientation="Horizontal">
+                        <muxc:PersonPicture
+                            Width="20"
+                            Height="20"
+                            DisplayName="{Binding UserName}"
+                            ProfilePicture="{Binding UserAvatar.Pic, Mode=OneWay}" />
+                        <TextBlock
+                            Margin="4,0,0,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding UserName}" />
+                    </StackPanel>
+                </Button>
+                <TextBlock
+                    Margin="0,5"
+                    VerticalAlignment="Center"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Text="{Binding Dateline}" />
+            </StackPanel>
+            <StackPanel Grid.Row="1" Padding="6,0,6,8">
+                <control:TextBlockEx Text="{Binding Message}" />
+                <control:TextBlockEx Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{Binding FeedMessage}" />
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="LikeNotificationCardTemplate">
+        <Grid
+            Padding="8"
+            Background="{ThemeResource SystemControlTransparentBrush}"
+            Tag="{Binding Url}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    Margin="4"
+                    Padding="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Click="Button_Click"
+                    Style="{StaticResource TransparentButtonStyle}"
+                    Tag="{Binding UserUrl}">
+                    <StackPanel Orientation="Horizontal">
+                        <muxc:PersonPicture
+                            Width="20"
+                            Height="20"
+                            DisplayName="{Binding UserName}"
+                            ProfilePicture="{Binding UserAvatar.Pic, Mode=OneWay}" />
+                        <TextBlock
+                            Margin="4,0,0,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding UserName}" />
+                    </StackPanel>
+                </Button>
+                <TextBlock
+                    Margin="0,5"
+                    VerticalAlignment="Center"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    IsTextSelectionEnabled="{Binding FeedDetail.IsCopyEnabled, Mode=OneWay}"
+                    Text="{Binding Dateline}" />
+            </StackPanel>
+            <control:StackPanel Grid.Row="1" Spacing="4">
+                <TextBlock
+                    Margin="4,0"
+                    FontSize="16"
+                    FontWeight="SemiLight"
+                    IsTextSelectionEnabled="{Binding FeedDetail.IsCopyEnabled, Mode=OneWay}"
+                    Text="{Binding Title}" />
+                <control:WebViewContentControl
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    ContentCornerRadius="8"
+                    ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
+                    DataContext="{Binding FeedDetail}" />
+            </control:StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="MessageNotificationCardTemplate">
+        <Grid
+            Padding="8"
+            Background="{ThemeResource SystemControlTransparentBrush}"
+            Tag="{Binding Url}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="48" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <muxc:PersonPicture
+                Grid.RowSpan="2"
+                Width="40"
+                Height="40"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                DisplayName="{Binding UserName}"
+                ProfilePicture="{Binding UserAvatar.Pic, Mode=OneWay}"
+                Tag="{Binding UserUrl}"
+                Tapped="OnTapped" />
+            <TextBlock Grid.Row="0" Grid.Column="1">
+                <Run Text="{Binding UserName}" />
+                <Run Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{Binding Dateline}" />
+            </TextBlock>
+            <control:TextBlockEx
+                Grid.Row="2"
+                Grid.Column="1"
+                Padding="0,0,0,4"
+                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                Text="{Binding FeedMessage}" />
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

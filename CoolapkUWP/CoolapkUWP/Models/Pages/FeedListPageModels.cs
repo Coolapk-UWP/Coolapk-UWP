@@ -92,7 +92,7 @@ namespace CoolapkUWP.Models.Pages
 
             if (token.TryGetValue("feed", out JToken feed))
             {
-                FansNum = feed.ToObject<int>();
+                FeedNum = feed.ToObject<int>();
             }
 
             if (token.TryGetValue("be_like_num", out JToken be_like_num))
@@ -149,7 +149,7 @@ namespace CoolapkUWP.Models.Pages
 
             if (token.TryGetValue("logintime", out JToken logintime))
             {
-                LoginTime = $"{logintime.ToObject<double>().ConvertUnixTimeStampToReadable()}活跃";
+                LoginTime = $"{logintime.ToObject<long>().ConvertUnixTimeStampToReadable()}活跃";
             }
 
             if (token.TryGetValue("block_status", out JToken block_status))

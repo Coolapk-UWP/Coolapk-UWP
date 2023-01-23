@@ -88,13 +88,40 @@ namespace CoolapkUWP.Models.Feeds
             }
         }
 
+        private bool showUser = true;
+        public bool ShowUser
+        {
+            get => showUser;
+            set
+            {
+                if (showUser != value)
+                {
+                    showUser = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
+        private bool showButtons = true;
+        public bool ShowButtons
+        {
+            get => showButtons;
+            set
+            {
+                if (showButtons != value)
+                {
+                    showButtons = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
         public int ID => EntityID;
         public int UID => UserInfo.UID;
         public bool Stared { get; set; }
         public string Info { get; private set; }
         public int ShareNum { get; private set; }
         public string DeviceTitle { get; private set; }
-        public bool ShowUser { get; private set; } = true;
 
         public event PropertyChangedEventHandler PropertyChanged;
 

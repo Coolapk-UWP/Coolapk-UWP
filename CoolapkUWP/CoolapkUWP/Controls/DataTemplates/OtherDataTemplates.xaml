@@ -11,7 +11,7 @@
 
     <DataTemplate x:Key="UserTemplate">
         <Grid
-            Padding="0,8"
+            Padding="8"
             KeyDown="OnKeyDown"
             Tag="{Binding Url}"
             Tapped="OnTapped">
@@ -28,7 +28,7 @@
                 Grid.RowSpan="2"
                 Width="36"
                 Height="36"
-                Margin="8,0"
+                Margin="0,0,8,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 DisplayName="{Binding UserName}"
@@ -83,6 +83,7 @@
             </Border>
             <Grid
                 Grid.Column="1"
+                Margin="0,0,8,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center">
                 <Grid.RowDefinitions>
@@ -126,6 +127,7 @@
             </Ellipse>
             <Grid
                 Grid.Column="1"
+                Margin="0,0,8,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center">
                 <Grid.RowDefinitions>

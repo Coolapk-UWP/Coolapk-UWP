@@ -1,0 +1,96 @@
+﻿<Page
+    x:Class="CoolapkUWP.Pages.FeedPages.NotificationsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CoolapkUWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    NavigationCacheMode="Required"
+    mc:Ignorable="d">
+    <Pivot
+        x:Name="Pivot"
+        Loaded="Pivot_Loaded"
+        SelectionChanged="Pivot_SelectionChanged">
+        <Pivot.RightHeader>
+            <Button
+                x:Name="RefreshButton"
+                VerticalAlignment="Center"
+                Click="RefreshButton_Click"
+                Content="&#xE72C;"
+                Style="{StaticResource NavigationIconButtonNormalStyle}" />
+        </Pivot.RightHeader>
+        <PivotItem Tag="CommentMe">
+            <PivotItem.Header>
+                <controls:StackPanel Orientation="Horizontal" Spacing="4">
+                    <TextBlock x:Uid="/NotificationsPage/CommentMe" />
+                    <muxc:InfoBadge
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind NotificationsTask.CommentMeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
+                        Value="{x:Bind NotificationsTask.CommentMeNum, Mode=OneWay}" />
+                </controls:StackPanel>
+            </PivotItem.Header>
+            <Frame />
+        </PivotItem>
+        <PivotItem Tag="AtMe">
+            <PivotItem.Header>
+                <controls:StackPanel Orientation="Horizontal" Spacing="4">
+                    <TextBlock x:Uid="/NotificationsPage/AtMe" />
+                    <muxc:InfoBadge
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind NotificationsTask.AtMeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
+                        Value="{x:Bind NotificationsTask.AtMeNum, Mode=OneWay}" />
+                </controls:StackPanel>
+            </PivotItem.Header>
+            <Frame />
+        </PivotItem>
+        <PivotItem Tag="AtCommentMe">
+            <PivotItem.Header>
+                <controls:StackPanel Orientation="Horizontal" Spacing="4">
+                    <TextBlock x:Uid="/NotificationsPage/AtCommentMe" />
+                    <muxc:InfoBadge
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind NotificationsTask.AtCommentMeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
+                        Value="{x:Bind NotificationsTask.AtCommentMeNum, Mode=OneWay}" />
+                </controls:StackPanel>
+            </PivotItem.Header>
+            <Frame />
+        </PivotItem>
+        <PivotItem Tag="FeedLike">
+            <PivotItem.Header>
+                <controls:StackPanel Orientation="Horizontal" Spacing="4">
+                    <TextBlock x:Uid="/NotificationsPage/FeedLike" />
+                    <muxc:InfoBadge
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind NotificationsTask.FeedLikeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
+                        Value="{x:Bind NotificationsTask.FeedLikeNum, Mode=OneWay}" />
+                </controls:StackPanel>
+            </PivotItem.Header>
+            <Frame />
+        </PivotItem>
+        <PivotItem Tag="Follow">
+            <PivotItem.Header>
+                <controls:StackPanel Orientation="Horizontal" Spacing="4">
+                    <TextBlock x:Uid="/NotificationsPage/Follow" />
+                    <muxc:InfoBadge
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind NotificationsTask.FollowNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
+                        Value="{x:Bind NotificationsTask.FollowNum, Mode=OneWay}" />
+                </controls:StackPanel>
+            </PivotItem.Header>
+            <Frame />
+        </PivotItem>
+        <PivotItem Tag="Message">
+            <PivotItem.Header>
+                <controls:StackPanel Orientation="Horizontal" Spacing="4">
+                    <TextBlock x:Uid="/NotificationsPage/Message" />
+                    <muxc:InfoBadge
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind NotificationsTask.MessageNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
+                        Value="{x:Bind NotificationsTask.MessageNum, Mode=OneWay}" />
+                </controls:StackPanel>
+            </PivotItem.Header>
+            <Frame />
+        </PivotItem>
+    </Pivot>
+</Page>

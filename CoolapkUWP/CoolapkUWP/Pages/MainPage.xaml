@@ -9,9 +9,22 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     contract12NotPresent:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     NavigationCacheMode="Required"
     mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <templates:SearchWord />
+                <templates:IndexCardTemplates />
+            </ResourceDictionary.MergedDictionaries>
+            <templates:SearchTemplateSelector
+                x:Key="SearchTemplateSelector"
+                App="{StaticResource Empty}"
+                SearchWord="{StaticResource SearchWord}" />
+        </ResourceDictionary>
+    </Page.Resources>
     <Grid>
         <Grid
             x:Name="AppTitleBar"
@@ -21,7 +34,7 @@
             IsHitTestVisible="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="LeftPaddingColumn" Width="0" />
-                <ColumnDefinition Width="Auto" MinWidth="72" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition x:Name="RightPaddingColumn" Width="0" />
@@ -59,6 +72,35 @@
                     TextTrimming="CharacterEllipsis"
                     TextWrapping="NoWrap" />
             </Grid>
+            <controls:Slot
+                x:Name="SearchBoxHolder"
+                Grid.Column="2"
+                Orientation="Horizontal">
+                <AutoSuggestBox
+                    x:Name="SearchTextBox"
+                    Height="33"
+                    MaxWidth="600"
+                    Margin="40,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    IsTabStop="True"
+                    ItemTemplateSelector="{StaticResource SearchWordSelector}"
+                    PlaceholderText="搜索动态、话题、用户等"
+                    QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                    SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                    TextChanged="AutoSuggestBox_TextChanged">
+                    <AutoSuggestBox.QueryIcon>
+                        <muxc:AnimatedIcon>
+                            <muxc:AnimatedIcon.Source>
+                                <animatedvisuals:AnimatedFindVisualSource />
+                            </muxc:AnimatedIcon.Source>
+                            <muxc:AnimatedIcon.FallbackIconSource>
+                                <muxc:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE721;" />
+                            </muxc:AnimatedIcon.FallbackIconSource>
+                        </muxc:AnimatedIcon>
+                    </AutoSuggestBox.QueryIcon>
+                </AutoSuggestBox>
+            </controls:Slot>
             <Grid
                 Grid.Column="3"
                 Margin="10,0"
@@ -90,11 +132,15 @@
             x:Name="NavigationView"
             BackRequested="NavigationView_BackRequested"
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
-            IsBackEnabled="True"
+            IsBackButtonVisible="Collapsed"
+            IsBackEnabled="False"
             IsSettingsVisible="False"
             IsTitleBarAutoPaddingEnabled="False"
             Loaded="NavigationView_Loaded"
             SelectionChanged="NavigationView_SelectionChanged">
+            <muxc:NavigationView.PaneCustomContent>
+                <Border x:Name="NavigationViewPaneHeader" />
+            </muxc:NavigationView.PaneCustomContent>
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem Content="首页" Tag="Home">
                     <muxc:NavigationViewItem.Icon>
@@ -113,12 +159,12 @@
                 </muxc:NavigationViewItem>
             </muxc:NavigationView.MenuItems>
             <muxc:NavigationView.FooterMenuItems>
-                <muxc:NavigationViewItem Content="通知" Tag="Test">
+                <muxc:NavigationViewItem Content="通知" Tag="Notifications">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8BD;" />
                     </muxc:NavigationViewItem.Icon>
                     <muxc:NavigationViewItem.InfoBadge>
-                        <muxc:InfoBadge Value="{x:Bind NotificationsTask.BadgeNum, Mode=OneWay}" />
+                        <muxc:InfoBadge Visibility="{x:Bind NotificationsTask.BadgeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}" Value="{x:Bind NotificationsTask.BadgeNum, Mode=OneWay}" />
                     </muxc:NavigationViewItem.InfoBadge>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItem Content="设置" Tag="Settings">
@@ -159,6 +205,28 @@
                     <VisualState.Setters>
                         <contract7Present:Setter Target="ProfileFlyout.Placement" Value="BottomEdgeAlignedRight" />
                         <Setter Target="NavigationView.PaneDisplayMode" Value="Auto" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SearchTextBox.Margin" Value="0" />
+                        <Setter Target="SearchBoxHolder.IsStretch" Value="True" />
+                        <Setter Target="AppTitleText.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="850" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SearchTextBox.Margin" Value="40,0" />
+                        <Setter Target="SearchBoxHolder.IsStretch" Value="False" />
+                        <Setter Target="AppTitleText.Visibility" Value="Visible" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

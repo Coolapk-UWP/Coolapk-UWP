@@ -15,16 +15,16 @@ namespace CoolapkUWP.Helpers
 
         private static readonly DateTime unixDateBase = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        public static string ConvertUnixTimeStampToReadable(this double time)
+        public static string ConvertUnixTimeStampToReadable(this long time)
         {
             return ConvertUnixTimeStampToReadable(time, DateTime.Now);
         }
 
-        public static string ConvertUnixTimeStampToReadable(this double time, DateTime baseTime)
+        public static string ConvertUnixTimeStampToReadable(this long time, DateTime baseTime)
         {
-            (TimeIntervalType type, object time) ConvertUnixTimeStampToReadable(double times, DateTime baseTimes)
+            (TimeIntervalType type, object time) ConvertUnixTimeStampToReadable(long _time, DateTime baseTimes)
             {
-                TimeSpan ttime = new TimeSpan((long)times * 1000_0000);
+                TimeSpan ttime = new TimeSpan(_time * 1000_0000);
                 DateTime tdate = unixDateBase.Add(ttime);
                 TimeSpan temp = baseTimes.ToUniversalTime()
                                         .Subtract(tdate);
@@ -65,7 +65,7 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        public static DateTime ConvertUnixTimeStampToDateTime(this double time) => unixDateBase.Add(new TimeSpan((long)time * 1000_0000));
+        public static DateTime ConvertUnixTimeStampToDateTime(this long time) => unixDateBase.Add(new TimeSpan(time * 1000_0000));
 
         public static double ConvertDateTimeToUnixTimeStamp(this DateTime time) => Math.Round(time.ToUniversalTime().Subtract(unixDateBase).TotalSeconds);
     }

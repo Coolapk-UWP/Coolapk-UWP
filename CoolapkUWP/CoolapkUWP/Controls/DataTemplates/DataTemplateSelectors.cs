@@ -1,7 +1,9 @@
 ﻿using CoolapkUWP.Models;
 using CoolapkUWP.Models.Feeds;
+using CoolapkUWP.Models.Pages;
 using CoolapkUWP.Models.Users;
 using Newtonsoft.Json.Linq;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using static CoolapkUWP.Models.Feeds.FeedModel;
@@ -19,9 +21,13 @@ namespace CoolapkUWP.Controls.DataTemplates
         public DataTemplate IconLinks { get; set; }
         public DataTemplate LoginCard { get; set; }
         public DataTemplate TitleCard { get; set; }
+        public DataTemplate CommentMe { get; set; }
+        public DataTemplate LikeNotify { get; set; }
+        public DataTemplate AtCommentMe { get; set; }
         public DataTemplate RefreshCard { get; set; }
         public DataTemplate MessageCard { get; set; }
         public DataTemplate SubtitleList { get; set; }
+        public DataTemplate MessageNotify { get; set; }
         public DataTemplate GridScrollCard { get; set; }
         public DataTemplate ImageTextScrollCard { get; set; }
         protected override DataTemplate SelectTemplateCore(object item)
@@ -51,6 +57,10 @@ namespace CoolapkUWP.Controls.DataTemplates
                     default: return Others;
                 }
             }
+            else if (item is LikeNotificationModel) { return LikeNotify; }
+            else if (item is SimpleNotificationModel) { return CommentMe; }
+            else if (item is MessageNotificationModel) { return MessageNotify; }
+            else if (item is AtCommentMeNotificationModel) { return AtCommentMe; }
             else if (item is IHasDescription) { return List; }
             else if (item is IHasSubtitle) { return SubtitleList; }
             else { return Others; }

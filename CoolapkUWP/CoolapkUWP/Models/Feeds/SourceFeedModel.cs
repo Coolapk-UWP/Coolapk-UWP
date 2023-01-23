@@ -77,7 +77,7 @@ namespace CoolapkUWP.Models.Feeds
 
             if (token.TryGetValue("dateline", out JToken dateline))
             {
-                Dateline = dateline.ToObject<double>().ConvertUnixTimeStampToReadable();
+                Dateline = dateline.ToObject<long>().ConvertUnixTimeStampToReadable();
             }
 
             if (token.TryGetValue("picArr", out JToken picArr) && (picArr as JArray).Count > 0)
