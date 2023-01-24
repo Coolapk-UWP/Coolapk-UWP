@@ -121,6 +121,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BackgroundTasks\LiveTileTask.cs" />
+    <Compile Include="BackgroundTasks\NotificationsTask.cs" />
     <Compile Include="Common\ExceptionHandling.cs" />
     <Compile Include="Common\HtmlToText.cs" />
     <Compile Include="Common\ScrollProgressProvider.cs" />
@@ -132,6 +134,9 @@
     </Compile>
     <Compile Include="Controls\DataTemplates\IndexCardTemplates.xaml.cs">
       <DependentUpon>IndexCardTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataTemplates\NotificationTemplates.xaml.cs">
+      <DependentUpon>NotificationTemplates.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DataTemplates\OtherDatatemplates.xaml.cs">
       <DependentUpon>OtherDatatemplates.xaml</DependentUpon>
@@ -164,6 +169,7 @@
       <DependentUpon>ShowQRCodeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ShyHeaderListView\ShyHeaderListView.cs" />
+    <Compile Include="Controls\Slot.cs" />
     <Compile Include="Controls\StackPanel.cs" />
     <Compile Include="Controls\TextBlockEx.xaml.cs">
       <DependentUpon>TextBlockEx.xaml</DependentUpon>
@@ -174,6 +180,7 @@
     <Compile Include="Helpers\Converters\CollectionToBoolConverter.cs" />
     <Compile Include="Helpers\Converters\FontSizeToLineHeight.cs" />
     <Compile Include="Helpers\Converters\HTMLToTextConverter.cs" />
+    <Compile Include="Helpers\Converters\NumMultConverter.cs" />
     <Compile Include="Helpers\Converters\StringToBoolConverter.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
@@ -204,6 +211,7 @@
     <Compile Include="Models\IndexPageModel.cs" />
     <Compile Include="Models\Interfaces.cs" />
     <Compile Include="Models\Pages\FeedListPageModels.cs" />
+    <Compile Include="Models\Pages\NotificationsPageModels.cs" />
     <Compile Include="Models\Pages\ProfileDetailModel.cs" />
     <Compile Include="Models\SearchWord.cs" />
     <Compile Include="Models\TopicModel.cs" />
@@ -237,6 +245,12 @@
     <Compile Include="Pages\FeedPages\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\FeedPages\NotificationsPage.xaml.cs">
+      <DependentUpon>NotificationsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\FeedPages\SearchingPage.xaml.cs">
+      <DependentUpon>SearchingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -256,6 +270,7 @@
     <Compile Include="ViewModels\FeedPages\FeedListViewModel.cs" />
     <Compile Include="ViewModels\FeedPages\FeedShellViewModel.cs" />
     <Compile Include="ViewModels\FeedPages\ProfileFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FeedPages\SearchingViewModel.cs" />
     <Compile Include="ViewModels\Interfaces.cs" />
     <Compile Include="ViewModels\Providers\CoolapkListProvider.cs" />
     <Compile Include="ViewModels\SettingsPages\SettingsViewModel.cs" />
@@ -858,6 +873,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\DataTemplates\NotificationTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\DataTemplates\OtherDatatemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -966,6 +985,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\FeedPages\NotificationsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\FeedPages\SearchingPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -975,6 +1002,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\SettingsPages\TestPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\AutoSuggestBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1085,6 +1116,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\About\About.zh-CN.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\zh-CN\NotificationsPage.resw" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

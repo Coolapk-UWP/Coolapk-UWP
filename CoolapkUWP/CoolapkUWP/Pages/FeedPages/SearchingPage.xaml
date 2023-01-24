@@ -1,0 +1,114 @@
+﻿<Page
+    x:Class="CoolapkUWP.Pages.FeedPages.SearchingPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:feedpages="using:CoolapkUWP.ViewModels.FeedPages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
+    xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
+    d:DataContext="{d:DesignInstance Type=feedpages:SearchingViewModel}"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <templates:Feeds />
+                <templates:SearchWord />
+                <templates:IndexCardTemplates />
+                <templates:OtherDatatemplates />
+            </ResourceDictionary.MergedDictionaries>
+            <templates:CardTemplateSelector
+                x:Key="CardTemplateSelector"
+                Feed="{StaticResource FeedDefaultTemplate}"
+                FeedReply="{StaticResource FeedReplyDefaultTemplate}"
+                GridScrollCard="{StaticResource GridScrollCardTemplate}"
+                IconLinks="{StaticResource IconLinksTemplate}"
+                ImageTextScrollCard="{StaticResource ImageTextScrollCardTemplate}"
+                Images="{StaticResource ImageCardTemplate}"
+                List="{StaticResource ListDefaultTemplate}"
+                LoginCard="{StaticResource LoginCardTemplate}"
+                MessageCard="{StaticResource MessageCardTemplate}"
+                Others="{StaticResource Empty}"
+                RefreshCard="{StaticResource RefreshCardTemplate}"
+                SubtitleList="{StaticResource SubtitleListDefaultTemplate}"
+                TitleCard="{StaticResource TitleCardTemplate}"
+                User="{StaticResource UserTemplate}" />
+        </ResourceDictionary>
+    </Page.Resources>
+    <Pivot
+        x:Name="Pivot"
+        Loaded="Pivot_Loaded"
+        SelectionChanged="Pivot_SelectionChanged">
+        <Pivot.RightHeader>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel x:Name="RightHeader" Orientation="Horizontal">
+                    <ComboBox
+                        Margin="8,6,4,6"
+                        VerticalAlignment="Bottom"
+                        SelectedIndex="{Binding SeachFeedItemSourse.SearchFeedTypeComboBoxSelectedIndex, Mode=TwoWay}">
+                        <x:String>全部</x:String>
+                        <x:String>动态</x:String>
+                        <x:String>图文</x:String>
+                        <x:String>点评</x:String>
+                        <x:String>酷图</x:String>
+                        <x:String>提问</x:String>
+                        <x:String>回答</x:String>
+                        <x:String>视频</x:String>
+                        <x:String>二手</x:String>
+                        <x:String>投票</x:String>
+                    </ComboBox>
+                    <ComboBox
+                        Margin="4,6,8,6"
+                        VerticalAlignment="Bottom"
+                        SelectedIndex="{Binding SeachFeedItemSourse.SearchFeedSortTypeComboBoxSelectedIndex, Mode=TwoWay}">
+                        <x:String>实时</x:String>
+                        <x:String>热度</x:String>
+                        <x:String>评论数</x:String>
+                    </ComboBox>
+                </StackPanel>
+                <Button
+                    x:Name="RefreshButton"
+                    Grid.Column="2"
+                    Margin="-8,0,0,0"
+                    VerticalAlignment="Center"
+                    Click="RefreshButton_Click"
+                    Content="&#xE72C;"
+                    Style="{StaticResource NavigationIconButtonNormalStyle}" />
+            </StackPanel>
+        </Pivot.RightHeader>
+        <PivotItem Header="动态">
+            <muxc:RefreshContainer RefreshRequested="RefreshContainer_RefreshRequested">
+                <ListView
+                    ui:ListViewExtensions.ItemContainerStretchDirection="Horizontal"
+                    ItemContainerStyle="{StaticResource DefaultCardItemStyle}"
+                    ItemTemplateSelector="{StaticResource CardTemplateSelector}"
+                    ItemsSource="{Binding SeachFeedItemSourse}"
+                    ShowsScrollingPlaceholders="False"
+                    Style="{StaticResource DefaultCardListViewStyle}" />
+            </muxc:RefreshContainer>
+        </PivotItem>
+        <PivotItem Header="用户">
+            <muxc:RefreshContainer RefreshRequested="RefreshContainer_RefreshRequested">
+                <ListView
+                    ui:ListViewExtensions.ItemContainerStretchDirection="Horizontal"
+                    ItemContainerStyle="{StaticResource DefaultCardItemStyle}"
+                    ItemTemplateSelector="{StaticResource CardTemplateSelector}"
+                    ItemsSource="{Binding SeachUserItemSourse}"
+                    ShowsScrollingPlaceholders="False"
+                    Style="{StaticResource DefaultCardListViewStyle}" />
+            </muxc:RefreshContainer>
+        </PivotItem>
+        <PivotItem Header="话题">
+            <muxc:RefreshContainer RefreshRequested="RefreshContainer_RefreshRequested">
+                <ListView
+                    ui:ListViewExtensions.ItemContainerStretchDirection="Horizontal"
+                    ItemContainerStyle="{StaticResource DefaultCardItemStyle}"
+                    ItemTemplateSelector="{StaticResource CardTemplateSelector}"
+                    ItemsSource="{Binding SeachTopicItemSourse}"
+                    ShowsScrollingPlaceholders="False"
+                    Style="{StaticResource DefaultCardListViewStyle}" />
+            </muxc:RefreshContainer>
+        </PivotItem>
+    </Pivot>
+</Page>

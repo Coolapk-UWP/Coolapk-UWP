@@ -3,6 +3,7 @@ using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.Pages.SettingsPages;
+using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.UI.Xaml.Controls;
 using Newtonsoft.Json.Linq;
 using System;
@@ -10,7 +11,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Xml.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
@@ -331,21 +331,13 @@ namespace CoolapkUWP.Pages
             //    UIHelper.NavigateInSplitPane(typeof(AppPages.AppPage), "https://www.coolapk.com" + app.Url);
             //}
             //else
-            //if (args.ChosenSuggestion is SearchWord word)
-            //{
-            //    HamburgerMenuFrame.Navigate(typeof(SearchingPage), new SearchingViewModel(word.ToString()));
-            //}
-            //else if (args.ChosenSuggestion is null)
-            //{
-            //    HamburgerMenuFrame.Navigate(typeof(SearchingPage), new SearchingViewModel(sender.Text));
-            //}
-        }
-
-        private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
-        {
-            if (args.SelectedItem is SearchWord searchWord)
+            if (args.ChosenSuggestion is SearchWord word)
             {
-                sender.Text = searchWord.ToString();
+                NavigationViewFrame.Navigate(typeof(SearchingPage), new SearchingViewModel(word.ToString(), word.Glyph == "\uE77B" ? 1 : -1));
+            }
+            else if (args.ChosenSuggestion is null && !string.IsNullOrEmpty(sender.Text))
+            {
+                NavigationViewFrame.Navigate(typeof(SearchingPage), new SearchingViewModel(sender.Text));
             }
         }
 
@@ -401,10 +393,7 @@ namespace CoolapkUWP.Pages
             {
                 AppTitleText.Text = message ?? ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安";
             }
-            else
-            {
-                ApplicationView.GetForCurrentView().Title = message ?? string.Empty;
-            }
+            ApplicationView.GetForCurrentView().Title = message ?? string.Empty;
         }
 
         #endregion

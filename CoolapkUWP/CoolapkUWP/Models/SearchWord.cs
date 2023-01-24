@@ -1,33 +1,44 @@
 ﻿using Newtonsoft.Json.Linq;
-using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Models
 {
-    internal class SearchWord
+    public class SearchWord : Entity
     {
-        public Symbol Symbol { get; set; }
+        public string Glyph { get; set; }
         public string Title { get; set; }
 
-        public SearchWord(JObject keys)
+        public SearchWord(JObject keys) : base(keys)
         {
-            Symbol = keys.Value<string>("logo").Contains("app")
-                ? Symbol.Shop
-                : keys.Value<string>("logo").Contains("cube")
-                    ? Symbol.Shop
-                    : keys.Value<string>("logo").Contains("xitongguanli")
-                        ? Symbol.Contact
-                        : Symbol.Find;
-            Title = keys.Value<string>("title");
+            if (keys.TryGetValue("logo", out JToken logo))
+            {
+                if (logo.ToString().Contains("app") || logo.ToString().Contains("cube"))
+                {
+                    Glyph = "\uE719";
+                }
+                else if (logo.ToString().Contains("xitongguanli"))
+                {
+                    Glyph = "\uE77B";
+                }
+                else
+                {
+                    Glyph = "\uE721";
+                }
+            }
+            if (keys.TryGetValue("title", out JToken title))
+            {
+                Title = title.ToString();
+            }
         }
 
         public override string ToString()
         {
-            switch (Symbol)
+            switch (Glyph)
             {
-                case Symbol.Shop:
-                case Symbol.Contact:
-                    return Title.Substring(5);
-
+                case "\uE719":
+                case "\uE77B":
+                    return Title
+                        .Replace("搜索应用：", string.Empty)
+                        .Replace("搜索用户：", string.Empty);
                 default:
                     return Title;
             }

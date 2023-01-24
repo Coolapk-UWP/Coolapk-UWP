@@ -68,7 +68,7 @@ namespace CoolapkUWP.Pages.FeedPages
             PivotItem MenuItem = Pivot.SelectedItem as PivotItem;
             if ((Pivot.SelectedItem as PivotItem).Content is Frame Frame && Frame.Content is null)
             {
-                switch((Pivot.SelectedItem as PivotItem).Tag.ToString())
+                switch ((Pivot.SelectedItem as PivotItem).Tag.ToString())
                 {
                     case "CommentMe":
                         _ = Frame.Navigate(typeof(AdaptivePage), new AdaptiveViewModel(
@@ -150,6 +150,11 @@ namespace CoolapkUWP.Pages.FeedPages
                     default:
                         break;
                 }
+                Refresh = () => _ = (Frame.Content as AdaptivePage).Refresh(true);
+            }
+            else if ((Pivot.SelectedItem as PivotItem).Content is Frame __ && __.Content is AdaptivePage AdaptivePage)
+            {
+                Refresh = () => _ = AdaptivePage.Refresh(true);
             }
         }
 

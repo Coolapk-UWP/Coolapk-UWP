@@ -260,6 +260,9 @@
     <Compile Include="Pages\FeedPages\NotificationsPage.xaml.cs">
       <DependentUpon>NotificationsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\FeedPages\SearchingPage.xaml.cs">
+      <DependentUpon>SearchingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -279,6 +282,7 @@
     <Compile Include="ViewModels\FeedPages\FeedListViewModel.cs" />
     <Compile Include="ViewModels\FeedPages\FeedShellViewModel.cs" />
     <Compile Include="ViewModels\FeedPages\ProfileFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\FeedPages\SearchingViewModel.cs" />
     <Compile Include="ViewModels\Interfaces.cs" />
     <Compile Include="ViewModels\Providers\CoolapkListProvider.cs" />
     <Compile Include="ViewModels\SettingsPages\SettingsViewModel.cs" />
@@ -1023,6 +1027,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\FeedPages\NotificationsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\FeedPages\SearchingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

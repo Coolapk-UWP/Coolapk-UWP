@@ -78,16 +78,16 @@
                 Orientation="Horizontal">
                 <AutoSuggestBox
                     x:Name="SearchTextBox"
+                    x:Uid="/MainPage/SearchBox"
                     Height="33"
                     MaxWidth="600"
                     Margin="40,0"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Center"
                     IsTabStop="True"
-                    ItemTemplateSelector="{StaticResource SearchWordSelector}"
+                    ItemTemplateSelector="{StaticResource SearchTemplateSelector}"
                     PlaceholderText="搜索动态、话题、用户等"
                     QuerySubmitted="AutoSuggestBox_QuerySubmitted"
-                    SuggestionChosen="AutoSuggestBox_SuggestionChosen"
                     TextChanged="AutoSuggestBox_TextChanged">
                     <AutoSuggestBox.QueryIcon>
                         <muxc:AnimatedIcon>
@@ -95,7 +95,10 @@
                                 <animatedvisuals:AnimatedFindVisualSource />
                             </muxc:AnimatedIcon.Source>
                             <muxc:AnimatedIcon.FallbackIconSource>
-                                <muxc:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE721;" />
+                                <muxc:FontIconSource
+                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                    FontSize="12"
+                                    Glyph="&#xE721;" />
                             </muxc:AnimatedIcon.FallbackIconSource>
                         </muxc:AnimatedIcon>
                     </AutoSuggestBox.QueryIcon>
@@ -142,24 +145,24 @@
                 <Border x:Name="NavigationViewPaneHeader" />
             </muxc:NavigationView.PaneCustomContent>
             <muxc:NavigationView.MenuItems>
-                <muxc:NavigationViewItem Content="首页" Tag="Home">
+                <muxc:NavigationViewItem x:Uid="/MainPage/Home" Tag="Home">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE80F;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem Content="圈子" Tag="Circle">
+                <muxc:NavigationViewItem x:Uid="/MainPage/Circle" Tag="Circle">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE716;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem Content="发现" Tag="Find">
+                <muxc:NavigationViewItem x:Uid="/MainPage/Find" Tag="Find">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE707;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
             </muxc:NavigationView.MenuItems>
             <muxc:NavigationView.FooterMenuItems>
-                <muxc:NavigationViewItem Content="通知" Tag="Notifications">
+                <muxc:NavigationViewItem x:Uid="/MainPage/Notifications" Tag="Notifications">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8BD;" />
                     </muxc:NavigationViewItem.Icon>
@@ -167,7 +170,7 @@
                         <muxc:InfoBadge Visibility="{x:Bind NotificationsTask.BadgeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}" Value="{x:Bind NotificationsTask.BadgeNum, Mode=OneWay}" />
                     </muxc:NavigationViewItem.InfoBadge>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem Content="设置" Tag="Settings">
+                <muxc:NavigationViewItem x:Uid="/MainPage/Settings" Tag="Settings">
                     <muxc:NavigationViewItem.Icon>
                         <muxc:AnimatedIcon>
                             <muxc:AnimatedIcon.Source>
@@ -214,7 +217,7 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="SearchTextBox.Margin" Value="0" />
+                        <Setter Target="SearchTextBox.Margin" Value="0,0,6,0" />
                         <Setter Target="SearchBoxHolder.IsStretch" Value="True" />
                         <Setter Target="AppTitleText.Visibility" Value="Collapsed" />
                     </VisualState.Setters>

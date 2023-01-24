@@ -14,11 +14,7 @@ namespace CoolapkUWP.Models
 
         public Entity(JObject token)
         {
-            if (token == null)
-            {
-                //throw new ArgumentNullException(nameof(token));
-                return;
-            }
+            if (token == null) { return; }
 
             if (token.TryGetValue("entityId", out JToken entityId))
             {
@@ -49,17 +45,11 @@ namespace CoolapkUWP.Models
             }
         }
 
-        public override string ToString()
-        {
-            return $"{EntityType} - {EntityID}";
-        }
+        public override string ToString() => $"{EntityType} - {EntityID}";
     }
 
     public class NullModel : Entity
     {
-        public NullModel(JObject o = null) : base(o)
-        {
-
-        }
+        public NullModel(JObject o = null) : base(o) { }
     }
 }
