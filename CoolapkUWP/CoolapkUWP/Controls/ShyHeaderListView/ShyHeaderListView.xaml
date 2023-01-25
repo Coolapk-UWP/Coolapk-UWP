@@ -75,6 +75,7 @@
                                             x:Name="HeaderGrid"
                                             Grid.Row="1"
                                             Height="{TemplateBinding HeaderHeight}"
+                                            Margin="1,0"
                                             Background="{TemplateBinding HeaderBackground}"
                                             BorderThickness="1"
                                             CornerRadius="{ThemeResource OverlayCornerRadius}">

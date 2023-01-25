@@ -162,7 +162,7 @@ namespace CoolapkUWP.Helpers
         {
             const string name = "X-Dark-Mode";
             _ = headers.Remove(name);
-            headers.Add(name, await ThemeHelper.IsDarkThemeAsync() ? "1" : "0");
+            headers.Add(name, ThemeHelper.IsDarkTheme() ? "1" : "0");
         }
 
         private static void ReplaceAppToken(this HttpRequestHeaders headers)

@@ -9,7 +9,7 @@
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     mc:Ignorable="d">
     <ResourceDictionary.MergedDictionaries>
-        <templates:Feeds />
+        <templates:FeedsTemplates />
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate x:Key="SimpleNotificationCardTemplate">

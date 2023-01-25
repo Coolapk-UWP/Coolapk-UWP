@@ -12,9 +12,9 @@ using Windows.UI.Xaml.Input;
 
 namespace CoolapkUWP.Controls.DataTemplates
 {
-    public partial class Feeds : ResourceDictionary
+    public partial class FeedsTemplates : ResourceDictionary
     {
-        public Feeds() => InitializeComponent();
+        public FeedsTemplates() => InitializeComponent();
 
         private void OnTapped(object sender, TappedRoutedEventArgs e)
         {

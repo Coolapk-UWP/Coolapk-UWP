@@ -16,7 +16,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:SearchWord />
+                <templates:SearchWordTemplates />
                 <templates:IndexCardTemplates />
             </ResourceDictionary.MergedDictionaries>
             <templates:SearchTemplateSelector

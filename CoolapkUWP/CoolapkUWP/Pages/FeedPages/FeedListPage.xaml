@@ -18,7 +18,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:Feeds />
+                <templates:FeedsTemplates />
                 <templates:IndexCardTemplates />
                 <templates:OtherDatatemplates />
             </ResourceDictionary.MergedDictionaries>
@@ -926,9 +926,9 @@
                     <control:ShyHeaderListView
                         x:Name="ListView"
                         Grid.Row="1"
-                        Padding="7,4"
+                        Padding="7,3,7,4"
                         ui:ListViewExtensions.ItemContainerStretchDirection="Horizontal"
-                        HeaderHeight="41"
+                        HeaderHeight="42"
                         ItemContainerStyle="{StaticResource DefaultCardItemStyle}"
                         ItemTemplateSelector="{StaticResource CardTemplateSelector}"
                         ShowsScrollingPlaceholders="False"

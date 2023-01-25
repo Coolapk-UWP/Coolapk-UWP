@@ -13,8 +13,8 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:Feeds />
-                <templates:SearchWord />
+                <templates:FeedsTemplates />
+                <templates:SearchWordTemplates />
                 <templates:IndexCardTemplates />
                 <templates:OtherDatatemplates />
             </ResourceDictionary.MergedDictionaries>

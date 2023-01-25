@@ -22,15 +22,15 @@ namespace CoolapkUWP.Common
 
         public ScrollProgressProvider()
         {
-            propSet = Window.Current.Compositor.CreatePropertySet();
+            propSet = Window.Current?.Compositor?.CreatePropertySet();
             propSet.InsertScalar("progress", 0f);
             propSet.InsertScalar("threshold", 0f);
             propSet.InsertScalar("delayprogress", -1f);
 
-            progressBind = Window.Current.Compositor.CreateExpressionAnimation("clamp(prop.progress, 0f, 1f)");
+            progressBind = Window.Current?.Compositor?.CreateExpressionAnimation("clamp(prop.progress, 0f, 1f)");
             progressBind.SetReferenceParameter("prop", propSet);
 
-            thresholdBind = Window.Current.Compositor.CreateExpressionAnimation("max(prop.threshold, 0f)");
+            thresholdBind = Window.Current?.Compositor?.CreateExpressionAnimation("max(prop.threshold, 0f)");
             thresholdBind.SetReferenceParameter("prop", propSet);
         }
 
@@ -194,7 +194,7 @@ namespace CoolapkUWP.Common
             {
                 scrollPropertySet = ElementCompositionPreview.GetScrollViewerManipulationPropertySet(sv);
 
-                ExpressionAnimation exp = Window.Current.Compositor.CreateExpressionAnimation($"(prop.delayprogress >= 0) ? prop.delayprogress : clamp(-sv.Translation.Y, 0f, prop.threshold) / prop.threshold");
+                ExpressionAnimation exp = Window.Current?.Compositor?.CreateExpressionAnimation($"(prop.delayprogress >= 0) ? prop.delayprogress : clamp(-sv.Translation.Y, 0f, prop.threshold) / prop.threshold");
                 exp.SetReferenceParameter("sv", scrollPropertySet);
                 exp.SetReferenceParameter("prop", propSet);
 
@@ -244,7 +244,7 @@ namespace CoolapkUWP.Common
 
         public CompositionPropertySet GetProgressPropertySet()
         {
-            CompositionPropertySet _propSet = Window.Current.Compositor.CreatePropertySet();
+            CompositionPropertySet _propSet = Window.Current?.Compositor?.CreatePropertySet();
             _propSet.InsertScalar("progress", (float)innerProgress);
             _propSet.InsertScalar("threshold", (float)Threshold);
             _propSet.StartAnimation("progress", progressBind);

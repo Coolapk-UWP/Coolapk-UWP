@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -148,15 +149,15 @@ namespace CoolapkUWP.Models.Images
                     case UISettingChangedType.LightMode:
                     case UISettingChangedType.DarkMode:
                         _ = DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                        {
+                            if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
                             {
-                                if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
+                                if (pic != null && pic.TryGetTarget(out BitmapImage _))
                                 {
-                                    if (pic != null && pic.TryGetTarget(out BitmapImage _))
-                                    {
-                                        Pic = ImageCacheHelper.NoPic;
-                                    }
+                                    Pic = ImageCacheHelper.NoPic;
                                 }
-                            });
+                            }
+                        });
                         break;
 
                     case UISettingChangedType.NoPicChanged:
@@ -192,21 +193,25 @@ namespace CoolapkUWP.Models.Images
                 Pic = bitmapImage;
                 if (Window.Current != null)
                 {
-                    IsLongPic =
-                        ((bitmapImage.PixelHeight * Window.Current.Bounds.Width) > bitmapImage.PixelWidth * Window.Current.Bounds.Height * 1.5)
-                        && bitmapImage.PixelHeight > bitmapImage.PixelWidth * 1.5;
-                    IsWidePic =
-                        ((bitmapImage.PixelWidth * Window.Current.Bounds.Height) > bitmapImage.PixelHeight * Window.Current.Bounds.Width * 1.5)
-                        && bitmapImage.PixelWidth > bitmapImage.PixelHeight * 1.5;
+                    double PixelWidth = bitmapImage.PixelWidth;
+                    double PixelHeight = bitmapImage.PixelHeight;
+                    IsLongPic = await Window.Current.Dispatcher.AwaitableRunAsync(
+                        () => ((PixelHeight * Window.Current.Bounds.Width) > PixelWidth * Window.Current.Bounds.Height * 1.5)
+                            && PixelHeight > PixelWidth * 1.5);
+                    IsWidePic = await Window.Current.Dispatcher.AwaitableRunAsync(
+                        () => ((PixelWidth * Window.Current.Bounds.Height) > PixelHeight * Window.Current.Bounds.Width * 1.5)
+                            && PixelWidth > PixelHeight * 1.5);
                 }
                 else
                 {
+                    double PixelWidth = bitmapImage.PixelWidth;
+                    double PixelHeight = bitmapImage.PixelHeight;
                     IsLongPic = await App.MainWindow.Dispatcher.AwaitableRunAsync(
-                        () => ((bitmapImage.PixelHeight * App.MainWindow.Bounds.Width) > bitmapImage.PixelWidth * App.MainWindow.Bounds.Height * 1.5)
-                            && bitmapImage.PixelHeight > bitmapImage.PixelWidth * 1.5);
+                        () => ((PixelHeight * App.MainWindow.Bounds.Width) > PixelWidth * App.MainWindow.Bounds.Height * 1.5)
+                            && PixelHeight > PixelWidth * 1.5);
                     IsWidePic = await App.MainWindow.Dispatcher.AwaitableRunAsync(
-                        () => ((bitmapImage.PixelWidth * Window.Current.Bounds.Height) > bitmapImage.PixelHeight * Window.Current.Bounds.Width * 1.5)
-                            && bitmapImage.PixelWidth > bitmapImage.PixelHeight * 1.5);
+                        () => ((PixelWidth * Window.Current.Bounds.Height) > PixelHeight * Window.Current.Bounds.Width * 1.5)
+                            && PixelWidth > PixelHeight * 1.5);
                 }
             }
             else
@@ -219,21 +224,25 @@ namespace CoolapkUWP.Models.Images
                     Pic = image;
                     if (Window.Current != null)
                     {
-                        IsLongPic =
-                            ((bitmapImage.PixelHeight * Window.Current.Bounds.Width) > bitmapImage.PixelWidth * Window.Current.Bounds.Height * 1.5)
-                            && bitmapImage.PixelHeight > bitmapImage.PixelWidth * 1.5;
-                        IsWidePic =
-                            ((bitmapImage.PixelWidth * Window.Current.Bounds.Height) > bitmapImage.PixelHeight * Window.Current.Bounds.Width * 1.5)
-                            && bitmapImage.PixelWidth > bitmapImage.PixelHeight * 1.5;
+                        double PixelWidth = image.PixelWidth;
+                        double PixelHeight = image.PixelHeight;
+                        IsLongPic = await Window.Current.Dispatcher.AwaitableRunAsync(
+                            () => ((PixelHeight * Window.Current.Bounds.Width) > PixelWidth * Window.Current.Bounds.Height * 1.5)
+                                && PixelHeight > PixelWidth * 1.5);
+                        IsWidePic = await Window.Current.Dispatcher.AwaitableRunAsync(
+                            () => ((PixelWidth * Window.Current.Bounds.Height) > PixelHeight * Window.Current.Bounds.Width * 1.5)
+                                && PixelWidth > PixelHeight * 1.5);
                     }
                     else if (App.MainWindow != null)
                     {
+                        double PixelWidth = image.PixelWidth;
+                        double PixelHeight = image.PixelHeight;
                         IsLongPic = await App.MainWindow.Dispatcher.AwaitableRunAsync(
-                            () => ((bitmapImage.PixelHeight * App.MainWindow.Bounds.Width) > bitmapImage.PixelWidth * App.MainWindow.Bounds.Height * 1.5)
-                                && bitmapImage.PixelHeight > bitmapImage.PixelWidth * 1.5);
+                            () => ((PixelHeight * App.MainWindow.Bounds.Width) > PixelWidth * App.MainWindow.Bounds.Height * 1.5)
+                                && PixelHeight > PixelWidth * 1.5);
                         IsWidePic = await App.MainWindow.Dispatcher.AwaitableRunAsync(
-                            () => ((bitmapImage.PixelWidth * Window.Current.Bounds.Height) > bitmapImage.PixelHeight * Window.Current.Bounds.Width * 1.5)
-                                && bitmapImage.PixelWidth > bitmapImage.PixelHeight * 1.5);
+                            () => ((PixelWidth * Window.Current.Bounds.Height) > PixelHeight * Window.Current.Bounds.Width * 1.5)
+                                && PixelWidth > PixelHeight * 1.5);
                     }
                 }
             }

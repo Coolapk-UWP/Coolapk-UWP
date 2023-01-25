@@ -62,7 +62,7 @@ namespace CoolapkUWP.Models.Feeds
 
             if (token.TryGetValue("message", out JToken message))
             {
-                Message = message.ToString();
+                Message = message.ToString().Replace("<a href=\"\">查看更多</a>", $"<a href=\"{Url}\">查看更多</a>");
             }
 
             if (token.TryGetValue("message_title", out JToken message_title))

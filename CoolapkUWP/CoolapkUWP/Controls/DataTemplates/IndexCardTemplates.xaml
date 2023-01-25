@@ -13,7 +13,7 @@
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     mc:Ignorable="d">
     <ResourceDictionary.MergedDictionaries>
-        <templates:Feeds />
+        <templates:FeedsTemplates />
         <templates:OtherDatatemplates />
     </ResourceDictionary.MergedDictionaries>
 

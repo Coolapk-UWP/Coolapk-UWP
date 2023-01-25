@@ -1,5 +1,5 @@
 ﻿<ResourceDictionary
-    x:Class="CoolapkUWP.Controls.DataTemplates.Pic"
+    x:Class="CoolapkUWP.Controls.DataTemplates.PicTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <DataTemplate x:Key="PicDefaultTemplate">

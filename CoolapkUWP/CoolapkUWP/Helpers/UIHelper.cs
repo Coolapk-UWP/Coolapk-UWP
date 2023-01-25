@@ -1,9 +1,11 @@
-﻿using CoolapkUWP.Pages;
+﻿using CoolapkUWP.Models.Images;
+using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.UI;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
@@ -27,7 +29,6 @@ namespace CoolapkUWP.Helpers
     {
         public const int Duration = 3000;
         public static bool IsShowingProgressBar, IsShowingMessage;
-        public static bool HasTitleBar => !CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar;
         public static bool HasStatusBar => ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
         private static readonly ObservableCollection<string> MessageList = new ObservableCollection<string>();
 
@@ -266,6 +267,28 @@ namespace CoolapkUWP.Helpers
             }
         }
 
+        public static async void ShowImage(ImageModel image)
+        {
+            CoreApplicationView View = CoreApplication.CreateNewView();
+            int ViewId = 0;
+            await View.ExecuteOnUIThreadAsync(() =>
+            {
+                Window window = Window.Current;
+                WindowHelper.TrackWindow(window);
+                ThemeHelper.Initialize();
+                Frame frame = new Frame();
+                frame.Navigate(typeof(ShowImagePage), image);
+                window.Content = frame;
+                window.Activate();
+                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+                ViewId = ApplicationView.GetForCurrentView().Id;
+            });
+            _ = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(ViewId);
+        }
+    }
+
+    internal static partial class UIHelper
+    {
         private static readonly ImmutableArray<string> routes = new string[]
         {
             "/page?",
@@ -370,7 +393,7 @@ namespace CoolapkUWP.Helpers
             }
             else if (str.IsFirst(i++))
             {
-                //ShowImage(new ImageModel(str, ImageType.SmallImage));
+                ShowImage(new ImageModel(str, ImageType.SmallImage));
             }
             else if (str.Contains("mp/user"))
             {

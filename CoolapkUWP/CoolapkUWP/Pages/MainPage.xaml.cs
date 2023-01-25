@@ -109,7 +109,7 @@ namespace CoolapkUWP.Pages
         {
             base.OnNavigatedTo(e);
             OnLoginChanged(string.Empty, true);
-            Window.Current.SetTitleBar(DragRegion);
+            Window.Current?.SetTitleBar(DragRegion);
             SettingsHelper.LoginChanged += OnLoginChanged;
             if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
             {

@@ -182,8 +182,8 @@
                     <controls:FeedShellListControl
                         x:Name="ListControl"
                         Grid.Row="1"
-                        Padding="7,4"
-                        HeaderHeight="41"
+                        Padding="7,3,7,4"
+                        HeaderHeight="42"
                         ItemSource="{Binding ItemSource, Mode=TwoWay}">
                         <controls:FeedShellListControl.Header>
                             <Grid x:Name="Pane2Grid" />

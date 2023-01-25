@@ -188,7 +188,7 @@ namespace CoolapkUWP.Controls
 
         private void TryStartAnimationWithScale(FrameworkElement newIndicator, FrameworkElement oldIndicator)
         {
-            Compositor compositor = Window.Current.Compositor;
+            Compositor compositor = Window.Current?.Compositor;
 
             Visual old_target = ElementCompositionPreview.GetElementVisual(oldIndicator);
             Visual new_target = ElementCompositionPreview.GetElementVisual(newIndicator);

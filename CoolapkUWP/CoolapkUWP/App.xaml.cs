@@ -38,8 +38,10 @@ namespace CoolapkUWP
         public App()
         {
             InitializeComponent();
+
             Suspending += OnSuspending;
             UnhandledException += Application_UnhandledException;
+
             if (ApiInformation.IsEnumNamedValuePresent("Windows.UI.Xaml.FocusVisualKind", "Reveal"))
             {
                 FocusVisualKind = AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Xbox" ? FocusVisualKind.Reveal : FocusVisualKind.HighVisibility;
@@ -58,6 +60,10 @@ namespace CoolapkUWP
             RegisterExceptionHandlingSynchronizationContext();
 
             MainWindow = Window.Current;
+            WindowHelper.TrackWindow(MainWindow);
+
+            ThemeHelper.Initialize();
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
 
             // 不要在窗口已包含内容时重复应用程序初始化，
             // 只需确保窗口处于活动状态
@@ -84,10 +90,8 @@ namespace CoolapkUWP
                     // 当导航堆栈尚未还原时，导航到第一页，
                     // 并通过将所需信息作为导航参数传入来配置
                     // 参数
-                    CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
                     rootFrame.Navigate(typeof(MainPage), e.Arguments);
                 }
-                ThemeHelper.Initialize();
                 // 确保当前窗口处于活动状态
                 MainWindow.Activate();
             }

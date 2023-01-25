@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:Feeds />
+                <templates:FeedsTemplates />
                 <templates:OtherDatatemplates />
             </ResourceDictionary.MergedDictionaries>
             <templates:CardTemplateSelector

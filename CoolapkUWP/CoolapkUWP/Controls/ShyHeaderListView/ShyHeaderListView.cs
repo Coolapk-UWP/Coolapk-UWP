@@ -330,7 +330,7 @@ namespace CoolapkUWP.Controls
             }
             if (HasGetElementVisual)
             {
-                _propSet = _propSet ?? Window.Current.Compositor.CreatePropertySet();
+                _propSet = _propSet ?? Window.Current?.Compositor?.CreatePropertySet();
                 _propSet.InsertScalar("height", (float)_topheight);
             }
             if (_scrollViewer.VerticalOffset >= _topheight || _topheight == 0)
@@ -353,10 +353,10 @@ namespace CoolapkUWP.Controls
                 Visual _headerVisual = ElementCompositionPreview.GetElementVisual(ListViewHeader);
                 CompositionPropertySet _manipulationPropertySet = ElementCompositionPreview.GetScrollViewerManipulationPropertySet(_scrollViewer);
 
-                _propSet = _propSet ?? Window.Current.Compositor.CreatePropertySet();
+                _propSet = _propSet ?? Window.Current?.Compositor?.CreatePropertySet();
                 _propSet.InsertScalar("height", (float)Math.Max(0, _topHeader.ActualHeight - HeaderMargin));
 
-                Compositor _compositor = Window.Current.Compositor;
+                Compositor _compositor = Window.Current?.Compositor;
                 ExpressionAnimation _headerAnimation = _compositor.CreateExpressionAnimation("_manipulationPropertySet.Translation.Y > -_propSet.height ? 0: -_propSet.height -_manipulationPropertySet.Translation.Y");
 
                 _headerAnimation.SetReferenceParameter("_propSet", _propSet);
