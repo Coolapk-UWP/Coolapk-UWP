@@ -220,7 +220,7 @@
                                 HorizontalAlignment="Left"
                                 CornerRadius="8">
                                 <Border.Background>
-                                    <ImageBrush ImageSource="{Binding Logo.Pic, Mode=OneWay}" />
+                                    <ImageBrush ImageSource="{Binding Logo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                                 </Border.Background>
                             </Border>
                             <control:StackPanel Grid.Column="1" Margin="8,0">
@@ -311,7 +311,7 @@
                                 HorizontalAlignment="Left"
                                 CornerRadius="8">
                                 <Border.Background>
-                                    <ImageBrush ImageSource="{Binding Logo.Pic, Mode=OneWay}" />
+                                    <ImageBrush ImageSource="{Binding Logo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                                 </Border.Background>
                             </Border>
                             <control:StackPanel Grid.Column="1" Margin="8,0">
@@ -438,7 +438,7 @@
                                     HorizontalAlignment="Left"
                                     CornerRadius="8">
                                     <Border.Background>
-                                        <ImageBrush ImageSource="{Binding Logo.Pic, Mode=OneWay}" />
+                                        <ImageBrush ImageSource="{Binding Logo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                                     </Border.Background>
                                 </Border>
                                 <control:StackPanel Grid.Column="1" Margin="8,0">

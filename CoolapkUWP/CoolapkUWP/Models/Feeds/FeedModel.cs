@@ -10,13 +10,13 @@ namespace CoolapkUWP.Models.Feeds
 
         internal enum FeedDisplayMode
         {
-            normal = 0,
-            notShowDyhName = 0x02,
-            isFirstPageFeed = 0x01,
-            notShowMessageTitle = 0x04
+            Normal = 0,
+            NotShowDyhName = 0x02,
+            IsFirstPageFeed = 0x01,
+            NotShowMessageTitle = 0x04
         }
 
-        public FeedModel(JObject token, FeedDisplayMode mode = FeedDisplayMode.normal) : base(token)
+        public FeedModel(JObject token, FeedDisplayMode mode = FeedDisplayMode.Normal) : base(token)
         {
             ShowLikes = !(EntityType == "forwardFeed");
             IsStickTop = token.TryGetValue("isStickTop", out JToken j) && int.Parse(j.ToString()) == 1;

@@ -108,7 +108,7 @@ namespace CoolapkUWP.Controls.DataTemplates
             UserControl UserControl = sender as UserControl;
             FrameworkElement StackPanel = UserControl.FindChild("BtnsPanel");
             double width = e is null ? UserControl.Width : e.NewSize.Width;
-            StackPanel?.SetValue(Grid.RowProperty, width > 600 ? 1 : 10);
+            StackPanel?.SetValue(Grid.RowProperty, width > 600 ? 1 : 20);
         }
 
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e) => (sender as GridView).SelectedIndex = -1;

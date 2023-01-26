@@ -51,9 +51,9 @@
             x:Name="HeaderControl"
             Title="{Binding Title}"
             Margin="18,0,0,0"
-            x:Load="{x:Bind Provider.IsShowTitle, Mode=OneWay}"
             FontSize="{StaticResource ContentControlFontSize}"
-            FontWeight="Normal">
+            FontWeight="Normal"
+            Visibility="{Binding IsShowTitle, Converter={StaticResource BoolToVisibilityConverter}}">
             <Button
                 x:Name="RefreshButton"
                 Margin="-8,0,0,0"

@@ -5,8 +5,8 @@ namespace CoolapkUWP.Helpers
     /// <summary> 程序支持的能从服务器中获取的数据的类型。 </summary>
     public enum LinkType
     {
-        Coolapk,
         ITHome,
+        Coolapk,
         Bilibili
     }
 

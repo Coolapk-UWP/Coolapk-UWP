@@ -25,17 +25,17 @@
                     x:Uid="/BrowserPage/OpenInBrowserButton"
                     Height="32"
                     VerticalAlignment="Center"
-                    x:Load="{x:Bind Provider.IsLoginPage, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                     Click="GotoSystemBrowserButton_Click"
-                    Style="{StaticResource TransparentButtonStyle}" />
+                    Style="{StaticResource TransparentButtonStyle}"
+                    Visibility="{Binding IsLoginPage, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
                 <Button
                     x:Name="TryLoginButton"
                     x:Uid="/BrowserPage/BackButton"
                     Height="32"
                     VerticalAlignment="Center"
-                    x:Load="{x:Bind Provider.IsLoginPage, Mode=OneWay}"
                     Click="TryLoginButton_Click"
-                    Style="{StaticResource TransparentButtonStyle}" />
+                    Style="{StaticResource TransparentButtonStyle}"
+                    Visibility="{Binding IsLoginPage, Converter={StaticResource BoolToVisibilityConverter}}" />
                 <Button
                     x:Name="RefreshButton"
                     Margin="-8,0,0,0"

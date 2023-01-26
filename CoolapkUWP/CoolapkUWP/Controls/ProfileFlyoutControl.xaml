@@ -69,8 +69,8 @@
                 Margin="-8,4,4,4"
                 contract5NotPresent:Content="&#xE72D;"
                 contract5Present:Content="&#xED14;"
-                x:Load="{x:Bind Provider.IsLogin, Mode=OneWay}"
-                Style="{StaticResource NavigationIconButtonNormalStyle}">
+                Style="{StaticResource NavigationIconButtonNormalStyle}"
+                Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Button.Flyout>
                     <Flyout>
                         <Flyout.FlyoutPresenterStyle>
@@ -90,17 +90,17 @@
                 x:Name="LoginButton"
                 Grid.Column="2"
                 Margin="-8,4,4,4"
-                x:Load="{x:Bind Provider.IsLogin, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                 Click="Button_Click"
                 Content="&#xE78B;"
                 Style="{StaticResource NavigationIconButtonNormalStyle}"
-                Tag="LoginButton" />
+                Tag="LoginButton"
+                Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
         </Grid>
         <Grid
             x:Name="ButtonGrid"
             Grid.Row="1"
             Margin="12,0,12,12"
-            x:Load="{x:Bind Provider.IsLogin, Mode=OneWay}">
+            Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />

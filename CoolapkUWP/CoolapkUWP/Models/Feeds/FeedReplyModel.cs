@@ -4,6 +4,7 @@ using CoolapkUWP.Models.Users;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
 
@@ -66,14 +67,14 @@ namespace CoolapkUWP.Models.Feeds
             }
         }
 
-        public bool ShowReplyRows { get; set; }
-        public ImageModel Pic { get; private set; }
+        public int ReplyRowsMore { get; private set; }
+        public int ReplyRowsCount { get; private set; }
+
         public string Dateline { get; private set; }
-        public new string Message { get; private set; }
-        public double ReplyRowsMore { get; private set; }
-        public double ReplyRowsCount { get; private set; }
-        public bool ShowReplyRowsMore => ReplyRowsMore > 0;
-        public List<SourceFeedReplyModel> ReplyRows { get; private set; }
+
+        public ImageModel Pic { get; private set; }
+
+        public ImmutableArray<SourceFeedReplyModel> ReplyRows { get; private set; } = ImmutableArray<SourceFeedReplyModel>.Empty;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -96,29 +97,27 @@ namespace CoolapkUWP.Models.Feeds
 
             if (token.TryGetValue("likenum", out JToken likenum))
             {
-                LikeNum = Convert.ToInt32(likenum.ToString());
+                LikeNum = likenum.ToObject<int>();
             }
 
             if (token.TryGetValue("replynum", out JToken replynum))
             {
-                ReplyNum = Convert.ToInt32(replynum.ToString());
+                ReplyNum = replynum.ToObject<int>();
             }
 
             if (token.TryGetValue("replyRowsMore", out JToken replyRowsMore))
             {
-                ReplyRowsMore = Convert.ToInt32(replyRowsMore.ToString());
+                ReplyRowsMore = replyRowsMore.ToObject<int>();
             }
 
             if (token.TryGetValue("replyRowsCount", out JToken replyRowsCount))
             {
-                ReplyRowsCount = Convert.ToInt32(replyRowsCount.ToString());
+                ReplyRowsCount = replyRowsCount.ToObject<int>();
             }
 
-            ShowReplyRows = ShowReplyRow && ReplyRowsCount > 0;
-
-            if (ShowReplyRows)
+            if (token.TryGetValue("replyRows", out JToken replyRows))
             {
-                ReplyRows = token["replyRows"].Select(item => new SourceFeedReplyModel((JObject)item)).ToList();
+                ReplyRows = replyRows.Select(item => new SourceFeedReplyModel((JObject)item)).ToImmutableArray();
             }
 
             if (!string.IsNullOrEmpty(PicUri))

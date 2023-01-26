@@ -11,14 +11,18 @@ namespace CoolapkUWP.Models.Feeds
     public class SourceFeedReplyModel : Entity
     {
         public int ID { get; private set; }
+        public int BlockStatus { get; private set; }
+
+        public bool IsFeedAuthor { get; private set; }
+
         public string Rurl { get; private set; }
         public string PicUri { get; private set; }
-        public string Message { get; private set; }
-        public int BlockStatus { get; private set; }
+        public string Message { get; protected set; }
         public string Rusername { get; private set; }
-        public bool IsFeedAuthor { get; private set; }
+
         public UserModel UserInfo { get; private set; }
         public UserAction UserAction { get; private set; }
+
         public ImmutableArray<ImageModel> PicArr { get; private set; } = ImmutableArray<ImageModel>.Empty;
 
         public SourceFeedReplyModel(JObject token) : base(token)

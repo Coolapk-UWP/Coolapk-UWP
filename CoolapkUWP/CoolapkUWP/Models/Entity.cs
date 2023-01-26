@@ -48,8 +48,8 @@ namespace CoolapkUWP.Models
         public override string ToString() => $"{EntityType} - {EntityID}";
     }
 
-    public class NullModel : Entity
+    public class NullEntity : Entity
     {
-        public NullModel(JObject o = null) : base(o) { }
+        public NullEntity(JObject token = null) : base(token) { }
     }
 }

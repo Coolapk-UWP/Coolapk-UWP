@@ -122,7 +122,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
                 <Ellipse.Fill>
-                    <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" />
+                    <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                 </Ellipse.Fill>
             </Ellipse>
             <Grid

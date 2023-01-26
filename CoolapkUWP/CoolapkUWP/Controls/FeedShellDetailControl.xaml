@@ -7,6 +7,7 @@
     xmlns:feeds="using:CoolapkUWP.Models.Feeds"
     xmlns:local="using:CoolapkUWP.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:Microsoft.UI.Xaml.Media"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     d:DataContext="{d:DesignInstance Type=feeds:FeedDetailModel}"
@@ -15,6 +16,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <templates:PicTemplates />
+                <templates:FeedsTemplates />
+                <templates:RelationRowsTemplates />
             </ResourceDictionary.MergedDictionaries>
             <converters:HTMLToTextConverter x:Key="HTMLToTextConverter" />
         </ResourceDictionary>
@@ -29,8 +32,141 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Grid x:Name="UserBar" Grid.Row="1">
+                <Button
+                    Height="40"
+                    Margin="0,0,0,4"
+                    Padding="4"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    Visibility="{Binding ShowTopicTitle, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            Grid.Column="0"
+                            Width="32"
+                            Height="32"
+                            Margin="0,0,8,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            CornerRadius="4">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding TopicLogo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                            </Border.Background>
+                        </Border>
+                        <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Text="{Binding TopicTitle}"
+                            TextTrimming="CharacterEllipsis"
+                            Visibility="{Binding TopicTitle, Converter={StaticResource StringVisibilityConverter}}" />
+                        <FontIcon
+                            Grid.Column="2"
+                            Margin="8,0"
+                            HorizontalAlignment="Right"
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            FontSize="16"
+                            Glyph="&#xE72A;"
+                            Visibility="{Binding TopicUrl, Converter={StaticResource StringVisibilityConverter}}" />
+                    </Grid>
+                </Button>
+                <Button
+                    Grid.Row="1"
+                    Height="40"
+                    Margin="0,0,0,4"
+                    Padding="4"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    Visibility="{Binding ShowDyhName, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            Grid.Column="0"
+                            Width="32"
+                            Height="32"
+                            Margin="0,0,8,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            CornerRadius="4">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding DyhLogo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                            </Border.Background>
+                        </Border>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Text="{Binding DyhName}"
+                                TextTrimming="CharacterEllipsis"
+                                Visibility="{Binding DyhName, Converter={StaticResource StringVisibilityConverter}}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                FontSize="12"
+                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                Text="{Binding DyhSubTitle}"
+                                TextTrimming="CharacterEllipsis"
+                                Visibility="{Binding DyhSubTitle, Converter={StaticResource StringVisibilityConverter}}" />
+                        </Grid>
+                        <FontIcon
+                            Grid.Column="2"
+                            Margin="8,0"
+                            HorizontalAlignment="Right"
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            FontSize="16"
+                            Glyph="&#xE72A;"
+                            Visibility="{Binding DyhUrl, Converter={StaticResource StringVisibilityConverter}}" />
+                    </Grid>
+                </Button>
+                <Grid
+                    x:Name="FeedArticleTitle"
+                    Grid.Row="2"
+                    Margin="0,0,0,4"
+                    CornerRadius="8"
+                    Visibility="{Binding IsFeedArticle, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
+                    <Image
+                        x:Name="MessageCover"
+                        Source="{Binding MessageCover.Pic, Mode=OneWay}"
+                        Stretch="UniformToFill"
+                        Tag="{Binding MessageCover}"
+                        Visibility="{Binding MessageCover.Uri, Converter={StaticResource StringVisibilityConverter}}" />
+                    <Border
+                        VerticalAlignment="Bottom"
+                        Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                        CornerRadius="0,0,8,8">
+                        <TextBlock
+                            Margin="8,4"
+                            FontSize="20"
+                            IsTextSelectionEnabled="True"
+                            Text="{Binding MessageTitle, Mode=OneWay}"
+                            TextWrapping="Wrap" />
+                    </Border>
+                </Grid>
+                <Grid x:Name="UserBar" Grid.Row="3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -66,11 +202,16 @@
                                 x:Name="DateLineTxb"
                                 Margin="0,0,5,0"
                                 Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                IsTextSelectionEnabled="True"
                                 Text="{Binding Dateline}" />
-                            <TextBlock Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{Binding Info}" />
+                            <TextBlock
+                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                IsTextSelectionEnabled="True"
+                                Text="{Binding Info}" />
                             <TextBlock
                                 Margin="5,0,0,0"
                                 Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                IsTextSelectionEnabled="True"
                                 Text="{Binding DeviceTitle}"
                                 Visibility="{Binding DeviceTitle, Converter={StaticResource StringVisibilityConverter}}" />
                         </StackPanel>
@@ -100,25 +241,26 @@
                 </Grid>
                 <local:TextBlockEx
                     x:Name="Message"
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Margin="4"
                     IsTextSelectionEnabled="True"
                     Text="{Binding Message}"
                     Visibility="{Binding MessageRawOutput, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true'}" />
                 <local:TextBlockEx
                     x:Name="ArticleMessage"
-                    Grid.Row="3"
+                    Grid.Row="5"
                     Margin="4"
                     IsTextSelectionEnabled="True"
                     Text="{Binding MessageRawOutput}"
                     Visibility="{Binding MessageRawOutput, Converter={StaticResource StringVisibilityConverter}}" />
                 <Grid
-                    Grid.Row="4"
+                    Grid.Row="6"
                     MinHeight="0"
-                    Margin="4,8,4,4"
-                    Padding="0"
+                    Margin="4"
                     Visibility="{Binding MessageRawOutput, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true'}">
                     <GridView
+                        MinHeight="0"
+                        Padding="0"
                         HorizontalContentAlignment="Left"
                         ItemTemplate="{StaticResource PicDefaultTemplate}"
                         ItemsSource="{Binding PicArr}"
@@ -132,6 +274,114 @@
                         </GridView.ItemsPanel>
                     </GridView>
                 </Grid>
+                <Border
+                    Grid.Row="7"
+                    HorizontalAlignment="Stretch"
+                    Visibility="{Binding ShowSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
+                    <local:WebViewContentControl
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        ContentCornerRadius="8"
+                        ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
+                        DataContext="{Binding SourceFeed}" />
+                </Border>
+                <Grid
+                    Grid.Row="8"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Visibility="{Binding ExtraTitle, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="{Binding ExtraPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                    </Grid.Background>
+                    <Grid Padding="8" Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                        <Grid.Background>
+                            <media:AcrylicBrush
+                                BackgroundSource="Backdrop"
+                                FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintOpacity="1" />
+                        </Grid.Background>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            Width="56"
+                            Height="56"
+                            CornerRadius="8"
+                            Visibility="{Binding ExtraPic.Uri, Converter={StaticResource StringVisibilityConverter}}">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding ExtraPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                            </Border.Background>
+                        </Border>
+                        <Border
+                            Width="56"
+                            Height="56"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Visibility="{Binding ExtraPic.Uri, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true'}">
+                            <FontIcon
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                Glyph="&#xE71B;" />
+                        </Border>
+                        <StackPanel
+                            Grid.Column="1"
+                            Margin="8,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+                            <TextBlock
+                                Foreground="White"
+                                MaxLines="2"
+                                Text="{Binding ExtraTitle}"
+                                TextTrimming="WordEllipsis"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                Foreground="LightGray"
+                                Text="{Binding ExtraSubtitle}"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Grid>
+                    <Grid Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <local:WebViewContentControl
+                            ContentCornerRadius="8"
+                            ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
+                            DataContext="{Binding LinkSourceFeed}">
+                            <local:WebViewContentControl.Background>
+                                <media:AcrylicBrush
+                                    BackgroundSource="Backdrop"
+                                    FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                    TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                                    TintOpacity="1" />
+                            </local:WebViewContentControl.Background>
+                        </local:WebViewContentControl>
+                        <muxc:ProgressRing Visibility="{Binding LinkSourceFeed.Succeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
+                    </Grid>
+                </Grid>
+                <muxc:ItemsRepeaterScrollHost
+                    Grid.Row="9"
+                    Margin="2,0"
+                    Visibility="{Binding RelationRows, Converter={StaticResource CollectionVisibilityConverter}, FallbackValue='Collapsed'}">
+                    <ScrollViewer
+                        Padding="0,4"
+                        HorizontalScrollBarVisibility="Hidden"
+                        HorizontalScrollMode="Auto"
+                        VerticalScrollMode="Disabled">
+                        <muxc:ItemsRepeater
+                            HorizontalAlignment="Stretch"
+                            ItemTemplate="{StaticResource RelationRowsItemTemplate}"
+                            ItemsSource="{Binding RelationRows}">
+                            <muxc:ItemsRepeater.Layout>
+                                <muxc:StackLayout Orientation="Horizontal" Spacing="6" />
+                            </muxc:ItemsRepeater.Layout>
+                        </muxc:ItemsRepeater>
+                    </ScrollViewer>
+                </muxc:ItemsRepeaterScrollHost>
             </Grid>
         </UserControl>
     </Grid>

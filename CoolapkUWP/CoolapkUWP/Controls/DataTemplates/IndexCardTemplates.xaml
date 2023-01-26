@@ -45,7 +45,7 @@
             Tapped="Grid_Tapped">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock
                 x:Name="TitleText"
@@ -529,7 +529,7 @@
             Tag="{Binding}"
             Tapped="Grid_Tapped">
             <Border.Background>
-                <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="Fill" />
+                <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
             </Border.Background>
             <StackPanel Padding="4" CornerRadius="8">
                 <StackPanel.Background>
@@ -590,7 +590,7 @@
                     Margin="8"
                     HorizontalAlignment="Center">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" />
+                        <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                     </Ellipse.Fill>
                 </Ellipse>
                 <TextBlock

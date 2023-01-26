@@ -148,7 +148,7 @@ namespace CoolapkUWP.Controls.DataTemplates
             switch (json.Value<string>("entityType"))
             {
                 case "feed":
-                case "discovery": return new FeedModel(json, isHotFeedPage ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
+                case "discovery": return new FeedModel(json, isHotFeedPage ? FeedDisplayMode.IsFirstPageFeed : FeedDisplayMode.Normal);
                 case "user": return new UserModel(json);
                 case "topic": return new TopicModel(json);
                 case "history": return new HistoryModel(json);
@@ -159,7 +159,7 @@ namespace CoolapkUWP.Controls.DataTemplates
                     {
                         switch (entityTemplate.ToString())
                         {
-                            case "feed": return new FeedModel(json, isHotFeedPage ? FeedDisplayMode.isFirstPageFeed : FeedDisplayMode.normal);
+                            case "feed": return new FeedModel(json, isHotFeedPage ? FeedDisplayMode.IsFirstPageFeed : FeedDisplayMode.Normal);
                             case "imageSquareScrollCard":
                             case "iconScrollCard":
                             case "iconGridCard":

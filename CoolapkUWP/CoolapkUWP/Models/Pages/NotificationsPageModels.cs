@@ -164,7 +164,7 @@ namespace CoolapkUWP.Models.Pages
     {
         public string Title { get; private set; }
 
-        public FeedModel FeedDetail { get; private set; }
+        public SourceFeedModel FeedDetail { get; private set; }
 
         public LikeNotificationModel(JObject token) : base(token)
         {
@@ -227,7 +227,7 @@ namespace CoolapkUWP.Models.Pages
                 Dateline += " [仅自己可见]";
             }
 
-            FeedDetail = new FeedModel(token) { ShowButtons = false };
+            FeedDetail = new SourceFeedModel(token);
         }
 
         public override string ToString() => Title;

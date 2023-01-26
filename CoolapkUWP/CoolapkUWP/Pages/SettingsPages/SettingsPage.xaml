@@ -54,7 +54,7 @@
                 <controls:SettingsGroup
                     x:Name="AccountSettingsHeader"
                     x:Uid="/SettingsPage/AccountSettingsHeader"
-                    x:Load="{x:Bind Provider.IsLogin, Mode=OneWay}">
+                    Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}}">
                     <controls:SettingButton Click="Button_Click" Tag="AccountSetting">
                         <controls:Setting x:Uid="/SettingsPage/AccountSettings" Icon="&#xEF58;" />
                     </controls:SettingButton>
@@ -125,21 +125,21 @@
                                             x:Name="CheckingUpdateRing"
                                             Width="24"
                                             Height="24"
-                                            x:Load="{x:Bind Provider.CheckingUpdate, Mode=OneWay}" />
+                                            Visibility="{Binding CheckingUpdate, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <TextBlock
                                             x:Name="CheckingUpdateText"
                                             x:Uid="/SettingsPage/CheckingUpdates"
                                             VerticalAlignment="Center"
-                                            x:Load="{x:Bind Provider.CheckingUpdate, Mode=OneWay}"
                                             FontWeight="SemiBold"
-                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Visibility="{Binding CheckingUpdate, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <Button
                                             x:Name="UpdateButton"
                                             x:Uid="/SettingsPage/CheckUpdates"
                                             HorizontalAlignment="Right"
-                                            x:Load="{x:Bind Provider.CheckingUpdate, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                                             Click="Button_Click"
-                                            Tag="CheckUpdate" />
+                                            Tag="CheckUpdate"
+                                            Visibility="{Binding CheckingUpdate, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
                                     </controls:StackPanel>
                                 </controls:Setting.ActionContent>
                             </controls:Setting>

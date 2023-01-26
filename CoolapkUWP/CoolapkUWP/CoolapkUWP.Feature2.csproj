@@ -156,6 +156,9 @@
     <Compile Include="Controls\DataTemplates\PicTemplates.xaml.cs">
       <DependentUpon>PicTemplates.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DataTemplates\RelationRowsTemplates.xaml.cs">
+      <DependentUpon>RelationRowsTemplates.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DataTemplates\SearchWordTemplates.xaml.cs">
       <DependentUpon>SearchWordTemplates.xaml</DependentUpon>
     </Compile>
@@ -217,6 +220,7 @@
     <Compile Include="Models\Feeds\FeedModel.cs" />
     <Compile Include="Models\Feeds\FeedModelBase.cs" />
     <Compile Include="Models\Feeds\FeedReplyModel.cs" />
+    <Compile Include="Models\Feeds\LinkFeedModel.cs" />
     <Compile Include="Models\Feeds\SourceFeedModel.cs" />
     <Compile Include="Models\Feeds\SourceFeedReplyModel.cs" />
     <Compile Include="Models\HistoryModel.cs" />
@@ -232,6 +236,7 @@
     <Compile Include="Models\Update\UpdateInfo.cs" />
     <Compile Include="Models\Upload\UploadFileFragment.cs" />
     <Compile Include="Models\Users\ContactModel.cs" />
+    <Compile Include="Models\Users\LinkUserModel.cs" />
     <Compile Include="Models\Users\UserAction.cs" />
     <Compile Include="Models\Users\UserModel.cs" />
     <Compile Include="Pages\BrowserPages\HTMLPage.xaml.cs">
@@ -962,6 +967,10 @@
     <Page Include="Controls\DataTemplates\PicTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DataTemplates\RelationRowsTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\DataTemplates\SearchWordTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>

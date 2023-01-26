@@ -471,7 +471,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
             {
                 foreach (Entity item in items)
                 {
-                    if (item is NullModel) { continue; }
+                    if (item is NullEntity) { continue; }
                     Add(item);
                 }
             }

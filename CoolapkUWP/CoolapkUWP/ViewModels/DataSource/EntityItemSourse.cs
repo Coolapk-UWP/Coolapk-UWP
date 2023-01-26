@@ -29,8 +29,7 @@ namespace CoolapkUWP.ViewModels.DataSource
             {
                 foreach (Entity item in items)
                 {
-                    if (item is NullModel) { continue; }
-                    Add(item);
+                    if (!(item is NullEntity)) { Add(item); }
                 }
             }
         }

@@ -1,0 +1,51 @@
+﻿<ResourceDictionary
+    x:Class="CoolapkUWP.Controls.DataTemplates.RelationRowsTemplates"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CoolapkUWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <DataTemplate x:Key="RelationRowsItemTemplate">
+        <Button
+            MinHeight="0"
+            Padding="0"
+            VerticalAlignment="Center"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            Tag="{Binding Url}">
+            <Grid Margin="4,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border
+                    Width="20"
+                    Height="20"
+                    Margin="0,0,4,0"
+                    CornerRadius="4">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding Logo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                    </Border.Background>
+                </Border>
+                <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Text="{Binding Title}" />
+            </Grid>
+        </Button>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ReplyRowsItemTemplate">
+        <Grid BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="0,0,0,1">
+            <controls:TextBlockEx
+                Margin="4"
+                VerticalAlignment="Center"
+                Text="{Binding Message}" />
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

@@ -78,7 +78,7 @@ namespace CoolapkUWP.Controls
             if (isStretch)
             {
                 Rect rcChild = new Rect(0, 0, arrangeSize.Width, arrangeSize.Height);
-                UIElement child = children[0];
+                UIElement child = children.FirstOrDefault();
                 child?.Arrange(rcChild);
             }
             else
@@ -93,14 +93,14 @@ namespace CoolapkUWP.Controls
                     {
                         double padding = leftPadding - rightPadding;
                         Rect rcChild = new Rect(padding, 0, arrangeSize.Width - padding, arrangeSize.Height);
-                        UIElement child = children[0];
+                        UIElement child = children.FirstOrDefault();
                         child?.Arrange(rcChild);
                     }
                     else
                     {
                         double padding = rightPadding - leftPadding;
                         Rect rcChild = new Rect(0, 0, arrangeSize.Width - padding, arrangeSize.Height);
-                        UIElement child = children[0];
+                        UIElement child = children.FirstOrDefault();
                         child?.Arrange(rcChild);
                     }
                 }
@@ -112,14 +112,14 @@ namespace CoolapkUWP.Controls
                     {
                         double padding = topPadding - buttonPadding;
                         Rect rcChild = new Rect(0, padding, arrangeSize.Width, arrangeSize.Height - padding);
-                        UIElement child = children[0];
+                        UIElement child = children.FirstOrDefault();
                         child?.Arrange(rcChild);
                     }
                     else
                     {
                         double padding = buttonPadding - topPadding;
                         Rect rcChild = new Rect(0, 0, arrangeSize.Width, arrangeSize.Height - padding);
-                        UIElement child = children[0];
+                        UIElement child = children.FirstOrDefault();
                         child?.Arrange(rcChild);
                     }
                 }

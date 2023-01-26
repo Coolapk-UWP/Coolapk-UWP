@@ -7,11 +7,22 @@ namespace CoolapkUWP.Models.Feeds
 {
     public class FeedDetailModel : FeedModelBase
     {
-        public string Title { get; private set; }
+        public bool ShowDyhName { get; private set; }
         public bool IsAnswerFeed { get; private set; }
         public bool IsFeedArticle { get; private set; }
+        public bool ShowTopicTitle { get; private set; }
+
+        public string Title { get; private set; }
+        public string DyhUrl { get; private set; }
+        public string DyhName { get; private set; }
+        public string TopicUrl { get; private set; }
+        public string TopicTitle { get; private set; }
+        public string DyhSubTitle { get; private set; }
         public string QuestionUrl { get; private set; }
         public string MessageRawOutput { get; private set; }
+
+        public ImageModel DyhLogo { get; private set; }
+        public ImageModel TopicLogo { get; private set; }
         public ImageModel MessageCover { get; private set; }
 
         public FeedDetailModel(JObject token) : base(token)
@@ -19,6 +30,50 @@ namespace CoolapkUWP.Models.Feeds
             if (token.TryGetValue("title", out JToken title))
             {
                 Title = title.ToString();
+            }
+
+            if (token.TryGetValue("targetRow", out JToken v))
+            {
+                ShowDyhName = true;
+
+                JObject targetRow = (JObject)v;
+
+                if (targetRow.TryGetValue("logo", out JToken logo))
+                {
+                    DyhLogo = new ImageModel(logo.ToString(), ImageType.Icon);
+                }
+
+                if (targetRow.TryGetValue("title", out JToken dtitle))
+                {
+                    DyhName = dtitle.ToString();
+                }
+
+                if (targetRow.TryGetValue("url", out JToken url))
+                {
+                    DyhUrl = url.ToString();
+                }
+
+                if (targetRow.TryGetValue("subTitle", out JToken subTitle))
+                {
+                    DyhSubTitle = subTitle.ToString();
+                }
+            }
+
+            if (token.TryGetValue("ttitle", out JToken ttitle) && !ShowDyhName && !string.IsNullOrEmpty(ttitle.ToString()))
+            {
+                ShowTopicTitle = true;
+
+                TopicTitle = ttitle.ToString();
+
+                if (token.TryGetValue("turl", out JToken turl))
+                {
+                    TopicUrl = turl.ToString();
+                }
+
+                if (token.TryGetValue("tpic", out JToken tpic))
+                {
+                    TopicLogo = new ImageModel(tpic.ToString(), ImageType.Icon);
+                }
             }
 
             if (EntityType != "article")

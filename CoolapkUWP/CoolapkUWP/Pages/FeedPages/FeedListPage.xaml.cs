@@ -1,6 +1,4 @@
 ﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Pages.BrowserPages;
-using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.DataSource;
 using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.UI;

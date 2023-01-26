@@ -7,10 +7,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:Microsoft.UI.Xaml.Media"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <ResourceDictionary.MergedDictionaries>
         <local:PicTemplates />
+        <local:RelationRowsTemplates />
     </ResourceDictionary.MergedDictionaries>
 
     <converters:HTMLToTextConverter x:Key="HTMLToTextConverter" />
@@ -18,6 +20,7 @@
     <DataTemplate x:Key="FeedDefaultTemplate">
         <UserControl
             x:Name="Root"
+            Background="{StaticResource SystemControlTransparentBrush}"
             Loaded="UserControl_Loaded"
             SizeChanged="UserControl_SizeChanged"
             Tag="{Binding Url}"
@@ -91,6 +94,11 @@
                 Background="{ThemeResource SystemControlTransparentBrush}"
                 ContextFlyout="{StaticResource MoreFlyout}">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -231,16 +239,26 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE10C;" />
                     </Button>
                 </controls:StackPanel>
+                <TextBlock
+                    x:Name="MessageTitle"
+                    Grid.Row="3"
+                    Margin="4"
+                    FontSize="16"
+                    FontWeight="Black"
+                    IsTextSelectionEnabled="{Binding IsCopyEnabled}"
+                    Text="{Binding MessageTitle}"
+                    TextWrapping="Wrap"
+                    Visibility="{Binding MessageTitle, Converter={StaticResource StringVisibilityConverter}}" />
                 <controls:TextBlockEx
                     x:Name="Message"
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Margin="4"
                     IsTextSelectionEnabled="{Binding IsCopyEnabled}"
                     Text="{Binding Message}" />
                 <GridView
-                    Grid.Row="4"
+                    Grid.Row="5"
                     MinHeight="0"
-                    Margin="4,8,4,4"
+                    Margin="4"
                     Padding="0"
                     HorizontalContentAlignment="Left"
                     ItemTemplate="{StaticResource PicDefaultTemplate}"
@@ -254,6 +272,141 @@
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                 </GridView>
+                <Border
+                    Grid.Row="6"
+                    HorizontalAlignment="Stretch"
+                    Visibility="{Binding ShowSourceFeed, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <controls:WebViewContentControl
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        ContentCornerRadius="8"
+                        ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
+                        DataContext="{Binding SourceFeed}" />
+                </Border>
+                <Grid
+                    Grid.Row="7"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Visibility="{Binding ExtraTitle, Converter={StaticResource StringVisibilityConverter}}">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="{Binding ExtraPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                    </Grid.Background>
+                    <Grid Padding="8" Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                        <Grid.Background>
+                            <media:AcrylicBrush
+                                BackgroundSource="Backdrop"
+                                FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintOpacity="1" />
+                        </Grid.Background>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            Width="56"
+                            Height="56"
+                            CornerRadius="8"
+                            Visibility="{Binding ExtraPic.Uri, Converter={StaticResource StringVisibilityConverter}}">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding ExtraPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                            </Border.Background>
+                        </Border>
+                        <Border
+                            Width="56"
+                            Height="56"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Visibility="{Binding ExtraPic.Uri, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true'}">
+                            <FontIcon
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                Glyph="&#xE71B;" />
+                        </Border>
+                        <StackPanel
+                            Grid.Column="1"
+                            Margin="8,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+                            <TextBlock
+                                Foreground="White"
+                                MaxLines="2"
+                                Text="{Binding ExtraTitle}"
+                                TextTrimming="WordEllipsis"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                Foreground="LightGray"
+                                Text="{Binding ExtraSubtitle}"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Grid>
+                    <Grid Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <controls:WebViewContentControl
+                            ContentCornerRadius="8"
+                            ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
+                            DataContext="{Binding LinkSourceFeed}">
+                            <controls:WebViewContentControl.Background>
+                                <media:AcrylicBrush
+                                    BackgroundSource="Backdrop"
+                                    FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                    TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                                    TintOpacity="1" />
+                            </controls:WebViewContentControl.Background>
+                        </controls:WebViewContentControl>
+                        <muxc:ProgressRing Visibility="{Binding LinkSourceFeed.Succeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
+                    </Grid>
+                </Grid>
+                <muxc:ItemsRepeaterScrollHost
+                    Grid.Row="8"
+                    Margin="2,0"
+                    Visibility="{Binding RelationRows, Converter={StaticResource CollectionVisibilityConverter}}">
+                    <ScrollViewer
+                        Padding="0,4"
+                        HorizontalScrollBarVisibility="Hidden"
+                        HorizontalScrollMode="Auto"
+                        VerticalScrollMode="Disabled">
+                        <muxc:ItemsRepeater
+                            HorizontalAlignment="Stretch"
+                            ItemTemplate="{StaticResource RelationRowsItemTemplate}"
+                            ItemsSource="{Binding RelationRows}">
+                            <muxc:ItemsRepeater.Layout>
+                                <muxc:StackLayout Orientation="Horizontal" Spacing="6" />
+                            </muxc:ItemsRepeater.Layout>
+                        </muxc:ItemsRepeater>
+                    </ScrollViewer>
+                </muxc:ItemsRepeaterScrollHost>
+                <StackPanel
+                    x:Name="ReplyRows"
+                    Grid.Row="9"
+                    Margin="0,4"
+                    Padding="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    CornerRadius="8"
+                    Visibility="{Binding ReplyRows, Converter={StaticResource CollectionVisibilityConverter}}">
+                    <muxc:ItemsRepeater
+                        HorizontalAlignment="Stretch"
+                        ItemTemplate="{StaticResource ReplyRowsItemTemplate}"
+                        ItemsSource="{Binding ReplyRows}">
+                        <muxc:ItemsRepeater.Layout>
+                            <muxc:StackLayout />
+                        </muxc:ItemsRepeater.Layout>
+                    </muxc:ItemsRepeater>
+                    <TextBlock
+                        Margin="4"
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
+                        <Run x:Uid="/Feed/SeeAll" />
+                        <Run Text="(" />
+                        <Run Text="{Binding ReplyNum}" />
+                        <Run Text=")" />
+                    </TextBlock>
+                </StackPanel>
             </Grid>
         </UserControl>
     </DataTemplate>
@@ -337,7 +490,7 @@
                 <GridView
                     Grid.Row="2"
                     MinHeight="0"
-                    Margin="4,8,4,4"
+                    Margin="4"
                     Padding="0"
                     HorizontalContentAlignment="Left"
                     ItemTemplate="{StaticResource PicDefaultTemplate}"
@@ -543,7 +696,7 @@
                 <GridView
                     Grid.Row="4"
                     MinHeight="0"
-                    Margin="4,8,4,4"
+                    Margin="4"
                     Padding="0"
                     HorizontalContentAlignment="Left"
                     ItemTemplate="{StaticResource PicDefaultTemplate}"
@@ -557,38 +710,33 @@
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                 </GridView>
-                <ListView
+                <StackPanel
                     x:Name="ReplyRows"
                     Grid.Row="5"
-                    Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    Margin="2,0,4,8"
-                    ItemContainerStyle="{StaticResource DefaultCardItemStyle}"
-                    ItemsSource="{Binding ReplyRows}"
-                    Style="{StaticResource VerticalListViewStyle}"
-                    Visibility="{Binding ShowReplyRows, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <controls:TextBlockEx
-                                Margin="4"
-                                VerticalAlignment="Center"
-                                Text="{Binding Message}" />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                    <ListView.Footer>
-                        <ListViewItem Style="{StaticResource DefaultCardItemStyle}">
-                            <TextBlock
-                                Margin="4"
-                                VerticalAlignment="Center"
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
-                                <Run x:Uid="/Feed/SeeAll" />
-                                <Run Text="(" />
-                                <Run Text="{Binding ReplyNum}" />
-                                <Run Text=")" />
-                            </TextBlock>
-                        </ListViewItem>
-                    </ListView.Footer>
-                </ListView>
+                    Margin="0,4"
+                    Padding="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    CornerRadius="8"
+                    Visibility="{Binding ReplyRows, Converter={StaticResource CollectionVisibilityConverter}}">
+                    <muxc:ItemsRepeater
+                        HorizontalAlignment="Stretch"
+                        ItemTemplate="{StaticResource ReplyRowsItemTemplate}"
+                        ItemsSource="{Binding ReplyRows}">
+                        <muxc:ItemsRepeater.Layout>
+                            <muxc:StackLayout />
+                        </muxc:ItemsRepeater.Layout>
+                    </muxc:ItemsRepeater>
+                    <TextBlock
+                        Margin="4"
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
+                        <Run x:Uid="/Feed/SeeAll" />
+                        <Run Text="(" />
+                        <Run Text="{Binding ReplyNum}" />
+                        <Run Text=")" />
+                    </TextBlock>
+                </StackPanel>
             </Grid>
         </UserControl>
     </DataTemplate>
