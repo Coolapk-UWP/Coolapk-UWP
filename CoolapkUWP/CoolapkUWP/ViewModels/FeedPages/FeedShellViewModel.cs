@@ -78,7 +78,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         {
             if (string.IsNullOrEmpty(id)) { throw new ArgumentException(nameof(id)); }
             FeedDetailModel detail = await GetFeedDetailAsync(id);
-            return detail != null ? new FeedDetailViewModel(id) : null;
+            return detail != null ? detail.IsQuestionFeed ? new QuestionViewModel(id) : (FeedShellViewModel)new FeedDetailViewModel(id) : null;
         }
 
         protected static async Task<FeedDetailModel> GetFeedDetailAsync(string id)
@@ -140,6 +140,60 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 {
                     Header = "转发",
                     ItemSource = ShareItemSourse
+                });
+                base.ItemSource = ItemSource;
+            }
+            await ReplyItemSourse?.Refresh(reset);
+        }
+    }
+
+    public class QuestionViewModel : FeedShellViewModel
+    {
+        public QuestionItemSourse ReplyItemSourse { get; private set; }
+        public QuestionItemSourse LikeItemSourse { get; private set; }
+        public QuestionItemSourse DatelineItemSourse { get; private set; }
+
+        internal QuestionViewModel(string id) : base(id) { }
+
+        public override async Task Refresh(bool reset = false)
+        {
+            if (FeedDetail == null || reset)
+            {
+                FeedDetail = await GetFeedDetailAsync(ID);
+                List<ShyHeaderItem> ItemSource = new List<ShyHeaderItem>();
+                Title = FeedDetail.Title;
+                if (ReplyItemSourse == null || ReplyItemSourse.ID != ID)
+                {
+                    ReplyItemSourse = new QuestionItemSourse(ID, "reply");
+                    ReplyItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
+                    ReplyItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
+                }
+                ItemSource.Add(new ShyHeaderItem
+                {
+                    Header = "热度排序",
+                    ItemSource = ReplyItemSourse
+                });
+                if (LikeItemSourse == null || LikeItemSourse.ID != ID)
+                {
+                    LikeItemSourse = new QuestionItemSourse(ID, "like");
+                    LikeItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
+                    LikeItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
+                }
+                ItemSource.Add(new ShyHeaderItem
+                {
+                    Header = "点赞排序",
+                    ItemSource = LikeItemSourse
+                });
+                if (DatelineItemSourse == null || DatelineItemSourse.ID != ID)
+                {
+                    DatelineItemSourse = new QuestionItemSourse(ID, "dateline");
+                    DatelineItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
+                    DatelineItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
+                }
+                ItemSource.Add(new ShyHeaderItem
+                {
+                    Header = "时间排序",
+                    ItemSource = DatelineItemSourse
                 });
                 base.ItemSource = ItemSource;
             }
@@ -296,6 +350,32 @@ namespace CoolapkUWP.ViewModels.FeedPages
                     id,
                     feedtype,
                     p),
+                GetEntities,
+                "id");
+        }
+
+        private IEnumerable<Entity> GetEntities(JObject json)
+        {
+            yield return new FeedModel(json);
+        }
+    }
+
+    public class QuestionItemSourse : EntityItemSourse
+    {
+        public string ID;
+
+        public QuestionItemSourse(string id, string answerSortType = "reply")
+        {
+            ID = id;
+            Provider = new CoolapkListProvider(
+                (p, firstItem, lastItem) =>
+                UriHelper.GetUri(
+                    UriType.GetAnswers,
+                    id,
+                    answerSortType,
+                    p,
+                    string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                    string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                 GetEntities,
                 "id");
         }

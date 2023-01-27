@@ -295,6 +295,7 @@ namespace CoolapkUWP.Helpers
             "/u/",
             "/feed/",
             "/picture/",
+            "/question/",
             "/t/",
             "t/",
             "/dyh/",
@@ -355,6 +356,10 @@ namespace CoolapkUWP.Helpers
             {
                 if (str == "/feed/writer") { ShowMessage("暂不支持"); }
                 else { Navigate(typeof(FeedShellPage), new FeedDetailViewModel(str.Replace(i - 1))); }
+            }
+            else if (str.IsFirst(i++))
+            {
+                Navigate(typeof(FeedShellPage), new QuestionViewModel(str.Replace(i - 1)));
             }
             else if (str.IsFirst(i++) || str.IsFirst(i++))
             {

@@ -38,6 +38,12 @@ namespace CoolapkUWP.Models.Feeds
             }
         }
 
+        public int RatingStar { get; private set; }
+
+        public bool IsRatingFeed { get; private set; }
+        public bool IsCoolPicture { get; private set; }
+        public bool IsQuestionFeed { get; private set; }
+
         public string Url { get; private set; }
         public string Message { get; private set; }
         public string Dateline { get; private set; }
@@ -111,6 +117,20 @@ namespace CoolapkUWP.Models.Feeds
             if (token.TryGetValue("feedType", out JToken feedType))
             {
                 FeedType = feedType.ToString();
+                switch (FeedType)
+                {
+                    case "question":
+                        IsQuestionFeed = true;
+                        Url = Url.Replace("/feed/", "/question/");
+                        break;
+                    case "rating":
+                        IsRatingFeed = true;
+                        if (token.TryGetValue("star", out JToken star))
+                        {
+                            RatingStar = star.ToObject<int>();
+                        }
+                        break;
+                }
             }
 
             if (token.TryGetValue("dateline", out JToken dateline))

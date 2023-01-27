@@ -98,6 +98,8 @@ namespace CoolapkUWP.Models.Feeds
         public int UID => UserInfo.UID;
         public int ShareNum { get; private set; }
         public int ReplyRowsCount { get; private set; }
+        public int QuestionAnswerNum { get; private set; }
+        public int QuestionFollowNum { get; private set; }
 
         public bool Stared { get; set; }
         public bool ShowSourceFeed { get; private set; }
@@ -106,11 +108,14 @@ namespace CoolapkUWP.Models.Feeds
 
         public string Info { get; private set; }
         public string ExtraUrl { get; private set; }
+        public string MediaUrl { get; private set; }
         public string ExtraTitle { get; private set; }
         public string DeviceTitle { get; private set; }
         public string ExtraSubtitle { get; private set; }
+        public string MediaSubtitle { get; private set; }
 
         public ImageModel ExtraPic { get; private set; }
+        public ImageModel MediaPic { get; private set; }
         public SourceFeedModel SourceFeed { get; private set; }
         public LinkFeedModel LinkSourceFeed { get; private set; }
 
@@ -146,6 +151,18 @@ namespace CoolapkUWP.Models.Feeds
             if (token.TryGetValue("forwardnum", out JToken forwardnum))
             {
                 ShareNum = forwardnum.ToObject<int>();
+            }
+
+            if (IsQuestionFeed)
+            {
+                if (token.TryGetValue("question_answer_num", out JToken question_answer_num))
+                {
+                    QuestionAnswerNum = question_answer_num.ToObject<int>();
+                }
+                if (token.TryGetValue("question_follow_num", out JToken question_follow_num))
+                {
+                    QuestionFollowNum = question_follow_num.ToObject<int>();
+                }
             }
 
             if (token.TryGetValue("device_title", out JToken device_title))
@@ -196,6 +213,17 @@ namespace CoolapkUWP.Models.Feeds
                 }
             }
 
+            if (token.TryGetValue("media_url", out JToken media_url))
+            {
+                MediaUrl = media_url.ToString();
+                MediaSubtitle = MediaUrl.ValidateAndGetUri() is Uri ExtraUri && ExtraUri != null ? ExtraUri.Host : MediaUrl;
+
+                if (token.TryGetValue("media_pic", out JToken media_pic))
+                {
+                    MediaPic = new ImageModel(media_pic.ToString(), ImageType.Icon);
+                }
+            }
+
             if (token.TryGetValue("replyRowsCount", out JToken replyRowsCount))
             {
                 ReplyRowsCount = replyRowsCount.ToObject<int>();
@@ -217,7 +245,7 @@ namespace CoolapkUWP.Models.Feeds
                 ImmutableArray<RelationRowsItem>.Builder buider = ImmutableArray.CreateBuilder<RelationRowsItem>();
                 if (location != null && !string.IsNullOrEmpty(location.ToString()))
                 {
-                    buider.Add(new RelationRowsItem { Title = location.ToString() });
+                    buider.Add(new RelationRowsItem { Title = location.ToString(), Logo = new ImageModel("https://store-images.s-microsoft.com/image/apps.26122.9007199266740465.7153e958-76ad-445a-be02-d2e4cc26f347.35a35f29-9e39-42d3-814f-6d73e208553a", ImageType.Icon) });
                 }
 
                 if (ttitle != null && !string.IsNullOrEmpty(ttitle.ToString()))

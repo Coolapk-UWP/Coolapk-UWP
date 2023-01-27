@@ -105,6 +105,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <StackPanel
                     x:Name="StickUp"
@@ -249,12 +251,49 @@
                     Text="{Binding MessageTitle}"
                     TextWrapping="Wrap"
                     Visibility="{Binding MessageTitle, Converter={StaticResource StringVisibilityConverter}}" />
-                <controls:TextBlockEx
-                    x:Name="Message"
+                <controls:StackPanel
                     Grid.Row="4"
                     Margin="4"
-                    IsTextSelectionEnabled="{Binding IsCopyEnabled}"
-                    Text="{Binding Message}" />
+                    Spacing="4">
+                    <Grid Margin="0,-4" Visibility="{Binding IsRatingFeed, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            Padding="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            BorderBrush="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4">
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                Text="评分" />
+                        </Border>
+                        <muxc:RatingControl
+                            x:Name="RatingStarControl"
+                            Grid.Column="1"
+                            Margin="8,7,8,0"
+                            IsReadOnly="True"
+                            Value="{Binding RatingStar, Mode=OneWay}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
+                            <Run Text="{Binding RatingStar, Converter={StaticResource NumMultConverter}, ConverterParameter='2', Mode=OneWay}" />
+                            <Run Text="分" />
+                        </TextBlock>
+                    </Grid>
+                    <controls:TextBlockEx
+                        x:Name="Message"
+                        IsTextSelectionEnabled="{Binding IsCopyEnabled}"
+                        Text="{Binding Message}"
+                        Visibility="{Binding Message, Converter={StaticResource StringVisibilityConverter}}" />
+                </controls:StackPanel>
                 <GridView
                     Grid.Row="5"
                     MinHeight="0"
@@ -274,6 +313,7 @@
                 </GridView>
                 <Border
                     Grid.Row="6"
+                    Margin="0,4"
                     HorizontalAlignment="Stretch"
                     Visibility="{Binding ShowSourceFeed, Converter={StaticResource BoolToVisibilityConverter}}">
                     <controls:WebViewContentControl
@@ -286,6 +326,7 @@
                 </Border>
                 <Grid
                     Grid.Row="7"
+                    Margin="0,4"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
                     CornerRadius="8"
@@ -293,7 +334,11 @@
                     <Grid.Background>
                         <ImageBrush ImageSource="{Binding ExtraPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                     </Grid.Background>
-                    <Grid Padding="8" Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                    <Grid
+                        Padding="8"
+                        Tag="{Binding ExtraUrl}"
+                        Tapped="OnTopTapped"
+                        Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
                         <Grid.Background>
                             <media:AcrylicBrush
                                 BackgroundSource="Backdrop"
@@ -361,8 +406,74 @@
                         <muxc:ProgressRing Visibility="{Binding LinkSourceFeed.Succeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
                     </Grid>
                 </Grid>
-                <muxc:ItemsRepeaterScrollHost
+                <Grid
                     Grid.Row="8"
+                    Margin="0,4"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Visibility="{Binding MediaUrl, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="{Binding MediaPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                    </Grid.Background>
+                    <Grid
+                        Padding="8"
+                        Tag="{Binding MediaUrl}"
+                        Tapped="OnTapped"
+                        Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                        <Grid.Background>
+                            <media:AcrylicBrush
+                                BackgroundSource="Backdrop"
+                                FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintOpacity="1" />
+                        </Grid.Background>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            Width="56"
+                            Height="56"
+                            CornerRadius="8"
+                            Visibility="{Binding MediaPic.Uri, Converter={StaticResource StringVisibilityConverter}}">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding MediaPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                            </Border.Background>
+                        </Border>
+                        <Border
+                            Width="56"
+                            Height="56"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Visibility="{Binding MediaPic.Uri, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true'}">
+                            <FontIcon
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                Glyph="&#xE786;" />
+                        </Border>
+                        <StackPanel
+                            Grid.Column="1"
+                            Margin="8,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+                            <TextBlock
+                                MaxLines="2"
+                                Text="视频分享"
+                                TextTrimming="WordEllipsis"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                Text="{Binding MediaSubtitle}"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <muxc:ItemsRepeaterScrollHost
+                    Grid.Row="9"
                     Margin="2,0"
                     Visibility="{Binding RelationRows, Converter={StaticResource CollectionVisibilityConverter}}">
                     <ScrollViewer
@@ -382,7 +493,7 @@
                 </muxc:ItemsRepeaterScrollHost>
                 <StackPanel
                     x:Name="ReplyRows"
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Margin="0,4"
                     Padding="4"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
@@ -407,6 +518,19 @@
                         <Run Text=")" />
                     </TextBlock>
                 </StackPanel>
+                <TextBlock
+                    Grid.Row="11"
+                    Margin="4"
+                    HorizontalAlignment="Left"
+                    FontSize="12"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Run FontWeight="Bold" Text="{Binding QuestionAnswerNum}" />
+                    <Run Text="人回答" />
+                    <Run Text="•" />
+                    <Run FontWeight="Bold" Text="{Binding QuestionFollowNum}" />
+                    <Run Text="人关注" />
+                </TextBlock>
             </Grid>
         </UserControl>
     </DataTemplate>
@@ -600,7 +724,7 @@
                             <Border
                                 Margin="6,0"
                                 VerticalAlignment="Center"
-                                BorderBrush="{ThemeResource SystemAccentColor}"
+                                BorderBrush="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                 BorderThickness="1"
                                 CornerRadius="4"
                                 Visibility="{Binding IsFeedAuthor, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -608,7 +732,7 @@
                                     x:Uid="/Feed/FeedAuthor"
                                     Margin="1"
                                     FontSize="12"
-                                    Foreground="{ThemeResource SystemAccentColor}"
+                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                     IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}" />
                             </Border>
                         </StackPanel>
@@ -630,7 +754,7 @@
                                 Padding="0"
                                 Background="{ThemeResource SystemControlTransparentBrush}"
                                 Content="{Binding Rusername}"
-                                Foreground="{ThemeResource SystemAccentColor}"
+                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                 Tag="{Binding Rurl}"
                                 Visibility="{Binding Rusername, Converter={StaticResource StringVisibilityConverter}}" />
                         </StackPanel>

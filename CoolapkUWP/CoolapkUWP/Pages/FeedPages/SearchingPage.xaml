@@ -45,7 +45,7 @@
                 <StackPanel x:Name="RightHeader" Orientation="Horizontal">
                     <ComboBox
                         Margin="8,6,4,6"
-                        VerticalAlignment="Bottom"
+                        VerticalAlignment="Center"
                         SelectedIndex="{Binding SeachFeedItemSourse.SearchFeedTypeComboBoxSelectedIndex, Mode=TwoWay}">
                         <x:String>全部</x:String>
                         <x:String>动态</x:String>
@@ -60,7 +60,7 @@
                     </ComboBox>
                     <ComboBox
                         Margin="4,6,8,6"
-                        VerticalAlignment="Bottom"
+                        VerticalAlignment="Center"
                         SelectedIndex="{Binding SeachFeedItemSourse.SearchFeedSortTypeComboBoxSelectedIndex, Mode=TwoWay}">
                         <x:String>实时</x:String>
                         <x:String>热度</x:String>

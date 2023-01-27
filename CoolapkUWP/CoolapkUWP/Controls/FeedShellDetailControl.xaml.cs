@@ -3,6 +3,7 @@ using CoolapkUWP.Models;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
@@ -45,6 +46,18 @@ namespace CoolapkUWP.Controls
                 };
             }
         }
+
+        private void OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            FrameworkElement element = sender as FrameworkElement;
+            if ((element.DataContext as ICanCopy)?.IsCopyEnabled ?? false) { return; }
+
+            if (e != null) { e.Handled = true; }
+
+            UIHelper.OpenLinkAsync(element.Tag.ToString());
+        }
+
+        private void UrlButton_Click(object sender, RoutedEventArgs e) => UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
 
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e) => (sender as GridView).SelectedIndex = -1;
     }
