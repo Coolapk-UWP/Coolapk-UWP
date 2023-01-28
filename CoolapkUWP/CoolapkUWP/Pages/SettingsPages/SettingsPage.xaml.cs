@@ -4,6 +4,8 @@ using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.SettingsPages;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Xaml;
@@ -69,12 +71,27 @@ namespace CoolapkUWP.Pages.SettingsPages
             }
         }
 
+        private async void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            switch ((sender as FrameworkElement).Tag.ToString())
+            {
+                case "OpenLogFile":
+                    StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists);
+                    IReadOnlyList<StorageFile> files = await folder.GetFilesAsync();
+                    StorageFile file = files.FirstOrDefault();
+                    if (file != null) { _ = Launcher.LaunchFileAsync(file); }
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private async void HyperlinkButton_Click(object sender, RoutedEventArgs e)
         {
             switch ((sender as FrameworkElement).Tag.ToString())
             {
                 case "LogFolder":
-                    _ = await Launcher.LaunchFolderAsync(await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists));
+                    _ = Launcher.LaunchFolderAsync(await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists));
                     break;
                 case "WindowsColor":
                     _ = Launcher.LaunchUriAsync(new Uri("ms-settings:colors"));

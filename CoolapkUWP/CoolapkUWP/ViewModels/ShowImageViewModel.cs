@@ -17,6 +17,7 @@ namespace CoolapkUWP.ViewModels
 {
     public class ShowImageViewModel : INotifyPropertyChanged, IViewModel
     {
+        private ImageModel BaseImage;
         private string ImageName = string.Empty;
         public double[] VerticalOffsets { get; set; } = new double[1];
 
@@ -48,7 +49,7 @@ namespace CoolapkUWP.ViewModels
             }
         }
 
-        private bool isLoading;
+        private bool isLoading = true;
         public bool IsLoading
         {
             get => isLoading;
@@ -97,10 +98,12 @@ namespace CoolapkUWP.ViewModels
             if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
 
-        public ShowImageViewModel(ImageModel image)
+        public ShowImageViewModel(ImageModel image) => BaseImage = image;
+
+        public void Initialize()
         {
-            Images = image.ContextArray.Select(x => new ImageModel(x.Uri, ImageType.SmallImage)).ToList();
-            Index = image.ContextArray.IndexOf(image);
+            Images = BaseImage.ContextArray.Select(x => new ImageModel(x.Uri, ImageType.SmallImage)).ToList();
+            Index = BaseImage.ContextArray.IndexOf(BaseImage);
         }
 
         public async Task Refresh(bool reset = false) => await Images[Index].Refresh();

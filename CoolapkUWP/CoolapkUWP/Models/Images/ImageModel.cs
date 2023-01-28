@@ -187,9 +187,9 @@ namespace CoolapkUWP.Models.Images
         {
             LoadStarted?.Invoke(this, null);
             if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode)) { Pic = ImageCacheHelper.NoPic; }
-            BitmapImage bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri);
-            if (bitmapImage.Dispatcher.HasThreadAccess)
+            if (ImageCacheHelper.Dispatcher.HasThreadAccess)
             {
+                BitmapImage bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri);
                 Pic = bitmapImage;
                 if (Window.Current != null)
                 {

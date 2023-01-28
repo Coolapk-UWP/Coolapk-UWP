@@ -28,7 +28,14 @@ namespace CoolapkUWP.BackgroundTasks
         public async void UpdateTile()
         {
             Uri uri = new Uri(SettingsHelper.Get<string>(SettingsHelper.TileUrl));
-            try { await GetData(uri); } catch { }
+            try
+            {
+                await GetData(uri);
+            }
+            catch (Exception ex)
+            {
+                SettingsHelper.LogManager.GetLogger(nameof(LiveTileTask)).Error(ex.ExceptionToMessage(), ex);
+            }
         }
 
         private async Task GetData(Uri uri)
@@ -62,7 +69,10 @@ namespace CoolapkUWP.BackgroundTasks
                 TileNotification tileNotification = new TileNotification(tileContent.GetXml());
                 TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                SettingsHelper.LogManager.GetLogger(nameof(LiveTileTask)).Error(ex.ExceptionToMessage(), ex);
+            }
         }
 
         private TileContent GetFeedTitle(JObject token)

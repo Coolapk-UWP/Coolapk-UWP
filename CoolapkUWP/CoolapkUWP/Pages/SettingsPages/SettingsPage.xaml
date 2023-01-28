@@ -101,7 +101,20 @@
                                                     x:Uid="/SettingsPage/LogFolderLink"
                                                     Margin="2,0"
                                                     Click="HyperlinkButton_Click"
-                                                    Tag="LogFolder" />
+                                                    Tag="LogFolder">
+                                                    <HyperlinkButton.ContextFlyout>
+                                                        <MenuFlyout>
+                                                            <MenuFlyoutItem
+                                                                Click="MenuFlyoutItem_Click"
+                                                                Tag="OpenLogFile"
+                                                                Text="打开最近的日志">
+                                                                <MenuFlyoutItem.Icon>
+                                                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7C3;" />
+                                                                </MenuFlyoutItem.Icon>
+                                                            </MenuFlyoutItem>
+                                                        </MenuFlyout>
+                                                    </HyperlinkButton.ContextFlyout>
+                                                </HyperlinkButton>
                                                 <HyperlinkButton
                                                     x:Uid="/SettingsPage/TranslateLink"
                                                     Margin="2,0"

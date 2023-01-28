@@ -11,6 +11,7 @@
     xmlns:viewmodels="using:CoolapkUWP.ViewModels"
     contract12NotPresent:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     d:DataContext="{d:DesignInstance Type=viewmodels:ShowImageViewModel}"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <MenuFlyout x:Key="FlipViewContextFlyout">
@@ -99,6 +100,7 @@
                     x:Name="FlipView"
                     Background="Transparent"
                     ContextFlyout="{StaticResource FlipViewContextFlyout}"
+                    IsTabStop="True"
                     ItemsSource="{Binding Images}"
                     SelectedIndex="{Binding Index, Mode=TwoWay}"
                     Tapped="FlipView_Tapped">
@@ -128,6 +130,23 @@
                         </DataTemplate>
                     </FlipView.ItemTemplate>
                 </FlipView>
+                <Border
+                    Margin="4"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    CornerRadius="6">
+                    <Border.Background>
+                        <media:AcrylicBrush
+                            BackgroundSource="Backdrop"
+                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintOpacity="0" />
+                    </Border.Background>
+                    <muxc:PipsPager
+                        Margin="2,0"
+                        NumberOfPages="{Binding Images, Converter={StaticResource CollectionCountConverter}}"
+                        SelectedPageIndex="{Binding SelectedIndex, ElementName=FlipView, Mode=TwoWay}" />
+                </Border>
                 <muxc:ProgressRing
                     Width="60"
                     Height="60"

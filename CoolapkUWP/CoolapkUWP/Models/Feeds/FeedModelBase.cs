@@ -6,7 +6,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
-using Windows.UI.Xaml.Shapes;
 
 namespace CoolapkUWP.Models.Feeds
 {

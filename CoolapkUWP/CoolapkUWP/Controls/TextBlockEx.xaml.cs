@@ -342,8 +342,10 @@ namespace CoolapkUWP.Controls
 
                                     Grid.Children.Add(viewbox);
                                     Grid.Children.Add(PicSizePanel);
+                                    Grid.Tapped += (sender, args) => UIHelper.ShowImage(imageModel);
 
                                     container.Child = Grid;
+
                                     Paragraph paragraph1 = new Paragraph { TextAlignment = TextAlignment.Center };
                                     paragraph1.Inlines.Add(container);
                                     RichTextBlock.Blocks.Add(paragraph1);

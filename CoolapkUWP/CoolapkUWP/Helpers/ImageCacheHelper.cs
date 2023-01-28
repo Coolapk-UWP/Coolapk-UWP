@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Helpers
@@ -25,6 +27,7 @@ namespace CoolapkUWP.Helpers
         private static readonly BitmapImage WhiteNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/NoPic/img_placeholder.png")) { DecodePixelHeight = 768, DecodePixelWidth = 768 };
         private static readonly BitmapImage DarkNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/NoPic/img_placeholder_night.png")) { DecodePixelHeight = 768, DecodePixelWidth = 768 };
         internal static BitmapImage NoPic { get => ThemeHelper.IsDarkTheme() ? DarkNoPicMode : WhiteNoPicMode; }
+        internal static readonly CoreDispatcher Dispatcher = Window.Current.Dispatcher;
 
         static ImageCacheHelper()
         {
@@ -65,17 +68,15 @@ namespace CoolapkUWP.Helpers
                         BitmapImage image = await ImageCache.Instance.GetFromCacheAsync(uri, true);
                         return image;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        SettingsHelper.LogManager.GetLogger(nameof(ImageCacheHelper)).Error(ex.ExceptionToMessage(), ex);
                         string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
                         UIHelper.ShowMessage(str);
                         return NoPic;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    SettingsHelper.LogManager.GetLogger(nameof(ImageCacheHelper)).Error(ex.ExceptionToMessage(), ex);
                     string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
                     UIHelper.ShowMessage(str);
                     return NoPic;
@@ -122,17 +123,15 @@ namespace CoolapkUWP.Helpers
                         }
                         return image;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        SettingsHelper.LogManager.GetLogger(nameof(ImageCacheHelper)).Error(ex.ExceptionToMessage(), ex);
                         string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
                         UIHelper.ShowMessage(str);
                         return null;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    SettingsHelper.LogManager.GetLogger(nameof(ImageCacheHelper)).Error(ex.ExceptionToMessage(), ex);
                     string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
                     UIHelper.ShowMessage(str);
                     return null;
@@ -213,9 +212,8 @@ namespace CoolapkUWP.Helpers
             {
                 return (filename is null || (!forceGetPic && SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))) ? NoPic : new BitmapImage(new Uri(filename));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                SettingsHelper.LogManager.GetLogger(nameof(ImageCacheHelper)).Error(ex.ExceptionToMessage(), ex);
                 return NoPic;
             }
         }
@@ -233,14 +231,12 @@ namespace CoolapkUWP.Helpers
                 }
                 return new BitmapImage(new Uri(file.Path));
             }
-            catch (FileLoadException fle)
+            catch (FileLoadException)
             {
-                SettingsHelper.LogManager.GetLogger(nameof(ImageCacheHelper)).Error(fle.ExceptionToMessage(), fle);
                 return NoPic;
             }
-            catch (HttpRequestException hre)
+            catch (HttpRequestException)
             {
-                SettingsHelper.LogManager.GetLogger(nameof(ImageCacheHelper)).Error(hre.ExceptionToMessage(), hre);
                 string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
                 UIHelper.ShowMessage(str);
                 return NoPic;

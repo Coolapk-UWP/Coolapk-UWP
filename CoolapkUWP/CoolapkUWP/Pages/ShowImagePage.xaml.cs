@@ -1,12 +1,13 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Images;
 using CoolapkUWP.ViewModels;
+using Microsoft.Toolkit.Uwp.Helpers;
+using Microsoft.UI.Xaml.Controls;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
 using Windows.Phone.UI.Input;
-using Windows.UI;
 using Windows.UI.Core;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -23,7 +24,12 @@ namespace CoolapkUWP.Pages
     {
         private ShowImageViewModel Provider;
 
-        public ShowImagePage() => InitializeComponent();
+        public ShowImagePage()
+        {
+            InitializeComponent();
+            if (ApiInformation.IsMethodPresent("Windows.UI.Composition.Compositor", "TryCreateBlurredWallpaperBackdropBrush"))
+            { BackdropMaterial.SetApplyToRootOrPageBackground(this, true); }
+        }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -151,6 +157,13 @@ namespace CoolapkUWP.Pages
         {
             ScrollViewer view = (sender as FrameworkElement).Parent as ScrollViewer;
             _ = view.ChangeView(view.HorizontalOffset - e.Delta.Translation.X * view.ZoomFactor, view.VerticalOffset - e.Delta.Translation.Y * view.ZoomFactor, null);
+        }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (SystemInformation.Instance.OperatingSystemVersion.Build <= 16299)
+            { await Task.Delay(2000); }
+            Provider?.Initialize();
         }
 
         private void TitleBar_IsVisibleChanged(CoreApplicationViewTitleBar sender, object args) => UpdateContentLayout(sender);

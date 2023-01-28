@@ -383,11 +383,13 @@
                                 MaxLines="2"
                                 Text="{Binding ExtraTitle}"
                                 TextTrimming="WordEllipsis"
-                                TextWrapping="Wrap" />
+                                TextWrapping="Wrap"
+                                Visibility="{Binding ExtraTitle, Converter={StaticResource StringVisibilityConverter}}" />
                             <TextBlock
                                 Foreground="LightGray"
                                 Text="{Binding ExtraSubtitle}"
-                                TextWrapping="Wrap" />
+                                TextWrapping="Wrap"
+                                Visibility="{Binding ExtraSubtitle, Converter={StaticResource StringVisibilityConverter}}" />
                         </StackPanel>
                     </Grid>
                     <Grid Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -468,7 +470,8 @@
                             <TextBlock
                                 Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                                 Text="{Binding MediaSubtitle}"
-                                TextWrapping="Wrap" />
+                                TextWrapping="Wrap"
+                                Visibility="{Binding MediaSubtitle, Converter={StaticResource StringVisibilityConverter}}" />
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -770,10 +773,10 @@
                                 Visibility="{Binding Rusername, Converter={StaticResource StringVisibilityConverter}}" />
                             <HyperlinkButton
                                 x:Name="Ruser"
-                                Content="{Binding Rusername}"
-                                FontWeight="Normal"
                                 Margin="0,-5"
                                 Click="Button_Click"
+                                Content="{Binding Rusername}"
+                                FontWeight="Normal"
                                 Style="{StaticResource TextButtonStyle}"
                                 Tag="{Binding Rurl}"
                                 Visibility="{Binding Rusername, Converter={StaticResource StringVisibilityConverter}}" />

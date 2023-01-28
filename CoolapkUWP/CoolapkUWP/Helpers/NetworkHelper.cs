@@ -325,10 +325,7 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        public static Uri GetHost(Uri uri)
-        {
-            return new Uri("https://" + uri.Host);
-        }
+        public static Uri GetHost(Uri uri) => new Uri("https://" + uri.Host);
 
         public static string ExpandShortUrl(this Uri ShortUrl)
         {
@@ -344,12 +341,13 @@ namespace CoolapkUWP.Helpers
             return NativeUrl ?? ShortUrl.ToString();
         }
 
-        public static Uri ValidateAndGetUri(this string uriString)
+        public static Uri ValidateAndGetUri(this string url)
         {
+            if (string.IsNullOrWhiteSpace(url)) { return null; }
             Uri uri = null;
             try
             {
-                uri = new Uri(uriString);
+                uri = new Uri(url);
             }
             catch (FormatException ex)
             {
