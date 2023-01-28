@@ -80,7 +80,7 @@
                                             BorderThickness="1"
                                             CornerRadius="{ThemeResource OverlayCornerRadius}">
                                             <contract7Present:Grid.BackgroundTransition>
-                                                <contract7Present:BrushTransition />
+                                                <contract7Present:BrushTransition Duration="0:0:0.083" />
                                             </contract7Present:Grid.BackgroundTransition>
                                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
                                                 <Grid.ColumnDefinitions>

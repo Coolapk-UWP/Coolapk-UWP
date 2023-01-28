@@ -138,14 +138,14 @@ namespace CoolapkUWP.Pages
                                         : element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
                                         ? new GridLength(48) : new GridLength(16);
 
-                if (element.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top)
-                {
-                    NavigationViewPaneHeader.Height = 0;
-                }
-                else if (element.DisplayMode != muxc.NavigationViewDisplayMode.Minimal)
-                {
-                    NavigationViewPaneHeader.Height = element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed ? 0 : 40;
-                }
+                //if (element.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top)
+                //{
+                //    NavigationViewPaneHeader.Height = 0;
+                //}
+                //else if (element.DisplayMode != muxc.NavigationViewDisplayMode.Minimal)
+                //{
+                //    NavigationViewPaneHeader.Height = element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed ? 0 : 40;
+                //}
             }
         }
 
@@ -242,14 +242,14 @@ namespace CoolapkUWP.Pages
                                     : sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
                                     ? new GridLength(48) : new GridLength(16);
 
-            if (sender.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top)
-            {
-                NavigationViewPaneHeader.Height = 0;
-            }
-            else if (sender.DisplayMode != muxc.NavigationViewDisplayMode.Minimal)
-            {
-                NavigationViewPaneHeader.Height = sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed ? 0 : 40;
-            }
+            //if (sender.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top)
+            //{
+            //    NavigationViewPaneHeader.Height = 0;
+            //}
+            //else if (sender.DisplayMode != muxc.NavigationViewDisplayMode.Minimal)
+            //{
+            //    NavigationViewPaneHeader.Height = sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed ? 0 : 40;
+            //}
         }
 
         private void OnLoginChanged(string sender, bool args) => SetUserAvatar(args);

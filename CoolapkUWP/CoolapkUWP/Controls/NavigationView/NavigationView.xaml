@@ -107,9 +107,9 @@
                                         Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.LeftPaneVisibility}">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="0" />
+                                            <RowDefinition Height="0" MaxHeight="0" />
                                             <!--  above button margin + back button space  -->
-                                            <RowDefinition x:Name="PaneContentGridToggleButtonRow" Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="0" />
@@ -121,7 +121,7 @@
 
                                         <Grid Grid.Row="2">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition x:Name="PaneHeaderContentBorderRow" />
+                                                <RowDefinition x:Name="PaneContentGridToggleButtonRow" />
                                             </Grid.RowDefinitions>
 
                                             <Grid.ColumnDefinitions>
@@ -526,14 +526,14 @@
                                 <VisualState x:Name="Compact">
                                     <VisualState.Setters>
                                         <Setter Target="TogglePaneButton.Visibility" Value="Collapsed" />
-                                        <Setter Target="PaneContentGridToggleButtonRow.Height" Value="5" />
+                                        <Setter Target="PaneContentGridToggleButtonRow.Height" Value="45" />
                                     </VisualState.Setters>
                                 </VisualState>
 
                                 <VisualState x:Name="Expanded">
                                     <VisualState.Setters>
                                         <Setter Target="TogglePaneButton.Visibility" Value="Collapsed" />
-                                        <Setter Target="PaneContentGridToggleButtonRow.Height" Value="5" />
+                                        <Setter Target="PaneContentGridToggleButtonRow.Height" Value="45" />
                                     </VisualState.Setters>
                                 </VisualState>
 

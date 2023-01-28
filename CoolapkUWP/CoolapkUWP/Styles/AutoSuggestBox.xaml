@@ -38,6 +38,9 @@
                                                 BorderBrush="{ThemeResource TextControlButtonBorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
                                                 CornerRadius="{ThemeResource ControlCornerRadius}">
+                                                <contract7Present:Grid.BackgroundTransition>
+                                                    <contract7Present:BrushTransition Duration="0:0:0.083" />
+                                                </contract7Present:Grid.BackgroundTransition>
                                                 <TextBlock
                                                     x:Name="GlyphElement"
                                                     HorizontalAlignment="Center"
@@ -116,6 +119,9 @@
                                                 ContentTransitions="{TemplateBinding ContentTransitions}"
                                                 CornerRadius="{ThemeResource ControlCornerRadius}"
                                                 FontSize="{ThemeResource AutoSuggestBoxIconFontSize}">
+                                                <contract7Present:ContentPresenter.BackgroundTransition>
+                                                    <contract7Present:BrushTransition Duration="0:0:0.083" />
+                                                </contract7Present:ContentPresenter.BackgroundTransition>
                                                 <VisualStateManager.VisualStateGroups>
                                                     <VisualStateGroup x:Name="CommonStates">
                                                         <VisualState x:Name="Normal" />
@@ -192,7 +198,11 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{ThemeResource ControlCornerRadius}" />
+                            CornerRadius="{ThemeResource ControlCornerRadius}">
+                            <contract7Present:Border.BackgroundTransition>
+                                <contract7Present:BrushTransition Duration="0:0:0.083" />
+                            </contract7Present:Border.BackgroundTransition>
+                        </Border>
                         <ContentPresenter
                             x:Name="HeaderContentPresenter"
                             Grid.Row="0"

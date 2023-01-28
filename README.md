@@ -85,25 +85,25 @@
 
 ## 屏幕截图
 - 启动图
-![启动图](Images/Screenshots/Snipaste_2021-08-06_09-01-36.png)
+![启动图](Images/Screenshots/Snipaste_2023-01-28_22-02-42.png)
 - 首页
-![头条](Images/Screenshots/Snipaste_2021-08-06_09-04-21.png)
+![头条](Images/Screenshots/Snipaste_2023-01-28_22-03-45.png)
 ![酷图](Images/Screenshots/Snipaste_2021-08-06_09-06-13.png)
-![关注](Images/Screenshots/Snipaste_2021-08-06_09-07-15.png)
+![关注](Images/Screenshots/Snipaste_2023-01-28_22-04-18.png)
 - 通知
-![通知](Images/Screenshots/Snipaste_2021-08-06_09-10-25.png)
+![通知](Images/Screenshots/Snipaste_2023-01-28_22-04-50.png)
 - 搜索
 ![搜索栏](Images/Screenshots/Snipaste_2021-08-06_09-13-19.png)
-![搜索页面](Images/Screenshots/Snipaste_2021-08-06_09-15-47.png)
+![搜索页面](Images/Screenshots/Snipaste_2023-01-28_22-05-52.png)
 - 应用
 ![应用详情](Images/Screenshots/Snipaste_2021-08-06_09-17-06.png)
 - 动态
-![个人动态](Images/Screenshots/Snipaste_2021-08-06_09-19-18.png)
-![动态详情](Images/Screenshots/Snipaste_2021-08-06_09-21-06.png)
+![个人动态](Images/Screenshots/Snipaste_2023-01-28_22-06-53.png)
+![动态详情](Images/Screenshots/Snipaste_2023-01-28_22-07-18.png)
 - 图文
-![图文](Images/Screenshots/Snipaste_2021-08-06_09-24-43.png)
+![图文](Images/Screenshots/Snipaste_2023-01-28_22-08-58.png)
 - 问答
-![问答](Images/Screenshots/Snipaste_2021-08-06_09-27-48.png)
+![问答](Images/Screenshots/Snipaste_2023-01-28_22-08-14.png)
 
 ## 使用到的模块
 - [QRCoder](https://github.com/codebude/QRCoder)

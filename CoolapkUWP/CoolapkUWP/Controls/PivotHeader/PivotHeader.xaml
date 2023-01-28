@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,7)"
     xmlns:local="using:CoolapkUWP.Controls">
     <Style TargetType="local:PivotHeader">
         <Setter Property="IsTabStop" Value="False" />
@@ -46,6 +47,9 @@
                                     x:Name="LayoutRoot"
                                     Background="{TemplateBinding Background}"
                                     BorderThickness="{TemplateBinding BorderThickness}">
+                                    <contract7Present:Grid.BackgroundTransition>
+                                        <contract7Present:BrushTransition Duration="0:0:0.083" />
+                                    </contract7Present:Grid.BackgroundTransition>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="Auto" />

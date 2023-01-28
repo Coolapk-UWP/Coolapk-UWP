@@ -141,9 +141,9 @@
             IsTitleBarAutoPaddingEnabled="False"
             Loaded="NavigationView_Loaded"
             SelectionChanged="NavigationView_SelectionChanged">
-            <muxc:NavigationView.PaneCustomContent>
+            <!--<muxc:NavigationView.PaneCustomContent>
                 <Border x:Name="NavigationViewPaneHeader" />
-            </muxc:NavigationView.PaneCustomContent>
+            </muxc:NavigationView.PaneCustomContent>-->
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem x:Uid="/MainPage/Home" Tag="Home">
                     <muxc:NavigationViewItem.Icon>
