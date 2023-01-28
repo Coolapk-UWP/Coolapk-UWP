@@ -412,7 +412,7 @@
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
                     CornerRadius="8"
-                    Visibility="{Binding MediaUrl, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
+                    Visibility="{Binding MediaUrl, Converter={StaticResource StringVisibilityConverter}}">
                     <Grid.Background>
                         <ImageBrush ImageSource="{Binding MediaPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                     </Grid.Background>
@@ -518,19 +518,38 @@
                         <Run Text=")" />
                     </TextBlock>
                 </StackPanel>
-                <TextBlock
+                <StackPanel
                     Grid.Row="11"
                     Margin="4"
                     HorizontalAlignment="Left"
-                    FontSize="12"
-                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                    Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <Run FontWeight="Bold" Text="{Binding QuestionAnswerNum}" />
-                    <Run Text="人回答" />
-                    <Run Text="•" />
-                    <Run FontWeight="Bold" Text="{Binding QuestionFollowNum}" />
-                    <Run Text="人关注" />
-                </TextBlock>
+                    Orientation="Horizontal">
+                    <TextBlock
+                        FontSize="12"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        IsTextSelectionEnabled="True"
+                        Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Run FontWeight="Bold" Text="{Binding QuestionAnswerNum}" />
+                        <Run Text="人回答" />
+                        <Run Text="•" />
+                        <Run FontWeight="Bold" Text="{Binding QuestionFollowNum}" />
+                        <Run Text="人关注" />
+                    </TextBlock>
+                    <Border Margin="2,0" Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock
+                            FontSize="12"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Text="•"
+                            Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}}" />
+                    </Border>
+                    <TextBlock
+                        FontSize="12"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        IsTextSelectionEnabled="True"
+                        Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}}">
+                        <Run Text="发布于" />
+                        <Run FontWeight="Bold" Text="{Binding IPLocation}" />
+                    </TextBlock>
+                </StackPanel>
             </Grid>
         </UserControl>
     </DataTemplate>
@@ -749,12 +768,13 @@
                                 IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
                                 Text="@"
                                 Visibility="{Binding Rusername, Converter={StaticResource StringVisibilityConverter}}" />
-                            <Button
+                            <HyperlinkButton
                                 x:Name="Ruser"
-                                Padding="0"
-                                Background="{ThemeResource SystemControlTransparentBrush}"
                                 Content="{Binding Rusername}"
-                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                FontWeight="Normal"
+                                Margin="0,-5"
+                                Click="Button_Click"
+                                Style="{StaticResource TextButtonStyle}"
                                 Tag="{Binding Rurl}"
                                 Visibility="{Binding Rusername, Converter={StaticResource StringVisibilityConverter}}" />
                         </StackPanel>
@@ -851,15 +871,23 @@
                             <muxc:StackLayout />
                         </muxc:ItemsRepeater.Layout>
                     </muxc:ItemsRepeater>
-                    <TextBlock
-                        Margin="4"
-                        VerticalAlignment="Center"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
-                        <Run x:Uid="/Feed/SeeAll" />
-                        <Run Text="(" />
-                        <Run Text="{Binding ReplyNum}" />
-                        <Run Text=")" />
-                    </TextBlock>
+                    <Button
+                        Padding="4"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
+                        Click="ReplyButton_Click"
+                        Style="{StaticResource TransparentButtonStyle}"
+                        Tag="{Binding}">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
+                            <Run x:Uid="/Feed/SeeAll" />
+                            <Run Text="(" />
+                            <Run Text="{Binding ReplyNum}" />
+                            <Run Text=")" />
+                        </TextBlock>
+                    </Button>
                 </StackPanel>
             </Grid>
         </UserControl>

@@ -7,6 +7,8 @@ namespace CoolapkUWP.Models.Feeds
 {
     public class FeedDetailModel : FeedModelBase
     {
+        public int ReadNum { get; private set; }
+
         public bool ShowDyhName { get; private set; }
         public bool IsAnswerFeed { get; private set; }
         public bool IsFeedArticle { get; private set; }
@@ -27,6 +29,11 @@ namespace CoolapkUWP.Models.Feeds
 
         public FeedDetailModel(JObject token) : base(token)
         {
+            if (token.TryGetValue("readNum", out JToken readNum))
+            {
+                ReadNum = readNum.ToObject<int>();
+            }
+
             if (token.TryGetValue("title", out JToken title))
             {
                 Title = title.ToString();

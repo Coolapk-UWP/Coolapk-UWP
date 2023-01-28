@@ -20,11 +20,12 @@
                     Orientation="Horizontal">
                     <Border
                         x:Name="GIF"
+                        Padding="4,2"
                         Background="#0F9D58"
                         CornerRadius="0,8,0,8"
                         Visibility="{Binding IsGif, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                         <TextBlock
-                            Margin="2,0"
+                            FontSize="12"
                             Foreground="White"
                             Text="GIF" />
                     </Border>
@@ -35,22 +36,24 @@
                     Orientation="Horizontal">
                     <Border
                         x:Name="LongPic"
+                        Padding="4,2"
                         Background="#0F9D58"
                         CornerRadius="8,0,8,0"
                         Visibility="{Binding IsLongPic, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                         <TextBlock
                             x:Uid="/Feed/LongPic"
-                            Margin="2,0"
+                            FontSize="12"
                             Foreground="White" />
                     </Border>
                     <Border
                         x:Name="WidePic"
+                        Padding="4,2"
                         Background="#0F9D58"
                         CornerRadius="8,0,8,0"
                         Visibility="{Binding IsWidePic, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                         <TextBlock
                             x:Uid="/Feed/WidePic"
-                            Margin="2,0"
+                            FontSize="12"
                             Foreground="White" />
                     </Border>
                 </StackPanel>

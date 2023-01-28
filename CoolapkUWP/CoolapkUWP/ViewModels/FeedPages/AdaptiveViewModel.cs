@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Controls.DataTemplates;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Models.Feeds;
 using CoolapkUWP.Models.Users;
 using CoolapkUWP.ViewModels.DataSource;
 using CoolapkUWP.ViewModels.Providers;
@@ -8,7 +9,10 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.ViewModels.FeedPages
 {
@@ -89,6 +93,39 @@ namespace CoolapkUWP.ViewModels.FeedPages
                     (o) => new Entity[] { new UserModel((JObject)(isFollowList ? o["fUserInfo"] : o["userInfo"])) },
                     "fuid"))
             { Title = $"{name}的{(isFollowList ? "关注" : "粉丝")}" };
+        }
+
+        public static AdaptiveViewModel GetReplyListProvider(string id, FeedReplyModel reply = null)
+        {
+            if (string.IsNullOrEmpty(id)) { throw new ArgumentException(nameof(id)); }
+            if (reply == null)
+            {
+                return new AdaptiveViewModel(
+                    new CoolapkListProvider(
+                        (p, firstItem, lastItem) =>
+                            UriHelper.GetUri(
+                                UriType.GetHotReplies,
+                                id,
+                                p,
+                                p > 1 ? $"&firstItem={firstItem}&lastItem={lastItem}" : string.Empty),
+                        (o) => new Entity[] { new FeedReplyModel(o) },
+                        "id"))
+                { Title = $"热门回复" };
+            }
+            else
+            {
+                return new AdaptiveViewModel(
+                    new CoolapkListProvider(
+                        (p, firstItem, lastItem) =>
+                            UriHelper.GetUri(
+                                UriType.GetReplyReplies,
+                                id,
+                                p,
+                                p > 1 ? $"&lastItem={lastItem}" : string.Empty),
+                        (o) => new Entity[] { new FeedReplyModel(o, false) },
+                        "id"))
+                { Title = $"回复({reply.ReplyNum})" };
+            }
         }
 
         public async Task Refresh(bool reset = false)

@@ -129,8 +129,8 @@
     <Compile Include="Common\TokenCreater.cs" />
     <Compile Include="Common\WeakEvent.cs" />
     <Compile Include="Controls\DataTemplates\DataTemplateSelectors.cs" />
-    <Compile Include="Controls\DataTemplates\Feeds.xaml.cs">
-      <DependentUpon>Feeds.xaml</DependentUpon>
+    <Compile Include="Controls\DataTemplates\FeedsTemplates.xaml.cs">
+      <DependentUpon>FeedsTemplates.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DataTemplates\IndexCardTemplates.xaml.cs">
       <DependentUpon>IndexCardTemplates.xaml</DependentUpon>
@@ -141,11 +141,14 @@
     <Compile Include="Controls\DataTemplates\OtherDatatemplates.xaml.cs">
       <DependentUpon>OtherDatatemplates.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DataTemplates\Pic.xaml.cs">
-      <DependentUpon>Pic.xaml</DependentUpon>
+    <Compile Include="Controls\DataTemplates\PicTemplates.xaml.cs">
+      <DependentUpon>PicTemplates.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DataTemplates\SearchWord.xaml.cs">
-      <DependentUpon>SearchWord.xaml</DependentUpon>
+    <Compile Include="Controls\DataTemplates\RelationRowsTemplates.xaml.cs">
+      <DependentUpon>RelationRowsTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataTemplates\SearchWordTemplates.xaml.cs">
+      <DependentUpon>SearchWordTemplates.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FeedShellDetailControl.xaml.cs">
       <DependentUpon>FeedShellDetailControl.xaml</DependentUpon>
@@ -196,6 +199,7 @@
     <Compile Include="Helpers\UpdateHelper.cs" />
     <Compile Include="Helpers\UriHelper.cs" />
     <Compile Include="Helpers\VisualStateHelper.cs" />
+    <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="Models\CollectionModel.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\Exceptions\CoolapkMessageException.cs" />
@@ -204,6 +208,7 @@
     <Compile Include="Models\Feeds\FeedModel.cs" />
     <Compile Include="Models\Feeds\FeedModelBase.cs" />
     <Compile Include="Models\Feeds\FeedReplyModel.cs" />
+    <Compile Include="Models\Feeds\LinkFeedModel.cs" />
     <Compile Include="Models\Feeds\SourceFeedModel.cs" />
     <Compile Include="Models\Feeds\SourceFeedReplyModel.cs" />
     <Compile Include="Models\HistoryModel.cs" />
@@ -219,6 +224,7 @@
     <Compile Include="Models\Update\UpdateInfo.cs" />
     <Compile Include="Models\Upload\UploadFileFragment.cs" />
     <Compile Include="Models\Users\ContactModel.cs" />
+    <Compile Include="Models\Users\LinkUserModel.cs" />
     <Compile Include="Models\Users\UserAction.cs" />
     <Compile Include="Models\Users\UserModel.cs" />
     <Compile Include="Pages\BrowserPages\HTML2Page.xaml.cs">
@@ -260,6 +266,9 @@
     <Compile Include="Pages\SettingsPages\TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ShowImagePage.xaml.cs">
+      <DependentUpon>ShowImagePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BrowserPages\BrowserViewModel.cs" />
     <Compile Include="ViewModels\BrowserPages\HTMLViewModel.cs" />
@@ -274,6 +283,7 @@
     <Compile Include="ViewModels\Interfaces.cs" />
     <Compile Include="ViewModels\Providers\CoolapkListProvider.cs" />
     <Compile Include="ViewModels\SettingsPages\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\ShowImageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -865,7 +875,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\DataTemplates\Feeds.xaml">
+    <Page Include="Controls\DataTemplates\FeedsTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -881,11 +891,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\DataTemplates\Pic.xaml">
+    <Page Include="Controls\DataTemplates\PicTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\DataTemplates\SearchWord.xaml">
+    <Page Include="Controls\DataTemplates\RelationRowsTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DataTemplates\SearchWordTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1002,6 +1016,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\SettingsPages\TestPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\ShowImagePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

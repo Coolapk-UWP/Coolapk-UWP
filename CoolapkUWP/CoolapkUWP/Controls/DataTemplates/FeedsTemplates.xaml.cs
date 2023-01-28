@@ -1,7 +1,10 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Models.Feeds;
 using CoolapkUWP.Pages.BrowserPages;
+using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.BrowserPages;
+using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.UI;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
@@ -45,6 +48,15 @@ namespace CoolapkUWP.Controls.DataTemplates
                 default:
                     UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
                     break;
+            }
+        }
+
+        private void ReplyButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement frameworkElement)
+            {
+                if ((frameworkElement.Tag as ICanCopy)?.IsCopyEnabled ?? false) { return; }
+                UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetReplyListProvider(((FeedReplyModel)frameworkElement.Tag).ID.ToString(), (FeedReplyModel)frameworkElement.Tag));
             }
         }
 

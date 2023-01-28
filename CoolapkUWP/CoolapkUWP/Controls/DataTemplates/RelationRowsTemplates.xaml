@@ -34,6 +34,7 @@
                 </Border>
                 <TextBlock
                     Grid.Column="1"
+                    Margin="0,0,0,2"
                     VerticalAlignment="Center"
                     FontSize="12"
                     Text="{Binding Title}"
@@ -46,7 +47,7 @@
         <Grid
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
             BorderThickness="0,0,0,1"
-            Visibility="{Binding Message, Converter={StaticResource BoolToVisibilityConverter}}">
+            Visibility="{Binding Message, Converter={StaticResource StringVisibilityConverter}}">
             <controls:TextBlockEx
                 Margin="4"
                 VerticalAlignment="Center"

@@ -74,14 +74,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
             ID = id;
         }
 
-        internal static async Task<FeedShellViewModel> GetViewModelAsync(string id)
-        {
-            if (string.IsNullOrEmpty(id)) { throw new ArgumentException(nameof(id)); }
-            FeedDetailModel detail = await GetFeedDetailAsync(id);
-            return detail != null ? detail.IsQuestionFeed ? new QuestionViewModel(id) : (FeedShellViewModel)new FeedDetailViewModel(id) : null;
-        }
-
-        protected static async Task<FeedDetailModel> GetFeedDetailAsync(string id)
+        protected virtual async Task<FeedDetailModel> GetFeedDetailAsync(string id)
         {
             (bool isSucceed, JToken result) = id.Contains("changeHistoryDetail") ? await RequestHelper.GetDataAsync(new Uri(UriHelper.BaseUri.ToString() + "v6/feed/" + id), true) : await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.GetFeedDetail, id), true);
             if (!isSucceed) { return null; }

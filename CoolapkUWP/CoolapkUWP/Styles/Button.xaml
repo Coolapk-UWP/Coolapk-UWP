@@ -9,6 +9,7 @@
         <Setter Property="Margin" Value="0" />
         <Setter Property="MinWidth" Value="0" />
         <Setter Property="MinHeight" Value="0" />
+        <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Background" Value="{ThemeResource HyperlinkButtonBackground}" />
         <Setter Property="Foreground" Value="{ThemeResource HyperlinkButtonForeground}" />
         <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}" />
@@ -28,7 +29,7 @@
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             Content="{TemplateBinding Content}"
-                            FontWeight="SemiBold" />
+                            FontWeight="{TemplateBinding FontWeight}" />
 
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">

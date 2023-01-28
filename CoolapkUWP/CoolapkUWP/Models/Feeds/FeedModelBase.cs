@@ -109,6 +109,7 @@ namespace CoolapkUWP.Models.Feeds
         public string Info { get; private set; }
         public string ExtraUrl { get; private set; }
         public string MediaUrl { get; private set; }
+        public string IPLocation { get; private set; }
         public string ExtraTitle { get; private set; }
         public string DeviceTitle { get; private set; }
         public string ExtraSubtitle { get; private set; }
@@ -165,9 +166,18 @@ namespace CoolapkUWP.Models.Feeds
                 }
             }
 
-            if (token.TryGetValue("device_title", out JToken device_title))
+            if (token.TryGetValue("device_title", out JToken device_title) && !string.IsNullOrEmpty(device_title.ToString()))
             {
                 DeviceTitle = device_title.ToString();
+            }
+            else if (token.TryGetValue("device_name", out JToken device_name))
+            {
+                DeviceTitle = device_name.ToString();
+            }
+
+            if (token.TryGetValue("ip_location", out JToken ip_location))
+            {
+                IPLocation = ip_location.ToString();
             }
 
             if (token.TryGetValue("extra_title", out JToken extra_title) && !string.IsNullOrEmpty(extra_title.ToString()))

@@ -78,7 +78,7 @@ namespace CoolapkUWP.Helpers
             Client.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
             Client.DefaultRequestHeaders.Add("X-App-Device", TokenCreater.DeviceCode);
             Client.DefaultRequestHeaders.Add("X-Dark-Mode", ThemeHelper.IsDarkTheme() ? "1" : "0");
-            Client.DefaultRequestHeaders.UserAgent.ParseAdd($"Dalvik/2.1.0 (Windows NT {(ushort)((OSVersion & 0xFFFF000000000000L) >> 48)}.{(ushort)((OSVersion & 0x0000FFFF00000000L) >> 32)}; Win32; {Package.Current.Id.Architecture.ToString().Replace("X", "x")}; WebView/3.0) (#Build; {deviceInfo.SystemManufacturer}; {deviceInfo.SystemProductName}; CoolapkUWP {Package.Current.Id.Version.ToFormattedString()}; {(ushort)((OSVersion & 0xFFFF000000000000L) >> 48)}.{(ushort)((OSVersion & 0x0000FFFF00000000L) >> 32)}.{(ushort)((OSVersion & 0x00000000FFFF0000L) >> 16)}.{(ushort)(OSVersion & 0x000000000000FFFFL)})");
+            Client.DefaultRequestHeaders.UserAgent.ParseAdd($"Dalvik/2.1.0 (Windows NT {(ushort)((OSVersion & 0xFFFF000000000000L) >> 48)}.{(ushort)((OSVersion & 0x0000FFFF00000000L) >> 32)}; Win{(Package.Current.Id.Architecture.ToString().Contains("64") ? "64" : "32")}; {Package.Current.Id.Architecture.ToString().Replace("X", "x")}; WebView/3.0) (#Build; {deviceInfo.SystemManufacturer}; {deviceInfo.SystemProductName}; CoolapkUWP {Package.Current.Id.Version.ToFormattedString()}; {(ushort)((OSVersion & 0xFFFF000000000000L) >> 48)}.{(ushort)((OSVersion & 0x0000FFFF00000000L) >> 32)}.{(ushort)((OSVersion & 0x00000000FFFF0000L) >> 16)}.{(ushort)(OSVersion & 0x000000000000FFFFL)})");
 
             switch (APIVersion)
             {
@@ -132,10 +132,10 @@ namespace CoolapkUWP.Helpers
                     break;
                 case "V13":
                 default:
-                    Client.DefaultRequestHeaders.UserAgent.ParseAdd(" +CoolMarket/13.0-2301112-universal");
-                    Client.DefaultRequestHeaders.Add("X-App-Version", "13.0");
-                    Client.DefaultRequestHeaders.Add("X-Api-Supported", "2301112");
-                    Client.DefaultRequestHeaders.Add("X-App-Code", "2301112");
+                    Client.DefaultRequestHeaders.UserAgent.ParseAdd(" +CoolMarket/13.0.1-2301171-universal");
+                    Client.DefaultRequestHeaders.Add("X-App-Version", "13.0.1");
+                    Client.DefaultRequestHeaders.Add("X-Api-Supported", "2301171");
+                    Client.DefaultRequestHeaders.Add("X-App-Code", "2301171");
                     Client.DefaultRequestHeaders.Add("X-Api-Version", "13");
                     break;
             }
@@ -158,7 +158,7 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        private static async void ReplaceDarkMode(this HttpRequestHeaders headers)
+        private static void ReplaceDarkMode(this HttpRequestHeaders headers)
         {
             const string name = "X-Dark-Mode";
             _ = headers.Remove(name);
