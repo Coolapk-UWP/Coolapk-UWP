@@ -23,6 +23,10 @@
                         <ReorderThemeTransition />
                     </TransitionCollection>
                 </StackPanel.ChildrenTransitions>
+                <Image
+                    Width="20"
+                    Height="20"
+                    Source="ms-appx:///Assets/Emoji/(cos滑稽).png" />
             </StackPanel>
         </ScrollViewer>
         <VisualStateManager.VisualStateGroups>

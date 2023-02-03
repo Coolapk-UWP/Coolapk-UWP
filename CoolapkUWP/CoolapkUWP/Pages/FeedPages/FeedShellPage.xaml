@@ -32,11 +32,11 @@
                     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
                 </Style>
             </Flyout.FlyoutPresenterStyle>
-            <!--<controls:CreateFeedControl
+            <controls:CreateFeedControl
                 MinWidth="300"
                 MinHeight="200"
                 FeedType="Reply"
-                ReplyID="{Binding FeedDetail.ID}" />-->
+                ReplyID="{Binding FeedDetail.ID}" />
         </Flyout>
     </Page.Resources>
     <Grid>

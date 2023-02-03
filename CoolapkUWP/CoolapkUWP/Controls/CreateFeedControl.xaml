@@ -1,0 +1,162 @@
+﻿<UserControl
+    x:Class="CoolapkUWP.Controls.CreateFeedControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:CoolapkUWP.Helpers"
+    xmlns:local="using:CoolapkUWP.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <local:StringToEmojiConverter x:Key="StringToEmojiConverter" />
+            <DataTemplate x:Key="EmojiImageTemplate">
+                <Image
+                    Width="36"
+                    Height="36"
+                    Source="{Binding Converter={StaticResource StringToEmojiConverter}}"
+                    ToolTipService.ToolTip="{Binding}" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <RichEditBox
+            x:Name="InputBox"
+            AcceptsReturn="True"
+            Loaded="InputBox_Loaded"
+            TextWrapping="Wrap" />
+        <GridView
+            Grid.Row="1"
+            Padding="0"
+            HorizontalContentAlignment="Left"
+            ItemsSource="{x:Bind Pictures, Mode=OneWay}"
+            SelectionChanged="GridView_SelectionChanged">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        Width="102"
+                        Height="102"
+                        CornerRadius="8">
+                        <Border.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem
+                                    x:Name="Delete"
+                                    Click="MenuFlyoutItem_Click"
+                                    Tag="{Binding}"
+                                    Text="删除">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74D;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyout>
+                        </Border.ContextFlyout>
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding}" Stretch="UniformToFill" />
+                        </Border.Background>
+                    </Border>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+        <CommandBar Grid.Row="2">
+            <AppBarButton
+                AllowFocusOnInteraction="True"
+                Label="表情"
+                Tag="Emoji">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE76E;" />
+                </AppBarButton.Icon>
+                <AppBarButton.Flyout>
+                    <Flyout x:Name="EmojiFlyout">
+                        <Flyout.FlyoutPresenterStyle>
+                            <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="MaxHeight" Value="320" />
+                                <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+                                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                            </Style>
+                        </Flyout.FlyoutPresenterStyle>
+                        <Pivot>
+                            <PivotItem Header="常规">
+                                <GridView
+                                    Padding="8,0"
+                                    IsItemClickEnabled="True"
+                                    ItemClick="EmojiGridView_ItemClick"
+                                    ItemTemplate="{StaticResource EmojiImageTemplate}"
+                                    ItemsSource="{x:Bind helpers:EmojiHelper.Normal}"
+                                    SelectionChanged="GridView_SelectionChanged" />
+                            </PivotItem>
+                            <PivotItem Header="酷币">
+                                <GridView
+                                    Padding="8,0"
+                                    IsItemClickEnabled="True"
+                                    ItemClick="EmojiGridView_ItemClick"
+                                    ItemTemplate="{StaticResource EmojiImageTemplate}"
+                                    ItemsSource="{x:Bind helpers:EmojiHelper.CoolCoins}"
+                                    SelectionChanged="GridView_SelectionChanged" />
+                            </PivotItem>
+                            <PivotItem Header="滑稽">
+                                <GridView
+                                    Padding="8,0"
+                                    IsItemClickEnabled="True"
+                                    ItemClick="EmojiGridView_ItemClick"
+                                    ItemTemplate="{StaticResource EmojiImageTemplate}"
+                                    ItemsSource="{x:Bind helpers:EmojiHelper.Funny}"
+                                    SelectionChanged="GridView_SelectionChanged" />
+                            </PivotItem>
+                            <PivotItem Header="Doge">
+                                <GridView
+                                    Padding="8,0"
+                                    IsItemClickEnabled="True"
+                                    ItemClick="EmojiGridView_ItemClick"
+                                    ItemTemplate="{StaticResource EmojiImageTemplate}"
+                                    ItemsSource="{x:Bind helpers:EmojiHelper.Doge}"
+                                    SelectionChanged="GridView_SelectionChanged" />
+                            </PivotItem>
+                            <PivotItem Header="传统">
+                                <GridView
+                                    Padding="8,0"
+                                    IsItemClickEnabled="True"
+                                    ItemClick="EmojiGridView_ItemClick"
+                                    ItemTemplate="{StaticResource EmojiImageTemplate}"
+                                    ItemsSource="{x:Bind helpers:EmojiHelper.Tradition}"
+                                    SelectionChanged="GridView_SelectionChanged" />
+                            </PivotItem>
+                            <PivotItem Header="经典">
+                                <GridView
+                                    Padding="8,0"
+                                    IsItemClickEnabled="True"
+                                    ItemClick="EmojiGridView_ItemClick"
+                                    ItemTemplate="{StaticResource EmojiImageTemplate}"
+                                    ItemsSource="{x:Bind helpers:EmojiHelper.Classic}"
+                                    SelectionChanged="GridView_SelectionChanged" />
+                            </PivotItem>
+                        </Pivot>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton
+                Click="AppBarButton_Click"
+                Label="添加图片"
+                Tag="AddPic">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE710;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton
+                Click="AppBarButton_Click"
+                Label="发送"
+                Tag="Send">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE724;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </CommandBar>
+    </Grid>
+</UserControl>

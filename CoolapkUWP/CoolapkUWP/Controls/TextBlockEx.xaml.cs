@@ -81,14 +81,14 @@ namespace CoolapkUWP.Controls
             HtmlDocument doc = new HtmlDocument();
             Regex emojis = new Regex(@"(\[\S*?\]|#\(\S*?\))");
             doc.LoadHtml(Text.Replace("<!--break-->", string.Empty));
-            Paragraph paragraph = new Paragraph() { LineHeight = FontSize + 10 };
+            Paragraph paragraph = new Paragraph { LineHeight = FontSize + 10 };
             ImmutableArray<ImageModel>.Builder imageArrayBuider = ImmutableArray.CreateBuilder<ImageModel>();
             void NewLine()
             {
                 RichTextBlock.Blocks.Add(paragraph);
-                paragraph = new Paragraph() { LineHeight = FontSize + 10 };
+                paragraph = new Paragraph { LineHeight = FontSize + 10 };
             }
-            void AddText(string item) => paragraph.Inlines.Add(new Run() { Text = WebUtility.HtmlDecode(item) });
+            void AddText(string item) => paragraph.Inlines.Add(new Run { Text = WebUtility.HtmlDecode(item) });
             HtmlNodeCollection nodes = doc.DocumentNode.ChildNodes;
             foreach (HtmlNode node in nodes)
             {
@@ -103,11 +103,11 @@ namespace CoolapkUWP.Controls
                             {
                                 case '#':
                                     {
-                                        string s = item.Substring(1, item.Length - 2);
-                                        if (EmojiHelper.Emojis.Contains(s))
+                                        string str = item.Substring(1);
+                                        if (EmojiHelper.Emojis.Contains(str))
                                         {
                                             InlineUIContainer container = new InlineUIContainer();
-                                            Image image = new Image { Source = new BitmapImage(new Uri($"ms-appx:///Assets/Emoji/{item}.png")) };
+                                            Image image = new Image { Source = new BitmapImage(new Uri($"ms-appx:///Assets/Emoji/{str}.png")) };
                                             ToolTipService.SetToolTip(image, new ToolTip { Content = item });
                                             Viewbox viewbox = new Viewbox
                                             {
