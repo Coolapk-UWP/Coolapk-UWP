@@ -4,6 +4,7 @@
 
 using System;
 using System.Numerics;
+using Windows.Foundation.Metadata;
 using Windows.UI;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
@@ -172,12 +173,24 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 // alpha mask even if Content happens to extend any of the other classes
                 if (Content is IAlphaMaskProvider maskedControl)
                 {
-                    if (maskedControl.WaitUntilLoaded && maskedControl is FrameworkElement element && !element.IsLoaded)
+                    if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.FrameworkElement", "IsLoaded"))
                     {
-                        element.Loaded += CustomMaskedElement_Loaded;
+                        if (maskedControl.WaitUntilLoaded && maskedControl is FrameworkElement element && !element.IsLoaded)
+                        {
+                            element.Loaded += CustomMaskedElement_Loaded;
+                        }
+                        else
+                        {
+                            mask = maskedControl.GetAlphaMask();
+                        }
                     }
                     else
                     {
+                        if (maskedControl.WaitUntilLoaded && maskedControl is FrameworkElement element)
+                        {
+                            element.Loaded += CustomMaskedElement_Loaded;
+                        }
+
                         mask = maskedControl.GetAlphaMask();
                     }
                 }

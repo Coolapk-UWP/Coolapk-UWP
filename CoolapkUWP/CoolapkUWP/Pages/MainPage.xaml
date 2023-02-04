@@ -44,20 +44,16 @@
                     <ReorderThemeTransition />
                 </TransitionCollection>
             </Grid.ChildrenTransitions>
-            <Grid
-                x:Name="DragRegion"
-                Grid.Column="1"
-                Grid.ColumnSpan="3"
-                Background="{ThemeResource SystemControlTransparentBrush}" />
             <Grid x:Name="AppTitle" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Viewbox
+                    x:Name="AppTitleIcon"
                     Width="24"
                     Height="24"
-                    Margin="0,0,16,0"
+                    Margin="16,0"
                     VerticalAlignment="Center">
                     <muxc:ImageIcon Source="ms-appx:///Assets/StoreLogo.png" />
                 </Viewbox>
@@ -72,6 +68,11 @@
                     TextTrimming="CharacterEllipsis"
                     TextWrapping="NoWrap" />
             </Grid>
+            <Grid
+                x:Name="DragRegion"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Background="{ThemeResource SystemControlTransparentBrush}" />
             <controls:Slot
                 x:Name="SearchBoxHolder"
                 Grid.Column="2"
@@ -217,7 +218,19 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="SearchTextBox.Margin" Value="0,0,6,0" />
+                        <Setter Target="AppTitleIcon.Margin" Value="16,0" />
+                        <Setter Target="SearchTextBox.Margin" Value="0" />
+                        <Setter Target="SearchBoxHolder.IsStretch" Value="True" />
+                        <Setter Target="AppTitleText.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="641" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="AppTitleIcon.Margin" Value="24.5,0,24,0" />
+                        <Setter Target="SearchTextBox.Margin" Value="0,0,0,0" />
                         <Setter Target="SearchBoxHolder.IsStretch" Value="True" />
                         <Setter Target="AppTitleText.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
@@ -227,6 +240,7 @@
                         <AdaptiveTrigger MinWindowWidth="850" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter Target="AppTitleIcon.Margin" Value="16,0" />
                         <Setter Target="SearchTextBox.Margin" Value="40,0" />
                         <Setter Target="SearchBoxHolder.IsStretch" Value="False" />
                         <Setter Target="AppTitleText.Visibility" Value="Visible" />

@@ -5,6 +5,7 @@
 using System;
 using System.Linq;
 using Windows.Foundation;
+using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -191,7 +192,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private void InvalidateLazyLoading()
         {
-            if (!IsLoaded)
+            if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.FrameworkElement", "IsLoaded") && !IsLoaded)
             {
                 _isInViewport = false;
                 return;

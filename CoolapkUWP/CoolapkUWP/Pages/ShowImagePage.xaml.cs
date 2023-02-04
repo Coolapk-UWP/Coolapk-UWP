@@ -29,8 +29,6 @@ namespace CoolapkUWP.Pages
             InitializeComponent();
             if (ApiInformation.IsMethodPresent("Windows.UI.Composition.Compositor", "TryCreateBlurredWallpaperBackdropBrush"))
             { BackdropMaterial.SetApplyToRootOrPageBackground(this, true); }
-            if (SystemInformation.Instance.OperatingSystemVersion.Build >= 22000)
-            { CommandBar.DefaultLabelPosition = CommandBarDefaultLabelPosition.Right; }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

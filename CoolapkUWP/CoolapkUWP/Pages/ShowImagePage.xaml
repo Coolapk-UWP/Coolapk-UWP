@@ -159,6 +159,7 @@
         <CommandBar
             x:Name="CommandBar"
             VerticalAlignment="Bottom"
+            contract12Present:DefaultLabelPosition="Right"
             Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
             Visibility="Collapsed">
             <CommandBar.PrimaryCommands>

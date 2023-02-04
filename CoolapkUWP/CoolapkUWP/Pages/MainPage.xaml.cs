@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.BackgroundTasks;
+using CoolapkUWP.Controls;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Pages.FeedPages;
@@ -101,6 +102,7 @@ namespace CoolapkUWP.Pages
             UIHelper.ShellDispatcher = Dispatcher;
             NotificationsTask.Instance?.GetNums();
             NotificationsTask = NotificationsTask.Instance;
+            SearchBoxHolder.RegisterPropertyChangedCallback(Slot.IsStretchProperty, new DependencyPropertyChangedCallback(OnIsStretchProperty));
             NavigationView.RegisterPropertyChangedCallback(muxc.NavigationView.IsBackButtonVisibleProperty, new DependencyPropertyChangedCallback(OnIsBackButtonVisibleChanged));
             if (ApiInformation.IsMethodPresent("Windows.UI.Composition.Compositor", "TryCreateBlurredWallpaperBackdropBrush")) { BackdropMaterial.SetApplyToRootOrPageBackground(this, true); }
         }
@@ -122,30 +124,30 @@ namespace CoolapkUWP.Pages
 
         public string GetAppTitleFromSystem => Package.Current.DisplayName;
 
+        private void OnIsStretchProperty(DependencyObject sender, DependencyProperty dp)
+        {
+            if (sender is Slot)
+            {
+                UpdateAppTitleIcon();
+            }
+        }
+
         private void OnIsBackButtonVisibleChanged(DependencyObject sender, DependencyProperty dp)
         {
             if (sender is muxc.NavigationView element)
             {
                 LeftPaddingColumn.Width = element.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top
                     ? element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                        ? new GridLength(48) : new GridLength(16)
+                        ? new GridLength(32) : new GridLength(0)
                         : element.DisplayMode == muxc.NavigationViewDisplayMode.Minimal
                             ? element.IsPaneToggleButtonVisible
                                 ? element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                                ? new GridLength((48 * 2) - 8) : new GridLength(48)
+                                ? new GridLength((48 * 2) - 24) : new GridLength(32)
                                     : element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                                    ? new GridLength(48) : new GridLength(16)
+                                    ? new GridLength(32) : new GridLength(0)
                                         : element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                                        ? new GridLength(48) : new GridLength(16);
-
-                //if (element.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top)
-                //{
-                //    NavigationViewPaneHeader.Height = 0;
-                //}
-                //else if (element.DisplayMode != muxc.NavigationViewDisplayMode.Minimal)
-                //{
-                //    NavigationViewPaneHeader.Height = element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed ? 0 : 40;
-                //}
+                                        ? new GridLength(32) : new GridLength(0);
+                UpdateAppTitleIcon();
             }
         }
 
@@ -232,24 +234,26 @@ namespace CoolapkUWP.Pages
         {
             LeftPaddingColumn.Width = sender.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top
                 ? sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                    ? new GridLength(48) : new GridLength(16)
+                    ? new GridLength(32) : new GridLength(0)
                     : sender.DisplayMode == muxc.NavigationViewDisplayMode.Minimal
                         ? sender.IsPaneToggleButtonVisible
                             ? sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                            ? new GridLength((48 * 2) - 8) : new GridLength(48)
+                            ? new GridLength((48 * 2) - 24) : new GridLength(32)
                                 : sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                                ? new GridLength(48) : new GridLength(16)
+                                ? new GridLength(32) : new GridLength(0)
                                     : sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                                    ? new GridLength(48) : new GridLength(16);
+                                    ? new GridLength(32) : new GridLength(0);
+            UpdateAppTitleIcon();
+        }
 
-            //if (sender.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top)
-            //{
-            //    NavigationViewPaneHeader.Height = 0;
-            //}
-            //else if (sender.DisplayMode != muxc.NavigationViewDisplayMode.Minimal)
-            //{
-            //    NavigationViewPaneHeader.Height = sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed ? 0 : 40;
-            //}
+        private void UpdateAppTitleIcon()
+        {
+            AppTitleIcon.Margin = SearchBoxHolder.IsStretch
+                && NavigationView.PaneDisplayMode != muxc.NavigationViewPaneDisplayMode.Top
+                    ? NavigationView.IsBackButtonVisible == muxc.NavigationViewBackButtonVisible.Visible
+                        ? new Thickness(16, 0, 16, 0)
+                        : new Thickness(24.5, 0, 24, 0)
+                            : new Thickness(16, 0, 16, 0);
         }
 
         private void OnLoginChanged(string sender, bool args) => SetUserAvatar(args);

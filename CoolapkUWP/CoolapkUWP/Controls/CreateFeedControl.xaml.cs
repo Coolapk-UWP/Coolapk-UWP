@@ -12,6 +12,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using UnicodeStyle;
 using Windows.ApplicationModel.Resources;
+using Windows.Foundation.Metadata;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -262,10 +263,17 @@ namespace CoolapkUWP.Controls
 
         private void InputBox_Loaded(object sender, RoutedEventArgs e)
         {
-            InputBox.SelectionFlyout.Opening += Menu_Opening;
-            InputBox.ContextFlyout.Opening += Menu_Opening;
-            InputBox.SelectionFlyout.Closing += Menu_Closing;
-            InputBox.ContextFlyout.Closing += Menu_Closing;
+            if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.Controls.RichEditBox", "ContextFlyout"))
+            {
+                InputBox.ContextFlyout.Opening += Menu_Opening;
+                InputBox.ContextFlyout.Closing += Menu_Closing;
+            }
+
+            if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.Controls.RichEditBox", "SelectionFlyout"))
+            {
+                InputBox.SelectionFlyout.Opening += Menu_Opening;
+                InputBox.SelectionFlyout.Closing += Menu_Closing;
+            }
         }
 
         private void Menu_Opening(object sender, object e)

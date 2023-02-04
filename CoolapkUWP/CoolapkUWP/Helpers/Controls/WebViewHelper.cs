@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -78,7 +79,7 @@ namespace CoolapkUWP.Helpers
         private static void OnMarginChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             WebView element = (WebView)d;
-            if (element.IsLoaded)
+            if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.FrameworkElement", "IsLoaded") && element.IsLoaded)
             {
                 Thickness margin = GetMargin(element);
                 UpdateMargin(element, margin);
@@ -122,7 +123,7 @@ namespace CoolapkUWP.Helpers
         private static void OnIsVerticalStretchChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             WebView element = (WebView)d;
-            if (element.IsLoaded)
+            if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.FrameworkElement", "IsLoaded") && element.IsLoaded)
             {
                 bool isVerticalStretch = GetIsVerticalStretch(element);
                 UpdateIsVerticalStretch(element, isVerticalStretch);
@@ -170,18 +171,32 @@ namespace CoolapkUWP.Helpers
         private static void OnHTMLChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             WebView element = (WebView)d;
-            if (element.IsLoaded)
+            if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.FrameworkElement", "IsLoaded"))
             {
-                string html = GetHTML(element);
-                element.NavigateToString(html);
+                if (element.IsLoaded)
+                {
+                    string html = GetHTML(element);
+                    element.NavigateToString(html);
+                }
+                else
+                {
+                    element.Loaded += (sender, args) =>
+                    {
+                        string html = GetHTML(element);
+                        element.NavigateToString(html);
+                    };
+                }
             }
             else
             {
                 element.Loaded += (sender, args) =>
                 {
-                    string html = GetHTML(element);
-                    element.NavigateToString(html);
+                    string _html = GetHTML(element);
+                    element.NavigateToString(_html);
                 };
+
+                string html = GetHTML(element);
+                element.NavigateToString(html);
             }
         }
 
