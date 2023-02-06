@@ -64,6 +64,8 @@ namespace CoolapkUWP.Helpers
         SearchTags,
         SearchUsers,
         SearchWords,
+        SearchCreateTags,
+        SearchCreateUsers,
         GetDevMyList,
         GetITHomeFeed,
         GetBilibiliFeed
@@ -172,6 +174,8 @@ namespace CoolapkUWP.Helpers
                 case UriType.SearchTags: return "/v6/search?type=feedTopic&searchValue={0}&page={1}{2}&showAnonymous=-1";
                 case UriType.SearchUsers: return "/v6/search?type=user&searchValue={0}&page={1}{2}&showAnonymous=-1";
                 case UriType.SearchWords: return "/v6/search/suggestSearchWordsNew?searchValue={0}&type=app";
+                case UriType.SearchCreateTags: return "/v6/feed/searchTag?q={0}&page={1}{2}";
+                case UriType.SearchCreateUsers: return "/v6/user/search?q={0}&page={1}{2}";
                 //开发者中心
                 case UriType.GetDevMyList: return "/do?c=apk&m=myList&listType={0}&p={1}";
                 //IT之家

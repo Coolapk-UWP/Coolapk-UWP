@@ -128,6 +128,9 @@
     <Compile Include="Common\ScrollProgressProvider.cs" />
     <Compile Include="Common\TokenCreater.cs" />
     <Compile Include="Common\WeakEvent.cs" />
+    <Compile Include="Controls\CreateFeedControl.xaml.cs">
+      <DependentUpon>CreateFeedControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DataTemplates\DataTemplateSelectors.cs" />
     <Compile Include="Controls\DataTemplates\FeedsTemplates.xaml.cs">
       <DependentUpon>FeedsTemplates.xaml</DependentUpon>
@@ -296,99 +299,99 @@
     <Content Include="Assets\BadgeLogo.scale-150.png" />
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\BadgeLogo.scale-400.png" />
-    <Content Include="Assets\Emoji\%28cos滑稽.png" />
-    <Content Include="Assets\Emoji\%28haha.png" />
-    <Content Include="Assets\Emoji\%28OK.png" />
-    <Content Include="Assets\Emoji\%28sofa.png" />
-    <Content Include="Assets\Emoji\%28what.png" />
-    <Content Include="Assets\Emoji\%28三道杠.png" />
-    <Content Include="Assets\Emoji\%28不高兴.png" />
-    <Content Include="Assets\Emoji\%28乖.png" />
-    <Content Include="Assets\Emoji\%28传统滑稽.png" />
-    <Content Include="Assets\Emoji\%28你懂的.png" />
-    <Content Include="Assets\Emoji\%28便便.png" />
-    <Content Include="Assets\Emoji\%28冷.png" />
-    <Content Include="Assets\Emoji\%28勉强.png" />
-    <Content Include="Assets\Emoji\%28受虐滑稽.png" />
-    <Content Include="Assets\Emoji\%28吃瓜.png" />
-    <Content Include="Assets\Emoji\%28吐.png" />
-    <Content Include="Assets\Emoji\%28吐舌.png" />
-    <Content Include="Assets\Emoji\%28呀咩爹.png" />
-    <Content Include="Assets\Emoji\%28呵呵.png" />
-    <Content Include="Assets\Emoji\%28呼~.png" />
-    <Content Include="Assets\Emoji\%28咦.png" />
-    <Content Include="Assets\Emoji\%28哈哈.png" />
-    <Content Include="Assets\Emoji\%28哼.png" />
-    <Content Include="Assets\Emoji\%28啊.png" />
-    <Content Include="Assets\Emoji\%28喝酒.png" />
-    <Content Include="Assets\Emoji\%28喷.png" />
-    <Content Include="Assets\Emoji\%28嘿嘿嘿.png" />
-    <Content Include="Assets\Emoji\%28噗.png" />
-    <Content Include="Assets\Emoji\%28困成狗.png" />
-    <Content Include="Assets\Emoji\%28墨镜滑稽.png" />
-    <Content Include="Assets\Emoji\%28大拇指.png" />
-    <Content Include="Assets\Emoji\%28太开心.png" />
-    <Content Include="Assets\Emoji\%28太阳.png" />
-    <Content Include="Assets\Emoji\%28委屈.png" />
-    <Content Include="Assets\Emoji\%28小乖.png" />
-    <Content Include="Assets\Emoji\%28小嘴滑稽.png" />
-    <Content Include="Assets\Emoji\%28小红脸.png" />
-    <Content Include="Assets\Emoji\%28开心.png" />
-    <Content Include="Assets\Emoji\%28弱.png" />
-    <Content Include="Assets\Emoji\%28彩虹.png" />
-    <Content Include="Assets\Emoji\%28微微一笑.png" />
-    <Content Include="Assets\Emoji\%28心碎.png" />
-    <Content Include="Assets\Emoji\%28怒.png" />
-    <Content Include="Assets\Emoji\%28惊哭.png" />
-    <Content Include="Assets\Emoji\%28惊讶.png" />
-    <Content Include="Assets\Emoji\%28懒得理.png" />
-    <Content Include="Assets\Emoji\%28托腮.png" />
-    <Content Include="Assets\Emoji\%28挖鼻.png" />
-    <Content Include="Assets\Emoji\%28捂嘴笑.png" />
-    <Content Include="Assets\Emoji\%28摊手.png" />
-    <Content Include="Assets\Emoji\%28斗鸡眼滑稽.png" />
-    <Content Include="Assets\Emoji\%28星星月亮.png" />
-    <Content Include="Assets\Emoji\%28暗中观察.png" />
-    <Content Include="Assets\Emoji\%28柯基暗中观察.png" />
-    <Content Include="Assets\Emoji\%28欢呼.png" />
-    <Content Include="Assets\Emoji\%28汗.png" />
-    <Content Include="Assets\Emoji\%28泪.png" />
-    <Content Include="Assets\Emoji\%28流汗滑稽.png" />
-    <Content Include="Assets\Emoji\%28滑稽.png" />
-    <Content Include="Assets\Emoji\%28滑稽炸.png" />
-    <Content Include="Assets\Emoji\%28灯泡.png" />
-    <Content Include="Assets\Emoji\%28爱心.png" />
-    <Content Include="Assets\Emoji\%28犀利.png" />
-    <Content Include="Assets\Emoji\%28狂汗.png" />
-    <Content Include="Assets\Emoji\%28玫瑰.png" />
-    <Content Include="Assets\Emoji\%28疑问.png" />
-    <Content Include="Assets\Emoji\%28真棒.png" />
-    <Content Include="Assets\Emoji\%28睡觉.png" />
-    <Content Include="Assets\Emoji\%28礼物.png" />
-    <Content Include="Assets\Emoji\%28稽滑.png" />
-    <Content Include="Assets\Emoji\%28突然兴奋.png" />
-    <Content Include="Assets\Emoji\%28笑尿.png" />
-    <Content Include="Assets\Emoji\%28笑眼.png" />
-    <Content Include="Assets\Emoji\%28紧张.png" />
-    <Content Include="Assets\Emoji\%28红领巾.png" />
-    <Content Include="Assets\Emoji\%28纸巾.png" />
-    <Content Include="Assets\Emoji\%28胜利.png" />
-    <Content Include="Assets\Emoji\%28花心.png" />
-    <Content Include="Assets\Emoji\%28茶杯.png" />
-    <Content Include="Assets\Emoji\%28药丸.png" />
-    <Content Include="Assets\Emoji\%28蛋糕.png" />
-    <Content Include="Assets\Emoji\%28蜡烛.png" />
-    <Content Include="Assets\Emoji\%28鄙视.png" />
-    <Content Include="Assets\Emoji\%28酷.png" />
-    <Content Include="Assets\Emoji\%28酸爽.png" />
-    <Content Include="Assets\Emoji\%28钱.png" />
-    <Content Include="Assets\Emoji\%28钱币.png" />
-    <Content Include="Assets\Emoji\%28阴险.png" />
-    <Content Include="Assets\Emoji\%28音乐.png" />
-    <Content Include="Assets\Emoji\%28香蕉.png" />
-    <Content Include="Assets\Emoji\%28黑头瞪眼.png" />
-    <Content Include="Assets\Emoji\%28黑头高兴.png" />
-    <Content Include="Assets\Emoji\%28黑线.png" />
+    <Content Include="Assets\Emoji\%28cos滑稽%29.png" />
+    <Content Include="Assets\Emoji\%28haha%29.png" />
+    <Content Include="Assets\Emoji\%28OK%29.png" />
+    <Content Include="Assets\Emoji\%28sofa%29.png" />
+    <Content Include="Assets\Emoji\%28what%29.png" />
+    <Content Include="Assets\Emoji\%28三道杠%29.png" />
+    <Content Include="Assets\Emoji\%28不高兴%29.png" />
+    <Content Include="Assets\Emoji\%28乖%29.png" />
+    <Content Include="Assets\Emoji\%28传统滑稽%29.png" />
+    <Content Include="Assets\Emoji\%28你懂的%29.png" />
+    <Content Include="Assets\Emoji\%28便便%29.png" />
+    <Content Include="Assets\Emoji\%28冷%29.png" />
+    <Content Include="Assets\Emoji\%28勉强%29.png" />
+    <Content Include="Assets\Emoji\%28受虐滑稽%29.png" />
+    <Content Include="Assets\Emoji\%28吃瓜%29.png" />
+    <Content Include="Assets\Emoji\%28吐%29.png" />
+    <Content Include="Assets\Emoji\%28吐舌%29.png" />
+    <Content Include="Assets\Emoji\%28呀咩爹%29.png" />
+    <Content Include="Assets\Emoji\%28呵呵%29.png" />
+    <Content Include="Assets\Emoji\%28呼~%29.png" />
+    <Content Include="Assets\Emoji\%28咦%29.png" />
+    <Content Include="Assets\Emoji\%28哈哈%29.png" />
+    <Content Include="Assets\Emoji\%28哼%29.png" />
+    <Content Include="Assets\Emoji\%28啊%29.png" />
+    <Content Include="Assets\Emoji\%28喝酒%29.png" />
+    <Content Include="Assets\Emoji\%28喷%29.png" />
+    <Content Include="Assets\Emoji\%28嘿嘿嘿%29.png" />
+    <Content Include="Assets\Emoji\%28噗%29.png" />
+    <Content Include="Assets\Emoji\%28困成狗%29.png" />
+    <Content Include="Assets\Emoji\%28墨镜滑稽%29.png" />
+    <Content Include="Assets\Emoji\%28大拇指%29.png" />
+    <Content Include="Assets\Emoji\%28太开心%29.png" />
+    <Content Include="Assets\Emoji\%28太阳%29.png" />
+    <Content Include="Assets\Emoji\%28委屈%29.png" />
+    <Content Include="Assets\Emoji\%28小乖%29.png" />
+    <Content Include="Assets\Emoji\%28小嘴滑稽%29.png" />
+    <Content Include="Assets\Emoji\%28小红脸%29.png" />
+    <Content Include="Assets\Emoji\%28开心%29.png" />
+    <Content Include="Assets\Emoji\%28弱%29.png" />
+    <Content Include="Assets\Emoji\%28彩虹%29.png" />
+    <Content Include="Assets\Emoji\%28微微一笑%29.png" />
+    <Content Include="Assets\Emoji\%28心碎%29.png" />
+    <Content Include="Assets\Emoji\%28怒%29.png" />
+    <Content Include="Assets\Emoji\%28惊哭%29.png" />
+    <Content Include="Assets\Emoji\%28惊讶%29.png" />
+    <Content Include="Assets\Emoji\%28懒得理%29.png" />
+    <Content Include="Assets\Emoji\%28托腮%29.png" />
+    <Content Include="Assets\Emoji\%28挖鼻%29.png" />
+    <Content Include="Assets\Emoji\%28捂嘴笑%29.png" />
+    <Content Include="Assets\Emoji\%28摊手%29.png" />
+    <Content Include="Assets\Emoji\%28斗鸡眼滑稽%29.png" />
+    <Content Include="Assets\Emoji\%28星星月亮%29.png" />
+    <Content Include="Assets\Emoji\%28暗中观察%29.png" />
+    <Content Include="Assets\Emoji\%28柯基暗中观察%29.png" />
+    <Content Include="Assets\Emoji\%28欢呼%29.png" />
+    <Content Include="Assets\Emoji\%28汗%29.png" />
+    <Content Include="Assets\Emoji\%28泪%29.png" />
+    <Content Include="Assets\Emoji\%28流汗滑稽%29.png" />
+    <Content Include="Assets\Emoji\%28滑稽%29.png" />
+    <Content Include="Assets\Emoji\%28滑稽炸%29.png" />
+    <Content Include="Assets\Emoji\%28灯泡%29.png" />
+    <Content Include="Assets\Emoji\%28爱心%29.png" />
+    <Content Include="Assets\Emoji\%28犀利%29.png" />
+    <Content Include="Assets\Emoji\%28狂汗%29.png" />
+    <Content Include="Assets\Emoji\%28玫瑰%29.png" />
+    <Content Include="Assets\Emoji\%28疑问%29.png" />
+    <Content Include="Assets\Emoji\%28真棒%29.png" />
+    <Content Include="Assets\Emoji\%28睡觉%29.png" />
+    <Content Include="Assets\Emoji\%28礼物%29.png" />
+    <Content Include="Assets\Emoji\%28稽滑%29.png" />
+    <Content Include="Assets\Emoji\%28突然兴奋%29.png" />
+    <Content Include="Assets\Emoji\%28笑尿%29.png" />
+    <Content Include="Assets\Emoji\%28笑眼%29.png" />
+    <Content Include="Assets\Emoji\%28紧张%29.png" />
+    <Content Include="Assets\Emoji\%28红领巾%29.png" />
+    <Content Include="Assets\Emoji\%28纸巾%29.png" />
+    <Content Include="Assets\Emoji\%28胜利%29.png" />
+    <Content Include="Assets\Emoji\%28花心%29.png" />
+    <Content Include="Assets\Emoji\%28茶杯%29.png" />
+    <Content Include="Assets\Emoji\%28药丸%29.png" />
+    <Content Include="Assets\Emoji\%28蛋糕%29.png" />
+    <Content Include="Assets\Emoji\%28蜡烛%29.png" />
+    <Content Include="Assets\Emoji\%28鄙视%29.png" />
+    <Content Include="Assets\Emoji\%28酷%29.png" />
+    <Content Include="Assets\Emoji\%28酸爽%29.png" />
+    <Content Include="Assets\Emoji\%28钱%29.png" />
+    <Content Include="Assets\Emoji\%28钱币%29.png" />
+    <Content Include="Assets\Emoji\%28阴险%29.png" />
+    <Content Include="Assets\Emoji\%28音乐%29.png" />
+    <Content Include="Assets\Emoji\%28香蕉%29.png" />
+    <Content Include="Assets\Emoji\%28黑头瞪眼%29.png" />
+    <Content Include="Assets\Emoji\%28黑头高兴%29.png" />
+    <Content Include="Assets\Emoji\%28黑线%29.png" />
     <Content Include="Assets\Emoji\[Blob滑稽].png" />
     <Content Include="Assets\Emoji\[cos滑稽].png" />
     <Content Include="Assets\Emoji\[doge].png" />
@@ -875,6 +878,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\CreateFeedControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\DataTemplates\FeedsTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1095,6 +1102,9 @@
     </PackageReference>
     <PackageReference Include="QRCoder">
       <Version>1.4.3</Version>
+    </PackageReference>
+    <PackageReference Include="UnicodeStyle">
+      <Version>0.0.10</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

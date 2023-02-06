@@ -1,5 +1,9 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Models;
 using CoolapkUWP.Models.Exceptions;
+using CoolapkUWP.Models.Users;
+using CoolapkUWP.Pages.FeedPages;
+using CoolapkUWP.ViewModels.FeedPages;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -38,6 +42,8 @@ namespace CoolapkUWP.Controls
         private AppBarToggleButton UnderLineButton;
         private AppBarToggleButton StrikethroughButton;
 
+        public CreateFeedViewModel Provider;
+
         public static readonly DependencyProperty FeedTypeProperty =
             DependencyProperty.Register(
                 nameof(FeedType),
@@ -66,7 +72,11 @@ namespace CoolapkUWP.Controls
 
         internal readonly ObservableCollection<WriteableBitmap> Pictures = new ObservableCollection<WriteableBitmap>();
 
-        public CreateFeedControl() => InitializeComponent();
+        public CreateFeedControl()
+        {
+            InitializeComponent();
+            Provider = new CreateFeedViewModel();
+        }
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
@@ -362,7 +372,7 @@ namespace CoolapkUWP.Controls
         {
             if (BoldButton != null && ItalicButton != null && UnderLineButton != null && StrikethroughButton != null)
             {
-                string SelectionText = InputBox.Document.Selection.Text;
+                InputBox.Document.Selection.GetText(TextGetOptions.UseObjectText, out string SelectionText);
 
                 SelectionText = UnderLineButton.IsChecked == true
                     ? UnicodeStyler.AddLine(SelectionText, true, UnicodeLines.Underline)
@@ -406,7 +416,52 @@ namespace CoolapkUWP.Controls
             _ = InputBox.Document.Selection.MoveRight(TextRangeUnit.Character, 1, false);
         }
 
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LinkFlyout.Hide();
+            if(e.AddedItems.FirstOrDefault() is UserModel UserModel)
+            {
+                InputBox.Document.Selection.TypeText($"@{UserModel.UserName} ");
+            }
+            else if (e.AddedItems.FirstOrDefault() is TopicModel TopicModel)
+            {
+                InputBox.Document.Selection.TypeText($" #{TopicModel.Title}# ");
+            }
+            (sender as ListView).SelectedIndex = -1;
+        }
+
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e) => (sender as GridView).SelectedIndex = -1;
+
+        #region 搜索框
+
+        private void UserAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            Provider.CreateUserItemSourse.Keyword = args.QueryText;
+            _ = Provider.CreateUserItemSourse.Refresh(true);
+        }
+
+        private void TopicAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            Provider.CreateTopicItemSourse.Keyword = args.QueryText;
+            _ = Provider.CreateTopicItemSourse.Refresh(true);
+        }
+
+        private void EmojiAutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput && !string.IsNullOrWhiteSpace(sender.Text))
+            {
+                sender.ItemsSource = EmojiHelper.Emojis.Where(x => (x[0] == '(' ? $"#{x}" : x).Contains(sender.Text));
+            }
+        }
+
+        private void EmojiAutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            EmojiFlyout.Hide();
+            InsertEmoji(args.SelectedItem.ToString());
+            sender.Text = string.Empty;
+        }
+
+        #endregion
     }
 
     public class StringToEmojiConverter : IValueConverter
@@ -425,6 +480,23 @@ namespace CoolapkUWP.Controls
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             return targetType.IsInstanceOfType(value) ? value : XamlBindingHelper.ConvertValue(targetType, value);
+        }
+    }
+
+    public class EmojiNameConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            string data = value.ToString();
+            string result = data[0] == '(' ? $"#{data}" : data;
+            return targetType.IsInstanceOfType(result) ? result : XamlBindingHelper.ConvertValue(targetType, result);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            string data = value.ToString();
+            string result = data[0] == '#' ? data.Substring(1) : data;
+            return targetType.IsInstanceOfType(result) ? result : XamlBindingHelper.ConvertValue(targetType, result);
         }
     }
 

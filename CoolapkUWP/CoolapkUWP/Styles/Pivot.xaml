@@ -845,4 +845,5 @@
         <Setter Property="FontSize" Value="{ThemeResource TextStyleLargeFontSize}" />
         <Setter Property="Margin" Value="{StaticResource PivotPortraitThemePadding}" />
     </Style>
+
 </ResourceDictionary>

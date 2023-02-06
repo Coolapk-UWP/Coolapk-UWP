@@ -48,11 +48,7 @@
                             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
                         </Style>
                     </Flyout.FlyoutPresenterStyle>
-                    <controls:CreateFeedControl
-                        MinWidth="300"
-                        MinHeight="200"
-                        FeedType="Reply"
-                        ReplyID="{Binding ID}" />
+                    <controls:CreateFeedControl FeedType="Reply" ReplyID="{Binding ID}" />
                 </Flyout>
                 <MenuFlyout x:Key="MoreFlyout">
                     <MenuFlyoutSubItem Text="复制">

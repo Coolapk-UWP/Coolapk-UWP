@@ -183,4 +183,5 @@
     <Style x:Key="DefaultCardListViewStyle" TargetType="ListView">
         <Setter Property="Padding" Value="7,4" />
     </Style>
+
 </ResourceDictionary>

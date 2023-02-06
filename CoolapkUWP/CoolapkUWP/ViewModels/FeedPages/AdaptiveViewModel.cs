@@ -54,13 +54,6 @@ namespace CoolapkUWP.ViewModels.FeedPages
             }
         }
 
-        protected override event PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
-        {
-            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
-        }
-
         internal AdaptiveViewModel(string uri, List<Type> types = null)
         {
             Uri = GetUri(uri);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,6 +45,27 @@ namespace CoolapkUWP.ViewModels.DataSource
 
         #endregion
 
+        private bool isLoading;
+        public bool IsLoading
+        {
+            get => isLoading;
+            set
+            {
+                if (isLoading != value)
+                {
+                    isLoading = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
+        protected override event PropertyChangedEventHandler PropertyChanged;
+
+        protected void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        {
+            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
+        }
+
         /// <summary>
         /// We use this method to load data and add to self.
         /// </summary>
@@ -55,6 +77,7 @@ namespace CoolapkUWP.ViewModels.DataSource
             try
             {
                 // We are going to load more.
+                IsLoading = true;
                 OnLoadMoreStarted?.Invoke();
 
                 // Data loading will different for sub-class.
@@ -63,6 +86,7 @@ namespace CoolapkUWP.ViewModels.DataSource
                 AddItems(items);
 
                 // We finished loading operation.
+                IsLoading = false;
                 OnLoadMoreCompleted?.Invoke();
 
                 return new LoadMoreItemsResult { Count = items == null ? 0 : (uint)items.Count };

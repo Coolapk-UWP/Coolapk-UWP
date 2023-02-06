@@ -2,22 +2,25 @@
     x:Class="CoolapkUWP.Controls.CreateFeedControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:contract12Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 12)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,7)"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:CoolapkUWP.Helpers"
     xmlns:local="using:CoolapkUWP.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
+            <local:EmojiNameConverter x:Key="EmojiNameConverter" />
             <local:StringToEmojiConverter x:Key="StringToEmojiConverter" />
             <DataTemplate x:Key="EmojiImageTemplate">
                 <Image
                     Width="36"
                     Height="36"
                     Source="{Binding Converter={StaticResource StringToEmojiConverter}}"
-                    ToolTipService.ToolTip="{Binding}" />
+                    ToolTipService.ToolTip="{Binding Converter={StaticResource EmojiNameConverter}}" />
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -70,6 +73,151 @@
         <CommandBar Grid.Row="2" contract12Present:OverflowButtonVisibility="Collapsed">
             <AppBarButton
                 AllowFocusOnInteraction="True"
+                Label="用户与话题"
+                Tag="Link">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE71B;" />
+                </AppBarButton.Icon>
+                <AppBarButton.Flyout>
+                    <Flyout x:Name="LinkFlyout">
+                        <Flyout.FlyoutPresenterStyle>
+                            <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="MaxHeight" Value="320" />
+                                <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+                                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                            </Style>
+                        </Flyout.FlyoutPresenterStyle>
+                        <Pivot>
+                            <PivotItem Header="用户">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <AutoSuggestBox
+                                        Margin="8,4"
+                                        IsTabStop="True"
+                                        PlaceholderText="搜索用户……"
+                                        QuerySubmitted="UserAutoSuggestBox_QuerySubmitted">
+                                        <AutoSuggestBox.QueryIcon>
+                                            <muxc:AnimatedIcon>
+                                                <muxc:AnimatedIcon.Source>
+                                                    <animatedvisuals:AnimatedFindVisualSource />
+                                                </muxc:AnimatedIcon.Source>
+                                                <muxc:AnimatedIcon.FallbackIconSource>
+                                                    <muxc:FontIconSource
+                                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                        FontSize="12"
+                                                        Glyph="&#xE721;" />
+                                                </muxc:AnimatedIcon.FallbackIconSource>
+                                            </muxc:AnimatedIcon>
+                                        </AutoSuggestBox.QueryIcon>
+                                    </AutoSuggestBox>
+                                    <muxc:RefreshContainer Grid.Row="1">
+                                        <ListView
+                                            Padding="8,0"
+                                            ItemsSource="{x:Bind Provider.CreateUserItemSourse, Mode=OneWay}"
+                                            SelectionChanged="ListView_SelectionChanged"
+                                            Tag="UserList">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Padding="0,4">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <muxc:PersonPicture
+                                                            Width="24"
+                                                            Height="24"
+                                                            DisplayName="{Binding UserName}"
+                                                            ProfilePicture="{Binding UserAvatar.Pic, Mode=OneWay}" />
+                                                        <TextBlock
+                                                            Grid.Column="1"
+                                                            Margin="10,0,0,2"
+                                                            VerticalAlignment="Center"
+                                                            Text="{Binding UserName}" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </muxc:RefreshContainer>
+                                    <muxc:ProgressBar
+                                        VerticalAlignment="Top"
+                                        Background="{ThemeResource SystemControlTransparentBrush}"
+                                        IsIndeterminate="{x:Bind Provider.CreateUserItemSourse.IsLoading, Mode=OneWay}" />
+                                </Grid>
+                            </PivotItem>
+                            <PivotItem Header="话题">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <AutoSuggestBox
+                                        Margin="8,4"
+                                        IsTabStop="True"
+                                        PlaceholderText="搜索话题……"
+                                        QuerySubmitted="TopicAutoSuggestBox_QuerySubmitted">
+                                        <AutoSuggestBox.QueryIcon>
+                                            <muxc:AnimatedIcon>
+                                                <muxc:AnimatedIcon.Source>
+                                                    <animatedvisuals:AnimatedFindVisualSource />
+                                                </muxc:AnimatedIcon.Source>
+                                                <muxc:AnimatedIcon.FallbackIconSource>
+                                                    <muxc:FontIconSource
+                                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                        FontSize="12"
+                                                        Glyph="&#xE721;" />
+                                                </muxc:AnimatedIcon.FallbackIconSource>
+                                            </muxc:AnimatedIcon>
+                                        </AutoSuggestBox.QueryIcon>
+                                    </AutoSuggestBox>
+                                    <muxc:RefreshContainer Grid.Row="1">
+                                        <ListView
+                                            Padding="8,0"
+                                            ItemsSource="{x:Bind Provider.CreateTopicItemSourse, Mode=OneWay}"
+                                            SelectionChanged="ListView_SelectionChanged"
+                                            Tag="TopicList">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Padding="0,4">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Border
+                                                            Width="24"
+                                                            Height="24"
+                                                            CornerRadius="4">
+                                                            <Border.Background>
+                                                                <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                                                            </Border.Background>
+                                                        </Border>
+                                                        <TextBlock
+                                                            Grid.Column="1"
+                                                            Margin="10,0,0,2"
+                                                            VerticalAlignment="Center"
+                                                            Text="{Binding Title}" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </muxc:RefreshContainer>
+                                    <muxc:ProgressBar
+                                        VerticalAlignment="Top"
+                                        Background="{ThemeResource SystemControlTransparentBrush}"
+                                        IsIndeterminate="{x:Bind Provider.CreateTopicItemSourse.IsLoading, Mode=OneWay}" />
+                                </Grid>
+                            </PivotItem>
+                        </Pivot>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton
+                AllowFocusOnInteraction="True"
                 Label="表情"
                 Tag="Emoji">
                 <AppBarButton.Icon>
@@ -87,62 +235,95 @@
                                 <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
-                        <Pivot>
-                            <PivotItem Header="常规">
-                                <GridView
-                                    Padding="8,0"
-                                    IsItemClickEnabled="True"
-                                    ItemClick="EmojiGridView_ItemClick"
-                                    ItemTemplate="{StaticResource EmojiImageTemplate}"
-                                    ItemsSource="{x:Bind helpers:EmojiHelper.Normal}"
-                                    SelectionChanged="GridView_SelectionChanged" />
-                            </PivotItem>
-                            <PivotItem Header="酷币">
-                                <GridView
-                                    Padding="8,0"
-                                    IsItemClickEnabled="True"
-                                    ItemClick="EmojiGridView_ItemClick"
-                                    ItemTemplate="{StaticResource EmojiImageTemplate}"
-                                    ItemsSource="{x:Bind helpers:EmojiHelper.CoolCoins}"
-                                    SelectionChanged="GridView_SelectionChanged" />
-                            </PivotItem>
-                            <PivotItem Header="滑稽">
-                                <GridView
-                                    Padding="8,0"
-                                    IsItemClickEnabled="True"
-                                    ItemClick="EmojiGridView_ItemClick"
-                                    ItemTemplate="{StaticResource EmojiImageTemplate}"
-                                    ItemsSource="{x:Bind helpers:EmojiHelper.Funny}"
-                                    SelectionChanged="GridView_SelectionChanged" />
-                            </PivotItem>
-                            <PivotItem Header="Doge">
-                                <GridView
-                                    Padding="8,0"
-                                    IsItemClickEnabled="True"
-                                    ItemClick="EmojiGridView_ItemClick"
-                                    ItemTemplate="{StaticResource EmojiImageTemplate}"
-                                    ItemsSource="{x:Bind helpers:EmojiHelper.Doge}"
-                                    SelectionChanged="GridView_SelectionChanged" />
-                            </PivotItem>
-                            <PivotItem Header="传统">
-                                <GridView
-                                    Padding="8,0"
-                                    IsItemClickEnabled="True"
-                                    ItemClick="EmojiGridView_ItemClick"
-                                    ItemTemplate="{StaticResource EmojiImageTemplate}"
-                                    ItemsSource="{x:Bind helpers:EmojiHelper.Tradition}"
-                                    SelectionChanged="GridView_SelectionChanged" />
-                            </PivotItem>
-                            <PivotItem Header="经典">
-                                <GridView
-                                    Padding="8,0"
-                                    IsItemClickEnabled="True"
-                                    ItemClick="EmojiGridView_ItemClick"
-                                    ItemTemplate="{StaticResource EmojiImageTemplate}"
-                                    ItemsSource="{x:Bind helpers:EmojiHelper.Classic}"
-                                    SelectionChanged="GridView_SelectionChanged" />
-                            </PivotItem>
-                        </Pivot>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <AutoSuggestBox
+                                Margin="8,8,8,-8"
+                                IsTabStop="True"
+                                PlaceholderText="搜索表情……"
+                                SuggestionChosen="EmojiAutoSuggestBox_SuggestionChosen"
+                                TextChanged="EmojiAutoSuggestBox_TextChanged">
+                                <AutoSuggestBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Padding="0,4">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Image
+                                                Width="24"
+                                                Height="24"
+                                                Source="{Binding Converter={StaticResource StringToEmojiConverter}}"
+                                                ToolTipService.ToolTip="{Binding Converter={StaticResource EmojiNameConverter}}" />
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                Margin="10,0,0,2"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding Converter={StaticResource EmojiNameConverter}}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </AutoSuggestBox.ItemTemplate>
+                            </AutoSuggestBox>
+                            <Pivot Grid.Row="1">
+                                <PivotItem Header="常规">
+                                    <GridView
+                                        Padding="8,0"
+                                        IsItemClickEnabled="True"
+                                        ItemClick="EmojiGridView_ItemClick"
+                                        ItemTemplate="{StaticResource EmojiImageTemplate}"
+                                        ItemsSource="{x:Bind helpers:EmojiHelper.Normal}"
+                                        SelectionChanged="GridView_SelectionChanged" />
+                                </PivotItem>
+                                <PivotItem Header="酷币">
+                                    <GridView
+                                        Padding="8,0"
+                                        IsItemClickEnabled="True"
+                                        ItemClick="EmojiGridView_ItemClick"
+                                        ItemTemplate="{StaticResource EmojiImageTemplate}"
+                                        ItemsSource="{x:Bind helpers:EmojiHelper.CoolCoins}"
+                                        SelectionChanged="GridView_SelectionChanged" />
+                                </PivotItem>
+                                <PivotItem Header="滑稽">
+                                    <GridView
+                                        Padding="8,0"
+                                        IsItemClickEnabled="True"
+                                        ItemClick="EmojiGridView_ItemClick"
+                                        ItemTemplate="{StaticResource EmojiImageTemplate}"
+                                        ItemsSource="{x:Bind helpers:EmojiHelper.Funny}"
+                                        SelectionChanged="GridView_SelectionChanged" />
+                                </PivotItem>
+                                <PivotItem Header="Doge">
+                                    <GridView
+                                        Padding="8,0"
+                                        IsItemClickEnabled="True"
+                                        ItemClick="EmojiGridView_ItemClick"
+                                        ItemTemplate="{StaticResource EmojiImageTemplate}"
+                                        ItemsSource="{x:Bind helpers:EmojiHelper.Doge}"
+                                        SelectionChanged="GridView_SelectionChanged" />
+                                </PivotItem>
+                                <PivotItem Header="传统">
+                                    <GridView
+                                        Padding="8,0"
+                                        IsItemClickEnabled="True"
+                                        ItemClick="EmojiGridView_ItemClick"
+                                        ItemTemplate="{StaticResource EmojiImageTemplate}"
+                                        ItemsSource="{x:Bind helpers:EmojiHelper.Tradition}"
+                                        SelectionChanged="GridView_SelectionChanged" />
+                                </PivotItem>
+                                <PivotItem Header="经典">
+                                    <GridView
+                                        Padding="8,0"
+                                        IsItemClickEnabled="True"
+                                        ItemClick="EmojiGridView_ItemClick"
+                                        ItemTemplate="{StaticResource EmojiImageTemplate}"
+                                        ItemsSource="{x:Bind helpers:EmojiHelper.Classic}"
+                                        SelectionChanged="GridView_SelectionChanged" />
+                                </PivotItem>
+                            </Pivot>
+                        </Grid>
                     </Flyout>
                 </AppBarButton.Flyout>
             </AppBarButton>

@@ -27,35 +27,35 @@ namespace CoolapkUWP.ViewModels.FeedPages
             }
         }
 
-        private SeachFeedItemSourse seachFeedItemSourse;
-        public SeachFeedItemSourse SeachFeedItemSourse
+        private SearchFeedItemSourse searchFeedItemSourse;
+        public SearchFeedItemSourse SearchFeedItemSourse
         {
-            get => seachFeedItemSourse;
+            get => searchFeedItemSourse;
             private set
             {
-                seachFeedItemSourse = value;
+                searchFeedItemSourse = value;
                 RaisePropertyChangedEvent();
             }
         }
 
-        private SeachUserItemSourse seachUserItemSourse;
-        public SeachUserItemSourse SeachUserItemSourse
+        private SearchUserItemSourse searchUserItemSourse;
+        public SearchUserItemSourse SearchUserItemSourse
         {
-            get => seachUserItemSourse;
+            get => searchUserItemSourse;
             private set
             {
-                seachUserItemSourse = value;
+                searchUserItemSourse = value;
                 RaisePropertyChangedEvent();
             }
         }
 
-        private SeachTopicItemSourse seachTopicItemSourse;
-        public SeachTopicItemSourse SeachTopicItemSourse
+        private SearchTopicItemSourse searchTopicItemSourse;
+        public SearchTopicItemSourse SearchTopicItemSourse
         {
-            get => seachTopicItemSourse;
+            get => searchTopicItemSourse;
             private set
             {
-                seachTopicItemSourse = value;
+                searchTopicItemSourse = value;
                 RaisePropertyChangedEvent();
             }
         }
@@ -78,44 +78,44 @@ namespace CoolapkUWP.ViewModels.FeedPages
             if (reset)
             {
                 List<PivotItem> ItemSource = new List<PivotItem>();
-                if (SeachFeedItemSourse == null)
+                if (SearchFeedItemSourse == null)
                 {
-                    SeachFeedItemSourse = new SeachFeedItemSourse(Title);
-                    SeachFeedItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
-                    SeachFeedItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
+                    SearchFeedItemSourse = new SearchFeedItemSourse(Title);
+                    SearchFeedItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
+                    SearchFeedItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
                 }
-                else if (SeachFeedItemSourse.Keyword != Title)
+                else if (SearchFeedItemSourse.Keyword != Title)
                 {
-                    SeachFeedItemSourse.Keyword = Title;
+                    SearchFeedItemSourse.Keyword = Title;
                 }
-                if (SeachUserItemSourse == null)
+                if (SearchUserItemSourse == null)
                 {
-                    SeachUserItemSourse = new SeachUserItemSourse(Title);
-                    SeachUserItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
-                    SeachUserItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
+                    SearchUserItemSourse = new SearchUserItemSourse(Title);
+                    SearchUserItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
+                    SearchUserItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
                 }
-                else if (SeachUserItemSourse.Keyword != Title)
+                else if (SearchUserItemSourse.Keyword != Title)
                 {
-                    SeachUserItemSourse.Keyword = Title;
+                    SearchUserItemSourse.Keyword = Title;
                 }
-                if (SeachTopicItemSourse == null)
+                if (SearchTopicItemSourse == null)
                 {
-                    SeachTopicItemSourse = new SeachTopicItemSourse(Title);
-                    SeachTopicItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
-                    SeachTopicItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
+                    SearchTopicItemSourse = new SearchTopicItemSourse(Title);
+                    SearchTopicItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
+                    SearchTopicItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
                 }
-                else if (SeachTopicItemSourse.Keyword != Title)
+                else if (SearchTopicItemSourse.Keyword != Title)
                 {
-                    SeachTopicItemSourse.Keyword = Title;
+                    SearchTopicItemSourse.Keyword = Title;
                 }
             }
-            await SeachFeedItemSourse?.Refresh(reset);
-            await SeachUserItemSourse?.Refresh(reset);
-            await SeachTopicItemSourse?.Refresh(reset);
+            await SearchFeedItemSourse?.Refresh(reset);
+            await SearchUserItemSourse?.Refresh(reset);
+            await SearchTopicItemSourse?.Refresh(reset);
         }
     }
 
-    public class SeachFeedItemSourse : EntityItemSourse, INotifyPropertyChanged
+    public class SearchFeedItemSourse : EntityItemSourse, INotifyPropertyChanged
     {
         public string Keyword;
 
@@ -145,14 +145,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
             }
         }
 
-        protected override event PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
-        {
-            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
-        }
-
-        public SeachFeedItemSourse(string keyword)
+        public SearchFeedItemSourse(string keyword)
         {
             Keyword = keyword;
             string feedType = string.Empty;
@@ -231,11 +224,11 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class SeachUserItemSourse : EntityItemSourse
+    public class SearchUserItemSourse : EntityItemSourse
     {
         public string Keyword;
 
-        public SeachUserItemSourse(string keyword)
+        public SearchUserItemSourse(string keyword)
         {
             Keyword = keyword;
             Provider = new CoolapkListProvider(
@@ -255,11 +248,11 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class SeachTopicItemSourse : EntityItemSourse
+    public class SearchTopicItemSourse : EntityItemSourse
     {
         public string Keyword;
 
-        public SeachTopicItemSourse(string keyword)
+        public SearchTopicItemSourse(string keyword)
         {
             Keyword = keyword;
             Provider = new CoolapkListProvider(

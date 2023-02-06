@@ -73,13 +73,14 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Border
+                Width="40"
+                Height="40"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 CornerRadius="8">
-                <Image
-                    Width="40"
-                    Height="40"
-                    Source="{Binding Pic.Pic, Mode=OneWay}" />
+                <Border.Background>
+                    <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                </Border.Background>
             </Border>
             <Grid
                 Grid.Column="1"

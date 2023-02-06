@@ -17,7 +17,7 @@ namespace CoolapkUWP.ViewModels.DataSource
             {
                 int temp = Models.Count;
                 if (Models.Count > 0) { _currentPage++; }
-                await Provider.GetEntity(Models, _currentPage);
+                await Provider?.GetEntity(Models, _currentPage);
                 if (Models.Count <= 0 || Models.Count <= temp) { break; }
             }
             return Models;
