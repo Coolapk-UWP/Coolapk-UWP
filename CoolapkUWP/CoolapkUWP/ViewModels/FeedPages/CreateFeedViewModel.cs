@@ -12,7 +12,19 @@ namespace CoolapkUWP.ViewModels.FeedPages
 {
     public class CreateFeedViewModel : IViewModel
     {
-        public string Title => string.Empty;
+        private string title = string.Empty;
+        public string Title
+        {
+            get => title;
+            set
+            {
+                if (title != value)
+                {
+                    title = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
 
         public CreateUserItemSourse CreateUserItemSourse = new CreateUserItemSourse();
         public CreateTopicItemSourse CreateTopicItemSourse = new CreateTopicItemSourse();

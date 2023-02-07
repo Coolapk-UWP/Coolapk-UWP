@@ -9,7 +9,9 @@ using Microsoft.Toolkit.Uwp.UI;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media.Animation;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
@@ -85,6 +87,41 @@ namespace CoolapkUWP.Controls.DataTemplates
                 case "ReportButton":
                     DisabledCopy();
                     UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel(element.Tag.ToString()));
+                    break;
+
+                case "ReplyButton":
+                    DisabledCopy();
+                    if (element.Tag is FeedModelBase feed)
+                    {
+                        new CreateFeedControl
+                        {
+                            ReplyID = feed.ID,
+                            FeedType = CreateFeedType.Reply,
+                            PopupTransitions = new TransitionCollection
+                            {
+                                new EdgeUIThemeTransition
+                                {
+                                    Edge = EdgeTransitionLocation.Bottom
+                                }
+                            }
+                        }.Show();
+                    }
+                    else if (element.Tag is FeedReplyModel reply)
+                    {
+                        new CreateFeedControl
+                        {
+                            ReplyID = reply.ID,
+                            FeedType = CreateFeedType.ReplyReply,
+                            PopupTransitions = new TransitionCollection
+                            {
+                                new EdgeUIThemeTransition
+                                {
+                                    Edge = EdgeTransitionLocation.Bottom
+                                }
+                            }
+                        }.Show();
+                    }
+                    DisabledCopy();
                     break;
 
                 case "ShareButton":

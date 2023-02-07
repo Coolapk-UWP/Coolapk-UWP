@@ -35,7 +35,7 @@ using muxc = Microsoft.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Controls
 {
-    public sealed partial class CreateFeedControl : UserControl
+    public sealed partial class CreateFeedControl : Picker
     {
         private AppBarToggleButton BoldButton;
         private AppBarToggleButton ItalicButton;
@@ -49,7 +49,7 @@ namespace CoolapkUWP.Controls
                 nameof(FeedType),
                 typeof(CreateFeedType),
                 typeof(CreateFeedControl),
-                new PropertyMetadata(CreateFeedType.Feed));
+                new PropertyMetadata(CreateFeedType.Feed, OnFeedPropertyChanged));
 
         public CreateFeedType FeedType
         {
@@ -62,12 +62,17 @@ namespace CoolapkUWP.Controls
                 nameof(ReplyID),
                 typeof(int),
                 typeof(CreateFeedControl),
-                null);
+                new PropertyMetadata(0, OnFeedPropertyChanged));
 
         public int ReplyID
         {
             get => (int)GetValue(ReplyIDProperty);
             set => SetValue(ReplyIDProperty, value);
+        }
+
+        private static void OnFeedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((CreateFeedControl)d).UpdateTitle();
         }
 
         internal readonly ObservableCollection<WriteableBitmap> Pictures = new ObservableCollection<WriteableBitmap>();
@@ -76,6 +81,38 @@ namespace CoolapkUWP.Controls
         {
             InitializeComponent();
             Provider = new CreateFeedViewModel();
+            UpdateTitle();
+        }
+
+        private void UpdateTitle()
+        {
+            if (Provider != null)
+            {
+                switch (FeedType)
+                {
+                    case CreateFeedType.Feed:
+                        Provider.Title = "写动态";
+                        break;
+                    case CreateFeedType.Reply:
+                        Provider.Title = $"回复动态 ID {ReplyID}";
+                        break;
+                    case CreateFeedType.ReplyReply:
+                        Provider.Title = $"回复评论 ID {ReplyID}";
+                        break;
+                }
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            switch ((sender as FrameworkElement).Tag as string)
+            {
+                case "CloseButton":
+                    Hide();
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
@@ -193,6 +230,7 @@ namespace CoolapkUWP.Controls
             UIHelper.ShowMessage(ResourceLoader.GetForViewIndependentUse("CreateFeedControl").GetString("SendSuccessed"));
             InputBox.Document.SetText(TextSetOptions.None, string.Empty);
             Pictures.Clear();
+            Hide();
         }
 
         public async void PickImage()

@@ -18,6 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -171,5 +172,27 @@
                 </StackPanel>
             </Button>
         </Grid>
+        <Button
+            Grid.Row="2"
+            Margin="12,0,12,12"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Click="Button_Click"
+            Tag="CreateFeedButton"
+            Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}}">
+            <controls:StackPanel
+                Margin="8,0"
+                Orientation="Horizontal"
+                Spacing="8">
+                <FontIcon
+                    FontFamily="{StaticResource SymbolThemeFontFamily}"
+                    FontSize="16"
+                    Glyph="&#xE932;" />
+                <TextBlock
+                    Margin="0,0,0,2"
+                    FontSize="16"
+                    Text="写动态" />
+            </controls:StackPanel>
+        </Button>
     </Grid>
 </UserControl>

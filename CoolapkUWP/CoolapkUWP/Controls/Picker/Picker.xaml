@@ -1,0 +1,70 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,7)"
+    xmlns:local="using:CoolapkUWP.Controls">
+    <Style TargetType="local:Picker">
+        <Setter Property="Foreground" Value="{ThemeResource ContentDialogForeground}" />
+        <Setter Property="Background" Value="{ThemeResource ContentDialogBackground}" />
+        <Setter Property="BorderThickness" Value="{ThemeResource ContentDialogBorderWidth}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource ContentDialogBorderBrush}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:Picker">
+                    <Border x:Name="Container">
+                        <Grid x:Name="LayoutRoot">
+                            <Rectangle x:Name="SmokeLayerBackground" Fill="{ThemeResource ContentDialogSmokeFill}" />
+                            <Border
+                                x:Name="BackgroundElement"
+                                MinWidth="{ThemeResource ContentDialogMinWidth}"
+                                MinHeight="{ThemeResource ContentDialogMinHeight}"
+                                MaxWidth="{ThemeResource ContentDialogMaxWidth}"
+                                MaxHeight="{ThemeResource ContentDialogMaxHeight}"
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                contract7Present:BackgroundSizing="InnerBorderEdge"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{ThemeResource OverlayCornerRadius}"
+                                FlowDirection="{TemplateBinding FlowDirection}"
+                                RenderTransformOrigin="0.5,0.5"
+                                Transitions="{TemplateBinding PopupTransitions}">
+                                <Border.RenderTransform>
+                                    <ScaleTransform x:Name="ScaleTransform" />
+                                </Border.RenderTransform>
+                                <Grid x:Name="DialogSpace" CornerRadius="{ThemeResource OverlayCornerRadius}">
+                                    <ScrollViewer
+                                        x:Name="ContentScrollViewer"
+                                        HorizontalScrollBarVisibility="Disabled"
+                                        IsTabStop="False"
+                                        VerticalScrollBarVisibility="Disabled"
+                                        ZoomMode="Disabled">
+                                        <Grid
+                                            Background="{ThemeResource ContentDialogTopOverlay}"
+                                            BorderBrush="{ThemeResource ContentDialogSeparatorBorderBrush}"
+                                            BorderThickness="{ThemeResource ContentDialogSeparatorThickness}">
+                                            <ContentPresenter
+                                                x:Name="Content"
+                                                Grid.Row="1"
+                                                Content="{TemplateBinding Content}"
+                                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                FontFamily="{StaticResource ContentControlThemeFontFamily}"
+                                                FontSize="{StaticResource ControlContentThemeFontSize}"
+                                                Foreground="{TemplateBinding Foreground}"
+                                                TextWrapping="Wrap" />
+                                        </Grid>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

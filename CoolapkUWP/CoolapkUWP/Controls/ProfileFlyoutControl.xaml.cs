@@ -6,6 +6,8 @@ using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media.Animation;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
@@ -14,6 +16,19 @@ namespace CoolapkUWP.Controls
     public sealed partial class ProfileFlyoutControl : UserControl
     {
         private ProfileFlyoutViewModel Provider;
+
+        public static readonly DependencyProperty FlyoutBaseProperty =
+            DependencyProperty.Register(
+                nameof(FlyoutBase),
+                typeof(FlyoutBase),
+                typeof(ProfileFlyoutControl),
+                null);
+
+        public FlyoutBase FlyoutBase
+        {
+            get => (FlyoutBase)GetValue(FlyoutBaseProperty);
+            set => SetValue(FlyoutBaseProperty, value);
+        }
 
         public ProfileFlyoutControl()
         {
@@ -38,9 +53,23 @@ namespace CoolapkUWP.Controls
                 case "LoginButton":
                     UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel(UriHelper.LoginUri));
                     break;
+                case "CreateFeedButton":
+                    new CreateFeedControl
+                    {
+                        FeedType = CreateFeedType.Feed,
+                        PopupTransitions = new TransitionCollection
+                        {
+                            new EdgeUIThemeTransition
+                            {
+                                Edge = EdgeTransitionLocation.Bottom
+                            }
+                        }
+                    }.Show();
+                    break;
                 default:
                     break;
             }
+            FlyoutBase?.Hide();
         }
 
         private void Button_Loaded(object sender, RoutedEventArgs e)

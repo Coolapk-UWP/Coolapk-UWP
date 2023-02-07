@@ -38,18 +38,6 @@
                     </Flyout.FlyoutPresenterStyle>
                     <controls:ShowQRCodeControl QRCodeText="{Binding ShareUrl}" />
                 </Flyout>
-                <Flyout x:Key="ReplyFlyout">
-                    <Flyout.FlyoutPresenterStyle>
-                        <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
-                            <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
-                            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
-                            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-                        </Style>
-                    </Flyout.FlyoutPresenterStyle>
-                    <controls:CreateFeedControl FeedType="Reply" ReplyID="{Binding ID}" />
-                </Flyout>
                 <MenuFlyout x:Key="MoreFlyout">
                     <MenuFlyoutSubItem Text="复制">
                         <MenuFlyoutSubItem.Icon>
@@ -195,10 +183,9 @@
                         </StackPanel>
                     </Button>
                     <Button
-                        x:Name="MakeReplyButton"
+                        x:Name="ReplyButton"
                         Height="32"
                         Click="FeedButton_Click"
-                        Flyout="{StaticResource ReplyFlyout}"
                         Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding}"
                         ToolTipService.ToolTip="回复"
@@ -656,22 +643,6 @@
             Loaded="UserControl_Loaded"
             SizeChanged="UserControl_SizeChanged">
             <UserControl.Resources>
-                <Flyout x:Key="ReplyFlyout">
-                    <Flyout.FlyoutPresenterStyle>
-                        <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
-                            <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
-                            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
-                            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-                        </Style>
-                    </Flyout.FlyoutPresenterStyle>
-                    <controls:CreateFeedControl
-                        MinWidth="300"
-                        MinHeight="200"
-                        FeedType="ReplyReply"
-                        ReplyID="{Binding ID}" />
-                </Flyout>
                 <MenuFlyout x:Key="MoreFlyout">
                     <MenuFlyoutSubItem Text="复制">
                         <MenuFlyoutSubItem.Icon>
@@ -806,10 +777,9 @@
                         </StackPanel>
                     </Button>
                     <Button
-                        x:Name="MakeReplyButton"
+                        x:Name="ReplyButton"
                         Height="32"
                         Click="FeedButton_Click"
-                        Flyout="{StaticResource ReplyFlyout}"
                         Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding}"
                         ToolTipService.ToolTip="回复">

@@ -21,7 +21,7 @@
             <Thickness x:Key="PageHeaderMinimalPadding">-4,0,12,0</Thickness>
 
             <CornerRadius x:Key="ControlCornerRadius">4</CornerRadius>
-            <CornerRadius x:Key="OverlayCornerRadius">4</CornerRadius>
+            <CornerRadius x:Key="OverlayCornerRadius">8</CornerRadius>
 
             <FontFamily x:Key="SymbolThemeFontFamily">Segoe Fluent Icons,Segoe MDL2 Assets,Segoe UI Symbol</FontFamily>
 

@@ -22,22 +22,6 @@
             </Flyout.FlyoutPresenterStyle>
             <controls:ShowQRCodeControl QRCodeText="{Binding FeedDetail.ShareUrl}" />
         </Flyout>
-        <Flyout x:Key="ReplyFlyout">
-            <Flyout.FlyoutPresenterStyle>
-                <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
-                    <Setter Property="Padding" Value="0" />
-                    <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
-                    <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
-                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
-                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-                </Style>
-            </Flyout.FlyoutPresenterStyle>
-            <controls:CreateFeedControl
-                MinWidth="300"
-                MinHeight="200"
-                FeedType="Reply"
-                ReplyID="{Binding FeedDetail.ID}" />
-        </Flyout>
     </Page.Resources>
     <Grid>
         <muxc:TwoPaneView
@@ -94,7 +78,6 @@
                                 x:Name="ReplyButton"
                                 Height="32"
                                 Click="FeedButton_Click"
-                                Flyout="{StaticResource ReplyFlyout}"
                                 Style="{StaticResource TransparentButtonStyle}"
                                 Tag="{Binding FeedDetail}"
                                 ToolTipService.ToolTip="回复">

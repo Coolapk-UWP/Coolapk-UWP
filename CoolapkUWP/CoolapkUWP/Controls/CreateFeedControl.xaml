@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<local:Picker
     x:Class="CoolapkUWP.Controls.CreateFeedControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -10,8 +10,9 @@
     xmlns:local="using:CoolapkUWP.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    Padding="25"
     mc:Ignorable="d">
-    <UserControl.Resources>
+    <local:Picker.Resources>
         <ResourceDictionary>
             <local:EmojiNameConverter x:Key="EmojiNameConverter" />
             <local:StringToEmojiConverter x:Key="StringToEmojiConverter" />
@@ -23,24 +24,49 @@
                     ToolTipService.ToolTip="{Binding Converter={StaticResource EmojiNameConverter}}" />
             </DataTemplate>
         </ResourceDictionary>
-    </UserControl.Resources>
+    </local:Picker.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <local:PageHeader
+            x:Name="HeaderControl"
+            Title="{x:Bind Provider.Title, Mode=OneWay}"
+            Margin="18,0,0,0"
+            FontSize="{StaticResource ContentControlFontSize}"
+            FontWeight="Normal">
+            <Button
+                Margin="-8,0,0,0"
+                VerticalAlignment="Center"
+                Click="Button_Click"
+                Content="&#xE10A;"
+                Style="{StaticResource NavigationIconButtonNormalStyle}"
+                Tag="CloseButton" />
+        </local:PageHeader>
         <RichEditBox
             x:Name="InputBox"
+            Grid.Row="1"
+            Margin="6,0"
             AcceptsReturn="True"
+            Background="{ThemeResource SystemControlTransparentBrush}"
+            BorderBrush="{ThemeResource SystemControlTransparentBrush}"
             Loaded="InputBox_Loaded"
+            PlaceholderText="写一些东西……"
             TextWrapping="Wrap" />
         <GridView
-            Grid.Row="1"
-            Padding="0"
+            Grid.Row="2"
+            Padding="10,8,10,0"
             HorizontalContentAlignment="Left"
             ItemsSource="{x:Bind Pictures, Mode=OneWay}"
             SelectionChanged="GridView_SelectionChanged">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid MaximumRowsOrColumns="3" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Border
@@ -70,7 +96,7 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        <CommandBar Grid.Row="2" contract12Present:OverflowButtonVisibility="Collapsed">
+        <CommandBar Grid.Row="3" contract12Present:OverflowButtonVisibility="Collapsed">
             <AppBarButton
                 AllowFocusOnInteraction="True"
                 Label="用户与话题"
@@ -118,7 +144,7 @@
                                     </AutoSuggestBox>
                                     <muxc:RefreshContainer Grid.Row="1">
                                         <ListView
-                                            Padding="8,0"
+                                            Padding="4,0"
                                             ItemsSource="{x:Bind Provider.CreateUserItemSourse, Mode=OneWay}"
                                             SelectionChanged="ListView_SelectionChanged"
                                             Tag="UserList">
@@ -177,7 +203,7 @@
                                     </AutoSuggestBox>
                                     <muxc:RefreshContainer Grid.Row="1">
                                         <ListView
-                                            Padding="8,0"
+                                            Padding="4,0"
                                             ItemsSource="{x:Bind Provider.CreateTopicItemSourse, Mode=OneWay}"
                                             SelectionChanged="ListView_SelectionChanged"
                                             Tag="TopicList">
@@ -345,4 +371,4 @@
             </AppBarButton>
         </CommandBar>
     </Grid>
-</UserControl>
+</local:Picker>

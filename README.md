@@ -1,4 +1,4 @@
-<img alt="Coolapk LOGO" src="./logo3.png" width="200px" />
+<img alt="Coolapk LOGO" src="./logo2.png" width="200px" />
 
 # Coolapk UWP
 一个基于UWP平台的第三方酷安客户端
@@ -41,7 +41,7 @@
 1. 夜间模式
 2. 登录/点赞
 3. 浏览动态/图文/问答/通知
-4. 更多内容请自行发掘<img alt="流汗滑稽" src="./CoolapkUWP/CoolapkUWP/Assets/Emoji/(流汗滑稽.png" width="20px" />
+4. 更多内容请自行发掘<img alt="流汗滑稽" src="./CoolapkUWP/CoolapkUWP/Assets/Emoji/[流汗滑稽].png" width="20px" />
 
 ## 如何安装应用
 ### 最低需求

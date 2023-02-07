@@ -1,10 +1,14 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Controls;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Models.Feeds;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using TwoPaneView = Microsoft.UI.Xaml.Controls.TwoPaneView;
 using TwoPaneViewMode = Microsoft.UI.Xaml.Controls.TwoPaneViewMode;
@@ -57,11 +61,23 @@ namespace CoolapkUWP.Pages.FeedPages
             FrameworkElement element = sender as FrameworkElement;
             switch (element.Name)
             {
-                case "MakeReplyButton":
+                case "ReplyButton":
                     DisabledCopy();
-                    //ListViewItem item = element.FindAscendant<ListViewItem>();
-                    //MakeFeedControl ctrl = item.FindName("makeFeed") as MakeFeedControl;
-                    //ctrl.Visibility = ctrl.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+                    if (element.Tag is FeedModelBase feed)
+                    {
+                        new CreateFeedControl
+                        {
+                            ReplyID = feed.ID,
+                            FeedType = CreateFeedType.Reply,
+                            PopupTransitions = new TransitionCollection
+                            {
+                                new EdgeUIThemeTransition
+                                {
+                                    Edge = EdgeTransitionLocation.Bottom
+                                }
+                            }
+                        }.Show();
+                    }
                     break;
 
                 case "LikeButton":

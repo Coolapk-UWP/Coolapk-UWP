@@ -78,7 +78,7 @@
                                             Margin="1,0"
                                             Background="{TemplateBinding HeaderBackground}"
                                             BorderThickness="1"
-                                            CornerRadius="{ThemeResource OverlayCornerRadius}">
+                                            CornerRadius="{ThemeResource ControlCornerRadius}">
                                             <contract7Present:Grid.BackgroundTransition>
                                                 <contract7Present:BrushTransition Duration="0:0:0.083" />
                                             </contract7Present:Grid.BackgroundTransition>

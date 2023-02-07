@@ -28,7 +28,7 @@
                         x:Name="LayoutRoot"
                         Margin="{TemplateBinding Padding}"
                         Background="{TemplateBinding Background}"
-                        CornerRadius="{ThemeResource OverlayCornerRadius}">
+                        CornerRadius="{ThemeResource ControlCornerRadius}">
                         <contract7Present:Grid.BackgroundTransition>
                             <contract7Present:BrushTransition Duration="0:0:0.083" />
                         </contract7Present:Grid.BackgroundTransition>
@@ -105,7 +105,7 @@
                         MinWidth="{TemplateBinding MinWidth}"
                         Margin="{ThemeResource NavigationViewItemOnTopMargin}"
                         Background="{TemplateBinding Background}"
-                        CornerRadius="{ThemeResource OverlayCornerRadius}">
+                        CornerRadius="{ThemeResource ControlCornerRadius}">
                         <contract7Present:Grid.BackgroundTransition>
                             <contract7Present:BrushTransition Duration="0:0:0.083" />
                         </contract7Present:Grid.BackgroundTransition>
@@ -179,7 +179,7 @@
                         Margin="{ThemeResource NavigationViewItemOnLeftMargin}"
                         Background="{TemplateBinding Background}"
                         Control.IsTemplateFocusTarget="True"
-                        CornerRadius="{ThemeResource OverlayCornerRadius}">
+                        CornerRadius="{ThemeResource ControlCornerRadius}">
                         <contract7Present:Grid.BackgroundTransition>
                             <contract7Present:BrushTransition Duration="0:0:0.083" />
                         </contract7Present:Grid.BackgroundTransition>
