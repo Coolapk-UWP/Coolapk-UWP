@@ -3,6 +3,7 @@ using CoolapkUWP.Helpers;
 using CoolapkUWP.Helpers.Exceptions;
 using CoolapkUWP.Models.Exceptions;
 using CoolapkUWP.Pages;
+using CoolapkUWP.Pages.SettingsPages;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
@@ -19,6 +20,7 @@ using Windows.Foundation.Metadata;
 using Windows.Security.Authorization.AppCapabilityAccess;
 using Windows.System.Profile;
 using Windows.UI.Notifications;
+using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -55,20 +57,44 @@ namespace CoolapkUWP
         /// <param name="e">有关启动请求和过程的详细信息。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            RequestWifiAccess();
-            RegisterBackgroundTask();
-            RegisterExceptionHandlingSynchronizationContext();
+            EnsureWindow(e);
+        }
 
-            MainWindow = Window.Current;
-            WindowHelper.TrackWindow(MainWindow);
+        /// <summary>
+        /// 当应用程序被除正常启动以外的某种方式激活时调用。
+        /// </summary>
+        /// <param name="e">事件的事件数据。</param>
+        protected override void OnActivated(IActivatedEventArgs e)
+        {
+            EnsureWindow(e);
+            base.OnActivated(e);
+        }
 
-            ThemeHelper.Initialize();
-            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+        private async void EnsureWindow(IActivatedEventArgs e)
+        {
+            if (MainWindow == null)
+            {
+                RequestWifiAccess();
+                RegisterBackgroundTask();
+                RegisterExceptionHandlingSynchronizationContext();
+
+                MainWindow = Window.Current;
+                WindowHelper.TrackWindow(MainWindow);
+
+                if (JumpList.IsSupported())
+                {
+                    JumpList JumpList = await JumpList.LoadCurrentAsync();
+                    JumpList.SystemGroupKind = JumpListSystemGroupKind.None;
+                }
+            }
 
             // 不要在窗口已包含内容时重复应用程序初始化，
             // 只需确保窗口处于活动状态
             if (!(MainWindow.Content is Frame rootFrame))
             {
+                ThemeHelper.Initialize();
+                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+
                 // 创建要充当导航上下文的框架，并导航到第一页
                 rootFrame = new Frame();
 
@@ -80,21 +106,28 @@ namespace CoolapkUWP
                 }
 
                 // 将框架放在当前窗口中
-                MainWindow.Content = rootFrame;
+                Window.Current.Content = rootFrame;
             }
 
-            if (e.PrelaunchActivated == false)
+            if (e is LaunchActivatedEventArgs args)
             {
-                if (rootFrame.Content == null)
+                if (!args.PrelaunchActivated)
                 {
-                    // 当导航堆栈尚未还原时，导航到第一页，
-                    // 并通过将所需信息作为导航参数传入来配置
-                    // 参数
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    CoreApplication.EnablePrelaunch(true);
                 }
-                // 确保当前窗口处于活动状态
-                MainWindow.Activate();
+                else { return; }
             }
+            
+            if (rootFrame.Content == null)
+            {
+                // 当导航堆栈尚未还原时，导航到第一页，
+                // 并通过将所需信息作为导航参数传入来配置
+                // 参数
+                rootFrame.Navigate(typeof(MainPage), e);
+            }
+
+            // 确保当前窗口处于活动状态
+            MainWindow.Activate();
         }
 
         /// <summary>

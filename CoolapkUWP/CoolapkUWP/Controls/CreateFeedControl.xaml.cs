@@ -2,7 +2,6 @@
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Exceptions;
 using CoolapkUWP.Models.Users;
-using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.FeedPages;
 using Newtonsoft.Json.Linq;
 using System;
@@ -14,7 +13,10 @@ using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Microsoft.Toolkit.Uwp.UI;
+using Microsoft.Toolkit.Uwp.Helpers;
 using UnicodeStyle;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation.Metadata;
 using Windows.Graphics.Imaging;
@@ -75,12 +77,12 @@ namespace CoolapkUWP.Controls
             ((CreateFeedControl)d).UpdateTitle();
         }
 
-        internal readonly ObservableCollection<WriteableBitmap> Pictures = new ObservableCollection<WriteableBitmap>();
-
         public CreateFeedControl()
         {
             InitializeComponent();
             Provider = new CreateFeedViewModel();
+            Clipboard.ContentChanged += Clipboard_ContentChanged;
+            Clipboard_ContentChanged(null, null);
             UpdateTitle();
         }
 
@@ -123,7 +125,7 @@ namespace CoolapkUWP.Controls
                     CreateDataContent();
                     break;
                 case "AddPic":
-                    PickImage();
+                    Provider.PickImage();
                     break;
                 default:
                     break;
@@ -134,8 +136,11 @@ namespace CoolapkUWP.Controls
         {
             switch ((sender as FrameworkElement).Name)
             {
-                case "Delete":
-                    Pictures.Remove((sender as FrameworkElement).Tag as WriteableBitmap);
+                case "PastePic":
+                    _ = Provider.DropFile(Clipboard.GetContent());
+                    break;
+                case "DeletePic":
+                    Provider.Pictures.Remove((sender as FrameworkElement).Tag as WriteableBitmap);
                     break;
                 default:
                     break;
@@ -159,7 +164,7 @@ namespace CoolapkUWP.Controls
                 using (StringContent message = new StringContent(contentText))
                 using (StringContent type = new StringContent("feed"))
                 using (StringContent is_html_article = new StringContent("0"))
-                using (StringContent pic = new StringContent(string.Join(",", await UploadPic())))
+                using (StringContent pic = new StringContent(string.Join(",", await Provider.UploadPic())))
                 {
                     content.Add(message, "message");
                     content.Add(type, "type");
@@ -175,7 +180,7 @@ namespace CoolapkUWP.Controls
             using (MultipartFormDataContent content = new MultipartFormDataContent())
             {
                 using (StringContent message = new StringContent(contentText))
-                using (StringContent pic = new StringContent(string.Join(",", await UploadPic())))
+                using (StringContent pic = new StringContent(string.Join(",", await Provider.UploadPic())))
                 {
                     content.Add(message, "message");
                     content.Add(pic, "pic");
@@ -229,84 +234,8 @@ namespace CoolapkUWP.Controls
         {
             UIHelper.ShowMessage(ResourceLoader.GetForViewIndependentUse("CreateFeedControl").GetString("SendSuccessed"));
             InputBox.Document.SetText(TextSetOptions.None, string.Empty);
-            Pictures.Clear();
+            Provider.Pictures.Clear();
             Hide();
-        }
-
-        public async void PickImage()
-        {
-            FileOpenPicker FileOpen = new FileOpenPicker();
-            FileOpen.FileTypeFilter.Add(".jpg");
-            FileOpen.FileTypeFilter.Add(".jpeg");
-            FileOpen.FileTypeFilter.Add(".png");
-            FileOpen.FileTypeFilter.Add(".bmp");
-            FileOpen.SuggestedStartLocation = PickerLocationId.ComputerFolder;
-
-            StorageFile file = await FileOpen.PickSingleFileAsync();
-            if (file != null)
-            {
-                using (IRandomAccessStreamWithContentType stream = await file.OpenReadAsync())
-                {
-                    BitmapDecoder ImageDecoder = await BitmapDecoder.CreateAsync(stream);
-                    SoftwareBitmap SoftwareImage = await ImageDecoder.GetSoftwareBitmapAsync();
-                    try
-                    {
-                        WriteableBitmap WriteableImage = new WriteableBitmap((int)ImageDecoder.PixelWidth, (int)ImageDecoder.PixelHeight);
-                        await WriteableImage.SetSourceAsync(stream);
-                        Pictures.Add(WriteableImage);
-                    }
-                    catch
-                    {
-                        try
-                        {
-                            using (InMemoryRandomAccessStream random = new InMemoryRandomAccessStream())
-                            {
-                                BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, random);
-                                encoder.SetSoftwareBitmap(SoftwareImage);
-                                await encoder.FlushAsync();
-                                WriteableBitmap WriteableImage = new WriteableBitmap((int)ImageDecoder.PixelWidth, (int)ImageDecoder.PixelHeight);
-                                await WriteableImage.SetSourceAsync(random);
-                                Pictures.Add(WriteableImage);
-                            }
-                        }
-                        catch { }
-                    }
-                }
-            }
-        }
-
-        private async Task<List<string>> UploadPic()
-        {
-            int i = 0;
-            List<string> results = new List<string>();
-            if (!Pictures.Any()) { return results; }
-            UIHelper.ShowMessage("上传图片");
-            foreach (WriteableBitmap pic in Pictures)
-            {
-                i++;
-                using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
-                {
-                    BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream);
-                    Stream pixelStream = pic.PixelBuffer.AsStream();
-                    byte[] pixels = new byte[pixelStream.Length];
-                    await pixelStream.ReadAsync(pixels, 0, pixels.Length);
-
-                    encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore,
-                        (uint)pic.PixelWidth,
-                        (uint)pic.PixelHeight,
-                        96.0,
-                        96.0,
-                        pixels);
-
-                    await encoder.FlushAsync();
-
-                    byte[] bytes = stream.GetBytes();
-                    (bool isSucceed, string result) = await RequestHelper.UploadImage(bytes, "pic");
-                    if (isSucceed) { results.Add(result); }
-                }
-                UIHelper.ShowMessage($"已上传 ({i}/{Pictures.Count})");
-            }
-            return results;
         }
 
         private void InputBox_Loaded(object sender, RoutedEventArgs e)
@@ -467,6 +396,8 @@ namespace CoolapkUWP.Controls
             }
             (sender as ListView).SelectedIndex = -1;
         }
+
+        private void Clipboard_ContentChanged(object sender, object e) => _ = Dispatcher.AwaitableRunAsync(async () => PastePic.IsEnabled = await Provider.CheckData(Clipboard.GetContent()));
 
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e) => (sender as GridView).SelectedIndex = -1;
 

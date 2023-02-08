@@ -181,49 +181,51 @@
                     Glyph="&#xE72A;"
                     Visibility="{Binding Url, Converter={StaticResource StringVisibilityConverter}}" />
             </Grid>
-            <Grid
+            <Border
                 Grid.Row="1"
                 CornerRadius="8"
                 Visibility="{Binding ShowEntities, Converter={StaticResource BoolToVisibilityConverter}}">
-                <FlipView
-                    x:Name="FlipView"
-                    contract7Present:CornerRadius="8"
-                    Background="{ThemeResource SystemControlTransparentBrush}"
-                    ItemsSource="{Binding Entities}"
-                    Loaded="FlipView_Loaded"
-                    SizeChanged="FlipView_SizeChanged">
-                    <FlipView.ItemTemplate>
-                        <DataTemplate>
-                            <Image
-                                x:Name="Picture"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                CanDrag="True"
-                                KeyDown="Grid_KeyDown"
-                                Source="{Binding Pic.Pic, Mode=OneWay}"
-                                Tag="{Binding}"
-                                Tapped="Grid_Tapped" />
-                        </DataTemplate>
-                    </FlipView.ItemTemplate>
-                </FlipView>
-                <Border
-                    Margin="4"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    CornerRadius="6">
-                    <Border.Background>
-                        <media:AcrylicBrush
-                            BackgroundSource="Backdrop"
-                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
-                            TintColor="{ThemeResource SystemChromeMediumHighColor}"
-                            TintOpacity="0" />
-                    </Border.Background>
-                    <muxc:PipsPager
-                        Margin="2,0"
-                        NumberOfPages="{Binding Entities, Converter={StaticResource CollectionCountConverter}}"
-                        SelectedPageIndex="{Binding SelectedIndex, ElementName=FlipView, Mode=TwoWay}" />
-                </Border>
-            </Grid>
+                <Grid>
+                    <FlipView
+                        x:Name="FlipView"
+                        contract7Present:CornerRadius="8"
+                        Background="{ThemeResource SystemControlTransparentBrush}"
+                        ItemsSource="{Binding Entities}"
+                        Loaded="FlipView_Loaded"
+                        SizeChanged="FlipView_SizeChanged">
+                        <FlipView.ItemTemplate>
+                            <DataTemplate>
+                                <Image
+                                    x:Name="Picture"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    CanDrag="True"
+                                    KeyDown="Grid_KeyDown"
+                                    Source="{Binding Pic.Pic, Mode=OneWay}"
+                                    Tag="{Binding}"
+                                    Tapped="Grid_Tapped" />
+                            </DataTemplate>
+                        </FlipView.ItemTemplate>
+                    </FlipView>
+                    <Border
+                        Margin="4"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        CornerRadius="6">
+                        <Border.Background>
+                            <media:AcrylicBrush
+                                BackgroundSource="Backdrop"
+                                FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintOpacity="0" />
+                        </Border.Background>
+                        <muxc:PipsPager
+                            Margin="2,0"
+                            NumberOfPages="{Binding Entities, Converter={StaticResource CollectionCountConverter}}"
+                            SelectedPageIndex="{Binding SelectedIndex, ElementName=FlipView, Mode=TwoWay}" />
+                    </Border>
+                </Grid>
+            </Border>
             <Border
                 Grid.Row="2"
                 CornerRadius="8"

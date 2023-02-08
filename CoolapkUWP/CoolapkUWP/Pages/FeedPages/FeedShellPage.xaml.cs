@@ -4,7 +4,9 @@ using CoolapkUWP.Models;
 using CoolapkUWP.Models.Feeds;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
+using System;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.UserActivities;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,6 +25,7 @@ namespace CoolapkUWP.Pages.FeedPages
     public sealed partial class FeedShellPage : Page
     {
         private FeedShellViewModel Provider;
+        private static UserActivitySession _currentActivity;
 
         public FeedShellPage() => InitializeComponent();
 
@@ -37,6 +40,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 if (Provider.FeedDetail != null)
                 {
                     SetLayout();
+                    GenerateActivityAsync();
                 }
             }
             await Task.Delay(30);
@@ -46,6 +50,26 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             TwoPaneView.MinWideModeWidth = Provider.FeedDetail?.IsFeedArticle ?? false ? 876 : 804;
             TwoPaneView.Pane1Length = new GridLength(Provider.FeedDetail?.IsFeedArticle ?? false ? 520 : 420);
+        }
+
+        private async void GenerateActivityAsync()
+        {
+            // Get the default UserActivityChannel and query it for our UserActivity. If the activity doesn't exist, one is created.
+            UserActivityChannel channel = UserActivityChannel.GetDefault();
+            UserActivity userActivity = await channel.GetOrCreateUserActivityAsync(Provider.FeedDetail.ShareUrl.GetMD5());
+
+            // Populate required properties
+            userActivity.VisualElements.DisplayText = Provider.Title;
+            userActivity.VisualElements.AttributionDisplayText = Provider.Title;
+            userActivity.VisualElements.Description = Provider.FeedDetail.Message.CSStoString();
+            userActivity.ActivationUri = new Uri($"coolapk://{(Provider.FeedDetail.Url[0] == '/' ? Provider.FeedDetail.Url.Substring(1) : Provider.FeedDetail.Url)}");
+
+            //Save
+            await userActivity.SaveAsync(); //save the new metadata
+
+            // Dispose of any current UserActivitySession, and create a new one.
+            _currentActivity?.Dispose();
+            _currentActivity = userActivity.CreateSession();
         }
 
         private async void FeedButton_Click(object sender, RoutedEventArgs _)

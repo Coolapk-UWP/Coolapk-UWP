@@ -23,7 +23,7 @@ namespace CoolapkUWP.Controls.DataTemplates
         {
             if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
             {
-                (sender as FrameworkElement).Visibility = Visibility.Collapsed;
+                ((sender as FrameworkElement)?.Parent as FrameworkElement).Visibility = Visibility.Collapsed;
             }
             else
             {

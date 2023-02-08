@@ -87,7 +87,6 @@
                     VerticalAlignment="Center"
                     IsTabStop="True"
                     ItemTemplateSelector="{StaticResource SearchTemplateSelector}"
-                    PlaceholderText="搜索动态、话题、用户等"
                     QuerySubmitted="AutoSuggestBox_QuerySubmitted"
                     TextChanged="AutoSuggestBox_TextChanged">
                     <AutoSuggestBox.QueryIcon>
@@ -140,11 +139,7 @@
             IsBackEnabled="False"
             IsSettingsVisible="False"
             IsTitleBarAutoPaddingEnabled="False"
-            Loaded="NavigationView_Loaded"
             SelectionChanged="NavigationView_SelectionChanged">
-            <!--<muxc:NavigationView.PaneCustomContent>
-                <Border x:Name="NavigationViewPaneHeader" />
-            </muxc:NavigationView.PaneCustomContent>-->
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem x:Uid="/MainPage/Home" Tag="Home">
                     <muxc:NavigationViewItem.Icon>
@@ -184,7 +179,10 @@
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
             </muxc:NavigationView.FooterMenuItems>
-            <Frame x:Name="NavigationViewFrame" x:FieldModifier="public" />
+            <Frame
+                x:Name="NavigationViewFrame"
+                x:FieldModifier="public"
+                Navigated="On_Navigated" />
         </muxc:NavigationView>
         <muxc:ProgressBar
             x:Name="ProgressBar"

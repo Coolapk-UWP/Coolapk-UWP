@@ -48,19 +48,19 @@
         </local:PageHeader>
         <RichEditBox
             x:Name="InputBox"
+            x:Uid="/CreateFeedControl/EditBox"
             Grid.Row="1"
             Margin="6,0"
             AcceptsReturn="True"
             Background="{ThemeResource SystemControlTransparentBrush}"
             BorderBrush="{ThemeResource SystemControlTransparentBrush}"
             Loaded="InputBox_Loaded"
-            PlaceholderText="写一些东西……"
             TextWrapping="Wrap" />
         <GridView
             Grid.Row="2"
             Padding="10,8,10,0"
             HorizontalContentAlignment="Left"
-            ItemsSource="{x:Bind Pictures, Mode=OneWay}"
+            ItemsSource="{x:Bind Provider.Pictures, Mode=OneWay}"
             SelectionChanged="GridView_SelectionChanged">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -79,10 +79,10 @@
                         <Border.ContextFlyout>
                             <MenuFlyout>
                                 <MenuFlyoutItem
-                                    x:Name="Delete"
+                                    x:Name="DeletePic"
+                                    x:Uid="/CreateFeedControl/DeletePicItem"
                                     Click="MenuFlyoutItem_Click"
-                                    Tag="{Binding}"
-                                    Text="删除">
+                                    Tag="{Binding}">
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74D;" />
                                     </MenuFlyoutItem.Icon>
@@ -98,8 +98,8 @@
         </GridView>
         <CommandBar Grid.Row="3" contract12Present:OverflowButtonVisibility="Collapsed">
             <AppBarButton
+                x:Uid="/CreateFeedControl/LinkButton"
                 AllowFocusOnInteraction="True"
-                Label="用户与话题"
                 Tag="Link">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE71B;" />
@@ -117,16 +117,16 @@
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
                         <Pivot>
-                            <PivotItem Header="用户">
+                            <PivotItem x:Uid="/CreateFeedControl/UserPivotItem">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
                                     <AutoSuggestBox
+                                        x:Uid="/CreateFeedControl/UserSearchBox"
                                         Margin="8,4"
                                         IsTabStop="True"
-                                        PlaceholderText="搜索用户……"
                                         QuerySubmitted="UserAutoSuggestBox_QuerySubmitted">
                                         <AutoSuggestBox.QueryIcon>
                                             <muxc:AnimatedIcon>
@@ -176,16 +176,16 @@
                                         IsIndeterminate="{x:Bind Provider.CreateUserItemSourse.IsLoading, Mode=OneWay}" />
                                 </Grid>
                             </PivotItem>
-                            <PivotItem Header="话题">
+                            <PivotItem x:Uid="/CreateFeedControl/TopicPivotItem">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
                                     <AutoSuggestBox
+                                        x:Uid="/CreateFeedControl/TopicSearchBox"
                                         Margin="8,4"
                                         IsTabStop="True"
-                                        PlaceholderText="搜索话题……"
                                         QuerySubmitted="TopicAutoSuggestBox_QuerySubmitted">
                                         <AutoSuggestBox.QueryIcon>
                                             <muxc:AnimatedIcon>
@@ -243,8 +243,8 @@
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarButton
+                x:Uid="/CreateFeedControl/EmojiButton"
                 AllowFocusOnInteraction="True"
-                Label="表情"
                 Tag="Emoji">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE76E;" />
@@ -267,9 +267,9 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <AutoSuggestBox
+                                x:Uid="/CreateFeedControl/EmojiSearchBox"
                                 Margin="8,8,8,-8"
                                 IsTabStop="True"
-                                PlaceholderText="搜索表情……"
                                 SuggestionChosen="EmojiAutoSuggestBox_SuggestionChosen"
                                 TextChanged="EmojiAutoSuggestBox_TextChanged">
                                 <AutoSuggestBox.ItemTemplate>
@@ -354,16 +354,29 @@
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarButton
+                x:Uid="/CreateFeedControl/AddPicButton"
                 Click="AppBarButton_Click"
-                Label="添加图片"
                 Tag="AddPic">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE710;" />
                 </AppBarButton.Icon>
+                <AppBarButton.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem
+                            x:Name="PastePic"
+                            x:Uid="/CreateFeedControl/PastePicItem"
+                            Click="MenuFlyoutItem_Click"
+                            Tag="PastePic">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77F;" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                    </MenuFlyout>
+                </AppBarButton.ContextFlyout>
             </AppBarButton>
             <AppBarButton
+                x:Uid="/CreateFeedControl/SendButton"
                 Click="AppBarButton_Click"
-                Label="发送"
                 Tag="Send">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE724;" />

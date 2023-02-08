@@ -217,6 +217,7 @@ namespace CoolapkUWP.Models.Images
             else
             {
                 StorageFile file = await ImageCacheHelper.GetImageFileAsync(Type, Uri);
+                if (file == null) { LoadCompleted?.Invoke(this, null); return; }
                 using (IRandomAccessStreamWithContentType stream = await file.OpenReadAsync())
                 {
                     BitmapImage image = new BitmapImage();

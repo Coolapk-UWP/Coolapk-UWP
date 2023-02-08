@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation.Metadata;
@@ -120,9 +121,78 @@ namespace CoolapkUWP.Pages
             SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
             AppTitleText.Text = ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安";
             CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged += (s, _) => UpdateAppTitle(s);
+            if (e.Parameter is IActivatedEventArgs ActivatedEventArgs) { OpenActivatedEventArgs(ActivatedEventArgs); }
         }
 
         public string GetAppTitleFromSystem => Package.Current.DisplayName;
+
+        private void OpenActivatedEventArgs(IActivatedEventArgs args)
+        {
+            switch (args.Kind)
+            {
+                case ActivationKind.Launch:
+                    LaunchActivatedEventArgs LaunchActivatedEventArgs = (LaunchActivatedEventArgs)args;
+                    if (LaunchActivatedEventArgs.Arguments != null)
+                    {
+                        switch (LaunchActivatedEventArgs.Arguments)
+                        {
+                            case "settings":
+                                UIHelper.Navigate(typeof(SettingsPage));
+                                break;
+                            case "flags":
+                                UIHelper.Navigate(typeof(TestPage));
+                                break;
+                            default:
+                                NavigationView.SelectedItem = NavigationView.MenuItems[0];
+                                break;
+                        }
+                    }
+                    else if (LaunchActivatedEventArgs.TileActivatedInfo != null)
+                    {
+                        if (LaunchActivatedEventArgs.TileActivatedInfo.RecentlyShownNotifications.Any())
+                        {
+                            UIHelper.OpenLinkAsync(LaunchActivatedEventArgs.TileActivatedInfo.RecentlyShownNotifications.FirstOrDefault().Arguments);
+                        }
+                        else
+                        {
+                            NavigationView.SelectedItem = NavigationView.MenuItems[0];
+                        }
+                    }
+                    else
+                    {
+                        NavigationView.SelectedItem = NavigationView.MenuItems[0];
+                    }
+                    break;
+                case ActivationKind.Protocol:
+                    IProtocolActivatedEventArgs ProtocolActivatedEventArgs = (IProtocolActivatedEventArgs)args;
+                    switch (ProtocolActivatedEventArgs.Uri.Host)
+                    {
+                        case "www.coolapk.com":
+                        case "coolapk.com":
+                        case "www.coolmarket.com":
+                        case "coolmarket.com":
+                            UIHelper.OpenLinkAsync(ProtocolActivatedEventArgs.Uri.AbsolutePath);
+                            break;
+                        case "http":
+                        case "https":
+                            UIHelper.OpenLinkAsync($"{ProtocolActivatedEventArgs.Uri.Host}:{ProtocolActivatedEventArgs.Uri.AbsolutePath}");
+                            break;
+                        case "settings":
+                            UIHelper.Navigate(typeof(SettingsPage));
+                            break;
+                        case "flags":
+                            UIHelper.Navigate(typeof(TestPage));
+                            break;
+                        default:
+                            UIHelper.OpenLinkAsync($"{(ProtocolActivatedEventArgs.Uri.AbsolutePath[0] == '/' ? string.Empty : "/")}{ProtocolActivatedEventArgs.Uri.AbsolutePath}");
+                            break;
+                    }
+                    break;
+                default:
+                    NavigationView.SelectedItem = NavigationView.MenuItems[0];
+                    break;
+            }
+        }
 
         private void OnIsStretchProperty(DependencyObject sender, DependencyProperty dp)
         {
@@ -149,13 +219,6 @@ namespace CoolapkUWP.Pages
                                         ? new GridLength(32) : new GridLength(0);
                 UpdateAppTitleIcon();
             }
-        }
-
-        private void NavigationView_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Add handler for ContentFrame navigation.
-            NavigationViewFrame.Navigated += On_Navigated;
-            NavigationView.SelectedItem = NavigationView.MenuItems[0];
         }
 
         private void NavigationView_Navigate(string NavItemTag, NavigationTransitionInfo TransitionInfo, object vs = null)

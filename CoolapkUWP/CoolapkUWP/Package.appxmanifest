@@ -33,15 +33,15 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="CoolapkUWP.App">
       <uap:VisualElements
-		  DisplayName="ms-resource:AppName"
-		  Square150x150Logo="Assets\Square150x150Logo.png"
-		  Square44x44Logo="Assets\Square44x44Logo.png"
-		  Description="ms-resource:AppDescription"
-		  BackgroundColor="transparent">
+        DisplayName="ms-resource:AppName"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png"
+        Description="ms-resource:AppDescription"
+        BackgroundColor="transparent">
         <uap:DefaultTile
-			Wide310x150Logo="Assets\Wide310x150Logo.png"
-			Square71x71Logo="Assets\SmallTile.png"
-			Square310x310Logo="Assets\LargeTile.png">
+          Wide310x150Logo="Assets\Wide310x150Logo.png"
+          Square71x71Logo="Assets\SmallTile.png"
+          Square310x310Logo="Assets\LargeTile.png">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="square150x150Logo" />
             <uap:ShowOn Tile="wide310x150Logo" />
@@ -56,6 +56,20 @@
           <uap:Rotation Preference="landscapeFlipped" />
         </uap:InitialRotationPreference>
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="coolmarket" ReturnResults="optional">
+            <uap:DisplayName>ms-resource:CoolMarketProtocol</uap:DisplayName>
+            <uap:Logo>Assets\StoreLogo.png</uap:Logo>
+          </uap:Protocol>
+        </uap:Extension>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="coolapk" ReturnResults="optional">
+            <uap:DisplayName>ms-resource:CoolapkProtocol</uap:DisplayName>
+            <uap:Logo>Assets\StoreLogo.png</uap:Logo>
+          </uap:Protocol>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
 
