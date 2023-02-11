@@ -5,7 +5,7 @@
 
 基于[@一块小板子](http://www.coolapk.com/u/695942 "一块小板子")的源码([Github](https://github.com/oboard/CoolApk-UWP "oboard"))
 
-[![Build Status](https://dev.azure.com/wherewhere/Coolapk-UWP/_apis/build/status/Coolapk-UWP.Coolapk-UWP?branchName=dev-where)](https://dev.azure.com/wherewhere/Coolapk-UWP/_build/latest?definitionId=2&branchName=dev-where)
+[![Build Status](https://dev.azure.com/wherewhere/Coolapk-UWP/_apis/build/status/Coolapk-UWP.Coolapk-UWP?branchName=revived)](https://dev.azure.com/wherewhere/Coolapk-UWP/_build/latest?definitionId=2&branchName=revived)
 
 [![LICENSE](https://img.shields.io/github/license/Coolapk-UWP/Coolapk-UWP.svg?label=License&style=flat-square)](https://github.com/Coolapk-UWP/Coolapk-UWP/blob/master/LICENSE "LICENSE")
 [![Issues](https://img.shields.io/github/issues/Coolapk-UWP/Coolapk-UWP.svg?label=Issues&style=flat-square)](https://github.com/Coolapk-UWP/Coolapk-UWP/issues "Issues")

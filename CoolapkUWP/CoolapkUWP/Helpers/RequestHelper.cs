@@ -1,5 +1,4 @@
-﻿using CoolapkUWP.Common;
-using CoolapkUWP.Models;
+﻿using CoolapkUWP.Models;
 using CoolapkUWP.Models.Feeds;
 using CoolapkUWP.Models.Upload;
 using Microsoft.Toolkit.Uwp.Helpers;
@@ -9,11 +8,9 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Core;
@@ -60,52 +57,35 @@ namespace CoolapkUWP.Helpers
 
         public static async Task<(bool isSucceed, JToken result)> PostDataAsync(Uri uri, HttpContent content = null, bool isBackground = false)
         {
-            (bool isSucceed, JToken result) result;
-
-            (bool isSucceed, JToken result) GetResult(string jsons)
-            {
-                if (string.IsNullOrEmpty(jsons)) { return (false, null); }
-                JObject o;
-                try { o = JObject.Parse(jsons); }
-                catch (Exception ex)
-                {
-                    SettingsHelper.LogManager.GetLogger(nameof(RequestHelper)).Error(ex.ExceptionToMessage(), ex);
-                    UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
-                    return (false, null);
-                }
-                if (!o.TryGetValue("data", out JToken token) && o.TryGetValue("message", out JToken message))
-                {
-                    UIHelper.ShowInAppMessage(MessageType.Message, message.ToString());
-                    return (false, null);
-                }
-                else { return (token != null && !string.IsNullOrEmpty(token.ToString()), token); }
-            }
-
             string json = await NetworkHelper.PostAsync(uri, content, NetworkHelper.GetCoolapkCookies(uri), isBackground);
-            result = GetResult(json);
-
-            return result;
+            if (string.IsNullOrEmpty(json)) { return (false, null); }
+            JObject token;
+            try { token = JObject.Parse(json); }
+            catch (Exception ex)
+            {
+                SettingsHelper.LogManager.GetLogger(nameof(RequestHelper)).Error(ex.ExceptionToMessage(), ex);
+                UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
+                return (false, null);
+            }
+            if (!token.TryGetValue("data", out JToken data) && token.TryGetValue("message", out JToken message))
+            {
+                bool _isSucceed = token.TryGetValue("error", out JToken error) && error.ToObject<int>() == 0;
+                UIHelper.ShowInAppMessage(MessageType.Message, message.ToString());
+                return (_isSucceed, token);
+            }
+            else if (data != null && !string.IsNullOrWhiteSpace(data.ToString())) { return (true, data); }
+            else { return (token != null && !string.IsNullOrEmpty(token.ToString()), token); }
         }
 
         public static async Task<(bool isSucceed, string result)> PostStringAsync(Uri uri, HttpContent content = null, bool isBackground = false)
         {
-            (bool isSucceed, string result) result;
-
-            string json;
-            (bool isSucceed, string result) GetResult()
+            string json = await NetworkHelper.PostAsync(uri, content, NetworkHelper.GetCoolapkCookies(uri), isBackground);
+            if (string.IsNullOrEmpty(json))
             {
-                if (string.IsNullOrEmpty(json))
-                {
-                    UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
-                    return (false, null);
-                }
-                else { return (true, json); }
+                UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
+                return (false, null);
             }
-
-            json = await NetworkHelper.PostAsync(uri, content, NetworkHelper.GetCoolapkCookies(uri), isBackground);
-            result = GetResult();
-
-            return result;
+            else { return (true, json); }
         }
 
         private static (int page, Uri uri) GetPage(this Uri uri)
@@ -159,7 +139,7 @@ namespace CoolapkUWP.Helpers
 
             bool isReply = model is FeedReplyModel;
             Uri u = UriHelper.GetOldUri(
-                model.Liked ? UriType.OperateUnlike : UriType.OperateLike,
+                model.Liked ? UriType.PostFeedUnlike : UriType.PostFeedLike,
                 isReply ? "Reply" : string.Empty,
                 model.ID);
             (bool isSucceed, JToken result) = await PostDataAsync(u, null, true);
@@ -183,16 +163,6 @@ namespace CoolapkUWP.Helpers
                 model.Liked = !model.Liked;
                 model.LikeNum = LikeNum;
             });
-        }
-
-        public static async void ChangeFollow(this ICanFollow model, CoreDispatcher dispatcher)
-        {
-            UriType type = model.Followed ? UriType.OperateUnfollow : UriType.OperateFollow;
-
-            (bool isSucceed, _) = await PostDataAsync(UriHelper.GetUri(type, model.UID), null, true);
-            if (!isSucceed) { return; }
-
-            await dispatcher.AwaitableRunAsync(() => model.Followed = !model.Followed);
         }
 
         public static async void UploadImagePrepare(IList<UploadFileFragment> images)

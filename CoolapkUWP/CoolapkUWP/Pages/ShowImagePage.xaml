@@ -166,7 +166,8 @@
                 <AppBarButton
                     Click="AppBarButton_Click"
                     Label="刷新"
-                    Tag="Refresh">
+                    Tag="Refresh"
+                    ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
                     </AppBarButton.Icon>
@@ -174,7 +175,8 @@
                 <AppBarButton
                     Click="AppBarButton_Click"
                     Label="分享"
-                    Tag="Share">
+                    Tag="Share"
+                    ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72D;" />
                     </AppBarButton.Icon>
@@ -182,7 +184,8 @@
                 <AppBarButton
                     Click="AppBarButton_Click"
                     Label="保存"
-                    Tag="Save">
+                    Tag="Save"
+                    ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74E;" />
                     </AppBarButton.Icon>

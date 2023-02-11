@@ -1,11 +1,14 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Images;
+using Microsoft.Toolkit.Uwp.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Windows.UI.Core;
 
 namespace CoolapkUWP.Models.Feeds
 {
@@ -92,6 +95,8 @@ namespace CoolapkUWP.Models.Feeds
                 }
             }
         }
+
+        int ICanFollow.ID => UID;
 
         public int ID => EntityID;
         public int UID => UserInfo.UID;
@@ -292,6 +297,16 @@ namespace CoolapkUWP.Models.Feeds
                 ShowSourceFeed = true;
                 SourceFeed = new SourceFeedModel(forwardSourceFeed as JObject);
             }
+        }
+
+        public async Task ChangeFollow()
+        {
+            UriType type = Followed ? UriType.PostUserUnfollow : UriType.PostUserFollow;
+
+            (bool isSucceed, _) = await RequestHelper.PostDataAsync(UriHelper.GetUri(type, UID), null, true);
+            if (!isSucceed) { return; }
+
+            Followed = !Followed;
         }
     }
 

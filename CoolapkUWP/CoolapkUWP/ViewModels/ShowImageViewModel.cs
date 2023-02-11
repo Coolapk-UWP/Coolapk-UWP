@@ -102,8 +102,10 @@ namespace CoolapkUWP.ViewModels
 
         public void Initialize()
         {
-            Images = BaseImage.ContextArray.Select(x => new ImageModel(x.Uri, ImageType.SmallImage)).ToList();
-            Index = BaseImage.ContextArray.IndexOf(BaseImage);
+            Images = BaseImage.ContextArray.Any()
+                ? BaseImage.ContextArray.Select(x => new ImageModel(x.Uri, ImageType.SmallImage)).ToList()
+                : (IList<ImageModel>)new List<ImageModel> { new ImageModel(BaseImage.Uri, ImageType.SmallImage) };
+            Index = BaseImage.ContextArray.Any() ? BaseImage.ContextArray.IndexOf(BaseImage) : 0;
         }
 
         public async Task Refresh(bool reset = false) => await Images[Index].Refresh();

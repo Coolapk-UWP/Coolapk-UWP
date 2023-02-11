@@ -47,6 +47,7 @@
                     Visibility="{Binding IsFeedArticle, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
                     <Image
                         x:Name="MessageCover"
+                        Tapped="OnTapped"
                         Source="{Binding MessageCover.Pic, Mode=OneWay}"
                         Stretch="UniformToFill"
                         Tag="{Binding MessageCover}"

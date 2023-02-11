@@ -52,10 +52,15 @@ namespace CoolapkUWP.Helpers
         GetUserSpace,
         GetUserProfile,
         GetUserFollows,
-        OperateFollow,
-        OperateLike,
-        OperateUnfollow,
-        OperateUnlike,
+        PostUserFollow,
+        PostTopicFollow,
+        PostDyhFollow,
+        PostFeedLike,
+        PostUserUnfollow,
+        PostTopicUnfollow,
+        PostDyhUnfollow,
+        PostFeedUnlike,
+        OperateProductFollow,
         OOSUploadPrepare,
         RequestValidate,
         UploadImage,
@@ -162,10 +167,15 @@ namespace CoolapkUWP.Helpers
                 case UriType.GetUserSpace: return "/v6/user/space?uid={0}";
                 case UriType.GetUserProfile: return "/v6/user/profile?uid={0}";
                 case UriType.GetUserFollows: return "/v6/user/{0}?uid={1}&page={2}";
-                case UriType.OperateFollow: return "/v6/user/follow?uid={0}";
-                case UriType.OperateLike: return "/v6/feed/like{0}?id={1}";
-                case UriType.OperateUnfollow: return "/v6/user/unfollow?uid={0}";
-                case UriType.OperateUnlike: return "/v6/feed/unlike{0}?id={1}";
+                case UriType.PostUserFollow: return "/v6/user/follow?uid={0}";
+                case UriType.PostTopicFollow: return "/v6/feed/followTag?tag={0}";
+                case UriType.PostDyhFollow: return "/v6/dyh/follow?dyhId={0}";
+                case UriType.PostFeedLike: return "/v6/feed/like{0}?id={1}";
+                case UriType.PostUserUnfollow: return "/v6/user/unfollow?uid={0}";
+                case UriType.PostDyhUnfollow: return "/v6/dyh/unFollow?dyhId={0}";
+                case UriType.PostTopicUnfollow: return "/v6/feed/unFollowTag?tag={0}";
+                case UriType.PostFeedUnlike: return "/v6/feed/unlike{0}?id={1}";
+                case UriType.OperateProductFollow: return "/v6/product/changeFollowStatus";
                 case UriType.OOSUploadPrepare: return "/v6/upload/ossUploadPrepare";
                 case UriType.RequestValidate: return "/v6/account/requestValidate";
                 case UriType.UploadImage: return "/v6/feed/uploadImage?fieldName=picFile&uploadDir={0}";

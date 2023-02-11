@@ -100,7 +100,8 @@
             <AppBarButton
                 x:Uid="/CreateFeedControl/LinkButton"
                 AllowFocusOnInteraction="True"
-                Tag="Link">
+                Tag="Link"
+                ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE71B;" />
                 </AppBarButton.Icon>
@@ -245,7 +246,8 @@
             <AppBarButton
                 x:Uid="/CreateFeedControl/EmojiButton"
                 AllowFocusOnInteraction="True"
-                Tag="Emoji">
+                Tag="Emoji"
+                ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE76E;" />
                 </AppBarButton.Icon>
@@ -356,7 +358,8 @@
             <AppBarButton
                 x:Uid="/CreateFeedControl/AddPicButton"
                 Click="AppBarButton_Click"
-                Tag="AddPic">
+                Tag="AddPic"
+                ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE710;" />
                 </AppBarButton.Icon>
@@ -377,7 +380,8 @@
             <AppBarButton
                 x:Uid="/CreateFeedControl/SendButton"
                 Click="AppBarButton_Click"
-                Tag="Send">
+                Tag="Send"
+                ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE724;" />
                 </AppBarButton.Icon>

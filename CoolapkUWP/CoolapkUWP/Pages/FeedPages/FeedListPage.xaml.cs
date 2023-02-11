@@ -1,9 +1,11 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Models;
 using CoolapkUWP.ViewModels.DataSource;
 using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -122,8 +124,12 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            switch ((sender as FrameworkElement).Tag.ToString())
+            FrameworkElement element = sender as FrameworkElement;
+            switch (element.Name)
             {
+                case "FollowButton":
+                    _ = (element.Tag as ICanFollow).ChangeFollow();
+                    break;
                 case "FollowsButton":
                     UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(Provider.ID, true, Provider.Title));
                     break;

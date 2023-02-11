@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Models.Images;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -19,7 +20,7 @@ namespace CoolapkUWP.Controls
             switch (element.Name)
             {
                 case "FollowButton":
-                    RequestHelper.ChangeFollow(element.Tag as ICanFollow, element.Dispatcher);
+                    _ = (element.Tag as ICanFollow).ChangeFollow();
                     break;
                 default:
                     UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
@@ -54,7 +55,14 @@ namespace CoolapkUWP.Controls
 
             if (e != null) { e.Handled = true; }
 
-            UIHelper.OpenLinkAsync(element.Tag.ToString());
+            if (element.Tag is ImageModel image)
+            {
+                UIHelper.ShowImage(image);
+            }
+            else
+            {
+                UIHelper.OpenLinkAsync(element.Tag.ToString());
+            }
         }
 
         private void UrlButton_Click(object sender, RoutedEventArgs e) => UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
