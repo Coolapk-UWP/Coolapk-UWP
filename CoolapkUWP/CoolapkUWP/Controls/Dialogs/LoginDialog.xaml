@@ -1,0 +1,28 @@
+﻿<ContentDialog
+    x:Class="CoolapkUWP.Controls.LoginDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:CoolapkUWP.Controls"
+    x:Uid="/LoginDialog/LoginDialog"
+    DefaultButton="Primary"
+    Style="{StaticResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+    <controls:StackPanel Spacing="4">
+        <TextBox
+            Header="UID"
+            PlaceholderText="UID"
+            Text="{x:Bind UID, Mode=TwoWay}"
+            TextChanged="TextBox_TextChanged" />
+        <TextBox
+            Header="Username"
+            PlaceholderText="Username"
+            Text="{x:Bind UserName, Mode=TwoWay}"
+            TextChanged="TextBox_TextChanged" />
+        <PasswordBox
+            Header="Token"
+            Password="{x:Bind Token, Mode=TwoWay}"
+            PasswordChanged="PasswordBox_PasswordChanged"
+            PlaceholderText="Token" />
+    </controls:StackPanel>
+</ContentDialog>

@@ -9,7 +9,7 @@
     xmlns:primitives="using:Microsoft.UI.Xaml.Controls.Primitives">
 
     <Thickness x:Key="NavigationViewHeaderMargin">0</Thickness>
-    <Thickness x:Key="NavigationViewMinimalHeaderMargin">0,48,0,0</Thickness>
+    <Thickness x:Key="NavigationViewMinimalHeaderMargin">0,40,0,0</Thickness>
     <Thickness x:Key="NavigationViewTopHeaderMargin">0,40,0,0</Thickness>
     <Thickness x:Key="NavigationViewItemInnerHeaderMargin">0</Thickness>
     <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
@@ -543,6 +543,7 @@
                                         <Setter Target="ContentGrid.BorderThickness" Value="{ThemeResource NavigationViewMinimalContentGridBorderThickness}" />
                                         <Setter Target="ContentGrid.ContentCornerRadius" Value="{ThemeResource NavigationViewMinimalContentGridCornerRadius}" />
                                         <Setter Target="ContentGrid.Margin" Value="{ThemeResource NavigationViewMinimalContentMargin}" />
+                                        <Setter Target="PaneContentGridToggleButtonRow.Height" Value="40" />
                                     </VisualState.Setters>
                                 </VisualState>
 
@@ -561,6 +562,7 @@
                                         <Setter Target="ContentGrid.BorderThickness" Value="{ThemeResource NavigationViewMinimalContentGridBorderThickness}" />
                                         <Setter Target="ContentGrid.ContentCornerRadius" Value="{ThemeResource NavigationViewMinimalContentGridCornerRadius}" />
                                         <Setter Target="ContentGrid.Margin" Value="{ThemeResource NavigationViewMinimalContentMargin}" />
+                                        <Setter Target="PaneContentGridToggleButtonRow.Height" Value="40" />
                                     </VisualState.Setters>
                                 </VisualState>
                             </VisualStateGroup>
@@ -628,6 +630,9 @@
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TogglePaneButton" Storyboard.TargetProperty="Visibility">
                                                 <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
                                             </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="NavigationViewCloseButton" Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                                            </ObjectAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualTransition>
                                     <VisualTransition From="PaneOverlaying" To="PaneNotOverlaying">
@@ -651,6 +656,7 @@
                                 <VisualState x:Name="PaneOverlaying">
                                     <VisualState.Setters>
                                         <Setter Target="TogglePaneButton.Visibility" Value="Collapsed" />
+                                        <Setter Target="NavigationViewCloseButton.Visibility" Value="Visible" />
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="PaneNotOverlaying">

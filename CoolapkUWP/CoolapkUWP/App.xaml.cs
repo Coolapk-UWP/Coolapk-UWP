@@ -3,7 +3,6 @@ using CoolapkUWP.Helpers;
 using CoolapkUWP.Helpers.Exceptions;
 using CoolapkUWP.Models.Exceptions;
 using CoolapkUWP.Pages;
-using CoolapkUWP.Pages.SettingsPages;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
@@ -92,8 +91,8 @@ namespace CoolapkUWP
             // 只需确保窗口处于活动状态
             if (!(MainWindow.Content is Frame rootFrame))
             {
-                ThemeHelper.Initialize();
                 CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+                ThemeHelper.Initialize();
 
                 // 创建要充当导航上下文的框架，并导航到第一页
                 rootFrame = new Frame();

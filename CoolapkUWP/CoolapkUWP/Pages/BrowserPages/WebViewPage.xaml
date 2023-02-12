@@ -35,7 +35,20 @@
                     VerticalAlignment="Center"
                     Click="TryLoginButton_Click"
                     Style="{StaticResource TransparentButtonStyle}"
-                    Visibility="{Binding IsLoginPage, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    Visibility="{Binding IsLoginPage, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <UIElement.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem
+                                x:Name="ManualLoginButton"
+                                x:Uid="/BrowserPage/ManualLoginButton"
+                                Click="ManualLoginButton_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEC87;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </UIElement.ContextFlyout>
+                </Button>
                 <Button
                     x:Name="RefreshButton"
                     Margin="-8,0,0,0"

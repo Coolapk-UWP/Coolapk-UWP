@@ -4,6 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:globalization="using:System.Globalization"
+    xmlns:helper="using:CoolapkUWP.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     NavigationCacheMode="Required"
     mc:Ignorable="d">
@@ -12,7 +14,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <controls:PageHeader x:Name="HeaderControl" Title="测试" />
+        <controls:PageHeader x:Name="HeaderControl" x:Uid="/TestPage/TitleBar" />
         <ScrollViewer
             Grid.Row="1"
             HorizontalScrollBarVisibility="Disabled"
@@ -23,10 +25,70 @@
                         <ReorderThemeTransition />
                     </TransitionCollection>
                 </StackPanel.ChildrenTransitions>
-                <Image
-                    Width="20"
-                    Height="20"
-                    Source="ms-appx:///Assets/Emoji/(cos滑稽).png" />
+                <controls:SettingsGroup x:Uid="/TestPage/UITestSettingsHeader">
+                    <controls:Setting x:Uid="/TestPage/TitleBarSettings" Icon="&#xE737;">
+                        <controls:Setting.ActionContent>
+                            <ToggleSwitch IsOn="{x:Bind IsExtendsTitleBar, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
+                        </controls:Setting.ActionContent>
+                    </controls:Setting>
+                    <controls:SettingExpander>
+                        <controls:SettingExpander.Header>
+                            <controls:Setting x:Uid="/TestPage/ProgressSettings" Icon="&#xF16A;">
+                                <controls:Setting.ActionContent>
+                                    <ToggleSwitch IsOn="{x:Bind IsShowProgressRing, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
+                                </controls:Setting.ActionContent>
+                            </controls:Setting>
+                        </controls:SettingExpander.Header>
+                        <controls:SettingExpander.Content>
+                            <StackPanel>
+                                <controls:Setting x:Uid="/TestPage/SetProgressValue" Style="{StaticResource ExpanderContentSettingStyle}">
+                                    <controls:Setting.ActionContent>
+                                        <Slider
+                                            Width="180"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center"
+                                            Maximum="100"
+                                            Value="{x:Bind ProgressValue, Mode=TwoWay}" />
+                                    </controls:Setting.ActionContent>
+                                </controls:Setting>
+                            </StackPanel>
+                        </controls:SettingExpander.Content>
+                    </controls:SettingExpander>
+                    <controls:Setting x:Uid="/TestPage/LanguageSettings" Icon="&#xF2B7;">
+                        <controls:Setting.ActionContent>
+                            <ComboBox
+                                ItemsSource="{x:Bind helper:LanguageHelper.SupportCultures}"
+                                Loaded="ComboBox_Loaded"
+                                SelectionChanged="ComboBox_SelectionChanged"
+                                Tag="Language">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="globalization:CultureInfo">
+                                        <TextBlock>
+                                            <Run Text="{x:Bind DisplayName}" />
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </controls:Setting.ActionContent>
+                    </controls:Setting>
+                    <controls:Setting x:Uid="/TestPage/CompactOverlaySettings" Icon="&#xE944;">
+                        <controls:Setting.ActionContent>
+                            <StackPanel
+                                Margin="0,2"
+                                Orientation="Horizontal"
+                                Spacing="4">
+                                <Button
+                                    x:Uid="/TestPage/EnterPIP"
+                                    Click="Button_Click"
+                                    Tag="EnterPIP" />
+                                <Button
+                                    x:Uid="/TestPage/OutPIP"
+                                    Click="Button_Click"
+                                    Tag="OutPIP" />
+                            </StackPanel>
+                        </controls:Setting.ActionContent>
+                    </controls:Setting>
+                </controls:SettingsGroup>
             </StackPanel>
         </ScrollViewer>
         <VisualStateManager.VisualStateGroups>

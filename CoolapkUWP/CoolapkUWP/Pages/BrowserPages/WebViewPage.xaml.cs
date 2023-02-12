@@ -3,6 +3,7 @@ using CoolapkUWP.Helpers;
 using CoolapkUWP.ViewModels.BrowserPages;
 using Microsoft.Toolkit.Uwp.UI;
 using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.System;
 using Windows.UI.Xaml;
@@ -26,6 +27,7 @@ namespace CoolapkUWP.Pages.BrowserPages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            Frame.Navigating += OnFrameNavigating;
             UIHelper.MainPage.FindDescendant<WebViewContentControl>().IsWebView = true;
             if (e.Parameter is BrowserViewModel ViewModel)
             {
@@ -38,6 +40,7 @@ namespace CoolapkUWP.Pages.BrowserPages
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
+            Frame.Navigating -= OnFrameNavigating;
             UIHelper.MainPage.FindDescendant<WebViewContentControl>().IsWebView = false;
         }
 
@@ -62,11 +65,11 @@ namespace CoolapkUWP.Pages.BrowserPages
             }
         }
 
-        private void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        private async void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
             if (Provider.IsLoginPage && args.Uri.AbsoluteUri == "https://www.coolapk.com/")
             {
-                CheckLogin();
+                await CheckLogin();
             }
             else if (args.Uri.AbsoluteUri == UriHelper.LoginUri)
             {
@@ -76,11 +79,22 @@ namespace CoolapkUWP.Pages.BrowserPages
             UIHelper.HideProgressBar();
         }
 
-        private async void CheckLogin()
+        private void OnFrameNavigating(object sender, NavigatingCancelEventArgs args)
+        {
+            if (args.NavigationMode == NavigationMode.Back && WebView.CanGoBack)
+            {
+                WebView.GoBack();
+                args.Cancel = true;
+            }
+        }
+
+        private async Task CheckLogin()
         {
             ResourceLoader loader = ResourceLoader.GetForCurrentView("BrowserPage");
+            UIHelper.ShowMessage(loader.GetString("Logging"));
             if (await SettingsHelper.Login())
             {
+                Frame.Navigating -= OnFrameNavigating;
                 if (Frame.CanGoBack) { Frame.GoBack(); }
                 UIHelper.ShowMessage(loader.GetString("LoginSuccessfully"));
             }
@@ -91,9 +105,20 @@ namespace CoolapkUWP.Pages.BrowserPages
             }
         }
 
+        private async void ManualLoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoginDialog Dialog = new LoginDialog();
+            ContentDialogResult result = await Dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary && Frame.CanGoBack)
+            {
+                Frame.Navigating -= OnFrameNavigating;
+                if (Frame.CanGoBack) { Frame.GoBack(); }
+            }
+        }
+
         private void GotoSystemBrowserButton_Click(object sender, RoutedEventArgs e) => _ = Launcher.LaunchUriAsync(WebView.Source);
 
-        private void TryLoginButton_Click(object sender, RoutedEventArgs e) => CheckLogin();
+        private void TryLoginButton_Click(object sender, RoutedEventArgs e) => _ = CheckLogin();
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e) => WebView.Refresh();
     }

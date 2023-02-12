@@ -23,6 +23,7 @@ namespace CoolapkUWP.Helpers
         public const string UpdateDate = "UpdateDate";
         public const string IsNoPicsMode = "IsNoPicsMode";
         public const string TokenVersion = "TokenVersion";
+        public const string CurrentLanguage = "CurrentLanguage";
         public const string SelectedAppTheme = "SelectedAppTheme";
         public const string ShowOtherException = "ShowOtherException";
         public const string IsDisplayOriginPicture = "IsDisplayOriginPicture";
@@ -74,6 +75,10 @@ namespace CoolapkUWP.Helpers
             if (!LocalObject.KeyExists(TokenVersion))
             {
                 LocalObject.Save(TokenVersion, Common.TokenVersion.TokenV2);
+            }
+            if (!LocalObject.KeyExists(CurrentLanguage))
+            {
+                LocalObject.Save(CurrentLanguage, LanguageHelper.AutoLanguageCode);
             }
             if (!LocalObject.KeyExists(SelectedAppTheme))
             {

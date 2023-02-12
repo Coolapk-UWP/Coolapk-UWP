@@ -4,6 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:contract12NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 12)"
+    xmlns:contract5NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
+    xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,7)"
     xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -109,6 +111,49 @@
                 Margin="10,0"
                 HorizontalAlignment="Left">
                 <Button Style="{StaticResource ProfileButtonStyle}">
+                    <Button.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem
+                                Click="MenuFlyoutItem_Click"
+                                Tag="CreateFeed"
+                                Text="写动态"
+                                Visibility="{x:Bind UserName, Converter={StaticResource StringVisibilityConverter}, Mode=OneWay}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE932;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutSeparator Visibility="{x:Bind UserName, Converter={StaticResource StringVisibilityConverter}, Mode=OneWay}" />
+                            <MenuFlyoutItem
+                                Click="MenuFlyoutItem_Click"
+                                Tag="Settings"
+                                Text="设置">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE713;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem
+                                Click="MenuFlyoutItem_Click"
+                                Tag="Logout"
+                                Text="注销"
+                                Visibility="{x:Bind UserName, Converter={StaticResource StringVisibilityConverter}, Mode=OneWay}">
+                                <contract5Present:MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF3B1;" />
+                                </contract5Present:MenuFlyoutItem.Icon>
+                                <contract5NotPresent:MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8D4;" />
+                                </contract5NotPresent:MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem
+                                Click="MenuFlyoutItem_Click"
+                                Tag="Login"
+                                Text="登录"
+                                Visibility="{x:Bind UserName, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true', Mode=OneWay}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE78B;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Button.ContextFlyout>
                     <Button.Flyout>
                         <Flyout x:Name="ProfileFlyout">
                             <Flyout.FlyoutPresenterStyle>
@@ -139,6 +184,8 @@
             IsBackEnabled="False"
             IsSettingsVisible="False"
             IsTitleBarAutoPaddingEnabled="False"
+            PaneClosing="NavigationViewControl_PaneClosing"
+            PaneOpening="NavigationViewControl_PaneOpening"
             SelectionChanged="NavigationView_SelectionChanged">
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem x:Uid="/MainPage/Home" Tag="Home">
@@ -194,7 +241,15 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
+                        <AdaptiveTrigger MinWindowHeight="0" MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NavigationView.PaneDisplayMode" Value="Auto" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowHeight="386" MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="NavigationView.PaneDisplayMode" Value="Top" />
@@ -202,7 +257,7 @@
                 </VisualState>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{x:Bind NavigationView.CompactModeThresholdWidth}" />
+                        <AdaptiveTrigger MinWindowHeight="0" MinWindowWidth="{x:Bind NavigationView.CompactModeThresholdWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <contract7Present:Setter Target="ProfileFlyout.Placement" Value="BottomEdgeAlignedRight" />
@@ -216,7 +271,6 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="AppTitleIcon.Margin" Value="16,0" />
                         <Setter Target="SearchTextBox.Margin" Value="0" />
                         <Setter Target="SearchBoxHolder.IsStretch" Value="True" />
                         <Setter Target="AppTitleText.Visibility" Value="Collapsed" />
@@ -227,7 +281,6 @@
                         <AdaptiveTrigger MinWindowWidth="641" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="AppTitleIcon.Margin" Value="24.5,0,24,0" />
                         <Setter Target="SearchTextBox.Margin" Value="0,0,0,0" />
                         <Setter Target="SearchBoxHolder.IsStretch" Value="True" />
                         <Setter Target="AppTitleText.Visibility" Value="Collapsed" />
@@ -238,7 +291,6 @@
                         <AdaptiveTrigger MinWindowWidth="850" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="AppTitleIcon.Margin" Value="16,0" />
                         <Setter Target="SearchTextBox.Margin" Value="40,0" />
                         <Setter Target="SearchBoxHolder.IsStretch" Value="False" />
                         <Setter Target="AppTitleText.Visibility" Value="Visible" />

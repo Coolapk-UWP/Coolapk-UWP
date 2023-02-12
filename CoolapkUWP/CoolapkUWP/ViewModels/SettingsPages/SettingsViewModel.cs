@@ -227,9 +227,9 @@ namespace CoolapkUWP.ViewModels.SettingsPages
 
         public SettingsViewModel() => Caches = this;
 
-        private async void GetAboutTextBlockText()
+        private void GetAboutTextBlockText()
         {
-            await Task.Run(async () =>
+            _ = Task.Run(async () =>
             {
                 string langcode = LanguageHelper.GetPrimaryLanguage();
                 Uri dataUri = new Uri($"ms-appx:///Assets/About/About.{langcode}.md");

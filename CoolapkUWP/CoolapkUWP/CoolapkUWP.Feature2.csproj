@@ -165,6 +165,9 @@
     <Compile Include="Controls\DataTemplates\SearchWordTemplates.xaml.cs">
       <DependentUpon>SearchWordTemplates.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Dialogs\LoginDialog.xaml.cs">
+      <DependentUpon>LoginDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\FeedShellDetailControl.xaml.cs">
       <DependentUpon>FeedShellDetailControl.xaml</DependentUpon>
     </Compile>
@@ -988,6 +991,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\Dialogs\LoginDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\FeedShellDetailControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1187,6 +1194,12 @@
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\zh-CN\CreateFeedControl.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\zh-CN\LoginDialog.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\zh-CN\TestPage.resw" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

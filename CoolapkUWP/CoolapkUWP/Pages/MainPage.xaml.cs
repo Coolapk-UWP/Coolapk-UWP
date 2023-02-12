@@ -2,9 +2,12 @@
 using CoolapkUWP.Controls;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.Pages.SettingsPages;
+using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
+using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using Newtonsoft.Json.Linq;
 using System;
@@ -12,6 +15,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Xml.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -22,6 +26,7 @@ using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
@@ -204,21 +209,8 @@ namespace CoolapkUWP.Pages
 
         private void OnIsBackButtonVisibleChanged(DependencyObject sender, DependencyProperty dp)
         {
-            if (sender is muxc.NavigationView element)
-            {
-                LeftPaddingColumn.Width = element.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top
-                    ? element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                        ? new GridLength(32) : new GridLength(0)
-                        : element.DisplayMode == muxc.NavigationViewDisplayMode.Minimal
-                            ? element.IsPaneToggleButtonVisible
-                                ? element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                                ? new GridLength((48 * 2) - 24) : new GridLength(32)
-                                    : element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                                    ? new GridLength(32) : new GridLength(0)
-                                        : element.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                                        ? new GridLength(32) : new GridLength(0);
-                UpdateAppTitleIcon();
-            }
+            UpdateLeftPaddingColumn();
+            UpdateAppTitleIcon();
         }
 
         private void NavigationView_Navigate(string NavItemTag, NavigationTransitionInfo TransitionInfo, object vs = null)
@@ -293,19 +285,35 @@ namespace CoolapkUWP.Pages
             UIHelper.HideProgressBar();
         }
 
+        private void NavigationViewControl_PaneClosing(muxc.NavigationView sender, muxc.NavigationViewPaneClosingEventArgs args)
+        {
+            UpdateLeftPaddingColumn();
+        }
+
+        private void NavigationViewControl_PaneOpening(muxc.NavigationView sender, object args)
+        {
+            UpdateLeftPaddingColumn();
+        }
+
+        private void UpdateLeftPaddingColumn()
+        {
+            LeftPaddingColumn.Width = NavigationView.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top
+                ? NavigationView.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
+                    ? new GridLength(48) : new GridLength(0)
+                    : NavigationView.DisplayMode == muxc.NavigationViewDisplayMode.Minimal
+                        ? NavigationView.IsPaneOpen ? new GridLength(72)
+                        : NavigationView.IsPaneToggleButtonVisible
+                            ? NavigationView.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
+                            ? new GridLength(88) : new GridLength(48)
+                                : NavigationView.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
+                                ? new GridLength(48) : new GridLength(0)
+                                    : NavigationView.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
+                                    ? new GridLength(48) : new GridLength(0);
+        }
+
         private void NavigationViewControl_DisplayModeChanged(muxc.NavigationView sender, muxc.NavigationViewDisplayModeChangedEventArgs args)
         {
-            LeftPaddingColumn.Width = sender.PaneDisplayMode == muxc.NavigationViewPaneDisplayMode.Top
-                ? sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                    ? new GridLength(32) : new GridLength(0)
-                    : sender.DisplayMode == muxc.NavigationViewDisplayMode.Minimal
-                        ? sender.IsPaneToggleButtonVisible
-                            ? sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                            ? new GridLength((48 * 2) - 24) : new GridLength(32)
-                                : sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                                ? new GridLength(32) : new GridLength(0)
-                                    : sender.IsBackButtonVisible != muxc.NavigationViewBackButtonVisible.Collapsed
-                                    ? new GridLength(32) : new GridLength(0);
+            UpdateLeftPaddingColumn();
             UpdateAppTitleIcon();
         }
 
@@ -313,13 +321,17 @@ namespace CoolapkUWP.Pages
         {
             AppTitleIcon.Margin = SearchBoxHolder.IsStretch
                 && NavigationView.PaneDisplayMode != muxc.NavigationViewPaneDisplayMode.Top
+                && NavigationView.DisplayMode != muxc.NavigationViewDisplayMode.Minimal
                     ? NavigationView.IsBackButtonVisible == muxc.NavigationViewBackButtonVisible.Visible
-                        ? new Thickness(16, 0, 16, 0)
+                        ? new Thickness(0, 0, 16, 0)
                         : new Thickness(24.5, 0, 24, 0)
-                            : new Thickness(16, 0, 16, 0);
+                    : NavigationView.IsBackButtonVisible == muxc.NavigationViewBackButtonVisible.Visible
+                        || NavigationView.IsPaneToggleButtonVisible
+                        ? new Thickness(0, 0, 16, 0)
+                        : new Thickness(16, 0, 16, 0);
         }
 
-        private void OnLoginChanged(string sender, bool args) => SetUserAvatar(args);
+        private void OnLoginChanged(string sender, bool args) => _ = Dispatcher.AwaitableRunAsync(() => SetUserAvatar(args));
 
         private async void SetUserAvatar(bool isLogin)
         {
@@ -360,6 +372,35 @@ namespace CoolapkUWP.Pages
             if (!e.Handled)
             {
                 e.Handled = TryGoBack();
+            }
+        }
+
+        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            switch ((sender as FrameworkElement).Tag.ToString())
+            {
+                case "Login":
+                    NavigationViewFrame.Navigate(typeof(BrowserPage), new BrowserViewModel(UriHelper.LoginUri));
+                    break;
+                case "Logout":
+                    SettingsHelper.Logout();
+                    break;
+                case "Settings":
+                    NavigationView.SelectedItem = NavigationView.FooterMenuItems.LastOrDefault();
+                    break;
+                case "CreateFeed":
+                    new CreateFeedControl
+                    {
+                        FeedType = CreateFeedType.Feed,
+                        PopupTransitions = new TransitionCollection
+                        {
+                            new EdgeUIThemeTransition
+                            {
+                                Edge = EdgeTransitionLocation.Bottom
+                            }
+                        }
+                    }.Show();
+                    break;
             }
         }
 
@@ -414,53 +455,71 @@ namespace CoolapkUWP.Pages
 
         public void ShowProgressBar()
         {
-            ProgressBar.Visibility = Visibility.Visible;
-            ProgressBar.IsIndeterminate = true;
-            ProgressBar.ShowError = false;
-            ProgressBar.ShowPaused = false;
+            _ = Dispatcher.AwaitableRunAsync(() =>
+            {
+                ProgressBar.Visibility = Visibility.Visible;
+                ProgressBar.IsIndeterminate = true;
+                ProgressBar.ShowError = false;
+                ProgressBar.ShowPaused = false;
+            });
         }
 
         public void ShowProgressBar(double value)
         {
-            ProgressBar.Visibility = Visibility.Visible;
-            ProgressBar.IsIndeterminate = false;
-            ProgressBar.ShowError = false;
-            ProgressBar.ShowPaused = false;
-            ProgressBar.Value = value;
+            _ = Dispatcher.AwaitableRunAsync(() =>
+            {
+                ProgressBar.Visibility = Visibility.Visible;
+                ProgressBar.IsIndeterminate = false;
+                ProgressBar.ShowError = false;
+                ProgressBar.ShowPaused = false;
+                ProgressBar.Value = value;
+            });
         }
 
         public void PausedProgressBar()
         {
-            ProgressBar.Visibility = Visibility.Visible;
-            ProgressBar.IsIndeterminate = true;
-            ProgressBar.ShowError = false;
-            ProgressBar.ShowPaused = true;
+            _ = Dispatcher.AwaitableRunAsync(() =>
+            {
+                ProgressBar.Visibility = Visibility.Visible;
+                ProgressBar.IsIndeterminate = true;
+                ProgressBar.ShowError = false;
+                ProgressBar.ShowPaused = true;
+            });
         }
 
         public void ErrorProgressBar()
         {
-            ProgressBar.Visibility = Visibility.Visible;
-            ProgressBar.IsIndeterminate = true;
-            ProgressBar.ShowPaused = false;
-            ProgressBar.ShowError = true;
+            _ = Dispatcher.AwaitableRunAsync(() =>
+            {
+                ProgressBar.Visibility = Visibility.Visible;
+                ProgressBar.IsIndeterminate = true;
+                ProgressBar.ShowPaused = false;
+                ProgressBar.ShowError = true;
+            });
         }
 
         public void HideProgressBar()
         {
-            ProgressBar.Visibility = Visibility.Collapsed;
-            ProgressBar.IsIndeterminate = false;
-            ProgressBar.ShowError = false;
-            ProgressBar.ShowPaused = false;
-            ProgressBar.Value = 0;
+            _ = Dispatcher.AwaitableRunAsync(() =>
+            {
+                ProgressBar.Visibility = Visibility.Collapsed;
+                ProgressBar.IsIndeterminate = false;
+                ProgressBar.ShowError = false;
+                ProgressBar.ShowPaused = false;
+                ProgressBar.Value = 0;
+            });
         }
 
         public void ShowMessage(string message = null)
         {
-            if (CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar)
+            _ = Dispatcher.AwaitableRunAsync(() =>
             {
-                AppTitleText.Text = message ?? ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安";
-            }
-            ApplicationView.GetForCurrentView().Title = message ?? string.Empty;
+                if (CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar)
+                {
+                    AppTitleText.Text = message ?? ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安";
+                }
+                ApplicationView.GetForCurrentView().Title = message ?? string.Empty;
+            });
         }
 
         #endregion

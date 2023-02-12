@@ -129,7 +129,7 @@ namespace CoolapkUWP.Helpers
                         ApplicationViewTitleBar TitleBar = ApplicationView.GetForCurrentView().TitleBar;
                         TitleBar.ForegroundColor = TitleBar.ButtonForegroundColor = ForegroundColor;
                         TitleBar.BackgroundColor = TitleBar.InactiveBackgroundColor = BackgroundColor;
-                        TitleBar.ButtonBackgroundColor = TitleBar.ButtonInactiveBackgroundColor = ExtendViewIntoTitleBar ? BackgroundColor : Colors.Transparent;
+                        TitleBar.ButtonBackgroundColor = TitleBar.ButtonInactiveBackgroundColor = ExtendViewIntoTitleBar ? Colors.Transparent : BackgroundColor;
                     }
                 });
             }

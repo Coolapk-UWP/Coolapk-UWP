@@ -117,31 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BackButton.Content" xml:space="preserve">
-    <value>尝试获取token</value>
+  <data name="CompactOverlaySettings.Description" xml:space="preserve">
+    <value>进入或退出画中画模式</value>
   </data>
-  <data name="BackButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>如果登录成功后没有自动返回上一页，请点这里。如果获取token失败，请右击尝试手动登录。</value>
+  <data name="CompactOverlaySettings.Header" xml:space="preserve">
+    <value>画中画模式</value>
   </data>
-  <data name="CannotGetToken" xml:space="preserve">
-    <value>没有获取到token，请尝试重新登录</value>
+  <data name="EnterPIP.Content" xml:space="preserve">
+    <value>进入画中画模式</value>
   </data>
-  <data name="Logging" xml:space="preserve">
-    <value>正在登录</value>
+  <data name="LanguageSettings.Description" xml:space="preserve">
+    <value>选择语言并重启应用来更改语言</value>
   </data>
-  <data name="LoginFailed" xml:space="preserve">
-    <value>登录失败</value>
+  <data name="LanguageSettings.Header" xml:space="preserve">
+    <value>语言</value>
   </data>
-  <data name="LoginSuccessfully" xml:space="preserve">
-    <value>登录成功</value>
+  <data name="OutPIP.Content" xml:space="preserve">
+    <value>退出</value>
   </data>
-  <data name="ManualLoginButton.Text" xml:space="preserve">
-    <value>手动登录</value>
+  <data name="ProgressSettings.Description" xml:space="preserve">
+    <value>测试窗口顶部的进度条</value>
   </data>
-  <data name="OpenInBrowserButton.Content" xml:space="preserve">
-    <value>在浏览器中打开</value>
+  <data name="ProgressSettings.Header" xml:space="preserve">
+    <value>进度</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>浏览器</value>
+  <data name="SetProgressValue.Description" xml:space="preserve">
+    <value>设置进度条的值</value>
+  </data>
+  <data name="SetProgressValue.Header" xml:space="preserve">
+    <value>进度值</value>
+  </data>
+  <data name="TitleBar.Title" xml:space="preserve">
+    <value>测试</value>
+  </data>
+  <data name="TitleBarSettings.Description" xml:space="preserve">
+    <value>将内容扩展到标题栏</value>
+  </data>
+  <data name="TitleBarSettings.Header" xml:space="preserve">
+    <value>标题栏</value>
+  </data>
+  <data name="UITestSettingsHeader.Header" xml:space="preserve">
+    <value>界面测试</value>
   </data>
 </root>

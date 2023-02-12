@@ -231,6 +231,26 @@ namespace CoolapkUWP.Helpers
             if (!string.IsNullOrWhiteSpace(ex.HelpLink)) { builder.Append($"HelperLink: {ex.HelpLink}"); }
             return builder.ToString();
         }
+
+        public static TResult AwaitByTaskCompleteSource<TResult>(Func<Task<TResult>> function)
+        {
+            TaskCompletionSource<TResult> taskCompletionSource = new TaskCompletionSource<TResult>();
+            Task<TResult> task = taskCompletionSource.Task;
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    TResult result = await function.Invoke().ConfigureAwait(false);
+                    taskCompletionSource.SetResult(result);
+                }
+                catch (Exception e)
+                {
+                    taskCompletionSource.SetException(e);
+                }
+            });
+            TResult taskResult = task.Result;
+            return taskResult;
+        }
     }
 
     public enum NavigationThemeTransition

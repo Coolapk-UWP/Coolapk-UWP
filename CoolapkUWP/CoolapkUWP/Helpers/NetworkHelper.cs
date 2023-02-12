@@ -269,8 +269,9 @@ namespace CoolapkUWP.Helpers
         /// 通过用户名或 UID 获取用户信息。
         /// </summary>
         /// <param name="name">要获取信息的用户名或 UID 。</param>
+        /// <param name="isBackground">是否通知错误。</param>
         /// <returns>用户信息</returns>
-        public static async Task<(string UID, string UserName, string UserAvatar)> GetUserInfoByNameAsync(string name)
+        public static async Task<(string UID, string UserName, string UserAvatar)> GetUserInfoByNameAsync(string name, bool isBackground = false)
         {
             (string UID, string UserName, string UserAvatar) result = (string.Empty, string.Empty, string.Empty);
 
@@ -312,7 +313,7 @@ namespace CoolapkUWP.Helpers
             catch (HttpRequestException e)
             {
                 SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Error(e.ExceptionToMessage(), e);
-                UIHelper.ShowHttpExceptionMessage(e);
+                if (!isBackground) { UIHelper.ShowHttpExceptionMessage(e); }
                 return result;
             }
             catch (Exception ex)
