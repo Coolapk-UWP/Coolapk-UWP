@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Controls;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.ViewModels.BrowserPages;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
@@ -28,6 +29,7 @@ namespace CoolapkUWP.Pages.BrowserPages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            Frame.Navigating += OnFrameNavigating;
             if (e.Parameter is BrowserViewModel ViewModel)
             {
                 Provider = ViewModel;
@@ -39,6 +41,7 @@ namespace CoolapkUWP.Pages.BrowserPages
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
+            Frame.Navigating -= OnFrameNavigating;
             WebView.Close();
         }
 
@@ -61,12 +64,25 @@ namespace CoolapkUWP.Pages.BrowserPages
             UIHelper.HideProgressBar();
         }
 
+        private void OnFrameNavigating(object sender, NavigatingCancelEventArgs args)
+        {
+            if (args.NavigationMode == NavigationMode.Back && WebView.CanGoBack)
+            {
+                WebView.GoBack();
+                args.Cancel = true;
+            }
+        }
+
         private async void CheckLogin()
         {
             ResourceLoader loader = ResourceLoader.GetForCurrentView("BrowserPage");
             if (await SetLoginCookie() && await SettingsHelper.Login())
             {
-                if (Frame.CanGoBack) { Frame.GoBack(); }
+                if (Frame.CanGoBack)
+                {
+                    Frame.Navigating -= OnFrameNavigating;
+                    Frame.GoBack();
+                }
                 UIHelper.ShowMessage(loader.GetString("LoginSuccessfully"));
             }
             else
@@ -114,6 +130,17 @@ namespace CoolapkUWP.Pages.BrowserPages
                 return true;
             }
             return false;
+        }
+
+        private async void ManualLoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoginDialog Dialog = new LoginDialog();
+            ContentDialogResult result = await Dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary && Frame.CanGoBack)
+            {
+                Frame.Navigating -= OnFrameNavigating;
+                Frame.GoBack();
+            }
         }
 
         private void GotoSystemBrowserButton_Click(object sender, RoutedEventArgs e) => _ = Launcher.LaunchUriAsync(WebView.Source);

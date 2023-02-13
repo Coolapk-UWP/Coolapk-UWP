@@ -225,7 +225,11 @@ namespace CoolapkUWP.ViewModels.SettingsPages
             }
         }
 
-        public SettingsViewModel() => Caches = this;
+        public SettingsViewModel()
+        {
+            Caches = this;
+            SettingsHelper.LoginChanged += (sender, args) => IsLogin = args;
+        }
 
         private void GetAboutTextBlockText()
         {

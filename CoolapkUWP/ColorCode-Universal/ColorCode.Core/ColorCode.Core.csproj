@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="MSBuild.Sdk.Extras">
+
+  <PropertyGroup>
+    <TargetFramework>uap10.0</TargetFramework>
+    <RootNamespace>ColorCode</RootNamespace>
+    <AssemblyName>ColorCode.Core</AssemblyName>
+    <Title>ColorCode-Universal</Title>
+    <Description>The Core Library, containing the Parser, and the classes to create your own formatter.</Description>
+    <PackageTags>ColorCode Syntax Highlighting SyntaxHighlighting Formatting</PackageTags>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
+    <ExtrasUwpMetaPackageVersion>6.2.14</ExtrasUwpMetaPackageVersion>
+    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.22621.0</TargetPlatformVersion>
+  </PropertyGroup>
+
+</Project>

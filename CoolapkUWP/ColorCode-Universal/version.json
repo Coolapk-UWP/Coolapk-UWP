@@ -1,0 +1,15 @@
+{
+  "version": "2.0.15-build.{height}",
+  "publicReleaseRefSpec": [
+    "^refs/heads/main$", // we release out of main
+    "^refs/heads/rel/\\d+\\.\\d+\\.\\d+" // we also release branches starting with rel/N.N.N
+  ],
+  "nugetPackageVersion":{
+    "semVer": 2
+  },
+  "cloudBuild": {
+    "buildNumber": {
+      "enabled": false
+    }
+  }
+}

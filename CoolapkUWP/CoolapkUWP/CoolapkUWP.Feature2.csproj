@@ -924,6 +924,14 @@
       <Project>{001d1687-3e63-4b1a-8d4c-a9bb3631a511}</Project>
       <Name>BCrypt.Net</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ColorCode-Universal\ColorCode.Core\ColorCode.Core.csproj">
+      <Project>{66c525f8-8bb9-4026-8ced-5f2868175b8e}</Project>
+      <Name>ColorCode.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ColorCode-Universal\ColorCode.UWP\ColorCode.UWP.csproj">
+      <Project>{c28c936a-316c-46da-888d-3ab53f15557e}</Project>
+      <Name>ColorCode.UWP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WindowsCommunityToolkit\Microsoft.Toolkit.Uwp.Connectivity\Microsoft.Toolkit.Uwp.Connectivity.csproj">
       <Project>{fedc09c9-6e92-4676-87e1-bf492644dc40}</Project>
       <Name>Microsoft.Toolkit.Uwp.Connectivity</Name>

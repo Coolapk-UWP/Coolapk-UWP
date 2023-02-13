@@ -24,7 +24,7 @@
 
   <PropertyGroup>
     <TargetPlatformBaseVersion>10.0</TargetPlatformBaseVersion>
-    <TargetPlatformRevision>19041</TargetPlatformRevision>
+    <TargetPlatformRevision>22621</TargetPlatformRevision>
     <TargetPlatformMinRevision>15063</TargetPlatformMinRevision>
   </PropertyGroup>
 

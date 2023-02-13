@@ -9,7 +9,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     d:DataContext="{d:DesignInstance Type=browserpages:BrowserViewModel}"
-    NavigationCacheMode="Required"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
@@ -22,23 +21,36 @@
             Margin="18,0,0,0"
             FontSize="{StaticResource ContentControlFontSize}"
             FontWeight="Normal">
-            <controls:StackPanel Orientation="Horizontal" Spacing="2">
+            <StackPanel Orientation="Horizontal" Spacing="2">
                 <Button
                     x:Name="GotoSystemBrowserButton"
                     x:Uid="/BrowserPage/OpenInBrowserButton"
                     Height="32"
                     VerticalAlignment="Center"
-                    x:Load="{x:Bind Provider.IsLoginPage, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                     Click="GotoSystemBrowserButton_Click"
-                    Style="{StaticResource TransparentButtonStyle}" />
+                    Style="{StaticResource TransparentButtonStyle}"
+                    Visibility="{Binding IsLoginPage, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
                 <Button
                     x:Name="TryLoginButton"
                     x:Uid="/BrowserPage/BackButton"
                     Height="32"
                     VerticalAlignment="Center"
-                    x:Load="{x:Bind Provider.IsLoginPage, Mode=OneWay}"
                     Click="TryLoginButton_Click"
-                    Style="{StaticResource TransparentButtonStyle}" />
+                    Style="{StaticResource TransparentButtonStyle}"
+                    Visibility="{Binding IsLoginPage, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <UIElement.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem
+                                x:Name="ManualLoginButton"
+                                x:Uid="/BrowserPage/ManualLoginButton"
+                                Click="ManualLoginButton_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEC87;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </UIElement.ContextFlyout>
+                </Button>
                 <Button
                     x:Name="RefreshButton"
                     Margin="-8,0,0,0"
@@ -46,7 +58,7 @@
                     Click="RefreshButton_Click"
                     Content="&#xE72C;"
                     Style="{StaticResource NavigationIconButtonNormalStyle}" />
-            </controls:StackPanel>
+            </StackPanel>
         </controls:PageHeader>
         <muxc:WebView2
             x:Name="WebView"

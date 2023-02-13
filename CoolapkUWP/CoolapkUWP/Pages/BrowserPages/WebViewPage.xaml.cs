@@ -94,8 +94,11 @@ namespace CoolapkUWP.Pages.BrowserPages
             UIHelper.ShowMessage(loader.GetString("Logging"));
             if (await SettingsHelper.Login())
             {
-                Frame.Navigating -= OnFrameNavigating;
-                if (Frame.CanGoBack) { Frame.GoBack(); }
+                if (Frame.CanGoBack)
+                {
+                    Frame.Navigating -= OnFrameNavigating;
+                    Frame.GoBack();
+                }
                 UIHelper.ShowMessage(loader.GetString("LoginSuccessfully"));
             }
             else
@@ -112,7 +115,7 @@ namespace CoolapkUWP.Pages.BrowserPages
             if (result == ContentDialogResult.Primary && Frame.CanGoBack)
             {
                 Frame.Navigating -= OnFrameNavigating;
-                if (Frame.CanGoBack) { Frame.GoBack(); }
+                Frame.GoBack();
             }
         }
 

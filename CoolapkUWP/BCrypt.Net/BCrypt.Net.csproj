@@ -9,7 +9,6 @@
     <ExtrasUwpMetaPackageVersion>6.2.14</ExtrasUwpMetaPackageVersion>
     <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
     <TargetPlatformVersion>10.0.22621.0</TargetPlatformVersion>
-    <TargetPlatformWinMDLocation>C:\Program Files (x86)\Windows Kits\10\UnionMetadata</TargetPlatformWinMDLocation>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netcore50'">

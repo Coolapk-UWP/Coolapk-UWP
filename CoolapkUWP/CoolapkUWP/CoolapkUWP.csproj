@@ -153,6 +153,9 @@
     <Compile Include="Controls\DataTemplates\SearchWordTemplates.xaml.cs">
       <DependentUpon>SearchWordTemplates.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Dialogs\LoginDialog.xaml.cs">
+      <DependentUpon>LoginDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\FeedShellDetailControl.xaml.cs">
       <DependentUpon>FeedShellDetailControl.xaml</DependentUpon>
     </Compile>
@@ -912,6 +915,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\Dialogs\LoginDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\FeedShellDetailControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1073,8 +1080,8 @@
     <PackageReference Include="BCrypt.Net-Next">
       <Version>4.0.3</Version>
     </PackageReference>
-    <PackageReference Include="CommunityToolkit.Mvvm">
-      <Version>8.0.0</Version>
+    <PackageReference Include="ColorCode.UWP">
+      <Version>2.0.14</Version>
     </PackageReference>
     <PackageReference Include="HtmlAgilityPack">
       <Version>1.11.46</Version>
@@ -1102,6 +1109,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.8.2</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Web.WebView2">
+      <Version>1.0.1518.46</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
@@ -1153,6 +1163,15 @@
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\zh-CN\NotificationsPage.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\zh-CN\CreateFeedControl.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\zh-CN\LoginDialog.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\zh-CN\TestPage.resw" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

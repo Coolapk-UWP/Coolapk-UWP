@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Xml.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -326,7 +325,7 @@ namespace CoolapkUWP.Pages
                         ? new Thickness(0, 0, 16, 0)
                         : new Thickness(24.5, 0, 24, 0)
                     : NavigationView.IsBackButtonVisible == muxc.NavigationViewBackButtonVisible.Visible
-                        || NavigationView.IsPaneToggleButtonVisible
+                        || (NavigationView.DisplayMode == muxc.NavigationViewDisplayMode.Minimal && NavigationView.IsPaneToggleButtonVisible)
                         ? new Thickness(0, 0, 16, 0)
                         : new Thickness(16, 0, 16, 0);
         }

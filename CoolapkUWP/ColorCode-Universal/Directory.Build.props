@@ -1,0 +1,67 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- Package Config -->
+    <Company>Microsoft</Company>
+    <Authors>Microsoft</Authors>
+    <Product>ColorCode Universal</Product>
+    <CommonTags>dotnet;Community;Toolkit;syntax;highlight</CommonTags>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Copyright>(c) .NET Foundation and Contributors. All rights reserved.</Copyright>
+    <PackageProjectUrl>https://github.com/CommunityToolkit/ColorCode-Universal</PackageProjectUrl>
+    
+    <!-- Project States -->
+    <LangVersion>7.3</LangVersion>
+    <IsUwpProject>$(MSBuildProjectName.Contains('UWP'))</IsUwpProject>
+    <IsWinUIProject>$(MSBuildProjectName.Contains('WinUI'))</IsWinUIProject>
+    <IsTestProject>$(MSBuildProjectName.Contains('Test'))</IsTestProject>
+  </PropertyGroup>
+
+  <!-- UWP Config -->
+  <PropertyGroup Condition="'$(IsUwpProject)' == 'true'">
+    <ExtrasUwpMetaPackageVersion>6.2.14</ExtrasUwpMetaPackageVersion>
+    <TargetPlatformVersion>10.0.22621.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
+  </PropertyGroup>
+
+  <!-- WinUI Config -->
+  <PropertyGroup Condition="'$(IsWinUIProject)' == 'true'">
+    <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="'$(SourceLinkEnabled)' != 'false' and '$(IsTestProject)' != 'true'">
+      <PropertyGroup>
+        <GenerateLibraryLayout>true</GenerateLibraryLayout>
+        <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <!-- Optional: Embed source files that are not tracked by the source control manager in the PDB -->
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <!-- Optional: Include PDB in the built .nupkg -->
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+      </PropertyGroup>
+      <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+      </ItemGroup>
+    </When>
+  </Choose>
+  
+  <Choose>
+    <When Condition="'$(IsWinUIProject)' == 'true'">
+      <ItemGroup>
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.4" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.5.119" PrivateAssets="all" />
+  </ItemGroup>
+</Project>

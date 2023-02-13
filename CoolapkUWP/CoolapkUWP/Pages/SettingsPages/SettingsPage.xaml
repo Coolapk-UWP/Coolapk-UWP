@@ -2,6 +2,8 @@
     x:Class="CoolapkUWP.Pages.SettingsPages.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:contract5NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
+    xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:cwuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -58,7 +60,13 @@
                     <controls:SettingButton Click="Button_Click" Tag="AccountSetting">
                         <controls:Setting x:Uid="/SettingsPage/AccountSettings" Icon="&#xEF58;" />
                     </controls:SettingButton>
-                    <controls:Setting x:Uid="/SettingsPage/LogoutSettings" Icon="&#xE8D4;">
+                    <controls:Setting x:Uid="/SettingsPage/LogoutSettings">
+                        <controls:Setting.Icon>
+                            <FontIcon
+                                contract5NotPresent:Glyph="&#xE8D4;"
+                                contract5Present:Glyph="&#xF3B1;"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                        </controls:Setting.Icon>
                         <Button x:Name="AccountLogout" x:Uid="/SettingsPage/LogoutSettingsButton">
                             <Button.Flyout>
                                 <Flyout>
