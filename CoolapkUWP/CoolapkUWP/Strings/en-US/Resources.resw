@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDescription" xml:space="preserve">
-    <value>An unofficial Coolapk UWP Program. Based on @oboard. Written by @Tangent-90. Assist by @wherewhere</value>
+    <value>An unofficial Coolapk UWP Program</value>
   </data>
   <data name="AppName" xml:space="preserve">
-    <value>Coolapk UWP</value>
+    <value>Coolapk</value>
   </data>
   <data name="CoolapkProtocol" xml:space="preserve">
-    <value>酷安网页跳转</value>
+    <value>Coolapk Web Jump</value>
   </data>
   <data name="CoolMarketProtocol" xml:space="preserve">
-    <value>酷市场网页跳转</value>
+    <value>Cool Market Web Jump</value>
   </data>
   <data name="ExceptionThrown" xml:space="preserve">
     <value>There was an error with the program…</value>
@@ -152,7 +152,7 @@
     <value>Personal Page load failure</value>
   </data>
   <data name="NetworkError" xml:space="preserve">
-    <value>Network exception</value>
+    <value>Failed to connect to network</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
