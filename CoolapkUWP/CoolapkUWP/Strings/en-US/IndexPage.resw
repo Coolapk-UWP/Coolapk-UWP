@@ -124,10 +124,10 @@
     <value>KanKan</value>
   </data>
   <data name="V11_HOME_MEIHUA" xml:space="preserve">
-    <value>美化</value>
+    <value>Beautify</value>
   </data>
   <data name="V11_HOME_TAB_JC" xml:space="preserve">
-    <value>教程</value>
+    <value>Tutorials</value>
   </data>
   <data name="V11_HOME_TAB_NEWS" xml:space="preserve">
     <value>Newsflash</value>
