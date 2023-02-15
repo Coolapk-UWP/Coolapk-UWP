@@ -118,19 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AtCommentMe.Text" xml:space="preserve">
-    <value>@我的评论</value>
+    <value>@我的評論</value>
   </data>
   <data name="AtMe.Text" xml:space="preserve">
-    <value>@我的动态</value>
+    <value>@我的動態</value>
   </data>
   <data name="CommentMe.Text" xml:space="preserve">
-    <value>回复</value>
+    <value>回復</value>
   </data>
   <data name="FeedLike.Text" xml:space="preserve">
-    <value>我收到的赞</value>
+    <value>我收到的讚</value>
   </data>
   <data name="Follow.Text" xml:space="preserve">
-    <value>好友关注</value>
+    <value>好友關注</value>
   </data>
   <data name="Message.Text" xml:space="preserve">
     <value>私信</value>
