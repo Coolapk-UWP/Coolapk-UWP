@@ -118,19 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="apk" xml:space="preserve">
-    <value>应用</value>
+    <value>應用</value>
   </data>
   <data name="circle" xml:space="preserve">
     <value>好友</value>
   </data>
   <data name="product" xml:space="preserve">
-    <value>数码</value>
+    <value>數碼</value>
   </data>
   <data name="question" xml:space="preserve">
-    <value>问题</value>
+    <value>問題</value>
   </data>
   <data name="topic" xml:space="preserve">
-    <value>话题</value>
+    <value>話題</value>
   </data>
   <data name="V9_HOME_TAB_FOLLOW" xml:space="preserve">
     <value>全部</value>
