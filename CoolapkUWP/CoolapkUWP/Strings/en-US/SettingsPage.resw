@@ -124,25 +124,25 @@
     <value>Are you sure you want to log out?</value>
   </data>
   <data name="DisplaySettingsHeader.Header" xml:space="preserve">
-    <value>显示</value>
+    <value>Display</value>
   </data>
   <data name="ThemeSettings.Header" xml:space="preserve">
-    <value>应用主题</value>
+    <value>App Theme</value>
   </data>
   <data name="WindowsColorButton.Content" xml:space="preserve">
-    <value>Windows 颜色设置</value>
+    <value>Windows Color Settings</value>
   </data>
   <data name="RadioThemeDark.Content" xml:space="preserve">
-    <value>深色</value>
+    <value>Dark</value>
   </data>
   <data name="RadioThemeDefault.Content" xml:space="preserve">
-    <value>Windows 默认</value>
+    <value>Windows Default</value>
   </data>
   <data name="RadioThemeLight.Content" xml:space="preserve">
-    <value>浅色</value>
+    <value>Light</value>
   </data>
   <data name="NoPicsModeSettings.Description" xml:space="preserve">
-    <value>浏览时不显示头像和图片。</value>
+    <value>Avatar and picture not displayed while browsing.</value>
   </data>
   <data name="NoPicsModeSettings.Header" xml:space="preserve">
     <value>No Picture Mode</value>
@@ -151,114 +151,114 @@
     <value>Others</value>
   </data>
   <data name="ShowOtherExceptionSettings.Description" xml:space="preserve">
-    <value>当应用出现未知错误时在应用内通知显示。</value>
+    <value>Notify in app when an unknown error has occurred.</value>
   </data>
   <data name="ShowOtherExceptionSettings.Header" xml:space="preserve">
-    <value>显示未知错误</value>
+    <value>Show Unknown Error</value>
   </data>
   <data name="ResetSettings.Description" xml:space="preserve">
-    <value>重置此应用程序的设置。</value>
+    <value>Reset settings of this application.</value>
   </data>
   <data name="ResetSettings.Header" xml:space="preserve">
-    <value>重置应用</value>
+    <value>Reset application</value>
   </data>
   <data name="ResetSettingsButton.Content" xml:space="preserve">
-    <value>重置</value>
+    <value>Reset</value>
   </data>
   <data name="ResetSettingsConfirm.Content" xml:space="preserve">
-    <value>确定</value>
+    <value>Yes</value>
   </data>
   <data name="ResetSettingsTitle.Text" xml:space="preserve">
-    <value>您确定要重置应用吗？</value>
+    <value>Are you sure you want to reset the app?</value>
   </data>
   <data name="GoToTestPage.Description" xml:space="preserve">
-    <value>前往用于测试的页面。</value>
+    <value>Go to the page of test.</value>
   </data>
   <data name="GoToTestPage.Header" xml:space="preserve">
-    <value>前往测试页面</value>
+    <value>Go to TestPage</value>
   </data>
   <data name="TranslateLink.Content" xml:space="preserve">
-    <value>翻译</value>
+    <value>Translate</value>
   </data>
   <data name="FeedbackLink.Content" xml:space="preserve">
-    <value>反馈</value>
+    <value>Feedback</value>
   </data>
   <data name="LogFolderLink.Content" xml:space="preserve">
-    <value>日志</value>
+    <value>Logs</value>
   </data>
   <data name="ReleaseNotes.Content" xml:space="preserve">
-    <value>发行说明</value>
+    <value>Release notes</value>
   </data>
   <data name="GoToUpdate.Content" xml:space="preserve">
-    <value>前往更新</value>
+    <value>Go to Update</value>
   </data>
   <data name="LastChecked.Text" xml:space="preserve">
-    <value>上次检查时间: </value>
+    <value>Last Checked: </value>
   </data>
   <data name="AboutSettingsHeader.Header" xml:space="preserve">
-    <value>关于</value>
+    <value>About</value>
   </data>
   <data name="CheckFailed" xml:space="preserve">
-    <value>检查失败</value>
+    <value>Check Failed</value>
   </data>
   <data name="CheckingUpdates.Text" xml:space="preserve">
-    <value>正在检查更新……</value>
+    <value>Checking For Updates...</value>
   </data>
   <data name="CheckUpdates.Content" xml:space="preserve">
-    <value>Check for updates</value>
+    <value>Check For Updates</value>
   </data>
   <data name="FindUpdate" xml:space="preserve">
-    <value>找到新的更新</value>
+    <value>Find Update</value>
   </data>
   <data name="UpToDate" xml:space="preserve">
-    <value>Most Recent</value>
+    <value>Up To Date</value>
   </data>
   <data name="FrameworkSettings.Description" xml:space="preserve">
-    <value>关于此应用程序框架的信息。</value>
+    <value>Information about the frameworks of this app.</value>
   </data>
   <data name="FrameworkSettings.Header" xml:space="preserve">
-    <value>框架信息</value>
+    <value>Framework Information</value>
   </data>
   <data name="FrameworkTextBlock.Text" xml:space="preserve">
-    <value>框架</value>
+    <value>Framework</value>
   </data>
   <data name="OSArchitectureTextBlock.Text" xml:space="preserve">
-    <value>操作系统架构</value>
+    <value>OS Architecture</value>
   </data>
   <data name="OSPlatformTextBlock.Text" xml:space="preserve">
-    <value>操作系统版本</value>
+    <value>OS Platform</value>
   </data>
   <data name="DeviceFamilyTextBlock.Text" xml:space="preserve">
-    <value>设备类型</value>
+    <value>Device Type</value>
   </data>
   <data name="CleanCacheButton.Content" xml:space="preserve">
-    <value>清理</value>
+    <value>Clear cache</value>
   </data>
   <data name="CleanCacheSettings.Description" xml:space="preserve">
-    <value>清理图片缓存。</value>
+    <value>Clear image cache.</value>
   </data>
   <data name="CleanCacheSettings.Header" xml:space="preserve">
-    <value>清理缓存</value>
+    <value>Clear The Cache</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="AccountSettings.Description" xml:space="preserve">
-    <value>设置和绑定账户。</value>
+    <value>Set and bind accounts.</value>
   </data>
   <data name="AccountSettings.Header" xml:space="preserve">
-    <value>账户与绑定</value>
+    <value>Account &amp; Bind</value>
   </data>
   <data name="AccountSettingsHeader.Header" xml:space="preserve">
     <value>Account</value>
   </data>
   <data name="LogoutSettings.Description" xml:space="preserve">
-    <value>退出登录。</value>
+    <value>Log out</value>
   </data>
   <data name="LogoutSettings.Header" xml:space="preserve">
-    <value>注销</value>
+    <value>Logout</value>
   </data>
   <data name="LogoutSettingsButton.Content" xml:space="preserve">
-    <value>注销</value>
+    <value>Logout</value>
   </data>
 </root>
