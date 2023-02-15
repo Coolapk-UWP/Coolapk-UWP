@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddPicButton.Label" xml:space="preserve">
-    <value>添加图片</value>
+    <value>Add Image</value>
   </data>
   <data name="DeletePicItem.Text" xml:space="preserve">
-    <value>删除</value>
+    <value>Delete</value>
   </data>
   <data name="EditBox.PlaceholderText" xml:space="preserve">
     <value>Your thoughts…</value>
@@ -130,30 +130,30 @@
     <value>Add Emoji</value>
   </data>
   <data name="EmojiSearchBox.PlaceholderText" xml:space="preserve">
-    <value>搜索表情……</value>
+    <value>Search Emoji...</value>
   </data>
   <data name="LinkButton.Label" xml:space="preserve">
-    <value>用户与话题</value>
+    <value>User &amp; Topic</value>
   </data>
   <data name="PastePicItem.Text" xml:space="preserve">
-    <value>粘贴</value>
+    <value>Paste</value>
   </data>
   <data name="SendButton.Label" xml:space="preserve">
     <value>Seed</value>
   </data>
   <data name="SendSuccessed" xml:space="preserve">
-    <value>Seed successed</value>
+    <value>Sent successfully</value>
   </data>
   <data name="TopicPivotItem.Header" xml:space="preserve">
     <value>Threads</value>
   </data>
   <data name="TopicSearchBox.PlaceholderText" xml:space="preserve">
-    <value>搜索话题……</value>
+    <value>Search Topic...</value>
   </data>
   <data name="UserPivotItem.Header" xml:space="preserve">
-    <value>用户</value>
+    <value>Users</value>
   </data>
   <data name="UserSearchBox.PlaceholderText" xml:space="preserve">
-    <value>搜索用户……</value>
+    <value>Search Users...</value>
   </data>
 </root>
