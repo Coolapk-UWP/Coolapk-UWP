@@ -118,45 +118,45 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ClickMeToRefresh.Text" xml:space="preserve">
-    <value>点我刷新</value>
+    <value>點我刷新</value>
   </data>
   <data name="Copy.Text" xml:space="preserve">
-    <value>自由复制</value>
+    <value>自由複製</value>
   </data>
   <data name="FeedAuthor.Text" xml:space="preserve">
-    <value>楼主</value>
+    <value>樓主</value>
   </data>
   <data name="GIF" xml:space="preserve">
     <value>GIF</value>
   </data>
   <data name="LongPic.Text" xml:space="preserve">
-    <value>长图</value>
+    <value>長圖</value>
   </data>
   <data name="QR.Text" xml:space="preserve">
-    <value>二维码</value>
+    <value>二維碼</value>
   </data>
   <data name="Readmore" xml:space="preserve">
     <value>查看更多</value>
   </data>
   <data name="Report.Text" xml:space="preserve">
-    <value>举报</value>
+    <value>舉報</value>
   </data>
   <data name="SeeAll.Text" xml:space="preserve">
-    <value>查看全部回复</value>
+    <value>查看全部回復</value>
   </data>
   <data name="SeePic" xml:space="preserve">
-    <value>查看图片</value>
+    <value>查看圖片</value>
   </data>
   <data name="Share.Text" xml:space="preserve">
     <value>分享</value>
   </data>
   <data name="SourceFeedNotFount.Text" xml:space="preserve">
-    <value>抱歉，该转发已被删除。</value>
+    <value>抱歉，該轉發已被刪除。</value>
   </data>
   <data name="StickUp.Text" xml:space="preserve">
-    <value>置顶</value>
+    <value>置頂</value>
   </data>
   <data name="WidePic.Text" xml:space="preserve">
-    <value>宽图</value>
+    <value>寬圖</value>
   </data>
 </root>
