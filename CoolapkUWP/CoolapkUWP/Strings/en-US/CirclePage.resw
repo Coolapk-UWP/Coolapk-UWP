@@ -121,18 +121,18 @@
     <value>Apps</value>
   </data>
   <data name="circle" xml:space="preserve">
-    <value>好友</value>
+    <value>Friends</value>
   </data>
   <data name="product" xml:space="preserve">
     <value>Digital</value>
   </data>
   <data name="question" xml:space="preserve">
-    <value>问题</value>
+    <value>Q&amp;A</value>
   </data>
   <data name="topic" xml:space="preserve">
     <value>Threads</value>
   </data>
   <data name="V9_HOME_TAB_FOLLOW" xml:space="preserve">
-    <value>全部</value>
+    <value>All</value>
   </data>
 </root>
