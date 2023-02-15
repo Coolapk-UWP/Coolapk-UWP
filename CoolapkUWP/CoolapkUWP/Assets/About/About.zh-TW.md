@@ -1,22 +1,22 @@
-#### 欢迎使用酷安 UWP！
+#### 歡迎使用酷安 UWP！
 
-##### 声明
-1. 本程序是[酷安](https://coolapk.com)的第三方客户端，仅用作学习交流使用，禁止用于商业用途。
-2. 本程序是开源软件，因此，在使用时请确保程序是来自[本Github仓库](https://github.com/Coolapk-UWP/Coolapk-UWP)，以确保您的数据安全。
-3. 若程序来源无异常，程序运行过程中您的所有数据都仅用于与酷安的服务器交流或储存于本地，开发者不会窃取您的任何数据。但即便如此，也请注意使用环境的安全性。
-4. 若您对[酷安](https://coolapk.com)如何处理您的数据存在疑虑，请访问[酷安用户服务协议](https://m.coolapk.com/mp/user/agreement)、[酷安隐私保护政策](https://m.coolapk.com/mp/user/privacy)、[酷安二手安全条约](https://m.coolapk.com/mp/user/ershouAgreement)。
+##### 聲明
+1. 本程式是[酷安](https://coolapk.com)的第三方用戶端，僅用作學習交流使用，禁止用於商業用途。
+2. 本程式是開源軟體，因此，在使用時請確保程式是來自[本Github倉庫](https://github.com/Coolapk-UWP/Coolapk-UWP)，以確保您的數據安全。
+3. 若程式來源無異常，程式運行過程中您的所有數據都僅用於與酷安的伺服器交流或儲存於本地，開發者不會竊取您的任何數據。但即便如此，也請注意使用環境的安全性。
+4. 若您對[酷安](https://coolapk.com)如何處理您的數據存在疑慮，請訪問[酷安使用者服務協定](https://m.coolapk.com/mp/user/agreement)、[酷安隱私保護政策](https://m.coolapk.com/mp/user/privacy)、[酷安二手安全條約](https://m.coolapk.com/mp/user/ershouAgreement)。
 
-##### 翻译
-感谢 [Crowdin](https://crowdin.com/project/CoolapkUWP "Crowdin") 翻译者的支持。 如果翻译出现了什么问题，欢迎前来纠正。 并且请认真对待翻译。 您所写的一切将会被全世界阅读。
+##### 翻譯
+感謝 [Crowdin](https://crowdin.com/project/CoolapkUWP "Crowdin") 翻譯者的支援。 如果翻譯出現了什麼問題，歡迎前來糾正。 並且請認真對待翻譯。 您所寫的一切將會被全世界閱讀。
 
-##### 鸣谢
-| 贡献                                                                                | 作者                                              |
+##### 鳴謝
+| 貢獻                                                                                | 作者                                              |
 | --------------------------------------------------------------------------------- | ----------------------------------------------- |
 | [原作(CoolApk-UWP)](https://github.com/oboard/CoolApk-UWP)                          | [oboard](https://github.com/oboard)             |
-| [Token获取方法(CoolapkTokenCrack)](https://github.com/ZCKun/CoolapkTokenCrack)        | [ZCKun](https://github.com/ZCKun)               |
-| [TokenV2获取方法(CoolapkTokenV2)](https://github.com/XiaoMengXinX/FuckCoolapkTokenV2) | [XiaoMengXinX](https://github.com/XiaoMengXinX) |
+| [Token獲取方法(CoolapkTokenCrack)](https://github.com/ZCKun/CoolapkTokenCrack)        | [ZCKun](https://github.com/ZCKun)               |
+| [TokenV2獲取方法(CoolapkTokenV2)](https://github.com/XiaoMengXinX/FuckCoolapkTokenV2) | [XiaoMengXinX](https://github.com/XiaoMengXinX) |
 
-##### 引用及参考
+##### 引用及參考
 - [QRCoder](https://github.com/codebude/QRCoder)
 - [MetroLog](https://github.com/novotnyllc/MetroLog)
 - [Bcrypt.Net](https://github.com/BcryptNet/bcrypt.net)
