@@ -118,45 +118,45 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CompactOverlaySettings.Description" xml:space="preserve">
-    <value>进入或退出画中画模式</value>
+    <value>進入或退出畫中畫模式</value>
   </data>
   <data name="CompactOverlaySettings.Header" xml:space="preserve">
-    <value>画中画模式</value>
+    <value>畫中畫模式</value>
   </data>
   <data name="EnterPIP.Content" xml:space="preserve">
-    <value>进入画中画模式</value>
+    <value>進入畫中畫模式</value>
   </data>
   <data name="LanguageSettings.Description" xml:space="preserve">
-    <value>选择语言并重启应用来更改语言</value>
+    <value>選擇語言並重啟應用來更改語言</value>
   </data>
   <data name="LanguageSettings.Header" xml:space="preserve">
-    <value>语言</value>
+    <value>語言</value>
   </data>
   <data name="OutPIP.Content" xml:space="preserve">
     <value>退出</value>
   </data>
   <data name="ProgressSettings.Description" xml:space="preserve">
-    <value>测试窗口顶部的进度条</value>
+    <value>測試標題列上的進度環</value>
   </data>
   <data name="ProgressSettings.Header" xml:space="preserve">
-    <value>进度</value>
+    <value>進度</value>
   </data>
   <data name="SetProgressValue.Description" xml:space="preserve">
-    <value>设置进度条的值</value>
+    <value>設置進度環的值</value>
   </data>
   <data name="SetProgressValue.Header" xml:space="preserve">
-    <value>进度值</value>
+    <value>進度值</value>
   </data>
   <data name="TitleBar.Title" xml:space="preserve">
-    <value>测试</value>
+    <value>測試</value>
   </data>
   <data name="TitleBarSettings.Description" xml:space="preserve">
-    <value>将内容扩展到标题栏</value>
+    <value>將內容擴展到標題列</value>
   </data>
   <data name="TitleBarSettings.Header" xml:space="preserve">
-    <value>标题栏</value>
+    <value>標題列</value>
   </data>
   <data name="UITestSettingsHeader.Header" xml:space="preserve">
-    <value>界面测试</value>
+    <value>介面測試</value>
   </data>
 </root>
