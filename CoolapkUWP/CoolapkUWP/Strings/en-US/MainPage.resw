@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Circle.Content" xml:space="preserve">
-    <value>圈子</value>
+    <value>Circle</value>
   </data>
   <data name="Find.Content" xml:space="preserve">
-    <value>发现</value>
+    <value>Discover</value>
   </data>
   <data name="Home.Content" xml:space="preserve">
     <value>Content</value>
@@ -130,7 +130,7 @@
     <value>Notification</value>
   </data>
   <data name="SearchBox.PlaceholderText" xml:space="preserve">
-    <value>搜索动态、话题、用户等</value>
+    <value>Search for Feeds, Topics, Users, etc</value>
   </data>
   <data name="Settings.Content" xml:space="preserve">
     <value>Settings</value>
