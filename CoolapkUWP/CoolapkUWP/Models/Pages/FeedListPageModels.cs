@@ -635,7 +635,7 @@ namespace CoolapkUWP.Models.Pages
                 ID = id.ToObject<int>();
             }
 
-            int MaxStarCount = 0, MaxOwnerStarCount = 0;
+            double MaxStarCount = 0, MaxOwnerStarCount = 0;
 
             if (token.TryGetValue("star_1_count", out JToken star_1_count))
             {
@@ -696,6 +696,9 @@ namespace CoolapkUWP.Models.Pages
                 OwnerStar5Count = owner_star_5_count.ToObject<int>();
                 MaxOwnerStarCount = Math.Max(OwnerStar5Count, MaxOwnerStarCount);
             }
+
+            MaxStarCount = Math.Max(MaxStarCount, double.Epsilon);
+            MaxOwnerStarCount = Math.Max(MaxOwnerStarCount, double.Epsilon);
 
             Star1Percent = Star1Count * 100 / MaxStarCount;
             Star2Percent = Star2Count * 100 / MaxStarCount;

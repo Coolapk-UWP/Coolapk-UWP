@@ -67,7 +67,7 @@ namespace CoolapkUWP.Helpers
             string APIVersion = SettingsHelper.Get<string>(SettingsHelper.APIVersion);
             ulong OSVersion = ulong.Parse(AnalyticsInfo.VersionInfo.DeviceFamilyVersion);
             TokenVersion TokenVersion = SettingsHelper.Get<TokenVersion>(SettingsHelper.TokenVersion);
-            string Culture = GlobalizationPreferences.Languages.Any() ? new CultureInfo(GlobalizationPreferences.Languages.FirstOrDefault()).ToString() : "zh-CN";
+            string Culture = LanguageHelper.GetPrimaryLanguage();
 
             token = new TokenCreater(TokenVersion);
             Client.DefaultRequestHeaders.Clear();
