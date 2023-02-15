@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ClickMeToRefresh.Text" xml:space="preserve">
-    <value>Dot me to refresh</value>
+    <value>Tap me to refresh</value>
   </data>
   <data name="Copy.Text" xml:space="preserve">
     <value>Free copy</value>
@@ -142,7 +142,7 @@
     <value>Report</value>
   </data>
   <data name="SeeAll.Text" xml:space="preserve">
-    <value>View more</value>
+    <value>View all replies</value>
   </data>
   <data name="SeePic" xml:space="preserve">
     <value>View picture</value>
