@@ -121,7 +121,7 @@
     <value>Active</value>
   </data>
   <data name="All" xml:space="preserve">
-    <value>Featured</value>
+    <value>Select</value>
   </data>
   <data name="Answer" xml:space="preserve">
     <value>Q&amp;A</value>
@@ -136,7 +136,7 @@
     <value>[Current limited]</value>
   </data>
   <data name="CommentNum" xml:space="preserve">
-    <value>Comment</value>
+    <value>Discuss</value>
   </data>
   <data name="DatelineDesc" xml:space="preserve">
     <value>Sort by time</value>
@@ -160,7 +160,7 @@
     <value>Follows</value>
   </data>
   <data name="FollowFan" xml:space="preserve">
-    <value>互关</value>
+    <value>Friend</value>
   </data>
   <data name="FollowNum.Text" xml:space="preserve">
     <value>Follows</value>
@@ -181,7 +181,7 @@
     <value>Recent Comments</value>
   </data>
   <data name="LikeNum.Text" xml:space="preserve">
-    <value>获赞</value>
+    <value>Liked</value>
   </data>
   <data name="Newest" xml:space="preserve">
     <value>Most Recent</value>
@@ -190,7 +190,7 @@
     <value>News</value>
   </data>
   <data name="Popular" xml:space="preserve">
-    <value>Sort by popularity</value>
+    <value>Sort by population</value>
   </data>
   <data name="ProductNum" xml:space="preserve">
     <value> Machine types</value>
@@ -202,7 +202,7 @@
     <value>Release Date: </value>
   </data>
   <data name="Square" xml:space="preserve">
-    <value>Square</value>
+    <value>Hall</value>
   </data>
   <data name="Status-1" xml:space="preserve">
     <value>[Locked]</value>
@@ -211,18 +211,18 @@
     <value>[Half blocked]</value>
   </data>
   <data name="Subscribe" xml:space="preserve">
-    <value>Subscribe</value>
+    <value>Subscript</value>
   </data>
   <data name="SubscribeNum" xml:space="preserve">
-    <value>人订阅</value>
+    <value> People Subscription</value>
   </data>
   <data name="Unfollow" xml:space="preserve">
-    <value>Followed</value>
+    <value>Unsubscript</value>
   </data>
   <data name="UnfollowFan" xml:space="preserve">
-    <value>已互关</value>
+    <value>Is Friends</value>
   </data>
   <data name="Unsubscribe" xml:space="preserve">
-    <value>已订阅</value>
+    <value>Subscribed</value>
   </data>
 </root>
