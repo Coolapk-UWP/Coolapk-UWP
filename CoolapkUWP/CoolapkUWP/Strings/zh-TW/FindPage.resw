@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="V10_CHANNEL_SJB" xml:space="preserve">
-    <value>手机</value>
+    <value>手機</value>
   </data>
   <data name="V10_DIGITAL_HOME" xml:space="preserve">
-    <value>数码</value>
+    <value>數碼</value>
   </data>
   <data name="V11_FIND_GOOD_GOODS_HOME" xml:space="preserve">
-    <value>点评</value>
+    <value>點評</value>
   </data>
   <data name="V11_HOME_CAR" xml:space="preserve">
-    <value>汽车</value>
+    <value>汽車</value>
   </data>
   <data name="V11_HOME_NEW" xml:space="preserve">
-    <value>新机</value>
+    <value>新機</value>
   </data>
   <data name="V11_ZHUANTI_EARPHONE" xml:space="preserve">
-    <value>耳机</value>
+    <value>耳機</value>
   </data>
   <data name="V9_HOME_TAB_SHIPIN" xml:space="preserve">
-    <value>视频</value>
+    <value>視頻</value>
   </data>
 </root>
