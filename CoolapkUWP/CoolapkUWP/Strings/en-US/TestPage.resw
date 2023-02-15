@@ -118,45 +118,45 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CompactOverlaySettings.Description" xml:space="preserve">
-    <value>进入或退出画中画模式</value>
+    <value>Enter or Exit Compact Overlay</value>
   </data>
   <data name="CompactOverlaySettings.Header" xml:space="preserve">
-    <value>画中画模式</value>
+    <value>Compact Overlay</value>
   </data>
   <data name="EnterPIP.Content" xml:space="preserve">
-    <value>进入画中画模式</value>
+    <value>Enter Compact Overlay</value>
   </data>
   <data name="LanguageSettings.Description" xml:space="preserve">
-    <value>选择语言并重启应用来更改语言</value>
+    <value>Select language and restart to change language</value>
   </data>
   <data name="LanguageSettings.Header" xml:space="preserve">
-    <value>语言</value>
+    <value>Language</value>
   </data>
   <data name="OutPIP.Content" xml:space="preserve">
-    <value>退出</value>
+    <value>Exit</value>
   </data>
   <data name="ProgressSettings.Description" xml:space="preserve">
-    <value>测试窗口顶部的进度条</value>
+    <value>Test Progress Ring on the Title Bar</value>
   </data>
   <data name="ProgressSettings.Header" xml:space="preserve">
-    <value>进度</value>
+    <value>Progress</value>
   </data>
   <data name="SetProgressValue.Description" xml:space="preserve">
-    <value>设置进度条的值</value>
+    <value>Set the value of Progress Ring</value>
   </data>
   <data name="SetProgressValue.Header" xml:space="preserve">
-    <value>进度值</value>
+    <value>Progress Value</value>
   </data>
   <data name="TitleBar.Title" xml:space="preserve">
-    <value>测试</value>
+    <value>Testing</value>
   </data>
   <data name="TitleBarSettings.Description" xml:space="preserve">
-    <value>将内容扩展到标题栏</value>
+    <value>Extends Content Into TitleBar</value>
   </data>
   <data name="TitleBarSettings.Header" xml:space="preserve">
-    <value>标题栏</value>
+    <value>Title Bar</value>
   </data>
   <data name="UITestSettingsHeader.Header" xml:space="preserve">
-    <value>界面测试</value>
+    <value>UI Test</value>
   </data>
 </root>
