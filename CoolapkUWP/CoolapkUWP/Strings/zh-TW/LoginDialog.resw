@@ -121,9 +121,9 @@
     <value>取消</value>
   </data>
   <data name="LoginDialog.PrimaryButtonText" xml:space="preserve">
-    <value>登录</value>
+    <value>登入</value>
   </data>
   <data name="LoginDialog.Title" xml:space="preserve">
-    <value>手动登录</value>
+    <value>手動登錄</value>
   </data>
 </root>
