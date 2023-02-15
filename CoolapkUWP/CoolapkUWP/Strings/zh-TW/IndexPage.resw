@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="V11_FIND_COOLPIC" xml:space="preserve">
-    <value>酷图</value>
+    <value>酷圖</value>
   </data>
   <data name="V11_FIND_DYH" xml:space="preserve">
-    <value>看看号</value>
+    <value>看看號</value>
   </data>
   <data name="V11_HOME_MEIHUA" xml:space="preserve">
     <value>美化</value>
@@ -130,15 +130,15 @@
     <value>教程</value>
   </data>
   <data name="V11_HOME_TAB_NEWS" xml:space="preserve">
-    <value>快讯</value>
+    <value>快訊</value>
   </data>
   <data name="V9_HOME_TAB_HEADLINE" xml:space="preserve">
-    <value>头条</value>
+    <value>頭條</value>
   </data>
   <data name="V9_HOME_TAB_RANKING" xml:space="preserve">
-    <value>热榜</value>
+    <value>熱榜</value>
   </data>
   <data name="V9_HOME_TAB_WENDA" xml:space="preserve">
-    <value>问答</value>
+    <value>問答</value>
   </data>
 </root>
