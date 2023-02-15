@@ -124,13 +124,13 @@
     <value>@me feeds</value>
   </data>
   <data name="CommentMe.Text" xml:space="preserve">
-    <value>回复</value>
+    <value>Reply</value>
   </data>
   <data name="FeedLike.Text" xml:space="preserve">
     <value>Received likes</value>
   </data>
   <data name="Follow.Text" xml:space="preserve">
-    <value>Friends</value>
+    <value>Follows</value>
   </data>
   <data name="Message.Text" xml:space="preserve">
     <value>PM</value>
