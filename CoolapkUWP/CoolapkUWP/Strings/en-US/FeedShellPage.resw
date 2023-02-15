@@ -124,7 +124,7 @@
     <value>Only author</value>
   </data>
   <data name="IsFromAuthorToggle.Header" xml:space="preserve">
-    <value>只看楼主：</value>
+    <value>Only author: </value>
   </data>
   <data name="lastupdate_desc" xml:space="preserve">
     <value>Recent Comments</value>
@@ -133,6 +133,6 @@
     <value>Sort by like</value>
   </data>
   <data name="popular" xml:space="preserve">
-    <value>Sort by popularity</value>
+    <value>Sort by population</value>
   </data>
 </root>
