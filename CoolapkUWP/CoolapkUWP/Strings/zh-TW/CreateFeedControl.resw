@@ -117,148 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountLogoutConfirm.Content" xml:space="preserve">
-    <value>确定退出</value>
+  <data name="AddPicButton.Label" xml:space="preserve">
+    <value>添加圖片</value>
   </data>
-  <data name="AccountLogoutTitle.Text" xml:space="preserve">
-    <value>你确定要退出登录吗？</value>
+  <data name="DeletePicItem.Text" xml:space="preserve">
+    <value>刪除</value>
   </data>
-  <data name="DisplaySettingsHeader.Header" xml:space="preserve">
-    <value>显示</value>
+  <data name="EditBox.PlaceholderText" xml:space="preserve">
+    <value>分享你的想法......</value>
   </data>
-  <data name="ThemeSettings.Header" xml:space="preserve">
-    <value>应用主题</value>
+  <data name="EmojiButton.Label" xml:space="preserve">
+    <value>插入表情</value>
   </data>
-  <data name="WindowsColorButton.Content" xml:space="preserve">
-    <value>Windows 颜色设置</value>
+  <data name="EmojiSearchBox.PlaceholderText" xml:space="preserve">
+    <value>搜尋表情......</value>
   </data>
-  <data name="RadioThemeDark.Content" xml:space="preserve">
-    <value>深色</value>
+  <data name="LinkButton.Label" xml:space="preserve">
+    <value>用戶與話題</value>
   </data>
-  <data name="RadioThemeDefault.Content" xml:space="preserve">
-    <value>Windows 默认</value>
+  <data name="PastePicItem.Text" xml:space="preserve">
+    <value>粘貼</value>
   </data>
-  <data name="RadioThemeLight.Content" xml:space="preserve">
-    <value>浅色</value>
+  <data name="SendButton.Label" xml:space="preserve">
+    <value>發送</value>
   </data>
-  <data name="NoPicsModeSettings.Description" xml:space="preserve">
-    <value>浏览时不显示头像和图片。</value>
+  <data name="SendSuccessed" xml:space="preserve">
+    <value>發送成功</value>
   </data>
-  <data name="NoPicsModeSettings.Header" xml:space="preserve">
-    <value>无图模式</value>
+  <data name="TopicPivotItem.Header" xml:space="preserve">
+    <value>話題</value>
   </data>
-  <data name="OthersSettingsHeader.Header" xml:space="preserve">
-    <value>其他</value>
+  <data name="TopicSearchBox.PlaceholderText" xml:space="preserve">
+    <value>搜索話題......</value>
   </data>
-  <data name="ShowOtherExceptionSettings.Description" xml:space="preserve">
-    <value>当应用出现未知错误时在应用内通知显示。</value>
+  <data name="UserPivotItem.Header" xml:space="preserve">
+    <value>使用者</value>
   </data>
-  <data name="ShowOtherExceptionSettings.Header" xml:space="preserve">
-    <value>显示未知错误</value>
-  </data>
-  <data name="ResetSettings.Description" xml:space="preserve">
-    <value>重置此应用程序的设置。</value>
-  </data>
-  <data name="ResetSettings.Header" xml:space="preserve">
-    <value>重置应用</value>
-  </data>
-  <data name="ResetSettingsButton.Content" xml:space="preserve">
-    <value>重置</value>
-  </data>
-  <data name="ResetSettingsConfirm.Content" xml:space="preserve">
-    <value>确定</value>
-  </data>
-  <data name="ResetSettingsTitle.Text" xml:space="preserve">
-    <value>您确定要重置应用吗？</value>
-  </data>
-  <data name="GoToTestPage.Description" xml:space="preserve">
-    <value>前往用于测试的页面。</value>
-  </data>
-  <data name="GoToTestPage.Header" xml:space="preserve">
-    <value>前往测试页面</value>
-  </data>
-  <data name="TranslateLink.Content" xml:space="preserve">
-    <value>翻译</value>
-  </data>
-  <data name="FeedbackLink.Content" xml:space="preserve">
-    <value>反馈</value>
-  </data>
-  <data name="LogFolderLink.Content" xml:space="preserve">
-    <value>日志</value>
-  </data>
-  <data name="ReleaseNotes.Content" xml:space="preserve">
-    <value>发行说明</value>
-  </data>
-  <data name="GoToUpdate.Content" xml:space="preserve">
-    <value>前往更新</value>
-  </data>
-  <data name="LastChecked.Text" xml:space="preserve">
-    <value>上次检查时间: </value>
-  </data>
-  <data name="AboutSettingsHeader.Header" xml:space="preserve">
-    <value>关于</value>
-  </data>
-  <data name="CheckFailed" xml:space="preserve">
-    <value>检查失败</value>
-  </data>
-  <data name="CheckingUpdates.Text" xml:space="preserve">
-    <value>正在检查更新……</value>
-  </data>
-  <data name="CheckUpdates.Content" xml:space="preserve">
-    <value>检查更新</value>
-  </data>
-  <data name="FindUpdate" xml:space="preserve">
-    <value>找到新的更新</value>
-  </data>
-  <data name="UpToDate" xml:space="preserve">
-    <value>最新</value>
-  </data>
-  <data name="FrameworkSettings.Description" xml:space="preserve">
-    <value>关于此应用程序框架的信息。</value>
-  </data>
-  <data name="FrameworkSettings.Header" xml:space="preserve">
-    <value>框架信息</value>
-  </data>
-  <data name="FrameworkTextBlock.Text" xml:space="preserve">
-    <value>框架</value>
-  </data>
-  <data name="OSArchitectureTextBlock.Text" xml:space="preserve">
-    <value>操作系统架构</value>
-  </data>
-  <data name="OSPlatformTextBlock.Text" xml:space="preserve">
-    <value>操作系统版本</value>
-  </data>
-  <data name="DeviceFamilyTextBlock.Text" xml:space="preserve">
-    <value>设备类型</value>
-  </data>
-  <data name="CleanCacheButton.Content" xml:space="preserve">
-    <value>清理</value>
-  </data>
-  <data name="CleanCacheSettings.Description" xml:space="preserve">
-    <value>清理图片缓存。</value>
-  </data>
-  <data name="CleanCacheSettings.Header" xml:space="preserve">
-    <value>清理缓存</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>设置</value>
-  </data>
-  <data name="AccountSettings.Description" xml:space="preserve">
-    <value>设置和绑定账户。</value>
-  </data>
-  <data name="AccountSettings.Header" xml:space="preserve">
-    <value>账户与绑定</value>
-  </data>
-  <data name="AccountSettingsHeader.Header" xml:space="preserve">
-    <value>账户</value>
-  </data>
-  <data name="LogoutSettings.Description" xml:space="preserve">
-    <value>退出登录。</value>
-  </data>
-  <data name="LogoutSettings.Header" xml:space="preserve">
-    <value>注销</value>
-  </data>
-  <data name="LogoutSettingsButton.Content" xml:space="preserve">
-    <value>注销</value>
+  <data name="UserSearchBox.PlaceholderText" xml:space="preserve">
+    <value>搜尋使用者......</value>
   </data>
 </root>
