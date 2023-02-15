@@ -121,27 +121,27 @@
     <value>Try to get token</value>
   </data>
   <data name="BackButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>如果登录成功后没有自动返回上一页，请点这里。如果获取token失败，请右击尝试手动登录。</value>
+    <value>If you do not return to the previous page automatically after successful login, please click here. If getting the token fails, please right-click to try to log in manually.</value>
   </data>
   <data name="CannotGetToken" xml:space="preserve">
     <value>Unable to get token. Try to Sign in again.</value>
   </data>
   <data name="Logging" xml:space="preserve">
-    <value>正在登录</value>
+    <value>Signing In</value>
   </data>
   <data name="LoginFailed" xml:space="preserve">
-    <value>登录失败</value>
+    <value>Login failed</value>
   </data>
   <data name="LoginSuccessfully" xml:space="preserve">
     <value>Login successfully</value>
   </data>
   <data name="ManualLoginButton.Text" xml:space="preserve">
-    <value>手动登录</value>
+    <value>Manual Login</value>
   </data>
   <data name="OpenInBrowserButton.Content" xml:space="preserve">
     <value>Open in browser</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>浏览器</value>
+    <value>Browser</value>
   </data>
 </root>
