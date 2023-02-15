@@ -124,13 +124,13 @@
     <value>Digital</value>
   </data>
   <data name="V11_FIND_GOOD_GOODS_HOME" xml:space="preserve">
-    <value>点评</value>
+    <value>Reviews</value>
   </data>
   <data name="V11_HOME_CAR" xml:space="preserve">
-    <value>汽车</value>
+    <value>Cars</value>
   </data>
   <data name="V11_HOME_NEW" xml:space="preserve">
-    <value>新机</value>
+    <value>New Phones</value>
   </data>
   <data name="V11_ZHUANTI_EARPHONE" xml:space="preserve">
     <value>Headphones</value>
