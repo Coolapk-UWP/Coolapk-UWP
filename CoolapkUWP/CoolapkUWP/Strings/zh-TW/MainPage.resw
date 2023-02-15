@@ -121,18 +121,18 @@
     <value>圈子</value>
   </data>
   <data name="Find.Content" xml:space="preserve">
-    <value>发现</value>
+    <value>發現</value>
   </data>
   <data name="Home.Content" xml:space="preserve">
-    <value>内容</value>
+    <value>內容</value>
   </data>
   <data name="Notifications.Content" xml:space="preserve">
     <value>通知</value>
   </data>
   <data name="SearchBox.PlaceholderText" xml:space="preserve">
-    <value>搜索动态、话题、用户等</value>
+    <value>搜索動態、話題、使用者等</value>
   </data>
   <data name="Settings.Content" xml:space="preserve">
-    <value>设置</value>
+    <value>設定</value>
   </data>
 </root>
