@@ -1,37 +1,50 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using System;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Automation;
+﻿using Windows.UI.Xaml.Automation;
+using Windows.UI.Xaml.Automation.Peers;
+using Windows.UI.Xaml.Controls;
 
-// The Templated Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234235
+// To learn more about WinUI, the WinUI project structure,
+// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace CoolapkUWP.Controls
 {
-    public partial class SettingExpander : Expander
+    /// <summary>
+    /// The SettingExpander is a collapsable control to host multiple SettingsCards.
+    /// </summary>
+    public partial class SettingExpander : ItemsControl
     {
+        /// <summary>
+        /// Creates a new instance of the <see cref="SettingExpander"/> class.
+        /// </summary>
         public SettingExpander()
         {
-            DefaultStyleKey = typeof(Expander);
-            Style = (Style)Application.Current.Resources["SettingExpanderStyle"];
-            _ = RegisterPropertyChangedCallback(HeaderProperty, OnHeaderChanged);
+            DefaultStyleKey = typeof(SettingExpander);
         }
 
-        private void OnHeaderChanged(DependencyObject d, DependencyProperty dp)
+        /// <inheritdoc />
+        protected override void OnApplyTemplate()
         {
-            SettingExpander self = (SettingExpander)d;
-            if (self.Header != null)
-            {
-                if (self.Header.GetType() == typeof(Setting))
-                {
-                    Setting selfSetting = (Setting)self.Header;
-                    selfSetting.Style = (Style)Application.Current.Resources["ExpanderHeaderSettingStyle"];
+            base.OnApplyTemplate();
+            RegisterAutomation();
+        }
 
-                    if (!string.IsNullOrEmpty(selfSetting.Header))
-                    {
-                        AutomationProperties.SetName(self, selfSetting.Header);
-                    }
+        private void RegisterAutomation()
+        {
+            if (Header is string headerString && headerString != string.Empty)
+            {
+                if (!string.IsNullOrEmpty(headerString) && string.IsNullOrEmpty(AutomationProperties.GetName(this)))
+                {
+                    AutomationProperties.SetName(this, headerString);
                 }
             }
+        }
+
+        /// <summary>
+        /// Creates AutomationPeer
+        /// </summary>
+        /// <returns>An automation peer for <see cref="SettingsExpander"/>.</returns>
+        protected override AutomationPeer OnCreateAutomationPeer()
+        {
+            return new SettingExpanderAutomationPeer(this);
         }
     }
 }

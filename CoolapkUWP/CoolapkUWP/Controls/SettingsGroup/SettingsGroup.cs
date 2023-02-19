@@ -1,9 +1,9 @@
-﻿using System.ComponentModel;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Automation.Peers;
 using Windows.UI.Xaml.Controls;
 
-// The Templated Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234235
+// To learn more about WinUI, the WinUI project structure,
+// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace CoolapkUWP.Controls
 {
@@ -19,25 +19,13 @@ namespace CoolapkUWP.Controls
             DefaultStyleKey = typeof(SettingsGroup);
         }
 
-        public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register(
-            "Header",
-            typeof(string),
-            typeof(SettingsGroup),
-            new PropertyMetadata(default(string)));
-
-        [Localizable(true)]
-        public string Header
-        {
-            get => (string)GetValue(HeaderProperty);
-            set => SetValue(HeaderProperty, value);
-        }
-
         protected override void OnApplyTemplate()
         {
+            base.OnApplyTemplate();
             IsEnabledChanged -= SettingsGroup_IsEnabledChanged;
+            OnHeaderChanged();
             SetEnabledState();
             IsEnabledChanged += SettingsGroup_IsEnabledChanged;
-            base.OnApplyTemplate();
         }
 
         private void SettingsGroup_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -50,23 +38,18 @@ namespace CoolapkUWP.Controls
             VisualStateManager.GoToState(this, IsEnabled ? "Normal" : "Disabled", true);
         }
 
+        /// <summary>
+        /// Creates AutomationPeer
+        /// </summary>
+        /// <returns>An automation peer for <see cref="SettingsGroup"/>.</returns>
         protected override AutomationPeer OnCreateAutomationPeer()
         {
             return new SettingsGroupAutomationPeer(this);
         }
-    }
 
-    public class SettingsGroupAutomationPeer : FrameworkElementAutomationPeer
-    {
-        public SettingsGroupAutomationPeer(SettingsGroup owner)
-            : base(owner)
+        public void OnHeaderChanged()
         {
-        }
-
-        protected override string GetNameCore()
-        {
-            SettingsGroup selectedSettingsGroup = (SettingsGroup)Owner;
-            return selectedSettingsGroup.Header;
+            _ = VisualStateManager.GoToState(this, Header == null ? "HeaderCollapsed" : "HeaderVisible", false);
         }
     }
 }

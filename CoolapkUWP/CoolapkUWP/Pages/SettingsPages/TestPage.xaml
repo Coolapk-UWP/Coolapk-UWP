@@ -27,66 +27,50 @@
                 </StackPanel.ChildrenTransitions>
                 <controls:SettingsGroup x:Uid="/TestPage/UITestSettingsHeader">
                     <controls:Setting x:Uid="/TestPage/TitleBarSettings" Icon="&#xE737;">
-                        <controls:Setting.ActionContent>
-                            <ToggleSwitch IsOn="{x:Bind IsExtendsTitleBar, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
-                        </controls:Setting.ActionContent>
+                        <ToggleSwitch IsOn="{x:Bind IsExtendsTitleBar, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
                     </controls:Setting>
-                    <controls:SettingExpander>
-                        <controls:SettingExpander.Header>
-                            <controls:Setting x:Uid="/TestPage/ProgressSettings" Icon="&#xF16A;">
-                                <controls:Setting.ActionContent>
-                                    <ToggleSwitch IsOn="{x:Bind IsShowProgressRing, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
-                                </controls:Setting.ActionContent>
-                            </controls:Setting>
-                        </controls:SettingExpander.Header>
-                        <controls:SettingExpander.Content>
-                            <StackPanel>
-                                <controls:Setting x:Uid="/TestPage/SetProgressValue" Style="{StaticResource ExpanderContentSettingStyle}">
-                                    <controls:Setting.ActionContent>
-                                        <Slider
-                                            Width="180"
-                                            HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Center"
-                                            Maximum="100"
-                                            Value="{x:Bind ProgressValue, Mode=TwoWay}" />
-                                    </controls:Setting.ActionContent>
-                                </controls:Setting>
-                            </StackPanel>
-                        </controls:SettingExpander.Content>
+                    <controls:SettingExpander x:Uid="/TestPage/ProgressSettings" Icon="&#xF16A;">
+                        <controls:SettingExpander.ActionContent>
+                            <ToggleSwitch IsOn="{x:Bind IsShowProgressRing, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
+                        </controls:SettingExpander.ActionContent>
+                        <controls:Setting x:Uid="/TestPage/SetProgressValue" Style="{StaticResource DefaultSettingExpanderItemStyle}">
+                            <Slider
+                                Width="180"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Maximum="100"
+                                Value="{x:Bind ProgressValue, Mode=TwoWay}" />
+                        </controls:Setting>
                     </controls:SettingExpander>
                     <controls:Setting x:Uid="/TestPage/LanguageSettings" Icon="&#xF2B7;">
-                        <controls:Setting.ActionContent>
-                            <ComboBox
-                                ItemsSource="{x:Bind helper:LanguageHelper.SupportCultures}"
-                                Loaded="ComboBox_Loaded"
-                                SelectionChanged="ComboBox_SelectionChanged"
-                                Tag="Language">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate x:DataType="globalization:CultureInfo">
-                                        <TextBlock>
-                                            <Run Text="{x:Bind DisplayName}" />
-                                        </TextBlock>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                        </controls:Setting.ActionContent>
+                        <ComboBox
+                            ItemsSource="{x:Bind helper:LanguageHelper.SupportCultures}"
+                            Loaded="ComboBox_Loaded"
+                            SelectionChanged="ComboBox_SelectionChanged"
+                            Tag="Language">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="globalization:CultureInfo">
+                                    <TextBlock>
+                                        <Run Text="{x:Bind DisplayName}" />
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </controls:Setting>
                     <controls:Setting x:Uid="/TestPage/CompactOverlaySettings" Icon="&#xE944;">
-                        <controls:Setting.ActionContent>
-                            <StackPanel
-                                Margin="0,2"
-                                Orientation="Horizontal"
-                                Spacing="4">
-                                <Button
-                                    x:Uid="/TestPage/EnterPIP"
-                                    Click="Button_Click"
-                                    Tag="EnterPIP" />
-                                <Button
-                                    x:Uid="/TestPage/OutPIP"
-                                    Click="Button_Click"
-                                    Tag="OutPIP" />
-                            </StackPanel>
-                        </controls:Setting.ActionContent>
+                        <controls:StackPanel
+                            Margin="0,2"
+                            Orientation="Horizontal"
+                            Spacing="4">
+                            <Button
+                                x:Uid="/TestPage/EnterPIP"
+                                Click="Button_Click"
+                                Tag="EnterPIP" />
+                            <Button
+                                x:Uid="/TestPage/OutPIP"
+                                Click="Button_Click"
+                                Tag="OutPIP" />
+                        </controls:StackPanel>
                     </controls:Setting>
                 </controls:SettingsGroup>
             </StackPanel>

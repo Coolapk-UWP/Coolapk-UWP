@@ -39,27 +39,26 @@
                                 Click="HyperlinkButton_Click"
                                 Tag="WindowsColor" />
                         </controls:Setting.Description>
-                        <controls:Setting.ActionContent>
-                            <ComboBox SelectedIndex="{Binding SelectedTheme, Mode=TwoWay}">
-                                <ComboBoxItem x:Uid="/SettingsPage/RadioThemeDark" />
-                                <ComboBoxItem x:Uid="/SettingsPage/RadioThemeLight" />
-                                <ComboBoxItem x:Uid="/SettingsPage/RadioThemeDefault" />
-                            </ComboBox>
-                        </controls:Setting.ActionContent>
+                        <ComboBox SelectedIndex="{Binding SelectedTheme, Mode=TwoWay}">
+                            <ComboBoxItem x:Uid="/SettingsPage/RadioThemeDark" />
+                            <ComboBoxItem x:Uid="/SettingsPage/RadioThemeLight" />
+                            <ComboBoxItem x:Uid="/SettingsPage/RadioThemeDefault" />
+                        </ComboBox>
                     </controls:Setting>
                     <controls:Setting x:Uid="/SettingsPage/NoPicsModeSettings" Icon="&#xEB9F;">
-                        <controls:Setting.ActionContent>
-                            <ToggleSwitch IsOn="{Binding IsNoPicsMode, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
-                        </controls:Setting.ActionContent>
+                        <ToggleSwitch IsOn="{Binding IsNoPicsMode, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
                     </controls:Setting>
                 </controls:SettingsGroup>
                 <controls:SettingsGroup
                     x:Name="AccountSettingsHeader"
                     x:Uid="/SettingsPage/AccountSettingsHeader"
                     Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <controls:SettingButton Click="Button_Click" Tag="AccountSetting">
-                        <controls:Setting x:Uid="/SettingsPage/AccountSettings" Icon="&#xEF58;" />
-                    </controls:SettingButton>
+                    <controls:Setting
+                        x:Uid="/SettingsPage/AccountSettings"
+                        Click="Button_Click"
+                        Icon="&#xEF58;"
+                        IsClickEnabled="True"
+                        Tag="AccountSetting" />
                     <controls:Setting x:Uid="/SettingsPage/LogoutSettings">
                         <controls:Setting.Icon>
                             <FontIcon
@@ -86,94 +85,88 @@
                     </controls:Setting>
                 </controls:SettingsGroup>
                 <controls:SettingsGroup x:Uid="/SettingsPage/AboutSettingsHeader">
-                    <controls:SettingExpander>
-                        <controls:SettingExpander.Header>
-                            <controls:Setting Header="{Binding VersionTextBlockText}" Icon="&#xE117;">
-                                <controls:Setting.Description>
-                                    <StackPanel Orientation="Vertical">
-                                        <TextBlock Style="{StaticResource SecondaryTextStyle}" TextWrapping="WrapWholeWords">
-                                            <Run x:Uid="/SettingsPage/LastChecked" />
-                                            <Run Text="{Binding UpdateDate, Mode=OneWay}" />
-                                        </TextBlock>
-                                        <ScrollViewer
-                                            Margin="0,2,0,0"
-                                            HorizontalScrollBarVisibility="Auto"
-                                            VerticalScrollBarVisibility="Disabled">
-                                            <StackPanel Orientation="Horizontal">
-                                                <HyperlinkButton
-                                                    x:Uid="/SettingsPage/FeedbackLink"
-                                                    Margin="0,0,2,0"
-                                                    NavigateUri="https://github.com/Coolapk-UWP/Coolapk-UWP/issues"
-                                                    ToolTipService.ToolTip="{Binding NavigateUri, RelativeSource={RelativeSource Mode=Self}}" />
-                                                <HyperlinkButton
-                                                    x:Uid="/SettingsPage/LogFolderLink"
-                                                    Margin="2,0"
-                                                    Click="HyperlinkButton_Click"
-                                                    Tag="LogFolder">
-                                                    <HyperlinkButton.ContextFlyout>
-                                                        <MenuFlyout>
-                                                            <MenuFlyoutItem
-                                                                Click="MenuFlyoutItem_Click"
-                                                                Tag="OpenLogFile"
-                                                                Text="打开最近的日志">
-                                                                <MenuFlyoutItem.Icon>
-                                                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7C3;" />
-                                                                </MenuFlyoutItem.Icon>
-                                                            </MenuFlyoutItem>
-                                                        </MenuFlyout>
-                                                    </HyperlinkButton.ContextFlyout>
-                                                </HyperlinkButton>
-                                                <HyperlinkButton
-                                                    x:Uid="/SettingsPage/TranslateLink"
-                                                    Margin="2,0"
-                                                    NavigateUri="https://crowdin.com/project/CoolapkUWP"
-                                                    ToolTipService.ToolTip="{Binding NavigateUri, RelativeSource={RelativeSource Mode=Self}}" />
-                                                <HyperlinkButton
-                                                    x:Uid="/SettingsPage/ReleaseNotes"
-                                                    Margin="2,0"
-                                                    NavigateUri="https://github.com/Coolapk-UWP/Coolapk-UWP/releases/latest"
-                                                    ToolTipService.ToolTip="{Binding NavigateUri, RelativeSource={RelativeSource Mode=Self}}" />
-                                            </StackPanel>
-                                        </ScrollViewer>
+                    <controls:SettingExpander Header="{Binding VersionTextBlockText}" Icon="&#xE117;">
+                        <controls:SettingExpander.Description>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Style="{StaticResource SecondaryTextStyle}" TextWrapping="WrapWholeWords">
+                                    <Run x:Uid="/SettingsPage/LastChecked" />
+                                    <Run Text="{Binding UpdateDate, Mode=OneWay}" />
+                                </TextBlock>
+                                <ScrollViewer
+                                    Margin="0,2,0,0"
+                                    HorizontalScrollBarVisibility="Auto"
+                                    VerticalScrollBarVisibility="Disabled">
+                                    <StackPanel Orientation="Horizontal">
+                                        <HyperlinkButton
+                                            x:Uid="/SettingsPage/FeedbackLink"
+                                            Margin="0,0,2,0"
+                                            NavigateUri="https://github.com/Coolapk-UWP/Coolapk-UWP/issues"
+                                            ToolTipService.ToolTip="{Binding NavigateUri, RelativeSource={RelativeSource Mode=Self}}" />
+                                        <HyperlinkButton
+                                            x:Uid="/SettingsPage/LogFolderLink"
+                                            Margin="2,0"
+                                            Click="HyperlinkButton_Click"
+                                            Tag="LogFolder">
+                                            <HyperlinkButton.ContextFlyout>
+                                                <MenuFlyout>
+                                                    <MenuFlyoutItem
+                                                        Click="MenuFlyoutItem_Click"
+                                                        Tag="OpenLogFile"
+                                                        Text="打开最近的日志">
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7C3;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+                                                </MenuFlyout>
+                                            </HyperlinkButton.ContextFlyout>
+                                        </HyperlinkButton>
+                                        <HyperlinkButton
+                                            x:Uid="/SettingsPage/TranslateLink"
+                                            Margin="2,0"
+                                            NavigateUri="https://crowdin.com/project/CoolapkUWP"
+                                            ToolTipService.ToolTip="{Binding NavigateUri, RelativeSource={RelativeSource Mode=Self}}" />
+                                        <HyperlinkButton
+                                            x:Uid="/SettingsPage/ReleaseNotes"
+                                            Margin="2,0"
+                                            NavigateUri="https://github.com/Coolapk-UWP/Coolapk-UWP/releases/latest"
+                                            ToolTipService.ToolTip="{Binding NavigateUri, RelativeSource={RelativeSource Mode=Self}}" />
                                     </StackPanel>
-                                </controls:Setting.Description>
-                                <controls:Setting.ActionContent>
-                                    <controls:StackPanel
-                                        VerticalAlignment="Center"
-                                        Orientation="Horizontal"
-                                        Spacing="18">
-                                        <muxc:ProgressRing
-                                            x:Name="CheckingUpdateRing"
-                                            Width="24"
-                                            Height="24"
-                                            Visibility="{Binding CheckingUpdate, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                        <TextBlock
-                                            x:Name="CheckingUpdateText"
-                                            x:Uid="/SettingsPage/CheckingUpdates"
-                                            VerticalAlignment="Center"
-                                            FontWeight="SemiBold"
-                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                            Visibility="{Binding CheckingUpdate, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                        <Button
-                                            x:Name="UpdateButton"
-                                            x:Uid="/SettingsPage/CheckUpdates"
-                                            HorizontalAlignment="Right"
-                                            Click="Button_Click"
-                                            Tag="CheckUpdate"
-                                            Visibility="{Binding CheckingUpdate, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
-                                    </controls:StackPanel>
-                                </controls:Setting.ActionContent>
-                            </controls:Setting>
-                        </controls:SettingExpander.Header>
-                        <controls:SettingExpander.Content>
-                            <Grid Style="{StaticResource ExpanderContentGridStyle}">
-                                <cwuc:MarkdownTextBlock
-                                    HorizontalAlignment="Left"
-                                    Background="{ThemeResource SystemControlTransparentBrush}"
-                                    LinkClicked="MarkdownText_LinkClicked"
-                                    Text="{Binding AboutTextBlockText}" />
-                            </Grid>
-                        </controls:SettingExpander.Content>
+                                </ScrollViewer>
+                            </StackPanel>
+                        </controls:SettingExpander.Description>
+                        <controls:SettingExpander.ActionContent>
+                            <controls:StackPanel
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal"
+                                Spacing="18">
+                                <muxc:ProgressRing
+                                    x:Name="CheckingUpdateRing"
+                                    Width="24"
+                                    Height="24"
+                                    Visibility="{Binding CheckingUpdate, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <TextBlock
+                                    x:Name="CheckingUpdateText"
+                                    x:Uid="/SettingsPage/CheckingUpdates"
+                                    VerticalAlignment="Center"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Visibility="{Binding CheckingUpdate, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <Button
+                                    x:Name="UpdateButton"
+                                    x:Uid="/SettingsPage/CheckUpdates"
+                                    HorizontalAlignment="Right"
+                                    Click="Button_Click"
+                                    Tag="CheckUpdate"
+                                    Visibility="{Binding CheckingUpdate, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
+                            </controls:StackPanel>
+                        </controls:SettingExpander.ActionContent>
+                        <Grid Style="{StaticResource SettingExpanderContentGridStyle}">
+                            <cwuc:MarkdownTextBlock
+                                HorizontalAlignment="Left"
+                                Background="{ThemeResource SystemControlTransparentBrush}"
+                                LinkClicked="MarkdownText_LinkClicked"
+                                Text="{Binding AboutTextBlockText}" />
+                        </Grid>
                     </controls:SettingExpander>
                     <muxc:InfoBar
                         x:Name="UpdateState"
@@ -192,148 +185,136 @@
                                 Visibility="{Binding GotoUpdateVisibility}" />
                         </muxc:InfoBar.ActionButton>
                     </muxc:InfoBar>
-                    <controls:SettingExpander>
-                        <controls:SettingExpander.Header>
-                            <controls:Setting x:Uid="/SettingsPage/FrameworkSettings" Icon="&#xE950;" />
-                        </controls:SettingExpander.Header>
-                        <controls:SettingExpander.Content>
-                            <Grid Style="{StaticResource ExpanderContentGridStyle}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
+                    <controls:SettingExpander x:Uid="/SettingsPage/FrameworkSettings" Icon="&#xE950;">
+                        <Grid Style="{StaticResource SettingExpanderContentGridStyle}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                                <TextBlock
-                                    x:Uid="/SettingsPage/FrameworkTextBlock"
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    Padding="0,0,0,8"
-                                    Foreground="{ThemeResource CardPrimaryForegroundBrush}" />
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    Padding="32,0,0,8"
-                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="{x:Bind interopservices:RuntimeInformation.FrameworkDescription}"
-                                    TextWrapping="WrapWholeWords" />
+                            <TextBlock
+                                x:Uid="/SettingsPage/FrameworkTextBlock"
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Padding="0,0,0,8"
+                                Foreground="{ThemeResource CardPrimaryForegroundBrush}" />
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Padding="32,0,0,8"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Text="{x:Bind interopservices:RuntimeInformation.FrameworkDescription}"
+                                TextWrapping="WrapWholeWords" />
 
-                                <TextBlock
-                                    Grid.Row="1"
-                                    Grid.Column="0"
-                                    Padding="0,0,0,8"
-                                    Foreground="{ThemeResource CardPrimaryForegroundBrush}"
-                                    Text="Community Toolkit" />
-                                <TextBlock
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    Padding="32,0,0,8"
-                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="{Binding ToolkitVersion}"
-                                    TextWrapping="WrapWholeWords" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Padding="0,0,0,8"
+                                Foreground="{ThemeResource CardPrimaryForegroundBrush}"
+                                Text="Community Toolkit" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Padding="32,0,0,8"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Text="{Binding ToolkitVersion}"
+                                TextWrapping="WrapWholeWords" />
 
-                                <TextBlock
-                                    x:Uid="/SettingsPage/DeviceFamilyTextBlock"
-                                    Grid.Row="2"
-                                    Grid.Column="0"
-                                    Padding="0,0,0,8"
-                                    Foreground="{ThemeResource CardPrimaryForegroundBrush}" />
-                                <TextBlock
-                                    Grid.Row="2"
-                                    Grid.Column="1"
-                                    Padding="32,0,0,8"
-                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="{Binding DeviceFamily}"
-                                    TextWrapping="WrapWholeWords" />
+                            <TextBlock
+                                x:Uid="/SettingsPage/DeviceFamilyTextBlock"
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Padding="0,0,0,8"
+                                Foreground="{ThemeResource CardPrimaryForegroundBrush}" />
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Padding="32,0,0,8"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Text="{Binding DeviceFamily}"
+                                TextWrapping="WrapWholeWords" />
 
-                                <TextBlock
-                                    x:Uid="/SettingsPage/OSPlatformTextBlock"
-                                    Grid.Row="3"
-                                    Grid.Column="0"
-                                    Padding="0,0,0,8"
-                                    Foreground="{ThemeResource CardPrimaryForegroundBrush}" />
-                                <TextBlock
-                                    Grid.Row="3"
-                                    Grid.Column="1"
-                                    Padding="32,0,0,8"
-                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="{x:Bind helpers:SystemInformation.Instance.OperatingSystemVersion}"
-                                    TextWrapping="WrapWholeWords" />
+                            <TextBlock
+                                x:Uid="/SettingsPage/OSPlatformTextBlock"
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Padding="0,0,0,8"
+                                Foreground="{ThemeResource CardPrimaryForegroundBrush}" />
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Padding="32,0,0,8"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Text="{x:Bind helpers:SystemInformation.Instance.OperatingSystemVersion}"
+                                TextWrapping="WrapWholeWords" />
 
-                                <TextBlock
-                                    x:Uid="/SettingsPage/OSArchitectureTextBlock"
-                                    Grid.Row="4"
-                                    Grid.Column="0"
-                                    Padding="0,0,0,8"
-                                    Foreground="{ThemeResource CardPrimaryForegroundBrush}" />
-                                <TextBlock
-                                    Grid.Row="4"
-                                    Grid.Column="1"
-                                    Padding="32,0,0,8"
-                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="{x:Bind interopservices:RuntimeInformation.OSArchitecture}"
-                                    TextWrapping="WrapWholeWords" />
-                            </Grid>
-                        </controls:SettingExpander.Content>
+                            <TextBlock
+                                x:Uid="/SettingsPage/OSArchitectureTextBlock"
+                                Grid.Row="4"
+                                Grid.Column="0"
+                                Padding="0,0,0,8"
+                                Foreground="{ThemeResource CardPrimaryForegroundBrush}" />
+                            <TextBlock
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                Padding="32,0,0,8"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Text="{x:Bind interopservices:RuntimeInformation.OSArchitecture}"
+                                TextWrapping="WrapWholeWords" />
+                        </Grid>
                     </controls:SettingExpander>
                 </controls:SettingsGroup>
                 <controls:SettingsGroup x:Uid="/SettingsPage/OthersSettingsHeader">
                     <controls:Setting x:Uid="/SettingsPage/ShowOtherExceptionSettings" Icon="&#xE90F;">
-                        <controls:Setting.ActionContent>
-                            <ToggleSwitch IsOn="{Binding ShowOtherException, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
-                        </controls:Setting.ActionContent>
+                        <ToggleSwitch IsOn="{Binding ShowOtherException, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
                     </controls:Setting>
                     <controls:Setting x:Uid="/SettingsPage/CleanCacheSettings" Icon="&#xEA99;">
-                        <controls:Setting.ActionContent>
-                            <StackPanel Orientation="Horizontal">
-                                <muxc:ProgressRing
-                                    Width="24"
-                                    Height="24"
-                                    Margin="8,0"
-                                    HorizontalAlignment="Left"
-                                    IsActive="{Binding IsCleanCache, Mode=OneWay}" />
-                                <Button
-                                    x:Uid="/SettingsPage/CleanCacheButton"
-                                    Click="Button_Click"
-                                    IsEnabled="{Binding IsCleanCache, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
-                                    Tag="CleanCache" />
-                            </StackPanel>
-                        </controls:Setting.ActionContent>
+                        <controls:StackPanel Orientation="Horizontal" Spacing="8">
+                            <muxc:ProgressRing
+                                Width="24"
+                                Height="24"
+                                HorizontalAlignment="Left"
+                                IsActive="{Binding IsCleanCache, Mode=OneWay}"
+                                Visibility="{Binding IsActive, RelativeSource={RelativeSource Mode=Self}}" />
+                            <Button
+                                x:Uid="/SettingsPage/CleanCacheButton"
+                                Click="Button_Click"
+                                IsEnabled="{Binding IsCleanCache, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
+                                Tag="CleanCache" />
+                        </controls:StackPanel>
                     </controls:Setting>
                     <controls:Setting x:Uid="/SettingsPage/ResetSettings" Icon="&#xE777;">
-                        <controls:Setting.ActionContent>
-                            <Button x:Name="Reset" x:Uid="/SettingsPage/ResetSettingsButton">
-                                <Button.Flyout>
-                                    <Flyout>
-                                        <StackPanel>
-                                            <TextBlock
-                                                x:Uid="/SettingsPage/ResetSettingsTitle"
-                                                Margin="0,0,0,12"
-                                                Style="{ThemeResource BaseTextBlockStyle}" />
-                                            <Button
-                                                x:Uid="/SettingsPage/ResetSettingsConfirm"
-                                                Click="Button_Click"
-                                                Tag="Reset" />
-                                        </StackPanel>
-                                    </Flyout>
-                                </Button.Flyout>
-                            </Button>
-                        </controls:Setting.ActionContent>
+                        <Button x:Name="Reset" x:Uid="/SettingsPage/ResetSettingsButton">
+                            <Button.Flyout>
+                                <Flyout>
+                                    <StackPanel>
+                                        <TextBlock
+                                            x:Uid="/SettingsPage/ResetSettingsTitle"
+                                            Margin="0,0,0,12"
+                                            Style="{ThemeResource BaseTextBlockStyle}" />
+                                        <Button
+                                            x:Uid="/SettingsPage/ResetSettingsConfirm"
+                                            Click="Button_Click"
+                                            Tag="Reset" />
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
                     </controls:Setting>
-                    <controls:SettingButton
+                    <controls:Setting
                         x:Name="GoToTestPage"
+                        x:Uid="/SettingsPage/GoToTestPage"
                         Click="Button_Click"
-                        Tag="TestPage">
-                        <controls:SettingButton.Content>
-                            <controls:Setting x:Uid="/SettingsPage/GoToTestPage" Icon="&#xEC7A;" />
-                        </controls:SettingButton.Content>
-                    </controls:SettingButton>
+                        Icon="&#xEC7A;"
+                        IsClickEnabled="True"
+                        Tag="TestPage" />
                 </controls:SettingsGroup>
             </StackPanel>
         </ScrollViewer>

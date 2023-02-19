@@ -7,7 +7,13 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <controls:StackPanel Orientation="Vertical" Spacing="2" />
+                    <controls:StackPanel Orientation="Vertical" Spacing="2">
+                        <controls:StackPanel.ChildrenTransitions>
+                            <TransitionCollection>
+                                <ReorderThemeTransition />
+                            </TransitionCollection>
+                        </controls:StackPanel.ChildrenTransitions>
+                    </controls:StackPanel>
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
@@ -22,14 +28,18 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock
+                        <ContentPresenter
                             x:Name="HeaderPresenter"
                             Grid.Row="0"
                             Margin="1,32,0,8"
                             contract6Present:AutomationProperties.HeadingLevel="Level2"
-                            Style="{ThemeResource BodyStrongTextBlockStyle}"
-                            Text="{TemplateBinding Header}"
-                            Visibility="{Binding Header, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource StringVisibilityConverter}}" />
+                            Content="{TemplateBinding Header}"
+                            FontSize="{StaticResource BodyStrongTextBlockFontSize}"
+                            FontWeight="SemiBold"
+                            HighContrastAdjustment="None"
+                            LineStackingStrategy="MaxHeight"
+                            TextLineBounds="Full"
+                            TextWrapping="Wrap" />
                         <ItemsPresenter Grid.Row="1" />
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
@@ -37,6 +47,14 @@
                                 <VisualState x:Name="Disabled">
                                     <VisualState.Setters>
                                         <Setter Target="HeaderPresenter.Foreground" Value="{ThemeResource TextFillColorDisabledBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="HeaderVisibilityGroup">
+                                <VisualState x:Name="HeaderVisible" />
+                                <VisualState x:Name="HeaderCollapsed">
+                                    <VisualState.Setters>
+                                        <Setter Target="HeaderPresenter.Visibility" Value="Collapsed" />
                                     </VisualState.Setters>
                                 </VisualState>
                             </VisualStateGroup>
