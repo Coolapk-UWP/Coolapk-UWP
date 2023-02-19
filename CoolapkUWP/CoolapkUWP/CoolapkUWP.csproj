@@ -171,10 +171,15 @@
     <Compile Include="Controls\ProfileFlyoutControl.xaml.cs">
       <DependentUpon>ProfileFlyoutControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SettingButton\SettingButton.cs" />
     <Compile Include="Controls\SettingExpander\SettingExpander.cs" />
+    <Compile Include="Controls\SettingExpander\SettingExpander.Properties.cs" />
+    <Compile Include="Controls\SettingExpander\SettingExpanderAutomationPeer.cs" />
     <Compile Include="Controls\SettingsGroup\SettingsGroup.cs" />
+    <Compile Include="Controls\SettingsGroup\SettingsGroup.Properties.cs" />
+    <Compile Include="Controls\SettingsGroup\SettingsGroupAutomationPeer.cs" />
     <Compile Include="Controls\Setting\Setting.cs" />
+    <Compile Include="Controls\Setting\Setting.Properties.cs" />
+    <Compile Include="Controls\Setting\SettingAutomationPeer.cs" />
     <Compile Include="Controls\ShowQRCodeControl.xaml.cs">
       <DependentUpon>ShowQRCodeControl.xaml</DependentUpon>
     </Compile>
@@ -955,7 +960,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\SettingButton\SettingButton.xaml">
+    <Page Include="Controls\SettingExpander\SettingExpander.ThemeResources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -964,6 +969,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\SettingsGroup\SettingsGroup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Setting\Setting.ThemeResources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

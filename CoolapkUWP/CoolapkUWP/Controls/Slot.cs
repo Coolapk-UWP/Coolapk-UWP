@@ -48,26 +48,28 @@ namespace CoolapkUWP.Controls
                 typeof(Slot),
                 new PropertyMetadata(Orientation.Vertical, OnLayoutPropertyChanged));
 
+        public UIElement LastControl
+        {
+            get => (UIElement)GetValue(LastControlProperty);
+            set => SetValue(LastControlProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="LastControl"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LastControlProperty =
+            DependencyProperty.Register(
+                nameof(LastControl),
+                typeof(UIElement),
+                typeof(Slot),
+                null);
+
         private static void OnLayoutPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != e.OldValue)
             {
                 (d as Slot).InvalidateArrange();
             }
-        }
-
-        protected override Size MeasureOverride(Size constraint)
-        {
-            UIElementCollection children = Children;
-            for (int i = 0, count = children.Count; i < count; ++i)
-            {
-                UIElement child = children[i];
-
-                if (child == null) { continue; }
-
-                child.Measure(constraint);
-            }
-            return constraint;
         }
 
         protected override Size ArrangeOverride(Size arrangeSize)
@@ -78,49 +80,68 @@ namespace CoolapkUWP.Controls
             if (isStretch)
             {
                 Rect rcChild = new Rect(0, 0, arrangeSize.Width, arrangeSize.Height);
-                UIElement child = children.FirstOrDefault();
-                child?.Arrange(rcChild);
+                foreach (UIElement child in children)
+                {
+                    child?.Arrange(rcChild);
+                }
             }
             else
             {
                 Window window = Window.Current;
-                Point screenCoords = TransformToVisual(window.Content).TransformPoint(new Point(0, 0));
                 if (fHorizontal)
                 {
-                    double leftPadding = window.Bounds.Width - screenCoords.X - arrangeSize.Width;
-                    double rightPadding = screenCoords.X;
+                    Point screenCoords = LastControl != null
+                        ? LastControl.TransformToVisual(window.Content).TransformPoint(new Point(LastControl.ActualSize.X, 0))
+                        : TransformToVisual(window.Content).TransformPoint(new Point(0, 0));
+
+                    double leftPadding = screenCoords.X;
+                    double rightPadding = window.Bounds.Width - screenCoords.X - arrangeSize.Width;
+
                     if (leftPadding > rightPadding)
                     {
                         double padding = leftPadding - rightPadding;
-                        Rect rcChild = new Rect(padding, 0, arrangeSize.Width - padding, arrangeSize.Height);
-                        UIElement child = children.FirstOrDefault();
-                        child?.Arrange(rcChild);
+                        Rect rcChild = new Rect(0, 0, arrangeSize.Width - padding, arrangeSize.Height);
+                        foreach (UIElement child in children)
+                        {
+                            child?.Arrange(rcChild);
+                        }
                     }
                     else
                     {
                         double padding = rightPadding - leftPadding;
-                        Rect rcChild = new Rect(0, 0, arrangeSize.Width - padding, arrangeSize.Height);
-                        UIElement child = children.FirstOrDefault();
-                        child?.Arrange(rcChild);
+                        Rect rcChild = new Rect(padding, 0, arrangeSize.Width - padding, arrangeSize.Height);
+                        foreach (UIElement child in children)
+                        {
+                            child?.Arrange(rcChild);
+                        }
                     }
                 }
                 else
                 {
+                    Point screenCoords = LastControl != null
+                        ? LastControl.TransformToVisual(window.Content).TransformPoint(new Point(0, LastControl.ActualSize.Y))
+                        : TransformToVisual(window.Content).TransformPoint(new Point(0, 0));
+
                     double topPadding = screenCoords.Y;
                     double buttonPadding = window.Bounds.Height - screenCoords.Y - arrangeSize.Height;
+
                     if (topPadding > buttonPadding)
                     {
                         double padding = topPadding - buttonPadding;
-                        Rect rcChild = new Rect(0, padding, arrangeSize.Width, arrangeSize.Height - padding);
-                        UIElement child = children.FirstOrDefault();
-                        child?.Arrange(rcChild);
+                        Rect rcChild = new Rect(0, 0, arrangeSize.Width, arrangeSize.Height - padding);
+                        foreach (UIElement child in children)
+                        {
+                            child?.Arrange(rcChild);
+                        }
                     }
                     else
                     {
                         double padding = buttonPadding - topPadding;
-                        Rect rcChild = new Rect(0, 0, arrangeSize.Width, arrangeSize.Height - padding);
-                        UIElement child = children.FirstOrDefault();
-                        child?.Arrange(rcChild);
+                        Rect rcChild = new Rect(0, padding, arrangeSize.Width, arrangeSize.Height - padding);
+                        foreach (UIElement child in children)
+                        {
+                            child?.Arrange(rcChild);
+                        }
                     }
                 }
             }

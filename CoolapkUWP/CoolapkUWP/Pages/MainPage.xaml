@@ -78,6 +78,7 @@
             <controls:Slot
                 x:Name="SearchBoxHolder"
                 Grid.Column="2"
+                LastControl="{x:Bind AppTitle}"
                 Orientation="Horizontal">
                 <AutoSuggestBox
                     x:Name="SearchTextBox"
