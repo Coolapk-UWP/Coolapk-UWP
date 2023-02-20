@@ -325,7 +325,9 @@ namespace CoolapkUWP.Pages
                         ? new Thickness(0, 0, 16, 0)
                         : new Thickness(24.5, 0, 24, 0)
                     : NavigationView.IsBackButtonVisible == muxc.NavigationViewBackButtonVisible.Visible
-                        || (NavigationView.DisplayMode == muxc.NavigationViewDisplayMode.Minimal && NavigationView.IsPaneToggleButtonVisible)
+                        || (NavigationView.DisplayMode == muxc.NavigationViewDisplayMode.Minimal
+                            && NavigationView.PaneDisplayMode != muxc.NavigationViewPaneDisplayMode.Top
+                            && NavigationView.IsPaneToggleButtonVisible)
                         ? new Thickness(0, 0, 16, 0)
                         : new Thickness(16, 0, 16, 0);
         }

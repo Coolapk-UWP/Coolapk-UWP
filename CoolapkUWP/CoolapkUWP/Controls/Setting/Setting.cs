@@ -1,4 +1,6 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using Windows.Foundation.Metadata;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Automation.Peers;
 using Windows.UI.Xaml.Controls;
@@ -65,16 +67,24 @@ namespace CoolapkUWP.Controls
 
             PointerEntered += Control_PointerEntered;
             PointerExited += Control_PointerExited;
-            PreviewKeyDown += Control_PreviewKeyDown;
-            PreviewKeyUp += Control_PreviewKeyUp;
+            PointerCaptureLost += Control_PointerCaptureLost;
+            PointerCanceled += Control_PointerCanceled;
+            if (ApiInformation.IsEventPresent("Windows.UI.Xaml.UIElement", "PreviewKeyDown"))
+            { PreviewKeyDown += Control_PreviewKeyDown; }
+            if (ApiInformation.IsEventPresent("Windows.UI.Xaml.UIElement", "PreviewKeyUp"))
+            { PreviewKeyUp += Control_PreviewKeyUp; }
         }
 
         private void DisableButtonInteraction()
         {
             PointerEntered -= Control_PointerEntered;
             PointerExited -= Control_PointerExited;
-            PreviewKeyDown -= Control_PreviewKeyDown;
-            PreviewKeyUp -= Control_PreviewKeyUp;
+            PointerCaptureLost -= Control_PointerCaptureLost;
+            PointerCanceled -= Control_PointerCanceled;
+            if (ApiInformation.IsEventPresent("Windows.UI.Xaml.UIElement", "PreviewKeyDown"))
+            { PreviewKeyDown -= Control_PreviewKeyDown; }
+            if (ApiInformation.IsEventPresent("Windows.UI.Xaml.UIElement", "PreviewKeyUp"))
+            { PreviewKeyUp -= Control_PreviewKeyUp; }
         }
 
         private void Control_PreviewKeyUp(object sender, KeyRoutedEventArgs e)
@@ -93,26 +103,39 @@ namespace CoolapkUWP.Controls
             }
         }
 
+        public void Control_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            base.OnPointerEntered(e);
+            VisualStateManager.GoToState(this, PointerOverState, true);
+        }
+
         public void Control_PointerExited(object sender, PointerRoutedEventArgs e)
         {
             base.OnPointerExited(e);
             VisualStateManager.GoToState(this, NormalState, true);
         }
 
-        public void Control_PointerEntered(object sender, PointerRoutedEventArgs e)
+        private void Control_PointerCaptureLost(object sender, PointerRoutedEventArgs e)
         {
-            base.OnPointerEntered(e);
-            VisualStateManager.GoToState(this, PointerOverState, true);
+            base.OnPointerCaptureLost(e);
+            VisualStateManager.GoToState(this, NormalState, true);
         }
+
+        private void Control_PointerCanceled(object sender, PointerRoutedEventArgs e)
+        {
+            base.OnPointerCanceled(e);
+            VisualStateManager.GoToState(this, NormalState, true);
+        }
+
         protected override void OnPointerPressed(PointerRoutedEventArgs e)
         {
-            //  e.Handled = true;
             if (IsClickEnabled)
             {
                 base.OnPointerPressed(e);
                 VisualStateManager.GoToState(this, PressedState, true);
             }
         }
+
         protected override void OnPointerReleased(PointerRoutedEventArgs e)
         {
             if (IsClickEnabled)

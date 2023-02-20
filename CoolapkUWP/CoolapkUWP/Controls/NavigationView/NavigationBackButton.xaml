@@ -12,7 +12,7 @@
         <Setter Property="Background" Value="{ThemeResource NavigationViewBackButtonBackground}" />
         <Setter Property="Foreground" Value="{ThemeResource NavigationViewItemForeground}" />
         <Setter Property="FontFamily" Value="{ThemeResource SymbolThemeFontFamily}" />
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontSize" Value="14" />
         <Setter Property="Height" Value="{ThemeResource NavigationBackButtonHeight}" />
         <Setter Property="Width" Value="{ThemeResource NavigationBackButtonWidth}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
