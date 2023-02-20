@@ -16,7 +16,8 @@ namespace CoolapkUWP.ViewModels.SettingsPages
 {
     public class SettingsViewModel : IViewModel
     {
-        public static SettingsViewModel Caches;
+        public static SettingsViewModel Caches { get; set; }
+
         private readonly ResourceLoader _loader = ResourceLoader.GetForViewIndependentUse("SettingsPage");
 
         public string Title => _loader.GetString("Title");

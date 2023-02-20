@@ -70,6 +70,18 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void RefreshButton_Click(object sender, RoutedEventArgs e) => Refresh();
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Refresh != null)
+            {
+                Refresh();
+            }
+            else if ((Pivot.SelectedItem as PivotItem).Content is muxc.RefreshContainer RefreshContainer
+                && RefreshContainer.Content is ListView ListView
+                && ListView.ItemsSource is EntityItemSourse ItemsSource)
+            {
+                _ = ItemsSource.Refresh(true);
+            }
+        }
     }
 }
