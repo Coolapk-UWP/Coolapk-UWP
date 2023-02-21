@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlreadyPinnedTile" xml:space="preserve">
+    <value>磁贴已固定到开始</value>
+  </data>
   <data name="AppDescription" xml:space="preserve">
     <value>一个基于UWP平台的酷安客户端</value>
   </data>
@@ -159,6 +162,12 @@
   </data>
   <data name="NoUpdate" xml:space="preserve">
     <value>当前无可用更新。</value>
+  </data>
+  <data name="PinnedTileFailed" xml:space="preserve">
+    <value>固定磁贴失败</value>
+  </data>
+  <data name="PinnedTileSucceeded" xml:space="preserve">
+    <value>固定磁贴成功</value>
   </data>
   <data name="UserNameError" xml:space="preserve">
     <value>请输入用户名</value>
