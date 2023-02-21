@@ -76,7 +76,7 @@
     <x:String x:Key="SettingCardChevronRightGlyph">&#xE76C;</x:String>
 
     <Thickness x:Key="ToggleSwitchLeftHeaderMargin">0,0,4,0</Thickness>
-    
+
     <!--  This style overrides the default style so that all ToggleSwitches are right aligned, with the label on the left  -->
     <Style x:Key="ToggleSwitchSettingStyle" TargetType="ToggleSwitch">
         <Setter Property="MinWidth" Value="0" />
@@ -111,8 +111,8 @@
                             x:Name="HeaderContentPresenter"
                             Grid.Column="0"
                             Margin="{ThemeResource ToggleSwitchLeftHeaderMargin}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             HorizontalAlignment="Left"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             x:DeferLoadStrategy="Lazy"
                             AutomationProperties.AccessibilityView="Raw"
                             Content="{TemplateBinding Header}"

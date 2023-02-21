@@ -5,8 +5,14 @@ using Windows.ApplicationModel.Resources;
 
 namespace CoolapkUWP.Models.Users
 {
-    public class UserModel : Entity, IHasSubtitle
+    public class UserModel : Entity, IUserModel, IHasSubtitle
     {
+        private readonly int fansNum;
+        int IUserModel.FansNum => fansNum;
+
+        private readonly int followNum;
+        int IUserModel.FollowNum => followNum;
+
         public int UID { get; private set; }
         public int Level { get; private set; }
         public int Status { get; private set; }
@@ -48,7 +54,8 @@ namespace CoolapkUWP.Models.Users
 
             if (token.TryGetValue("fans", out JToken fans))
             {
-                FansNum = $"{fans.ToObject<int>()}{loader.GetString("Fan")}";
+                fansNum = fans.ToObject<int>();
+                FansNum = $"{fansNum}{loader.GetString("Fan")}";
             }
 
             if (token.TryGetValue("level", out JToken level))
@@ -83,7 +90,8 @@ namespace CoolapkUWP.Models.Users
 
             if (token.TryGetValue("follow", out JToken follow))
             {
-                FollowNum = $"{follow.ToObject<int>()}{loader.GetString("Follow")}";
+                followNum = follow.ToObject<int>();
+                FollowNum = $"{followNum}{loader.GetString("Follow")}";
             }
 
             if (token.TryGetValue("experience", out JToken experience))

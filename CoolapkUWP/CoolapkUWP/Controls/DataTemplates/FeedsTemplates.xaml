@@ -39,27 +39,36 @@
                     <controls:ShowQRCodeControl QRCodeText="{Binding ShareUrl}" />
                 </Flyout>
                 <MenuFlyout x:Key="MoreFlyout">
-                    <MenuFlyoutSubItem Text="复制">
+                    <MenuFlyoutSubItem x:Uid="/Feed/Copy">
                         <MenuFlyoutSubItem.Icon>
                             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
                         </MenuFlyoutSubItem.Icon>
                         <ToggleMenuFlyoutItem
                             x:Name="CopyButton"
-                            x:Uid="/Feed/Copy"
+                            x:Uid="/Feed/CopyFree"
                             IsChecked="{Binding IsCopyEnabled, Mode=TwoWay}" />
                         <MenuFlyoutItem
+                            x:Uid="/Feed/CopyLink"
                             Click="CopyMenuItem_Click"
-                            Tag="{Binding ShareUrl}"
-                            Text="复制链接" />
+                            Tag="{Binding ShareUrl}" />
                         <MenuFlyoutItem
+                            x:Uid="/Feed/CopyAll"
                             Click="CopyMenuItem_Click"
-                            Tag="{Binding Message, Converter={StaticResource HTMLToTextConverter}}"
-                            Text="复制全部内容" />
+                            Tag="{Binding Message, Converter={StaticResource HTMLToTextConverter}}" />
                         <MenuFlyoutItem
                             Click="CopyMenuItem_Click"
                             Tag="{Binding UserInfo.UserName, Converter={StaticResource StringFormatConverter}, ConverterParameter='@{0}', Mode=OneWay}"
                             Text="{Binding UserInfo.UserName, Converter={StaticResource StringFormatConverter}, ConverterParameter='复制 @{0}', Mode=OneWay}" />
                     </MenuFlyoutSubItem>
+                    <MenuFlyoutItem
+                        x:Name="PinTileButton"
+                        x:Uid="/Feed/PinTile"
+                        Click="FeedButton_Click"
+                        Tag="{Binding}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE840;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
                     <MenuFlyoutItem
                         x:Name="ReportButton"
                         x:Uid="/Feed/Report"
@@ -644,18 +653,18 @@
             SizeChanged="UserControl_SizeChanged">
             <UserControl.Resources>
                 <MenuFlyout x:Key="MoreFlyout">
-                    <MenuFlyoutSubItem Text="复制">
+                    <MenuFlyoutSubItem x:Uid="/Feed/Copy">
                         <MenuFlyoutSubItem.Icon>
                             <FontIcon Glyph="&#xE8C8;" />
                         </MenuFlyoutSubItem.Icon>
                         <ToggleMenuFlyoutItem
                             x:Name="CopyButton"
-                            x:Uid="/Feed/Copy"
+                            x:Uid="/Feed/CopyFree"
                             IsChecked="{Binding IsCopyEnabled, Mode=TwoWay}" />
                         <MenuFlyoutItem
+                            x:Uid="/Feed/CopyAll"
                             Click="CopyMenuItem_Click"
-                            Tag="{Binding Message, Converter={StaticResource HTMLToTextConverter}}"
-                            Text="复制全部内容" />
+                            Tag="{Binding Message, Converter={StaticResource HTMLToTextConverter}}" />
                         <MenuFlyoutItem
                             Click="CopyMenuItem_Click"
                             Tag="{Binding UserInfo.UserName, Converter={StaticResource StringFormatConverter}, ConverterParameter='@{0}', Mode=OneWay}"

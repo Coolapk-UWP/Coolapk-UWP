@@ -56,7 +56,7 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             // Get the default UserActivityChannel and query it for our UserActivity. If the activity doesn't exist, one is created.
             UserActivityChannel channel = UserActivityChannel.GetDefault();
-            UserActivity userActivity = await channel.GetOrCreateUserActivityAsync(Provider.FeedDetail.ShareUrl.GetMD5());
+            UserActivity userActivity = await channel.GetOrCreateUserActivityAsync(Provider.FeedDetail.Url.GetMD5());
 
             // Populate required properties
             userActivity.VisualElements.DisplayText = Provider.Title;

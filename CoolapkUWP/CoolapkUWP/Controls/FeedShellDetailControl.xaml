@@ -20,575 +20,615 @@
                 <templates:RelationRowsTemplates />
             </ResourceDictionary.MergedDictionaries>
             <converters:HTMLToTextConverter x:Key="HTMLToTextConverter" />
+            <MenuFlyout x:Key="MoreFlyout">
+                <MenuFlyoutSubItem x:Uid="/Feed/Copy">
+                    <MenuFlyoutSubItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
+                    </MenuFlyoutSubItem.Icon>
+                    <MenuFlyoutItem
+                        x:Uid="/Feed/CopyLink"
+                        Click="CopyMenuItem_Click"
+                        Tag="{Binding ShareUrl}" />
+                    <MenuFlyoutItem
+                        x:Uid="/Feed/CopyAll"
+                        Click="CopyMenuItem_Click"
+                        Tag="{Binding Message, Converter={StaticResource HTMLToTextConverter}}" />
+                    <MenuFlyoutItem
+                        Click="CopyMenuItem_Click"
+                        Tag="{Binding UserInfo.UserName, Converter={StaticResource StringFormatConverter}, ConverterParameter='@{0}', Mode=OneWay}"
+                        Text="{Binding UserInfo.UserName, Converter={StaticResource StringFormatConverter}, ConverterParameter='复制 @{0}', Mode=OneWay}" />
+                </MenuFlyoutSubItem>
+                <MenuFlyoutItem
+                    x:Name="PinTileButton"
+                    x:Uid="/Feed/PinTile"
+                    Click="Button_Click"
+                    Tag="{Binding}">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE840;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem
+                    x:Name="ReportButton"
+                    x:Uid="/Feed/Report"
+                    Click="Button_Click"
+                    Tag="{Binding ID, Converter={StaticResource StringFormatConverter}, ConverterParameter='https://m.coolapk.com/mp/do?c=feed&amp;m=report&amp;type=feed&amp;id={0}', Mode=OneWay}">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8F8;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuFlyout>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Padding="{x:Bind Padding, Mode=TwoWay}">
-        <UserControl>
-            <Grid Padding="12,4">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid
-                    x:Name="FeedArticleTitle"
-                    Grid.Row="0"
-                    Margin="0,0,0,4"
-                    CornerRadius="8"
-                    Visibility="{Binding IsFeedArticle, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
-                    <Image
-                        x:Name="MessageCover"
-                        Tapped="OnTapped"
-                        Source="{Binding MessageCover.Pic, Mode=OneWay}"
-                        Stretch="UniformToFill"
-                        Tag="{Binding MessageCover}"
-                        Visibility="{Binding MessageCover.Uri, Converter={StaticResource StringVisibilityConverter}}" />
-                    <Border
-                        VerticalAlignment="Bottom"
-                        Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                        CornerRadius="0,0,8,8">
-                        <TextBlock
-                            Margin="8,4"
-                            FontSize="20"
-                            IsTextSelectionEnabled="True"
-                            Text="{Binding MessageTitle, Mode=OneWay}"
-                            TextWrapping="Wrap" />
-                    </Border>
-                </Grid>
-                <Button
-                    Grid.Row="1"
-                    Height="40"
-                    Margin="0,0,0,4"
-                    Padding="4"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    Click="UrlButton_Click"
-                    Tag="{Binding QuestionUrl}"
-                    Visibility="{Binding IsAnswerFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                            Grid.Column="1"
-                            Margin="8,0,0,2"
-                            VerticalAlignment="Center"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            TextTrimming="CharacterEllipsis">
-                            <Run Text="查看全部" />
-                            <Run Text="{Binding QuestionAnswerNum, Mode=OneWay}" />
-                            <Run Text="个答案" />
-                        </TextBlock>
-                        <FontIcon
-                            Grid.Column="2"
-                            Margin="8,0"
-                            HorizontalAlignment="Right"
-                            FontFamily="{StaticResource SymbolThemeFontFamily}"
-                            FontSize="16"
-                            Glyph="&#xE72A;"
-                            Visibility="{Binding QuestionUrl, Converter={StaticResource StringVisibilityConverter}}" />
-                    </Grid>
-                </Button>
-                <Button
-                    Grid.Row="2"
-                    Height="40"
-                    Margin="0,0,0,4"
-                    Padding="4"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    Click="UrlButton_Click"
-                    Tag="{Binding TopicUrl}"
-                    Visibility="{Binding ShowTopicTitle, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Border
-                            Grid.Column="0"
-                            Width="32"
-                            Height="32"
-                            Margin="0,0,8,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            CornerRadius="4">
-                            <Border.Background>
-                                <ImageBrush ImageSource="{Binding TopicLogo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
-                            </Border.Background>
-                        </Border>
-                        <TextBlock
-                            Grid.Column="1"
-                            Margin="0,0,0,2"
-                            VerticalAlignment="Center"
-                            FontSize="16"
-                            Text="{Binding TopicTitle}"
-                            TextTrimming="CharacterEllipsis"
-                            Visibility="{Binding TopicTitle, Converter={StaticResource StringVisibilityConverter}}" />
-                        <FontIcon
-                            Grid.Column="2"
-                            Margin="8,0"
-                            HorizontalAlignment="Right"
-                            FontFamily="{StaticResource SymbolThemeFontFamily}"
-                            FontSize="16"
-                            Glyph="&#xE72A;"
-                            Visibility="{Binding TopicUrl, Converter={StaticResource StringVisibilityConverter}}" />
-                    </Grid>
-                </Button>
-                <Button
-                    Grid.Row="3"
-                    Height="40"
-                    Margin="0,0,0,4"
-                    Padding="4"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    Click="UrlButton_Click"
-                    Tag="{Binding DyhUrl}"
-                    Visibility="{Binding ShowDyhName, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Border
-                            Grid.Column="0"
-                            Width="32"
-                            Height="32"
-                            Margin="0,0,8,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            CornerRadius="4">
-                            <Border.Background>
-                                <ImageBrush ImageSource="{Binding DyhLogo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
-                            </Border.Background>
-                        </Border>
-                        <Grid Grid.Column="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock
-                                Margin="0,0,0,2"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                Text="{Binding DyhName}"
-                                TextTrimming="CharacterEllipsis"
-                                Visibility="{Binding DyhName, Converter={StaticResource StringVisibilityConverter}}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                FontSize="12"
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                Text="{Binding DyhSubTitle}"
-                                TextTrimming="CharacterEllipsis"
-                                Visibility="{Binding DyhSubTitle, Converter={StaticResource StringVisibilityConverter}}" />
-                        </Grid>
-                        <FontIcon
-                            Grid.Column="2"
-                            Margin="8,0"
-                            HorizontalAlignment="Right"
-                            FontFamily="{StaticResource SymbolThemeFontFamily}"
-                            FontSize="16"
-                            Glyph="&#xE72A;"
-                            Visibility="{Binding DyhUrl, Converter={StaticResource StringVisibilityConverter}}" />
-                    </Grid>
-                </Button>
-                <Grid x:Name="UserBar" Grid.Row="4">
+    <Grid
+        Padding="{x:Bind Padding, Mode=TwoWay}"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        Background="{ThemeResource SystemControlTransparentBrush}"
+        ContextFlyout="{StaticResource MoreFlyout}">
+        <Grid Padding="12,4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid
+                x:Name="FeedArticleTitle"
+                Grid.Row="0"
+                Margin="0,0,0,4"
+                CornerRadius="8"
+                Visibility="{Binding IsFeedArticle, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
+                <Image
+                    x:Name="MessageCover"
+                    Source="{Binding MessageCover.Pic, Mode=OneWay}"
+                    Stretch="UniformToFill"
+                    Tag="{Binding MessageCover}"
+                    Tapped="OnTapped"
+                    Visibility="{Binding MessageCover.Uri, Converter={StaticResource StringVisibilityConverter}}" />
+                <Border
+                    VerticalAlignment="Bottom"
+                    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                    CornerRadius="0,0,8,8">
+                    <TextBlock
+                        Margin="8,4"
+                        FontSize="20"
+                        IsTextSelectionEnabled="True"
+                        Text="{Binding MessageTitle, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+                </Border>
+            </Grid>
+            <Button
+                Grid.Row="1"
+                Height="40"
+                Margin="0,0,0,4"
+                Padding="4"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                Click="UrlButton_Click"
+                Tag="{Binding QuestionUrl}"
+                Visibility="{Binding IsAnswerFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Button
-                        Grid.Column="0"
-                        Margin="0,4"
-                        Padding="0"
-                        HorizontalAlignment="Left"
-                        Background="{ThemeResource SystemControlTransparentBrush}"
-                        Click="Button_Click"
-                        Style="{StaticResource TransparentButtonStyle}"
-                        Tag="{Binding UserInfo.Url}">
-                        <muxc:PersonPicture
-                            Width="36"
-                            Height="36"
-                            DisplayName="{Binding UserInfo.UserName}"
-                            ProfilePicture="{Binding UserInfo.UserAvatar.Pic, Mode=OneWay}" />
-                    </Button>
-                    <StackPanel
+                    <TextBlock
                         Grid.Column="1"
-                        Margin="8,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center">
-                        <TextBlock
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            IsTextSelectionEnabled="True"
-                            Text="{Binding UserInfo.UserName}" />
-                        <StackPanel Margin="-1,0" Orientation="Horizontal">
-                            <TextBlock
-                                x:Name="DateLineTxb"
-                                Margin="0,0,5,0"
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                IsTextSelectionEnabled="True"
-                                Text="{Binding Dateline}" />
-                            <TextBlock
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                IsTextSelectionEnabled="True"
-                                Text="{Binding Info}" />
-                            <TextBlock
-                                Margin="5,0,0,0"
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                IsTextSelectionEnabled="True"
-                                Text="{Binding DeviceTitle}"
-                                Visibility="{Binding DeviceTitle, Converter={StaticResource StringVisibilityConverter}}" />
-                        </StackPanel>
-                    </StackPanel>
-                    <Button
-                        x:Name="FollowButton"
+                        Margin="8,0,0,2"
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        TextTrimming="CharacterEllipsis">
+                        <Run Text="查看全部" />
+                        <Run Text="{Binding QuestionAnswerNum, Mode=OneWay}" />
+                        <Run Text="个答案" />
+                    </TextBlock>
+                    <FontIcon
                         Grid.Column="2"
-                        Height="32"
+                        Margin="8,0"
                         HorizontalAlignment="Right"
-                        Click="Button_Click"
-                        Style="{StaticResource TransparentButtonStyle}"
-                        Tag="{Binding}"
-                        ToolTipService.ToolTip="{x:Bind FollowStatus.Text, Mode=OneWay}">
-                        <StackPanel Orientation="Horizontal">
-                            <FontIcon
-                                VerticalAlignment="Center"
-                                FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                FontSize="15"
-                                Glyph="{Binding UserAction.FollowGlyph}" />
-                            <TextBlock
-                                x:Name="FollowStatus"
-                                Margin="8,0,0,0"
-                                VerticalAlignment="Center"
-                                Text="{Binding UserAction.FollowStatus}" />
-                        </StackPanel>
-                    </Button>
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        FontSize="16"
+                        Glyph="&#xE72A;"
+                        Visibility="{Binding QuestionUrl, Converter={StaticResource StringVisibilityConverter}}" />
                 </Grid>
-                <local:StackPanel
-                    Grid.Row="5"
-                    Margin="4"
-                    Spacing="4">
-                    <Grid Margin="0,-4" Visibility="{Binding IsRatingFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
+            </Button>
+            <Button
+                Grid.Row="2"
+                Height="40"
+                Margin="0,0,0,4"
+                Padding="4"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                Click="UrlButton_Click"
+                Tag="{Binding TopicUrl}"
+                Visibility="{Binding ShowTopicTitle, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Grid.Column="0"
+                        Width="32"
+                        Height="32"
+                        Margin="0,0,8,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        CornerRadius="4">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding TopicLogo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                        </Border.Background>
+                    </Border>
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="0,0,0,2"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Text="{Binding TopicTitle}"
+                        TextTrimming="CharacterEllipsis"
+                        Visibility="{Binding TopicTitle, Converter={StaticResource StringVisibilityConverter}}" />
+                    <FontIcon
+                        Grid.Column="2"
+                        Margin="8,0"
+                        HorizontalAlignment="Right"
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        FontSize="16"
+                        Glyph="&#xE72A;"
+                        Visibility="{Binding TopicUrl, Converter={StaticResource StringVisibilityConverter}}" />
+                </Grid>
+            </Button>
+            <Button
+                Grid.Row="3"
+                Height="40"
+                Margin="0,0,0,4"
+                Padding="4"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                Click="UrlButton_Click"
+                Tag="{Binding DyhUrl}"
+                Visibility="{Binding ShowDyhName, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Grid.Column="0"
+                        Width="32"
+                        Height="32"
+                        Margin="0,0,8,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        CornerRadius="4">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding DyhLogo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                        </Border.Background>
+                    </Border>
+                    <Grid Grid.Column="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <Border
-                            Padding="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            BorderBrush="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            BorderThickness="1"
-                            CornerRadius="4">
-                            <TextBlock
-                                FontSize="12"
-                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                Text="评分" />
-                        </Border>
-                        <muxc:RatingControl
-                            x:Name="RatingStarControl"
-                            Grid.Column="1"
-                            Margin="8,7,8,0"
-                            IsReadOnly="True"
-                            Value="{Binding RatingStar, Mode=OneWay}" />
                         <TextBlock
-                            Grid.Column="2"
+                            Margin="0,0,0,2"
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Text="{Binding DyhName}"
+                            TextTrimming="CharacterEllipsis"
+                            Visibility="{Binding DyhName, Converter={StaticResource StringVisibilityConverter}}" />
+                        <TextBlock
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             FontSize="12"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
-                            <Run Text="{Binding RatingStar, Converter={StaticResource NumMultConverter}, ConverterParameter='2', Mode=OneWay}" />
-                            <Run Text="分" />
-                        </TextBlock>
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Text="{Binding DyhSubTitle}"
+                            TextTrimming="CharacterEllipsis"
+                            Visibility="{Binding DyhSubTitle, Converter={StaticResource StringVisibilityConverter}}" />
                     </Grid>
-                    <Grid>
-                        <local:TextBlockEx
-                            x:Name="Message"
-                            IsTextSelectionEnabled="True"
-                            Text="{Binding Message}"
-                            Visibility="{Binding MessageRawOutput, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true'}" />
-                        <local:TextBlockEx
-                            x:Name="ArticleMessage"
-                            IsTextSelectionEnabled="True"
-                            Text="{Binding MessageRawOutput}"
-                            Visibility="{Binding MessageRawOutput, Converter={StaticResource StringVisibilityConverter}}" />
-                    </Grid>
-                </local:StackPanel>
-                <Grid
-                    Grid.Row="6"
-                    MinHeight="0"
-                    Margin="4"
-                    Visibility="{Binding MessageRawOutput, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true', FallbackValue='Collapsed'}">
-                    <GridView
-                        MinHeight="0"
-                        Padding="0"
-                        HorizontalContentAlignment="Left"
-                        ItemTemplate="{StaticResource PicDefaultTemplate}"
-                        ItemsSource="{Binding PicArr}"
-                        ScrollViewer.VerticalScrollMode="Disabled"
-                        SelectionChanged="GridView_SelectionChanged"
-                        Visibility="{Binding PicArr, Converter={StaticResource CollectionVisibilityConverter}}">
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid MaximumRowsOrColumns="3" Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
-                    </GridView>
+                    <FontIcon
+                        Grid.Column="2"
+                        Margin="8,0"
+                        HorizontalAlignment="Right"
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        FontSize="16"
+                        Glyph="&#xE72A;"
+                        Visibility="{Binding DyhUrl, Converter={StaticResource StringVisibilityConverter}}" />
                 </Grid>
-                <Border
-                    Grid.Row="7"
+            </Button>
+            <Grid x:Name="UserBar" Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="0"
                     Margin="0,4"
-                    HorizontalAlignment="Stretch"
-                    Visibility="{Binding ShowSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
-                    <local:WebViewContentControl
+                    Padding="0"
+                    HorizontalAlignment="Left"
+                    Background="{ThemeResource SystemControlTransparentBrush}"
+                    Click="Button_Click"
+                    Style="{StaticResource TransparentButtonStyle}"
+                    Tag="{Binding UserInfo.Url}">
+                    <muxc:PersonPicture
+                        Width="36"
+                        Height="36"
+                        DisplayName="{Binding UserInfo.UserName}"
+                        ProfilePicture="{Binding UserInfo.UserAvatar.Pic, Mode=OneWay}" />
+                </Button>
+                <StackPanel
+                    Grid.Column="1"
+                    Margin="8,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        IsTextSelectionEnabled="True"
+                        Text="{Binding UserInfo.UserName}" />
+                    <StackPanel Margin="-1,0" Orientation="Horizontal">
+                        <TextBlock
+                            x:Name="DateLineTxb"
+                            Margin="0,0,5,0"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{Binding Dateline}" />
+                        <TextBlock
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{Binding Info}" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{Binding DeviceTitle}"
+                            Visibility="{Binding DeviceTitle, Converter={StaticResource StringVisibilityConverter}}" />
+                    </StackPanel>
+                </StackPanel>
+                <Button
+                    x:Name="FollowButton"
+                    Grid.Column="2"
+                    Height="32"
+                    HorizontalAlignment="Right"
+                    Click="Button_Click"
+                    Style="{StaticResource TransparentButtonStyle}"
+                    Tag="{Binding}"
+                    ToolTipService.ToolTip="{x:Bind FollowStatus.Text, Mode=OneWay}">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            FontSize="15"
+                            Glyph="{Binding UserAction.FollowGlyph}" />
+                        <TextBlock
+                            x:Name="FollowStatus"
+                            Margin="8,0,0,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding UserAction.FollowStatus}" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+            <local:StackPanel
+                Grid.Row="5"
+                Margin="4"
+                Spacing="4">
+                <Grid Margin="0,-4" Visibility="{Binding IsRatingFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Padding="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        BorderBrush="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <TextBlock
+                            FontSize="12"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                            Text="评分" />
+                    </Border>
+                    <muxc:RatingControl
+                        x:Name="RatingStarControl"
+                        Grid.Column="1"
+                        Margin="8,7,8,0"
+                        IsReadOnly="True"
+                        Value="{Binding RatingStar, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
+                        <Run Text="{Binding RatingStar, Converter={StaticResource NumMultConverter}, ConverterParameter='2', Mode=OneWay}" />
+                        <Run Text="分" />
+                    </TextBlock>
+                </Grid>
+                <Grid>
+                    <local:TextBlockEx
+                        x:Name="Message"
+                        IsTextSelectionEnabled="True"
+                        Text="{Binding Message}"
+                        Visibility="{Binding MessageRawOutput, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true'}" />
+                    <local:TextBlockEx
+                        x:Name="ArticleMessage"
+                        IsTextSelectionEnabled="True"
+                        Text="{Binding MessageRawOutput}"
+                        Visibility="{Binding MessageRawOutput, Converter={StaticResource StringVisibilityConverter}}" />
+                </Grid>
+            </local:StackPanel>
+            <Grid
+                Grid.Row="6"
+                MinHeight="0"
+                Margin="4"
+                Visibility="{Binding MessageRawOutput, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true', FallbackValue='Collapsed'}">
+                <GridView
+                    MinHeight="0"
+                    Padding="0"
+                    HorizontalContentAlignment="Left"
+                    ItemTemplate="{StaticResource PicDefaultTemplate}"
+                    ItemsSource="{Binding PicArr}"
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    SelectionChanged="GridView_SelectionChanged"
+                    Visibility="{Binding PicArr, Converter={StaticResource CollectionVisibilityConverter}}">
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid MaximumRowsOrColumns="3" Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </GridView>
+            </Grid>
+            <Border
+                Grid.Row="7"
+                Margin="0,4"
+                HorizontalAlignment="Stretch"
+                Visibility="{Binding ShowSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
+                <local:WebViewContentControl
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    ContentCornerRadius="8"
+                    ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
+                    DataContext="{Binding SourceFeed}" />
+            </Border>
+            <Grid
+                Grid.Row="8"
+                Margin="0,4"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="8"
+                Visibility="{Binding ExtraTitle, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
+                <Grid.Background>
+                    <ImageBrush ImageSource="{Binding ExtraPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                </Grid.Background>
+                <Grid
+                    Padding="8"
+                    Tag="{Binding ExtraUrl}"
+                    Tapped="OnTapped"
+                    Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                    <Grid.Background>
+                        <media:AcrylicBrush
+                            BackgroundSource="Backdrop"
+                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintOpacity="1" />
+                    </Grid.Background>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Width="56"
+                        Height="56"
+                        CornerRadius="8"
+                        Visibility="{Binding ExtraPic.Uri, Converter={StaticResource StringVisibilityConverter}}">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding ExtraPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                        </Border.Background>
+                    </Border>
+                    <Border
+                        Width="56"
+                        Height="56"
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                         BorderThickness="1"
+                        CornerRadius="8"
+                        Visibility="{Binding ExtraPic.Uri, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true'}">
+                        <FontIcon
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Glyph="&#xE71B;" />
+                    </Border>
+                    <StackPanel
+                        Grid.Column="1"
+                        Margin="8,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center">
+                        <TextBlock
+                            MaxLines="2"
+                            Text="{Binding ExtraTitle}"
+                            TextTrimming="WordEllipsis"
+                            TextWrapping="Wrap"
+                            Visibility="{Binding ExtraTitle, Converter={StaticResource StringVisibilityConverter}}" />
+                        <TextBlock
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Text="{Binding ExtraSubtitle}"
+                            TextWrapping="Wrap"
+                            Visibility="{Binding ExtraSubtitle, Converter={StaticResource StringVisibilityConverter}}" />
+                    </StackPanel>
+                </Grid>
+                <Grid Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <local:WebViewContentControl
                         ContentCornerRadius="8"
                         ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
-                        DataContext="{Binding SourceFeed}" />
-                </Border>
-                <Grid
-                    Grid.Row="8"
-                    Margin="0,4"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Visibility="{Binding ExtraTitle, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
-                    <Grid.Background>
-                        <ImageBrush ImageSource="{Binding ExtraPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
-                    </Grid.Background>
-                    <Grid
-                        Padding="8"
-                        Tag="{Binding ExtraUrl}"
-                        Tapped="OnTapped"
-                        Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
-                        <Grid.Background>
+                        DataContext="{Binding LinkSourceFeed}">
+                        <local:WebViewContentControl.Background>
                             <media:AcrylicBrush
                                 BackgroundSource="Backdrop"
                                 FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                                 TintColor="{ThemeResource SystemChromeMediumHighColor}"
                                 TintOpacity="1" />
-                        </Grid.Background>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Border
-                            Width="56"
-                            Height="56"
-                            CornerRadius="8"
-                            Visibility="{Binding ExtraPic.Uri, Converter={StaticResource StringVisibilityConverter}}">
-                            <Border.Background>
-                                <ImageBrush ImageSource="{Binding ExtraPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
-                            </Border.Background>
-                        </Border>
-                        <Border
-                            Width="56"
-                            Height="56"
-                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                            BorderThickness="1"
-                            CornerRadius="8"
-                            Visibility="{Binding ExtraPic.Uri, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true'}">
-                            <FontIcon
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                Glyph="&#xE71B;" />
-                        </Border>
-                        <StackPanel
-                            Grid.Column="1"
-                            Margin="8,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center">
-                            <TextBlock
-                                MaxLines="2"
-                                Text="{Binding ExtraTitle}"
-                                TextTrimming="WordEllipsis"
-                                TextWrapping="Wrap"
-                                Visibility="{Binding ExtraTitle, Converter={StaticResource StringVisibilityConverter}}" />
-                            <TextBlock
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                Text="{Binding ExtraSubtitle}"
-                                TextWrapping="Wrap"
-                                Visibility="{Binding ExtraSubtitle, Converter={StaticResource StringVisibilityConverter}}" />
-                        </StackPanel>
-                    </Grid>
-                    <Grid Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <local:WebViewContentControl
-                            ContentCornerRadius="8"
-                            ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
-                            DataContext="{Binding LinkSourceFeed}">
-                            <local:WebViewContentControl.Background>
-                                <media:AcrylicBrush
-                                    BackgroundSource="Backdrop"
-                                    FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
-                                    TintColor="{ThemeResource SystemChromeMediumHighColor}"
-                                    TintOpacity="1" />
-                            </local:WebViewContentControl.Background>
-                        </local:WebViewContentControl>
-                        <muxc:ProgressRing Visibility="{Binding LinkSourceFeed.Succeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
-                    </Grid>
+                        </local:WebViewContentControl.Background>
+                    </local:WebViewContentControl>
+                    <muxc:ProgressRing Visibility="{Binding LinkSourceFeed.Succeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
                 </Grid>
-                <Grid
-                    Grid.Row="9"
-                    Margin="0,4"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Visibility="{Binding MediaUrl, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
-                    <Grid.Background>
-                        <ImageBrush ImageSource="{Binding MediaPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
-                    </Grid.Background>
-                    <Grid
-                        Padding="8"
-                        Tag="{Binding MediaUrl}"
-                        Tapped="OnTapped"
-                        Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
-                        <Grid.Background>
-                            <media:AcrylicBrush
-                                BackgroundSource="Backdrop"
-                                FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
-                                TintColor="{ThemeResource SystemChromeMediumHighColor}"
-                                TintOpacity="1" />
-                        </Grid.Background>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Border
-                            Width="56"
-                            Height="56"
-                            CornerRadius="8"
-                            Visibility="{Binding MediaPic.Uri, Converter={StaticResource StringVisibilityConverter}}">
-                            <Border.Background>
-                                <ImageBrush ImageSource="{Binding MediaPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
-                            </Border.Background>
-                        </Border>
-                        <Border
-                            Width="56"
-                            Height="56"
-                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                            BorderThickness="1"
-                            CornerRadius="8"
-                            Visibility="{Binding MediaPic.Uri, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true'}">
-                            <FontIcon
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                Glyph="&#xE786;" />
-                        </Border>
-                        <StackPanel
-                            Grid.Column="1"
-                            Margin="8,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center">
-                            <TextBlock
-                                MaxLines="2"
-                                Text="视频分享"
-                                TextTrimming="WordEllipsis"
-                                TextWrapping="Wrap" />
-                            <TextBlock
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                Text="{Binding MediaSubtitle}"
-                                TextWrapping="Wrap"
-                                Visibility="{Binding MediaSubtitle, Converter={StaticResource StringVisibilityConverter}}" />
-                        </StackPanel>
-                    </Grid>
-                </Grid>
-                <muxc:ItemsRepeaterScrollHost
-                    Grid.Row="10"
-                    Margin="2,0"
-                    Visibility="{Binding RelationRows, Converter={StaticResource CollectionVisibilityConverter}, FallbackValue='Collapsed'}">
-                    <ScrollViewer
-                        Padding="0,4"
-                        HorizontalScrollBarVisibility="Hidden"
-                        HorizontalScrollMode="Auto"
-                        VerticalScrollMode="Disabled">
-                        <muxc:ItemsRepeater
-                            HorizontalAlignment="Stretch"
-                            ItemTemplate="{StaticResource RelationRowsItemTemplate}"
-                            ItemsSource="{Binding RelationRows}">
-                            <muxc:ItemsRepeater.Layout>
-                                <muxc:StackLayout Orientation="Horizontal" Spacing="6" />
-                            </muxc:ItemsRepeater.Layout>
-                        </muxc:ItemsRepeater>
-                    </ScrollViewer>
-                </muxc:ItemsRepeaterScrollHost>
-                <StackPanel
-                    Grid.Row="11"
-                    Margin="4"
-                    HorizontalAlignment="Left"
-                    Orientation="Horizontal">
-                    <TextBlock
-                        FontSize="12"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        IsTextSelectionEnabled="True"
-                        Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
-                        <Run FontWeight="Bold" Text="{Binding QuestionAnswerNum}" />
-                        <Run Text="人回答" />
-                        <Run Text="•" />
-                        <Run FontWeight="Bold" Text="{Binding QuestionFollowNum}" />
-                        <Run Text="人关注" />
-                    </TextBlock>
-                    <Border Margin="2,0" Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
-                        <TextBlock
-                            FontSize="12"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            Text="•"
-                            Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}" />
-                    </Border>
-                    <TextBlock
-                        FontSize="12"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        IsTextSelectionEnabled="True"
-                        Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
-                        <Run Text="发布于" />
-                        <Run FontWeight="Bold" Text="{Binding IPLocation}" />
-                    </TextBlock>
-                    <Border Margin="2,0" Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
-                        <TextBlock
-                            FontSize="12"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            Text="•"
-                            Visibility="{Binding ReadNum, Converter={StaticResource DoubleToVisibilityConverter}, FallbackValue='Collapsed'}" />
-                    </Border>
-                    <TextBlock
-                        FontSize="12"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        IsTextSelectionEnabled="True"
-                        Visibility="{Binding ReadNum, Converter={StaticResource DoubleToVisibilityConverter}, FallbackValue='Collapsed'}">
-                        <Run FontWeight="Bold" Text="{Binding ReadNum}" />
-                        <Run Text="浏览" />
-                    </TextBlock>
-                </StackPanel>
             </Grid>
-        </UserControl>
+            <Grid
+                Grid.Row="9"
+                Margin="0,4"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="8"
+                Visibility="{Binding MediaUrl, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
+                <Grid.Background>
+                    <ImageBrush ImageSource="{Binding MediaPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                </Grid.Background>
+                <Grid
+                    Padding="8"
+                    Tag="{Binding MediaUrl}"
+                    Tapped="OnTapped"
+                    Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                    <Grid.Background>
+                        <media:AcrylicBrush
+                            BackgroundSource="Backdrop"
+                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintOpacity="1" />
+                    </Grid.Background>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Width="56"
+                        Height="56"
+                        CornerRadius="8"
+                        Visibility="{Binding MediaPic.Uri, Converter={StaticResource StringVisibilityConverter}}">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding MediaPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                        </Border.Background>
+                    </Border>
+                    <Border
+                        Width="56"
+                        Height="56"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Visibility="{Binding MediaPic.Uri, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true'}">
+                        <FontIcon
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Glyph="&#xE786;" />
+                    </Border>
+                    <StackPanel
+                        Grid.Column="1"
+                        Margin="8,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center">
+                        <TextBlock
+                            MaxLines="2"
+                            Text="视频分享"
+                            TextTrimming="WordEllipsis"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Text="{Binding MediaSubtitle}"
+                            TextWrapping="Wrap"
+                            Visibility="{Binding MediaSubtitle, Converter={StaticResource StringVisibilityConverter}}" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+            <muxc:ItemsRepeaterScrollHost
+                Grid.Row="10"
+                Margin="2,0"
+                Visibility="{Binding RelationRows, Converter={StaticResource CollectionVisibilityConverter}, FallbackValue='Collapsed'}">
+                <ScrollViewer
+                    Padding="0,4"
+                    HorizontalScrollBarVisibility="Hidden"
+                    HorizontalScrollMode="Auto"
+                    VerticalScrollMode="Disabled">
+                    <muxc:ItemsRepeater
+                        HorizontalAlignment="Stretch"
+                        ItemTemplate="{StaticResource RelationRowsItemTemplate}"
+                        ItemsSource="{Binding RelationRows}">
+                        <muxc:ItemsRepeater.Layout>
+                            <muxc:StackLayout Orientation="Horizontal" Spacing="6" />
+                        </muxc:ItemsRepeater.Layout>
+                    </muxc:ItemsRepeater>
+                </ScrollViewer>
+            </muxc:ItemsRepeaterScrollHost>
+            <StackPanel
+                Grid.Row="11"
+                Margin="4"
+                HorizontalAlignment="Left"
+                Orientation="Horizontal">
+                <TextBlock
+                    FontSize="12"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    IsTextSelectionEnabled="True"
+                    Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
+                    <Run FontWeight="Bold" Text="{Binding QuestionAnswerNum}" />
+                    <Run Text="人回答" />
+                    <Run Text="•" />
+                    <Run FontWeight="Bold" Text="{Binding QuestionFollowNum}" />
+                    <Run Text="人关注" />
+                </TextBlock>
+                <Border Margin="2,0" Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
+                    <TextBlock
+                        FontSize="12"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Text="•"
+                        Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}" />
+                </Border>
+                <TextBlock
+                    FontSize="12"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    IsTextSelectionEnabled="True"
+                    Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
+                    <Run Text="发布于" />
+                    <Run FontWeight="Bold" Text="{Binding IPLocation}" />
+                </TextBlock>
+                <Border Margin="2,0" Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
+                    <TextBlock
+                        FontSize="12"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Text="•"
+                        Visibility="{Binding ReadNum, Converter={StaticResource DoubleToVisibilityConverter}, FallbackValue='Collapsed'}" />
+                </Border>
+                <TextBlock
+                    FontSize="12"
+                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    IsTextSelectionEnabled="True"
+                    Visibility="{Binding ReadNum, Converter={StaticResource DoubleToVisibilityConverter}, FallbackValue='Collapsed'}">
+                    <Run FontWeight="Bold" Text="{Binding ReadNum}" />
+                    <Run Text="浏览" />
+                </TextBlock>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Controls;
+﻿using CoolapkUWP.BackgroundTasks;
+using CoolapkUWP.Controls;
 using CoolapkUWP.Controls.DataTemplates;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
@@ -8,14 +9,18 @@ using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.DataSource;
 using CoolapkUWP.ViewModels.Providers;
+using Microsoft.Toolkit.Uwp.Notifications;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
+using Windows.UI.Notifications;
+using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using static CoolapkUWP.Models.Pages.DyhDetail;
+using TileSize = Windows.UI.StartScreen.TileSize;
 
 namespace CoolapkUWP.ViewModels.FeedPages
 {
@@ -108,6 +113,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
             }
         }
 
+        public abstract Task<bool> PinSecondaryTile(Entity entity);
+
         public abstract Task<FeedListDetailBase> GetDetail();
 
         public abstract Task Refresh(bool reset = false);
@@ -179,11 +186,6 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 }
             }
 
-            public void Report()
-            {
-                UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel($"https://m.coolapk.com/mp/do?c=user&m=report&id={ID}"));
-            }
-
             protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as UserDetail)?.UserName;
 
             public override async Task<FeedListDetailBase> GetDetail()
@@ -201,6 +203,82 @@ namespace CoolapkUWP.ViewModels.FeedPages
 
                 return detail;
             }
+
+            public override async Task<bool> PinSecondaryTile(Entity entity)
+            {
+                UserDetail user = (UserDetail)entity;
+
+                ResourceLoader loader = ResourceLoader.GetForViewIndependentUse();
+
+                // Construct a unique tile ID, which you will need to use later for updating the tile
+                string tileId = user.Url.GetMD5();
+
+                bool isPinned = SecondaryTile.Exists(tileId);
+                if (isPinned)
+                {
+                    UIHelper.ShowMessage(loader.GetString("AlreadyPinnedTile"));
+                }
+                else
+                {
+                    // Use a display name you like
+                    string displayName = user.UserName;
+
+                    // Provide all the required info in arguments so that when user
+                    // clicks your tile, you can navigate them to the correct content
+                    string arguments = user.Url;
+
+                    // Initialize the tile with required arguments
+                    SecondaryTile tile = new SecondaryTile(
+                        tileId,
+                        displayName,
+                        arguments,
+                        new Uri("ms-appx:///Assets/Square150x150Logo.png"),
+                        TileSize.Default);
+
+                    // Enable wide and large tile sizes
+                    tile.VisualElements.Wide310x150Logo = new Uri("ms-appx:///Assets/Wide310x150Logo.png");
+                    tile.VisualElements.Square310x310Logo = new Uri("ms-appx:///Assets/LargeTile.png");
+
+                    // Add a small size logo for better looking small tile
+                    tile.VisualElements.Square71x71Logo = new Uri("ms-appx:///Assets/SmallTile.png");
+
+                    // Add a unique corner logo for the secondary tile
+                    tile.VisualElements.Square44x44Logo = new Uri("ms-appx:///Assets/Square44x44Logo.png");
+
+                    // Show the display name on all sizes
+                    tile.VisualElements.ShowNameOnSquare150x150Logo = true;
+                    tile.VisualElements.ShowNameOnWide310x150Logo = true;
+                    tile.VisualElements.ShowNameOnSquare310x310Logo = true;
+
+                    // Pin the tile
+                    isPinned = await tile.RequestCreateAsync();
+
+                    if (isPinned) { UIHelper.ShowMessage(loader.GetString("PinnedTileSucceeded")); }
+                }
+
+                if (isPinned)
+                {
+                    try
+                    {
+                        TileUpdater tileUpdater = TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileId);
+                        tileUpdater.Clear();
+                        tileUpdater.EnableNotificationQueue(true);
+                        TileContent tileContent = LiveTileTask.GetUserTitle(user);
+                        TileNotification tileNotification = new TileNotification(tileContent.GetXml());
+                        tileUpdater.Update(tileNotification);
+                    }
+                    catch (Exception ex)
+                    {
+                        SettingsHelper.LogManager.GetLogger(nameof(FeedShellDetailControl)).Error(ex.ExceptionToMessage(), ex);
+                    }
+
+                    return isPinned;
+                }
+
+                UIHelper.ShowMessage(loader.GetString("PinnedTileFailed"));
+                return isPinned;
+            }
+
         }
 
         internal class TagViewModel : FeedListViewModel
@@ -280,6 +358,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
 
                 return detail;
             }
+
+            public override Task<bool> PinSecondaryTile(Entity entity) => Task.Run(() => false);
         }
 
         internal class DyhViewModel : FeedListViewModel
@@ -345,6 +425,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
 
                 return detail;
             }
+
+            public override Task<bool> PinSecondaryTile(Entity entity) => Task.Run(() => false);
         }
 
         internal class ProductViewModel : FeedListViewModel
@@ -452,6 +534,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
 
                 return detail;
             }
+
+            public override Task<bool> PinSecondaryTile(Entity entity) => Task.Run(() => false);
         }
     }
 

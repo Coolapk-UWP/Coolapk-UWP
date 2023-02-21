@@ -45,7 +45,7 @@ namespace CoolapkUWP.Models.Pages
         }
     }
 
-    internal class UserDetail : FeedListDetailBase, ICanFollow
+    internal class UserDetail : FeedListDetailBase, IUserModel, ICanFollow
     {
         private bool followed;
         public bool Followed
@@ -117,6 +117,8 @@ namespace CoolapkUWP.Models.Pages
 
         public ImageModel Cover { get; private set; }
         public ImageModel UserAvatar { get; private set; }
+
+        public string Url => $"/u/{UID}";
 
         internal UserDetail(JObject token) : base(token)
         {

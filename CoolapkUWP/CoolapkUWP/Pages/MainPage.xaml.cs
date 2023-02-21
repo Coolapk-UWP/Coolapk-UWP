@@ -136,7 +136,7 @@ namespace CoolapkUWP.Pages
             {
                 case ActivationKind.Launch:
                     LaunchActivatedEventArgs LaunchActivatedEventArgs = (LaunchActivatedEventArgs)args;
-                    if (LaunchActivatedEventArgs.Arguments != null)
+                    if (!string.IsNullOrWhiteSpace(LaunchActivatedEventArgs.Arguments))
                     {
                         switch (LaunchActivatedEventArgs.Arguments)
                         {
@@ -147,7 +147,7 @@ namespace CoolapkUWP.Pages
                                 UIHelper.Navigate(typeof(TestPage));
                                 break;
                             default:
-                                NavigationView.SelectedItem = NavigationView.MenuItems[0];
+                                UIHelper.OpenLinkAsync(LaunchActivatedEventArgs.Arguments);
                                 break;
                         }
                     }
@@ -155,7 +155,15 @@ namespace CoolapkUWP.Pages
                     {
                         if (LaunchActivatedEventArgs.TileActivatedInfo.RecentlyShownNotifications.Any())
                         {
-                            UIHelper.OpenLinkAsync(LaunchActivatedEventArgs.TileActivatedInfo.RecentlyShownNotifications.FirstOrDefault().Arguments);
+                            string TileArguments = LaunchActivatedEventArgs.TileActivatedInfo.RecentlyShownNotifications.FirstOrDefault().Arguments;
+                            if (!string.IsNullOrWhiteSpace(LaunchActivatedEventArgs.Arguments))
+                            {
+                                UIHelper.OpenLinkAsync(TileArguments);
+                            }
+                            else
+                            {
+                                NavigationView.SelectedItem = NavigationView.MenuItems[0];
+                            }
                         }
                         else
                         {

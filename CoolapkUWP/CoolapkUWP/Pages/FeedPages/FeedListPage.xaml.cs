@@ -1,5 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Pages.BrowserPages;
+using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.DataSource;
 using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.UI;
@@ -127,14 +129,20 @@ namespace CoolapkUWP.Pages.FeedPages
             FrameworkElement element = sender as FrameworkElement;
             switch (element.Name)
             {
+                case "FansButton":
+                    UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(Provider.ID, false, Provider.Title));
+                    break;
+                case "ReportButton":
+                    UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel(element.Tag.ToString()));
+                    break;
                 case "FollowButton":
                     _ = (element.Tag as ICanFollow).ChangeFollow();
                     break;
+                case "PinTileButton":
+                    _ = Provider.PinSecondaryTile(element.Tag as Entity);
+                    break;
                 case "FollowsButton":
                     UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(Provider.ID, true, Provider.Title));
-                    break;
-                case "FansButton":
-                    UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(Provider.ID, false, Provider.Title));
                     break;
                 default:
                     break;

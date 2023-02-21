@@ -61,4 +61,18 @@ namespace CoolapkUWP.Models
         bool Followed { get; set; }
         Task ChangeFollow();
     }
+
+    public interface IUserModel
+    {
+        int FansNum { get; }
+        int FollowNum { get; }
+
+        string Bio { get; }
+        string Url { get; }
+        string UserName { get; }
+        string LoginTime { get; }
+
+        ImageModel Cover { get; }
+        ImageModel UserAvatar { get; }
+    }
 }

@@ -1,17 +1,25 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.BackgroundTasks;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Feeds;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
+using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Toolkit.Uwp.UI;
+using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.Resources;
+using Windows.UI.Notifications;
+using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
+using TileSize = Windows.UI.StartScreen.TileSize;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
@@ -62,7 +70,7 @@ namespace CoolapkUWP.Controls.DataTemplates
             }
         }
 
-        private async void FeedButton_Click(object sender, RoutedEventArgs _)
+        private void FeedButton_Click(object sender, RoutedEventArgs e)
         {
             void DisabledCopy()
             {
@@ -79,9 +87,14 @@ namespace CoolapkUWP.Controls.DataTemplates
                     DisabledCopy();
                     break;
 
+                case "PinTileButton":
+                    DisabledCopy();
+                    _ = PinSecondaryTile(element.Tag as FeedModelBase);
+                    break;
+
                 case "LikeButton":
                     DisabledCopy();
-                    await RequestHelper.ChangeLikeAsync(element.Tag as ICanLike, element.Dispatcher);
+                    _ = RequestHelper.ChangeLikeAsync(element.Tag as ICanLike, element.Dispatcher);
                     break;
 
                 case "ReportButton":
@@ -147,6 +160,79 @@ namespace CoolapkUWP.Controls.DataTemplates
                     UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
                     break;
             }
+        }
+
+        private async Task<bool> PinSecondaryTile(FeedModelBase feed)
+        {
+            ResourceLoader loader = ResourceLoader.GetForViewIndependentUse();
+
+            // Construct a unique tile ID, which you will need to use later for updating the tile
+            string tileId = feed.Url.GetMD5();
+
+            bool isPinned = SecondaryTile.Exists(tileId);
+            if (isPinned)
+            {
+                UIHelper.ShowMessage(loader.GetString("AlreadyPinnedTile"));
+            }
+            else
+            {
+                // Use a display name you like
+                string displayName = $"{feed.UserInfo.UserName}的{feed.Info}";
+
+                // Provide all the required info in arguments so that when user
+                // clicks your tile, you can navigate them to the correct content
+                string arguments = feed.Url;
+
+                // Initialize the tile with required arguments
+                SecondaryTile tile = new SecondaryTile(
+                    tileId,
+                    displayName,
+                    arguments,
+                    new Uri("ms-appx:///Assets/Square150x150Logo.png"),
+                    TileSize.Default);
+
+                // Enable wide and large tile sizes
+                tile.VisualElements.Wide310x150Logo = new Uri("ms-appx:///Assets/Wide310x150Logo.png");
+                tile.VisualElements.Square310x310Logo = new Uri("ms-appx:///Assets/LargeTile.png");
+
+                // Add a small size logo for better looking small tile
+                tile.VisualElements.Square71x71Logo = new Uri("ms-appx:///Assets/SmallTile.png");
+
+                // Add a unique corner logo for the secondary tile
+                tile.VisualElements.Square44x44Logo = new Uri("ms-appx:///Assets/Square44x44Logo.png");
+
+                // Show the display name on all sizes
+                tile.VisualElements.ShowNameOnSquare150x150Logo = true;
+                tile.VisualElements.ShowNameOnWide310x150Logo = true;
+                tile.VisualElements.ShowNameOnSquare310x310Logo = true;
+
+                // Pin the tile
+                isPinned = await tile.RequestCreateAsync();
+
+                if (isPinned) { UIHelper.ShowMessage(loader.GetString("PinnedTileSucceeded")); }
+            }
+
+            if (isPinned)
+            {
+                try
+                {
+                    TileUpdater tileUpdater = TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileId);
+                    tileUpdater.Clear();
+                    tileUpdater.EnableNotificationQueue(true);
+                    TileContent tileContent = LiveTileTask.GetFeedTitle(feed);
+                    TileNotification tileNotification = new TileNotification(tileContent.GetXml());
+                    tileUpdater.Update(tileNotification);
+                }
+                catch (Exception ex)
+                {
+                    SettingsHelper.LogManager.GetLogger(nameof(FeedShellDetailControl)).Error(ex.ExceptionToMessage(), ex);
+                }
+
+                return isPinned;
+            }
+
+            UIHelper.ShowMessage(loader.GetString("PinnedTileFailed"));
+            return isPinned;
         }
 
         private void CopyMenuItem_Click(object sender, RoutedEventArgs e)

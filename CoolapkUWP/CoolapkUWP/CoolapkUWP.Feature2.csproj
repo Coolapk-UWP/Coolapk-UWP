@@ -1170,7 +1170,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\Feed.resw" />
+    <PRIResource Include="Strings\zh-CN\Feed.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\zh-CN\FeedListPage.resw" />
@@ -1179,7 +1181,9 @@
     <PRIResource Include="Strings\zh-CN\MainPage.resw" />
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\Resources.resw" />
+    <PRIResource Include="Strings\zh-CN\Resources.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\zh-CN\IndexPage.resw" />

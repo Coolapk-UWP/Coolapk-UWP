@@ -23,182 +23,208 @@
                 <templates:OtherDatatemplates />
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate x:Key="UserDetailCard">
-                <Grid
-                    HorizontalAlignment="Stretch"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="8">
-                    <Border CornerRadius="8">
-                        <Border.Background>
-                            <ImageBrush ImageSource="{Binding Cover.Pic, Mode=OneWay}" Stretch="UniformToFill" />
-                        </Border.Background>
-                    </Border>
+                <Border>
+                    <Border.Resources>
+                        <MenuFlyout x:Key="MoreFlyout">
+                            <MenuFlyoutItem
+                                x:Name="PinTileButton"
+                                x:Uid="/Feed/PinTile"
+                                Click="Button_Click"
+                                Tag="{Binding}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE840;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem
+                                x:Name="ReportButton"
+                                x:Uid="/Feed/Report"
+                                Click="Button_Click"
+                                Tag="{Binding UID, Converter={StaticResource StringFormatConverter}, ConverterParameter='https://m.coolapk.com/mp/do?c=user&amp;m=report&amp;id={0}', Mode=OneWay}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8F8;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Border.Resources>
                     <Grid
-                        Padding="10"
-                        Background="{ThemeResource TextOnAccentFillColorSecondaryBrush}"
+                        HorizontalAlignment="Stretch"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        ContextFlyout="{StaticResource MoreFlyout}"
                         CornerRadius="8">
-                        <control:StackPanel Spacing="8">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <muxc:PersonPicture
-                                    Width="56"
-                                    Height="56"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    DisplayName="{Binding UserName}"
-                                    ProfilePicture="{Binding UserAvatar.Pic, Mode=OneWay}" />
-                                <Button
-                                    x:Name="FollowButton"
-                                    Grid.Column="1"
-                                    Height="32"
-                                    HorizontalAlignment="Right"
-                                    Click="Button_Click"
-                                    Style="{StaticResource TransparentButtonStyle}"
-                                    Tag="{Binding}"
-                                    ToolTipService.ToolTip="{Binding FollowStatus}"
-                                    Visibility="{Binding FollowStatus, Converter={StaticResource StringVisibilityConverter}}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <FontIcon
-                                            VerticalAlignment="Center"
-                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                            FontSize="15"
-                                            Glyph="{Binding FollowGlyph}" />
-                                        <TextBlock
-                                            x:Name="FollowStatus"
-                                            Margin="8,0,0,0"
-                                            VerticalAlignment="Center"
-                                            Text="{Binding FollowStatus}" />
-                                    </StackPanel>
-                                </Button>
-                            </Grid>
-                            <Grid HorizontalAlignment="Left">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid Grid.Row="0">
+                        <Border CornerRadius="8">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding Cover.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                            </Border.Background>
+                        </Border>
+                        <Grid
+                            Padding="10"
+                            Background="{ThemeResource TextOnAccentFillColorSecondaryBrush}"
+                            ContextFlyout="{StaticResource MoreFlyout}"
+                            CornerRadius="8">
+                            <control:StackPanel Spacing="8">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock
-                                        Grid.Column="0"
+                                    <muxc:PersonPicture
+                                        Width="56"
+                                        Height="56"
                                         HorizontalAlignment="Left"
-                                        FontSize="12"
-                                        FontStyle="Italic"
-                                        Foreground="{Binding Foreground, ElementName=NextLevelPercentage, Mode=OneWay}"
-                                        Text="{Binding LevelNum, Converter={StaticResource StringFormatConverter}, ConverterParameter='Lv.{0}'}" />
-                                    <TextBlock
+                                        VerticalAlignment="Top"
+                                        DisplayName="{Binding UserName}"
+                                        ProfilePicture="{Binding UserAvatar.Pic, Mode=OneWay}" />
+                                    <Button
+                                        x:Name="FollowButton"
                                         Grid.Column="1"
+                                        Height="32"
                                         HorizontalAlignment="Right"
-                                        FontSize="12"
-                                        Text="{Binding NextLevelNowExperience}" />
+                                        Click="Button_Click"
+                                        Style="{StaticResource TransparentButtonStyle}"
+                                        Tag="{Binding}"
+                                        ToolTipService.ToolTip="{Binding FollowStatus}"
+                                        Visibility="{Binding FollowStatus, Converter={StaticResource StringVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <FontIcon
+                                                VerticalAlignment="Center"
+                                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                FontSize="15"
+                                                Glyph="{Binding FollowGlyph}" />
+                                            <TextBlock
+                                                x:Name="FollowStatus"
+                                                Margin="8,0,0,0"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding FollowStatus}" />
+                                        </StackPanel>
+                                    </Button>
                                 </Grid>
-                                <muxc:ProgressBar
-                                    x:Name="NextLevelPercentage"
-                                    Grid.Row="1"
-                                    Width="160"
-                                    Margin="0,4"
-                                    Value="{Binding NextLevelPercentage}" />
-                            </Grid>
-                            <TextBlock
-                                IsTextSelectionEnabled="{Binding IsCopyEnabled}"
-                                TextTrimming="CharacterEllipsis"
-                                Visibility="{Binding VerifyTitle, Converter={StaticResource StringVisibilityConverter}}">
-                                <Run
-                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                    Foreground="LightGreen"
-                                    Text="&#xE10B;" />
-                                <Run Text="{Binding VerifyTitle}" />
-                            </TextBlock>
-                            <TextBlock
-                                Text="{Binding Bio}"
-                                TextWrapping="WrapWholeWords"
-                                Visibility="{Binding Bio, Converter={StaticResource StringVisibilityConverter}}" />
-                            <control:StackPanel Orientation="Horizontal" Spacing="12">
-                                <TextBlock FontSize="16">
-                                    <Run FontWeight="Bold" Text="{Binding LikeNum}" />
-                                    <Run x:Uid="/FeedListPage/LikeNum" FontWeight="Thin" />
+                                <Grid HorizontalAlignment="Left">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Left"
+                                            FontSize="12"
+                                            FontStyle="Italic"
+                                            Foreground="{Binding Foreground, ElementName=NextLevelPercentage, Mode=OneWay}"
+                                            Text="{Binding LevelNum, Converter={StaticResource StringFormatConverter}, ConverterParameter='Lv.{0}'}" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            FontSize="12"
+                                            Text="{Binding NextLevelNowExperience}" />
+                                    </Grid>
+                                    <muxc:ProgressBar
+                                        x:Name="NextLevelPercentage"
+                                        Grid.Row="1"
+                                        Width="160"
+                                        Margin="0,4"
+                                        Value="{Binding NextLevelPercentage}" />
+                                </Grid>
+                                <TextBlock
+                                    IsTextSelectionEnabled="{Binding IsCopyEnabled}"
+                                    TextTrimming="CharacterEllipsis"
+                                    Visibility="{Binding VerifyTitle, Converter={StaticResource StringVisibilityConverter}}">
+                                    <Run
+                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                        Foreground="LightGreen"
+                                        Text="&#xE10B;" />
+                                    <Run Text="{Binding VerifyTitle}" />
                                 </TextBlock>
-                                <Button
-                                    x:Name="FollowsButton"
-                                    Padding="0"
-                                    Click="Button_Click"
-                                    FontSize="16"
-                                    Style="{StaticResource TransparentButtonStyle}">
-                                    <TextBlock>
-                                        <Run FontWeight="Bold" Text="{Binding FollowNum}" />
-                                        <Run x:Uid="/FeedListPage/FollowNum" FontWeight="Thin" />
+                                <TextBlock
+                                    Text="{Binding Bio}"
+                                    TextWrapping="WrapWholeWords"
+                                    Visibility="{Binding Bio, Converter={StaticResource StringVisibilityConverter}}" />
+                                <control:StackPanel Orientation="Horizontal" Spacing="12">
+                                    <TextBlock FontSize="16">
+                                        <Run FontWeight="Bold" Text="{Binding LikeNum}" />
+                                        <Run x:Uid="/FeedListPage/LikeNum" FontWeight="Thin" />
                                     </TextBlock>
-                                </Button>
-                                <Button
-                                    x:Name="FansButton"
-                                    Padding="0"
-                                    Click="Button_Click"
-                                    FontSize="16"
-                                    Style="{StaticResource TransparentButtonStyle}">
-                                    <TextBlock>
-                                        <Run FontWeight="Bold" Text="{Binding FansNum}" />
-                                        <Run x:Uid="/FeedListPage/FansNum" FontWeight="Thin" />
+                                    <Button
+                                        x:Name="FollowsButton"
+                                        Padding="0"
+                                        Click="Button_Click"
+                                        FontSize="16"
+                                        Style="{StaticResource TransparentButtonStyle}">
+                                        <TextBlock>
+                                            <Run FontWeight="Bold" Text="{Binding FollowNum}" />
+                                            <Run x:Uid="/FeedListPage/FollowNum" FontWeight="Thin" />
+                                        </TextBlock>
+                                    </Button>
+                                    <Button
+                                        x:Name="FansButton"
+                                        Padding="0"
+                                        Click="Button_Click"
+                                        FontSize="16"
+                                        Style="{StaticResource TransparentButtonStyle}">
+                                        <TextBlock>
+                                            <Run FontWeight="Bold" Text="{Binding FansNum}" />
+                                            <Run x:Uid="/FeedListPage/FansNum" FontWeight="Thin" />
+                                        </TextBlock>
+                                    </Button>
+                                    <TextBlock FontSize="16">
+                                        <Run FontWeight="Bold" Text="{Binding FeedNum}" />
+                                        <Run x:Uid="/FeedListPage/FeedsNum" FontWeight="Thin" />
                                     </TextBlock>
-                                </Button>
-                                <TextBlock FontSize="16">
-                                    <Run FontWeight="Bold" Text="{Binding FeedNum}" />
-                                    <Run x:Uid="/FeedListPage/FeedsNum" FontWeight="Thin" />
-                                </TextBlock>
+                                </control:StackPanel>
+                                <control:StackPanel Orientation="Horizontal" Spacing="4">
+                                    <Border
+                                        Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="4"
+                                        Visibility="{Binding Gender, Converter={StaticResource StringVisibilityConverter}}">
+                                        <TextBlock
+                                            Margin="4,2"
+                                            FontSize="12"
+                                            Text="{Binding Gender}" />
+                                    </Border>
+                                    <Border
+                                        Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="4"
+                                        Visibility="{Binding City, Converter={StaticResource StringVisibilityConverter}}">
+                                        <TextBlock
+                                            Margin="4,2"
+                                            FontSize="12"
+                                            Text="{Binding City}" />
+                                    </Border>
+                                    <Border
+                                        Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="4"
+                                        Visibility="{Binding Astro, Converter={StaticResource StringVisibilityConverter}}">
+                                        <TextBlock
+                                            Margin="4,2"
+                                            FontSize="12"
+                                            Text="{Binding Astro}" />
+                                    </Border>
+                                    <Border
+                                        Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="4"
+                                        Visibility="{Binding BlockStatus, Converter={StaticResource StringVisibilityConverter}}">
+                                        <TextBlock
+                                            Margin="4,2"
+                                            FontSize="12"
+                                            Text="{Binding BlockStatus}" />
+                                    </Border>
+                                </control:StackPanel>
                             </control:StackPanel>
-                            <control:StackPanel Orientation="Horizontal" Spacing="4">
-                                <Border
-                                    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="4"
-                                    Visibility="{Binding Gender, Converter={StaticResource StringVisibilityConverter}}">
-                                    <TextBlock
-                                        Margin="4,2"
-                                        FontSize="12"
-                                        Text="{Binding Gender}" />
-                                </Border>
-                                <Border
-                                    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="4"
-                                    Visibility="{Binding City, Converter={StaticResource StringVisibilityConverter}}">
-                                    <TextBlock
-                                        Margin="4,2"
-                                        FontSize="12"
-                                        Text="{Binding City}" />
-                                </Border>
-                                <Border
-                                    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="4"
-                                    Visibility="{Binding Astro, Converter={StaticResource StringVisibilityConverter}}">
-                                    <TextBlock
-                                        Margin="4,2"
-                                        FontSize="12"
-                                        Text="{Binding Astro}" />
-                                </Border>
-                                <Border
-                                    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="4"
-                                    Visibility="{Binding BlockStatus, Converter={StaticResource StringVisibilityConverter}}">
-                                    <TextBlock
-                                        Margin="4,2"
-                                        FontSize="12"
-                                        Text="{Binding BlockStatus}" />
-                                </Border>
-                            </control:StackPanel>
-                        </control:StackPanel>
+                        </Grid>
                     </Grid>
-                </Grid>
+                </Border>
             </DataTemplate>
             <DataTemplate x:Key="TopicDetailCard">
                 <Grid
