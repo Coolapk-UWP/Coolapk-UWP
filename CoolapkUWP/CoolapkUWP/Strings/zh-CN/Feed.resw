@@ -121,7 +121,16 @@
     <value>点我刷新</value>
   </data>
   <data name="Copy.Text" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="CopyAll.Text" xml:space="preserve">
+    <value>复制全部内容</value>
+  </data>
+  <data name="CopyFree.Text" xml:space="preserve">
     <value>自由复制</value>
+  </data>
+  <data name="CopyLink.Text" xml:space="preserve">
+    <value>复制链接</value>
   </data>
   <data name="FeedAuthor.Text" xml:space="preserve">
     <value>楼主</value>
@@ -131,6 +140,9 @@
   </data>
   <data name="LongPic.Text" xml:space="preserve">
     <value>长图</value>
+  </data>
+  <data name="PinTile.Text" xml:space="preserve">
+    <value>固定到开始</value>
   </data>
   <data name="QR.Text" xml:space="preserve">
     <value>二维码</value>
