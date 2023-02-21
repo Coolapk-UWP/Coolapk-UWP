@@ -75,10 +75,13 @@
     <x:String x:Key="SettingCardChevronLinkGlyph">&#xE8A7;</x:String>
     <x:String x:Key="SettingCardChevronRightGlyph">&#xE76C;</x:String>
 
+    <Thickness x:Key="ToggleSwitchLeftHeaderMargin">0,0,4,0</Thickness>
+    
     <!--  This style overrides the default style so that all ToggleSwitches are right aligned, with the label on the left  -->
     <Style x:Key="ToggleSwitchSettingStyle" TargetType="ToggleSwitch">
         <Setter Property="MinWidth" Value="0" />
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Right" />
         <Setter Property="HorizontalContentAlignment" Value="Right" />
         <Setter Property="ManipulationMode" Value="System,TranslateX" />
@@ -99,16 +102,17 @@
                             <BrushTransition Duration="0:0:0.083" />
                         </contract7Present:Grid.BackgroundTransition>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
                         <ContentPresenter
                             x:Name="HeaderContentPresenter"
-                            Grid.Row="0"
-                            Margin="{ThemeResource ToggleSwitchTopHeaderMargin}"
-                            VerticalAlignment="Top"
+                            Grid.Column="0"
+                            Margin="{ThemeResource ToggleSwitchLeftHeaderMargin}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            HorizontalAlignment="Left"
                             x:DeferLoadStrategy="Lazy"
                             AutomationProperties.AccessibilityView="Raw"
                             Content="{TemplateBinding Header}"
@@ -119,9 +123,9 @@
                             Visibility="Collapsed" />
 
                         <Grid
-                            Grid.Row="1"
+                            Grid.Column="1"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalAlignment="Top">
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="{ThemeResource ToggleSwitchPreContentMargin}" />
                                 <RowDefinition Height="Auto" />
