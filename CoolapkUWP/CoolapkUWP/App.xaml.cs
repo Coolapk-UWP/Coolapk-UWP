@@ -92,7 +92,6 @@ namespace CoolapkUWP
             if (!(MainWindow.Content is Frame rootFrame))
             {
                 CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-                ThemeHelper.Initialize();
 
                 // 创建要充当导航上下文的框架，并导航到第一页
                 rootFrame = new Frame();
@@ -106,6 +105,8 @@ namespace CoolapkUWP
 
                 // 将框架放在当前窗口中
                 Window.Current.Content = rootFrame;
+
+                ThemeHelper.Initialize();
             }
 
             if (e is LaunchActivatedEventArgs args)

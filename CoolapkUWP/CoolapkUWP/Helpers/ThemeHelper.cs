@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Common;
 using Microsoft.Toolkit.Uwp.Helpers;
+using Newtonsoft.Json.Linq;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
 using Windows.UI.Core;
@@ -28,15 +29,29 @@ namespace CoolapkUWP.Helpers
         {
             get
             {
-                if (CurrentApplicationWindow?.Content is FrameworkElement rootElement)
+                ElementTheme? value = null;
+                if (CurrentApplicationWindow?.Dispatcher?.HasThreadAccess == true)
                 {
-                    if (rootElement.RequestedTheme != ElementTheme.Default)
+                    if (CurrentApplicationWindow?.Content is FrameworkElement rootElement
+                        && rootElement.RequestedTheme != ElementTheme.Default)
                     {
                         return rootElement.RequestedTheme;
                     }
                 }
-
-                return SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme);
+                else
+                {
+                    value = UIHelper.AwaitByTaskCompleteSource(() =>
+                        CurrentApplicationWindow?.Dispatcher?.AwaitableRunAsync<ElementTheme?>(() =>
+                        {
+                            if (CurrentApplicationWindow?.Content is FrameworkElement rootElement
+                                && rootElement.RequestedTheme != ElementTheme.Default)
+                            {
+                                return rootElement.RequestedTheme;
+                            }
+                            return null;
+                        }, CoreDispatcherPriority.High));
+                }
+                return value ?? SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme);
             }
         }
 
@@ -50,13 +65,25 @@ namespace CoolapkUWP.Helpers
                 ElementTheme? value = null;
                 foreach (Window window in WindowHelper.ActiveWindows)
                 {
-                    window.Dispatcher.AwaitableRunAsync(() =>
+                    if (window.Dispatcher.HasThreadAccess)
                     {
                         if (window?.Content is FrameworkElement rootElement)
                         {
                             value = rootElement.RequestedTheme;
                         }
-                    }, CoreDispatcherPriority.High).Wait();
+                    }
+                    else
+                    {
+                        value = UIHelper.AwaitByTaskCompleteSource(() =>
+                            window.Dispatcher.AwaitableRunAsync<ElementTheme?>(() =>
+                            {
+                                if (window?.Content is FrameworkElement rootElement)
+                                {
+                                    return rootElement.RequestedTheme;
+                                }
+                                return null;
+                            }, CoreDispatcherPriority.High));
+                    }
                     if (value.HasValue) { return value.Value; }
                 }
                 return ElementTheme.Default;
@@ -91,6 +118,15 @@ namespace CoolapkUWP.Helpers
             UISettings.ColorValuesChanged += UISettings_ColorValuesChanged;
         }
 
+        public static void Initialize(Window window)
+        {
+            if (window?.Content is FrameworkElement rootElement)
+            {
+                rootElement.RequestedTheme = ActualTheme;
+            }
+            UpdateSystemCaptionButtonColors(window);
+        }
+
         private static void UISettings_ColorValuesChanged(UISettings sender, object args)
         {
             UpdateSystemCaptionButtonColors();
@@ -99,11 +135,36 @@ namespace CoolapkUWP.Helpers
 
         public static bool IsDarkTheme()
         {
-            return RootTheme == ElementTheme.Default
-                ? Application.Current.RequestedTheme == ApplicationTheme.Dark
-                : RootTheme == ElementTheme.Dark;
+            if (Window.Current != null)
+            {
+                return ActualTheme == ElementTheme.Default
+                    ? Application.Current.RequestedTheme == ApplicationTheme.Dark
+                    : ActualTheme == ElementTheme.Dark;
+            }
+            else
+            {
+                return ActualTheme == ElementTheme.Default
+                    ? UISettings.GetColorValue(UIColorType.Background) == Colors.Black
+                    : ActualTheme == ElementTheme.Dark;
+            }
         }
-        
+
+        public static bool IsDarkTheme(ElementTheme ActualTheme)
+        {
+            if (Window.Current != null)
+            {
+                return ActualTheme == ElementTheme.Default
+                    ? Application.Current.RequestedTheme == ApplicationTheme.Dark
+                    : ActualTheme == ElementTheme.Dark;
+            }
+            else
+            {
+                return ActualTheme == ElementTheme.Default
+                    ? UISettings.GetColorValue(UIColorType.Background) == Colors.Black
+                    : ActualTheme == ElementTheme.Dark;
+            }
+        }
+
         public static void UpdateSystemCaptionButtonColors()
         {
             bool IsDark = IsDarkTheme();
@@ -133,6 +194,34 @@ namespace CoolapkUWP.Helpers
                     }
                 });
             }
+        }
+
+        public static void UpdateSystemCaptionButtonColors(Window window)
+        {
+            _ = window.Dispatcher.AwaitableRunAsync(() =>
+            {
+                bool IsDark = window?.Content is FrameworkElement rootElement ? IsDarkTheme(rootElement.RequestedTheme) : IsDarkTheme();
+                bool IsHighContrast = new AccessibilitySettings().HighContrast;
+
+                Color ForegroundColor = IsDark || IsHighContrast ? Colors.White : Colors.Black;
+                Color BackgroundColor = IsHighContrast ? Color.FromArgb(255, 0, 0, 0) : IsDark ? Color.FromArgb(255, 32, 32, 32) : Color.FromArgb(255, 243, 243, 243);
+
+                if (UIHelper.HasStatusBar)
+                {
+                    StatusBar StatusBar = StatusBar.GetForCurrentView();
+                    StatusBar.ForegroundColor = ForegroundColor;
+                    StatusBar.BackgroundColor = BackgroundColor;
+                    StatusBar.BackgroundOpacity = 0; // 透明度
+                }
+                else
+                {
+                    bool ExtendViewIntoTitleBar = CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar;
+                    ApplicationViewTitleBar TitleBar = ApplicationView.GetForCurrentView().TitleBar;
+                    TitleBar.ForegroundColor = TitleBar.ButtonForegroundColor = ForegroundColor;
+                    TitleBar.BackgroundColor = TitleBar.InactiveBackgroundColor = BackgroundColor;
+                    TitleBar.ButtonBackgroundColor = TitleBar.ButtonInactiveBackgroundColor = ExtendViewIntoTitleBar ? Colors.Transparent : BackgroundColor;
+                }
+            });
         }
     }
 

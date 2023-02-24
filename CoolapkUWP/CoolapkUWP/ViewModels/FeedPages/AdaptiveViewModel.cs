@@ -8,17 +8,13 @@ using CoolapkUWP.ViewModels.Providers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.ViewModels.FeedPages
 {
     public class AdaptiveViewModel : DataSourceBase<Entity>, IViewModel
     {
-        private readonly string Uri;
+        public readonly string Uri;
         private readonly List<Type> EntityTypes;
         protected bool IsInitPage => Uri == "/main/init";
         protected bool IsIndexPage => !Uri.Contains("?");

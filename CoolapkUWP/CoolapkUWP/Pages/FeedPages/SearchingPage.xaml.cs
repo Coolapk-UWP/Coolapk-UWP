@@ -29,7 +29,8 @@ namespace CoolapkUWP.Pages.FeedPages
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.Parameter is SearchingViewModel ViewModel)
+            if (e.Parameter is SearchingViewModel ViewModel
+                && (Provider != null || Provider.Title != ViewModel.Title))
             {
                 Provider = ViewModel;
                 DataContext = Provider;

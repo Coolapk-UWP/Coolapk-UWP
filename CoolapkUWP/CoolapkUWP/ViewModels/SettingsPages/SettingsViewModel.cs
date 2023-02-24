@@ -47,7 +47,7 @@ namespace CoolapkUWP.ViewModels.SettingsPages
 
         public static int SelectedTheme
         {
-            get => 2 - (int)ThemeHelper.RootTheme;
+            get => 2 - (int)ThemeHelper.ActualTheme;
             set
             {
                 if (SelectedTheme != value)

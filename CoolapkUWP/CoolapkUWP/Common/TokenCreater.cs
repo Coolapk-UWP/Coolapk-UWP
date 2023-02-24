@@ -119,4 +119,17 @@ namespace CoolapkUWP.Common
         TokenV1,
         TokenV2
     }
+
+    public enum APIVersion
+    {
+        小程序 = 5,
+        V6,
+        V7,
+        V8,
+        V9,
+        V10,
+        V11,
+        V12,
+        V13,
+    }
 }

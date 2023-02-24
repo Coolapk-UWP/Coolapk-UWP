@@ -32,7 +32,8 @@ namespace CoolapkUWP.Pages.FeedPages
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.Parameter is FeedShellViewModel ViewModel)
+            if (e.Parameter is FeedShellViewModel ViewModel
+                && (Provider == null || Provider.ID != ViewModel.ID))
             {
                 Provider = ViewModel;
                 DataContext = Provider;

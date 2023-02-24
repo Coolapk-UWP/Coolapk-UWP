@@ -125,7 +125,7 @@
                             </controls:Setting.Background>
                         </controls:Setting>
                         <controls:Setting
-                            ContentCornerRadius="0,0,8,8"
+                            ContentCornerRadius="0,0,4,4"
                             Header="SystemAccentColorDark3"
                             RequestedTheme="Dark"
                             Style="{StaticResource DefaultSettingExpanderItemStyle}">
@@ -133,6 +133,65 @@
                                 <SolidColorBrush Color="{ThemeResource SystemAccentColorDark3}" />
                             </controls:Setting.Background>
                         </controls:Setting>
+                    </controls:SettingExpander>
+                </controls:SettingsGroup>
+                <controls:SettingsGroup Header="网络测试">
+                    <controls:Setting
+                        Description="设置使用的酷安版本"
+                        Header="API 版本"
+                        Icon="&#xE90F;">
+                        <ComboBox SelectedIndex="{x:Bind APIVersion, Mode=TwoWay}">
+                            <ComboBoxItem>小程序</ComboBoxItem>
+                            <ComboBoxItem>V6</ComboBoxItem>
+                            <ComboBoxItem>V7</ComboBoxItem>
+                            <ComboBoxItem>V8</ComboBoxItem>
+                            <ComboBoxItem>V9</ComboBoxItem>
+                            <ComboBoxItem>V10</ComboBoxItem>
+                            <ComboBoxItem>V11</ComboBoxItem>
+                            <ComboBoxItem>V12</ComboBoxItem>
+                            <ComboBoxItem>V13</ComboBoxItem>
+                        </ComboBox>
+                    </controls:Setting>
+                    <controls:Setting
+                        Description="设置使用的 Token 获取方法"
+                        Header="Token 版本"
+                        Icon="&#xE90F;">
+                        <ComboBox SelectedIndex="{x:Bind TokenVersion, Mode=TwoWay}">
+                            <ComboBoxItem>Token V1</ComboBoxItem>
+                            <ComboBoxItem>Token V2</ComboBoxItem>
+                        </ComboBox>
+                    </controls:Setting>
+                    <controls:Setting
+                        Description="是否使用新的酷安接口"
+                        Header="是否使用 API2"
+                        Icon="&#xE90F;">
+                        <ToggleSwitch IsOn="{x:Bind IsUseAPI2, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
+                    </controls:Setting>
+                    <controls:SettingExpander
+                        Description="测试网络相关内容"
+                        Header="Web 测试"
+                        Icon="&#xE909;">
+                        <controls:SettingExpander.ActionContent>
+                            <TextBox x:Name="URLTextBox" Text="https://api2.coolapk.com/v6/account/checkLoginInfo" />
+                        </controls:SettingExpander.ActionContent>
+                        <controls:Setting
+                            Click="Button_Click"
+                            Header="打开页面"
+                            IsClickEnabled="True"
+                            Style="{StaticResource ClickableSettingExpanderItemStyle}"
+                            Tag="OpenURL" />
+                        <controls:Setting
+                            Click="Button_Click"
+                            Header="获取内容"
+                            IsClickEnabled="True"
+                            Style="{StaticResource ClickableSettingExpanderItemStyle}"
+                            Tag="GetURLContent" />
+                        <controls:Setting
+                            ContentCornerRadius="0,0,4,4"
+                            Header="用内置浏览器打开"
+                            IsClickEnabled="True"
+                            Style="{StaticResource ClickableSettingExpanderItemStyle}"
+                            Tag="OpenBrowser" />
                     </controls:SettingExpander>
                 </controls:SettingsGroup>
             </StackPanel>

@@ -8,6 +8,7 @@ using Windows.Web.Http.Filters;
 using Windows.Web.Http;
 using IObjectSerializer = Microsoft.Toolkit.Helpers.IObjectSerializer;
 using Windows.Foundation;
+using CoolapkUWP.Common;
 
 namespace CoolapkUWP.Helpers
 {
@@ -62,7 +63,7 @@ namespace CoolapkUWP.Helpers
             }
             if (!LocalObject.KeyExists(APIVersion))
             {
-                LocalObject.Save(APIVersion, "V13");
+                LocalObject.Save(APIVersion, Common.APIVersion.V13);
             }
             if (!LocalObject.KeyExists(UpdateDate))
             {

@@ -301,6 +301,7 @@ namespace CoolapkUWP.Controls
         private void UpdateShyHeaderItem(IList<ShyHeaderItem> items = null)
         {
             items = items ?? ShyHeaderItemSource;
+            if(items == null) { return; }
             if (_pivotHeader != null)
             {
                 _pivotHeader.ItemsSource = (from item in items

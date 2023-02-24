@@ -16,7 +16,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
 {
     public abstract class FeedShellViewModel : IViewModel, INotifyPropertyChanged
     {
-        protected string ID;
+        public string ID { get; protected set; }
         public double[] VerticalOffsets { get; set; } = new double[3];
 
         private string title = string.Empty;
