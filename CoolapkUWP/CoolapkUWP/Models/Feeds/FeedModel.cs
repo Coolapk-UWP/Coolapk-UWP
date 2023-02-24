@@ -19,6 +19,7 @@ namespace CoolapkUWP.Models.Feeds
         public FeedModel(JObject token, FeedDisplayMode mode = FeedDisplayMode.Normal) : base(token)
         {
             ShowLikes = !(EntityType == "forwardFeed");
+            ShowDateline = mode != FeedDisplayMode.IsFirstPageFeed;
             IsStickTop = token.TryGetValue("isStickTop", out JToken j) && int.Parse(j.ToString()) == 1;
         }
     }

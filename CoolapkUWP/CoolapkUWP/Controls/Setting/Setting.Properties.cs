@@ -216,6 +216,29 @@ namespace CoolapkUWP.Controls
 
         #endregion
 
+        #region ContentCornerRadius
+
+        /// <summary>
+        /// Identifies the <see cref="ContentCornerRadius"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ContentCornerRadiusProperty =
+            DependencyProperty.Register(
+                nameof(ContentCornerRadius),
+                typeof(CornerRadius),
+                typeof(Setting),
+                null);
+
+        /// <summary>
+        /// Gets or sets the threshold of wrap with no icon.
+        /// </summary>
+        public CornerRadius ContentCornerRadius
+        {
+            get => (CornerRadius)GetValue(ContentCornerRadiusProperty);
+            set => SetValue(ContentCornerRadiusProperty, value);
+        }
+
+        #endregion
+
         #region WrapThreshold
 
         /// <summary>

@@ -17,6 +17,7 @@
             <Setter Property="Foreground" Value="{ThemeResource SettingCardForeground}" />
             <Setter Property="BorderBrush" Value="{ThemeResource SettingCardBorderBrush}" />
             <Setter Property="BorderThickness" Value="{ThemeResource SettingCardBorderThickness}" />
+            <Setter Property="ContentCornerRadius" Value="{ThemeResource ControlCornerRadius}" />
             <Setter Property="MinHeight" Value="{ThemeResource SettingCardMinHeight}" />
             <Setter Property="MinWidth" Value="{ThemeResource SettingCardMinWidth}" />
             <Setter Property="IsTabStop" Value="False" />
@@ -48,7 +49,7 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{ThemeResource ControlCornerRadius}">
+                            CornerRadius="{TemplateBinding ContentCornerRadius}">
                             <contract7Present:Grid.BackgroundTransition>
                                 <BrushTransition Duration="0:0:0.083" />
                             </contract7Present:Grid.BackgroundTransition>

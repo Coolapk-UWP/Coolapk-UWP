@@ -72,7 +72,7 @@ namespace CoolapkUWP.Pages.SettingsPages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            switch ((sender as FrameworkElement).Tag as string)
+            switch ((sender as FrameworkElement).Tag.ToString())
             {
                 case "OutPIP":
                     _ = ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
@@ -89,7 +89,7 @@ namespace CoolapkUWP.Pages.SettingsPages
         private void ComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             ComboBox ComboBox = sender as ComboBox;
-            switch (ComboBox.Tag as string)
+            switch (ComboBox.Tag.ToString())
             {
                 case "Language":
                     string lang = SettingsHelper.Get<string>(SettingsHelper.CurrentLanguage);
@@ -103,7 +103,7 @@ namespace CoolapkUWP.Pages.SettingsPages
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox ComboBox = sender as ComboBox;
-            switch (ComboBox.Tag as string)
+            switch (ComboBox.Tag.ToString())
             {
                 case "Language":
                     CultureInfo culture = ComboBox.SelectedItem as CultureInfo;

@@ -8,7 +8,9 @@ using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Toolkit.Uwp.UI;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
@@ -17,6 +19,7 @@ using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
 using TileSize = Windows.UI.StartScreen.TileSize;
@@ -141,15 +144,6 @@ namespace CoolapkUWP.Controls.DataTemplates
                     DisabledCopy();
                     break;
 
-                case "DeviceButton":
-                    DisabledCopy();
-                    //FeedListPageViewModelBase f = FeedListPageViewModelBase.GetProvider(FeedListType.DevicePageList, (sender as FrameworkElement).Tag as string);
-                    //if (f != null)
-                    //{
-                    //    UIHelper.NavigateInSplitPane(typeof(FeedListPage), f);
-                    //}
-                    break;
-
                 case "ChangeButton":
                     DisabledCopy();
                     //UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModels.AdaptivePage.ViewModel((sender as FrameworkElement).Tag as string, ViewModels.AdaptivePage.ListType.FeedInfo, "changeHistory"));
@@ -159,6 +153,27 @@ namespace CoolapkUWP.Controls.DataTemplates
                     DisabledCopy();
                     UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
                     break;
+            }
+        }
+
+        private async void DeviceHyperlink_Click(Hyperlink sender, HyperlinkClickEventArgs args)
+        {
+            UIHelper.ShowProgressBar();
+            string device = (sender.Inlines.FirstOrDefault().ElementStart.VisualParent.DataContext as FeedModelBase).DeviceTitle;
+            (bool isSucceed, JToken result) = await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.GetProductDetailByName, device), true);
+            UIHelper.HideProgressBar();
+            if (!isSucceed) { return; }
+
+            JObject token = (JObject)result;
+
+            if (token.TryGetValue("id", out JToken id))
+            {
+                FeedListViewModel provider = FeedListViewModel.GetProvider(FeedListType.ProductPageList, id.ToString());
+
+                if (provider != null)
+                {
+                    UIHelper.Navigate(typeof(FeedListPage), provider);
+                }
             }
         }
 

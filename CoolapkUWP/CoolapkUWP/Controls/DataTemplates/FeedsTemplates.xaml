@@ -136,32 +136,52 @@
                             DisplayName="{Binding UserInfo.UserName}"
                             ProfilePicture="{Binding UserInfo.UserAvatar.Pic, Mode=OneWay}" />
                     </Button>
-                    <StackPanel Margin="8,0" VerticalAlignment="Center">
+                    <Grid Margin="8,0" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
                         <TextBlock
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
+                            VerticalAlignment="Center"
                             IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
-                            Text="{Binding UserInfo.UserName}" />
-                        <StackPanel Margin="-1,0" Orientation="Horizontal">
-                            <TextBlock
-                                x:Name="DateLineTxb"
-                                Margin="0,0,5,0"
+                            Text="{Binding UserInfo.UserName}"
+                            TextTrimming="CharacterEllipsis" />
+                        <TextBlock
+                            Grid.Row="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
+                            TextTrimming="CharacterEllipsis"
+                            Visibility="{Binding ShowDateline, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                            <Run Text="{Binding InfoHTML}" />
+                            <Run Text="{Binding Info}" />
+                            <Hyperlink
+                                Click="DeviceHyperlink_Click"
                                 Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
-                                Text="{Binding Dateline}"
-                                Visibility="{Binding ShowDateline, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            <TextBlock
+                                UnderlineStyle="None">
+                                <Run Text="{Binding DeviceTitle}" />
+                            </Hyperlink>
+                        </TextBlock>
+                        <TextBlock
+                            Grid.Row="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
+                            TextTrimming="CharacterEllipsis"
+                            Visibility="{Binding ShowDateline, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Run Text="{Binding Dateline}" />
+                            <Run Text="{Binding Info}" />
+                            <Hyperlink
+                                Click="DeviceHyperlink_Click"
                                 Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
-                                Text="{Binding Info}" />
-                            <TextBlock
-                                Margin="5,0,0,0"
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
-                                Text="{Binding DeviceTitle}"
-                                Visibility="{Binding DeviceTitle, Converter={StaticResource StringVisibilityConverter}}" />
-                        </StackPanel>
-                    </StackPanel>
+                                UnderlineStyle="None">
+                                <Run Text="{Binding DeviceTitle}" />
+                            </Hyperlink>
+                        </TextBlock>
+                    </Grid>
                 </StackPanel>
                 <controls:StackPanel
                     x:Name="BtnsPanel"

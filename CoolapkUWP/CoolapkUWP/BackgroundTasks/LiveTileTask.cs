@@ -94,7 +94,6 @@ namespace CoolapkUWP.BackgroundTasks
                 {
                     Branding = TileBranding.NameAndLogo,
                     DisplayName = FeedDetail.Info,
-                    Arguments = FeedDetail.Url,
 
                     TileMedium = new TileBinding
                     {
@@ -246,7 +245,6 @@ namespace CoolapkUWP.BackgroundTasks
                 {
                     Branding = TileBranding.NameAndLogo,
                     DisplayName = UserDetail.UserName,
-                    Arguments = UserDetail.Url,
 
                     TileSmall = new TileBinding
                     {

@@ -313,6 +313,7 @@ namespace CoolapkUWP.Helpers
         {
             "/page?",
             "/u/",
+            "/feed/changeHistoryList",
             "/feed/",
             "/picture/",
             "/question/",
@@ -371,6 +372,9 @@ namespace CoolapkUWP.Helpers
                 {
                     Navigate(typeof(FeedListPage), f);
                 }
+            }
+            else if (str.IsFirst(i++))
+            {
             }
             else if (str.IsFirst(i++) || str.IsFirst(i++))
             {

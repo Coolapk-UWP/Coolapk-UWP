@@ -111,6 +111,7 @@ namespace CoolapkUWP.Models.Feeds
         public bool ShowLinkSourceFeed { get; private set; }
 
         public string Info { get; private set; }
+        public string InfoHTML { get; private set; }
         public string ExtraUrl { get; private set; }
         public string MediaUrl { get; private set; }
         public string IPLocation { get; private set; }
@@ -136,6 +137,15 @@ namespace CoolapkUWP.Models.Feeds
             else if (token.TryGetValue("feedTypeName", out JToken feedTypeName))
             {
                 Info = feedTypeName.ToString();
+            }
+
+            if (token.TryGetValue("infoHtml", out JToken infoHtml) && !string.IsNullOrEmpty(infoHtml.ToString()))
+            {
+                InfoHTML = infoHtml.ToString();
+            }
+            else
+            {
+                InfoHTML = Dateline;
             }
 
             if (token.TryGetValue("likenum", out JToken likenum))
@@ -252,7 +262,10 @@ namespace CoolapkUWP.Models.Feeds
                 (token.TryGetValue("location", out JToken location) && !string.IsNullOrEmpty(location.ToString())) |
                 (token.TryGetValue("ttitle", out JToken ttitle) && !string.IsNullOrEmpty(ttitle.ToString())) |
                 (token.TryGetValue("dyh_name", out JToken dyh_name) && !string.IsNullOrEmpty(dyh_name.ToString())) |
-                (token.TryGetValue("relationRows", out JToken relationRows) && relationRows.Any());
+                (token.TryGetValue("relationRows", out JToken relationRows) && relationRows.Any()) |
+                (token.TryGetValue("change_count", out JToken change_count) && change_count.ToObject<int>() > 0) |
+                (token.TryGetValue("status", out JToken status) && status.ToObject<int>() == -1) |
+                (token.TryGetValue("block_status", out JToken block_status) && block_status.ToObject<int>() != 0);
 
             if (ShowRelationRows)
             {
@@ -284,6 +297,26 @@ namespace CoolapkUWP.Models.Feeds
                             Logo = new ImageModel(item.Value<string>("logo"), ImageType.Icon)
                         });
                     }
+                }
+
+                if (change_count != null && change_count.ToObject<int>() > 0)
+                {
+                    buider.Add(new RelationRowsItem
+                    {
+                        Title = $"已编辑{change_count.ToObject<int>()}次",
+                        Url = $"/feed/changeHistoryList?id={ID}",
+                        Logo = new ImageModel("https://store-images.s-microsoft.com/image/apps.22218.9007199266484421.d7454822-3b68-4c7c-a337-0f4f29835fb7.933730b7-d8f0-4997-a557-7dbfc3c7b950", ImageType.Icon)
+                    });
+                }
+
+                if (status != null && status.ToObject<int>() == -1)
+                {
+                    buider.Add(new RelationRowsItem { Title = "仅自己可见" });
+                }
+
+                if (block_status != null && block_status.ToObject<int>() != 0)
+                {
+                    buider.Add(new RelationRowsItem { Title = "已折叠" });
                 }
 
                 ShowRelationRows = buider.Any();

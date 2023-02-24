@@ -277,35 +277,37 @@
                         DisplayName="{Binding UserInfo.UserName}"
                         ProfilePicture="{Binding UserInfo.UserAvatar.Pic, Mode=OneWay}" />
                 </Button>
-                <StackPanel
+                <Grid
                     Grid.Column="1"
                     Margin="8,0"
-                    HorizontalAlignment="Left"
                     VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
                     <TextBlock
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
+                        VerticalAlignment="Center"
                         IsTextSelectionEnabled="True"
-                        Text="{Binding UserInfo.UserName}" />
-                    <StackPanel Margin="-1,0" Orientation="Horizontal">
-                        <TextBlock
-                            x:Name="DateLineTxb"
-                            Margin="0,0,5,0"
+                        Text="{Binding UserInfo.UserName}"
+                        TextTrimming="CharacterEllipsis" />
+                    <TextBlock
+                        Grid.Row="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        IsTextSelectionEnabled="True"
+                        TextTrimming="CharacterEllipsis">
+                        <Run Text="{Binding Dateline}" />
+                        <Run Text="{Binding Info}" />
+                        <Hyperlink
+                            Click="DeviceHyperlink_Click"
                             Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            IsTextSelectionEnabled="True"
-                            Text="{Binding Dateline}" />
-                        <TextBlock
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            IsTextSelectionEnabled="True"
-                            Text="{Binding Info}" />
-                        <TextBlock
-                            Margin="5,0,0,0"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                            IsTextSelectionEnabled="True"
-                            Text="{Binding DeviceTitle}"
-                            Visibility="{Binding DeviceTitle, Converter={StaticResource StringVisibilityConverter}}" />
-                    </StackPanel>
-                </StackPanel>
+                            UnderlineStyle="None">
+                            <Run Text="{Binding DeviceTitle}" />
+                        </Hyperlink>
+                    </TextBlock>
+                </Grid>
                 <Button
                     x:Name="FollowButton"
                     Grid.Column="2"

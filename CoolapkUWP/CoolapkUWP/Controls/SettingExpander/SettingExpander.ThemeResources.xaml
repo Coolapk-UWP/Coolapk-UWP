@@ -27,6 +27,7 @@
             <Setter Property="Padding" Value="{ThemeResource SettingExpanderItemPadding}" />
             <Setter Property="WrapThreshold" Value="{StaticResource SettingExpanderItemWrapThreshold}" />
             <Setter Property="WrapNoIconThreshold" Value="{StaticResource SettingExpanderItemWrapNoIconThreshold}" />
+            <Setter Property="ContentCornerRadius" Value="0" />
         </Style.Setters>
     </Style>
 

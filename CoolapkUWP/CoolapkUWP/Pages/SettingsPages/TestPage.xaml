@@ -72,6 +72,68 @@
                                 Tag="OutPIP" />
                         </controls:StackPanel>
                     </controls:Setting>
+                    <controls:SettingExpander
+                        Description="各种强调色"
+                        Header="颜色"
+                        Icon="&#xE790;">
+                        <controls:Setting
+                            Foreground="White"
+                            Header="SystemAccentColor"
+                            Style="{StaticResource DefaultSettingExpanderItemStyle}">
+                            <controls:Setting.Background>
+                                <SolidColorBrush Color="{ThemeResource SystemAccentColor}" />
+                            </controls:Setting.Background>
+                        </controls:Setting>
+                        <controls:Setting
+                            Header="SystemAccentColorLight1"
+                            RequestedTheme="Light"
+                            Style="{StaticResource DefaultSettingExpanderItemStyle}">
+                            <controls:Setting.Background>
+                                <SolidColorBrush Color="{ThemeResource SystemAccentColorLight1}" />
+                            </controls:Setting.Background>
+                        </controls:Setting>
+                        <controls:Setting
+                            Header="SystemAccentColorLight2"
+                            RequestedTheme="Light"
+                            Style="{StaticResource DefaultSettingExpanderItemStyle}">
+                            <controls:Setting.Background>
+                                <SolidColorBrush Color="{ThemeResource SystemAccentColorLight2}" />
+                            </controls:Setting.Background>
+                        </controls:Setting>
+                        <controls:Setting
+                            Header="SystemAccentColorLight3"
+                            RequestedTheme="Light"
+                            Style="{StaticResource DefaultSettingExpanderItemStyle}">
+                            <controls:Setting.Background>
+                                <SolidColorBrush Color="{ThemeResource SystemAccentColorLight3}" />
+                            </controls:Setting.Background>
+                        </controls:Setting>
+                        <controls:Setting
+                            Header="SystemAccentColorDark1"
+                            RequestedTheme="Dark"
+                            Style="{StaticResource DefaultSettingExpanderItemStyle}">
+                            <controls:Setting.Background>
+                                <SolidColorBrush Color="{ThemeResource SystemAccentColorDark1}" />
+                            </controls:Setting.Background>
+                        </controls:Setting>
+                        <controls:Setting
+                            Header="SystemAccentColorDark2"
+                            RequestedTheme="Dark"
+                            Style="{StaticResource DefaultSettingExpanderItemStyle}">
+                            <controls:Setting.Background>
+                                <SolidColorBrush Color="{ThemeResource SystemAccentColorDark2}" />
+                            </controls:Setting.Background>
+                        </controls:Setting>
+                        <controls:Setting
+                            ContentCornerRadius="0,0,8,8"
+                            Header="SystemAccentColorDark3"
+                            RequestedTheme="Dark"
+                            Style="{StaticResource DefaultSettingExpanderItemStyle}">
+                            <controls:Setting.Background>
+                                <SolidColorBrush Color="{ThemeResource SystemAccentColorDark3}" />
+                            </controls:Setting.Background>
+                        </controls:Setting>
+                    </controls:SettingExpander>
                 </controls:SettingsGroup>
             </StackPanel>
         </ScrollViewer>

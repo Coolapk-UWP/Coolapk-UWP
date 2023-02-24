@@ -26,10 +26,12 @@ namespace CoolapkUWP.Helpers
         GetDyhDetail,
         GetDyhFeeds,
         GetProductDetail,
+        GetProductDetailByName,
         GetProductFeeds,
         GetFeedDetail,
         GetFeedReplies,
         GetFeedInfos,
+        GetChangeHistoryList,
         GetHotReplies,
         GetIndexPage,
         GetIndexPageNames,
@@ -141,10 +143,12 @@ namespace CoolapkUWP.Helpers
                 case UriType.GetDyhDetail: return "/v6/dyh/detail?dyhId={0}";
                 case UriType.GetDyhFeeds: return "/v6/dyhArticle/list?dyhId={0}&type={1}&page={2}{3}{4}";
                 case UriType.GetProductDetail: return "/v6/product/detail?id={0}";
+                case UriType.GetProductDetailByName: return "/v6/product/detail?name={0}";
                 case UriType.GetProductFeeds: return "/v6/page/dataList?url=/page?url=/product/feedList?type={4}&id={0}&page={1}{2}{3}";
                 case UriType.GetFeedDetail: return "/v6/feed/detail?id={0}";
                 case UriType.GetFeedReplies: return "/v6/feed/replyList?id={0}&listType={1}&page={2}{3}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={4}";
                 case UriType.GetFeedInfos: return "/v6/feed/{4}List?id={0}&page={1}{2}{3}";
+                case UriType.GetChangeHistoryList: return "/v6/feed/changeHistoryList?id={0}";
                 case UriType.GetHotReplies: return "/v6/feed/hotReplyList?id={0}&page={1}{2}&discussMode=1";
                 case UriType.GetIndexPage: return "/v6{0}{1}page={2}";
                 case UriType.GetIndexPageNames: return "/v6/main/init";

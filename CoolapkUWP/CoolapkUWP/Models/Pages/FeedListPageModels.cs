@@ -205,6 +205,7 @@ namespace CoolapkUWP.Models.Pages
             {
                 BlockStatus = block_status.ToObject<int>() == -1 ? loader.GetString("BlockStatus-1")
                     : block_status.ToObject<int>() == 2 ? loader.GetString("BlockStatus2") : null;
+                BlockStatus = BlockStatus.Substring(1, BlockStatus.Length - 2);
             }
 
             if (token.TryGetValue("verify_title", out JToken verify_title))
