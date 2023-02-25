@@ -25,4 +25,10 @@
             <StaticResource x:Key="CardPrimaryForegroundBrush" ResourceKey="SystemColorButtonTextColorBrush" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
+    <LinearGradientBrush x:Key="CoolapkLogoForeground" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#12B868" />
+            <GradientStop Offset="1" Color="#0F9D58" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
 </ResourceDictionary>

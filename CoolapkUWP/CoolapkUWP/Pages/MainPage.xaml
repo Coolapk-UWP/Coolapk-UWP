@@ -53,11 +53,15 @@
                 </Grid.ColumnDefinitions>
                 <Viewbox
                     x:Name="AppTitleIcon"
-                    Width="24"
-                    Height="24"
+                    Width="16"
+                    Height="16"
                     Margin="16,0"
                     VerticalAlignment="Center">
-                    <muxc:ImageIcon Source="ms-appx:///Assets/StoreLogo.png" />
+                    <PathIcon
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Data="{StaticResource CoolapkLogoGeometry}"
+                        Foreground="{StaticResource CoolapkLogoForeground}" />
                 </Viewbox>
                 <TextBlock
                     x:Name="AppTitleText"
