@@ -51,7 +51,7 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="{TemplateBinding ContentCornerRadius}">
                             <contract7Present:Grid.BackgroundTransition>
-                                <BrushTransition Duration="0:0:0.083" />
+                                <contract7Present:BrushTransition Duration="0:0:0.083" />
                             </contract7Present:Grid.BackgroundTransition>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />

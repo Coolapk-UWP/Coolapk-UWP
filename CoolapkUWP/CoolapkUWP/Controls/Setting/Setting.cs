@@ -20,6 +20,7 @@ namespace CoolapkUWP.Controls
         internal const string PressedState = "Pressed";
         internal const string DisabledState = "Disabled";
 
+        internal const string ContentPresenter = "PART_ContentPresenter";
         internal const string HeaderIconPresenterHolder = "PART_HeaderIconPresenterHolder";
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace CoolapkUWP.Controls
             OnHeaderChanged();
             OnHeaderIconChanged();
             OnDescriptionChanged();
+            OnContentChanged();
             OnIsClickEnabledChanged();
             VisualStateManager.GoToState(this, IsEnabled ? NormalState : DisabledState, true);
             RegisterAutomation();
@@ -145,6 +147,12 @@ namespace CoolapkUWP.Controls
             }
         }
 
+        protected override void OnContentChanged(object oldContent, object newContent)
+        {
+            base.OnContentChanged(oldContent, newContent);
+            OnContentChanged();
+        }
+
         /// <summary>
         /// Creates AutomationPeer
         /// </summary>
@@ -169,9 +177,8 @@ namespace CoolapkUWP.Controls
 
         private void OnIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            VisualStateManager.GoToState(this, IsEnabled ? NormalState : DisabledState, true);
+            _ = VisualStateManager.GoToState(this, IsEnabled ? NormalState : DisabledState, true);
         }
-
 
         public void OnButtonIconChanged()
         {
@@ -183,6 +190,16 @@ namespace CoolapkUWP.Controls
             if (GetTemplateChild(HeaderIconPresenterHolder) is FrameworkElement headerIconPresenter)
             {
                 headerIconPresenter.Visibility = Icon != null
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+        }
+
+        public void OnContentChanged()
+        {
+            if (GetTemplateChild(ContentPresenter) is FrameworkElement contentPresenter)
+            {
+                contentPresenter.Visibility = Content != null
                     ? Visibility.Visible
                     : Visibility.Collapsed;
             }

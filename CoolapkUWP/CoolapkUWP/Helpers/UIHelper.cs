@@ -335,6 +335,7 @@ namespace CoolapkUWP.Helpers
                     else
                     {
                         Navigate(typeof(BrowserPage), new BrowserViewModel(origin));
+                        return;
                     }
                 }
             }
@@ -433,6 +434,10 @@ namespace CoolapkUWP.Helpers
             else if (link.StartsWith("/mp/", StringComparison.OrdinalIgnoreCase))
             {
                 Navigate(typeof(HTMLPage), new HTMLViewModel(link));
+            }
+            else
+            {
+                Navigate(typeof(BrowserPage), new BrowserViewModel(origin));
             }
         }
     }

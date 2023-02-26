@@ -2,6 +2,8 @@
     x:Class="CoolapkUWP.Pages.SettingsPages.TestPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:contract5NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
+    xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:globalization="using:System.Globalization"
@@ -42,7 +44,13 @@
                                 Value="{x:Bind ProgressValue, Mode=TwoWay}" />
                         </controls:Setting>
                     </controls:SettingExpander>
-                    <controls:Setting x:Uid="/TestPage/LanguageSettings" Icon="&#xF2B7;">
+                    <controls:Setting x:Uid="/TestPage/LanguageSettings">
+                        <controls:Setting.Icon>
+                            <FontIcon
+                                contract5NotPresent:Glyph="&#xE775;"
+                                contract5Present:Glyph="&#xF2B7;"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                        </controls:Setting.Icon>
                         <ComboBox
                             ItemsSource="{x:Bind helper:LanguageHelper.SupportCultures}"
                             Loaded="ComboBox_Loaded"
