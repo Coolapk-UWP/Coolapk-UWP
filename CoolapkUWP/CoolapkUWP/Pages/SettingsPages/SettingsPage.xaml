@@ -2,8 +2,10 @@
     x:Class="CoolapkUWP.Pages.SettingsPages.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:contract5NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
+    xmlns:contract5NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
+    xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 7)"
+    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:cwuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -139,11 +141,21 @@
                                 VerticalAlignment="Center"
                                 Orientation="Horizontal"
                                 Spacing="18">
-                                <muxc:ProgressRing
-                                    x:Name="CheckingUpdateRing"
-                                    Width="24"
-                                    Height="24"
-                                    Visibility="{Binding CheckingUpdate, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <Border Visibility="{Binding CheckingUpdate, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <contract7NotPresent:Border.Child>
+                                        <ProgressRing
+                                            Width="24"
+                                            Height="24"
+                                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                            IsActive="{Binding CheckingUpdate}" />
+                                    </contract7NotPresent:Border.Child>
+                                    <contract7Present:Border.Child>
+                                        <muxc:ProgressRing
+                                            Width="24"
+                                            Height="24"
+                                            IsActive="{Binding CheckingUpdate}" />
+                                    </contract7Present:Border.Child>
+                                </Border>
                                 <TextBlock
                                     x:Name="CheckingUpdateText"
                                     x:Uid="/SettingsPage/CheckingUpdates"
@@ -276,13 +288,22 @@
                         <ToggleSwitch IsOn="{Binding ShowOtherException, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
                     </controls:Setting>
                     <controls:Setting x:Uid="/SettingsPage/CleanCacheSettings" Icon="&#xEA99;">
-                        <controls:StackPanel Orientation="Horizontal" Spacing="8">
-                            <muxc:ProgressRing
-                                Width="24"
-                                Height="24"
-                                HorizontalAlignment="Left"
-                                IsActive="{Binding IsCleanCache, Mode=OneWay}"
-                                Visibility="{Binding IsActive, RelativeSource={RelativeSource Mode=Self}}" />
+                        <controls:StackPanel Orientation="Horizontal" Spacing="18">
+                            <Border Visibility="{Binding IsCleanCache, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <contract7NotPresent:Border.Child>
+                                    <ProgressRing
+                                        Width="24"
+                                        Height="24"
+                                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                        IsActive="{Binding IsCleanCache}" />
+                                </contract7NotPresent:Border.Child>
+                                <contract7Present:Border.Child>
+                                    <muxc:ProgressRing
+                                        Width="24"
+                                        Height="24"
+                                        IsActive="{Binding IsCleanCache}" />
+                                </contract7Present:Border.Child>
+                            </Border>
                             <Button
                                 x:Uid="/SettingsPage/CleanCacheButton"
                                 Click="Button_Click"

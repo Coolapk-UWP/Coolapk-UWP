@@ -96,6 +96,9 @@ namespace CoolapkUWP.Pages
 
         private AppViewBackButtonVisibility TryGoBack()
         {
+            if (!Dispatcher.HasThreadAccess)
+            { return AppViewBackButtonVisibility.Disabled; }
+
             if (!Frame.CanGoBack)
             { return AppViewBackButtonVisibility.Disabled; }
 

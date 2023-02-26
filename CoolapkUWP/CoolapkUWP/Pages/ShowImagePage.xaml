@@ -4,6 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:contract12NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 12)"
     xmlns:contract12Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 12)"
+    xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 7)"
+    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:Microsoft.UI.Xaml.Media"
@@ -147,13 +149,24 @@
                         NumberOfPages="{Binding Images, Converter={StaticResource CollectionCountConverter}}"
                         SelectedPageIndex="{Binding SelectedIndex, ElementName=FlipView, Mode=TwoWay}" />
                 </Border>
-                <muxc:ProgressRing
-                    Width="60"
-                    Height="60"
+                <Border
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    IsActive="{Binding IsLoading}"
-                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <contract7NotPresent:Border.Child>
+                        <ProgressRing
+                            Width="60"
+                            Height="60"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                            IsActive="{Binding IsLoading}" />
+                    </contract7NotPresent:Border.Child>
+                    <contract7Present:Border.Child>
+                        <muxc:ProgressRing
+                            Width="60"
+                            Height="60"
+                            IsActive="{Binding IsLoading}" />
+                    </contract7Present:Border.Child>
+                </Border>
             </Grid>
         </Grid>
         <CommandBar

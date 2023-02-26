@@ -250,6 +250,9 @@ namespace CoolapkUWP.Pages
 
         private bool TryGoBack()
         {
+            if (!Dispatcher.HasThreadAccess)
+            { return false; }
+
             if (!NavigationViewFrame.CanGoBack)
             { return false; }
 

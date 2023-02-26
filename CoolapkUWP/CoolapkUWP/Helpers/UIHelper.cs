@@ -113,7 +113,7 @@ namespace CoolapkUWP.Helpers
             if (!IsShowingMessage)
             {
                 IsShowingMessage = true;
-                while (MessageList.Count > 0)
+                while (MessageList.Any())
                 {
                     if (HasStatusBar)
                     {
@@ -423,7 +423,7 @@ namespace CoolapkUWP.Helpers
                 }
                 else
                 {
-                    string tag = link.Substring(5);
+                    string tag = link.Substring(9);
                     FeedListViewModel provider = FeedListViewModel.GetProvider(FeedListType.ProductPageList, tag);
                     if (provider != null)
                     {

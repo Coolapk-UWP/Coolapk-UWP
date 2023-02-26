@@ -2,6 +2,8 @@
     x:Class="CoolapkUWP.Controls.FeedShellDetailControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 7)"
+    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:converters="using:CoolapkUWP.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:feeds="using:CoolapkUWP.Models.Feeds"
@@ -495,7 +497,21 @@
                                 TintOpacity="1" />
                         </local:WebViewContentControl.Background>
                     </local:WebViewContentControl>
-                    <muxc:ProgressRing Visibility="{Binding LinkSourceFeed.Succeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
+                    <Border Visibility="{Binding LinkSourceFeed.Succeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                        <contract7NotPresent:Border.Child>
+                            <ProgressRing
+                                Width="24"
+                                Height="24"
+                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                IsActive="{Binding LinkSourceFeed.Succeed, Converter={StaticResource BoolNegationConverter}, ConverterParameter='true'}" />
+                        </contract7NotPresent:Border.Child>
+                        <contract7Present:Border.Child>
+                            <muxc:ProgressRing
+                                Width="24"
+                                Height="24"
+                                IsActive="{Binding LinkSourceFeed.Succeed, Converter={StaticResource BoolNegationConverter}, ConverterParameter='true'}" />
+                        </contract7Present:Border.Child>
+                    </Border>
                 </Grid>
             </Grid>
             <Grid

@@ -7,6 +7,7 @@ using CoolapkUWP.ViewModels.FeedPages;
 using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.UserActivities;
+using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -55,6 +56,9 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private async void GenerateActivityAsync()
         {
+            if (!ApiInformation.IsTypePresent("Windows.ApplicationModel.UserActivities.UserActivityChannel"))
+            { return; }
+
             // Get the default UserActivityChannel and query it for our UserActivity. If the activity doesn't exist, one is created.
             UserActivityChannel channel = UserActivityChannel.GetDefault();
             UserActivity userActivity = await channel.GetOrCreateUserActivityAsync(Provider.FeedDetail.Url.GetMD5());
