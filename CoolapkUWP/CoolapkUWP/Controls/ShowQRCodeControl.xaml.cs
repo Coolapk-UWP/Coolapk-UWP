@@ -35,7 +35,7 @@ namespace CoolapkUWP.Controls
         {
             DataPackage dataPackage = new DataPackage();
 
-            Uri shareLinkString = NetworkHelper.ValidateAndGetUri(QRCodeText);
+            Uri shareLinkString = QRCodeText.ValidateAndGetUri();
             if (shareLinkString != null)
             {
                 dataPackage.SetWebLink(shareLinkString);
@@ -58,8 +58,9 @@ namespace CoolapkUWP.Controls
         {
             using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
             {
-                QRCodeData qrCodeData = qrGenerator.CreateQrCode("https://www.coolapk.com", QRCodeGenerator.ECCLevel.Q);
-                if (QRCodeText != null) { qrCodeData = qrGenerator.CreateQrCode(QRCodeText, QRCodeGenerator.ECCLevel.Q); }
+                QRCodeData qrCodeData = QRCodeText == null
+                    ? qrGenerator.CreateQrCode("https://www.coolapk.com", QRCodeGenerator.ECCLevel.Q)
+                    : qrGenerator.CreateQrCode(QRCodeText, QRCodeGenerator.ECCLevel.Q);
                 using (PngByteQRCode qrCodeBmp = new PngByteQRCode(qrCodeData))
                 {
                     byte[] qrCodeImageBmp = qrCodeBmp.GetGraphic(

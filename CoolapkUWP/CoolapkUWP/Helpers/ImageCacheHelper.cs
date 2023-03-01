@@ -36,7 +36,7 @@ namespace CoolapkUWP.Helpers
 
         internal static async Task<BitmapImage> GetImageAsync(ImageType type, string url, bool isforce = false)
         {
-            Uri uri = NetworkHelper.ValidateAndGetUri(url);
+            Uri uri = url.ValidateAndGetUri();
             if (uri == null) { return NoPic; }
 
             if (url.IndexOf("ms-appx", StringComparison.Ordinal) == 0)
@@ -52,7 +52,7 @@ namespace CoolapkUWP.Helpers
                 if (type == ImageType.SmallImage || type == ImageType.SmallAvatar)
                 {
                     if (url.Contains("coolapk.com") && !url.EndsWith(".png")) { url += ".s.jpg"; }
-                    uri = NetworkHelper.ValidateAndGetUri(url);
+                    uri = url.ValidateAndGetUri();
                 }
 
                 try
@@ -86,7 +86,7 @@ namespace CoolapkUWP.Helpers
 
         internal static async Task<StorageFile> GetImageFileAsync(ImageType type, string url)
         {
-            Uri uri = NetworkHelper.ValidateAndGetUri(url);
+            Uri uri = url.ValidateAndGetUri();
             if (uri == null) { return null; }
 
             if (url.IndexOf("ms-appx", StringComparison.Ordinal) == 0)
@@ -98,7 +98,7 @@ namespace CoolapkUWP.Helpers
                 if (type == ImageType.SmallImage || type == ImageType.SmallAvatar)
                 {
                     if (url.Contains("coolapk.com") && !url.EndsWith(".png")) { url += ".s.jpg"; }
-                    uri = NetworkHelper.ValidateAndGetUri(url);
+                    uri = url.ValidateAndGetUri();
                 }
 
                 try
@@ -173,7 +173,7 @@ namespace CoolapkUWP.Helpers
         [Obsolete]
         internal static async Task<BitmapImage> GetImageAsyncOld(ImageType type, string url, bool isforce = false)
         {
-            Uri uri = NetworkHelper.ValidateAndGetUri(url);
+            Uri uri = url.ValidateAndGetUri();
             if (uri == null) { return NoPic; }
 
             if (url.IndexOf("ms-appx", StringComparison.Ordinal) == 0)

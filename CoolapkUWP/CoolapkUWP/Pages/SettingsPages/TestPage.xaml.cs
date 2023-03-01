@@ -1,5 +1,4 @@
-﻿using ColorCode.Compilation.Languages;
-using CoolapkUWP.Common;
+﻿using CoolapkUWP.Common;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.ViewModels.BrowserPages;
@@ -8,13 +7,11 @@ using System;
 using System.Globalization;
 using Windows.ApplicationModel.Core;
 using Windows.Globalization;
-using Windows.System;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using static QRCoder.PayloadGenerator;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 

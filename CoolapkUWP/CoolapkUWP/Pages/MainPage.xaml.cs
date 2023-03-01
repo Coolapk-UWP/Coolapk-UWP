@@ -275,21 +275,15 @@ namespace CoolapkUWP.Pages
             if (NavigationViewFrame.SourcePageType != null)
             {
                 (string Tag, Type Page) item = _pages.FirstOrDefault(p => p.Page == e.SourcePageType);
-                try
+                if (item.Tag != null)
                 {
-                    NavigationView.SelectedItem = NavigationView.MenuItems
+                    muxc.NavigationViewItem SelectedItem = NavigationView.MenuItems
                         .OfType<muxc.NavigationViewItem>()
-                        .First(n => n.Tag.Equals(item.Tag));
-                }
-                catch
-                {
-                    try
-                    {
-                        NavigationView.SelectedItem = NavigationView.FooterMenuItems
-                            .OfType<muxc.NavigationViewItem>()
-                            .First(n => n.Tag.Equals(item.Tag));
-                    }
-                    catch { }
+                        .FirstOrDefault(n => n.Tag.Equals(item.Tag))
+                            ?? NavigationView.FooterMenuItems
+                                .OfType<muxc.NavigationViewItem>()
+                                .FirstOrDefault(n => n.Tag.Equals(item.Tag));
+                    NavigationView.SelectedItem = SelectedItem;
                 }
             }
             UIHelper.HideProgressBar();

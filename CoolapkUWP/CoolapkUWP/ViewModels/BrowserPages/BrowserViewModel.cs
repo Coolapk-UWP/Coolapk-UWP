@@ -62,7 +62,7 @@ namespace CoolapkUWP.ViewModels.BrowserPages
         public BrowserViewModel(string url)
         {
             if (!url.Contains("://")) { url = $"https://{url}"; }
-            Uri = NetworkHelper.ValidateAndGetUri(url);
+            Uri = url.ValidateAndGetUri();
             IsLoginPage = url == UriHelper.LoginUri;
             Title = _loader.GetString("Title");
         }

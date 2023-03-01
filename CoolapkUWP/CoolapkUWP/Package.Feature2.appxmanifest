@@ -10,7 +10,7 @@
   <Identity
     Name="wherewhere.CoolapkUWP.Feature2"
     Publisher="CN=where"
-    Version="0.0.7.0" />
+    Version="0.0.8.0" />
 
   <mp:PhoneIdentity PhoneProductId="7dd1320e-c126-4dca-a633-eb3e78c3dc10" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

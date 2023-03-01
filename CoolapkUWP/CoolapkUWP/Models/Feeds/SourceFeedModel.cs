@@ -101,7 +101,7 @@ namespace CoolapkUWP.Models.Feeds
             }
             else
             {
-                ShareUrl = "https://www.coolapk.com" + Url != null ? Url.Replace("/question/", "/feed/") : string.Empty; ;
+                ShareUrl = $"https://www.coolapk.com{(Url != null ? Url.Replace("/question/", "/feed/") : string.Empty)}";
             }
 
             if (token.TryGetValue("message", out JToken message))

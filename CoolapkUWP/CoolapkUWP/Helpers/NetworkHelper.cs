@@ -348,7 +348,9 @@ namespace CoolapkUWP.Helpers
             Uri uri = null;
             try
             {
-                uri = new Uri(url);
+                uri = url.Contains("://") ? new Uri(url)
+                    : url[0] == '/' ? new Uri(UriHelper.CoolapkUri, url)
+                    : new Uri($"https://{url}");
             }
             catch (FormatException ex)
             {
