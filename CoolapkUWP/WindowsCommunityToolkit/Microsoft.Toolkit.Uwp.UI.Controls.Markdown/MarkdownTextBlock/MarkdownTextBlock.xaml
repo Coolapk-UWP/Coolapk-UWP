@@ -1,6 +1,7 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls">
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls">
 
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Default" />
@@ -49,7 +50,7 @@
         <Setter Property="CodePadding" Value="10, 6, 10, 6" />
         <Setter Property="InlineCodeBorderThickness" Value="0" />
         <Setter Property="InlineCodePadding" Value="4, 2, 4, 2" />
-        <Setter Property="InlineCodeMargin" Value="2,0,2,-4"/>
+        <Setter Property="InlineCodeMargin" Value="2,0,2,-4" />
         <Setter Property="InlineCodeBackground" Value="{ThemeResource MarkdownInlineCodeBackgroundBrush}" />
         <Setter Property="InlineCodeBorderBrush" Value="{ThemeResource MarkdownBorderBrush}" />
         <Setter Property="InlineCodeForeground" Value="{ThemeResource MarkdownInlineCodeForegroundBrush}" />
@@ -97,10 +98,11 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:MarkdownTextBlock">
-                    <Border x:Name="RootElement"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}" />
+                    <Border
+                        x:Name="RootElement"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

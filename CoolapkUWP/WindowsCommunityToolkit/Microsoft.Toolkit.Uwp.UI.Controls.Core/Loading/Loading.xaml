@@ -4,51 +4,58 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls">
 
     <Style TargetType="controls:Loading">
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:Loading">
-                    <Border x:Name="RootGrid" Background="{TemplateBinding Background}"
-                            Visibility="Collapsed" Opacity="0"
-                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border
+                        x:Name="RootGrid"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Opacity="0"
+                        Visibility="Collapsed">
+                        <ContentPresenter
+                            x:Name="ContentGrid"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            x:DeferLoadStrategy="Lazy">
+                            <ContentPresenter.RenderTransform>
+                                <CompositeTransform />
+                            </ContentPresenter.RenderTransform>
+                        </ContentPresenter>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="LoadingIn">
                                     <Storyboard>
-                                        <DoubleAnimationUsingKeyFrames
-                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)"
-                                            Storyboard.TargetName="ContentGrid">
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)">
                                             <EasingDoubleKeyFrame KeyTime="0:0:0" Value="40">
                                                 <EasingDoubleKeyFrame.EasingFunction>
-                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                    <QuadraticEase EasingMode="EaseInOut" />
                                                 </EasingDoubleKeyFrame.EasingFunction>
                                             </EasingDoubleKeyFrame>
                                             <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0">
                                                 <EasingDoubleKeyFrame.EasingFunction>
-                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                    <QuadraticEase EasingMode="EaseInOut" />
                                                 </EasingDoubleKeyFrame.EasingFunction>
                                             </EasingDoubleKeyFrame>
                                         </DoubleAnimationUsingKeyFrames>
-                                        <DoubleAnimationUsingKeyFrames
-                                            Storyboard.TargetProperty="Opacity"
-                                            Storyboard.TargetName="RootGrid">
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Opacity">
                                             <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0">
                                                 <EasingDoubleKeyFrame.EasingFunction>
-                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                    <QuadraticEase EasingMode="EaseInOut" />
                                                 </EasingDoubleKeyFrame.EasingFunction>
                                             </EasingDoubleKeyFrame>
                                             <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1">
                                                 <EasingDoubleKeyFrame.EasingFunction>
-                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                    <QuadraticEase EasingMode="EaseInOut" />
                                                 </EasingDoubleKeyFrame.EasingFunction>
                                             </EasingDoubleKeyFrame>
                                         </DoubleAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="RootGrid"
-                                            Storyboard.TargetProperty="Visibility">
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Visibility">
                                             <DiscreteObjectKeyFrame KeyTime="0:0:0">
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <Visibility>Visible</Visibility>
@@ -59,37 +66,31 @@
                                 </VisualState>
                                 <VisualState x:Name="LoadingOut">
                                     <Storyboard>
-                                        <DoubleAnimationUsingKeyFrames
-                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)"
-                                            Storyboard.TargetName="ContentGrid">
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)">
                                             <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0">
                                                 <EasingDoubleKeyFrame.EasingFunction>
-                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                    <QuadraticEase EasingMode="EaseInOut" />
                                                 </EasingDoubleKeyFrame.EasingFunction>
                                             </EasingDoubleKeyFrame>
                                             <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="40">
                                                 <EasingDoubleKeyFrame.EasingFunction>
-                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                    <QuadraticEase EasingMode="EaseInOut" />
                                                 </EasingDoubleKeyFrame.EasingFunction>
                                             </EasingDoubleKeyFrame>
                                         </DoubleAnimationUsingKeyFrames>
-                                        <DoubleAnimationUsingKeyFrames
-                                            Storyboard.TargetProperty="Opacity"
-                                            Storyboard.TargetName="RootGrid">
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Opacity">
                                             <EasingDoubleKeyFrame KeyTime="0:0:0" Value="1">
                                                 <EasingDoubleKeyFrame.EasingFunction>
-                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                    <QuadraticEase EasingMode="EaseInOut" />
                                                 </EasingDoubleKeyFrame.EasingFunction>
                                             </EasingDoubleKeyFrame>
                                             <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0">
                                                 <EasingDoubleKeyFrame.EasingFunction>
-                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                    <QuadraticEase EasingMode="EaseInOut" />
                                                 </EasingDoubleKeyFrame.EasingFunction>
                                             </EasingDoubleKeyFrame>
                                         </DoubleAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
-                                            Storyboard.TargetName="RootGrid"
-                                            Storyboard.TargetProperty="Visibility">
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Visibility">
                                             <DiscreteObjectKeyFrame KeyTime="0:0:0.3">
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <Visibility>Collapsed</Visibility>
@@ -100,11 +101,6 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <ContentPresenter x:Name="ContentGrid" x:DeferLoadStrategy="Lazy" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                            <ContentPresenter.RenderTransform>
-                                <CompositeTransform></CompositeTransform>
-                            </ContentPresenter.RenderTransform>
-                        </ContentPresenter>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

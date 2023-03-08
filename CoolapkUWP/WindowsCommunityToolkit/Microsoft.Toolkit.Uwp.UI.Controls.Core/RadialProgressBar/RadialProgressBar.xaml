@@ -3,18 +3,22 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Microsoft.Toolkit.Uwp.UI.Controls">
 
-    <Style TargetType="local:RadialProgressBar" >
+    <Style TargetType="local:RadialProgressBar">
         <Setter Property="Foreground" Value="{ThemeResource SystemControlHighlightAccentBrush}" />
         <Setter Property="Outline" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Thickness" Value="4"/>
-        <Setter Property="FlowDirection" Value="LeftToRight"/>
+        <Setter Property="Thickness" Value="4" />
+        <Setter Property="FlowDirection" Value="LeftToRight" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:RadialProgressBar">
                     <Grid Background="{TemplateBinding Background}">
-                        <!-- Gray outline of progress bar -->
-                        <Path Fill="Transparent" Stroke="{TemplateBinding Outline}" StrokeThickness="{TemplateBinding Thickness}" StrokeDashCap="Flat">
+                        <!--  Gray outline of progress bar  -->
+                        <Path
+                            Fill="Transparent"
+                            Stroke="{TemplateBinding Outline}"
+                            StrokeDashCap="Flat"
+                            StrokeThickness="{TemplateBinding Thickness}">
                             <Path.Data>
                                 <PathGeometry>
                                     <PathGeometry.Figures>
@@ -22,7 +26,10 @@
                                             <PathFigure x:Name="OutlineFigurePart">
                                                 <PathFigure.Segments>
                                                     <PathSegmentCollection>
-                                                        <ArcSegment x:Name="OutlineArcPart" IsLargeArc="True" SweepDirection="Clockwise"/>
+                                                        <ArcSegment
+                                                            x:Name="OutlineArcPart"
+                                                            IsLargeArc="True"
+                                                            SweepDirection="Clockwise" />
                                                     </PathSegmentCollection>
                                                 </PathFigure.Segments>
                                             </PathFigure>
@@ -31,8 +38,12 @@
                                 </PathGeometry>
                             </Path.Data>
                         </Path>
-                        <!-- Progress Bar -->
-                        <Path Fill="Transparent" Stroke="{TemplateBinding Foreground}" StrokeThickness="{TemplateBinding Thickness}" StrokeDashCap="Flat">
+                        <!--  Progress Bar  -->
+                        <Path
+                            Fill="Transparent"
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeDashCap="Flat"
+                            StrokeThickness="{TemplateBinding Thickness}">
                             <Path.Data>
                                 <PathGeometry>
                                     <PathGeometry.Figures>
@@ -40,7 +51,10 @@
                                             <PathFigure x:Name="BarFigurePart">
                                                 <PathFigure.Segments>
                                                     <PathSegmentCollection>
-                                                        <ArcSegment x:Name="BarArcPart" IsLargeArc="False" SweepDirection="Clockwise" />
+                                                        <ArcSegment
+                                                            x:Name="BarArcPart"
+                                                            IsLargeArc="False"
+                                                            SweepDirection="Clockwise" />
                                                     </PathSegmentCollection>
                                                 </PathFigure.Segments>
                                             </PathFigure>
