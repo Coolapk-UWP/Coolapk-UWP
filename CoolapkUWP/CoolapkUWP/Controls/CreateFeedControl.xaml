@@ -72,7 +72,7 @@
                     <Border
                         Width="102"
                         Height="102"
-                        CornerRadius="8">
+                        CornerRadius="{ThemeResource OverlayCornerRadius}">
                         <contract7Present:Border.BackgroundTransition>
                             <contract7Present:BrushTransition />
                         </contract7Present:Border.BackgroundTransition>
@@ -218,7 +218,7 @@
                                                         <Border
                                                             Width="24"
                                                             Height="24"
-                                                            CornerRadius="4">
+                                                            CornerRadius="{ThemeResource ControlCornerRadius}">
                                                             <Border.Background>
                                                                 <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                                                             </Border.Background>

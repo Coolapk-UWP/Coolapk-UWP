@@ -52,8 +52,8 @@
                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                         BorderThickness="1"
                         ContextFlyout="{StaticResource MoreFlyout}"
-                        CornerRadius="8">
-                        <Border CornerRadius="8">
+                        CornerRadius="{ThemeResource OverlayCornerRadius}">
+                        <Border CornerRadius="{ThemeResource OverlayCornerRadius}">
                             <Border.Background>
                                 <ImageBrush ImageSource="{Binding Cover.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                             </Border.Background>
@@ -62,7 +62,7 @@
                             Padding="10"
                             Background="{ThemeResource TextOnAccentFillColorSecondaryBrush}"
                             ContextFlyout="{StaticResource MoreFlyout}"
-                            CornerRadius="8">
+                            CornerRadius="{ThemeResource OverlayCornerRadius}">
                             <control:StackPanel Spacing="8">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -181,7 +181,7 @@
                                         Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
                                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                         BorderThickness="1"
-                                        CornerRadius="4"
+                                        CornerRadius="{ThemeResource ControlCornerRadius}"
                                         Visibility="{Binding Gender, Converter={StaticResource StringVisibilityConverter}}">
                                         <TextBlock
                                             Margin="4,2"
@@ -192,7 +192,7 @@
                                         Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
                                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                         BorderThickness="1"
-                                        CornerRadius="4"
+                                        CornerRadius="{ThemeResource ControlCornerRadius}"
                                         Visibility="{Binding City, Converter={StaticResource StringVisibilityConverter}}">
                                         <TextBlock
                                             Margin="4,2"
@@ -203,7 +203,7 @@
                                         Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
                                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                         BorderThickness="1"
-                                        CornerRadius="4"
+                                        CornerRadius="{ThemeResource ControlCornerRadius}"
                                         Visibility="{Binding Astro, Converter={StaticResource StringVisibilityConverter}}">
                                         <TextBlock
                                             Margin="4,2"
@@ -214,7 +214,7 @@
                                         Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
                                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                         BorderThickness="1"
-                                        CornerRadius="4"
+                                        CornerRadius="{ThemeResource ControlCornerRadius}"
                                         Visibility="{Binding BlockStatus, Converter={StaticResource StringVisibilityConverter}}">
                                         <TextBlock
                                             Margin="4,2"
@@ -234,7 +234,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
-                    CornerRadius="8">
+                    CornerRadius="{ThemeResource OverlayCornerRadius}">
                     <control:StackPanel Spacing="8">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -246,7 +246,7 @@
                                 Width="56"
                                 Height="56"
                                 HorizontalAlignment="Left"
-                                CornerRadius="8">
+                                CornerRadius="{ThemeResource OverlayCornerRadius}">
                                 <Border.Background>
                                     <ImageBrush ImageSource="{Binding Logo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                                 </Border.Background>
@@ -326,7 +326,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
-                    CornerRadius="8">
+                    CornerRadius="{ThemeResource OverlayCornerRadius}">
                     <control:StackPanel Spacing="8">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -338,7 +338,7 @@
                                 Width="56"
                                 Height="56"
                                 HorizontalAlignment="Left"
-                                CornerRadius="8">
+                                CornerRadius="{ThemeResource OverlayCornerRadius}">
                                 <Border.Background>
                                     <ImageBrush ImageSource="{Binding Logo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                                 </Border.Background>
@@ -409,11 +409,11 @@
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                         BorderThickness="1"
-                        CornerRadius="8"
+                        CornerRadius="{ThemeResource OverlayCornerRadius}"
                         Visibility="{Binding CoverArr, Converter={StaticResource CollectionVisibilityConverter}}">
                         <FlipView
                             x:Name="FlipView"
-                            contract7Present:CornerRadius="8"
+                            contract7Present:CornerRadius="{ThemeResource OverlayCornerRadius}"
                             Background="{ThemeResource SystemControlTransparentBrush}"
                             ItemsSource="{Binding CoverArr}"
                             Loaded="FlipView_Loaded"
@@ -454,7 +454,7 @@
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                         BorderThickness="1"
-                        CornerRadius="8">
+                        CornerRadius="{ThemeResource OverlayCornerRadius}">
                         <control:StackPanel Spacing="8">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -466,7 +466,7 @@
                                     Width="56"
                                     Height="56"
                                     HorizontalAlignment="Left"
-                                    CornerRadius="8">
+                                    CornerRadius="{ThemeResource OverlayCornerRadius}">
                                     <Border.Background>
                                         <ImageBrush ImageSource="{Binding Logo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                                     </Border.Background>
@@ -559,7 +559,7 @@
                                             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                                             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                             BorderThickness="1"
-                                            CornerRadius="4">
+                                            CornerRadius="{ThemeResource ControlCornerRadius}">
                                             <TextBlock
                                                 Margin="4,2"
                                                 FontSize="12"
@@ -576,7 +576,7 @@
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                         BorderThickness="1"
-                        CornerRadius="8">
+                        CornerRadius="{ThemeResource OverlayCornerRadius}">
                         <control:StackPanel>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -605,7 +605,7 @@
                                         Grid.Column="1"
                                         Padding="4,2"
                                         contract7NotPresent:Loaded="Button_Loaded"
-                                        contract7Present:CornerRadius="0,4,4,0"
+                                        contract7Present:CornerRadius="{Binding Source={ThemeResource ControlCornerRadius}, Converter={StaticResource RightCornerRadiusFilterConverter}}"
                                         BorderThickness="0,1,1,1"
                                         Content="查看全部"
                                         FontSize="12"
@@ -615,7 +615,7 @@
                                         Grid.Column="0"
                                         Padding="4,2"
                                         contract7NotPresent:Loaded="Button_Loaded"
-                                        contract7Present:CornerRadius="4,0,0,4"
+                                        contract7Present:CornerRadius="{Binding Source={ThemeResource ControlCornerRadius}, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
                                         BorderThickness="1,1,0,1"
                                         Content="只看机主"
                                         FontSize="12"

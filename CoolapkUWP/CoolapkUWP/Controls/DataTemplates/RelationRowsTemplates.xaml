@@ -26,7 +26,7 @@
                     Width="20"
                     Height="20"
                     Margin="0,0,4,0"
-                    CornerRadius="4"
+                    CornerRadius="{ThemeResource ControlCornerRadius}"
                     Visibility="{Binding Logo.Uri, Converter={StaticResource StringVisibilityConverter}}">
                     <Border.Background>
                         <ImageBrush ImageSource="{Binding Logo.Pic, Mode=OneWay}" Stretch="UniformToFill" />

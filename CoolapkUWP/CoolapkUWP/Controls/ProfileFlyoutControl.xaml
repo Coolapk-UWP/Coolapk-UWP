@@ -112,7 +112,7 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 contract7NotPresent:Loaded="Button_Loaded"
-                contract7Present:CornerRadius="4,0,0,4"
+                contract7Present:CornerRadius="{Binding Source={ThemeResource ControlCornerRadius}, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
                 Click="Button_Click"
                 Tag="FeedsButton">
                 <StackPanel>
@@ -155,7 +155,7 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 contract7NotPresent:Loaded="Button_Loaded"
-                contract7Present:CornerRadius="0,4,4,0"
+                contract7Present:CornerRadius="{Binding Source={ThemeResource ControlCornerRadius}, Converter={StaticResource RightCornerRadiusFilterConverter}}"
                 Click="Button_Click"
                 Tag="FansButton">
                 <StackPanel>

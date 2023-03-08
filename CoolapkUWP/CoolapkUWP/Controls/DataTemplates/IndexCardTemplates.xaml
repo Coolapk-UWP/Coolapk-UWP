@@ -2,6 +2,7 @@
     x:Class="CoolapkUWP.Controls.DataTemplates.IndexCardTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:control="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -183,27 +184,30 @@
             </Grid>
             <Border
                 Grid.Row="1"
-                CornerRadius="8"
+                CornerRadius="{ThemeResource OverlayCornerRadius}"
                 Visibility="{Binding ShowEntities, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid>
                     <FlipView
                         x:Name="FlipView"
-                        contract7Present:CornerRadius="8"
+                        contract7Present:CornerRadius="{ThemeResource OverlayCornerRadius}"
                         Background="{ThemeResource SystemControlTransparentBrush}"
                         ItemsSource="{Binding Entities}"
                         Loaded="FlipView_Loaded"
                         SizeChanged="FlipView_SizeChanged">
                         <FlipView.ItemTemplate>
                             <DataTemplate>
-                                <Image
+                                <Border
                                     x:Name="Picture"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    CanDrag="True"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    contract7NotPresent:CornerRadius="{ThemeResource OverlayCornerRadius}"
                                     KeyDown="Grid_KeyDown"
-                                    Source="{Binding Pic.Pic, Mode=OneWay}"
                                     Tag="{Binding}"
-                                    Tapped="Grid_Tapped" />
+                                    Tapped="Grid_Tapped">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                                    </Border.Background>
+                                </Border>
                             </DataTemplate>
                         </FlipView.ItemTemplate>
                     </FlipView>
@@ -228,7 +232,7 @@
             </Border>
             <Border
                 Grid.Row="2"
-                CornerRadius="8"
+                CornerRadius="{ThemeResource OverlayCornerRadius}"
                 Tag="{Binding}"
                 Tapped="Grid_Tapped"
                 Visibility="{Binding ShowEntities, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
@@ -243,7 +247,7 @@
                 Grid.Row="3"
                 Margin="12,8"
                 VerticalAlignment="Stretch"
-                CornerRadius="8"
+                CornerRadius="{ThemeResource OverlayCornerRadius}"
                 Visibility="{Binding Description, Converter={StaticResource StringVisibilityConverter}}">
                 <control:TextBlockEx Text="{Binding Description}" />
             </Border>
@@ -255,7 +259,7 @@
             Margin="8"
             HorizontalAlignment="Stretch"
             Background="{ThemeResource SystemControlTransparentBrush}"
-            CornerRadius="8"
+            CornerRadius="{ThemeResource OverlayCornerRadius}"
             KeyDown="Grid_KeyDown"
             Tag="{Binding}"
             Tapped="Grid_Tapped">
@@ -284,7 +288,7 @@
                                 <Border
                                     Width="40"
                                     Height="40"
-                                    CornerRadius="4">
+                                    CornerRadius="{ThemeResource ControlCornerRadius}">
                                     <Image Source="{Binding Pic.Pic, Mode=OneWay}" />
                                 </Border>
                                 <TextBlock
@@ -488,7 +492,7 @@
             Height="86"
             BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}"
             BorderThickness="1"
-            CornerRadius="8"
+            CornerRadius="{ThemeResource OverlayCornerRadius}"
             KeyDown="Grid_KeyDown"
             Tag="{Binding}"
             Tapped="Grid_Tapped">
@@ -526,14 +530,14 @@
             Width="86"
             BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}"
             BorderThickness="1"
-            CornerRadius="8"
+            CornerRadius="{ThemeResource OverlayCornerRadius}"
             KeyDown="Grid_KeyDown"
             Tag="{Binding}"
             Tapped="Grid_Tapped">
             <Border.Background>
                 <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
             </Border.Background>
-            <StackPanel Padding="4" CornerRadius="8">
+            <StackPanel Padding="4" CornerRadius="{ThemeResource OverlayCornerRadius}">
                 <StackPanel.Background>
                     <media:AcrylicBrush
                         BackgroundSource="Backdrop"
@@ -545,7 +549,7 @@
                     Width="36"
                     Height="36"
                     Margin="4"
-                    CornerRadius="4"
+                    CornerRadius="{ThemeResource ControlCornerRadius}"
                     Tag="{Binding}"
                     Tapped="Grid_Tapped">
                     <Border.Background>
@@ -624,7 +628,7 @@
                     Width="16"
                     Height="16"
                     Margin="8"
-                    CornerRadius="4">
+                    CornerRadius="{ThemeResource ControlCornerRadius}">
                     <Border.Background>
                         <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                     </Border.Background>

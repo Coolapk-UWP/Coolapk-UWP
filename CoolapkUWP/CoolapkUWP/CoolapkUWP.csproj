@@ -171,6 +171,10 @@
     <Compile Include="Controls\ProfileFlyoutControl.xaml.cs">
       <DependentUpon>ProfileFlyoutControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\QRCode\QRCode.cs" />
+    <Compile Include="Controls\QRCode\QRCode.Properties.cs" />
+    <Compile Include="Controls\QRCode\QRCodeTemplateSettings.cs" />
+    <Compile Include="Controls\QRCode\XamlQRCode.cs" />
     <Compile Include="Controls\SettingExpander\SettingExpander.cs" />
     <Compile Include="Controls\SettingExpander\SettingExpander.Properties.cs" />
     <Compile Include="Controls\SettingExpander\SettingExpanderAutomationPeer.cs" />
@@ -960,6 +964,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\QRCode\QRCode.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\SettingExpander\SettingExpander.ThemeResources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1123,7 +1131,7 @@
       <Version>1.0.1587.40</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2</Version>
+      <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="QRCoder">
       <Version>1.4.3</Version>

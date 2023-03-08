@@ -77,7 +77,7 @@
                 Height="40"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                CornerRadius="8">
+                CornerRadius="{ThemeResource OverlayCornerRadius}">
                 <Border.Background>
                     <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                 </Border.Background>
@@ -88,8 +88,8 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock
                     Grid.Row="0"
@@ -132,9 +132,9 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock
                     Grid.Row="0"

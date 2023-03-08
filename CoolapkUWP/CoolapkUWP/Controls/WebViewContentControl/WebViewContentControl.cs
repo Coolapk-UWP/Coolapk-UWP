@@ -14,6 +14,8 @@ namespace CoolapkUWP.Controls
 
         public WebViewContentControl() => DefaultStyleKey = typeof(WebViewContentControl);
 
+        #region IsWebView
+
         public static readonly DependencyProperty IsWebViewProperty =
             DependencyProperty.Register(
                 nameof(IsWebView),
@@ -35,6 +37,10 @@ namespace CoolapkUWP.Controls
             }
         }
 
+        #endregion
+
+        #region CornerRadius
+
         public static readonly DependencyProperty ContentCornerRadiusProperty =
             DependencyProperty.Register(
                 nameof(ContentCornerRadius),
@@ -55,6 +61,8 @@ namespace CoolapkUWP.Controls
                 (d as WebViewContentControl).UpdateCornerRadius();
             }
         }
+
+        #endregion
 
         protected override void OnApplyTemplate()
         {

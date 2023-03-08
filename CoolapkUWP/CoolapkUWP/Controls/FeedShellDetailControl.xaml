@@ -86,7 +86,7 @@
                 x:Name="FeedArticleTitle"
                 Grid.Row="0"
                 Margin="0,0,0,4"
-                CornerRadius="8"
+                CornerRadius="{ThemeResource OverlayCornerRadius}"
                 Visibility="{Binding IsFeedArticle, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
                 <Image
                     x:Name="MessageCover"
@@ -172,7 +172,7 @@
                         Margin="0,0,8,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        CornerRadius="4">
+                        CornerRadius="{ThemeResource ControlCornerRadius}">
                         <Border.Background>
                             <ImageBrush ImageSource="{Binding TopicLogo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                         </Border.Background>
@@ -221,7 +221,7 @@
                         Margin="0,0,8,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        CornerRadius="4">
+                        CornerRadius="{ThemeResource ControlCornerRadius}">
                         <Border.Background>
                             <ImageBrush ImageSource="{Binding DyhLogo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
                         </Border.Background>
@@ -349,7 +349,7 @@
                         VerticalAlignment="Center"
                         BorderBrush="{ThemeResource AccentTextFillColorPrimaryBrush}"
                         BorderThickness="1"
-                        CornerRadius="4">
+                        CornerRadius="{ThemeResource ControlCornerRadius}">
                         <TextBlock
                             FontSize="12"
                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
@@ -413,7 +413,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
-                    ContentCornerRadius="8"
+                    ContentCornerRadius="{ThemeResource OverlayCornerRadius}"
                     ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
                     DataContext="{Binding SourceFeed}" />
             </Border>
@@ -422,7 +422,7 @@
                 Margin="0,4"
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1"
-                CornerRadius="8"
+                CornerRadius="{ThemeResource OverlayCornerRadius}"
                 Visibility="{Binding ExtraTitle, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
                 <Grid.Background>
                     <ImageBrush ImageSource="{Binding ExtraPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
@@ -446,7 +446,7 @@
                     <Border
                         Width="56"
                         Height="56"
-                        CornerRadius="8"
+                        CornerRadius="{ThemeResource OverlayCornerRadius}"
                         Visibility="{Binding ExtraPic.Uri, Converter={StaticResource StringVisibilityConverter}}">
                         <Border.Background>
                             <ImageBrush ImageSource="{Binding ExtraPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
@@ -458,7 +458,7 @@
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                         BorderThickness="1"
-                        CornerRadius="8"
+                        CornerRadius="{ThemeResource OverlayCornerRadius}"
                         Visibility="{Binding ExtraPic.Uri, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true'}">
                         <FontIcon
                             HorizontalAlignment="Center"
@@ -486,7 +486,7 @@
                 </Grid>
                 <Grid Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}}">
                     <local:WebViewContentControl
-                        ContentCornerRadius="8"
+                        ContentCornerRadius="{ThemeResource OverlayCornerRadius}"
                         ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
                         DataContext="{Binding LinkSourceFeed}">
                         <local:WebViewContentControl.Background>
@@ -519,7 +519,7 @@
                 Margin="0,4"
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1"
-                CornerRadius="8"
+                CornerRadius="{ThemeResource OverlayCornerRadius}"
                 Visibility="{Binding MediaUrl, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
                 <Grid.Background>
                     <ImageBrush ImageSource="{Binding MediaPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
@@ -543,7 +543,7 @@
                     <Border
                         Width="56"
                         Height="56"
-                        CornerRadius="8"
+                        CornerRadius="{ThemeResource OverlayCornerRadius}"
                         Visibility="{Binding MediaPic.Uri, Converter={StaticResource StringVisibilityConverter}}">
                         <Border.Background>
                             <ImageBrush ImageSource="{Binding MediaPic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
@@ -555,7 +555,7 @@
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                         BorderThickness="1"
-                        CornerRadius="8"
+                        CornerRadius="{ThemeResource OverlayCornerRadius}"
                         Visibility="{Binding MediaPic.Uri, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true'}">
                         <FontIcon
                             HorizontalAlignment="Center"

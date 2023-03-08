@@ -7,7 +7,7 @@
         <Border
             Width="102"
             Height="102"
-            CornerRadius="8"
+            CornerRadius="{ThemeResource OverlayCornerRadius}"
             KeyDown="Image_KeyDown"
             Tag="{Binding}"
             Tapped="Image_Tapped">

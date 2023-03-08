@@ -42,7 +42,7 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Control.IsTemplateFocusTarget="True"
-                        CornerRadius="8"
+                        CornerRadius="{ThemeResource OverlayCornerRadius}"
                         FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
                         RenderTransformOrigin="0.5,0.5">
                         <contract7Present:Grid.BackgroundTransition>

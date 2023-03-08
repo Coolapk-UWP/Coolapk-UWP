@@ -1,11 +1,9 @@
 ﻿using CoolapkUWP.Helpers;
-using QRCoder;
+using Microsoft.Toolkit.Uwp.UI;
 using System;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Controls
 {
@@ -15,7 +13,7 @@ namespace CoolapkUWP.Controls
             nameof(QRCodeText),
             typeof(string),
             typeof(ShowQRCodeControl),
-            new PropertyMetadata(string.Empty, new PropertyChangedCallback(OnQRCodeTextChanged))
+            new PropertyMetadata("https://www.coolapk.com", new PropertyChangedCallback(OnQRCodeTextChanged))
         );
 
         public string QRCodeText
@@ -26,10 +24,20 @@ namespace CoolapkUWP.Controls
 
         private static void OnQRCodeTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as ShowQRCodeControl).RefreshQRCode();
+            (d as ShowQRCodeControl).QRCodeText = e.NewValue as string ?? "https://www.coolapk.com"; ;
         }
 
         public ShowQRCodeControl() => InitializeComponent();
+
+        private void Button_Loaded(object sender, RoutedEventArgs e)
+        {
+            FrameworkElement element = sender as FrameworkElement;
+            ContentPresenter content = element.FindDescendant<ContentPresenter>();
+            if (content != null)
+            {
+                content.CornerRadius = new CornerRadius(8);
+            }
+        }
 
         private void ShowUIButton_Click(object sender, RoutedEventArgs e)
         {
@@ -52,35 +60,6 @@ namespace CoolapkUWP.Controls
             DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
             dataTransferManager.DataRequested += (obj, args) => { args.Request.Data = dataPackage; };
             DataTransferManager.ShowShareUI();
-        }
-
-        private async void RefreshQRCode()
-        {
-            using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
-            {
-                QRCodeData qrCodeData = QRCodeText == null
-                    ? qrGenerator.CreateQrCode("https://www.coolapk.com", QRCodeGenerator.ECCLevel.Q)
-                    : qrGenerator.CreateQrCode(QRCodeText, QRCodeGenerator.ECCLevel.Q);
-                using (PngByteQRCode qrCodeBmp = new PngByteQRCode(qrCodeData))
-                {
-                    byte[] qrCodeImageBmp = qrCodeBmp.GetGraphic(
-                        20,
-                        new byte[] { 0, 0, 0, 0xFF },
-                        new byte[] { 0xFF, 0xFF, 0xFF, 0xFF });
-                    using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
-                    {
-                        using (DataWriter writer = new DataWriter(stream.GetOutputStreamAt(0)))
-                        {
-                            writer.WriteBytes(qrCodeImageBmp);
-                            await writer.StoreAsync();
-                        }
-                        BitmapImage image = new BitmapImage();
-                        await image.SetSourceAsync(stream);
-
-                        QRCodeImage.ImageSource = image;
-                    }
-                }
-            }
         }
     }
 }
