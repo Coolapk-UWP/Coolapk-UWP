@@ -215,8 +215,8 @@ namespace Microsoft.Toolkit.Uwp.Helpers
             {
                 if (LaunchCount > 0)
                 {
-                    var subSessionLength = DateTime.UtcNow.Subtract(_sessionStart).Ticks;
-                    var uptimeSoFar = _settingsStorage.Read<long>(nameof(AppUptime));
+                    long subSessionLength = DateTime.UtcNow.Subtract(_sessionStart).Ticks;
+                    long uptimeSoFar = _settingsStorage.Read<long>(nameof(AppUptime));
 
                     return new TimeSpan(uptimeSoFar + subSessionLength);
                 }
@@ -232,7 +232,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <param name="duration">The amount to time to add</param>
         public void AddToAppUptime(TimeSpan duration)
         {
-            var uptimeSoFar = _settingsStorage.Read<long>(nameof(AppUptime));
+            long uptimeSoFar = _settingsStorage.Read<long>(nameof(AppUptime));
 
             _settingsStorage.Save(nameof(AppUptime), uptimeSoFar + duration.Ticks);
         }
@@ -272,7 +272,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
 
                 LaunchTime = DateTime.UtcNow;
 
-                var lastLaunch = _settingsStorage.Read<long>(nameof(LastLaunchTime));
+                long lastLaunch = _settingsStorage.Read<long>(nameof(LastLaunchTime));
 
                 LastLaunchTime = lastLaunch != 0
                     ? DateTime.FromFileTimeUtc(lastLaunch)
@@ -281,7 +281,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 _settingsStorage.Save(nameof(LastLaunchTime), LaunchTime.ToFileTimeUtc());
                 _settingsStorage.Save(nameof(AppUptime), 0L);
 
-                var lastResetTime = _settingsStorage.Read<long>(nameof(LastResetTime));
+                long lastResetTime = _settingsStorage.Read<long>(nameof(LastResetTime));
 
                 LastResetTime = lastResetTime != 0
                     ? DateTime.FromFileTimeUtc(lastResetTime)
@@ -320,8 +320,8 @@ namespace Microsoft.Toolkit.Uwp.Helpers
             }
             else
             {
-                var subSessionLength = DateTime.UtcNow.Subtract(_sessionStart).Ticks;
-                var uptimeSoFar = _settingsStorage.Read<long>(nameof(AppUptime));
+                long subSessionLength = DateTime.UtcNow.Subtract(_sessionStart).Ticks;
+                long uptimeSoFar = _settingsStorage.Read<long>(nameof(AppUptime));
 
                 _settingsStorage.Save(nameof(AppUptime), uptimeSoFar + subSessionLength);
             }
@@ -341,7 +341,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
 
         private (bool IsUpdated, PackageVersion PreviousVersion) DetectIfAppUpdated()
         {
-            var currentVersion = ApplicationVersion.ToFormattedString();
+            string currentVersion = ApplicationVersion.ToFormattedString();
 
             // If the "currentVersion" key does not exist, it means that this is the first time this method
             // is ever called. That is, this is either the first time the app has been launched, or the first
@@ -353,7 +353,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
             }
             else
             {
-                var previousVersion = _settingsStorage.Read<string>(nameof(currentVersion));
+                string previousVersion = _settingsStorage.Read<string>(nameof(currentVersion));
 
                 // There are two possible cases if the "currentVersion" key exists:
                 //   1) The previous version is different than the current one. This means that the application
@@ -376,7 +376,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         {
             if (_settingsStorage.KeyExists(nameof(FirstUseTime)))
             {
-                var firstUse = _settingsStorage.Read<long>(nameof(FirstUseTime));
+                long firstUse = _settingsStorage.Read<long>(nameof(FirstUseTime));
 
                 return DateTime.FromFileTimeUtc(firstUse);
             }

@@ -24,7 +24,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         {
             if (value != null)
             {
-                var gridView = (GridView)parameter;
+                GridView gridView = (GridView)parameter;
                 if (gridView == null)
                 {
                     return value;
@@ -32,8 +32,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
                 double.TryParse(value.ToString(), out double height);
 
-                var padding = gridView.Padding;
-                var margin = GetItemMargin(gridView, DefaultItemMargin);
+                Thickness padding = gridView.Padding;
+                Thickness margin = GetItemMargin(gridView, DefaultItemMargin);
                 height = height + margin.Top + margin.Bottom + padding.Top + padding.Bottom;
 
                 return height;
@@ -47,9 +47,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             throw new NotImplementedException();
         }
 
-        internal static Thickness GetItemMargin(GridView view, Thickness fallback = default(Thickness))
+        internal static Thickness GetItemMargin(GridView view, Thickness fallback = default)
         {
-            var setter = view.ItemContainerStyle?.Setters.OfType<Setter>().FirstOrDefault(s => s.Property == FrameworkElement.MarginProperty);
+            Setter setter = view.ItemContainerStyle?.Setters.OfType<Setter>().FirstOrDefault(s => s.Property == FrameworkElement.MarginProperty);
             if (setter != null)
             {
                 return (Thickness)setter.Value;
@@ -58,7 +58,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             {
                 if (view.Items.Count > 0)
                 {
-                    var container = (GridViewItem)view.ContainerFromIndex(0);
+                    GridViewItem container = (GridViewItem)view.ContainerFromIndex(0);
                     if (container != null)
                     {
                         return container.Margin;

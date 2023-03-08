@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using ColorCode.Common;
+using ColorCode.Compilation;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using ColorCode.Common;
-using ColorCode.Compilation;
 
 namespace ColorCode.Parsing
 {
@@ -27,7 +27,9 @@ namespace ColorCode.Parsing
                           Action<string, IList<Scope>> parseHandler)
         {
             if (string.IsNullOrEmpty(sourceCode))
+            {
                 return;
+            }
 
             CompiledLanguage compiledLanguage = languageCompiler.Compile(language);
 
@@ -41,7 +43,9 @@ namespace ColorCode.Parsing
             Match regexMatch = compiledLanguage.Regex.Match(sourceCode);
 
             if (!regexMatch.Success)
+            {
                 parseHandler(sourceCode, new List<Scope>());
+            }
             else
             {
                 int currentIndex = 0;
@@ -50,7 +54,9 @@ namespace ColorCode.Parsing
                 {
                     string sourceCodeBeforeMatch = sourceCode.Substring(currentIndex, regexMatch.Index - currentIndex);
                     if (!string.IsNullOrEmpty(sourceCodeBeforeMatch))
+                    {
                         parseHandler(sourceCodeBeforeMatch, new List<Scope>());
+                    }
 
                     string matchedSourceCode = sourceCode.Substring(regexMatch.Index, regexMatch.Length);
                     if (!string.IsNullOrEmpty(matchedSourceCode))
@@ -66,7 +72,9 @@ namespace ColorCode.Parsing
 
                 string sourceCodeAfterAllMatches = sourceCode.Substring(currentIndex);
                 if (!string.IsNullOrEmpty(sourceCodeAfterAllMatches))
+                {
                     parseHandler(sourceCodeAfterAllMatches, new List<Scope>());
+                }
             }
         }
 
@@ -74,7 +82,7 @@ namespace ColorCode.Parsing
         {
             capturedStyles.SortStable((x, y) => x.Index.CompareTo(y.Index));
 
-            var capturedStyleTree = new List<Scope>(capturedStyles.Count);
+            List<Scope> capturedStyleTree = new List<Scope>(capturedStyles.Count);
             Scope currentScope = null;
 
             foreach (Scope capturedStyle in capturedStyles)
@@ -106,9 +114,13 @@ namespace ColorCode.Parsing
                 currentScope = currentScope.Parent;
 
                 if (currentScope != null)
+                {
                     AddScopeToNestedScopes(scope, ref currentScope, capturedStyleTree);
+                }
                 else
+                {
                     capturedStyleTree.Add(scope);
+                }
             }
         }
 
@@ -117,16 +129,20 @@ namespace ColorCode.Parsing
                                                       int currentIndex,
                                                       CompiledLanguage compiledLanguage)
         {
-            var capturedStyles = new List<Scope>();
+            List<Scope> capturedStyles = new List<Scope>();
 
             for (int i = 0; i < regexMatch.Groups.Count; i++)
             {
                 Group regexGroup = regexMatch.Groups[i];
-                if (regexGroup.Length > 0 && i < compiledLanguage.Captures.Count) {  //note: i can be >= Captures.Count due to named groups; these do capture a group but always get added after all non-named groups (which is why we do not count them in numberOfCaptures)
+                if (regexGroup.Length > 0 && i < compiledLanguage.Captures.Count)
+                {  //note: i can be >= Captures.Count due to named groups; these do capture a group but always get added after all non-named groups (which is why we do not count them in numberOfCaptures)
                     string styleName = compiledLanguage.Captures[i];
-                    if (!String.IsNullOrEmpty(styleName)) {
+                    if (!string.IsNullOrEmpty(styleName))
+                    {
                         foreach (Capture regexCapture in regexGroup.Captures)
+                        {
                             AppendCapturedStylesForRegexCapture(regexCapture, currentIndex, styleName, capturedStyles);
+                        }
                     }
                 }
             }
@@ -145,7 +161,9 @@ namespace ColorCode.Parsing
                 AppendCapturedStylesForNestedLanguage(regexCapture, regexCapture.Index - currentIndex, nestedGrammarId, capturedStyles);
             }
             else
+            {
                 capturedStyles.Add(new Scope(styleName, regexCapture.Index - currentIndex, regexCapture.Length));
+            }
         }
 
         private void AppendCapturedStylesForNestedLanguage(Capture regexCapture,
@@ -156,7 +174,9 @@ namespace ColorCode.Parsing
             ILanguage nestedLanguage = languageRepository.FindById(nestedLanguageId);
 
             if (nestedLanguage == null)
+            {
                 throw new InvalidOperationException("The nested language was not found in the language repository.");
+            }
             else
             {
                 CompiledLanguage nestedCompiledLanguage = languageCompiler.Compile(nestedLanguage);
@@ -164,7 +184,9 @@ namespace ColorCode.Parsing
                 Match regexMatch = nestedCompiledLanguage.Regex.Match(regexCapture.Value, 0, regexCapture.Value.Length);
 
                 if (!regexMatch.Success)
+                {
                     return;
+                }
                 else
                 {
                     while (regexMatch.Success)
@@ -194,7 +216,9 @@ namespace ColorCode.Parsing
                 scope.Index += amountToIncrease;
 
                 if (scope.Children.Count > 0)
+                {
                     IncreaseCapturedStyleIndicies(scope.Children, amountToIncrease);
+                }
             }
         }
     }

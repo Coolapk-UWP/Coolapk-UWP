@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using ColorCode.Common;
 using System;
 using System.Collections.Generic;
-using ColorCode.Common;
 
 namespace ColorCode.Parsing
 {
@@ -15,7 +15,7 @@ namespace ColorCode.Parsing
                      int length)
         {
             Guard.ArgNotNullAndNotEmpty(name, "name");
-            
+
             Name = name;
             Index = index;
             Length = length;
@@ -31,7 +31,9 @@ namespace ColorCode.Parsing
         public void AddChild(Scope childScope)
         {
             if (childScope.Parent != null)
+            {
                 throw new InvalidOperationException("The child scope already has a parent.");
+            }
 
             childScope.Parent = this;
 

@@ -59,7 +59,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <summary>
         /// Gets DropShadow. Exposes the underlying composition object to allow custom Windows.UI.Composition animations.
         /// </summary>
-        public DropShadow DropShadow => _dropShadow;
+        public DropShadow DropShadow { get; }
 
         /// <summary>
         /// Gets or sets the mask of the underlying <see cref="Windows.UI.Composition.DropShadow"/>.
@@ -69,14 +69,14 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         {
             get
             {
-                return _dropShadow?.Mask;
+                return DropShadow?.Mask;
             }
 
             set
             {
-                if (_dropShadow != null)
+                if (DropShadow != null)
                 {
-                    _dropShadow.Mask = value;
+                    DropShadow.Mask = value;
                 }
             }
         }

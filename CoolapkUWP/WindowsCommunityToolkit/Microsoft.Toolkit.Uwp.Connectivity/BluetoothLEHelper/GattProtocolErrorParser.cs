@@ -18,7 +18,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
         /// <returns>String representation of the error</returns>
         public static string GetErrorString(this byte? errorValue)
         {
-            var errorString = "Protocol Error";
+            string errorString = "Protocol Error";
 
             if (errorValue.HasValue == false)
             {
@@ -90,27 +90,13 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
                 return "Read Not Permitted";
             }
 
-            if (errorValue == GattProtocolError.RequestNotSupported)
-            {
-                return "Request Not Supported";
-            }
-
-            if (errorValue == GattProtocolError.UnlikelyError)
-            {
-                return "UnlikelyError";
-            }
-
-            if (errorValue == GattProtocolError.UnsupportedGroupType)
-            {
-                return "Unsupported Group Type";
-            }
-
-            if (errorValue == GattProtocolError.WriteNotPermitted)
-            {
-                return "Write Not Permitted";
-            }
-
-            return errorString;
+            return errorValue == GattProtocolError.RequestNotSupported
+                ? "Request Not Supported"
+                : errorValue == GattProtocolError.UnlikelyError
+                ? "UnlikelyError"
+                : errorValue == GattProtocolError.UnsupportedGroupType
+                ? "Unsupported Group Type"
+                : errorValue == GattProtocolError.WriteNotPermitted ? "Write Not Permitted" : errorString;
         }
     }
 }

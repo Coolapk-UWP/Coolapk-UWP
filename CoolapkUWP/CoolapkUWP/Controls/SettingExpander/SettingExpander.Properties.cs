@@ -1,5 +1,5 @@
-﻿using Windows.UI.Xaml;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using Windows.UI.Xaml;
 
 namespace CoolapkUWP.Controls
 {
@@ -133,7 +133,7 @@ namespace CoolapkUWP.Controls
                 nameof(ItemsHeader),
                 typeof(UIElement),
                 typeof(SettingExpander),
-                new PropertyMetadata( null));
+                new PropertyMetadata(null));
 
         /// <summary>
         /// Gets or sets the ItemsFooter.

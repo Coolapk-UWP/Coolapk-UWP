@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Collections;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +10,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Toolkit.Collections;
 using Windows.Foundation;
 using Windows.UI.Xaml.Data;
 
@@ -103,12 +103,7 @@ namespace Microsoft.Toolkit.Uwp
         {
             get
             {
-                if (_cancellationToken.IsCancellationRequested)
-                {
-                    return false;
-                }
-
-                return _hasMoreItems;
+                return !_cancellationToken.IsCancellationRequested && _hasMoreItems;
             }
 
             private set
@@ -202,7 +197,7 @@ namespace Microsoft.Toolkit.Uwp
             }
             else
             {
-                var previousCount = Count;
+                int previousCount = Count;
                 Clear();
                 CurrentPageIndex = 0;
                 HasMoreItems = true;
@@ -228,7 +223,7 @@ namespace Microsoft.Toolkit.Uwp
         /// </returns>
         protected virtual async Task<IEnumerable<IType>> LoadDataAsync(CancellationToken cancellationToken)
         {
-            var result = await Source.GetPagedItemsAsync(CurrentPageIndex, ItemsPerPage, cancellationToken)
+            IEnumerable<IType> result = await Source.GetPagedItemsAsync(CurrentPageIndex, ItemsPerPage, cancellationToken)
                 .ContinueWith(
                     t =>
                     {
@@ -279,7 +274,7 @@ namespace Microsoft.Toolkit.Uwp
                     {
                         resultCount = (uint)data.Count();
 
-                        foreach (var item in data)
+                        foreach (IType item in data)
                         {
                             Add(item);
                         }

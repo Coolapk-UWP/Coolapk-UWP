@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
 {
@@ -69,7 +69,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
 
             // Check for a known scheme e.g. "https://".
             int pos = -1;
-            foreach (var scheme in MarkdownDocument.KnownSchemes)
+            foreach (string scheme in MarkdownDocument.KnownSchemes)
             {
                 if (maxEnd - innerStart >= scheme.Length && string.Equals(markdown.Substring(innerStart, scheme.Length), scheme, StringComparison.OrdinalIgnoreCase))
                 {
@@ -97,7 +97,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
                 return null;
             }
 
-            var url = markdown.Substring(innerStart, innerEnd - innerStart);
+            string url = markdown.Substring(innerStart, innerEnd - innerStart);
             return new InlineParseResult(new HyperlinkInline { Url = url, Text = url, LinkType = HyperlinkType.BracketedUrl }, start, innerEnd + 1);
         }
 
@@ -113,7 +113,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             int start = -1;
 
             // Check for a known scheme e.g. "https://".
-            foreach (var scheme in MarkdownDocument.KnownSchemes)
+            foreach (string scheme in MarkdownDocument.KnownSchemes)
             {
                 int schemeStart = tripPos - scheme.Length;
                 if (schemeStart >= 0 && schemeStart <= maxEnd - scheme.Length && string.Equals(markdown.Substring(schemeStart, scheme.Length), scheme, StringComparison.OrdinalIgnoreCase))
@@ -151,7 +151,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             // Find the end of the URL.
             int end = FindUrlEnd(markdown, dotIndex + 1, maxEnd);
 
-            var url = markdown.Substring(start, end - start);
+            string url = markdown.Substring(start, end - start);
             return new InlineParseResult(new HyperlinkInline { Url = url, Text = url, LinkType = HyperlinkType.FullUrl }, start, end);
         }
 
@@ -164,13 +164,8 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
         /// <returns> A parsed subreddit or user link, or <c>null</c> if this is not a subreddit link. </returns>
         internal static InlineParseResult ParseRedditLink(string markdown, int start, int maxEnd)
         {
-            var result = ParseDoubleSlashLink(markdown, start, maxEnd);
-            if (result != null)
-            {
-                return result;
-            }
-
-            return ParseSingleSlashLink(markdown, start, maxEnd);
+            InlineParseResult result = ParseDoubleSlashLink(markdown, start, maxEnd);
+            return result ?? ParseSingleSlashLink(markdown, start, maxEnd);
         }
 
         /// <summary>
@@ -219,7 +214,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             }
 
             // We found something!
-            var text = markdown.Substring(start, end - start);
+            string text = markdown.Substring(start, end - start);
             return new InlineParseResult(new HyperlinkInline { Text = text, Url = text, LinkType = linkType }, start, end);
         }
 
@@ -271,7 +266,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             }
 
             // We found something!
-            var text = markdown.Substring(start, end - start);
+            string text = markdown.Substring(start, end - start);
             return new InlineParseResult(new HyperlinkInline { Text = text, Url = "/" + text, LinkType = linkType }, start, end);
         }
 
@@ -305,7 +300,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             // Find the end of the URL.
             int end = FindUrlEnd(markdown, start + 4, maxEnd);
 
-            var url = markdown.Substring(start, end - start);
+            string url = markdown.Substring(start, end - start);
             return new InlineParseResult(new HyperlinkInline { Url = "http://" + url, Text = url, LinkType = HyperlinkType.PartialUrl }, start, end);
         }
 
@@ -400,7 +395,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             }
 
             // We found an email address!
-            var emailAddress = markdown.Substring(start, end - start);
+            string emailAddress = markdown.Substring(start, end - start);
             return new InlineParseResult(new HyperlinkInline { Url = "mailto:" + emailAddress, Text = emailAddress, LinkType = HyperlinkType.Email }, start, end);
         }
 
@@ -410,12 +405,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
         /// <returns> The textual representation of this object. </returns>
         public override string ToString()
         {
-            if (Text == null)
-            {
-                return base.ToString();
-            }
-
-            return Text;
+            return Text ?? base.ToString();
         }
 
         /// <summary>

@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Toolkit.Parsers.Core;
 using Microsoft.Toolkit.Parsers.Markdown.Helpers;
+using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
 {
@@ -121,7 +121,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
                 // Find the ')' character.
                 pos = linkOpen;
                 int linkClose = -1;
-                var openParenthesis = 0;
+                int openParenthesis = 0;
                 while (pos < maxEnd)
                 {
                     if (markdown[pos] == ')')
@@ -178,7 +178,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
                 {
                     // Extract the URL (resolving any escape sequences).
                     url = TextRunInline.ResolveEscapeSequences(markdown, linkOpen, tooltipStart).TrimEnd(' ', '\t', '\r', '\n');
-                    tooltip = markdown.Substring(tooltipStart + 2, (linkClose - 1) - (tooltipStart + 2));
+                    tooltip = markdown.Substring(tooltipStart + 2, linkClose - 1 - (tooltipStart + 2));
                 }
                 else
                 {
@@ -200,10 +200,12 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
                 }
 
                 // We found a regular stand-alone link.
-                var result = new MarkdownLinkInline();
-                result.Inlines = Common.ParseInlineChildren(markdown, linkTextOpen, linkTextClose, ignoreLinks: true);
-                result.Url = url.Replace(" ", "%20");
-                result.Tooltip = tooltip;
+                MarkdownLinkInline result = new MarkdownLinkInline
+                {
+                    Inlines = Common.ParseInlineChildren(markdown, linkTextOpen, linkTextClose, ignoreLinks: true),
+                    Url = url.Replace(" ", "%20"),
+                    Tooltip = tooltip
+                };
                 return new InlineParseResult(result, start, end);
             }
             else if (markdown[pos] == '[')
@@ -216,9 +218,11 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
                 }
 
                 // We found a reference-style link.
-                var result = new MarkdownLinkInline();
-                result.Inlines = Common.ParseInlineChildren(markdown, linkTextOpen, linkTextClose, ignoreLinks: true);
-                result.ReferenceId = markdown.Substring(linkOpen + 1, linkClose - (linkOpen + 1));
+                MarkdownLinkInline result = new MarkdownLinkInline
+                {
+                    Inlines = Common.ParseInlineChildren(markdown, linkTextOpen, linkTextClose, ignoreLinks: true),
+                    ReferenceId = markdown.Substring(linkOpen + 1, linkClose - (linkOpen + 1))
+                };
                 if (result.ReferenceId == string.Empty)
                 {
                     result.ReferenceId = markdown.Substring(linkTextOpen, linkTextClose - linkTextOpen);
@@ -247,7 +251,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             }
 
             // Look up the reference ID.
-            var reference = document.LookUpReference(ReferenceId);
+            Blocks.LinkReferenceBlock reference = document.LookUpReference(ReferenceId);
             if (reference == null)
             {
                 return;
@@ -271,17 +275,11 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
         /// <returns> The textual representation of this object. </returns>
         public override string ToString()
         {
-            if (Inlines == null || Url == null)
-            {
-                return base.ToString();
-            }
-
-            if (ReferenceId != null)
-            {
-                return string.Format("[{0}][{1}]", string.Join(string.Empty, Inlines), ReferenceId);
-            }
-
-            return string.Format("[{0}]({1})", string.Join(string.Empty, Inlines), Url);
+            return Inlines == null || Url == null
+                ? base.ToString()
+                : ReferenceId != null
+                ? string.Format("[{0}][{1}]", string.Join(string.Empty, Inlines), ReferenceId)
+                : string.Format("[{0}]({1})", string.Join(string.Empty, Inlines), Url);
         }
     }
 }

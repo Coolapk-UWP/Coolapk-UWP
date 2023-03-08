@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Linq;
 using Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons;
 using Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons.Common;
+using System;
+using System.Linq;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -38,7 +38,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.MarkDown
         /// <param name="button">The button pressed</param>
         public void StyleHeader(ToolbarButton button)
         {
-            var list = new ListBox { Margin = new Thickness(0), Padding = new Thickness(0) };
+            ListBox list = new ListBox { Margin = new Thickness(0), Padding = new Thickness(0) };
             headerFlyout = new Flyout { Content = list };
 
             if (Windows.Foundation.Metadata.ApiInformation.IsPropertyPresent("Windows.UI.Xaml.UIElement", "XamlRoot") && button.XamlRoot != null)
@@ -50,7 +50,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.MarkDown
             for (int i = 1; i <= 5; i++)
             {
                 string val = string.Concat(Enumerable.Repeat(headerVal, i));
-                var item = new ListBoxItem
+                ListBoxItem item = new ListBoxItem
                 {
                     Content = new MarkdownTextBlock
                     {
@@ -70,7 +70,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.MarkDown
 
         private void HeaderSelected(object sender, TappedRoutedEventArgs e)
         {
-            var item = sender as FrameworkElement;
+            FrameworkElement item = sender as FrameworkElement;
 
             EnsureAtStartOfCurrentLine();
             string linesStart = (item.Tag as string) + " ";
@@ -107,10 +107,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.MarkDown
             }
             else
             {
-                Func<string> codeLines = () =>
+                string codeLines()
                 {
                     return ListLineIterator == 1 || ReachedEndLine ? "```" : string.Empty;
-                };
+                }
 
                 SetList(codeLines, button, wrapNewLines: true);
             }
@@ -273,7 +273,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.MarkDown
                 EnsureAtNewLine();
                 string text = listChar();
 
-                var lines = Selected.Text.Split(new string[] { Return }, StringSplitOptions.None).ToList();
+                System.Collections.Generic.List<string> lines = Selected.Text.Split(new string[] { Return }, StringSplitOptions.None).ToList();
                 if (wrapNewLines)
                 {
                     lines.Insert(0, string.Empty);
@@ -287,7 +287,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.MarkDown
                 {
                     ListLineIterator++;
 
-                    var element = lines[i];
+                    string element = lines[i];
                     text += element;
 
                     ReachedEndLine = i + 1 >= lines.Count;
@@ -336,7 +336,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.MarkDown
             // Test if line contains List Char, if so, reverse. For Single Line Operations Only.
             if (!Selected.Text.Contains("\r"))
             {
-                var testChar = listChar();
+                string testChar = listChar();
                 Selected.StartPosition -= testChar.Length;
                 if (Selected.Text.StartsWith(testChar))
                 {
@@ -349,7 +349,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.MarkDown
                 }
             }
 
-            var lines = Selected.Text.Split(new string[] { Return }, StringSplitOptions.None).ToList();
+            System.Collections.Generic.List<string> lines = Selected.Text.Split(new string[] { Return }, StringSplitOptions.None).ToList();
             if (wrapNewLines)
             {
                 lines.RemoveAt(lines.Count - 1); // removes the line kept from Wrapping with NewLines.
@@ -357,7 +357,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.MarkDown
 
             for (int i = 0; i < lines.Count; i++)
             {
-                var line = lines[i];
+                string line = lines[i];
 
                 ReachedEndLine = i + 1 >= lines.Count;
                 string listchar = listChar();
@@ -446,7 +446,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.MarkDown
         {
             get
             {
-                Model.Editor.Document.GetText(TextGetOptions.UseCrlf, out var currentvalue);
+                Model.Editor.Document.GetText(TextGetOptions.UseCrlf, out string currentvalue);
                 return currentvalue.Replace('\n', '\r'); // Converts CRLF into double Return for Markdown new line.
             }
         }

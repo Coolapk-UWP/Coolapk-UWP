@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Data;
+
 namespace Microsoft.Toolkit.Uwp.UI.Helpers
 {
-    using System;
-    using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Data;
-
     /// <summary>
     /// Used to Track Changes of a Dependency Property
     /// </summary>
@@ -65,10 +65,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Helpers
         {
             DependencyPropertyWatcher<T> source = (DependencyPropertyWatcher<T>)sender;
 
-            if (source.PropertyChanged != null)
-            {
-                source.PropertyChanged(source, EventArgs.Empty);
-            }
+            source.PropertyChanged?.Invoke(source, EventArgs.Empty);
         }
 
         /// <summary>

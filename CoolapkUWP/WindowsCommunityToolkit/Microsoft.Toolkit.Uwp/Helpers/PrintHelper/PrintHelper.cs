@@ -70,22 +70,22 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// The list of elements used to store the print preview pages.
         /// This gives easy access to any desired preview page.
         /// </summary>
-        private List<FrameworkElement> _printPreviewPages;
+        private readonly List<FrameworkElement> _printPreviewPages;
 
         /// <summary>
         /// A hidden canvas used to hold pages we wish to print.
         /// </summary>
         private Canvas _printCanvas;
 
-        private Panel _canvasContainer;
+        private readonly Panel _canvasContainer;
         private string _printTaskName;
-        private Dictionary<FrameworkElement, PrintHelperStateBag> _stateBags = new Dictionary<FrameworkElement, PrintHelperStateBag>();
+        private readonly Dictionary<FrameworkElement, PrintHelperStateBag> _stateBags = new Dictionary<FrameworkElement, PrintHelperStateBag>();
         private bool _directPrint = false;
 
         /// <summary>
         /// The list of elements to print.
         /// </summary>
-        private List<FrameworkElement> _elementsToPrint;
+        private readonly List<FrameworkElement> _elementsToPrint;
 
         /// <summary>
         /// The options for the print dialog.
@@ -95,7 +95,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <summary>
         /// The default options for the print dialog.
         /// </summary>
-        private PrintHelperOptions _defaultPrintHelperOptions;
+        private readonly PrintHelperOptions _defaultPrintHelperOptions;
 
         /// <summary>
         /// Gets or sets which CoreDispatcher is used to dispatch UI updates.
@@ -111,17 +111,13 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         public PrintHelper(Panel canvasContainer, PrintHelperOptions defaultPrintHelperOptions = null, CoreDispatcher dispatcher = null)
         {
             Dispatcher = dispatcher ?? CoreApplication.MainView.Dispatcher;
-
-            if (canvasContainer == null)
-            {
-                throw new ArgumentNullException();
-            }
-
             _printPreviewPages = new List<FrameworkElement>();
-            _printCanvas = new Canvas();
-            _printCanvas.Opacity = 0;
+            _printCanvas = new Canvas
+            {
+                Opacity = 0
+            };
 
-            _canvasContainer = canvasContainer;
+            _canvasContainer = canvasContainer ?? throw new ArgumentNullException();
             _canvasContainer.RequestedTheme = ElementTheme.Light;
 
             _elementsToPrint = new List<FrameworkElement>();
@@ -266,7 +262,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                     await Dispatcher.AwaitableRunAsync(
                         async () =>
                         {
-                            foreach (var element in _stateBags.Keys)
+                            foreach (FrameworkElement element in _stateBags.Keys)
                             {
                                 _stateBags[element].Restore(element);
                             }
@@ -307,7 +303,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 printTask.Options.DisplayedOptions.Clear();
             }
 
-            foreach (var displayedOption in displayedOptionsToAdd)
+            foreach (string displayedOption in displayedOptionsToAdd)
             {
                 if (!printTask.Options.DisplayedOptions.Contains(displayedOption))
                 {
@@ -411,8 +407,8 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 // Clear the print canvas of preview pages
                 _printCanvas.Children.Clear();
 
-                var printPageTasks = new List<Task>();
-                foreach (var element in _elementsToPrint)
+                List<Task> printPageTasks = new List<Task>();
+                foreach (FrameworkElement element in _elementsToPrint)
                 {
                     printPageTasks.Add(AddOnePrintPreviewPage(element, pageDescription));
                 }
@@ -476,12 +472,12 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         private Task AddOnePrintPreviewPage(FrameworkElement element, PrintPageDescription printPageDescription)
         {
-            var page = new Page();
+            Page page = new Page();
 
             // Save state
             if (!_stateBags.ContainsKey(element))
             {
-                var stateBag = new PrintHelperStateBag(Dispatcher);
+                PrintHelperStateBag stateBag = new PrintHelperStateBag(Dispatcher);
                 stateBag.Capture(element);
                 _stateBags.Add(element, stateBag);
             }
@@ -500,16 +496,16 @@ namespace Microsoft.Toolkit.Uwp.Helpers
 
             if (element.Width > element.Height)
             {
-                var newWidth = page.Width - marginWidth;
+                double newWidth = page.Width - marginWidth;
 
-                element.Height = element.Height * (newWidth / element.Width);
+                element.Height *= newWidth / element.Width;
                 element.Width = newWidth;
             }
             else
             {
-                var newHeight = page.Height - marginHeight;
+                double newHeight = page.Height - marginHeight;
 
-                element.Width = element.Width * (newHeight / element.Height);
+                element.Width *= newHeight / element.Height;
                 element.Height = newHeight;
             }
 

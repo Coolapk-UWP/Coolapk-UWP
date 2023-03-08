@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 using Microsoft.Toolkit.Parsers.Markdown.Inlines;
+using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
 {
@@ -64,7 +64,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
         {
             // This type of header starts with one or more '#' characters, followed by the header
             // text, optionally followed by any number of hash characters.
-            var result = new HeaderBlock();
+            HeaderBlock result = new HeaderBlock();
 
             // Figure out how many consecutive hash characters there are.
             int pos = start;
@@ -144,11 +144,13 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
                 pos++;
             }
 
-            var result = new HeaderBlock();
-            result.HeaderLevel = underlineChar == '=' ? 1 : 2;
+            HeaderBlock result = new HeaderBlock
+            {
+                HeaderLevel = underlineChar == '=' ? 1 : 2,
 
-            // Parse the inline content.
-            result.Inlines = Common.ParseInlineChildren(markdown, firstLineStart, firstLineEnd);
+                // Parse the inline content.
+                Inlines = Common.ParseInlineChildren(markdown, firstLineStart, firstLineEnd)
+            };
             return result;
         }
 
@@ -158,12 +160,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
         /// <returns> The textual representation of this object. </returns>
         public override string ToString()
         {
-            if (Inlines == null)
-            {
-                return base.ToString();
-            }
-
-            return string.Join(string.Empty, Inlines);
+            return Inlines == null ? base.ToString() : string.Join(string.Empty, Inlines);
         }
     }
 }

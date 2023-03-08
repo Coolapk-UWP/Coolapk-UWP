@@ -2,8 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Collections.Generic;
 using ColorCode.Common;
+using System.Collections.Generic;
 
 namespace ColorCode.Compilation.Languages
 {
@@ -90,8 +90,8 @@ namespace ColorCode.Compilation.Languages
                         // 'toptype' captures two groups: type keyword and type variables 
                         // each 'nestedtype' captures three groups: parameter names, type keywords and type variables
                         @"(?:" + @"\b(type|struct|cotype|rectype)\b|"
-                               + @"::?(?!" + symbol + ")|" 
-                               + @"\b(alias)\s+[a-z]\w+\s*(?:<[^>]*>\s*)?(=)" + ")" 
+                               + @"::?(?!" + symbol + ")|"
+                               + @"\b(alias)\s+[a-z]\w+\s*(?:<[^>]*>\s*)?(=)" + ")"
                                + toptype + "*" +
                         @"(?:" +
                          @"(?:(?<type>[\(\[<])(?:" + nestedtype + @"|[,]" + @")*)+" +
@@ -100,21 +100,21 @@ namespace ColorCode.Compilation.Languages
                         @"", //(?=(?:[,\)\{\}\]<>]|(" + keywords +")\b))",
                         new Dictionary<int,string> {
                             { 0, ScopeName.Type },
-                    
+
                             { 1, ScopeName.Keyword },   // type struct etc
                             { 2, ScopeName.Keyword },   // alias
                             { 3, ScopeName.Keyword },   //  =
                     
                             { 4, ScopeName.Keyword},
                             { 5, ScopeName.TypeVariable },
-                    
-                            { 6, ScopeName.PlainText }, 
+
+                            { 6, ScopeName.PlainText },
                             { 7, ScopeName.Keyword },
                             { 8, ScopeName.TypeVariable },
-                    
+
                             { 9, ScopeName.PlainText },
                             { 10, ScopeName.Keyword },
-                            { 11, ScopeName.TypeVariable },                
+                            { 11, ScopeName.TypeVariable },
                         }),
 
                     // module and imports
@@ -228,7 +228,8 @@ namespace ColorCode.Compilation.Languages
 
         public bool HasAlias(string lang)
         {
-            switch (lang.ToLower()) {
+            switch (lang.ToLower())
+            {
                 case "kk":
                 case "kki":
                     return true;

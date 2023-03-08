@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using System.Linq;
 using System.Numerics;
 using Windows.Foundation;
@@ -100,16 +99,16 @@ namespace Microsoft.Toolkit.Uwp.UI
 
                 if (e.NewValue is FrameworkElement elementNew)
                 {
-                    var prevContainer = shadow._container;
+                    ContainerVisual prevContainer = shadow._container;
 
-                    var child = ElementCompositionPreview.GetElementChildVisual(elementNew);
+                    Visual child = ElementCompositionPreview.GetElementChildVisual(elementNew);
                     if (child is ContainerVisual visual)
                     {
                         shadow._container = visual;
                     }
                     else
                     {
-                        var compositor = ElementCompositionPreview.GetElementVisual(shadow.CastTo).Compositor;
+                        Compositor compositor = ElementCompositionPreview.GetElementVisual(shadow.CastTo).Compositor;
                         shadow._container = compositor.CreateContainerVisual();
 
                         ElementCompositionPreview.SetElementChildVisual(elementNew, shadow._container);
@@ -118,7 +117,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                     // Need to remove all old children from previous container if it's changed
                     if (prevContainer != null && prevContainer != shadow._container)
                     {
-                        foreach (var context in shadow.EnumerateElementContexts())
+                        foreach (AttachedShadowElementContext context in shadow.EnumerateElementContexts())
                         {
                             if (context.IsInitialized &&
                                 prevContainer.Children.Contains(context.SpriteVisual))
@@ -129,7 +128,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                     }
 
                     // Make sure all child shadows are hooked into container
-                    foreach (var context in shadow.EnumerateElementContexts())
+                    foreach (AttachedShadowElementContext context in shadow.EnumerateElementContexts())
                     {
                         if (context.IsInitialized)
                         {
@@ -149,7 +148,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             // Don't use sender or 'e' here as related to container element not
             // element for shadow, grab values off context. (Also may be null from internal call.)
-            foreach (var context in EnumerateElementContexts())
+            foreach (AttachedShadowElementContext context in EnumerateElementContexts())
             {
                 if (context.IsInitialized)
                 {
@@ -211,7 +210,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             if (sender is FrameworkElement element)
             {
-                var context = GetElementContext(element);
+                AttachedShadowElementContext context = GetElementContext(element);
 
                 if (element.Visibility == Visibility.Collapsed)
                 {
@@ -279,16 +278,16 @@ namespace Microsoft.Toolkit.Uwp.UI
                 if (mask == null && SupportsCompositionVisualSurface && CornerRadius > 0)
                 {
                     // Create rounded rectangle geometry and add it to a shape
-                    var geometry = context.GetResource(RoundedRectangleGeometryResourceKey) ?? context.AddResource(
+                    CompositionRoundedRectangleGeometry geometry = context.GetResource(RoundedRectangleGeometryResourceKey) ?? context.AddResource(
                         RoundedRectangleGeometryResourceKey,
                         context.Compositor.CreateRoundedRectangleGeometry());
                     geometry.CornerRadius = new Vector2((float)CornerRadius);
 
-                    var shape = context.GetResource(ShapeResourceKey) ?? context.AddResource(ShapeResourceKey, context.Compositor.CreateSpriteShape(geometry));
+                    CompositionSpriteShape shape = context.GetResource(ShapeResourceKey) ?? context.AddResource(ShapeResourceKey, context.Compositor.CreateSpriteShape(geometry));
                     shape.FillBrush = context.Compositor.CreateColorBrush(Colors.Black);
 
                     // Create a ShapeVisual so that our geometry can be rendered to a visual
-                    var shapeVisual = context.GetResource(ShapeVisualResourceKey) ??
+                    ShapeVisual shapeVisual = context.GetResource(ShapeVisualResourceKey) ??
                                       context.AddResource(ShapeVisualResourceKey, context.Compositor.CreateShapeVisual());
 
                     if (!shapeVisual.Shapes.Contains(shape))
@@ -297,13 +296,13 @@ namespace Microsoft.Toolkit.Uwp.UI
                     }
 
                     // Create a CompositionVisualSurface, which renders our ShapeVisual to a texture
-                    var visualSurface = context.GetResource(VisualSurfaceResourceKey) ??
+                    CompositionVisualSurface visualSurface = context.GetResource(VisualSurfaceResourceKey) ??
                                         context.AddResource(VisualSurfaceResourceKey, context.Compositor.CreateVisualSurface());
                     visualSurface.SourceVisual = shapeVisual;
 
                     // Create a CompositionSurfaceBrush to render our CompositionVisualSurface to a brush.
                     // Now we have a rounded rectangle brush that can be used on as the mask for our shadow.
-                    var surfaceBrush = context.GetResource(SurfaceBrushResourceKey) ?? context.AddResource(
+                    CompositionSurfaceBrush surfaceBrush = context.GetResource(SurfaceBrushResourceKey) ?? context.AddResource(
                         SurfaceBrushResourceKey,
                         context.Compositor.CreateSurfaceBrush(visualSurface));
 
@@ -323,8 +322,8 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static void BindSizeAndScale(CompositionObject source, UIElement target)
         {
-            var visual = ElementCompositionPreview.GetElementVisual(target);
-            var bindSizeAnimation = source.Compositor.CreateExpressionAnimation($"{nameof(visual)}.Size * {nameof(visual)}.Scale.XY");
+            Visual visual = ElementCompositionPreview.GetElementVisual(target);
+            ExpressionAnimation bindSizeAnimation = source.Compositor.CreateExpressionAnimation($"{nameof(visual)}.Size * {nameof(visual)}.Scale.XY");
 
             bindSizeAnimation.SetReferenceParameter(nameof(visual), visual);
 
@@ -334,7 +333,7 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private void CustomMaskedElement_Loaded(object sender, RoutedEventArgs e)
         {
-            var context = GetElementContext(sender as FrameworkElement);
+            AttachedShadowElementContext context = GetElementContext(sender as FrameworkElement);
 
             context.Element.Loaded -= CustomMaskedElement_Loaded;
 
@@ -362,7 +361,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             }
             else if (property == CornerRadiusProperty)
             {
-                var geometry = context.GetResource(RoundedRectangleGeometryResourceKey);
+                CompositionRoundedRectangleGeometry geometry = context.GetResource(RoundedRectangleGeometryResourceKey);
                 if (geometry != null)
                 {
                     geometry.CornerRadius = new Vector2((float)(double)newValue);

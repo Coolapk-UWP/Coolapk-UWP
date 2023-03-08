@@ -44,8 +44,8 @@ namespace Microsoft.Toolkit.Uwp.UI
             bool isVirtualizing = default;
             double previousXOffset = default, previousYOffset = default;
 
-            var scrollViewer = listViewBase.FindDescendant<ScrollViewer>();
-            var selectorItem = listViewBase.ContainerFromIndex(index) as SelectorItem;
+            ScrollViewer scrollViewer = listViewBase.FindDescendant<ScrollViewer>();
+            SelectorItem selectorItem = listViewBase.ContainerFromIndex(index) as SelectorItem;
 
             // If selectorItem is null then the panel is virtualized.
             // So in order to get the container of the item we need to scroll to that item first and then use ContainerFromIndex
@@ -56,7 +56,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                 previousXOffset = scrollViewer.HorizontalOffset;
                 previousYOffset = scrollViewer.VerticalOffset;
 
-                var tcs = new TaskCompletionSource<object>();
+                TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
 
                 void ViewChanged(object _, ScrollViewerViewChangedEventArgs __) => tcs.TrySetResult(result: default);
 
@@ -74,8 +74,8 @@ namespace Microsoft.Toolkit.Uwp.UI
                 selectorItem = (SelectorItem)listViewBase.ContainerFromIndex(index);
             }
 
-            var transform = selectorItem.TransformToVisual((UIElement)scrollViewer.Content);
-            var position = transform.TransformPoint(new Point(0, 0));
+            Windows.UI.Xaml.Media.GeneralTransform transform = selectorItem.TransformToVisual((UIElement)scrollViewer.Content);
+            Point position = transform.TransformPoint(new Point(0, 0));
 
             // Scrolling back to previous position
             if (isVirtualizing)
@@ -83,24 +83,24 @@ namespace Microsoft.Toolkit.Uwp.UI
                 await scrollViewer.ChangeViewAsync(previousXOffset, previousYOffset, zoomFactor: null, disableAnimation: true);
             }
 
-            var listViewBaseWidth = listViewBase.ActualWidth;
-            var selectorItemWidth = selectorItem.ActualWidth;
-            var listViewBaseHeight = listViewBase.ActualHeight;
-            var selectorItemHeight = selectorItem.ActualHeight;
+            double listViewBaseWidth = listViewBase.ActualWidth;
+            double selectorItemWidth = selectorItem.ActualWidth;
+            double listViewBaseHeight = listViewBase.ActualHeight;
+            double selectorItemHeight = selectorItem.ActualHeight;
 
             previousXOffset = scrollViewer.HorizontalOffset;
             previousYOffset = scrollViewer.VerticalOffset;
 
-            var minXPosition = position.X - listViewBaseWidth + selectorItemWidth;
-            var minYPosition = position.Y - listViewBaseHeight + selectorItemHeight;
+            double minXPosition = position.X - listViewBaseWidth + selectorItemWidth;
+            double minYPosition = position.Y - listViewBaseHeight + selectorItemHeight;
 
-            var maxXPosition = position.X;
-            var maxYPosition = position.Y;
+            double maxXPosition = position.X;
+            double maxYPosition = position.Y;
 
             double finalXPosition, finalYPosition;
 
             // If the Item is in view and scrollIfVisible is false then we don't need to scroll
-            if (!scrollIfVisible && (previousXOffset <= maxXPosition && previousXOffset >= minXPosition) && (previousYOffset <= maxYPosition && previousYOffset >= minYPosition))
+            if (!scrollIfVisible && previousXOffset <= maxXPosition && previousXOffset >= minXPosition && previousYOffset <= maxYPosition && previousYOffset >= minYPosition)
             {
                 finalXPosition = previousXOffset;
                 finalYPosition = previousYOffset;
@@ -110,31 +110,17 @@ namespace Microsoft.Toolkit.Uwp.UI
                 switch (itemPlacement)
                 {
                     case ScrollItemPlacement.Default:
-                        if (previousXOffset <= maxXPosition && previousXOffset >= minXPosition)
-                        {
-                            finalXPosition = previousXOffset + additionalHorizontalOffset;
-                        }
-                        else if (Math.Abs(previousXOffset - minXPosition) < Math.Abs(previousXOffset - maxXPosition))
-                        {
-                            finalXPosition = minXPosition + additionalHorizontalOffset;
-                        }
-                        else
-                        {
-                            finalXPosition = maxXPosition + additionalHorizontalOffset;
-                        }
+                        finalXPosition = previousXOffset <= maxXPosition && previousXOffset >= minXPosition
+                            ? previousXOffset + additionalHorizontalOffset
+                            : Math.Abs(previousXOffset - minXPosition) < Math.Abs(previousXOffset - maxXPosition)
+                                ? minXPosition + additionalHorizontalOffset
+                                : maxXPosition + additionalHorizontalOffset;
 
-                        if (previousYOffset <= maxYPosition && previousYOffset >= minYPosition)
-                        {
-                            finalYPosition = previousYOffset + additionalVerticalOffset;
-                        }
-                        else if (Math.Abs(previousYOffset - minYPosition) < Math.Abs(previousYOffset - maxYPosition))
-                        {
-                            finalYPosition = minYPosition + additionalVerticalOffset;
-                        }
-                        else
-                        {
-                            finalYPosition = maxYPosition + additionalVerticalOffset;
-                        }
+                        finalYPosition = previousYOffset <= maxYPosition && previousYOffset >= minYPosition
+                            ? previousYOffset + additionalVerticalOffset
+                            : Math.Abs(previousYOffset - minYPosition) < Math.Abs(previousYOffset - maxYPosition)
+                                ? minYPosition + additionalVerticalOffset
+                                : maxYPosition + additionalVerticalOffset;
 
                         break;
 
@@ -149,8 +135,8 @@ namespace Microsoft.Toolkit.Uwp.UI
                         break;
 
                     case ScrollItemPlacement.Center:
-                        var centreX = (listViewBaseWidth - selectorItemWidth) / 2.0;
-                        var centreY = (listViewBaseHeight - selectorItemHeight) / 2.0;
+                        double centreX = (listViewBaseWidth - selectorItemWidth) / 2.0;
+                        double centreY = (listViewBaseHeight - selectorItemHeight) / 2.0;
                         finalXPosition = maxXPosition - centreX + additionalHorizontalOffset;
                         finalYPosition = maxYPosition - centreY + additionalVerticalOffset;
                         break;
@@ -225,7 +211,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                 return;
             }
 
-            var tcs = new TaskCompletionSource<object>();
+            TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
 
             void ViewChanged(object _, ScrollViewerViewChangedEventArgs e)
             {

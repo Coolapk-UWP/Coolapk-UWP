@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Toolkit.Parsers.Core;
 using Microsoft.Toolkit.Parsers.Markdown.Helpers;
+using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
 {
@@ -74,8 +73,10 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             }
 
             // We found something!
-            var result = new SubscriptTextInline();
-            result.Inlines = Common.ParseInlineChildren(markdown, innerStart, innerEnd);
+            SubscriptTextInline result = new SubscriptTextInline
+            {
+                Inlines = Common.ParseInlineChildren(markdown, innerStart, innerEnd)
+            };
             return new InlineParseResult(result, start, innerEnd + 6);
         }
 
@@ -85,12 +86,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
         /// <returns> The textual representation of this object. </returns>
         public override string ToString()
         {
-            if (Inlines == null)
-            {
-                return base.ToString();
-            }
-
-            return "<sub>" + string.Join(string.Empty, Inlines) + "</sub>";
+            return Inlines == null ? base.ToString() : "<sub>" + string.Join(string.Empty, Inlines) + "</sub>";
         }
     }
 }

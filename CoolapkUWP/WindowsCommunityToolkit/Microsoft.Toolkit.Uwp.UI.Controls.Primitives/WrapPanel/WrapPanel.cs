@@ -135,15 +135,15 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <inheritdoc />
         protected override Size MeasureOverride(Size availableSize)
         {
-            var childAvailableSize = new Size(
+            Size childAvailableSize = new Size(
                 availableSize.Width - Padding.Left - Padding.Right,
                 availableSize.Height - Padding.Top - Padding.Bottom);
-            foreach (var child in Children)
+            foreach (UIElement child in Children)
             {
                 child.Measure(childAvailableSize);
             }
 
-            var requiredSize = UpdateRows(availableSize);
+            Size requiredSize = UpdateRows(availableSize);
             return requiredSize;
         }
 
@@ -160,12 +160,12 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             if (_rows.Count > 0)
             {
                 // Now that we have all the data, we do the actual arrange pass
-                var childIndex = 0;
-                foreach (var row in _rows)
+                int childIndex = 0;
+                foreach (Row row in _rows)
                 {
-                    foreach (var rect in row.ChildrenRects)
+                    foreach (UvRect rect in row.ChildrenRects)
                     {
-                        var child = Children[childIndex++];
+                        UIElement child = Children[childIndex++];
                         while (child.Visibility == Visibility.Collapsed)
                         {
                             // Collapsed children are not added into the rows,
@@ -173,13 +173,13 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                             child = Children[childIndex++];
                         }
 
-                        var arrangeRect = new UvRect
+                        UvRect arrangeRect = new UvRect
                         {
                             Position = rect.Position,
                             Size = new UvMeasure { U = rect.Size.U, V = row.Size.V },
                         };
 
-                        var finalRect = arrangeRect.ToRect(Orientation);
+                        Rect finalRect = arrangeRect.ToRect(Orientation);
                         child.Arrange(finalRect);
                     }
                 }
@@ -192,21 +192,21 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         {
             _rows.Clear();
 
-            var paddingStart = new UvMeasure(Orientation, Padding.Left, Padding.Top);
-            var paddingEnd = new UvMeasure(Orientation, Padding.Right, Padding.Bottom);
+            UvMeasure paddingStart = new UvMeasure(Orientation, Padding.Left, Padding.Top);
+            UvMeasure paddingEnd = new UvMeasure(Orientation, Padding.Right, Padding.Bottom);
 
             if (Children.Count == 0)
             {
-                var emptySize = paddingStart.Add(paddingEnd).ToSize(Orientation);
+                Size emptySize = paddingStart.Add(paddingEnd).ToSize(Orientation);
                 return emptySize;
             }
 
-            var parentMeasure = new UvMeasure(Orientation, availableSize.Width, availableSize.Height);
-            var spacingMeasure = new UvMeasure(Orientation, HorizontalSpacing, VerticalSpacing);
-            var position = new UvMeasure(Orientation, Padding.Left, Padding.Top);
+            UvMeasure parentMeasure = new UvMeasure(Orientation, availableSize.Width, availableSize.Height);
+            UvMeasure spacingMeasure = new UvMeasure(Orientation, HorizontalSpacing, VerticalSpacing);
+            UvMeasure position = new UvMeasure(Orientation, Padding.Left, Padding.Top);
 
-            var currentRow = new Row(new List<UvRect>(), default);
-            var finalMeasure = new UvMeasure(Orientation, width: 0.0, height: 0.0);
+            Row currentRow = new Row(new List<UvRect>(), default);
+            UvMeasure finalMeasure = new UvMeasure(Orientation, width: 0.0, height: 0.0);
             void Arrange(UIElement child, bool isLast = false)
             {
                 if (child.Visibility == Visibility.Collapsed)
@@ -214,7 +214,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                     return; // if an item is collapsed, avoid adding the spacing
                 }
 
-                var desiredMeasure = new UvMeasure(Orientation, child.DesiredSize);
+                UvMeasure desiredMeasure = new UvMeasure(Orientation, child.DesiredSize);
                 if ((desiredMeasure.U + position.U + paddingEnd.U) > parentMeasure.U)
                 {
                     // next row!
@@ -238,8 +238,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 finalMeasure.U = Math.Max(finalMeasure.U, position.U);
             }
 
-            var lastIndex = Children.Count - 1;
-            for (var i = 0; i < lastIndex; i++)
+            int lastIndex = Children.Count - 1;
+            for (int i = 0; i < lastIndex; i++)
             {
                 Arrange(Children[i]);
             }
@@ -252,14 +252,14 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
             if (_rows.Count == 0)
             {
-                var emptySize = paddingStart.Add(paddingEnd).ToSize(Orientation);
+                Size emptySize = paddingStart.Add(paddingEnd).ToSize(Orientation);
                 return emptySize;
             }
 
             // Get max V here before computing final rect
-            var lastRowRect = _rows.Last().Rect;
+            UvRect lastRowRect = _rows.Last().Rect;
             finalMeasure.V = lastRowRect.Position.V + lastRowRect.Size.V;
-            var finalRect = finalMeasure.Add(paddingEnd).ToSize(Orientation);
+            Size finalRect = finalMeasure.Add(paddingEnd).ToSize(Orientation);
             return finalRect;
         }
     }

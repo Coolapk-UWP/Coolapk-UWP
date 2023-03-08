@@ -23,16 +23,10 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <returns>Deserialized value or default value.</returns>
         public T Deserialize<T>(object value)
         {
-            var type = typeof(T);
-            var typeInfo = type.GetTypeInfo();
+            Type type = typeof(T);
+            TypeInfo typeInfo = type.GetTypeInfo();
 
-            if (typeInfo.IsPrimitive || type == typeof(string))
-            {
-                return (T)Convert.ChangeType(value, type);
-            }
-
-            return ThrowNotSupportedException();
-
+            return typeInfo.IsPrimitive || type == typeof(string) ? (T)Convert.ChangeType(value, type) : ThrowNotSupportedException();
             T ThrowNotSupportedException() => throw new NotSupportedException("This serializer can only handle primitive types and strings. Please implement your own IObjectSerializer for more complex scenarios.");
         }
 

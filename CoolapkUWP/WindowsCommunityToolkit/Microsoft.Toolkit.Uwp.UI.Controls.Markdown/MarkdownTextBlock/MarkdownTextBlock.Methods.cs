@@ -2,17 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using ColorCode;
+using Microsoft.Toolkit.Parsers.Markdown;
+using Microsoft.Toolkit.Uwp.Helpers;
+using Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ColorCode;
-using Microsoft.Toolkit.Parsers.Markdown;
-using Microsoft.Toolkit.Uwp.Helpers;
-using Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render;
-using Windows.ApplicationModel.Core;
-using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -54,7 +52,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             // Clear everything that exists.
             _listeningHyperlinks.Clear();
 
-            var markdownRenderedArgs = new MarkdownRenderedEventArgs(null);
+            MarkdownRenderedEventArgs markdownRenderedArgs = new MarkdownRenderedEventArgs(null);
 
             // Make sure we have something to parse.
             if (string.IsNullOrWhiteSpace(Text))
@@ -80,8 +78,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                     markdown.Parse(Text);
 
                     // Now try to display it
-                    var renderer = Activator.CreateInstance(renderertype, markdown, this, this, this) as MarkdownRenderer;
-                    if (renderer == null)
+                    if (!(Activator.CreateInstance(renderertype, markdown, this, this, this) is MarkdownRenderer renderer))
                     {
                         throw new Exception("Markdown Renderer was not of the correct type.");
                     }
@@ -263,7 +260,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 }
             }
 
-            var eventArgs = new ImageResolvingEventArgs(url, tooltip);
+            ImageResolvingEventArgs eventArgs = new ImageResolvingEventArgs(url, tooltip);
             ImageResolving?.Invoke(this, eventArgs);
 
             await eventArgs.WaitForDeferrals();
@@ -281,12 +278,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
             ImageSource GetImageSource(Uri imageUrl)
             {
-                if (Path.GetExtension(imageUrl.AbsolutePath)?.ToLowerInvariant() == ".svg")
-                {
-                    return new SvgImageSource(imageUrl);
-                }
-
-                return new BitmapImage(imageUrl);
+                return Path.GetExtension(imageUrl.AbsolutePath)?.ToLowerInvariant() == ".svg"
+                    ? new SvgImageSource(imageUrl)
+                    : (ImageSource)new BitmapImage(imageUrl);
             }
         }
 
@@ -296,15 +290,15 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <returns>Parsing was handled Successfully</returns>
         bool ICodeBlockResolver.ParseSyntax(InlineCollection inlineCollection, string text, string codeLanguage)
         {
-            var eventArgs = new CodeBlockResolvingEventArgs(inlineCollection, text, codeLanguage);
+            CodeBlockResolvingEventArgs eventArgs = new CodeBlockResolvingEventArgs(inlineCollection, text, codeLanguage);
             CodeBlockResolving?.Invoke(this, eventArgs);
 
             try
             {
-                var result = eventArgs.Handled;
+                bool result = eventArgs.Handled;
                 if (UseSyntaxHighlighting && !result && codeLanguage != null)
                 {
-                    var language = Languages.FindById(codeLanguage);
+                    ILanguage language = Languages.FindById(codeLanguage);
                     if (language != null)
                     {
                         RichTextBlockFormatter formatter;
@@ -314,7 +308,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                         }
                         else
                         {
-                            var theme = themeListener.CurrentTheme == ApplicationTheme.Dark ? ElementTheme.Dark : ElementTheme.Light;
+                            ElementTheme theme = themeListener.CurrentTheme == ApplicationTheme.Dark ? ElementTheme.Dark : ElementTheme.Light;
                             if (RequestedTheme != ElementTheme.Default)
                             {
                                 theme = RequestedTheme;
@@ -359,7 +353,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             }
 
             // Fire off the event.
-            var eventArgs = new LinkClickedEventArgs(url);
+            LinkClickedEventArgs eventArgs = new LinkClickedEventArgs(url);
             if (isHyperlink)
             {
                 LinkClicked?.Invoke(this, eventArgs);

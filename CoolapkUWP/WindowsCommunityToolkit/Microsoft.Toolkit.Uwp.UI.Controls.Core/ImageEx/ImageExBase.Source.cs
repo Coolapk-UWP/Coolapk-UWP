@@ -40,9 +40,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var control = d as ImageExBase;
-
-            if (control == null)
+            if (!(d is ImageExBase control))
             {
                 return;
             }
@@ -115,18 +113,17 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
             VisualStateManager.GoToState(this, LoadingState, true);
 
-            var imageSource = source as ImageSource;
-            if (imageSource != null)
+            if (source is ImageSource imageSource)
             {
                 AttachSource(imageSource);
 
                 return;
             }
 
-            var uri = source as Uri;
+            Uri uri = source as Uri;
             if (uri == null)
             {
-                var url = source as string ?? source.ToString();
+                string url = source as string ?? source.ToString();
                 if (!Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out uri))
                 {
                     VisualStateManager.GoToState(this, FailedState, true);
@@ -161,7 +158,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             {
                 if (IsCacheEnabled)
                 {
-                    var img = await ProvideCachedResourceAsync(imageUri, token);
+                    ImageSource img = await ProvideCachedResourceAsync(imageUri, token);
 
                     if (!_tokenSource.IsCancellationRequested)
                     {
@@ -171,13 +168,13 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 }
                 else if (string.Equals(imageUri.Scheme, "data", StringComparison.OrdinalIgnoreCase))
                 {
-                    var source = imageUri.OriginalString;
+                    string source = imageUri.OriginalString;
                     const string base64Head = "base64,";
-                    var index = source.IndexOf(base64Head);
+                    int index = source.IndexOf(base64Head);
                     if (index >= 0)
                     {
-                        var bytes = Convert.FromBase64String(source.Substring(index + base64Head.Length));
-                        var bitmap = new BitmapImage();
+                        byte[] bytes = Convert.FromBase64String(source.Substring(index + base64Head.Length));
+                        BitmapImage bitmap = new BitmapImage();
                         await bitmap.SetSourceAsync(new MemoryStream(bytes).AsRandomAccessStream());
 
                         if (!_tokenSource.IsCancellationRequested)

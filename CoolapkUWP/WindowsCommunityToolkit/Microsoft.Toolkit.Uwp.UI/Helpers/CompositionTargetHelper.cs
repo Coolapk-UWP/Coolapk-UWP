@@ -28,7 +28,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Helpers
                 ThrowArgumentNullException();
             }
 
-            var taskCompletionSource = options.HasValue ? new TaskCompletionSource<bool>(options.Value)
+            TaskCompletionSource<bool> taskCompletionSource = options.HasValue ? new TaskCompletionSource<bool>(options.Value)
                 : new TaskCompletionSource<bool>();
 
             try

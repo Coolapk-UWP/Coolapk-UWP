@@ -78,12 +78,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <returns>The T object</returns>
         public T Read<T>(string key, T @default = default)
         {
-            if (!Settings.Values.TryGetValue(key, out var value) || value == null)
-            {
-                return @default;
-            }
-
-            return serializer.Deserialize<T>(value);
+            return !Settings.Values.TryGetValue(key, out object value) || value == null ? @default : serializer.Deserialize<T>(value);
         }
 
         /// <summary>

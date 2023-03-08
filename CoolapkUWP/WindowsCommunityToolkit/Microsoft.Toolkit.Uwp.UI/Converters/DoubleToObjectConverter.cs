@@ -117,7 +117,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Converters
                 vd = result;
             }
 
-            var boolValue = false;
+            bool boolValue = false;
 
             if (GreaterThan != double.NaN && LessThan != double.NaN &&
                 vd > GreaterThan && vd < LessThan)

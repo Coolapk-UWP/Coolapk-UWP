@@ -26,12 +26,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Converters
         /// <returns>The string corresponding to the resource name.</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value == null)
-            {
-                return string.Empty;
-            }
-
-            return _resourceLoader.GetString(value.ToString());
+            return value == null ? string.Empty : (object)_resourceLoader.GetString(value.ToString());
         }
 
         /// <summary>

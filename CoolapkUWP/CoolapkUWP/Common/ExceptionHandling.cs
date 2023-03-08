@@ -1,6 +1,6 @@
-﻿using Windows.UI.Xaml.Controls;
-using System;
+﻿using System;
 using System.Threading;
+using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Helpers.Exceptions
 {

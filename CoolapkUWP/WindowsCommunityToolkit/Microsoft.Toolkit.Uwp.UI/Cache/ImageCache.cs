@@ -28,7 +28,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         [ThreadStatic]
         private static ImageCache _instance;
 
-        private List<string> _extendedPropertyNames = new List<string>();
+        private readonly List<string> _extendedPropertyNames = new List<string>();
 
         /// <summary>
         /// Gets public singleton property.
@@ -58,25 +58,22 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>awaitable task</returns>
         protected override async Task<BitmapImage> InitializeTypeAsync(Stream stream, List<KeyValuePair<string, object>> initializerKeyValues = null)
         {
-            if (stream.Length == 0)
-            {
-                throw new FileNotFoundException();
-            }
-
-            return await Dispatcher.AwaitableRunAsync(async () =>
+            return stream.Length == 0
+                ? throw new FileNotFoundException()
+                : await Dispatcher.AwaitableRunAsync(async () =>
             {
                 BitmapImage image = new BitmapImage();
 
                 if (initializerKeyValues != null && initializerKeyValues.Count > 0)
                 {
-                    foreach (var kvp in initializerKeyValues)
+                    foreach (KeyValuePair<string, object> kvp in initializerKeyValues)
                     {
                         if (string.IsNullOrWhiteSpace(kvp.Key))
                         {
                             continue;
                         }
 
-                        var propInfo = image.GetType().GetProperty(kvp.Key, BindingFlags.Public | BindingFlags.Instance);
+                        PropertyInfo propInfo = image.GetType().GetProperty(kvp.Key, BindingFlags.Public | BindingFlags.Instance);
 
                         if (propInfo != null && propInfo.CanWrite)
                         {
@@ -99,7 +96,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>awaitable task</returns>
         protected override async Task<BitmapImage> InitializeTypeAsync(StorageFile baseFile, List<KeyValuePair<string, object>> initializerKeyValues = null)
         {
-            using (var stream = await baseFile.OpenStreamForReadAsync().ConfigureAwait(false))
+            using (Stream stream = await baseFile.OpenStreamForReadAsync().ConfigureAwait(false))
             {
                 return await InitializeTypeAsync(stream, initializerKeyValues).ConfigureAwait(false);
             }
@@ -124,11 +121,11 @@ namespace Microsoft.Toolkit.Uwp.UI
                 await file.Properties.RetrievePropertiesAsync(_extendedPropertyNames).AsTask().ConfigureAwait(false);
 
             // Get date-accessed property.
-            var propValue = extraProperties[DateAccessedProperty];
+            object propValue = extraProperties[DateAccessedProperty];
 
             if (propValue != null)
             {
-                var lastAccess = propValue as DateTimeOffset?;
+                DateTimeOffset? lastAccess = propValue as DateTimeOffset?;
 
                 if (lastAccess.HasValue)
                 {
@@ -136,7 +133,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                 }
             }
 
-            var properties = await file.GetBasicPropertiesAsync().AsTask().ConfigureAwait(false);
+            Windows.Storage.FileProperties.BasicProperties properties = await file.GetBasicPropertiesAsync().AsTask().ConfigureAwait(false);
 
             return properties.Size == 0 || DateTime.Now.Subtract(properties.DateModified.DateTime) > duration;
         }

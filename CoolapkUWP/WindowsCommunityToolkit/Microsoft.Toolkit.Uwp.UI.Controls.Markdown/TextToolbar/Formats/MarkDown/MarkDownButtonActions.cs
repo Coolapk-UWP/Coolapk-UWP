@@ -41,7 +41,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.MarkDown
         /// <inheritdoc/>
         public override void FormatLink(ToolbarButton button, string label, string formattedText, string link)
         {
-            var select = Formatter.Selected;
+            Windows.UI.Text.ITextSelection select = Formatter.Selected;
             int originalStart = Formatter.Selected.StartPosition;
             string urlLabel = "WCT_TextToolbar_UrlLabel".GetLocalized("Microsoft.Toolkit.Uwp.UI.Controls.Core/Resources");
             string labelLabel = "WCT_TextToolbar_LabelLabel".GetLocalized("Microsoft.Toolkit.Uwp.UI.Controls.Core/Resources");

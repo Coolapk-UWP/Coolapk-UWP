@@ -37,7 +37,7 @@ namespace Microsoft.Toolkit.Uwp
         {
             if (uiContext != null)
             {
-                var resourceLoader = ResourceLoader.GetForUIContext(uiContext);
+                ResourceLoader resourceLoader = ResourceLoader.GetForUIContext(uiContext);
                 return resourceLoader.GetString(resourceKey);
             }
             else
@@ -57,7 +57,7 @@ namespace Microsoft.Toolkit.Uwp
         {
             if (uiContext != null)
             {
-                var resourceLoader = ResourceLoader.GetForUIContext(uiContext);
+                ResourceLoader resourceLoader = ResourceLoader.GetForUIContext(uiContext);
                 return resourceLoader.GetString(resourceKey);
             }
             else
@@ -75,7 +75,7 @@ namespace Microsoft.Toolkit.Uwp
         public static string GetLocalized(this string resourceKey, string resourcePath)
         {
             // Try and retrieve resource at app level first.
-            var result = IndependentLoader?.GetString(resourceKey);
+            string result = IndependentLoader?.GetString(resourceKey);
 
             if (string.IsNullOrEmpty(result))
             {

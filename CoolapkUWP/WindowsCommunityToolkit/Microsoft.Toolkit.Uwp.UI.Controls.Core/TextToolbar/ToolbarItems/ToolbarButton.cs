@@ -181,14 +181,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons
 
             set
             {
-                if (value)
-                {
-                    Toggled = Visibility.Visible;
-                }
-                else
-                {
-                    Toggled = Visibility.Collapsed;
-                }
+                Toggled = value ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
@@ -201,13 +194,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons
         /// <summary>
         /// Gets or sets the Attached TextToolbar
         /// </summary>
-        internal TextToolbar Model
-        {
-            get { return _model; }
-            set { _model = value; }
-        }
-
-        private TextToolbar _model;
+        internal TextToolbar Model { get; set; }
 
         private int _position = -1;
 

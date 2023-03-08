@@ -67,15 +67,15 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
         /// <returns>A byte array with more zeros in front"/></returns>
         private static byte[] GetBytes(byte[] input, int length)
         {
-            var result = new byte[length];
+            byte[] result = new byte[length];
 
             if (input.Length >= length)
             {
                 result = input;
             }
 
-            var offset = length - input.Length;
-            for (var i = 0; i < input.Length; i++)
+            int offset = length - input.Length;
+            for (int i = 0; i < input.Length; i++)
             {
                 result[offset + i] = input[i];
             }

@@ -32,12 +32,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>A <see cref="Vector2"/> string representation of the <see cref="Visual.AnchorPoint"/></returns>
         public static string GetAnchorPoint(DependencyObject obj)
         {
-            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element)
-            {
-                return GetAnchorPointForElement(element);
-            }
-
-            return (string)obj.GetValue(AnchorPointProperty);
+            return !DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element
+                ? GetAnchorPointForElement(element)
+                : (string)obj.GetValue(AnchorPointProperty);
         }
 
         /// <summary>
@@ -62,12 +59,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>A <see cref="Vector3"/> string representation of the <see cref="Visual.CenterPoint"/></returns>
         public static string GetCenterPoint(DependencyObject obj)
         {
-            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element)
-            {
-                return GetCenterPointForElement(element);
-            }
-
-            return (string)obj.GetValue(CenterPointProperty);
+            return !DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element
+                ? GetCenterPointForElement(element)
+                : (string)obj.GetValue(CenterPointProperty);
         }
 
         /// <summary>
@@ -92,12 +86,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>A <see cref="Vector3"/> string representation of the <see cref="Visual.Offset"/></returns>
         public static string GetOffset(DependencyObject obj)
         {
-            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element)
-            {
-                return GetOffsetForElement(element);
-            }
-
-            return (string)obj.GetValue(OffsetProperty);
+            return !DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element
+                ? GetOffsetForElement(element)
+                : (string)obj.GetValue(OffsetProperty);
         }
 
         /// <summary>
@@ -122,12 +113,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The <see cref="string"/> representation of the <c>"Translation"</c> property property.</returns>
         public static string GetTranslation(DependencyObject obj)
         {
-            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element)
-            {
-                return GetTranslationForElement(element);
-            }
-
-            return (string)obj.GetValue(TranslationProperty);
+            return !DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element
+                ? GetTranslationForElement(element)
+                : (string)obj.GetValue(TranslationProperty);
         }
 
         /// <summary>
@@ -152,12 +140,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The <see cref="Visual.Opacity"/> of the <see cref="UIElement"/></returns>
         public static double GetOpacity(DependencyObject obj)
         {
-            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element)
-            {
-                return GetOpacityForElement(element);
-            }
-
-            return (double)obj.GetValue(OpacityProperty);
+            return !DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element
+                ? GetOpacityForElement(element)
+                : (double)obj.GetValue(OpacityProperty);
         }
 
         /// <summary>
@@ -182,12 +167,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The <see cref="Visual.RotationAngle"/> of the <see cref="UIElement"/></returns>
         public static double GetRotationAngle(DependencyObject obj)
         {
-            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element)
-            {
-                return GetRotationAngleForElement(element);
-            }
-
-            return (double)obj.GetValue(RotationAngleProperty);
+            return !DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element
+                ? GetRotationAngleForElement(element)
+                : (double)obj.GetValue(RotationAngleProperty);
         }
 
         /// <summary>
@@ -212,12 +194,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The <see cref="Visual.RotationAngleInDegrees"/> of the <see cref="UIElement"/></returns>
         public static double GetRotationAngleInDegrees(DependencyObject obj)
         {
-            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element)
-            {
-                return GetRotationAngleInDegreesForElement(element);
-            }
-
-            return (double)obj.GetValue(RotationAngleInDegreesProperty);
+            return !DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element
+                ? GetRotationAngleInDegreesForElement(element)
+                : (double)obj.GetValue(RotationAngleInDegreesProperty);
         }
 
         /// <summary>
@@ -242,12 +221,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>A <see cref="Vector3"/> string representation of the <see cref="Visual.RotationAxis"/></returns>
         public static string GetRotationAxis(DependencyObject obj)
         {
-            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element)
-            {
-                return GetRotationAxisForElement(element);
-            }
-
-            return (string)obj.GetValue(RotationAxisProperty);
+            return !DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element
+                ? GetRotationAxisForElement(element)
+                : (string)obj.GetValue(RotationAxisProperty);
         }
 
         /// <summary>
@@ -272,12 +248,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>A <see cref="Vector3"/> string representation of the <see cref="Visual.Scale"/></returns>
         public static string GetScale(DependencyObject obj)
         {
-            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element)
-            {
-                return GetScaleForElement(element);
-            }
-
-            return (string)obj.GetValue(ScaleProperty);
+            return !DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element
+                ? GetScaleForElement(element)
+                : (string)obj.GetValue(ScaleProperty);
         }
 
         /// <summary>
@@ -302,12 +275,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>A <see cref="Vector2"/> string representation of the <see cref="Visual.Size"/></returns>
         public static string GetSize(DependencyObject obj)
         {
-            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element)
-            {
-                return GetSizeForElement(element);
-            }
-
-            return (string)obj.GetValue(SizeProperty);
+            return !DesignTimeHelpers.IsRunningInLegacyDesignerMode && obj is UIElement element
+                ? GetSizeForElement(element)
+                : (string)obj.GetValue(SizeProperty);
         }
 
         /// <summary>
@@ -514,37 +484,37 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static string GetAnchorPointForElement(UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             return visual.AnchorPoint.ToString();
         }
 
         private static void SetAnchorPointForElement(string value, UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             visual.AnchorPoint = value.ToVector2();
         }
 
         private static string GetCenterPointForElement(UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             return visual.CenterPoint.ToString();
         }
 
         private static void SetCenterPointForElement(string value, UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             visual.CenterPoint = value.ToVector3();
         }
 
         private static string GetOffsetForElement(UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             return visual.Offset.ToString();
         }
 
         private static void SetOffsetForElement(string value, UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             visual.Offset = value.ToVector3();
         }
 
@@ -579,73 +549,73 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static double GetOpacityForElement(UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             return visual.Opacity;
         }
 
         private static void SetOpacityForElement(double value, UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             visual.Opacity = (float)value;
         }
 
         private static double GetRotationAngleForElement(UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             return visual.RotationAngle;
         }
 
         private static void SetRotationAngleForElement(double value, UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             visual.RotationAngle = (float)value;
         }
 
         private static double GetRotationAngleInDegreesForElement(UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             return visual.RotationAngleInDegrees;
         }
 
         private static void SetRotationAngleInDegreesForElement(double value, UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             visual.RotationAngleInDegrees = (float)value;
         }
 
         private static string GetRotationAxisForElement(UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             return visual.RotationAxis.ToString();
         }
 
         private static void SetRotationAxisForElement(string value, UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             visual.RotationAxis = value.ToVector3();
         }
 
         private static string GetScaleForElement(UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             return visual.Scale.ToString();
         }
 
         private static void SetScaleForElement(string value, UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             visual.Scale = value.ToVector3();
         }
 
         private static string GetSizeForElement(UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             return visual.Size.ToString();
         }
 
         private static void SetSizeForElement(string value, UIElement element)
         {
-            var visual = GetVisual(element);
+            Visual visual = GetVisual(element);
             visual.Size = value.ToVector2();
         }
     }

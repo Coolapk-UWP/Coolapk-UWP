@@ -17,7 +17,7 @@ namespace CoolapkUWP.Controls.DataTemplates
         {
             if (((FrameworkElement)sender).FindAscendant("searchPivot") == null)
             {
-                UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+                _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
             }
         }
 

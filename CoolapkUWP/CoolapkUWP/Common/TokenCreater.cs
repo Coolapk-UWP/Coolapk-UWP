@@ -11,12 +11,12 @@ namespace CoolapkUWP.Common
         private static readonly string Guid = System.Guid.NewGuid().ToString();
         private static readonly string aid = RandHexString(16);
         private static readonly string mac = RandMacAdress();
-        private static string SystemManufacturer;
-        private static string SystemProductName;
+        private static readonly string SystemManufacturer;
+        private static readonly string SystemProductName;
 
         public static string DeviceCode;
 
-        private TokenVersion TokenVersion;
+        private readonly TokenVersion TokenVersion;
 
         static TokenCreater()
         {

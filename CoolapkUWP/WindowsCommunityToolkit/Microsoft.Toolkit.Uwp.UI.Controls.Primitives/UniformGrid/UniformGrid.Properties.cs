@@ -2,11 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
 
 namespace Microsoft.Toolkit.Uwp.UI.Controls
 {
@@ -112,12 +109,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void OnPropertyChanged(DependencyObject d, object newValue)
         {
-            var self = d as UniformGrid;
+            UniformGrid self = d as UniformGrid;
 
-            if (self != null)
-            {
-                self.InvalidateMeasure();
-            }
+            self?.InvalidateMeasure();
         }
 
         /// <summary>

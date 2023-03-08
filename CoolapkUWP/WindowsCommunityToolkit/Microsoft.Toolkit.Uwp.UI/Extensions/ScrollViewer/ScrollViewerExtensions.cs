@@ -41,17 +41,17 @@ namespace Microsoft.Toolkit.Uwp.UI
                 return false;
             }
 
-            var scrollViewer = sender as ScrollViewer ?? sender.FindDescendant<ScrollViewer>();
+            ScrollViewer scrollViewer = sender as ScrollViewer ?? sender.FindDescendant<ScrollViewer>();
 
             // Last scrollbar with "HorizontalScrollBar" as name is our target to set its margin and avoid it overlapping the header
-            var scrollBar = scrollViewer?.FindDescendants().OfType<ScrollBar>().LastOrDefault(bar => bar.Name == "HorizontalScrollBar");
+            ScrollBar scrollBar = scrollViewer?.FindDescendants().OfType<ScrollBar>().LastOrDefault(bar => bar.Name == "HorizontalScrollBar");
 
             if (scrollBar == null)
             {
                 return false;
             }
 
-            var newMargin = GetHorizontalScrollBarMargin(sender);
+            Thickness newMargin = GetHorizontalScrollBarMargin(sender);
 
             scrollBar.Margin = newMargin;
 
@@ -96,17 +96,17 @@ namespace Microsoft.Toolkit.Uwp.UI
                 return false;
             }
 
-            var scrollViewer = sender as ScrollViewer ?? sender.FindDescendant<ScrollViewer>();
+            ScrollViewer scrollViewer = sender as ScrollViewer ?? sender.FindDescendant<ScrollViewer>();
 
             // Last scrollbar with "HorizontalScrollBar" as name is our target to set its margin and avoid it overlapping the header
-            var scrollBar = scrollViewer?.FindDescendants().OfType<ScrollBar>().LastOrDefault(bar => bar.Name == "VerticalScrollBar");
+            ScrollBar scrollBar = scrollViewer?.FindDescendants().OfType<ScrollBar>().LastOrDefault(bar => bar.Name == "VerticalScrollBar");
 
             if (scrollBar == null)
             {
                 return false;
             }
 
-            var newMargin = GetVerticalScrollBarMargin(sender);
+            Thickness newMargin = GetVerticalScrollBarMargin(sender);
 
             scrollBar.Margin = newMargin;
 

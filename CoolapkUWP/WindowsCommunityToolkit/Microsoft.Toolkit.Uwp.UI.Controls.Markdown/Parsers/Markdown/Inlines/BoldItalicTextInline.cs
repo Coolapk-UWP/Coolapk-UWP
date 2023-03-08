@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Toolkit.Parsers.Core;
 using Microsoft.Toolkit.Parsers.Markdown.Helpers;
+using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
 {
@@ -65,7 +65,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
 
             // Find the end of the span.  The end sequence (either '***' or '___') must be the same
             // as the start sequence.
-            var innerStart = start + 3;
+            int innerStart = start + 3;
             int innerEnd = Common.IndexOf(markdown, startSequence, innerStart, maxEnd);
             if (innerEnd == -1)
             {
@@ -91,7 +91,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             }
 
             // We found something!
-            var bold = new BoldTextInline
+            BoldTextInline bold = new BoldTextInline
             {
                 Inlines = new List<MarkdownInline>
                 {
@@ -110,12 +110,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
         /// <returns> The textual representation of this object. </returns>
         public override string ToString()
         {
-            if (Inlines == null)
-            {
-                return base.ToString();
-            }
-
-            return "***" + string.Join(string.Empty, Inlines) + "***";
+            return Inlines == null ? base.ToString() : "***" + string.Join(string.Empty, Inlines) + "***";
         }
     }
 }

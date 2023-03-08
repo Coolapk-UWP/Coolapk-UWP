@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections;
 using System.Collections.Specialized;
-using Microsoft.Toolkit.Uwp.Helpers;
-using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -184,7 +183,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             bool hasTwoOrMoreItems = false;
             if (ItemsSource is IEnumerable)
             {
-                var enumerator = (ItemsSource as IEnumerable).GetEnumerator();
+                IEnumerator enumerator = (ItemsSource as IEnumerable).GetEnumerator();
                 int count = 0;
                 while (enumerator.MoveNext())
                 {
@@ -202,10 +201,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return;
             }
 
-            var sb = new Storyboard();
+            Storyboard sb = new Storyboard();
             if (_translate != null)
             {
-                var anim = new DoubleAnimation
+                DoubleAnimation anim = new DoubleAnimation
                 {
                     Duration = new Duration(TimeSpan.FromMilliseconds(500)),
                     From = 0
@@ -298,12 +297,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private object GetNext()
         {
-            if (_currentIndex < 0)
-            {
-                return null;
-            }
-
-            return GetItemAt(_currentIndex + 1);
+            return _currentIndex < 0 ? null : GetItemAt(_currentIndex + 1);
         }
 
         private object GetItemAt(int index)
@@ -312,16 +306,16 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             {
                 if (ItemsSource is IList)
                 {
-                    var list = ItemsSource as IList;
+                    IList list = ItemsSource as IList;
                     if (list.Count > 0)
                     {
-                        index = index % list.Count;
+                        index %= list.Count;
                         return list[index];
                     }
                 }
                 else if (ItemsSource is IEnumerable)
                 {
-                    var ienum = ((IEnumerable)ItemsSource).GetEnumerator();
+                    IEnumerator ienum = ((IEnumerable)ItemsSource).GetEnumerator();
                     int count = 0;
                     while (ienum.MoveNext())
                     {
@@ -330,7 +324,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
                     if (count > 0)
                     {
-                        index = index % count;
+                        index %= count;
                         ienum.Reset();
                         for (int i = 0; i < index; i++)
                         {
@@ -350,7 +344,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             if (ItemsSource is IEnumerable)
             {
                 int i = 0;
-                var ienum = ((IEnumerable)ItemsSource).GetEnumerator();
+                IEnumerator ienum = ((IEnumerable)ItemsSource).GetEnumerator();
                 while (ienum.MoveNext())
                 {
                     if (ienum.Current == item)
@@ -368,7 +362,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         private void Start()
         {
             _currentIndex = 0;
-            var currentItem = GetCurrent();
+            object currentItem = GetCurrent();
             if (_currentElement != null)
             {
                 _currentElement.DataContext = currentItem;
@@ -388,8 +382,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
             if (_timer == null)
             {
-                _timer = new DispatcherTimer();
-                _timer.Interval = GetTileDuration();
+                _timer = new DispatcherTimer
+                {
+                    Interval = GetTileDuration()
+                };
                 _timer.Tick += Timer_Tick;
             }
 
@@ -419,7 +415,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void OnItemsSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var ctrl = (RotatorTile)d;
+            RotatorTile ctrl = (RotatorTile)d;
             ctrl.OnCollectionChanged(e.OldValue, e.NewValue);
         }
 
@@ -427,7 +423,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         {
             if (oldValue is INotifyCollectionChanged)
             {
-                var incc = (INotifyCollectionChanged)oldValue;
+                INotifyCollectionChanged incc = (INotifyCollectionChanged)oldValue;
                 incc.CollectionChanged -= Incc_CollectionChanged;
                 _inccWeakEventListener?.Detach();
                 _inccWeakEventListener = null;
@@ -435,9 +431,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
             if (newValue is IEnumerable)
             {
-                if (newValue is INotifyCollectionChanged)
+                if (newValue is INotifyCollectionChanged incc)
                 {
-                    var incc = (INotifyCollectionChanged)newValue;
                     _inccWeakEventListener = new WeakEventListener<RotatorTile, object, NotifyCollectionChangedEventArgs>(this)
                     {
                         OnEventAction = (instance, source, eventArgs) => instance.Incc_CollectionChanged(source, eventArgs),
@@ -469,7 +464,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                     else if (_currentIndex > endIndex)
                     {
                         // Items were removed before the current item. Just update the changed index
-                        _currentIndex -= (endIndex - e.NewStartingIndex) - 1;
+                        _currentIndex -= endIndex - e.NewStartingIndex - 1;
                     }
                     else if (e.NewStartingIndex == _currentIndex + 1)
                     {
@@ -542,7 +537,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         private static void OnRotationDelayInSecondsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             // Update new timer value.
-            var ctrl = d as RotatorTile;
+            RotatorTile ctrl = d as RotatorTile;
             if (ctrl?._timer != null)
             {
                 ctrl._timer.Interval = ctrl.GetTileDuration();
@@ -551,7 +546,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void OnCurrentItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var ctrl = (RotatorTile)d;
+            RotatorTile ctrl = (RotatorTile)d;
             if (ctrl._suppressFlipOnSet)
             {
                 return;

@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using System.Collections;
 
 namespace Microsoft.Toolkit.Uwp.UI.Converters
@@ -21,10 +20,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Converters
         protected override bool CheckValueIsEmpty(object value)
         {
             bool isEmpty = true;
-            var collection = value as IEnumerable;
-            if (collection != null)
+            if (value is IEnumerable collection)
             {
-                var enumerator = collection.GetEnumerator();
+                IEnumerator enumerator = collection.GetEnumerator();
                 isEmpty = !enumerator.MoveNext();
             }
 

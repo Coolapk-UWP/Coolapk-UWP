@@ -67,7 +67,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Windows.UI.Xaml.Controls.WebView wv = d as Windows.UI.Xaml.Controls.WebView;
 
-            var content = e.NewValue as string;
+            string content = e.NewValue as string;
 
             if (string.IsNullOrEmpty(content))
             {
@@ -81,7 +81,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Windows.UI.Xaml.Controls.WebView wv = d as Windows.UI.Xaml.Controls.WebView;
 
-            var uri = e.NewValue as Uri;
+            Uri uri = e.NewValue as Uri;
 
             if (uri == null)
             {

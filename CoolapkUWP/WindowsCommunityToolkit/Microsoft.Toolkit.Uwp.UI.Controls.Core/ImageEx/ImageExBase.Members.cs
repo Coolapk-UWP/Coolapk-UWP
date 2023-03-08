@@ -144,7 +144,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         {
             if (d is ImageExBase control)
             {
-                var value = (bool)e.NewValue;
+                bool value = (bool)e.NewValue;
                 if (value)
                 {
                     control.LayoutUpdated += control.ImageExBase_LayoutUpdated;

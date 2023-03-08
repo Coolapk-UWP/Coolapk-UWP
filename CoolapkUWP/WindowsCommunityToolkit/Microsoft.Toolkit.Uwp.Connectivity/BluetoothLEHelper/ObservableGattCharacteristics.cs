@@ -320,19 +320,15 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task<string> ReadValueAsync()
         {
-            var result = await Characteristic.ReadValueAsync(BluetoothCacheMode.Uncached);
+            GattReadResult result = await Characteristic.ReadValueAsync(BluetoothCacheMode.Uncached);
 
             if (result.Status == GattCommunicationStatus.Success)
             {
                 SetValue(result.Value);
             }
-            else if (result.Status == GattCommunicationStatus.ProtocolError)
-            {
-                Value = result.ProtocolError.GetErrorString();
-            }
             else
             {
-                Value = "Unreachable";
+                Value = result.Status == GattCommunicationStatus.ProtocolError ? result.ProtocolError.GetErrorString() : "Unreachable";
             }
 
             return Value;
@@ -349,7 +345,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
                 return IsIndicateSet;
             }
 
-            var result = await
+            GattCommunicationStatus result = await
                 Characteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
                     GattClientCharacteristicConfigurationDescriptorValue.Indicate);
 
@@ -380,7 +376,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
                 return !IsIndicateSet;
             }
 
-            var result = await
+            GattCommunicationStatus result = await
                 Characteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
                     GattClientCharacteristicConfigurationDescriptorValue.None);
 
@@ -411,7 +407,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
                 return IsNotifySet;
             }
 
-            var result = await
+            GattCommunicationStatus result = await
                 Characteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
                     GattClientCharacteristicConfigurationDescriptorValue.Notify);
 
@@ -442,7 +438,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
                 return IsNotifySet;
             }
 
-            var result = await
+            GattCommunicationStatus result = await
                 Characteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
                     GattClientCharacteristicConfigurationDescriptorValue.None);
 
@@ -521,8 +517,8 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
                 }
                 else
                 {
-                    var isString = true;
-                    var buffer = GattConvert.ToUTF8String(_rawData);
+                    bool isString = true;
+                    string buffer = GattConvert.ToUTF8String(_rawData);
 
                     // if buffer is only 1 char or 2 char with 0 at end then let's assume it's hex
                     if (buffer.Length == 1)
@@ -535,7 +531,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
                     }
                     else
                     {
-                        foreach (var b in buffer)
+                        foreach (char b in buffer)
                         {
                             // if within the reasonable range of used characters and not null, let's assume it's a UTF8 string by default, else hex
                             if ((b < ' ' || b > '~') && b != 0)
@@ -551,7 +547,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
             }
             else if (format != null && DisplayType == DisplayTypes.NotSet)
             {
-                if (format.FormatType == GattPresentationFormatTypes.Boolean ||
+                DisplayType = format.FormatType == GattPresentationFormatTypes.Boolean ||
                     format.FormatType == GattPresentationFormatTypes.Bit2 ||
                     format.FormatType == GattPresentationFormatTypes.Nibble ||
                     format.FormatType == GattPresentationFormatTypes.UInt8 ||
@@ -565,33 +561,22 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
                     format.FormatType == GattPresentationFormatTypes.SInt12 ||
                     format.FormatType == GattPresentationFormatTypes.SInt16 ||
                     format.FormatType == GattPresentationFormatTypes.SInt24 ||
-                    format.FormatType == GattPresentationFormatTypes.SInt32)
-                {
-                    DisplayType = DisplayTypes.Decimal;
-                }
-                else if (format.FormatType == GattPresentationFormatTypes.Utf8)
-                {
-                    DisplayType = DisplayTypes.Utf8;
-                }
-                else if (format.FormatType == GattPresentationFormatTypes.Utf16)
-                {
-                    DisplayType = DisplayTypes.Utf16;
-                }
-                else if (format.FormatType == GattPresentationFormatTypes.UInt128 ||
-                         format.FormatType == GattPresentationFormatTypes.SInt128 ||
-                         format.FormatType == GattPresentationFormatTypes.DUInt16 ||
-                         format.FormatType == GattPresentationFormatTypes.SInt64 ||
-                         format.FormatType == GattPresentationFormatTypes.Struct ||
-                         format.FormatType == GattPresentationFormatTypes.Float ||
-                         format.FormatType == GattPresentationFormatTypes.Float32 ||
-                         format.FormatType == GattPresentationFormatTypes.Float64)
-                {
-                    DisplayType = DisplayTypes.Unsupported;
-                }
-                else
-                {
-                    DisplayType = DisplayTypes.Unsupported;
-                }
+                    format.FormatType == GattPresentationFormatTypes.SInt32
+                    ? DisplayTypes.Decimal
+                    : format.FormatType == GattPresentationFormatTypes.Utf8
+                        ? DisplayTypes.Utf8
+                        : format.FormatType == GattPresentationFormatTypes.Utf16
+                                            ? DisplayTypes.Utf16
+                                            : format.FormatType == GattPresentationFormatTypes.UInt128 ||
+                                                                                     format.FormatType == GattPresentationFormatTypes.SInt128 ||
+                                                                                     format.FormatType == GattPresentationFormatTypes.DUInt16 ||
+                                                                                     format.FormatType == GattPresentationFormatTypes.SInt64 ||
+                                                                                     format.FormatType == GattPresentationFormatTypes.Struct ||
+                                                                                     format.FormatType == GattPresentationFormatTypes.Float ||
+                                                                                     format.FormatType == GattPresentationFormatTypes.Float32 ||
+                                                                                     format.FormatType == GattPresentationFormatTypes.Float64
+                                                                ? DisplayTypes.Unsupported
+                                                                : DisplayTypes.Unsupported;
             }
 
             // Decode the value into the right display type

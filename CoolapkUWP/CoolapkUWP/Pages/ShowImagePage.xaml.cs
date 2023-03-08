@@ -146,20 +146,15 @@ namespace CoolapkUWP.Pages
         private void ScrollViewer_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             ScrollViewer view = sender as ScrollViewer;
-            if (view.ZoomFactor < 2)
-            {
-                _ = view.ChangeView(view.HorizontalOffset * 2, view.VerticalOffset * 2, 2);
-            }
-            else
-            {
-                _ = view.ChangeView(view.HorizontalOffset / view.ZoomFactor, view.VerticalOffset / view.ZoomFactor, 1);
-            }
+            _ = view.ZoomFactor < 2
+                ? view.ChangeView(view.HorizontalOffset * 2, view.VerticalOffset * 2, 2)
+                : view.ChangeView(view.HorizontalOffset / view.ZoomFactor, view.VerticalOffset / view.ZoomFactor, 1);
         }
 
         private void Image_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
             ScrollViewer view = (sender as FrameworkElement).Parent as ScrollViewer;
-            _ = view.ChangeView(view.HorizontalOffset - e.Delta.Translation.X * view.ZoomFactor, view.VerticalOffset - e.Delta.Translation.Y * view.ZoomFactor, null);
+            _ = view.ChangeView(view.HorizontalOffset - (e.Delta.Translation.X * view.ZoomFactor), view.VerticalOffset - (e.Delta.Translation.Y * view.ZoomFactor), null);
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)

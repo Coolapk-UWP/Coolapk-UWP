@@ -92,7 +92,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static async void OnScrollViewerContainerChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var control = d as TileControl;
+            TileControl control = d as TileControl;
             await control.InitializeScrollViewerContainer(e.OldValue as FrameworkElement, e.NewValue as FrameworkElement);
         }
 
@@ -108,7 +108,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static async void OnAlignmentChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var control = d as TileControl;
+            TileControl control = d as TileControl;
             await control.RefreshContainerTileLocked();
         }
 
@@ -123,7 +123,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static async void OnImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var control = d as TileControl;
+            TileControl control = d as TileControl;
             await control.LoadImageBrushAsync(e.NewValue as Uri);
         }
 
@@ -139,7 +139,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static async void OnOrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var control = d as TileControl;
+            TileControl control = d as TileControl;
             await control.RefreshContainerTileLocked();
             await control.CreateModuloExpression(control._scrollViewer);
         }
@@ -155,7 +155,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void OnOffsetChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var c = d as TileControl;
+            TileControl c = d as TileControl;
 
             c.RefreshMove();
         }
@@ -180,7 +180,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void OnScrollSpeedRatioChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var c = d as TileControl;
+            TileControl c = d as TileControl;
             c.RefreshScrollSpeedRatio((double)e.NewValue);
         }
 
@@ -195,7 +195,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void OnIsAnimatedChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var c = d as TileControl;
+            TileControl c = d as TileControl;
 
             if ((bool)e.NewValue)
             {
@@ -238,7 +238,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void OnAnimationDuration(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var c = d as TileControl;
+            TileControl c = d as TileControl;
 
             c._timerAnimation.Interval = TimeSpan.FromMilliseconds(c.AnimationDuration);
         }

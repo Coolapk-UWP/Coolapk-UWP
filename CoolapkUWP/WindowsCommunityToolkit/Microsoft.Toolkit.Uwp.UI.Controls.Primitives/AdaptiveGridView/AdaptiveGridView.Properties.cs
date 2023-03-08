@@ -6,7 +6,6 @@ using System;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
 
 namespace Microsoft.Toolkit.Uwp.UI.Controls
 {
@@ -60,19 +59,19 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void OnOneRowModeEnabledChanged(DependencyObject d, object newValue)
         {
-            var self = d as AdaptiveGridView;
+            AdaptiveGridView self = d as AdaptiveGridView;
             self.DetermineOneRowMode();
         }
 
         private static void DesiredWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var self = d as AdaptiveGridView;
+            AdaptiveGridView self = d as AdaptiveGridView;
             self.RecalculateLayout(self.ActualWidth);
         }
 
         private static void OnStretchContentForSingleRowPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var self = d as AdaptiveGridView;
+            AdaptiveGridView self = d as AdaptiveGridView;
             self.RecalculateLayout(self.ActualWidth);
         }
 
@@ -151,7 +150,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static int CalculateColumns(double containerWidth, double itemWidth)
         {
-            var columns = (int)Math.Round(containerWidth / itemWidth);
+            int columns = (int)Math.Round(containerWidth / itemWidth);
             if (columns == 0)
             {
                 columns = 1;

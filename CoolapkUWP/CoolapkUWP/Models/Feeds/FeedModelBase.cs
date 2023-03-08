@@ -1,6 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Images;
-using Microsoft.Toolkit.Uwp.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Immutable;
@@ -8,7 +7,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Windows.UI.Core;
 
 namespace CoolapkUWP.Models.Feeds
 {
@@ -139,14 +137,9 @@ namespace CoolapkUWP.Models.Feeds
                 Info = feedTypeName.ToString();
             }
 
-            if (token.TryGetValue("infoHtml", out JToken infoHtml) && !string.IsNullOrEmpty(infoHtml.ToString()))
-            {
-                InfoHTML = infoHtml.ToString();
-            }
-            else
-            {
-                InfoHTML = Dateline;
-            }
+            InfoHTML = token.TryGetValue("infoHtml", out JToken infoHtml) && !string.IsNullOrEmpty(infoHtml.ToString())
+                ? infoHtml.ToString()
+                : Dateline;
 
             if (token.TryGetValue("likenum", out JToken likenum))
             {
@@ -208,7 +201,7 @@ namespace CoolapkUWP.Models.Feeds
                     }
 
                     ExtraSubtitle = ExtraUrl.ValidateAndGetUri() is Uri ExtraUri && ExtraUri != null ? ExtraUri.Host : ExtraUrl;
-                    
+
                     if (token.TryGetValue("extra_pic", out JToken extra_pic))
                     {
                         ExtraPic = new ImageModel(extra_pic.ToString(), ImageType.Icon);

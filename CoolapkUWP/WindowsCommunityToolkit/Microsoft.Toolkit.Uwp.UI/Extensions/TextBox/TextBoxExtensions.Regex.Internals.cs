@@ -14,9 +14,7 @@ namespace Microsoft.Toolkit.Uwp.UI
     {
         private static void TextBoxRegexPropertyOnChange(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var textBox = sender as TextBox;
-
-            if (textBox == null)
+            if (!(sender is TextBox textBox))
             {
                 return;
             }
@@ -33,26 +31,26 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var textBox = (TextBox)sender;
-            var validationMode = (ValidationMode)textBox.GetValue(ValidationModeProperty);
+            TextBox textBox = (TextBox)sender;
+            ValidationMode validationMode = (ValidationMode)textBox.GetValue(ValidationModeProperty);
             ValidateTextBox(textBox, validationMode == ValidationMode.Dynamic);
         }
 
         private static void TextBox_Loaded(object sender, RoutedEventArgs e)
         {
-            var textBox = (TextBox)sender;
+            TextBox textBox = (TextBox)sender;
             ValidateTextBox(textBox);
         }
 
         private static void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            var textBox = (TextBox)sender;
+            TextBox textBox = (TextBox)sender;
             ValidateTextBox(textBox);
         }
 
         private static void ValidateTextBox(TextBox textBox, bool force = true)
         {
-            var validationType = (ValidationType)textBox.GetValue(ValidationTypeProperty);
+            ValidationType validationType = (ValidationType)textBox.GetValue(ValidationTypeProperty);
             string regex;
             bool regexMatch;
             switch (validationType)
@@ -88,7 +86,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             {
                 if (!string.IsNullOrEmpty(textBox.Text))
                 {
-                    var validationModel = (ValidationMode)textBox.GetValue(ValidationModeProperty);
+                    ValidationMode validationModel = (ValidationMode)textBox.GetValue(ValidationModeProperty);
                     if (validationModel == ValidationMode.Forced)
                     {
                         textBox.Text = string.Empty;

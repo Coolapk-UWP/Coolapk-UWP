@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Toolkit.Parsers.Core;
 using Microsoft.Toolkit.Parsers.Markdown.Helpers;
+using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
 {
@@ -46,7 +46,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             }
 
             // Find the end of the span.
-            var innerStart = start + 1;
+            int innerStart = start + 1;
             int innerEnd = Common.IndexOf(markdown, startSequence, innerStart, maxEnd);
             if (innerEnd == -1)
             {
@@ -71,11 +71,11 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
                 return null;
             }
 
-            var emojiName = markdown.Substring(innerStart, innerEnd - innerStart);
+            string emojiName = markdown.Substring(innerStart, innerEnd - innerStart);
 
-            if (_emojiCodesDictionary.TryGetValue(emojiName, out var emojiCode))
+            if (_emojiCodesDictionary.TryGetValue(emojiName, out int emojiCode))
             {
-                var result = new EmojiInline { Text = char.ConvertFromUtf32(emojiCode), Type = MarkdownInlineType.Emoji };
+                EmojiInline result = new EmojiInline { Text = char.ConvertFromUtf32(emojiCode), Type = MarkdownInlineType.Emoji };
                 return new InlineParseResult(result, start, innerEnd + 1);
             }
 

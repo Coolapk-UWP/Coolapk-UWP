@@ -27,7 +27,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <inheritdoc/>
         protected override object ProvideValue()
         {
-            var fontIcon = new FontIcon
+            FontIcon fontIcon = new FontIcon
             {
                 Glyph = Glyph,
                 FontFamily = FontFamily ?? SymbolThemeFontFamily,

@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -13,8 +13,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 {
     internal class WrapLayoutState
     {
-        private List<WrapItem> _items = new List<WrapItem>();
-        private VirtualizingLayoutContext _context;
+        private readonly List<WrapItem> _items = new List<WrapItem>();
+        private readonly VirtualizingLayoutContext _context;
 
         public WrapLayoutState(VirtualizingLayoutContext context)
         {
@@ -65,12 +65,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         internal void SetOrientation(Orientation orientation)
         {
-            foreach (var item in _items.Where(i => i.Measure.HasValue))
+            foreach (WrapItem item in _items.Where(i => i.Measure.HasValue))
             {
                 UvMeasure measure = item.Measure.Value;
-                double v = measure.V;
-                measure.V = measure.U;
-                measure.U = v;
+                (measure.U, measure.V) = (measure.V, measure.U);
                 item.Measure = measure;
                 item.Position = null;
             }
@@ -81,7 +79,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         internal void ClearPositions()
         {
-            foreach (var item in _items)
+            foreach (WrapItem item in _items)
             {
                 item.Position = null;
             }
@@ -106,7 +104,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             int itemCount = _items.Count;
             for (int i = _items.Count - 1; i >= 0; i--)
             {
-                var item = _items[i];
+                WrapItem item = _items[i];
                 if (item.Position == null)
                 {
                     itemCount--;
@@ -127,14 +125,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             }
 
             double totalHeight = lastPosition.Value.V + maxV;
-            if (calculateAverage)
-            {
-                return (totalHeight / itemCount) * _context.ItemCount;
-            }
-            else
-            {
-                return totalHeight;
-            }
+            return calculateAverage ? totalHeight / itemCount * _context.ItemCount : totalHeight;
         }
 
         internal void RecycleElementAt(int index)

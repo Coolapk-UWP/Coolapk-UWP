@@ -16,8 +16,8 @@ namespace Microsoft.Toolkit.Uwp.UI
     public class InMemoryStorage<T>
     {
         private int _maxItemCount;
-        private ConcurrentDictionary<string, InMemoryStorageItem<T>> _inMemoryStorage = new ConcurrentDictionary<string, InMemoryStorageItem<T>>();
-        private object _settingMaxItemCountLocker = new object();
+        private readonly ConcurrentDictionary<string, InMemoryStorageItem<T>> _inMemoryStorage = new ConcurrentDictionary<string, InMemoryStorageItem<T>>();
+        private readonly object _settingMaxItemCountLocker = new object();
 
         /// <summary>
         /// Gets or sets the maximum count of Items that can be stored in this InMemoryStorage instance.
@@ -61,7 +61,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             DateTime expirationDate = DateTime.Now.Subtract(duration);
 
-            var itemsToRemove = _inMemoryStorage.Where(kvp => kvp.Value.LastUpdated <= expirationDate).Select(kvp => kvp.Key);
+            IEnumerable<string> itemsToRemove = _inMemoryStorage.Where(kvp => kvp.Value.LastUpdated <= expirationDate).Select(kvp => kvp.Key);
 
             if (itemsToRemove.Any())
             {
@@ -75,7 +75,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="keys">identified of the in-memory storage item</param>
         public void Remove(IEnumerable<string> keys)
         {
-            foreach (var key in keys)
+            foreach (string key in keys)
             {
                 if (string.IsNullOrWhiteSpace(key))
                 {
@@ -102,7 +102,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             // ensure max limit is maintained. trim older entries first
             if (_inMemoryStorage.Count > MaxItemCount)
             {
-                var itemsToRemove = _inMemoryStorage.OrderBy(kvp => kvp.Value.Created).Take(_inMemoryStorage.Count - MaxItemCount).Select(kvp => kvp.Key);
+                IEnumerable<string> itemsToRemove = _inMemoryStorage.OrderBy(kvp => kvp.Value.Created).Take(_inMemoryStorage.Count - MaxItemCount).Select(kvp => kvp.Key);
                 Remove(itemsToRemove);
             }
         }
@@ -115,7 +115,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>Valid item if not out of date or return null if out of date or item does not exist</returns>
         public InMemoryStorageItem<T> GetItem(string id, TimeSpan duration)
         {
-            if (!_inMemoryStorage.TryGetValue(id, out var tempItem))
+            if (!_inMemoryStorage.TryGetValue(id, out InMemoryStorageItem<T> tempItem))
             {
                 return null;
             }

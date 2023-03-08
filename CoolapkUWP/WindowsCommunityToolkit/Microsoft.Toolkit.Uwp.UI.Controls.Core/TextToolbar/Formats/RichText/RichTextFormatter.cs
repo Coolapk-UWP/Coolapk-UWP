@@ -27,41 +27,13 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.RichText
         /// <inheritdoc/>
         public override void OnSelectionChanged()
         {
-            if (Selected.CharacterFormat.Bold == FormatEffect.On)
-            {
-                BoldButton.IsToggled = true;
-            }
-            else
-            {
-                BoldButton.IsToggled = false;
-            }
+            BoldButton.IsToggled = Selected.CharacterFormat.Bold == FormatEffect.On;
 
-            if (Selected.CharacterFormat.Italic == FormatEffect.On)
-            {
-                ItalicButton.IsToggled = true;
-            }
-            else
-            {
-                ItalicButton.IsToggled = false;
-            }
+            ItalicButton.IsToggled = Selected.CharacterFormat.Italic == FormatEffect.On;
 
-            if (Selected.CharacterFormat.Strikethrough == FormatEffect.On)
-            {
-                StrikeButton.IsToggled = true;
-            }
-            else
-            {
-                StrikeButton.IsToggled = false;
-            }
+            StrikeButton.IsToggled = Selected.CharacterFormat.Strikethrough == FormatEffect.On;
 
-            if (Selected.CharacterFormat.Underline != UnderlineType.None)
-            {
-                Underline.IsToggled = true;
-            }
-            else
-            {
-                Underline.IsToggled = false;
-            }
+            Underline.IsToggled = Selected.CharacterFormat.Underline != UnderlineType.None;
 
             switch (Selected.ParagraphFormat.ListType)
             {
@@ -92,7 +64,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.RichText
         {
             get
             {
-                Model.Editor.Document.GetText(TextGetOptions.FormatRtf, out var currentvalue);
+                Model.Editor.Document.GetText(TextGetOptions.FormatRtf, out string currentvalue);
                 return currentvalue;
             }
         }

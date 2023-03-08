@@ -152,8 +152,8 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
         /// <returns>The status of the communication with the GATT device.</returns>
         private async Task<GattCommunicationStatus> PopulateAllCharacteristicsAsync()
         {
-            var tokenSource = new CancellationTokenSource(5000);
-            var getCharacteristicsTask = await Task.Run(
+            CancellationTokenSource tokenSource = new CancellationTokenSource(5000);
+            Windows.Foundation.IAsyncOperation<GattCharacteristicsResult> getCharacteristicsTask = await Task.Run(
                 () => Service.GetCharacteristicsAsync(BluetoothCacheMode.Uncached),
                 tokenSource.Token);
 
@@ -162,7 +162,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
 
             if (result.Status == GattCommunicationStatus.Success)
             {
-                foreach (var gattCharacteristic in result.Characteristics)
+                foreach (GattCharacteristic gattCharacteristic in result.Characteristics)
                 {
                     Characteristics.Add(new ObservableGattCharacteristics(gattCharacteristic, this));
                 }

@@ -3,12 +3,11 @@ using Microsoft.Toolkit.Uwp.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Windows.Web.Http.Filters;
-using Windows.Web.Http;
-using IObjectSerializer = Microsoft.Toolkit.Helpers.IObjectSerializer;
 using Windows.Foundation;
-using CoolapkUWP.Common;
+using Windows.UI.Xaml;
+using Windows.Web.Http;
+using Windows.Web.Http.Filters;
+using IObjectSerializer = Microsoft.Toolkit.Helpers.IObjectSerializer;
 
 namespace CoolapkUWP.Helpers
 {

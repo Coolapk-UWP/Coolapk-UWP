@@ -23,7 +23,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
     {
         private void UpdateTrigger()
         {
-            var evaluation = CompareValues();
+            Comparison evaluation = CompareValues();
             SetActive(evaluation == Comparison ||
                 (Comparison == Comparison.LessThanOrEqual && (evaluation == Comparison.LessThan || evaluation == Comparison.Equal)) ||
                 (Comparison == Comparison.GreaterThanOrEqual && (evaluation == Comparison.GreaterThan || evaluation == Comparison.Equal)));
@@ -34,7 +34,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
         /// </summary>
         public object Value
         {
-            get { return (object)GetValue(ValueProperty); }
+            get { return GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
         }
 
@@ -46,7 +46,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
 
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var obj = (CompareStateTrigger)d;
+            CompareStateTrigger obj = (CompareStateTrigger)d;
             obj.UpdateTrigger();
         }
 
@@ -55,7 +55,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
         /// </summary>
         public object To
         {
-            get { return (object)GetValue(ToProperty); }
+            get { return GetValue(ToProperty); }
             set { SetValue(ToProperty, value); }
         }
 
@@ -82,8 +82,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
 
         internal Comparison CompareValues()
         {
-            var v1 = Value;
-            var v2 = To;
+            object v1 = Value;
+            object v2 = To;
             if ((Comparison == Comparison.Equal || Comparison == Comparison.LessThanOrEqual || Comparison == Comparison.GreaterThanOrEqual) && v1 == v2)
             {
                 return Comparison.Equal;
@@ -116,19 +116,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
                 {
                     if (v1 is IComparable)
                     {
-                        var result = ((IComparable)v1).CompareTo(v2);
-                        if (result < 0)
-                        {
-                            return Comparison.LessThan;
-                        }
-                        else if (result == 0)
-                        {
-                            return Comparison.Equal;
-                        }
-                        else
-                        {
-                            return Comparison.GreaterThan;
-                        }
+                        int result = ((IComparable)v1).CompareTo(v2);
+                        return result < 0 ? Comparison.LessThan : result == 0 ? Comparison.Equal : Comparison.GreaterThan;
                     }
                 }
             }

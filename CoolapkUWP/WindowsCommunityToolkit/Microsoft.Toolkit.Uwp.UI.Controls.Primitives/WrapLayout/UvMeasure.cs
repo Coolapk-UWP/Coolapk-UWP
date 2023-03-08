@@ -9,7 +9,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
     [System.Diagnostics.DebuggerDisplay("U = {U} V = {V}")]
     internal struct UvMeasure
     {
-        internal static readonly UvMeasure Zero = default(UvMeasure);
+        internal static readonly UvMeasure Zero = default;
 
         internal double U { get; set; }
 
@@ -31,12 +31,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         public override bool Equals(object obj)
         {
-            if (obj is UvMeasure measure)
-            {
-                return (measure.U == U) && (measure.V == V);
-            }
-
-            return false;
+            return obj is UvMeasure measure && (measure.U == U) && (measure.V == V);
         }
 
         public override int GetHashCode()

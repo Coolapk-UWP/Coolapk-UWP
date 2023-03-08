@@ -3,9 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Linq;
-using System.Reflection;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
@@ -22,7 +19,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// </summary>
         private static void OnPropertyChangedStatic(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var instance = d as MarkdownTextBlock;
+            MarkdownTextBlock instance = d as MarkdownTextBlock;
 
             // Defer to the instance method.
             instance?.OnPropertyChanged(d, e.Property);

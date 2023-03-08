@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 using Microsoft.Toolkit.Parsers.Markdown.Inlines;
+using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
 {
@@ -35,8 +35,10 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
         /// <returns> A parsed paragraph. </returns>
         internal static ParagraphBlock Parse(string markdown)
         {
-            var result = new ParagraphBlock();
-            result.Inlines = Common.ParseInlineChildren(markdown, 0, markdown.Length);
+            ParagraphBlock result = new ParagraphBlock
+            {
+                Inlines = Common.ParseInlineChildren(markdown, 0, markdown.Length)
+            };
             return result;
         }
 
@@ -46,12 +48,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
         /// <returns> The textual representation of this object. </returns>
         public override string ToString()
         {
-            if (Inlines == null)
-            {
-                return base.ToString();
-            }
-
-            return string.Join(string.Empty, Inlines);
+            return Inlines == null ? base.ToString() : string.Join(string.Empty, Inlines);
         }
     }
 }

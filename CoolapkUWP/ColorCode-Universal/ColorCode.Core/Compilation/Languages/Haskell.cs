@@ -2,8 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Collections.Generic;
 using ColorCode.Common;
+using System.Collections.Generic;
 
 namespace ColorCode.Compilation.Languages
 {
@@ -40,7 +40,7 @@ namespace ColorCode.Compilation.Languages
 
         private const string vsymbol = @"[\!\#\$%\&\⋆\+\./<=>\?@\\\^\-~\|]";
         private const string symbol = @"(?:" + vsymbol + "|:)";
-        
+
         private const string varop = vsymbol + "(?:" + symbol + @")*";
         private const string conop = ":(?:" + symbol + @")*";
 
@@ -50,16 +50,16 @@ namespace ColorCode.Compilation.Languages
         private const string qconid = @"((?:[A-Z][\w']*\.)*)" + conid;
         private const string qvarid = @"((?:[A-Z][\w']*\.)*)" + varid;
         private const string qconidop = @"((?:[A-Z][\w']*\.)*)(?:" + conid + "|" + conop + ")";
-        
+
         private const string intype = @"(\bforall\b|=>)|" + qconidop + @"|(?!deriving|where|data|type|newtype|instance|class)([a-z][\w']*)|\->|[ \t!\#]|\r?\n[ \t]+(?=[\(\)\[\]]|->|=>|[A-Z])";
         private const string toptype = "(?:" + intype + "|::)";
         private const string nestedtype = @"(?:" + intype + ")";
 
         private const string datatype = "(?:" + intype + @"|[,]|\r?\n[ \t]+|::|(?<!" + symbol + @"|^)([=\|])\s*(" + conid + ")|" + nonnestComment + ")";
-        
-        private const string inexports = @"(?:[\[\],\s]|(" + conid + ")|" + varid 
+
+        private const string inexports = @"(?:[\[\],\s]|(" + conid + ")|" + varid
                                           + "|" + nonnestComment
-                                          + @"|\((?:[,\.\s]|(" + conid + ")|" + varid + @")*\)" 
+                                          + @"|\((?:[,\.\s]|(" + conid + ")|" + varid + @")*\)"
                                           + ")*";
 
         public IList<LanguageRule> Rules
@@ -95,9 +95,9 @@ namespace ColorCode.Compilation.Languages
                         // Type highlighting using named balanced groups to balance parenthesized sub types
                         // 'toptype' and 'nestedtype' capture three groups: type keywords, namespaces, and type variables 
                         @"(?:" + @"\b(class|instance|deriving)\b"
-                                + @"|::(?!" + symbol + ")" 
-                                + @"|\b(type)\s+" + toptype + @"*\s*(=)" 
-                                + @"|\b(data|newtype)\s+" + toptype + @"*\s*(=)\s*(" + conid + ")" 
+                                + @"|::(?!" + symbol + ")"
+                                + @"|\b(type)\s+" + toptype + @"*\s*(=)"
+                                + @"|\b(data|newtype)\s+" + toptype + @"*\s*(=)\s*(" + conid + ")"
                                 + @"|\s+(\|)\s*(" + conid + ")"
                           + ")" + toptype + "*" +
                         @"(?:" +
@@ -106,7 +106,7 @@ namespace ColorCode.Compilation.Languages
                         @")*",
                         new Dictionary<int,string> {
                             { 0, ScopeName.Type },
-                    
+
                             { 1, ScopeName.Keyword },   // class instance etc
 
                             { 2, ScopeName.Keyword},        // type
@@ -114,28 +114,28 @@ namespace ColorCode.Compilation.Languages
                             { 4, ScopeName.NameSpace },
                             { 5, ScopeName.TypeVariable },
                             { 6, ScopeName.Keyword},
-                           
+
                             { 7, ScopeName.Keyword},        // data , newtype
                             { 8, ScopeName.Keyword},
                             { 9, ScopeName.NameSpace },
                             { 10, ScopeName.TypeVariable },
                             { 11, ScopeName.Keyword },       // = conid
-                            { 12, ScopeName.Constructor },   
+                            { 12, ScopeName.Constructor },
 
                             { 13, ScopeName.Keyword },       // | conid
-                            { 14, ScopeName.Constructor },  
+                            { 14, ScopeName.Constructor },
 
                             { 15, ScopeName.Keyword},
                             { 16, ScopeName.NameSpace },
                             { 17, ScopeName.TypeVariable },
-                    
+
                             { 18, ScopeName.Keyword },
                             { 19, ScopeName.NameSpace },
                             { 20, ScopeName.TypeVariable },
-                    
+
                             { 21, ScopeName.Keyword },
                             { 22, ScopeName.NameSpace },
-                            { 23, ScopeName.TypeVariable },                
+                            { 23, ScopeName.TypeVariable },
                         }),
 
                         
@@ -157,7 +157,7 @@ namespace ColorCode.Compilation.Languages
                                 { 1, ScopeName.Keyword },
                                 { 2, ScopeName.NameSpace }
                             }),
-    
+
                     new LanguageRule(
                         @"\b(import)\s+(qualified\s+)?(" + qconid + @")\s*"
                             + @"(?:\(" + inexports + @"\))?"

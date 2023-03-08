@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using Microsoft.Toolkit.Parsers.Core;
 using Microsoft.Toolkit.Parsers.Markdown;
 using Microsoft.Toolkit.Parsers.Markdown.Inlines;
 using Microsoft.Toolkit.Parsers.Markdown.Render;
+using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
@@ -42,7 +42,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// <returns> A XAML UI element. </returns>
         public UIElement Render()
         {
-            var stackPanel = new StackPanel();
+            StackPanel stackPanel = new StackPanel();
             RootElement = stackPanel;
             Render(new UIElementCollectionRenderContext(stackPanel.Children) { Foreground = Foreground });
 
@@ -61,13 +61,12 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// <returns>The rich text block</returns>
         protected RichTextBlock CreateOrReuseRichTextBlock(IRenderContext context)
         {
-            var localContext = context as UIElementCollectionRenderContext;
-            if (localContext == null)
+            if (!(context is UIElementCollectionRenderContext localContext))
             {
                 throw new RenderContextIncorrectException();
             }
 
-            var blockUIElementCollection = localContext.BlockUIElementCollection;
+            UIElementCollection blockUIElementCollection = localContext.BlockUIElementCollection;
 
             // Reuse the last RichTextBlock, if possible.
             if (blockUIElementCollection != null && blockUIElementCollection.Count > 0 && blockUIElementCollection[blockUIElementCollection.Count - 1] is RichTextBlock)
@@ -75,7 +74,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
                 return (RichTextBlock)blockUIElementCollection[blockUIElementCollection.Count - 1];
             }
 
-            var result = new RichTextBlock
+            RichTextBlock result = new RichTextBlock
             {
                 CharacterSpacing = CharacterSpacing,
                 FontFamily = FontFamily,
@@ -99,7 +98,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// <returns>The created TextBlock</returns>
         protected TextBlock CreateTextBlock(RenderContext context)
         {
-            var result = new TextBlock
+            TextBlock result = new TextBlock
             {
                 CharacterSpacing = CharacterSpacing,
                 FontFamily = FontFamily,
@@ -120,7 +119,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// </summary>
         protected void AlterChildRuns(Span parentSpan, Action<Span, Run> action)
         {
-            foreach (var inlineElement in parentSpan.Inlines)
+            foreach (Inline inlineElement in parentSpan.Inlines)
             {
                 if (inlineElement is Span span)
                 {
@@ -139,7 +138,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// <returns> <c>true</c> if all text is superscript (level 1); <c>false</c> otherwise. </returns>
         private bool AllTextIsSuperscript(IInlineContainer container, int superscriptLevel = 0)
         {
-            foreach (var inline in container.Inlines)
+            foreach (MarkdownInline inline in container.Inlines)
             {
                 if (inline is SuperscriptTextInline textInline)
                 {
@@ -176,7 +175,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         {
             for (int i = 0; i < container.Inlines.Count; i++)
             {
-                var inline = container.Inlines[i];
+                MarkdownInline inline = container.Inlines[i];
                 if (inline is SuperscriptTextInline textInline)
                 {
                     // Remove any nested superscripts.
@@ -189,7 +188,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
                         container.Inlines.Insert(i++, new TextRunInline { Text = "^" });
                     }
 
-                    foreach (var superscriptInline in textInline.Inlines)
+                    foreach (MarkdownInline superscriptInline in textInline.Inlines)
                     {
                         container.Inlines.Insert(i++, superscriptInline);
                     }
@@ -206,7 +205,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
 
         private void Preventative_PointerWheelChanged(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            var pointerPoint = e.GetCurrentPoint((UIElement)sender);
+            Windows.UI.Input.PointerPoint pointerPoint = e.GetCurrentPoint((UIElement)sender);
 
             if (pointerPoint.Properties.IsHorizontalMouseWheel)
             {
@@ -214,7 +213,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
                 return;
             }
 
-            var rootViewer = RootElement.FindAscendant<ScrollViewer>();
+            ScrollViewer rootViewer = RootElement.FindAscendant<ScrollViewer>();
             if (rootViewer != null)
             {
                 pointerWheelChanged?.Invoke(rootViewer, new object[] { e });

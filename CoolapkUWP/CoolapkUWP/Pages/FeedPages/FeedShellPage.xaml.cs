@@ -77,7 +77,7 @@ namespace CoolapkUWP.Pages.FeedPages
             _currentActivity = userActivity.CreateSession();
         }
 
-        private async void FeedButton_Click(object sender, RoutedEventArgs _)
+        private async void FeedButton_Click(object sender, RoutedEventArgs e)
         {
             void DisabledCopy()
             {
@@ -125,7 +125,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
                 default:
                     DisabledCopy();
-                    UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+                    _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
                     break;
             }
         }

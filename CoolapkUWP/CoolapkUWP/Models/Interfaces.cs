@@ -1,7 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Images;
 using System.Threading.Tasks;
-using Windows.UI.Core;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Models

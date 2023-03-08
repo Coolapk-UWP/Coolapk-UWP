@@ -32,12 +32,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
         /// <returns> <c>true</c> if the specified object is equal to the current object; otherwise, <c>false.</c> </returns>
         public override bool Equals(object obj)
         {
-            if (!base.Equals(obj) || !(obj is MarkdownBlock))
-            {
-                return false;
-            }
-
-            return Type == ((MarkdownBlock)obj).Type;
+            return base.Equals(obj) && obj is MarkdownBlock && Type == ((MarkdownBlock)obj).Type;
         }
 
         /// <summary>

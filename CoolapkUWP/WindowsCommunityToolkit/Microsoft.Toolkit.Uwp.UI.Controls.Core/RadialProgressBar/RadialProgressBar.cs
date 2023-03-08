@@ -125,22 +125,22 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         // Render outline and progress segment when thickness is changed
         private static void ThicknessChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var sender = d as RadialProgressBar;
+            RadialProgressBar sender = d as RadialProgressBar;
             sender.RenderAll();
         }
 
         // Render outline and progress segment when control is resized.
         private void SizeChangedHandler(object sender, SizeChangedEventArgs e)
         {
-            var self = sender as RadialProgressBar;
+            RadialProgressBar self = sender as RadialProgressBar;
             self.RenderAll();
         }
 
         private double ComputeNormalizedRange()
         {
-            var range = Maximum - Minimum;
-            var delta = Value - Minimum;
-            var output = range == 0.0 ? 0.0 : delta / range;
+            double range = Maximum - Minimum;
+            double delta = Value - Minimum;
+            double output = range == 0.0 ? 0.0 : delta / range;
             output = Math.Min(Math.Max(0.0, output), 0.9999);
             return output;
         }
@@ -148,9 +148,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         // Compute size of ellipse so that the outer edge touches the bounding rectangle
         private Size ComputeEllipseSize()
         {
-            var safeThickness = Math.Max(Thickness, 0.0);
-            var width = Math.Max((ActualWidth - safeThickness) / 2.0, 0.0);
-            var height = Math.Max((ActualHeight - safeThickness) / 2.0, 0.0);
+            double safeThickness = Math.Max(Thickness, 0.0);
+            double width = Math.Max((ActualWidth - safeThickness) / 2.0, 0.0);
+            double height = Math.Max((ActualHeight - safeThickness) / 2.0, 0.0);
             return new Size(width, height);
         }
 
@@ -162,11 +162,11 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return;
             }
 
-            var normalizedRange = ComputeNormalizedRange();
+            double normalizedRange = ComputeNormalizedRange();
 
-            var angle = 2 * Math.PI * normalizedRange;
-            var size = ComputeEllipseSize();
-            var translationFactor = Math.Max(Thickness / 2.0, 0.0);
+            double angle = 2 * Math.PI * normalizedRange;
+            Size size = ComputeEllipseSize();
+            double translationFactor = Math.Max(Thickness / 2.0, 0.0);
 
             double x = (Math.Sin(angle) * size.Width) + size.Width + translationFactor;
             double y = (((Math.Cos(angle) * size.Height) - size.Height) * -1) + translationFactor;
@@ -183,9 +183,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return;
             }
 
-            var size = ComputeEllipseSize();
-            var segmentWidth = size.Width;
-            var translationFactor = Math.Max(Thickness / 2.0, 0.0);
+            Size size = ComputeEllipseSize();
+            double segmentWidth = size.Width;
+            double translationFactor = Math.Max(Thickness / 2.0, 0.0);
 
             outlineFigure.StartPoint = barFigure.StartPoint = new Point(segmentWidth + translationFactor, translationFactor);
             outlineArc.Size = barArc.Size = new Size(segmentWidth, size.Height);

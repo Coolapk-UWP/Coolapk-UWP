@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Uwp.UI.Predicates;
 using System;
 using System.Collections.Generic;
-using Microsoft.Toolkit.Uwp.UI.Predicates;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
@@ -102,7 +102,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             int childrenCount = VisualTreeHelper.GetChildrenCount(element);
 
-            for (var i = 0; i < childrenCount; i++)
+            for (int i = 0; i < childrenCount; i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(element, i);
 
@@ -131,12 +131,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The descendant (or self) that was found, or <see langword="null"/>.</returns>
         public static FrameworkElement FindDescendantOrSelf(this DependencyObject element, string name, StringComparison comparisonType = StringComparison.Ordinal)
         {
-            if (element is FrameworkElement result && name.Equals(result.Name, comparisonType))
-            {
-                return result;
-            }
-
-            return FindDescendant(element, name, comparisonType);
+            return element is FrameworkElement result && name.Equals(result.Name, comparisonType)
+                ? result
+                : FindDescendant(element, name, comparisonType);
         }
 
         /// <summary>
@@ -148,12 +145,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         public static T FindDescendantOrSelf<T>(this DependencyObject element)
             where T : DependencyObject
         {
-            if (element is T result)
-            {
-                return result;
-            }
-
-            return FindDescendant<T>(element);
+            return element is T result ? result : FindDescendant<T>(element);
         }
 
         /// <summary>
@@ -164,12 +156,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The descendant (or self) that was found, or <see langword="null"/>.</returns>
         public static DependencyObject FindDescendantOrSelf(this DependencyObject element, Type type)
         {
-            if (element.GetType() == type)
-            {
-                return element;
-            }
-
-            return FindDescendant(element, type);
+            return element.GetType() == type ? element : FindDescendant(element, type);
         }
 
         /// <summary>
@@ -182,12 +169,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         public static T FindDescendantOrSelf<T>(this DependencyObject element, Func<T, bool> predicate)
             where T : DependencyObject
         {
-            if (element is T result && predicate(result))
-            {
-                return result;
-            }
-
-            return FindDescendant(element, predicate);
+            return element is T result && predicate(result) ? result : FindDescendant(element, predicate);
         }
 
         /// <summary>
@@ -202,12 +184,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         public static T FindDescendantOrSelf<T, TState>(this DependencyObject element, TState state, Func<T, TState, bool> predicate)
             where T : DependencyObject
         {
-            if (element is T result && predicate(result, state))
-            {
-                return result;
-            }
-
-            return FindDescendant(element, state, predicate);
+            return element is T result && predicate(result, state) ? result : FindDescendant(element, state, predicate);
         }
 
         /// <summary>
@@ -226,7 +203,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             int childrenCount = VisualTreeHelper.GetChildrenCount(element);
 
-            for (var i = 0; i < childrenCount; i++)
+            for (int i = 0; i < childrenCount; i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(element, i);
 
@@ -351,12 +328,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The ascendant (or self) that was found, or <see langword="null"/>.</returns>
         public static FrameworkElement FindAscendantOrSelf(this DependencyObject element, string name, StringComparison comparisonType = StringComparison.Ordinal)
         {
-            if (element is FrameworkElement result && name.Equals(result.Name, comparisonType))
-            {
-                return result;
-            }
-
-            return FindAscendant(element, name, comparisonType);
+            return element is FrameworkElement result && name.Equals(result.Name, comparisonType)
+                ? result
+                : FindAscendant(element, name, comparisonType);
         }
 
         /// <summary>
@@ -368,12 +342,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         public static T FindAscendantOrSelf<T>(this DependencyObject element)
             where T : DependencyObject
         {
-            if (element is T result)
-            {
-                return result;
-            }
-
-            return FindAscendant<T>(element);
+            return element is T result ? result : FindAscendant<T>(element);
         }
 
         /// <summary>
@@ -384,12 +353,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The ascendant (or self) that was found, or <see langword="null"/>.</returns>
         public static DependencyObject FindAscendantOrSelf(this DependencyObject element, Type type)
         {
-            if (element.GetType() == type)
-            {
-                return element;
-            }
-
-            return FindAscendant(element, type);
+            return element.GetType() == type ? element : FindAscendant(element, type);
         }
 
         /// <summary>
@@ -402,12 +366,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         public static T FindAscendantOrSelf<T>(this DependencyObject element, Func<T, bool> predicate)
             where T : DependencyObject
         {
-            if (element is T result && predicate(result))
-            {
-                return result;
-            }
-
-            return FindAscendant(element, predicate);
+            return element is T result && predicate(result) ? result : FindAscendant(element, predicate);
         }
 
         /// <summary>
@@ -422,12 +381,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         public static T FindAscendantOrSelf<T, TState>(this DependencyObject element, TState state, Func<T, TState, bool> predicate)
             where T : DependencyObject
         {
-            if (element is T result && predicate(result, state))
-            {
-                return result;
-            }
-
-            return FindAscendant(element, state, predicate);
+            return element is T result && predicate(result, state) ? result : FindAscendant(element, state, predicate);
         }
 
         /// <summary>

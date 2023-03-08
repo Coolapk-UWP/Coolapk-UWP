@@ -18,14 +18,8 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
         /// <returns>Name of the UUID</returns>
         public static string ConvertUuidToName(Guid uuid)
         {
-            GattNativeUuid name;
 
-            if (Enum.TryParse(ConvertUuidToShortId(uuid).ToString(), out name))
-            {
-                return name.ToString();
-            }
-
-            return uuid.ToString();
+            return Enum.TryParse(ConvertUuidToShortId(uuid).ToString(), out GattNativeUuid name) ? name.ToString() : uuid.ToString();
         }
 
         /// <summary>
@@ -36,8 +30,8 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
         /// <returns>32bit version of the input UUID</returns>
         public static ushort ConvertUuidToShortId(Guid uuid)
         {
-            var bytes = uuid.ToByteArray();
-            var shortUuid = (ushort)(bytes[0] | (bytes[1] << 8));
+            byte[] bytes = uuid.ToByteArray();
+            ushort shortUuid = (ushort)(bytes[0] | (bytes[1] << 8));
 
             return shortUuid;
         }

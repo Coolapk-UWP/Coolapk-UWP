@@ -49,22 +49,22 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons.Common
         /// <param name="button">The <see cref="ToolbarButton"/> invoked</param>
         public async void OpenLinkCreator(ToolbarButton button)
         {
-            var selection = button.Model.Editor.Document.Selection;
+            Windows.UI.Text.ITextSelection selection = button.Model.Editor.Document.Selection;
 
-            var labelBox = new RichEditBox
+            RichEditBox labelBox = new RichEditBox
             {
                 PlaceholderText = "WCT_TextToolbar_LabelLabel".GetLocalized("Microsoft.Toolkit.Uwp.UI.Controls.Core/Resources"),
                 Margin = new Thickness(0, 0, 0, 5),
                 AcceptsReturn = false
             };
-            var linkBox = new TextBox
+            TextBox linkBox = new TextBox
             {
                 PlaceholderText = "WCT_TextToolbar_UrlLabel".GetLocalized("Microsoft.Toolkit.Uwp.UI.Controls.Core/Resources")
             };
 
             CheckBox relativeBox = null;
 
-            var contentPanel = new StackPanel
+            StackPanel contentPanel = new StackPanel
             {
                 Children =
                     {
@@ -86,7 +86,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons.Common
             selection.GetText(Windows.UI.Text.TextGetOptions.FormatRtf, out string labeltext);
             labelBox.Document.SetText(Windows.UI.Text.TextSetOptions.FormatRtf, labeltext);
 
-            var contentDialog = new ContentDialog
+            ContentDialog contentDialog = new ContentDialog
             {
                 Title = "WCT_TextToolbar_CreateLinkLabel".GetLocalized("Microsoft.Toolkit.Uwp.UI.Controls.Core/Resources"),
                 Content = contentPanel,
@@ -99,7 +99,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons.Common
                 contentDialog.XamlRoot = button.XamlRoot;
             }
 
-            var result = await contentDialog.ShowAsync();
+            ContentDialogResult result = await contentDialog.ShowAsync();
 
             if (result == ContentDialogResult.Primary)
             {
@@ -119,7 +119,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons.Common
 
                 if (Model.UseURIChecker && !string.IsNullOrWhiteSpace(linkText))
                 {
-                    var wellFormed = Uri.IsWellFormedUriString(linkText, relativeBox?.IsChecked == true ? UriKind.RelativeOrAbsolute : UriKind.Absolute);
+                    bool wellFormed = Uri.IsWellFormedUriString(linkText, relativeBox?.IsChecked == true ? UriKind.RelativeOrAbsolute : UriKind.Absolute);
                     if (!wellFormed)
                     {
                         ShowContentDialog(warningLabel, linkInvalidLabel, okLabel, button);
@@ -133,7 +133,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons.Common
 
         private async void ShowContentDialog(string title, string content, string primaryButtonText, ToolbarButton button)
         {
-            var contentDialog = new ContentDialog
+            ContentDialog contentDialog = new ContentDialog
             {
                 Title = title,
                 Content = content,

@@ -114,7 +114,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void OnMetadataItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var control = (MetadataControl)d;
+            MetadataControl control = (MetadataControl)d;
             void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args) => control.Update();
 
             if (e.OldValue is INotifyCollectionChanged oldNcc)
@@ -153,8 +153,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             }
 
             Inline unitToAppend;
-            var accessibleString = new StringBuilder();
-            foreach (var unit in Items)
+            StringBuilder accessibleString = new StringBuilder();
+            foreach (MetadataItem unit in Items)
             {
                 if (_textContainer.Inlines.Count > 0)
                 {
@@ -169,7 +169,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
                 if (unit.Command != null)
                 {
-                    var hyperLink = new Hyperlink
+                    Hyperlink hyperLink = new Hyperlink
                     {
                         UnderlineStyle = UnderlineStyle.None,
                         Foreground = _textContainer.Foreground,
@@ -189,7 +189,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                     unitToAppend = hyperLink;
                 }
 
-                var unitAccessibleLabel = unit.AccessibleLabel ?? unit.Label;
+                string unitAccessibleLabel = unit.AccessibleLabel ?? unit.Label;
                 AutomationProperties.SetName(unitToAppend, unitAccessibleLabel);
                 accessibleString.Append(unitAccessibleLabel);
 
@@ -204,7 +204,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         {
             if (AutomationPeer.ListenerExists(AutomationEvents.LiveRegionChanged))
             {
-                var peer = FrameworkElementAutomationPeer.FromElement(this);
+                AutomationPeer peer = FrameworkElementAutomationPeer.FromElement(this);
                 peer?.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
             }
         }

@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 using System;
 using System.Text;
-using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
 {
@@ -57,12 +57,12 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
                 Or the code block starts and ends with ```
             */
 
-            foreach (var lineInfo in Common.ParseLines(markdown, start, maxEnd, quoteDepth))
+            foreach (LineInfo lineInfo in Common.ParseLines(markdown, start, maxEnd, quoteDepth))
             {
                 int pos = lineInfo.StartOfLine;
                 if (pos < maxEnd && markdown[pos] == '`')
                 {
-                    var backTickCount = 0;
+                    int backTickCount = 0;
                     while (pos < maxEnd && backTickCount < 3)
                     {
                         if (markdown[pos] == '`')

@@ -1,9 +1,7 @@
 ﻿using CoolapkUWP.ViewModels.FeedPages;
 using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
-using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;

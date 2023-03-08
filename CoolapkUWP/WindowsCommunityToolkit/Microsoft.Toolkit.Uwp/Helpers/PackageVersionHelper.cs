@@ -47,7 +47,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <returns>The parsed <see cref="PackageVersion"/></returns>
         public static PackageVersion ToPackageVersion(this string formattedVersionNumber)
         {
-            var parts = formattedVersionNumber.Split('.');
+            string[] parts = formattedVersionNumber.Split('.');
 
             return new PackageVersion
             {

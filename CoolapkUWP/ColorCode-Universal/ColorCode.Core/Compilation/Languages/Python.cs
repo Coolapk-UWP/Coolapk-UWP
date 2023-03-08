@@ -2,8 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Collections.Generic;
 using ColorCode.Common;
+using System.Collections.Generic;
 
 namespace ColorCode.Compilation.Languages
 {
@@ -90,7 +90,7 @@ namespace ColorCode.Compilation.Languages
                                
                                // keywords
                                new LanguageRule(
-                                   @"(?i)\b(False|await|else|import|pass|None|break|except|in|raise|True|class|finally|is|return|and|continue|for|lambda|try|as|def|from|" + 
+                                   @"(?i)\b(False|await|else|import|pass|None|break|except|in|raise|True|class|finally|is|return|and|continue|for|lambda|try|as|def|from|" +
                                    @"nonlocal|while|assert|del|global|not|with|async|elif|if|or|yield|self)\b",
                                    new Dictionary<int, string>
                                        {
@@ -125,7 +125,7 @@ namespace ColorCode.Compilation.Languages
             {
                 case "py":
                     return true;
-                
+
                 case "python":
                     return true;
 

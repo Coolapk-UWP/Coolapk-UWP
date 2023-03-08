@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Toolkit.Parsers.Core;
 using Microsoft.Toolkit.Parsers.Markdown.Helpers;
+using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
 {
@@ -91,8 +91,10 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
 
                 // We found something!
                 end = innerEnd + 6;
-                var result = new SuperscriptTextInline();
-                result.Inlines = Common.ParseInlineChildren(markdown, innerStart, innerEnd);
+                SuperscriptTextInline result = new SuperscriptTextInline
+                {
+                    Inlines = Common.ParseInlineChildren(markdown, innerStart, innerEnd)
+                };
                 return new InlineParseResult(result, start, end);
             }
             else
@@ -126,8 +128,10 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
                 }
 
                 // We found something!
-                var result = new SuperscriptTextInline();
-                result.Inlines = Common.ParseInlineChildren(markdown, innerStart, innerEnd);
+                SuperscriptTextInline result = new SuperscriptTextInline
+                {
+                    Inlines = Common.ParseInlineChildren(markdown, innerStart, innerEnd)
+                };
                 return new InlineParseResult(result, start, end);
             }
         }
@@ -138,12 +142,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
         /// <returns> The textual representation of this object. </returns>
         public override string ToString()
         {
-            if (Inlines == null)
-            {
-                return base.ToString();
-            }
-
-            return "^(" + string.Join(string.Empty, Inlines) + ")";
+            return Inlines == null ? base.ToString() : "^(" + string.Join(string.Empty, Inlines) + ")";
         }
     }
 }

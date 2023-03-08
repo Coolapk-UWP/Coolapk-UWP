@@ -42,7 +42,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
 
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var obj = (RegexStateTrigger)d;
+            RegexStateTrigger obj = (RegexStateTrigger)d;
             obj.UpdateTrigger();
         }
 

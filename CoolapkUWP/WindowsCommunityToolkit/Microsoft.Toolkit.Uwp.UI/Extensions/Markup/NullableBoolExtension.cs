@@ -26,12 +26,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <inheritdoc/>
         protected override object ProvideValue()
         {
-            if (IsNull)
-            {
-                return null;
-            }
-
-            return Value;
+            return IsNull ? null : (object)Value;
         }
     }
 }

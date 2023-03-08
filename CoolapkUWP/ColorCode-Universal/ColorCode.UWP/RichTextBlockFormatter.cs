@@ -52,7 +52,7 @@ namespace ColorCode
         /// <param name="RichText">The Control to add the Text to.</param>
         public void FormatRichTextBlock(string sourceCode, ILanguage Language, RichTextBlock RichText)
         {
-            var paragraph = new Paragraph();
+            Paragraph paragraph = new Paragraph();
             RichText.Blocks.Add(paragraph);
             FormatInlines(sourceCode, Language, paragraph.Inlines);
         }
@@ -73,10 +73,12 @@ namespace ColorCode
 
         protected override void Write(string parsedSourceCode, IList<Scope> scopes)
         {
-            var styleInsertions = new List<TextInsertion>();
+            List<TextInsertion> styleInsertions = new List<TextInsertion>();
 
             foreach (Scope scope in scopes)
+            {
                 GetStyleInsertionsForCapturedStyle(scope, styleInsertions);
+            }
 
             styleInsertions.SortStable((x, y) => x.Index.CompareTo(y.Index));
 
@@ -84,9 +86,9 @@ namespace ColorCode
 
             Scope PreviousScope = null;
 
-            foreach (var styleinsertion in styleInsertions)
+            foreach (TextInsertion styleinsertion in styleInsertions)
             {
-                var text = parsedSourceCode.Substring(offset, styleinsertion.Index - offset);
+                string text = parsedSourceCode.Substring(offset, styleinsertion.Index - offset);
                 CreateSpan(text, PreviousScope);
                 if (!string.IsNullOrWhiteSpace(styleinsertion.Text))
                 {
@@ -97,7 +99,7 @@ namespace ColorCode
                 PreviousScope = styleinsertion.Scope;
             }
 
-            var remaining = parsedSourceCode.Substring(offset);
+            string remaining = parsedSourceCode.Substring(offset);
             // Ensures that those loose carriages don't run away!
             if (remaining != "\r")
             {
@@ -107,14 +109,18 @@ namespace ColorCode
 
         private void CreateSpan(string Text, Scope scope)
         {
-            var span = new Span();
-            var run = new Run
+            Span span = new Span();
+            Run run = new Run
             {
                 Text = Text
             };
 
             // Styles and writes the text to the span.
-            if (scope != null) StyleRun(run, scope);
+            if (scope != null)
+            {
+                StyleRun(run, scope);
+            }
+
             span.Inlines.Add(run);
 
             InlineCollection.Add(span);
@@ -138,15 +144,21 @@ namespace ColorCode
             }
 
             if (!string.IsNullOrWhiteSpace(foreground))
+            {
                 Run.Foreground = foreground.GetSolidColorBrush();
+            }
 
             //Background isn't supported, but a workaround could be created.
 
             if (italic)
+            {
                 Run.FontStyle = FontStyle.Italic;
+            }
 
             if (bold)
+            {
                 Run.FontWeight = FontWeights.Bold;
+            }
         }
 
         private void GetStyleInsertionsForCapturedStyle(Scope scope, ICollection<TextInsertion> styleInsertions)
@@ -158,7 +170,9 @@ namespace ColorCode
             });
 
             foreach (Scope childScope in scope.Children)
+            {
                 GetStyleInsertionsForCapturedStyle(childScope, styleInsertions);
+            }
 
             styleInsertions.Add(new TextInsertion
             {

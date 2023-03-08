@@ -3,12 +3,10 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.ComponentModel;
 using System.Reflection;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Markup;
-using Windows.UI.Xaml.Media;
 
 namespace Microsoft.Toolkit.Uwp.UI.Controls
 {
@@ -54,7 +52,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// </summary>
         public object Value
         {
-            get { return (object)GetValue(ValueProperty); }
+            get { return GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
         }
 
@@ -202,16 +200,16 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             {
                 // If we have a TargetType and the first value is the right type
                 // Then our 2nd value isn't, so convert to string and coerce.
-                var valueBase2 = ConvertValue(TargetType, value);
+                object valueBase2 = ConvertValue(TargetType, value);
 
                 return compare.Equals(valueBase2);
             }
 
             // Neither of our two values matches the type so
             // we'll convert both to a String and try and coerce it to the proper type.
-            var compareBase = ConvertValue(TargetType, compare);
+            object compareBase = ConvertValue(TargetType, compare);
 
-            var valueBase = ConvertValue(TargetType, value);
+            object valueBase = ConvertValue(TargetType, value);
 
             return compareBase.Equals(valueBase);
         }
@@ -224,18 +222,11 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <returns>The converted value</returns>
         internal static object ConvertValue(Type targetType, object value)
         {
-            if (value != null && targetType.IsAssignableFrom(value.GetType()))
-            {
-                return value;
-            }
-            else if (value is string str && EnumTryParse(targetType, str, out object result))
-            {
-                return result;
-            }
-            else
-            {
-                return XamlBindingHelper.ConvertValue(targetType, value);
-            }
+            return value != null && targetType.IsAssignableFrom(value.GetType())
+                ? value
+                : value is string str && EnumTryParse(targetType, str, out object result)
+                    ? result
+                    : XamlBindingHelper.ConvertValue(targetType, value);
         }
 
         private static bool EnumTryParse(Type enumType, string value, out object result)

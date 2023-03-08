@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml;
 
 namespace Microsoft.Toolkit.Uwp.UI.Controls
 {
     internal class StaggeredLayoutState
     {
-        private List<StaggeredItem> _items = new List<StaggeredItem>();
-        private VirtualizingLayoutContext _context;
-        private Dictionary<int, StaggeredColumnLayout> _columnLayout = new Dictionary<int, StaggeredColumnLayout>();
+        private readonly List<StaggeredItem> _items = new List<StaggeredItem>();
+        private readonly VirtualizingLayoutContext _context;
+        private readonly Dictionary<int, StaggeredColumnLayout> _columnLayout = new Dictionary<int, StaggeredColumnLayout>();
         private double _lastAverageHeight;
 
         public StaggeredLayoutState(VirtualizingLayoutContext context)
@@ -102,20 +102,20 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         {
             double desiredHeight = Enumerable.Max(_columnLayout.Values, c => c.Height);
 
-            var itemCount = Enumerable.Sum(_columnLayout.Values, c => c.Count);
+            int itemCount = Enumerable.Sum(_columnLayout.Values, c => c.Count);
             if (itemCount == _context.ItemCount)
             {
                 return desiredHeight;
             }
 
             double averageHeight = 0;
-            foreach (var kvp in _columnLayout)
+            foreach (KeyValuePair<int, StaggeredColumnLayout> kvp in _columnLayout)
             {
                 averageHeight += kvp.Value.Height / kvp.Value.Count;
             }
 
             averageHeight /= _columnLayout.Count;
-            double estimatedHeight = (averageHeight * _context.ItemCount) / _columnLayout.Count;
+            double estimatedHeight = averageHeight * _context.ItemCount / _columnLayout.Count;
             if (estimatedHeight > desiredHeight)
             {
                 desiredHeight = estimatedHeight;
@@ -147,7 +147,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             int numToRemove = _items.Count - index;
             _items.RemoveRange(index, numToRemove);
 
-            foreach (var kvp in _columnLayout)
+            foreach (KeyValuePair<int, StaggeredColumnLayout> kvp in _columnLayout)
             {
                 StaggeredColumnLayout layout = kvp.Value;
                 for (int i = 0; i < layout.Count; i++)
@@ -179,7 +179,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 RecycleElementAt(i);
             }
 
-            foreach (var kvp in _columnLayout)
+            foreach (KeyValuePair<int, StaggeredColumnLayout> kvp in _columnLayout)
             {
                 StaggeredColumnLayout layout = kvp.Value;
                 for (int i = 0; i < layout.Count; i++)

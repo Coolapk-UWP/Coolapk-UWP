@@ -95,14 +95,9 @@ namespace CoolapkUWP.Models.Feeds
                 UserAction = new UserAction(null);
             }
 
-            if (token.TryGetValue("shareUrl", out JToken shareUrl) && !string.IsNullOrEmpty(shareUrl.ToString()))
-            {
-                ShareUrl = shareUrl.ToString();
-            }
-            else
-            {
-                ShareUrl = $"https://www.coolapk.com{(Url != null ? Url.Replace("/question/", "/feed/") : string.Empty)}";
-            }
+            ShareUrl = token.TryGetValue("shareUrl", out JToken shareUrl) && !string.IsNullOrEmpty(shareUrl.ToString())
+                ? shareUrl.ToString()
+                : $"https://www.coolapk.com{(Url != null ? Url.Replace("/question/", "/feed/") : string.Empty)}";
 
             if (token.TryGetValue("message", out JToken message))
             {

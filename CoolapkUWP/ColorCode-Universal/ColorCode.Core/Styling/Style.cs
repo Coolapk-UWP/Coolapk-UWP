@@ -59,10 +59,10 @@ namespace ColorCode.Styling
         public bool Bold { get; set; }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see cref="string"/> that represents this instance.
         /// </returns>
         /// <remarks>
         /// Returns the scope name if specified, or String.Empty otherwise.

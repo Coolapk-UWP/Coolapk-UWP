@@ -30,16 +30,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static bool NavigateUsingKeyboard(KeyEventArgs args, Menu menu, Orientation orientation)
         {
-            object element;
-            if (ControlHelpers.IsXamlRootAvailable && menu.XamlRoot != null)
-            {
-                element = FocusManager.GetFocusedElement(menu.XamlRoot);
-            }
-            else
-            {
-                element = FocusManager.GetFocusedElement();
-            }
-
+            object element = ControlHelpers.IsXamlRootAvailable && menu.XamlRoot != null
+                ? FocusManager.GetFocusedElement(menu.XamlRoot)
+                : FocusManager.GetFocusedElement();
             if (element is MenuFlyoutPresenter &&
                 ((args.VirtualKey == VirtualKey.Down) ||
                  (args.VirtualKey == VirtualKey.Up) ||
@@ -124,18 +117,18 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static MenuItem GetNextMenuItem(Menu menu, int moveCount)
         {
-            var currentMenuItemIndex = menu.Items.IndexOf(menu.SelectedMenuItem);
-            var nextIndex = (currentMenuItemIndex + moveCount + menu.Items.Count) % menu.Items.Count;
-            var nextItem = menu.Items.ElementAt(nextIndex) as MenuItem;
+            int currentMenuItemIndex = menu.Items.IndexOf(menu.SelectedMenuItem);
+            int nextIndex = (currentMenuItemIndex + moveCount + menu.Items.Count) % menu.Items.Count;
+            MenuItem nextItem = menu.Items.ElementAt(nextIndex) as MenuItem;
             nextItem?.Focus(FocusState.Keyboard);
             return nextItem;
         }
 
         private static string MapInputToGestureKey(VirtualKey key, bool menuHasFocus = false)
         {
-            var isCtrlDown = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control).HasFlag(CoreVirtualKeyStates.Down);
-            var isShiftDown = Window.Current.CoreWindow.GetKeyState(VirtualKey.Shift).HasFlag(CoreVirtualKeyStates.Down);
-            var isAltDown = Window.Current.CoreWindow.GetKeyState(VirtualKey.Menu).HasFlag(CoreVirtualKeyStates.Down) || menuHasFocus;
+            bool isCtrlDown = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control).HasFlag(CoreVirtualKeyStates.Down);
+            bool isShiftDown = Window.Current.CoreWindow.GetKeyState(VirtualKey.Shift).HasFlag(CoreVirtualKeyStates.Down);
+            bool isAltDown = Window.Current.CoreWindow.GetKeyState(VirtualKey.Menu).HasFlag(CoreVirtualKeyStates.Down) || menuHasFocus;
 
             if (!isCtrlDown && !isShiftDown && !isAltDown)
             {
@@ -176,7 +169,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         internal bool UpdateMenuItemsFlyoutPlacement()
         {
-            var placementMode = GetMenuFlyoutPlacementMode();
+            FlyoutPlacementMode placementMode = GetMenuFlyoutPlacementMode();
 
             if (placementMode == CurrentFlyoutPlacement)
             {
@@ -214,40 +207,26 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 width = Window.Current.Bounds.Width;
             }
 
-            var ttv = TransformToVisual(content);
-            var menuCoords = ttv.TransformPoint(new Point(0, 0));
+            Windows.UI.Xaml.Media.GeneralTransform ttv = TransformToVisual(content);
+            Point menuCoords = ttv.TransformPoint(new Point(0, 0));
 
             if (Orientation == Orientation.Horizontal)
             {
-                var menuCenter = menuCoords.Y + (ActualHeight / 2);
+                double menuCenter = menuCoords.Y + (ActualHeight / 2);
 
-                if (menuCenter <= height / 2)
-                {
-                    return FlyoutPlacementMode.Bottom;
-                }
-                else
-                {
-                    return FlyoutPlacementMode.Top;
-                }
+                return menuCenter <= height / 2 ? FlyoutPlacementMode.Bottom : FlyoutPlacementMode.Top;
             }
             else
             {
-                var menuCenter = menuCoords.X + (ActualWidth / 2);
+                double menuCenter = menuCoords.X + (ActualWidth / 2);
 
-                if (menuCenter <= width / 2)
-                {
-                    return FlyoutPlacementMode.Right;
-                }
-                else
-                {
-                    return FlyoutPlacementMode.Left;
-                }
+                return menuCenter <= width / 2 ? FlyoutPlacementMode.Right : FlyoutPlacementMode.Left;
             }
         }
 
         private static void OrientationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var menu = (Menu)d;
+            Menu menu = (Menu)d;
             if (menu._wrapPanel != null)
             {
                 menu._wrapPanel.Orientation = menu.Orientation;
@@ -258,19 +237,19 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void RemoveElementFromCache(FrameworkElement descendant)
         {
-            var value = descendant.GetValue(InputGestureTextProperty);
+            object value = descendant.GetValue(InputGestureTextProperty);
             if (value == null)
             {
                 return;
             }
 
-            var inputGestureText = value.ToString().ToUpper();
+            string inputGestureText = value.ToString().ToUpper();
             if (!MenuItemInputGestureCache.ContainsKey(inputGestureText))
             {
                 return;
             }
 
-            var cachedMenuItem = MenuItemInputGestureCache[inputGestureText];
+            DependencyObject cachedMenuItem = MenuItemInputGestureCache[inputGestureText];
             if (cachedMenuItem == descendant)
             {
                 MenuItemInputGestureCache.Remove(inputGestureText);
@@ -311,7 +290,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         internal void CalculateBounds()
         {
-            var ttv = TransformToVisual(ControlHelpers.IsXamlRootAvailable && XamlRoot != null ? XamlRoot.Content : Window.Current.Content);
+            Windows.UI.Xaml.Media.GeneralTransform ttv = TransformToVisual(ControlHelpers.IsXamlRootAvailable && XamlRoot != null ? XamlRoot.Content : Window.Current.Content);
             Point screenCoords = ttv.TransformPoint(new Point(0, 0));
             _bounds.X = screenCoords.X;
             _bounds.Y = screenCoords.Y;

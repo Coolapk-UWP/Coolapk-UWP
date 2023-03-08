@@ -72,12 +72,12 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <inheritdoc/>
         protected override void ParseUriString(string uri)
         {
-            var validatedUri = ValidateSourceUri(uri);
+            Uri validatedUri = ValidateSourceUri(uri);
 
             SetRoot(validatedUri);
-            var queryParams = new Helpers.QueryParameterCollection(validatedUri);
-            var grouped = queryParams.GroupBy(pair => pair.Key);
-            foreach (var group in grouped)
+            QueryParameterCollection queryParams = new Helpers.QueryParameterCollection(validatedUri);
+            System.Collections.Generic.IEnumerable<IGrouping<string, System.Collections.Generic.KeyValuePair<string, string>>> grouped = queryParams.GroupBy(pair => pair.Key);
+            foreach (IGrouping<string, System.Collections.Generic.KeyValuePair<string, string>> group in grouped)
             { // adds the group to the base with ',' separating each item within a group
                 Add(group.Key, string.Join(",", group.Select(item => item.Value)));
             }

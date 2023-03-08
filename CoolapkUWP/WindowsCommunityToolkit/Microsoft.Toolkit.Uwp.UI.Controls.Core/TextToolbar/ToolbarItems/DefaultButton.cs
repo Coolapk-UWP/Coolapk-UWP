@@ -30,8 +30,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons
         /// <inheritdoc/>
         public override bool Equals(object obj)
         {
-            var other = obj as DefaultButton;
-            return other != null && other.Type == Type;
+            return obj is DefaultButton other && other.Type == Type;
         }
 
         /// <inheritdoc/>
@@ -50,7 +49,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons
         {
             if (obj is DefaultButton button && button.Button != null)
             {
-                var model = button.Button as FrameworkElement;
+                FrameworkElement model = button.Button as FrameworkElement;
                 model.Visibility = button.IsVisible ? Visibility.Visible : Visibility.Collapsed;
             }
         }
@@ -84,7 +83,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons
                 _button = value;
                 if (_button != null)
                 {
-                    var element = _button as FrameworkElement;
+                    FrameworkElement element = _button as FrameworkElement;
                     element.Visibility = IsVisible ? Visibility.Visible : Visibility.Collapsed;
                 }
             }

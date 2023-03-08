@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Specialized;
-using Microsoft.UI.Xaml.Controls;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -91,7 +91,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <inheritdoc />
         protected override void InitializeForContextCore(VirtualizingLayoutContext context)
         {
-            var state = new WrapLayoutState(context);
+            WrapLayoutState state = new WrapLayoutState(context);
             context.LayoutState = state;
             base.InitializeForContextCore(context);
         }
@@ -106,7 +106,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <inheritdoc />
         protected override void OnItemsChangedCore(VirtualizingLayoutContext context, object source, NotifyCollectionChangedEventArgs args)
         {
-            var state = (WrapLayoutState)context.LayoutState;
+            WrapLayoutState state = (WrapLayoutState)context.LayoutState;
 
             switch (args.Action)
             {
@@ -138,13 +138,13 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <inheritdoc />
         protected override Size MeasureOverride(VirtualizingLayoutContext context, Size availableSize)
         {
-            var totalMeasure = UvMeasure.Zero;
-            var parentMeasure = new UvMeasure(Orientation, availableSize.Width, availableSize.Height);
-            var spacingMeasure = new UvMeasure(Orientation, HorizontalSpacing, VerticalSpacing);
-            var realizationBounds = new UvBounds(Orientation, context.RealizationRect);
-            var position = UvMeasure.Zero;
+            UvMeasure totalMeasure = UvMeasure.Zero;
+            UvMeasure parentMeasure = new UvMeasure(Orientation, availableSize.Width, availableSize.Height);
+            UvMeasure spacingMeasure = new UvMeasure(Orientation, HorizontalSpacing, VerticalSpacing);
+            UvBounds realizationBounds = new UvBounds(Orientation, context.RealizationRect);
+            UvMeasure position = UvMeasure.Zero;
 
-            var state = (WrapLayoutState)context.LayoutState;
+            WrapLayoutState state = (WrapLayoutState)context.LayoutState;
             if (state.Orientation != Orientation)
             {
                 state.SetOrientation(Orientation);
@@ -274,11 +274,11 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         {
             if (context.ItemCount > 0)
             {
-                var parentMeasure = new UvMeasure(Orientation, finalSize.Width, finalSize.Height);
-                var spacingMeasure = new UvMeasure(Orientation, HorizontalSpacing, VerticalSpacing);
-                var realizationBounds = new UvBounds(Orientation, context.RealizationRect);
+                UvMeasure parentMeasure = new UvMeasure(Orientation, finalSize.Width, finalSize.Height);
+                UvMeasure spacingMeasure = new UvMeasure(Orientation, HorizontalSpacing, VerticalSpacing);
+                UvBounds realizationBounds = new UvBounds(Orientation, context.RealizationRect);
 
-                var state = (WrapLayoutState)context.LayoutState;
+                WrapLayoutState state = (WrapLayoutState)context.LayoutState;
                 bool Arrange(WrapItem item, bool isLast = false)
                 {
                     if (item.Measure.HasValue == false)
@@ -291,7 +291,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                         return false;
                     }
 
-                    var desiredMeasure = item.Measure.Value;
+                    UvMeasure desiredMeasure = item.Measure.Value;
                     if (desiredMeasure.U == 0)
                     {
                         return true; // if an item is collapsed, avoid adding the spacing
@@ -326,7 +326,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                     return true;
                 }
 
-                for (var i = 0; i < context.ItemCount; i++)
+                for (int i = 0; i < context.ItemCount; i++)
                 {
                     bool continueArranging = Arrange(state.GetItemAt(i));
                     if (continueArranging == false)

@@ -50,7 +50,7 @@ namespace CoolapkUWP.Pages.SettingsPages
 
         internal int APIVersion
         {
-            get => (int)SettingsHelper.Get<APIVersion>(SettingsHelper.APIVersion)-5;
+            get => (int)SettingsHelper.Get<APIVersion>(SettingsHelper.APIVersion) - 5;
             set
             {
                 if (APIVersion != value)
@@ -122,7 +122,7 @@ namespace CoolapkUWP.Pages.SettingsPages
                     _ = ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
                     break;
                 case "OpenURL":
-                    UIHelper.OpenLinkAsync(URLTextBox.Text);
+                    _ = UIHelper.OpenLinkAsync(URLTextBox.Text);
                     break;
                 case "EnterPIP":
                     if (ApplicationView.GetForCurrentView().IsViewModeSupported(ApplicationViewMode.CompactOverlay))

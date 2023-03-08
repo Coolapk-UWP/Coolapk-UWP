@@ -141,7 +141,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             RemoveImageOpened(OnImageOpened);
             RemoveImageFailed(OnImageFailed);
 
-            Image = GetTemplateChild(PartImage) as object;
+            Image = GetTemplateChild(PartImage);
 
             IsInitialized = true;
 
@@ -200,8 +200,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
             // Find the first ascendant ScrollViewer, if not found, use the root element.
             FrameworkElement hostElement = null;
-            var ascendants = this.FindAscendants().OfType<FrameworkElement>();
-            foreach (var ascendant in ascendants)
+            System.Collections.Generic.IEnumerable<FrameworkElement> ascendants = this.FindAscendants().OfType<FrameworkElement>();
+            foreach (FrameworkElement ascendant in ascendants)
             {
                 hostElement = ascendant;
                 if (hostElement is ScrollViewer)
@@ -216,10 +216,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return;
             }
 
-            var controlRect = TransformToVisual(hostElement)
+            Rect controlRect = TransformToVisual(hostElement)
                 .TransformBounds(new Rect(0, 0, ActualWidth, ActualHeight));
-            var lazyLoadingThreshold = LazyLoadingThreshold;
-            var hostRect = new Rect(
+            double lazyLoadingThreshold = LazyLoadingThreshold;
+            Rect hostRect = new Rect(
                 0 - lazyLoadingThreshold,
                 0 - lazyLoadingThreshold,
                 hostElement.ActualWidth + (2 * lazyLoadingThreshold),
@@ -231,7 +231,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
                 if (_lazyLoadingSource != null)
                 {
-                    var source = _lazyLoadingSource;
+                    object source = _lazyLoadingSource;
                     _lazyLoadingSource = null;
                     SetSource(source);
                 }

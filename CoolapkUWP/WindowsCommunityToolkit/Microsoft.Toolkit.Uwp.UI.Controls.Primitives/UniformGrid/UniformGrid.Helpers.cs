@@ -22,7 +22,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         {
             if (topdown)
             {
-                var rows = arrayref.Height;
+                int rows = arrayref.Height;
 
                 // Layout spots from Top-Bottom, Left-Right (right-left handled automatically by Grid with Flow-Direction).
                 // Effectively transpose the Grid Layout.
@@ -40,7 +40,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             }
             else
             {
-                var columns = arrayref.Width;
+                int columns = arrayref.Width;
 
                 // Layout spots as normal from Left-Right.
                 // (right-left handled automatically by Grid with Flow-Direction
@@ -70,14 +70,14 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             if (rows == 0 || cols == 0)
             {
                 // Calculate the size & area of all objects in the grid to know how much space we need.
-                var count = Math.Max(1, visible.Sum(item => GetRowSpan(item) * GetColumnSpan(item)));
+                int count = Math.Max(1, visible.Sum(item => GetRowSpan(item) * GetColumnSpan(item)));
 
                 if (rows == 0)
                 {
                     if (cols > 0)
                     {
                         // Bound check
-                        var first = (firstColumn >= cols || firstColumn < 0) ? 0 : firstColumn;
+                        int first = (firstColumn >= cols || firstColumn < 0) ? 0 : firstColumn;
 
                         // If we have columns but no rows, calculate rows based on column offset and number of children.
                         rows = (count + first + (cols - 1)) / cols;
@@ -86,10 +86,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                     else
                     {
                         // Otherwise, determine square layout if both are zero.
-                        var size = (int)Math.Ceiling(Math.Sqrt(count));
+                        int size = (int)Math.Ceiling(Math.Sqrt(count));
 
                         // Figure out if firstColumn is in bounds
-                        var first = (firstColumn >= size || firstColumn < 0) ? 0 : firstColumn;
+                        int first = (firstColumn >= size || firstColumn < 0) ? 0 : firstColumn;
 
                         rows = (int)Math.Ceiling(Math.Sqrt(count + first));
                         return (rows, rows);
@@ -101,7 +101,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                     cols = (count + (rows - 1)) / rows;
 
                     // Now that we know a rough size of our shape, see if the FirstColumn effects that:
-                    var first = (firstColumn >= cols || firstColumn < 0) ? 0 : firstColumn;
+                    int first = (firstColumn >= cols || firstColumn < 0) ? 0 : firstColumn;
 
                     cols = (count + first + (rows - 1)) / rows;
                 }
@@ -115,7 +115,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         internal void SetupRowDefinitions(int rows)
         {
             // Mark initial definitions so we don't erase them.
-            foreach (var rd in RowDefinitions)
+            foreach (RowDefinition rd in RowDefinitions)
             {
                 if (GetAutoLayout(rd) == null)
                 {
@@ -136,7 +136,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
                 for (int r = this.RowDefinitions.Count; r < rows; r++)
                 {
-                    var rd = new RowDefinition();
+                    RowDefinition rd = new RowDefinition();
                     SetAutoLayout(rd, true);
                     this.RowDefinitions.Insert(r, rd);
                 }
@@ -148,7 +148,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         internal void SetupColumnDefinitions(int columns)
         {
             // Mark initial definitions so we don't erase them.
-            foreach (var cd in ColumnDefinitions)
+            foreach (ColumnDefinition cd in ColumnDefinitions)
             {
                 if (GetAutoLayout(cd) == null)
                 {
@@ -169,7 +169,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
                 for (int c = ColumnDefinitions.Count; c < columns; c++)
                 {
-                    var cd = new ColumnDefinition();
+                    ColumnDefinition cd = new ColumnDefinition();
                     SetAutoLayout(cd, true);
                     ColumnDefinitions.Insert(c, cd);
                 }

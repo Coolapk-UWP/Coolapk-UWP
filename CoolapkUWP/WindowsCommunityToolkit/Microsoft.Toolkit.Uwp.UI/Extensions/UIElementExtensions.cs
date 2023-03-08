@@ -40,8 +40,8 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             if (d is UIElement element)
             {
-                var clipToBounds = (bool)e.NewValue;
-                var visual = ElementCompositionPreview.GetElementVisual(element);
+                bool clipToBounds = (bool)e.NewValue;
+                Windows.UI.Composition.Visual visual = ElementCompositionPreview.GetElementVisual(element);
                 visual.Clip = clipToBounds ? visual.Compositor.CreateInsetClip() : null;
             }
         }
@@ -56,7 +56,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns><see cref="Point"/> containing difference in position of elements.</returns>
         public static Point CoordinatesFrom(this UIElement target, UIElement parent)
         {
-            return target.TransformToVisual(parent).TransformPoint(default(Point));
+            return target.TransformToVisual(parent).TransformPoint(default);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns><see cref="Point"/> containing difference in position of elements.</returns>
         public static Point CoordinatesTo(this UIElement parent, UIElement target)
         {
-            return target.TransformToVisual(parent).TransformPoint(default(Point));
+            return target.TransformToVisual(parent).TransformPoint(default);
         }
     }
 }

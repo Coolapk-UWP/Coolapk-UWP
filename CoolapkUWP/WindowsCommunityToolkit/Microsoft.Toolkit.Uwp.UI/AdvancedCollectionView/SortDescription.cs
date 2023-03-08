@@ -61,8 +61,8 @@ namespace Microsoft.Toolkit.Uwp.UI
 
             public int Compare(object x, object y)
             {
-                var cx = x as IComparable;
-                var cy = y as IComparable;
+                IComparable cx = x as IComparable;
+                IComparable cy = y as IComparable;
 
                 // ReSharper disable once PossibleUnintendedReferenceComparison
                 return cx == cy ? 0 : cx == null ? -1 : cy == null ? +1 : cx.CompareTo(cy);

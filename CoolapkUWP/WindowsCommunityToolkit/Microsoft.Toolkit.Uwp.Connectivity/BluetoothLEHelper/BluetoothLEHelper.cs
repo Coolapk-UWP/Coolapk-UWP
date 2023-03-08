@@ -203,7 +203,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
                 {
                     if (_readerWriterLockSlim.TryEnterReadLock(TimeSpan.FromSeconds(1)))
                     {
-                        foreach (var device in BluetoothLeDevices)
+                        foreach (ObservableBluetoothLEDevice device in BluetoothLeDevices)
                         {
                             if (device.BluetoothAddressAsUlong == args.BluetoothAddress)
                             {
@@ -252,7 +252,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
                 {
                     if (_readerWriterLockSlim.TryEnterWriteLock(TimeSpan.FromSeconds(2)))
                     {
-                        var unusedDevice = _unusedDevices.FirstOrDefault(i => i.Id == deviceInfoUpdate.Id);
+                        DeviceInformation unusedDevice = _unusedDevices.FirstOrDefault(i => i.Id == deviceInfoUpdate.Id);
 
                         if (unusedDevice != null)
                         {
@@ -287,10 +287,10 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
                     {
                         if (_readerWriterLockSlim.TryEnterWriteLock(TimeSpan.FromSeconds(1)))
                         {
-                            var device = BluetoothLeDevices.FirstOrDefault(i => i.DeviceInfo.Id == deviceInfoUpdate.Id);
+                            ObservableBluetoothLEDevice device = BluetoothLeDevices.FirstOrDefault(i => i.DeviceInfo.Id == deviceInfoUpdate.Id);
                             BluetoothLeDevices.Remove(device);
 
-                            var unusedDevice = _unusedDevices.FirstOrDefault(i => i.Id == deviceInfoUpdate.Id);
+                            DeviceInformation unusedDevice = _unusedDevices.FirstOrDefault(i => i.Id == deviceInfoUpdate.Id);
                             _unusedDevices?.Remove(unusedDevice);
 
                             _readerWriterLockSlim.ExitWriteLock();
@@ -324,8 +324,8 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
             // Make sure device name isn't blank or already present in the list.
             if (!string.IsNullOrEmpty(deviceInfo?.Name))
             {
-                var device = new ObservableBluetoothLEDevice(deviceInfo, Dispatcher);
-                var connectable = (device.DeviceInfo.Properties.Keys.Contains("System.Devices.Aep.Bluetooth.Le.IsConnectable") &&
+                ObservableBluetoothLEDevice device = new ObservableBluetoothLEDevice(deviceInfo, Dispatcher);
+                bool connectable = (device.DeviceInfo.Properties.Keys.Contains("System.Devices.Aep.Bluetooth.Le.IsConnectable") &&
                                         (bool)device.DeviceInfo.Properties["System.Devices.Aep.Bluetooth.Le.IsConnectable"]) ||
                                         (device.DeviceInfo.Properties.Keys.Contains("System.Devices.Aep.IsConnected") &&
                                         (bool)device.DeviceInfo.Properties["System.Devices.Aep.IsConnected"]);

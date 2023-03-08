@@ -118,12 +118,9 @@ namespace CoolapkUWP.Controls
             }
 
             DependencyObject container = ContainerFromItem(item);
-            if (container == null)
-            {
-                return null;
-            }
-
-            return !(VisualTreeHelper.GetChild(container, 0) is Grid grid) ? null : grid.FindName("Indicator") as Rectangle;
+            return container == null
+                ? null
+                : !(VisualTreeHelper.GetChild(container, 0) is Grid grid) ? null : grid.FindName("Indicator") as Rectangle;
         }
 
         private async Task<T> WaitForLoaded<T>(FrameworkElement element, Func<T> func, Predicate<T> pre, CancellationToken cancellationToken)

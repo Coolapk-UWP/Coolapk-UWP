@@ -67,8 +67,8 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static void OnHyperlinkClicked(Hyperlink sender, HyperlinkClickEventArgs args)
         {
-            var command = GetCommand(sender);
-            var parameter = GetCommandParameter(sender);
+            ICommand command = GetCommand(sender);
+            object parameter = GetCommandParameter(sender);
 
             if (command?.CanExecute(parameter) == true)
             {

@@ -79,16 +79,16 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         protected override Size MeasureOverride(Size availableSize)
         {
             // Measure the width of each column, with no horizontal width restrictions.
-            var naturalColumnWidths = new double[_columnCount];
-            foreach (var child in ContentChildren)
+            double[] naturalColumnWidths = new double[_columnCount];
+            foreach (FrameworkElement child in ContentChildren)
             {
-                var columnIndex = Grid.GetColumn(child);
+                int columnIndex = Grid.GetColumn(child);
                 child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 naturalColumnWidths[columnIndex] = Math.Max(naturalColumnWidths[columnIndex], child.DesiredSize.Width);
             }
 
             // Now figure out the actual column widths.
-            var remainingContentWidth = availableSize.Width - ((_columnCount + 1) * _borderThickness);
+            double remainingContentWidth = availableSize.Width - ((_columnCount + 1) * _borderThickness);
             _columnWidths = new double[_columnCount];
             int remainingColumnCount = _columnCount;
             while (remainingColumnCount > 0)
@@ -129,10 +129,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
 
             // Now measure row heights.
             _rowHeights = new double[_rowCount];
-            foreach (var child in ContentChildren)
+            foreach (FrameworkElement child in ContentChildren)
             {
-                var columnIndex = Grid.GetColumn(child);
-                var rowIndex = Grid.GetRow(child);
+                int columnIndex = Grid.GetColumn(child);
+                int rowIndex = Grid.GetRow(child);
                 child.Measure(new Size(_columnWidths[columnIndex], double.PositiveInfinity));
                 _rowHeights[rowIndex] = Math.Max(_rowHeights[rowIndex], child.DesiredSize.Height);
             }
@@ -150,12 +150,12 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
             }
 
             // Arrange content.
-            foreach (var child in ContentChildren)
+            foreach (FrameworkElement child in ContentChildren)
             {
-                var columnIndex = Grid.GetColumn(child);
-                var rowIndex = Grid.GetRow(child);
+                int columnIndex = Grid.GetColumn(child);
+                int rowIndex = Grid.GetRow(child);
 
-                var rect = new Rect(_borderThickness, 0, 0, 0);
+                Rect rect = new Rect(_borderThickness, 0, 0, 0);
 
                 for (int col = 0; col < columnIndex; col++)
                 {
@@ -177,7 +177,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
             {
                 int colIndex = 0;
                 double x = 0;
-                foreach (var borderLine in VerticalLines)
+                foreach (Rectangle borderLine in VerticalLines)
                 {
                     borderLine.Arrange(new Rect(x, 0, _borderThickness, finalSize.Height));
                     if (colIndex >= _columnWidths.Length)
@@ -194,7 +194,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
             {
                 int rowIndex = 0;
                 double y = 0;
-                foreach (var borderLine in HorizontalLines)
+                foreach (Rectangle borderLine in HorizontalLines)
                 {
                     borderLine.Arrange(new Rect(0, y, finalSize.Width, _borderThickness));
                     if (rowIndex >= _rowHeights.Length)

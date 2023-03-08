@@ -24,15 +24,15 @@ namespace ColorCode.UWP.Common
 
             if (hex.Length == 8)
             {
-                a = (byte)(Convert.ToUInt32(hex.Substring(index, 2), 16));
+                a = (byte)Convert.ToUInt32(hex.Substring(index, 2), 16);
                 index += 2;
             }
 
-            byte r = (byte)(Convert.ToUInt32(hex.Substring(index, 2), 16));
+            byte r = (byte)Convert.ToUInt32(hex.Substring(index, 2), 16);
             index += 2;
-            byte g = (byte)(Convert.ToUInt32(hex.Substring(index, 2), 16));
+            byte g = (byte)Convert.ToUInt32(hex.Substring(index, 2), 16);
             index += 2;
-            byte b = (byte)(Convert.ToUInt32(hex.Substring(index, 2), 16));
+            byte b = (byte)Convert.ToUInt32(hex.Substring(index, 2), 16);
             SolidColorBrush myBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(a, r, g, b));
             return myBrush;
         }

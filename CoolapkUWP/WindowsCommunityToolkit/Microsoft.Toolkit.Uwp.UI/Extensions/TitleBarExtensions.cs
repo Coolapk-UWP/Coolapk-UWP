@@ -22,7 +22,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Color color;
 
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 color = titleBar.BackgroundColor.GetValueOrDefault();
@@ -38,7 +38,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value">Color</param>
         public static void SetBackgroundColor(Page page, Color value)
         {
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 titleBar.BackgroundColor = value;
@@ -54,7 +54,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Color color;
 
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 color = titleBar.ButtonBackgroundColor.GetValueOrDefault();
@@ -70,7 +70,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value">Color</param>
         public static void SetButtonBackgroundColor(Page page, Color value)
         {
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 titleBar.ButtonBackgroundColor = value;
@@ -86,7 +86,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Color color;
 
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 color = titleBar.ButtonForegroundColor.GetValueOrDefault();
@@ -102,7 +102,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value">Color</param>
         public static void SetButtonForegroundColor(Page page, Color value)
         {
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 titleBar.ButtonForegroundColor = value;
@@ -118,7 +118,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Color color;
 
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 color = titleBar.ButtonHoverBackgroundColor.GetValueOrDefault();
@@ -134,7 +134,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value">Color</param>
         public static void SetButtonHoverBackgroundColor(Page page, Color value)
         {
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 titleBar.ButtonHoverBackgroundColor = value;
@@ -150,7 +150,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Color color;
 
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 color = titleBar.ButtonHoverForegroundColor.GetValueOrDefault();
@@ -166,7 +166,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value">Color</param>
         public static void SetButtonHoverForegroundColor(Page page, Color value)
         {
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 titleBar.ButtonHoverForegroundColor = value;
@@ -182,7 +182,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Color color;
 
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 color = titleBar.ButtonInactiveBackgroundColor.GetValueOrDefault();
@@ -198,7 +198,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value">Color</param>
         public static void SetButtonInactiveBackgroundColor(Page page, Color value)
         {
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 titleBar.ButtonInactiveBackgroundColor = value;
@@ -214,7 +214,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Color color;
 
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 color = titleBar.ButtonInactiveForegroundColor.GetValueOrDefault();
@@ -230,7 +230,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value">Color</param>
         public static void SetButtonInactiveForegroundColor(Page page, Color value)
         {
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 titleBar.ButtonInactiveForegroundColor = value;
@@ -246,7 +246,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Color color;
 
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 color = titleBar.ButtonPressedBackgroundColor.GetValueOrDefault();
@@ -262,7 +262,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value">Color</param>
         public static void SetButtonPressedBackgroundColor(Page page, Color value)
         {
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 titleBar.ButtonPressedBackgroundColor = value;
@@ -278,7 +278,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Color color;
 
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 color = titleBar.ButtonPressedForegroundColor.GetValueOrDefault();
@@ -294,7 +294,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value">Color</param>
         public static void SetButtonPressedForegroundColor(Page page, Color value)
         {
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 titleBar.ButtonPressedForegroundColor = value;
@@ -310,7 +310,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Color color;
 
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 color = titleBar.ForegroundColor.GetValueOrDefault();
@@ -326,7 +326,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value">Color</param>
         public static void SetForegroundColor(Page page, Color value)
         {
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 titleBar.ForegroundColor = value;
@@ -342,7 +342,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Color color;
 
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 color = titleBar.InactiveBackgroundColor.GetValueOrDefault();
@@ -358,7 +358,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value">Color</param>
         public static void SetInactiveBackgroundColor(Page page, Color value)
         {
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 titleBar.InactiveBackgroundColor = value;
@@ -374,7 +374,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Color color;
 
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 color = titleBar.InactiveForegroundColor.GetValueOrDefault();
@@ -390,7 +390,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value">Color</param>
         public static void SetInactiveForegroundColor(Page page, Color value)
         {
-            var titleBar = GetTitleBar();
+            ApplicationViewTitleBar titleBar = GetTitleBar();
             if (titleBar != null)
             {
                 titleBar.InactiveForegroundColor = value;

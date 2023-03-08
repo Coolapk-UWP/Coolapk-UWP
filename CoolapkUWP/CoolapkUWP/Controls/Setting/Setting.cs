@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.Foundation.Metadata;
+﻿using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Automation.Peers;

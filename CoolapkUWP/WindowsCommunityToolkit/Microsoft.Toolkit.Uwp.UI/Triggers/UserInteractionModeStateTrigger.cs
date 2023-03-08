@@ -21,7 +21,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
         {
             if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                var weakEvent =
+                WeakEventListener<UserInteractionModeStateTrigger, object, WindowSizeChangedEventArgs> weakEvent =
                     new WeakEventListener<UserInteractionModeStateTrigger, object, WindowSizeChangedEventArgs>(this)
                     {
                         OnEventAction = (instance, source, eventArgs) => instance.UserInteractionModeTrigger_SizeChanged(source, eventArgs),
@@ -49,10 +49,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
 
         private static void OnInteractionModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var obj = (UserInteractionModeStateTrigger)d;
+            UserInteractionModeStateTrigger obj = (UserInteractionModeStateTrigger)d;
             if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                var orientation = (UserInteractionMode)e.NewValue;
+                UserInteractionMode orientation = (UserInteractionMode)e.NewValue;
                 obj.UpdateTrigger(orientation);
             }
         }

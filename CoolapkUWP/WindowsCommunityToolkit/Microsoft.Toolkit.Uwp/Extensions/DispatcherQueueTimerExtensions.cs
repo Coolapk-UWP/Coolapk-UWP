@@ -13,7 +13,7 @@ namespace Microsoft.Toolkit.Uwp.UI
     /// </summary>
     public static class DispatcherQueueTimerExtensions
     {
-        private static ConcurrentDictionary<DispatcherQueueTimer, Action> _debounceInstances = new ConcurrentDictionary<DispatcherQueueTimer, Action>();
+        private static readonly ConcurrentDictionary<DispatcherQueueTimer, Action> _debounceInstances = new ConcurrentDictionary<DispatcherQueueTimer, Action>();
 
         /// <summary>
         /// <para>Used to debounce (rate-limit) an event.  The action will be postponed and executed after the interval has elapsed.  At the end of the interval, the function will be called with the arguments that were passed most recently to the debounced function.</para>
@@ -38,7 +38,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         public static void Debounce(this DispatcherQueueTimer timer, Action action, TimeSpan interval, bool immediate = false)
         {
             // Check and stop any existing timer
-            var timeout = timer.IsRunning;
+            bool timeout = timer.IsRunning;
             if (timeout)
             {
                 timer.Stop();

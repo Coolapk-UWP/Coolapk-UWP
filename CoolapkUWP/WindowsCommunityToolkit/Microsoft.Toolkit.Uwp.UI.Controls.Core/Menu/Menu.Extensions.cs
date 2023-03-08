@@ -21,9 +21,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void InputGestureTextChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var element = sender as FrameworkElement;
+            FrameworkElement element = sender as FrameworkElement;
 
-            var inputGestureValue = element?.GetValue(InputGestureTextProperty).ToString();
+            string inputGestureValue = element?.GetValue(InputGestureTextProperty).ToString();
             if (string.IsNullOrEmpty(inputGestureValue))
             {
                 return;

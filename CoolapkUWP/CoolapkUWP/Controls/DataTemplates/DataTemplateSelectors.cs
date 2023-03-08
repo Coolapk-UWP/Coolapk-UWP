@@ -3,7 +3,6 @@ using CoolapkUWP.Models.Feeds;
 using CoolapkUWP.Models.Pages;
 using CoolapkUWP.Models.Users;
 using Newtonsoft.Json.Linq;
-using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using static CoolapkUWP.Models.Feeds.FeedModel;
@@ -59,11 +58,14 @@ namespace CoolapkUWP.Controls.DataTemplates
             }
             else if (item is LikeNotificationModel) { return LikeNotify; }
             else if (item is SimpleNotificationModel) { return CommentMe; }
-            else if (item is MessageNotificationModel) { return MessageNotify; }
-            else if (item is AtCommentMeNotificationModel) { return AtCommentMe; }
-            else if (item is IHasDescription) { return List; }
-            else if (item is IHasSubtitle) { return SubtitleList; }
-            else { return Others; }
+            else
+            {
+                return item is MessageNotificationModel
+                ? MessageNotify
+                : item is AtCommentMeNotificationModel
+                ? AtCommentMe
+                : item is IHasDescription ? List : item is IHasSubtitle ? SubtitleList : Others;
+            }
         }
     }
 
@@ -123,9 +125,10 @@ namespace CoolapkUWP.Controls.DataTemplates
                     default: return Empty;
                 }
             }
-            else if (item is IHasDescription) { return List; }
-            else if (item is IHasSubtitle) { return SubtitleList; }
-            else { return Empty; }
+            else
+            {
+                return item is IHasDescription ? List : item is IHasSubtitle ? SubtitleList : Empty;
+            }
         }
     }
 

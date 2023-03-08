@@ -20,8 +20,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <returns>ContainerVisual associated with the element</returns>
         public static ContainerVisual GetVisual(this UIElement element)
         {
-            var hostVisual = ElementCompositionPreview.GetElementVisual(element);
-            var root = hostVisual.Compositor.CreateContainerVisual();
+            Visual hostVisual = ElementCompositionPreview.GetElementVisual(element);
+            ContainerVisual root = hostVisual.Compositor.CreateContainerVisual();
             ElementCompositionPreview.SetElementChildVisual(element, root);
             return root;
         }

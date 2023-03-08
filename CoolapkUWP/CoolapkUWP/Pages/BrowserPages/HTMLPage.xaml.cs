@@ -43,7 +43,7 @@ namespace CoolapkUWP.Pages.BrowserPages
             if (args.Uri != null)
             {
                 args.Cancel = true;
-                UIHelper.OpenLinkAsync(args.Uri.AbsoluteUri);
+                _ = UIHelper.OpenLinkAsync(args.Uri.AbsoluteUri);
             }
         }
 

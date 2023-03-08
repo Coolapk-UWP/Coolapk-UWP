@@ -20,7 +20,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
         {
             if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                var weakEvent =
+                WeakEventListener<FullScreenModeStateTrigger, ApplicationView, object> weakEvent =
                     new WeakEventListener<FullScreenModeStateTrigger, ApplicationView, object>(this)
                     {
                         OnEventAction = (instance, source, eventArgs) => instance.FullScreenModeTrigger_VisibleBoundsChanged(source, eventArgs),
@@ -45,7 +45,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
                 _isFullScreen = value;
                 if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
                 {
-                    var isFullScreenMode = ApplicationView.GetForCurrentView().IsFullScreenMode;
+                    bool isFullScreenMode = ApplicationView.GetForCurrentView().IsFullScreenMode;
                     UpdateTrigger(isFullScreenMode);
                 }
             }

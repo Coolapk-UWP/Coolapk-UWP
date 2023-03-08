@@ -4,8 +4,8 @@
 
 // Copyright (c) 2015 Christopher Pardi.
 
-using System.Collections.Generic;
 using ColorCode.Common;
+using System.Collections.Generic;
 
 namespace ColorCode.Compilation.Languages
 {

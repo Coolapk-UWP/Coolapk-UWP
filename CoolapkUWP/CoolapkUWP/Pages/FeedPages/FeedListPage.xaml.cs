@@ -7,7 +7,6 @@ using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -152,7 +151,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void On_Tapped(object sender, TappedRoutedEventArgs e) => UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
+        private void On_Tapped(object sender, TappedRoutedEventArgs e) => _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e) => _ = Refresh(true);
 

@@ -40,21 +40,17 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static void OnCommandPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            var listViewBase = sender as ListViewBase;
-
-            if (listViewBase == null)
+            if (!(sender is ListViewBase listViewBase))
             {
                 return;
             }
 
-            var oldCommand = args.OldValue as ICommand;
-            if (oldCommand != null)
+            if (args.OldValue is ICommand oldCommand)
             {
                 listViewBase.ItemClick -= OnListViewBaseItemClick;
             }
 
-            var newCommand = args.NewValue as ICommand;
-            if (newCommand != null)
+            if (args.NewValue is ICommand newCommand)
             {
                 listViewBase.ItemClick += OnListViewBaseItemClick;
             }
@@ -62,8 +58,8 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static void OnListViewBaseItemClick(object sender, ItemClickEventArgs e)
         {
-            var listViewBase = sender as ListViewBase;
-            var command = GetCommand(listViewBase);
+            ListViewBase listViewBase = sender as ListViewBase;
+            ICommand command = GetCommand(listViewBase);
             if (listViewBase == null || command == null)
             {
                 return;

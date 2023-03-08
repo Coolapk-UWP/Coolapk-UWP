@@ -16,7 +16,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
     /// </summary>
     public class NetworkConnectionStateTrigger : StateTriggerBase
     {
-        private CoreDispatcher _dispatcher;
+        private readonly CoreDispatcher _dispatcher;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NetworkConnectionStateTrigger"/> class.
@@ -24,7 +24,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
         public NetworkConnectionStateTrigger()
         {
             _dispatcher = CoreApplication.MainView.Dispatcher;
-            var weakEvent =
+            WeakEventListener<NetworkConnectionStateTrigger, object> weakEvent =
                 new WeakEventListener<NetworkConnectionStateTrigger, object>(this)
                 {
                     OnEventAction = (instance, source) => instance.NetworkInformation_NetworkStatusChanged(source),
@@ -42,7 +42,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
         private void UpdateState()
         {
             bool isConnected = false;
-            var profile = NetworkInformation.GetInternetConnectionProfile();
+            ConnectionProfile profile = NetworkInformation.GetInternetConnectionProfile();
             if (profile != null)
             {
                 isConnected = profile.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess;
@@ -68,7 +68,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
 
         private static void OnConnectionStatePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var obj = (NetworkConnectionStateTrigger)d;
+            NetworkConnectionStateTrigger obj = (NetworkConnectionStateTrigger)d;
             obj.UpdateState();
         }
 
@@ -78,7 +78,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
             /// <summary>
             /// WeakReference to the instance listening for the event.
             /// </summary>
-            private WeakReference _weakInstance;
+            private readonly WeakReference _weakInstance;
 
             /// <summary>
             /// Gets or sets the method to call when the event fires.

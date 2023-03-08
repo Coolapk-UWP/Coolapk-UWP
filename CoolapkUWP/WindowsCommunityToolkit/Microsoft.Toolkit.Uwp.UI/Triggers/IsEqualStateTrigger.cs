@@ -28,7 +28,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
         /// </summary>
         public object Value
         {
-            get { return (object)GetValue(ValueProperty); }
+            get { return GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
         }
 
@@ -40,7 +40,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
 
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var obj = (IsEqualStateTrigger)d;
+            IsEqualStateTrigger obj = (IsEqualStateTrigger)d;
             obj.UpdateTrigger();
         }
 
@@ -49,7 +49,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
         /// </summary>
         public object To
         {
-            get { return (object)GetValue(ToProperty); }
+            get { return GetValue(ToProperty); }
             set { SetValue(ToProperty, value); }
         }
 
@@ -80,14 +80,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
         private static bool ConvertTypeEquals(object value1, object value2)
         {
             // Let's see if we can convert:
-            if (value2 is Enum)
-            {
-                value1 = ConvertToEnum(value2.GetType(), value1);
-            }
-            else
-            {
-                value1 = Convert.ChangeType(value1, value2.GetType(), CultureInfo.InvariantCulture);
-            }
+            value1 = value2 is Enum
+                ? ConvertToEnum(value2.GetType(), value1)
+                : Convert.ChangeType(value1, value2.GetType(), CultureInfo.InvariantCulture);
 
             return value2.Equals(value1);
         }
@@ -96,7 +91,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
         {
             // value cannot be the same type of enum now
             return value is string str
-                ? EnumTryParse(enumType, str, out var e) ? e : null
+                ? EnumTryParse(enumType, str, out object e) ? e : null
                 : value is int || value is uint || value is byte || value is sbyte || value is long || value is ulong || value is short || value is ushort
                 ? Enum.ToObject(enumType, value)
                 : null;

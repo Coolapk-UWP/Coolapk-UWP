@@ -88,8 +88,7 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static void OnEnableActualSizeBindingPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            var baseElement = sender as FrameworkElement;
-            if (baseElement == null)
+            if (!(sender is FrameworkElement baseElement))
             {
                 return;
             }
@@ -111,21 +110,20 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static void UpdateActualSizeProperties(object sender, RoutedEventArgs routedEventArgs)
         {
-            var baseElement = sender as FrameworkElement;
-            if (baseElement == null)
+            if (!(sender is FrameworkElement baseElement))
             {
                 return;
             }
 
             // Update only if needed
-            var currentHeight = GetActualHeight(baseElement);
+            double currentHeight = GetActualHeight(baseElement);
             if (currentHeight != baseElement.ActualHeight)
             {
                 SetActualHeight(baseElement, baseElement.ActualHeight);
             }
 
             // Update only if needed
-            var currentWidth = GetActualWidth(baseElement);
+            double currentWidth = GetActualWidth(baseElement);
             if (currentWidth != baseElement.ActualWidth)
             {
                 SetActualWidth(baseElement, baseElement.ActualWidth);

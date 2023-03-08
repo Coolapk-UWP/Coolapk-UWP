@@ -147,7 +147,7 @@ namespace CoolapkUWP.Pages
                                 UIHelper.Navigate(typeof(TestPage));
                                 break;
                             default:
-                                UIHelper.OpenLinkAsync(LaunchActivatedEventArgs.Arguments);
+                                _ = UIHelper.OpenLinkAsync(LaunchActivatedEventArgs.Arguments);
                                 break;
                         }
                     }
@@ -158,7 +158,7 @@ namespace CoolapkUWP.Pages
                             string TileArguments = LaunchActivatedEventArgs.TileActivatedInfo.RecentlyShownNotifications.FirstOrDefault().Arguments;
                             if (!string.IsNullOrWhiteSpace(LaunchActivatedEventArgs.Arguments))
                             {
-                                UIHelper.OpenLinkAsync(TileArguments);
+                                _ = UIHelper.OpenLinkAsync(TileArguments);
                             }
                             else
                             {
@@ -183,11 +183,11 @@ namespace CoolapkUWP.Pages
                         case "coolapk.com":
                         case "www.coolmarket.com":
                         case "coolmarket.com":
-                            UIHelper.OpenLinkAsync(ProtocolActivatedEventArgs.Uri.AbsolutePath);
+                            _ = UIHelper.OpenLinkAsync(ProtocolActivatedEventArgs.Uri.AbsolutePath);
                             break;
                         case "http":
                         case "https":
-                            UIHelper.OpenLinkAsync($"{ProtocolActivatedEventArgs.Uri.Host}:{ProtocolActivatedEventArgs.Uri.AbsolutePath}");
+                            _ = UIHelper.OpenLinkAsync($"{ProtocolActivatedEventArgs.Uri.Host}:{ProtocolActivatedEventArgs.Uri.AbsolutePath}");
                             break;
                         case "settings":
                             UIHelper.Navigate(typeof(SettingsPage));
@@ -196,7 +196,7 @@ namespace CoolapkUWP.Pages
                             UIHelper.Navigate(typeof(TestPage));
                             break;
                         default:
-                            UIHelper.OpenLinkAsync($"{(ProtocolActivatedEventArgs.Uri.AbsolutePath[0] == '/' ? string.Empty : "/")}{ProtocolActivatedEventArgs.Uri.AbsolutePath}");
+                            _ = UIHelper.OpenLinkAsync($"{(ProtocolActivatedEventArgs.Uri.AbsolutePath[0] == '/' ? string.Empty : "/")}{ProtocolActivatedEventArgs.Uri.AbsolutePath}");
                             break;
                     }
                     break;

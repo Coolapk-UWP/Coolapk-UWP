@@ -86,8 +86,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             //    we'll request the child's measurements first, so we can use that as
             //    a starting point to constrain it's dimensions based on the criteria
             //    set in our properties.
-            var hasWidth = IsPositiveRealNumber(availableSize.Width);
-            var hasHeight = IsPositiveRealNumber(availableSize.Height);
+            bool hasWidth = IsPositiveRealNumber(availableSize.Width);
+            bool hasHeight = IsPositiveRealNumber(availableSize.Height);
 
             if (!hasWidth && !hasHeight)
             {
@@ -143,7 +143,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             }
 
             // Calculate the Aspect Ratio constraint based on the newly scaled size.
-            var currentAspect = availableSize.Width / availableSize.Height;
+            double currentAspect = availableSize.Width / availableSize.Height;
 
             if (!hasWidth)
             {

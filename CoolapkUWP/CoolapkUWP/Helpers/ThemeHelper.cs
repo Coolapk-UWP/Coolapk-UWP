@@ -1,6 +1,5 @@
 ﻿using CoolapkUWP.Common;
 using Microsoft.Toolkit.Uwp.Helpers;
-using Newtonsoft.Json.Linq;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
 using Windows.UI.Core;
@@ -43,12 +42,10 @@ namespace CoolapkUWP.Helpers
                     value = UIHelper.AwaitByTaskCompleteSource(() =>
                         CurrentApplicationWindow?.Dispatcher?.AwaitableRunAsync<ElementTheme?>(() =>
                         {
-                            if (CurrentApplicationWindow?.Content is FrameworkElement rootElement
-                                && rootElement.RequestedTheme != ElementTheme.Default)
-                            {
-                                return rootElement.RequestedTheme;
-                            }
-                            return null;
+                            return CurrentApplicationWindow?.Content is FrameworkElement rootElement
+                                && rootElement.RequestedTheme != ElementTheme.Default
+                                ? rootElement.RequestedTheme
+                                : (ElementTheme?)null;
                         }, CoreDispatcherPriority.High));
                 }
                 return value ?? SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme);
@@ -77,11 +74,7 @@ namespace CoolapkUWP.Helpers
                         value = UIHelper.AwaitByTaskCompleteSource(() =>
                             window.Dispatcher.AwaitableRunAsync<ElementTheme?>(() =>
                             {
-                                if (window?.Content is FrameworkElement rootElement)
-                                {
-                                    return rootElement.RequestedTheme;
-                                }
-                                return null;
+                                return window?.Content is FrameworkElement rootElement ? rootElement.RequestedTheme : (ElementTheme?)null;
                             }, CoreDispatcherPriority.High));
                     }
                     if (value.HasValue) { return value.Value; }
@@ -135,34 +128,24 @@ namespace CoolapkUWP.Helpers
 
         public static bool IsDarkTheme()
         {
-            if (Window.Current != null)
-            {
-                return ActualTheme == ElementTheme.Default
+            return Window.Current != null
+                ? ActualTheme == ElementTheme.Default
                     ? Application.Current.RequestedTheme == ApplicationTheme.Dark
-                    : ActualTheme == ElementTheme.Dark;
-            }
-            else
-            {
-                return ActualTheme == ElementTheme.Default
+                    : ActualTheme == ElementTheme.Dark
+                : ActualTheme == ElementTheme.Default
                     ? UISettings.GetColorValue(UIColorType.Background) == Colors.Black
                     : ActualTheme == ElementTheme.Dark;
-            }
         }
 
         public static bool IsDarkTheme(ElementTheme ActualTheme)
         {
-            if (Window.Current != null)
-            {
-                return ActualTheme == ElementTheme.Default
+            return Window.Current != null
+                ? ActualTheme == ElementTheme.Default
                     ? Application.Current.RequestedTheme == ApplicationTheme.Dark
-                    : ActualTheme == ElementTheme.Dark;
-            }
-            else
-            {
-                return ActualTheme == ElementTheme.Default
+                    : ActualTheme == ElementTheme.Dark
+                : ActualTheme == ElementTheme.Default
                     ? UISettings.GetColorValue(UIColorType.Background) == Colors.Black
                     : ActualTheme == ElementTheme.Dark;
-            }
         }
 
         public static void UpdateSystemCaptionButtonColors()

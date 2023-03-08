@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Deferred;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Toolkit.Deferred;
 using Windows.Foundation;
 
 namespace Microsoft.Toolkit.Uwp.Deferred
@@ -49,7 +49,7 @@ namespace Microsoft.Toolkit.Uwp.Deferred
                 return Task.CompletedTask;
             }
 
-            var tasks = eventHandler.GetInvocationList()
+            Task[] tasks = eventHandler.GetInvocationList()
                 .OfType<TypedEventHandler<S, R>>()
                 .Select(invocationDelegate =>
                 {
@@ -58,7 +58,7 @@ namespace Microsoft.Toolkit.Uwp.Deferred
                     invocationDelegate(sender, eventArgs);
 
 #pragma warning disable CS0618 // Type or member is obsolete
-                    var deferral = eventArgs.GetCurrentDeferralAndReset();
+                    EventDeferral deferral = eventArgs.GetCurrentDeferralAndReset();
 
                     return deferral?.WaitForCompletion(cancellationToken) ?? Task.CompletedTask;
 #pragma warning restore CS0618 // Type or member is obsolete

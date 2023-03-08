@@ -11,7 +11,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         public void Image_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            UIHelper.ShowImage((sender as FrameworkElement).Tag as ImageModel);
+            _ = UIHelper.ShowImageAsync((sender as FrameworkElement).Tag as ImageModel);
         }
 
         public void Image_KeyDown(object sender, KeyRoutedEventArgs e)

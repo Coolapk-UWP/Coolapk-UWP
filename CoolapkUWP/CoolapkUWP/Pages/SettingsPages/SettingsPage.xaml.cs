@@ -103,14 +103,7 @@ namespace CoolapkUWP.Pages.SettingsPages
 
         private void MarkdownText_LinkClicked(object sender, LinkClickedEventArgs e)
         {
-            if (e.Link.Contains("mp/user"))
-            {
-                _ = Frame.Navigate(typeof(HTMLPage), new HTMLViewModel(e.Link));
-            }
-            else
-            {
-                _ = Launcher.LaunchUriAsync(new Uri(e.Link));
-            }
+            _ = UIHelper.OpenLinkAsync(e.Link);
         }
 
         private void GotoUpdate_Click(object sender, RoutedEventArgs e) => _ = Launcher.LaunchUriAsync(new Uri((sender as FrameworkElement).Tag.ToString()));

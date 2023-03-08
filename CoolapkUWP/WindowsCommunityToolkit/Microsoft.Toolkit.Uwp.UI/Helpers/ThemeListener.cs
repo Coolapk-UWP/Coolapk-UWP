@@ -57,8 +57,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Helpers
         /// </summary>
         public event ThemeChangedEvent ThemeChanged;
 
-        private AccessibilitySettings _accessible = new AccessibilitySettings();
-        private UISettings _settings = new UISettings();
+        private readonly AccessibilitySettings _accessible = new AccessibilitySettings();
+        private readonly UISettings _settings = new UISettings();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ThemeListener"/> class.

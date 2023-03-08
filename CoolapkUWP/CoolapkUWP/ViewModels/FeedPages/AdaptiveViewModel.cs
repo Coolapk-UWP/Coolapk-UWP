@@ -68,8 +68,9 @@ namespace CoolapkUWP.ViewModels.FeedPages
 
         public static AdaptiveViewModel GetUserListProvider(string uid, bool isFollowList, string name)
         {
-            if (string.IsNullOrEmpty(uid)) { throw new ArgumentException(nameof(uid)); }
-            return new AdaptiveViewModel(
+            return string.IsNullOrEmpty(uid)
+                ? throw new ArgumentException(nameof(uid))
+                : new AdaptiveViewModel(
                 new CoolapkListProvider(
                     (p, firstItem, lastItem) =>
                         UriHelper.GetUri(
@@ -81,15 +82,15 @@ namespace CoolapkUWP.ViewModels.FeedPages
                             string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                     (o) => new Entity[] { new UserModel((JObject)(isFollowList ? o["fUserInfo"] : o["userInfo"])) },
                     "fuid"))
-            { Title = $"{name}的{(isFollowList ? "关注" : "粉丝")}" };
+                { Title = $"{name}的{(isFollowList ? "关注" : "粉丝")}" };
         }
 
         public static AdaptiveViewModel GetReplyListProvider(string id, FeedReplyModel reply = null)
         {
-            if (string.IsNullOrEmpty(id)) { throw new ArgumentException(nameof(id)); }
-            if (reply == null)
-            {
-                return new AdaptiveViewModel(
+            return string.IsNullOrEmpty(id)
+                ? throw new ArgumentException(nameof(id))
+                : reply == null
+                ? new AdaptiveViewModel(
                     new CoolapkListProvider(
                         (p, firstItem, lastItem) =>
                             UriHelper.GetUri(
@@ -99,11 +100,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
                                 p > 1 ? $"&firstItem={firstItem}&lastItem={lastItem}" : string.Empty),
                         (o) => new Entity[] { new FeedReplyModel(o) },
                         "id"))
-                { Title = $"热门回复" };
-            }
-            else
-            {
-                return new AdaptiveViewModel(
+                { Title = $"热门回复" }
+                : new AdaptiveViewModel(
                     new CoolapkListProvider(
                         (p, firstItem, lastItem) =>
                             UriHelper.GetUri(
@@ -114,7 +112,6 @@ namespace CoolapkUWP.ViewModels.FeedPages
                         (o) => new Entity[] { new FeedReplyModel(o, false) },
                         "id"))
                 { Title = $"回复({reply.ReplyNum})" };
-            }
         }
 
         public async Task Refresh(bool reset = false)

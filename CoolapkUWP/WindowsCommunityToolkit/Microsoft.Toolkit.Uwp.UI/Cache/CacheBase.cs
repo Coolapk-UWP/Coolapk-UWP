@@ -34,7 +34,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         private StorageFolder _cacheFolder = null;
         private InMemoryStorage<T> _inMemoryFileStorage = null;
 
-        private ConcurrentDictionary<string, ConcurrentRequest> _concurrentTasks = new ConcurrentDictionary<string, ConcurrentRequest>();
+        private readonly ConcurrentDictionary<string, ConcurrentRequest> _concurrentTasks = new ConcurrentDictionary<string, ConcurrentRequest>();
 
         private HttpClient _httpClient = null;
 
@@ -83,7 +83,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             {
                 if (_httpClient == null)
                 {
-                    var messageHandler = new HttpClientHandler() { MaxConnectionsPerServer = 20 };
+                    HttpClientHandler messageHandler = new HttpClientHandler() { MaxConnectionsPerServer = 20 };
 
                     _httpClient = new HttpClient(messageHandler);
                 }
@@ -118,8 +118,8 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>awaitable task</returns>
         public async Task ClearAsync()
         {
-            var folder = await GetCacheFolderAsync().ConfigureAwait(false);
-            var files = await folder.GetFilesAsync().AsTask().ConfigureAwait(false);
+            StorageFolder folder = await GetCacheFolderAsync().ConfigureAwait(false);
+            IReadOnlyList<StorageFile> files = await folder.GetFilesAsync().AsTask().ConfigureAwait(false);
 
             await InternalClearAsync(files).ConfigureAwait(false);
 
@@ -145,12 +145,12 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             TimeSpan expiryDuration = duration ?? CacheDuration;
 
-            var folder = await GetCacheFolderAsync().ConfigureAwait(false);
-            var files = await folder.GetFilesAsync().AsTask().ConfigureAwait(false);
+            StorageFolder folder = await GetCacheFolderAsync().ConfigureAwait(false);
+            IReadOnlyList<StorageFile> files = await folder.GetFilesAsync().AsTask().ConfigureAwait(false);
 
-            var filesToDelete = new List<StorageFile>();
+            List<StorageFile> filesToDelete = new List<StorageFile>();
 
-            foreach (var file in files)
+            foreach (StorageFile file in files)
             {
                 if (file == null)
                 {
@@ -180,23 +180,23 @@ namespace Microsoft.Toolkit.Uwp.UI
                 return;
             }
 
-            var folder = await GetCacheFolderAsync().ConfigureAwait(false);
-            var files = await folder.GetFilesAsync().AsTask().ConfigureAwait(false);
+            StorageFolder folder = await GetCacheFolderAsync().ConfigureAwait(false);
+            IReadOnlyList<StorageFile> files = await folder.GetFilesAsync().AsTask().ConfigureAwait(false);
 
-            var filesToDelete = new List<StorageFile>();
-            var keys = new List<string>();
+            List<StorageFile> filesToDelete = new List<StorageFile>();
+            List<string> keys = new List<string>();
 
             Dictionary<string, StorageFile> hashDictionary = new Dictionary<string, StorageFile>();
 
-            foreach (var file in files)
+            foreach (StorageFile file in files)
             {
                 hashDictionary.Add(file.Name, file);
             }
 
-            foreach (var uri in uriForCachedItems)
+            foreach (Uri uri in uriForCachedItems)
             {
                 string fileName = GetCacheFileName(uri);
-                if (hashDictionary.TryGetValue(fileName, out var file))
+                if (hashDictionary.TryGetValue(fileName, out StorageFile file))
                 {
                     filesToDelete.Add(file);
                     keys.Add(fileName);
@@ -216,7 +216,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="storeToMemoryCache">Indicates if item should be loaded into the in-memory storage</param>
         /// <param name="cancellationToken">instance of <see cref="CancellationToken"/></param>
         /// <returns>Awaitable Task</returns>
-        public Task PreCacheAsync(Uri uri, bool throwOnError = false, bool storeToMemoryCache = false, CancellationToken cancellationToken = default(CancellationToken))
+        public Task PreCacheAsync(Uri uri, bool throwOnError = false, bool storeToMemoryCache = false, CancellationToken cancellationToken = default)
         {
             return GetItemAsync(uri, throwOnError, !storeToMemoryCache, cancellationToken, null);
         }
@@ -229,7 +229,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="cancellationToken">instance of <see cref="CancellationToken"/></param>
         /// <param name="initializerKeyValues">key value pairs used when initializing instance of generic type</param>
         /// <returns>an instance of Generic type</returns>
-        public Task<T> GetFromCacheAsync(Uri uri, bool throwOnError = false, CancellationToken cancellationToken = default(CancellationToken), List<KeyValuePair<string, object>> initializerKeyValues = null)
+        public Task<T> GetFromCacheAsync(Uri uri, bool throwOnError = false, CancellationToken cancellationToken = default, List<KeyValuePair<string, object>> initializerKeyValues = null)
         {
             return GetItemAsync(uri, throwOnError, false, cancellationToken, initializerKeyValues);
         }
@@ -241,11 +241,11 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>a StorageFile</returns>
         public async Task<StorageFile> GetFileFromCacheAsync(Uri uri)
         {
-            var folder = await GetCacheFolderAsync().ConfigureAwait(false);
+            StorageFolder folder = await GetCacheFolderAsync().ConfigureAwait(false);
 
             string fileName = GetCacheFileName(uri);
 
-            var item = await folder.TryGetItemAsync(fileName).AsTask().ConfigureAwait(false);
+            IStorageItem item = await folder.TryGetItemAsync(fileName).AsTask().ConfigureAwait(false);
 
             return item as StorageFile;
         }
@@ -257,13 +257,13 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>an instance of Generic type</returns>
         public T GetFromMemoryCache(Uri uri)
         {
-            T instance = default(T);
+            T instance = default;
 
             string fileName = GetCacheFileName(uri);
 
             if (_inMemoryFileStorage.MaxItemCount > 0)
             {
-                var msi = _inMemoryFileStorage.GetItem(fileName, CacheDuration);
+                InMemoryStorageItem<T> msi = _inMemoryFileStorage.GetItem(fileName, CacheDuration);
                 if (msi != null)
                 {
                     instance = msi.Item;
@@ -303,7 +303,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                 return treatNullFileAsOutOfDate;
             }
 
-            var properties = await file.GetBasicPropertiesAsync().AsTask().ConfigureAwait(false);
+            Windows.Storage.FileProperties.BasicProperties properties = await file.GetBasicPropertiesAsync().AsTask().ConfigureAwait(false);
 
             return properties.Size == 0 || DateTime.Now.Subtract(properties.DateModified.DateTime) > duration;
         }
@@ -320,7 +320,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             ulong value = (ulong)utf8.Length;
             for (int n = 0; n < utf8.Length; n++)
             {
-                value += (ulong)utf8[n] << ((n * 5) % 56);
+                value += (ulong)utf8[n] << (n * 5 % 56);
             }
 
             return value;
@@ -328,10 +328,10 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private async Task<T> GetItemAsync(Uri uri, bool throwOnError, bool preCacheOnly, CancellationToken cancellationToken, List<KeyValuePair<string, object>> initializerKeyValues)
         {
-            T instance = default(T);
+            T instance = default;
 
             string fileName = GetCacheFileName(uri);
-            _concurrentTasks.TryGetValue(fileName, out var request);
+            _concurrentTasks.TryGetValue(fileName, out ConcurrentRequest request);
 
             // if similar request exists check if it was preCacheOnly and validate that current request isn't preCacheOnly
             if (request != null && request.EnsureCachedCopy && !preCacheOnly)
@@ -373,11 +373,11 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private async Task<T> GetFromCacheOrDownloadAsync(Uri uri, string fileName, bool preCacheOnly, CancellationToken cancellationToken, List<KeyValuePair<string, object>> initializerKeyValues)
         {
-            T instance = default(T);
+            T instance = default;
 
             if (_inMemoryFileStorage.MaxItemCount > 0)
             {
-                var msi = _inMemoryFileStorage.GetItem(fileName, CacheDuration);
+                InMemoryStorageItem<T> msi = _inMemoryFileStorage.GetItem(fileName, CacheDuration);
                 if (msi != null)
                 {
                     instance = msi.Item;
@@ -389,8 +389,8 @@ namespace Microsoft.Toolkit.Uwp.UI
                 return instance;
             }
 
-            var folder = await GetCacheFolderAsync().ConfigureAwait(false);
-            var baseFile = await folder.TryGetItemAsync(fileName).AsTask().ConfigureAwait(false) as StorageFile;
+            StorageFolder folder = await GetCacheFolderAsync().ConfigureAwait(false);
+            StorageFile baseFile = await folder.TryGetItemAsync(fileName).AsTask().ConfigureAwait(false) as StorageFile;
 
             bool downloadDataFile = baseFile == null || await IsFileOutOfDateAsync(baseFile, CacheDuration).ConfigureAwait(false);
 
@@ -429,15 +429,15 @@ namespace Microsoft.Toolkit.Uwp.UI
                 }
             }
 
-            if (EqualityComparer<T>.Default.Equals(instance, default(T)) && !preCacheOnly)
+            if (EqualityComparer<T>.Default.Equals(instance, default) && !preCacheOnly)
             {
                 instance = await InitializeTypeAsync(baseFile, initializerKeyValues).ConfigureAwait(false);
 
                 if (_inMemoryFileStorage.MaxItemCount > 0)
                 {
-                    var properties = await baseFile.GetBasicPropertiesAsync().AsTask().ConfigureAwait(false);
+                    Windows.Storage.FileProperties.BasicProperties properties = await baseFile.GetBasicPropertiesAsync().AsTask().ConfigureAwait(false);
 
-                    var msi = new InMemoryStorageItem<T>(fileName, properties.DateModified.DateTime, instance);
+                    InMemoryStorageItem<T> msi = new InMemoryStorageItem<T>(fileName, properties.DateModified.DateTime, instance);
                     _inMemoryFileStorage.SetItem(msi);
                 }
             }
@@ -447,18 +447,18 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private async Task<T> DownloadFileAsync(Uri uri, StorageFile baseFile, bool preCacheOnly, CancellationToken cancellationToken, List<KeyValuePair<string, object>> initializerKeyValues)
         {
-            T instance = default(T);
+            T instance = default;
 
             using (MemoryStream ms = new MemoryStream())
             {
-                using (var stream = await HttpClient.GetStreamAsync(uri))
+                using (Stream stream = await HttpClient.GetStreamAsync(uri))
                 {
                     stream.CopyTo(ms);
                     ms.Flush();
 
                     ms.Position = 0;
 
-                    using (var fs = await baseFile.OpenStreamForWriteAsync())
+                    using (Stream fs = await baseFile.OpenStreamForWriteAsync())
                     {
                         ms.CopyTo(fs);
 
@@ -480,7 +480,7 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private async Task InternalClearAsync(IEnumerable<StorageFile> files)
         {
-            foreach (var file in files)
+            foreach (StorageFile file in files)
             {
                 try
                 {

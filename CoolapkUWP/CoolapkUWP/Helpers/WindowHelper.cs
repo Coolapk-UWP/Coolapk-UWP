@@ -1,6 +1,4 @@
-﻿using Microsoft.Toolkit.Uwp.Helpers;
-using System.Collections.Generic;
-using Windows.ApplicationModel.Core;
+﻿using System.Collections.Generic;
 using Windows.UI.Xaml;
 
 namespace CoolapkUWP.Helpers

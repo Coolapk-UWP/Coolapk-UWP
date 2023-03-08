@@ -15,7 +15,7 @@ namespace CoolapkUWP.Controls
 {
     public sealed partial class ProfileFlyoutControl : UserControl
     {
-        private ProfileFlyoutViewModel Provider;
+        private readonly ProfileFlyoutViewModel Provider;
 
         public static readonly DependencyProperty FlyoutBaseProperty =
             DependencyProperty.Register(

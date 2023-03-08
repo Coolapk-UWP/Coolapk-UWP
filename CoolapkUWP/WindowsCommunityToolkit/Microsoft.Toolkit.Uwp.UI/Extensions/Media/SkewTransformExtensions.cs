@@ -21,10 +21,10 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             Matrix matrix = Matrix.Identity;
 
-            var angleX = transform.AngleX;
-            var angleY = transform.AngleY;
-            var centerX = transform.CenterX;
-            var centerY = transform.CenterY;
+            double angleX = transform.AngleX;
+            double angleY = transform.AngleY;
+            double centerX = transform.CenterX;
+            double centerY = transform.CenterY;
 
             bool hasCenter = centerX != 0 || centerY != 0;
 

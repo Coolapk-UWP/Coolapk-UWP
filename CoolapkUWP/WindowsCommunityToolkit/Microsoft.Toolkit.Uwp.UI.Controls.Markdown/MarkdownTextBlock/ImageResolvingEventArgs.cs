@@ -51,7 +51,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <returns>Deferral</returns>
         public Deferral GetDeferral()
         {
-            var task = new TaskCompletionSource<object>();
+            TaskCompletionSource<object> task = new TaskCompletionSource<object>();
             _deferrals.Add(task);
 
             return new Deferral(() =>

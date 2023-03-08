@@ -54,8 +54,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             // Clear Cache
             foreach (MenuItem menuItem in Items)
             {
-                var menuFlyoutItems = menuItem.GetMenuFlyoutItems();
-                foreach (var flyoutItem in menuFlyoutItems)
+                System.Collections.Generic.IEnumerable<MenuFlyoutItemBase> menuFlyoutItems = menuItem.GetMenuFlyoutItems();
+                foreach (MenuFlyoutItemBase flyoutItem in menuFlyoutItems)
                 {
                     RemoveElementFromCache(flyoutItem);
                 }
@@ -108,10 +108,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
             if (MenuItemInputGestureCache.ContainsKey(gestureKey))
             {
-                var cachedMenuItem = MenuItemInputGestureCache[gestureKey];
-                if (cachedMenuItem is MenuFlyoutItem)
+                DependencyObject cachedMenuItem = MenuItemInputGestureCache[gestureKey];
+                if (cachedMenuItem is MenuFlyoutItem menuFlyoutItem)
                 {
-                    var menuFlyoutItem = (MenuFlyoutItem)cachedMenuItem;
                     menuFlyoutItem.Command?.Execute(menuFlyoutItem.CommandParameter);
                 }
             }
@@ -119,16 +118,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private void Menu_LostFocus(object sender, RoutedEventArgs e)
         {
-            MenuItem menuItem;
-            if (ControlHelpers.IsXamlRootAvailable && XamlRoot != null)
-            {
-                menuItem = FocusManager.GetFocusedElement(XamlRoot) as MenuItem;
-            }
-            else
-            {
-                menuItem = FocusManager.GetFocusedElement() as MenuItem;
-            }
-
+            MenuItem menuItem = ControlHelpers.IsXamlRootAvailable && XamlRoot != null
+                ? FocusManager.GetFocusedElement(XamlRoot) as MenuItem
+                : FocusManager.GetFocusedElement() as MenuItem;
             if (AllowTooltip)
             {
                 HideMenuItemsTooltips();
@@ -153,14 +145,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return;
             }
 
-            if (ControlHelpers.IsXamlRootAvailable && XamlRoot != null)
-            {
-                _lastFocusElement = FocusManager.GetFocusedElement(XamlRoot) as Control;
-            }
-            else
-            {
-                _lastFocusElement = FocusManager.GetFocusedElement() as Control;
-            }
+            _lastFocusElement = ControlHelpers.IsXamlRootAvailable && XamlRoot != null
+                ? FocusManager.GetFocusedElement(XamlRoot) as Control
+                : FocusManager.GetFocusedElement() as Control;
 
             if (args.KeyStatus.ScanCode != AltScanCode)
             {
@@ -206,7 +193,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             }
             else if ((args.KeyStatus.IsMenuKeyDown || !_isLostFocus) && args.KeyStatus.IsKeyReleased)
             {
-                var gestureKey = MapInputToGestureKey(args.VirtualKey, !_isLostFocus);
+                string gestureKey = MapInputToGestureKey(args.VirtualKey, !_isLostFocus);
                 if (gestureKey == null)
                 {
                     return;
@@ -214,10 +201,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
                 if (MenuItemInputGestureCache.ContainsKey(gestureKey))
                 {
-                    var cachedMenuItem = MenuItemInputGestureCache[gestureKey];
-                    if (cachedMenuItem is MenuItem)
+                    DependencyObject cachedMenuItem = MenuItemInputGestureCache[gestureKey];
+                    if (cachedMenuItem is MenuItem menuItem)
                     {
-                        var menuItem = (MenuItem)cachedMenuItem;
                         menuItem.ShowMenu();
                         menuItem.Focus(FocusState.Keyboard);
                     }

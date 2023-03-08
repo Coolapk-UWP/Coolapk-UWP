@@ -82,7 +82,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return;
             }
 
-            var peer = FrameworkElementAutomationPeer.CreatePeerForElement(this);
+            AutomationPeer peer = FrameworkElementAutomationPeer.CreatePeerForElement(this);
             peer.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
         }
     }

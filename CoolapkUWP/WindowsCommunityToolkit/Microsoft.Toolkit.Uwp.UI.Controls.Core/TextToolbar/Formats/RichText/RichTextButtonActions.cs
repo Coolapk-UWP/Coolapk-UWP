@@ -24,7 +24,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.RichText
         /// <inheritdoc/>
         public override void FormatBold(ToolbarButton button)
         {
-            var format = Formatter.SelectionFormat;
+            ITextCharacterFormat format = Formatter.SelectionFormat;
             if (!button.IsToggled)
             {
                 format.Bold = FormatEffect.On;
@@ -42,7 +42,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.RichText
         /// <inheritdoc/>
         public override void FormatItalics(ToolbarButton button)
         {
-            var format = Formatter.SelectionFormat;
+            ITextCharacterFormat format = Formatter.SelectionFormat;
             if (!button.IsToggled)
             {
                 format.Italic = FormatEffect.On;
@@ -60,7 +60,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.RichText
         /// <inheritdoc/>
         public override void FormatStrikethrough(ToolbarButton button)
         {
-            var format = Formatter.SelectionFormat;
+            ITextCharacterFormat format = Formatter.SelectionFormat;
             if (!button.IsToggled)
             {
                 format.Strikethrough = FormatEffect.On;
@@ -78,7 +78,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.RichText
         /// <inheritdoc/>
         public override void FormatLink(ToolbarButton button, string label, string formattedText, string link)
         {
-            var selected = Formatter.Selected;
+            ITextSelection selected = Formatter.Selected;
             if (!string.IsNullOrWhiteSpace(label))
             {
                 selected.SetText(TextSetOptions.FormatRtf, formattedText);
@@ -96,14 +96,14 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.RichText
 
             selected.Link = $"\"{link}\"";
 
-            var doc = Formatter.Model.Editor.Document;
+            ITextDocument doc = Formatter.Model.Editor.Document;
             doc.ApplyDisplayUpdates(); // doesn't seem to work
         }
 
         /// <inheritdoc/>
         public override void FormatList(ToolbarButton button)
         {
-            var selected = Formatter.Selected;
+            ITextSelection selected = Formatter.Selected;
             if (!button.IsToggled)
             {
                 Formatter.OrderedListButton.IsToggled = false;
@@ -121,7 +121,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.RichText
         /// <inheritdoc/>
         public override void FormatOrderedList(ToolbarButton button)
         {
-            var selected = Formatter.Selected;
+            ITextSelection selected = Formatter.Selected;
             if (!button.IsToggled)
             {
                 Formatter.ListButton.IsToggled = false;
@@ -142,7 +142,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats.RichText
         /// <param name="button">The button invoking the action</param>
         public void FormatUnderline(ToolbarButton button)
         {
-            var format = Formatter.SelectionFormat;
+            ITextCharacterFormat format = Formatter.SelectionFormat;
             if (!button.IsToggled)
             {
                 format.Underline = UnderlineType.Single;

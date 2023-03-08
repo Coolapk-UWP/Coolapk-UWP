@@ -1,7 +1,7 @@
-﻿using Windows.UI.Xaml.Media;
-using QRCoder;
+﻿using QRCoder;
 using System;
 using Windows.Foundation;
+using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Controls
 {
@@ -145,37 +145,21 @@ namespace CoolapkUWP.Controls
         private static bool CheckIsPositionMarker(int xi, int yi, int drawableModulesCount, int positionMarkerCount)
         {
             const int offsetModules = 4;
-            if (xi < offsetModules || yi < offsetModules)
-            {
-                return false;
-            }
-            else if (xi < positionMarkerCount + offsetModules && yi < positionMarkerCount + offsetModules)
-            {
-                return true;
-            }
-            else if (xi >= drawableModulesCount + offsetModules - positionMarkerCount
-                    && xi < drawableModulesCount + offsetModules
-                    && yi < positionMarkerCount + offsetModules)
-            {
-                return true;
-            }
-            else if (yi >= drawableModulesCount + offsetModules - positionMarkerCount
-                    && yi < drawableModulesCount + offsetModules
-                    && xi < positionMarkerCount + offsetModules)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return xi >= offsetModules && yi >= offsetModules
+&& ((xi < positionMarkerCount + offsetModules && yi < positionMarkerCount + offsetModules)
+|| (xi >= drawableModulesCount + offsetModules - positionMarkerCount
+                                                    && xi < drawableModulesCount + offsetModules
+                                                    && yi < positionMarkerCount + offsetModules)
+                || (yi >= drawableModulesCount + offsetModules - positionMarkerCount
+                                                                    && yi < drawableModulesCount + offsetModules
+                                                                    && xi < positionMarkerCount + offsetModules));
         }
 
         private static PathFigure CreateRoundedRectanglePath(double x, double y, double unitsPerModule, RadiusFilterKind filterKind)
         {
-            double x_middle = x + unitsPerModule / 2;
+            double x_middle = x + (unitsPerModule / 2);
             double x_end = x + unitsPerModule;
-            double y_middle = y + unitsPerModule / 2;
+            double y_middle = y + (unitsPerModule / 2);
             double y_end = y + unitsPerModule;
             Size arcSize = new Size(unitsPerModule / 2, unitsPerModule / 2);
 
@@ -283,9 +267,9 @@ namespace CoolapkUWP.Controls
 
         private static PathFigureCollection CreateEntiRoundedRectanglePath(double x, double y, double unitsPerModule, RadiusFilterKind filterKind)
         {
-            double x_middle = x + unitsPerModule / 2;
+            double x_middle = x + (unitsPerModule / 2);
             double x_end = x + unitsPerModule;
-            double y_middle = y + unitsPerModule / 2;
+            double y_middle = y + (unitsPerModule / 2);
             double y_end = y + unitsPerModule;
             Size arcSize = new Size(unitsPerModule / 2, unitsPerModule / 2);
 

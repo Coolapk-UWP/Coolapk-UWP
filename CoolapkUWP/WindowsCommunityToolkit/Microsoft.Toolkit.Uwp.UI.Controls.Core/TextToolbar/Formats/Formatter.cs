@@ -2,8 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons;
+using System;
 using Windows.UI.Text;
 
 namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats
@@ -70,17 +70,17 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats
             int counter = 0;
             bool atNewLine = false;
 
-            Model.Editor.Document.GetText(TextGetOptions.NoHidden, out var docText);
-            var lines = docText.Split(new string[] { Return }, StringSplitOptions.None);
+            Model.Editor.Document.GetText(TextGetOptions.NoHidden, out string docText);
+            string[] lines = docText.Split(new string[] { Return }, StringSplitOptions.None);
 
-            foreach (var line in lines)
+            foreach (string line in lines)
             {
                 if (counter == val)
                 {
                     atNewLine = true;
                 }
 
-                foreach (var c in line)
+                foreach (char c in line)
                 {
                     counter++;
                     if (counter >= val)
@@ -112,7 +112,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats
         public virtual string[] GetLines()
         {
             Model.Editor.Document.GetText(TextGetOptions.None, out string doc);
-            var lines = doc.Split(new string[] { NewLineChars }, StringSplitOptions.None);
+            string[] lines = doc.Split(new string[] { NewLineChars }, StringSplitOptions.None);
             return lines;
         }
 
@@ -131,7 +131,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats
         /// <returns>Last line text</returns>
         public virtual string GetLastLine()
         {
-            var lines = GetLines();
+            string[] lines = GetLines();
             return lines[lines.Length - 2];
         }
 
@@ -188,7 +188,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats
         {
             get
             {
-                Model.Editor.Document.GetText(TextGetOptions.FormatRtf, out var currentvalue);
+                Model.Editor.Document.GetText(TextGetOptions.FormatRtf, out string currentvalue);
                 return currentvalue;
             }
         }

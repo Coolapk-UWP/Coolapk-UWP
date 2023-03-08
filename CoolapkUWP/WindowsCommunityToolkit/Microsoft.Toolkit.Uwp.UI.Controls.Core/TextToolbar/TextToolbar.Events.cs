@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons;
+using Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats;
 using System;
 using System.Collections.Specialized;
 using System.Linq;
-using Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons;
-using Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarFormats;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -34,13 +34,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
             if (obj is TextToolbar bar)
             {
-                var oldEditor = args.OldValue as RichEditBox;
-                var newEditor = args.NewValue as RichEditBox;
+                RichEditBox oldEditor = args.OldValue as RichEditBox;
+                RichEditBox newEditor = args.NewValue as RichEditBox;
 
-                if (oldEditor != null)
-                {
-                    oldEditor.RemoveHandler(KeyDownEvent, bar.KeyEventHandler);
-                }
+                oldEditor?.RemoveHandler(KeyDownEvent, bar.KeyEventHandler);
 
                 if (newEditor != null)
                 {
@@ -56,7 +53,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                     }
                 }
 
-                var editorArgs = new EditorChangedArgs
+                EditorChangedArgs editorArgs = new EditorChangedArgs
                 {
                     Old = oldEditor,
                     New = newEditor
@@ -98,7 +95,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         {
             if (obj is TextToolbar bar)
             {
-                var root = bar.GetTemplateChild(RootControl) as CommandBar;
+                CommandBar root = bar.GetTemplateChild(RootControl) as CommandBar;
 
                 if (args.OldValue is ButtonMap oldSource)
                 {
@@ -134,7 +131,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         {
             if (obj is TextToolbar bar)
             {
-                var root = bar.GetTemplateChild(RootControl) as CommandBar;
+                CommandBar root = bar.GetTemplateChild(RootControl) as CommandBar;
 
                 if (args.OldValue is DefaultButtonModificationList oldSource)
                 {
@@ -147,7 +144,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
                     foreach (DefaultButton item in newSource)
                     {
-                        var element = bar.GetDefaultButton(item.Type);
+                        ToolbarButton element = bar.GetDefaultButton(item.Type);
                         item.Button = element;
                     }
                 }
@@ -210,7 +207,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 case NotifyCollectionChangedAction.Add:
                     foreach (DefaultButton item in e.NewItems)
                     {
-                        var element = GetDefaultButton(item.Type);
+                        ToolbarButton element = GetDefaultButton(item.Type);
                         item.Button = element;
                     }
 
@@ -250,9 +247,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
             if (GetTemplateChild(RootControl) is CommandBar root && IsDoingShortcut(e.Key))
             {
-                var key = FindBestAlternativeKey(e.Key);
+                VirtualKey key = FindBestAlternativeKey(e.Key);
 
-                var matchingButtons = root.PrimaryCommands.OfType<ToolbarButton>().Where(item => item.ShortcutKey == key);
+                System.Collections.Generic.IEnumerable<ToolbarButton> matchingButtons = root.PrimaryCommands.OfType<ToolbarButton>().Where(item => item.ShortcutKey == key);
                 if (matchingButtons.Any())
                 {
                     if (e.Handled)
@@ -264,8 +261,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                         }
                     }
 
-                    var args = new ShortcutKeyRequestArgs(key, ShiftKeyDown, e);
-                    foreach (var button in matchingButtons)
+                    ShortcutKeyRequestArgs args = new ShortcutKeyRequestArgs(key, ShiftKeyDown, e);
+                    foreach (ToolbarButton button in matchingButtons)
                     {
                         if (button != null && !args.Handled)
                         {
@@ -291,12 +288,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             }
 
             // ignore when Control is used in combination with Menu (aka Alt) to avoid blocking use of AltGr key
-            if (MenuKeyDown)
-            {
-                return false;
-            }
-
-            return true;
+            return !MenuKeyDown;
         }
 
         private KeyEventHandler KeyEventHandler { get; set; }

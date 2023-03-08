@@ -21,14 +21,14 @@ namespace Microsoft.Toolkit.Uwp.Helpers
     {
         private static IList<KeyValuePair<string, string>> CreatePairsFromUri(string uri)
         {
-            var queryStartPosition = uri?.IndexOf('?');
+            int? queryStartPosition = uri?.IndexOf('?');
             if (queryStartPosition.GetValueOrDefault(-1) != -1)
             { // Uri has a query string
-                var queryString = uri.Substring(queryStartPosition.Value + 1);
+                string queryString = uri.Substring(queryStartPosition.Value + 1);
                 return queryString.Split('&')
                     .Select(param =>
                     {
-                        var kvp = param.Split('=');
+                        string[] kvp = param.Split('=');
                         return new KeyValuePair<string, string>(System.Net.WebUtility.UrlDecode(kvp[0]), System.Net.WebUtility.UrlDecode(kvp[1]));
                     }).ToList();
             }

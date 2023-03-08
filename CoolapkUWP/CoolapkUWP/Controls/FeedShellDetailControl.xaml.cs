@@ -45,7 +45,7 @@ namespace CoolapkUWP.Controls
                     _ = (element.Tag as ICanFollow).ChangeFollow();
                     break;
                 default:
-                    UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+                    _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
                     break;
             }
         }
@@ -174,15 +174,15 @@ namespace CoolapkUWP.Controls
 
             if (element.Tag is ImageModel image)
             {
-                UIHelper.ShowImage(image);
+                _ = UIHelper.ShowImageAsync(image);
             }
             else
             {
-                UIHelper.OpenLinkAsync(element.Tag.ToString());
+                _ = UIHelper.OpenLinkAsync(element.Tag.ToString());
             }
         }
 
-        private void UrlButton_Click(object sender, RoutedEventArgs e) => UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
+        private void UrlButton_Click(object sender, RoutedEventArgs e) => _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
 
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e) => (sender as GridView).SelectedIndex = -1;
     }

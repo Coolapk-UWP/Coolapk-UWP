@@ -2,8 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Collections.Generic;
 using ColorCode.Common;
+using System.Collections.Generic;
 
 namespace ColorCode.Compilation.Languages
 {
@@ -38,7 +38,7 @@ namespace ColorCode.Compilation.Languages
         }
 
 
-        
+
         public IList<LanguageRule> Rules
         {
             get
@@ -47,7 +47,7 @@ namespace ColorCode.Compilation.Languages
                            {
                                // Heading
                                new LanguageRule(
-                                   @"^(\#.*)\r?|^.*\r?\n([-]+|[=]+)\r?$",    
+                                   @"^(\#.*)\r?|^.*\r?\n([-]+|[=]+)\r?$",
                                    new Dictionary<int, string>
                                        {
                                            { 0, ScopeName.MarkdownHeader },
@@ -56,7 +56,7 @@ namespace ColorCode.Compilation.Languages
 
                                // code block
                                new LanguageRule(
-                                   @"^([ ]{4}(?![ ])(?:.|\r?\n[ ]{4})*)|^(```+[ \t]*\w*)((?:[ \t\r\n]|.)*?)(^```+)[ \t]*\r?$",    
+                                   @"^([ ]{4}(?![ ])(?:.|\r?\n[ ]{4})*)|^(```+[ \t]*\w*)((?:[ \t\r\n]|.)*?)(^```+)[ \t]*\r?$",
                                    new Dictionary<int, string>
                                        {
                                            { 1, ScopeName.MarkdownCode },
@@ -67,27 +67,27 @@ namespace ColorCode.Compilation.Languages
 
                                // Line
                                new LanguageRule(
-                                   @"^\s*((-\s*){3}|(\*\s*){3}|(=\s*){3})[ \t\-\*=]*\r?$",    
+                                   @"^\s*((-\s*){3}|(\*\s*){3}|(=\s*){3})[ \t\-\*=]*\r?$",
                                    new Dictionary<int, string>
                                        {
-                                           { 0, ScopeName.MarkdownHeader }, 
+                                           { 0, ScopeName.MarkdownHeader },
                                        }),
 
                                
                                // List
                                new LanguageRule(
-                                   @"^[ \t]*([\*\+\-]|\d+\.)",    
+                                   @"^[ \t]*([\*\+\-]|\d+\.)",
                                    new Dictionary<int, string>
                                        {
-                                           { 1, ScopeName.MarkdownListItem }, 
+                                           { 1, ScopeName.MarkdownListItem },
                                        }),
 
                                // escape
                                new LanguageRule(
-                                   @"\\[\\`\*_{}\[\]\(\)\#\+\-\.\!]",    
+                                   @"\\[\\`\*_{}\[\]\(\)\#\+\-\.\!]",
                                    new Dictionary<int, string>
                                        {
-                                           { 0, ScopeName.StringEscape }, 
+                                           { 0, ScopeName.StringEscape },
                                        }),
 
                                // link
@@ -95,11 +95,11 @@ namespace ColorCode.Compilation.Languages
                                    link(link()) + "|" + link(),  // support nested links (mostly for images)
                                    new Dictionary<int, string>
                                        {
-                                           { 1, ScopeName.MarkdownBold }, 
-                                           { 2, ScopeName.XmlDocTag }, 
-                                           { 3, ScopeName.XmlDocTag },    
-                                           { 4, ScopeName.MarkdownBold }, 
-                                           { 5, ScopeName.XmlDocTag },    
+                                           { 1, ScopeName.MarkdownBold },
+                                           { 2, ScopeName.XmlDocTag },
+                                           { 3, ScopeName.XmlDocTag },
+                                           { 4, ScopeName.MarkdownBold },
+                                           { 5, ScopeName.XmlDocTag },
                                        }),
                                new LanguageRule(
                                    @"^[ ]{0,3}\[[^\]\n]+\]:(.|\r|\n[ \t]+(?![\r\n]))*$",
@@ -113,36 +113,36 @@ namespace ColorCode.Compilation.Languages
                                    @"\*(?!\*)([^\*\n]|\*\w)+?\*(?!\w)|\*\*([^\*\n]|\*(?!\*))+?\*\*",
                                    new Dictionary<int, string>
                                        {
-                                           { 0, ScopeName.MarkdownBold }, 
+                                           { 0, ScopeName.MarkdownBold },
                                        }),
 
                                // emphasized 
                                new LanguageRule(
-                                   @"_([^_\n]|_\w)+?_(?!\w)|__([^_\n]|_(?=[\w_]))+?__(?!\w)",    
+                                   @"_([^_\n]|_\w)+?_(?!\w)|__([^_\n]|_(?=[\w_]))+?__(?!\w)",
                                    new Dictionary<int, string>
                                        {
-                                           { 0, ScopeName.MarkdownEmph }, 
+                                           { 0, ScopeName.MarkdownEmph },
                                        }),
                                
                                // inline code
                                new LanguageRule(
-                                   @"`[^`\n]+?`|``([^`\n]|`(?!`))+?``",    
+                                   @"`[^`\n]+?`|``([^`\n]|`(?!`))+?``",
                                    new Dictionary<int, string>
                                        {
-                                           { 0, ScopeName.MarkdownCode }, 
+                                           { 0, ScopeName.MarkdownCode },
                                        }),
 
                                // strings
                                new LanguageRule(
-                                   @"""[^""\n]+?""|'[\w\-_]+'",    
+                                   @"""[^""\n]+?""|'[\w\-_]+'",
                                    new Dictionary<int, string>
                                        {
-                                           { 0, ScopeName.String }, 
+                                           { 0, ScopeName.String },
                                        }),
 
                                // html tag
                                new LanguageRule(
-                                   @"</?\w.*?>",    
+                                   @"</?\w.*?>",
                                    new Dictionary<int, string>
                                        {
                                            { 0, ScopeName.HtmlTagDelimiter },
@@ -150,7 +150,7 @@ namespace ColorCode.Compilation.Languages
 
                                // html entity
                                new LanguageRule(
-                                   @"\&\#?\w+?;",    
+                                   @"\&\#?\w+?;",
                                    new Dictionary<int, string>
                                        {
                                            { 0, ScopeName.HtmlEntity },

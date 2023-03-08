@@ -19,7 +19,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
     /// </summary>
     public static class StreamHelper
     {
-        private static HttpClient client = new HttpClient();
+        private static readonly HttpClient client = new HttpClient();
 
         /// <summary>
         /// Gets the response stream returned by a HTTP get request.
@@ -27,13 +27,13 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <param name="uri">Uri to request.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> used to cancel the operation.</param>
         /// <returns>The response stream</returns>
-        public static async Task<IRandomAccessStream> GetHttpStreamAsync(this Uri uri, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<IRandomAccessStream> GetHttpStreamAsync(this Uri uri, CancellationToken cancellationToken = default)
         {
-            var outputStream = new InMemoryRandomAccessStream();
+            InMemoryRandomAccessStream outputStream = new InMemoryRandomAccessStream();
 
-            using (var request = new HttpRequestMessage(HttpMethod.Get, uri))
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, uri))
             {
-                using (var response = await client.SendAsync(request, cancellationToken).ConfigureAwait(false))
+                using (HttpResponseMessage response = await client.SendAsync(request, cancellationToken).ConfigureAwait(false))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -56,11 +56,11 @@ namespace Microsoft.Toolkit.Uwp.Helpers
             this Uri uri,
             StorageFile targetFile)
         {
-            using (var fileStream = await targetFile.OpenAsync(FileAccessMode.ReadWrite).AsTask().ConfigureAwait(false))
+            using (IRandomAccessStream fileStream = await targetFile.OpenAsync(FileAccessMode.ReadWrite).AsTask().ConfigureAwait(false))
             {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, uri))
+                using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, uri))
                 {
-                    using (var response = await client.SendAsync(request).ConfigureAwait(false))
+                    using (HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false))
                     {
                         if (response.IsSuccessStatusCode)
                         {
@@ -139,10 +139,10 @@ namespace Microsoft.Toolkit.Uwp.Helpers
             this IRandomAccessStream stream,
             Encoding encoding = null)
         {
-            var reader = new DataReader(stream.GetInputStreamAt(0));
+            DataReader reader = new DataReader(stream.GetInputStreamAt(0));
             await reader.LoadAsync((uint)stream.Size);
 
-            var bytes = new byte[stream.Size];
+            byte[] bytes = new byte[stream.Size];
             reader.ReadBytes(bytes);
 
             if (encoding == null)
@@ -159,10 +159,10 @@ namespace Microsoft.Toolkit.Uwp.Helpers
             FileAccessMode accessMode,
             StorageFolder workingFolder)
         {
-            var fileName = Path.GetFileName(fullFileName);
+            string fileName = Path.GetFileName(fullFileName);
             workingFolder = await GetSubFolderAsync(fullFileName, workingFolder);
 
-            var file = await workingFolder.GetFileAsync(fileName);
+            StorageFile file = await workingFolder.GetFileAsync(fileName);
 
             return await file.OpenAsync(accessMode);
         }
@@ -171,14 +171,9 @@ namespace Microsoft.Toolkit.Uwp.Helpers
             string fullFileName,
             StorageFolder workingFolder)
         {
-            var folderName = Path.GetDirectoryName(fullFileName);
+            string folderName = Path.GetDirectoryName(fullFileName);
 
-            if (!string.IsNullOrEmpty(folderName) && folderName != @"\")
-            {
-                return await workingFolder.GetFolderAsync(folderName);
-            }
-
-            return workingFolder;
+            return !string.IsNullOrEmpty(folderName) && folderName != @"\" ? await workingFolder.GetFolderAsync(folderName) : workingFolder;
         }
     }
 }

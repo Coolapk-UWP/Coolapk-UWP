@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Toolkit.Parsers.Core;
 using Microsoft.Toolkit.Parsers.Markdown.Helpers;
+using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
 {
@@ -148,7 +148,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
                     pos++;
                 }
 
-                var imageDimensionsPos = markdown.IndexOf(" =", urlStart, pos - urlStart, StringComparison.Ordinal);
+                int imageDimensionsPos = markdown.IndexOf(" =", urlStart, pos - urlStart, StringComparison.Ordinal);
 
                 url = imageDimensionsPos > 0
                     ? TextRunInline.ResolveEscapeSequences(markdown, urlStart + 1, imageDimensionsPos)
@@ -157,18 +157,18 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
                 if (imageDimensionsPos > 0)
                 {
                     // trying to find 'x' which separates image width and height
-                    var dimensionsSeparatorPos = markdown.IndexOf("x", imageDimensionsPos + 2, pos - imageDimensionsPos - 1, StringComparison.Ordinal);
+                    int dimensionsSeparatorPos = markdown.IndexOf("x", imageDimensionsPos + 2, pos - imageDimensionsPos - 1, StringComparison.Ordinal);
 
                     // didn't find separator, trying to parse value as imageWidth
                     if (dimensionsSeparatorPos == -1)
                     {
-                        var imageWidthStr = markdown.Substring(imageDimensionsPos + 2, pos - imageDimensionsPos - 2);
+                        string imageWidthStr = markdown.Substring(imageDimensionsPos + 2, pos - imageDimensionsPos - 2);
 
                         int.TryParse(imageWidthStr, out imageWidth);
                     }
                     else
                     {
-                        var dimensions = markdown.Substring(imageDimensionsPos + 2, pos - imageDimensionsPos - 2).Split('x');
+                        string[] dimensions = markdown.Substring(imageDimensionsPos + 2, pos - imageDimensionsPos - 2).Split('x');
 
                         // got width and height
                         if (dimensions.Length == 2)
@@ -186,7 +186,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             }
 
             // We found something!
-            var result = new ImageInline
+            ImageInline result = new ImageInline
             {
                 Tooltip = tooltip,
                 RenderUrl = url,
@@ -216,7 +216,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             }
 
             // Look up the reference ID.
-            var reference = document.LookUpReference(ReferenceId);
+            Blocks.LinkReferenceBlock reference = document.LookUpReference(ReferenceId);
             if (reference == null)
             {
                 return;
@@ -239,22 +239,13 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
         /// <returns> The textual representation of this object. </returns>
         public override string ToString()
         {
-            if (ImageWidth > 0 && ImageHeight > 0)
-            {
-                return string.Format("![{0}]: {1} (Width: {2}, Height: {3})", Tooltip, Url, ImageWidth, ImageHeight);
-            }
-
-            if (ImageWidth > 0)
-            {
-                return string.Format("![{0}]: {1} (Width: {2})", Tooltip, Url, ImageWidth);
-            }
-
-            if (ImageHeight > 0)
-            {
-                return string.Format("![{0}]: {1} (Height: {2})", Tooltip, Url, ImageHeight);
-            }
-
-            return string.Format("![{0}]: {1}", Tooltip, Url);
+            return ImageWidth > 0 && ImageHeight > 0
+                ? string.Format("![{0}]: {1} (Width: {2}, Height: {3})", Tooltip, Url, ImageWidth, ImageHeight)
+                : ImageWidth > 0
+                ? string.Format("![{0}]: {1} (Width: {2})", Tooltip, Url, ImageWidth)
+                : ImageHeight > 0
+                ? string.Format("![{0}]: {1} (Height: {2})", Tooltip, Url, ImageHeight)
+                : string.Format("![{0}]: {1}", Tooltip, Url);
         }
     }
 }

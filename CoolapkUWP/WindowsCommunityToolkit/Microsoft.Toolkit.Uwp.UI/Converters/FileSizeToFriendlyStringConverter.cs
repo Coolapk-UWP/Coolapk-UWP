@@ -15,12 +15,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Converters
         /// <inheritdoc/>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is long size)
-            {
-                return Toolkit.Converters.ToFileSizeString(size);
-            }
-
-            return string.Empty;
+            return value is long size ? Toolkit.Converters.ToFileSizeString(size) : (object)string.Empty;
         }
 
         /// <inheritdoc/>

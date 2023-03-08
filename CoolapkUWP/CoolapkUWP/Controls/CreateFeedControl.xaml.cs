@@ -378,7 +378,7 @@ namespace CoolapkUWP.Controls
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LinkFlyout.Hide();
-            if(e.AddedItems.FirstOrDefault() is UserModel UserModel)
+            if (e.AddedItems.FirstOrDefault() is UserModel UserModel)
             {
                 InputBox.Document.Selection.TypeText($"@{UserModel.UserName} ");
             }

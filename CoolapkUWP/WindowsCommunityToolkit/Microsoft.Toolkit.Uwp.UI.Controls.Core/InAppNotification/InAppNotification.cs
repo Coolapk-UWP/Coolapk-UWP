@@ -21,10 +21,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
     public partial class InAppNotification : ContentControl
     {
         private ContentPresenter _contentProvider;
-        private DispatcherTimer _dismissTimer;
+        private readonly DispatcherTimer _dismissTimer;
         private Button _dismissButton;
         private InAppNotificationDismissKind _lastDismissKind;
-        private List<NotificationOptions> _stackedNotificationOptions;
+        private readonly List<NotificationOptions> _stackedNotificationOptions;
         private VisualStateGroup _visualStateGroup;
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 _visualStateGroup.CurrentStateChanged += OnCurrentStateChanged;
             }
 
-            var firstNotification = _stackedNotificationOptions.FirstOrDefault();
+            NotificationOptions firstNotification = _stackedNotificationOptions.FirstOrDefault();
             if (firstNotification != null)
             {
                 UpdateContent(firstNotification);
@@ -90,7 +90,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         public void Show(int duration = 0)
         {
             // We keep our current content
-            var notificationOptions = new NotificationOptions
+            NotificationOptions notificationOptions = new NotificationOptions
             {
                 Duration = duration,
                 Content = Content
@@ -106,7 +106,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <param name="duration">Displayed duration of the notification in ms (less or equal 0 means infinite duration)</param>
         public void Show(string text, int duration = 0)
         {
-            var notificationOptions = new NotificationOptions
+            NotificationOptions notificationOptions = new NotificationOptions
             {
                 Duration = duration,
                 Content = text
@@ -121,7 +121,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <param name="duration">Displayed duration of the notification in ms (less or equal 0 means infinite duration)</param>
         public void Show(UIElement element, int duration = 0)
         {
-            var notificationOptions = new NotificationOptions
+            NotificationOptions notificationOptions = new NotificationOptions
             {
                 Duration = duration,
                 Content = element
@@ -136,7 +136,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <param name="duration">Displayed duration of the notification in ms (less or equal 0 means infinite duration)</param>
         public void Show(DataTemplate dataTemplate, int duration = 0)
         {
-            var notificationOptions = new NotificationOptions
+            NotificationOptions notificationOptions = new NotificationOptions
             {
                 Duration = duration,
                 Content = dataTemplate
@@ -152,7 +152,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <param name="duration">Displayed duration of the notification in ms (less or equal 0 means infinite duration)</param>
         public void Show(object content, int duration = 0)
         {
-            var notificationOptions = new NotificationOptions
+            NotificationOptions notificationOptions = new NotificationOptions
             {
                 Duration = duration,
                 Content = content
@@ -181,7 +181,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return;
             }
 
-            var closingEventArgs = new InAppNotificationClosingEventArgs(dismissKind);
+            InAppNotificationClosingEventArgs closingEventArgs = new InAppNotificationClosingEventArgs(dismissKind);
             Closing?.Invoke(this, closingEventArgs);
 
             if (closingEventArgs.Cancel)
@@ -204,7 +204,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             // Continue to display notification if on remaining stacked notification
             if (_stackedNotificationOptions.Any())
             {
-                var notificationOptions = _stackedNotificationOptions[0];
+                NotificationOptions notificationOptions = _stackedNotificationOptions[0];
 
                 UpdateContent(notificationOptions);
 
@@ -217,7 +217,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return;
             }
 
-            var result = VisualStateManager.GoToState(this, StateContentCollapsed, true);
+            bool result = VisualStateManager.GoToState(this, StateContentCollapsed, true);
             if (!result)
             {
                 // The state transition cannot be executed.
@@ -277,7 +277,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <param name="notificationOptions">Information about the notification to display</param>
         private void Show(NotificationOptions notificationOptions)
         {
-            var eventArgs = new InAppNotificationOpeningEventArgs();
+            InAppNotificationOpeningEventArgs eventArgs = new InAppNotificationOpeningEventArgs();
             Opening?.Invoke(this, eventArgs);
 
             if (eventArgs.Cancel)
@@ -285,7 +285,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return;
             }
 
-            var shouldDisplayImmediately = true;
+            bool shouldDisplayImmediately = true;
             switch (StackMode)
             {
                 case StackMode.Replace:

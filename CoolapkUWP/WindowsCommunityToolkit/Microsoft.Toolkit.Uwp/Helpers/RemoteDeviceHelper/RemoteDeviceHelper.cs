@@ -65,7 +65,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// </summary>
         private async void GenerateSystemsWithFilterAsync(List<IRemoteSystemFilter> filter)
         {
-            var accessStatus = await RemoteSystem.RequestAccessAsync();
+            RemoteSystemAccessStatus accessStatus = await RemoteSystem.RequestAccessAsync();
             if (accessStatus == RemoteSystemAccessStatus.Allowed)
             {
                 _remoteSystemWatcher = filter != null ? RemoteSystem.CreateWatcher(filter) : RemoteSystem.CreateWatcher();

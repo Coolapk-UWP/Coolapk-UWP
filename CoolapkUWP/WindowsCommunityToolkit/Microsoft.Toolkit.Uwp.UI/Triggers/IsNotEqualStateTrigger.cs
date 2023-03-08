@@ -18,7 +18,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
         /// </summary>
         public object Value
         {
-            get { return (object)GetValue(ValueProperty); }
+            get { return GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
         }
 
@@ -30,7 +30,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
 
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var obj = (IsNotEqualStateTrigger)d;
+            IsNotEqualStateTrigger obj = (IsNotEqualStateTrigger)d;
             obj.UpdateTrigger();
         }
 
@@ -39,7 +39,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
         /// </summary>
         public object To
         {
-            get { return (object)GetValue(ToProperty); }
+            get { return GetValue(ToProperty); }
             set { SetValue(ToProperty, value); }
         }
 

@@ -72,8 +72,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private void SelectedItemChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            var item = sender.SelectedItem as TabbedCommandBarItem;
-            if (item == null || item.Visibility == Visibility.Collapsed)
+            if (!(sender.SelectedItem is TabbedCommandBarItem item) || item.Visibility == Visibility.Collapsed)
             {
                 // If the item is now hidden, select the first item instead.
                 // I can't think of any way that the visibiltiy would be null
@@ -84,10 +83,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
             // Remove the visibility PropertyChanged handler from the
             // previously selected item
-            if (_previousSelectedItem != null)
-            {
-                _previousSelectedItem.UnregisterPropertyChangedCallback(TabbedCommandBarItem.VisibilityProperty, _visibilityChangedToken);
-            }
+            _previousSelectedItem?.UnregisterPropertyChangedCallback(TabbedCommandBarItem.VisibilityProperty, _visibilityChangedToken);
 
             // Register a new visibility PropertyChangedcallback for the
             // currently selected item

@@ -4,13 +4,14 @@ using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
-using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Toolkit.Uwp.Helpers;
+using Microsoft.Toolkit.Uwp.UI;
 using System;
-using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
@@ -22,8 +23,6 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
-using System.Text.RegularExpressions;
-using System.Linq;
 
 namespace CoolapkUWP.Helpers
 {
@@ -289,7 +288,7 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        public static async void ShowImage(ImageModel image)
+        public static async Task ShowImageAsync(ImageModel image)
         {
             CoreApplicationView View = CoreApplication.CreateNewView();
             int ViewId = 0;
@@ -311,7 +310,7 @@ namespace CoolapkUWP.Helpers
 
     internal static partial class UIHelper
     {
-        public static async void OpenLinkAsync(string link)
+        public static async Task OpenLinkAsync(string link)
         {
             if (string.IsNullOrWhiteSpace(link)) { return; }
 
@@ -322,7 +321,7 @@ namespace CoolapkUWP.Helpers
                 link = link.Replace("http://", string.Empty).Replace("https://", string.Empty);
                 if (link.StartsWith("image.coolapk.com"))
                 {
-                    ShowImage(new ImageModel(origin, ImageType.SmallImage));
+                    _ = ShowImageAsync(new ImageModel(origin, ImageType.SmallImage));
                     return;
                 }
                 else
@@ -330,7 +329,7 @@ namespace CoolapkUWP.Helpers
                     Regex coolapk = new Regex(@"\w*?.?coolapk.\w*/");
                     if (coolapk.IsMatch(link))
                     {
-                        link =coolapk.Replace(link, string.Empty);
+                        link = coolapk.Replace(link, string.Empty);
                     }
                     else
                     {

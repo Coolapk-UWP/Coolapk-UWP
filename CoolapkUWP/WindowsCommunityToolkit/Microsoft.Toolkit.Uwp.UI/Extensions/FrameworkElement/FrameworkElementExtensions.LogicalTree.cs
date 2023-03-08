@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Uwp.UI.Predicates;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Microsoft.Toolkit.Uwp.UI.Predicates;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Markup;
@@ -248,12 +248,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The child (or self) that was found, or <see langword="null"/>.</returns>
         public static FrameworkElement FindChildOrSelf(this FrameworkElement element, string name, StringComparison comparisonType = StringComparison.Ordinal)
         {
-            if (name.Equals(element.Name, comparisonType))
-            {
-                return element;
-            }
-
-            return FindChild(element, name, comparisonType);
+            return name.Equals(element.Name, comparisonType) ? element : FindChild(element, name, comparisonType);
         }
 
         /// <summary>
@@ -265,12 +260,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         public static T FindChildOrSelf<T>(this FrameworkElement element)
             where T : FrameworkElement
         {
-            if (element is T result)
-            {
-                return result;
-            }
-
-            return FindChild<T>(element);
+            return element is T result ? result : FindChild<T>(element);
         }
 
         /// <summary>
@@ -281,12 +271,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The child (or self) that was found, or <see langword="null"/>.</returns>
         public static FrameworkElement FindChildOrSelf(this FrameworkElement element, Type type)
         {
-            if (element.GetType() == type)
-            {
-                return element;
-            }
-
-            return FindChild(element, type);
+            return element.GetType() == type ? element : FindChild(element, type);
         }
 
         /// <summary>
@@ -299,12 +284,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         public static T FindChildOrSelf<T>(this FrameworkElement element, Func<T, bool> predicate)
             where T : FrameworkElement
         {
-            if (element is T result && predicate(result))
-            {
-                return result;
-            }
-
-            return FindChild(element, predicate);
+            return element is T result && predicate(result) ? result : FindChild(element, predicate);
         }
 
         /// <summary>
@@ -319,12 +299,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         public static T FindChildOrSelf<T, TState>(this FrameworkElement element, TState state, Func<T, TState, bool> predicate)
             where T : FrameworkElement
         {
-            if (element is T result && predicate(result, state))
-            {
-                return result;
-            }
-
-            return FindChild(element, state, predicate);
+            return element is T result && predicate(result, state) ? result : FindChild(element, state, predicate);
         }
 
         /// <summary>
@@ -552,12 +527,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The parent (or self) that was found, or <see langword="null"/>.</returns>
         public static FrameworkElement FindParentOrSelf(this FrameworkElement element, string name, StringComparison comparisonType = StringComparison.Ordinal)
         {
-            if (name.Equals(element.Name, comparisonType))
-            {
-                return element;
-            }
-
-            return FindParent(element, name, comparisonType);
+            return name.Equals(element.Name, comparisonType) ? element : FindParent(element, name, comparisonType);
         }
 
         /// <summary>
@@ -569,12 +539,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         public static T FindParentOrSelf<T>(this FrameworkElement element)
             where T : FrameworkElement
         {
-            if (element is T result)
-            {
-                return result;
-            }
-
-            return FindParent<T>(element);
+            return element is T result ? result : FindParent<T>(element);
         }
 
         /// <summary>
@@ -585,12 +550,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The parent (or self) that was found, or <see langword="null"/>.</returns>
         public static FrameworkElement FindParentOrSelf(this FrameworkElement element, Type type)
         {
-            if (element.GetType() == type)
-            {
-                return element;
-            }
-
-            return FindParent(element, type);
+            return element.GetType() == type ? element : FindParent(element, type);
         }
 
         /// <summary>
@@ -603,12 +563,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         public static T FindParentOrSelf<T>(this FrameworkElement element, Func<T, bool> predicate)
             where T : FrameworkElement
         {
-            if (element is T result && predicate(result))
-            {
-                return result;
-            }
-
-            return FindParent(element, predicate);
+            return element is T result && predicate(result) ? result : FindParent(element, predicate);
         }
 
         /// <summary>
@@ -623,12 +578,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         public static T FindParentOrSelf<T, TState>(this FrameworkElement element, TState state, Func<T, TState, bool> predicate)
             where T : FrameworkElement
         {
-            if (element is T result && predicate(result, state))
-            {
-                return result;
-            }
-
-            return FindParent(element, state, predicate);
+            return element is T result && predicate(result, state) ? result : FindParent(element, state, predicate);
         }
 
         /// <summary>

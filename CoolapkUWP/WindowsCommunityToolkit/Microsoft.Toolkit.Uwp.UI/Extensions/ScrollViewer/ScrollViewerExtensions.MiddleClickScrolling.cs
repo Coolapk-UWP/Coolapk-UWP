@@ -21,17 +21,17 @@ namespace Microsoft.Toolkit.Uwp.UI
     /// </summary>
     public static partial class ScrollViewerExtensions
     {
-        private static double _threshold = 50;
+        private static readonly double _threshold = 50;
         private static bool _isPressed = false;
         private static bool _isMoved = false;
         private static Point _startPosition;
         private static bool _isDeferredMovingStarted = false;
-        private static double _factor = 50;
+        private static readonly double _factor = 50;
         private static Point _currentPosition;
         private static Timer _timer;
         private static ScrollViewer _scrollViewer;
         private static uint _oldCursorID = 100;
-        private static uint _maxSpeed = 200;
+        private static readonly uint _maxSpeed = 200;
         private static bool _isCursorAvailable = false;
 
         /// <summary>
@@ -96,8 +96,8 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             _isPressed = true;
             _isMoved = false;
-            _startPosition = default(Point);
-            _currentPosition = default(Point);
+            _startPosition = default;
+            _currentPosition = default;
             _isDeferredMovingStarted = false;
             _oldCursorID = 100;
             _isCursorAvailable = IsCursorResourceAvailable();
@@ -119,8 +119,8 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             _isPressed = false;
             _isMoved = false;
-            _startPosition = default(Point);
-            _currentPosition = default(Point);
+            _startPosition = default;
+            _currentPosition = default;
             _isDeferredMovingStarted = false;
             _oldCursorID = 100;
             _timer?.Dispose();
@@ -137,14 +137,13 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="state">Default param for <see cref="Timer"/>. In this function it will be `null`</param>
         private static void Scroll(object state)
         {
-            var dispatcher = state as CoreDispatcher;
-            if (dispatcher == null)
+            if (!(state is CoreDispatcher dispatcher))
             {
                 return;
             }
 
-            var offsetX = _currentPosition.X - _startPosition.X;
-            var offsetY = _currentPosition.Y - _startPosition.Y;
+            double offsetX = _currentPosition.X - _startPosition.X;
+            double offsetY = _currentPosition.Y - _startPosition.Y;
 
             SetCursorType(dispatcher, offsetX, offsetY);
 
@@ -214,8 +213,8 @@ namespace Microsoft.Toolkit.Uwp.UI
                 {
                     _currentPosition = Window.Current.CoreWindow.PointerPosition;
 
-                    var offsetX = _currentPosition.X - _startPosition.X;
-                    var offsetY = _currentPosition.Y - _startPosition.Y;
+                    double offsetX = _currentPosition.X - _startPosition.X;
+                    double offsetY = _currentPosition.Y - _startPosition.Y;
 
                     // Setting _isMoved if pointer goes out of threshold value
                     if (Math.Abs(offsetX) > _threshold || Math.Abs(offsetY) > _threshold)
@@ -335,7 +334,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>Returns `true` if the cursor resource is available</returns>
         private static bool IsCursorResourceAvailable()
         {
-            var isCursorAvailable = true;
+            bool isCursorAvailable = true;
 
             try
             {

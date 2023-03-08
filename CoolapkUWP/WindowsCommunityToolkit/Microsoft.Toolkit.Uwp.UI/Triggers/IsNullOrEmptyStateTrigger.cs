@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Uwp.Helpers;
 using System.Collections;
 using System.Collections.Specialized;
-using Microsoft.Toolkit.Uwp.Helpers;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 
@@ -32,8 +32,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
 
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var obj = (IsNullOrEmptyStateTrigger)d;
-            var val = e.NewValue;
+            IsNullOrEmptyStateTrigger obj = (IsNullOrEmptyStateTrigger)d;
+            object val = e.NewValue;
 
             obj.SetActive(IsNullOrEmpty(val));
 
@@ -44,10 +44,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
 
             // Try to listen for various notification events
             // Starting with INorifyCollectionChanged
-            var valNotifyCollection = val as INotifyCollectionChanged;
-            if (valNotifyCollection != null)
+            if (val is INotifyCollectionChanged valNotifyCollection)
             {
-                var weakEvent = new WeakEventListener<IsNullOrEmptyStateTrigger, object, NotifyCollectionChangedEventArgs>(obj)
+                WeakEventListener<IsNullOrEmptyStateTrigger, object, NotifyCollectionChangedEventArgs> weakEvent = new WeakEventListener<IsNullOrEmptyStateTrigger, object, NotifyCollectionChangedEventArgs>(obj)
                 {
                     OnEventAction = (instance, source, args) => instance.SetActive(IsNullOrEmpty(source)),
                     OnDetachAction = (weakEventListener) => valNotifyCollection.CollectionChanged -= weakEventListener.OnEvent
@@ -58,10 +57,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
             }
 
             // Not INotifyCollectionChanged, try IObservableVector
-            var valObservableVector = val as IObservableVector<object>;
-            if (valObservableVector != null)
+            if (val is IObservableVector<object> valObservableVector)
             {
-                var weakEvent = new WeakEventListener<IsNullOrEmptyStateTrigger, object, IVectorChangedEventArgs>(obj)
+                WeakEventListener<IsNullOrEmptyStateTrigger, object, IVectorChangedEventArgs> weakEvent = new WeakEventListener<IsNullOrEmptyStateTrigger, object, IVectorChangedEventArgs>(obj)
                 {
                     OnEventAction = (instance, source, args) => instance.SetActive(IsNullOrEmpty(source)),
                     OnDetachAction = (weakEventListener) => valObservableVector.VectorChanged -= weakEventListener.OnEvent
@@ -72,10 +70,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
             }
 
             // Not INotifyCollectionChanged, try IObservableMap
-            var valObservableMap = val as IObservableMap<object, object>;
-            if (valObservableMap != null)
+            if (val is IObservableMap<object, object> valObservableMap)
             {
-                var weakEvent = new WeakEventListener<IsNullOrEmptyStateTrigger, object, IMapChangedEventArgs<object>>(obj)
+                WeakEventListener<IsNullOrEmptyStateTrigger, object, IMapChangedEventArgs<object>> weakEvent = new WeakEventListener<IsNullOrEmptyStateTrigger, object, IMapChangedEventArgs<object>>(obj)
                 {
                     OnEventAction = (instance, source, args) => instance.SetActive(IsNullOrEmpty(source)),
                     OnDetachAction = (weakEventListener) => valObservableMap.MapChanged -= weakEventListener.OnEvent
@@ -93,24 +90,21 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
             }
 
             // Object is not null, check for an empty string
-            var valString = val as string;
-            if (valString != null)
+            if (val is string valString)
             {
                 return valString.Length == 0;
             }
 
             // Object is not a string, check for an empty ICollection (faster)
-            var valCollection = val as ICollection;
-            if (valCollection != null)
+            if (val is ICollection valCollection)
             {
                 return valCollection.Count == 0;
             }
 
             // Object is not an ICollection, check for an empty IEnumerable
-            var valEnumerable = val as IEnumerable;
-            if (valEnumerable != null)
+            if (val is IEnumerable valEnumerable)
             {
-                foreach (var item in valEnumerable)
+                foreach (object item in valEnumerable)
                 {
                     // Found an item, not empty
                     return false;

@@ -46,7 +46,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var folder = ApplicationData.Current.LocalFolder;
+            StorageFolder folder = ApplicationData.Current.LocalFolder;
             return folder.WriteTextToFileAsync(text, fileName, options);
         }
 
@@ -78,7 +78,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var folder = ApplicationData.Current.LocalCacheFolder;
+            StorageFolder folder = ApplicationData.Current.LocalCacheFolder;
             return folder.WriteTextToFileAsync(text, fileName, options);
         }
 
@@ -114,7 +114,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var folder = GetFolderFromKnownFolderId(knownFolderId);
+            StorageFolder folder = GetFolderFromKnownFolderId(knownFolderId);
             return folder.WriteTextToFileAsync(text, fileName, options);
         }
 
@@ -155,7 +155,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var storageFile = await fileLocation.CreateFileAsync(fileName, options);
+            StorageFile storageFile = await fileLocation.CreateFileAsync(fileName, options);
             await FileIO.WriteTextAsync(storageFile, text);
 
             return storageFile;
@@ -189,7 +189,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var folder = ApplicationData.Current.LocalFolder;
+            StorageFolder folder = ApplicationData.Current.LocalFolder;
             return folder.WriteBytesToFileAsync(bytes, fileName, options);
         }
 
@@ -221,7 +221,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var folder = ApplicationData.Current.LocalCacheFolder;
+            StorageFolder folder = ApplicationData.Current.LocalCacheFolder;
             return folder.WriteBytesToFileAsync(bytes, fileName, options);
         }
 
@@ -257,7 +257,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var folder = GetFolderFromKnownFolderId(knownFolderId);
+            StorageFolder folder = GetFolderFromKnownFolderId(knownFolderId);
             return folder.WriteBytesToFileAsync(bytes, fileName, options);
         }
 
@@ -298,7 +298,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var storageFile = await fileLocation.CreateFileAsync(fileName, options);
+            StorageFile storageFile = await fileLocation.CreateFileAsync(fileName, options);
             await FileIO.WriteBytesAsync(storageFile, bytes);
 
             return storageFile;
@@ -323,7 +323,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var folder = Package.Current.InstalledLocation;
+            StorageFolder folder = Package.Current.InstalledLocation;
             return folder.ReadTextFromFileAsync(fileName);
         }
 
@@ -346,7 +346,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var folder = ApplicationData.Current.LocalCacheFolder;
+            StorageFolder folder = ApplicationData.Current.LocalCacheFolder;
             return folder.ReadTextFromFileAsync(fileName);
         }
 
@@ -369,7 +369,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var folder = ApplicationData.Current.LocalFolder;
+            StorageFolder folder = ApplicationData.Current.LocalFolder;
             return folder.ReadTextFromFileAsync(fileName);
         }
 
@@ -397,7 +397,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var folder = GetFolderFromKnownFolderId(knownFolderId);
+            StorageFolder folder = GetFolderFromKnownFolderId(knownFolderId);
             return folder.ReadTextFromFileAsync(fileName);
         }
 
@@ -425,7 +425,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var file = await fileLocation.GetFileAsync(fileName);
+            StorageFile file = await fileLocation.GetFileAsync(fileName);
             return await FileIO.ReadTextAsync(file);
         }
 
@@ -448,7 +448,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var folder = Package.Current.InstalledLocation;
+            StorageFolder folder = Package.Current.InstalledLocation;
             return folder.ReadBytesFromFileAsync(fileName);
         }
 
@@ -471,7 +471,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var folder = ApplicationData.Current.LocalCacheFolder;
+            StorageFolder folder = ApplicationData.Current.LocalCacheFolder;
             return folder.ReadBytesFromFileAsync(fileName);
         }
 
@@ -494,7 +494,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var folder = ApplicationData.Current.LocalFolder;
+            StorageFolder folder = ApplicationData.Current.LocalFolder;
             return folder.ReadBytesFromFileAsync(fileName);
         }
 
@@ -522,7 +522,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var folder = GetFolderFromKnownFolderId(knownFolderId);
+            StorageFolder folder = GetFolderFromKnownFolderId(knownFolderId);
             return folder.ReadBytesFromFileAsync(fileName);
         }
 
@@ -550,7 +550,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            var file = await fileLocation.GetFileAsync(fileName).AsTask().ConfigureAwait(false);
+            StorageFile file = await fileLocation.GetFileAsync(fileName).AsTask().ConfigureAwait(false);
             return await file.ReadBytesAsync();
         }
 
@@ -572,10 +572,10 @@ namespace Microsoft.Toolkit.Uwp.Helpers
 
             using (IRandomAccessStream stream = await file.OpenReadAsync())
             {
-                using (var reader = new DataReader(stream.GetInputStreamAt(0)))
+                using (DataReader reader = new DataReader(stream.GetInputStreamAt(0)))
                 {
                     await reader.LoadAsync((uint)stream.Size);
-                    var bytes = new byte[stream.Size];
+                    byte[] bytes = new byte[stream.Size];
                     reader.ReadBytes(bytes);
                     return bytes;
                 }
@@ -609,7 +609,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <returns><c>true</c> if the filename is valid; otherwise, <c>false</c>.</returns>
         public static bool IsFileNameValid(string fileName)
         {
-            var illegalChars = Path.GetInvalidFileNameChars();
+            char[] illegalChars = Path.GetInvalidFileNameChars();
             return fileName.All(c => !illegalChars.Contains(c));
         }
 
@@ -620,7 +620,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <returns><c>true</c> if the file path is valid; otherwise, <c>false</c>.</returns>
         public static bool IsFilePathValid(string filePath)
         {
-            var illegalChars = Path.GetInvalidPathChars();
+            char[] illegalChars = Path.GetInvalidPathChars();
             return filePath.All(c => !illegalChars.Contains(c));
         }
 
@@ -638,7 +638,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// </returns>
         internal static async Task<bool> FileExistsInFolderAsync(StorageFolder folder, string fileName)
         {
-            var item = await folder.TryGetItemAsync(fileName).AsTask().ConfigureAwait(false);
+            IStorageItem item = await folder.TryGetItemAsync(fileName).AsTask().ConfigureAwait(false);
             return (item != null) && item.IsOfType(StorageItemTypes.File);
         }
 
@@ -664,13 +664,13 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 throw new ArgumentException(nameof(fileName));
             }
 
-            var options = new QueryOptions
+            QueryOptions options = new QueryOptions
             {
                 FolderDepth = FolderDepth.Deep,
                 UserSearchFilter = $"filename:=\"{fileName}\"" // “:=” is the exact-match operator
             };
 
-            var files = await rootFolder.CreateFileQueryWithOptions(options).GetFilesAsync().AsTask().ConfigureAwait(false);
+            System.Collections.Generic.IReadOnlyList<StorageFile> files = await rootFolder.CreateFileQueryWithOptions(options).GetFilesAsync().AsTask().ConfigureAwait(false);
             return files.Count > 0;
         }
 

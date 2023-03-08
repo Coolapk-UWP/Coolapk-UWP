@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using ColorCode.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using ColorCode.Common;
 
 namespace ColorCode.Compilation
 {
@@ -28,7 +28,9 @@ namespace ColorCode.Compilation
             Guard.ArgNotNull(language, "language");
 
             if (string.IsNullOrEmpty(language.Id))
+            {
                 throw new ArgumentException("The language identifier must not be null.", "language");
+            }
 
             CompiledLanguage compiledLanguage;
 
@@ -39,7 +41,9 @@ namespace ColorCode.Compilation
                 // only a read lock since the majority of the time
                 // it'll be created already and upgradeable lock blocks
                 if (compiledLanguages.ContainsKey(language.Id))
+                {
                     return compiledLanguages[language.Id];
+                }
             }
             finally
             {
@@ -50,7 +54,9 @@ namespace ColorCode.Compilation
             try
             {
                 if (compiledLanguages.ContainsKey(language.Id))
+                {
                     compiledLanguage = compiledLanguages[language.Id];
+                }
                 else
                 {
                     compileLock.EnterWriteLock();
@@ -58,10 +64,14 @@ namespace ColorCode.Compilation
                     try
                     {
                         if (string.IsNullOrEmpty(language.Name))
+                        {
                             throw new ArgumentException("The language name must not be null or empty.", "language");
+                        }
 
                         if (language.Rules == null || language.Rules.Count == 0)
+                        {
                             throw new ArgumentException("The language rules collection must not be empty.", "language");
+                        }
 
                         compiledLanguage = CompileLanguage(language);
 
@@ -102,7 +112,9 @@ namespace ColorCode.Compilation
             CompileRule(rules[0], regexBuilder, captures, true);
 
             for (int i = 1; i < rules.Count; i++)
+            {
                 CompileRule(rules[i], regexBuilder, captures, false);
+            }
 
             regex = new Regex(regexBuilder.ToString());
         }

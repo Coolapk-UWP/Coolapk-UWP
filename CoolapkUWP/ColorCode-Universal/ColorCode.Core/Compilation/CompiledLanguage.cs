@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using ColorCode.Common;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using ColorCode.Common;
 
 namespace ColorCode.Compilation
 {
@@ -19,7 +19,7 @@ namespace ColorCode.Compilation
             Guard.ArgNotNullAndNotEmpty(name, "name");
             Guard.ArgNotNull(regex, "regex");
             Guard.ArgNotNullAndNotEmpty(captures, "captures");
-            
+
             Id = id;
             Name = name;
             Regex = regex;

@@ -3,9 +3,7 @@ using CoolapkUWP.Models.Feeds;
 using CoolapkUWP.Models.Images;
 using HtmlAgilityPack;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Linq;
-using System.ServiceModel.Channels;
 using Windows.ApplicationModel.Resources;
 
 namespace CoolapkUWP.Models.Pages

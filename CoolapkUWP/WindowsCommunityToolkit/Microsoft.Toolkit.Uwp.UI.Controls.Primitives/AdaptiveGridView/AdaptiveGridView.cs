@@ -57,14 +57,14 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             base.PrepareContainerForItemOverride(obj, item);
             if (obj is FrameworkElement element)
             {
-                var heightBinding = new Binding()
+                Binding heightBinding = new Binding()
                 {
                     Source = this,
                     Path = new PropertyPath("ItemHeight"),
                     Mode = BindingMode.TwoWay
                 };
 
-                var widthBinding = new Binding()
+                Binding widthBinding = new Binding()
                 {
                     Source = this,
                     Path = new PropertyPath("ItemWidth"),
@@ -100,7 +100,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return DesiredWidth;
             }
 
-            var columns = CalculateColumns(containerWidth, DesiredWidth);
+            int columns = CalculateColumns(containerWidth, DesiredWidth);
 
             // If there's less items than there's columns, reduce the column count (if requested);
             if (Items != null && Items.Count > 0 && Items.Count < columns && StretchContentForSingleRow)
@@ -109,8 +109,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             }
 
             // subtract the margin from the width so we place the correct width for placement
-            var fallbackThickness = default(Thickness);
-            var itemMargin = AdaptiveHeightValueConverter.GetItemMargin(this, fallbackThickness);
+            Thickness fallbackThickness = default;
+            Thickness itemMargin = AdaptiveHeightValueConverter.GetItemMargin(this, fallbackThickness);
             if (itemMargin == fallbackThickness)
             {
                 // No style explicitly defined, or no items or no container for the items
@@ -145,7 +145,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private void OnItemClick(object sender, ItemClickEventArgs e)
         {
-            var cmd = ItemClickCommand;
+            System.Windows.Input.ICommand cmd = ItemClickCommand;
             if (cmd != null)
             {
                 if (cmd.CanExecute(e.ClickedItem))
@@ -161,8 +161,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             // Fixes #1737
             if (HorizontalAlignment != HorizontalAlignment.Stretch)
             {
-                var prevColumns = CalculateColumns(e.PreviousSize.Width, DesiredWidth);
-                var newColumns = CalculateColumns(e.NewSize.Width, DesiredWidth);
+                int prevColumns = CalculateColumns(e.PreviousSize.Width, DesiredWidth);
+                int newColumns = CalculateColumns(e.NewSize.Width, DesiredWidth);
 
                 // If the width of the internal list view changes, check if more or less columns needs to be rendered.
                 if (prevColumns != newColumns)
@@ -192,11 +192,11 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         {
             if (_isLoaded)
             {
-                var itemsWrapGridPanel = ItemsPanelRoot as ItemsWrapGrid;
+                ItemsWrapGrid itemsWrapGridPanel = ItemsPanelRoot as ItemsWrapGrid;
 
                 if (OneRowModeEnabled)
                 {
-                    var b = new Binding()
+                    Binding b = new Binding()
                     {
                         Source = this,
                         Path = new PropertyPath("ItemHeight"),
@@ -249,18 +249,17 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private void RecalculateLayout(double containerWidth)
         {
-            var itemsPanel = ItemsPanelRoot as Panel;
-            var panelMargin = itemsPanel != null ?
+            double panelMargin = ItemsPanelRoot is Panel itemsPanel ?
                               itemsPanel.Margin.Left + itemsPanel.Margin.Right :
                               0;
-            var padding = Padding.Left + Padding.Right;
-            var border = BorderThickness.Left + BorderThickness.Right;
+            double padding = Padding.Left + Padding.Right;
+            double border = BorderThickness.Left + BorderThickness.Right;
 
             // width should be the displayable width
             containerWidth = containerWidth - padding - panelMargin - border;
             if (containerWidth > 0)
             {
-                var newWidth = CalculateItemWidth(containerWidth);
+                double newWidth = CalculateItemWidth(containerWidth);
                 ItemWidth = Math.Floor(newWidth);
             }
         }

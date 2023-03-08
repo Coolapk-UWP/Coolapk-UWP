@@ -52,7 +52,7 @@ namespace Microsoft.Toolkit.Uwp
 
             Task TryEnqueueAsync(DispatcherQueue _dispatcher, Action _function, DispatcherQueuePriority _priority)
             {
-                var taskCompletionSource = new TaskCompletionSource<object>();
+                TaskCompletionSource<object> taskCompletionSource = new TaskCompletionSource<object>();
 
                 if (!_dispatcher.TryEnqueue(_priority, () =>
                 {
@@ -103,7 +103,7 @@ namespace Microsoft.Toolkit.Uwp
 
             Task<T> TryEnqueueAsync(DispatcherQueue _dispatcher, Func<T> _function, DispatcherQueuePriority _priority)
             {
-                var taskCompletionSource = new TaskCompletionSource<T>();
+                TaskCompletionSource<T> taskCompletionSource = new TaskCompletionSource<T>();
 
                 if (!_dispatcher.TryEnqueue(_priority, () =>
                 {
@@ -145,12 +145,9 @@ namespace Microsoft.Toolkit.Uwp
             {
                 try
                 {
-                    if (function() is Task awaitableResult)
-                    {
-                        return awaitableResult;
-                    }
-
-                    return Task.FromException(GetEnqueueException("The Task returned by function cannot be null."));
+                    return function() is Task awaitableResult
+                        ? awaitableResult
+                        : Task.FromException(GetEnqueueException("The Task returned by function cannot be null."));
                 }
                 catch (Exception e)
                 {
@@ -160,7 +157,7 @@ namespace Microsoft.Toolkit.Uwp
 
             Task TryEnqueueAsync(DispatcherQueue _dispatcher, Func<Task> _function, DispatcherQueuePriority _priority)
             {
-                var taskCompletionSource = new TaskCompletionSource<object>();
+                TaskCompletionSource<object> taskCompletionSource = new TaskCompletionSource<object>();
 
                 if (!_dispatcher.TryEnqueue(_priority, async () =>
                 {
@@ -208,12 +205,9 @@ namespace Microsoft.Toolkit.Uwp
             {
                 try
                 {
-                    if (function() is Task<T> awaitableResult)
-                    {
-                        return awaitableResult;
-                    }
-
-                    return Task.FromException<T>(GetEnqueueException("The Task returned by function cannot be null."));
+                    return function() is Task<T> awaitableResult
+                        ? awaitableResult
+                        : Task.FromException<T>(GetEnqueueException("The Task returned by function cannot be null."));
                 }
                 catch (Exception e)
                 {
@@ -223,7 +217,7 @@ namespace Microsoft.Toolkit.Uwp
 
             Task<T> TryEnqueueAsync(DispatcherQueue _dispatcher, Func<Task<T>> _function, DispatcherQueuePriority _priority)
             {
-                var taskCompletionSource = new TaskCompletionSource<T>();
+                TaskCompletionSource<T> taskCompletionSource = new TaskCompletionSource<T>();
 
                 if (!_dispatcher.TryEnqueue(_priority, async () =>
                 {
@@ -231,7 +225,7 @@ namespace Microsoft.Toolkit.Uwp
                     {
                         if (_function() is Task<T> awaitableResult)
                         {
-                            var result = await awaitableResult.ConfigureAwait(false);
+                            T result = await awaitableResult.ConfigureAwait(false);
 
                             taskCompletionSource.SetResult(result);
                         }

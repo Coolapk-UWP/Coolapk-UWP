@@ -43,10 +43,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
             /// <returns>Returns 0 if equal</returns>
             public int Compare(object x, object y)
             {
-                ObservableBluetoothLEDevice a = x as ObservableBluetoothLEDevice;
-                ObservableBluetoothLEDevice b = y as ObservableBluetoothLEDevice;
-
-                if (a == null || b == null)
+                if (!(x is ObservableBluetoothLEDevice a) || !(y is ObservableBluetoothLEDevice b))
                 {
                     throw new InvalidOperationException("Compared objects are not ObservableBluetoothLEDevice");
                 }
@@ -58,19 +55,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
                 }
 
                 // RSSI == 0 means we don't know it. Always make that the end.
-                if (b.RSSI == 0)
-                {
-                    return -1;
-                }
-
-                if (a.RSSI < b.RSSI || a.RSSI == 0)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return -1;
-                }
+                return b.RSSI == 0 ? -1 : a.RSSI < b.RSSI || a.RSSI == 0 ? 1 : -1;
             }
         }
 
@@ -117,7 +102,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
         /// <summary>
         /// Queue to store the last 10 observed RSSI values
         /// </summary>
-        private Queue<int> _rssiValue = new Queue<int>(10);
+        private readonly Queue<int> _rssiValue = new Queue<int>(10);
 
         /// <summary>
         /// Source for <see cref="RSSI"/>
@@ -425,8 +410,8 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
                 Name = BluetoothLEDevice.Name;
 
                 // Get all the services for this device
-                var getGattServicesAsyncTokenSource = new CancellationTokenSource(5000);
-                var getGattServicesAsyncTask = await
+                CancellationTokenSource getGattServicesAsyncTokenSource = new CancellationTokenSource(5000);
+                Windows.Foundation.IAsyncOperation<GattDeviceServicesResult> getGattServicesAsyncTask = await
                     Task.Run(
                         () => BluetoothLEDevice.GetGattServicesAsync(BluetoothCacheMode.Uncached),
                         getGattServicesAsyncTokenSource.Token);
@@ -438,7 +423,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
                     // In case we connected before, clear the service list and recreate it
                     Services.Clear();
 
-                    foreach (var service in _result.Services)
+                    foreach (GattDeviceService service in _result.Services)
                     {
                         Services.Add(new ObservableGattDeviceService(service));
                     }
@@ -462,7 +447,7 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
         /// <exception cref="Exception">The status of the pairing.</exception>
         public async Task DoInAppPairingAsync()
         {
-            var result = await DeviceInfo.Pairing.PairAsync();
+            DevicePairingResult result = await DeviceInfo.Pairing.PairAsync();
 
             if (result.Status != DevicePairingResultStatus.Paired ||
                 result.Status != DevicePairingResultStatus.AlreadyPaired)
@@ -547,8 +532,8 @@ namespace Microsoft.Toolkit.Uwp.Connectivity
             await Dispatcher.AwaitableRunAsync(
                 async () =>
                 {
-                    var deviceThumbnail = await DeviceInfo.GetGlyphThumbnailAsync();
-                    var glyphBitmapImage = new BitmapImage();
+                    DeviceThumbnail deviceThumbnail = await DeviceInfo.GetGlyphThumbnailAsync();
+                    BitmapImage glyphBitmapImage = new BitmapImage();
                     await glyphBitmapImage.SetSourceAsync(deviceThumbnail);
                     Glyph = glyphBitmapImage;
                 }, CoreDispatcherPriority.Normal);

@@ -68,7 +68,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Converters
         /// <returns>The value to be passed to the target dependency property.</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var typeMatches = value != null && Type.Equals(value.GetType());
+            bool typeMatches = value != null && Type.Equals(value.GetType());
 
             // Negate if needed
             if (ConverterTools.TryParseBool(parameter))

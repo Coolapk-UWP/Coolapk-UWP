@@ -10,7 +10,7 @@ namespace CoolapkUWP.ViewModels.BrowserPages
 {
     public class HTMLViewModel : IViewModel
     {
-        private Uri uri;
+        private readonly Uri uri;
 
         private string title;
         public string Title
@@ -94,18 +94,11 @@ namespace CoolapkUWP.ViewModels.BrowserPages
             if (isSucceed)
             {
                 JObject json = JObject.Parse(result);
-                if (json.TryGetValue("html", out JToken html) && !string.IsNullOrEmpty(html.ToString()))
-                {
-                    RawHTML = html.ToString();
-                }
-                else if (json.TryGetValue("description", out JToken description) && !string.IsNullOrEmpty(description.ToString()))
-                {
-                    RawHTML = description.ToString();
-                }
-                else
-                {
-                    RawHTML = "<h1>网络错误</h1>";
-                }
+                RawHTML = json.TryGetValue("html", out JToken html) && !string.IsNullOrEmpty(html.ToString())
+                    ? html.ToString()
+                    : json.TryGetValue("description", out JToken description) && !string.IsNullOrEmpty(description.ToString())
+                        ? description.ToString()
+                        : "<h1>网络错误</h1>";
 
                 if (json.TryGetValue("title", out JToken title))
                 {

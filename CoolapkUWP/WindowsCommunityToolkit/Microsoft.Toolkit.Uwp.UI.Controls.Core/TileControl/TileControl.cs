@@ -9,7 +9,6 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.System;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -168,10 +167,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
                 _isImageSourceLoaded = false;
 
-                var compositor = _containerVisual.Compositor;
+                Compositor compositor = _containerVisual.Compositor;
 
                 _imageSurface = LoadedImageSurface.StartLoadFromUri(uri);
-                var loadCompletedSource = new TaskCompletionSource<bool>();
+                TaskCompletionSource<bool> loadCompletedSource = new TaskCompletionSource<bool>();
                 _brushVisual = compositor.CreateSurfaceBrush(_imageSurface);
 
                 void LoadCompleted(LoadedImageSurface sender, LoadedImageSourceLoadCompletedEventArgs args)
@@ -217,7 +216,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <inheritdoc/>
         protected override async void OnApplyTemplate()
         {
-            var rootElement = _rootElement;
+            FrameworkElement rootElement = _rootElement;
 
             if (rootElement != null)
             {
@@ -239,7 +238,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 if (rootVisual != null)
                 {
                     // We create a ContainerVisual to insert SpriteVisual with a brush
-                    var container = rootVisual.Compositor.CreateContainerVisual();
+                    ContainerVisual container = rootVisual.Compositor.CreateContainerVisual();
 
                     // the containerVisual is now a child of rootVisual
                     ElementCompositionPreview.SetElementChildVisual(rootElement, container);
@@ -316,10 +315,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             int offsetHorizontalAlignment = 0;
             int offsetVerticalAlignment = 0;
 
-            var clip = new RectangleGeometry { Rect = new Rect(0, 0, width, height) };
+            RectangleGeometry clip = new RectangleGeometry { Rect = new Rect(0, 0, width, height) };
             _rootElement.Clip = clip;
 
-            var imageAlignment = ImageAlignment;
+            ImageAlignment imageAlignment = ImageAlignment;
 
             switch (orientation)
             {
@@ -371,12 +370,12 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                     break;
             }
 
-            var count = _compositionChildren.Count;
+            int count = _compositionChildren.Count;
 
             // instantiate all elements not created yet
             for (int x = 0; x < numberSpriteToInstantiate - count; x++)
             {
-                var sprite = _containerVisual.Compositor.CreateSpriteVisual();
+                SpriteVisual sprite = _containerVisual.Compositor.CreateSpriteVisual();
                 _containerVisual.Children.InsertAtTop(sprite);
                 _compositionChildren.Add(sprite);
             }
@@ -384,7 +383,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             // remove elements not used now
             for (int x = 0; x < count - numberSpriteToInstantiate; x++)
             {
-                var element = _containerVisual.Children.FirstOrDefault() as SpriteVisual;
+                SpriteVisual element = _containerVisual.Children.FirstOrDefault() as SpriteVisual;
                 _containerVisual.Children.Remove(element);
                 _compositionChildren.Remove(element);
             }
@@ -396,7 +395,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 {
                     int index = (y * numberImagePerColumn) + x;
 
-                    var sprite = _compositionChildren[index];
+                    SpriteVisual sprite = _compositionChildren[index];
                     sprite.Brush = _brushVisual;
                     sprite.Offset = new Vector3((float)((x * imageWidth) + offsetVerticalAlignment), (float)((y * imageHeight) + offsetHorizontalAlignment), 0);
                     sprite.Size = new Vector2((float)imageWidth, (float)imageHeight);
@@ -458,13 +457,13 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return;
             }
 
-            var compositor = _containerVisual.Compositor;
+            Compositor compositor = _containerVisual.Compositor;
 
             // Setup the expression
-            var expressionX = compositor.CreateExpressionAnimation();
-            var expressionY = compositor.CreateExpressionAnimation();
+            ExpressionAnimation expressionX = compositor.CreateExpressionAnimation();
+            ExpressionAnimation expressionY = compositor.CreateExpressionAnimation();
 
-            var propertySetModulo = compositor.CreatePropertySet();
+            CompositionPropertySet propertySetModulo = compositor.CreatePropertySet();
             propertySetModulo.InsertScalar(imageWidthParam, (float)imageWidth);
             propertySetModulo.InsertScalar(offsetXParam, (float)OffsetX);
             propertySetModulo.InsertScalar(imageHeightParam, (float)imageHeight);
@@ -496,7 +495,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             else
             {
                 // expressions are created to simulate a positive and negative modulo with the size of the image and the offset and the ScrollViewer offset (Translation)
-                var scrollProperties = ElementCompositionPreview.GetScrollViewerManipulationPropertySet(scrollViewer);
+                CompositionPropertySet scrollProperties = ElementCompositionPreview.GetScrollViewerManipulationPropertySet(scrollViewer);
                 const string scrollParam = "s";
                 const string translationParam = scrollParam + "." + nameof(scrollViewer.Translation);
                 const string qualifiedSpeedParam = propSetParam + "." + speedParam;
@@ -575,19 +574,11 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <returns>the offset between 0 and the size of the image</returns>
         private double GetOffsetModulo(double offset, double size)
         {
-            var offsetCeil = Math.Ceiling(offset);
+            double offsetCeil = Math.Ceiling(offset);
 
-            if (offsetCeil == 0)
-            {
-                return 0;
-            }
-
-            if (offsetCeil < 0)
-            {
-                return -(Math.Abs(offsetCeil - (Math.Ceiling(offsetCeil / size) * size)) % size);
-            }
-
-            return -(size - (offsetCeil % size));
+            return offsetCeil == 0
+                ? 0
+                : offsetCeil < 0 ? -(Math.Abs(offsetCeil - (Math.Ceiling(offsetCeil / size) * size)) % size) : -(size - (offsetCeil % size));
         }
 
         private void RefreshImageSize(double width, double height)
@@ -628,8 +619,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return;
             }
 
-            var stepX = AnimationStepX;
-            var stepY = AnimationStepY;
+            double stepX = AnimationStepX;
+            double stepY = AnimationStepY;
 
             if (stepX != 0)
             {

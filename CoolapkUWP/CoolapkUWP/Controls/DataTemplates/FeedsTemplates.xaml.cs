@@ -40,7 +40,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
             if (e != null) { e.Handled = true; }
 
-            UIHelper.OpenLinkAsync(element.Tag.ToString());
+            _ = UIHelper.OpenLinkAsync(element.Tag.ToString());
         }
 
         private void OnTopTapped(object sender, TappedRoutedEventArgs e)
@@ -50,7 +50,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
             if (e != null) { e.Handled = true; }
 
-            UIHelper.OpenLinkAsync(element.Tag.ToString());
+            _ = UIHelper.OpenLinkAsync(element.Tag.ToString());
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -59,7 +59,7 @@ namespace CoolapkUWP.Controls.DataTemplates
             switch (element.Name)
             {
                 default:
-                    UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
+                    _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
                     break;
             }
         }
@@ -151,7 +151,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
                 default:
                     DisabledCopy();
-                    UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+                    _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
                     break;
             }
         }

@@ -53,7 +53,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// </summary>
         public object Header
         {
-            get { return (object)GetValue(HeaderProperty); }
+            get { return GetValue(HeaderProperty); }
             set { SetValue(HeaderProperty, value); }
         }
 
@@ -175,23 +175,14 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private void MenuItem_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var menuItemControl = (MenuItem)sender;
+            MenuItem menuItemControl = (MenuItem)sender;
             menuItemControl.UpdateEnabledVisualState();
         }
 
         internal void CalculateBounds()
         {
-            UIElement content;
-            if (ControlHelpers.IsXamlRootAvailable && XamlRoot != null)
-            {
-                content = XamlRoot.Content;
-            }
-            else
-            {
-                content = Window.Current.Content;
-            }
-
-            var ttv = TransformToVisual(content);
+            UIElement content = ControlHelpers.IsXamlRootAvailable && XamlRoot != null ? XamlRoot.Content : Window.Current.Content;
+            GeneralTransform ttv = TransformToVisual(content);
             Point screenCoords = ttv.TransformPoint(new Point(0, 0));
             _bounds.X = screenCoords.X;
             _bounds.Y = screenCoords.Y;
@@ -201,7 +192,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         internal IEnumerable<MenuFlyoutItemBase> GetMenuFlyoutItems()
         {
-            var allItems = new List<MenuFlyoutItemBase>();
+            List<MenuFlyoutItemBase> allItems = new List<MenuFlyoutItemBase>();
             if (MenuFlyout != null)
             {
                 GetMenuFlyoutItemItems(MenuFlyout.Items, allItems);
@@ -212,13 +203,12 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private void GetMenuFlyoutItemItems(IList<MenuFlyoutItemBase> menuFlyoutItems, List<MenuFlyoutItemBase> allItems)
         {
-            foreach (var menuFlyoutItem in menuFlyoutItems)
+            foreach (MenuFlyoutItemBase menuFlyoutItem in menuFlyoutItems)
             {
                 allItems.Add(menuFlyoutItem);
 
-                if (menuFlyoutItem is MenuFlyoutSubItem)
+                if (menuFlyoutItem is MenuFlyoutSubItem menuItem)
                 {
-                    var menuItem = (MenuFlyoutSubItem)menuFlyoutItem;
                     GetMenuFlyoutItemItems(menuItem.Items, allItems);
                 }
             }
@@ -226,17 +216,18 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         internal void ShowTooltip()
         {
-            var inputGestureText = GetValue(Menu.InputGestureTextProperty) as string;
+            string inputGestureText = GetValue(Menu.InputGestureTextProperty) as string;
             if (string.IsNullOrEmpty(inputGestureText))
             {
                 return;
             }
 
-            var tooltip = ToolTipService.GetToolTip(FlyoutButton) as ToolTip;
-            if (tooltip == null)
+            if (!(ToolTipService.GetToolTip(FlyoutButton) is ToolTip tooltip))
             {
-                tooltip = new ToolTip();
-                tooltip.Style = _parentMenu.TooltipStyle;
+                tooltip = new ToolTip
+                {
+                    Style = _parentMenu.TooltipStyle
+                };
                 ToolTipService.SetToolTip(FlyoutButton, tooltip);
             }
 
@@ -248,18 +239,12 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private string RemoveAlt(string inputGesture)
         {
-            if (string.IsNullOrEmpty(inputGesture))
-            {
-                return string.Empty;
-            }
-
-            return inputGesture.Replace("Alt+", string.Empty);
+            return string.IsNullOrEmpty(inputGesture) ? string.Empty : inputGesture.Replace("Alt+", string.Empty);
         }
 
         internal void HideTooltip()
         {
-            var tooltip = ToolTipService.GetToolTip(FlyoutButton) as ToolTip;
-            if (tooltip != null)
+            if (ToolTipService.GetToolTip(FlyoutButton) is ToolTip tooltip)
             {
                 tooltip.IsOpen = false;
                 tooltip.IsEnabled = false;
@@ -274,7 +259,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             }
 
             MenuFlyout.Items.Clear();
-            foreach (var item in Items)
+            foreach (object item in Items)
             {
                 AddItemToFlyout(item);
             }
@@ -282,37 +267,39 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private void AddItemToFlyout(object item)
         {
-            var menuItem = item as MenuFlyoutItemBase;
-            if (menuItem != null)
+            if (item is MenuFlyoutItemBase menuItem)
             {
                 MenuFlyout.Items.Add(menuItem);
             }
             else
             {
-                var newMenuItem = new MenuFlyoutItem();
-                newMenuItem.DataContext = item;
+                MenuFlyoutItem newMenuItem = new MenuFlyoutItem
+                {
+                    DataContext = item
+                };
                 MenuFlyout.Items.Add(newMenuItem);
             }
         }
 
         private void InsertItemToFlyout(object item, int index)
         {
-            var menuItem = item as MenuFlyoutItemBase;
-            if (menuItem != null)
+            if (item is MenuFlyoutItemBase menuItem)
             {
                 MenuFlyout.Items.Insert(index, menuItem);
             }
             else
             {
-                var newMenuItem = new MenuFlyoutItem();
-                newMenuItem.DataContext = item;
+                MenuFlyoutItem newMenuItem = new MenuFlyoutItem
+                {
+                    DataContext = item
+                };
                 MenuFlyout.Items.Insert(index, newMenuItem);
             }
         }
 
         private void Items_VectorChanged(IObservableVector<object> sender, IVectorChangedEventArgs e)
         {
-            var index = (int)e.Index;
+            int index = (int)e.Index;
             switch (e.CollectionChange)
             {
                 case CollectionChange.Reset:
@@ -381,15 +368,15 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                     outerContentHeight = Window.Current.Bounds.Height;
                 }
 
-                var popup = popups.FirstOrDefault(p => p.Child is MenuFlyoutPresenter);
+                Popup popup = popups.FirstOrDefault(p => p.Child is MenuFlyoutPresenter);
 
                 if (popup != null)
                 {
-                    var mfp = (MenuFlyoutPresenter)popup.Child;
-                    var height = mfp.ActualHeight;
-                    var width = mfp.ActualWidth;
+                    MenuFlyoutPresenter mfp = (MenuFlyoutPresenter)popup.Child;
+                    double height = mfp.ActualHeight;
+                    double width = mfp.ActualWidth;
 
-                    var flytoutButtonPoint = FlyoutButton.TransformToVisual(content).TransformPoint(new Point(0, 0));
+                    Point flytoutButtonPoint = FlyoutButton.TransformToVisual(content).TransformPoint(new Point(0, 0));
 
                     if ((width > outerContentWidth - flytoutButtonPoint.X &&
                         (MenuFlyout.Placement == FlyoutPlacementMode.Bottom)) ||
@@ -480,20 +467,19 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return;
             }
 
-            var underlineCharacterIndex = _originalHeader.IndexOf(UnderlineCharacter);
+            int underlineCharacterIndex = _originalHeader.IndexOf(UnderlineCharacter);
 
-            var underlinedCharacter = _originalHeader[underlineCharacterIndex + 1];
-            var text = new TextBlock();
+            char underlinedCharacter = _originalHeader[underlineCharacterIndex + 1];
+            TextBlock text = new TextBlock();
 
-            var runWithUnderlinedCharacter = new Run
+            Run runWithUnderlinedCharacter = new Run
             {
-                Text = underlinedCharacter.ToString()
+                Text = underlinedCharacter.ToString(),
+                TextDecorations = Windows.UI.Text.TextDecorations.Underline
             };
 
-            runWithUnderlinedCharacter.TextDecorations = Windows.UI.Text.TextDecorations.Underline;
-
-            var firstPartBuilder = new StringBuilder();
-            var secondPartBuilder = new StringBuilder();
+            StringBuilder firstPartBuilder = new StringBuilder();
+            StringBuilder secondPartBuilder = new StringBuilder();
 
             for (int i = 0; i < underlineCharacterIndex; i++)
             {
@@ -505,8 +491,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 secondPartBuilder.Append(_originalHeader[i]);
             }
 
-            var firstPart = firstPartBuilder.ToString();
-            var secondPart = secondPartBuilder.ToString();
+            string firstPart = firstPartBuilder.ToString();
+            string secondPart = secondPartBuilder.ToString();
 
             if (!string.IsNullOrEmpty(firstPart))
             {
@@ -540,14 +526,14 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
                 menuitem._originalHeader = null;
 
-                var headerString = e.NewValue as string;
+                string headerString = e.NewValue as string;
 
                 if (string.IsNullOrEmpty(headerString))
                 {
                     return;
                 }
 
-                var underlineCharacterIndex = headerString.IndexOf(UnderlineCharacter);
+                int underlineCharacterIndex = headerString.IndexOf(UnderlineCharacter);
 
                 if (underlineCharacterIndex == -1)
                 {

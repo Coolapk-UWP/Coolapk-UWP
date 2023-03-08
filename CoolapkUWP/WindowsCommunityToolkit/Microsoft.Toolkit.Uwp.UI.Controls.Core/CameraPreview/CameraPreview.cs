@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Toolkit.Uwp.Helpers;
 using Windows.Media.Capture.Frames;
 using Windows.Media.Core;
 using Windows.Media.Playback;
@@ -22,7 +22,6 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
     [TemplatePart(Name = Preview_FrameSourceGroupButton, Type = typeof(Button))]
     public partial class CameraPreview : Control
     {
-        private CameraHelper _cameraHelper;
         private MediaPlayer _mediaPlayer;
         private MediaPlayerElement _mediaPlayerElementControl;
         private Button _frameSourceGroupButton;
@@ -34,7 +33,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <summary>
         /// Gets Camera Helper
         /// </summary>
-        public CameraHelper CameraHelper { get => _cameraHelper; private set => _cameraHelper = value; }
+        public CameraHelper CameraHelper { get; private set; }
 
         /// <summary>
         /// Initialize control with a default CameraHelper instance for video preview and frame capture.
@@ -57,7 +56,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 cameraHelper = new CameraHelper();
             }
 
-            _cameraHelper = cameraHelper;
+            CameraHelper = cameraHelper;
             _frameSourceGroups = await CameraHelper.GetFrameSourceGroupsAsync();
 
             // UI controls exist and are initialized
@@ -76,7 +75,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         }
 
         /// <inheritdoc/>
-        protected async override void OnApplyTemplate()
+        protected override async void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
@@ -95,7 +94,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 _frameSourceGroupButton.Visibility = Visibility.Collapsed;
             }
 
-            if (_cameraHelper != null)
+            if (CameraHelper != null)
             {
                 await InitializeAsync();
             }
@@ -103,7 +102,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private async Task InitializeAsync()
         {
-            var result = await _cameraHelper.InitializeAndStartCaptureAsync();
+            CameraHelperResult result = await CameraHelper.InitializeAndStartCaptureAsync();
             if (result != CameraHelperResult.Success)
             {
                 InvokePreviewFailed(result.ToString());
@@ -114,12 +113,12 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private async void FrameSourceGroupButton_ClickAsync(object sender, RoutedEventArgs e)
         {
-            var oldGroup = _cameraHelper.FrameSourceGroup;
-            var currentIndex = _frameSourceGroups.Select((grp, index) => new { grp, index }).First(v => v.grp.Id == oldGroup.Id).index;
-            var newIndex = currentIndex < (_frameSourceGroups.Count - 1) ? currentIndex + 1 : 0;
-            var group = _frameSourceGroups[newIndex];
+            MediaFrameSourceGroup oldGroup = CameraHelper.FrameSourceGroup;
+            int currentIndex = _frameSourceGroups.Select((grp, index) => new { grp, index }).First(v => v.grp.Id == oldGroup.Id).index;
+            int newIndex = currentIndex < (_frameSourceGroups.Count - 1) ? currentIndex + 1 : 0;
+            MediaFrameSourceGroup group = _frameSourceGroups[newIndex];
             _frameSourceGroupButton.IsEnabled = false;
-            _cameraHelper.FrameSourceGroup = group;
+            CameraHelper.FrameSourceGroup = group;
             await InitializeAsync();
         }
 
@@ -133,7 +132,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         {
             try
             {
-                var frameSource = _cameraHelper?.PreviewFrameSource;
+                MediaFrameSource frameSource = CameraHelper?.PreviewFrameSource;
                 if (frameSource != null)
                 {
                     if (_mediaPlayer == null)
@@ -157,7 +156,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private void SetUIControls(CameraHelperResult result)
         {
-            var success = result == CameraHelperResult.Success;
+            bool success = result == CameraHelperResult.Success;
             if (success)
             {
                 SetMediaPlayerSource();
@@ -183,10 +182,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// </summary>
         public void Stop()
         {
-            if (_mediaPlayerElementControl != null)
-            {
-                _mediaPlayerElementControl.SetMediaPlayer(null);
-            }
+            _mediaPlayerElementControl?.SetMediaPlayer(null);
 
             if (_mediaPlayer != null)
             {

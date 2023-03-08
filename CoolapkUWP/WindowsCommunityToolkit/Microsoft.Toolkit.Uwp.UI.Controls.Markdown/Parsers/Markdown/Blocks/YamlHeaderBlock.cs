@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 using System;
 using System.Collections.Generic;
-using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
 {
@@ -106,9 +106,11 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
                 return null;
             }
 
-            var result = new YamlHeaderBlock();
-            result.Children = new Dictionary<string, string>();
-            foreach (var item in elements)
+            YamlHeaderBlock result = new YamlHeaderBlock
+            {
+                Children = new Dictionary<string, string>()
+            };
+            foreach (string item in elements)
             {
                 string[] splits = item.Split(new string[] { ": " }, StringSplitOptions.None);
                 if (splits.Length < 2)

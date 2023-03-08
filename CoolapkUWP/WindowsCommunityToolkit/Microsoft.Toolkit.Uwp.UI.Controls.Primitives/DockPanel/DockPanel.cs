@@ -16,21 +16,21 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
     {
         private static void DockChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var senderElement = sender as FrameworkElement;
-            var dockPanel = senderElement?.FindParent<DockPanel>();
+            FrameworkElement senderElement = sender as FrameworkElement;
+            DockPanel dockPanel = senderElement?.FindParent<DockPanel>();
 
             dockPanel?.InvalidateArrange();
         }
 
         private static void LastChildFillChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var dockPanel = (DockPanel)sender;
+            DockPanel dockPanel = (DockPanel)sender;
             dockPanel.InvalidateArrange();
         }
 
         private static void OnPaddingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var dockPanel = (DockPanel)sender;
+            DockPanel dockPanel = (DockPanel)sender;
             dockPanel.InvalidateMeasure();
         }
 
@@ -42,13 +42,13 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return finalSize;
             }
 
-            var currentBounds = new Rect(Padding.Left, Padding.Top, finalSize.Width - Padding.Right, finalSize.Height - Padding.Bottom);
-            var childrenCount = LastChildFill ? Children.Count - 1 : Children.Count;
+            Rect currentBounds = new Rect(Padding.Left, Padding.Top, finalSize.Width - Padding.Right, finalSize.Height - Padding.Bottom);
+            int childrenCount = LastChildFill ? Children.Count - 1 : Children.Count;
 
-            for (var index = 0; index < childrenCount; index++)
+            for (int index = 0; index < childrenCount; index++)
             {
-                var child = Children[index];
-                var dock = (Dock)child.GetValue(DockProperty);
+                UIElement child = Children[index];
+                Dock dock = (Dock)child.GetValue(DockProperty);
                 double width, height;
                 switch (dock)
                 {
@@ -85,9 +85,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
             if (LastChildFill)
             {
-                var width = GetPositiveOrZero(currentBounds.Width - currentBounds.X);
-                var height = GetPositiveOrZero(currentBounds.Height - currentBounds.Y);
-                var child = Children[Children.Count - 1];
+                double width = GetPositiveOrZero(currentBounds.Width - currentBounds.X);
+                double height = GetPositiveOrZero(currentBounds.Height - currentBounds.Y);
+                UIElement child = Children[Children.Count - 1];
                 child.Arrange(
                     new Rect(currentBounds.X, currentBounds.Y, width, height));
             }
@@ -98,19 +98,19 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <inheritdoc />
         protected override Size MeasureOverride(Size availableSize)
         {
-            var parentWidth = 0.0;
-            var parentHeight = 0.0;
-            var accumulatedWidth = Padding.Left + Padding.Right;
-            var accumulatedHeight = Padding.Top + Padding.Bottom;
+            double parentWidth = 0.0;
+            double parentHeight = 0.0;
+            double accumulatedWidth = Padding.Left + Padding.Right;
+            double accumulatedHeight = Padding.Top + Padding.Bottom;
 
-            foreach (var child in Children)
+            foreach (UIElement child in Children)
             {
-                var childConstraint = new Size(
+                Size childConstraint = new Size(
                     GetPositiveOrZero(availableSize.Width - accumulatedWidth),
                     GetPositiveOrZero(availableSize.Height - accumulatedHeight));
 
                 child.Measure(childConstraint);
-                var childDesiredSize = child.DesiredSize;
+                Size childDesiredSize = child.DesiredSize;
 
                 switch ((Dock)child.GetValue(DockProperty))
                 {

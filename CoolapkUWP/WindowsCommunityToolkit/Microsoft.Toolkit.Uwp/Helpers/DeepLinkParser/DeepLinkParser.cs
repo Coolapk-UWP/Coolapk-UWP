@@ -66,19 +66,12 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <exception cref="System.ArgumentException">Not a valid URI format</exception>
         protected static Uri ValidateSourceUri(string uri)
         {
-            if (uri == null)
-            {
-                throw new ArgumentNullException(nameof(uri));
-            }
-
-            Uri validatedUri;
-            if (!Uri.TryCreate(uri, UriKind.RelativeOrAbsolute, out validatedUri)
-                || !validatedUri.IsWellFormedOriginalString())
-            {
-                throw new ArgumentException("Not a valid URI format", nameof(uri));
-            }
-
-            return validatedUri;
+            return uri == null
+                ? throw new ArgumentNullException(nameof(uri))
+                : !Uri.TryCreate(uri, UriKind.RelativeOrAbsolute, out Uri validatedUri)
+                || !validatedUri.IsWellFormedOriginalString()
+                ? throw new ArgumentException("Not a valid URI format", nameof(uri))
+                : validatedUri;
         }
 
         /// <summary>
@@ -95,11 +88,9 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <exception cref="System.ArgumentException">'args' is not an instance of ILaunchActivatedEventArgs or IProtocolActivatedEventArgs - args</exception>
         protected DeepLinkParser(IActivatedEventArgs args)
         {
-            var launchArgs = args as ILaunchActivatedEventArgs;
-            if (launchArgs == null)
+            if (!(args is ILaunchActivatedEventArgs launchArgs))
             {
-                var protocolArgs = args as IProtocolActivatedEventArgs;
-                if (protocolArgs != null)
+                if (args is IProtocolActivatedEventArgs protocolArgs)
                 {
                     ParseUriString(protocolArgs.Uri.OriginalString);
                 }
@@ -148,8 +139,8 @@ namespace Microsoft.Toolkit.Uwp.Helpers
             Uri validatedUri = ValidateSourceUri(uri);
 
             SetRoot(validatedUri);
-            var queryParams = new Helpers.QueryParameterCollection(validatedUri);
-            foreach (var queryStringParam in queryParams)
+            QueryParameterCollection queryParams = new Helpers.QueryParameterCollection(validatedUri);
+            foreach (KeyValuePair<string, string> queryStringParam in queryParams)
             {
                 try
                 {
@@ -168,8 +159,8 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <param name="validatedUri">The validated URI (from <see cref="ValidateSourceUri(string)" />).</param>
         protected virtual void SetRoot(Uri validatedUri)
         {
-            var origString = validatedUri.OriginalString;
-            var startIndex = origString.IndexOf("://", StringComparison.OrdinalIgnoreCase);
+            string origString = validatedUri.OriginalString;
+            int startIndex = origString.IndexOf("://", StringComparison.OrdinalIgnoreCase);
             if (startIndex != -1)
             {
                 origString = origString.Substring(startIndex + 3);

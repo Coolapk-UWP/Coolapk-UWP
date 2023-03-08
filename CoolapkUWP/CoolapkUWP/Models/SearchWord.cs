@@ -11,18 +11,9 @@ namespace CoolapkUWP.Models
         {
             if (keys.TryGetValue("logo", out JToken logo))
             {
-                if (logo.ToString().Contains("app") || logo.ToString().Contains("cube"))
-                {
-                    Glyph = "\uE719";
-                }
-                else if (logo.ToString().Contains("xitongguanli"))
-                {
-                    Glyph = "\uE77B";
-                }
-                else
-                {
-                    Glyph = "\uE721";
-                }
+                Glyph = logo.ToString().Contains("app") || logo.ToString().Contains("cube")
+                    ? "\uE719"
+                    : logo.ToString().Contains("xitongguanli") ? "\uE77B" : "\uE721";
             }
             if (keys.TryGetValue("title", out JToken title))
             {

@@ -17,7 +17,7 @@ namespace CoolapkUWP.ViewModels
 {
     public class ShowImageViewModel : INotifyPropertyChanged, IViewModel
     {
-        private ImageModel BaseImage;
+        private readonly ImageModel BaseImage;
         private string ImageName = string.Empty;
         public double[] VerticalOffsets { get; set; } = new double[1];
 

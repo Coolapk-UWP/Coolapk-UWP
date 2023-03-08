@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Linq;
 using Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarButtons;
+using System.Linq;
 using Windows.System;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Microsoft.Toolkit.Uwp.UI.Controls
@@ -25,7 +24,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         {
             if (GetTemplateChild(RootControl) is CommandBar root)
             {
-                var element = root.PrimaryCommands.OfType<ToolbarButton>().FirstOrDefault(item => ((FrameworkElement)item).Name == button.ToString());
+                ToolbarButton element = root.PrimaryCommands.OfType<ToolbarButton>().FirstOrDefault(item => item.Name == button.ToString());
                 return element;
             }
 
@@ -43,9 +42,9 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
                 AttachButtonMap(DefaultButtons, root);
 
-                foreach (var button in ButtonModifications)
+                foreach (DefaultButton button in ButtonModifications)
                 {
-                    var element = GetDefaultButton(button.Type);
+                    ToolbarButton element = GetDefaultButton(button.Type);
                     button.Button = element;
                 }
 
@@ -68,7 +67,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return;
             }
 
-            foreach (var item in map)
+            foreach (IToolbarItem item in map)
             {
                 AddToolbarItem(item, root);
             }
@@ -125,7 +124,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <param name="item">Item to Remove</param>
         public void RemoveToolbarItem(IToolbarItem item)
         {
-            var root = GetTemplateChild(RootControl) as CommandBar;
+            CommandBar root = GetTemplateChild(RootControl) as CommandBar;
             if (root.PrimaryCommands.Contains(item))
             {
                 root.PrimaryCommands.Remove(item);
@@ -155,7 +154,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <returns>Is Key pressed down?</returns>
         private static bool IsKeyActive(CoreVirtualKeyStates state)
         {
-            var downAndLocked = CoreVirtualKeyStates.Down | CoreVirtualKeyStates.Locked;
+            CoreVirtualKeyStates downAndLocked = CoreVirtualKeyStates.Down | CoreVirtualKeyStates.Locked;
             return state == CoreVirtualKeyStates.Down || state == downAndLocked;
         }
     }

@@ -4,7 +4,6 @@
 
 using System.Collections.Generic;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 using Windows.Foundation;
 using Windows.Foundation.Metadata;
 using Windows.UI;
@@ -111,7 +110,7 @@ namespace Microsoft.Toolkit.Uwp.UI
             }
 
             ShadowElementContextTable = ShadowElementContextTable ?? new Dictionary<FrameworkElement, AttachedShadowElementContext>();
-            if (ShadowElementContextTable.TryGetValue(element, out var context))
+            if (ShadowElementContextTable.TryGetValue(element, out AttachedShadowElementContext context))
             {
                 return;
             }
@@ -128,7 +127,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                 return;
             }
 
-            if (ShadowElementContextTable.TryGetValue(element, out var context))
+            if (ShadowElementContextTable.TryGetValue(element, out AttachedShadowElementContext context))
             {
                 context.DisconnectFromElement();
                 ShadowElementContextTable.Remove(element);
@@ -163,12 +162,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <inheritdoc/>
         public AttachedShadowElementContext GetElementContext(FrameworkElement element)
         {
-            if (ShadowElementContextTable != null && ShadowElementContextTable.TryGetValue(element, out var context))
-            {
-                return context;
-            }
-
-            return null;
+            return ShadowElementContextTable != null && ShadowElementContextTable.TryGetValue(element, out AttachedShadowElementContext context) ? context : null;
         }
 
         /// <inheritdoc/>
@@ -176,7 +170,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             if (ShadowElementContextTable != null)
             {
-                foreach (var kvp in ShadowElementContextTable)
+                foreach (KeyValuePair<FrameworkElement, AttachedShadowElementContext> kvp in ShadowElementContextTable)
                 {
                     yield return kvp.Value;
                 }
@@ -199,7 +193,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                 return;
             }
 
-            foreach (var context in ShadowElementContextTable)
+            foreach (KeyValuePair<FrameworkElement, AttachedShadowElementContext> context in ShadowElementContextTable)
             {
                 if (context.Value.IsInitialized)
                 {

@@ -28,10 +28,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         protected override Size MeasureOverride(Size availableSize)
         {
             // Get all Visible FrameworkElement Children
-            var visible = Children.Where(item => item.Visibility != Visibility.Collapsed && item is FrameworkElement).Select(item => item as FrameworkElement).ToArray();
+            FrameworkElement[] visible = Children.Where(item => item.Visibility != Visibility.Collapsed && item is FrameworkElement).Select(item => item as FrameworkElement).ToArray();
 
 #pragma warning disable SA1008 // Opening parenthesis must be spaced correctly
-            var (rows, columns) = GetDimensions(visible, Rows, Columns, FirstColumn);
+            (int rows, int columns) = GetDimensions(visible, Rows, Columns, FirstColumn);
 #pragma warning restore SA1008 // Opening parenthesis must be spaced correctly
 
             // Now that we know size, setup automatic rows/columns
@@ -56,12 +56,12 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             }
 
             // Figure out which children we should automatically layout and where available openings are.
-            foreach (var child in visible)
+            foreach (FrameworkElement child in visible)
             {
-                var row = GetRow(child);
-                var col = GetColumn(child);
-                var rowspan = GetRowSpan(child);
-                var colspan = GetColumnSpan(child);
+                int row = GetRow(child);
+                int col = GetColumn(child);
+                int rowspan = GetRowSpan(child);
+                int colspan = GetColumnSpan(child);
 
                 // If an element needs to be forced in the 0, 0 position,
                 // they should manually set UniformGrid.AutoLayout to False for that element.
@@ -95,8 +95,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
             // Set Grid Row/Col for every child with autolayout = true
             // Backwards with FlowDirection
-            var freespots = GetFreeSpot(spotref, FirstColumn, Orientation == Orientation.Vertical).GetEnumerator();
-            foreach (var child in visible)
+            IEnumerator<(int row, int column)> freespots = GetFreeSpot(spotref, FirstColumn, Orientation == Orientation.Vertical).GetEnumerator();
+            foreach (FrameworkElement child in visible)
             {
                 // Set location if we're in charge
                 if (GetAutoLayout(child) == true)
@@ -105,15 +105,15 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                     {
 #pragma warning disable SA1009 // Closing parenthesis must be followed by a space.
 #pragma warning disable SA1008 // Opening parenthesis must be spaced correctly
-                        var (row, column) = freespots.Current;
+                        (int row, int column) = freespots.Current;
 #pragma warning restore SA1008 // Opening parenthesis must be spaced correctly
 #pragma warning restore SA1009 // Closing parenthesis must be followed by a space.
 
                         SetRow(child, row);
                         SetColumn(child, column);
 
-                        var rowspan = GetRowSpan(child);
-                        var colspan = GetColumnSpan(child);
+                        int rowspan = GetRowSpan(child);
+                        int colspan = GetColumnSpan(child);
 
                         if (rowspan > 1 || colspan > 1)
                         {
@@ -153,7 +153,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             }
 
             // Return our desired size based on the largest child we found, our dimensions, and spacing.
-            var desiredSize = new Size((maxWidth * columns) + columnSpacingSize, (maxHeight * rows) + rowSpacingSize);
+            Size desiredSize = new Size((maxWidth * columns) + columnSpacingSize, (maxHeight * rows) + rowSpacingSize);
 
             // Required to perform regular grid measurement, but ignore result.
             base.MeasureOverride(desiredSize);
@@ -165,10 +165,10 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         protected override Size ArrangeOverride(Size finalSize)
         {
             // Have grid to the bulk of our heavy lifting.
-            var size = base.ArrangeOverride(finalSize);
+            Size size = base.ArrangeOverride(finalSize);
 
             // Make sure all overflown elements have no size.
-            foreach (var child in _overflow)
+            foreach (UIElement child in _overflow)
             {
                 child.Arrange(default);
             }

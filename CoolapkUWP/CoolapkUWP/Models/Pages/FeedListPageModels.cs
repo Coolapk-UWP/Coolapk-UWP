@@ -1,18 +1,14 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Images;
 using CoolapkUWP.Models.Users;
-using Microsoft.Toolkit.Uwp.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Cryptography;
-using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
-using Windows.UI.Core;
 
 namespace CoolapkUWP.Models.Pages
 {

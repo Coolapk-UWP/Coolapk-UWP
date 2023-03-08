@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Parsers.Core;
+using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.Toolkit.Parsers.Core;
-using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 
 [assembly: InternalsVisibleTo("UnitTests.UWP, PublicKey=002400000480000094000000060200000024000052534131000400000100010041753af735ae6140c9508567666c51c6ab929806adb0d210694b30ab142a060237bc741f9682e7d8d4310364b4bba4ee89cc9d3d5ce7e5583587e8ea44dca09977996582875e71fb54fa7b170798d853d5d8010b07219633bdb761d01ac924da44576d6180cdceae537973982bb461c541541d58417a3794e34f45e6f2d129e2")]
 
@@ -50,14 +50,14 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
         /// <returns> A parsed list block, or <c>null</c> if this is not a list block. </returns>
         internal static ListBlock Parse(string markdown, int start, int maxEnd, int quoteDepth, out int actualEnd)
         {
-            var russianDolls = new List<NestedListInfo>();
+            List<NestedListInfo> russianDolls = new List<NestedListInfo>();
             int russianDollIndex = -1;
             bool previousLineWasBlank = false;
             bool inCodeBlock = false;
             ListItemBlock currentListItem = null;
             actualEnd = start;
 
-            foreach (var lineInfo in Common.ParseLines(markdown, start, maxEnd, quoteDepth))
+            foreach (LineInfo lineInfo in Common.ParseLines(markdown, start, maxEnd, quoteDepth))
             {
                 // Is this line blank?
                 if (lineInfo.IsLineBlank)
@@ -190,15 +190,8 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
                     // Check for Closing Code Blocks.
                     if (currentListItem.Blocks.Last() is ListItemBuilder currentBlock)
                     {
-                        var blockMatchCount = Regex.Matches(currentBlock.Builder.ToString(), "```").Count;
-                        if (blockMatchCount > 0 && blockMatchCount % 2 != 0)
-                        {
-                            inCodeBlock = true;
-                        }
-                        else
-                        {
-                            inCodeBlock = false;
-                        }
+                        int blockMatchCount = Regex.Matches(currentBlock.Builder.ToString(), "```").Count;
+                        inCodeBlock = blockMatchCount > 0 && blockMatchCount % 2 != 0;
                     }
 
                     // The line was not blank.
@@ -209,7 +202,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
                 actualEnd = lineInfo.EndOfLine;
             }
 
-            var result = russianDolls[0].List;
+            ListBlock result = russianDolls[0].List;
             ReplaceStringBuilders(result);
             return result;
         }
@@ -289,7 +282,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
                 listItem.Blocks.Add(listItemBuilder);
             }
 
-            var builder = listItemBuilder.Builder;
+            StringBuilder builder = listItemBuilder.Builder;
             if (builder.Length >= 2 &&
                 ParseHelpers.IsMarkdownWhiteSpace(builder[builder.Length - 2]) &&
                 ParseHelpers.IsMarkdownWhiteSpace(builder[builder.Length - 1]))
@@ -317,13 +310,13 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
         private static bool ReplaceStringBuilders(ListBlock list)
         {
             bool usedBlockParser = false;
-            foreach (var listItem in list.Items)
+            foreach (ListItemBlock listItem in list.Items)
             {
                 // Use the inline parser if there is one paragraph, use the block parser otherwise.
-                var useBlockParser = listItem.Blocks.Count(block => block.Type == MarkdownBlockType.ListItemBuilder) > 1;
+                bool useBlockParser = listItem.Blocks.Count(block => block.Type == MarkdownBlockType.ListItemBuilder) > 1;
 
                 // Recursively replace any child lists.
-                foreach (var block in listItem.Blocks)
+                foreach (MarkdownBlock block in listItem.Blocks)
                 {
                     if (block is ListBlock && ReplaceStringBuilders((ListBlock)block))
                     {
@@ -332,24 +325,25 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
                 }
 
                 // Parse the text content of the list items.
-                var newBlockList = new List<MarkdownBlock>();
-                foreach (var block in listItem.Blocks)
+                List<MarkdownBlock> newBlockList = new List<MarkdownBlock>();
+                foreach (MarkdownBlock block in listItem.Blocks)
                 {
                     if (block is ListItemBuilder)
                     {
-                        var blockText = ((ListItemBuilder)block).Builder.ToString();
+                        string blockText = ((ListItemBuilder)block).Builder.ToString();
                         if (useBlockParser)
                         {
                             // Parse the list item as a series of blocks.
-                            int actualEnd;
-                            newBlockList.AddRange(MarkdownDocument.Parse(blockText, 0, blockText.Length, quoteDepth: 0, actualEnd: out actualEnd));
+                            newBlockList.AddRange(MarkdownDocument.Parse(blockText, 0, blockText.Length, quoteDepth: 0, actualEnd: out int actualEnd));
                             usedBlockParser = true;
                         }
                         else
                         {
                             // Don't allow blocks.
-                            var paragraph = new ParagraphBlock();
-                            paragraph.Inlines = Common.ParseInlineChildren(blockText, 0, blockText.Length);
+                            ParagraphBlock paragraph = new ParagraphBlock
+                            {
+                                Inlines = Common.ParseInlineChildren(blockText, 0, blockText.Length)
+                            };
                             newBlockList.Add(paragraph);
                         }
                     }
@@ -376,7 +370,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
                 return base.ToString();
             }
 
-            var result = new StringBuilder();
+            StringBuilder result = new StringBuilder();
             for (int i = 0; i < Items.Count; i++)
             {
                 if (result.Length > 0)

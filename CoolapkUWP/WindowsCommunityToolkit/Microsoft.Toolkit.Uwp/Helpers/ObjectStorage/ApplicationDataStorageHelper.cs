@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Toolkit.Helpers;
 using Windows.Storage;
 using Windows.System;
 
@@ -56,7 +56,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <returns>A new instance of ApplicationDataStorageHelper.</returns>
         public static ApplicationDataStorageHelper GetCurrent(Toolkit.Helpers.IObjectSerializer objectSerializer = null)
         {
-            var appData = ApplicationData.Current;
+            ApplicationData appData = ApplicationData.Current;
             return new ApplicationDataStorageHelper(appData, objectSerializer);
         }
 
@@ -68,7 +68,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <returns>A new instance of ApplicationDataStorageHelper.</returns>
         public static async Task<ApplicationDataStorageHelper> GetForUserAsync(User user, Toolkit.Helpers.IObjectSerializer objectSerializer = null)
         {
-            var appData = await ApplicationData.GetForUserAsync(user);
+            ApplicationData appData = await ApplicationData.GetForUserAsync(user);
             return new ApplicationDataStorageHelper(appData, objectSerializer);
         }
 
@@ -91,18 +91,15 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <returns>The TValue object.</returns>
         public T Read<T>(string key, T @default = default)
         {
-            if (Settings.Values.TryGetValue(key, out var valueObj) && valueObj is string valueString)
-            {
-                return Serializer.Deserialize<T>(valueString);
-            }
-
-            return @default;
+            return Settings.Values.TryGetValue(key, out object valueObj) && valueObj is string valueString
+                ? Serializer.Deserialize<T>(valueString)
+                : @default;
         }
 
         /// <inheritdoc />
         public bool TryRead<T>(string key, out T value)
         {
-            if (Settings.Values.TryGetValue(key, out var valueObj) && valueObj is string valueString)
+            if (Settings.Values.TryGetValue(key, out object valueObj) && valueObj is string valueString)
             {
                 value = Serializer.Deserialize<T>(valueString);
                 return true;
@@ -138,12 +135,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <returns>True if a value exists.</returns>
         public bool KeyExists(string compositeKey, string key)
         {
-            if (TryRead(compositeKey, out ApplicationDataCompositeValue composite) && composite != null)
-            {
-                return composite.ContainsKey(key);
-            }
-
-            return false;
+            return TryRead(compositeKey, out ApplicationDataCompositeValue composite) && composite != null && composite.ContainsKey(key);
         }
 
         /// <summary>
@@ -235,12 +227,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <returns>A boolean indicator of success.</returns>
         public bool TryDelete(string compositeKey, string key)
         {
-            if (TryRead(compositeKey, out ApplicationDataCompositeValue composite) && composite != null)
-            {
-                return composite.Remove(key);
-            }
-
-            return false;
+            return TryRead(compositeKey, out ApplicationDataCompositeValue composite) && composite != null && composite.Remove(key);
         }
 
         /// <inheritdoc />
@@ -287,12 +274,12 @@ namespace Microsoft.Toolkit.Uwp.Helpers
 
         private async Task<IEnumerable<(DirectoryItemType, string)>> ReadFolderAsync(StorageFolder folder, string folderPath)
         {
-            var targetFolder = await folder.GetFolderAsync(NormalizePath(folderPath));
-            var items = await targetFolder.GetItemsAsync();
+            StorageFolder targetFolder = await folder.GetFolderAsync(NormalizePath(folderPath));
+            IReadOnlyList<IStorageItem> items = await targetFolder.GetItemsAsync();
 
             return items.Select((item) =>
             {
-                var itemType = item.IsOfType(StorageItemTypes.File) ? DirectoryItemType.File
+                DirectoryItemType itemType = item.IsOfType(StorageItemTypes.File) ? DirectoryItemType.File
                     : item.IsOfType(StorageItemTypes.Folder) ? DirectoryItemType.Folder
                     : DirectoryItemType.None;
 
@@ -314,7 +301,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         {
             try
             {
-                var item = await folder.GetItemAsync(NormalizePath(itemPath));
+                IStorageItem item = await folder.GetItemAsync(NormalizePath(itemPath));
                 await item.DeleteAsync();
                 return true;
             }
@@ -328,7 +315,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         {
             try
             {
-                var item = await folder.GetItemAsync(NormalizePath(itemPath));
+                IStorageItem item = await folder.GetItemAsync(NormalizePath(itemPath));
                 await item.RenameAsync(newName, NameCollisionOption.FailIfExists);
                 return true;
             }

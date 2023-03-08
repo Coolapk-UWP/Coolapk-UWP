@@ -200,7 +200,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>True if the resource exists, false otherwise</returns>
         public bool TryGetResource<T>(string key, out T resource)
         {
-            if (_resources != null && _resources.TryGetValue(key, out var objResource) && objResource is T tResource)
+            if (_resources != null && _resources.TryGetValue(key, out object objResource) && objResource is T tResource)
             {
                 resource = tResource;
                 return true;
@@ -218,12 +218,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The resource if available, otherwise default value.</returns>
         public T GetResource<T>(string key)
         {
-            if (TryGetResource(key, out T resource))
-            {
-                return resource;
-            }
-
-            return default;
+            return TryGetResource(key, out T resource) ? resource : default;
         }
 
         /// <summary>
@@ -234,7 +229,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>The resource that was removed, if any</returns>
         public T RemoveResource<T>(string key)
         {
-            if (_resources != null && _resources.TryGetValue(key, out var objResource))
+            if (_resources != null && _resources.TryGetValue(key, out object objResource))
             {
                 _resources.Remove(key);
                 if (objResource is T resource)
@@ -255,7 +250,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         public T RemoveAndDisposeResource<T>(string key)
             where T : IDisposable
         {
-            if (_resources != null && _resources.TryGetValue(key, out var objResource))
+            if (_resources != null && _resources.TryGetValue(key, out object objResource))
             {
                 _resources.Remove(key);
                 if (objResource is T resource)
@@ -311,7 +306,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         {
             if (_resources != null)
             {
-                foreach (var kvp in _resources)
+                foreach (KeyValuePair<string, object> kvp in _resources)
                 {
                     (kvp.Value as IDisposable)?.Dispose();
                 }

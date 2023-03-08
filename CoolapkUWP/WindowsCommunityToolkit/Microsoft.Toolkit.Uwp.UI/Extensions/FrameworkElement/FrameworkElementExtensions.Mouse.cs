@@ -47,13 +47,12 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static void CursorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var element = d as FrameworkElement;
-            if (element == null)
+            if (!(d is FrameworkElement element))
             {
                 throw new NullReferenceException(nameof(element));
             }
 
-            var value = (CoreCursorType)e.NewValue;
+            CoreCursorType value = (CoreCursorType)e.NewValue;
 
             // lock ensures CoreCursor creation and event handlers attachment/detachment is atomic
             lock (_cursorLock)
@@ -82,16 +81,9 @@ namespace Microsoft.Toolkit.Uwp.UI
         private static void Element_PointerExited(object sender, PointerRoutedEventArgs e)
         {
             // when exiting change the cursor to the target Mouse.Cursor value of the new element
-            CoreCursor cursor;
-            if (sender != e.OriginalSource && e.OriginalSource is FrameworkElement newElement)
-            {
-                cursor = _cursors[GetCursor(newElement)];
-            }
-            else
-            {
-                cursor = _defaultCursor;
-            }
-
+            CoreCursor cursor = sender != e.OriginalSource && e.OriginalSource is FrameworkElement newElement
+                ? _cursors[GetCursor(newElement)]
+                : _defaultCursor;
             Window.Current.CoreWindow.PointerCursor = cursor;
         }
 

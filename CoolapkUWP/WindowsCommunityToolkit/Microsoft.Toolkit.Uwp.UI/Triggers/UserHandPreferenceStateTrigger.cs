@@ -12,7 +12,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
     /// </summary>
     public class UserHandPreferenceStateTrigger : StateTriggerBase
     {
-        private static HandPreference handPreference;
+        private static readonly HandPreference handPreference;
 
         static UserHandPreferenceStateTrigger()
         {
@@ -45,8 +45,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Triggers
 
         private static void OnHandPreferencePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var obj = (UserHandPreferenceStateTrigger)d;
-            var val = (HandPreference)e.NewValue;
+            UserHandPreferenceStateTrigger obj = (UserHandPreferenceStateTrigger)d;
+            HandPreference val = (HandPreference)e.NewValue;
             obj.SetActive(handPreference == val);
         }
     }

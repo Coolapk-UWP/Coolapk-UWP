@@ -23,8 +23,6 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
     public partial class DropShadowPanel : ContentControl
     {
         private const string PartShadow = "ShadowElement";
-
-        private readonly DropShadow _dropShadow;
         private readonly SpriteVisual _shadowVisual;
         private Border _border;
 
@@ -41,8 +39,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
                 _shadowVisual = compositor.CreateSpriteVisual();
 
-                _dropShadow = compositor.CreateDropShadow();
-                _shadowVisual.Shadow = _dropShadow;
+                DropShadow = compositor.CreateDropShadow();
+                _shadowVisual.Shadow = DropShadow;
             }
         }
 
@@ -112,49 +110,49 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private void OnBlurRadiusChanged(double newValue)
         {
-            if (_dropShadow != null)
+            if (DropShadow != null)
             {
-                _dropShadow.BlurRadius = (float)newValue;
+                DropShadow.BlurRadius = (float)newValue;
             }
         }
 
         private void OnColorChanged(Color newValue)
         {
-            if (_dropShadow != null)
+            if (DropShadow != null)
             {
-                _dropShadow.Color = newValue;
+                DropShadow.Color = newValue;
             }
         }
 
         private void OnOffsetXChanged(double newValue)
         {
-            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && _dropShadow != null)
+            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && DropShadow != null)
             {
-                UpdateShadowOffset((float)newValue, _dropShadow.Offset.Y, _dropShadow.Offset.Z);
+                UpdateShadowOffset((float)newValue, DropShadow.Offset.Y, DropShadow.Offset.Z);
             }
         }
 
         private void OnOffsetYChanged(double newValue)
         {
-            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && _dropShadow != null)
+            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && DropShadow != null)
             {
-                UpdateShadowOffset(_dropShadow.Offset.X, (float)newValue, _dropShadow.Offset.Z);
+                UpdateShadowOffset(DropShadow.Offset.X, (float)newValue, DropShadow.Offset.Z);
             }
         }
 
         private void OnOffsetZChanged(double newValue)
         {
-            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && _dropShadow != null)
+            if (!DesignTimeHelpers.IsRunningInLegacyDesignerMode && DropShadow != null)
             {
-                UpdateShadowOffset(_dropShadow.Offset.X, _dropShadow.Offset.Y, (float)newValue);
+                UpdateShadowOffset(DropShadow.Offset.X, DropShadow.Offset.Y, (float)newValue);
             }
         }
 
         private void OnShadowOpacityChanged(double newValue)
         {
-            if (_dropShadow != null)
+            if (DropShadow != null)
             {
-                _dropShadow.Opacity = (float)newValue;
+                DropShadow.Opacity = (float)newValue;
             }
         }
 
@@ -207,11 +205,11 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                     mask = ((TextBlock)Content).GetAlphaMask();
                 }
 
-                _dropShadow.Mask = mask;
+                DropShadow.Mask = mask;
             }
             else
             {
-                _dropShadow.Mask = null;
+                DropShadow.Mask = null;
             }
         }
 
@@ -221,15 +219,15 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
             {
                 element.Loaded -= CustomMaskedElement_Loaded;
 
-                _dropShadow.Mask = ((IAlphaMaskProvider)element).GetAlphaMask();
+                DropShadow.Mask = ((IAlphaMaskProvider)element).GetAlphaMask();
             }
         }
 
         private void UpdateShadowOffset(float x, float y, float z)
         {
-            if (_dropShadow != null)
+            if (DropShadow != null)
             {
-                _dropShadow.Offset = new Vector3(x, y, z);
+                DropShadow.Offset = new Vector3(x, y, z);
             }
         }
 

@@ -68,7 +68,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         public async Task ReadStream(IRandomAccessStream stream)
         {
             BitmapDecoder ImageDecoder = await BitmapDecoder.CreateAsync(stream);
-            var SoftwareImage = await ImageDecoder.GetSoftwareBitmapAsync();
+            SoftwareBitmap SoftwareImage = await ImageDecoder.GetSoftwareBitmapAsync();
             try
             {
                 WriteableBitmap WriteableImage = new WriteableBitmap((int)ImageDecoder.PixelWidth, (int)ImageDecoder.PixelHeight);

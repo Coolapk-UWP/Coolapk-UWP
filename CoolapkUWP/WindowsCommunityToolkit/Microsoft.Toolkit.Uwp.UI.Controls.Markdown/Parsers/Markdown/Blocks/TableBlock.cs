@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Toolkit.Parsers.Core;
 using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 using Microsoft.Toolkit.Parsers.Markdown.Inlines;
+using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
 {
@@ -55,14 +55,14 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
             actualEnd = start;
 
             // First thing to do is to check if there is a vertical bar on the line.
-            var barSections = markdown.Substring(start, endOfFirstLine - start).Split('|');
+            string[] barSections = markdown.Substring(start, endOfFirstLine - start).Split('|');
 
-            var allBarsEscaped = true;
+            bool allBarsEscaped = true;
 
             // we can skip the last section, because there is no bar at the end of it
-            for (var i = 0; i < barSections.Length - 1; i++)
+            for (int i = 0; i < barSections.Length - 1; i++)
             {
-                var barSection = barSections[i];
+                string barSection = barSections[i];
                 if (!barSection.EndsWith("\\"))
                 {
                     allBarsEscaped = false;
@@ -75,15 +75,15 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
                 return null;
             }
 
-            var rows = new List<TableRow>();
+            List<TableRow> rows = new List<TableRow>();
 
             // Parse the first row.
-            var firstRow = new TableRow();
+            TableRow firstRow = new TableRow();
             start = firstRow.Parse(markdown, start, maxEnd, quoteDepth);
             rows.Add(firstRow);
 
             // Parse the contents of the second row.
-            var secondRowContents = new List<string>();
+            List<string> secondRowContents = new List<string>();
             start = TableRow.ParseContents(
                 markdown,
                 start,
@@ -100,10 +100,10 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
 
             // Check each column definition.
             // Note: excess columns past firstRowColumnCount are ignored and can contain anything.
-            var columnDefinitions = new List<TableColumnDefinition>(firstRow.Cells.Count);
+            List<TableColumnDefinition> columnDefinitions = new List<TableColumnDefinition>(firstRow.Cells.Count);
             for (int i = 0; i < firstRow.Cells.Count; i++)
             {
-                var cellContent = secondRowContents[i];
+                string cellContent = secondRowContents[i];
                 if (cellContent.Length == 0)
                 {
                     return null;
@@ -130,7 +130,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
                 }
 
                 // Record the alignment.
-                var columnDefinition = new TableColumnDefinition();
+                TableColumnDefinition columnDefinition = new TableColumnDefinition();
                 if (cellContent.Length > 1 && cellContent[0] == ':' && cellContent[cellContent.Length - 1] == ':')
                 {
                     columnDefinition.Alignment = ColumnAlignment.Center;
@@ -150,7 +150,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
             // Parse additional rows.
             while (start < maxEnd)
             {
-                var row = new TableRow();
+                TableRow row = new TableRow();
                 start = row.Parse(markdown, start, maxEnd, quoteDepth);
                 if (row.Cells.Count == 0)
                 {
@@ -309,8 +309,10 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Blocks
                     requireVerticalBar: true,
                     contentParser: (startingPos2, maxEndingPos2) =>
                     {
-                        var cell = new TableCell();
-                        cell.Inlines = Common.ParseInlineChildren(markdown, startingPos2, maxEndingPos2);
+                        TableCell cell = new TableCell
+                        {
+                            Inlines = Common.ParseInlineChildren(markdown, startingPos2, maxEndingPos2)
+                        };
                         Cells.Add(cell);
                     });
             }

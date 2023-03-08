@@ -1,10 +1,6 @@
-﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Models;
-using CoolapkUWP.ViewModels.DataSource;
+﻿using CoolapkUWP.ViewModels.DataSource;
 using CoolapkUWP.ViewModels.FeedPages;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;

@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace Microsoft.Toolkit.Uwp.UI.Controls
 {
-    internal struct UvBounds
+    internal readonly struct UvBounds
     {
         public UvBounds(Orientation orientation, Rect rect)
         {

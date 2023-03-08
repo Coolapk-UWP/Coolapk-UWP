@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 using System;
 using System.Collections.Generic;
-using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
 {
@@ -56,17 +56,17 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             }
 
             // Find the end of the span.  The end sequence ('-->')
-            var innerStart = start + 4;
+            int innerStart = start + 4;
             int innerEnd = Common.IndexOf(markdown, "-->", innerStart, maxEnd);
             if (innerEnd == -1)
             {
                 return null;
             }
 
-            var length = innerEnd - innerStart;
-            var contents = markdown.Substring(innerStart, length);
+            int length = innerEnd - innerStart;
+            string contents = markdown.Substring(innerStart, length);
 
-            var result = new CommentInline
+            CommentInline result = new CommentInline
             {
                 Text = contents
             };

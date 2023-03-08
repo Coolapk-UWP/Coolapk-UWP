@@ -128,7 +128,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
             if (HorizontalAlignment == HorizontalAlignment.Stretch)
             {
-                availableWidth = availableWidth - ((numColumns - 1) * ColumnSpacing);
+                availableWidth -= (numColumns - 1) * ColumnSpacing;
                 _columnWidth = availableWidth / numColumns;
             }
 
@@ -137,16 +137,16 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return new Size(0, 0);
             }
 
-            var columnHeights = new double[numColumns];
-            var itemsPerColumn = new double[numColumns];
+            double[] columnHeights = new double[numColumns];
+            double[] itemsPerColumn = new double[numColumns];
 
             for (int i = 0; i < Children.Count; i++)
             {
-                var columnIndex = GetColumnIndex(columnHeights);
+                int columnIndex = GetColumnIndex(columnHeights);
 
-                var child = Children[i];
+                UIElement child = Children[i];
                 child.Measure(new Size(_columnWidth, availableHeight));
-                var elementSize = child.DesiredSize;
+                Size elementSize = child.DesiredSize;
                 columnHeights[columnIndex] += elementSize.Height + (itemsPerColumn[columnIndex] > 0 ? RowSpacing : 0);
                 itemsPerColumn[columnIndex]++;
             }
@@ -182,15 +182,15 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 horizontalOffset += (finalSize.Width - totalWidth) / 2;
             }
 
-            var columnHeights = new double[numColumns];
-            var itemsPerColumn = new double[numColumns];
+            double[] columnHeights = new double[numColumns];
+            double[] itemsPerColumn = new double[numColumns];
 
             for (int i = 0; i < Children.Count; i++)
             {
-                var columnIndex = GetColumnIndex(columnHeights);
+                int columnIndex = GetColumnIndex(columnHeights);
 
-                var child = Children[i];
-                var elementSize = child.DesiredSize;
+                UIElement child = Children[i];
+                Size elementSize = child.DesiredSize;
 
                 double elementHeight = elementSize.Height;
 
@@ -209,13 +209,13 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void OnDesiredColumnWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var panel = (StaggeredPanel)d;
+            StaggeredPanel panel = (StaggeredPanel)d;
             panel.InvalidateMeasure();
         }
 
         private static void OnPaddingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var panel = (StaggeredPanel)d;
+            StaggeredPanel panel = (StaggeredPanel)d;
             panel.InvalidateMeasure();
         }
 

@@ -89,7 +89,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void OnShowDismissButtonChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var inApNotification = d as InAppNotification;
+            InAppNotification inApNotification = d as InAppNotification;
 
             if (inApNotification._dismissButton != null)
             {

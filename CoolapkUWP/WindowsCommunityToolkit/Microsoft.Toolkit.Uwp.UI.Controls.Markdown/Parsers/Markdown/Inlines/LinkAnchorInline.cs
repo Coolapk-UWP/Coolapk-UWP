@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
 {
@@ -60,7 +60,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             }
 
             // Find the end of the span.  The end sequence ('-->')
-            var innerStart = start + 2;
+            int innerStart = start + 2;
             int innerEnd = Common.IndexOf(markdown, "</a>", innerStart, maxEnd);
             int trueEnd = innerEnd + 4;
             if (innerEnd == -1)
@@ -74,21 +74,21 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             }
 
             // This link Reference wasn't closed properly if the next link starts before a close.
-            var nextLink = Common.IndexOf(markdown, "<a", innerStart, maxEnd);
+            int nextLink = Common.IndexOf(markdown, "<a", innerStart, maxEnd);
             if (nextLink > -1 && nextLink < innerEnd)
             {
                 return null;
             }
 
-            var length = trueEnd - start;
-            var contents = markdown.Substring(start, length);
+            int length = trueEnd - start;
+            string contents = markdown.Substring(start, length);
 
             string link = null;
 
             try
             {
-                var xml = XElement.Parse(contents);
-                var attr = xml.Attribute("name");
+                XElement xml = XElement.Parse(contents);
+                XAttribute attr = xml.Attribute("name");
                 if (attr != null)
                 {
                     link = attr.Value;
@@ -106,7 +106,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             }
 
             // We found something!
-            var result = new LinkAnchorInline
+            LinkAnchorInline result = new LinkAnchorInline
             {
                 Raw = contents,
                 Link = link

@@ -2,14 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using Microsoft.UI.Xaml.Controls;
 using Windows.Foundation;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace Microsoft.Toolkit.Uwp.UI.Controls
 {
@@ -100,7 +98,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// <inheritdoc/>
         protected override void OnItemsChangedCore(VirtualizingLayoutContext context, object source, NotifyCollectionChangedEventArgs args)
         {
-            var state = (StaggeredLayoutState)context.LayoutState;
+            StaggeredLayoutState state = (StaggeredLayoutState)context.LayoutState;
 
             switch (args.Action)
             {
@@ -142,7 +140,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return new Size(availableSize.Width, 0.0);
             }
 
-            var state = (StaggeredLayoutState)context.LayoutState;
+            StaggeredLayoutState state = (StaggeredLayoutState)context.LayoutState;
 
             double availableWidth = availableSize.Width;
             double availableHeight = availableSize.Height;
@@ -185,13 +183,13 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 state.RowSpacing = RowSpacing;
             }
 
-            var columnHeights = new double[numColumns];
-            var itemsPerColumn = new int[numColumns];
-            var deadColumns = new HashSet<int>();
+            double[] columnHeights = new double[numColumns];
+            int[] itemsPerColumn = new int[numColumns];
+            HashSet<int> deadColumns = new HashSet<int>();
 
             for (int i = 0; i < context.ItemCount; i++)
             {
-                var columnIndex = GetColumnIndex(columnHeights);
+                int columnIndex = GetColumnIndex(columnHeights);
 
                 bool measured = false;
                 StaggeredItem item = state.GetItemAt(i);
@@ -264,7 +262,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
                 return finalSize;
             }
 
-            var state = (StaggeredLayoutState)context.LayoutState;
+            StaggeredLayoutState state = (StaggeredLayoutState)context.LayoutState;
 
             // Cycle through each column and arrange the items that are within the realization bounds
             for (int columnIndex = 0; columnIndex < state.NumberOfColumns; columnIndex++)
@@ -301,13 +299,13 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void OnDesiredColumnWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var panel = (StaggeredLayout)d;
+            StaggeredLayout panel = (StaggeredLayout)d;
             panel.InvalidateMeasure();
         }
 
         private static void OnSpacingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var panel = (StaggeredLayout)d;
+            StaggeredLayout panel = (StaggeredLayout)d;
             panel.InvalidateMeasure();
         }
 

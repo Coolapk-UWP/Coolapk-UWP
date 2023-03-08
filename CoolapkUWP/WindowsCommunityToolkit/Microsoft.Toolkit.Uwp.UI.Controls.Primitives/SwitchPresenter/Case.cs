@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Markup;
 
@@ -49,7 +48,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
         /// </summary>
         public object Value
         {
-            get { return (object)GetValue(ValueProperty); }
+            get { return GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
         }
 

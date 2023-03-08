@@ -20,7 +20,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns><see cref="string"/></returns>
         public static string GetTitle(Page page)
         {
-            var applicationView = GetApplicationView();
+            Windows.UI.ViewManagement.ApplicationView applicationView = GetApplicationView();
 
             return applicationView?.Title ?? string.Empty;
         }
@@ -32,7 +32,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value"><see cref="string"/></param>
         public static void SetTitle(Page page, string value)
         {
-            var applicationView = GetApplicationView();
+            Windows.UI.ViewManagement.ApplicationView applicationView = GetApplicationView();
             if (applicationView != null)
             {
                 applicationView.Title = value;
@@ -46,7 +46,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns><see cref="string"/></returns>
         public static bool GetExtendViewIntoTitleBar(Page page)
         {
-            var applicationView = GetCoreApplicationView();
+            CoreApplicationView applicationView = GetCoreApplicationView();
 
             return applicationView?.TitleBar?.ExtendViewIntoTitleBar ?? false;
         }
@@ -58,7 +58,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value"><see cref="bool"/></param>
         public static void SetExtendViewIntoTitleBar(Page page, bool value)
         {
-            var applicationView = GetCoreApplicationView();
+            CoreApplicationView applicationView = GetCoreApplicationView();
             if (applicationView != null && applicationView.TitleBar != null)
             {
                 applicationView.TitleBar.ExtendViewIntoTitleBar = value;
@@ -72,7 +72,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns><see cref="string"/></returns>
         public static AppViewBackButtonVisibility GetBackButtonVisibility(Page page)
         {
-            var systemNavigationManager = GetSystemNavigationManager();
+            SystemNavigationManager systemNavigationManager = GetSystemNavigationManager();
 
             return systemNavigationManager?.AppViewBackButtonVisibility ?? AppViewBackButtonVisibility.Collapsed;
         }
@@ -84,7 +84,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <param name="value"><see cref="AppViewBackButtonVisibility"/></param>
         public static void SetBackButtonVisibility(Page page, AppViewBackButtonVisibility value)
         {
-            var systemNavigationManager = GetSystemNavigationManager();
+            SystemNavigationManager systemNavigationManager = GetSystemNavigationManager();
 
             if (systemNavigationManager != null)
             {

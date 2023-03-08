@@ -93,14 +93,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
 
         private static float GetScale(XamlRoot xamlRoot)
         {
-            if (xamlRoot != null)
-            {
-                return (float)xamlRoot.RasterizationScale;
-            }
-            else
-            {
-                return (float)DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
-            }
+            return xamlRoot != null ? (float)xamlRoot.RasterizationScale : (float)DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
         }
     }
 }

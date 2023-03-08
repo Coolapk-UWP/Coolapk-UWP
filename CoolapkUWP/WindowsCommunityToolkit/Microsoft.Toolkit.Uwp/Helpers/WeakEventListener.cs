@@ -53,7 +53,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         /// <param name="eventArgs">Event arguments.</param>
         public void OnEvent(TSource source, TEventArgs eventArgs)
         {
-            var target = (TInstance)_weakInstance.Target;
+            TInstance target = (TInstance)_weakInstance.Target;
             if (target != null)
             {
                 // Call registered action

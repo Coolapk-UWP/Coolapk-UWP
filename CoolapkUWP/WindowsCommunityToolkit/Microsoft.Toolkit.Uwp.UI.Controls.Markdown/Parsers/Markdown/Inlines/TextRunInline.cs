@@ -451,12 +451,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
         /// <returns> The textual representation of this object. </returns>
         public override string ToString()
         {
-            if (Text == null)
-            {
-                return base.ToString();
-            }
-
-            return Text;
+            return Text ?? base.ToString();
         }
     }
 }

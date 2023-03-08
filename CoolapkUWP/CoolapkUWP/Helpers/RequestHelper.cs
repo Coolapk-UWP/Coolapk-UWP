@@ -73,8 +73,12 @@ namespace CoolapkUWP.Helpers
                 UIHelper.ShowInAppMessage(MessageType.Message, message.ToString());
                 return (_isSucceed, token);
             }
-            else if (data != null && !string.IsNullOrWhiteSpace(data.ToString())) { return (true, data); }
-            else { return (token != null && !string.IsNullOrEmpty(token.ToString()), token); }
+            else
+            {
+                return data != null && !string.IsNullOrWhiteSpace(data.ToString())
+                ? ((bool isSucceed, JToken result))(true, data)
+                : ((bool isSucceed, JToken result))(token != null && !string.IsNullOrEmpty(token.ToString()), token);
+            }
         }
 
         public static async Task<(bool isSucceed, string result)> PostStringAsync(Uri uri, HttpContent content = null, bool isBackground = false)
@@ -193,9 +197,11 @@ namespace CoolapkUWP.Helpers
             {
                 using (ByteArrayContent picFile = new ByteArrayContent(image))
                 {
-                    picFile.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
-                    picFile.Headers.ContentDisposition.Name = "\"picFile\"";
-                    picFile.Headers.ContentDisposition.FileName = $"\"{name}\"";
+                    picFile.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                    {
+                        Name = "\"picFile\"",
+                        FileName = $"\"{name}\""
+                    };
                     picFile.Headers.ContentType = new MediaTypeHeaderValue("image/png");
                     picFile.Headers.ContentLength = image.Length;
 

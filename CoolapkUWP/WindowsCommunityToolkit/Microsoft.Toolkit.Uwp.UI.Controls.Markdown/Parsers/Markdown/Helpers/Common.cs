@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Parsers.Markdown.Inlines;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Toolkit.Parsers.Markdown.Inlines;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Helpers
 {
@@ -47,18 +47,18 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Helpers
         {
             int currentParsePosition = startingPos;
 
-            var inlines = new List<MarkdownInline>();
+            List<MarkdownInline> inlines = new List<MarkdownInline>();
             while (currentParsePosition < maxEndingPos)
             {
                 // Find the next inline element.
-                var parseResult = FindNextInlineElement(markdown, currentParsePosition, maxEndingPos, ignoreLinks);
+                InlineParseResult parseResult = FindNextInlineElement(markdown, currentParsePosition, maxEndingPos, ignoreLinks);
 
                 // If the element we found doesn't start at the position we are looking for there
                 // is text between the element and the start of the parsed element. We need to wrap
                 // it into a text run.
                 if (parseResult.Start != currentParsePosition)
                 {
-                    var textRun = TextRunInline.Parse(markdown, currentParsePosition, parseResult.Start);
+                    TextRunInline textRun = TextRunInline.Parse(markdown, currentParsePosition, parseResult.Start);
                     inlines.Add(textRun);
                 }
 
@@ -237,12 +237,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Helpers
             startOfNextLine = lineFeedPos + 1;
 
             // Check if it was a CRLF.
-            if (lineFeedPos > startingPos && markdown[lineFeedPos - 1] == '\r')
-            {
-                return lineFeedPos - 1;
-            }
-
-            return lineFeedPos;
+            return lineFeedPos > startingPos && markdown[lineFeedPos - 1] == '\r' ? lineFeedPos - 1 : lineFeedPos;
         }
 
         /// <summary>
@@ -522,7 +517,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Helpers
             }
 
             // Check the scheme is allowed.
-            foreach (var scheme in MarkdownDocument.KnownSchemes)
+            foreach (string scheme in MarkdownDocument.KnownSchemes)
             {
                 if (result.Scheme.Equals(scheme))
                 {

@@ -1,5 +1,5 @@
-﻿using Windows.UI.Xaml;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using Windows.UI.Xaml;
 
 namespace CoolapkUWP.Controls
 {

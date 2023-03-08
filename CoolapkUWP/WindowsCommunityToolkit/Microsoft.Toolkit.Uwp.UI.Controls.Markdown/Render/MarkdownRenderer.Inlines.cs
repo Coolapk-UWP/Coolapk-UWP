@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Toolkit.Parsers.Markdown;
 using Microsoft.Toolkit.Parsers.Markdown.Inlines;
 using Microsoft.Toolkit.Parsers.Markdown.Render;
+using System;
+using System.Collections.Generic;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -29,15 +28,14 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// <param name="context"> Persistent state. </param>
         protected override void RenderEmoji(EmojiInline element, IRenderContext context)
         {
-            var localContext = context as InlineRenderContext;
-            if (localContext == null)
+            if (!(context is InlineRenderContext localContext))
             {
                 throw new RenderContextIncorrectException();
             }
 
-            var inlineCollection = localContext.InlineCollection;
+            InlineCollection inlineCollection = localContext.InlineCollection;
 
-            var emoji = new Run
+            Run emoji = new Run
             {
                 FontFamily = EmojiFontFamily ?? DefaultEmojiFont,
                 Text = element.Text
@@ -58,13 +56,12 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
 
         private Run InternalRenderTextRun(TextRunInline element, IRenderContext context)
         {
-            var localContext = context as InlineRenderContext;
-            if (localContext == null)
+            if (!(context is InlineRenderContext localContext))
             {
                 throw new RenderContextIncorrectException();
             }
 
-            var inlineCollection = localContext.InlineCollection;
+            InlineCollection inlineCollection = localContext.InlineCollection;
 
             // Create the text run
             Run textRun = new Run
@@ -84,8 +81,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// <param name="context"> Persistent state. </param>
         protected override void RenderBoldRun(BoldTextInline element, IRenderContext context)
         {
-            var localContext = context as InlineRenderContext;
-            if (localContext == null)
+            if (!(context is InlineRenderContext localContext))
             {
                 throw new RenderContextIncorrectException();
             }
@@ -96,7 +92,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
                 FontWeight = FontWeights.Bold
             };
 
-            var childContext = new InlineRenderContext(boldSpan.Inlines, context)
+            InlineRenderContext childContext = new InlineRenderContext(boldSpan.Inlines, context)
             {
                 Parent = boldSpan,
                 WithinBold = true
@@ -116,8 +112,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// <param name="context"> Persistent state. </param>
         protected override void RenderMarkdownLink(MarkdownLinkInline element, IRenderContext context)
         {
-            var localContext = context as InlineRenderContext;
-            if (localContext == null)
+            if (!(context is InlineRenderContext localContext))
             {
                 throw new RenderContextIncorrectException();
             }
@@ -128,7 +123,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
             if (AllTextIsSuperscript(element) == false)
             {
                 // Regular ol' hyperlink.
-                var link = new Hyperlink();
+                Hyperlink link = new Hyperlink();
 
                 // Register the link
                 LinkRegister.RegisterNewHyperLink(link, element.Url);
@@ -137,7 +132,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
                 RemoveSuperscriptRuns(element, insertCaret: true);
 
                 // Render the children into the link inline.
-                var childContext = new InlineRenderContext(link.Inlines, context)
+                InlineRenderContext childContext = new InlineRenderContext(link.Inlines, context)
                 {
                     Parent = link,
                     WithinHyperlink = true
@@ -165,7 +160,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
                 // THE HACK IS ON!
 
                 // Create a fake superscript element.
-                var fakeSuperscript = new SuperscriptTextInline
+                SuperscriptTextInline fakeSuperscript = new SuperscriptTextInline
                 {
                     Inlines = new List<MarkdownInline>
                     {
@@ -188,18 +183,17 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// <param name="context"> Persistent state. </param>
         protected override void RenderHyperlink(HyperlinkInline element, IRenderContext context)
         {
-            var localContext = context as InlineRenderContext;
-            if (localContext == null)
+            if (!(context is InlineRenderContext localContext))
             {
                 throw new RenderContextIncorrectException();
             }
 
-            var link = new Hyperlink();
+            Hyperlink link = new Hyperlink();
 
             // Register the link
             LinkRegister.RegisterNewHyperLink(link, element.Url);
 
-            var brush = localContext.Foreground;
+            Brush brush = localContext.Foreground;
             if (LinkForeground != null && !localContext.OverrideForeground)
             {
                 brush = LinkForeground;
@@ -225,16 +219,15 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// <param name="context"> Persistent state. </param>
         protected override async void RenderImage(ImageInline element, IRenderContext context)
         {
-            var localContext = context as InlineRenderContext;
-            if (localContext == null)
+            if (!(context is InlineRenderContext localContext))
             {
                 throw new RenderContextIncorrectException();
             }
 
-            var inlineCollection = localContext.InlineCollection;
+            InlineCollection inlineCollection = localContext.InlineCollection;
 
-            var placeholder = InternalRenderTextRun(new TextRunInline { Text = element.Text, Type = MarkdownInlineType.TextRun }, context);
-            var resolvedImage = await ImageResolver.ResolveImageAsync(element.RenderUrl, element.Tooltip);
+            Run placeholder = InternalRenderTextRun(new TextRunInline { Text = element.Text, Type = MarkdownInlineType.TextRun }, context);
+            ImageSource resolvedImage = await ImageResolver.ResolveImageAsync(element.RenderUrl, element.Tooltip);
 
             // if image can not be resolved we have to return
             if (resolvedImage == null)
@@ -242,7 +235,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
                 return;
             }
 
-            var image = new Image
+            Image image = new Image
             {
                 Source = resolvedImage,
                 HorizontalAlignment = HorizontalAlignment.Left,
@@ -255,7 +248,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
                 Content = image
             };
 
-            var viewbox = new Viewbox
+            Viewbox viewbox = new Viewbox
             {
                 Child = hyperlinkButton,
                 StretchDirection = Windows.UI.Xaml.Controls.StretchDirection.DownOnly
@@ -263,14 +256,14 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
 
             viewbox.PointerWheelChanged += Preventative_PointerWheelChanged;
 
-            var scrollViewer = new ScrollViewer
+            ScrollViewer scrollViewer = new ScrollViewer
             {
                 Content = viewbox,
                 VerticalScrollMode = ScrollMode.Disabled,
                 VerticalScrollBarVisibility = ScrollBarVisibility.Disabled
             };
 
-            var imageContainer = new InlineUIContainer() { Child = scrollViewer };
+            InlineUIContainer imageContainer = new InlineUIContainer() { Child = scrollViewer };
 
             bool ishyperlink = false;
             if (element.RenderUrl != element.Url)
@@ -332,7 +325,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
             // Could fail because some containers like Hyperlink cannot have inlined images
             try
             {
-                var placeholderIndex = inlineCollection.IndexOf(placeholder);
+                int placeholderIndex = inlineCollection.IndexOf(placeholder);
                 inlineCollection.Remove(placeholder);
                 inlineCollection.Insert(placeholderIndex, imageContainer);
             }
@@ -349,8 +342,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// <param name="context"> Persistent state. </param>
         protected override void RenderItalicRun(ItalicTextInline element, IRenderContext context)
         {
-            var localContext = context as InlineRenderContext;
-            if (localContext == null)
+            if (!(context is InlineRenderContext localContext))
             {
                 throw new RenderContextIncorrectException();
             }
@@ -361,7 +353,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
                 FontStyle = FontStyle.Italic
             };
 
-            var childContext = new InlineRenderContext(italicSpan.Inlines, context)
+            InlineRenderContext childContext = new InlineRenderContext(italicSpan.Inlines, context)
             {
                 Parent = italicSpan,
                 WithinItalics = true
@@ -381,17 +373,17 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// <param name="context"> Persistent state. </param>
         protected override void RenderStrikethroughRun(StrikethroughTextInline element, IRenderContext context)
         {
-            var localContext = context as InlineRenderContext;
-            if (localContext == null)
+            if (!(context is InlineRenderContext localContext))
             {
                 throw new RenderContextIncorrectException();
             }
 
-            Span span = new Span();
+            Span span = new Span
+            {
+                TextDecorations = TextDecorations.Strikethrough
+            };
 
-            span.TextDecorations = TextDecorations.Strikethrough;
-
-            var childContext = new InlineRenderContext(span.Inlines, context)
+            InlineRenderContext childContext = new InlineRenderContext(span.Inlines, context)
             {
                 Parent = span
             };
@@ -410,8 +402,8 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// <param name="context"> Persistent state. </param>
         protected override void RenderSuperscriptRun(SuperscriptTextInline element, IRenderContext context)
         {
-            var localContext = context as InlineRenderContext;
-            var parent = localContext?.Parent as TextElement;
+            InlineRenderContext localContext = context as InlineRenderContext;
+            TextElement parent = localContext?.Parent as TextElement;
             if (localContext == null && parent == null)
             {
                 throw new RenderContextIncorrectException();
@@ -424,7 +416,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
                 return;
             }
 
-            var paragraph = new Paragraph
+            Paragraph paragraph = new Paragraph
             {
                 FontSize = parent.FontSize * 0.8,
                 FontFamily = parent.FontFamily,
@@ -432,23 +424,23 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
                 FontWeight = parent.FontWeight
             };
 
-            var childContext = new InlineRenderContext(paragraph.Inlines, context)
+            InlineRenderContext childContext = new InlineRenderContext(paragraph.Inlines, context)
             {
                 Parent = paragraph
             };
 
             RenderInlineChildren(element.Inlines, childContext);
 
-            var richTextBlock = CreateOrReuseRichTextBlock(new UIElementCollectionRenderContext(null, context));
+            RichTextBlock richTextBlock = CreateOrReuseRichTextBlock(new UIElementCollectionRenderContext(null, context));
             richTextBlock.Blocks.Add(paragraph);
 
-            var border = new Border
+            Border border = new Border
             {
                 Padding = new Thickness(0, 0, 0, paragraph.FontSize * 0.2),
                 Child = richTextBlock
             };
 
-            var inlineUIContainer = new InlineUIContainer
+            InlineUIContainer inlineUIContainer = new InlineUIContainer
             {
                 Child = border
             };
@@ -464,14 +456,14 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// <param name="context"> Persistent state. </param>
         protected override void RenderSubscriptRun(SubscriptTextInline element, IRenderContext context)
         {
-            var localContext = context as InlineRenderContext;
-            var parent = localContext?.Parent as TextElement;
+            InlineRenderContext localContext = context as InlineRenderContext;
+            TextElement parent = localContext?.Parent as TextElement;
             if (localContext == null && parent == null)
             {
                 throw new RenderContextIncorrectException();
             }
 
-            var paragraph = new Paragraph
+            Paragraph paragraph = new Paragraph
             {
                 FontSize = parent.FontSize * 0.7,
                 FontFamily = parent.FontFamily,
@@ -479,23 +471,23 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
                 FontWeight = parent.FontWeight
             };
 
-            var childContext = new InlineRenderContext(paragraph.Inlines, context)
+            InlineRenderContext childContext = new InlineRenderContext(paragraph.Inlines, context)
             {
                 Parent = paragraph
             };
 
             RenderInlineChildren(element.Inlines, childContext);
 
-            var richTextBlock = CreateOrReuseRichTextBlock(new UIElementCollectionRenderContext(null, context));
+            RichTextBlock richTextBlock = CreateOrReuseRichTextBlock(new UIElementCollectionRenderContext(null, context));
             richTextBlock.Blocks.Add(paragraph);
 
-            var border = new Border
+            Border border = new Border
             {
                 Margin = new Thickness(0, 0, 0, (-1) * (paragraph.FontSize * 0.6)),
                 Child = richTextBlock
             };
 
-            var inlineUIContainer = new InlineUIContainer
+            InlineUIContainer inlineUIContainer = new InlineUIContainer
             {
                 Child = border
             };
@@ -511,13 +503,12 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
         /// <param name="context"> Persistent state. </param>
         protected override void RenderCodeRun(CodeInline element, IRenderContext context)
         {
-            var localContext = context as InlineRenderContext;
-            if (localContext == null)
+            if (!(context is InlineRenderContext localContext))
             {
                 throw new RenderContextIncorrectException();
             }
 
-            var text = CollapseWhitespace(context, element.Text);
+            string text = CollapseWhitespace(context, element.Text);
 
             // Avoid a crash if the current inline is inside an hyperline.
             // This happens when using inline code blocks like [`SomeCode`](https://www.foo.bar).
@@ -547,7 +538,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
             }
             else
             {
-                var textBlock = CreateTextBlock(localContext);
+                TextBlock textBlock = CreateTextBlock(localContext);
                 textBlock.Text = text;
                 textBlock.FontFamily = InlineCodeFontFamily ?? FontFamily;
                 textBlock.Foreground = InlineCodeForeground ?? Foreground;
@@ -562,7 +553,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls.Markdown.Render
                     textBlock.FontWeight = FontWeights.Bold;
                 }
 
-                var inlineUIContainer = new InlineUIContainer
+                InlineUIContainer inlineUIContainer = new InlineUIContainer
                 {
                     Child = new Border
                     {

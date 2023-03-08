@@ -16,7 +16,7 @@ namespace Microsoft.Toolkit.Uwp.UI
     /// </summary>
     public static partial class ListViewExtensions
     {
-        private static Dictionary<IObservableVector<object>, Windows.UI.Xaml.Controls.ListViewBase> _itemsForList = new Dictionary<IObservableVector<object>, Windows.UI.Xaml.Controls.ListViewBase>();
+        private static readonly Dictionary<IObservableVector<object>, Windows.UI.Xaml.Controls.ListViewBase> _itemsForList = new Dictionary<IObservableVector<object>, Windows.UI.Xaml.Controls.ListViewBase>();
 
         /// <summary>
         /// Attached <see cref="DependencyProperty"/> for binding a <see cref="Brush"/> as an alternate background color to a <see cref="Windows.UI.Xaml.Controls.ListViewBase"/>
@@ -70,9 +70,7 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static void OnAlternateColorPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            Windows.UI.Xaml.Controls.ListViewBase listViewBase = sender as Windows.UI.Xaml.Controls.ListViewBase;
-
-            if (listViewBase == null)
+            if (!(sender is Windows.UI.Xaml.Controls.ListViewBase listViewBase))
             {
                 return;
             }
@@ -92,15 +90,13 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static void ColorContainerContentChanging(Windows.UI.Xaml.Controls.ListViewBase sender, ContainerContentChangingEventArgs args)
         {
-            var itemContainer = args.ItemContainer as Control;
+            Control itemContainer = args.ItemContainer;
             SetItemContainerBackground(sender, itemContainer, args.ItemIndex);
         }
 
         private static void OnAlternateItemTemplatePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            Windows.UI.Xaml.Controls.ListViewBase listViewBase = sender as Windows.UI.Xaml.Controls.ListViewBase;
-
-            if (listViewBase == null)
+            if (!(sender is Windows.UI.Xaml.Controls.ListViewBase listViewBase))
             {
                 return;
             }
@@ -117,23 +113,14 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static void ItemTemplateContainerContentChanging(Windows.UI.Xaml.Controls.ListViewBase sender, ContainerContentChangingEventArgs args)
         {
-            var itemContainer = args.ItemContainer as SelectorItem;
+            SelectorItem itemContainer = args.ItemContainer;
 
-            if (args.ItemIndex % 2 == 0)
-            {
-                itemContainer.ContentTemplate = GetAlternateItemTemplate(sender);
-            }
-            else
-            {
-                itemContainer.ContentTemplate = sender.ItemTemplate;
-            }
+            itemContainer.ContentTemplate = args.ItemIndex % 2 == 0 ? GetAlternateItemTemplate(sender) : sender.ItemTemplate;
         }
 
         private static void OnItemContainerStretchDirectionPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            Windows.UI.Xaml.Controls.ListViewBase listViewBase = sender as Windows.UI.Xaml.Controls.ListViewBase;
-
-            if (listViewBase == null)
+            if (!(sender is Windows.UI.Xaml.Controls.ListViewBase listViewBase))
             {
                 return;
             }
@@ -150,8 +137,8 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static void ItemContainerStretchDirectionChanging(Windows.UI.Xaml.Controls.ListViewBase sender, ContainerContentChangingEventArgs args)
         {
-            var itemContainer = args.ItemContainer as SelectorItem;
-            var stretchDirection = GetItemContainerStretchDirection(sender);
+            SelectorItem itemContainer = args.ItemContainer;
+            ItemContainerStretchDirection stretchDirection = GetItemContainerStretchDirection(sender);
 
             if (stretchDirection == ItemContainerStretchDirection.Vertical || stretchDirection == ItemContainerStretchDirection.Both)
             {
@@ -197,8 +184,7 @@ namespace Microsoft.Toolkit.Uwp.UI
                 int index = (int)args.Index;
                 for (int i = index; i < sender.Count; i++)
                 {
-                    var itemContainer = listViewBase.ContainerFromIndex(i) as Control;
-                    if (itemContainer != null)
+                    if (listViewBase.ContainerFromIndex(i) is Control itemContainer)
                     {
                         SetItemContainerBackground(listViewBase, itemContainer, i);
                     }
@@ -208,14 +194,7 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static void SetItemContainerBackground(Windows.UI.Xaml.Controls.ListViewBase sender, Control itemContainer, int itemIndex)
         {
-            if (itemIndex % 2 == 0)
-            {
-                itemContainer.Background = GetAlternateColor(sender);
-            }
-            else
-            {
-                itemContainer.Background = null;
-            }
+            itemContainer.Background = itemIndex % 2 == 0 ? GetAlternateColor(sender) : null;
         }
     }
 }

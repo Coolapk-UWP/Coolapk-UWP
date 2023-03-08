@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections;
-using Windows.UI.Xaml.Shapes;
 
 namespace Microsoft.Toolkit.Uwp.UI.Controls
 {

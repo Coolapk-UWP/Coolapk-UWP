@@ -36,8 +36,8 @@ namespace Microsoft.Toolkit.Uwp.Helpers
         {
             if (_frameSourceGroups == null)
             {
-                var videoDevices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
-                var groups = await MediaFrameSourceGroup.FindAllAsync();
+                DeviceInformationCollection videoDevices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
+                IReadOnlyList<MediaFrameSourceGroup> groups = await MediaFrameSourceGroup.FindAllAsync();
 
                 // Filter out color video preview and video record type sources and remove duplicates video devices.
                 _frameSourceGroups = groups.Where(g => g.SourceInfos.Any(s => s.SourceKind == MediaFrameSourceKind.Color &&
@@ -194,7 +194,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 _mediaCapture = new MediaCapture();
             }
 
-            var settings = new MediaCaptureInitializationSettings()
+            MediaCaptureInitializationSettings settings = new MediaCaptureInitializationSettings()
             {
                 SourceGroup = _group,
                 MemoryPreference = MediaCaptureMemoryPreference.Cpu,
@@ -233,7 +233,7 @@ namespace Microsoft.Toolkit.Uwp.Helpers
                 }
 
                 // Set the format with the highest resolution available by default
-                var defaultFormat = FrameFormatsAvailable.Last();
+                MediaFrameFormat defaultFormat = FrameFormatsAvailable.Last();
                 await PreviewFrameSource.SetFormatAsync(defaultFormat);
             }
             catch (UnauthorizedAccessException)
@@ -289,12 +289,12 @@ namespace Microsoft.Toolkit.Uwp.Helpers
             // This can return null if there is no such frame, or if the reader is not in the
             // "Started" state. The latter can occur if a FrameArrived event was in flight
             // when the reader was stopped.
-            var frame = sender.TryAcquireLatestFrame();
+            MediaFrameReference frame = sender.TryAcquireLatestFrame();
             if (frame != null)
             {
-                var vmf = frame.VideoMediaFrame;
+                VideoMediaFrame vmf = frame.VideoMediaFrame;
                 EventHandler<FrameEventArgs> handler = FrameArrived;
-                var frameArgs = new FrameEventArgs() { VideoFrame = vmf.GetVideoFrame() };
+                FrameEventArgs frameArgs = new FrameEventArgs() { VideoFrame = vmf.GetVideoFrame() };
                 handler?.Invoke(sender, frameArgs);
             }
         }

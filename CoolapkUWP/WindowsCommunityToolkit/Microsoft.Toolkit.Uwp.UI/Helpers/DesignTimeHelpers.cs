@@ -11,9 +11,9 @@ namespace Microsoft.Toolkit.Uwp.UI
     /// </summary>
     public static class DesignTimeHelpers
     {
-        private static Lazy<bool> designModeEnabled = new Lazy<bool>(InitializeDesignerMode);
+        private static readonly Lazy<bool> designModeEnabled = new Lazy<bool>(InitializeDesignerMode);
 
-        private static Lazy<bool> designMode2Enabled = new Lazy<bool>(InitializeDesignMode2);
+        private static readonly Lazy<bool> designMode2Enabled = new Lazy<bool>(InitializeDesignMode2);
 
         /// <summary>
         /// Gets a value indicating whether app is running in the Legacy Designer

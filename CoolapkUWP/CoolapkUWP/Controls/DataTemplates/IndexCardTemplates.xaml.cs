@@ -100,7 +100,7 @@ namespace CoolapkUWP.Controls.DataTemplates
                 //    string r = SettingsHelper.Get<string>(SettingsHelper.Uid);
                 //    if (r != null) { UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModel(r, ListType.UserFeed, "questionAndAnswer")); }
                 //}
-                else { UIHelper.OpenLinkAsync(strings); }
+                else { _ = UIHelper.OpenLinkAsync(strings); }
             }
             else if (tag is IHasTitle u)
             {
@@ -140,7 +140,7 @@ namespace CoolapkUWP.Controls.DataTemplates
                 //    string r = SettingsHelper.Get<string>(SettingsHelper.Uid);
                 //    if (r != null) { UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModel(r, ListType.UserFeed, "questionAndAnswer")); }
                 //}
-                else { UIHelper.OpenLinkAsync(str); }
+                else { _ = UIHelper.OpenLinkAsync(str); }
             }
         }
     }

@@ -2,9 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace Microsoft.Toolkit.Uwp.UI.Controls
 {
@@ -31,7 +29,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Controls
 
         private static void IsLoadingPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var control = d as Loading;
+            Loading control = d as Loading;
             if (control._presenter == null)
             {
                 control._presenter = control.GetTemplateChild("ContentGrid") as FrameworkElement;

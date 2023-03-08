@@ -64,7 +64,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>Rotated Matrix.</returns>
         public static Matrix Rotate(this Matrix matrix, double angle)
         {
-            return matrix.Multiply(CreateRotationRadians((angle % 360) * (Math.PI / 180.0)));
+            return matrix.Multiply(CreateRotationRadians(angle % 360 * (Math.PI / 180.0)));
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>Rotated Matrix.</returns>
         public static Matrix RotateAt(this Matrix matrix, double angle, double centerX, double centerY)
         {
-            return matrix.Multiply(CreateRotationRadians((angle % 360) * (Math.PI / 180.0), centerX, centerY));
+            return matrix.Multiply(CreateRotationRadians(angle % 360 * (Math.PI / 180.0), centerX, centerY));
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Microsoft.Toolkit.Uwp.UI
         /// <returns>Skewed Matrix.</returns>
         public static Matrix Skew(this Matrix matrix, double skewX, double skewY)
         {
-            return matrix.Multiply(CreateSkewRadians((skewX % 360) * (Math.PI / 180.0), (skewY % 360) * (Math.PI / 180.0)));
+            return matrix.Multiply(CreateSkewRadians(skewX % 360 * (Math.PI / 180.0), skewY % 360 * (Math.PI / 180.0)));
         }
 
         /// <summary>
@@ -137,10 +137,10 @@ namespace Microsoft.Toolkit.Uwp.UI
 
         private static Matrix CreateRotationRadians(double angle, double centerX, double centerY)
         {
-            var sin = Math.Sin(angle);
-            var cos = Math.Cos(angle);
-            var dx = (centerX * (1.0 - cos)) + (centerY * sin);
-            var dy = (centerY * (1.0 - cos)) - (centerX * sin);
+            double sin = Math.Sin(angle);
+            double cos = Math.Cos(angle);
+            double dx = (centerX * (1.0 - cos)) + (centerY * sin);
+            double dy = (centerY * (1.0 - cos)) - (centerX * sin);
 
             return new Matrix(cos, sin, -sin, cos, dx, dy);
         }

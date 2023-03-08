@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Data;
 
 namespace Microsoft.Toolkit.Uwp.UI.Converters
 {

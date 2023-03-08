@@ -9,7 +9,7 @@ namespace CoolapkUWP.Helpers.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var result= value.ToString().CSStoString();
+            string result = value.ToString().CSStoString();
             return targetType.IsInstanceOfType(result) ? result : XamlBindingHelper.ConvertValue(targetType, result);
         }
 

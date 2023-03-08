@@ -23,15 +23,7 @@ namespace Microsoft.Toolkit.Uwp.UI.Converters
         /// <returns>The formatted string.</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var formattableValue = value as IFormattable;
-            var format = parameter as string;
-
-            if (formattableValue == null || format == null)
-            {
-                return value;
-            }
-
-            return formattableValue.ToString(format, null);
+            return !(value is IFormattable formattableValue) || !(parameter is string format) ? value : formattableValue.ToString(format, null);
         }
 
         /// <summary>

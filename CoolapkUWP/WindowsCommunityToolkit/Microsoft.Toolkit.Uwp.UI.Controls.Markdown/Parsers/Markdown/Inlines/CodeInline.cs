@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 using System;
 using System.Collections.Generic;
-using Microsoft.Toolkit.Parsers.Markdown.Helpers;
 
 namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
 {
@@ -90,8 +90,10 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
             }
 
             // We found something!
-            var result = new CodeInline();
-            result.Text = markdown.Substring(innerStart, innerEnd - innerStart).Trim(' ', '\t', '\r', '\n');
+            CodeInline result = new CodeInline
+            {
+                Text = markdown.Substring(innerStart, innerEnd - innerStart).Trim(' ', '\t', '\r', '\n')
+            };
             return new InlineParseResult(result, start, end);
         }
 
@@ -101,12 +103,7 @@ namespace Microsoft.Toolkit.Parsers.Markdown.Inlines
         /// <returns> The textual representation of this object. </returns>
         public override string ToString()
         {
-            if (Text == null)
-            {
-                return base.ToString();
-            }
-
-            return "`" + Text + "`";
+            return Text == null ? base.ToString() : "`" + Text + "`";
         }
     }
 }

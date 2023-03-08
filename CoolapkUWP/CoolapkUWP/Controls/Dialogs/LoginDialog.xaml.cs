@@ -1,6 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Exceptions;
-using MetroLog.WinRT;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Net.Http;

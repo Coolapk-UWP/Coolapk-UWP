@@ -2,8 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Collections.Generic;
 using ColorCode.Common;
+using System.Collections.Generic;
 
 namespace ColorCode.Compilation.Languages
 {
@@ -78,7 +78,7 @@ namespace ColorCode.Compilation.Languages
             {
                 case "js":
                     return true;
-                
+
                 case "json":
                     return true;
 
