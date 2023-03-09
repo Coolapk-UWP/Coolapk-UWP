@@ -159,6 +159,9 @@
     <Compile Include="Controls\DataTemplates\PicTemplates.xaml.cs">
       <DependentUpon>PicTemplates.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DataTemplates\ProfileCardTemplates.xaml.cs">
+      <DependentUpon>ProfileCardTemplates.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DataTemplates\RelationRowsTemplates.xaml.cs">
       <DependentUpon>RelationRowsTemplates.xaml</DependentUpon>
     </Compile>
@@ -999,6 +1002,10 @@
     <Page Include="Controls\DataTemplates\PicTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DataTemplates\ProfileCardTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\DataTemplates\RelationRowsTemplates.xaml">
       <SubType>Designer</SubType>

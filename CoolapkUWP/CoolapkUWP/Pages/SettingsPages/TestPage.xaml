@@ -9,7 +9,7 @@
     xmlns:globalization="using:System.Globalization"
     xmlns:helper="using:CoolapkUWP.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    NavigationCacheMode="Required"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>

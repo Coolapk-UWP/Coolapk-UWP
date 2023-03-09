@@ -28,8 +28,8 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 Provider = ViewModel;
                 DataContext = Provider;
-                Provider.OnLoadMoreStarted += UIHelper.ShowProgressBar;
-                Provider.OnLoadMoreCompleted += UIHelper.HideProgressBar;
+                Provider.LoadMoreStarted += UIHelper.ShowProgressBar;
+                Provider.LoadMoreCompleted += UIHelper.HideProgressBar;
                 await Refresh(true);
             }
         }
@@ -37,8 +37,8 @@ namespace CoolapkUWP.Pages.FeedPages
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
-            Provider.OnLoadMoreStarted -= UIHelper.ShowProgressBar;
-            Provider.OnLoadMoreCompleted -= UIHelper.HideProgressBar;
+            Provider.LoadMoreStarted -= UIHelper.ShowProgressBar;
+            Provider.LoadMoreCompleted -= UIHelper.HideProgressBar;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

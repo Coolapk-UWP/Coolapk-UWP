@@ -1,0 +1,272 @@
+﻿<ResourceDictionary
+    x:Class="CoolapkUWP.Controls.DataTemplates.ProfileCardTemplates"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CoolapkUWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:Microsoft.UI.Xaml.Media"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
+    mc:Ignorable="d">
+
+    <templates:ProfileItemTemplateSelector
+        x:Key="ProfileItemTemplateSelector"
+        Empty="{StaticResource Empty}"
+        History="{StaticResource HistoryTemplate}"
+        IconLink="{StaticResource IconLinkTemplate}"
+        TextLink="{StaticResource TextLinkTemplate}" />
+
+    <DataTemplate x:Key="Empty" />
+
+    <!--  一级卡片  -->
+
+    <DataTemplate x:Key="TextLinkListCardTemplate">
+        <controls:StackPanel Spacing="12">
+            <Grid
+                x:Name="TitleGrid"
+                HorizontalAlignment="Stretch"
+                Background="{ThemeResource SystemControlTransparentBrush}"
+                Tag="{Binding}"
+                Visibility="{Binding ShowTitle, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    x:Name="TitleText"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    Text="{Binding Title}"
+                    TextTrimming="CharacterEllipsis"
+                    Visibility="{Binding Title, Converter={StaticResource StringVisibilityConverter}}" />
+                <Button
+                    Grid.Column="1"
+                    Padding="4,2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Click="Button_Click"
+                    Content="查看更多"
+                    FontSize="12"
+                    Tag="{Binding}"
+                    Visibility="{Binding Url, Converter={StaticResource StringVisibilityConverter}}" />
+            </Grid>
+            <Border
+                Background="{ThemeResource ButtonBackground}"
+                BorderBrush="{ThemeResource ButtonBorderBrush}"
+                BorderThickness="{ThemeResource ButtonBorderThemeThickness}"
+                CornerRadius="{ThemeResource ControlCornerRadius}"
+                Visibility="{Binding Entities, Converter={StaticResource CollectionVisibilityConverter}}">
+                <muxc:ItemsRepeater
+                    HorizontalAlignment="Stretch"
+                    ItemTemplate="{StaticResource ProfileItemTemplateSelector}"
+                    ItemsSource="{Binding Entities}" />
+            </Border>
+            <TextBlock
+                Margin="12,0"
+                VerticalAlignment="Center"
+                FontSize="14"
+                Text="{Binding Description}"
+                Visibility="{Binding Description, Converter={StaticResource BoolToVisibilityConverter}}" />
+        </controls:StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ImageTextScrollCardTemplate">
+        <controls:StackPanel Spacing="12">
+            <Grid
+                x:Name="TitleGrid"
+                HorizontalAlignment="Stretch"
+                Background="{ThemeResource SystemControlTransparentBrush}"
+                Tag="{Binding}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    x:Name="TitleText"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    Text="{Binding Title}"
+                    TextTrimming="CharacterEllipsis"
+                    Visibility="{Binding Title, Converter={StaticResource StringVisibilityConverter}}" />
+                <Button
+                    Grid.Column="1"
+                    Padding="4,2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Click="Button_Click"
+                    Content="查看更多"
+                    FontSize="12"
+                    Tag="{Binding}"
+                    Visibility="{Binding Url, Converter={StaticResource StringVisibilityConverter}}" />
+            </Grid>
+            <muxc:ItemsRepeaterScrollHost>
+                <ScrollViewer
+                    Margin="0,0,0,-12"
+                    Padding="0,0,0,12"
+                    HorizontalScrollBarVisibility="Auto"
+                    HorizontalScrollMode="Auto"
+                    VerticalScrollMode="Disabled">
+                    <muxc:ItemsRepeater ItemTemplate="{StaticResource ProfileItemTemplateSelector}" ItemsSource="{Binding Entities}">
+                        <muxc:ItemsRepeater.Layout>
+                            <muxc:StackLayout Orientation="Horizontal" Spacing="6" />
+                        </muxc:ItemsRepeater.Layout>
+                    </muxc:ItemsRepeater>
+                </ScrollViewer>
+            </muxc:ItemsRepeaterScrollHost>
+        </controls:StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="TitleCardTemplate">
+        <Grid
+            x:Name="TitleGrid"
+            HorizontalAlignment="Stretch"
+            Background="{ThemeResource SystemControlTransparentBrush}"
+            Tag="{Binding}"
+            Visibility="{Binding ShowTitle, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                x:Name="TitleText"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                FontSize="14"
+                FontWeight="SemiBold"
+                Text="{Binding Title}"
+                TextTrimming="CharacterEllipsis"
+                Visibility="{Binding Title, Converter={StaticResource StringVisibilityConverter}}" />
+            <Button
+                Grid.Column="1"
+                Padding="4,2"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Click="Button_Click"
+                Content="查看更多"
+                FontSize="12"
+                Tag="{Binding}"
+                Visibility="{Binding Url, Converter={StaticResource StringVisibilityConverter}}" />
+        </Grid>
+    </DataTemplate>
+
+    <!--  二级卡片  -->
+
+    <DataTemplate x:Key="HistoryTemplate">
+        <Button
+            Padding="0,8"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            Click="Button_Click"
+            Style="{StaticResource TransparentButtonStyle}"
+            Tag="{Binding Url}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="56" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border
+                    Width="40"
+                    Height="40"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    CornerRadius="{ThemeResource OverlayCornerRadius}">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                    </Border.Background>
+                </Border>
+                <Grid
+                    Grid.Column="1"
+                    Margin="0,0,8,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        VerticalAlignment="Center"
+                        Text="{Binding Title}"
+                        Visibility="{Binding Title, Converter={StaticResource StringVisibilityConverter}}" />
+                    <controls:TextBlockEx
+                        Grid.Row="1"
+                        VerticalAlignment="Center"
+                        FontSize="13"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        MaxLines="1"
+                        Text="{Binding Description}"
+                        Visibility="{Binding Description, Converter={StaticResource StringVisibilityConverter}}" />
+                </Grid>
+            </Grid>
+        </Button>
+    </DataTemplate>
+
+    <DataTemplate x:Key="IconLinkTemplate">
+        <Button
+            Width="86"
+            Padding="4"
+            Click="Button_Click"
+            Tag="{Binding Url}">
+            <StackPanel CornerRadius="{ThemeResource ControlCornerRadius}">
+                <Border
+                    Width="36"
+                    Height="36"
+                    Margin="4"
+                    CornerRadius="{ThemeResource ControlCornerRadius}">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                    </Border.Background>
+                </Border>
+                <TextBlock
+                    HorizontalAlignment="Stretch"
+                    Text="{Binding Title}"
+                    TextAlignment="Center"
+                    TextTrimming="CharacterEllipsis" />
+                <TextBlock
+                    x:Name="SubTitle"
+                    HorizontalAlignment="Stretch"
+                    FontSize="12"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Text="{Binding SubTitle}"
+                    TextAlignment="Center"
+                    TextTrimming="CharacterEllipsis"
+                    Visibility="{Binding SubTitle, Converter={StaticResource StringVisibilityConverter}}" />
+            </StackPanel>
+        </Button>
+    </DataTemplate>
+
+    <DataTemplate x:Key="TextLinkTemplate">
+        <Button
+            Padding="8"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            Click="Button_Click"
+            Style="{StaticResource TransparentButtonStyle}"
+            Tag="{Binding Url}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image
+                    Width="20"
+                    Height="20"
+                    VerticalAlignment="Center"
+                    Source="{Binding Pic.Pic, Mode=OneWay}" />
+                <TextBlock
+                    Grid.Column="2"
+                    Margin="0,0,0,2"
+                    VerticalAlignment="Center"
+                    Text="{Binding Title}"
+                    TextTrimming="CharacterEllipsis" />
+            </Grid>
+        </Button>
+    </DataTemplate>
+
+</ResourceDictionary>

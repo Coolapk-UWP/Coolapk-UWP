@@ -11,188 +11,212 @@
     xmlns:feedpages="using:CoolapkUWP.ViewModels.FeedPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     d:DataContext="{d:DesignInstance Type=feedpages:ProfileFlyoutViewModel}"
     Loaded="UserControl_Loaded"
     mc:Ignorable="d">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <muxc:PersonPicture
-                Width="49"
-                Height="49"
-                Margin="12"
-                DisplayName="{Binding ProfileDetail.UserName}"
-                ProfilePicture="{Binding ProfileDetail.UserAvatar.Pic, Mode=OneWay}" />
-            <Grid Grid.Column="1" Margin="0,12,12,12">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock FontWeight="SemiBold" Text="{Binding ProfileDetail.UserName, FallbackValue='登录'}" />
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock
-                        Grid.Column="0"
-                        HorizontalAlignment="Left"
-                        FontSize="12"
-                        FontStyle="Italic"
-                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                        Text="{Binding ProfileDetail.LevelNum, Converter={StaticResource StringFormatConverter}, ConverterParameter='Lv.{0}', FallbackValue='Lv.0'}" />
-                    <TextBlock
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        FontSize="12"
-                        Text="{Binding ProfileDetail.NextLevelNowExperience}" />
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <templates:ProfileCardTemplates FlyoutBase="{x:Bind FlyoutBase, Mode=OneWay}" />
+            </ResourceDictionary.MergedDictionaries>
+            <templates:ProfileCardTemplateSelector
+                x:Key="ProfileCardTemplateSelector"
+                ImageTextScrollCard="{StaticResource ImageTextScrollCardTemplate}"
+                Others="{StaticResource Empty}"
+                TextLinkList="{StaticResource TextLinkListCardTemplate}"
+                TitleCard="{StaticResource TitleCardTemplate}" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ScrollViewer
+        HorizontalScrollBarVisibility="Auto"
+        HorizontalScrollMode="Auto"
+        VerticalScrollBarVisibility="Auto"
+        VerticalScrollMode="Auto">
+        <controls:StackPanel Padding="12" Spacing="12">
+            <controls:StackPanel.ChildrenTransitions>
+                <TransitionCollection>
+                    <ReorderThemeTransition />
+                </TransitionCollection>
+            </controls:StackPanel.ChildrenTransitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="12" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="12" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <muxc:PersonPicture
+                    Width="49"
+                    Height="49"
+                    DisplayName="{Binding ProfileDetail.UserName}"
+                    DoubleTapped="Grid_DoubleTapped"
+                    IsDoubleTapEnabled="True"
+                    ProfilePicture="{Binding ProfileDetail.UserAvatar.Pic, Mode=OneWay}" />
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock FontWeight="SemiBold" Text="{Binding ProfileDetail.UserName, FallbackValue='登录'}" />
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            FontSize="12"
+                            FontStyle="Italic"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                            Text="{Binding ProfileDetail.LevelNum, Converter={StaticResource StringFormatConverter}, ConverterParameter='Lv.{0}', FallbackValue='Lv.0'}" />
+                        <TextBlock
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            FontSize="12"
+                            Text="{Binding ProfileDetail.NextLevelNowExperience}" />
+                    </Grid>
+                    <muxc:ProgressBar
+                        x:Name="NextLevelPercentage"
+                        Grid.Row="2"
+                        MinWidth="160"
+                        Margin="0,4"
+                        Value="{Binding ProfileDetail.NextLevelPercentage}" />
                 </Grid>
-                <muxc:ProgressBar
-                    x:Name="NextLevelPercentage"
-                    Grid.Row="2"
-                    Width="160"
-                    Margin="0,4"
-                    Value="{Binding ProfileDetail.NextLevelPercentage}" />
+                <Button
+                    x:Name="QRCodeButton"
+                    Grid.Column="4"
+                    Margin="-8,4"
+                    contract5NotPresent:Content="&#xE72D;"
+                    contract5Present:Content="&#xED14;"
+                    Style="{StaticResource NavigationIconButtonNormalStyle}"
+                    Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Button.Flyout>
+                        <Flyout>
+                            <Flyout.FlyoutPresenterStyle>
+                                <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
+                                    <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
+                                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+                                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                                </Style>
+                            </Flyout.FlyoutPresenterStyle>
+                            <controls:ShowQRCodeControl QRCodeText="{Binding ProfileDetail.Url}" />
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+                <Button
+                    x:Name="LoginButton"
+                    Grid.Column="4"
+                    Margin="-8,4"
+                    Click="Button_Click"
+                    Content="&#xE78B;"
+                    Style="{StaticResource NavigationIconButtonNormalStyle}"
+                    Tag="LoginButton"
+                    Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
+            </Grid>
+            <Grid x:Name="ButtonGrid" Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    contract7NotPresent:Loaded="Button_Loaded"
+                    contract7Present:CornerRadius="{Binding Source={ThemeResource ControlCornerRadius}, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
+                    Click="Button_Click"
+                    Tag="FeedsButton">
+                    <StackPanel>
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Text="{Binding ProfileDetail.FeedNum, FallbackValue='0'}" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="动态" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    contract7NotPresent:Loaded="Button_Loaded"
+                    contract7Present:CornerRadius="0"
+                    BorderThickness="0,1"
+                    Click="Button_Click"
+                    Tag="FollowsButton">
+                    <StackPanel>
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Text="{Binding ProfileDetail.FollowNum, FallbackValue='0'}" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="关注" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Grid.Column="2"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    contract7NotPresent:Loaded="Button_Loaded"
+                    contract7Present:CornerRadius="{Binding Source={ThemeResource ControlCornerRadius}, Converter={StaticResource RightCornerRadiusFilterConverter}}"
+                    Click="Button_Click"
+                    Tag="FansButton">
+                    <StackPanel>
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Text="{Binding ProfileDetail.FansNum, FallbackValue='0'}" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="粉丝" />
+                    </StackPanel>
+                </Button>
             </Grid>
             <Button
-                x:Name="QRCodeButton"
-                Grid.Column="2"
-                Margin="-8,4,4,4"
-                contract5NotPresent:Content="&#xE72D;"
-                contract5Present:Content="&#xED14;"
-                Style="{StaticResource NavigationIconButtonNormalStyle}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Click="Button_Click"
+                Tag="CreateFeedButton"
                 Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}}">
-                <Button.Flyout>
-                    <Flyout>
-                        <Flyout.FlyoutPresenterStyle>
-                            <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
-                                <Setter Property="Padding" Value="0" />
-                                <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
-                                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
-                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
-                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-                            </Style>
-                        </Flyout.FlyoutPresenterStyle>
-                        <controls:ShowQRCodeControl QRCodeText="{Binding ProfileDetail.Url}" />
-                    </Flyout>
-                </Button.Flyout>
+                <controls:StackPanel
+                    Margin="8,0"
+                    Orientation="Horizontal"
+                    Spacing="8">
+                    <FontIcon
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        FontSize="16"
+                        Glyph="&#xE932;" />
+                    <TextBlock
+                        Margin="0,0,0,2"
+                        FontSize="16"
+                        Text="写动态" />
+                </controls:StackPanel>
             </Button>
-            <Button
-                x:Name="LoginButton"
-                Grid.Column="2"
-                Margin="-8,4,4,4"
-                Click="Button_Click"
-                Content="&#xE78B;"
-                Style="{StaticResource NavigationIconButtonNormalStyle}"
-                Tag="LoginButton"
-                Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
-        </Grid>
-        <Grid
-            x:Name="ButtonGrid"
-            Grid.Row="1"
-            Margin="12,0,12,12"
-            Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Button
-                Grid.Column="0"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                contract7NotPresent:Loaded="Button_Loaded"
-                contract7Present:CornerRadius="{Binding Source={ThemeResource ControlCornerRadius}, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
-                Click="Button_Click"
-                Tag="FeedsButton">
-                <StackPanel>
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        FontSize="20"
-                        FontWeight="Bold"
-                        Text="{Binding ProfileDetail.FeedNum, FallbackValue='0'}" />
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        FontSize="12"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        Text="动态" />
-                </StackPanel>
-            </Button>
-            <Button
-                Grid.Column="1"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                contract7NotPresent:Loaded="Button_Loaded"
-                contract7Present:CornerRadius="0"
-                BorderThickness="0,1"
-                Click="Button_Click"
-                Tag="FollowsButton">
-                <StackPanel>
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        FontSize="20"
-                        FontWeight="Bold"
-                        Text="{Binding ProfileDetail.FollowNum, FallbackValue='0'}" />
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        FontSize="12"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        Text="关注" />
-                </StackPanel>
-            </Button>
-            <Button
-                Grid.Column="2"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                contract7NotPresent:Loaded="Button_Loaded"
-                contract7Present:CornerRadius="{Binding Source={ThemeResource ControlCornerRadius}, Converter={StaticResource RightCornerRadiusFilterConverter}}"
-                Click="Button_Click"
-                Tag="FansButton">
-                <StackPanel>
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        FontSize="20"
-                        FontWeight="Bold"
-                        Text="{Binding ProfileDetail.FansNum, FallbackValue='0'}" />
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        FontSize="12"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                        Text="粉丝" />
-                </StackPanel>
-            </Button>
-        </Grid>
-        <Button
-            Grid.Row="2"
-            Margin="12,0,12,12"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Click="Button_Click"
-            Tag="CreateFeedButton"
-            Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}}">
-            <controls:StackPanel
-                Margin="8,0"
-                Orientation="Horizontal"
-                Spacing="8">
-                <FontIcon
-                    FontFamily="{StaticResource SymbolThemeFontFamily}"
-                    FontSize="16"
-                    Glyph="&#xE932;" />
-                <TextBlock
-                    Margin="0,0,0,2"
-                    FontSize="16"
-                    Text="写动态" />
-            </controls:StackPanel>
-        </Button>
-    </Grid>
+            <Border MaxWidth="300" Visibility="{Binding Any, Converter={StaticResource BoolToVisibilityConverter}}">
+                <muxc:ItemsRepeater ItemTemplate="{StaticResource ProfileCardTemplateSelector}" ItemsSource="{Binding}">
+                    <muxc:ItemsRepeater.Layout>
+                        <muxc:StackLayout Orientation="Vertical" Spacing="12" />
+                    </muxc:ItemsRepeater.Layout>
+                </muxc:ItemsRepeater>
+            </Border>
+        </controls:StackPanel>
+    </ScrollViewer>
 </UserControl>

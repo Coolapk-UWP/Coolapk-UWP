@@ -17,6 +17,7 @@ namespace CoolapkUWP.Pages.FeedPages
     {
         private static int PivotIndex = 0;
 
+        private bool isLoaded;
         private Action Refresh;
 
         public CirclePage() => InitializeComponent();
@@ -29,8 +30,12 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void Pivot_Loaded(object sender, RoutedEventArgs e)
         {
-            Pivot.ItemsSource = GetMainItems();
-            Pivot.SelectedIndex = PivotIndex;
+            if (!isLoaded)
+            {
+                Pivot.ItemsSource = GetMainItems();
+                Pivot.SelectedIndex = PivotIndex;
+                isLoaded = true;
+            }
         }
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)

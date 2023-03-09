@@ -33,7 +33,10 @@ namespace CoolapkUWP.Pages.BrowserPages
             {
                 Provider = ViewModel;
                 DataContext = Provider;
-                WebView.Navigate(Provider.Uri);
+                if (Provider.Uri != null)
+                {
+                    WebView.Navigate(Provider.Uri);
+                }
             }
         }
 

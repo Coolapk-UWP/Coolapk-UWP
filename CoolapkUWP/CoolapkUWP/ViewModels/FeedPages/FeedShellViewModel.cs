@@ -104,8 +104,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 if (ReplyItemSourse == null || ReplyItemSourse.ID != ID)
                 {
                     ReplyItemSourse = new ReplyItemSourse(ID);
-                    ReplyItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
-                    ReplyItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
+                    ReplyItemSourse.LoadMoreStarted += UIHelper.ShowProgressBar;
+                    ReplyItemSourse.LoadMoreCompleted += UIHelper.HideProgressBar;
                 }
                 ItemSource.Add(new ShyHeaderItem
                 {
@@ -115,8 +115,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 if (LikeItemSourse == null || LikeItemSourse.ID != ID)
                 {
                     LikeItemSourse = new LikeItemSourse(ID);
-                    LikeItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
-                    LikeItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
+                    LikeItemSourse.LoadMoreStarted += UIHelper.ShowProgressBar;
+                    LikeItemSourse.LoadMoreCompleted += UIHelper.HideProgressBar;
                 }
                 ItemSource.Add(new ShyHeaderItem
                 {
@@ -126,8 +126,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 if (ShareItemSourse == null || ShareItemSourse.ID != ID)
                 {
                     ShareItemSourse = new ShareItemSourse(ID, FeedDetail.FeedType);
-                    ShareItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
-                    ShareItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
+                    ShareItemSourse.LoadMoreStarted += UIHelper.ShowProgressBar;
+                    ShareItemSourse.LoadMoreCompleted += UIHelper.HideProgressBar;
                 }
                 ItemSource.Add(new ShyHeaderItem
                 {
@@ -158,8 +158,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 if (ReplyItemSourse == null || ReplyItemSourse.ID != ID)
                 {
                     ReplyItemSourse = new QuestionItemSourse(ID, "reply");
-                    ReplyItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
-                    ReplyItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
+                    ReplyItemSourse.LoadMoreStarted += UIHelper.ShowProgressBar;
+                    ReplyItemSourse.LoadMoreCompleted += UIHelper.HideProgressBar;
                 }
                 ItemSource.Add(new ShyHeaderItem
                 {
@@ -169,8 +169,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 if (LikeItemSourse == null || LikeItemSourse.ID != ID)
                 {
                     LikeItemSourse = new QuestionItemSourse(ID, "like");
-                    LikeItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
-                    LikeItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
+                    LikeItemSourse.LoadMoreStarted += UIHelper.ShowProgressBar;
+                    LikeItemSourse.LoadMoreCompleted += UIHelper.HideProgressBar;
                 }
                 ItemSource.Add(new ShyHeaderItem
                 {
@@ -180,8 +180,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 if (DatelineItemSourse == null || DatelineItemSourse.ID != ID)
                 {
                     DatelineItemSourse = new QuestionItemSourse(ID, "dateline");
-                    DatelineItemSourse.OnLoadMoreStarted += UIHelper.ShowProgressBar;
-                    DatelineItemSourse.OnLoadMoreCompleted += UIHelper.HideProgressBar;
+                    DatelineItemSourse.LoadMoreStarted += UIHelper.ShowProgressBar;
+                    DatelineItemSourse.LoadMoreCompleted += UIHelper.HideProgressBar;
                 }
                 ItemSource.Add(new ShyHeaderItem
                 {

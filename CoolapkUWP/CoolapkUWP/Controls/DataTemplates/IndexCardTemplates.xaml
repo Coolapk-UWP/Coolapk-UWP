@@ -15,7 +15,7 @@
     mc:Ignorable="d">
     <ResourceDictionary.MergedDictionaries>
         <templates:FeedsTemplates />
-        <templates:OtherDatatemplates />
+        <templates:OtherDataTemplates />
     </ResourceDictionary.MergedDictionaries>
 
     <templates:ItemTemplateSelector
@@ -566,7 +566,7 @@
                 <TextBlock
                     x:Name="SubTitle"
                     HorizontalAlignment="Center"
-                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     MaxLines="1"
                     Text="{Binding SubTitle}"
                     TextAlignment="Center"

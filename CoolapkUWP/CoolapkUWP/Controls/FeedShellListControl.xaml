@@ -11,7 +11,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <templates:FeedsTemplates />
-                <templates:OtherDatatemplates />
+                <templates:OtherDataTemplates />
             </ResourceDictionary.MergedDictionaries>
             <templates:CardTemplateSelector
                 x:Key="CardTemplateSelector"

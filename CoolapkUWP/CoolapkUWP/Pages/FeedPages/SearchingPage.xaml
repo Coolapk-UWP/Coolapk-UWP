@@ -9,6 +9,7 @@
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     d:DataContext="{d:DesignInstance Type=feedpages:SearchingViewModel}"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
@@ -16,7 +17,7 @@
                 <templates:FeedsTemplates />
                 <templates:SearchWordTemplates />
                 <templates:IndexCardTemplates />
-                <templates:OtherDatatemplates />
+                <templates:OtherDataTemplates />
             </ResourceDictionary.MergedDictionaries>
             <templates:CardTemplateSelector
                 x:Key="CardTemplateSelector"

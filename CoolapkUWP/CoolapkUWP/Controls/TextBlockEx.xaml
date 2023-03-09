@@ -9,5 +9,6 @@
         x:Name="RichTextBlock"
         IsTextSelectionEnabled="{x:Bind IsTextSelectionEnabled, Mode=OneWay}"
         MaxLines="{x:Bind MaxLines, Mode=OneWay}"
-        TextTrimming="WordEllipsis" />
+        TextTrimming="{x:Bind TextTrimming, Mode=OneWay}"
+        TextWrapping="{x:Bind TextWrapping, Mode=OneWay}" />
 </UserControl>

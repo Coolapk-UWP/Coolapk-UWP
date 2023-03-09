@@ -13,7 +13,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     contract12NotPresent:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    NavigationCacheMode="Required"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>

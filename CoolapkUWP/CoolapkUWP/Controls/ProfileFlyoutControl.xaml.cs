@@ -1,12 +1,16 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Models;
+using CoolapkUWP.Models.Users;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.UI;
+using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
@@ -15,6 +19,7 @@ namespace CoolapkUWP.Controls
 {
     public sealed partial class ProfileFlyoutControl : UserControl
     {
+        private DateTime dateTime = default;
         private readonly ProfileFlyoutViewModel Provider;
 
         public static readonly DependencyProperty FlyoutBaseProperty =
@@ -95,6 +100,19 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e) => await Provider.Refresh(true);
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!Provider.IsLogin || dateTime == default || DateTime.UtcNow - dateTime == TimeSpan.FromMinutes(1))
+            {
+                _ = Provider.Refresh(true);
+                dateTime = DateTime.UtcNow;
+            }
+        }
+
+        private void Grid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            _ = Provider.Refresh(true);
+            dateTime = DateTime.UtcNow;
+        }
     }
 }

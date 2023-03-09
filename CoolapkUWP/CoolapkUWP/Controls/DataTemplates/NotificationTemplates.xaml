@@ -39,13 +39,13 @@
                 Tapped="OnTapped" />
             <TextBlock Grid.Row="0" Grid.Column="1">
                 <Run Text="{Binding UserName}" />
-                <Run Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{Binding Dateline}" />
+                <Run Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding Dateline}" />
             </TextBlock>
             <control:TextBlockEx
                 Grid.Row="2"
                 Grid.Column="1"
                 Padding="0,0,0,4"
-                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                 Text="{Binding Note}" />
         </Grid>
     </DataTemplate>
@@ -85,12 +85,12 @@
                 <TextBlock
                     Margin="0,5"
                     VerticalAlignment="Center"
-                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     Text="{Binding Dateline}" />
             </StackPanel>
             <StackPanel Grid.Row="1" Padding="6,0,6,8">
                 <control:TextBlockEx Text="{Binding Message}" />
-                <control:TextBlockEx Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{Binding FeedMessage}" />
+                <control:TextBlockEx Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding FeedMessage}" />
             </StackPanel>
         </Grid>
     </DataTemplate>
@@ -128,7 +128,7 @@
                 <TextBlock
                     Margin="0,5"
                     VerticalAlignment="Center"
-                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     IsTextSelectionEnabled="{Binding FeedDetail.IsCopyEnabled, Mode=OneWay}"
                     Text="{Binding Dateline}" />
             </StackPanel>
@@ -175,13 +175,13 @@
                 Tapped="OnTapped" />
             <TextBlock Grid.Row="0" Grid.Column="1">
                 <Run Text="{Binding UserName}" />
-                <Run Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Text="{Binding Dateline}" />
+                <Run Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding Dateline}" />
             </TextBlock>
             <control:TextBlockEx
                 Grid.Row="2"
                 Grid.Column="1"
                 Padding="0,0,0,4"
-                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                 Text="{Binding FeedMessage}" />
         </Grid>
     </DataTemplate>

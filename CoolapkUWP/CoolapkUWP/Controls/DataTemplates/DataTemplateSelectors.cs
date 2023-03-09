@@ -29,6 +29,7 @@ namespace CoolapkUWP.Controls.DataTemplates
         public DataTemplate MessageNotify { get; set; }
         public DataTemplate GridScrollCard { get; set; }
         public DataTemplate ImageTextScrollCard { get; set; }
+
         protected override DataTemplate SelectTemplateCore(object item)
         {
             if (item is FeedModel) { return Feed; }
@@ -130,6 +131,68 @@ namespace CoolapkUWP.Controls.DataTemplates
                 return item is IHasDescription ? List : item is IHasSubtitle ? SubtitleList : Empty;
             }
         }
+    }
+
+    public sealed class ProfileCardTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate Others { get; set; }
+        public DataTemplate TitleCard { get; set; }
+        public DataTemplate TextLinkList { get; set; }
+        public DataTemplate ImageTextScrollCard { get; set; }
+
+        protected override DataTemplate SelectTemplateCore(object item)
+        {
+            if (item is IndexPageHasEntitiesModel IndexPageHasEntitiesModel)
+            {
+                switch (IndexPageHasEntitiesModel.EntitiesType)
+                {
+                    case EntityType.TextLinks: return TextLinkList;
+                    default: return ImageTextScrollCard;
+                }
+            }
+            else if (item is IndexPageOperationCardModel IndexPageOperationCardModel)
+            {
+                switch (IndexPageOperationCardModel.OperationType)
+                {
+                    case OperationType.ShowTitle: return TitleCard;
+                    default: return Others;
+                }
+            }
+            else { return Others; }
+        }
+
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
+    }
+
+    public sealed class ProfileItemTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate Empty { get; set; }
+        public DataTemplate History { get; set; }
+        public DataTemplate IconLink { get; set; }
+        public DataTemplate TextLink { get; set; }
+
+        protected override DataTemplate SelectTemplateCore(object item)
+        {
+            if (item is CollectionModel)
+            {
+                return History;
+            }
+            else if (item is IndexPageModel IndexPageModel)
+            {
+                switch (IndexPageModel?.EntityType)
+                {
+                    case "topic":
+                    case "recentHistory": return IconLink;
+                    case "textLink": return TextLink;
+                    case "collection":
+                    case "history": return History;
+                    default: return Empty;
+                }
+            }
+            else { return Empty; }
+        }
+
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
 
     public sealed class SearchTemplateSelector : DataTemplateSelector

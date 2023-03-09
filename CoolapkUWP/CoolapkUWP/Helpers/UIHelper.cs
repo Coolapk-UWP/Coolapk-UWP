@@ -398,7 +398,7 @@ namespace CoolapkUWP.Helpers
             else if (link.StartsWith("/t/", StringComparison.OrdinalIgnoreCase))
             {
                 int end = link.IndexOf('?');
-                string tag = end > 3 ? link.Substring(3) : link.Substring(3, end - 3);
+                string tag = end > 3 ? link.Substring(3, end - 3) : link.Substring(3);
                 FeedListViewModel provider = FeedListViewModel.GetProvider(FeedListType.TagPageList, tag);
                 if (provider != null)
                 {

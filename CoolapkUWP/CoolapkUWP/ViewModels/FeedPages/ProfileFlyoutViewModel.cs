@@ -112,7 +112,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         protected override async Task<IList<Entity>> LoadItemsAsync(uint count)
         {
             List<Entity> Models = new List<Entity>();
-            if (_currentPage <= 0)
+            if (_currentPage <= 1)
             {
                 await Provider.GetEntity(Models, _currentPage++);
             }
@@ -126,6 +126,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 foreach (Entity item in items)
                 {
                     if (item is NullEntity) { continue; }
+                    Add(item);
                 }
             }
         }

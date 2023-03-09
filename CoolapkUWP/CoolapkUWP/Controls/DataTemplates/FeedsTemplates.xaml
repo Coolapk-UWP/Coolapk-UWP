@@ -153,7 +153,7 @@
                             Grid.Row="1"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
                             TextTrimming="CharacterEllipsis"
                             Visibility="{Binding ShowDateline, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
@@ -161,7 +161,7 @@
                             <Run Text="{Binding Info}" />
                             <Hyperlink
                                 Click="DeviceHyperlink_Click"
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                 UnderlineStyle="None">
                                 <Run Text="{Binding DeviceTitle}" />
                             </Hyperlink>
@@ -170,7 +170,7 @@
                             Grid.Row="1"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
                             TextTrimming="CharacterEllipsis"
                             Visibility="{Binding ShowDateline, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -178,7 +178,7 @@
                             <Run Text="{Binding Info}" />
                             <Hyperlink
                                 Click="DeviceHyperlink_Click"
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                 UnderlineStyle="None">
                                 <Run Text="{Binding DeviceTitle}" />
                             </Hyperlink>
@@ -297,7 +297,7 @@
                             Grid.Column="2"
                             VerticalAlignment="Center"
                             FontSize="12"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}">
                             <Run Text="{Binding RatingStar, Converter={StaticResource NumMultConverter}, ConverterParameter='2', Mode=OneWay}" />
                             <Run Text="分" />
                         </TextBlock>
@@ -497,7 +497,7 @@
                                 TextTrimming="WordEllipsis"
                                 TextWrapping="Wrap" />
                             <TextBlock
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                 Text="{Binding MediaSubtitle}"
                                 TextWrapping="Wrap"
                                 Visibility="{Binding MediaSubtitle, Converter={StaticResource StringVisibilityConverter}}" />
@@ -543,7 +543,7 @@
                     <TextBlock
                         Margin="4"
                         VerticalAlignment="Center"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}">
                         <Run x:Uid="/Feed/SeeAll" />
                         <Run Text="(" />
                         <Run Text="{Binding ReplyNum}" />
@@ -557,7 +557,7 @@
                     Orientation="Horizontal">
                     <TextBlock
                         FontSize="12"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         IsTextSelectionEnabled="True"
                         Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}}">
                         <Run FontWeight="Bold" Text="{Binding QuestionAnswerNum}" />
@@ -569,13 +569,13 @@
                     <Border Margin="2,0" Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}}">
                         <TextBlock
                             FontSize="12"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             Text="•"
                             Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}}" />
                     </Border>
                     <TextBlock
                         FontSize="12"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         IsTextSelectionEnabled="True"
                         Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}}">
                         <Run Text="发布于" />
@@ -652,7 +652,7 @@
                     <TextBlock
                         Margin="4"
                         VerticalAlignment="Center"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
                         Text="{Binding Dateline}" />
                 </StackPanel>
@@ -774,13 +774,13 @@
                         <StackPanel Margin="-1,0" Orientation="Horizontal">
                             <TextBlock
                                 VerticalAlignment="Center"
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                 IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
                                 Text="{Binding Dateline}" />
                             <TextBlock
                                 Margin="2,0,0,0"
                                 VerticalAlignment="Center"
-                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                 IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
                                 Text="@"
                                 Visibility="{Binding Rusername, Converter={StaticResource StringVisibilityConverter}}" />
@@ -896,7 +896,7 @@
                         <TextBlock
                             VerticalAlignment="Center"
                             FontSize="12"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}">
                             <Run x:Uid="/Feed/SeeAll" />
                             <Run Text="(" />
                             <Run Text="{Binding ReplyNum}" />
@@ -923,16 +923,14 @@
             <Border
                 VerticalAlignment="Bottom"
                 Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                CornerRadius="0,0,8,8"
+                CornerRadius="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}"
                 Tag="{Binding Url}"
                 Tapped="OnTapped">
                 <TextBlock
                     Margin="8"
                     FontSize="16"
-                    MaxLines="1"
                     Text="{Binding MessageTitle}"
-                    TextTrimming="WordEllipsis"
-                    TextWrapping="Wrap" />
+                    TextTrimming="WordEllipsis" />
             </Border>
         </Grid>
     </DataTemplate>

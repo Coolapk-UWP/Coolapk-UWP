@@ -99,7 +99,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                                 p,
                                 p > 1 ? $"&firstItem={firstItem}&lastItem={lastItem}" : string.Empty),
                         (o) => new Entity[] { new FeedReplyModel(o) },
-                        "id"))
+                        "uid"))
                 { Title = $"热门回复" }
                 : new AdaptiveViewModel(
                     new CoolapkListProvider(
@@ -110,8 +110,56 @@ namespace CoolapkUWP.ViewModels.FeedPages
                                 p,
                                 p > 1 ? $"&lastItem={lastItem}" : string.Empty),
                         (o) => new Entity[] { new FeedReplyModel(o, false) },
-                        "id"))
+                        "uid"))
                 { Title = $"回复({reply.ReplyNum})" };
+        }
+
+        public static AdaptiveViewModel GetHistoryProvider(string title)
+        {
+            if (string.IsNullOrEmpty(title)) { throw new ArgumentException(nameof(title)); }
+
+            UriType type = UriType.CheckLoginInfo;
+
+            switch (title)
+            {
+                case "我的常去":
+                    type = UriType.GetUserRecentHistory;
+                    break;
+                case "浏览历史":
+                    type = UriType.GetUserHistory;
+                    break;
+                default: throw new ArgumentException(nameof(title));
+            }
+
+            return new AdaptiveViewModel(
+                new CoolapkListProvider(
+                    (p, firstItem, lastItem) =>
+                        UriHelper.GetUri(
+                            type,
+                            p,
+                            string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                            string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
+                    (o) => new Entity[] { new HistoryModel(o) },
+                    "uid"))
+                { Title = title };
+        }
+
+        public static AdaptiveViewModel GetUserFeedsProvider(string uid, string branch)
+        {
+            return string.IsNullOrEmpty(uid)
+                ? throw new ArgumentException(nameof(uid))
+                : new AdaptiveViewModel(
+                    new CoolapkListProvider(
+                        (p, firstItem, lastItem) =>
+                            UriHelper.GetUri(
+                                UriType.GetUserFeeds,
+                                uid,
+                                p,
+                                string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                                string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}",
+                                branch),
+                        (o) => new Entity[] { new FeedModel(o) },
+                        "uid"));
         }
 
         public async Task Refresh(bool reset = false)

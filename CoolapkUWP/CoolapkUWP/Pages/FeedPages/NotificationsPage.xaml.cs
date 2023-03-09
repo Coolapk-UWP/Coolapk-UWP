@@ -21,6 +21,7 @@ namespace CoolapkUWP.Pages.FeedPages
     {
         private static readonly int PivotIndex = 0;
 
+        private bool isLoaded;
         private Action Refresh;
 
         private NotificationsTask _notificationsTask;
@@ -48,8 +49,13 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void Pivot_Loaded(object sender, RoutedEventArgs e)
         {
-            Pivot.SelectedIndex = PivotIndex;
-            NotificationsTask = NotificationsTask.Instance;
+            if (!isLoaded)
+            {
+                Pivot.SelectedIndex = PivotIndex;
+                NotificationsTask = NotificationsTask.Instance;
+                isLoaded = true;
+            }
+            NotificationsTask.GetNums();
         }
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -145,8 +151,13 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 Refresh = () => _ = AdaptivePage.Refresh(true);
             }
+            NotificationsTask.GetNums();
         }
 
-        private void RefreshButton_Click(object sender, RoutedEventArgs e) => Refresh();
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+            NotificationsTask.GetNums();
+        }
     }
 }

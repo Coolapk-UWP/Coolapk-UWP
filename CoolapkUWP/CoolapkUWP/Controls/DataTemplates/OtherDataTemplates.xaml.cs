@@ -6,9 +6,9 @@ using Windows.UI.Xaml;
 
 namespace CoolapkUWP.Controls.DataTemplates
 {
-    public sealed partial class OtherDatatemplates : ResourceDictionary
+    public sealed partial class OtherDataTemplates : ResourceDictionary
     {
-        public OtherDatatemplates()
+        public OtherDataTemplates()
         {
             InitializeComponent();
         }

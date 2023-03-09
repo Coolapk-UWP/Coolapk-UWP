@@ -43,6 +43,20 @@ namespace CoolapkUWP.Controls
                 typeof(TextBlockEx),
                 null);
 
+        public static readonly DependencyProperty TextTrimmingProperty =
+            DependencyProperty.Register(
+                nameof(TextTrimming),
+                typeof(TextTrimming),
+                typeof(TextBlockEx),
+                new PropertyMetadata(TextTrimming.CharacterEllipsis));
+
+        public static readonly DependencyProperty TextWrappingProperty =
+            DependencyProperty.Register(
+                nameof(TextWrapping),
+                typeof(TextWrapping),
+                typeof(TextBlockEx),
+                new PropertyMetadata(TextWrapping.Wrap));
+
         public static readonly DependencyProperty IsTextSelectionEnabledProperty =
             DependencyProperty.Register(
                 nameof(IsTextSelectionEnabled),
@@ -60,6 +74,18 @@ namespace CoolapkUWP.Controls
         {
             get => (int)GetValue(MaxLinesProperty);
             set => SetValue(MaxLinesProperty, value);
+        }
+
+        public TextTrimming TextTrimming
+        {
+            get => (TextTrimming)GetValue(TextTrimmingProperty);
+            set => SetValue(TextTrimmingProperty, value);
+        }
+
+        public TextWrapping TextWrapping
+        {
+            get => (TextWrapping)GetValue(TextWrappingProperty);
+            set => SetValue(TextWrappingProperty, value);
         }
 
         public bool IsTextSelectionEnabled

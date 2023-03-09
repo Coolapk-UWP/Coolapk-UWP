@@ -130,7 +130,7 @@
                         Grid.Column="1"
                         Margin="8,0,0,2"
                         VerticalAlignment="Center"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         TextTrimming="CharacterEllipsis">
                         <Run Text="查看全部" />
                         <Run Text="{Binding QuestionAnswerNum, Mode=OneWay}" />
@@ -243,7 +243,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             FontSize="12"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             Text="{Binding DyhSubTitle}"
                             TextTrimming="CharacterEllipsis"
                             Visibility="{Binding DyhSubTitle, Converter={StaticResource StringVisibilityConverter}}" />
@@ -297,14 +297,14 @@
                         Grid.Row="1"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         IsTextSelectionEnabled="True"
                         TextTrimming="CharacterEllipsis">
                         <Run Text="{Binding Dateline}" />
                         <Run Text="{Binding Info}" />
                         <Hyperlink
                             Click="DeviceHyperlink_Click"
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             UnderlineStyle="None">
                             <Run Text="{Binding DeviceTitle}" />
                         </Hyperlink>
@@ -365,7 +365,7 @@
                         Grid.Column="2"
                         VerticalAlignment="Center"
                         FontSize="12"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}">
                         <Run Text="{Binding RatingStar, Converter={StaticResource NumMultConverter}, ConverterParameter='2', Mode=OneWay}" />
                         <Run Text="分" />
                     </TextBlock>
@@ -478,7 +478,7 @@
                             TextWrapping="Wrap"
                             Visibility="{Binding ExtraTitle, Converter={StaticResource StringVisibilityConverter}}" />
                         <TextBlock
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             Text="{Binding ExtraSubtitle}"
                             TextWrapping="Wrap"
                             Visibility="{Binding ExtraSubtitle, Converter={StaticResource StringVisibilityConverter}}" />
@@ -574,7 +574,7 @@
                             TextTrimming="WordEllipsis"
                             TextWrapping="Wrap" />
                         <TextBlock
-                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             Text="{Binding MediaSubtitle}"
                             TextWrapping="Wrap"
                             Visibility="{Binding MediaSubtitle, Converter={StaticResource StringVisibilityConverter}}" />
@@ -607,7 +607,7 @@
                 Orientation="Horizontal">
                 <TextBlock
                     FontSize="12"
-                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     IsTextSelectionEnabled="True"
                     Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
                     <Run FontWeight="Bold" Text="{Binding QuestionAnswerNum}" />
@@ -619,13 +619,13 @@
                 <Border Margin="2,0" Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
                     <TextBlock
                         FontSize="12"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Text="•"
                         Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}" />
                 </Border>
                 <TextBlock
                     FontSize="12"
-                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     IsTextSelectionEnabled="True"
                     Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
                     <Run Text="发布于" />
@@ -634,13 +634,13 @@
                 <Border Margin="2,0" Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
                     <TextBlock
                         FontSize="12"
-                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Text="•"
                         Visibility="{Binding ReadNum, Converter={StaticResource DoubleToVisibilityConverter}, FallbackValue='Collapsed'}" />
                 </Border>
                 <TextBlock
                     FontSize="12"
-                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     IsTextSelectionEnabled="True"
                     Visibility="{Binding ReadNum, Converter={StaticResource DoubleToVisibilityConverter}, FallbackValue='Collapsed'}">
                     <Run FontWeight="Bold" Text="{Binding ReadNum}" />

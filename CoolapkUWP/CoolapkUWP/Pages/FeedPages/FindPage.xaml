@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:CoolapkUWP.Pages.FeedPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    NavigationCacheMode="Required"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Pivot
         x:Name="Pivot"

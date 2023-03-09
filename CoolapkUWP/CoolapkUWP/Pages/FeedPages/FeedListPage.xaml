@@ -14,14 +14,14 @@
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     d:DataContext="{d:DesignInstance Type=feedpages:FeedListViewModel}"
-    NavigationCacheMode="Required"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <templates:FeedsTemplates />
                 <templates:IndexCardTemplates />
-                <templates:OtherDatatemplates />
+                <templates:OtherDataTemplates />
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate x:Key="UserDetailCard">
                 <Border>
@@ -256,7 +256,7 @@
                                     FontSize="16"
                                     FontWeight="SemiBold"
                                     Text="{Binding Title}" />
-                                <TextBlock FontSize="12" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
+                                <TextBlock FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}">
                                     <Run Text="{Binding HotNum}" />
                                     <Run Text="{Binding CommentNum}" />
                                 </TextBlock>
@@ -476,7 +476,7 @@
                                         FontSize="16"
                                         FontWeight="SemiBold"
                                         Text="{Binding Title}" />
-                                    <TextBlock FontSize="12" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
+                                    <TextBlock FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}">
                                         <Run Text="{Binding HotNum}" />
                                         <Run Text="{Binding CommentNum}" />
                                     </TextBlock>
