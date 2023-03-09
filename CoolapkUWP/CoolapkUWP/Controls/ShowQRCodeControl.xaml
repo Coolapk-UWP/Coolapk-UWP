@@ -39,7 +39,7 @@
                 Padding="8"
                 Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                 Content="{x:Bind QRCodeText}"
-                CornerRadius="{StaticResource OverlayCornerRadius}"
+                ContentCornerRadius="{StaticResource OverlayCornerRadius}"
                 Foreground="{ThemeResource ApplicationForegroundThemeBrush}"
                 RequestedTheme="Light" />
         </Button>

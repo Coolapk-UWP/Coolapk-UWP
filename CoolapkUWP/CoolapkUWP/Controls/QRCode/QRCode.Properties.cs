@@ -171,11 +171,11 @@ namespace CoolapkUWP.Controls
         #region CornerRadius
 
         /// <summary>
-        /// Identifies the <see cref="CornerRadius"/> dependency property.
+        /// Identifies the <see cref="ContentCornerRadius"/> dependency property.
         /// </summary>
-        public static new readonly DependencyProperty CornerRadiusProperty =
+        public static readonly DependencyProperty ContentCornerRadiusProperty =
             DependencyProperty.Register(
-                nameof(CornerRadius),
+                nameof(ContentCornerRadius),
                 typeof(CornerRadius),
                 typeof(QRCode),
                 null);
@@ -183,10 +183,10 @@ namespace CoolapkUWP.Controls
         /// <summary>
         /// Gets or sets the payload which shall be encoded in the QR code.
         /// </summary>
-        public new CornerRadius CornerRadius
+        public CornerRadius ContentCornerRadius
         {
-            get => (CornerRadius)GetValue(CornerRadiusProperty);
-            set => SetValue(CornerRadiusProperty, value);
+            get => (CornerRadius)GetValue(ContentCornerRadiusProperty);
+            set => SetValue(ContentCornerRadiusProperty, value);
         }
 
         #endregion

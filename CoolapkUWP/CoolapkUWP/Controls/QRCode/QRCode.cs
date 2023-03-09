@@ -97,18 +97,17 @@ namespace CoolapkUWP.Controls
                 templateSettings.GeometryGroup = null;
                 return;
             }
-
-            Size size = new Size(100, 100);
+            
             if (QRCodePath != null)
             {
                 double length = Math.Min(QRCodePath.ActualWidth, QRCodePath.ActualHeight);
-                size = new Size(length, length);
-            }
+                Size size = new Size(length, length);
 
-            using (XamlQRCode xamlQRCode = new XamlQRCode(QRCodeData, false))
-            {
-                GeometryGroup qrCodeGeometry = xamlQRCode.GetGraphic(size);
-                templateSettings.GeometryGroup = qrCodeGeometry;
+                using (XamlQRCode xamlQRCode = new XamlQRCode(QRCodeData, false))
+                {
+                    GeometryGroup qrCodeGeometry = xamlQRCode.GetGraphic(size);
+                    templateSettings.GeometryGroup = qrCodeGeometry;
+                }
             }
         }
     }
