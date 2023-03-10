@@ -11,6 +11,7 @@
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     d:DataContext="{d:DesignInstance Type=feedpages:AdaptiveViewModel}"
     Loaded="Page_Loaded"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>
         <ResourceDictionary>
