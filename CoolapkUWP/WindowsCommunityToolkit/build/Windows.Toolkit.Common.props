@@ -26,6 +26,7 @@
     <TargetPlatformBaseVersion>10.0</TargetPlatformBaseVersion>
     <TargetPlatformRevision>22621</TargetPlatformRevision>
     <TargetPlatformMinRevision>15063</TargetPlatformMinRevision>
+    <ExtrasUwpMetaPackageVersion>6.2.14</ExtrasUwpMetaPackageVersion>
   </PropertyGroup>
 
   <PropertyGroup>
