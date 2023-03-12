@@ -191,7 +191,7 @@ namespace CoolapkUWP.Models.Feeds
                                     if (Message.Contains("</a>") ? Message.Length - 200 >= 7 : Message.Length - 120 >= 7)
                                     {
                                         Message = message.ToString().Substring(0, 120);
-                                        Message = Message.Contains("</a>") ? message.ToString().Substring(0, 200) + "...<a href=\"" + Url + "\">" + loader.GetString("Readmore") + "</a>" : Message + "...<a href=\"" + Url + "\">" + loader.GetString("readmore") + "</a>";
+                                        Message = Message.Contains("</a>") ? message.ToString().Substring(0, 200) + "...<a href=\"" + Url + "\">" + loader.GetString("ReadMore") + "</a>" : Message + "...<a href=\"" + Url + "\">" + loader.GetString("ReadMore") + "</a>";
                                     }
                                 }
                             }

@@ -153,8 +153,8 @@
     <Compile Include="Controls\DataTemplates\NotificationTemplates.xaml.cs">
       <DependentUpon>NotificationTemplates.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DataTemplates\OtherDatatemplates.xaml.cs">
-      <DependentUpon>OtherDatatemplates.xaml</DependentUpon>
+    <Compile Include="Controls\DataTemplates\OtherDataTemplates.xaml.cs">
+      <DependentUpon>OtherDataTemplates.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DataTemplates\PicTemplates.xaml.cs">
       <DependentUpon>PicTemplates.xaml</DependentUpon>
@@ -969,7 +969,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\DataTemplates\OtherDatatemplates.xaml">
+    <Page Include="Controls\DataTemplates\OtherDataTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1009,7 +1009,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\NavigationView\NavigationView_Themeresources.xaml">
+    <Page Include="Controls\NavigationView\NavigationView.Themeresources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

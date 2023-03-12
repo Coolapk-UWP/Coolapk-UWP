@@ -3,6 +3,7 @@ using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Feeds;
 using CoolapkUWP.Pages.BrowserPages;
+using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
 using System;
 using System.Threading.Tasks;
@@ -116,7 +117,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
                 case "ReportButton":
                     DisabledCopy();
-                    UIHelper.Navigate(typeof(BrowserPage), new object[] { false, $"https://m.coolapk.com/mp/do?c=feed&m=report&type=feed&id={element.Tag}" });
+                    UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel(element.Tag.ToString()));
                     break;
 
                 case "ShareButton":

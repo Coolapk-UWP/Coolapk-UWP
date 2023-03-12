@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
+    xmlns:contract8Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 8)"
     xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:converters="using:CoolapkUWP.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -28,7 +29,7 @@
             Tag="{Binding Url}"
             Tapped="OnTapped">
             <UserControl.Resources>
-                <Flyout x:Key="QRCodeFlyout">
+                <Flyout x:Key="QRCodeFlyout" contract8Present:ShouldConstrainToRootBounds="False">
                     <Flyout.FlyoutPresenterStyle>
                         <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
                             <Setter Property="Padding" Value="0" />
@@ -595,22 +596,22 @@
             Tapped="OnTapped">
             <UserControl.Resources>
                 <MenuFlyout x:Key="MoreFlyout">
-                    <MenuFlyoutSubItem Text="复制">
+                    <MenuFlyoutSubItem x:Uid="/Feed/Copy">
                         <MenuFlyoutSubItem.Icon>
                             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
                         </MenuFlyoutSubItem.Icon>
                         <ToggleMenuFlyoutItem
                             x:Name="CopyButton"
-                            x:Uid="/Feed/Copy"
+                            x:Uid="/Feed/CopyFree"
                             IsChecked="{Binding IsCopyEnabled, Mode=TwoWay}" />
                         <MenuFlyoutItem
+                            x:Uid="/Feed/CopyLink"
                             Click="CopyMenuItem_Click"
-                            Tag="{Binding ShareUrl}"
-                            Text="复制链接" />
+                            Tag="{Binding ShareUrl}" />
                         <MenuFlyoutItem
+                            x:Uid="/Feed/CopyAll"
                             Click="CopyMenuItem_Click"
-                            Tag="{Binding Message, Converter={StaticResource HTMLToTextConverter}}"
-                            Text="复制全部内容" />
+                            Tag="{Binding Message, Converter={StaticResource HTMLToTextConverter}}" />
                         <MenuFlyoutItem
                             Click="CopyMenuItem_Click"
                             Tag="{Binding UserInfo.UserName, Converter={StaticResource StringFormatConverter}, ConverterParameter='@{0}', Mode=OneWay}"

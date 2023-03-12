@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 namespace CoolapkUWP.ViewModels.DataSource
 {
-    public delegate void OnDataRequestError(int code);
-
     /// <summary>
     /// Datasource base for Coolapk that enabled incremental loading (page based). <br/>
     /// Clone from <see cref="cnblogs UAP" href="https://github.com/MS-UAP/cnblogs-UAP"./>
@@ -63,7 +61,7 @@ namespace CoolapkUWP.ViewModels.DataSource
             DataRequestError?.Invoke(code);
         }
 
-        public event OnDataRequestError DataRequestError;
+        public event EventHandler<int> DataRequestError;
 
         protected override bool HasMoreItemsOverride() => _hasMoreItems;
 

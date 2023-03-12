@@ -6,6 +6,7 @@
     xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
+    xmlns:contract8Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 8)"
     xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:cwuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -70,7 +71,7 @@
                         </controls:Setting.Icon>
                         <Button x:Name="AccountLogout" x:Uid="/SettingsPage/LogoutSettingsButton">
                             <Button.Flyout>
-                                <Flyout>
+                                <Flyout contract8Present:ShouldConstrainToRootBounds="False">
                                     <StackPanel>
                                         <TextBlock
                                             x:Uid="/SettingsPage/AccountLogoutTitle"
@@ -314,7 +315,7 @@
                     <controls:Setting x:Uid="/SettingsPage/ResetSettings" Icon="&#xE777;">
                         <Button x:Name="Reset" x:Uid="/SettingsPage/ResetSettingsButton">
                             <Button.Flyout>
-                                <Flyout>
+                                <Flyout contract8Present:ShouldConstrainToRootBounds="False">
                                     <StackPanel>
                                         <TextBlock
                                             x:Uid="/SettingsPage/ResetSettingsTitle"

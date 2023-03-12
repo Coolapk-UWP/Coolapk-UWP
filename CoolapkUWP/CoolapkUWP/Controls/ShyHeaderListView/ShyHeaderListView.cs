@@ -246,18 +246,18 @@ namespace CoolapkUWP.Controls
             base.OnApplyTemplate();
         }
 
-        protected override void OnItemsChanged(object e)
-        {
-            if (_progressProvider != null)
-            {
-                _scrollViewer.ChangeView(null, _progressProvider.Progress * _progressProvider.Threshold, null, true);
-            }
-            else
-            {
-                _scrollViewer.ChangeView(null, Math.Min(_offset, _topheight), null, true);
-            }
-            base.OnItemsChanged(e);
-        }
+        //protected override void OnItemsChanged(object e)
+        //{
+        //    if (_progressProvider != null)
+        //    {
+        //        _scrollViewer.ChangeView(null, _progressProvider.Progress * _progressProvider.Threshold, null, true);
+        //    }
+        //    else
+        //    {
+        //        _scrollViewer.ChangeView(null, Math.Min(_offset, _topheight), null, true);
+        //    }
+        //    base.OnItemsChanged(e);
+        //}
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {

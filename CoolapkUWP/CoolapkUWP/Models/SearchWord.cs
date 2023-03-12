@@ -15,6 +15,7 @@ namespace CoolapkUWP.Models
                     ? "\uE719"
                     : logo.ToString().Contains("xitongguanli") ? "\uE77B" : "\uE721";
             }
+
             if (keys.TryGetValue("title", out JToken title))
             {
                 Title = title.ToString();
