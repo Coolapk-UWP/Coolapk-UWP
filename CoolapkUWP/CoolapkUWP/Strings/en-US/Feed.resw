@@ -147,8 +147,8 @@
   <data name="QR.Text" xml:space="preserve">
     <value>QR Code</value>
   </data>
-  <data name="Readmore" xml:space="preserve">
-    <value>See more</value>
+  <data name="ReadMore" xml:space="preserve">
+    <value>查看更多</value>
   </data>
   <data name="Report.Text" xml:space="preserve">
     <value>Report</value>
