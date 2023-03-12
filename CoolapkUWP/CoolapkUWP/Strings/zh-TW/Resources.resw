@@ -121,7 +121,7 @@
     <value>磁贴已固定到开始</value>
   </data>
   <data name="AppDescription" xml:space="preserve">
-    <value>一個基於UWP平臺的酷安用戶端</value>
+    <value>一个基于 UWP 平台的第三方酷安客户端</value>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>酷安</value>
