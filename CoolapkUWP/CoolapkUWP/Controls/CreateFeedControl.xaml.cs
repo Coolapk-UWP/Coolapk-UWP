@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using UnicodeStyle;
+using UnicodeStyle.Models;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation.Metadata;
@@ -334,12 +335,12 @@ namespace CoolapkUWP.Controls
                 InputBox.Document.Selection.GetText(TextGetOptions.UseObjectText, out string SelectionText);
 
                 SelectionText = UnderLineButton.IsChecked == true
-                    ? UnicodeStyler.AddLine(SelectionText, true, UnicodeLines.Underline)
-                    : UnicodeStyler.RemoveLine(SelectionText, UnicodeLines.Underline);
+                    ? UnicodeLiner.AddLine(SelectionText, true, UnicodeLines.Underline)
+                    : UnicodeLiner.RemoveLine(SelectionText, UnicodeLines.Underline);
 
                 SelectionText = StrikethroughButton.IsChecked == true
-                    ? UnicodeStyler.AddLine(SelectionText, true, UnicodeLines.LongStrokeOverlay)
-                    : UnicodeStyler.RemoveLine(SelectionText, UnicodeLines.LongStrokeOverlay);
+                    ? UnicodeLiner.AddLine(SelectionText, true, UnicodeLines.LongStrokeOverlay)
+                    : UnicodeLiner.RemoveLine(SelectionText, UnicodeLines.LongStrokeOverlay);
 
                 UnicodeStyles Style = BoldButton.IsChecked == true
                     ? ItalicButton.IsChecked == true
