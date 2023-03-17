@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AlreadyPinnedTile" xml:space="preserve">
-    <value>磁贴已固定到开始</value>
+    <value>Tile is pinned to start</value>
   </data>
   <data name="AppDescription" xml:space="preserve">
     <value>A third-party Coolapk client based on UWP</value>
@@ -164,10 +164,10 @@
     <value>No update</value>
   </data>
   <data name="PinnedTileFailed" xml:space="preserve">
-    <value>固定磁贴失败</value>
+    <value>Failed to pinned tile</value>
   </data>
   <data name="PinnedTileSucceeded" xml:space="preserve">
-    <value>固定磁贴成功</value>
+    <value>Pinned tile successful</value>
   </data>
   <data name="UserNameError" xml:space="preserve">
     <value>Please enter your username</value>
