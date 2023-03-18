@@ -117,8 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlreadyPinnedTile" xml:space="preserve">
+    <value>Tile is pinned to start</value>
+  </data>
   <data name="AppDescription" xml:space="preserve">
-    <value>An unofficial Coolapk UWP Program</value>
+    <value>A third-party Coolapk client based on UWP</value>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>Coolapk</value>
@@ -159,6 +162,12 @@
   </data>
   <data name="NoUpdate" xml:space="preserve">
     <value>No update</value>
+  </data>
+  <data name="PinnedTileFailed" xml:space="preserve">
+    <value>Failed to pinned tile</value>
+  </data>
+  <data name="PinnedTileSucceeded" xml:space="preserve">
+    <value>Pinned tile successful</value>
   </data>
   <data name="UserNameError" xml:space="preserve">
     <value>Please enter your username</value>
