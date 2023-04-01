@@ -3,6 +3,7 @@ using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Storage;
@@ -14,6 +15,8 @@ namespace CoolapkUWP.Models.Images
 {
     public class ImageModel : INotifyPropertyChanged, IPic
     {
+        private static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(SettingsHelper.Get<int>(SettingsHelper.SemaphoreSlimCount));
+
         protected WeakReference<BitmapImage> pic;
         public BitmapImage Pic
         {
@@ -137,6 +140,20 @@ namespace CoolapkUWP.Models.Images
             }
         }
 
+        private bool isLoading = true;
+        public bool IsLoading
+        {
+            get => isLoading;
+            private set
+            {
+                if (isLoading != value)
+                {
+                    isLoading = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
         public ImageModel(string uri, ImageType type)
         {
             Uri = uri;
@@ -182,61 +199,37 @@ namespace CoolapkUWP.Models.Images
             if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
 
+        public static void SetSemaphoreSlim(int initialCount)
+        {
+            semaphoreSlim.Dispose();
+            semaphoreSlim = new SemaphoreSlim(initialCount);
+        }
+
         private async Task GetImage()
         {
-            LoadStarted?.Invoke(this, null);
-            if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode)) { Pic = ImageCacheHelper.NoPic; }
-            if (ImageCacheHelper.Dispatcher.HasThreadAccess)
+            try
             {
-                BitmapImage bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri);
-                Pic = bitmapImage;
-                if (Window.Current != null)
+                IsLoading = true;
+                LoadStarted?.Invoke(this, null);
+                await semaphoreSlim.WaitAsync();
+                if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode)) { Pic = ImageCacheHelper.NoPic; }
+                if (ImageCacheHelper.Dispatcher.HasThreadAccess)
                 {
-                    double PixelWidth = bitmapImage.PixelWidth;
-                    double PixelHeight = bitmapImage.PixelHeight;
-                    IsLongPic = await Window.Current.Dispatcher.AwaitableRunAsync(
-                        () => ((PixelHeight * Window.Current.Bounds.Width) > PixelWidth * Window.Current.Bounds.Height * 1.5)
-                            && PixelHeight > PixelWidth * 1.5);
-                    IsWidePic = await Window.Current.Dispatcher.AwaitableRunAsync(
-                        () => ((PixelWidth * Window.Current.Bounds.Height) > PixelHeight * Window.Current.Bounds.Width * 1.5)
-                            && PixelWidth > PixelHeight * 1.5);
-                }
-                else
-                {
-                    double PixelWidth = bitmapImage.PixelWidth;
-                    double PixelHeight = bitmapImage.PixelHeight;
-                    IsLongPic = await App.MainWindow.Dispatcher.AwaitableRunAsync(
-                        () => ((PixelHeight * App.MainWindow.Bounds.Width) > PixelWidth * App.MainWindow.Bounds.Height * 1.5)
-                            && PixelHeight > PixelWidth * 1.5);
-                    IsWidePic = await App.MainWindow.Dispatcher.AwaitableRunAsync(
-                        () => ((PixelWidth * Window.Current.Bounds.Height) > PixelHeight * Window.Current.Bounds.Width * 1.5)
-                            && PixelWidth > PixelHeight * 1.5);
-                }
-            }
-            else
-            {
-                StorageFile file = await ImageCacheHelper.GetImageFileAsync(Type, Uri);
-                if (file == null) { LoadCompleted?.Invoke(this, null); return; }
-                using (IRandomAccessStreamWithContentType stream = await file.OpenReadAsync())
-                {
-                    BitmapImage image = new BitmapImage();
-                    await image.SetSourceAsync(stream);
-                    Pic = image;
+                    BitmapImage bitmapImage = await ImageCacheHelper.GetImageAsync(Type, Uri);
+                    Pic = bitmapImage;
                     if (Window.Current != null)
                     {
-                        double PixelWidth = image.PixelWidth;
-                        double PixelHeight = image.PixelHeight;
-                        IsLongPic = await Window.Current.Dispatcher.AwaitableRunAsync(
-                            () => ((PixelHeight * Window.Current.Bounds.Width) > PixelWidth * Window.Current.Bounds.Height * 1.5)
-                                && PixelHeight > PixelWidth * 1.5);
-                        IsWidePic = await Window.Current.Dispatcher.AwaitableRunAsync(
-                            () => ((PixelWidth * Window.Current.Bounds.Height) > PixelHeight * Window.Current.Bounds.Width * 1.5)
-                                && PixelWidth > PixelHeight * 1.5);
+                        double PixelWidth = bitmapImage.PixelWidth;
+                        double PixelHeight = bitmapImage.PixelHeight;
+                        IsLongPic = ((PixelHeight * Window.Current.Bounds.Width) > PixelWidth * Window.Current.Bounds.Height * 1.5)
+                                    && PixelHeight > PixelWidth * 1.5;
+                        IsWidePic = ((PixelWidth * Window.Current.Bounds.Height) > PixelHeight * Window.Current.Bounds.Width * 1.5)
+                                    && PixelWidth > PixelHeight * 1.5;
                     }
-                    else if (App.MainWindow != null)
+                    else
                     {
-                        double PixelWidth = image.PixelWidth;
-                        double PixelHeight = image.PixelHeight;
+                        double PixelWidth = bitmapImage.PixelWidth;
+                        double PixelHeight = bitmapImage.PixelHeight;
                         IsLongPic = await App.MainWindow.Dispatcher.AwaitableRunAsync(
                             () => ((PixelHeight * App.MainWindow.Bounds.Width) > PixelWidth * App.MainWindow.Bounds.Height * 1.5)
                                 && PixelHeight > PixelWidth * 1.5);
@@ -245,11 +238,49 @@ namespace CoolapkUWP.Models.Images
                                 && PixelWidth > PixelHeight * 1.5);
                     }
                 }
+                else
+                {
+                    StorageFile file = await ImageCacheHelper.GetImageFileAsync(Type, Uri);
+                    if (file == null) { return; }
+                    using (IRandomAccessStreamWithContentType stream = await file.OpenReadAsync())
+                    {
+                        BitmapImage image = new BitmapImage();
+                        await image.SetSourceAsync(stream);
+                        Pic = image;
+                        if (Window.Current != null)
+                        {
+                            double PixelWidth = image.PixelWidth;
+                            double PixelHeight = image.PixelHeight;
+                            IsLongPic = await Window.Current.Dispatcher.AwaitableRunAsync(
+                                () => ((PixelHeight * Window.Current.Bounds.Width) > PixelWidth * Window.Current.Bounds.Height * 1.5)
+                                    && PixelHeight > PixelWidth * 1.5);
+                            IsWidePic = await Window.Current.Dispatcher.AwaitableRunAsync(
+                                () => ((PixelWidth * Window.Current.Bounds.Height) > PixelHeight * Window.Current.Bounds.Width * 1.5)
+                                    && PixelWidth > PixelHeight * 1.5);
+                        }
+                        else if (App.MainWindow != null)
+                        {
+                            double PixelWidth = image.PixelWidth;
+                            double PixelHeight = image.PixelHeight;
+                            IsLongPic = await App.MainWindow.Dispatcher.AwaitableRunAsync(
+                                () => ((PixelHeight * App.MainWindow.Bounds.Width) > PixelWidth * App.MainWindow.Bounds.Height * 1.5)
+                                    && PixelHeight > PixelWidth * 1.5);
+                            IsWidePic = await App.MainWindow.Dispatcher.AwaitableRunAsync(
+                                () => ((PixelWidth * Window.Current.Bounds.Height) > PixelHeight * Window.Current.Bounds.Width * 1.5)
+                                    && PixelWidth > PixelHeight * 1.5);
+                        }
+                    }
+                }
             }
-            LoadCompleted?.Invoke(this, null);
+            finally
+            {
+                LoadCompleted?.Invoke(this, null);
+                semaphoreSlim.Release();
+                IsLoading = false;
+            }
         }
 
-        public async Task Refresh() => await DispatcherHelper.ExecuteOnUIThreadAsync(GetImage);
+        public async Task Refresh() => await GetImage();
 
         public override string ToString() => Uri;
     }

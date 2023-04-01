@@ -4,6 +4,7 @@ using Windows.ApplicationModel.Core;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
+using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 
 namespace CoolapkUWP.Helpers
@@ -28,27 +29,24 @@ namespace CoolapkUWP.Helpers
         {
             get
             {
-                ElementTheme? value = null;
                 if (CurrentApplicationWindow?.Dispatcher?.HasThreadAccess == true)
                 {
-                    if (CurrentApplicationWindow?.Content is FrameworkElement rootElement
-                        && rootElement.RequestedTheme != ElementTheme.Default)
-                    {
-                        return rootElement.RequestedTheme;
-                    }
+                    return CurrentApplicationWindow?.Content is FrameworkElement rootElement
+                        && rootElement.RequestedTheme != ElementTheme.Default
+                        ? rootElement.RequestedTheme
+                        : SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme);
                 }
                 else
                 {
-                    value = UIHelper.AwaitByTaskCompleteSource(() =>
-                        CurrentApplicationWindow?.Dispatcher?.AwaitableRunAsync<ElementTheme?>(() =>
+                    return UIHelper.AwaitByTaskCompleteSource(() =>
+                        CurrentApplicationWindow?.Dispatcher?.AwaitableRunAsync(() =>
                         {
                             return CurrentApplicationWindow?.Content is FrameworkElement rootElement
                                 && rootElement.RequestedTheme != ElementTheme.Default
                                 ? rootElement.RequestedTheme
-                                : (ElementTheme?)null;
+                                : SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme);
                         }, CoreDispatcherPriority.High));
                 }
-                return value ?? SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme);
             }
         }
 
@@ -59,40 +57,37 @@ namespace CoolapkUWP.Helpers
         {
             get
             {
-                ElementTheme? value = null;
-                foreach (Window window in WindowHelper.ActiveWindows)
+                if (CurrentApplicationWindow == null) { return ElementTheme.Default; }
+                if (CurrentApplicationWindow.Dispatcher.HasThreadAccess)
                 {
-                    if (window.Dispatcher.HasThreadAccess)
-                    {
-                        if (window?.Content is FrameworkElement rootElement)
-                        {
-                            value = rootElement.RequestedTheme;
-                        }
-                    }
-                    else
-                    {
-                        value = UIHelper.AwaitByTaskCompleteSource(() =>
-                            window.Dispatcher.AwaitableRunAsync<ElementTheme?>(() =>
-                            {
-                                return window?.Content is FrameworkElement rootElement ? rootElement.RequestedTheme : (ElementTheme?)null;
-                            }, CoreDispatcherPriority.High));
-                    }
-                    if (value.HasValue) { return value.Value; }
+                    return CurrentApplicationWindow.Content is FrameworkElement rootElement ? rootElement.RequestedTheme : ElementTheme.Default;
                 }
-                return ElementTheme.Default;
+                else
+                {
+                    return UIHelper.AwaitByTaskCompleteSource(() =>
+                        CurrentApplicationWindow.Dispatcher.AwaitableRunAsync(() =>
+                        {
+                            return CurrentApplicationWindow.Content is FrameworkElement rootElement ? rootElement.RequestedTheme : ElementTheme.Default;
+                        }, CoreDispatcherPriority.High));
+                }
             }
             set
             {
-                foreach (Window window in WindowHelper.ActiveWindows)
+                _ = CurrentApplicationWindow?.Dispatcher?.AwaitableRunAsync(() =>
                 {
-                    _ = window.Dispatcher.AwaitableRunAsync(() =>
+                    if (CurrentApplicationWindow?.Content is FrameworkElement rootElement)
                     {
-                        if (window?.Content is FrameworkElement rootElement)
+                        rootElement.RequestedTheme = value;
+                    }
+
+                    if (WindowHelper.IsSupportedAppWindow)
+                    {
+                        foreach (FrameworkElement element in WindowHelper.ActiveWindows.Keys)
                         {
-                            rootElement.RequestedTheme = value;
+                            element.RequestedTheme = value;
                         }
-                    });
-                }
+                    }
+                });
 
                 SettingsHelper.Set(SettingsHelper.SelectedAppTheme, value);
                 UpdateSystemCaptionButtonColors();
@@ -156,27 +151,36 @@ namespace CoolapkUWP.Helpers
             Color ForegroundColor = IsDark || IsHighContrast ? Colors.White : Colors.Black;
             Color BackgroundColor = IsHighContrast ? Color.FromArgb(255, 0, 0, 0) : IsDark ? Color.FromArgb(255, 32, 32, 32) : Color.FromArgb(255, 243, 243, 243);
 
-            foreach (Window window in WindowHelper.ActiveWindows)
+            _ = CurrentApplicationWindow?.Dispatcher?.AwaitableRunAsync(() =>
             {
-                _ = window.Dispatcher.AwaitableRunAsync(() =>
+                if (UIHelper.HasStatusBar)
                 {
-                    if (UIHelper.HasStatusBar)
+                    StatusBar StatusBar = StatusBar.GetForCurrentView();
+                    StatusBar.ForegroundColor = ForegroundColor;
+                    StatusBar.BackgroundColor = BackgroundColor;
+                    StatusBar.BackgroundOpacity = 0; // 透明度
+                }
+                else
+                {
+                    bool ExtendViewIntoTitleBar = CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar;
+                    ApplicationViewTitleBar TitleBar = ApplicationView.GetForCurrentView().TitleBar;
+                    TitleBar.ForegroundColor = TitleBar.ButtonForegroundColor = ForegroundColor;
+                    TitleBar.BackgroundColor = TitleBar.InactiveBackgroundColor = BackgroundColor;
+                    TitleBar.ButtonBackgroundColor = TitleBar.ButtonInactiveBackgroundColor = ExtendViewIntoTitleBar ? Colors.Transparent : BackgroundColor;
+                }
+
+                if (WindowHelper.IsSupportedAppWindow)
+                {
+                    foreach (AppWindow window in WindowHelper.ActiveWindows.Values)
                     {
-                        StatusBar StatusBar = StatusBar.GetForCurrentView();
-                        StatusBar.ForegroundColor = ForegroundColor;
-                        StatusBar.BackgroundColor = BackgroundColor;
-                        StatusBar.BackgroundOpacity = 0; // 透明度
-                    }
-                    else
-                    {
-                        bool ExtendViewIntoTitleBar = CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar;
-                        ApplicationViewTitleBar TitleBar = ApplicationView.GetForCurrentView().TitleBar;
+                        bool ExtendViewIntoTitleBar = window.TitleBar.ExtendsContentIntoTitleBar;
+                        AppWindowTitleBar TitleBar = window.TitleBar;
                         TitleBar.ForegroundColor = TitleBar.ButtonForegroundColor = ForegroundColor;
                         TitleBar.BackgroundColor = TitleBar.InactiveBackgroundColor = BackgroundColor;
                         TitleBar.ButtonBackgroundColor = TitleBar.ButtonInactiveBackgroundColor = ExtendViewIntoTitleBar ? Colors.Transparent : BackgroundColor;
                     }
-                });
-            }
+                }
+            });
         }
 
         public static void UpdateSystemCaptionButtonColors(Window window)

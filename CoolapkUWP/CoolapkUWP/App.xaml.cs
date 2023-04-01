@@ -78,7 +78,6 @@ namespace CoolapkUWP
                 RegisterExceptionHandlingSynchronizationContext();
 
                 MainWindow = Window.Current;
-                WindowHelper.TrackWindow(MainWindow);
 
                 if (JumpList.IsSupported())
                 {
@@ -124,6 +123,10 @@ namespace CoolapkUWP
                 // 并通过将所需信息作为导航参数传入来配置
                 // 参数
                 rootFrame.Navigate(typeof(MainPage), e);
+            }
+            else
+            {
+                _ = UIHelper.OpenActivatedEventArgs(e);
             }
 
             // 确保当前窗口处于活动状态

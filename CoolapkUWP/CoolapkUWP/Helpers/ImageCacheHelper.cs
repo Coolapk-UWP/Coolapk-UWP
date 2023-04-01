@@ -12,14 +12,22 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Helpers
 {
+    [Flags]
     public enum ImageType
     {
-        Icon,
-        Captcha,
-        BigAvatar,
-        SmallImage,
-        OriginImage,
-        SmallAvatar,
+        Origin = 0x00,
+        Small = 0x01,
+
+        Image = 0x02,
+        Avatar = 0x04,
+        Icon = 0x08,
+        Captcha = 0x16,
+
+        OriginImage = Image | Origin,
+        BigAvatar = Avatar | Origin,
+
+        SmallImage = Image | Small,
+        SmallAvatar = Avatar | Small,
     }
 
     internal static partial class ImageCacheHelper
@@ -49,7 +57,7 @@ namespace CoolapkUWP.Helpers
             }
             else
             {
-                if (type == ImageType.SmallImage || type == ImageType.SmallAvatar)
+                if (type.HasFlag(ImageType.Small))
                 {
                     if (url.Contains("coolapk.com") && !url.EndsWith(".png")) { url += ".s.jpg"; }
                     uri = url.ValidateAndGetUri();
@@ -95,7 +103,7 @@ namespace CoolapkUWP.Helpers
             }
             else
             {
-                if (type == ImageType.SmallImage || type == ImageType.SmallAvatar)
+                if (type.HasFlag(ImageType.Small))
                 {
                     if (url.Contains("coolapk.com") && !url.EndsWith(".png")) { url += ".s.jpg"; }
                     uri = url.ValidateAndGetUri();
@@ -104,7 +112,7 @@ namespace CoolapkUWP.Helpers
                 try
                 {
                     StorageFile image = await ImageCache.Instance.GetFileFromCacheAsync(uri);
-                    if (image != null)
+                    if (image == null)
                     {
                         _ = await ImageCache.Instance.GetFromCacheAsync(uri, true);
                         image = await ImageCache.Instance.GetFileFromCacheAsync(uri);
@@ -116,7 +124,7 @@ namespace CoolapkUWP.Helpers
                     try
                     {
                         StorageFile image = await ImageCache.Instance.GetFileFromCacheAsync(uri);
-                        if (image != null)
+                        if (image == null)
                         {
                             _ = await ImageCache.Instance.GetFromCacheAsync(uri, true);
                             image = await ImageCache.Instance.GetFileFromCacheAsync(uri);
@@ -189,7 +197,7 @@ namespace CoolapkUWP.Helpers
                 string fileName = DataHelper.GetMD5(url);
                 StorageFolder folder = await GetFolderAsync(type);
                 IStorageItem item = await folder.TryGetItemAsync(fileName);
-                if (type == ImageType.SmallImage || type == ImageType.SmallAvatar)
+                if (type.HasFlag(ImageType.Small))
                 {
                     if (url.Contains("coolapk.com") && !url.EndsWith(".png")) { url += ".s.jpg"; }
                 }

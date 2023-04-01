@@ -116,6 +116,9 @@
                 Margin="10,0"
                 HorizontalAlignment="Left">
                 <Button Style="{StaticResource ProfileButtonStyle}">
+                    <contract5Present:Button.KeyboardAccelerators>
+                        <contract5Present:KeyboardAccelerator Key="U" Modifiers="Control" />
+                    </contract5Present:Button.KeyboardAccelerators>
                     <Button.ContextFlyout>
                         <MenuFlyout>
                             <MenuFlyoutItem

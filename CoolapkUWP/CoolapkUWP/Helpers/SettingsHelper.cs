@@ -13,21 +13,23 @@ namespace CoolapkUWP.Helpers
 {
     internal static partial class SettingsHelper
     {
-        public const string Uid = "Uid";
-        public const string Token = "Token";
-        public const string TileUrl = "TileUrl";
-        public const string UserName = "UserName";
-        public const string IsUseAPI2 = "IsUseAPI2";
-        public const string IsFirstRun = "IsFirstRun";
-        public const string APIVersion = "APIVersion";
-        public const string UpdateDate = "UpdateDate";
-        public const string IsNoPicsMode = "IsNoPicsMode";
-        public const string TokenVersion = "TokenVersion";
-        public const string CurrentLanguage = "CurrentLanguage";
-        public const string SelectedAppTheme = "SelectedAppTheme";
-        public const string ShowOtherException = "ShowOtherException";
-        public const string IsDisplayOriginPicture = "IsDisplayOriginPicture";
-        public const string CheckUpdateWhenLuanching = "CheckUpdateWhenLuanching";
+        public const string Uid = nameof(Uid);
+        public const string Token = nameof(Token);
+        public const string TileUrl = nameof(TileUrl);
+        public const string UserName = nameof(UserName);
+        public const string IsUseAPI2 = nameof(IsUseAPI2);
+        public const string IsFirstRun = nameof(IsFirstRun);
+        public const string APIVersion = nameof(APIVersion);
+        public const string UpdateDate = nameof(UpdateDate);
+        public const string IsNoPicsMode = nameof(IsNoPicsMode);
+        public const string TokenVersion = nameof(TokenVersion);
+        public const string CurrentLanguage = nameof(CurrentLanguage);
+        public const string IsUseMultiWindow = nameof(IsUseMultiWindow);
+        public const string SelectedAppTheme = nameof(SelectedAppTheme);
+        public const string ShowOtherException = nameof(ShowOtherException);
+        public const string SemaphoreSlimCount = nameof(SemaphoreSlimCount);
+        public const string IsDisplayOriginPicture = nameof(IsDisplayOriginPicture);
+        public const string CheckUpdateWhenLaunching = nameof(CheckUpdateWhenLaunching);
 
         public static Type Get<Type>(string key) => LocalObject.Read<Type>(key);
         public static void Set<Type>(string key, Type value) => LocalObject.Save(key, value);
@@ -80,6 +82,10 @@ namespace CoolapkUWP.Helpers
             {
                 LocalObject.Save(CurrentLanguage, LanguageHelper.AutoLanguageCode);
             }
+            if (!LocalObject.KeyExists(IsUseMultiWindow))
+            {
+                LocalObject.Save(IsUseMultiWindow, true);
+            }
             if (!LocalObject.KeyExists(SelectedAppTheme))
             {
                 LocalObject.Save(SelectedAppTheme, ElementTheme.Default);
@@ -88,13 +94,17 @@ namespace CoolapkUWP.Helpers
             {
                 LocalObject.Save(ShowOtherException, true);
             }
+            if (!LocalObject.KeyExists(SemaphoreSlimCount))
+            {
+                LocalObject.Save(SemaphoreSlimCount, Environment.ProcessorCount);
+            }
             if (!LocalObject.KeyExists(IsDisplayOriginPicture))
             {
                 LocalObject.Save(IsDisplayOriginPicture, false);
             }
-            if (!LocalObject.KeyExists(CheckUpdateWhenLuanching))
+            if (!LocalObject.KeyExists(CheckUpdateWhenLaunching))
             {
-                LocalObject.Save(CheckUpdateWhenLuanching, true);
+                LocalObject.Save(CheckUpdateWhenLaunching, true);
             }
         }
     }

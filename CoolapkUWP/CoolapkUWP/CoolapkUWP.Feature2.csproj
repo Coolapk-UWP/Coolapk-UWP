@@ -1332,7 +1332,9 @@
     <Content Include="Assets\About\About.en-US.md" />
     <Content Include="Assets\About\About.zh-TW.md" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PRIResource Include="Strings\zh-CN\ShowImagePage.resw" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

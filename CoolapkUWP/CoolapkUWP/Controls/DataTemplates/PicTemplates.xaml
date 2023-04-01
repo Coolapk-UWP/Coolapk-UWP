@@ -2,26 +2,107 @@
     x:Class="CoolapkUWP.Controls.DataTemplates.PicTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)">
+    xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
+    xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 7)"
+    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls">
     <DataTemplate x:Key="PicDefaultTemplate">
         <Border
+            x:Name="Root"
             Width="102"
             Height="102"
             CornerRadius="{ThemeResource OverlayCornerRadius}"
+            DragStarting="Border_DragStarting"
             KeyDown="Image_KeyDown"
             Tag="{Binding}"
             Tapped="Image_Tapped">
             <contract7Present:Border.BackgroundTransition>
                 <contract7Present:BrushTransition />
             </contract7Present:Border.BackgroundTransition>
+            <Border.ContextFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem
+                        x:Name="RefreshButton"
+                        x:Uid="/ShowImagePage/RefreshMenuItem"
+                        Click="AppBarButton_Click"
+                        Tag="{Binding}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
+                        </MenuFlyoutItem.Icon>
+                        <contract5Present:MenuFlyoutItem.KeyboardAccelerators>
+                            <contract5Present:KeyboardAccelerator Key="F5" ScopeOwner="{Binding ElementName=Root}" />
+                        </contract5Present:MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem
+                        x:Name="CopyButton"
+                        x:Uid="/ShowImagePage/CopyMenuItem"
+                        Click="AppBarButton_Click"
+                        Tag="{Binding}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
+                        </MenuFlyoutItem.Icon>
+                        <contract5Present:MenuFlyoutItem.KeyboardAccelerators>
+                            <contract5Present:KeyboardAccelerator
+                                Key="C"
+                                Modifiers="Control"
+                                ScopeOwner="{Binding ElementName=Root}" />
+                        </contract5Present:MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem
+                        x:Name="ShareButton"
+                        x:Uid="/ShowImagePage/ShareMenuItem"
+                        Click="AppBarButton_Click"
+                        Tag="{Binding}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72D;" />
+                        </MenuFlyoutItem.Icon>
+                        <contract5Present:MenuFlyoutItem.KeyboardAccelerators>
+                            <contract5Present:KeyboardAccelerator
+                                Key="S"
+                                Modifiers="Shift"
+                                ScopeOwner="{Binding ElementName=Root}" />
+                        </contract5Present:MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem
+                        x:Name="SaveButton"
+                        x:Uid="/ShowImagePage/SaveMenuItem"
+                        Click="AppBarButton_Click"
+                        Tag="{Binding}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74E;" />
+                        </MenuFlyoutItem.Icon>
+                        <contract5Present:MenuFlyoutItem.KeyboardAccelerators>
+                            <contract5Present:KeyboardAccelerator
+                                Key="S"
+                                Modifiers="Control"
+                                ScopeOwner="{Binding ElementName=Root}" />
+                        </contract5Present:MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                </MenuFlyout>
+            </Border.ContextFlyout>
             <Border.Background>
                 <ImageBrush ImageSource="{Binding Pic, Mode=OneWay}" Stretch="UniformToFill" />
             </Border.Background>
             <Grid>
-                <StackPanel
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Orientation="Horizontal">
+                <Border
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <contract7NotPresent:Border.Child>
+                        <ProgressRing
+                            Width="50"
+                            Height="50"
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                            IsActive="{Binding IsLoading}" />
+                    </contract7NotPresent:Border.Child>
+                    <contract7Present:Border.Child>
+                        <muxc:ProgressRing
+                            Width="50"
+                            Height="50"
+                            IsActive="{Binding IsLoading}" />
+                    </contract7Present:Border.Child>
+                </Border>
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Bottom">
                     <Border
                         x:Name="GIF"
                         Padding="4,2"
@@ -33,11 +114,8 @@
                             Foreground="White"
                             Text="GIF" />
                     </Border>
-                </StackPanel>
-                <StackPanel
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Orientation="Horizontal">
+                </Grid>
+                <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
                     <Border
                         x:Name="LongPic"
                         Padding="4,2"
@@ -60,7 +138,7 @@
                             FontSize="12"
                             Foreground="White" />
                     </Border>
-                </StackPanel>
+                </Grid>
             </Grid>
         </Border>
     </DataTemplate>

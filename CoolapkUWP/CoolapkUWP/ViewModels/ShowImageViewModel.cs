@@ -17,7 +17,6 @@ namespace CoolapkUWP.ViewModels
 {
     public class ShowImageViewModel : INotifyPropertyChanged, IViewModel
     {
-        private readonly ImageModel BaseImage;
         private string ImageName = string.Empty;
         public double[] VerticalOffsets { get; set; } = new double[1];
 
@@ -35,21 +34,24 @@ namespace CoolapkUWP.ViewModels
             }
         }
 
-        private int index;
+        private int index = -1;
         public int Index
         {
             get => index;
             set
             {
-                ResigerImage(Images[index], Images[value]);
-                index = value;
-                RaisePropertyChangedEvent();
-                Title = GetTitle(Images[value].Uri);
-                ShowOrigin = Images[value].Type == ImageType.SmallImage || Images[value].Type == ImageType.SmallAvatar;
+                if (index != value)
+                {
+                    if (index != -1) { ResigerImage(Images[index], Images[value]); }
+                    index = value;
+                    RaisePropertyChangedEvent();
+                    Title = GetTitle(Images[value].Uri);
+                    ShowOrigin = Images[value].Type.HasFlag(ImageType.Small);
+                }
             }
         }
 
-        private bool isLoading = true;
+        private bool isLoading;
         public bool IsLoading
         {
             get => isLoading;
@@ -98,14 +100,18 @@ namespace CoolapkUWP.ViewModels
             if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
 
-        public ShowImageViewModel(ImageModel image) => BaseImage = image;
-
-        public void Initialize()
+        public ShowImageViewModel(ImageModel image)
         {
-            Images = BaseImage.ContextArray.Any()
-                ? BaseImage.ContextArray.Select(x => new ImageModel(x.Uri, ImageType.SmallImage)).ToList()
-                : (IList<ImageModel>)new List<ImageModel> { new ImageModel(BaseImage.Uri, ImageType.SmallImage) };
-            Index = BaseImage.ContextArray.Any() ? BaseImage.ContextArray.IndexOf(BaseImage) : 0;
+            if (image.ContextArray.Any())
+            {
+                Images = image.ContextArray;
+                Index = Images.IndexOf(image);
+            }
+            else
+            {
+                Images = new List<ImageModel> { image };
+                Index = 0;
+            }
         }
 
         public async Task Refresh(bool reset = false) => await Images[Index].Refresh();
@@ -119,50 +125,66 @@ namespace CoolapkUWP.ViewModels
 
         public async void CopyPic()
         {
-            StorageFile file = await ImageCacheHelper.GetImageFileAsync(ImageType.OriginImage, Images[Index].Uri);
-            if (file == null)
-            {
-                string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
-                UIHelper.ShowMessage(str);
-            }
-            RandomAccessStreamReference bitmap = RandomAccessStreamReference.CreateFromFile(file);
-
-            DataPackage dataPackage = new DataPackage();
-            dataPackage.SetBitmap(bitmap);
-            dataPackage.Properties.Title = "分享图片";
-            dataPackage.Properties.Description = ImageName;
-
+            DataPackage dataPackage = await GetImageDataPackage("复制图片");
             Clipboard.SetContentWithOptions(dataPackage, null);
         }
 
         public async void SharePic()
+        {
+            DataPackage dataPackage = await GetImageDataPackage("分享图片");
+            if (dataPackage != null)
+            {
+                DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+                dataTransferManager.DataRequested += (sender, args) => { args.Request.Data = dataPackage; };
+                DataTransferManager.ShowShareUI();
+            }
+        }
+
+        public async Task<DataPackage> GetImageDataPackage(string title)
         {
             StorageFile file = await ImageCacheHelper.GetImageFileAsync(ImageType.OriginImage, Images[Index].Uri);
             if (file == null)
             {
                 string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
                 UIHelper.ShowMessage(str);
+                return null;
             }
             RandomAccessStreamReference bitmap = RandomAccessStreamReference.CreateFromFile(file);
 
             DataPackage dataPackage = new DataPackage();
             dataPackage.SetBitmap(bitmap);
-            dataPackage.Properties.Title = "分享图片";
+            dataPackage.Properties.Title = title;
             dataPackage.Properties.Description = ImageName;
 
-            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
-            dataTransferManager.DataRequested += (sender, args) => { args.Request.Data = dataPackage; };
-            DataTransferManager.ShowShareUI();
+            return dataPackage;
+        }
+
+        public async Task GetImageDataPackage(DataPackage dataPackage, string title)
+        {
+            StorageFile file = await ImageCacheHelper.GetImageFileAsync(ImageType.OriginImage, Images[Index].Uri);
+            if (file == null)
+            {
+                string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
+                UIHelper.ShowMessage(str);
+                return;
+            }
+            RandomAccessStreamReference bitmap = RandomAccessStreamReference.CreateFromFile(file);
+
+            dataPackage.SetBitmap(bitmap);
+            dataPackage.Properties.Title = title;
+            dataPackage.Properties.Description = ImageName;
+            dataPackage.SetStorageItems(new IStorageItem[] { file });
         }
 
         public async void SavePic()
         {
             string url = Images[Index].Uri;
             StorageFile image = await ImageCacheHelper.GetImageFileAsync(ImageType.OriginImage, url);
-            if (image != null)
+            if (image == null)
             {
                 string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
                 UIHelper.ShowMessage(str);
+                return;
             }
 
             string fileName = ImageName;

@@ -41,6 +41,8 @@ namespace CoolapkUWP.Pages
     /// </summary>
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
+        private bool isLoaded;
+
         private string _userName;
         public string UserName
         {
@@ -119,90 +121,41 @@ namespace CoolapkUWP.Pages
             Window.Current?.SetTitleBar(DragRegion);
             SettingsHelper.LoginChanged += OnLoginChanged;
             if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
-            {
-                HardwareButtons.BackPressed += System_BackPressed;
-            }
+            { HardwareButtons.BackPressed += System_BackPressed; }
             SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
             AppTitleText.Text = ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安";
-            CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged += (s, _) => UpdateAppTitle(s);
-            if (e.Parameter is IActivatedEventArgs ActivatedEventArgs) { OpenActivatedEventArgs(ActivatedEventArgs); }
+            CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged += TitleBar_LayoutMetricsChanged;
+            if (!isLoaded)
+            {
+                if (e.Parameter is IActivatedEventArgs ActivatedEventArgs)
+                { OpenActivatedEventArgs(ActivatedEventArgs); }
+                isLoaded = true;
+            }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            Window.Current.SetTitleBar(null);
+            SettingsHelper.LoginChanged -= OnLoginChanged;
+            if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
+            { HardwareButtons.BackPressed -= System_BackPressed; }
+            SystemNavigationManager.GetForCurrentView().BackRequested -= System_BackRequested;
+            CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged -= TitleBar_LayoutMetricsChanged;
+        }
+
+        private void TitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
+        {
+            UpdateAppTitle(sender);
         }
 
         public string GetAppTitleFromSystem => Package.Current.DisplayName;
 
-        private void OpenActivatedEventArgs(IActivatedEventArgs args)
+        private async void OpenActivatedEventArgs(IActivatedEventArgs args)
         {
-            switch (args.Kind)
+            if (!(await UIHelper.OpenActivatedEventArgs(args)))
             {
-                case ActivationKind.Launch:
-                    LaunchActivatedEventArgs LaunchActivatedEventArgs = (LaunchActivatedEventArgs)args;
-                    if (!string.IsNullOrWhiteSpace(LaunchActivatedEventArgs.Arguments))
-                    {
-                        switch (LaunchActivatedEventArgs.Arguments)
-                        {
-                            case "settings":
-                                UIHelper.Navigate(typeof(SettingsPage));
-                                break;
-                            case "flags":
-                                UIHelper.Navigate(typeof(TestPage));
-                                break;
-                            default:
-                                _ = UIHelper.OpenLinkAsync(LaunchActivatedEventArgs.Arguments);
-                                break;
-                        }
-                    }
-                    else if (LaunchActivatedEventArgs.TileActivatedInfo != null)
-                    {
-                        if (LaunchActivatedEventArgs.TileActivatedInfo.RecentlyShownNotifications.Any())
-                        {
-                            string TileArguments = LaunchActivatedEventArgs.TileActivatedInfo.RecentlyShownNotifications.FirstOrDefault().Arguments;
-                            if (!string.IsNullOrWhiteSpace(LaunchActivatedEventArgs.Arguments))
-                            {
-                                _ = UIHelper.OpenLinkAsync(TileArguments);
-                            }
-                            else
-                            {
-                                NavigationView.SelectedItem = NavigationView.MenuItems[0];
-                            }
-                        }
-                        else
-                        {
-                            NavigationView.SelectedItem = NavigationView.MenuItems[0];
-                        }
-                    }
-                    else
-                    {
-                        NavigationView.SelectedItem = NavigationView.MenuItems[0];
-                    }
-                    break;
-                case ActivationKind.Protocol:
-                    IProtocolActivatedEventArgs ProtocolActivatedEventArgs = (IProtocolActivatedEventArgs)args;
-                    switch (ProtocolActivatedEventArgs.Uri.Host)
-                    {
-                        case "www.coolapk.com":
-                        case "coolapk.com":
-                        case "www.coolmarket.com":
-                        case "coolmarket.com":
-                            _ = UIHelper.OpenLinkAsync(ProtocolActivatedEventArgs.Uri.AbsolutePath);
-                            break;
-                        case "http":
-                        case "https":
-                            _ = UIHelper.OpenLinkAsync($"{ProtocolActivatedEventArgs.Uri.Host}:{ProtocolActivatedEventArgs.Uri.AbsolutePath}");
-                            break;
-                        case "settings":
-                            UIHelper.Navigate(typeof(SettingsPage));
-                            break;
-                        case "flags":
-                            UIHelper.Navigate(typeof(TestPage));
-                            break;
-                        default:
-                            _ = UIHelper.OpenLinkAsync($"{(ProtocolActivatedEventArgs.Uri.AbsolutePath[0] == '/' ? string.Empty : "/")}{ProtocolActivatedEventArgs.Uri.AbsolutePath}");
-                            break;
-                    }
-                    break;
-                default:
-                    NavigationView.SelectedItem = NavigationView.MenuItems[0];
-                    break;
+                NavigationView.SelectedItem = NavigationView.MenuItems[0];
             }
         }
 

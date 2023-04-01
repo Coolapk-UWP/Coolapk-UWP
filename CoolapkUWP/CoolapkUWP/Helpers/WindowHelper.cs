@@ -1,5 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Windows.Foundation.Metadata;
+using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Hosting;
 
 namespace CoolapkUWP.Helpers
 {
@@ -10,10 +16,47 @@ namespace CoolapkUWP.Helpers
     // windows. In the future, we would like to support this in platform APIs.
     public static class WindowHelper
     {
-        public static void TrackWindow(Window window) => ActiveWindows.Add(window);
+        public static bool IsSupportedAppWindow => ApiInformation.IsTypePresent("Windows.UI.WindowManagement.AppWindow");
 
-        public static void UntrackWindow(Window window) => ActiveWindows.Remove(window);
+        public static bool IsAppWindow(this UIElement element) => IsSupportedAppWindow && element?.XamlRoot?.Content != null && ActiveWindows.ContainsKey(element.XamlRoot.Content);
 
-        public static List<Window> ActiveWindows { get; } = new List<Window>();
+        public static async Task<(AppWindow, Frame)> CreateWindow()
+        {
+            Frame newFrame = new Frame();
+            AppWindow newWindow = await AppWindow.TryCreateAsync();
+            ElementCompositionPreview.SetAppWindowContent(newWindow, newFrame);
+            TrackWindow(newWindow, newFrame);
+            return (newWindow, newFrame);
+        }
+
+        public static void TrackWindow(this AppWindow window, Frame frame)
+        {
+            window.Closed += (sender, args) =>
+            {
+                ActiveWindows?.Remove(frame);
+                frame.Content = null;
+                window = null;
+            };
+            ActiveWindows?.Add(frame, window);
+        }
+
+        public static AppWindow GetWindowForElement(this UIElement element)
+        {
+            if (element.IsAppWindow())
+            {
+                return ActiveWindows[element.XamlRoot.Content];
+            }
+            return null;
+        }
+
+        public static void SetXAMLRoot(this UIElement element, UIElement target)
+        {
+            if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.UIElement", "XamlRoot"))
+            {
+                element.XamlRoot = target?.XamlRoot;
+            }
+        }
+
+        public static Dictionary<UIElement, AppWindow> ActiveWindows { get; } = IsSupportedAppWindow ? new Dictionary<UIElement, AppWindow>() : null;
     }
 }
