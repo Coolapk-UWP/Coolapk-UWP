@@ -51,6 +51,12 @@
                     <controls:Setting x:Uid="/SettingsPage/NoPicsModeSettings" Icon="&#xEB9F;">
                         <ToggleSwitch IsOn="{Binding IsNoPicsMode, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
                     </controls:Setting>
+                    <controls:Setting x:Uid="/SettingsPage/UseMultiWindowSettings" Icon="&#xE78B;">
+                        <ToggleSwitch IsOn="{Binding IsUseMultiWindow, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
+                    </controls:Setting>
+                    <controls:Setting x:Uid="/SettingsPage/DisplayOriginPictureSettings" Icon="&#xE8B9;">
+                        <ToggleSwitch IsOn="{Binding IsDisplayOriginPicture, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
+                    </controls:Setting>
                 </controls:SettingsGroup>
                 <controls:SettingsGroup
                     x:Name="AccountSettingsHeader"

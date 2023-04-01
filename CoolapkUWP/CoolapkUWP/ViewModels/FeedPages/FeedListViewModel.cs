@@ -3,6 +3,7 @@ using CoolapkUWP.Controls;
 using CoolapkUWP.Controls.DataTemplates;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Models.Images;
 using CoolapkUWP.Models.Pages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.DataSource;
@@ -12,8 +13,14 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
+using Windows.Storage;
 using Windows.UI.Notifications;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
@@ -99,6 +106,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 case FeedListType.TagPageList: return new TagViewModel(id);
                 case FeedListType.DyhPageList: return new DyhViewModel(id);
                 case FeedListType.ProductPageList: return new ProductViewModel(id);
+                case FeedListType.CollectionPageList: return new CollectionViewModel(id);
                 default: return null;
             }
         }
@@ -109,6 +117,99 @@ namespace CoolapkUWP.ViewModels.FeedPages
             {
                 Detail.IsCopyEnabled = mode;
             }
+        }
+
+        public async void CopyPic(ImageModel image)
+        {
+            DataPackage dataPackage = await GetImageDataPackage(image, "复制图片");
+            Clipboard.SetContentWithOptions(dataPackage, null);
+        }
+
+        public async void SharePic(ImageModel image)
+        {
+            DataPackage dataPackage = await GetImageDataPackage(image, "分享图片");
+            if (dataPackage != null)
+            {
+                DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+                dataTransferManager.DataRequested += (sender, args) => { args.Request.Data = dataPackage; };
+                DataTransferManager.ShowShareUI();
+            }
+        }
+
+        public async void SavePic(ImageModel imageModel)
+        {
+            string url = imageModel.Uri;
+            StorageFile image = await ImageCacheHelper.GetImageFileAsync(ImageType.OriginImage, url);
+            if (image == null)
+            {
+                string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
+                UIHelper.ShowMessage(str);
+                return;
+            }
+
+            string fileName = GetTitle(url);
+            FileSavePicker fileSavePicker = new FileSavePicker
+            {
+                SuggestedStartLocation = PickerLocationId.PicturesLibrary,
+                SuggestedFileName = fileName.Replace(fileName.Substring(fileName.LastIndexOf('.')), string.Empty)
+            };
+
+            string fileex = fileName.Substring(fileName.LastIndexOf('.') + 1);
+            int index = fileex.IndexOfAny(new char[] { '?', '%', '&' });
+            fileex = fileex.Substring(0, index == -1 ? fileex.Length : index);
+            fileSavePicker.FileTypeChoices.Add($"{fileex}文件", new string[] { "." + fileex });
+
+            StorageFile file = await fileSavePicker.PickSaveFileAsync();
+            if (file != null)
+            {
+                using (Stream FolderStream = await file.OpenStreamForWriteAsync())
+                {
+                    using (IRandomAccessStreamWithContentType RandomAccessStream = await image.OpenReadAsync())
+                    {
+                        using (Stream ImageStream = RandomAccessStream.AsStreamForRead())
+                        {
+                            await ImageStream.CopyToAsync(FolderStream);
+                        }
+                    }
+                }
+            }
+        }
+
+        public async Task<DataPackage> GetImageDataPackage(ImageModel image, string title)
+        {
+            StorageFile file = await ImageCacheHelper.GetImageFileAsync(ImageType.OriginImage, image.Uri);
+            if (file == null) { return null; }
+            RandomAccessStreamReference bitmap = RandomAccessStreamReference.CreateFromFile(file);
+
+            DataPackage dataPackage = new DataPackage();
+            dataPackage.SetBitmap(bitmap);
+            dataPackage.Properties.Title = title;
+            dataPackage.Properties.Description = GetTitle(image.Uri);
+
+            return dataPackage;
+        }
+
+        public async Task GetImageDataPackage(DataPackage dataPackage, ImageModel image, string title)
+        {
+            StorageFile file = await ImageCacheHelper.GetImageFileAsync(ImageType.OriginImage, image.Uri);
+            if (file == null)
+            {
+                string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
+                UIHelper.ShowMessage(str);
+                return;
+            }
+            RandomAccessStreamReference bitmap = RandomAccessStreamReference.CreateFromFile(file);
+
+            dataPackage.SetBitmap(bitmap);
+            dataPackage.Properties.Title = title;
+            dataPackage.Properties.Description = GetTitle(image.Uri);
+            dataPackage.SetStorageItems(new IStorageItem[] { file });
+        }
+
+        private string GetTitle(string url)
+        {
+            Regex regex = new Regex(@"[^/]+(?!.*/)");
+            return regex.IsMatch(url) ? regex.Match(url).Value : "图片";
         }
 
         public abstract Task<bool> PinSecondaryTile(Entity entity);
@@ -528,6 +629,92 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 if (token != null)
                 {
                     detail = new ProductDetail(token);
+                }
+
+                return detail;
+            }
+
+            public override Task<bool> PinSecondaryTile(Entity entity) => Task.Run(() => false);
+        }
+
+        internal class CollectionViewModel : FeedListViewModel
+        {
+            internal CollectionViewModel(string id) : base(id, FeedListType.CollectionPageList) { }
+
+            public override async Task Refresh(bool reset = false)
+            {
+                if (Detail == null || reset)
+                {
+                    Detail = await GetDetail();
+                }
+                if (ItemSource == null)
+                {
+                    (bool isSucceed, JToken result) = await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.GetCollectionContents, ID, "1", ""), true);
+                    if (isSucceed)
+                    {
+                        JArray array = (JArray)result;
+                        foreach (JObject item in array)
+                        {
+                            if (item.TryGetValue("entityTemplate", out JToken entityTemplate) && entityTemplate.ToString() == "selectorLinkCard")
+                            {
+                                if (item.TryGetValue("entities", out JToken v1))
+                                {
+                                    JArray entities = (JArray)v1;
+                                    List<ShyHeaderItem> ItemSource = new List<ShyHeaderItem>();
+                                    foreach (JObject entity in entities)
+                                    {
+                                        if (entity.TryGetValue("url", out JToken url) && !string.IsNullOrEmpty(url.ToString()))
+                                        {
+                                            CoolapkListProvider Provider = new CoolapkListProvider(
+                                                (p, firstItem, lastItem) => UriHelper.GetUri(UriType.DataList, url.ToString().Replace("#", "%23").Replace("/", "%2F").Replace("?", "%3F").Replace("=", "%3D").Replace("&", "%26"), $"&page={p}" + (string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}") + (string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}")),
+                                                GetEntities,
+                                                "id");
+                                            FeedListItemSourse FeedListItemSourse = new FeedListItemSourse(ID, Provider);
+                                            ShyHeaderItem ShyHeaderItem = new ShyHeaderItem { ItemSource = FeedListItemSourse };
+                                            if (entity.TryGetValue("title", out JToken title) && !string.IsNullOrEmpty(title.ToString()))
+                                            {
+                                                ShyHeaderItem.Header = title.ToString();
+                                            }
+                                            ItemSource.Add(ShyHeaderItem);
+                                        }
+                                    }
+                                    this.ItemSource = ItemSource;
+                                    break;
+                                }
+                            }
+                        }
+                        if (ItemSource == null)
+                        {
+                            List<ShyHeaderItem> ItemSource = new List<ShyHeaderItem>();
+                            CoolapkListProvider Provider = new CoolapkListProvider(
+                                (p, firstItem, lastItem) => UriHelper.GetUri(UriType.GetCollectionContents, ID, p, string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}", string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
+                                GetEntities,
+                                "id");
+                            FeedListItemSourse FeedListItemSourse = new FeedListItemSourse(ID, Provider);
+                            ShyHeaderItem ShyHeaderItem = new ShyHeaderItem
+                            {
+                                ItemSource = FeedListItemSourse,
+                                Header = Detail is CollectionDetail CollectionDetail && CollectionDetail.ItemNum > 0 ? $"全部({CollectionDetail.ItemNum})" : (object)$"全部"
+                            };
+                            ItemSource.Add(ShyHeaderItem);
+                            this.ItemSource = ItemSource;
+                        }
+                    }
+                }
+            }
+            protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as CollectionDetail)?.Title;
+
+            public override async Task<FeedListDetailBase> GetDetail()
+            {
+                (bool isSucceed, JToken result) = await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.GetCollectionDetail, ID), true);
+                if (!isSucceed) { return null; }
+
+                JObject token = (JObject)result;
+                FeedListDetailBase detail = null;
+
+                if (token != null)
+                {
+                    detail = new CollectionDetail(token);
                 }
 
                 return detail;

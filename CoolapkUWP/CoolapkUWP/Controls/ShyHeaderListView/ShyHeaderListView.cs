@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Common;
+using CoolapkUWP.Helpers;
 using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Collections.Generic;
@@ -29,8 +30,8 @@ namespace CoolapkUWP.Controls
         private double _offset;
         private double _topheight;
         private CompositionPropertySet _propSet;
-        private readonly ScrollProgressProvider _progressProvider;
-        private bool HasGetElementVisual => ApiInformation.IsMethodPresent("Windows.UI.Xaml.Hosting.ElementCompositionPreview", "GetElementVisual");
+        private ScrollProgressProvider _progressProvider;
+        private readonly bool HasGetElementVisual = SettingsHelper.Get<bool>(SettingsHelper.IsUseCompositor) && ApiInformation.IsMethodPresent("Windows.UI.Xaml.Hosting.ElementCompositionPreview", "GetElementVisual");
 
         public static readonly DependencyProperty TopHeaderProperty =
             DependencyProperty.Register(
@@ -186,7 +187,6 @@ namespace CoolapkUWP.Controls
             if (HasGetElementVisual)
             {
                 _progressProvider = new ScrollProgressProvider();
-                ScrollViewerExtensions.SetEnableMiddleClickScrolling(this, true);
                 _progressProvider.ProgressChanged += ProgressProvider_ProgressChanged;
             }
         }
@@ -242,6 +242,7 @@ namespace CoolapkUWP.Controls
             if (_listViewHeader != null)
             {
                 _listViewHeader.Loaded += ListViewHeader_Loaded;
+                _listViewHeader.Unloaded += ListViewHeader_Unloaded;
             }
             base.OnApplyTemplate();
         }
@@ -263,7 +264,7 @@ namespace CoolapkUWP.Controls
         {
             _offset = _scrollViewer.VerticalOffset;
             double Translation = _scrollViewer.VerticalOffset < _topheight ? 0 : -_topheight + _scrollViewer.VerticalOffset;
-            _listViewHeader.RenderTransform = new TranslateTransform { Y = Translation };
+            _listViewHeader.RenderTransform = new TranslateTransform() { Y = Translation };
             if (_scrollViewer.VerticalOffset >= _topheight || _topheight == 0)
             {
                 VisualStateManager.GoToState(this, "OnThreshold", true);
@@ -325,13 +326,16 @@ namespace CoolapkUWP.Controls
         {
             Grid TopHeader = sender as Grid;
             _topheight = Math.Max(0, TopHeader.ActualHeight - HeaderMargin);
-            if (_progressProvider != null)
-            {
-                _progressProvider.Threshold = _topheight;
-            }
             if (HasGetElementVisual)
             {
-                _propSet = _propSet ?? Window.Current?.Compositor?.CreatePropertySet();
+                if (_progressProvider == null)
+                {
+                    _progressProvider = new ScrollProgressProvider();
+                    _progressProvider.ProgressChanged += ProgressProvider_ProgressChanged;
+                    _progressProvider.ScrollViewer = _scrollViewer;
+                }
+                _progressProvider.Threshold = _topheight;
+                _propSet = _propSet ?? Window.Current.Compositor.CreatePropertySet();
                 _propSet.InsertScalar("height", (float)_topheight);
             }
             if (_scrollViewer.VerticalOffset >= _topheight || _topheight == 0)
@@ -351,13 +355,20 @@ namespace CoolapkUWP.Controls
 
             if (HasGetElementVisual)
             {
+                if (_progressProvider == null)
+                {
+                    _progressProvider = new ScrollProgressProvider();
+                    _progressProvider.ProgressChanged += ProgressProvider_ProgressChanged;
+                    _progressProvider.ScrollViewer = _scrollViewer;
+                }
+
                 Visual _headerVisual = ElementCompositionPreview.GetElementVisual(ListViewHeader);
                 CompositionPropertySet _manipulationPropertySet = ElementCompositionPreview.GetScrollViewerManipulationPropertySet(_scrollViewer);
 
-                _propSet = _propSet ?? Window.Current?.Compositor?.CreatePropertySet();
+                _propSet = _propSet ?? Window.Current.Compositor.CreatePropertySet();
                 _propSet.InsertScalar("height", (float)Math.Max(0, _topHeader.ActualHeight - HeaderMargin));
 
-                Compositor _compositor = Window.Current?.Compositor;
+                Compositor _compositor = Window.Current.Compositor;
                 ExpressionAnimation _headerAnimation = _compositor.CreateExpressionAnimation("_manipulationPropertySet.Translation.Y > -_propSet.height ? 0: -_propSet.height -_manipulationPropertySet.Translation.Y");
 
                 _headerAnimation.SetReferenceParameter("_propSet", _propSet);
@@ -368,6 +379,15 @@ namespace CoolapkUWP.Controls
             else
             {
                 _topheight = Math.Max(0, _topHeader.ActualHeight - HeaderMargin);
+            }
+        }
+
+        private void ListViewHeader_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (_progressProvider != null)
+            {
+                _progressProvider.ProgressChanged -= ProgressProvider_ProgressChanged;
+                _progressProvider = null;
             }
         }
     }

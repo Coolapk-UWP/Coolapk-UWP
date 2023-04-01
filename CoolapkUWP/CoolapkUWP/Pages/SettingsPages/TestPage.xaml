@@ -31,13 +31,19 @@
                     <controls:Setting x:Uid="/TestPage/TitleBarSettings" Icon="&#xE737;">
                         <ToggleSwitch IsOn="{x:Bind IsExtendsTitleBar, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
                     </controls:Setting>
-                    <controls:SettingExpander x:Uid="/TestPage/ProgressSettings" Icon="&#xF16A;">
+                    <controls:SettingExpander x:Uid="/TestPage/ProgressSettings">
+                        <controls:SettingExpander.Icon>
+                            <FontIcon
+                                contract5NotPresent:Glyph="&#xE9F5;"
+                                contract5Present:Glyph="&#xF16A;"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                        </controls:SettingExpander.Icon>
                         <controls:SettingExpander.ActionContent>
                             <ToggleSwitch IsOn="{x:Bind IsShowProgressRing, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
                         </controls:SettingExpander.ActionContent>
                         <controls:Setting x:Uid="/TestPage/SetProgressValue" Style="{StaticResource DefaultSettingExpanderItemStyle}">
                             <Slider
-                                Width="180"
+                                Width="{StaticResource SettingCardContentMinWidth}"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
                                 Maximum="100"
@@ -80,10 +86,10 @@
                                 Tag="OutPIP" />
                         </controls:StackPanel>
                     </controls:Setting>
-                    <controls:SettingExpander
-                        Description="各种强调色"
-                        Header="颜色"
-                        Icon="&#xE790;">
+                    <controls:Setting x:Uid="/TestPage/UseCompositorSettings" Icon="&#xED56;">
+                        <ToggleSwitch IsOn="{x:Bind IsUseCompositor, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
+                    </controls:Setting>
+                    <controls:SettingExpander x:Uid="/TestPage/AccentColorSettings" Icon="&#xE790;">
                         <controls:Setting
                             Foreground="White"
                             Header="SystemAccentColor"
@@ -143,11 +149,8 @@
                         </controls:Setting>
                     </controls:SettingExpander>
                 </controls:SettingsGroup>
-                <controls:SettingsGroup Header="网络测试">
-                    <controls:Setting
-                        Description="设置使用的酷安版本"
-                        Header="API 版本"
-                        Icon="&#xE90F;">
+                <controls:SettingsGroup x:Uid="/TestPage/WebTestSettingsHeader">
+                    <controls:Setting x:Uid="/TestPage/APIVersionSettings" Icon="&#xEB77;">
                         <ComboBox SelectedIndex="{x:Bind APIVersion, Mode=TwoWay}">
                             <ComboBoxItem>小程序</ComboBoxItem>
                             <ComboBoxItem>V6</ComboBoxItem>
@@ -160,43 +163,46 @@
                             <ComboBoxItem>V13</ComboBoxItem>
                         </ComboBox>
                     </controls:Setting>
-                    <controls:Setting
-                        Description="设置使用的 Token 获取方法"
-                        Header="Token 版本"
-                        Icon="&#xE90F;">
+                    <controls:Setting x:Uid="/TestPage/TokenVersionSettings" Icon="&#xED5D;">
                         <ComboBox SelectedIndex="{x:Bind TokenVersion, Mode=TwoWay}">
                             <ComboBoxItem>Token V1</ComboBoxItem>
                             <ComboBoxItem>Token V2</ComboBoxItem>
                         </ComboBox>
                     </controls:Setting>
-                    <controls:Setting
-                        Description="是否使用新的酷安接口"
-                        Header="是否使用 API2"
-                        Icon="&#xE90F;">
+                    <controls:Setting x:Uid="/TestPage/UseAPI2Settings" Icon="&#xEB41;">
                         <ToggleSwitch IsOn="{x:Bind IsUseAPI2, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
                     </controls:Setting>
-                    <controls:SettingExpander
-                        Description="测试网络相关内容"
-                        Header="Web 测试"
-                        Icon="&#xE909;">
+                    <controls:Setting x:Uid="/TestPage/SlimCountSettings" Icon="&#xEA79;">
+                        <Slider
+                            Width="{StaticResource SettingCardContentMinWidth}"
+                            Maximum="256"
+                            Minimum="1"
+                            TickFrequency="1"
+                            TickPlacement="Outside"
+                            Value="{x:Bind SemaphoreSlimCount, Mode=TwoWay}" />
+                    </controls:Setting>
+                    <controls:SettingExpander x:Uid="/TestPage/WebTestSettings" Icon="&#xE909;">
                         <controls:SettingExpander.ActionContent>
-                            <TextBox x:Name="URLTextBox" Text="https://api2.coolapk.com/v6/account/checkLoginInfo" />
+                            <TextBox
+                                x:Name="URLTextBox"
+                                MaxWidth="{StaticResource SettingCardContentMinWidth}"
+                                Text="https://api2.coolapk.com/v6/account/checkLoginInfo" />
                         </controls:SettingExpander.ActionContent>
                         <controls:Setting
+                            x:Uid="/TestPage/OpenURL"
                             Click="Button_Click"
-                            Header="打开页面"
                             IsClickEnabled="True"
                             Style="{StaticResource ClickableSettingExpanderItemStyle}"
                             Tag="OpenURL" />
                         <controls:Setting
+                            x:Uid="/TestPage/GetURLContent"
                             Click="Button_Click"
-                            Header="获取内容"
                             IsClickEnabled="True"
                             Style="{StaticResource ClickableSettingExpanderItemStyle}"
                             Tag="GetURLContent" />
                         <controls:Setting
+                            x:Uid="/TestPage/OpenBrowser"
                             ContentCornerRadius="0,0,4,4"
-                            Header="用内置浏览器打开"
                             IsClickEnabled="True"
                             Style="{StaticResource ClickableSettingExpanderItemStyle}"
                             Tag="OpenBrowser" />

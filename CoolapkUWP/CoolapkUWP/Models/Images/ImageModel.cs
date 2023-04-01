@@ -115,11 +115,16 @@ namespace CoolapkUWP.Models.Images
             {
                 if (type != value)
                 {
-                    type = value;
-                    if (pic != null && pic.TryGetTarget(out BitmapImage _))
+                    if ((((int)(type ^ value)) & 0x01) == 0x01)
                     {
-                        _ = GetImage();
+                        if (pic != null && pic.TryGetTarget(out BitmapImage _))
+                        {
+                            type = value;
+                            _ = GetImage();
+                            return;
+                        }
                     }
+                    type = value;
                 }
             }
         }

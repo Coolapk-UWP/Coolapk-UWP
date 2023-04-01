@@ -45,14 +45,66 @@
                                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8F8;" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
+                            <MenuFlyoutSubItem x:Uid="/FeedListPage/CoverMenuSubItem">
+                                <MenuFlyoutSubItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8B9;" />
+                                </MenuFlyoutSubItem.Icon>
+                                <MenuFlyoutItem
+                                    x:Name="RefreshButton"
+                                    x:Uid="/ShowImagePage/RefreshMenuItem"
+                                    Click="AppBarButton_Click"
+                                    Tag="{Binding Cover}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    x:Name="ShowImageButton"
+                                    x:Uid="/ShowImagePage/ShowMenuItem"
+                                    Click="AppBarButton_Click"
+                                    Tag="{Binding Cover}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8A7;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    x:Name="CopyButton"
+                                    x:Uid="/ShowImagePage/CopyMenuItem"
+                                    Click="AppBarButton_Click"
+                                    Tag="{Binding Cover}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    x:Name="ShareButton"
+                                    x:Uid="/ShowImagePage/ShareMenuItem"
+                                    Click="AppBarButton_Click"
+                                    Tag="{Binding Cover}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72D;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    x:Name="SaveButton"
+                                    x:Uid="/ShowImagePage/SaveMenuItem"
+                                    Click="AppBarButton_Click"
+                                    Tag="{Binding Cover}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74E;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyoutSubItem>
                         </MenuFlyout>
                     </Border.Resources>
                     <Grid
                         HorizontalAlignment="Stretch"
                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                         BorderThickness="1"
+                        CanDrag="True"
                         ContextFlyout="{StaticResource MoreFlyout}"
-                        CornerRadius="{ThemeResource OverlayCornerRadius}">
+                        CornerRadius="{ThemeResource OverlayCornerRadius}"
+                        DragStarting="Image_DragStarting">
                         <Border CornerRadius="{ThemeResource OverlayCornerRadius}">
                             <Border.Background>
                                 <ImageBrush ImageSource="{Binding Cover.Pic, Mode=OneWay}" Stretch="UniformToFill" />
@@ -425,8 +477,50 @@
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         CanDrag="True"
+                                        DragStarting="Image_DragStarting"
                                         Source="{Binding Pic, Mode=OneWay}"
-                                        Stretch="UniformToFill" />
+                                        Stretch="UniformToFill">
+                                        <Image.ContextFlyout>
+                                            <MenuFlyout>
+                                                <MenuFlyoutItem
+                                                    x:Name="RefreshButton"
+                                                    x:Uid="/ShowImagePage/RefreshMenuItem"
+                                                    Click="AppBarButton_Click"
+                                                    Tag="{Binding}">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                                <MenuFlyoutItem
+                                                    x:Name="CopyButton"
+                                                    x:Uid="/ShowImagePage/CopyMenuItem"
+                                                    Click="AppBarButton_Click"
+                                                    Tag="{Binding}">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                                <MenuFlyoutItem
+                                                    x:Name="ShareButton"
+                                                    x:Uid="/ShowImagePage/ShareMenuItem"
+                                                    Click="AppBarButton_Click"
+                                                    Tag="{Binding}">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72D;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                                <MenuFlyoutItem
+                                                    x:Name="SaveButton"
+                                                    x:Uid="/ShowImagePage/SaveMenuItem"
+                                                    Click="AppBarButton_Click"
+                                                    Tag="{Binding}">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74E;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                            </MenuFlyout>
+                                        </Image.ContextFlyout>
+                                    </Image>
                                 </DataTemplate>
                             </FlipView.ItemTemplate>
                         </FlipView>
@@ -584,16 +678,16 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
+                                    x:Uid="/FeedListPage/OwnerStar"
                                     VerticalAlignment="Center"
                                     FontSize="16"
                                     FontWeight="Bold"
-                                    Text="机主评分"
                                     Visibility="{Binding IsChecked, ElementName=OnlyOwnerButton, Converter={StaticResource BoolToVisibilityConverter}}" />
                                 <TextBlock
+                                    x:Uid="/FeedListPage/AllStar"
                                     VerticalAlignment="Center"
                                     FontSize="16"
                                     FontWeight="Bold"
-                                    Text="酷安评分"
                                     Visibility="{Binding IsChecked, ElementName=SeeAllButton, Converter={StaticResource BoolToVisibilityConverter}}" />
                                 <Grid Grid.Column="1" HorizontalAlignment="Right">
                                     <Grid.ColumnDefinitions>
@@ -602,22 +696,22 @@
                                     </Grid.ColumnDefinitions>
                                     <ToggleButton
                                         x:Name="SeeAllButton"
+                                        x:Uid="/FeedListPage/SeeAllButton"
                                         Grid.Column="1"
                                         Padding="4,2"
                                         contract7NotPresent:Loaded="Button_Loaded"
                                         contract7Present:CornerRadius="{Binding Source={ThemeResource ControlCornerRadius}, Converter={StaticResource RightCornerRadiusFilterConverter}}"
                                         BorderThickness="0,1,1,1"
-                                        Content="查看全部"
                                         FontSize="12"
                                         IsChecked="{Binding IsChecked, ElementName=OnlyOwnerButton, Converter={StaticResource BoolNegationConverter}, Mode=TwoWay}" />
                                     <ToggleButton
                                         x:Name="OnlyOwnerButton"
+                                        x:Uid="/FeedListPage/OnlyOwnerButton"
                                         Grid.Column="0"
                                         Padding="4,2"
                                         contract7NotPresent:Loaded="Button_Loaded"
                                         contract7Present:CornerRadius="{Binding Source={ThemeResource ControlCornerRadius}, Converter={StaticResource LeftCornerRadiusFilterConverter}}"
                                         BorderThickness="1,1,0,1"
-                                        Content="只看机主"
                                         FontSize="12"
                                         IsChecked="{Binding IsChecked, ElementName=SeeAllButton, Converter={StaticResource BoolNegationConverter}, Mode=TwoWay}" />
                                 </Grid>
@@ -878,6 +972,186 @@
                     </Grid>
                 </control:StackPanel>
             </DataTemplate>
+            <DataTemplate x:Key="CollectionDetailCard">
+                <Grid
+                    HorizontalAlignment="Stretch"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{ThemeResource OverlayCornerRadius}">
+                    <Grid.Resources>
+                        <MenuFlyout x:Key="MoreFlyout">
+                            <MenuFlyoutItem
+                                x:Name="PinTileButton"
+                                x:Uid="/Feed/PinTile"
+                                Click="Button_Click"
+                                Tag="{Binding}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE840;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutSubItem x:Uid="/FeedListPage/CoverMenuSubItem">
+                                <MenuFlyoutSubItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8B9;" />
+                                </MenuFlyoutSubItem.Icon>
+                                <MenuFlyoutItem
+                                    x:Name="RefreshButton"
+                                    x:Uid="/ShowImagePage/RefreshMenuItem"
+                                    Click="AppBarButton_Click"
+                                    Tag="{Binding Cover}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    x:Name="ShowImageButton"
+                                    x:Uid="/ShowImagePage/ShowMenuItem"
+                                    Click="AppBarButton_Click"
+                                    Tag="{Binding Cover}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8A7;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    x:Name="CopyButton"
+                                    x:Uid="/ShowImagePage/CopyMenuItem"
+                                    Click="AppBarButton_Click"
+                                    Tag="{Binding Cover}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    x:Name="ShareButton"
+                                    x:Uid="/ShowImagePage/ShareMenuItem"
+                                    Click="AppBarButton_Click"
+                                    Tag="{Binding Cover}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72D;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    x:Name="SaveButton"
+                                    x:Uid="/ShowImagePage/SaveMenuItem"
+                                    Click="AppBarButton_Click"
+                                    Tag="{Binding Cover}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74E;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyoutSubItem>
+                        </MenuFlyout>
+                    </Grid.Resources>
+                    <Border
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        CanDrag="True"
+                        CornerRadius="{ThemeResource OverlayCornerRadius}"
+                        DragStarting="Image_DragStarting">
+                        <Image
+                            ContextFlyout="{StaticResource MoreFlyout}"
+                            Source="{Binding Cover.Pic, Mode=OneWay}"
+                            Stretch="UniformToFill"
+                            Tag="{Binding Cover}" />
+                    </Border>
+                    <Grid
+                        Padding="8"
+                        VerticalAlignment="Bottom"
+                        Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                        CornerRadius="0,0,8,8">
+                        <control:StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    FontSize="20"
+                                    Text="{Binding Title}"
+                                    TextWrapping="Wrap" />
+                                <StackPanel
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <Button
+                                        x:Name="LikeButton"
+                                        x:Uid="/Feed/LikeButton"
+                                        Height="32"
+                                        Click="Button_Click"
+                                        Style="{StaticResource TransparentButtonStyle}"
+                                        Tag="{Binding}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <FontIcon
+                                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"
+                                                Glyph="&#xE8E1;"
+                                                Visibility="{Binding Liked, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                            <FontIcon
+                                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                Glyph="&#xE8E1;"
+                                                Visibility="{Binding Liked, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
+                                            <TextBlock Margin="8,0,0,0" Text="{Binding LikeNum}" />
+                                        </StackPanel>
+                                    </Button>
+                                    <Button
+                                        x:Name="FollowButton"
+                                        Height="32"
+                                        Click="Button_Click"
+                                        Style="{StaticResource TransparentButtonStyle}"
+                                        Tag="{Binding}"
+                                        ToolTipService.ToolTip="{Binding FollowStatus}"
+                                        Visibility="{Binding FollowStatus, Converter={StaticResource StringVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <FontIcon
+                                                VerticalAlignment="Center"
+                                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                FontSize="15"
+                                                Glyph="{Binding FollowGlyph}" />
+                                            <TextBlock
+                                                x:Name="FollowStatus"
+                                                Margin="8,0,0,0"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding FollowStatus}" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="4" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Ellipse
+                                    Grid.Column="0"
+                                    Width="20"
+                                    Height="20"
+                                    VerticalAlignment="Center">
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{Binding UserAvatar.Pic, Mode=OneWay}" />
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <TextBlock
+                                    Grid.Column="2"
+                                    Margin="0,0,0,2"
+                                    VerticalAlignment="Center"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    TextWrapping="Wrap">
+                                    <Run Text="{Binding UserName}" />
+                                    <Run Text="{Binding LastUpdate}" />
+                                    <Run Text="{Binding FollowNum}" />
+                                </TextBlock>
+                            </Grid>
+                            <TextBlock
+                                Text="{Binding Description}"
+                                TextWrapping="Wrap"
+                                Visibility="{Binding Description, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </control:StackPanel>
+                    </Grid>
+                </Grid>
+            </DataTemplate>
             <templates:CardTemplateSelector
                 x:Key="CardTemplateSelector"
                 Feed="{StaticResource FeedDefaultTemplate}"
@@ -891,6 +1165,7 @@
                 User="{StaticResource UserTemplate}" />
             <local:DetailTemplateSelector
                 x:Name="DetailTemplateSelector"
+                CollectionDetail="{StaticResource CollectionDetailCard}"
                 DyhDetail="{StaticResource DyhDetailCard}"
                 Others="{StaticResource Empty}"
                 ProductDetail="{StaticResource ProductDetailCard}"

@@ -8,6 +8,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Security.ExchangeActiveSyncProvisioning;
@@ -22,15 +23,26 @@ namespace CoolapkUWP.Helpers
 {
     public static partial class NetworkHelper
     {
-        public static readonly HttpClientHandler ClientHandler = new HttpClientHandler();
-        public static readonly HttpClient Client = new HttpClient(ClientHandler);
+        public static readonly HttpClientHandler ClientHandler;
+        public static readonly HttpClient Client;
+
+        private static SemaphoreSlim semaphoreSlim;
         private static TokenCreater token;
 
         static NetworkHelper()
         {
-            ThemeHelper.UISettingChanged.Add((arg) => Client.DefaultRequestHeaders.ReplaceDarkMode());
+            semaphoreSlim = new SemaphoreSlim(SettingsHelper.Get<int>(SettingsHelper.SemaphoreSlimCount));
+            ThemeHelper.UISettingChanged.Add((arg) => Client?.DefaultRequestHeaders?.ReplaceDarkMode());
+            ClientHandler = new HttpClientHandler();
+            Client = new HttpClient(ClientHandler);
             SetRequestHeaders();
             SetLoginCookie();
+        }
+
+        public static void SetSemaphoreSlim(int initialCount)
+        {
+            semaphoreSlim.Dispose();
+            semaphoreSlim = new SemaphoreSlim(initialCount);
         }
 
         public static void SetLoginCookie()

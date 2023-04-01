@@ -146,7 +146,7 @@ namespace CoolapkUWP.Pages
                     _ = Provider.Refresh();
                     break;
                 case "Origin":
-                    Provider.Images[Provider.Index].Type = ImageType.OriginImage;
+                    Provider.Images[Provider.Index].Type &= (ImageType)0xFE;
                     Provider.ShowOrigin = false;
                     break;
             }

@@ -247,7 +247,7 @@ namespace CoolapkUWP.Controls
                                 Image image = new Image();
                                 InlineUIContainer container = new InlineUIContainer();
 
-                                imageModel = new ImageModel(src, ImageType.OriginImage);
+                                imageModel = new ImageModel(src, SettingsHelper.Get<bool>(SettingsHelper.IsDisplayOriginPicture) ? ImageType.OriginImage : ImageType.SmallImage);
                                 image.SetBinding(Image.SourceProperty, new Binding
                                 {
                                     Source = imageModel,
@@ -284,32 +284,31 @@ namespace CoolapkUWP.Controls
 
                                     Grid Grid = new Grid
                                     {
-                                        CornerRadius = new CornerRadius(4)
+                                        Margin = new Thickness(0, 0, 0, 8),
+                                        CornerRadius = new CornerRadius(8)
                                     };
 
-                                    StackPanel IsGIFPanel = new StackPanel
+                                    Grid IsGIFPanel = new Grid
                                     {
-                                        Orientation = Orientation.Horizontal,
                                         VerticalAlignment = VerticalAlignment.Top,
                                         HorizontalAlignment = HorizontalAlignment.Left
                                     };
 
-                                    StackPanel PicSizePanel = new StackPanel
+                                    Grid PicSizePanel = new Grid
                                     {
-                                        Orientation = Orientation.Horizontal,
                                         VerticalAlignment = VerticalAlignment.Top,
                                         HorizontalAlignment = HorizontalAlignment.Right
                                     };
 
                                     Border GIFBorder = new Border
                                     {
-                                        CornerRadius = new CornerRadius(0, 0, 4, 0),
                                         Child = new TextBlock
                                         {
-                                            Text = _loader.GetString("GIF"),
-                                            Margin = new Thickness(2, 0, 2, 0)
+                                            Text = _loader.GetString("GIF")
                                         },
-                                        Background = new SolidColorBrush(Color.FromArgb(255, 15, 157, 88))
+                                        Padding = new Thickness(4, 2, 4, 2),
+                                        Background = new SolidColorBrush(Color.FromArgb(255, 15, 157, 88)),
+                                        CornerRadius = new CornerRadius(8, 0, 8, 0)
                                     };
                                     GIFBorder.SetBinding(VisibilityProperty, new Binding
                                     {
@@ -323,13 +322,13 @@ namespace CoolapkUWP.Controls
 
                                     Border WidePicBorder = new Border
                                     {
-                                        CornerRadius = new CornerRadius(0, 0, 0, 4),
                                         Child = new TextBlock
                                         {
-                                            Margin = new Thickness(2, 0, 2, 0),
-                                            Text = _loader.GetString("WidePic.Text")
+                                            Text = _loader.GetString("WidePicText")
                                         },
-                                        Background = new SolidColorBrush(Color.FromArgb(255, 15, 157, 88))
+                                        Padding = new Thickness(4, 2, 4, 2),
+                                        Background = new SolidColorBrush(Color.FromArgb(255, 15, 157, 88)),
+                                        CornerRadius = new CornerRadius(0, 8, 0, 8)
                                     };
                                     WidePicBorder.SetBinding(VisibilityProperty, new Binding
                                     {
@@ -341,13 +340,13 @@ namespace CoolapkUWP.Controls
 
                                     Border LongPicTextBorder = new Border
                                     {
-                                        CornerRadius = new CornerRadius(0, 0, 0, 4),
                                         Child = new TextBlock
                                         {
-                                            Margin = new Thickness(2, 0, 2, 0),
-                                            Text = _loader.GetString("LongPic.Text")
+                                            Text = _loader.GetString("LongPicText")
                                         },
-                                        Background = new SolidColorBrush(Color.FromArgb(255, 15, 157, 88))
+                                        Padding = new Thickness(4, 2, 4, 2),
+                                        Background = new SolidColorBrush(Color.FromArgb(255, 15, 157, 88)),
+                                        CornerRadius = new CornerRadius(0, 8, 0, 8)
                                     };
                                     LongPicTextBorder.SetBinding(VisibilityProperty, new Binding
                                     {
@@ -385,6 +384,7 @@ namespace CoolapkUWP.Controls
                                         {
                                             LineHeight = FontSize + 10,
                                             TextAlignment = TextAlignment.Center,
+                                            Foreground = (SolidColorBrush)Application.Current.Resources["TextFillColorSecondaryBrush"]
                                         };
                                         Run run = new Run { Text = WebUtility.HtmlDecode(alt) };
                                         paragraph2.Inlines.Add(run);
@@ -398,15 +398,18 @@ namespace CoolapkUWP.Controls
                                 Border border = new Border
                                 {
                                     Margin = new Thickness(4, 0, 4, -4),
-                                    VerticalAlignment = VerticalAlignment.Center,
-                                    BorderThickness = new Thickness(1),
                                     CornerRadius = new CornerRadius(4),
+                                    BorderThickness = new Thickness(1),
+                                    VerticalAlignment = VerticalAlignment.Center,
+                                    BorderBrush = (SolidColorBrush)Application.Current.Resources["AccentTextFillColorPrimaryBrush"],
                                 };
                                 TextBlock textBlock = new TextBlock
                                 {
-                                    Margin = new Thickness(1),
                                     FontSize = 12,
-                                    Text = _loader.GetString("FeedAuthor.Text"),
+                                    Margin = new Thickness(1),
+                                    IsTextSelectionEnabled = true,
+                                    Text = _loader.GetString("FeedAuthorText"),
+                                    Foreground = (SolidColorBrush)Application.Current.Resources["AccentTextFillColorPrimaryBrush"],
                                 };
 
                                 border.Child = textBlock;

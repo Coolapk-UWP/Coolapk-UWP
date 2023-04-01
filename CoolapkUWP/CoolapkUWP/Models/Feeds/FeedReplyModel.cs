@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoolapkUWP.Models.Feeds
 {
@@ -121,6 +122,18 @@ namespace CoolapkUWP.Models.Feeds
             if (!string.IsNullOrEmpty(PicUri))
             {
                 Pic = new ImageModel(PicUri, ImageType.SmallImage);
+            }
+        }
+
+        public async Task ChangeLike()
+        {
+            UriType type = Liked ? UriType.PostFeedUnlike : UriType.PostFeedLike;
+            (bool isSucceed, JToken result) = await RequestHelper.PostDataAsync(UriHelper.GetOldUri(type, "Reply", ID), null, true);
+            if (!isSucceed) { return; }
+            Liked = !Liked;
+            if (result.ToObject<int>() is int likenum && likenum >= 0)
+            {
+                LikeNum = likenum;
             }
         }
     }

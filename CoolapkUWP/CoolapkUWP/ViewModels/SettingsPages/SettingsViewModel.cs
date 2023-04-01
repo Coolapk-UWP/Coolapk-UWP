@@ -45,7 +45,7 @@ namespace CoolapkUWP.ViewModels.SettingsPages
             }
         }
 
-        public static int SelectedTheme
+        public int SelectedTheme
         {
             get => 2 - (int)ThemeHelper.ActualTheme;
             set
@@ -53,11 +53,12 @@ namespace CoolapkUWP.ViewModels.SettingsPages
                 if (SelectedTheme != value)
                 {
                     ThemeHelper.RootTheme = (ElementTheme)(2 - value);
+                    RaisePropertyChangedEvent();
                 }
             }
         }
 
-        public static bool IsNoPicsMode
+        public bool IsNoPicsMode
         {
             get => SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode);
             set
@@ -66,11 +67,38 @@ namespace CoolapkUWP.ViewModels.SettingsPages
                 {
                     SettingsHelper.Set(SettingsHelper.IsNoPicsMode, value);
                     ThemeHelper.UISettingChanged?.Invoke(UISettingChangedType.NoPicChanged);
+                    RaisePropertyChangedEvent();
                 }
             }
         }
 
-        public static bool ShowOtherException
+        public bool IsUseMultiWindow
+        {
+            get => SettingsHelper.Get<bool>(SettingsHelper.IsUseMultiWindow);
+            set
+            {
+                if (IsUseMultiWindow != value)
+                {
+                    SettingsHelper.Set(SettingsHelper.IsUseMultiWindow, value);
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
+        public bool IsDisplayOriginPicture
+        {
+            get => SettingsHelper.Get<bool>(SettingsHelper.IsDisplayOriginPicture);
+            set
+            {
+                if (IsDisplayOriginPicture != value)
+                {
+                    SettingsHelper.Set(SettingsHelper.IsDisplayOriginPicture, value);
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
+        public bool ShowOtherException
         {
             get => SettingsHelper.Get<bool>(SettingsHelper.ShowOtherException);
             set
@@ -78,6 +106,7 @@ namespace CoolapkUWP.ViewModels.SettingsPages
                 if (ShowOtherException != value)
                 {
                     SettingsHelper.Set(SettingsHelper.ShowOtherException, value);
+                    RaisePropertyChangedEvent();
                 }
             }
         }

@@ -5,6 +5,7 @@ using CoolapkUWP.Models.Users;
 using Newtonsoft.Json.Linq;
 using System.Collections.Immutable;
 using System.Linq;
+using Windows.ApplicationModel.Resources;
 
 namespace CoolapkUWP.Models.Feeds
 {
@@ -67,7 +68,7 @@ namespace CoolapkUWP.Models.Feeds
                 Rusername = rusername.ToString();
             }
 
-            Windows.ApplicationModel.Resources.ResourceLoader loader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse("Feed");
+            ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("Feed");
 
             if (token.TryGetValue("message", out JToken message))
             {

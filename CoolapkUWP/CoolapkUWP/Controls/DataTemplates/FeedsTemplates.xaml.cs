@@ -97,7 +97,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
                 case "LikeButton":
                     DisabledCopy();
-                    _ = RequestHelper.ChangeLikeAsync(element.Tag as ICanLike, element.Dispatcher);
+                    _ = (element.Tag as ICanLike).ChangeLike();
                     break;
 
                 case "ReportButton":

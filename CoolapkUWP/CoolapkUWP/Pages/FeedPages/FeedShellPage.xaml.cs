@@ -78,7 +78,7 @@ namespace CoolapkUWP.Pages.FeedPages
             _currentActivity = userActivity.CreateSession();
         }
 
-        private async void FeedButton_Click(object sender, RoutedEventArgs e)
+        private void FeedButton_Click(object sender, RoutedEventArgs e)
         {
             void DisabledCopy()
             {
@@ -112,7 +112,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
                 case "LikeButton":
                     DisabledCopy();
-                    await RequestHelper.ChangeLikeAsync(element.Tag as ICanLike, element.Dispatcher);
+                    _ = (element.Tag as ICanLike).ChangeLike();
                     break;
 
                 case "ReportButton":

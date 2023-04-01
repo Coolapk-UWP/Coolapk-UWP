@@ -822,4 +822,224 @@ namespace CoolapkUWP.Models.Pages
 
         public override string ToString() => $"{Title} - {Description}";
     }
+
+    internal class CollectionDetail : FeedListDetailBase, ICanLike, ICanFollow
+    {
+        private bool followed;
+        public bool Followed
+        {
+            get => followed;
+            set
+            {
+                if (followed != value)
+                {
+                    followed = value;
+                    RaisePropertyChangedEvent();
+                    OnFollowChanged();
+                }
+            }
+        }
+
+        private string followNum;
+        public string FollowNum
+        {
+            get => followNum;
+            set
+            {
+                if (followNum != value)
+                {
+                    followNum = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
+        private string followGlyph;
+        public string FollowGlyph
+        {
+            get => followGlyph;
+            set
+            {
+                if (followGlyph != value)
+                {
+                    followGlyph = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
+        private string followStatus;
+        public string FollowStatus
+        {
+            get => followStatus;
+            set
+            {
+                if (followStatus != value)
+                {
+                    followStatus = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
+        private bool liked;
+        public bool Liked
+        {
+            get => liked;
+            set
+            {
+                if (liked != value)
+                {
+                    liked = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
+
+        private int likeNum;
+        public int LikeNum
+        {
+            get => likeNum;
+            set
+            {
+                if (likeNum != value)
+                {
+                    likeNum = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
+        public int ID { get; private set; }
+        public int ItemNum { get; private set; }
+
+        public string Url { get; private set; }
+        public string Title { get; private set; }
+        public string UserName { get; private set; }
+        public string LastUpdate { get; private set; }
+        public string Description { get; private set; }
+
+        public ImageModel Cover { get; private set; }
+        public ImageModel UserAvatar { get; private set; }
+
+        public CollectionDetail(JObject token) : base(token)
+        {
+            ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("FeedListPage");
+
+            if (token.TryGetValue("id", out JToken id))
+            {
+                ID = id.ToObject<int>();
+            }
+
+            if (token.TryGetValue("userAction", out JToken userAction))
+            {
+                if (((JObject)userAction).TryGetValue("follow", out JToken follow))
+                {
+                    Followed = follow.ToObject<int>() == 1;
+                }
+
+                if (((JObject)userAction).TryGetValue("like", out JToken like))
+                {
+                    Liked = like.ToObject<int>() == 1;
+                }
+            }
+
+            if (token.TryGetValue("item_num", out JToken item_num))
+            {
+                ItemNum = item_num.ToObject<int>();
+            }
+
+            if (token.TryGetValue("like_num", out JToken like_num))
+            {
+                LikeNum = like_num.ToObject<int>();
+            }
+
+            if (token.TryGetValue("url", out JToken url))
+            {
+                Url = url.ToString();
+            }
+
+            if (token.TryGetValue("title", out JToken title))
+            {
+                Title = title.ToString();
+            }
+
+            if (token.TryGetValue("username", out JToken username))
+            {
+                UserName = username.ToString();
+            }
+
+            if (token.TryGetValue("follow_num", out JToken follownum))
+            {
+                FollowNum = $"{follownum}{loader.GetString("SubscribeNum")}";
+            }
+
+            if (token.TryGetValue("lastupdate", out JToken lastupdate))
+            {
+                LastUpdate = $"{lastupdate.ToObject<long>().ConvertUnixTimeStampToReadable()}活跃";
+            }
+
+            if (token.TryGetValue("description", out JToken description))
+            {
+                Description = description.ToString();
+            }
+
+            if (token.TryGetValue("cover_pic", out JToken cover_pic))
+            {
+                Cover = new ImageModel(cover_pic.ToString(), ImageType.OriginImage);
+            }
+
+            if (token.TryGetValue("userAvatar", out JToken userAvatar))
+            {
+                UserAvatar = new ImageModel(userAvatar.ToString(), ImageType.BigAvatar);
+            }
+
+            OnFollowChanged();
+        }
+
+        private void OnFollowChanged()
+        {
+            ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("FeedListPage");
+            FollowStatus = Followed ? loader.GetString("Unsubscribe") : loader.GetString("Subscribe");
+            FollowGlyph = Followed ? "\uE8FB" : "\uE710";
+        }
+
+        public async Task ChangeLike()
+        {
+            UriType type = Liked ? UriType.PostCollectionUnlike : UriType.PostCollectionLike;
+
+            using (MultipartFormDataContent content = new MultipartFormDataContent())
+            using (StringContent id = new StringContent(ID.ToString()))
+            {
+                content.Add(id, "id");
+                (bool isSucceed, JToken result) = await RequestHelper.PostDataAsync(UriHelper.GetUri(type), content, true);
+                if (!isSucceed) { return; }
+                Liked = !Liked;
+                if (result.ToObject<int>() is int follownum && follownum >= 0)
+                {
+                    LikeNum = follownum;
+                }
+            }
+        }
+
+        public async Task ChangeFollow()
+        {
+            UriType type = Followed ? UriType.PostCollectionUnfollow : UriType.PostCollectionFollow;
+
+            using (MultipartFormDataContent content = new MultipartFormDataContent())
+            using (StringContent id = new StringContent(ID.ToString()))
+            {
+                content.Add(id, "id");
+                (bool isSucceed, JToken result) = await RequestHelper.PostDataAsync(UriHelper.GetUri(type), content, true);
+                if (!isSucceed) { return; }
+                Followed = !Followed;
+                if (result.ToObject<int>() is int follownum && follownum >= 0)
+                {
+                    ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("FeedListPage");
+                    FollowNum = $"{follownum}{loader.GetString("SubscribeNum")}";
+                }
+            }
+        }
+    }
 }

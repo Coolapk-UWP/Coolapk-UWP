@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Models.Images;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.DataSource;
@@ -7,6 +8,7 @@ using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -134,6 +136,9 @@ namespace CoolapkUWP.Pages.FeedPages
                 case "FansButton":
                     UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(Provider.ID, false, Provider.Title));
                     break;
+                case "LikeButton":
+                    _ = (element.Tag as ICanLike).ChangeLike();
+                    break;
                 case "ReportButton":
                     UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel(element.Tag.ToString()));
                     break;
@@ -151,7 +156,51 @@ namespace CoolapkUWP.Pages.FeedPages
             }
         }
 
-        private void On_Tapped(object sender, TappedRoutedEventArgs e) => _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
+        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            ImageModel image = (sender as FrameworkElement).Tag as ImageModel;
+            switch ((sender as FrameworkElement).Name)
+            {
+                case "CopyButton":
+                    Provider.CopyPic(image);
+                    break;
+                case "SaveButton":
+                    Provider.SavePic(image);
+                    break;
+                case "ShareButton":
+                    Provider.SharePic(image);
+                    break;
+                case "RefreshButton":
+                    _ = image.Refresh();
+                    break;
+                case "ShowImageButton":
+                    _ = UIHelper.ShowImageAsync(image);
+                    break;
+                case "OriginButton":
+                    image.Type = ImageType.OriginImage;
+                    break;
+            }
+        }
+
+        private async void Image_DragStarting(UIElement sender, DragStartingEventArgs args)
+        {
+            args.DragUI.SetContentFromDataPackage();
+            args.Data.RequestedOperation = DataPackageOperation.Copy;
+            await Provider.GetImageDataPackage(args.Data, (sender as FrameworkElement).Tag as ImageModel, "拖拽图片");
+        }
+
+        private void On_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            object Tag = (sender as FrameworkElement).Tag;
+            if (Tag is ImageModel image)
+            {
+                _ = UIHelper.ShowImageAsync(image);
+            }
+            else if (Tag is string url)
+            {
+                _ = UIHelper.OpenLinkAsync(url);
+            }
+        }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e) => _ = Refresh(true);
 
@@ -217,6 +266,7 @@ namespace CoolapkUWP.Pages.FeedPages
         public DataTemplate UserDetail { get; set; }
         public DataTemplate TopicDetail { get; set; }
         public DataTemplate ProductDetail { get; set; }
+        public DataTemplate CollectionDetail { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
@@ -226,6 +276,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 case "UserDetail": return UserDetail;
                 case "TopicDetail": return TopicDetail;
                 case "ProductDetail": return ProductDetail;
+                case "CollectionDetail": return CollectionDetail;
                 default: return Others;
             }
         }

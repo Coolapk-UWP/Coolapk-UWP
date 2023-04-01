@@ -112,6 +112,13 @@ namespace CoolapkUWP.ViewModels
                 Images = new List<ImageModel> { image };
                 Index = 0;
             }
+            if (SettingsHelper.Get<bool>(SettingsHelper.IsDisplayOriginPicture))
+            {
+                foreach (ImageModel Image in Images)
+                {
+                    Image.Type &= (ImageType)0xFE;
+                }
+            }
         }
 
         public async Task Refresh(bool reset = false) => await Images[Index].Refresh();

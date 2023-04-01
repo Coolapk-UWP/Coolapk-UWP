@@ -137,38 +137,6 @@ namespace CoolapkUWP.Helpers
         }
 #pragma warning restore 0612
 
-        public static async Task ChangeLikeAsync(this ICanLike model, CoreDispatcher dispatcher)
-        {
-            if (model == null) { return; }
-
-            bool isReply = model is FeedReplyModel;
-            Uri u = UriHelper.GetOldUri(
-                model.Liked ? UriType.PostFeedUnlike : UriType.PostFeedLike,
-                isReply ? "Reply" : string.Empty,
-                model.ID);
-            (bool isSucceed, JToken result) = await PostDataAsync(u, null, true);
-            if (!isSucceed) { return; }
-
-            int LikeNum = 0;
-            if (isReply)
-            {
-                LikeNum = Convert.ToInt32(result.ToString().Replace("\"", string.Empty));
-            }
-            else
-            {
-                JObject json = result as JObject;
-                if (json.TryGetValue("count", out JToken count))
-                {
-                    LikeNum = count.ToObject<int>();
-                }
-            }
-            await dispatcher.AwaitableRunAsync(() =>
-            {
-                model.Liked = !model.Liked;
-                model.LikeNum = LikeNum;
-            });
-        }
-
         public static async void UploadImagePrepare(IList<UploadFileFragment> images)
         {
             using (MultipartFormDataContent content = new MultipartFormDataContent())

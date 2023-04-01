@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Common;
 using CoolapkUWP.Helpers;
+using CoolapkUWP.Models.Images;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.ViewModels.BrowserPages;
 using Microsoft.Toolkit.Uwp.UI.Controls;
@@ -70,6 +71,27 @@ namespace CoolapkUWP.Pages.SettingsPages
                 {
                     SettingsHelper.Set(SettingsHelper.TokenVersion, value);
                     NetworkHelper.SetRequestHeaders();
+                }
+            }
+        }
+
+        internal bool IsUseCompositor
+        {
+            get => SettingsHelper.Get<bool>(SettingsHelper.IsUseCompositor);
+            set => SettingsHelper.Set(SettingsHelper.IsUseCompositor, value);
+        }
+
+        internal double SemaphoreSlimCount
+        {
+            get => SettingsHelper.Get<int>(SettingsHelper.SemaphoreSlimCount);
+            set
+            {
+                if (SemaphoreSlimCount != value)
+                {
+                    int result = (int)Math.Floor(value);
+                    SettingsHelper.Set(SettingsHelper.SemaphoreSlimCount, result);
+                    NetworkHelper.SetSemaphoreSlim(result);
+                    ImageModel.SetSemaphoreSlim(result);
                 }
             }
         }
