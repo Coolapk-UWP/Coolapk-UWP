@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -135,20 +135,44 @@
   <data name="FeedAuthor.Text" xml:space="preserve">
     <value>楼主</value>
   </data>
+  <data name="FeedAuthorText" xml:space="preserve">
+    <value>楼主</value>
+  </data>
   <data name="GIF" xml:space="preserve">
     <value>GIF</value>
+  </data>
+  <data name="LikeButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>点赞</value>
   </data>
   <data name="LongPic.Text" xml:space="preserve">
     <value>长图</value>
   </data>
+  <data name="LongPicText" xml:space="preserve">
+    <value>长图</value>
+  </data>
+  <data name="MediaShare.Text" xml:space="preserve">
+    <value>视频分享</value>
+  </data>
+  <data name="MoreButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>更多</value>
+  </data>
   <data name="PinTile.Text" xml:space="preserve">
     <value>固定到开始</value>
+  </data>
+  <data name="PublishFrom.Text" xml:space="preserve">
+    <value>发布于</value>
   </data>
   <data name="QR.Text" xml:space="preserve">
     <value>二维码</value>
   </data>
+  <data name="Rating.Text" xml:space="preserve">
+    <value>评分</value>
+  </data>
   <data name="ReadMore" xml:space="preserve">
     <value>查看更多</value>
+  </data>
+  <data name="ReplyButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>回复</value>
   </data>
   <data name="Report.Text" xml:space="preserve">
     <value>举报</value>
@@ -162,13 +186,25 @@
   <data name="Share.Text" xml:space="preserve">
     <value>分享</value>
   </data>
+  <data name="ShareButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>分享</value>
+  </data>
+  <data name="ShareFeed.Text" xml:space="preserve">
+    <value>点按二维码分享链接</value>
+  </data>
   <data name="SourceFeedNotFount.Text" xml:space="preserve">
     <value>抱歉，该转发已被删除。</value>
+  </data>
+  <data name="StarButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>收藏</value>
   </data>
   <data name="StickUp.Text" xml:space="preserve">
     <value>置顶</value>
   </data>
   <data name="WidePic.Text" xml:space="preserve">
+    <value>宽图</value>
+  </data>
+  <data name="WidePicText" xml:space="preserve">
     <value>宽图</value>
   </data>
 </root>
