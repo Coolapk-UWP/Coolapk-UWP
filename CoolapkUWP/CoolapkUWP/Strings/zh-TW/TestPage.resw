@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccentColorSettings.Description" xml:space="preserve">
+    <value>各种强调色</value>
+  </data>
+  <data name="AccentColorSettings.Header" xml:space="preserve">
+    <value>颜色</value>
+  </data>
+  <data name="APIVersionSettings.Description" xml:space="preserve">
+    <value>设置使用的酷安版本</value>
+  </data>
+  <data name="APIVersionSettings.Header" xml:space="preserve">
+    <value>API 版本</value>
+  </data>
   <data name="CompactOverlaySettings.Description" xml:space="preserve">
     <value>進入或退出畫中畫模式</value>
   </data>
@@ -126,11 +138,20 @@
   <data name="EnterPIP.Content" xml:space="preserve">
     <value>進入畫中畫模式</value>
   </data>
+  <data name="GetURLContent.Header" xml:space="preserve">
+    <value>获取内容</value>
+  </data>
   <data name="LanguageSettings.Description" xml:space="preserve">
     <value>選擇語言並重啟應用來更改語言</value>
   </data>
   <data name="LanguageSettings.Header" xml:space="preserve">
     <value>語言</value>
+  </data>
+  <data name="OpenBrowser.Header" xml:space="preserve">
+    <value>用内置浏览器打开</value>
+  </data>
+  <data name="OpenURL.Header" xml:space="preserve">
+    <value>打开页面</value>
   </data>
   <data name="OutPIP.Content" xml:space="preserve">
     <value>退出</value>
@@ -147,6 +168,12 @@
   <data name="SetProgressValue.Header" xml:space="preserve">
     <value>進度值</value>
   </data>
+  <data name="SlimCountSettings.Description" xml:space="preserve">
+    <value>同时可以加载的图片数量</value>
+  </data>
+  <data name="SlimCountSettings.Header" xml:space="preserve">
+    <value>多任务数</value>
+  </data>
   <data name="TitleBar.Title" xml:space="preserve">
     <value>測試</value>
   </data>
@@ -156,7 +183,34 @@
   <data name="TitleBarSettings.Header" xml:space="preserve">
     <value>標題列</value>
   </data>
+  <data name="TokenVersionSettings.Description" xml:space="preserve">
+    <value>设置使用的 Token 获取方法</value>
+  </data>
+  <data name="TokenVersionSettings.Header" xml:space="preserve">
+    <value>Token 版本</value>
+  </data>
   <data name="UITestSettingsHeader.Header" xml:space="preserve">
     <value>介面測試</value>
+  </data>
+  <data name="UseAPI2Settings.Description" xml:space="preserve">
+    <value>是否使用新的酷安接口</value>
+  </data>
+  <data name="UseAPI2Settings.Header" xml:space="preserve">
+    <value>是否使用 API2</value>
+  </data>
+  <data name="UseCompositorSettings.Description" xml:space="preserve">
+    <value>是否在吸顶列表中使用合成动画</value>
+  </data>
+  <data name="UseCompositorSettings.Header" xml:space="preserve">
+    <value>是否使用合成动画</value>
+  </data>
+  <data name="WebTestSettings.Description" xml:space="preserve">
+    <value>测试网络相关内容</value>
+  </data>
+  <data name="WebTestSettings.Header" xml:space="preserve">
+    <value>Web 测试</value>
+  </data>
+  <data name="WebTestSettingsHeader.Header" xml:space="preserve">
+    <value>网络测试</value>
   </data>
 </root>
