@@ -171,6 +171,9 @@
   <data name="ReadMore" xml:space="preserve">
     <value>查看更多</value>
   </data>
+  <data name="ReadNum.Text" xml:space="preserve">
+    <value>浏览</value>
+  </data>
   <data name="ReplyButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>回復</value>
   </data>
