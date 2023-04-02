@@ -26,12 +26,7 @@ namespace CoolapkUWP.Pages
     {
         private ShowImageViewModel Provider;
 
-        public ShowImagePage()
-        {
-            InitializeComponent();
-            if (ApiInformation.IsMethodPresent("Windows.UI.Composition.Compositor", "TryCreateBlurredWallpaperBackdropBrush"))
-            { BackdropMaterial.SetApplyToRootOrPageBackground(this, true); }
-        }
+        public ShowImagePage() => InitializeComponent();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {

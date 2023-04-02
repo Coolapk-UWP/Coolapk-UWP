@@ -5,6 +5,7 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:contract12Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 12)"
     xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
+    xmlns:contract6NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 6)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:contract8Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 8)"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -110,6 +111,7 @@
         <CommandBar Grid.Row="3" contract12Present:OverflowButtonVisibility="Collapsed">
             <AppBarButton
                 x:Uid="/CreateFeedControl/LinkButton"
+                contract6NotPresent:ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}"
                 AllowFocusOnInteraction="True"
                 Tag="Link">
                 <contract5Present:AppBarButton.KeyboardAccelerators>
@@ -258,6 +260,7 @@
             </AppBarButton>
             <AppBarButton
                 x:Uid="/CreateFeedControl/EmojiButton"
+                contract6NotPresent:ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}"
                 AllowFocusOnInteraction="True"
                 Tag="Emoji">
                 <contract5Present:AppBarButton.KeyboardAccelerators>
@@ -372,6 +375,7 @@
             </AppBarButton>
             <AppBarButton
                 x:Uid="/CreateFeedControl/AddPicButton"
+                contract6NotPresent:ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}"
                 Click="AppBarButton_Click"
                 Tag="AddPic">
                 <contract5Present:AppBarButton.KeyboardAccelerators>

@@ -5,6 +5,7 @@
     xmlns:contract12NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 12)"
     xmlns:contract12Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 12)"
     xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
+    xmlns:contract6NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 6)"
     xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,8 +13,8 @@
     xmlns:media="using:Microsoft.UI.Xaml.Media"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:viewmodels="using:CoolapkUWP.ViewModels"
-    contract12NotPresent:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     d:DataContext="{d:DesignInstance Type=viewmodels:ShowImageViewModel}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
@@ -207,6 +208,7 @@
             <CommandBar.PrimaryCommands>
                 <AppBarButton
                     x:Uid="/ShowImagePage/RefreshButton"
+                    contract6NotPresent:ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}"
                     Click="AppBarButton_Click"
                     Tag="Refresh">
                     <AppBarButton.Icon>
@@ -218,6 +220,7 @@
                 </AppBarButton>
                 <AppBarButton
                     x:Uid="/ShowImagePage/ShareButton"
+                    contract6NotPresent:ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}"
                     Click="AppBarButton_Click"
                     Tag="Share">
                     <AppBarButton.Icon>
@@ -229,6 +232,7 @@
                 </AppBarButton>
                 <AppBarButton
                     x:Uid="/ShowImagePage/SaveButton"
+                    contract6NotPresent:ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}"
                     Click="AppBarButton_Click"
                     Tag="Save">
                     <AppBarButton.Icon>
@@ -242,6 +246,7 @@
             <CommandBar.SecondaryCommands>
                 <AppBarButton
                     x:Uid="/ShowImagePage/OriginButton"
+                    contract6NotPresent:ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}"
                     Click="AppBarButton_Click"
                     Tag="Origin"
                     Visibility="{Binding ShowOrigin, Converter={StaticResource BoolToVisibilityConverter}}">

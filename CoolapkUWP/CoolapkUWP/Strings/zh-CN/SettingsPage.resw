@@ -268,9 +268,9 @@
     <value>显示原图</value>
   </data>
   <data name="UseMultiWindowSettings.Description" xml:space="preserve">
-    <value>在新窗口查看图片。（仅支持 1903 及以上）</value>
+    <value>在新窗口查看图片。</value>
   </data>
   <data name="UseMultiWindowSettings.Header" xml:space="preserve">
-    <value>使用多窗口</value>
+    <value>使用多窗口（仅支持 1903 及以上）</value>
   </data>
 </root>

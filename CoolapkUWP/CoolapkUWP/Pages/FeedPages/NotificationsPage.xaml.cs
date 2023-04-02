@@ -55,7 +55,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 NotificationsTask = NotificationsTask.Instance;
                 isLoaded = true;
             }
-            NotificationsTask.GetNums();
+            NotificationsTask?.GetNums();
         }
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -151,13 +151,13 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 Refresh = () => _ = AdaptivePage.Refresh(true);
             }
-            NotificationsTask.GetNums();
+            NotificationsTask?.GetNums();
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             Refresh();
-            NotificationsTask.GetNums();
+            NotificationsTask?.GetNums();
         }
     }
 }

@@ -150,7 +150,13 @@
                     </controls:SettingExpander>
                 </controls:SettingsGroup>
                 <controls:SettingsGroup x:Uid="/TestPage/WebTestSettingsHeader">
-                    <controls:Setting x:Uid="/TestPage/APIVersionSettings" Icon="&#xEB77;">
+                    <controls:Setting x:Uid="/TestPage/APIVersionSettings">
+                        <controls:Setting.Icon>
+                            <FontIcon
+                                contract5NotPresent:Glyph="&#xE90F;"
+                                contract5Present:Glyph="&#xEB77;"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                        </controls:Setting.Icon>
                         <ComboBox SelectedIndex="{x:Bind APIVersion, Mode=TwoWay}">
                             <ComboBoxItem>小程序</ComboBoxItem>
                             <ComboBoxItem>V6</ComboBoxItem>

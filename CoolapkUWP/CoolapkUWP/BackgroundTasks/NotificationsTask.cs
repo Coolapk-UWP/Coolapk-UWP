@@ -7,7 +7,7 @@ namespace CoolapkUWP.BackgroundTasks
 {
     public sealed class NotificationsTask : IBackgroundTask, INotifyPropertyChanged
     {
-        public static NotificationsTask Instance = new NotificationsTask(false);
+        public static NotificationsTask Instance = new NotificationsTask();
 
         private int badgeNum, followNum, messageNum, atMeNum, atCommentMeNum, commentMeNum, feedLikeNum, cloudInstall, notification;
 
@@ -162,9 +162,9 @@ namespace CoolapkUWP.BackgroundTasks
             if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
 
-        public NotificationsTask(bool renew = true)
+        public NotificationsTask()
         {
-            if (renew) { Instance = this; }
+            Instance = Instance ?? this;
         }
 
         public void Run(IBackgroundTaskInstance taskInstance)
