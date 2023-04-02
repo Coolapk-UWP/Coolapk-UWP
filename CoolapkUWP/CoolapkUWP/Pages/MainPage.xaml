@@ -84,35 +84,34 @@
                 Grid.Column="2"
                 LastControl="{x:Bind AppTitle}"
                 Orientation="Horizontal">
-                <AutoSuggestBox
-                    x:Name="SearchTextBox"
-                    x:Uid="/MainPage/SearchBox"
-                    Height="33"
-                    MaxWidth="600"
-                    Margin="40,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center"
-                    IsTabStop="True"
-                    ItemTemplateSelector="{StaticResource SearchTemplateSelector}"
-                    QuerySubmitted="AutoSuggestBox_QuerySubmitted"
-                    TextChanged="AutoSuggestBox_TextChanged">
-                    <contract5Present:AutoSuggestBox.KeyboardAccelerators>
-                        <contract5Present:KeyboardAccelerator Key="F" Modifiers="Control" />
-                    </contract5Present:AutoSuggestBox.KeyboardAccelerators>
-                    <AutoSuggestBox.QueryIcon>
-                        <muxc:AnimatedIcon>
-                            <muxc:AnimatedIcon.Source>
-                                <animatedvisuals:AnimatedFindVisualSource />
-                            </muxc:AnimatedIcon.Source>
-                            <muxc:AnimatedIcon.FallbackIconSource>
-                                <muxc:FontIconSource
-                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                    FontSize="12"
-                                    Glyph="&#xE721;" />
-                            </muxc:AnimatedIcon.FallbackIconSource>
-                        </muxc:AnimatedIcon>
-                    </AutoSuggestBox.QueryIcon>
-                </AutoSuggestBox>
+                <Border x:Name="SearchBoxBorder">
+                    <AutoSuggestBox
+                        x:Name="SearchTextBox"
+                        x:Uid="/MainPage/SearchBox"
+                        Height="33"
+                        MaxWidth="600"
+                        Margin="40,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        IsTabStop="True"
+                        ItemTemplateSelector="{StaticResource SearchTemplateSelector}"
+                        QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                        TextChanged="AutoSuggestBox_TextChanged">
+                        <AutoSuggestBox.QueryIcon>
+                            <muxc:AnimatedIcon>
+                                <muxc:AnimatedIcon.Source>
+                                    <animatedvisuals:AnimatedFindVisualSource />
+                                </muxc:AnimatedIcon.Source>
+                                <muxc:AnimatedIcon.FallbackIconSource>
+                                    <muxc:FontIconSource
+                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                        FontSize="12"
+                                        Glyph="&#xE721;" />
+                                </muxc:AnimatedIcon.FallbackIconSource>
+                            </muxc:AnimatedIcon>
+                        </AutoSuggestBox.QueryIcon>
+                    </AutoSuggestBox>
+                </Border>
             </controls:Slot>
             <Grid
                 Grid.Column="3"
@@ -292,7 +291,7 @@
                         <AdaptiveTrigger MinWindowWidth="641" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="SearchTextBox.Margin" Value="0,0,0,0" />
+                        <Setter Target="SearchTextBox.Margin" Value="0" />
                         <Setter Target="SearchBoxHolder.IsStretch" Value="True" />
                         <Setter Target="AppTitleText.Visibility" Value="Collapsed" />
                     </VisualState.Setters>

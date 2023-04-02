@@ -78,6 +78,10 @@ namespace CoolapkUWP.Controls
                 foreach (UIElement child in children)
                 {
                     child?.Arrange(rcChild);
+                    if (child is FrameworkElement element)
+                    {
+                        element.MaxWidth = arrangeSize.Width;
+                    }
                 }
             }
             else
@@ -99,6 +103,10 @@ namespace CoolapkUWP.Controls
                         foreach (UIElement child in children)
                         {
                             child?.Arrange(rcChild);
+                            if (child is FrameworkElement element)
+                            {
+                                element.MaxWidth = arrangeSize.Width - padding;
+                            }
                         }
                     }
                     else
@@ -108,6 +116,10 @@ namespace CoolapkUWP.Controls
                         foreach (UIElement child in children)
                         {
                             child?.Arrange(rcChild);
+                            if (child is FrameworkElement element)
+                            {
+                                element.MaxWidth = arrangeSize.Width - padding;
+                            }
                         }
                     }
                 }
