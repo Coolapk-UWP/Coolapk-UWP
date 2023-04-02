@@ -89,12 +89,16 @@
                 </Grid>
                 <Button
                     x:Name="QRCodeButton"
+                    x:Uid="/ProfileFlyoutControl/QRCodeButton"
                     Grid.Column="4"
                     Margin="-8,4"
                     contract5NotPresent:Content="&#xE72D;"
                     contract5Present:Content="&#xED14;"
                     Style="{StaticResource NavigationIconButtonNormalStyle}"
                     Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <contract5Present:Button.KeyboardAccelerators>
+                        <contract5Present:KeyboardAccelerator Key="S" Modifiers="Control" />
+                    </contract5Present:Button.KeyboardAccelerators>
                     <Button.Flyout>
                         <Flyout contract8Present:ShouldConstrainToRootBounds="False">
                             <Flyout.FlyoutPresenterStyle>
@@ -112,13 +116,18 @@
                 </Button>
                 <Button
                     x:Name="LoginButton"
+                    x:Uid="/ProfileFlyoutControl/LoginButton"
                     Grid.Column="4"
                     Margin="-8,4"
                     Click="Button_Click"
                     Content="&#xE78B;"
                     Style="{StaticResource NavigationIconButtonNormalStyle}"
                     Tag="LoginButton"
-                    Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}" />
+                    Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                    <contract5Present:Button.KeyboardAccelerators>
+                        <contract5Present:KeyboardAccelerator Key="L" Modifiers="Control" />
+                    </contract5Present:Button.KeyboardAccelerators>
+                </Button>
             </Grid>
             <Grid x:Name="ButtonGrid" Visibility="{Binding IsLogin, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
@@ -206,9 +215,9 @@
                         FontSize="16"
                         Glyph="&#xE932;" />
                     <TextBlock
+                        x:Uid="/ProfileFlyoutControl/CreateFeed"
                         Margin="0,0,0,2"
-                        FontSize="16"
-                        Text="写动态" />
+                        FontSize="16" />
                 </controls:StackPanel>
             </Button>
             <Border MaxWidth="300" Visibility="{Binding Any, Converter={StaticResource BoolToVisibilityConverter}}">

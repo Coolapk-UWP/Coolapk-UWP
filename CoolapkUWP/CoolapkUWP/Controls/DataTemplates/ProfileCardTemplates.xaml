@@ -43,12 +43,12 @@
                     TextTrimming="CharacterEllipsis"
                     Visibility="{Binding Title, Converter={StaticResource StringVisibilityConverter}}" />
                 <Button
+                    x:Uid="/ProfileFlyoutControl/ReadMoreButton"
                     Grid.Column="1"
                     Padding="4,2"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Click="Button_Click"
-                    Content="查看更多"
                     FontSize="12"
                     Tag="{Binding}"
                     Visibility="{Binding Url, Converter={StaticResource StringVisibilityConverter}}" />
@@ -94,12 +94,12 @@
                     TextTrimming="CharacterEllipsis"
                     Visibility="{Binding Title, Converter={StaticResource StringVisibilityConverter}}" />
                 <Button
+                    x:Uid="/ProfileFlyoutControl/ReadMoreButton"
                     Grid.Column="1"
                     Padding="4,2"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Click="Button_Click"
-                    Content="查看更多"
                     FontSize="12"
                     Tag="{Binding}"
                     Visibility="{Binding Url, Converter={StaticResource StringVisibilityConverter}}" />
@@ -142,12 +142,12 @@
                 TextTrimming="CharacterEllipsis"
                 Visibility="{Binding Title, Converter={StaticResource StringVisibilityConverter}}" />
             <Button
+                x:Uid="/ProfileFlyoutControl/ReadMoreButton"
                 Grid.Column="1"
                 Padding="4,2"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Click="Button_Click"
-                Content="查看更多"
                 FontSize="12"
                 Tag="{Binding}"
                 Visibility="{Binding Url, Converter={StaticResource StringVisibilityConverter}}" />

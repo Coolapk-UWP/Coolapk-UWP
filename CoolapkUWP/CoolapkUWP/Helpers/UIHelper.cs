@@ -26,6 +26,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace CoolapkUWP.Helpers
@@ -174,16 +175,19 @@ namespace CoolapkUWP.Helpers
 
         public static bool IsOriginSource(object source, object originalSource)
         {
-            bool r = false;
-            DependencyObject DependencyObject = originalSource as DependencyObject;
-            if (DependencyObject.FindAscendant<Button>() == null && DependencyObject.FindAscendant<AppBarButton>() == null && originalSource.GetType() != typeof(Button) && originalSource.GetType() != typeof(AppBarButton) && originalSource.GetType() != typeof(RichEditBox))
+            if (source == originalSource) { return true; }
+
+            bool result = false;
+            FrameworkElement DependencyObject = originalSource as FrameworkElement;
+            if (DependencyObject.FindAscendant<ButtonBase>() == null && !(originalSource is ButtonBase) && !(originalSource is RichEditBox))
             {
                 if (source is FrameworkElement FrameworkElement)
                 {
-                    r = source == DependencyObject.FindAscendant(FrameworkElement.Name);
+                    result = source == DependencyObject.FindAscendant(FrameworkElement.Name);
                 }
             }
-            return source == originalSource || r;
+
+            return DependencyObject.Tag == null && result;
         }
 
         public static string ConvertMessageTypeToMessage(this MessageType type)

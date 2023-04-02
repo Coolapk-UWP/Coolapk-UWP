@@ -96,6 +96,9 @@
                     ItemTemplateSelector="{StaticResource SearchTemplateSelector}"
                     QuerySubmitted="AutoSuggestBox_QuerySubmitted"
                     TextChanged="AutoSuggestBox_TextChanged">
+                    <contract5Present:AutoSuggestBox.KeyboardAccelerators>
+                        <contract5Present:KeyboardAccelerator Key="F" Modifiers="Control" />
+                    </contract5Present:AutoSuggestBox.KeyboardAccelerators>
                     <AutoSuggestBox.QueryIcon>
                         <muxc:AnimatedIcon>
                             <muxc:AnimatedIcon.Source>

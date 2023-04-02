@@ -8,10 +8,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 {
     public sealed partial class OtherDataTemplates : ResourceDictionary
     {
-        public OtherDataTemplates()
-        {
-            InitializeComponent();
-        }
+        public OtherDataTemplates() => InitializeComponent();
 
         private void OnTapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {

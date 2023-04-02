@@ -32,21 +32,22 @@ namespace CoolapkUWP.Controls.DataTemplates
     {
         public FeedsTemplates() => InitializeComponent();
 
-        private void OnTapped(object sender, TappedRoutedEventArgs e)
+        private void OnRootTapped(object sender, TappedRoutedEventArgs e)
         {
             FrameworkElement element = sender as FrameworkElement;
-            if (e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
+
             if ((element.DataContext as ICanCopy)?.IsCopyEnabled ?? false) { return; }
+
+            if (e != null && !UIHelper.IsOriginSource(sender, e.OriginalSource)) { return; }
 
             if (e != null) { e.Handled = true; }
 
-            _ = UIHelper.OpenLinkAsync(element.Tag.ToString());
+            _ = UIHelper.OpenLinkAsync(element.Tag as string);
         }
 
         private void OnTopTapped(object sender, TappedRoutedEventArgs e)
         {
             FrameworkElement element = sender as FrameworkElement;
-            if ((element.DataContext as ICanCopy)?.IsCopyEnabled ?? false) { return; }
 
             if (e != null) { e.Handled = true; }
 
@@ -58,18 +59,12 @@ namespace CoolapkUWP.Controls.DataTemplates
             FrameworkElement element = sender as FrameworkElement;
             switch (element.Name)
             {
+                case "SeeAllButton":
+                    UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetReplyListProvider(((FeedReplyModel)element.Tag).ID.ToString(), (FeedReplyModel)element.Tag));
+                    break;
                 default:
                     _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
                     break;
-            }
-        }
-
-        private void ReplyButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is FrameworkElement frameworkElement)
-            {
-                if ((frameworkElement.Tag as ICanCopy)?.IsCopyEnabled ?? false) { return; }
-                UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetReplyListProvider(((FeedReplyModel)frameworkElement.Tag).ID.ToString(), (FeedReplyModel)frameworkElement.Tag));
             }
         }
 

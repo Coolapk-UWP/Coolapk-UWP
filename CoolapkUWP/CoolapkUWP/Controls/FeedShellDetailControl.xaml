@@ -351,9 +351,9 @@
                         BorderThickness="1"
                         CornerRadius="{ThemeResource ControlCornerRadius}">
                         <TextBlock
+                            x:Uid="/Feed/Rating"
                             FontSize="12"
-                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                            Text="评分" />
+                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
                     </Border>
                     <muxc:RatingControl
                         x:Name="RatingStarControl"
@@ -569,8 +569,8 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center">
                         <TextBlock
+                            x:Uid="/Feed/MediaShare"
                             MaxLines="2"
-                            Text="视频分享"
                             TextTrimming="WordEllipsis"
                             TextWrapping="Wrap" />
                         <TextBlock
@@ -628,7 +628,7 @@
                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     IsTextSelectionEnabled="True"
                     Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
-                    <Run Text="发布于" />
+                    <Run x:Uid="/Feed/PublishFrom" />
                     <Run FontWeight="Bold" Text="{Binding IPLocation}" />
                 </TextBlock>
                 <Border Margin="2,0" Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
@@ -644,7 +644,7 @@
                     IsTextSelectionEnabled="True"
                     Visibility="{Binding ReadNum, Converter={StaticResource DoubleToVisibilityConverter}, FallbackValue='Collapsed'}">
                     <Run FontWeight="Bold" Text="{Binding ReadNum}" />
-                    <Run Text="浏览" />
+                    <Run x:Uid="/Feed/ReadNum" />
                 </TextBlock>
             </StackPanel>
         </Grid>

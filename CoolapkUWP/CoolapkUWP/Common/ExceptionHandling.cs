@@ -2,7 +2,7 @@
 using System.Threading;
 using Windows.UI.Xaml.Controls;
 
-namespace CoolapkUWP.Helpers.Exceptions
+namespace CoolapkUWP.Helpers
 {
     /// <summary>
     /// Wrapper around a standard synchronization context, that catches any unhandled exceptions.

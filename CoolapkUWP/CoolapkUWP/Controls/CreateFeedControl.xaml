@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:contract12Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 12)"
+    xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:contract8Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 8)"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -26,7 +27,12 @@
             </DataTemplate>
         </ResourceDictionary>
     </local:Picker.Resources>
-    <Grid>
+    <Grid
+        x:Name="RootGrid"
+        AllowDrop="True"
+        Background="{ThemeResource SystemControlTransparentBrush}"
+        DragOver="Grid_DragOver"
+        Drop="Grid_Drop">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -45,7 +51,11 @@
                 Click="Button_Click"
                 Content="&#xE10A;"
                 Style="{StaticResource NavigationIconButtonNormalStyle}"
-                Tag="CloseButton" />
+                Tag="CloseButton">
+                <contract5Present:Button.KeyboardAccelerators>
+                    <contract5Present:KeyboardAccelerator Key="C" Modifiers="Control,Shift" />
+                </contract5Present:Button.KeyboardAccelerators>
+            </Button>
         </local:PageHeader>
         <RichEditBox
             x:Name="InputBox"
@@ -101,8 +111,10 @@
             <AppBarButton
                 x:Uid="/CreateFeedControl/LinkButton"
                 AllowFocusOnInteraction="True"
-                Tag="Link"
-                ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}">
+                Tag="Link">
+                <contract5Present:AppBarButton.KeyboardAccelerators>
+                    <contract5Present:KeyboardAccelerator Key="L" Modifiers="Control,Shift" />
+                </contract5Present:AppBarButton.KeyboardAccelerators>
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE71B;" />
                 </AppBarButton.Icon>
@@ -247,8 +259,10 @@
             <AppBarButton
                 x:Uid="/CreateFeedControl/EmojiButton"
                 AllowFocusOnInteraction="True"
-                Tag="Emoji"
-                ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}">
+                Tag="Emoji">
+                <contract5Present:AppBarButton.KeyboardAccelerators>
+                    <contract5Present:KeyboardAccelerator Key="E" Modifiers="Control,Shift" />
+                </contract5Present:AppBarButton.KeyboardAccelerators>
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE76E;" />
                 </AppBarButton.Icon>
@@ -359,8 +373,10 @@
             <AppBarButton
                 x:Uid="/CreateFeedControl/AddPicButton"
                 Click="AppBarButton_Click"
-                Tag="AddPic"
-                ToolTipService.ToolTip="{Binding Label, RelativeSource={RelativeSource Mode=Self}}">
+                Tag="AddPic">
+                <contract5Present:AppBarButton.KeyboardAccelerators>
+                    <contract5Present:KeyboardAccelerator Key="P" Modifiers="Control,Shift" />
+                </contract5Present:AppBarButton.KeyboardAccelerators>
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE710;" />
                 </AppBarButton.Icon>
@@ -371,6 +387,12 @@
                             x:Uid="/CreateFeedControl/PastePicItem"
                             Click="MenuFlyoutItem_Click"
                             Tag="PastePic">
+                            <contract5Present:MenuFlyoutItem.KeyboardAccelerators>
+                                <contract5Present:KeyboardAccelerator
+                                    Key="V"
+                                    Modifiers="Control"
+                                    ScopeOwner="{Binding ElementName=RootGrid}" />
+                            </contract5Present:MenuFlyoutItem.KeyboardAccelerators>
                             <MenuFlyoutItem.Icon>
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77F;" />
                             </MenuFlyoutItem.Icon>

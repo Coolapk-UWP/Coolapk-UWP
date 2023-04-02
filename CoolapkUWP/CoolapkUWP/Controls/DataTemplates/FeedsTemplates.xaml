@@ -27,7 +27,7 @@
             Loaded="UserControl_Loaded"
             SizeChanged="UserControl_SizeChanged"
             Tag="{Binding Url}"
-            Tapped="OnTapped">
+            Tapped="OnRootTapped">
             <UserControl.Resources>
                 <Flyout x:Key="QRCodeFlyout" contract8Present:ShouldConstrainToRootBounds="False">
                     <Flyout.FlyoutPresenterStyle>
@@ -195,11 +195,11 @@
                     Visibility="{Binding ShowButtons, Converter={StaticResource BoolToVisibilityConverter}}">
                     <Button
                         x:Name="LikeButton"
+                        x:Uid="/Feed/LikeButton"
                         Height="32"
                         Click="FeedButton_Click"
                         Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding}"
-                        ToolTipService.ToolTip="点赞"
                         Visibility="{Binding ShowLikes, Converter={StaticResource BoolToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon
@@ -216,11 +216,11 @@
                     </Button>
                     <Button
                         x:Name="ReplyButton"
+                        x:Uid="/Feed/ReplyButton"
                         Height="32"
                         Click="FeedButton_Click"
                         Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding}"
-                        ToolTipService.ToolTip="回复"
                         Visibility="{Binding ShowLikes, Converter={StaticResource BoolToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE90A;" />
@@ -232,12 +232,12 @@
                     </Button>
                     <Button
                         x:Name="ShareButton"
+                        x:Uid="/Feed/ShareButton"
                         Height="32"
                         Click="FeedButton_Click"
                         Flyout="{StaticResource QRCodeFlyout}"
                         Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding ShareUrl}"
-                        ToolTipService.ToolTip="分享"
                         Visibility="{Binding ShowLikes, Converter={StaticResource BoolToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72D;" />
@@ -249,10 +249,10 @@
                     </Button>
                     <Button
                         x:Name="MoreButton"
+                        x:Uid="/Feed/MoreButton"
                         Height="32"
                         Flyout="{StaticResource MoreFlyout}"
-                        Style="{StaticResource TransparentButtonStyle}"
-                        ToolTipService.ToolTip="更多">
+                        Style="{StaticResource TransparentButtonStyle}">
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE10C;" />
                     </Button>
                 </controls:StackPanel>
@@ -284,9 +284,9 @@
                             BorderThickness="1"
                             CornerRadius="{ThemeResource ControlCornerRadius}">
                             <TextBlock
+                                x:Uid="/Feed/Rating"
                                 FontSize="12"
-                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                Text="评分" />
+                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
                         </Border>
                         <muxc:RatingControl
                             x:Name="RatingStarControl"
@@ -451,8 +451,7 @@
                     <Grid
                         Padding="8"
                         Tag="{Binding MediaUrl}"
-                        Tapped="OnTapped"
-                        Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                        Tapped="OnTopTapped">
                         <Grid.Background>
                             <media:AcrylicBrush
                                 BackgroundSource="Backdrop"
@@ -493,8 +492,8 @@
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center">
                             <TextBlock
+                                x:Uid="/Feed/MediaShare"
                                 MaxLines="2"
-                                Text="视频分享"
                                 TextTrimming="WordEllipsis"
                                 TextWrapping="Wrap" />
                             <TextBlock
@@ -579,7 +578,7 @@
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         IsTextSelectionEnabled="True"
                         Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}}">
-                        <Run Text="发布于" />
+                        <Run x:Uid="/Feed/PublishFrom" />
                         <Run FontWeight="Bold" Text="{Binding IPLocation}" />
                     </TextBlock>
                 </StackPanel>
@@ -593,7 +592,7 @@
             Loaded="UserControl_Loaded"
             SizeChanged="UserControl_SizeChanged"
             Tag="{Binding Url}"
-            Tapped="OnTapped">
+            Tapped="OnRootTapped">
             <UserControl.Resources>
                 <MenuFlyout x:Key="MoreFlyout">
                     <MenuFlyoutSubItem x:Uid="/Feed/Copy">
@@ -809,7 +808,7 @@
                         Click="FeedButton_Click"
                         Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding}"
-                        ToolTipService.ToolTip="点赞">
+                        x:Uid="/Feed/LikeButton">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon
                                 FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -829,7 +828,7 @@
                         Click="FeedButton_Click"
                         Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding}"
-                        ToolTipService.ToolTip="回复">
+                        x:Uid="/Feed/ReplyButton">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE90A;" />
                             <TextBlock
@@ -843,7 +842,7 @@
                         Height="32"
                         Flyout="{StaticResource MoreFlyout}"
                         Style="{StaticResource TransparentButtonStyle}"
-                        ToolTipService.ToolTip="更多">
+                        x:Uid="/Feed/MoreButton">
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE10C;" />
                     </Button>
                 </controls:StackPanel>
@@ -888,10 +887,11 @@
                         </muxc:ItemsRepeater.Layout>
                     </muxc:ItemsRepeater>
                     <Button
+                        x:Name="SeeAllButton"
                         Padding="4"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Left"
-                        Click="ReplyButton_Click"
+                        Click="Button_Click"
                         Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding}">
                         <TextBlock
@@ -917,7 +917,7 @@
             BorderThickness="1"
             CornerRadius="{ThemeResource OverlayCornerRadius}"
             Tag="{Binding Url}"
-            Tapped="OnTapped">
+            Tapped="OnRootTapped">
             <Grid.Background>
                 <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
             </Grid.Background>
@@ -926,7 +926,7 @@
                 Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
                 CornerRadius="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}"
                 Tag="{Binding Url}"
-                Tapped="OnTapped">
+                Tapped="OnTopTapped">
                 <TextBlock
                     Margin="8"
                     FontSize="16"

@@ -1,6 +1,5 @@
 ﻿using CoolapkUWP.BackgroundTasks;
 using CoolapkUWP.Helpers;
-using CoolapkUWP.Helpers.Exceptions;
 using CoolapkUWP.Models.Exceptions;
 using CoolapkUWP.Pages;
 using Microsoft.Toolkit.Uwp.Helpers;
@@ -194,7 +193,7 @@ namespace CoolapkUWP
                 .UnhandledException += SynchronizationContext_UnhandledException;
         }
 
-        private void SynchronizationContext_UnhandledException(object sender, Helpers.Exceptions.UnhandledExceptionEventArgs e)
+        private void SynchronizationContext_UnhandledException(object sender, Helpers.UnhandledExceptionEventArgs e)
         {
             if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
             {

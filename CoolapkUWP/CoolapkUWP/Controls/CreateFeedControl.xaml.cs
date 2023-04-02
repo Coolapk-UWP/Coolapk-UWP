@@ -390,6 +390,18 @@ namespace CoolapkUWP.Controls
             (sender as ListView).SelectedIndex = -1;
         }
 
+        private void Grid_DragOver(object sender, DragEventArgs e)
+        {
+            e.AcceptedOperation = DataPackageOperation.Copy;
+            e.Handled = true;
+        }
+
+        private void Grid_Drop(object sender, DragEventArgs e)
+        {
+            _ = Provider.DropFile(e.DataView);
+            e.Handled = true;
+        }
+
         private void Clipboard_ContentChanged(object sender, object e) => _ = Dispatcher.AwaitableRunAsync(async () => PastePic.IsEnabled = await Provider.CheckData(Clipboard.GetContent()));
 
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e) => (sender as GridView).SelectedIndex = -1;

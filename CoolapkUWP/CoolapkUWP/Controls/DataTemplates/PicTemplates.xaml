@@ -2,13 +2,11 @@
     x:Class="CoolapkUWP.Controls.DataTemplates.PicTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls">
     <DataTemplate x:Key="PicDefaultTemplate">
         <Border
-            x:Name="Root"
             Width="102"
             Height="102"
             CornerRadius="{ThemeResource OverlayCornerRadius}"
@@ -29,9 +27,6 @@
                         <MenuFlyoutItem.Icon>
                             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
                         </MenuFlyoutItem.Icon>
-                        <contract5Present:MenuFlyoutItem.KeyboardAccelerators>
-                            <contract5Present:KeyboardAccelerator Key="F5" ScopeOwner="{Binding ElementName=Root}" />
-                        </contract5Present:MenuFlyoutItem.KeyboardAccelerators>
                     </MenuFlyoutItem>
                     <MenuFlyoutItem
                         x:Name="CopyButton"
@@ -41,12 +36,6 @@
                         <MenuFlyoutItem.Icon>
                             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
                         </MenuFlyoutItem.Icon>
-                        <contract5Present:MenuFlyoutItem.KeyboardAccelerators>
-                            <contract5Present:KeyboardAccelerator
-                                Key="C"
-                                Modifiers="Control"
-                                ScopeOwner="{Binding ElementName=Root}" />
-                        </contract5Present:MenuFlyoutItem.KeyboardAccelerators>
                     </MenuFlyoutItem>
                     <MenuFlyoutItem
                         x:Name="ShareButton"
@@ -56,12 +45,6 @@
                         <MenuFlyoutItem.Icon>
                             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72D;" />
                         </MenuFlyoutItem.Icon>
-                        <contract5Present:MenuFlyoutItem.KeyboardAccelerators>
-                            <contract5Present:KeyboardAccelerator
-                                Key="S"
-                                Modifiers="Shift"
-                                ScopeOwner="{Binding ElementName=Root}" />
-                        </contract5Present:MenuFlyoutItem.KeyboardAccelerators>
                     </MenuFlyoutItem>
                     <MenuFlyoutItem
                         x:Name="SaveButton"
@@ -71,12 +54,6 @@
                         <MenuFlyoutItem.Icon>
                             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74E;" />
                         </MenuFlyoutItem.Icon>
-                        <contract5Present:MenuFlyoutItem.KeyboardAccelerators>
-                            <contract5Present:KeyboardAccelerator
-                                Key="S"
-                                Modifiers="Control"
-                                ScopeOwner="{Binding ElementName=Root}" />
-                        </contract5Present:MenuFlyoutItem.KeyboardAccelerators>
                     </MenuFlyoutItem>
                 </MenuFlyout>
             </Border.ContextFlyout>

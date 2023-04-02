@@ -230,6 +230,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
             public FeedListItemSourse FeedItemSourse { get; private set; }
             public FeedListItemSourse HtmlFeedItemSourse { get; private set; }
             public FeedListItemSourse QAItemSourse { get; private set; }
+            public FeedListItemSourse CollectionItemSourse { get; private set; }
 
             internal UserViewModel(string uid) : base(uid, FeedListType.UserPageList) { }
 
@@ -279,6 +280,19 @@ namespace CoolapkUWP.ViewModels.FeedPages
                         {
                             Header = "问答",
                             ItemSource = QAItemSourse
+                        });
+                    }
+                    if (CollectionItemSourse == null || CollectionItemSourse.ID != ID)
+                    {
+                        CoolapkListProvider Provider = new CoolapkListProvider(
+                            (p, firstItem, lastItem) => UriHelper.GetUri(UriType.GetCollectionList, ID, p, string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}", string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
+                            GetEntities,
+                            idName);
+                        CollectionItemSourse = new FeedListItemSourse(ID, Provider);
+                        ItemSource.Add(new ShyHeaderItem
+                        {
+                            Header = "收藏单",
+                            ItemSource = CollectionItemSourse
                         });
                     }
                     base.ItemSource = ItemSource;

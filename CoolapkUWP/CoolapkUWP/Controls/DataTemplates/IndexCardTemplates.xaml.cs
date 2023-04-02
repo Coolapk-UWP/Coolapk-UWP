@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
@@ -82,11 +83,11 @@ namespace CoolapkUWP.Controls.DataTemplates
             {
                 if (str.Contains("我的常去"))
                 {
-                    //UIHelper.NavigateInSplitPane(typeof(HistoryPage), new ViewModels.HistoryPage.ViewModel("我的常去"));
+                    UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetHistoryProvider("我的常去"));
                 }
                 else if (str.Contains("浏览历史"))
                 {
-                    //UIHelper.NavigateInSplitPane(typeof(HistoryPage), new ViewModels.HistoryPage.ViewModel("浏览历史"));
+                    UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetHistoryProvider("浏览历史"));
                 }
                 else if (str.Contains("我关注的话题"))
                 {
@@ -97,8 +98,8 @@ namespace CoolapkUWP.Controls.DataTemplates
                 }
                 else if (str.Contains("我的问答"))
                 {
-                    string r = SettingsHelper.Get<string>(SettingsHelper.Uid);
-                    //if (r != null) { UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModel(r, ListType.UserFeed, "questionAndAnswer")); }
+                    string uid = SettingsHelper.Get<string>(SettingsHelper.Uid);
+                    if (uid != null) { UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserFeedsProvider(uid, "questionAndAnswer")); }
                 }
                 else
                 {
@@ -125,11 +126,11 @@ namespace CoolapkUWP.Controls.DataTemplates
                 }
                 else if (url.Contains("我的常去"))
                 {
-                    //UIHelper.NavigateInSplitPane(typeof(HistoryPage), new ViewModels.HistoryPage.ViewModel("我的常去"));
+                    UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetHistoryProvider("我的常去"));
                 }
                 else if (url.Contains("浏览历史"))
                 {
-                    //UIHelper.NavigateInSplitPane(typeof(HistoryPage), new ViewModels.HistoryPage.ViewModel("浏览历史"));
+                    UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetHistoryProvider("浏览历史"));
                 }
                 else if (url.Contains("我关注的话题"))
                 {
@@ -140,8 +141,8 @@ namespace CoolapkUWP.Controls.DataTemplates
                 }
                 else if (url.Contains("我的问答"))
                 {
-                    string r = SettingsHelper.Get<string>(SettingsHelper.Uid);
-                    //if (r != null) { UIHelper.NavigateInSplitPane(typeof(AdaptivePage), new ViewModel(r, ListType.UserFeed, "questionAndAnswer")); }
+                    string uid = SettingsHelper.Get<string>(SettingsHelper.Uid);
+                    if (uid != null) { UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserFeedsProvider(uid, "questionAndAnswer")); }
                 }
                 else
                 {
