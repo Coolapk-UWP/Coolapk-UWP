@@ -14,7 +14,20 @@ namespace CoolapkUWP.Helpers
         private const string KKPP_API = "https://v2.kkpp.cc/repos/{0}/{1}/releases/latest";
         private const string GITHUB_API = "https://api.github.com/repos/{0}/{1}/releases/latest";
 
-        public static async Task<UpdateInfo> CheckUpdateAsync(string username, string repository, PackageVersion currentVersion = new PackageVersion())
+        public static Task<UpdateInfo> CheckUpdateAsync(string username, string repository)
+        {
+            PackageVersion currentVersion = Package.Current.Id.Version;
+#if FEATURE2
+            currentVersion.Major += 1;
+            if (currentVersion.Minor > 0)
+            {
+                currentVersion.Minor -= 1;
+            }
+#endif
+            return CheckUpdateAsync(username, repository, currentVersion);
+        }
+
+        public static async Task<UpdateInfo> CheckUpdateAsync(string username, string repository, PackageVersion currentVersion)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -36,11 +49,6 @@ namespace CoolapkUWP.Helpers
 
             if (result != null)
             {
-                if (currentVersion.Major <= 0 && currentVersion.Minor <= 0 && currentVersion.Build <= 0 && currentVersion.Revision <= 0)
-                {
-                    currentVersion = Package.Current.Id.Version;
-                }
-
                 SystemVersionInfo newVersionInfo = GetAsVersionInfo(result.TagName);
                 int major = currentVersion.Major <= 0 ? 0 : currentVersion.Major;
                 int minor = currentVersion.Minor <= 0 ? 0 : currentVersion.Minor;
