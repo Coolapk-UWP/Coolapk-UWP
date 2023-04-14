@@ -262,15 +262,15 @@
     <value>登出</value>
   </data>
   <data name="DisplayOriginPictureSettings.Description" xml:space="preserve">
-    <value>在图文页面和查看图片时显示原图。</value>
+    <value>在圖文頁面和查看圖片時顯示原圖。</value>
   </data>
   <data name="DisplayOriginPictureSettings.Header" xml:space="preserve">
-    <value>显示原图</value>
+    <value>顯示原圖</value>
   </data>
   <data name="UseMultiWindowSettings.Description" xml:space="preserve">
-    <value>在新窗口查看图片。</value>
+    <value>在新視窗查看圖片。</value>
   </data>
   <data name="UseMultiWindowSettings.Header" xml:space="preserve">
-    <value>使用多窗口（仅支持 1903 及以上）</value>
+    <value>使用多視窗（僅支援 1903 及以上）</value>
   </data>
 </root>
