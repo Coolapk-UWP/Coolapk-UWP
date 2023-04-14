@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccentColorSettings.Description" xml:space="preserve">
+    <value>Various Accent Colors</value>
+  </data>
+  <data name="AccentColorSettings.Header" xml:space="preserve">
+    <value>Colors</value>
+  </data>
+  <data name="APIVersionSettings.Description" xml:space="preserve">
+    <value>Set the version of Coolapk to use</value>
+  </data>
+  <data name="APIVersionSettings.Header" xml:space="preserve">
+    <value>API Version</value>
+  </data>
   <data name="CompactOverlaySettings.Description" xml:space="preserve">
     <value>Enter or Exit Compact Overlay</value>
   </data>
@@ -126,11 +138,26 @@
   <data name="EnterPIP.Content" xml:space="preserve">
     <value>Enter Compact Overlay</value>
   </data>
+  <data name="GetURLContent.Header" xml:space="preserve">
+    <value>Get Content</value>
+  </data>
   <data name="LanguageSettings.Description" xml:space="preserve">
     <value>Select language and restart to change language</value>
   </data>
   <data name="LanguageSettings.Header" xml:space="preserve">
     <value>Language</value>
+  </data>
+  <data name="NewWindowSettings.Description" xml:space="preserve">
+    <value>Create a new window</value>
+  </data>
+  <data name="NewWindowSettings.Header" xml:space="preserve">
+    <value>New Window (only supported 1903 and above)</value>
+  </data>
+  <data name="OpenBrowser.Header" xml:space="preserve">
+    <value>Open with built-in browser</value>
+  </data>
+  <data name="OpenURL.Header" xml:space="preserve">
+    <value>Open Page</value>
   </data>
   <data name="OutPIP.Content" xml:space="preserve">
     <value>Exit</value>
@@ -147,6 +174,12 @@
   <data name="SetProgressValue.Header" xml:space="preserve">
     <value>Progress Value</value>
   </data>
+  <data name="SlimCountSettings.Description" xml:space="preserve">
+    <value>Number of images that can be loaded at the same time</value>
+  </data>
+  <data name="SlimCountSettings.Header" xml:space="preserve">
+    <value>Multitasking Number</value>
+  </data>
   <data name="TitleBar.Title" xml:space="preserve">
     <value>Testing</value>
   </data>
@@ -156,7 +189,34 @@
   <data name="TitleBarSettings.Header" xml:space="preserve">
     <value>Title Bar</value>
   </data>
+  <data name="TokenVersionSettings.Description" xml:space="preserve">
+    <value>Set the Token acquisition method to be used</value>
+  </data>
+  <data name="TokenVersionSettings.Header" xml:space="preserve">
+    <value>Token Version</value>
+  </data>
   <data name="UITestSettingsHeader.Header" xml:space="preserve">
     <value>UI Test</value>
+  </data>
+  <data name="UseAPI2Settings.Description" xml:space="preserve">
+    <value>Whether to use the new Coolapk interface</value>
+  </data>
+  <data name="UseAPI2Settings.Header" xml:space="preserve">
+    <value>Use API2</value>
+  </data>
+  <data name="UseCompositorSettings.Description" xml:space="preserve">
+    <value>Whether to use composite animation in the ceiling list</value>
+  </data>
+  <data name="UseCompositorSettings.Header" xml:space="preserve">
+    <value>Use Composite Animation</value>
+  </data>
+  <data name="WebTestSettings.Description" xml:space="preserve">
+    <value>Test network related content</value>
+  </data>
+  <data name="WebTestSettings.Header" xml:space="preserve">
+    <value>Web Tests</value>
+  </data>
+  <data name="WebTestSettingsHeader.Header" xml:space="preserve">
+    <value>Network Tests</value>
   </data>
 </root>

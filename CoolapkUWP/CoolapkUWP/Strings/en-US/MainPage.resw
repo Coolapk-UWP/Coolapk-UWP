@@ -129,6 +129,9 @@
   <data name="Notifications.Content" xml:space="preserve">
     <value>Notification</value>
   </data>
+  <data name="RefreshButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
   <data name="SearchBox.PlaceholderText" xml:space="preserve">
     <value>Search for Feeds, Topics, Users, etc</value>
   </data>

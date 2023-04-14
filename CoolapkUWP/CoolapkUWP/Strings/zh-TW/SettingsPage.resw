@@ -261,4 +261,16 @@
   <data name="LogoutSettingsButton.Content" xml:space="preserve">
     <value>登出</value>
   </data>
+  <data name="DisplayOriginPictureSettings.Description" xml:space="preserve">
+    <value>在圖文頁面和查看圖片時顯示原圖。</value>
+  </data>
+  <data name="DisplayOriginPictureSettings.Header" xml:space="preserve">
+    <value>顯示原圖</value>
+  </data>
+  <data name="UseMultiWindowSettings.Description" xml:space="preserve">
+    <value>在新視窗查看圖片。</value>
+  </data>
+  <data name="UseMultiWindowSettings.Header" xml:space="preserve">
+    <value>使用多視窗（僅支援 1903 及以上）</value>
+  </data>
 </root>

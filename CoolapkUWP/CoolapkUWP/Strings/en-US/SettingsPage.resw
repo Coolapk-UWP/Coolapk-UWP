@@ -261,4 +261,16 @@
   <data name="LogoutSettingsButton.Content" xml:space="preserve">
     <value>Logout</value>
   </data>
+  <data name="DisplayOriginPictureSettings.Description" xml:space="preserve">
+    <value>Display the original image on the graphic page and when viewing images.</value>
+  </data>
+  <data name="DisplayOriginPictureSettings.Header" xml:space="preserve">
+    <value>Show Original Images</value>
+  </data>
+  <data name="UseMultiWindowSettings.Description" xml:space="preserve">
+    <value>View the image in a new window.</value>
+  </data>
+  <data name="UseMultiWindowSettings.Header" xml:space="preserve">
+    <value>Use Multiple Windows (only supported 1903 and above)</value>
+  </data>
 </root>

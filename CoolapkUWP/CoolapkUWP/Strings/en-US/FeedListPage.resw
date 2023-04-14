@@ -123,6 +123,9 @@
   <data name="All" xml:space="preserve">
     <value>Select</value>
   </data>
+  <data name="AllStar.Text" xml:space="preserve">
+    <value>Coolapk Rating</value>
+  </data>
   <data name="Answer" xml:space="preserve">
     <value>Q&amp;A</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="CommentNum" xml:space="preserve">
     <value>Discuss</value>
+  </data>
+  <data name="CoverMenuSubItem.Text" xml:space="preserve">
+    <value>Cover Image</value>
   </data>
   <data name="DatelineDesc" xml:space="preserve">
     <value>Sort by time</value>
@@ -189,6 +195,12 @@
   <data name="NewsNum" xml:space="preserve">
     <value>News</value>
   </data>
+  <data name="OnlyOwnerButton.Content" xml:space="preserve">
+    <value>Only Owner</value>
+  </data>
+  <data name="OwnerStar.Text" xml:space="preserve">
+    <value>Owner Rating</value>
+  </data>
   <data name="Popular" xml:space="preserve">
     <value>Sort by population</value>
   </data>
@@ -200,6 +212,9 @@
   </data>
   <data name="ReleaseTime" xml:space="preserve">
     <value>Release Date: </value>
+  </data>
+  <data name="SeeAllButton.Content" xml:space="preserve">
+    <value>See All</value>
   </data>
   <data name="Square" xml:space="preserve">
     <value>Hall</value>

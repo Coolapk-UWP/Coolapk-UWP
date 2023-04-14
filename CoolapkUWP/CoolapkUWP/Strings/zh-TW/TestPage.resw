@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccentColorSettings.Description" xml:space="preserve">
+    <value>各種強調色</value>
+  </data>
+  <data name="AccentColorSettings.Header" xml:space="preserve">
+    <value>顏色</value>
+  </data>
+  <data name="APIVersionSettings.Description" xml:space="preserve">
+    <value>設置使用的酷安版本</value>
+  </data>
+  <data name="APIVersionSettings.Header" xml:space="preserve">
+    <value>API 版本</value>
+  </data>
   <data name="CompactOverlaySettings.Description" xml:space="preserve">
     <value>進入或退出畫中畫模式</value>
   </data>
@@ -126,11 +138,26 @@
   <data name="EnterPIP.Content" xml:space="preserve">
     <value>進入畫中畫模式</value>
   </data>
+  <data name="GetURLContent.Header" xml:space="preserve">
+    <value>獲取內容</value>
+  </data>
   <data name="LanguageSettings.Description" xml:space="preserve">
     <value>選擇語言並重啟應用來更改語言</value>
   </data>
   <data name="LanguageSettings.Header" xml:space="preserve">
     <value>語言</value>
+  </data>
+  <data name="NewWindowSettings.Description" xml:space="preserve">
+    <value>新建一個視窗</value>
+  </data>
+  <data name="NewWindowSettings.Header" xml:space="preserve">
+    <value>新視窗（僅支援 1903 及以上）</value>
+  </data>
+  <data name="OpenBrowser.Header" xml:space="preserve">
+    <value>用內置瀏覽器打開</value>
+  </data>
+  <data name="OpenURL.Header" xml:space="preserve">
+    <value>打開頁面</value>
   </data>
   <data name="OutPIP.Content" xml:space="preserve">
     <value>退出</value>
@@ -147,6 +174,12 @@
   <data name="SetProgressValue.Header" xml:space="preserve">
     <value>進度值</value>
   </data>
+  <data name="SlimCountSettings.Description" xml:space="preserve">
+    <value>同時可以載入的圖片數量</value>
+  </data>
+  <data name="SlimCountSettings.Header" xml:space="preserve">
+    <value>多任務數</value>
+  </data>
   <data name="TitleBar.Title" xml:space="preserve">
     <value>測試</value>
   </data>
@@ -156,7 +189,34 @@
   <data name="TitleBarSettings.Header" xml:space="preserve">
     <value>標題列</value>
   </data>
+  <data name="TokenVersionSettings.Description" xml:space="preserve">
+    <value>設置使用的 Token 獲取方法</value>
+  </data>
+  <data name="TokenVersionSettings.Header" xml:space="preserve">
+    <value>Token 版本</value>
+  </data>
   <data name="UITestSettingsHeader.Header" xml:space="preserve">
     <value>介面測試</value>
+  </data>
+  <data name="UseAPI2Settings.Description" xml:space="preserve">
+    <value>是否使用新的酷安介面</value>
+  </data>
+  <data name="UseAPI2Settings.Header" xml:space="preserve">
+    <value>是否使用 API2</value>
+  </data>
+  <data name="UseCompositorSettings.Description" xml:space="preserve">
+    <value>是否在吸頂清單中使用合成動畫</value>
+  </data>
+  <data name="UseCompositorSettings.Header" xml:space="preserve">
+    <value>是否使用合成動畫</value>
+  </data>
+  <data name="WebTestSettings.Description" xml:space="preserve">
+    <value>測試網路相關內容</value>
+  </data>
+  <data name="WebTestSettings.Header" xml:space="preserve">
+    <value>Web 測試</value>
+  </data>
+  <data name="WebTestSettingsHeader.Header" xml:space="preserve">
+    <value>網路測試</value>
   </data>
 </root>
