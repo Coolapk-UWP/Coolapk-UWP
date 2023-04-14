@@ -262,15 +262,15 @@
     <value>Logout</value>
   </data>
   <data name="DisplayOriginPictureSettings.Description" xml:space="preserve">
-    <value>在图文页面和查看图片时显示原图。</value>
+    <value>Display the original image on the graphic page and when viewing images.</value>
   </data>
   <data name="DisplayOriginPictureSettings.Header" xml:space="preserve">
-    <value>显示原图</value>
+    <value>Show Original Images</value>
   </data>
   <data name="UseMultiWindowSettings.Description" xml:space="preserve">
-    <value>在新窗口查看图片。</value>
+    <value>View the image in a new window.</value>
   </data>
   <data name="UseMultiWindowSettings.Header" xml:space="preserve">
-    <value>使用多窗口（仅支持 1903 及以上）</value>
+    <value>Use Multiple Windows (only supported 1903 and above)</value>
   </data>
 </root>
