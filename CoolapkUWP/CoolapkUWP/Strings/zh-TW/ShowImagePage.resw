@@ -121,10 +121,10 @@
     <value>複製</value>
   </data>
   <data name="OriginButton.Label" xml:space="preserve">
-    <value>查看原图</value>
+    <value>查看原圖</value>
   </data>
   <data name="OriginMenuItem.Text" xml:space="preserve">
-    <value>查看原图</value>
+    <value>查看原圖</value>
   </data>
   <data name="RefreshButton.Label" xml:space="preserve">
     <value>刷新</value>
