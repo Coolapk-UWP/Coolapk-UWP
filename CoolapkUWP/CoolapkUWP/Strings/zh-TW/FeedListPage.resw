@@ -124,7 +124,7 @@
     <value>精選</value>
   </data>
   <data name="AllStar.Text" xml:space="preserve">
-    <value>酷安评分</value>
+    <value>酷安評分</value>
   </data>
   <data name="Answer" xml:space="preserve">
     <value>問答</value>
@@ -142,7 +142,7 @@
     <value>討論</value>
   </data>
   <data name="CoverMenuSubItem.Text" xml:space="preserve">
-    <value>背景图</value>
+    <value>背景圖</value>
   </data>
   <data name="DatelineDesc" xml:space="preserve">
     <value>按時間排序</value>
@@ -196,10 +196,10 @@
     <value>新聞</value>
   </data>
   <data name="OnlyOwnerButton.Content" xml:space="preserve">
-    <value>只看机主</value>
+    <value>只看機主</value>
   </data>
   <data name="OwnerStar.Text" xml:space="preserve">
-    <value>机主评分</value>
+    <value>機主評分</value>
   </data>
   <data name="Popular" xml:space="preserve">
     <value>按熱度排序</value>
