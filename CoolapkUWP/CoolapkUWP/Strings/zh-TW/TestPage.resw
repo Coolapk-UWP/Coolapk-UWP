@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccentColorSettings.Description" xml:space="preserve">
-    <value>各种强调色</value>
+    <value>各種強調色</value>
   </data>
   <data name="AccentColorSettings.Header" xml:space="preserve">
-    <value>颜色</value>
+    <value>顏色</value>
   </data>
   <data name="APIVersionSettings.Description" xml:space="preserve">
-    <value>设置使用的酷安版本</value>
+    <value>設置使用的酷安版本</value>
   </data>
   <data name="APIVersionSettings.Header" xml:space="preserve">
     <value>API 版本</value>
@@ -139,7 +139,7 @@
     <value>進入畫中畫模式</value>
   </data>
   <data name="GetURLContent.Header" xml:space="preserve">
-    <value>获取内容</value>
+    <value>獲取內容</value>
   </data>
   <data name="LanguageSettings.Description" xml:space="preserve">
     <value>選擇語言並重啟應用來更改語言</value>
@@ -147,11 +147,17 @@
   <data name="LanguageSettings.Header" xml:space="preserve">
     <value>語言</value>
   </data>
+  <data name="NewWindowSettings.Description" xml:space="preserve">
+    <value>新建一个窗口</value>
+  </data>
+  <data name="NewWindowSettings.Header" xml:space="preserve">
+    <value>新窗口（仅支持 1903 及以上）</value>
+  </data>
   <data name="OpenBrowser.Header" xml:space="preserve">
-    <value>用内置浏览器打开</value>
+    <value>用內置瀏覽器打開</value>
   </data>
   <data name="OpenURL.Header" xml:space="preserve">
-    <value>打开页面</value>
+    <value>打開頁面</value>
   </data>
   <data name="OutPIP.Content" xml:space="preserve">
     <value>退出</value>
@@ -169,10 +175,10 @@
     <value>進度值</value>
   </data>
   <data name="SlimCountSettings.Description" xml:space="preserve">
-    <value>同时可以加载的图片数量</value>
+    <value>同時可以載入的圖片數量</value>
   </data>
   <data name="SlimCountSettings.Header" xml:space="preserve">
-    <value>多任务数</value>
+    <value>多任務數</value>
   </data>
   <data name="TitleBar.Title" xml:space="preserve">
     <value>測試</value>
@@ -184,7 +190,7 @@
     <value>標題列</value>
   </data>
   <data name="TokenVersionSettings.Description" xml:space="preserve">
-    <value>设置使用的 Token 获取方法</value>
+    <value>設置使用的 Token 獲取方法</value>
   </data>
   <data name="TokenVersionSettings.Header" xml:space="preserve">
     <value>Token 版本</value>
@@ -193,24 +199,24 @@
     <value>介面測試</value>
   </data>
   <data name="UseAPI2Settings.Description" xml:space="preserve">
-    <value>是否使用新的酷安接口</value>
+    <value>是否使用新的酷安介面</value>
   </data>
   <data name="UseAPI2Settings.Header" xml:space="preserve">
     <value>是否使用 API2</value>
   </data>
   <data name="UseCompositorSettings.Description" xml:space="preserve">
-    <value>是否在吸顶列表中使用合成动画</value>
+    <value>是否在吸頂清單中使用合成動畫</value>
   </data>
   <data name="UseCompositorSettings.Header" xml:space="preserve">
-    <value>是否使用合成动画</value>
+    <value>是否使用合成動畫</value>
   </data>
   <data name="WebTestSettings.Description" xml:space="preserve">
-    <value>测试网络相关内容</value>
+    <value>測試網路相關內容</value>
   </data>
   <data name="WebTestSettings.Header" xml:space="preserve">
-    <value>Web 测试</value>
+    <value>Web 測試</value>
   </data>
   <data name="WebTestSettingsHeader.Header" xml:space="preserve">
-    <value>网络测试</value>
+    <value>網路測試</value>
   </data>
 </root>
