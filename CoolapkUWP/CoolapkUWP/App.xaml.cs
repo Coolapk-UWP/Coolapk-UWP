@@ -224,6 +224,8 @@ namespace CoolapkUWP
             RegisterNotificationsTask();
             RegisterToastBackgroundTask();
 
+            #region LiveTileTask
+
             void RegisterLiveTileTask()
             {
                 const string LiveTileTask = "LiveTileTask";
@@ -236,9 +238,13 @@ namespace CoolapkUWP
                 BackgroundTaskRegistration _LiveTileTask = BackgroundTaskHelper.Register(LiveTileTask, new TimeTrigger(15, false), true);
             }
 
+            #endregion
+
+            #region NotificationsTask
+
             void RegisterNotificationsTask()
             {
-                const string NotificationsTask = "NotificationsTask";
+                const string NotificationsTask = "NotificationsModel";
 
                 // If background task is already registered, do nothing
                 if (BackgroundTaskRegistration.AllTasks.Any(i => i.Value.Name.Equals(NotificationsTask)))
@@ -247,6 +253,10 @@ namespace CoolapkUWP
                 // Register (Single Process)
                 BackgroundTaskRegistration _NotificationsTask = BackgroundTaskHelper.Register(NotificationsTask, new TimeTrigger(15, false), true);
             }
+
+            #endregion
+
+            #region ToastBackgroundTask
 
             void RegisterToastBackgroundTask()
             {
@@ -266,6 +276,8 @@ namespace CoolapkUWP
                 // And register the task
                 BackgroundTaskRegistration registration = builder.Register();
             }
+
+            #endregion
         }
 
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
@@ -283,7 +295,7 @@ namespace CoolapkUWP
                     }
                     break;
 
-                case "NotificationsTask":
+                case "NotificationsModel":
                     if (NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable)
                     {
                         NotificationsTask.Instance?.Run(args.TaskInstance);

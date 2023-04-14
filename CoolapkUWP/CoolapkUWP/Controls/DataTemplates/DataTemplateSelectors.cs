@@ -59,14 +59,11 @@ namespace CoolapkUWP.Controls.DataTemplates
             }
             else if (item is LikeNotificationModel) { return LikeNotify; }
             else if (item is SimpleNotificationModel) { return CommentMe; }
-            else
-            {
-                return item is MessageNotificationModel
-                ? MessageNotify
-                : item is AtCommentMeNotificationModel
-                ? AtCommentMe
-                : item is IHasDescription ? List : item is IHasSubtitle ? SubtitleList : Others;
-            }
+            else if (item is MessageNotificationModel) { return MessageNotify; }
+            else if (item is AtCommentMeNotificationModel) { return AtCommentMe; }
+            else if (item is IHasDescription) { return List; }
+            else if (item is IHasSubtitle) { return SubtitleList; }
+            else { return Others; }
         }
     }
 

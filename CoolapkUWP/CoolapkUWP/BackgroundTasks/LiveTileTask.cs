@@ -14,11 +14,11 @@ namespace CoolapkUWP.BackgroundTasks
 {
     public sealed class LiveTileTask : IBackgroundTask
     {
-        public static LiveTileTask Instance = new LiveTileTask(false);
+        public static LiveTileTask Instance = new LiveTileTask();
 
-        public LiveTileTask(bool renew = true)
+        public LiveTileTask()
         {
-            if (renew) { Instance = this; }
+            Instance = Instance ?? this;
         }
 
         public void Run(IBackgroundTaskInstance taskInstance)

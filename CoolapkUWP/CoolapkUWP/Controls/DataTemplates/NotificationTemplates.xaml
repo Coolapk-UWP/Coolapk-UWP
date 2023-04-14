@@ -41,7 +41,7 @@
                 <Run Text="{Binding UserName}" />
                 <Run Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding Dateline}" />
             </TextBlock>
-            <control:TextBlockEx
+            <TextBlock
                 Grid.Row="2"
                 Grid.Column="1"
                 Padding="0,0,0,4"
