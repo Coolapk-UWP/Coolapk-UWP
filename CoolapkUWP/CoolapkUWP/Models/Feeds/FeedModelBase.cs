@@ -105,6 +105,7 @@ namespace CoolapkUWP.Models.Feeds
 
         public bool Stared { get; set; }
         public bool ShowSourceFeed { get; private set; }
+        public bool EmptySourceFeed { get; private set; }
         public bool ShowRelationRows { get; private set; }
         public bool ShowLinkSourceFeed { get; private set; }
 
@@ -316,12 +317,21 @@ namespace CoolapkUWP.Models.Feeds
                 RelationRows = buider.ToImmutable();
             }
 
-            if (token.TryGetValue("forwardSourceFeed", out JToken forwardSourceFeed)
-                && !string.IsNullOrEmpty(forwardSourceFeed.ToString())
-                && forwardSourceFeed.ToString() != "null")
+            if (!IsQuestionFeed
+                && token.TryGetValue("source_id", out JToken source_id)
+                && !string.IsNullOrEmpty(source_id.ToString()))
             {
                 ShowSourceFeed = true;
-                SourceFeed = new SourceFeedModel(forwardSourceFeed as JObject);
+                if (token.TryGetValue("forwardSourceFeed", out JToken forwardSourceFeed)
+                    && !string.IsNullOrEmpty(forwardSourceFeed.ToString())
+                    && forwardSourceFeed.ToString() != "null")
+                {
+                    SourceFeed = new SourceFeedModel(forwardSourceFeed as JObject);
+                }
+                else
+                {
+                    EmptySourceFeed = true;
+                }
             }
         }
 

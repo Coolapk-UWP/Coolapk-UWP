@@ -331,13 +331,22 @@
                     Margin="0,4"
                     HorizontalAlignment="Stretch"
                     Visibility="{Binding ShowSourceFeed, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <controls:WebViewContentControl
+                    <Grid
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                         BorderThickness="1"
-                        ContentCornerRadius="{ThemeResource OverlayCornerRadius}"
-                        ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
-                        DataContext="{Binding SourceFeed}" />
+                        CornerRadius="{ThemeResource OverlayCornerRadius}">
+                        <TextBlock
+                            x:Uid="/Feed/SourceFeedNotFount"
+                            Margin="12,8"
+                            Visibility="{Binding EmptySourceFeed, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <Border Visibility="{Binding EmptySourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                            <controls:WebViewContentControl
+                                ContentCornerRadius="{ThemeResource OverlayCornerRadius}"
+                                ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
+                                DataContext="{Binding SourceFeed}" />
+                        </Border>
+                    </Grid>
                 </Border>
                 <Grid
                     Grid.Row="7"
@@ -435,7 +444,6 @@
                                     IsActive="{Binding LinkSourceFeed.Succeed, Converter={StaticResource BoolNegationConverter}, ConverterParameter='true'}" />
                             </contract7Present:Border.Child>
                         </Border>
-                        <muxc:ProgressRing />
                     </Grid>
                 </Grid>
                 <Grid
@@ -804,11 +812,11 @@
                     Spacing="2">
                     <Button
                         x:Name="LikeButton"
+                        x:Uid="/Feed/LikeButton"
                         Height="32"
                         Click="FeedButton_Click"
                         Style="{StaticResource TransparentButtonStyle}"
-                        Tag="{Binding}"
-                        x:Uid="/Feed/LikeButton">
+                        Tag="{Binding}">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon
                                 FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -824,11 +832,11 @@
                     </Button>
                     <Button
                         x:Name="ReplyButton"
+                        x:Uid="/Feed/ReplyButton"
                         Height="32"
                         Click="FeedButton_Click"
                         Style="{StaticResource TransparentButtonStyle}"
-                        Tag="{Binding}"
-                        x:Uid="/Feed/ReplyButton">
+                        Tag="{Binding}">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE90A;" />
                             <TextBlock
@@ -839,10 +847,10 @@
                     </Button>
                     <Button
                         x:Name="MoreButton"
+                        x:Uid="/Feed/MoreButton"
                         Height="32"
                         Flyout="{StaticResource MoreFlyout}"
-                        Style="{StaticResource TransparentButtonStyle}"
-                        x:Uid="/Feed/MoreButton">
+                        Style="{StaticResource TransparentButtonStyle}">
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE10C;" />
                     </Button>
                 </controls:StackPanel>

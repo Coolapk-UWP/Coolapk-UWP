@@ -223,7 +223,6 @@ namespace CoolapkUWP.Models.Feeds
                             }
                         }
                     }
-                    Succeed = true;
                     break;
                 case LinkType.Bilibili:
                     {
@@ -360,10 +359,10 @@ namespace CoolapkUWP.Models.Feeds
                             }
                         }
                     }
-                    Succeed = true;
                     break;
                 default: break;
             }
+            Succeed = true;
         }
     }
 }

@@ -409,13 +409,22 @@
                 Margin="0,4"
                 HorizontalAlignment="Stretch"
                 Visibility="{Binding ShowSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
-                <local:WebViewContentControl
+                <Grid
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
-                    ContentCornerRadius="{ThemeResource OverlayCornerRadius}"
-                    ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
-                    DataContext="{Binding SourceFeed}" />
+                    CornerRadius="{ThemeResource OverlayCornerRadius}">
+                    <TextBlock
+                        x:Uid="/Feed/SourceFeedNotFount"
+                        Margin="12,8"
+                        Visibility="{Binding EmptySourceFeed, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    <Border Visibility="{Binding EmptySourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                        <local:WebViewContentControl
+                            ContentCornerRadius="{ThemeResource OverlayCornerRadius}"
+                            ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
+                            DataContext="{Binding SourceFeed}" />
+                    </Border>
+                </Grid>
             </Border>
             <Grid
                 Grid.Row="8"
