@@ -27,8 +27,8 @@
             </Grid.ColumnDefinitions>
             <Grid
                 x:Name="PageTitle"
-                Height="44"
-                VerticalAlignment="Top"
+                Padding="0,6"
+                VerticalAlignment="Center"
                 Background="{ThemeResource SystemControlTransparentBrush}">
                 <Canvas x:Name="ShadowHost" Opacity="{x:Bind ShadowOpacity, Mode=OneWay}" />
                 <TextBlock

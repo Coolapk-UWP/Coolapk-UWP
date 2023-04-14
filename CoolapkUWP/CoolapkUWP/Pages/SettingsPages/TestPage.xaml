@@ -86,6 +86,13 @@
                                 Tag="OutPIP" />
                         </controls:StackPanel>
                     </controls:Setting>
+                    <controls:Setting
+                        x:Uid="/TestPage/NewWindowSettings"
+                        ActionIcon="&#xE8A7;"
+                        Click="Button_Click"
+                        Icon="&#xE78B;"
+                        IsClickEnabled="True"
+                        Tag="NewWindow" />
                     <controls:Setting x:Uid="/TestPage/UseCompositorSettings" Icon="&#xED56;">
                         <ToggleSwitch IsOn="{x:Bind IsUseCompositor, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
                     </controls:Setting>

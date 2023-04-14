@@ -147,6 +147,12 @@
   <data name="LanguageSettings.Header" xml:space="preserve">
     <value>语言</value>
   </data>
+  <data name="NewWindowSettings.Description" xml:space="preserve">
+    <value>新建一个窗口</value>
+  </data>
+  <data name="NewWindowSettings.Header" xml:space="preserve">
+    <value>新窗口（仅支持 1903 及以上）</value>
+  </data>
   <data name="OpenBrowser.Header" xml:space="preserve">
     <value>用内置浏览器打开</value>
   </data>

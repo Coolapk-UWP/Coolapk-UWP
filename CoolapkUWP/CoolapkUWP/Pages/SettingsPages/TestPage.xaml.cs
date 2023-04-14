@@ -10,6 +10,7 @@ using Windows.ApplicationModel.Core;
 using Windows.Globalization;
 using Windows.UI;
 using Windows.UI.ViewManagement;
+using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -136,7 +137,7 @@ namespace CoolapkUWP.Pages.SettingsPages
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             switch ((sender as FrameworkElement).Tag.ToString())
             {
@@ -149,6 +150,16 @@ namespace CoolapkUWP.Pages.SettingsPages
                 case "EnterPIP":
                     if (ApplicationView.GetForCurrentView().IsViewModeSupported(ApplicationViewMode.CompactOverlay))
                     { _ = ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay); }
+                    break;
+                case "NewWindow":
+                    if (WindowHelper.IsSupportedAppWindow)
+                    {
+                        (AppWindow window, Frame frame) = await WindowHelper.CreateWindow();
+                        window.TitleBar.ExtendsContentIntoTitleBar = true;
+                        ThemeHelper.Initialize();
+                        frame.Navigate(typeof(MainPage));
+                        await window.TryShowAsync();
+                    }
                     break;
                 case "OpenBrowser":
                     _ = Frame.Navigate(typeof(BrowserPage), new BrowserViewModel(URLTextBox.Text));
