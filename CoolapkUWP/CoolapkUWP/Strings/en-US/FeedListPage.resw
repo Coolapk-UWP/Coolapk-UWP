@@ -124,7 +124,7 @@
     <value>Select</value>
   </data>
   <data name="AllStar.Text" xml:space="preserve">
-    <value>酷安评分</value>
+    <value>Coolapk Rating</value>
   </data>
   <data name="Answer" xml:space="preserve">
     <value>Q&amp;A</value>
@@ -142,7 +142,7 @@
     <value>Discuss</value>
   </data>
   <data name="CoverMenuSubItem.Text" xml:space="preserve">
-    <value>背景图</value>
+    <value>Cover Image</value>
   </data>
   <data name="DatelineDesc" xml:space="preserve">
     <value>Sort by time</value>
@@ -196,10 +196,10 @@
     <value>News</value>
   </data>
   <data name="OnlyOwnerButton.Content" xml:space="preserve">
-    <value>只看机主</value>
+    <value>Only Owner</value>
   </data>
   <data name="OwnerStar.Text" xml:space="preserve">
-    <value>机主评分</value>
+    <value>Owner Rating</value>
   </data>
   <data name="Popular" xml:space="preserve">
     <value>Sort by population</value>
@@ -214,7 +214,7 @@
     <value>Release Date: </value>
   </data>
   <data name="SeeAllButton.Content" xml:space="preserve">
-    <value>查看全部</value>
+    <value>See All</value>
   </data>
   <data name="Square" xml:space="preserve">
     <value>Hall</value>
