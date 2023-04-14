@@ -14,7 +14,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
 {
     public class AdaptiveViewModel : DataSourceBase<Entity>, IViewModel
     {
-        public readonly string Uri;
+        private readonly string Uri;
         private readonly List<Type> EntityTypes;
         protected bool IsInitPage => Uri == "/main/init";
         protected bool IsIndexPage => !Uri.Contains("?");
@@ -173,6 +173,10 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 _ = await LoadItemsAsync(20);
             }
         }
+
+        bool IViewModel.IsEqual(IViewModel other) => other is AdaptiveViewModel model && IsEqual(model);
+
+        public bool IsEqual(AdaptiveViewModel other) => !string.IsNullOrWhiteSpace(Uri) ? Uri == other.Uri : Provider == other.Provider;
 
         private string GetUri(string uri)
         {

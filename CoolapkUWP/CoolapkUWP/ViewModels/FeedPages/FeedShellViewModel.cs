@@ -16,8 +16,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
 {
     public abstract class FeedShellViewModel : IViewModel, INotifyPropertyChanged
     {
-        public string ID { get; protected set; }
-        public double[] VerticalOffsets { get; set; } = new double[3];
+        protected string ID { get; set; }
 
         private string title = string.Empty;
         public string Title
@@ -84,6 +83,10 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
 
         public abstract Task Refresh(bool reset = false);
+
+        bool IViewModel.IsEqual(IViewModel other) => other is FeedShellViewModel model && IsEqual(model);
+
+        public bool IsEqual(FeedShellViewModel other) => ID == other.ID;
     }
 
     public class FeedDetailViewModel : FeedShellViewModel

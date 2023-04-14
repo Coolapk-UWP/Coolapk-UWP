@@ -35,7 +35,7 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             base.OnNavigatedTo(e);
             if (e.Parameter is FeedShellViewModel ViewModel
-                && (Provider == null || Provider.ID != ViewModel.ID))
+                && Provider?.IsEqual(ViewModel) != true)
             {
                 Provider = ViewModel;
                 DataContext = Provider;

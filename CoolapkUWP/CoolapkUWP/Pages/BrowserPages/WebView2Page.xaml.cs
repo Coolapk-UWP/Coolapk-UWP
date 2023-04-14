@@ -34,7 +34,10 @@ namespace CoolapkUWP.Pages.BrowserPages
             {
                 Provider = ViewModel;
                 DataContext = Provider;
-                WebView.Source = Provider.Uri;
+                if (Provider.Uri != null)
+                {
+                    WebView.Source = Provider.Uri;
+                }
             }
         }
 

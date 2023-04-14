@@ -18,9 +18,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
+using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
-using Windows.Storage;
 using Windows.UI.Notifications;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
@@ -34,7 +34,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         protected const string idName = "id";
 
         public string ID { get; }
-        public FeedListType ListType { get; }
+        private FeedListType ListType { get; }
         public DataTemplateSelector DataTemplateSelector;
 
         private string title;
@@ -217,6 +217,10 @@ namespace CoolapkUWP.ViewModels.FeedPages
         public abstract Task<FeedListDetailBase> GetDetail();
 
         public abstract Task Refresh(bool reset = false);
+
+        bool IViewModel.IsEqual(IViewModel other) => other is FeedListViewModel model && IsEqual(model);
+
+        public bool IsEqual(FeedListViewModel other) => ListType == other.ListType && ID == other.ID;
 
         protected abstract string GetTitleBarText(FeedListDetailBase detail);
 

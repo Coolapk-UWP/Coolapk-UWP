@@ -324,5 +324,7 @@ namespace CoolapkUWP.ViewModels.SettingsPages
         }
 
         public Task Refresh(bool reset) => throw new NotImplementedException();
+
+        bool IViewModel.IsEqual(IViewModel other) => Equals(other);
     }
 }

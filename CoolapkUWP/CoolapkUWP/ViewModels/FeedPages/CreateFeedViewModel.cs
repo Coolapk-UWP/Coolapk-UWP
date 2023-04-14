@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Users;
+using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.DataSource;
 using CoolapkUWP.ViewModels.Providers;
 using Newtonsoft.Json.Linq;
@@ -56,6 +57,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
             await CreateUserItemSourse.Refresh(reset);
             await CreateTopicItemSourse.Refresh(reset);
         }
+
+        bool IViewModel.IsEqual(IViewModel other) => other is CreateFeedViewModel model && Equals(model);
 
         public async Task ReadFile(IStorageFile file)
         {

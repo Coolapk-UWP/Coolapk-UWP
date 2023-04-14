@@ -633,17 +633,14 @@
                                 Visibility="{Binding Description, Converter={StaticResource StringVisibilityConverter}}" />
                         </control:StackPanel>
                     </Grid>
-                    <muxc:ItemsRepeaterScrollHost>
+                    <muxc:ItemsRepeaterScrollHost Visibility="{Binding TagArr, Converter={StaticResource CollectionVisibilityConverter}}">
                         <ScrollViewer
                             Margin="0,-2"
                             Padding="0,2"
                             HorizontalScrollBarVisibility="Hidden"
                             HorizontalScrollMode="Auto"
                             VerticalScrollMode="Disabled">
-                            <muxc:ItemsRepeater
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding TagArr}"
-                                Visibility="{Binding TagArr, Converter={StaticResource CollectionVisibilityConverter}}">
+                            <muxc:ItemsRepeater HorizontalAlignment="Stretch" ItemsSource="{Binding TagArr}">
                                 <muxc:ItemsRepeater.Layout>
                                     <muxc:StackLayout Orientation="Horizontal" Spacing="6" />
                                 </muxc:ItemsRepeater.Layout>

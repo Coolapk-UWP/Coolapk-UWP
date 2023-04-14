@@ -113,6 +113,10 @@ namespace CoolapkUWP.ViewModels.FeedPages
             await SearchUserItemSourse?.Refresh(reset);
             await SearchTopicItemSourse?.Refresh(reset);
         }
+
+        bool IViewModel.IsEqual(IViewModel other) => other is SearchingViewModel model && IsEqual(model);
+
+        public bool IsEqual(SearchingViewModel other) => Title == other.Title;
     }
 
     public class SearchFeedItemSourse : EntityItemSourse, INotifyPropertyChanged

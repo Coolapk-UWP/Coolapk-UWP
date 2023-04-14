@@ -123,6 +123,10 @@ namespace CoolapkUWP.ViewModels
 
         public async Task Refresh(bool reset = false) => await Images[Index].Refresh();
 
+        bool IViewModel.IsEqual(IViewModel other) => other is ShowImageViewModel model && IsEqual(model);
+
+        public bool IsEqual(ShowImageViewModel other) => Images == other.Images;
+
         private string GetTitle(string url)
         {
             Regex regex = new Regex(@"[^/]+(?!.*/)");

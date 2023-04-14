@@ -26,7 +26,7 @@ namespace CoolapkUWP.Pages.FeedPages
         {
             base.OnNavigatedTo(e);
             if (e.Parameter is SearchingViewModel ViewModel
-                && (Provider == null || Provider.Title != ViewModel.Title))
+                && Provider?.IsEqual(ViewModel) != true)
             {
                 Provider = ViewModel;
                 DataContext = Provider;
