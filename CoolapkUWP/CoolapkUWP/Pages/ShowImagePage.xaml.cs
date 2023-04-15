@@ -1,9 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Images;
 using CoolapkUWP.ViewModels;
-using Microsoft.Toolkit.Uwp.Helpers;
-using Microsoft.UI.Xaml.Controls;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation.Metadata;
@@ -100,7 +97,7 @@ namespace CoolapkUWP.Pages
                 e.Handled = TryGoBack() == AppViewBackButtonVisibility.Visible;
             }
         }
-        
+
         private AppViewBackButtonVisibility TryGoBack(bool goBack = true)
         {
             if (!Dispatcher.HasThreadAccess || !Frame.CanGoBack)

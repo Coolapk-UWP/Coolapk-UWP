@@ -5,7 +5,6 @@ using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.Pages.SettingsPages;
 using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
-using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Collections.ObjectModel;
@@ -15,7 +14,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
-using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
 using Windows.Data.Xml.Dom;
 using Windows.Foundation.Metadata;
@@ -459,13 +457,9 @@ namespace CoolapkUWP.Helpers
             {
                 Navigate(typeof(BrowserPage), new BrowserViewModel(origin));
             }
-            else if (origin.Contains("://"))
-            {
-                return await Launcher.LaunchUriAsync(origin.ValidateAndGetUri());
-            }
             else
             {
-                return false;
+                return origin.Contains("://") && await Launcher.LaunchUriAsync(origin.ValidateAndGetUri());
             }
 
             return true;
@@ -496,14 +490,7 @@ namespace CoolapkUWP.Helpers
                         if (LaunchActivatedEventArgs.TileActivatedInfo.RecentlyShownNotifications.Any())
                         {
                             string TileArguments = LaunchActivatedEventArgs.TileActivatedInfo.RecentlyShownNotifications.FirstOrDefault().Arguments;
-                            if (!string.IsNullOrWhiteSpace(LaunchActivatedEventArgs.Arguments))
-                            {
-                                return await OpenLinkAsync(TileArguments);
-                            }
-                            else
-                            {
-                                return false;
-                            }
+                            return !string.IsNullOrWhiteSpace(LaunchActivatedEventArgs.Arguments) && await OpenLinkAsync(TileArguments);
                         }
                         else
                         {

@@ -153,7 +153,7 @@ namespace CoolapkUWP.Pages
 
         private async void OpenActivatedEventArgs(IActivatedEventArgs args)
         {
-            if (!(await UIHelper.OpenActivatedEventArgs(args)))
+            if (!await UIHelper.OpenActivatedEventArgs(args))
             {
                 NavigationView.SelectedItem = NavigationView.MenuItems[0];
             }

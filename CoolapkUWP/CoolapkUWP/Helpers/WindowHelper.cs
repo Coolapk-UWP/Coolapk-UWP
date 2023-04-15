@@ -42,11 +42,7 @@ namespace CoolapkUWP.Helpers
 
         public static AppWindow GetWindowForElement(this UIElement element)
         {
-            if (element.IsAppWindow())
-            {
-                return ActiveWindows[element.XamlRoot.Content];
-            }
-            return null;
+            return element.IsAppWindow() ? ActiveWindows[element.XamlRoot.Content] : null;
         }
 
         public static void SetXAMLRoot(this UIElement element, UIElement target)

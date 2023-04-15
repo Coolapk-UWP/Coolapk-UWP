@@ -1,7 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Users;
-using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.DataSource;
 using CoolapkUWP.ViewModels.Providers;
 using Newtonsoft.Json.Linq;

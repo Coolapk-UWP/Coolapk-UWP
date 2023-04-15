@@ -1,7 +1,4 @@
-﻿using CoolapkUWP.Models;
-using CoolapkUWP.Models.Feeds;
-using CoolapkUWP.Models.Upload;
-using Microsoft.Toolkit.Uwp.Helpers;
+﻿using CoolapkUWP.Models.Upload;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -13,7 +10,6 @@ using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.UI.Core;
 using Windows.UI.Xaml.Media.Imaging;
 using mtuc = Microsoft.Toolkit.Uwp.Connectivity;
 

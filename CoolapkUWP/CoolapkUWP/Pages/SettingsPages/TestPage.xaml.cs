@@ -1,5 +1,4 @@
 ﻿using CoolapkUWP.Common;
-using CoolapkUWP.Controls;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Images;
 using CoolapkUWP.Pages.BrowserPages;

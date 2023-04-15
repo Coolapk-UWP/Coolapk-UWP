@@ -8,8 +8,6 @@ using CoolapkUWP.ViewModels.Providers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CoolapkUWP.ViewModels.FeedPages
 {
@@ -140,7 +138,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                             string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
                     (o) => new Entity[] { new HistoryModel(o) },
                     "uid"))
-                { Title = title };
+            { Title = title };
         }
 
         public static AdaptiveViewModel GetUserFeedsProvider(string uid, string branch)

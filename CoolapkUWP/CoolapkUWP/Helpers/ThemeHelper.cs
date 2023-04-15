@@ -29,24 +29,18 @@ namespace CoolapkUWP.Helpers
         {
             get
             {
-                if (CurrentApplicationWindow?.Dispatcher?.HasThreadAccess == true)
-                {
-                    return CurrentApplicationWindow?.Content is FrameworkElement rootElement
+                return CurrentApplicationWindow?.Dispatcher?.HasThreadAccess == true
+                    ? CurrentApplicationWindow?.Content is FrameworkElement rootElement
                         && rootElement.RequestedTheme != ElementTheme.Default
-                        ? rootElement.RequestedTheme
-                        : SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme);
-                }
-                else
-                {
-                    return UIHelper.AwaitByTaskCompleteSource(() =>
+                            ? rootElement.RequestedTheme
+                            : SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme)
+                    : UIHelper.AwaitByTaskCompleteSource(() =>
                         CurrentApplicationWindow?.Dispatcher?.AwaitableRunAsync(() =>
-                        {
-                            return CurrentApplicationWindow?.Content is FrameworkElement rootElement
-                                && rootElement.RequestedTheme != ElementTheme.Default
-                                ? rootElement.RequestedTheme
-                                : SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme);
-                        }, CoreDispatcherPriority.High));
-                }
+                            CurrentApplicationWindow?.Content is FrameworkElement _rootElement
+                                && _rootElement.RequestedTheme != ElementTheme.Default
+                                ? _rootElement.RequestedTheme
+                                : SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme),
+                            CoreDispatcherPriority.High));
             }
         }
 
@@ -57,19 +51,18 @@ namespace CoolapkUWP.Helpers
         {
             get
             {
-                if (CurrentApplicationWindow == null) { return ElementTheme.Default; }
-                if (CurrentApplicationWindow.Dispatcher.HasThreadAccess)
-                {
-                    return CurrentApplicationWindow.Content is FrameworkElement rootElement ? rootElement.RequestedTheme : ElementTheme.Default;
-                }
-                else
-                {
-                    return UIHelper.AwaitByTaskCompleteSource(() =>
+                return CurrentApplicationWindow == null
+                    ? ElementTheme.Default
+                        : CurrentApplicationWindow.Dispatcher.HasThreadAccess
+                        ? CurrentApplicationWindow.Content is FrameworkElement rootElement
+                            ? rootElement.RequestedTheme
+                            : ElementTheme.Default
+                    : UIHelper.AwaitByTaskCompleteSource(() =>
                         CurrentApplicationWindow.Dispatcher.AwaitableRunAsync(() =>
-                        {
-                            return CurrentApplicationWindow.Content is FrameworkElement rootElement ? rootElement.RequestedTheme : ElementTheme.Default;
-                        }, CoreDispatcherPriority.High));
-                }
+                            CurrentApplicationWindow.Content is FrameworkElement _rootElement
+                                ? _rootElement.RequestedTheme
+                                : ElementTheme.Default,
+                            CoreDispatcherPriority.High));
             }
             set
             {
