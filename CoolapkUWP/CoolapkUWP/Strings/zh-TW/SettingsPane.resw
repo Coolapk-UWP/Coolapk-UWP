@@ -118,18 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Feedback" xml:space="preserve">
-    <value>问题反馈</value>
+    <value>問題反饋</value>
   </data>
   <data name="LogFolder" xml:space="preserve">
-    <value>查看日志</value>
+    <value>查看紀錄</value>
   </data>
   <data name="Repository" xml:space="preserve">
-    <value>项目仓库</value>
+    <value>項目倉庫</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>应用设置</value>
+    <value>應用設置</value>
   </data>
   <data name="Translate" xml:space="preserve">
-    <value>贡献翻译</value>
+    <value>貢獻翻譯</value>
   </data>
 </root>
