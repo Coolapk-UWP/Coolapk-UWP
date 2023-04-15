@@ -175,10 +175,10 @@
     <value>Progress Value</value>
   </data>
   <data name="SettingsFlyoutSettings.Description" xml:space="preserve">
-    <value>打开 Charm 侧边栏设置</value>
+    <value>Show Settings Charm Pane</value>
   </data>
   <data name="SettingsFlyoutSettings.Header" xml:space="preserve">
-    <value>打开设置</value>
+    <value>Open Settings</value>
   </data>
   <data name="SlimCountSettings.Description" xml:space="preserve">
     <value>Number of images that can be loaded at the same time</value>
