@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Common;
+using CoolapkUWP.Controls;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Images;
 using CoolapkUWP.Pages.BrowserPages;
@@ -7,8 +8,10 @@ using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Globalization;
 using Windows.ApplicationModel.Core;
+using Windows.Foundation.Metadata;
 using Windows.Globalization;
 using Windows.UI;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.ViewManagement;
 using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
@@ -132,10 +135,7 @@ namespace CoolapkUWP.Pages.SettingsPages
             }
         }
 
-        public TestPage()
-        {
-            InitializeComponent();
-        }
+        public TestPage() => InitializeComponent();
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -166,6 +166,12 @@ namespace CoolapkUWP.Pages.SettingsPages
                     break;
                 case "GetURLContent":
                     GetURLContent();
+                    break;
+                case "SettingsFlyout":
+                    if (ApiInformation.IsTypePresent("Windows.UI.ApplicationSettings.SettingsPane"))
+                    {
+                        SettingsPane.Show();
+                    }
                     break;
                 default:
                     break;

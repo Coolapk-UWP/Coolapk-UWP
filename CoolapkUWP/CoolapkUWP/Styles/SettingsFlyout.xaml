@@ -1,0 +1,124 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls">
+    <Style x:Key="DefaultSettingsFlyoutStyle" TargetType="SettingsFlyout">
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
+        <Setter Property="HeaderForeground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
+        <Setter Property="Background" Value="{ThemeResource FlyoutPresenterBackground}" />
+        <Setter Property="HeaderBackground" Value="{ThemeResource SystemControlTransparentBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource FlyoutBorderThemeBrush}" />
+        <Setter Property="BorderThickness" Value="{ThemeResource FlyoutBorderThemeThickness}" />
+        <Setter Property="Padding" Value="12,0,12,12" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="ScrollViewer.VerticalScrollMode" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.ZoomMode" Value="Disabled" />
+        <Setter Property="MaxWidth" Value="646" />
+        <Setter Property="MinWidth" Value="320" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="SettingsFlyout">
+                    <Grid
+                        Padding="{ThemeResource FlyoutBorderThemePadding}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <contract7Present:Grid.BackgroundTransition>
+                            <contract7Present:BrushTransition />
+                        </contract7Present:Grid.BackgroundTransition>
+                        <Grid.Resources>
+                            <Style x:Key="BaseContentPresenterStyle" TargetType="ContentPresenter">
+                                <Setter Property="FontFamily" Value="XamlAutoFontFamily" />
+                                <Setter Property="FontWeight" Value="SemiBold" />
+                                <Setter Property="TextWrapping" Value="Wrap" />
+                                <Setter Property="LineStackingStrategy" Value="MaxHeight" />
+                                <Setter Property="TextLineBounds" Value="Full" />
+                                <Setter Property="OpticalMarginAlignment" Value="TrimSideBearings" />
+                            </Style>
+                            <Style
+                                x:Key="BodyContentPresenterStyle"
+                                BasedOn="{StaticResource BaseContentPresenterStyle}"
+                                TargetType="ContentPresenter">
+                                <Setter Property="FontWeight" Value="Normal" />
+                            </Style>
+                            <Style
+                                x:Key="BackButtonStyle"
+                                BasedOn="{StaticResource NavigationBackButtonNormalStyle}"
+                                TargetType="Button" />
+                        </Grid.Resources>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid x:Name="Header" Background="{TemplateBinding HeaderBackground}">
+                            <contract7Present:Grid.BackgroundTransition>
+                                <contract7Present:BrushTransition />
+                            </contract7Present:Grid.BackgroundTransition>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button
+                                x:Name="BackButton"
+                                Width="48"
+                                Height="48"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BackButtonStyle}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="0,0,16,2"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Foreground="{TemplateBinding HeaderForeground}"
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Text="{TemplateBinding Title}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                            <Viewbox
+                                Grid.Column="2"
+                                Width="16"
+                                Height="16"
+                                Margin="0,0,16,0"
+                                VerticalAlignment="Center">
+                                <muxc:ImageIcon
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.IconSource}" />
+                            </Viewbox>
+                        </Grid>
+                        <ScrollViewer
+                            x:Name="ScrollViewer"
+                            Grid.Row="1"
+                            AutomationProperties.AccessibilityView="Raw"
+                            HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                            HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
+                            VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                            VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
+                            ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}">
+                            <ContentPresenter
+                                x:Name="ContentPresenter"
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                ContentTransitions="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.ContentTransitions}"
+                                Style="{StaticResource BodyContentPresenterStyle}"
+                                TextWrapping="Wrap" />
+                        </ScrollViewer>
+                        <Rectangle x:Name="InputPanePlaceholder" Grid.Row="2" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
