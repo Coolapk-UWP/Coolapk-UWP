@@ -175,10 +175,10 @@
     <value>進度值</value>
   </data>
   <data name="SettingsFlyoutSettings.Description" xml:space="preserve">
-    <value>打开 Charm 侧边栏设置</value>
+    <value>打開 Charm 側邊欄設置</value>
   </data>
   <data name="SettingsFlyoutSettings.Header" xml:space="preserve">
-    <value>打开设置</value>
+    <value>打開設置</value>
   </data>
   <data name="SlimCountSettings.Description" xml:space="preserve">
     <value>同時可以載入的圖片數量</value>
