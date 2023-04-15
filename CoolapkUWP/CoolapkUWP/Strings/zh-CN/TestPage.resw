@@ -175,7 +175,7 @@
     <value>进度值</value>
   </data>
   <data name="SettingsFlyoutSettings.Description" xml:space="preserve">
-    <value>打开 Settings Charm Pane</value>
+    <value>打开 Charm 侧边栏设置</value>
   </data>
   <data name="SettingsFlyoutSettings.Header" xml:space="preserve">
     <value>打开设置</value>
