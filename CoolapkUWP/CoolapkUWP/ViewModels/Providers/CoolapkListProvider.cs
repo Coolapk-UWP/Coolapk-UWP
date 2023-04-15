@@ -16,6 +16,8 @@ namespace CoolapkUWP.ViewModels.Providers
         private readonly Func<int, string, string, Uri> _getUri;
         private readonly Func<JObject, IEnumerable<Entity>> _getEntities;
 
+        public Func<JObject, IEnumerable<Entity>> GetEntities => _getEntities;
+
         public CoolapkListProvider(Func<int, string, string, Uri> getUri, Func<JObject, IEnumerable<Entity>> getEntities, string idName)
         {
             _getUri = getUri ?? throw new ArgumentNullException(nameof(getUri));

@@ -8,19 +8,18 @@ using CoolapkUWP.ViewModels.Providers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoolapkUWP.ViewModels.FeedPages
 {
-    public class AdaptiveViewModel : DataSourceBase<Entity>, IViewModel
+    public class AdaptiveViewModel : EntityItemSourse, IViewModel
     {
         private readonly string Uri;
         private readonly List<Type> EntityTypes;
         protected bool IsInitPage => Uri == "/main/init";
         protected bool IsIndexPage => !Uri.Contains("?");
         protected bool IsHotFeedPage => Uri == "/main/indexV8" || Uri == "/main/index";
-
-        private readonly CoolapkListProvider Provider;
 
         private string title = string.Empty;
         public string Title
@@ -162,18 +161,6 @@ namespace CoolapkUWP.ViewModels.FeedPages
                         "uid"));
         }
 
-        public async Task Refresh(bool reset = false)
-        {
-            if (reset)
-            {
-                await Reset();
-            }
-            else
-            {
-                _ = await LoadItemsAsync(20);
-            }
-        }
-
         bool IViewModel.IsEqual(IViewModel other) => other is AdaptiveViewModel model && IsEqual(model);
 
         public bool IsEqual(AdaptiveViewModel other) => !string.IsNullOrWhiteSpace(Uri) ? Uri == other.Uri : Provider == other.Provider;
@@ -229,19 +216,6 @@ namespace CoolapkUWP.ViewModels.FeedPages
             yield break;
         }
 
-        protected override async Task<IList<Entity>> LoadItemsAsync(uint count)
-        {
-            List<Entity> Models = new List<Entity>();
-            while (Models.Count < count)
-            {
-                int temp = Models.Count;
-                if (Models.Count > 0) { _currentPage++; }
-                await Provider.GetEntity(Models, _currentPage);
-                if (Models.Count <= 0 || Models.Count <= temp) { break; }
-            }
-            return Models;
-        }
-
         protected override void AddItems(IList<Entity> items)
         {
             if (items != null)
@@ -249,7 +223,11 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 foreach (Entity item in items)
                 {
                     if (item is NullEntity) { continue; }
-                    if (EntityTypes == null || EntityTypes.Contains(item.GetType())) { Add(item); }
+                    if (EntityTypes == null || EntityTypes.Contains(item.GetType()))
+                    {
+                        Add(item);
+                        AddSubProvider(item);
+                    }
                 }
             }
         }

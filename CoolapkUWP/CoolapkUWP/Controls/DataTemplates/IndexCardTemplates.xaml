@@ -25,6 +25,8 @@
         FeedImageText="{StaticResource FeedImageTextTemplate}"
         FeedReply="{StaticResource FeedReplyDefaultTemplate}"
         IconLink="{StaticResource IconLinkTemplate}"
+        ImageText="{StaticResource ImageTextTemplate}"
+        Link="{StaticResource LinkTemplate}"
         List="{StaticResource ListDefaultTemplate}"
         MiniIconLink="{StaticResource MiniIconLinkTemplate}"
         MiniUser="{StaticResource MiniUserTemplate}"
@@ -309,25 +311,28 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock
-                x:Name="TitleText"
-                Grid.Row="0"
-                Margin="12,0"
-                VerticalAlignment="Center"
-                FontSize="16"
-                Text="{Binding Title}"
-                Visibility="{Binding Title, Converter={StaticResource StringVisibilityConverter}}" />
-            <control:TextBlockEx
-                x:Name="Description"
-                Grid.Row="1"
-                Margin="12,0"
-                Text="{Binding Description}"
-                Visibility="{Binding Description, Converter={StaticResource StringVisibilityConverter}}" />
+            <Grid Grid.Row="0" Margin="12,8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    x:Name="TitleText"
+                    Grid.Row="0"
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    Text="{Binding Title}"
+                    Visibility="{Binding Title, Converter={StaticResource StringVisibilityConverter}}" />
+                <control:TextBlockEx
+                    x:Name="Description"
+                    Grid.Row="1"
+                    Text="{Binding Description}"
+                    Visibility="{Binding Description, Converter={StaticResource StringVisibilityConverter}}" />
+            </Grid>
             <muxc:ItemsRepeaterScrollHost
                 x:Name="EntitiesHost"
-                Grid.Row="2"
+                Grid.Row="1"
                 Visibility="{Binding ShowEntities, Converter={StaticResource BoolToVisibilityConverter}}">
                 <ScrollViewer
                     Padding="8"
@@ -453,7 +458,7 @@
                 <FontIcon
                     x:Name="ForwardSymbol"
                     Grid.Column="1"
-                    Margin="8,0"
+                    Margin="8,0,0,0"
                     HorizontalAlignment="Right"
                     FontFamily="{StaticResource SymbolThemeFontFamily}"
                     FontSize="16"
@@ -575,6 +580,59 @@
                     Visibility="{Binding SubTitle, Converter={StaticResource StringVisibilityConverter}}" />
             </StackPanel>
         </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="LinkTemplate">
+        <Grid
+            BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="{ThemeResource OverlayCornerRadius}"
+            KeyDown="Grid_KeyDown"
+            Tag="{Binding}"
+            Tapped="Grid_Tapped">
+            <Border CornerRadius="{ThemeResource OverlayCornerRadius}">
+                <Image
+                    MaxWidth="160"
+                    MaxHeight="65"
+                    Source="{Binding Pic.Pic, Mode=OneWay}"
+                    Stretch="UniformToFill" />
+            </Border>
+            <Border
+                Padding="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom">
+                <TextBlock
+                    Margin="8,0"
+                    Text="{Binding Title}"
+                    TextWrapping="Wrap" />
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ImageTextTemplate">
+        <Grid
+            Width="260"
+            Height="118"
+            BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="{ThemeResource OverlayCornerRadius}"
+            KeyDown="Grid_KeyDown"
+            Tag="{Binding}"
+            Tapped="Grid_Tapped">
+            <Grid.Background>
+                <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" />
+            </Grid.Background>
+            <Border
+                VerticalAlignment="Bottom"
+                Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                CornerRadius="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}">
+                <TextBlock
+                    Margin="8"
+                    FontSize="16"
+                    Text="{Binding Title}"
+                    TextTrimming="WordEllipsis" />
+            </Border>
+        </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="MiniUserTemplate">
