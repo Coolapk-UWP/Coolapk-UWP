@@ -29,18 +29,20 @@ namespace CoolapkUWP.Helpers
         {
             get
             {
-                return CurrentApplicationWindow?.Dispatcher?.HasThreadAccess == true
-                    ? CurrentApplicationWindow?.Content is FrameworkElement rootElement
-                        && rootElement.RequestedTheme != ElementTheme.Default
-                            ? rootElement.RequestedTheme
-                            : SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme)
-                    : UIHelper.AwaitByTaskCompleteSource(() =>
-                        CurrentApplicationWindow?.Dispatcher?.AwaitableRunAsync(() =>
-                            CurrentApplicationWindow?.Content is FrameworkElement _rootElement
-                                && _rootElement.RequestedTheme != ElementTheme.Default
-                                ? _rootElement.RequestedTheme
-                                : SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme),
-                            CoreDispatcherPriority.High));
+                return CurrentApplicationWindow == null
+                    ? SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme)
+                    : CurrentApplicationWindow.Dispatcher.HasThreadAccess
+                        ? CurrentApplicationWindow.Content is FrameworkElement rootElement
+                            && rootElement.RequestedTheme != ElementTheme.Default
+                                ? rootElement.RequestedTheme
+                                : SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme)
+                        : UIHelper.AwaitByTaskCompleteSource(() =>
+                            CurrentApplicationWindow.Dispatcher.AwaitableRunAsync(() =>
+                                CurrentApplicationWindow.Content is FrameworkElement _rootElement
+                                    && _rootElement.RequestedTheme != ElementTheme.Default
+                                        ? _rootElement.RequestedTheme
+                                        : SettingsHelper.Get<ElementTheme>(SettingsHelper.SelectedAppTheme),
+                                CoreDispatcherPriority.High));
             }
         }
 
@@ -53,22 +55,24 @@ namespace CoolapkUWP.Helpers
             {
                 return CurrentApplicationWindow == null
                     ? ElementTheme.Default
-                        : CurrentApplicationWindow.Dispatcher.HasThreadAccess
+                    : CurrentApplicationWindow.Dispatcher.HasThreadAccess
                         ? CurrentApplicationWindow.Content is FrameworkElement rootElement
                             ? rootElement.RequestedTheme
                             : ElementTheme.Default
-                    : UIHelper.AwaitByTaskCompleteSource(() =>
-                        CurrentApplicationWindow.Dispatcher.AwaitableRunAsync(() =>
-                            CurrentApplicationWindow.Content is FrameworkElement _rootElement
-                                ? _rootElement.RequestedTheme
-                                : ElementTheme.Default,
-                            CoreDispatcherPriority.High));
+                        : UIHelper.AwaitByTaskCompleteSource(() =>
+                            CurrentApplicationWindow.Dispatcher.AwaitableRunAsync(() =>
+                                CurrentApplicationWindow.Content is FrameworkElement _rootElement
+                                    ? _rootElement.RequestedTheme
+                                    : ElementTheme.Default,
+                                CoreDispatcherPriority.High));
             }
             set
             {
-                _ = CurrentApplicationWindow?.Dispatcher?.AwaitableRunAsync(() =>
+                if (CurrentApplicationWindow == null) { return; }
+
+                _ = CurrentApplicationWindow.Dispatcher.AwaitableRunAsync(() =>
                 {
-                    if (CurrentApplicationWindow?.Content is FrameworkElement rootElement)
+                    if (CurrentApplicationWindow.Content is FrameworkElement rootElement)
                     {
                         rootElement.RequestedTheme = value;
                     }
