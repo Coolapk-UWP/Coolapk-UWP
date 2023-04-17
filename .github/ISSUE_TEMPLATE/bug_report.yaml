@@ -33,6 +33,7 @@ body:
       label: App version
       description: Specify the version of Coolapk UWP you're using.
       options:
+        - "3.0.40"
         - "2.1.39"
         - "2.1.38"
         - "2.0.37"
