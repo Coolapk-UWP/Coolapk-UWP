@@ -46,7 +46,8 @@
                 Grid.Column="1"
                 Padding="0,0,0,4"
                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                Text="{Binding Note}" />
+                Text="{Binding Note}"
+                TextWrapping="Wrap" />
         </Grid>
     </DataTemplate>
 

@@ -103,6 +103,7 @@ namespace CoolapkUWP
                 {
                     SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
                     rootFrame.Dispatcher.AcceleratorKeyActivated += Dispatcher_AcceleratorKeyActivated;
+                    Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("ms-appx:///Styles/SettingsFlyout.xaml") });
                 }
 
                 rootFrame.NavigationFailed += OnNavigationFailed;

@@ -6,7 +6,6 @@
         <ResourceDictionary Source="ms-appx:///Styles/ListView.xaml" />
         <ResourceDictionary Source="ms-appx:///Styles/TextBlock.xaml" />
         <ResourceDictionary Source="ms-appx:///Styles/AutoSuggestBox.xaml" />
-        <ResourceDictionary Source="ms-appx:///Styles/SettingsFlyout.xaml" />
         <ResourceDictionary Source="ms-appx:///Controls/Setting/Setting.ThemeResources.xaml" />
         <ResourceDictionary Source="ms-appx:///Controls/NavigationView/NavigationView.xaml" />
         <ResourceDictionary Source="ms-appx:///Controls/NavigationView/NavigationBackButton.xaml" />
