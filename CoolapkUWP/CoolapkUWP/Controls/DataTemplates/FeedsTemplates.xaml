@@ -2,6 +2,8 @@
     x:Class="CoolapkUWP.Controls.DataTemplates.FeedsTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:contract5NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 5)"
+    xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:contract8Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 8)"
@@ -363,13 +365,20 @@
                         Tag="{Binding ExtraUrl}"
                         Tapped="OnTopTapped"
                         Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
-                        <Grid.Background>
+                        <contract5NotPresent:Grid.Background>
                             <media:AcrylicBrush
                                 BackgroundSource="Backdrop"
                                 FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                                 TintColor="{ThemeResource SystemChromeMediumHighColor}"
                                 TintOpacity="1" />
-                        </Grid.Background>
+                        </contract5NotPresent:Grid.Background>
+                        <contract5Present:Grid.Background>
+                            <AcrylicBrush
+                                BackgroundSource="Backdrop"
+                                FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintOpacity="1" />
+                        </contract5Present:Grid.Background>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -416,19 +425,25 @@
                                 Visibility="{Binding ExtraSubtitle, Converter={StaticResource StringVisibilityConverter}}" />
                         </StackPanel>
                     </Grid>
-                    <Grid Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid CornerRadius="{ThemeResource OverlayCornerRadius}" Visibility="{Binding ShowLinkSourceFeed, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <contract5NotPresent:Grid.Background>
+                            <media:AcrylicBrush
+                                BackgroundSource="Backdrop"
+                                FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintOpacity="1" />
+                        </contract5NotPresent:Grid.Background>
+                        <contract5Present:Grid.Background>
+                            <AcrylicBrush
+                                BackgroundSource="Backdrop"
+                                FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintOpacity="1" />
+                        </contract5Present:Grid.Background>
                         <controls:WebViewContentControl
                             ContentCornerRadius="{ThemeResource OverlayCornerRadius}"
                             ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
-                            DataContext="{Binding LinkSourceFeed}">
-                            <controls:WebViewContentControl.Background>
-                                <media:AcrylicBrush
-                                    BackgroundSource="Backdrop"
-                                    FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
-                                    TintColor="{ThemeResource SystemChromeMediumHighColor}"
-                                    TintOpacity="1" />
-                            </controls:WebViewContentControl.Background>
-                        </controls:WebViewContentControl>
+                            DataContext="{Binding LinkSourceFeed}" />
                         <Border Visibility="{Binding LinkSourceFeed.Succeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
                             <contract7NotPresent:Border.Child>
                                 <ProgressRing
@@ -460,13 +475,20 @@
                         Padding="8"
                         Tag="{Binding MediaUrl}"
                         Tapped="OnTopTapped">
-                        <Grid.Background>
+                        <contract5NotPresent:Grid.Background>
                             <media:AcrylicBrush
                                 BackgroundSource="Backdrop"
                                 FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                                 TintColor="{ThemeResource SystemChromeMediumHighColor}"
                                 TintOpacity="1" />
-                        </Grid.Background>
+                        </contract5NotPresent:Grid.Background>
+                        <contract5Present:Grid.Background>
+                            <AcrylicBrush
+                                BackgroundSource="Backdrop"
+                                FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintOpacity="1" />
+                        </contract5Present:Grid.Background>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />

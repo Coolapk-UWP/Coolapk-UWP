@@ -2,6 +2,8 @@
     x:Class="CoolapkUWP.Controls.DataTemplates.IndexCardTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:contract5NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 5)"
+    xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:control="using:CoolapkUWP.Controls"
@@ -219,13 +221,20 @@
                         VerticalAlignment="Bottom"
                         CornerRadius="6"
                         Visibility="{Binding Entities, Converter={StaticResource PipsPagerVisibilityConverter}}">
-                        <Border.Background>
+                        <contract5NotPresent:Border.Background>
                             <media:AcrylicBrush
                                 BackgroundSource="Backdrop"
                                 FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                                 TintColor="{ThemeResource SystemChromeMediumHighColor}"
                                 TintOpacity="0" />
-                        </Border.Background>
+                        </contract5NotPresent:Border.Background>
+                        <contract5Present:Border.Background>
+                            <AcrylicBrush
+                                BackgroundSource="Backdrop"
+                                FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                                TintOpacity="0" />
+                        </contract5Present:Border.Background>
                         <muxc:PipsPager
                             Margin="2,0"
                             NumberOfPages="{Binding Entities, Converter={StaticResource CollectionCountConverter}}"
@@ -511,13 +520,20 @@
                 CornerRadius="0,0,8,8"
                 Tag="{Binding}"
                 Tapped="Grid_Tapped">
-                <Grid.Background>
+                <contract5NotPresent:Grid.Background>
                     <media:AcrylicBrush
                         BackgroundSource="Backdrop"
                         FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                         TintColor="{ThemeResource SystemChromeMediumHighColor}"
-                        TintOpacity="0" />
-                </Grid.Background>
+                        TintOpacity="1" />
+                </contract5NotPresent:Grid.Background>
+                <contract5Present:Grid.Background>
+                    <AcrylicBrush
+                        BackgroundSource="Backdrop"
+                        FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                        TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                        TintOpacity="1" />
+                </contract5Present:Grid.Background>
                 <TextBlock
                     Margin="2"
                     HorizontalAlignment="Center"
@@ -544,13 +560,20 @@
                 <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
             </Border.Background>
             <StackPanel Padding="4" CornerRadius="{ThemeResource OverlayCornerRadius}">
-                <StackPanel.Background>
+                <contract5NotPresent:StackPanel.Background>
                     <media:AcrylicBrush
                         BackgroundSource="Backdrop"
                         FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                         TintColor="{ThemeResource SystemChromeMediumHighColor}"
-                        TintOpacity="0" />
-                </StackPanel.Background>
+                        TintOpacity="1" />
+                </contract5NotPresent:StackPanel.Background>
+                <contract5Present:StackPanel.Background>
+                    <AcrylicBrush
+                        BackgroundSource="Backdrop"
+                        FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                        TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                        TintOpacity="1" />
+                </contract5Present:StackPanel.Background>
                 <Border
                     Width="36"
                     Height="36"
