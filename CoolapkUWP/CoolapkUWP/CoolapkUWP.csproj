@@ -214,9 +214,11 @@
     <Compile Include="Helpers\Controls\WebView2Helper.cs" />
     <Compile Include="Helpers\Converters\CollectionCountConverter.cs" />
     <Compile Include="Helpers\Converters\CollectionToBoolConverter.cs" />
+    <Compile Include="Helpers\Converters\ConverterTools.cs" />
     <Compile Include="Helpers\Converters\FontSizeToLineHeight.cs" />
     <Compile Include="Helpers\Converters\HTMLToTextConverter.cs" />
     <Compile Include="Helpers\Converters\NumMultConverter.cs" />
+    <Compile Include="Helpers\Converters\PipsPagerVisibilityConverter.cs" />
     <Compile Include="Helpers\Converters\StringToBoolConverter.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Helpers\DateHelper.cs" />

@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Images;
 using CoolapkUWP.ViewModels;
+using Microsoft.UI.Xaml.Controls;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation.Metadata;
@@ -66,6 +67,8 @@ namespace CoolapkUWP.Pages
             if (!this.IsAppWindow())
             {
                 Window.Current.SetTitleBar(CustomTitleBar);
+                if (ApiInformation.IsMethodPresent("Windows.UI.Composition.Compositor", "TryCreateBlurredWallpaperBackdropBrush"))
+                { BackdropMaterial.SetApplyToRootOrPageBackground(this, true); }
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = TryGoBack(false);
                 CoreApplicationViewTitleBar TitleBar = CoreApplication.GetCurrentView().TitleBar;
                 if (!(AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop"))

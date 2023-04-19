@@ -166,7 +166,8 @@
                     Margin="4"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    CornerRadius="6">
+                    CornerRadius="6"
+                    Visibility="{Binding Images, Converter={StaticResource PipsPagerVisibilityConverter}}">
                     <Border.Background>
                         <media:AcrylicBrush
                             BackgroundSource="Backdrop"
