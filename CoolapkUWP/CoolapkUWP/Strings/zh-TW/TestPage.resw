@@ -225,4 +225,22 @@
   <data name="WebTestSettingsHeader.Header" xml:space="preserve">
     <value>網路測試</value>
   </data>
+  <data name="APISettings.Description" xml:space="preserve">
+    <value>修改与酷安服务器通信的配置</value>
+  </data>
+  <data name="APISettings.Header" xml:space="preserve">
+    <value>API 设置</value>
+  </data>
+  <data name="CustomUASettings.Header" xml:space="preserve">
+    <value>修改 UserAgent</value>
+  </data>
+  <data name="IsCustomUASettings.Description" xml:space="preserve">
+    <value>使用自定义的 UserAgent</value>
+  </data>
+  <data name="IsCustomUASettings.Header" xml:space="preserve">
+    <value>是否修改 UserAgent</value>
+  </data>
+  <data name="WindowSettingsHeader.Header" xml:space="preserve">
+    <value>窗口测试</value>
+  </data>
 </root>
