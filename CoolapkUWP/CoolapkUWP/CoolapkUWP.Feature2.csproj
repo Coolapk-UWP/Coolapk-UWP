@@ -177,6 +177,9 @@
     <Compile Include="Controls\Dialogs\LoginDialog.xaml.cs">
       <DependentUpon>LoginDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Dialogs\UserAgentDialog.xaml.cs">
+      <DependentUpon>UserAgentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\FeedShellDetailControl.xaml.cs">
       <DependentUpon>FeedShellDetailControl.xaml</DependentUpon>
     </Compile>
@@ -221,9 +224,11 @@
     <Compile Include="Helpers\Controls\WebViewHelper.cs" />
     <Compile Include="Helpers\Converters\CollectionCountConverter.cs" />
     <Compile Include="Helpers\Converters\CollectionToBoolConverter.cs" />
+    <Compile Include="Helpers\Converters\ConverterTools.cs" />
     <Compile Include="Helpers\Converters\FontSizeToLineHeight.cs" />
     <Compile Include="Helpers\Converters\HTMLToTextConverter.cs" />
     <Compile Include="Helpers\Converters\NumMultConverter.cs" />
+    <Compile Include="Helpers\Converters\PipsPagerVisibilityConverter.cs" />
     <Compile Include="Helpers\Converters\StringToBoolConverter.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
@@ -263,6 +268,7 @@
     <Compile Include="Models\TopicModel.cs" />
     <Compile Include="Models\Update\SystemVersionInfo.cs" />
     <Compile Include="Models\Update\UpdateInfo.cs" />
+    <Compile Include="Models\Update\UserAgent.cs" />
     <Compile Include="Models\Upload\UploadFileFragment.cs" />
     <Compile Include="Models\Users\ContactModel.cs" />
     <Compile Include="Models\Users\LinkUserModel.cs" />
@@ -915,6 +921,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
+    <PRIResource Include="Strings\zh-CN\UserAgentDialog.resw" />
     <PRIResource Include="Strings\zh-TW\ShowImagePage.resw" />
     <PRIResource Include="Strings\zh-TW\ProfileFlyoutControl.resw" />
     <PRIResource Include="Strings\zh-CN\SettingsPane.resw" />
@@ -1081,6 +1088,10 @@
     <Page Include="Controls\Dialogs\LoginDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\UserAgentDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\FeedShellDetailControl.xaml">
       <SubType>Designer</SubType>

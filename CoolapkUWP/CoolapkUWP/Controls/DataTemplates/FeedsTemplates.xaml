@@ -373,7 +373,7 @@
                                 TintOpacity="1" />
                         </contract5NotPresent:Grid.Background>
                         <contract5Present:Grid.Background>
-                            <AcrylicBrush
+                            <contract5Present:AcrylicBrush
                                 BackgroundSource="Backdrop"
                                 FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                                 TintColor="{ThemeResource SystemChromeMediumHighColor}"
@@ -434,7 +434,7 @@
                                 TintOpacity="1" />
                         </contract5NotPresent:Grid.Background>
                         <contract5Present:Grid.Background>
-                            <AcrylicBrush
+                            <contract5Present:AcrylicBrush
                                 BackgroundSource="Backdrop"
                                 FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                                 TintColor="{ThemeResource SystemChromeMediumHighColor}"
@@ -483,7 +483,7 @@
                                 TintOpacity="1" />
                         </contract5NotPresent:Grid.Background>
                         <contract5Present:Grid.Background>
-                            <AcrylicBrush
+                            <contract5Present:AcrylicBrush
                                 BackgroundSource="Backdrop"
                                 FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                                 TintColor="{ThemeResource SystemChromeMediumHighColor}"

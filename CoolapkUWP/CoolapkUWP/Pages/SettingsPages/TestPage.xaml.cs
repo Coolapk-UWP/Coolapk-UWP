@@ -1,10 +1,13 @@
 ﻿using CoolapkUWP.Common;
+using CoolapkUWP.Controls;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Images;
+using CoolapkUWP.Models.Update;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.ViewModels.BrowserPages;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
@@ -24,7 +27,7 @@ namespace CoolapkUWP.Pages.SettingsPages
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class TestPage : Page
+    public sealed partial class TestPage : Page, INotifyPropertyChanged
     {
         internal bool IsExtendsTitleBar
         {
@@ -48,6 +51,20 @@ namespace CoolapkUWP.Pages.SettingsPages
                 {
                     SettingsHelper.Set(SettingsHelper.IsUseAPI2, value);
                     NetworkHelper.SetRequestHeaders();
+                }
+            }
+        }
+
+        internal bool IsCustomUA
+        {
+            get => SettingsHelper.Get<bool>(SettingsHelper.IsCustomUA);
+            set
+            {
+                if (IsCustomUA != value)
+                {
+                    SettingsHelper.Set(SettingsHelper.IsCustomUA, value);
+                    NetworkHelper.SetRequestHeaders();
+                    UserAgent = NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString();
                 }
             }
         }
@@ -99,6 +116,20 @@ namespace CoolapkUWP.Pages.SettingsPages
             }
         }
 
+        private string userAgent = NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString();
+        internal string UserAgent
+        {
+            get => userAgent;
+            set
+            {
+                if (userAgent != value)
+                {
+                    userAgent = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
         private double progressValue = 0;
         internal double ProgressValue
         {
@@ -134,6 +165,13 @@ namespace CoolapkUWP.Pages.SettingsPages
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        {
+            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
+        }
+
         public TestPage() => InitializeComponent();
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -141,7 +179,8 @@ namespace CoolapkUWP.Pages.SettingsPages
             switch ((sender as FrameworkElement).Tag.ToString())
             {
                 case "OutPIP":
-                    _ = ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
+                    if (ApplicationView.GetForCurrentView().IsViewModeSupported(ApplicationViewMode.Default))
+                    { _ = ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default); }
                     break;
                 case "OpenURL":
                     _ = UIHelper.OpenLinkAsync(URLTextBox.Text);
@@ -149,6 +188,11 @@ namespace CoolapkUWP.Pages.SettingsPages
                 case "EnterPIP":
                     if (ApplicationView.GetForCurrentView().IsViewModeSupported(ApplicationViewMode.CompactOverlay))
                     { _ = ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay); }
+                    break;
+                case "CustomUA":
+                    UserAgentDialog dialog = new UserAgentDialog(NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString());
+                    await dialog.ShowAsync();
+                    UserAgent = NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString();
                     break;
                 case "NewWindow":
                     if (WindowHelper.IsSupportedAppWindow)
@@ -168,9 +212,7 @@ namespace CoolapkUWP.Pages.SettingsPages
                     break;
                 case "SettingsFlyout":
                     if (ApiInformation.IsTypePresent("Windows.UI.ApplicationSettings.SettingsPane"))
-                    {
-                        SettingsPane.Show();
-                    }
+                    { SettingsPane.Show(); }
                     break;
                 default:
                     break;

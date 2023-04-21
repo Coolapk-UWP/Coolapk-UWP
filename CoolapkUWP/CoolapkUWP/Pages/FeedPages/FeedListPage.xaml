@@ -539,7 +539,7 @@
                                     TintOpacity="0" />
                             </contract5NotPresent:Border.Background>
                             <contract5Present:Border.Background>
-                                <AcrylicBrush
+                                <contract5Present:AcrylicBrush
                                     BackgroundSource="Backdrop"
                                     FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                                     TintColor="{ThemeResource SystemChromeMediumHighColor}"

@@ -117,130 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccentColorSettings.Description" xml:space="preserve">
-    <value>各种强调色</value>
+  <data name="FullProductName.Header" xml:space="preserve">
+    <value>完整设备型号</value>
   </data>
-  <data name="AccentColorSettings.Header" xml:space="preserve">
-    <value>颜色</value>
+  <data name="FullProductName.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>用于酷安的设备识别，如 GM1910_21_220617</value>
   </data>
-  <data name="APIVersionSettings.Description" xml:space="preserve">
-    <value>设置使用的酷安版本</value>
+  <data name="HeaderTextBox.Header" xml:space="preserve">
+    <value>UserAgent 头</value>
   </data>
-  <data name="APIVersionSettings.Header" xml:space="preserve">
-    <value>API 版本</value>
+  <data name="HeaderTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>UserAgent 的开始部分，填入浏览器的 UserAgent</value>
   </data>
-  <data name="CompactOverlaySettings.Description" xml:space="preserve">
-    <value>进入或退出画中画模式</value>
+  <data name="Manufacturer.Header" xml:space="preserve">
+    <value>设备厂商</value>
   </data>
-  <data name="CompactOverlaySettings.Header" xml:space="preserve">
-    <value>画中画模式</value>
+  <data name="Manufacturer.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>用于酷安的设备识别，如 OnePlus</value>
   </data>
-  <data name="EnterPIP.Content" xml:space="preserve">
-    <value>进入画中画模式</value>
+  <data name="OSVersion.Header" xml:space="preserve">
+    <value>系统版本号</value>
   </data>
-  <data name="GetURLContent.Header" xml:space="preserve">
-    <value>获取内容</value>
+  <data name="OSVersion.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>用于酷安的设备识别，如 11</value>
   </data>
-  <data name="LanguageSettings.Description" xml:space="preserve">
-    <value>选择语言并重启应用来更改语言</value>
+  <data name="ProductName.Header" xml:space="preserve">
+    <value>设备型号</value>
   </data>
-  <data name="LanguageSettings.Header" xml:space="preserve">
-    <value>语言</value>
+  <data name="ProductName.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>用于酷安的设备识别，如 GM1910</value>
   </data>
-  <data name="NewWindowSettings.Description" xml:space="preserve">
-    <value>新建一个窗口</value>
+  <data name="UserAgentDialog.CloseButtonText" xml:space="preserve">
+    <value>取消</value>
   </data>
-  <data name="NewWindowSettings.Header" xml:space="preserve">
-    <value>新窗口（仅支持 1903 及以上）</value>
+  <data name="UserAgentDialog.PrimaryButtonText" xml:space="preserve">
+    <value>完成</value>
   </data>
-  <data name="OpenBrowser.Header" xml:space="preserve">
-    <value>用内置浏览器打开</value>
-  </data>
-  <data name="OpenURL.Header" xml:space="preserve">
-    <value>打开页面</value>
-  </data>
-  <data name="OutPIP.Content" xml:space="preserve">
-    <value>退出</value>
-  </data>
-  <data name="ProgressSettings.Description" xml:space="preserve">
-    <value>测试窗口顶部的进度条</value>
-  </data>
-  <data name="ProgressSettings.Header" xml:space="preserve">
-    <value>进度</value>
-  </data>
-  <data name="SetProgressValue.Description" xml:space="preserve">
-    <value>设置进度条的值</value>
-  </data>
-  <data name="SetProgressValue.Header" xml:space="preserve">
-    <value>进度值</value>
-  </data>
-  <data name="SettingsFlyoutSettings.Description" xml:space="preserve">
-    <value>打开 Charm 侧边栏设置</value>
-  </data>
-  <data name="SettingsFlyoutSettings.Header" xml:space="preserve">
-    <value>打开设置</value>
-  </data>
-  <data name="SlimCountSettings.Description" xml:space="preserve">
-    <value>同时可以加载的图片数量</value>
-  </data>
-  <data name="SlimCountSettings.Header" xml:space="preserve">
-    <value>多任务数</value>
-  </data>
-  <data name="TitleBar.Title" xml:space="preserve">
-    <value>测试</value>
-  </data>
-  <data name="TitleBarSettings.Description" xml:space="preserve">
-    <value>将内容扩展到标题栏</value>
-  </data>
-  <data name="TitleBarSettings.Header" xml:space="preserve">
-    <value>标题栏</value>
-  </data>
-  <data name="TokenVersionSettings.Description" xml:space="preserve">
-    <value>设置使用的 Token 获取方法</value>
-  </data>
-  <data name="TokenVersionSettings.Header" xml:space="preserve">
-    <value>Token 版本</value>
-  </data>
-  <data name="UITestSettingsHeader.Header" xml:space="preserve">
-    <value>界面测试</value>
-  </data>
-  <data name="UseAPI2Settings.Description" xml:space="preserve">
-    <value>是否使用新的酷安接口</value>
-  </data>
-  <data name="UseAPI2Settings.Header" xml:space="preserve">
-    <value>是否使用 API2</value>
-  </data>
-  <data name="UseCompositorSettings.Description" xml:space="preserve">
-    <value>是否在吸顶列表中使用合成动画</value>
-  </data>
-  <data name="UseCompositorSettings.Header" xml:space="preserve">
-    <value>是否使用合成动画</value>
-  </data>
-  <data name="WebTestSettings.Description" xml:space="preserve">
-    <value>测试网络相关内容</value>
-  </data>
-  <data name="WebTestSettings.Header" xml:space="preserve">
-    <value>Web 测试</value>
-  </data>
-  <data name="WebTestSettingsHeader.Header" xml:space="preserve">
-    <value>网络测试</value>
-  </data>
-  <data name="APISettings.Description" xml:space="preserve">
-    <value>修改与酷安服务器通信的配置</value>
-  </data>
-  <data name="APISettings.Header" xml:space="preserve">
-    <value>API 设置</value>
-  </data>
-  <data name="CustomUASettings.Header" xml:space="preserve">
+  <data name="UserAgentDialog.Title" xml:space="preserve">
     <value>修改 UserAgent</value>
-  </data>
-  <data name="IsCustomUASettings.Description" xml:space="preserve">
-    <value>使用自定义的 UserAgent</value>
-  </data>
-  <data name="IsCustomUASettings.Header" xml:space="preserve">
-    <value>是否修改 UserAgent</value>
-  </data>
-  <data name="WindowSettingsHeader.Header" xml:space="preserve">
-    <value>窗口测试</value>
   </data>
 </root>

@@ -1,0 +1,34 @@
+﻿<ContentDialog
+    x:Class="CoolapkUWP.Controls.UserAgentDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CoolapkUWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Uid="/UserAgentDialog/UserAgentDialog"
+    DefaultButton="Primary"
+    Style="{StaticResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+    <controls:StackPanel Spacing="4">
+        <TextBox
+            x:Uid="/UserAgentDialog/UserAgentTextBox"
+            PlaceholderText="Dalvik/2.1.0 (Linux; U; Android 11; GM1910 Build/RKQ1.201022.002)"
+            Text="{x:Bind UserAgent.Header, Mode=TwoWay}" />
+        <TextBox
+            x:Uid="/UserAgentDialog/ManufacturerTextBox"
+            PlaceholderText="OnePlus"
+            Text="{x:Bind UserAgent.Manufacturer, Mode=TwoWay}" />
+        <TextBox
+            x:Uid="/UserAgentDialog/ProductNameTextBox"
+            PlaceholderText="GM1910"
+            Text="{x:Bind UserAgent.ProductName, Mode=TwoWay}" />
+        <TextBox
+            x:Uid="/UserAgentDialog/FullProductNameTextBox"
+            PlaceholderText="GM1910_21_220617"
+            Text="{x:Bind UserAgent.FullProductName, Mode=TwoWay}" />
+        <TextBox
+            x:Uid="/UserAgentDialog/OSVersionTextBox"
+            PlaceholderText="11"
+            Text="{x:Bind UserAgent.OSVersion, Mode=TwoWay}" />
+    </controls:StackPanel>
+</ContentDialog>

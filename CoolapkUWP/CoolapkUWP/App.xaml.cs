@@ -230,7 +230,7 @@ namespace CoolapkUWP
                     case AppCapabilityAccessStatus.DeniedByUser:
                     case AppCapabilityAccessStatus.DeniedBySystem:
                         // Do something
-                        await AppCapability.Create("wifiData").RequestAccessAsync();
+                        await wifiData.RequestAccessAsync();
                         break;
                 }
             }
