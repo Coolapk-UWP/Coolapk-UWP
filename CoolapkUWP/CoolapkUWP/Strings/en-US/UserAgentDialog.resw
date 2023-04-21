@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FullProductName.Header" xml:space="preserve">
+  <data name="FullProductNameTextBox.Header" xml:space="preserve">
     <value>完整设备型号</value>
   </data>
-  <data name="FullProductName.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="FullProductNameTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>用于酷安的设备识别，如 GM1910_21_220617</value>
   </data>
   <data name="HeaderTextBox.Header" xml:space="preserve">
@@ -129,22 +129,22 @@
   <data name="HeaderTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>UserAgent 的开始部分，填入浏览器的 UserAgent</value>
   </data>
-  <data name="Manufacturer.Header" xml:space="preserve">
+  <data name="ManufacturerTextBox.Header" xml:space="preserve">
     <value>设备厂商</value>
   </data>
-  <data name="Manufacturer.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="ManufacturerTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>用于酷安的设备识别，如 OnePlus</value>
   </data>
-  <data name="OSVersion.Header" xml:space="preserve">
+  <data name="OSVersionTextBox.Header" xml:space="preserve">
     <value>系统版本号</value>
   </data>
-  <data name="OSVersion.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="OSVersionTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>用于酷安的设备识别，如 11</value>
   </data>
-  <data name="ProductName.Header" xml:space="preserve">
+  <data name="ProductNameTextBox.Header" xml:space="preserve">
     <value>设备型号</value>
   </data>
-  <data name="ProductName.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="ProductNameTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>用于酷安的设备识别，如 GM1910</value>
   </data>
   <data name="UserAgentDialog.CloseButtonText" xml:space="preserve">
