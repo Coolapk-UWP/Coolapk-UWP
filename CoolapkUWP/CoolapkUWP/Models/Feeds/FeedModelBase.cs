@@ -7,6 +7,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Models.Feeds
 {
@@ -266,7 +269,7 @@ namespace CoolapkUWP.Models.Feeds
                 ImmutableArray<RelationRowsItem>.Builder buider = ImmutableArray.CreateBuilder<RelationRowsItem>();
                 if (location != null && !string.IsNullOrEmpty(location.ToString()))
                 {
-                    buider.Add(new RelationRowsItem { Title = location.ToString(), Logo = new ImageModel("https://store-images.s-microsoft.com/image/apps.26122.9007199266740465.7153e958-76ad-445a-be02-d2e4cc26f347.35a35f29-9e39-42d3-814f-6d73e208553a", ImageType.Icon) });
+                    buider.Add(new RelationRowsItem { Title = location.ToString(), Icon = new FontIconSource { Glyph = "\uE707", FontFamily = (FontFamily)Application.Current.Resources["SymbolThemeFontFamily"] } });
                 }
 
                 if (ttitle != null && !string.IsNullOrEmpty(ttitle.ToString()))
@@ -299,18 +302,38 @@ namespace CoolapkUWP.Models.Feeds
                     {
                         Title = $"已编辑{change_count.ToObject<int>()}次",
                         Url = $"/feed/changeHistoryList?id={ID}",
-                        Logo = new ImageModel("https://store-images.s-microsoft.com/image/apps.22218.9007199266484421.d7454822-3b68-4c7c-a337-0f4f29835fb7.933730b7-d8f0-4997-a557-7dbfc3c7b950", ImageType.Icon)
+                        Icon = new FontIconSource
+                        {
+                            Glyph = "\uE70F",
+                            FontFamily = (FontFamily)Application.Current.Resources["SymbolThemeFontFamily"]
+                        }
                     });
                 }
 
                 if (status != null && status.ToObject<int>() == -1)
                 {
-                    buider.Add(new RelationRowsItem { Title = "仅自己可见" });
+                    buider.Add(new RelationRowsItem
+                    {
+                        Title = "仅自己可见",
+                        Icon = new FontIconSource
+                        {
+                            Glyph = "\uE727",
+                            FontFamily = (FontFamily)Application.Current.Resources["SymbolThemeFontFamily"]
+                        }
+                    });
                 }
 
                 if (block_status != null && block_status.ToObject<int>() != 0)
                 {
-                    buider.Add(new RelationRowsItem { Title = "已折叠" });
+                    buider.Add(new RelationRowsItem
+                    {
+                        Title = "已折叠",
+                        Icon = new FontIconSource
+                        {
+                            Glyph = "\uE7BA",
+                            FontFamily = (FontFamily)Application.Current.Resources["SymbolThemeFontFamily"]
+                        }
+                    });
                 }
 
                 ShowRelationRows = buider.Any();
@@ -362,6 +385,11 @@ namespace CoolapkUWP.Models.Feeds
     {
         public string Url { get; set; }
         public string Title { get; set; }
+
+        public IconSource Icon { get; set; }
         public ImageModel Logo { get; set; }
+
+        public bool IsShowLogo => Logo != null;
+        public bool IsShowIcon => Icon != null || Logo != null;
     }
 }

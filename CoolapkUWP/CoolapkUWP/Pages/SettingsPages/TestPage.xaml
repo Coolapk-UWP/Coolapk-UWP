@@ -253,6 +253,7 @@
                             Tag="GetURLContent" />
                         <controls:Setting
                             x:Uid="/TestPage/OpenBrowser"
+                            Click="Button_Click"
                             ContentCornerRadius="{Binding Source={StaticResource ControlCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}"
                             IsClickEnabled="True"
                             Style="{StaticResource ClickableSettingExpanderItemStyle}"
