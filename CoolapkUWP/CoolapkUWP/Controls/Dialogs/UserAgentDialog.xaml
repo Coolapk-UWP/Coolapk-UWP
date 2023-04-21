@@ -11,7 +11,7 @@
     mc:Ignorable="d">
     <controls:StackPanel Spacing="4">
         <TextBox
-            x:Uid="/UserAgentDialog/UserAgentTextBox"
+            x:Uid="/UserAgentDialog/HeaderTextBox"
             PlaceholderText="Dalvik/2.1.0 (Linux; U; Android 11; GM1910 Build/RKQ1.201022.002)"
             Text="{x:Bind UserAgent.Header, Mode=TwoWay}" />
         <TextBox

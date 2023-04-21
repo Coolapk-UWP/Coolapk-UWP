@@ -78,6 +78,7 @@ namespace CoolapkUWP.Pages.SettingsPages
                 {
                     SettingsHelper.Set(SettingsHelper.APIVersion, value + 5);
                     NetworkHelper.SetRequestHeaders();
+                    UserAgent = NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString();
                 }
             }
         }
