@@ -273,7 +273,4 @@
   <data name="UseMultiWindowSettings.Header" xml:space="preserve">
     <value>Use Multiple Windows (only supported 1903 and above)</value>
   </data>
-  <data name="BackButton" xml:space="preserve">
-    <value/>
-  </data>
 </root>
