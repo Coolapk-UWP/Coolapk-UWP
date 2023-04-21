@@ -33,7 +33,7 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Visibility="{Binding IsShowLogo, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
-                        <IconSourceElement IconSource="{Binding Icon}" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="{Binding Icon}" />
                     </Viewbox>
                     <Border
                         HorizontalAlignment="Stretch"

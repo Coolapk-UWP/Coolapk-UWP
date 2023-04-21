@@ -269,17 +269,27 @@ namespace CoolapkUWP.Models.Feeds
                 ImmutableArray<RelationRowsItem>.Builder buider = ImmutableArray.CreateBuilder<RelationRowsItem>();
                 if (location != null && !string.IsNullOrEmpty(location.ToString()))
                 {
-                    buider.Add(new RelationRowsItem { Title = location.ToString(), Icon = new FontIconSource { Glyph = "\uE707", FontFamily = (FontFamily)Application.Current.Resources["SymbolThemeFontFamily"] } });
+                    buider.Add(
+                        new RelationRowsItem(
+                            title: location.ToString(),
+                            icon: "\uE707"));
                 }
 
                 if (ttitle != null && !string.IsNullOrEmpty(ttitle.ToString()))
                 {
-                    buider.Add(new RelationRowsItem { Title = ttitle.ToString(), Url = token.Value<string>("turl"), Logo = new ImageModel(token.Value<string>("tpic"), ImageType.Icon) });
+                    buider.Add(
+                        new RelationRowsItem(
+                            url: token.Value<string>("turl"),
+                            title: ttitle.ToString(),
+                            logo: token.Value<string>("tpic")));
                 }
 
                 if (EntityType != "article" && dyh_name != null && !string.IsNullOrEmpty(dyh_name.ToString()))
                 {
-                    buider.Add(new RelationRowsItem { Title = dyh_name.ToString(), Url = $"/dyh/{token["dyh_id"].ToString().Replace("\"", string.Empty)}" });
+                    buider.Add(
+                        new RelationRowsItem(
+                            url: $"/dyh/{token["dyh_id"]}",
+                            title: dyh_name.ToString()));
                 }
 
                 if (relationRows != null)
@@ -287,53 +297,37 @@ namespace CoolapkUWP.Models.Feeds
                     foreach (JToken i in relationRows)
                     {
                         JObject item = i as JObject;
-                        buider.Add(new RelationRowsItem
-                        {
-                            Title = item.Value<string>("title"),
-                            Url = item.Value<string>("url"),
-                            Logo = new ImageModel(item.Value<string>("logo"), ImageType.Icon)
-                        });
+                        buider.Add(
+                            new RelationRowsItem(
+                                url: item.Value<string>("url"),
+                                title: item.Value<string>("title"),
+                                logo: item.Value<string>("logo")));
                     }
                 }
 
                 if (change_count != null && change_count.ToObject<int>() > 0)
                 {
-                    buider.Add(new RelationRowsItem
-                    {
-                        Title = $"已编辑{change_count.ToObject<int>()}次",
-                        Url = $"/feed/changeHistoryList?id={ID}",
-                        Icon = new FontIconSource
-                        {
-                            Glyph = "\uE70F",
-                            FontFamily = (FontFamily)Application.Current.Resources["SymbolThemeFontFamily"]
-                        }
-                    });
+                    buider.Add(
+                        new RelationRowsItem(
+                            url: $"/feed/changeHistoryList?id={ID}",
+                            title: $"已编辑{change_count.ToObject<int>()}次",
+                            icon: "\uE70F"));
                 }
 
                 if (status != null && status.ToObject<int>() == -1)
                 {
-                    buider.Add(new RelationRowsItem
-                    {
-                        Title = "仅自己可见",
-                        Icon = new FontIconSource
-                        {
-                            Glyph = "\uE727",
-                            FontFamily = (FontFamily)Application.Current.Resources["SymbolThemeFontFamily"]
-                        }
-                    });
+                    buider.Add(
+                        new RelationRowsItem(
+                            title: "仅自己可见",
+                            icon: "\uE727"));
                 }
 
                 if (block_status != null && block_status.ToObject<int>() != 0)
                 {
-                    buider.Add(new RelationRowsItem
-                    {
-                        Title = "已折叠",
-                        Icon = new FontIconSource
-                        {
-                            Glyph = "\uE7BA",
-                            FontFamily = (FontFamily)Application.Current.Resources["SymbolThemeFontFamily"]
-                        }
-                    });
+                    buider.Add(
+                        new RelationRowsItem(
+                            title: "已折叠",
+                            icon: "\uE7BA"));
                 }
 
                 ShowRelationRows = buider.Any();
@@ -386,10 +380,21 @@ namespace CoolapkUWP.Models.Feeds
         public string Url { get; set; }
         public string Title { get; set; }
 
-        public IconSource Icon { get; set; }
+        public string Icon { get; set; }
         public ImageModel Logo { get; set; }
 
         public bool IsShowLogo => Logo != null;
-        public bool IsShowIcon => Icon != null || Logo != null;
+        public bool IsShowIcon => Logo != null || !string.IsNullOrWhiteSpace(Icon);
+
+        public RelationRowsItem(string url = null, string title = null, string icon = null, string logo = null)
+        {
+            Url = url;
+            Title = title;
+            Icon = icon;
+            if (logo != null)
+            {
+                Logo = new ImageModel(logo, ImageType.Icon);
+            }
+        }
     }
 }
