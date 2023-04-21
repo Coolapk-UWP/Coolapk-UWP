@@ -273,7 +273,4 @@
   <data name="UseMultiWindowSettings.Header" xml:space="preserve">
     <value>使用多視窗（僅支援 1903 及以上）</value>
   </data>
-  <data name="BackButton" xml:space="preserve">
-    <value/>
-  </data>
 </root>
