@@ -45,7 +45,7 @@ namespace CoolapkUWP.Models.Feeds
 
             if (token.TryGetValue("userAction", out JToken v2))
             {
-                JObject userAction = (JObject)v1;
+                JObject userAction = (JObject)v2;
                 UserAction = new UserAction(userAction);
             }
             else
