@@ -220,7 +220,7 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8BD;" />
                     </muxc:NavigationViewItem.Icon>
                     <muxc:NavigationViewItem.InfoBadge>
-                        <muxc:InfoBadge Visibility="{x:Bind NotificationsTask.BadgeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}" Value="{x:Bind NotificationsTask.BadgeNum, Mode=OneWay}" />
+                        <muxc:InfoBadge Visibility="{x:Bind NotificationsModel.BadgeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}" Value="{x:Bind NotificationsModel.BadgeNum, Mode=OneWay}" />
                     </muxc:NavigationViewItem.InfoBadge>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItem x:Uid="/MainPage/Settings" Tag="Settings">

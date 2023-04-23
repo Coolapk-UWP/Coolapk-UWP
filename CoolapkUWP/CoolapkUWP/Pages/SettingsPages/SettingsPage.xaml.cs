@@ -37,7 +37,7 @@ namespace CoolapkUWP.Pages.SettingsPages
             switch ((sender as FrameworkElement).Tag.ToString())
             {
                 case "Reset":
-                    ApplicationData.Current.LocalSettings.Values.Clear();
+                    SettingsHelper.LocalObject.Clear();
                     SettingsHelper.SetDefaultSettings();
                     if (Reset.Flyout is Flyout flyout_reset)
                     {

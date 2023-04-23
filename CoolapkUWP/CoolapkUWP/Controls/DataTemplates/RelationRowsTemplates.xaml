@@ -22,16 +22,29 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Border
+                <Grid
                     Width="20"
                     Height="20"
                     Margin="0,0,4,0"
-                    CornerRadius="{ThemeResource ControlCornerRadius}"
-                    Visibility="{Binding Logo.Uri, Converter={StaticResource StringVisibilityConverter}}">
-                    <Border.Background>
-                        <ImageBrush ImageSource="{Binding Logo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
-                    </Border.Background>
-                </Border>
+                    Visibility="{Binding IsShowIcon, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Viewbox
+                        Width="14"
+                        Height="14"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Visibility="{Binding IsShowLogo, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="{Binding Icon}" />
+                    </Viewbox>
+                    <Border
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        CornerRadius="{ThemeResource ControlCornerRadius}"
+                        Visibility="{Binding IsShowLogo, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding Logo.Pic, Mode=OneWay}" Stretch="UniformToFill" />
+                        </Border.Background>
+                    </Border>
+                </Grid>
                 <TextBlock
                     Grid.Column="1"
                     Margin="0,0,0,2"

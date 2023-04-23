@@ -1,14 +1,19 @@
 ﻿using CoolapkUWP.Common;
+using CoolapkUWP.Controls;
+using CoolapkUWP.Controls.Dialogs;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Images;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.ViewModels.BrowserPages;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using Windows.ApplicationModel.Core;
+using Windows.Foundation.Metadata;
 using Windows.Globalization;
 using Windows.UI;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.ViewManagement;
 using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
@@ -22,7 +27,7 @@ namespace CoolapkUWP.Pages.SettingsPages
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class TestPage : Page
+    public sealed partial class TestPage : Page, INotifyPropertyChanged
     {
         internal bool IsExtendsTitleBar
         {
@@ -50,22 +55,37 @@ namespace CoolapkUWP.Pages.SettingsPages
             }
         }
 
+        internal bool IsCustomUA
+        {
+            get => SettingsHelper.Get<bool>(SettingsHelper.IsCustomUA);
+            set
+            {
+                if (IsCustomUA != value)
+                {
+                    SettingsHelper.Set(SettingsHelper.IsCustomUA, value);
+                    NetworkHelper.SetRequestHeaders();
+                    UserAgent = NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString();
+                }
+            }
+        }
+
         internal int APIVersion
         {
-            get => (int)SettingsHelper.Get<APIVersion>(SettingsHelper.APIVersion) - 5;
+            get => (int)SettingsHelper.Get<APIVersions>(SettingsHelper.APIVersion) - 4;
             set
             {
                 if (APIVersion != value)
                 {
-                    SettingsHelper.Set(SettingsHelper.APIVersion, value + 5);
+                    SettingsHelper.Set(SettingsHelper.APIVersion, value + 4);
                     NetworkHelper.SetRequestHeaders();
+                    UserAgent = NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString();
                 }
             }
         }
 
         internal int TokenVersion
         {
-            get => (int)SettingsHelper.Get<TokenVersion>(SettingsHelper.TokenVersion);
+            get => (int)SettingsHelper.Get<TokenVersions>(SettingsHelper.TokenVersion);
             set
             {
                 if (TokenVersion != value)
@@ -93,6 +113,20 @@ namespace CoolapkUWP.Pages.SettingsPages
                     SettingsHelper.Set(SettingsHelper.SemaphoreSlimCount, result);
                     NetworkHelper.SetSemaphoreSlim(result);
                     ImageModel.SetSemaphoreSlim(result);
+                }
+            }
+        }
+
+        private string userAgent = NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString();
+        internal string UserAgent
+        {
+            get => userAgent;
+            set
+            {
+                if (userAgent != value)
+                {
+                    userAgent = value;
+                    RaisePropertyChangedEvent();
                 }
             }
         }
@@ -132,17 +166,22 @@ namespace CoolapkUWP.Pages.SettingsPages
             }
         }
 
-        public TestPage()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
-            InitializeComponent();
+            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
+
+        public TestPage() => InitializeComponent();
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             switch ((sender as FrameworkElement).Tag.ToString())
             {
                 case "OutPIP":
-                    _ = ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
+                    if (ApplicationView.GetForCurrentView().IsViewModeSupported(ApplicationViewMode.Default))
+                    { _ = ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default); }
                     break;
                 case "OpenURL":
                     _ = UIHelper.OpenLinkAsync(URLTextBox.Text);
@@ -150,6 +189,16 @@ namespace CoolapkUWP.Pages.SettingsPages
                 case "EnterPIP":
                     if (ApplicationView.GetForCurrentView().IsViewModeSupported(ApplicationViewMode.CompactOverlay))
                     { _ = ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay); }
+                    break;
+                case "CustomUA":
+                    UserAgentDialog userAgentDialog = new UserAgentDialog(UserAgent);
+                    await userAgentDialog.ShowAsync();
+                    UserAgent = NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString();
+                    break;
+                case "CustomAPI":
+                    APIVersionDialog _APIVersionDialog = new APIVersionDialog(UserAgent);
+                    await _APIVersionDialog.ShowAsync();
+                    UserAgent = NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString();
                     break;
                 case "NewWindow":
                     if (WindowHelper.IsSupportedAppWindow)
@@ -166,6 +215,10 @@ namespace CoolapkUWP.Pages.SettingsPages
                     break;
                 case "GetURLContent":
                     GetURLContent();
+                    break;
+                case "SettingsFlyout":
+                    if (ApiInformation.IsTypePresent("Windows.UI.ApplicationSettings.SettingsPane"))
+                    { SettingsPane.Show(); }
                     break;
                 default:
                     break;

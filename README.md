@@ -5,14 +5,14 @@
 
 基于[@一块小板子](http://www.coolapk.com/u/695942 "一块小板子")的源码([Github](https://github.com/oboard/CoolApk-UWP "oboard"))
 
-[![Build Status](https://dev.azure.com/wherewhere/Coolapk-UWP/_apis/build/status/Coolapk-UWP.Coolapk-UWP?branchName=revived)](https://dev.azure.com/wherewhere/Coolapk-UWP/_build/latest?definitionId=10&branchName=revived)
+[![Build Status](https://dev.azure.com/wherewhere/Coolapk-UWP/_apis/build/status/Coolapk-UWP.Coolapk-UWP?branchName=revived)](https://dev.azure.com/wherewhere/Coolapk-UWP/_build/latest?definitionId=10&branchName=revived "Build Status")
 
 [![LICENSE](https://img.shields.io/github/license/Coolapk-UWP/Coolapk-UWP.svg?label=License&style=flat-square)](https://github.com/Coolapk-UWP/Coolapk-UWP/blob/master/LICENSE "LICENSE")
 [![Issues](https://img.shields.io/github/issues/Coolapk-UWP/Coolapk-UWP.svg?label=Issues&style=flat-square)](https://github.com/Coolapk-UWP/Coolapk-UWP/issues "Issues")
 [![Stargazers](https://img.shields.io/github/stars/Coolapk-UWP/Coolapk-UWP.svg?label=Stars&style=flat-square)](https://github.com/Coolapk-UWP/Coolapk-UWP/stargazers "Stargazers")
 
+[![Microsoft Store](https://img.shields.io/badge/download-%e4%b8%8b%e8%bd%bd-magenta.svg?label=Microsoft%20Store&logo=Microsoft&style=for-the-badge&color=11a2f8)](https://www.microsoft.com/store/apps/9N0DMXZVMQVL "Microsoft Store")
 [![GitHub All Releases](https://img.shields.io/github/downloads/Coolapk-UWP/Coolapk-UWP/total.svg?label=DOWNLOAD&logo=github&style=for-the-badge)](https://github.com/Coolapk-UWP/Coolapk-UWP/releases/latest "GitHub All Releases")
-[![Baidu Netdisk](https://img.shields.io/badge/download-%e5%af%86%e7%a0%81%ef%bc%9alIIl-magenta.svg?label=%e4%b8%8b%e8%bd%bd&logo=baidu&style=for-the-badge)](https://pan.baidu.com/s/1Wjy-CUfjm0sOHCKLwQEALQ "Baidu Netdisk")
 
 ## 目录
 - [Coolapk UWP](#coolapk-uwp)
@@ -106,15 +106,18 @@
 ![问答](Images/Screenshots/Snipaste_2023-01-28_22-08-14.png)
 
 ## 使用到的模块
-- [QRCoder](https://github.com/codebude/QRCoder)
-- [MetroLog](https://github.com/novotnyllc/MetroLog)
-- [Bcrypt.Net](https://github.com/BcryptNet/bcrypt.net)
+- [QRCoder](https://github.com/codebude/QRCoder "QRCoder")
+- [MetroLog](https://github.com/novotnyllc/MetroLog "MetroLog")
+- [Bcrypt.Net](https://github.com/BcryptNet/bcrypt.net "Bcrypt.Net")
 - [Windows UI](https://github.com/microsoft/microsoft-ui-xaml "Windows UI")
-- [Newtonsoft Json](https://www.newtonsoft.com/json)
+- [Newtonsoft Json](https://www.newtonsoft.com/json "Newtonsoft Json")
 - [Windows Community Toolkit](https://github.com/CommunityToolkit/WindowsCommunityToolkit "Windows Community Toolkit")
 
 ## 衍生项目
 - [Coolapk-API-Collect](https://github.com/wherewhere/Coolapk-API-Collect "Coolapk-API-Collect")
+
+## 参与人员
+[![Contributors](https://contrib.rocks/image?repo=Coolapk-UWP/Coolapk-UWP)](https://github.com/Coolapk-UWP/Coolapk-UWP/graphs/contributors "Contributors")
 
 ## 鸣谢
 - 酷安UWP原作者[@一块小板子](http://www.coolapk.com/u/695942 "一块小板子")([Github](https://github.com/oboard "oboard"))

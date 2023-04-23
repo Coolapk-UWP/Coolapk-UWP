@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.BackgroundTasks;
+using CoolapkUWP.Controls;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Exceptions;
 using CoolapkUWP.Pages;
@@ -16,7 +17,11 @@ using Windows.ApplicationModel.Resources;
 using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
 using Windows.Security.Authorization.AppCapabilityAccess;
+using Windows.Storage;
+using Windows.System;
 using Windows.System.Profile;
+using Windows.UI.ApplicationSettings;
+using Windows.UI.Core;
 using Windows.UI.Notifications;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
@@ -94,6 +99,13 @@ namespace CoolapkUWP
                 // 创建要充当导航上下文的框架，并导航到第一页
                 rootFrame = new Frame();
 
+                if (ApiInformation.IsTypePresent("Windows.UI.ApplicationSettings.SettingsPane"))
+                {
+                    SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
+                    rootFrame.Dispatcher.AcceleratorKeyActivated += Dispatcher_AcceleratorKeyActivated;
+                    Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("ms-appx:///Styles/SettingsFlyout.xaml") });
+                }
+
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
@@ -156,6 +168,58 @@ namespace CoolapkUWP
             deferral.Complete();
         }
 
+        private void OnCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("SettingsPane");
+            args.Request.ApplicationCommands.Add(
+                new SettingsCommand(
+                    "Settings",
+                    loader.GetString("Settings"),
+                    (handler) => new SettingsFlyoutControl { RequestedTheme = ThemeHelper.ActualTheme }.Show()));
+            args.Request.ApplicationCommands.Add(
+                new SettingsCommand(
+                    "Feedback",
+                    loader.GetString("Feedback"),
+                    (handler) => _ = Launcher.LaunchUriAsync(new Uri("https://github.com/Coolapk-UWP/Coolapk-UWP/issues"))));
+            args.Request.ApplicationCommands.Add(
+                new SettingsCommand(
+                    "LogFolder",
+                    loader.GetString("LogFolder"),
+                    async (handler) => _ = Launcher.LaunchFolderAsync(await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists))));
+            args.Request.ApplicationCommands.Add(
+                new SettingsCommand(
+                    "Translate",
+                    loader.GetString("Translate"),
+                    (handler) => _ = Launcher.LaunchUriAsync(new Uri("https://crowdin.com/project/CoolapkUWP"))));
+            args.Request.ApplicationCommands.Add(
+                new SettingsCommand(
+                    "Repository",
+                    loader.GetString("Repository"),
+                    (handler) => _ = Launcher.LaunchUriAsync(new Uri("https://github.com/Coolapk-UWP/Coolapk-UWP"))));
+        }
+
+        private void Dispatcher_AcceleratorKeyActivated(CoreDispatcher sender, AcceleratorKeyEventArgs args)
+        {
+            if (args.EventType.ToString().Contains("Down"))
+            {
+                CoreVirtualKeyStates ctrl = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control);
+                if (ctrl.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    CoreVirtualKeyStates shift = Window.Current.CoreWindow.GetKeyState(VirtualKey.Shift);
+                    if (shift.HasFlag(CoreVirtualKeyStates.Down))
+                    {
+                        switch (args.VirtualKey)
+                        {
+                            case VirtualKey.X:
+                                SettingsPane.Show();
+                                args.Handled = true;
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
         private async void RequestWifiAccess()
         {
             if (ApiInformation.IsMethodPresent("Windows.Security.Authorization.AppCapabilityAccess.AppCapability", "Create"))
@@ -166,7 +230,7 @@ namespace CoolapkUWP
                     case AppCapabilityAccessStatus.DeniedByUser:
                     case AppCapabilityAccessStatus.DeniedBySystem:
                         // Do something
-                        await AppCapability.Create("wifiData").RequestAccessAsync();
+                        await wifiData.RequestAccessAsync();
                         break;
                 }
             }
@@ -224,6 +288,8 @@ namespace CoolapkUWP
             RegisterNotificationsTask();
             RegisterToastBackgroundTask();
 
+            #region LiveTileTask
+
             void RegisterLiveTileTask()
             {
                 const string LiveTileTask = "LiveTileTask";
@@ -236,9 +302,13 @@ namespace CoolapkUWP
                 BackgroundTaskRegistration _LiveTileTask = BackgroundTaskHelper.Register(LiveTileTask, new TimeTrigger(15, false), true);
             }
 
+            #endregion
+
+            #region NotificationsTask
+
             void RegisterNotificationsTask()
             {
-                const string NotificationsTask = "NotificationsTask";
+                const string NotificationsTask = "NotificationsModel";
 
                 // If background task is already registered, do nothing
                 if (BackgroundTaskRegistration.AllTasks.Any(i => i.Value.Name.Equals(NotificationsTask)))
@@ -247,6 +317,10 @@ namespace CoolapkUWP
                 // Register (Single Process)
                 BackgroundTaskRegistration _NotificationsTask = BackgroundTaskHelper.Register(NotificationsTask, new TimeTrigger(15, false), true);
             }
+
+            #endregion
+
+            #region ToastBackgroundTask
 
             void RegisterToastBackgroundTask()
             {
@@ -266,6 +340,8 @@ namespace CoolapkUWP
                 // And register the task
                 BackgroundTaskRegistration registration = builder.Register();
             }
+
+            #endregion
         }
 
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
@@ -283,7 +359,7 @@ namespace CoolapkUWP
                     }
                     break;
 
-                case "NotificationsTask":
+                case "NotificationsModel":
                     if (NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable)
                     {
                         NotificationsTask.Instance?.Run(args.TaskInstance);

@@ -1,6 +1,4 @@
 ﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.Models;
-using CoolapkUWP.Models.Users;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.BrowserPages;

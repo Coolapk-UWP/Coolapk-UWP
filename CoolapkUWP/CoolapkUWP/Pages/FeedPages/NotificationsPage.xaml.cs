@@ -1,5 +1,4 @@
-﻿using CoolapkUWP.BackgroundTasks;
-using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Feeds;
 using CoolapkUWP.Models.Pages;
@@ -9,6 +8,7 @@ using System;
 using System.ComponentModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -19,20 +19,20 @@ namespace CoolapkUWP.Pages.FeedPages
     /// </summary>
     public sealed partial class NotificationsPage : Page, INotifyPropertyChanged
     {
-        private static readonly int PivotIndex = 0;
+        private static int PivotIndex = 0;
 
         private bool isLoaded;
         private Action Refresh;
 
-        private NotificationsTask _notificationsTask;
-        public NotificationsTask NotificationsTask
+        private NotificationsModel _notificationsModel = NotificationsModel.Instance;
+        public NotificationsModel NotificationsModel
         {
-            get => _notificationsTask;
+            get => _notificationsModel;
             set
             {
-                if (_notificationsTask != value)
+                if (_notificationsModel != value)
                 {
-                    _notificationsTask = value;
+                    _notificationsModel = value;
                     RaisePropertyChangedEvent();
                 }
             }
@@ -47,15 +47,20 @@ namespace CoolapkUWP.Pages.FeedPages
 
         public NotificationsPage() => InitializeComponent();
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            PivotIndex = Pivot.SelectedIndex;
+        }
+
         private void Pivot_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isLoaded)
             {
                 Pivot.SelectedIndex = PivotIndex;
-                NotificationsTask = NotificationsTask.Instance;
                 isLoaded = true;
             }
-            NotificationsTask?.GetNums();
+            NotificationsModel?.Update();
         }
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -151,13 +156,13 @@ namespace CoolapkUWP.Pages.FeedPages
             {
                 Refresh = () => _ = AdaptivePage.Refresh(true);
             }
-            NotificationsTask?.GetNums();
+            NotificationsModel?.Update();
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             Refresh();
-            NotificationsTask?.GetNums();
+            NotificationsModel?.Update();
         }
     }
 }

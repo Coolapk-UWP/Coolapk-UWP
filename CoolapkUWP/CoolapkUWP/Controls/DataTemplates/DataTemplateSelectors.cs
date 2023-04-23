@@ -59,14 +59,11 @@ namespace CoolapkUWP.Controls.DataTemplates
             }
             else if (item is LikeNotificationModel) { return LikeNotify; }
             else if (item is SimpleNotificationModel) { return CommentMe; }
-            else
-            {
-                return item is MessageNotificationModel
-                ? MessageNotify
-                : item is AtCommentMeNotificationModel
-                ? AtCommentMe
-                : item is IHasDescription ? List : item is IHasSubtitle ? SubtitleList : Others;
-            }
+            else if (item is MessageNotificationModel) { return MessageNotify; }
+            else if (item is AtCommentMeNotificationModel) { return AtCommentMe; }
+            else if (item is IHasDescription) { return List; }
+            else if (item is IHasSubtitle) { return SubtitleList; }
+            else { return Others; }
         }
     }
 
@@ -75,10 +72,12 @@ namespace CoolapkUWP.Controls.DataTemplates
         public DataTemplate Feed { get; set; }
         public DataTemplate User { get; set; }
         public DataTemplate List { get; set; }
+        public DataTemplate Link { get; set; }
         public DataTemplate Empty { get; set; }
         public DataTemplate IconLink { get; set; }
         public DataTemplate MiniUser { get; set; }
         public DataTemplate FeedReply { get; set; }
+        public DataTemplate ImageText { get; set; }
         public DataTemplate MiniIconLink { get; set; }
         public DataTemplate SubtitleList { get; set; }
         public DataTemplate FeedImageText { get; set; }
@@ -123,6 +122,9 @@ namespace CoolapkUWP.Controls.DataTemplates
                             case "feedListCard": return List;
                             default: return IconLink;
                         }
+                    case "iconButton":
+                    case "link": return Link;
+                    case "imageText": return ImageText;
                     default: return Empty;
                 }
             }

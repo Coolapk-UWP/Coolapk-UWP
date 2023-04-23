@@ -71,15 +71,15 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private NotificationsTask _notificationsTask;
-        public NotificationsTask NotificationsTask
+        private NotificationsModel _notificationsModel;
+        public NotificationsModel NotificationsModel
         {
-            get => _notificationsTask;
+            get => _notificationsModel;
             set
             {
-                if (_notificationsTask != value)
+                if (_notificationsModel != value)
                 {
-                    _notificationsTask = value;
+                    _notificationsModel = value;
                     RaisePropertyChangedEvent();
                 }
             }
@@ -107,8 +107,8 @@ namespace CoolapkUWP.Pages
             UIHelper.MainPage = this;
             LiveTileTask.Instance?.UpdateTile();
             UIHelper.ShellDispatcher = Dispatcher;
-            NotificationsTask.Instance?.GetNums();
-            NotificationsTask = NotificationsTask.Instance;
+            NotificationsModel.Instance?.Update();
+            NotificationsModel = NotificationsModel.Instance;
             SearchBoxHolder.RegisterPropertyChangedCallback(Slot.IsStretchProperty, new DependencyPropertyChangedCallback(OnIsStretchProperty));
             NavigationView.RegisterPropertyChangedCallback(muxc.NavigationView.IsBackButtonVisibleProperty, new DependencyPropertyChangedCallback(OnIsBackButtonVisibleChanged));
             if (ApiInformation.IsMethodPresent("Windows.UI.Composition.Compositor", "TryCreateBlurredWallpaperBackdropBrush")) { BackdropMaterial.SetApplyToRootOrPageBackground(this, true); }
@@ -153,7 +153,7 @@ namespace CoolapkUWP.Pages
 
         private async void OpenActivatedEventArgs(IActivatedEventArgs args)
         {
-            if (!(await UIHelper.OpenActivatedEventArgs(args)))
+            if (!await UIHelper.OpenActivatedEventArgs(args))
             {
                 NavigationView.SelectedItem = NavigationView.MenuItems[0];
             }

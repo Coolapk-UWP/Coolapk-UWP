@@ -32,8 +32,8 @@
                     <TextBlock x:Uid="/NotificationsPage/CommentMe" />
                     <muxc:InfoBadge
                         VerticalAlignment="Center"
-                        Visibility="{x:Bind NotificationsTask.CommentMeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
-                        Value="{x:Bind NotificationsTask.CommentMeNum, Mode=OneWay}" />
+                        Visibility="{x:Bind NotificationsModel.CommentMeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
+                        Value="{x:Bind NotificationsModel.CommentMeNum, Mode=OneWay}" />
                 </controls:StackPanel>
             </PivotItem.Header>
             <Frame />
@@ -44,8 +44,8 @@
                     <TextBlock x:Uid="/NotificationsPage/AtMe" />
                     <muxc:InfoBadge
                         VerticalAlignment="Center"
-                        Visibility="{x:Bind NotificationsTask.AtMeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
-                        Value="{x:Bind NotificationsTask.AtMeNum, Mode=OneWay}" />
+                        Visibility="{x:Bind NotificationsModel.AtMeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
+                        Value="{x:Bind NotificationsModel.AtMeNum, Mode=OneWay}" />
                 </controls:StackPanel>
             </PivotItem.Header>
             <Frame />
@@ -56,8 +56,8 @@
                     <TextBlock x:Uid="/NotificationsPage/AtCommentMe" />
                     <muxc:InfoBadge
                         VerticalAlignment="Center"
-                        Visibility="{x:Bind NotificationsTask.AtCommentMeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
-                        Value="{x:Bind NotificationsTask.AtCommentMeNum, Mode=OneWay}" />
+                        Visibility="{x:Bind NotificationsModel.AtCommentMeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
+                        Value="{x:Bind NotificationsModel.AtCommentMeNum, Mode=OneWay}" />
                 </controls:StackPanel>
             </PivotItem.Header>
             <Frame />
@@ -68,8 +68,8 @@
                     <TextBlock x:Uid="/NotificationsPage/FeedLike" />
                     <muxc:InfoBadge
                         VerticalAlignment="Center"
-                        Visibility="{x:Bind NotificationsTask.FeedLikeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
-                        Value="{x:Bind NotificationsTask.FeedLikeNum, Mode=OneWay}" />
+                        Visibility="{x:Bind NotificationsModel.FeedLikeNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
+                        Value="{x:Bind NotificationsModel.FeedLikeNum, Mode=OneWay}" />
                 </controls:StackPanel>
             </PivotItem.Header>
             <Frame />
@@ -80,8 +80,8 @@
                     <TextBlock x:Uid="/NotificationsPage/Follow" />
                     <muxc:InfoBadge
                         VerticalAlignment="Center"
-                        Visibility="{x:Bind NotificationsTask.FollowNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
-                        Value="{x:Bind NotificationsTask.FollowNum, Mode=OneWay}" />
+                        Visibility="{x:Bind NotificationsModel.FollowNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
+                        Value="{x:Bind NotificationsModel.FollowNum, Mode=OneWay}" />
                 </controls:StackPanel>
             </PivotItem.Header>
             <Frame />
@@ -92,8 +92,8 @@
                     <TextBlock x:Uid="/NotificationsPage/Message" />
                     <muxc:InfoBadge
                         VerticalAlignment="Center"
-                        Visibility="{x:Bind NotificationsTask.MessageNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
-                        Value="{x:Bind NotificationsTask.MessageNum, Mode=OneWay}" />
+                        Visibility="{x:Bind NotificationsModel.MessageNum, Converter={StaticResource DoubleToVisibilityConverter}, Mode=OneWay}"
+                        Value="{x:Bind NotificationsModel.MessageNum, Mode=OneWay}" />
                 </controls:StackPanel>
             </PivotItem.Header>
             <Frame />

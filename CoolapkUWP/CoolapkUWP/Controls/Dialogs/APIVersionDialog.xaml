@@ -1,0 +1,22 @@
+﻿<ContentDialog
+    x:Class="CoolapkUWP.Controls.Dialogs.APIVersionDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CoolapkUWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Uid="/ContentDialog/APIVersionDialog"
+    DefaultButton="Primary"
+    Style="{StaticResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+    <controls:StackPanel Spacing="4">
+        <TextBox
+            x:Uid="/ContentDialog/APIVersionTextBox"
+            PlaceholderText="9.2.2"
+            Text="{x:Bind APIVersion.Version, Mode=TwoWay}" />
+        <TextBox
+            x:Uid="/ContentDialog/APIVersionCodeTextBox"
+            PlaceholderText="1905301"
+            Text="{x:Bind APIVersion.VersionCode, Mode=TwoWay}" />
+    </controls:StackPanel>
+</ContentDialog>

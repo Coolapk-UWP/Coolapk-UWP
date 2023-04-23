@@ -8,14 +8,14 @@
   IgnorableNamespaces="uap uap5 mp">
 
   <Identity
-    Name="wherewhere.CoolapkUWP.Feature2"
-    Publisher="CN=where"
-    Version="0.0.10.0" />
+    Name="18184wherewhere.CoolapkUWP"
+    Publisher="CN=2C3A37C0-35FC-4839-B08C-751C1C1AFBF5"
+    Version="2.1.40.0" />
 
-  <mp:PhoneIdentity PhoneProductId="7dd1320e-c126-4dca-a633-eb3e78c3dc10" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="8f3137b2-ad68-4a78-a56d-6321f67e73e9" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>CoolapkUWP.Feature2</DisplayName>
+    <DisplayName>Coolapk UWP</DisplayName>
     <PublisherDisplayName>wherewhere</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>

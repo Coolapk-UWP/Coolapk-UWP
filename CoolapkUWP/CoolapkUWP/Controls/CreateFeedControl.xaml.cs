@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Helpers.Converters;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Exceptions;
 using CoolapkUWP.Models.Users;
@@ -448,13 +449,10 @@ namespace CoolapkUWP.Controls
             {
                 result = new BitmapImage(new Uri($"ms-appx:///Assets/Emoji/{item}.png"));
             }
-            return targetType.IsInstanceOfType(result) ? result : XamlBindingHelper.ConvertValue(targetType, result);
+            return result.Convert(targetType);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            return targetType.IsInstanceOfType(value) ? value : XamlBindingHelper.ConvertValue(targetType, value);
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, string language) => value.Convert(targetType);
     }
 
     public class EmojiNameConverter : IValueConverter
@@ -463,14 +461,14 @@ namespace CoolapkUWP.Controls
         {
             string data = value.ToString();
             string result = data[0] == '(' ? $"#{data}" : data;
-            return targetType.IsInstanceOfType(result) ? result : XamlBindingHelper.ConvertValue(targetType, result);
+            return result.Convert(targetType);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             string data = value.ToString();
             string result = data[0] == '#' ? data.Substring(1) : data;
-            return targetType.IsInstanceOfType(result) ? result : XamlBindingHelper.ConvertValue(targetType, result);
+            return result.Convert(targetType);
         }
     }
 

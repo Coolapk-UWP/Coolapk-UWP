@@ -1,5 +1,4 @@
 ﻿using CoolapkUWP.Helpers;
-using CoolapkUWP.ViewModels.FeedPages;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;

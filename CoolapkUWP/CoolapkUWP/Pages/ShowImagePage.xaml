@@ -2,8 +2,8 @@
     x:Class="CoolapkUWP.Pages.ShowImagePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:contract12NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 12)"
     xmlns:contract12Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 12)"
+    xmlns:contract5NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:contract6NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 6)"
     xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 7)"
@@ -101,30 +101,42 @@
                 Height="32"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Top"
-                contract12Present:Background="{ThemeResource SystemControlTransparentBrush}"
+                Background="{ThemeResource SystemControlTransparentBrush}"
                 Canvas.ZIndex="1">
-                <contract12NotPresent:Grid.Background>
-                    <media:AcrylicBrush
-                        BackgroundSource="HostBackdrop"
-                        FallbackColor="{ThemeResource SolidBackgroundFillColorBase}"
-                        TintColor="{ThemeResource SolidBackgroundFillColorBase}"
-                        TintOpacity="0.8" />
-                </contract12NotPresent:Grid.Background>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="LeftPaddingColumn" Width="0" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition x:Name="RightPaddingColumn" Width="0" />
                 </Grid.ColumnDefinitions>
-                <TextBlock
-                    x:Name="AppTitle"
+                <Border
                     Grid.Column="1"
-                    Padding="12,0"
+                    Margin="12,0"
+                    Padding="4,2"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    MaxLines="1"
-                    Style="{StaticResource CaptionTextBlockStyle}"
-                    Text="{Binding Title}"
-                    TextTrimming="CharacterEllipsis" />
+                    CornerRadius="6"
+                    Visibility="{Binding Visibility, ElementName=CommandBar}">
+                    <contract5NotPresent:Border.Background>
+                        <media:AcrylicBrush
+                            BackgroundSource="Backdrop"
+                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintOpacity="0" />
+                    </contract5NotPresent:Border.Background>
+                    <contract5Present:Border.Background>
+                        <contract5Present:AcrylicBrush
+                            BackgroundSource="Backdrop"
+                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintOpacity="0" />
+                    </contract5Present:Border.Background>
+                    <TextBlock
+                        x:Name="AppTitle"
+                        MaxLines="1"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Text="{Binding Title}"
+                        TextTrimming="CharacterEllipsis" />
+                </Border>
             </Grid>
             <Grid x:Name="FlipViewGrid">
                 <FlipView
@@ -133,19 +145,23 @@
                     ContextFlyout="{StaticResource FlipViewContextFlyout}"
                     IsTabStop="True"
                     ItemsSource="{Binding Images}"
-                    SelectedIndex="{Binding Index, Mode=TwoWay}"
-                    Tapped="FlipView_Tapped">
+                    SelectedIndex="{Binding Index, Mode=TwoWay}">
                     <FlipView.ItemTemplate>
                         <DataTemplate>
                             <ScrollViewer
                                 x:Name="ImageScrollViewer"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Background="{ThemeResource SystemControlTransparentBrush}"
                                 DoubleTapped="ScrollViewer_DoubleTapped"
                                 HorizontalScrollBarVisibility="Hidden"
                                 HorizontalScrollMode="Auto"
                                 MaxZoomFactor="3"
                                 MinZoomFactor="0.5"
+                                Tapped="ScrollViewer_Tapped"
                                 VerticalScrollBarVisibility="Hidden"
                                 VerticalScrollMode="Auto"
+                                ViewChanged="ScrollViewer_ViewChanged"
                                 ZoomMode="Enabled">
                                 <Image
                                     x:Name="Image"
@@ -156,6 +172,8 @@
                                     CanDrag="True"
                                     DragStarting="Image_DragStarting"
                                     ManipulationDelta="Image_ManipulationDelta"
+                                    PointerMoved="Image_PointerMoved"
+                                    PointerPressed="Image_PointerPressed"
                                     RenderTransformOrigin="0.5,0.5"
                                     Source="{Binding Pic, Mode=OneWay}" />
                             </ScrollViewer>
@@ -166,14 +184,22 @@
                     Margin="4"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    CornerRadius="6">
-                    <Border.Background>
+                    CornerRadius="6"
+                    Visibility="{Binding Images, Converter={StaticResource PipsPagerVisibilityConverter}}">
+                    <contract5NotPresent:Border.Background>
                         <media:AcrylicBrush
                             BackgroundSource="Backdrop"
                             FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
                             TintColor="{ThemeResource SystemChromeMediumHighColor}"
                             TintOpacity="0" />
-                    </Border.Background>
+                    </contract5NotPresent:Border.Background>
+                    <contract5Present:Border.Background>
+                        <contract5Present:AcrylicBrush
+                            BackgroundSource="Backdrop"
+                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintColor="{ThemeResource SystemChromeMediumHighColor}"
+                            TintOpacity="0" />
+                    </contract5Present:Border.Background>
                     <muxc:PipsPager
                         Margin="2,0"
                         NumberOfPages="{Binding Images, Converter={StaticResource CollectionCountConverter}}"

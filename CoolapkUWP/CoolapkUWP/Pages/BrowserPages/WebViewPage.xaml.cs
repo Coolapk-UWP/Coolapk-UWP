@@ -113,12 +113,16 @@ namespace CoolapkUWP.Pages.BrowserPages
 
         private async void ManualLoginButton_Click(object sender, RoutedEventArgs e)
         {
+            UIHelper.ShowProgressBar();
             LoginDialog Dialog = new LoginDialog();
             ContentDialogResult result = await Dialog.ShowAsync();
-            if (result == ContentDialogResult.Primary && Frame.CanGoBack)
+            if (result == ContentDialogResult.Primary)
             {
-                Frame.Navigating -= OnFrameNavigating;
-                Frame.GoBack();
+                _ = CheckLogin();
+            }
+            else
+            {
+                UIHelper.HideProgressBar();
             }
         }
 

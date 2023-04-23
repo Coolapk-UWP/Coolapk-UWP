@@ -191,9 +191,10 @@
                         x:Name="UpdateState"
                         Title="{Binding UpdateStateTitle}"
                         IsClosable="True"
-                        IsOpen="{Binding UpdateStateIsOpen}"
+                        IsOpen="{Binding UpdateStateIsOpen, Mode=TwoWay}"
                         Message="{Binding UpdateStateMessage}"
-                        Severity="{Binding UpdateStateSeverity}">
+                        Severity="{Binding UpdateStateSeverity}"
+                        Visibility="{Binding UpdateStateIsOpen, Converter={StaticResource BoolToVisibilityConverter}}">
                         <muxc:InfoBar.ActionButton>
                             <Button
                                 x:Uid="/SettingsPage/GoToUpdate"
@@ -289,11 +290,6 @@
                                 TextWrapping="WrapWholeWords" />
                         </Grid>
                     </controls:SettingExpander>
-                </controls:SettingsGroup>
-                <controls:SettingsGroup x:Uid="/SettingsPage/OthersSettingsHeader">
-                    <controls:Setting x:Uid="/SettingsPage/ShowOtherExceptionSettings" Icon="&#xE90F;">
-                        <ToggleSwitch IsOn="{Binding ShowOtherException, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
-                    </controls:Setting>
                     <controls:Setting x:Uid="/SettingsPage/CleanCacheSettings" Icon="&#xEA99;">
                         <controls:StackPanel Orientation="Horizontal" Spacing="18">
                             <Border Visibility="{Binding IsCleanCache, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -335,6 +331,11 @@
                                 </Flyout>
                             </Button.Flyout>
                         </Button>
+                    </controls:Setting>
+                </controls:SettingsGroup>
+                <controls:SettingsGroup x:Uid="/SettingsPage/OthersSettingsHeader">
+                    <controls:Setting x:Uid="/SettingsPage/ShowOtherExceptionSettings" Icon="&#xE90F;">
+                        <ToggleSwitch IsOn="{Binding ShowOtherException, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
                     </controls:Setting>
                     <controls:Setting
                         x:Name="GoToTestPage"

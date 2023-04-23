@@ -1,21 +1,21 @@
-﻿using CoolapkUWP.Models;
-using CoolapkUWP.Models.Feeds;
-using CoolapkUWP.Models.Upload;
-using Microsoft.Toolkit.Uwp.Helpers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
+﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.UI.Core;
 using Windows.UI.Xaml.Media.Imaging;
 using mtuc = Microsoft.Toolkit.Uwp.Connectivity;
+
+#if FEATURE2
+using System.Net.Http.Headers;
+#else
+using CoolapkUWP.Models.Upload;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.Collections.Generic;
+using System.Linq;
+#endif
 
 namespace CoolapkUWP.Helpers
 {
@@ -33,12 +33,12 @@ namespace CoolapkUWP.Helpers
             catch (Exception ex)
             {
                 SettingsHelper.LogManager.GetLogger(nameof(RequestHelper)).Error(ex.ExceptionToMessage(), ex);
-                UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
+                UIHelper.ShowMessage("加载失败");
                 return (false, null);
             }
             if (!token.TryGetValue("data", out JToken data) && token.TryGetValue("message", out JToken message))
             {
-                UIHelper.ShowInAppMessage(MessageType.Message, message.ToString());
+                UIHelper.ShowMessage(message.ToString());
                 return (false, null);
             }
             else { return (data != null && !string.IsNullOrWhiteSpace(data.ToString()), data); }
@@ -49,7 +49,7 @@ namespace CoolapkUWP.Helpers
             string results = await NetworkHelper.GetStringAsync(uri, NetworkHelper.GetCoolapkCookies(uri), request, isBackground);
             if (string.IsNullOrWhiteSpace(results))
             {
-                UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
+                UIHelper.ShowMessage("加载失败");
                 return (false, results);
             }
             else { return (true, results); }
@@ -64,13 +64,13 @@ namespace CoolapkUWP.Helpers
             catch (Exception ex)
             {
                 SettingsHelper.LogManager.GetLogger(nameof(RequestHelper)).Error(ex.ExceptionToMessage(), ex);
-                UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
+                UIHelper.ShowMessage("加载失败");
                 return (false, null);
             }
             if (!token.TryGetValue("data", out JToken data) && token.TryGetValue("message", out JToken message))
             {
                 bool _isSucceed = token.TryGetValue("error", out JToken error) && error.ToObject<int>() == 0;
-                UIHelper.ShowInAppMessage(MessageType.Message, message.ToString());
+                UIHelper.ShowMessage(message.ToString());
                 return (_isSucceed, token);
             }
             else
@@ -86,25 +86,10 @@ namespace CoolapkUWP.Helpers
             string json = await NetworkHelper.PostAsync(uri, content, NetworkHelper.GetCoolapkCookies(uri), isBackground);
             if (string.IsNullOrEmpty(json))
             {
-                UIHelper.ShowInAppMessage(MessageType.Message, "加载失败");
+                UIHelper.ShowMessage("加载失败");
                 return (false, null);
             }
             else { return (true, json); }
-        }
-
-        private static (int page, Uri uri) GetPage(this Uri uri)
-        {
-            Regex pageregex = new Regex(@"([&|?])page=(\d+)(\??)");
-            if (pageregex.IsMatch(uri.ToString()))
-            {
-                int pagenum = Convert.ToInt32(pageregex.Match(uri.ToString()).Groups[2].Value);
-                Uri baseuri = new Uri(pageregex.Match(uri.ToString()).Groups[3].Value == "?" ? pageregex.Replace(uri.ToString(), pageregex.Match(uri.ToString()).Groups[1].Value) : pageregex.Replace(uri.ToString(), string.Empty));
-                return (pagenum, baseuri);
-            }
-            else
-            {
-                return (0, uri);
-            }
         }
 
         public static string GetId(JToken token, string _idName)
@@ -137,28 +122,7 @@ namespace CoolapkUWP.Helpers
         }
 #pragma warning restore 0612
 
-        public static async void UploadImagePrepare(IList<UploadFileFragment> images)
-        {
-            using (MultipartFormDataContent content = new MultipartFormDataContent())
-            {
-                string json = JsonConvert.SerializeObject(images, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-                using (StringContent uploadBucket = new StringContent("image"))
-                using (StringContent uploadDir = new StringContent("feed"))
-                using (StringContent is_anonymous = new StringContent("0"))
-                using (StringContent uploadFileList = new StringContent(json))
-                {
-                    content.Add(uploadBucket, "uploadBucket");
-                    content.Add(uploadDir, "uploadDir");
-                    content.Add(is_anonymous, "is_anonymous");
-                    content.Add(uploadFileList, "uploadFileList");
-                    (bool isSucceed, JToken result) = await PostDataAsync(UriHelper.GetUri(UriType.OOSUploadPrepare), content);
-                    if (isSucceed)
-                    {
-                    }
-                }
-            }
-        }
-
+#if FEATURE2
         public static async Task<(bool isSucceed, string result)> UploadImage(byte[] image, string name)
         {
             using (MultipartFormDataContent content = new MultipartFormDataContent())
@@ -182,6 +146,60 @@ namespace CoolapkUWP.Helpers
             }
             return (false, null);
         }
+#else
+        public static async Task<List<string>> UploadImages(IEnumerable<UploadFileFragment> images)
+        {
+            List<string> responses = new List<string>();
+            using (MultipartFormDataContent content = new MultipartFormDataContent())
+            {
+                string json = JsonConvert.SerializeObject(images, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+                using (StringContent uploadBucket = new StringContent("image"))
+                using (StringContent uploadDir = new StringContent("feed"))
+                using (StringContent is_anonymous = new StringContent("0"))
+                using (StringContent uploadFileList = new StringContent(json))
+                {
+                    content.Add(uploadBucket, "uploadBucket");
+                    content.Add(uploadDir, "uploadDir");
+                    content.Add(is_anonymous, "is_anonymous");
+                    content.Add(uploadFileList, "uploadFileList");
+                    (bool isSucceed, JToken result) = await PostDataAsync(UriHelper.GetUri(UriType.OOSUploadPrepare), content);
+                    if (isSucceed)
+                    {
+                        UploadPicturePrepareResult data = result.ToObject<UploadPicturePrepareResult>();
+                        foreach (UploadFileInfo info in data.FileInfo)
+                        {
+                            UploadFileFragment image = images.FirstOrDefault((x) => x.MD5 == info.MD5);
+                            if (image == null) { continue; }
+                            using (Stream stream = image.Bytes.GetStream())
+                            {
+                                string response = await Task.Run(() => OSSUploadHelper.OssUpload(data.UploadPrepareInfo, info, stream, "image/png"));
+                                if (!string.IsNullOrEmpty(response))
+                                {
+                                    try
+                                    {
+                                        JObject token = JObject.Parse(response);
+                                        if (token.TryGetValue("data", out JToken value)
+                                            && ((JObject)value).TryGetValue("url", out JToken url)
+                                            && !string.IsNullOrEmpty(url.ToString()))
+                                        {
+                                            responses.Add(url.ToString());
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        SettingsHelper.LogManager.GetLogger(nameof(RequestHelper)).Error(ex.ExceptionToMessage(), ex);
+                                        UIHelper.ShowMessage("上传失败");
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return responses;
+        }
+#endif
 
         public static async Task<bool> CheckLogin()
         {

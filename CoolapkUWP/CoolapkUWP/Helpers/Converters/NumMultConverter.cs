@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Reflection;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Markup;
 
 namespace CoolapkUWP.Helpers.Converters
 {
@@ -10,13 +8,13 @@ namespace CoolapkUWP.Helpers.Converters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             double result = System.Convert.ToDouble(value) * System.Convert.ToDouble(parameter);
-            return targetType.IsInstanceOfType(result) ? result : XamlBindingHelper.ConvertValue(targetType, result);
+            return result.Convert(targetType);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             double result = System.Convert.ToDouble(value) / System.Convert.ToDouble(parameter);
-            return targetType.IsInstanceOfType(result) ? result : XamlBindingHelper.ConvertValue(targetType, result);
+            return result.Convert(targetType);
         }
     }
 }

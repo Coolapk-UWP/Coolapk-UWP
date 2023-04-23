@@ -172,14 +172,7 @@ namespace CoolapkUWP.Controls
 
             if (e != null) { e.Handled = true; }
 
-            if (element.Tag is ImageModel image)
-            {
-                _ = UIHelper.ShowImageAsync(image);
-            }
-            else
-            {
-                _ = UIHelper.OpenLinkAsync(element.Tag.ToString());
-            }
+            _ = element.Tag is ImageModel image ? UIHelper.ShowImageAsync(image) : UIHelper.OpenLinkAsync(element.Tag.ToString());
         }
 
         private void UrlButton_Click(object sender, RoutedEventArgs e) => _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());

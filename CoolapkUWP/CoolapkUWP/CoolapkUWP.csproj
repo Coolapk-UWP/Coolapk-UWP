@@ -18,16 +18,15 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <PackageCertificateThumbprint>0CDF4A03E9BE9DD789894BB3C7AD3DEDECD9AB25</PackageCertificateThumbprint>
     <PackageCertificateKeyFile />
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
-    <AppxBundle>Always</AppxBundle>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AppxBundle>Never</AppxBundle>
     <AppxBundlePlatforms>x64|arm</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+    <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -168,8 +167,14 @@
     <Compile Include="Controls\DataTemplates\SearchWordTemplates.xaml.cs">
       <DependentUpon>SearchWordTemplates.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Dialogs\APIVersionDialog.xaml.cs">
+      <DependentUpon>APIVersionDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Dialogs\LoginDialog.xaml.cs">
       <DependentUpon>LoginDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\UserAgentDialog.xaml.cs">
+      <DependentUpon>UserAgentDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FeedShellDetailControl.xaml.cs">
       <DependentUpon>FeedShellDetailControl.xaml</DependentUpon>
@@ -177,13 +182,16 @@
     <Compile Include="Controls\FeedShellListControl.xaml.cs">
       <DependentUpon>FeedShellListControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Flyouts\SettingsFlyoutControl.xaml.cs">
+      <DependentUpon>SettingsFlyoutControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PageHeader.xaml.cs">
       <DependentUpon>PageHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Picker\Picker.cs" />
     <Compile Include="Controls\PivotHeader\IShyHeader.cs" />
     <Compile Include="Controls\PivotHeader\PivotHeader.cs" />
-    <Compile Include="Controls\ProfileFlyoutControl.xaml.cs">
+    <Compile Include="Controls\Flyouts\ProfileFlyoutControl.xaml.cs">
       <DependentUpon>ProfileFlyoutControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\QRCode\QRCode.cs" />
@@ -212,9 +220,11 @@
     <Compile Include="Helpers\Controls\WebView2Helper.cs" />
     <Compile Include="Helpers\Converters\CollectionCountConverter.cs" />
     <Compile Include="Helpers\Converters\CollectionToBoolConverter.cs" />
+    <Compile Include="Helpers\Converters\ConverterTools.cs" />
     <Compile Include="Helpers\Converters\FontSizeToLineHeight.cs" />
     <Compile Include="Helpers\Converters\HTMLToTextConverter.cs" />
     <Compile Include="Helpers\Converters\NumMultConverter.cs" />
+    <Compile Include="Helpers\Converters\PipsPagerVisibilityConverter.cs" />
     <Compile Include="Helpers\Converters\StringToBoolConverter.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
@@ -222,10 +232,11 @@
     <Compile Include="Helpers\ImageCacheHelper.cs" />
     <Compile Include="Helpers\LanguageHelper.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
+    <Compile Include="Helpers\OSSUploadHelper.cs" />
     <Compile Include="Helpers\RequestHelper.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Helpers\ThemeHelper.cs" />
-    <Compile Include="Helpers\TipsRectangleHelper.cs" />
+    <Compile Include="Helpers\Controls\TipsRectangleHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Helpers\UpdateHelper.cs" />
     <Compile Include="Helpers\UriHelper.cs" />
@@ -246,13 +257,19 @@
     <Compile Include="Models\Images\ImageModel.cs" />
     <Compile Include="Models\IndexPageModel.cs" />
     <Compile Include="Models\Interfaces.cs" />
+    <Compile Include="Models\NotificationsModel.cs" />
     <Compile Include="Models\Pages\FeedListPageModels.cs" />
     <Compile Include="Models\Pages\NotificationsPageModels.cs" />
     <Compile Include="Models\Pages\ProfileDetailModel.cs" />
     <Compile Include="Models\SearchWord.cs" />
     <Compile Include="Models\TopicModel.cs" />
+    <Compile Include="Models\Update\APIVersion.cs" />
     <Compile Include="Models\Update\SystemVersionInfo.cs" />
     <Compile Include="Models\Update\UpdateInfo.cs" />
+    <Compile Include="Models\Update\UserAgent.cs" />
+    <Compile Include="Models\Upload\UploadPicturePrepareResult.cs" />
+    <Compile Include="Models\Upload\UploadFileInfo.cs" />
+    <Compile Include="Models\Upload\UploadPrepareInfo.cs" />
     <Compile Include="Models\Upload\UploadFileFragment.cs" />
     <Compile Include="Models\Users\ContactModel.cs" />
     <Compile Include="Models\Users\LinkUserModel.cs" />
@@ -323,6 +340,9 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\About\About.en-US.md" />
+    <Content Include="Assets\About\About.zh-CN.md" />
+    <Content Include="Assets\About\About.zh-TW.md" />
     <Content Include="Assets\BadgeLogo.scale-100.png" />
     <Content Include="Assets\BadgeLogo.scale-125.png" />
     <Content Include="Assets\BadgeLogo.scale-150.png" />
@@ -900,9 +920,58 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
+    <PRIResource Include="Strings\zh-CN\ContentDialog.resw" />
+    <PRIResource Include="Strings\zh-TW\ShowImagePage.resw" />
+    <PRIResource Include="Strings\zh-TW\ProfileFlyoutControl.resw" />
+    <PRIResource Include="Strings\zh-CN\ShowImagePage.resw" />
+    <PRIResource Include="Strings\zh-CN\ProfileFlyoutControl.resw" />
+    <PRIResource Include="Strings\en-US\ShowImagePage.resw" />
+    <PRIResource Include="Strings\en-US\ProfileFlyoutControl.resw" />
+    <PRIResource Include="Strings\en-US\Resources.resw" />
+    <PRIResource Include="Strings\en-US\SettingsPage.resw" />
+    <PRIResource Include="Strings\en-US\TestPage.resw" />
+    <PRIResource Include="Strings\zh-CN\BrowserPage.resw" />
+    <PRIResource Include="Strings\zh-CN\CirclePage.resw" />
+    <PRIResource Include="Strings\zh-CN\CreateFeedControl.resw" />
+    <PRIResource Include="Strings\zh-CN\Feed.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
+    <PRIResource Include="Strings\zh-CN\FeedListPage.resw" />
+    <PRIResource Include="Strings\zh-CN\FeedShellPage.resw" />
+    <PRIResource Include="Strings\zh-CN\FindPage.resw" />
+    <PRIResource Include="Strings\zh-CN\IndexPage.resw" />
+    <PRIResource Include="Strings\zh-CN\MainPage.resw" />
+    <PRIResource Include="Strings\zh-CN\NotificationsPage.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
+    <PRIResource Include="Strings\zh-CN\Resources.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
+    <PRIResource Include="Strings\zh-CN\SettingsPage.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
+    <PRIResource Include="Strings\zh-CN\SettingsPane.resw" />
+    <PRIResource Include="Strings\zh-CN\TestPage.resw" />
+    <PRIResource Include="Strings\zh-TW\BrowserPage.resw" />
+    <PRIResource Include="Strings\zh-TW\CirclePage.resw" />
+    <PRIResource Include="Strings\zh-TW\CreateFeedControl.resw" />
+    <PRIResource Include="Strings\zh-TW\Feed.resw" />
+    <PRIResource Include="Strings\zh-TW\FeedListPage.resw" />
+    <PRIResource Include="Strings\zh-TW\FeedShellPage.resw" />
+    <PRIResource Include="Strings\zh-TW\FindPage.resw" />
+    <PRIResource Include="Strings\zh-TW\IndexPage.resw" />
+    <PRIResource Include="Strings\zh-TW\MainPage.resw" />
+    <PRIResource Include="Strings\zh-TW\NotificationsPage.resw" />
+    <PRIResource Include="Strings\zh-TW\Resources.resw" />
+    <PRIResource Include="Strings\zh-TW\SettingsPage.resw" />
+    <PRIResource Include="Strings\zh-TW\TestPage.resw" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Aliyun.OSS.SDK.NetCore">
+      <Version>2.13.0</Version>
+    </PackageReference>
     <PackageReference Include="BCrypt.Net-Next">
       <Version>4.0.3</Version>
     </PackageReference>
@@ -925,7 +994,7 @@
       <Version>7.1.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.2</Version>
+      <Version>2.8.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2">
       <Version>1.0.1587.40</Version>
@@ -944,6 +1013,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <SDKReference Include="WindowsDesktop, Version=10.0.22621.0">
+      <Name>Windows Desktop Extensions for the UWP</Name>
+    </SDKReference>
     <SDKReference Include="WindowsMobile, Version=10.0.22621.0">
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
@@ -989,7 +1061,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\Dialogs\APIVersionDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Dialogs\LoginDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\UserAgentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -998,6 +1078,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\FeedShellListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Flyouts\SettingsFlyoutControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1025,7 +1109,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\ProfileFlyoutControl.xaml">
+    <Page Include="Controls\Flyouts\ProfileFlyoutControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1141,6 +1225,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Styles\SettingsFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\TextBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1159,147 +1247,17 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\Feed.resw">
-      <SubType>Designer</SubType>
-    </PRIResource>
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\FeedListPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\MainPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\Resources.resw">
-      <SubType>Designer</SubType>
-    </PRIResource>
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\IndexPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\SettingsPage.resw">
-      <SubType>Designer</SubType>
-    </PRIResource>
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\CirclePage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\FindPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\BrowserPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Assets\About\About.zh-CN.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\FeedShellPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\NotificationsPage.resw">
-      <SubType>Designer</SubType>
-    </PRIResource>
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\CreateFeedControl.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\LoginDialog.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-CN\TestPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
     <PRIResource Include="Strings\en-US\BrowserPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
     <PRIResource Include="Strings\en-US\CirclePage.resw" />
-  </ItemGroup>
-  <ItemGroup>
     <PRIResource Include="Strings\en-US\CreateFeedControl.resw" />
-  </ItemGroup>
-  <ItemGroup>
     <PRIResource Include="Strings\en-US\Feed.resw" />
-  </ItemGroup>
-  <ItemGroup>
     <PRIResource Include="Strings\en-US\FeedListPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
     <PRIResource Include="Strings\en-US\FeedShellPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
     <PRIResource Include="Strings\en-US\FindPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
     <PRIResource Include="Strings\en-US\IndexPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\LoginDialog.resw" />
-  </ItemGroup>
-  <ItemGroup>
     <PRIResource Include="Strings\en-US\MainPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
     <PRIResource Include="Strings\en-US\NotificationsPage.resw" />
   </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\Resources.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\SettingsPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\en-US\TestPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-TW\BrowserPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-TW\CirclePage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-TW\CreateFeedControl.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-TW\Feed.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-TW\FeedListPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-TW\FeedShellPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-TW\FindPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-TW\IndexPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-TW\LoginDialog.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-TW\MainPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-TW\NotificationsPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-TW\Resources.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-TW\SettingsPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="Strings\zh-TW\TestPage.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Assets\About\About.en-US.md" />
-    <Content Include="Assets\About\About.zh-TW.md" />
-  </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

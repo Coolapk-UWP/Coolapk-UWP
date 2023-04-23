@@ -53,11 +53,11 @@ namespace CoolapkUWP.Pages.BrowserPages
             UIHelper.ShowProgressBar();
         }
 
-        private void WebView_NavigationCompleted(WebView2 sender, CoreWebView2NavigationCompletedEventArgs args)
+        private async void WebView_NavigationCompleted(WebView2 sender, CoreWebView2NavigationCompletedEventArgs args)
         {
             if (Provider.IsLoginPage && sender.Source.AbsoluteUri == "https://www.coolapk.com/")
             {
-                CheckLogin();
+                await CheckLogin();
             }
             else if (sender.Source.AbsoluteUri == UriHelper.LoginUri)
             {
@@ -76,7 +76,7 @@ namespace CoolapkUWP.Pages.BrowserPages
             }
         }
 
-        private async void CheckLogin()
+        private async Task CheckLogin()
         {
             ResourceLoader loader = ResourceLoader.GetForCurrentView("BrowserPage");
             if (await SetLoginCookie() && await SettingsHelper.Login())
@@ -137,18 +137,22 @@ namespace CoolapkUWP.Pages.BrowserPages
 
         private async void ManualLoginButton_Click(object sender, RoutedEventArgs e)
         {
+            UIHelper.ShowProgressBar();
             LoginDialog Dialog = new LoginDialog();
             ContentDialogResult result = await Dialog.ShowAsync();
-            if (result == ContentDialogResult.Primary && Frame.CanGoBack)
+            if (result == ContentDialogResult.Primary)
             {
-                Frame.Navigating -= OnFrameNavigating;
-                Frame.GoBack();
+                _ = CheckLogin();
+            }
+            else
+            {
+                UIHelper.HideProgressBar();
             }
         }
 
         private void GotoSystemBrowserButton_Click(object sender, RoutedEventArgs e) => _ = Launcher.LaunchUriAsync(WebView.Source);
 
-        private void TryLoginButton_Click(object sender, RoutedEventArgs e) => CheckLogin();
+        private void TryLoginButton_Click(object sender, RoutedEventArgs e) => _ = CheckLogin();
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e) => WebView.Reload();
     }

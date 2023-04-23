@@ -7,6 +7,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Models.Feeds
 {
@@ -266,17 +269,27 @@ namespace CoolapkUWP.Models.Feeds
                 ImmutableArray<RelationRowsItem>.Builder buider = ImmutableArray.CreateBuilder<RelationRowsItem>();
                 if (location != null && !string.IsNullOrEmpty(location.ToString()))
                 {
-                    buider.Add(new RelationRowsItem { Title = location.ToString(), Logo = new ImageModel("https://store-images.s-microsoft.com/image/apps.26122.9007199266740465.7153e958-76ad-445a-be02-d2e4cc26f347.35a35f29-9e39-42d3-814f-6d73e208553a", ImageType.Icon) });
+                    buider.Add(
+                        new RelationRowsItem(
+                            title: location.ToString(),
+                            icon: "\uE707"));
                 }
 
                 if (ttitle != null && !string.IsNullOrEmpty(ttitle.ToString()))
                 {
-                    buider.Add(new RelationRowsItem { Title = ttitle.ToString(), Url = token.Value<string>("turl"), Logo = new ImageModel(token.Value<string>("tpic"), ImageType.Icon) });
+                    buider.Add(
+                        new RelationRowsItem(
+                            url: token.Value<string>("turl"),
+                            title: ttitle.ToString(),
+                            logo: token.Value<string>("tpic")));
                 }
 
                 if (EntityType != "article" && dyh_name != null && !string.IsNullOrEmpty(dyh_name.ToString()))
                 {
-                    buider.Add(new RelationRowsItem { Title = dyh_name.ToString(), Url = $"/dyh/{token["dyh_id"].ToString().Replace("\"", string.Empty)}" });
+                    buider.Add(
+                        new RelationRowsItem(
+                            url: $"/dyh/{token["dyh_id"]}",
+                            title: dyh_name.ToString()));
                 }
 
                 if (relationRows != null)
@@ -284,33 +297,37 @@ namespace CoolapkUWP.Models.Feeds
                     foreach (JToken i in relationRows)
                     {
                         JObject item = i as JObject;
-                        buider.Add(new RelationRowsItem
-                        {
-                            Title = item.Value<string>("title"),
-                            Url = item.Value<string>("url"),
-                            Logo = new ImageModel(item.Value<string>("logo"), ImageType.Icon)
-                        });
+                        buider.Add(
+                            new RelationRowsItem(
+                                url: item.Value<string>("url"),
+                                title: item.Value<string>("title"),
+                                logo: item.Value<string>("logo")));
                     }
                 }
 
                 if (change_count != null && change_count.ToObject<int>() > 0)
                 {
-                    buider.Add(new RelationRowsItem
-                    {
-                        Title = $"已编辑{change_count.ToObject<int>()}次",
-                        Url = $"/feed/changeHistoryList?id={ID}",
-                        Logo = new ImageModel("https://store-images.s-microsoft.com/image/apps.22218.9007199266484421.d7454822-3b68-4c7c-a337-0f4f29835fb7.933730b7-d8f0-4997-a557-7dbfc3c7b950", ImageType.Icon)
-                    });
+                    buider.Add(
+                        new RelationRowsItem(
+                            url: $"/feed/changeHistoryList?id={ID}",
+                            title: $"已编辑{change_count.ToObject<int>()}次",
+                            icon: "\uE70F"));
                 }
 
                 if (status != null && status.ToObject<int>() == -1)
                 {
-                    buider.Add(new RelationRowsItem { Title = "仅自己可见" });
+                    buider.Add(
+                        new RelationRowsItem(
+                            title: "仅自己可见",
+                            icon: "\uE727"));
                 }
 
                 if (block_status != null && block_status.ToObject<int>() != 0)
                 {
-                    buider.Add(new RelationRowsItem { Title = "已折叠" });
+                    buider.Add(
+                        new RelationRowsItem(
+                            title: "已折叠",
+                            icon: "\uE7BA"));
                 }
 
                 ShowRelationRows = buider.Any();
@@ -362,6 +379,22 @@ namespace CoolapkUWP.Models.Feeds
     {
         public string Url { get; set; }
         public string Title { get; set; }
+
+        public string Icon { get; set; }
         public ImageModel Logo { get; set; }
+
+        public bool IsShowLogo => Logo != null;
+        public bool IsShowIcon => Logo != null || !string.IsNullOrWhiteSpace(Icon);
+
+        public RelationRowsItem(string url = null, string title = null, string icon = null, string logo = null)
+        {
+            Url = url;
+            Title = title;
+            Icon = icon;
+            if (logo != null)
+            {
+                Logo = new ImageModel(logo, ImageType.Icon);
+            }
+        }
     }
 }

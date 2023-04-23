@@ -5,7 +5,7 @@
     xmlns:controls="using:CoolapkUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:Uid="/LoginDialog/LoginDialog"
+    x:Uid="/ContentDialog/LoginDialog"
     DefaultButton="Primary"
     Style="{StaticResource DefaultContentDialogStyle}"
     mc:Ignorable="d">
@@ -13,17 +13,14 @@
         <TextBox
             Header="UID"
             PlaceholderText="UID"
-            Text="{x:Bind UID, Mode=TwoWay}"
-            TextChanged="TextBox_TextChanged" />
+            Text="{x:Bind UID, Mode=TwoWay}" />
         <TextBox
             Header="Username"
             PlaceholderText="Username"
-            Text="{x:Bind UserName, Mode=TwoWay}"
-            TextChanged="TextBox_TextChanged" />
+            Text="{x:Bind UserName, Mode=TwoWay}" />
         <PasswordBox
             Header="Token"
             Password="{x:Bind Token, Mode=TwoWay}"
-            PasswordChanged="PasswordBox_PasswordChanged"
             PlaceholderText="Token" />
     </controls:StackPanel>
 </ContentDialog>

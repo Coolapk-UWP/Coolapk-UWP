@@ -1,15 +1,18 @@
 ﻿using CoolapkUWP.Common;
 using CoolapkUWP.Helpers;
-using Microsoft.Toolkit.Uwp.UI;
+using CoolapkUWP.Helpers.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation.Metadata;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Hosting;
+using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 
 // The Templated Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234235
@@ -27,11 +30,12 @@ namespace CoolapkUWP.Controls
         private PivotHeader _pivotHeader;
         private ScrollViewer _scrollViewer;
 
-        private double _offset;
         private double _topheight;
         private CompositionPropertySet _propSet;
         private ScrollProgressProvider _progressProvider;
-        private readonly bool HasGetElementVisual = SettingsHelper.Get<bool>(SettingsHelper.IsUseCompositor) && ApiInformation.IsMethodPresent("Windows.UI.Xaml.Hosting.ElementCompositionPreview", "GetElementVisual");
+        private readonly bool HasGetElementVisual =
+            SettingsHelper.Get<bool>(SettingsHelper.IsUseCompositor)
+            && ApiInformation.IsMethodPresent("Windows.UI.Xaml.Hosting.ElementCompositionPreview", "GetElementVisual");
 
         public static readonly DependencyProperty TopHeaderProperty =
             DependencyProperty.Register(
@@ -201,10 +205,6 @@ namespace CoolapkUWP.Controls
             {
                 _pivotHeader.SelectionChanged -= PivotHeader_SelectionChanged;
             }
-            if (_scrollViewer != null)
-            {
-                _scrollViewer.ViewChanged -= ScrollViewer_ViewChanged;
-            }
             if (_listViewHeader != null)
             {
                 _listViewHeader.Loaded -= ListViewHeader_Loaded;
@@ -236,7 +236,7 @@ namespace CoolapkUWP.Controls
                 }
                 else
                 {
-                    _scrollViewer.ViewChanged += ScrollViewer_ViewChanged;
+                    RegisterScrollViewer();
                 }
             }
             if (_listViewHeader != null)
@@ -247,44 +247,24 @@ namespace CoolapkUWP.Controls
             base.OnApplyTemplate();
         }
 
-        //protected override void OnItemsChanged(object e)
-        //{
-        //    if (_progressProvider != null)
-        //    {
-        //        _scrollViewer.ChangeView(null, _progressProvider.Progress * _progressProvider.Threshold, null, true);
-        //    }
-        //    else
-        //    {
-        //        _scrollViewer.ChangeView(null, Math.Min(_offset, _topheight), null, true);
-        //    }
-        //    base.OnItemsChanged(e);
-        //}
-
-        private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        private void RegisterScrollViewer()
         {
-            _offset = _scrollViewer.VerticalOffset;
-            double Translation = _scrollViewer.VerticalOffset < _topheight ? 0 : -_topheight + _scrollViewer.VerticalOffset;
-            _listViewHeader.RenderTransform = new TranslateTransform() { Y = Translation };
-            if (_scrollViewer.VerticalOffset >= _topheight || _topheight == 0)
+            TranslateTransform transform = new TranslateTransform();
+            BindingOperations.SetBinding(transform, TranslateTransform.YProperty, new Binding
             {
-                VisualStateManager.GoToState(this, "OnThreshold", true);
-            }
-            else
-            {
-                VisualStateManager.GoToState(this, "BeforeThreshold", true);
-            }
+                Source = _scrollViewer,
+                Mode = BindingMode.OneWay,
+                Converter = new VerticalOffsetConverter(this),
+                Path = new PropertyPath(nameof(_scrollViewer.VerticalOffset))
+            });
+            _listViewHeader.RenderTransform = transform;
         }
 
         private void ProgressProvider_ProgressChanged(object sender, double args)
         {
-            if (args == 1 || _progressProvider.Threshold == 0)
-            {
-                VisualStateManager.GoToState(this, "OnThreshold", true);
-            }
-            else
-            {
-                VisualStateManager.GoToState(this, "BeforeThreshold", true);
-            }
+            _ = args == 1 || _progressProvider.Threshold == 0
+                ? VisualStateManager.GoToState(this, "OnThreshold", true)
+                : VisualStateManager.GoToState(this, "BeforeThreshold", true);
         }
 
         private void PivotHeader_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -338,14 +318,9 @@ namespace CoolapkUWP.Controls
                 _propSet = _propSet ?? Window.Current.Compositor.CreatePropertySet();
                 _propSet.InsertScalar("height", (float)_topheight);
             }
-            if (_scrollViewer.VerticalOffset >= _topheight || _topheight == 0)
-            {
-                VisualStateManager.GoToState(this, "OnThreshold", true);
-            }
-            else
-            {
-                VisualStateManager.GoToState(this, "BeforeThreshold", true);
-            }
+            _ = _scrollViewer.VerticalOffset >= _topheight || _topheight == 0
+                ? VisualStateManager.GoToState(this, "OnThreshold", true)
+                : VisualStateManager.GoToState(this, "BeforeThreshold", true);
         }
 
         private void ListViewHeader_Loaded(object sender, RoutedEventArgs e)
@@ -390,27 +365,59 @@ namespace CoolapkUWP.Controls
                 _progressProvider = null;
             }
         }
+
+        public class VerticalOffsetConverter : IValueConverter
+        {
+            public ShyHeaderListView ShyHeaderListView { get; private set; }
+
+            public VerticalOffsetConverter(ShyHeaderListView shyHeaderListView) => ShyHeaderListView = shyHeaderListView;
+
+            public object Convert(object value, Type targetType, object parameter, string language)
+            {
+                double offset = System.Convert.ToDouble(value);
+                UpdateVisualState(offset);
+                double result = offset < ShyHeaderListView._topheight ? 0 : -ShyHeaderListView._topheight + offset;
+                return result.Convert(targetType);
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, string language)
+            {
+                double offset = System.Convert.ToDouble(value);
+                double result = offset + ShyHeaderListView._topheight;
+                return result.Convert(targetType);
+            }
+
+            private void UpdateVisualState(double offset)
+            {
+                _ = offset >= ShyHeaderListView._topheight || ShyHeaderListView._topheight == 0
+                    ? VisualStateManager.GoToState(ShyHeaderListView, "OnThreshold", true)
+                    : VisualStateManager.GoToState(ShyHeaderListView, "BeforeThreshold", true);
+            }
+        }
     }
 
     public class ShyHeaderItem : DependencyObject
     {
-        public static readonly DependencyProperty TagProperty = DependencyProperty.Register(
-           "Tag",
-           typeof(object),
-           typeof(ShyHeaderItem),
-           null);
+        public static readonly DependencyProperty TagProperty =
+            DependencyProperty.Register(
+                nameof(Tag),
+                typeof(object),
+                typeof(ShyHeaderItem),
+                null);
 
-        public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register(
-           "Header",
-           typeof(string),
-           typeof(ShyHeaderItem),
-           null);
+        public static readonly DependencyProperty HeaderProperty =
+            DependencyProperty.Register(
+                nameof(Header),
+                typeof(string),
+                typeof(ShyHeaderItem),
+                null);
 
-        public static readonly DependencyProperty ItemSourceProperty = DependencyProperty.Register(
-           "ItemSource",
-           typeof(object),
-           typeof(ShyHeaderItem),
-           null);
+        public static readonly DependencyProperty ItemSourceProperty =
+            DependencyProperty.Register(
+                nameof(ItemSource),
+                typeof(object),
+                typeof(ShyHeaderItem),
+                null);
 
         public object Tag
         {

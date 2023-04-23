@@ -1,7 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Users;
-using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.DataSource;
 using CoolapkUWP.ViewModels.Providers;
 using Newtonsoft.Json.Linq;
@@ -9,9 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Graphics.Imaging;
@@ -19,6 +16,13 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
+
+#if FEATURE2
+using System.IO;
+using System.Runtime.InteropServices.WindowsRuntime;
+#else
+using CoolapkUWP.Models.Upload;
+#endif
 
 namespace CoolapkUWP.ViewModels.FeedPages
 {
@@ -142,10 +146,11 @@ namespace CoolapkUWP.ViewModels.FeedPages
 
         public async Task<List<string>> UploadPic()
         {
-            int i = 0;
             List<string> results = new List<string>();
             if (!Pictures.Any()) { return results; }
             UIHelper.ShowMessage("上传图片");
+#if FEATURE2
+            int i = 0;
             foreach (WriteableBitmap pic in Pictures)
             {
                 i++;
@@ -171,6 +176,15 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 }
                 UIHelper.ShowMessage($"已上传 ({i}/{Pictures.Count})");
             }
+#else
+            List<UploadFileFragment> fragments = new List<UploadFileFragment>();
+            foreach (WriteableBitmap pic in Pictures)
+            {
+                fragments.Add(await UploadFileFragment.FromWriteableBitmap(pic));
+            }
+            results = await RequestHelper.UploadImages(fragments);
+            UIHelper.ShowMessage($"上传了 {results.Count} 张图片");
+#endif
             return results;
         }
 
