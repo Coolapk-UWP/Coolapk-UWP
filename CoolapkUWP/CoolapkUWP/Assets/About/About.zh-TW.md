@@ -10,11 +10,11 @@
 感謝 [Crowdin](https://crowdin.com/project/CoolapkUWP "Crowdin") 翻譯者的支援。 如果翻譯出現了什麼問題，歡迎前來糾正。 並且請認真對待翻譯。 您所寫的一切將會被全世界閱讀。
 
 ##### 鳴謝
-| 貢獻                                                                                | 作者                                              |
-| --------------------------------------------------------------------------------- | ----------------------------------------------- |
-| [原作(CoolApk-UWP)](https://github.com/oboard/CoolApk-UWP)                          | [oboard](https://github.com/oboard)             |
-| [Token獲取方法(CoolapkTokenCrack)](https://github.com/ZCKun/CoolapkTokenCrack)        | [ZCKun](https://github.com/ZCKun)               |
-| [TokenV2獲取方法(CoolapkTokenV2)](https://github.com/XiaoMengXinX/FuckCoolapkTokenV2) | [XiaoMengXinX](https://github.com/XiaoMengXinX) |
+| 貢獻                                                                                                 | 作者                                              |
+| -------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| [原作(CoolApk-UWP)](https://github.com/oboard/CoolApk-UWP "CoolApk-UWP")                             | [oboard](https://github.com/oboard)             |
+| [Token獲取方法(CoolapkTokenCrack)](https://github.com/ZCKun/CoolapkTokenCrack "CoolapkTokenCrack")     | [ZCKun](https://github.com/ZCKun)               |
+| [TokenV2獲取方法(CoolapkTokenV2)](https://github.com/XiaoMengXinX/FuckCoolapkTokenV2 "CoolapkTokenV2") | [XiaoMengXinX](https://github.com/XiaoMengXinX) |
 
 ##### 引用及參考
 - [QRCoder](https://github.com/codebude/QRCoder "QRCoder")
