@@ -273,7 +273,6 @@
     <Compile Include="Models\Update\SystemVersionInfo.cs" />
     <Compile Include="Models\Update\UpdateInfo.cs" />
     <Compile Include="Models\Update\UserAgent.cs" />
-    <Compile Include="Models\Upload\UploadFileFragment.cs" />
     <Compile Include="Models\Users\ContactModel.cs" />
     <Compile Include="Models\Users\LinkUserModel.cs" />
     <Compile Include="Models\Users\UserAction.cs" />

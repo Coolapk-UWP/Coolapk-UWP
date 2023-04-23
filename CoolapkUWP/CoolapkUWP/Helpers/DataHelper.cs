@@ -220,5 +220,11 @@ namespace CoolapkUWP.Helpers
                 return ret;
             }
         }
+
+        public static Stream GetStream(this byte[] bytes)
+        {
+            Stream stream = new MemoryStream(bytes);
+            return stream;
+        }
     }
 }
