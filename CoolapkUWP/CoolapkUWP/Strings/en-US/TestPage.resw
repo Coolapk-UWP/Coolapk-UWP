@@ -226,27 +226,27 @@
     <value>Network Tests</value>
   </data>
   <data name="APISettings.Description" xml:space="preserve">
-    <value>修改与酷安服务器通信的配置</value>
+    <value>Modify the configuration of communication with Coolapk server</value>
   </data>
   <data name="APISettings.Header" xml:space="preserve">
-    <value>API 设置</value>
+    <value>API Settings</value>
   </data>
   <data name="CustomUASettings.Header" xml:space="preserve">
-    <value>修改 UserAgent</value>
+    <value>Change UserAgent</value>
   </data>
   <data name="IsCustomUASettings.Description" xml:space="preserve">
-    <value>使用自定义的 UserAgent</value>
+    <value>Using custom UserAgent</value>
   </data>
   <data name="IsCustomUASettings.Header" xml:space="preserve">
-    <value>是否修改 UserAgent</value>
+    <value>Change UserAgent</value>
   </data>
   <data name="WindowSettingsHeader.Header" xml:space="preserve">
-    <value>窗口测试</value>
+    <value>Window Tests</value>
   </data>
   <data name="CustomAPISettings.Description" xml:space="preserve">
-    <value>设置自定义的兼容版本</value>
+    <value>Set custom compatible version</value>
   </data>
   <data name="CustomAPISettings.Header" xml:space="preserve">
-    <value>自定义版本号</value>
+    <value>Custom API version</value>
   </data>
 </root>
