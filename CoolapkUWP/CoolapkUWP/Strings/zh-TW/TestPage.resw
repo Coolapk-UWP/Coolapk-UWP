@@ -226,27 +226,27 @@
     <value>網路測試</value>
   </data>
   <data name="APISettings.Description" xml:space="preserve">
-    <value>修改与酷安服务器通信的配置</value>
+    <value>修改與酷安伺服器通信的配置</value>
   </data>
   <data name="APISettings.Header" xml:space="preserve">
-    <value>API 设置</value>
+    <value>API 設置</value>
   </data>
   <data name="CustomUASettings.Header" xml:space="preserve">
     <value>修改 UserAgent</value>
   </data>
   <data name="IsCustomUASettings.Description" xml:space="preserve">
-    <value>使用自定义的 UserAgent</value>
+    <value>使用自定義的 UserAgent</value>
   </data>
   <data name="IsCustomUASettings.Header" xml:space="preserve">
     <value>是否修改 UserAgent</value>
   </data>
   <data name="WindowSettingsHeader.Header" xml:space="preserve">
-    <value>窗口测试</value>
+    <value>窗口測試</value>
   </data>
   <data name="CustomAPISettings.Description" xml:space="preserve">
-    <value>设置自定义的兼容版本</value>
+    <value>設置自定義的相容版本</value>
   </data>
   <data name="CustomAPISettings.Header" xml:space="preserve">
-    <value>自定义版本号</value>
+    <value>自訂版本號</value>
   </data>
 </root>
