@@ -10,11 +10,11 @@
 Thanks to [Crowdin](https://crowdin.com/project/CoolapkUWP "Crowdin") translators for their support. If there is any problem with the translation, please come and correct it. And please take translation seriously. Your words will be read all over the world.
 
 ##### Credits
-| Contributors                                                                              | Author                                          |
-| ----------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| [Original (CoolApk-UWP)](https://github.com/oboard/CoolApk-UWP)                           | [oboard](https://github.com/oboard)             |
-| [Token Get Method (CoolapkTokenCrack)](https://github.com/ZCKun/CoolapkTokenCrack)        | [ZCKun](https://github.com/ZCKun)               |
-| [TokenV2 Get Method (CoolapkTokenV2)](https://github.com/XiaoMengXinX/FuckCoolapkTokenV2) | [XiaoMengXinX](https://github.com/XiaoMengXinX) |
+| Contributors                                                                                               | Author                                          |
+| ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| [Original (CoolApk-UWP)](https://github.com/oboard/CoolApk-UWP "CoolApk-UWP")                              | [oboard](https://github.com/oboard)             |
+| [Token Get Method (CoolapkTokenCrack)](https://github.com/ZCKun/CoolapkTokenCrack "CoolapkTokenCrack")     | [ZCKun](https://github.com/ZCKun)               |
+| [TokenV2 Get Method (CoolapkTokenV2)](https://github.com/XiaoMengXinX/FuckCoolapkTokenV2 "CoolapkTokenV2") | [XiaoMengXinX](https://github.com/XiaoMengXinX) |
 
 ##### Citations and References
 - [QRCoder](https://github.com/codebude/QRCoder "QRCoder")
