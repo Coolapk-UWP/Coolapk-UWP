@@ -224,6 +224,7 @@
       <DependentUpon>TextBlockEx.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WebViewContentControl\WebViewContentControl.cs" />
+    <Compile Include="Helpers\Controls\TipsRectangleHelper.cs" />
     <Compile Include="Helpers\Controls\WebViewHelper.cs" />
     <Compile Include="Helpers\Converters\CollectionCountConverter.cs" />
     <Compile Include="Helpers\Converters\CollectionToBoolConverter.cs" />
@@ -242,7 +243,6 @@
     <Compile Include="Helpers\RequestHelper.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Helpers\ThemeHelper.cs" />
-    <Compile Include="Helpers\TipsRectangleHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Helpers\UpdateHelper.cs" />
     <Compile Include="Helpers\UriHelper.cs" />

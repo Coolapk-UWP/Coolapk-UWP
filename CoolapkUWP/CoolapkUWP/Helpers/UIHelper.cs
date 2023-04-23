@@ -150,25 +150,12 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        public static void ShowInAppMessage(MessageType type, string message = null)
-        {
-            switch (type)
-            {
-                case MessageType.Message:
-                    ShowMessage(message);
-                    break;
-                default:
-                    ShowMessage(type.ConvertMessageTypeToMessage());
-                    break;
-            }
-        }
-
         public static void ShowHttpExceptionMessage(HttpRequestException e)
         {
             if (e.Message.IndexOfAny(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }) != -1)
-            { ShowInAppMessage(MessageType.Message, $"服务器错误： {e.Message.Replace("Response status code does not indicate success: ", string.Empty)}"); }
-            else if (e.Message == "An error occurred while sending the request.") { ShowInAppMessage(MessageType.Message, "无法连接网络。"); }
-            else { ShowInAppMessage(MessageType.Message, $"请检查网络连接。 {e.Message}"); }
+            { ShowMessage($"服务器错误： {e.Message.Replace("Response status code does not indicate success: ", string.Empty)}"); }
+            else if (e.Message == "An error occurred while sending the request.") { ShowMessage("无法连接网络。"); }
+            else { ShowMessage($"请检查网络连接。 {e.Message}"); }
         }
 
         public static bool IsOriginSource(object source, object originalSource)
@@ -186,29 +173,6 @@ namespace CoolapkUWP.Helpers
             }
 
             return DependencyObject.Tag == null && result;
-        }
-
-        public static string ConvertMessageTypeToMessage(this MessageType type)
-        {
-            switch (type)
-            {
-                case MessageType.NoMore:
-                    return ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("NoMore");
-
-                case MessageType.NoMoreShare:
-                    return ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("NoMoreShare");
-
-                case MessageType.NoMoreReply:
-                    return ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("NoMoreReply");
-
-                case MessageType.NoMoreHotReply:
-                    return ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("NoMoreHotReply");
-
-                case MessageType.NoMoreLikeUser:
-                    return ResourceLoader.GetForViewIndependentUse("NotificationsPage").GetString("NoMoreLikeUser");
-
-                default: return string.Empty;
-            }
         }
 
         public static void SetBadgeNumber(string badgeGlyphValue)
