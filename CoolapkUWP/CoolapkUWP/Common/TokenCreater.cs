@@ -8,7 +8,7 @@ namespace CoolapkUWP.Common
 {
     public class TokenCreater
     {
-        private static readonly string Guid = System.Guid.NewGuid().ToString();
+        private static readonly string guid = Guid.NewGuid().ToString();
         private static readonly string aid = RandHexString(16);
         private static readonly string mac = RandMacAdress();
         private static readonly string SystemManufacturer;
@@ -16,7 +16,7 @@ namespace CoolapkUWP.Common
 
         public static string DeviceCode;
 
-        private readonly TokenVersion TokenVersion;
+        private readonly TokenVersions TokenVersion;
 
         static TokenCreater()
         {
@@ -26,7 +26,7 @@ namespace CoolapkUWP.Common
             DeviceCode = CreateDeviceCode(aid, mac, SystemManufacturer, SystemManufacturer, SystemProductName, $"CoolapkUWP {Package.Current.Id.Version.ToFormattedString()}");
         }
 
-        public TokenCreater(TokenVersion version = TokenVersion.TokenV2)
+        public TokenCreater(TokenVersions version = TokenVersions.TokenV2)
         {
             TokenVersion = version;
         }
@@ -38,10 +38,10 @@ namespace CoolapkUWP.Common
         {
             switch (TokenVersion)
             {
-                case TokenVersion.TokenV1:
+                case TokenVersions.TokenV1:
                     return GetCoolapkAppToken();
                 default:
-                case TokenVersion.TokenV2:
+                case TokenVersions.TokenV2:
                     return GetTokenWithDeviceCode(DeviceCode);
             }
         }
@@ -76,9 +76,9 @@ namespace CoolapkUWP.Common
             string hex_timeStamp = $"0x{Convert.ToString((int)timeStamp, 16)}";
             // 时间戳加密
             string md5_timeStamp = $"{timeStamp}".GetMD5();
-            string token = $"token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?{md5_timeStamp}${Guid}&com.coolapk.market";
+            string token = $"token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?{md5_timeStamp}${guid}&com.coolapk.market";
             string md5_token = token.GetBase64().GetMD5();
-            string appToken = $"{md5_token}{Guid}{hex_timeStamp}";
+            string appToken = $"{md5_token}{guid}{hex_timeStamp}";
             return appToken;
         }
 
@@ -114,15 +114,16 @@ namespace CoolapkUWP.Common
         }
     }
 
-    public enum TokenVersion
+    public enum TokenVersions
     {
         TokenV1,
         TokenV2
     }
 
-    public enum APIVersion
+    public enum APIVersions
     {
-        小程序 = 5,
+        Custom = 4,
+        小程序,
         V6,
         V7,
         V8,

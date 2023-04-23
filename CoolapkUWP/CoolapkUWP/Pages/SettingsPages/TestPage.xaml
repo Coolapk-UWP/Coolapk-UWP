@@ -186,6 +186,7 @@
                         </controls:SettingExpander.Icon>
                         <controls:Setting x:Uid="/TestPage/APIVersionSettings" Style="{StaticResource DefaultSettingExpanderItemStyle}">
                             <ComboBox SelectedIndex="{x:Bind APIVersion, Mode=TwoWay}">
+                                <ComboBoxItem>Custom</ComboBoxItem>
                                 <ComboBoxItem>小程序</ComboBoxItem>
                                 <ComboBoxItem>V6</ComboBoxItem>
                                 <ComboBoxItem>V7</ComboBoxItem>
@@ -197,6 +198,13 @@
                                 <ComboBoxItem>V13</ComboBoxItem>
                             </ComboBox>
                         </controls:Setting>
+                        <controls:Setting
+                            x:Uid="/TestPage/CustomAPISettings"
+                            ActionIcon="&#xE8A7;"
+                            Click="Button_Click"
+                            IsClickEnabled="True"
+                            Style="{StaticResource ClickableSettingExpanderItemStyle}"
+                            Tag="CustomAPI"/>
                         <controls:Setting x:Uid="/TestPage/TokenVersionSettings" Style="{StaticResource DefaultSettingExpanderItemStyle}">
                             <ComboBox SelectedIndex="{x:Bind TokenVersion, Mode=TwoWay}">
                                 <ComboBoxItem>Token V1</ComboBoxItem>

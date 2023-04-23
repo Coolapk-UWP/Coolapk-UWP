@@ -167,6 +167,9 @@
     <Compile Include="Controls\DataTemplates\SearchWordTemplates.xaml.cs">
       <DependentUpon>SearchWordTemplates.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Dialogs\APIVersionDialog.xaml.cs">
+      <DependentUpon>APIVersionDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Dialogs\LoginDialog.xaml.cs">
       <DependentUpon>LoginDialog.xaml</DependentUpon>
     </Compile>
@@ -259,6 +262,7 @@
     <Compile Include="Models\Pages\ProfileDetailModel.cs" />
     <Compile Include="Models\SearchWord.cs" />
     <Compile Include="Models\TopicModel.cs" />
+    <Compile Include="Models\Update\APIVersion.cs" />
     <Compile Include="Models\Update\SystemVersionInfo.cs" />
     <Compile Include="Models\Update\UpdateInfo.cs" />
     <Compile Include="Models\Update\UserAgent.cs" />
@@ -914,7 +918,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
-    <PRIResource Include="Strings\zh-CN\UserAgentDialog.resw" />
+    <PRIResource Include="Strings\zh-CN\ContentDialog.resw" />
     <PRIResource Include="Strings\zh-TW\ShowImagePage.resw" />
     <PRIResource Include="Strings\zh-TW\ProfileFlyoutControl.resw" />
     <PRIResource Include="Strings\zh-CN\ShowImagePage.resw" />
@@ -934,7 +938,6 @@
     <PRIResource Include="Strings\zh-CN\FeedShellPage.resw" />
     <PRIResource Include="Strings\zh-CN\FindPage.resw" />
     <PRIResource Include="Strings\zh-CN\IndexPage.resw" />
-    <PRIResource Include="Strings\zh-CN\LoginDialog.resw" />
     <PRIResource Include="Strings\zh-CN\MainPage.resw" />
     <PRIResource Include="Strings\zh-CN\NotificationsPage.resw">
       <SubType>Designer</SubType>
@@ -955,7 +958,6 @@
     <PRIResource Include="Strings\zh-TW\FeedShellPage.resw" />
     <PRIResource Include="Strings\zh-TW\FindPage.resw" />
     <PRIResource Include="Strings\zh-TW\IndexPage.resw" />
-    <PRIResource Include="Strings\zh-TW\LoginDialog.resw" />
     <PRIResource Include="Strings\zh-TW\MainPage.resw" />
     <PRIResource Include="Strings\zh-TW\NotificationsPage.resw" />
     <PRIResource Include="Strings\zh-TW\Resources.resw" />
@@ -1051,6 +1053,10 @@
     <Page Include="Controls\DataTemplates\SearchWordTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Dialogs\APIVersionDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Dialogs\LoginDialog.xaml">
       <SubType>Designer</SubType>
@@ -1242,7 +1248,6 @@
     <PRIResource Include="Strings\en-US\FeedShellPage.resw" />
     <PRIResource Include="Strings\en-US\FindPage.resw" />
     <PRIResource Include="Strings\en-US\IndexPage.resw" />
-    <PRIResource Include="Strings\en-US\LoginDialog.resw" />
     <PRIResource Include="Strings\en-US\MainPage.resw" />
     <PRIResource Include="Strings\en-US\NotificationsPage.resw" />
   </ItemGroup>

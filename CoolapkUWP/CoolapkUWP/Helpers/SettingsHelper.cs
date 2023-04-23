@@ -20,6 +20,7 @@ namespace CoolapkUWP.Helpers
         public const string UserName = nameof(UserName);
         public const string CustomUA = nameof(CustomUA);
         public const string IsUseAPI2 = nameof(IsUseAPI2);
+        public const string CustomAPI = nameof(CustomAPI);
         public const string IsFirstRun = nameof(IsFirstRun);
         public const string IsCustomUA = nameof(IsCustomUA);
         public const string APIVersion = nameof(APIVersion);
@@ -37,8 +38,8 @@ namespace CoolapkUWP.Helpers
 
         public static Type Get<Type>(string key) => LocalObject.Read<Type>(key);
         public static void Set<Type>(string key, Type value) => LocalObject.Save(key, value);
-        public static void SetFile<Type>(string key, Type value) => LocalObject.CreateFileAsync(key, value);
-        public static async Task<Type> GetFile<Type>(string key) => await LocalObject.ReadFileAsync<Type>(key);
+        public static Task<Type> GetFile<Type>(string key) => LocalObject.ReadFileAsync<Type>($"Settings/{key}");
+        public static Task SetFile<Type>(string key, Type value) => LocalObject.CreateFileAsync($"Settings/{key}", value);
 
         public static void SetDefaultSettings()
         {
@@ -66,6 +67,10 @@ namespace CoolapkUWP.Helpers
             {
                 LocalObject.Save(IsUseAPI2, true);
             }
+            if (!LocalObject.KeyExists(CustomAPI))
+            {
+                LocalObject.Save(CustomAPI, new APIVersion("9.2.2", "1905301"));
+            }
             if (!LocalObject.KeyExists(IsFirstRun))
             {
                 LocalObject.Save(IsFirstRun, true);
@@ -76,7 +81,7 @@ namespace CoolapkUWP.Helpers
             }
             if (!LocalObject.KeyExists(APIVersion))
             {
-                LocalObject.Save(APIVersion, Common.APIVersion.V13);
+                LocalObject.Save(APIVersion, Common.APIVersions.V13);
             }
             if (!LocalObject.KeyExists(UpdateDate))
             {
@@ -88,7 +93,7 @@ namespace CoolapkUWP.Helpers
             }
             if (!LocalObject.KeyExists(TokenVersion))
             {
-                LocalObject.Save(TokenVersion, Common.TokenVersion.TokenV2);
+                LocalObject.Save(TokenVersion, Common.TokenVersions.TokenV2);
             }
             if (!LocalObject.KeyExists(IsUseCompositor))
             {
