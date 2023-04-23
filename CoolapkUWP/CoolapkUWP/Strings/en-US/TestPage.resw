@@ -243,4 +243,10 @@
   <data name="WindowSettingsHeader.Header" xml:space="preserve">
     <value>窗口测试</value>
   </data>
+  <data name="CustomAPISettings.Description" xml:space="preserve">
+    <value>设置自定义的兼容版本</value>
+  </data>
+  <data name="CustomAPISettings.Header" xml:space="preserve">
+    <value>自定义版本号</value>
+  </data>
 </root>
