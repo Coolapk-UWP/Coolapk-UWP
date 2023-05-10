@@ -6,6 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{C4F32E53-CC9E-4D94-9516-7E5BA5D829EB}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CoolapkUWP</RootNamespace>
     <AssemblyName>CoolapkUWP</AssemblyName>
