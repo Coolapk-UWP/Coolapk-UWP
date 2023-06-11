@@ -54,7 +54,11 @@ namespace CoolapkUWP.Controls
                 grid.Children.Remove(this);
             }
 
-            _rootGrid = new Grid();
+            _rootGrid = new Grid
+            {
+                Width = Window.Current.Bounds.Width,
+                Height = Window.Current.Bounds.Height
+            };
 
             _popup = new Popup
             {

@@ -20,7 +20,8 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         public void Image_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            _ = UIHelper.ShowImageAsync((sender as FrameworkElement).Tag as ImageModel);
+            FrameworkElement element = sender as FrameworkElement;
+            _ = element.ShowImageAsync(element.Tag as ImageModel);
         }
 
         public void Image_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -33,8 +34,9 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            ImageModel image = (sender as FrameworkElement).Tag as ImageModel;
-            switch ((sender as FrameworkElement).Name)
+            FrameworkElement element = sender as FrameworkElement;
+            ImageModel image = element.Tag as ImageModel;
+            switch (element.Name)
             {
                 case "CopyButton":
                     CopyPic(image);
@@ -49,7 +51,7 @@ namespace CoolapkUWP.Controls.DataTemplates
                     _ = image.Refresh();
                     break;
                 case "ShowImageButton":
-                    _ = UIHelper.ShowImageAsync(image);
+                    _ = element.ShowImageAsync(image);
                     break;
                 case "OriginButton":
                     image.Type = ImageType.OriginImage;

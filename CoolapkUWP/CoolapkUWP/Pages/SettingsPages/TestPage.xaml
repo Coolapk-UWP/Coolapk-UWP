@@ -204,7 +204,7 @@
                             Click="Button_Click"
                             IsClickEnabled="True"
                             Style="{StaticResource ClickableSettingExpanderItemStyle}"
-                            Tag="CustomAPI"/>
+                            Tag="CustomAPI" />
                         <controls:Setting x:Uid="/TestPage/TokenVersionSettings" Style="{StaticResource DefaultSettingExpanderItemStyle}">
                             <ComboBox SelectedIndex="{x:Bind TokenVersion, Mode=TwoWay}">
                                 <ComboBoxItem>Token V1</ComboBoxItem>

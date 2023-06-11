@@ -172,7 +172,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     _ = image.Refresh();
                     break;
                 case "ShowImageButton":
-                    _ = UIHelper.ShowImageAsync(image);
+                    _ = this.ShowImageAsync(image);
                     break;
                 case "OriginButton":
                     image.Type = ImageType.OriginImage;
@@ -192,7 +192,7 @@ namespace CoolapkUWP.Pages.FeedPages
             FrameworkElement element = sender as FrameworkElement;
             if (element.Tag is ImageModel image)
             {
-                _ = UIHelper.ShowImageAsync(image);
+                _ = element.ShowImageAsync(image);
             }
             else if (element.Tag is string url)
             {

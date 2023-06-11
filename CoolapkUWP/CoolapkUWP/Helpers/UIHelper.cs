@@ -248,21 +248,27 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        public static async Task ShowImageAsync(ImageModel image)
+        public static Task<bool> ShowImageAsync(this DependencyObject element, ImageModel image)
         {
-            if (ShellDispatcher?.HasThreadAccess == false)
-            { await ShellDispatcher.ResumeForegroundAsync(); }
+            MainPage mainPage = element is MainPage page ? page : element.FindAscendant<MainPage>() ?? MainPage;
+            return mainPage.ShowImageAsync(image);
+        }
+
+        public static async Task<bool> ShowImageAsync(MainPage mainPage, ImageModel image)
+        {
+            if (!mainPage.Dispatcher.HasThreadAccess)
+            { await mainPage.Dispatcher.ResumeForegroundAsync(); }
             if (SettingsHelper.Get<bool>(SettingsHelper.IsUseMultiWindow) && WindowHelper.IsSupportedAppWindow)
             {
                 (AppWindow window, Frame frame) = await WindowHelper.CreateWindow();
                 window.TitleBar.ExtendsContentIntoTitleBar = true;
                 ThemeHelper.Initialize();
                 frame.Navigate(typeof(ShowImagePage), image);
-                await window.TryShowAsync();
+                return await window.TryShowAsync();
             }
             else
             {
-                MainPage.Frame.Navigate(typeof(ShowImagePage), image);
+                return mainPage.Frame.Navigate(typeof(ShowImagePage), image);
             }
         }
     }
@@ -289,8 +295,7 @@ namespace CoolapkUWP.Helpers
                 link = link.Replace("http://", string.Empty).Replace("https://", string.Empty);
                 if (link.StartsWith("image.coolapk.com"))
                 {
-                    _ = ShowImageAsync(new ImageModel(origin, ImageType.SmallImage));
-                    return true;
+                    return await frame.ShowImageAsync(new ImageModel(origin, ImageType.SmallImage));
                 }
                 else
                 {

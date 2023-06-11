@@ -370,7 +370,7 @@ namespace CoolapkUWP.Controls
 
                                     Grid.Children.Add(viewbox);
                                     Grid.Children.Add(PicSizePanel);
-                                    Grid.Tapped += (sender, args) => _ = UIHelper.ShowImageAsync(imageModel);
+                                    Grid.Tapped += (sender, args) => _ = this.ShowImageAsync(imageModel);
 
                                     container.Child = Grid;
 

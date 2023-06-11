@@ -180,14 +180,18 @@ namespace CoolapkUWP.Pages.SettingsPages
             switch ((sender as FrameworkElement).Tag.ToString())
             {
                 case "OutPIP":
-                    if (ApplicationView.GetForCurrentView().IsViewModeSupported(ApplicationViewMode.Default))
+                    if (this.IsAppWindow())
+                    { this.GetWindowForElement().Presenter.RequestPresentation(AppWindowPresentationKind.Default); }
+                    else if (ApplicationView.GetForCurrentView().IsViewModeSupported(ApplicationViewMode.Default))
                     { _ = ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default); }
                     break;
                 case "OpenURL":
                     _ = this.OpenLinkAsync(URLTextBox.Text);
                     break;
                 case "EnterPIP":
-                    if (ApplicationView.GetForCurrentView().IsViewModeSupported(ApplicationViewMode.CompactOverlay))
+                    if (this.IsAppWindow())
+                    { this.GetWindowForElement().Presenter.RequestPresentation(AppWindowPresentationKind.CompactOverlay); }
+                    else if(ApplicationView.GetForCurrentView().IsViewModeSupported(ApplicationViewMode.CompactOverlay))
                     { _ = ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay); }
                     break;
                 case "CustomUA":
