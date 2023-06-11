@@ -1,13 +1,16 @@
-﻿using System;
+﻿using CoolapkUWP.Common;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Data;
 
 namespace CoolapkUWP.ViewModels.DataSource
@@ -47,6 +50,8 @@ namespace CoolapkUWP.ViewModels.DataSource
 
         #endregion
 
+        public CoreDispatcher Dispatcher { get; }
+
         private bool any = false;
         public bool Any
         {
@@ -77,10 +82,19 @@ namespace CoolapkUWP.ViewModels.DataSource
 
         protected override event PropertyChangedEventHandler PropertyChanged;
 
-        protected void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        protected async void RaisePropertyChangedEvent([CallerMemberName] string name = null)
         {
-            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
+            if (name != null)
+            {
+                if (Dispatcher?.HasThreadAccess == false)
+                {
+                    await Dispatcher.ResumeForegroundAsync();
+                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            }
         }
+
+        public IncrementalLoadingBase(CoreDispatcher dispatcher) => Dispatcher = dispatcher;
 
         /// <summary>
         /// We use this method to load data and add to self.
@@ -92,6 +106,8 @@ namespace CoolapkUWP.ViewModels.DataSource
         {
             try
             {
+                await ThreadSwitcher.ResumeBackgroundAsync();
+
                 // We are going to load more.
                 IsLoading = true;
                 LoadMoreStarted?.Invoke();
@@ -99,7 +115,7 @@ namespace CoolapkUWP.ViewModels.DataSource
                 // Data loading will different for sub-class.
                 IList<T> items = await LoadMoreItemsOverrideAsync(c, count);
 
-                AddItems(items);
+                await AddItemsAsync(items);
 
                 // We finished loading operation.
                 IsLoading = false;
@@ -131,16 +147,25 @@ namespace CoolapkUWP.ViewModels.DataSource
         /// <summary>
         /// Append items to list.
         /// </summary>
-        protected virtual void AddItems(IList<T> items)
+        protected virtual async Task AddItemsAsync(IList<T> items)
         {
             if (items != null)
             {
                 foreach (T item in items)
                 {
-                    Add(item);
+                    await AddAsync(item);
                     InvokeProgressChanged(item, items);
                 }
             }
+        }
+
+        public virtual async Task AddAsync(T item)
+        {
+            if (Dispatcher?.HasThreadAccess == false)
+            {
+                await Dispatcher.ResumeForegroundAsync();
+            }
+            Add(item);
         }
 
         protected virtual void InvokeProgressChanged(T item, IList<T> items) => LoadMoreProgressChanged?.Invoke((double)(items.IndexOf(item) + 1) / items.Count);

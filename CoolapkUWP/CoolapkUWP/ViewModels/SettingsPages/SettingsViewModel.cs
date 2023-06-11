@@ -1,15 +1,18 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Common;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Update;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.ComponentModel;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
 using Windows.System.Profile;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 
 namespace CoolapkUWP.ViewModels.SettingsPages
@@ -17,6 +20,8 @@ namespace CoolapkUWP.ViewModels.SettingsPages
     public class SettingsViewModel : IViewModel
     {
         public static SettingsViewModel Caches { get; set; }
+
+        public CoreDispatcher Dispatcher { get; }
 
         private readonly ResourceLoader _loader = ResourceLoader.GetForViewIndependentUse("SettingsPage");
 
@@ -239,9 +244,16 @@ namespace CoolapkUWP.ViewModels.SettingsPages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        private async void RaisePropertyChangedEvent([CallerMemberName] string name = null)
         {
-            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
+            if (name != null)
+            {
+                if (Dispatcher?.HasThreadAccess == false)
+                {
+                    await Dispatcher.ResumeForegroundAsync();
+                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            }
         }
 
         public string VersionTextBlockText
@@ -250,7 +262,7 @@ namespace CoolapkUWP.ViewModels.SettingsPages
             {
                 string ver = $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
                 string name = ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安";
-                GetAboutTextBlockText();
+                _ = GetAboutTextBlockText();
                 return $"{name} v{ver}";
             }
         }
@@ -261,19 +273,17 @@ namespace CoolapkUWP.ViewModels.SettingsPages
             SettingsHelper.LoginChanged += (sender, args) => IsLogin = args;
         }
 
-        private void GetAboutTextBlockText()
+        private async Task GetAboutTextBlockText()
         {
-            _ = Task.Run(async () =>
+            await ThreadSwitcher.ResumeBackgroundAsync();
+            string langCode = LanguageHelper.GetPrimaryLanguage();
+            Uri dataUri = new Uri($"ms-appx:///Assets/About/About.{langCode}.md");
+            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
+            if (file != null)
             {
-                string langcode = LanguageHelper.GetPrimaryLanguage();
-                Uri dataUri = new Uri($"ms-appx:///Assets/About/About.{langcode}.md");
-                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
-                if (file != null)
-                {
-                    string markdown = await FileIO.ReadTextAsync(file);
-                    _ = DispatcherHelper.ExecuteOnUIThreadAsync(() => AboutTextBlockText = markdown);
-                }
-            });
+                string markdown = await FileIO.ReadTextAsync(file);
+                AboutTextBlockText = markdown;
+            }
         }
 
         public async void CleanCache()

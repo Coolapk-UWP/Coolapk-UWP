@@ -74,7 +74,7 @@ namespace CoolapkUWP.Controls
         public CreateFeedControl()
         {
             InitializeComponent();
-            Provider = new CreateFeedViewModel();
+            Provider = new CreateFeedViewModel(Dispatcher);
             Clipboard.ContentChanged += Clipboard_ContentChanged;
             Clipboard_ContentChanged(null, null);
             UpdateTitle();

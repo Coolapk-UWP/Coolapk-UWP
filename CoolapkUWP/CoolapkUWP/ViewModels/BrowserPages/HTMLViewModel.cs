@@ -1,15 +1,20 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Common;
+using CoolapkUWP.Helpers;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.Core;
 
 namespace CoolapkUWP.ViewModels.BrowserPages
 {
     public class HTMLViewModel : IViewModel
     {
+        public CoreDispatcher Dispatcher { get; }
+
         private readonly Uri uri;
 
         private string title;
@@ -57,13 +62,21 @@ namespace CoolapkUWP.ViewModels.BrowserPages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        private async void RaisePropertyChangedEvent([CallerMemberName] string name = null)
         {
-            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
+            if (name != null)
+            {
+                if (Dispatcher?.HasThreadAccess == false)
+                {
+                    await Dispatcher.ResumeForegroundAsync();
+                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            }
         }
 
-        public HTMLViewModel(string url)
+        public HTMLViewModel(string url, CoreDispatcher dispatcher)
         {
+            Dispatcher = dispatcher;
             uri = url.ValidateAndGetUri();
             ThemeHelper.UISettingChanged.Add(mode =>
             {
@@ -71,7 +84,7 @@ namespace CoolapkUWP.ViewModels.BrowserPages
                 {
                     case UISettingChangedType.LightMode:
                     case UISettingChangedType.DarkMode:
-                        _ = DispatcherHelper.ExecuteOnUIThreadAsync(async () => await GetHtmlAsync(RawHTML, ThemeHelper.IsDarkTheme() ? "Dark" : "Light"));
+                        _ = GetHtmlAsync(RawHTML, ThemeHelper.IsDarkTheme() ? "Dark" : "Light");
                         break;
                     case UISettingChangedType.NoPicChanged:
                         break;

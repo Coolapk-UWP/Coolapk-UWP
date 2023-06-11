@@ -138,6 +138,7 @@
     <Compile Include="Common\ExceptionHandling.cs" />
     <Compile Include="Common\HtmlToText.cs" />
     <Compile Include="Common\ScrollProgressProvider.cs" />
+    <Compile Include="Common\ThreadSwitcher.cs" />
     <Compile Include="Common\TokenCreater.cs" />
     <Compile Include="Common\WeakEvent.cs" />
     <Compile Include="Controls\CreateFeedControl.xaml.cs">
@@ -995,10 +996,10 @@
       <Version>7.1.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.3</Version>
+      <Version>2.8.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2">
-      <Version>1.0.1587.40</Version>
+      <Version>1.0.1823.32</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>

@@ -8,6 +8,7 @@ using CoolapkUWP.ViewModels.Providers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CoolapkUWP.ViewModels.FeedPages
 {
@@ -214,7 +215,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
             yield break;
         }
 
-        protected override void AddItems(IList<Entity> items)
+        protected override async Task AddItemsAsync(IList<Entity> items)
         {
             if (items != null)
             {
@@ -223,7 +224,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                     if (item is NullEntity) { continue; }
                     if (EntityTypes == null || EntityTypes.Contains(item.GetType()))
                     {
-                        Add(item);
+                        await AddAsync(item);
                         AddSubProvider(item);
                     }
                 }

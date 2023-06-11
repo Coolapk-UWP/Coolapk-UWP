@@ -1,13 +1,16 @@
-﻿using Microsoft.Toolkit.Uwp.UI;
+﻿using CoolapkUWP.Common;
+using Microsoft.Toolkit.Uwp.Helpers;
+using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Helpers
@@ -32,28 +35,38 @@ namespace CoolapkUWP.Helpers
 
     internal static partial class ImageCacheHelper
     {
-        private static readonly BitmapImage WhiteNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/NoPic/img_placeholder.png")) { DecodePixelHeight = 768, DecodePixelWidth = 768 };
-        private static readonly BitmapImage DarkNoPicMode = new BitmapImage(new Uri("ms-appx:/Assets/NoPic/img_placeholder_night.png")) { DecodePixelHeight = 768, DecodePixelWidth = 768 };
+        private static readonly Uri DarkNoPicUri = new Uri("ms-appx:/Assets/NoPic/img_placeholder_night.png");
+        private static readonly Uri WhiteNoPicUri = new Uri("ms-appx:/Assets/NoPic/img_placeholder.png");
+
+        private static BitmapImage DarkNoPicMode { get; set; }
+        private static BitmapImage WhiteNoPicMode { get; set; }
         internal static BitmapImage NoPic { get => ThemeHelper.IsDarkTheme() ? DarkNoPicMode : WhiteNoPicMode; }
-        internal static readonly CoreDispatcher Dispatcher = Window.Current.Dispatcher;
+
+        internal static CoreDispatcher Dispatcher { get; } = CoreApplication.MainView.Dispatcher;
 
         static ImageCacheHelper()
         {
             ImageCache.Instance.CacheDuration = TimeSpan.FromHours(8);
+            _ = Dispatcher.AwaitableRunAsync(() =>
+            {
+                DarkNoPicMode = new BitmapImage(DarkNoPicUri) { DecodePixelHeight = 768, DecodePixelWidth = 768 };
+                WhiteNoPicMode = new BitmapImage(WhiteNoPicUri) { DecodePixelHeight = 768, DecodePixelWidth = 768 };
+            });
         }
 
-        internal static async Task<BitmapImage> GetImageAsync(ImageType type, string url, bool isforce = false)
+        internal static async Task<BitmapImage> GetImageAsync(ImageType type, string url, CoreDispatcher dispatcher, bool isForce = false)
         {
             Uri uri = url.ValidateAndGetUri();
             if (uri == null) { return NoPic; }
 
             if (url.IndexOf("ms-appx", StringComparison.Ordinal) == 0)
             {
+                if (!dispatcher.HasThreadAccess) { await dispatcher.ResumeForegroundAsync(); }
                 return new BitmapImage(uri);
             }
-            else if (!isforce && SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
+            else if (!isForce && SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
             {
-                return NoPic;
+                return await GetNoPicAsync(dispatcher);
             }
             else
             {
@@ -63,18 +76,30 @@ namespace CoolapkUWP.Helpers
                     uri = url.ValidateAndGetUri();
                 }
 
-                try
+                if (await dispatcher.AwaitableRunAsync(() => Dispatcher.HasThreadAccess))
                 {
-                    BitmapImage image = await ImageCache.Instance.GetFromCacheAsync(uri, true);
-                    return image;
-                }
-                catch (FileNotFoundException)
-                {
+#if !FEATURE2
+                    await Dispatcher.ResumeForegroundAsync();
+#endif
                     try
                     {
-                        await ImageCache.Instance.RemoveAsync(new Uri[] { uri });
                         BitmapImage image = await ImageCache.Instance.GetFromCacheAsync(uri, true);
                         return image;
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        try
+                        {
+                            await ImageCache.Instance.RemoveAsync(new Uri[] { uri });
+                            BitmapImage image = await ImageCache.Instance.GetFromCacheAsync(uri, true);
+                            return image;
+                        }
+                        catch (Exception)
+                        {
+                            string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
+                            UIHelper.ShowMessage(str);
+                            return NoPic;
+                        }
                     }
                     catch (Exception)
                     {
@@ -83,11 +108,46 @@ namespace CoolapkUWP.Helpers
                         return NoPic;
                     }
                 }
-                catch (Exception)
+                else
                 {
-                    string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
-                    UIHelper.ShowMessage(str);
-                    return NoPic;
+                    StorageFile file = null;
+                    try
+                    {
+                        file = await ImageCache.Instance.GetFileFromCacheAsync(uri);
+                        if (file == null)
+                        {
+                            _ = await ImageCache.Instance.GetFromCacheAsync(uri, true);
+                            file = await ImageCache.Instance.GetFileFromCacheAsync(uri);
+                        }
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        try
+                        {
+                            await ImageCache.Instance.RemoveAsync(new Uri[] { uri });
+                            _ = await ImageCache.Instance.GetFromCacheAsync(uri, true);
+                            file = await ImageCache.Instance.GetFileFromCacheAsync(uri);
+                        }
+                        catch (Exception)
+                        {
+                            string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
+                            UIHelper.ShowMessage(str);
+                            return null;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        string str = ResourceLoader.GetForViewIndependentUse().GetString("ImageLoadError");
+                        UIHelper.ShowMessage(str);
+                        return null;
+                    }
+                    using (IRandomAccessStreamWithContentType stream = await file.OpenReadAsync())
+                    {
+                        await dispatcher.ResumeForegroundAsync();
+                        BitmapImage image = new BitmapImage();
+                        await image.SetSourceAsync(stream);
+                        return image;
+                    }
                 }
             }
         }
@@ -123,12 +183,9 @@ namespace CoolapkUWP.Helpers
                 {
                     try
                     {
+                        await ImageCache.Instance.RemoveAsync(new Uri[] { uri });
+                        _ = await ImageCache.Instance.GetFromCacheAsync(uri, true);
                         StorageFile image = await ImageCache.Instance.GetFileFromCacheAsync(uri);
-                        if (image == null)
-                        {
-                            _ = await ImageCache.Instance.GetFromCacheAsync(uri, true);
-                            image = await ImageCache.Instance.GetFileFromCacheAsync(uri);
-                        }
                         return image;
                     }
                     catch (Exception)
@@ -148,6 +205,21 @@ namespace CoolapkUWP.Helpers
         }
 
         internal static Task CleanCacheAsync() => ImageCache.Instance.ClearAsync();
+
+        internal static async Task<BitmapImage> GetNoPicAsync(CoreDispatcher dispatcher)
+        {
+            if (await dispatcher.AwaitableRunAsync(() => Dispatcher.HasThreadAccess))
+            {
+                return NoPic;
+            }
+            else
+            {
+                await dispatcher.ResumeForegroundAsync();
+                return ThemeHelper.IsDarkTheme()
+                    ? new BitmapImage(DarkNoPicUri) { DecodePixelHeight = 768, DecodePixelWidth = 768 }
+                    : new BitmapImage(WhiteNoPicUri) { DecodePixelHeight = 768, DecodePixelWidth = 768 };
+            }
+        }
     }
 
     internal static partial class ImageCacheHelper

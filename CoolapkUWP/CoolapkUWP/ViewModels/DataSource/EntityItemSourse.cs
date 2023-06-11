@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
 
 namespace CoolapkUWP.ViewModels.DataSource
 {
@@ -12,6 +15,10 @@ namespace CoolapkUWP.ViewModels.DataSource
     {
         protected CoolapkListProvider Provider;
         protected CoolapkListProvider SubProvider;
+
+        public EntityItemSourse() : base(Window.Current?.Dispatcher ?? CoreApplication.MainView.Dispatcher) { }
+
+        public EntityItemSourse(CoreDispatcher dispatcher) : base(dispatcher) { }
 
         protected override async Task<IList<Entity>> LoadItemsAsync(uint count)
         {
@@ -33,7 +40,7 @@ namespace CoolapkUWP.ViewModels.DataSource
             return Models;
         }
 
-        protected override void AddItems(IList<Entity> items)
+        protected override async Task AddItemsAsync(IList<Entity> items)
         {
             if (items != null)
             {
@@ -41,7 +48,7 @@ namespace CoolapkUWP.ViewModels.DataSource
                 {
                     if (!(item is NullEntity))
                     {
-                        Add(item);
+                        await AddAsync(item);
                         AddSubProvider(item);
                     }
                 }
@@ -92,7 +99,7 @@ namespace CoolapkUWP.ViewModels.DataSource
                 uri = uri.Replace("url=", string.Empty);
             }
 
-            if (uri.IndexOf("/page", StringComparison.Ordinal) == -1 && (uri.StartsWith("#", StringComparison.Ordinal) || (!uri.Contains("/main/") && !uri.Contains("/user/") && !uri.Contains("/apk/") && !uri.Contains("/appForum/") && !uri.Contains("/picture/") && !uri.Contains("/topic/") && !uri.Contains("/discovery/"))))
+            if (uri.IndexOf("/page", StringComparison.Ordinal) == -1 && (uri.StartsWith("#", StringComparison.Ordinal) || !uri.Contains("/main/") && !uri.Contains("/user/") && !uri.Contains("/apk/") && !uri.Contains("/appForum/") && !uri.Contains("/picture/") && !uri.Contains("/topic/") && !uri.Contains("/discovery/")))
             {
                 uri = "/page/dataList?url=" + uri;
             }

@@ -1,4 +1,5 @@
-﻿using CoolapkUWP.Models.Images;
+﻿using CoolapkUWP.Common;
+using CoolapkUWP.Models.Images;
 using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.Pages.FeedPages;
@@ -7,6 +8,7 @@ using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.UI;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
@@ -14,6 +16,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
 using Windows.Data.Xml.Dom;
 using Windows.Foundation.Metadata;
@@ -33,22 +36,14 @@ namespace CoolapkUWP.Helpers
     {
         public const int Duration = 3000;
         public static bool IsShowingProgressBar, IsShowingMessage;
+        public static CoreDispatcher ShellDispatcher { get; set; }
+        public static List<string> MessageList { get; } = new List<string>();
+        public static bool HasTitleBar => !CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar;
         public static bool HasStatusBar => ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
-        private static readonly ObservableCollection<string> MessageList = new ObservableCollection<string>();
+    }
 
-        private static CoreDispatcher shellDispatcher;
-        public static CoreDispatcher ShellDispatcher
-        {
-            get => shellDispatcher;
-            set
-            {
-                if (shellDispatcher != value)
-                {
-                    shellDispatcher = value;
-                }
-            }
-        }
-
+    internal static partial class UIHelper
+    {
         public static async void ShowProgressBar()
         {
             IsShowingProgressBar = true;
@@ -236,8 +231,9 @@ namespace CoolapkUWP.Helpers
     {
         public static MainPage MainPage;
 
-        public static void Navigate(Type pageType, object e = null, NavigationThemeTransition Type = NavigationThemeTransition.Default)
+        public static async void Navigate(Type pageType, object e = null, NavigationThemeTransition Type = NavigationThemeTransition.Default)
         {
+            await MainPage.Dispatcher.ResumeForegroundAsync();
             switch (Type)
             {
                 case NavigationThemeTransition.DrillIn:
@@ -260,6 +256,7 @@ namespace CoolapkUWP.Helpers
 
         public static async Task ShowImageAsync(ImageModel image)
         {
+            await MainPage.Dispatcher.ResumeForegroundAsync();
             if (SettingsHelper.Get<bool>(SettingsHelper.IsUseMultiWindow) && WindowHelper.IsSupportedAppWindow)
             {
                 (AppWindow window, Frame frame) = await WindowHelper.CreateWindow();
@@ -415,7 +412,7 @@ namespace CoolapkUWP.Helpers
             }
             else if (link.StartsWith("/mp/", StringComparison.OrdinalIgnoreCase))
             {
-                Navigate(typeof(HTMLPage), new HTMLViewModel(origin));
+                Navigate(typeof(HTMLPage), new HTMLViewModel(origin, ShellDispatcher));
             }
             else if (origin.StartsWith("http://") || link.StartsWith("https://"))
             {
@@ -431,6 +428,7 @@ namespace CoolapkUWP.Helpers
 
         public static async Task<bool> OpenActivatedEventArgs(IActivatedEventArgs args)
         {
+            await ThreadSwitcher.ResumeBackgroundAsync();
             switch (args.Kind)
             {
                 case ActivationKind.Launch:

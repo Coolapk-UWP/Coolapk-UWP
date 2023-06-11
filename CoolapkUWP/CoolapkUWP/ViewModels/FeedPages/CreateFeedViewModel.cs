@@ -16,6 +16,9 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
+using System.Runtime.CompilerServices;
+using Windows.UI.Core;
+using CoolapkUWP.Common;
 
 #if FEATURE2
 using System.IO;
@@ -29,6 +32,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
     public class CreateFeedViewModel : IViewModel
     {
         public static string[] ImageTypes = new string[] { ".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".tif", ".heif", ".heic" };
+
+        public CoreDispatcher Dispatcher { get; set; }
 
         private string title = string.Empty;
         public string Title
@@ -51,10 +56,19 @@ namespace CoolapkUWP.ViewModels.FeedPages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        private async void RaisePropertyChangedEvent([CallerMemberName] string name = null)
         {
-            if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
+            if (name != null)
+            {
+                if (Dispatcher?.HasThreadAccess == false)
+                {
+                    await Dispatcher.ResumeForegroundAsync();
+                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            }
         }
+
+        public CreateFeedViewModel(CoreDispatcher dispatcher) => Dispatcher = dispatcher;
 
         public async Task Refresh(bool reset)
         {
