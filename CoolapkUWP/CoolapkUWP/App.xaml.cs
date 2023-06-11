@@ -135,9 +135,9 @@ namespace CoolapkUWP
                 // 参数
                 rootFrame.Navigate(typeof(MainPage), e);
             }
-            else
+            else if (rootFrame.Content is MainPage page)
             {
-                _ = UIHelper.OpenActivatedEventArgs(e);
+                _ = page.OpenActivatedEventArgs(e);
             }
 
             // 确保当前窗口处于活动状态

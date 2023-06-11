@@ -23,6 +23,7 @@ using Windows.Foundation.Metadata;
 using Windows.Phone.UI.Input;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
+using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -111,24 +112,27 @@ namespace CoolapkUWP.Pages
             NotificationsModel = NotificationsModel.Instance;
             SearchBoxHolder.RegisterPropertyChangedCallback(Slot.IsStretchProperty, new DependencyPropertyChangedCallback(OnIsStretchProperty));
             NavigationView.RegisterPropertyChangedCallback(muxc.NavigationView.IsBackButtonVisibleProperty, new DependencyPropertyChangedCallback(OnIsBackButtonVisibleChanged));
-            if (ApiInformation.IsMethodPresent("Windows.UI.Composition.Compositor", "TryCreateBlurredWallpaperBackdropBrush")) { BackdropMaterial.SetApplyToRootOrPageBackground(this, true); }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             OnLoginChanged(string.Empty, true);
-            Window.Current?.SetTitleBar(DragRegion);
             SettingsHelper.LoginChanged += OnLoginChanged;
             if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
             { HardwareButtons.BackPressed += System_BackPressed; }
-            SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
             AppTitleText.Text = ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安";
-            CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged += TitleBar_LayoutMetricsChanged;
             if (!isLoaded)
             {
                 if (e.Parameter is IActivatedEventArgs ActivatedEventArgs)
-                { OpenActivatedEventArgs(ActivatedEventArgs); }
+                {
+                    OpenActivatedEventArgs(ActivatedEventArgs);
+                }
+                else
+                {
+                    NavigationView.SelectedItem = NavigationView.MenuItems[0];
+                    NavigationView_Navigate("Home", new EntranceNavigationTransitionInfo());
+                }
                 isLoaded = true;
             }
         }
@@ -136,26 +140,52 @@ namespace CoolapkUWP.Pages
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
-            Window.Current.SetTitleBar(null);
+            if (this.IsAppWindow())
+            {
+                this.GetWindowForElement().Changed -= AppWindow_Changed;
+            }
+            else
+            {
+                Window.Current.SetTitleBar(null);
+                SystemNavigationManager.GetForCurrentView().BackRequested -= System_BackRequested;
+                CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged -= TitleBar_LayoutMetricsChanged;
+            }
             SettingsHelper.LoginChanged -= OnLoginChanged;
             if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
             { HardwareButtons.BackPressed -= System_BackPressed; }
-            SystemNavigationManager.GetForCurrentView().BackRequested -= System_BackRequested;
-            CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged -= TitleBar_LayoutMetricsChanged;
         }
 
-        private void TitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            UpdateAppTitle(sender);
+            if (this.IsAppWindow())
+            {
+                this.GetWindowForElement().Changed += AppWindow_Changed;
+            }
+            else
+            {
+                Window.Current?.SetTitleBar(DragRegion);
+                SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
+                CoreApplication.GetCurrentView().TitleBar.LayoutMetricsChanged += TitleBar_LayoutMetricsChanged;
+                if (ApiInformation.IsMethodPresent("Windows.UI.Composition.Compositor", "TryCreateBlurredWallpaperBackdropBrush"))
+                { BackdropMaterial.SetApplyToRootOrPageBackground(this, true); }
+            }
         }
+
+        private void AppWindow_Changed(AppWindow sender, AppWindowChangedEventArgs args)
+        {
+            RightPaddingColumn.Width = new GridLength(sender.TitleBar.IsVisible ? 188 : 0);
+        }
+
+        private void TitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args) => UpdateAppTitle(sender);
 
         public string GetAppTitleFromSystem => Package.Current.DisplayName;
 
         private async void OpenActivatedEventArgs(IActivatedEventArgs args)
         {
-            if (!await UIHelper.OpenActivatedEventArgs(args))
+            if (!await NavigationViewFrame.OpenActivatedEventArgs(args))
             {
                 NavigationView.SelectedItem = NavigationView.MenuItems[0];
+                NavigationView_Navigate("Home", new EntranceNavigationTransitionInfo());
             }
         }
 
@@ -180,7 +210,7 @@ namespace CoolapkUWP.Pages
             (string Tag, Type Page) item = _pages.FirstOrDefault(p => p.Tag.Equals(NavItemTag, StringComparison.Ordinal));
             _page = item.Page;
             // Get the page type before navigation so you can prevent duplicate
-            // entries in the backstack.
+            // entries in the back stack.
             Type PreNavPageType = NavigationViewFrame.CurrentSourcePageType;
 
             // Only navigate if the selected page isn't currently loaded.
@@ -192,11 +222,11 @@ namespace CoolapkUWP.Pages
 
         private void NavigationView_BackRequested(muxc.NavigationView sender, muxc.NavigationViewBackRequestedEventArgs args) => _ = TryGoBack();
 
-        private void NavigationView_SelectionChanged(muxc.NavigationView sender, muxc.NavigationViewSelectionChangedEventArgs args)
+        private void NavigationView_ItemInvoked(muxc.NavigationView sender, muxc.NavigationViewItemInvokedEventArgs args)
         {
-            if (args.SelectedItemContainer != null)
+            if (args.InvokedItemContainer != null)
             {
-                string NavItemTag = args.SelectedItemContainer.Tag.ToString();
+                string NavItemTag = args.InvokedItemContainer.Tag.ToString();
                 NavigationView_Navigate(NavItemTag, args.RecommendedNavigationTransitionInfo);
             }
         }
@@ -358,7 +388,7 @@ namespace CoolapkUWP.Pages
                                 Edge = EdgeTransitionLocation.Bottom
                             }
                         }
-                    }.Show();
+                    }.Show(this);
                     break;
             }
         }

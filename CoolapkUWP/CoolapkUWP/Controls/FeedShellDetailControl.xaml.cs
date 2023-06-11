@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Notifications;
@@ -39,13 +40,13 @@ namespace CoolapkUWP.Controls
                     _ = PinSecondaryTile(element.Tag as FeedDetailModel);
                     break;
                 case "ReportButton":
-                    UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel(element.Tag.ToString()));
+                    _ = this.NavigateAsync(typeof(BrowserPage), new BrowserViewModel(element.Tag.ToString()));
                     break;
                 case "FollowButton":
                     _ = (element.Tag as ICanFollow).ChangeFollow();
                     break;
                 default:
-                    _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+                    _ = this.OpenLinkAsync((sender as FrameworkElement).Tag as string);
                     break;
             }
         }
@@ -66,7 +67,7 @@ namespace CoolapkUWP.Controls
 
                 if (provider != null)
                 {
-                    UIHelper.Navigate(typeof(FeedListPage), provider);
+                    _ = this.NavigateAsync(typeof(FeedListPage), provider);
                 }
             }
         }
@@ -172,10 +173,10 @@ namespace CoolapkUWP.Controls
 
             if (e != null) { e.Handled = true; }
 
-            _ = element.Tag is ImageModel image ? UIHelper.ShowImageAsync(image) : UIHelper.OpenLinkAsync(element.Tag.ToString());
+            _ = element.Tag is ImageModel image ? UIHelper.ShowImageAsync(image) : this.OpenLinkAsync(element.Tag.ToString());
         }
 
-        private void UrlButton_Click(object sender, RoutedEventArgs e) => _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
+        private void UrlButton_Click(object sender, RoutedEventArgs e) => _ = this.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
 
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e) => (sender as GridView).SelectedIndex = -1;
     }

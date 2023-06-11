@@ -1,11 +1,15 @@
-﻿using Windows.Foundation;
+﻿using System;
+using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Controls
 {
     public class Slot : Panel
     {
+        private UIElement RootElement;
+
         public bool IsStretch
         {
             get => (bool)GetValue(IsStretchProperty);
@@ -69,6 +73,15 @@ namespace CoolapkUWP.Controls
 
         protected override Size ArrangeOverride(Size arrangeSize)
         {
+            if (RootElement is null)
+            {
+                RootElement = FindAscendant(this) as UIElement;
+                if (RootElement is null && Window.Current != null)
+                {
+                    RootElement = Window.Current.Content;
+                }
+            }
+
             bool isStretch = IsStretch;
             bool fHorizontal = Orientation == Orientation.Horizontal;
             UIElementCollection children = Children;
@@ -86,39 +99,40 @@ namespace CoolapkUWP.Controls
             }
             else
             {
-                Window window = Window.Current;
                 if (fHorizontal)
                 {
                     Point screenCoords = LastControl != null
-                        ? LastControl.TransformToVisual(window.Content).TransformPoint(new Point(LastControl.ActualSize.X, 0))
-                        : TransformToVisual(window.Content).TransformPoint(new Point(0, 0));
+                        ? LastControl.TransformToVisual(RootElement).TransformPoint(new Point(LastControl.ActualSize.X, 0))
+                        : TransformToVisual(RootElement).TransformPoint(new Point(0, 0));
 
-                    double leftPadding = screenCoords.X;
-                    double rightPadding = window.Bounds.Width - screenCoords.X - arrangeSize.Width;
+                    double leftPadding = Math.Max(0, screenCoords.X);
+                    double rightPadding = Math.Max(0, RootElement.ActualSize.X - screenCoords.X - arrangeSize.Width);
 
                     if (leftPadding > rightPadding)
                     {
                         double padding = leftPadding - rightPadding;
-                        Rect rcChild = new Rect(0, 0, arrangeSize.Width - padding, arrangeSize.Height);
+                        double width = Math.Max(0, arrangeSize.Width - padding);
+                        Rect rcChild = new Rect(0, 0, width, arrangeSize.Height);
                         foreach (UIElement child in children)
                         {
                             child?.Arrange(rcChild);
                             if (child is FrameworkElement element)
                             {
-                                element.MaxWidth = arrangeSize.Width - padding;
+                                element.MaxWidth = width;
                             }
                         }
                     }
                     else
                     {
                         double padding = rightPadding - leftPadding;
-                        Rect rcChild = new Rect(padding, 0, arrangeSize.Width - padding, arrangeSize.Height);
+                        double width = Math.Max(0, arrangeSize.Width - padding);
+                        Rect rcChild = new Rect(padding, 0, width, arrangeSize.Height);
                         foreach (UIElement child in children)
                         {
                             child?.Arrange(rcChild);
                             if (child is FrameworkElement element)
                             {
-                                element.MaxWidth = arrangeSize.Width - padding;
+                                element.MaxWidth = width;
                             }
                         }
                     }
@@ -126,33 +140,57 @@ namespace CoolapkUWP.Controls
                 else
                 {
                     Point screenCoords = LastControl != null
-                        ? LastControl.TransformToVisual(window.Content).TransformPoint(new Point(0, LastControl.ActualSize.Y))
-                        : TransformToVisual(window.Content).TransformPoint(new Point(0, 0));
+                        ? LastControl.TransformToVisual(RootElement).TransformPoint(new Point(0, LastControl.ActualSize.Y))
+                        : TransformToVisual(RootElement).TransformPoint(new Point(0, 0));
 
-                    double topPadding = screenCoords.Y;
-                    double buttonPadding = window.Bounds.Height - screenCoords.Y - arrangeSize.Height;
+                    double topPadding = Math.Max(0, screenCoords.Y);
+                    double buttonPadding = Math.Max(0, RootElement.ActualSize.Y - screenCoords.Y - arrangeSize.Height);
 
                     if (topPadding > buttonPadding)
                     {
                         double padding = topPadding - buttonPadding;
-                        Rect rcChild = new Rect(0, 0, arrangeSize.Width, arrangeSize.Height - padding);
+                        double height = Math.Max(0, arrangeSize.Height - padding);
+                        Rect rcChild = new Rect(0, 0, arrangeSize.Width, height);
                         foreach (UIElement child in children)
                         {
                             child?.Arrange(rcChild);
+                            if (child is FrameworkElement element)
+                            {
+                                element.MaxHeight = height;
+                            }
                         }
                     }
                     else
                     {
                         double padding = buttonPadding - topPadding;
-                        Rect rcChild = new Rect(0, padding, arrangeSize.Width, arrangeSize.Height - padding);
+                        double height = Math.Max(0, arrangeSize.Height - padding);
+                        Rect rcChild = new Rect(0, padding, arrangeSize.Width, height);
                         foreach (UIElement child in children)
                         {
                             child?.Arrange(rcChild);
+                            if (child is FrameworkElement element)
+                            {
+                                element.MaxHeight = height;
+                            }
                         }
                     }
                 }
             }
             return arrangeSize;
+        }
+
+        private static DependencyObject FindAscendant(DependencyObject element)
+        {
+            DependencyObject result = null;
+            while (true)
+            {
+                DependencyObject parent = VisualTreeHelper.GetParent(element);
+                if (parent == null)
+                {
+                    return result;
+                }
+                result = element = parent;
+            }
         }
     }
 }

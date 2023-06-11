@@ -22,7 +22,7 @@ namespace CoolapkUWP.Controls
         public SettingsFlyoutControl()
         {
             InitializeComponent();
-            Provider = SettingsViewModel.Caches ?? new SettingsViewModel();
+            Provider = SettingsViewModel.Caches ?? new SettingsViewModel(Dispatcher);
             ThemeHelper.UISettingChanged.Add(mode =>
             {
                 switch (mode)
@@ -67,7 +67,7 @@ namespace CoolapkUWP.Controls
                     Provider.IsLogin = false;
                     break;
                 case "AccountSetting":
-                    UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel("https://account.coolapk.com/account/settings"));
+                    _ = this.NavigateAsync(typeof(BrowserPage), new BrowserViewModel("https://account.coolapk.com/account/settings"));
                     break;
                 default:
                     break;
@@ -104,10 +104,7 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        private void MarkdownText_LinkClicked(object sender, LinkClickedEventArgs e)
-        {
-            _ = UIHelper.OpenLinkAsync(e.Link);
-        }
+        private void MarkdownText_LinkClicked(object sender, LinkClickedEventArgs e) => _ = this.OpenLinkAsync(e.Link);
 
         private void GotoUpdate_Click(object sender, RoutedEventArgs e) => _ = Launcher.LaunchUriAsync(new Uri((sender as FrameworkElement).Tag.ToString()));
     }

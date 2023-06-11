@@ -44,7 +44,6 @@ namespace CoolapkUWP.Pages
                 Provider = ViewModel;
                 DataContext = Provider;
             }
-            SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
             if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
             { HardwareButtons.BackPressed += System_BackPressed; }
         }
@@ -60,15 +59,13 @@ namespace CoolapkUWP.Pages
             {
                 Window.Current?.SetTitleBar(null);
                 SystemNavigationManager.GetForCurrentView().BackRequested -= System_BackRequested;
-                if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
-                {
-                    HardwareButtons.BackPressed -= System_BackPressed;
-                }
                 CoreApplicationViewTitleBar TitleBar = CoreApplication.GetCurrentView().TitleBar;
                 TitleBar.LayoutMetricsChanged -= TitleBar_LayoutMetricsChanged;
                 TitleBar.IsVisibleChanged -= TitleBar_IsVisibleChanged;
                 Frame.Navigated -= On_Navigated;
             }
+            if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
+            { HardwareButtons.BackPressed -= System_BackPressed; }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -83,6 +80,7 @@ namespace CoolapkUWP.Pages
                 if (ApiInformation.IsMethodPresent("Windows.UI.Composition.Compositor", "TryCreateBlurredWallpaperBackdropBrush"))
                 { BackdropMaterial.SetApplyToRootOrPageBackground(this, true); }
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = TryGoBack(false);
+                SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
                 CoreApplicationViewTitleBar TitleBar = CoreApplication.GetCurrentView().TitleBar;
                 if (!(AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop"))
                 { UpdateContentLayout(TitleBar); }

@@ -267,9 +267,10 @@ namespace CoolapkUWP.ViewModels.SettingsPages
             }
         }
 
-        public SettingsViewModel()
+        public SettingsViewModel(CoreDispatcher dispatcher)
         {
             Caches = this;
+            Dispatcher = dispatcher;
             SettingsHelper.LoginChanged += (sender, args) => IsLogin = args;
         }
 

@@ -218,7 +218,7 @@ namespace CoolapkUWP.Controls
                                 Hyperlink hyperlink = new Hyperlink { UnderlineStyle = UnderlineStyle.None };
                                 if (!string.IsNullOrEmpty(href))
                                 {
-                                    hyperlink.Click += (sender, e) => _ = UIHelper.OpenLinkAsync(href);
+                                    hyperlink.Click += (sender, e) => _ = this.OpenLinkAsync(href);
                                     ToolTipService.SetToolTip(hyperlink, new ToolTip { Content = href });
                                 }
                                 if (!content.StartsWith("@") && !content.StartsWith("#") && !(type == "user-detail"))

@@ -184,7 +184,7 @@ namespace CoolapkUWP.Pages.SettingsPages
                     { _ = ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default); }
                     break;
                 case "OpenURL":
-                    _ = UIHelper.OpenLinkAsync(URLTextBox.Text);
+                    _ = this.OpenLinkAsync(URLTextBox.Text);
                     break;
                 case "EnterPIP":
                     if (ApplicationView.GetForCurrentView().IsViewModeSupported(ApplicationViewMode.CompactOverlay))

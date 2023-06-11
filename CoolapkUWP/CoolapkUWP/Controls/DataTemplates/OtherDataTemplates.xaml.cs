@@ -12,9 +12,10 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         private void OnTapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            if (((FrameworkElement)sender).FindAscendant("searchPivot") == null)
+            FrameworkElement element = sender as FrameworkElement;
+            if (element.FindAscendant("searchPivot") == null)
             {
-                _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+                _ = element.OpenLinkAsync((sender as FrameworkElement).Tag as string);
             }
         }
 

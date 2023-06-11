@@ -28,7 +28,7 @@ namespace CoolapkUWP.Pages.SettingsPages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            Provider = SettingsViewModel.Caches ?? new SettingsViewModel();
+            Provider = SettingsViewModel.Caches ?? new SettingsViewModel(Dispatcher);
             DataContext = Provider;
         }
 
@@ -103,7 +103,7 @@ namespace CoolapkUWP.Pages.SettingsPages
 
         private void MarkdownText_LinkClicked(object sender, LinkClickedEventArgs e)
         {
-            _ = UIHelper.OpenLinkAsync(e.Link);
+            _ = this.OpenLinkAsync(e.Link);
         }
 
         private void GotoUpdate_Click(object sender, RoutedEventArgs e) => _ = Launcher.LaunchUriAsync(new Uri((sender as FrameworkElement).Tag.ToString()));

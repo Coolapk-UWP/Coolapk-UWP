@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
-    xmlns:contract12NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 12)"
     xmlns:contract5NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
@@ -12,7 +11,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:templates="using:CoolapkUWP.Controls.DataTemplates"
-    contract12NotPresent:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="Page_Loaded"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>
@@ -117,7 +117,7 @@
                 Grid.Column="3"
                 Margin="10,0"
                 HorizontalAlignment="Left">
-                <Button Style="{StaticResource ProfileButtonStyle}">
+                <Button x:Name="ProfileButton" Style="{StaticResource ProfileButtonStyle}">
                     <contract5Present:Button.KeyboardAccelerators>
                         <contract5Present:KeyboardAccelerator Key="U" Modifiers="Control" />
                     </contract5Present:Button.KeyboardAccelerators>
@@ -175,7 +175,7 @@
                                     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
                                 </Style>
                             </Flyout.FlyoutPresenterStyle>
-                            <controls:ProfileFlyoutControl FlyoutBase="{x:Bind ProfileFlyout, Mode=OneWay}" />
+                            <controls:ProfileFlyoutControl FlyoutBase="{x:Bind ProfileFlyout, Mode=OneWay}" XamlHost="{x:Bind ProfileButton, Mode=OneWay}" />
                         </Flyout>
                     </Button.Flyout>
                     <muxc:PersonPicture
@@ -194,9 +194,9 @@
             IsBackEnabled="False"
             IsSettingsVisible="False"
             IsTitleBarAutoPaddingEnabled="False"
+            ItemInvoked="NavigationView_ItemInvoked"
             PaneClosing="NavigationViewControl_PaneClosing"
-            PaneOpening="NavigationViewControl_PaneOpening"
-            SelectionChanged="NavigationView_SelectionChanged">
+            PaneOpening="NavigationViewControl_PaneOpening">
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem x:Uid="/MainPage/Home" Tag="Home">
                     <muxc:NavigationViewItem.Icon>

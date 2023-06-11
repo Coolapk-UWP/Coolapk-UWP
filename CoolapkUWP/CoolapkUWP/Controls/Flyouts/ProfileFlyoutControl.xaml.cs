@@ -1,10 +1,12 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Controls.DataTemplates;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.UI;
 using System;
+using System.Xml.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -19,6 +21,19 @@ namespace CoolapkUWP.Controls
     {
         private DateTime dateTime = default;
         private readonly ProfileFlyoutViewModel Provider;
+
+        public static readonly DependencyProperty XamlHostProperty =
+            DependencyProperty.Register(
+                nameof(XamlHost),
+                typeof(DependencyObject),
+                typeof(ProfileCardTemplates),
+                null);
+
+        public DependencyObject XamlHost
+        {
+            get => (DependencyObject)GetValue(XamlHostProperty);
+            set => SetValue(XamlHostProperty, value);
+        }
 
         public static readonly DependencyProperty FlyoutBaseProperty =
             DependencyProperty.Register(
@@ -45,16 +60,16 @@ namespace CoolapkUWP.Controls
             switch ((sender as FrameworkElement).Tag.ToString())
             {
                 case "FeedsButton":
-                    UIHelper.Navigate(typeof(FeedListPage), FeedListViewModel.GetProvider(FeedListType.UserPageList, Provider.ProfileDetail.EntityID.ToString()));
+                    _ = XamlHost.NavigateAsync(typeof(FeedListPage), FeedListViewModel.GetProvider(FeedListType.UserPageList, Provider.ProfileDetail.EntityID.ToString()));
                     break;
                 case "FollowsButton":
-                    UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(SettingsHelper.Get<string>(SettingsHelper.Uid), true, "我"));
+                    _ = XamlHost.NavigateAsync(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(SettingsHelper.Get<string>(SettingsHelper.Uid), true, "我"));
                     break;
                 case "FansButton":
-                    UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(SettingsHelper.Get<string>(SettingsHelper.Uid), false, "我"));
+                    _ = XamlHost.NavigateAsync(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(SettingsHelper.Get<string>(SettingsHelper.Uid), false, "我"));
                     break;
                 case "LoginButton":
-                    UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel(UriHelper.LoginUri));
+                    _ = XamlHost.NavigateAsync(typeof(BrowserPage), new BrowserViewModel(UriHelper.LoginUri));
                     break;
                 case "CreateFeedButton":
                     new CreateFeedControl
@@ -67,7 +82,7 @@ namespace CoolapkUWP.Controls
                                 Edge = EdgeTransitionLocation.Bottom
                             }
                         }
-                    }.Show();
+                    }.Show(this);
                     break;
                 default:
                     break;

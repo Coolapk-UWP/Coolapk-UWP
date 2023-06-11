@@ -132,13 +132,13 @@ namespace CoolapkUWP.Pages.FeedPages
             switch (element.Name)
             {
                 case "FansButton":
-                    UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(Provider.ID, false, Provider.Title));
+                    _ = this.NavigateAsync(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(Provider.ID, false, Provider.Title));
                     break;
                 case "LikeButton":
                     _ = (element.Tag as ICanLike).ChangeLike();
                     break;
                 case "ReportButton":
-                    UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel(element.Tag.ToString()));
+                    _ = this.NavigateAsync(typeof(BrowserPage), new BrowserViewModel(element.Tag.ToString()));
                     break;
                 case "FollowButton":
                     _ = (element.Tag as ICanFollow).ChangeFollow();
@@ -147,7 +147,7 @@ namespace CoolapkUWP.Pages.FeedPages
                     _ = Provider.PinSecondaryTile(element.Tag as Entity);
                     break;
                 case "FollowsButton":
-                    UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(Provider.ID, true, Provider.Title));
+                    _ = this.NavigateAsync(typeof(AdaptivePage), AdaptiveViewModel.GetUserListProvider(Provider.ID, true, Provider.Title));
                     break;
                 default:
                     break;
@@ -189,14 +189,14 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void On_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            object Tag = (sender as FrameworkElement).Tag;
-            if (Tag is ImageModel image)
+            FrameworkElement element = sender as FrameworkElement;
+            if (element.Tag is ImageModel image)
             {
                 _ = UIHelper.ShowImageAsync(image);
             }
-            else if (Tag is string url)
+            else if (element.Tag is string url)
             {
-                _ = UIHelper.OpenLinkAsync(url);
+                _ = this.OpenLinkAsync(url);
             }
         }
 

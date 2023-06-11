@@ -2,6 +2,7 @@
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Feeds;
+using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.BrowserPages;
@@ -42,7 +43,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
             if (e != null) { e.Handled = true; }
 
-            _ = UIHelper.OpenLinkAsync(element.Tag as string);
+            _ = element.OpenLinkAsync(element.Tag as string);
         }
 
         private void OnTopTapped(object sender, TappedRoutedEventArgs e)
@@ -51,7 +52,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
             if (e != null) { e.Handled = true; }
 
-            _ = UIHelper.OpenLinkAsync(element.Tag.ToString());
+            _ = element.OpenLinkAsync(element.Tag.ToString());
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -60,25 +61,26 @@ namespace CoolapkUWP.Controls.DataTemplates
             switch (element.Name)
             {
                 case "SeeAllButton":
-                    UIHelper.Navigate(typeof(AdaptivePage), AdaptiveViewModel.GetReplyListProvider(((FeedReplyModel)element.Tag).ID.ToString(), (FeedReplyModel)element.Tag));
+                    _ = element.NavigateAsync(typeof(AdaptivePage), AdaptiveViewModel.GetReplyListProvider(((FeedReplyModel)element.Tag).ID.ToString(), (FeedReplyModel)element.Tag));
                     break;
                 default:
-                    _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
+                    _ = element.OpenLinkAsync((sender as FrameworkElement).Tag.ToString());
                     break;
             }
         }
 
         private void FeedButton_Click(object sender, RoutedEventArgs e)
         {
+            FrameworkElement element = sender as FrameworkElement;
+
             void DisabledCopy()
             {
-                if ((sender as FrameworkElement).DataContext is ICanCopy i)
+                if (element.DataContext is ICanCopy i)
                 {
                     i.IsCopyEnabled = false;
                 }
             }
 
-            FrameworkElement element = sender as FrameworkElement;
             switch (element.Name)
             {
                 case "MakeReplyButton":
@@ -97,7 +99,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
                 case "ReportButton":
                     DisabledCopy();
-                    UIHelper.Navigate(typeof(BrowserPage), new BrowserViewModel(element.Tag.ToString()));
+                    _ = element.NavigateAsync(typeof(BrowserPage), new BrowserViewModel(element.Tag.ToString()));
                     break;
 
                 case "ReplyButton":
@@ -115,7 +117,7 @@ namespace CoolapkUWP.Controls.DataTemplates
                                     Edge = EdgeTransitionLocation.Bottom
                                 }
                             }
-                        }.Show();
+                        }.Show(element);
                     }
                     else if (element.Tag is FeedReplyModel reply)
                     {
@@ -130,7 +132,7 @@ namespace CoolapkUWP.Controls.DataTemplates
                                     Edge = EdgeTransitionLocation.Bottom
                                 }
                             }
-                        }.Show();
+                        }.Show(element);
                     }
                     DisabledCopy();
                     break;
@@ -146,7 +148,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
                 default:
                     DisabledCopy();
-                    _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string);
+                    _ = element.OpenLinkAsync((sender as FrameworkElement).Tag as string);
                     break;
             }
         }
@@ -167,7 +169,7 @@ namespace CoolapkUWP.Controls.DataTemplates
 
                 if (provider != null)
                 {
-                    UIHelper.Navigate(typeof(FeedListPage), provider);
+                    _ = sender.NavigateAsync(typeof(FeedListPage), provider);
                 }
             }
         }

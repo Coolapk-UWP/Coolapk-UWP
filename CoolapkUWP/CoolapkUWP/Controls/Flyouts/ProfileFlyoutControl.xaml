@@ -19,7 +19,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <templates:ProfileCardTemplates FlyoutBase="{x:Bind FlyoutBase, Mode=OneWay}" />
+                <templates:ProfileCardTemplates FlyoutBase="{x:Bind FlyoutBase, Mode=OneWay}" XamlHost="{x:Bind XamlHost, Mode=OneWay}" />
             </ResourceDictionary.MergedDictionaries>
             <templates:ProfileCardTemplateSelector
                 x:Key="ProfileCardTemplateSelector"

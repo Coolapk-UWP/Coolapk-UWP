@@ -1,4 +1,5 @@
-﻿using Windows.UI.Core;
+﻿using CoolapkUWP.Helpers;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -46,24 +47,22 @@ namespace CoolapkUWP.Controls
             Window.Current.SizeChanged -= Window_SizeChanged;
         }
 
-        public void Show()
+        public void Show(UIElement element)
         {
             if (Parent is Grid grid)
             {
                 grid.Children.Remove(this);
             }
 
-            _rootGrid = new Grid
-            {
-                Width = Window.Current.Bounds.Width,
-                Height = Window.Current.Bounds.Height
-            };
+            _rootGrid = new Grid();
 
             _popup = new Popup
             {
                 Child = _rootGrid
             };
             _rootGrid.Children.Add(this);
+
+            _popup.SetXAMLRoot(element);
 
             _popup.IsOpen = true;
         }

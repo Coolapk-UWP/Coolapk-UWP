@@ -16,7 +16,10 @@ namespace CoolapkUWP.Controls.DataTemplates
         private void OnTapped(object sender, TappedRoutedEventArgs e)
         {
             if (e == null || sender is PersonPicture || (sender is Grid && !(e.OriginalSource is Ellipse)))
-            { _ = UIHelper.OpenLinkAsync((sender as FrameworkElement).Tag as string); }
+            {
+                FrameworkElement element = sender as FrameworkElement;
+                _ = element.OpenLinkAsync(element.Tag as string);
+            }
         }
 
         private void OnKeyDown(object sender, KeyRoutedEventArgs e)
