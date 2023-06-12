@@ -14,7 +14,6 @@ using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Data.Xml.Dom;
@@ -45,6 +44,10 @@ namespace CoolapkUWP.Helpers
     {
         public static async void ShowProgressBar()
         {
+            if (!MainPage.Dispatcher.HasThreadAccess)
+            {
+                await MainPage.Dispatcher.ResumeForegroundAsync();
+            }
             IsShowingProgressBar = true;
             if (HasStatusBar)
             {
@@ -60,6 +63,10 @@ namespace CoolapkUWP.Helpers
 
         public static async void ShowProgressBar(double value = 0)
         {
+            if (!MainPage.Dispatcher.HasThreadAccess)
+            {
+                await MainPage.Dispatcher.ResumeForegroundAsync();
+            }
             IsShowingProgressBar = true;
             if (HasStatusBar)
             {
@@ -75,6 +82,10 @@ namespace CoolapkUWP.Helpers
 
         public static async void PausedProgressBar()
         {
+            if (!MainPage.Dispatcher.HasThreadAccess)
+            {
+                await MainPage.Dispatcher.ResumeForegroundAsync();
+            }
             IsShowingProgressBar = true;
             if (HasStatusBar)
             {
@@ -85,6 +96,10 @@ namespace CoolapkUWP.Helpers
 
         public static async void ErrorProgressBar()
         {
+            if (!MainPage.Dispatcher.HasThreadAccess)
+            {
+                await MainPage.Dispatcher.ResumeForegroundAsync();
+            }
             IsShowingProgressBar = true;
             if (HasStatusBar)
             {
@@ -95,6 +110,10 @@ namespace CoolapkUWP.Helpers
 
         public static async void HideProgressBar()
         {
+            if (!MainPage.Dispatcher.HasThreadAccess)
+            {
+                await MainPage.Dispatcher.ResumeForegroundAsync();
+            }
             IsShowingProgressBar = false;
             if (HasStatusBar)
             {
@@ -109,6 +128,10 @@ namespace CoolapkUWP.Helpers
             if (!IsShowingMessage)
             {
                 IsShowingMessage = true;
+                if (!MainPage.Dispatcher.HasThreadAccess)
+                {
+                    await MainPage.Dispatcher.ResumeForegroundAsync();
+                }
                 while (MessageList.Any())
                 {
                     if (HasStatusBar)
