@@ -164,10 +164,10 @@
     <value>當前無可用更新。</value>
   </data>
   <data name="OSSUploaderDescription" xml:space="preserve">
-    <value>一个用于上传图片到阿里云 OSS 的插件</value>
+    <value>一個用於上傳圖片到阿裡雲 OSS 的擴展</value>
   </data>
   <data name="OSSUploaderName" xml:space="preserve">
-    <value>OSS 上传插件</value>
+    <value>OSS 上傳擴展</value>
   </data>
   <data name="PinnedTileFailed" xml:space="preserve">
     <value>固定磁貼失敗</value>
