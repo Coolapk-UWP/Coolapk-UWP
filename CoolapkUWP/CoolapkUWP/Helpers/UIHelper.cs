@@ -277,7 +277,7 @@ namespace CoolapkUWP.Helpers
             return mainPage.ShowImageAsync(image);
         }
 
-        public static async Task<bool> ShowImageAsync(MainPage mainPage, ImageModel image)
+        public static async Task<bool> ShowImageAsync(this MainPage mainPage, ImageModel image)
         {
             if (!mainPage.Dispatcher.HasThreadAccess)
             { await mainPage.Dispatcher.ResumeForegroundAsync(); }
