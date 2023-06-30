@@ -327,7 +327,7 @@
     <Compile Include="ViewModels\BrowserPages\BrowserViewModel.cs" />
     <Compile Include="ViewModels\BrowserPages\HTMLViewModel.cs" />
     <Compile Include="ViewModels\DataSource\DataSourceBase.cs" />
-    <Compile Include="ViewModels\DataSource\EntityItemSourse.cs" />
+    <Compile Include="ViewModels\DataSource\EntityItemSource.cs" />
     <Compile Include="ViewModels\DataSource\IncrementalLoadingBase.cs" />
     <Compile Include="ViewModels\FeedPages\AdaptiveViewModel.cs" />
     <Compile Include="ViewModels\FeedPages\CreateFeedViewModel.cs" />

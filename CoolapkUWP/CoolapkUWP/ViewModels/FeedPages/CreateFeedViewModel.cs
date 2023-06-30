@@ -48,8 +48,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
             }
         }
 
-        public readonly CreateUserItemSourse CreateUserItemSourse = new CreateUserItemSourse();
-        public readonly CreateTopicItemSourse CreateTopicItemSourse = new CreateTopicItemSourse();
+        public readonly CreateUserItemSource CreateUserItemSource = new CreateUserItemSource();
+        public readonly CreateTopicItemSource CreateTopicItemSource = new CreateTopicItemSource();
 
         public readonly ObservableCollection<WriteableBitmap> Pictures = new ObservableCollection<WriteableBitmap>();
 
@@ -71,8 +71,8 @@ namespace CoolapkUWP.ViewModels.FeedPages
 
         public async Task Refresh(bool reset)
         {
-            await CreateUserItemSourse.Refresh(reset);
-            await CreateTopicItemSourse.Refresh(reset);
+            await CreateUserItemSource.Refresh(reset);
+            await CreateTopicItemSource.Refresh(reset);
         }
 
         bool IViewModel.IsEqual(IViewModel other) => other is CreateFeedViewModel model && Equals(model);
@@ -245,7 +245,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class CreateUserItemSourse : EntityItemSourse
+    public class CreateUserItemSource : EntityItemSource
     {
         private string keyword = string.Empty;
         public string Keyword
@@ -261,7 +261,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
             }
         }
 
-        public CreateUserItemSourse(string keyword = " ")
+        public CreateUserItemSource(string keyword = " ")
         {
             Keyword = keyword;
         }
@@ -302,7 +302,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class CreateTopicItemSourse : EntityItemSourse
+    public class CreateTopicItemSource : EntityItemSource
     {
         private string keyword = string.Empty;
         public string Keyword
@@ -318,7 +318,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
             }
         }
 
-        public CreateTopicItemSourse(string keyword = " ")
+        public CreateTopicItemSource(string keyword = " ")
         {
             Keyword = keyword;
         }

@@ -51,7 +51,7 @@
                     <ComboBox
                         Margin="8,6,4,6"
                         VerticalAlignment="Center"
-                        SelectedIndex="{Binding SearchFeedItemSourse.SearchFeedTypeComboBoxSelectedIndex, Mode=TwoWay}">
+                        SelectedIndex="{Binding SearchFeedItemSource.SearchFeedTypeComboBoxSelectedIndex, Mode=TwoWay}">
                         <x:String>全部</x:String>
                         <x:String>动态</x:String>
                         <x:String>图文</x:String>
@@ -66,7 +66,7 @@
                     <ComboBox
                         Margin="4,6,8,6"
                         VerticalAlignment="Center"
-                        SelectedIndex="{Binding SearchFeedItemSourse.SearchFeedSortTypeComboBoxSelectedIndex, Mode=TwoWay}">
+                        SelectedIndex="{Binding SearchFeedItemSource.SearchFeedSortTypeComboBoxSelectedIndex, Mode=TwoWay}">
                         <x:String>实时</x:String>
                         <x:String>热度</x:String>
                         <x:String>评论数</x:String>
@@ -93,7 +93,7 @@
                     ui:ListViewExtensions.ItemContainerStretchDirection="Horizontal"
                     ItemContainerStyle="{StaticResource DefaultCardItemStyle}"
                     ItemTemplateSelector="{StaticResource CardTemplateSelector}"
-                    ItemsSource="{Binding SearchFeedItemSourse}"
+                    ItemsSource="{Binding SearchFeedItemSource}"
                     ShowsScrollingPlaceholders="False"
                     Style="{StaticResource DefaultCardListViewStyle}" />
             </muxc:RefreshContainer>
@@ -104,7 +104,7 @@
                     ui:ListViewExtensions.ItemContainerStretchDirection="Horizontal"
                     ItemContainerStyle="{StaticResource DefaultCardItemStyle}"
                     ItemTemplateSelector="{StaticResource CardTemplateSelector}"
-                    ItemsSource="{Binding SearchFeedItemSourse}"
+                    ItemsSource="{Binding SearchFeedItemSource}"
                     ShowsScrollingPlaceholders="False"
                     Style="{StaticResource DefaultCardListViewStyle}" />
             </muxc:RefreshContainer>
@@ -115,7 +115,7 @@
                     ui:ListViewExtensions.ItemContainerStretchDirection="Horizontal"
                     ItemContainerStyle="{StaticResource DefaultCardItemStyle}"
                     ItemTemplateSelector="{StaticResource CardTemplateSelector}"
-                    ItemsSource="{Binding SearchFeedItemSourse}"
+                    ItemsSource="{Binding SearchFeedItemSource}"
                     ShowsScrollingPlaceholders="False"
                     Style="{StaticResource DefaultCardListViewStyle}" />
             </muxc:RefreshContainer>

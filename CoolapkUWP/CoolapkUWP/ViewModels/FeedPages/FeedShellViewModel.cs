@@ -91,9 +91,9 @@ namespace CoolapkUWP.ViewModels.FeedPages
 
     public class FeedDetailViewModel : FeedShellViewModel
     {
-        public ReplyItemSourse ReplyItemSourse { get; private set; }
-        public LikeItemSourse LikeItemSourse { get; private set; }
-        public ShareItemSourse ShareItemSourse { get; private set; }
+        public ReplyItemSource ReplyItemSource { get; private set; }
+        public LikeItemSource LikeItemSource { get; private set; }
+        public ShareItemSource ShareItemSource { get; private set; }
 
         internal FeedDetailViewModel(string id) : base(id) { }
 
@@ -104,50 +104,50 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 FeedDetail = await GetFeedDetailAsync(ID);
                 List<ShyHeaderItem> ItemSource = new List<ShyHeaderItem>();
                 Title = FeedDetail.Title;
-                if (ReplyItemSourse == null || ReplyItemSourse.ID != ID)
+                if (ReplyItemSource == null || ReplyItemSource.ID != ID)
                 {
-                    ReplyItemSourse = new ReplyItemSourse(ID);
-                    ReplyItemSourse.LoadMoreStarted += UIHelper.ShowProgressBar;
-                    ReplyItemSourse.LoadMoreCompleted += UIHelper.HideProgressBar;
+                    ReplyItemSource = new ReplyItemSource(ID);
+                    ReplyItemSource.LoadMoreStarted += UIHelper.ShowProgressBar;
+                    ReplyItemSource.LoadMoreCompleted += UIHelper.HideProgressBar;
                 }
                 ItemSource.Add(new ShyHeaderItem
                 {
                     Header = "回复",
-                    ItemSource = ReplyItemSourse
+                    ItemSource = ReplyItemSource
                 });
-                if (LikeItemSourse == null || LikeItemSourse.ID != ID)
+                if (LikeItemSource == null || LikeItemSource.ID != ID)
                 {
-                    LikeItemSourse = new LikeItemSourse(ID);
-                    LikeItemSourse.LoadMoreStarted += UIHelper.ShowProgressBar;
-                    LikeItemSourse.LoadMoreCompleted += UIHelper.HideProgressBar;
+                    LikeItemSource = new LikeItemSource(ID);
+                    LikeItemSource.LoadMoreStarted += UIHelper.ShowProgressBar;
+                    LikeItemSource.LoadMoreCompleted += UIHelper.HideProgressBar;
                 }
                 ItemSource.Add(new ShyHeaderItem
                 {
                     Header = "点赞",
-                    ItemSource = LikeItemSourse
+                    ItemSource = LikeItemSource
                 });
-                if (ShareItemSourse == null || ShareItemSourse.ID != ID)
+                if (ShareItemSource == null || ShareItemSource.ID != ID)
                 {
-                    ShareItemSourse = new ShareItemSourse(ID, FeedDetail.FeedType);
-                    ShareItemSourse.LoadMoreStarted += UIHelper.ShowProgressBar;
-                    ShareItemSourse.LoadMoreCompleted += UIHelper.HideProgressBar;
+                    ShareItemSource = new ShareItemSource(ID, FeedDetail.FeedType);
+                    ShareItemSource.LoadMoreStarted += UIHelper.ShowProgressBar;
+                    ShareItemSource.LoadMoreCompleted += UIHelper.HideProgressBar;
                 }
                 ItemSource.Add(new ShyHeaderItem
                 {
                     Header = "转发",
-                    ItemSource = ShareItemSourse
+                    ItemSource = ShareItemSource
                 });
                 base.ItemSource = ItemSource;
             }
-            await ReplyItemSourse?.Refresh(reset);
+            await ReplyItemSource?.Refresh(reset);
         }
     }
 
     public class QuestionViewModel : FeedShellViewModel
     {
-        public QuestionItemSourse ReplyItemSourse { get; private set; }
-        public QuestionItemSourse LikeItemSourse { get; private set; }
-        public QuestionItemSourse DatelineItemSourse { get; private set; }
+        public QuestionItemSource ReplyItemSource { get; private set; }
+        public QuestionItemSource LikeItemSource { get; private set; }
+        public QuestionItemSource DatelineItemSource { get; private set; }
 
         internal QuestionViewModel(string id) : base(id) { }
 
@@ -158,46 +158,46 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 FeedDetail = await GetFeedDetailAsync(ID);
                 List<ShyHeaderItem> ItemSource = new List<ShyHeaderItem>();
                 Title = FeedDetail.Title;
-                if (ReplyItemSourse == null || ReplyItemSourse.ID != ID)
+                if (ReplyItemSource == null || ReplyItemSource.ID != ID)
                 {
-                    ReplyItemSourse = new QuestionItemSourse(ID, "reply");
-                    ReplyItemSourse.LoadMoreStarted += UIHelper.ShowProgressBar;
-                    ReplyItemSourse.LoadMoreCompleted += UIHelper.HideProgressBar;
+                    ReplyItemSource = new QuestionItemSource(ID, "reply");
+                    ReplyItemSource.LoadMoreStarted += UIHelper.ShowProgressBar;
+                    ReplyItemSource.LoadMoreCompleted += UIHelper.HideProgressBar;
                 }
                 ItemSource.Add(new ShyHeaderItem
                 {
                     Header = "热度排序",
-                    ItemSource = ReplyItemSourse
+                    ItemSource = ReplyItemSource
                 });
-                if (LikeItemSourse == null || LikeItemSourse.ID != ID)
+                if (LikeItemSource == null || LikeItemSource.ID != ID)
                 {
-                    LikeItemSourse = new QuestionItemSourse(ID, "like");
-                    LikeItemSourse.LoadMoreStarted += UIHelper.ShowProgressBar;
-                    LikeItemSourse.LoadMoreCompleted += UIHelper.HideProgressBar;
+                    LikeItemSource = new QuestionItemSource(ID, "like");
+                    LikeItemSource.LoadMoreStarted += UIHelper.ShowProgressBar;
+                    LikeItemSource.LoadMoreCompleted += UIHelper.HideProgressBar;
                 }
                 ItemSource.Add(new ShyHeaderItem
                 {
                     Header = "点赞排序",
-                    ItemSource = LikeItemSourse
+                    ItemSource = LikeItemSource
                 });
-                if (DatelineItemSourse == null || DatelineItemSourse.ID != ID)
+                if (DatelineItemSource == null || DatelineItemSource.ID != ID)
                 {
-                    DatelineItemSourse = new QuestionItemSourse(ID, "dateline");
-                    DatelineItemSourse.LoadMoreStarted += UIHelper.ShowProgressBar;
-                    DatelineItemSourse.LoadMoreCompleted += UIHelper.HideProgressBar;
+                    DatelineItemSource = new QuestionItemSource(ID, "dateline");
+                    DatelineItemSource.LoadMoreStarted += UIHelper.ShowProgressBar;
+                    DatelineItemSource.LoadMoreCompleted += UIHelper.HideProgressBar;
                 }
                 ItemSource.Add(new ShyHeaderItem
                 {
                     Header = "时间排序",
-                    ItemSource = DatelineItemSourse
+                    ItemSource = DatelineItemSource
                 });
                 base.ItemSource = ItemSource;
             }
-            await ReplyItemSourse?.Refresh(reset);
+            await ReplyItemSource?.Refresh(reset);
         }
     }
 
-    public class ReplyItemSourse : EntityItemSourse, INotifyPropertyChanged, ICanComboBoxChangeSelectedIndex, ICanToggleChangeSelectedIndex
+    public class ReplyItemSource : EntityItemSource, INotifyPropertyChanged, ICanComboBoxChangeSelectedIndex, ICanToggleChangeSelectedIndex
     {
         public string ID;
         public List<string> ItemSource { get; private set; }
@@ -248,7 +248,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
             }
         }
 
-        public ReplyItemSourse(string id)
+        public ReplyItemSource(string id)
         {
             ID = id;
             ItemSource = new List<string>()
@@ -301,11 +301,11 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class LikeItemSourse : EntityItemSourse
+    public class LikeItemSource : EntityItemSource
     {
         public string ID;
 
-        public LikeItemSourse(string id)
+        public LikeItemSource(string id)
         {
             ID = id;
             Provider = new CoolapkListProvider(
@@ -325,11 +325,11 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class ShareItemSourse : EntityItemSourse
+    public class ShareItemSource : EntityItemSource
     {
         public string ID;
 
-        public ShareItemSourse(string id, string feedtype = "feed")
+        public ShareItemSource(string id, string feedtype = "feed")
         {
             ID = id;
             Provider = new CoolapkListProvider(
@@ -349,11 +349,11 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class QuestionItemSourse : EntityItemSourse
+    public class QuestionItemSource : EntityItemSource
     {
         public string ID;
 
-        public QuestionItemSourse(string id, string answerSortType = "reply")
+        public QuestionItemSource(string id, string answerSortType = "reply")
         {
             ID = id;
             Provider = new CoolapkListProvider(

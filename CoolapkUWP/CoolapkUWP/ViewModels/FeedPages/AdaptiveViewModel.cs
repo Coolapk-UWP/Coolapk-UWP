@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CoolapkUWP.ViewModels.FeedPages
 {
-    public class AdaptiveViewModel : EntityItemSourse, IViewModel
+    public class AdaptiveViewModel : EntityItemSource, IViewModel
     {
         private readonly string Uri;
         private readonly List<Type> EntityTypes;

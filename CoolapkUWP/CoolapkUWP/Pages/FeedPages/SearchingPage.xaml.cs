@@ -52,7 +52,7 @@ namespace CoolapkUWP.Pages.FeedPages
             PivotItem MenuItem = Pivot.SelectedItem as PivotItem;
             if ((Pivot.SelectedItem as PivotItem).Content is muxc.RefreshContainer RefreshContainer
                 && RefreshContainer.Content is ListView ListView
-                && ListView.ItemsSource is EntityItemSourse ItemsSource)
+                && ListView.ItemsSource is EntityItemSource ItemsSource)
             {
                 Refresh = () => _ = ItemsSource.Refresh(true);
             }
@@ -61,7 +61,7 @@ namespace CoolapkUWP.Pages.FeedPages
 
         private void RefreshContainer_RefreshRequested(muxc.RefreshContainer sender, muxc.RefreshRequestedEventArgs args)
         {
-            if (sender.Content is ListView ListView && ListView.ItemsSource is EntityItemSourse ItemsSource)
+            if (sender.Content is ListView ListView && ListView.ItemsSource is EntityItemSource ItemsSource)
             {
                 _ = ItemsSource.Refresh(true);
             }
@@ -75,7 +75,7 @@ namespace CoolapkUWP.Pages.FeedPages
             }
             else if ((Pivot.SelectedItem as PivotItem).Content is muxc.RefreshContainer RefreshContainer
                 && RefreshContainer.Content is ListView ListView
-                && ListView.ItemsSource is EntityItemSourse ItemsSource)
+                && ListView.ItemsSource is EntityItemSource ItemsSource)
             {
                 _ = ItemsSource.Refresh(true);
             }

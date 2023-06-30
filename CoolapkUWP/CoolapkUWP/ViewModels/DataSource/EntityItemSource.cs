@@ -11,14 +11,14 @@ using Windows.UI.Xaml;
 
 namespace CoolapkUWP.ViewModels.DataSource
 {
-    public abstract class EntityItemSourse : DataSourceBase<Entity>
+    public abstract class EntityItemSource : DataSourceBase<Entity>
     {
         protected CoolapkListProvider Provider;
         protected CoolapkListProvider SubProvider;
 
-        public EntityItemSourse() : base(Window.Current?.Dispatcher ?? CoreApplication.MainView.Dispatcher) { }
+        public EntityItemSource() : base(Window.Current?.Dispatcher ?? CoreApplication.MainView.Dispatcher) { }
 
-        public EntityItemSourse(CoreDispatcher dispatcher) : base(dispatcher) { }
+        public EntityItemSource(CoreDispatcher dispatcher) : base(dispatcher) { }
 
         protected override async Task<IList<Entity>> LoadItemsAsync(uint count)
         {

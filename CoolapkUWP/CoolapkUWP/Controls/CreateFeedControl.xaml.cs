@@ -432,14 +432,14 @@ namespace CoolapkUWP.Controls
 
         private void UserAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            Provider.CreateUserItemSourse.Keyword = args.QueryText;
-            _ = Provider.CreateUserItemSourse.Refresh(true);
+            Provider.CreateUserItemSource.Keyword = args.QueryText;
+            _ = Provider.CreateUserItemSource.Refresh(true);
         }
 
         private void TopicAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            Provider.CreateTopicItemSourse.Keyword = args.QueryText;
-            _ = Provider.CreateTopicItemSourse.Refresh(true);
+            Provider.CreateTopicItemSource.Keyword = args.QueryText;
+            _ = Provider.CreateTopicItemSource.Refresh(true);
         }
 
         private void EmojiAutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
