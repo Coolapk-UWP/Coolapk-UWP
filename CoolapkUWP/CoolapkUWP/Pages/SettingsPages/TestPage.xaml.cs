@@ -205,7 +205,7 @@ namespace CoolapkUWP.Pages.SettingsPages
                     UserAgent = NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString();
                     break;
                 case "NewWindow":
-                    if (WindowHelper.IsSupportedAppWindow)
+                    if (WindowHelper.IsSupported)
                     {
                         (AppWindow window, Frame frame) = await WindowHelper.CreateWindow();
                         window.TitleBar.ExtendsContentIntoTitleBar = true;

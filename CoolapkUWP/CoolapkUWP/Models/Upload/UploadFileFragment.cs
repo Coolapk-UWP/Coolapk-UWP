@@ -51,7 +51,7 @@ namespace CoolapkUWP.Models.Upload
 
                 return new UploadFileFragment
                 {
-                    Name = $"TextReader_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.png",
+                    Name = $"CoolapkUWP_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.png",
                     Resolution = $"{bitmap.PixelWidth}x{bitmap.PixelHeight}",
                     MD5 = CryptographicBuffer.EncodeToHexString(computedHash),
                     Bytes = bytes

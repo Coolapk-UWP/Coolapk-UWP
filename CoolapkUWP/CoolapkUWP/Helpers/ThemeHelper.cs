@@ -77,7 +77,7 @@ namespace CoolapkUWP.Helpers
                         rootElement.RequestedTheme = value;
                     }
 
-                    if (WindowHelper.IsSupportedAppWindow)
+                    if (WindowHelper.IsSupported)
                     {
                         foreach (FrameworkElement element in WindowHelper.ActiveWindows.Keys)
                         {
@@ -169,7 +169,7 @@ namespace CoolapkUWP.Helpers
                 TitleBar.ButtonBackgroundColor = TitleBar.ButtonInactiveBackgroundColor = ExtendViewIntoTitleBar ? Colors.Transparent : BackgroundColor;
             }
 
-            if (WindowHelper.IsSupportedAppWindow)
+            if (WindowHelper.IsSupported)
             {
                 foreach (AppWindow window in WindowHelper.ActiveWindows.Values)
                 {

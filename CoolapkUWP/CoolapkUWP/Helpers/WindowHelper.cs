@@ -16,9 +16,9 @@ namespace CoolapkUWP.Helpers
     // windows. In the future, we would like to support this in platform APIs.
     public static class WindowHelper
     {
-        public static bool IsSupportedAppWindow => ApiInformation.IsTypePresent("Windows.UI.WindowManagement.AppWindow");
+        public static bool IsSupported { get; } = ApiInformation.IsTypePresent("Windows.UI.WindowManagement.AppWindow");
 
-        public static bool IsAppWindow(this UIElement element) => IsSupportedAppWindow && element?.XamlRoot?.Content != null && ActiveWindows.ContainsKey(element.XamlRoot.Content);
+        public static bool IsAppWindow(this UIElement element) => IsSupported && element?.XamlRoot?.Content != null && ActiveWindows.ContainsKey(element.XamlRoot.Content);
 
         public static async Task<(AppWindow, Frame)> CreateWindow()
         {
@@ -53,6 +53,6 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        public static Dictionary<UIElement, AppWindow> ActiveWindows { get; } = IsSupportedAppWindow ? new Dictionary<UIElement, AppWindow>() : null;
+        public static Dictionary<UIElement, AppWindow> ActiveWindows { get; } = IsSupported ? new Dictionary<UIElement, AppWindow>() : null;
     }
 }

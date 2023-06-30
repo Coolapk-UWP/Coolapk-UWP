@@ -7,6 +7,7 @@ using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
@@ -153,12 +154,23 @@ namespace CoolapkUWP.Controls
 
         private async void CreateFeedContent(string contentText)
         {
+            IList<string> pics = Array.Empty<string>();
+            if (Provider.Pictures.Any())
+            {
+                pics = await Provider.UploadPic();
+                if (pics.Count != Provider.Pictures.Count)
+                {
+                    UIHelper.ShowMessage("图片上传失败");
+                    UIHelper.HideProgressBar();
+                    return;
+                }
+            }
             using (MultipartFormDataContent content = new MultipartFormDataContent())
             {
                 using (StringContent message = new StringContent(contentText))
                 using (StringContent type = new StringContent("feed"))
                 using (StringContent is_html_article = new StringContent("0"))
-                using (StringContent pic = new StringContent(string.Join(",", await Provider.UploadPic())))
+                using (StringContent pic = new StringContent(string.Join(",", pics)))
                 {
                     content.Add(message, "message");
                     content.Add(type, "type");
@@ -171,10 +183,21 @@ namespace CoolapkUWP.Controls
 
         private async void CreateReplyContent(string contentText)
         {
+            IList<string> pics = Array.Empty<string>();
+            if (Provider.Pictures.Any())
+            {
+                pics = await Provider.UploadPic();
+                if (pics.Count != Provider.Pictures.Count)
+                {
+                    UIHelper.ShowMessage("图片上传失败");
+                    UIHelper.HideProgressBar();
+                    return;
+                }
+            }
             using (MultipartFormDataContent content = new MultipartFormDataContent())
             {
                 using (StringContent message = new StringContent(contentText))
-                using (StringContent pic = new StringContent(string.Join(",", await Provider.UploadPic())))
+                using (StringContent pic = new StringContent(string.Join(",", pics)))
                 {
                     content.Add(message, "message");
                     content.Add(pic, "pic");

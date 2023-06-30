@@ -6,14 +6,17 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 using mtuc = Microsoft.Toolkit.Uwp.Connectivity;
-
-#if FEATURE2
-using System.Net.Http.Headers;
-#else
+using System.Collections.Generic;
 using CoolapkUWP.Models.Upload;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System.Collections.Generic;
+
+#if FEATURE2
+using System.Net.Http.Headers;
+using CoolapkUWP.Common;
+using CoolapkUWP.Models.Update;
+using Windows.Foundation.Collections;
+#else
 using System.Linq;
 #endif
 
@@ -123,6 +126,21 @@ namespace CoolapkUWP.Helpers
 #pragma warning restore 0612
 
 #if FEATURE2
+        public static async Task<string[]> UploadImages(IEnumerable<UploadFileFragment> fragments, Extension extension)
+        {
+            ValueSet message = new ValueSet
+            {
+                ["UID"] = SettingsHelper.Get<string>(SettingsHelper.Uid),
+                ["UserName"] = SettingsHelper.Get<string>(SettingsHelper.UserName),
+                ["Token"] = SettingsHelper.Get<string>(SettingsHelper.Token),
+                ["TokenVersion"] = (int)SettingsHelper.Get<TokenVersions>(SettingsHelper.TokenVersion),
+                ["UserAgent"] = JsonConvert.SerializeObject(UserAgent.Parse(NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString())),
+                ["APIVersion"] = JsonConvert.SerializeObject(APIVersion.Parse(NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString())),
+                ["Images"] = JsonConvert.SerializeObject(fragments, new JsonSerializerSettings { ContractResolver = new IgnoreIgnoredContractResolver() })
+            };
+            return await extension.Invoke(message) as string[];
+        }
+
         public static async Task<(bool isSucceed, string result)> UploadImage(byte[] image, string name)
         {
             using (MultipartFormDataContent content = new MultipartFormDataContent())
@@ -145,6 +163,25 @@ namespace CoolapkUWP.Helpers
                 }
             }
             return (false, null);
+        }
+
+        private class IgnoreIgnoredContractResolver : DefaultContractResolver
+        {
+            protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+            {
+                IList<JsonProperty> list = base.CreateProperties(type, memberSerialization);
+                if (list != null)
+                {
+                    foreach (JsonProperty item in list)
+                    {
+                        if (item.Ignored)
+                        {
+                            item.Ignored = false;
+                        }
+                    }
+                }
+                return list;
+            }
         }
 #else
         public static async Task<List<string>> UploadImages(IEnumerable<UploadFileFragment> images)

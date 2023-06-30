@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using System.Runtime.CompilerServices;
 using Windows.UI.Core;
 using CoolapkUWP.Common;
+using CoolapkUWP.Models.Upload;
 
 #if FEATURE2
 using System.IO;
@@ -158,12 +159,27 @@ namespace CoolapkUWP.ViewModels.FeedPages
             }
         }
 
-        public async Task<List<string>> UploadPic()
+        public async Task<IList<string>> UploadPic()
         {
-            List<string> results = new List<string>();
+            IList<string> results = new List<string>();
             if (!Pictures.Any()) { return results; }
             UIHelper.ShowMessage("上传图片");
 #if FEATURE2
+            if (ExtensionManager.IsSupported)
+            {
+                await ExtensionManager.Instance.Initialize(Dispatcher);
+                if (ExtensionManager.Instance.Extensions.Any())
+                {
+                    List<UploadFileFragment> fragments = new List<UploadFileFragment>();
+                    foreach (WriteableBitmap pic in Pictures)
+                    {
+                        fragments.Add(await UploadFileFragment.FromWriteableBitmap(pic));
+                    }
+                    results = await RequestHelper.UploadImages(fragments, ExtensionManager.Instance.Extensions.FirstOrDefault());
+                    UIHelper.ShowMessage($"上传了 {results.Count} 张图片");
+                    return results;
+                }
+            }
             int i = 0;
             foreach (WriteableBitmap pic in Pictures)
             {
