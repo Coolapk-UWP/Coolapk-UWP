@@ -81,8 +81,8 @@
           <uap3:AppExtension
 			Name="CoolapkUWP.OSSUploader"
 			Id="CoolapkUWP.OSSUploader"
-			DisplayName="OSSUploader"
-			Description="An uploader to upload images through Aliyun OSS"
+			DisplayName="ms-resource:OSSUploaderName"
+			Description="ms-resource:OSSUploaderDescription"
 			PublicFolder="Public">
             <uap3:Properties>
               <Service>com.coolapkuwp.ossuploader</Service>
