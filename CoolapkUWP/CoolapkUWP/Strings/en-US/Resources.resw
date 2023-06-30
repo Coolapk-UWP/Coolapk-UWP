@@ -163,6 +163,12 @@
   <data name="NoUpdate" xml:space="preserve">
     <value>No update</value>
   </data>
+  <data name="OSSUploaderDescription" xml:space="preserve">
+    <value>一个用于上传图片到阿里云 OSS 的插件</value>
+  </data>
+  <data name="OSSUploaderName" xml:space="preserve">
+    <value>OSS 上传插件</value>
+  </data>
   <data name="PinnedTileFailed" xml:space="preserve">
     <value>Failed to pinned tile</value>
   </data>
