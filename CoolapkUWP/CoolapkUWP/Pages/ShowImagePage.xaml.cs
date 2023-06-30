@@ -2,7 +2,6 @@
 using CoolapkUWP.Models.Images;
 using CoolapkUWP.ViewModels;
 using Microsoft.UI.Xaml.Controls;
-using System;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;

@@ -13,7 +13,6 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Security.ExchangeActiveSyncProvisioning;
-using Windows.System.Profile;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
 using HttpClient = System.Net.Http.HttpClient;

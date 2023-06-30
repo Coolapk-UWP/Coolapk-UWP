@@ -29,6 +29,14 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using NetworkHelper = Microsoft.Toolkit.Uwp.Connectivity.NetworkHelper;
 
+#if !FEATURE2
+using CoolapkUWP.Models.Upload;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using Windows.ApplicationModel.AppService;
+#endif
+
 namespace CoolapkUWP
 {
     /// <summary>
@@ -357,6 +365,7 @@ namespace CoolapkUWP
                     {
                         LiveTileTask.Instance?.Run(args.TaskInstance);
                     }
+                    deferral.Complete();
                     break;
 
                 case "NotificationsModel":
@@ -364,6 +373,7 @@ namespace CoolapkUWP
                     {
                         NotificationsTask.Instance?.Run(args.TaskInstance);
                     }
+                    deferral.Complete();
                     break;
 
                 case "ToastBackgroundTask":
@@ -374,15 +384,108 @@ namespace CoolapkUWP
 
                         // Perform tasks
                     }
+                    deferral.Complete();
                     break;
 
                 default:
+#if !FEATURE2
+                    IBackgroundTaskInstance taskInstance = args.TaskInstance;
+                    if (taskInstance.TriggerDetails is AppServiceTriggerDetails appService)
+                    {
+                        if (_appServiceInitialized == false) // Only need to setup the handlers once
+                        {
+                            _appServiceInitialized = true;
+
+                            taskInstance.Canceled += OnAppServicesCanceled;
+
+                            _appServiceDeferral = deferral;
+                            _appServiceConnection = appService.AppServiceConnection;
+                            _appServiceConnection.RequestReceived += OnAppServiceRequestReceived;
+                            _appServiceConnection.ServiceClosed += AppServiceConnection_ServiceClosed;
+                        }
+                    }
+                    else
+                    {
+                        deferral.Complete();
+                    }
+#else
                     deferral.Complete();
+#endif
                     break;
             }
-
-            deferral.Complete();
         }
+
+#if !FEATURE2
+        /// <summary>
+        /// The handler for app service calls
+        /// This extension provides the exponent function. Extensions can provide more
+        /// than one function. You could send a "command" argument in args.Request.Message
+        /// to identify the function to carry out.
+        /// </summary>
+        /// <param name="sender">Contains details about the app connection</param>
+        /// <param name="args">Contains arguments for the app service and the deferral object</param>
+        private async void OnAppServiceRequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
+        {
+            // Get a deferral because we use an await-able API below (SendResponseAsync()) to respond to the message
+            // and we don't want this call to get cancelled while we are waiting.
+            AppServiceDeferral messageDeferral = args.GetDeferral();
+            ValueSet message = args.Request.Message;
+            ValueSet returnMessage = new ValueSet();
+
+            try
+            {
+                if (message.TryGetValue("Images", out object images))
+                {
+                    IEnumerable<UploadFileFragment> fragments = JsonConvert.DeserializeObject<IEnumerable<UploadFileFragment>>(images.ToString(), new JsonSerializerSettings { ContractResolver = new IgnoreIgnoredContractResolver() });
+                    returnMessage["Result"] = (await RequestHelper.UploadImages(fragments)).ToArray();
+                }
+            }
+            catch (Exception ex)
+            {
+                returnMessage["Error"] = ex.Message;
+            }
+
+            await args.Request.SendResponseAsync(returnMessage);
+            messageDeferral.Complete();
+        }
+
+        /// <summary>
+        /// Called if the system is going to cancel the app service because resources it needs to reclaim resources
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="reason"></param>
+        private void OnAppServicesCanceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason) => _appServiceDeferral.Complete();
+
+        /// <summary>
+        /// Called when the caller closes the connection to the app service
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void AppServiceConnection_ServiceClosed(AppServiceConnection sender, AppServiceClosedEventArgs args) => _appServiceDeferral.Complete();
+
+        private class IgnoreIgnoredContractResolver : DefaultContractResolver
+        {
+            protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+            {
+                IList<JsonProperty> list = base.CreateProperties(type, memberSerialization);
+                if (list != null)
+                {
+                    foreach (JsonProperty item in list)
+                    {
+                        if (item.Ignored)
+                        {
+                            item.Ignored = false;
+                        }
+                    }
+                }
+                return list;
+            }
+        }
+
+        private bool _appServiceInitialized = false;
+        private AppServiceConnection _appServiceConnection;
+        private BackgroundTaskDeferral _appServiceDeferral;
+#endif
 
         public static Window MainWindow { get; private set; }
     }

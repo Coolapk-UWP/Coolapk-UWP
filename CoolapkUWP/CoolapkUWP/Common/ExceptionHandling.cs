@@ -6,7 +6,7 @@ namespace CoolapkUWP.Helpers
 {
     /// <summary>
     /// Wrapper around a standard synchronization context, that catches any unhandled exceptions.
-    /// Acts as a facade passing calls to the original SynchronizationContext
+    /// Acts as a façade passing calls to the original SynchronizationContext
     /// </summary>
     /// <example>
     /// Set this up inside your App.xaml.cs file as follows:

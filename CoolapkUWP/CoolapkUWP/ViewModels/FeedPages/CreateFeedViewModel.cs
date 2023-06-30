@@ -1,5 +1,7 @@
-﻿using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Common;
+using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Models.Upload;
 using CoolapkUWP.Models.Users;
 using CoolapkUWP.ViewModels.DataSource;
 using CoolapkUWP.ViewModels.Providers;
@@ -9,23 +11,19 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
-using Windows.UI.Xaml.Media.Imaging;
-using System.Runtime.CompilerServices;
 using Windows.UI.Core;
-using CoolapkUWP.Common;
-using CoolapkUWP.Models.Upload;
+using Windows.UI.Xaml.Media.Imaging;
 
 #if FEATURE2
 using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
-#else
-using CoolapkUWP.Models.Upload;
 #endif
 
 namespace CoolapkUWP.ViewModels.FeedPages

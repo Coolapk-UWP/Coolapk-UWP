@@ -1,11 +1,9 @@
 ﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
-using CoolapkUWP.Pages;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.ViewModels.BrowserPages;
 using CoolapkUWP.ViewModels.FeedPages;
-using Microsoft.Toolkit.Uwp.UI;
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -66,7 +64,7 @@ namespace CoolapkUWP.Controls.DataTemplates
             FrameworkElement element = sender as FrameworkElement;
             OnTapped(element, element.Tag);
         }
-        
+
         private void OnTapped(FrameworkElement element, object tag)
         {
             if (tag is string str)

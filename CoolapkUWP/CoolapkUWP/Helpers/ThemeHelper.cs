@@ -125,7 +125,7 @@ namespace CoolapkUWP.Helpers
                     ? Application.Current.RequestedTheme == ApplicationTheme.Dark
                     : ActualTheme == ElementTheme.Dark
                 : ActualTheme == ElementTheme.Default
-                    ? UISettings.GetColorValue(UIColorType.Background) == Colors.Black
+                    ? UISettings?.GetColorValue(UIColorType.Background) == Colors.Black
                     : ActualTheme == ElementTheme.Dark;
         }
 
@@ -136,7 +136,7 @@ namespace CoolapkUWP.Helpers
                     ? Application.Current.RequestedTheme == ApplicationTheme.Dark
                     : ActualTheme == ElementTheme.Dark
                 : ActualTheme == ElementTheme.Default
-                    ? UISettings.GetColorValue(UIColorType.Background) == Colors.Black
+                    ? UISettings?.GetColorValue(UIColorType.Background) == Colors.Black
                     : ActualTheme == ElementTheme.Dark;
         }
 
