@@ -147,7 +147,7 @@
     <Compile Include="Common\HtmlToText.cs" />
     <Compile Include="Common\ScrollProgressProvider.cs" />
     <Compile Include="Common\ThreadSwitcher.cs" />
-    <Compile Include="Common\TokenCreater.cs" />
+    <Compile Include="Common\TokenCreator.cs" />
     <Compile Include="Common\WeakEvent.cs" />
     <Compile Include="Controls\CreateFeedControl.xaml.cs">
       <DependentUpon>CreateFeedControl.xaml</DependentUpon>
@@ -313,6 +313,9 @@
     </Compile>
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\ExtensionPage.xaml.cs">
+      <DependentUpon>ExtensionPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SettingsPages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -1196,6 +1199,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\FeedPages\SearchingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\ExtensionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

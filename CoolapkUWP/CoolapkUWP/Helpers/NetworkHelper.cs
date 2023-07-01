@@ -27,7 +27,7 @@ namespace CoolapkUWP.Helpers
         public static readonly HttpClient Client;
 
         private static SemaphoreSlim semaphoreSlim;
-        private static TokenCreater token;
+        private static TokenCreator token;
 
         static NetworkHelper()
         {
@@ -77,14 +77,14 @@ namespace CoolapkUWP.Helpers
             TokenVersions TokenVersion = SettingsHelper.Get<TokenVersions>(SettingsHelper.TokenVersion);
             string Culture = LanguageHelper.GetPrimaryLanguage();
 
-            token = new TokenCreater(TokenVersion);
+            token = new TokenCreator(TokenVersion);
             Client.DefaultRequestHeaders.Clear();
             Client.DefaultRequestHeaders.Add("X-Sdk-Int", "30");
             Client.DefaultRequestHeaders.Add("X-Sdk-Locale", Culture);
             Client.DefaultRequestHeaders.Add("X-App-Mode", "universal");
             Client.DefaultRequestHeaders.Add("X-App-Channel", "coolapk");
             Client.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
-            Client.DefaultRequestHeaders.Add("X-App-Device", TokenCreater.DeviceCode);
+            Client.DefaultRequestHeaders.Add("X-App-Device", TokenCreator.DeviceCode);
             Client.DefaultRequestHeaders.Add("X-Dark-Mode", ThemeHelper.IsDarkTheme() ? "1" : "0");
 
             if (SettingsHelper.Get<bool>(SettingsHelper.IsCustomUA))

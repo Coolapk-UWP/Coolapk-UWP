@@ -29,6 +29,13 @@ namespace CoolapkUWP.Pages.SettingsPages
     /// </summary>
     public sealed partial class TestPage : Page, INotifyPropertyChanged
     {
+        internal const bool IsFeature2 =
+#if FEATURE2
+            true;
+#else
+            false;
+#endif
+
         internal bool IsExtendsTitleBar
         {
             get => CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar;
@@ -204,6 +211,14 @@ namespace CoolapkUWP.Pages.SettingsPages
                     await _APIVersionDialog.ShowAsync();
                     UserAgent = NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString();
                     break;
+#if FEATURE2
+                case "Extension":
+                    if (ExtensionManager.IsSupported)
+                    {
+                        _ = Frame.Navigate(typeof(ExtensionPage));
+                    }
+                    break;
+#endif
                 case "NewWindow":
                     if (WindowHelper.IsSupported)
                     {

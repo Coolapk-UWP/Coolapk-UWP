@@ -139,7 +139,7 @@
     <Compile Include="Common\HtmlToText.cs" />
     <Compile Include="Common\ScrollProgressProvider.cs" />
     <Compile Include="Common\ThreadSwitcher.cs" />
-    <Compile Include="Common\TokenCreater.cs" />
+    <Compile Include="Common\TokenCreator.cs" />
     <Compile Include="Common\WeakEvent.cs" />
     <Compile Include="Controls\CreateFeedControl.xaml.cs">
       <DependentUpon>CreateFeedControl.xaml</DependentUpon>

@@ -9,6 +9,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:globalization="using:System.Globalization"
     xmlns:helper="using:CoolapkUWP.Helpers"
+    xmlns:local="using:CoolapkUWP.Pages.SettingsPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     NavigationCacheMode="Enabled"
@@ -175,6 +176,14 @@
                             </muxc:AnimatedIcon>
                         </controls:Setting.Icon>
                     </controls:Setting>
+                    <controls:Setting
+                        x:Name="ExtensionSettings"
+                        x:Uid="/TestPage/ExtensionSettings"
+                        x:Load="{x:Bind local:TestPage.IsFeature2}"
+                        Click="Button_Click"
+                        Icon="&#xE7B8;"
+                        IsClickEnabled="True"
+                        Tag="Extension" />
                 </controls:SettingsGroup>
                 <controls:SettingsGroup x:Uid="/TestPage/WebTestSettingsHeader">
                     <controls:SettingExpander x:Uid="/TestPage/APISettings">

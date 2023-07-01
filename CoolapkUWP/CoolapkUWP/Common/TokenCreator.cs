@@ -6,7 +6,7 @@ using Windows.Security.ExchangeActiveSyncProvisioning;
 
 namespace CoolapkUWP.Common
 {
-    public class TokenCreater
+    public class TokenCreator
     {
         private static readonly string guid = Guid.NewGuid().ToString();
         private static readonly string aid = RandHexString(16);
@@ -18,7 +18,7 @@ namespace CoolapkUWP.Common
 
         private readonly TokenVersions TokenVersion;
 
-        static TokenCreater()
+        static TokenCreator()
         {
             EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
             SystemManufacturer = deviceInfo.SystemManufacturer;
@@ -26,10 +26,7 @@ namespace CoolapkUWP.Common
             DeviceCode = CreateDeviceCode(aid, mac, SystemManufacturer, SystemManufacturer, SystemProductName, $"CoolapkUWP {Package.Current.Id.Version.ToFormattedString()}");
         }
 
-        public TokenCreater(TokenVersions version = TokenVersions.TokenV2)
-        {
-            TokenVersion = version;
-        }
+        public TokenCreator(TokenVersions version = TokenVersions.TokenV2) => TokenVersion = version;
 
         /// <summary>
         /// GetToken Generate a token with random device info
