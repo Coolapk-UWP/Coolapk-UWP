@@ -117,68 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AlreadyPinnedTile" xml:space="preserve">
-    <value>Tile is pinned to start</value>
+  <data name="LoginDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Login</value>
   </data>
-  <data name="AppDescription" xml:space="preserve">
-    <value>A third-party Coolapk client based on UWP</value>
+  <data name="LoginDialog.Title" xml:space="preserve">
+    <value>Manual Login</value>
   </data>
-  <data name="AppName" xml:space="preserve">
-    <value>Coolapk</value>
+  <data name="FullProductNameTextBox.Header" xml:space="preserve">
+    <value>Full Device Model</value>
   </data>
-  <data name="CoolapkProtocol" xml:space="preserve">
-    <value>Coolapk Web Jump</value>
+  <data name="FullProductNameTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Device identification for Cooapk, e.g. GM1910_21_220617</value>
   </data>
-  <data name="CoolMarketProtocol" xml:space="preserve">
-    <value>Cool Market Web Jump</value>
+  <data name="HeaderTextBox.Header" xml:space="preserve">
+    <value>UserAgent Header</value>
   </data>
-  <data name="ExceptionThrown" xml:space="preserve">
-    <value>There was an error with the program…</value>
+  <data name="HeaderTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>The beginning of the UserAgent, fill in the browser UserAgent</value>
   </data>
-  <data name="GotoGithub" xml:space="preserve">
-    <value>Go to Github</value>
+  <data name="ManufacturerTextBox.Header" xml:space="preserve">
+    <value>Device Manufacturer</value>
   </data>
-  <data name="HasUpdate" xml:space="preserve">
-    <value>Update to v({0}.{1}.{2} -&gt; {3})。</value>
-    <comment>{0}.{1}.{2}和{3} 表示版本号</comment>
+  <data name="ManufacturerTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Device identification for Coolapk, e.g. OnePlus</value>
   </data>
-  <data name="HasUpdateTitle" xml:space="preserve">
-    <value>Update Checked</value>
+  <data name="OSVersionTextBox.Header" xml:space="preserve">
+    <value>System Version</value>
   </data>
-  <data name="ImageLoadError" xml:space="preserve">
-    <value>Picture failed to load</value>
+  <data name="OSVersionTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Device identification for Coolapk, e.g. 11</value>
   </data>
-  <data name="IndexPageError" xml:space="preserve">
-    <value>Home Page load failure</value>
+  <data name="ProductNameTextBox.Header" xml:space="preserve">
+    <value>Device Model</value>
   </data>
-  <data name="MyPageError" xml:space="preserve">
-    <value>Personal Page load failure</value>
+  <data name="ProductNameTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Device identification for Coolapk, e.g. GM1910</value>
   </data>
-  <data name="NetworkError" xml:space="preserve">
-    <value>Failed to connect to network</value>
+  <data name="UserAgentDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Done</value>
   </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
+  <data name="UserAgentDialog.Title" xml:space="preserve">
+    <value>Change UserAgent</value>
   </data>
-  <data name="NoUpdate" xml:space="preserve">
-    <value>No update</value>
+  <data name="APIVersionCodeTextBox.Header" xml:space="preserve">
+    <value>Coolapk Version Code</value>
   </data>
-  <data name="OSSUploaderDescription" xml:space="preserve">
-    <value>An uploader to upload images through Aliyun OSS</value>
+  <data name="APIVersionCodeTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>The version code of Coolapk APP, e.g. 1905301</value>
   </data>
-  <data name="OSSUploaderName" xml:space="preserve">
-    <value>OSS Uploader</value>
+  <data name="APIVersionDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Done</value>
   </data>
-  <data name="PinnedTileFailed" xml:space="preserve">
-    <value>Failed to pinned tile</value>
+  <data name="APIVersionDialog.Title" xml:space="preserve">
+    <value>API Version</value>
   </data>
-  <data name="PinnedTileSucceeded" xml:space="preserve">
-    <value>Pinned tile successful</value>
+  <data name="APIVersionTextBox.Header" xml:space="preserve">
+    <value>Coolapk Version</value>
   </data>
-  <data name="UserNameError" xml:space="preserve">
-    <value>Please enter your username</value>
+  <data name="APIVersionTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>The version of Coolapk APP, e.g. 9.2.2</value>
   </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+  <data name="APIVersionDialog.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="LoginDialog.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="UserAgentDialog.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
   </data>
 </root>

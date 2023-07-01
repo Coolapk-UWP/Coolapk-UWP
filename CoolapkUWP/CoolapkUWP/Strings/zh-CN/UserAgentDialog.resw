@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,68 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AlreadyPinnedTile" xml:space="preserve">
-    <value>Tile is pinned to start</value>
+  <data name="FullProductNameTextBox.Header" xml:space="preserve">
+    <value>完整设备型号</value>
   </data>
-  <data name="AppDescription" xml:space="preserve">
-    <value>A third-party Coolapk client based on UWP</value>
+  <data name="FullProductNameTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>用于酷安的设备识别，如 GM1910_21_220617</value>
   </data>
-  <data name="AppName" xml:space="preserve">
-    <value>Coolapk</value>
+  <data name="HeaderTextBox.Header" xml:space="preserve">
+    <value>UserAgent 头</value>
   </data>
-  <data name="CoolapkProtocol" xml:space="preserve">
-    <value>Coolapk Web Jump</value>
+  <data name="HeaderTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>UserAgent 的开始部分，填入浏览器的 UserAgent</value>
   </data>
-  <data name="CoolMarketProtocol" xml:space="preserve">
-    <value>Cool Market Web Jump</value>
+  <data name="ManufacturerTextBox.Header" xml:space="preserve">
+    <value>设备厂商</value>
   </data>
-  <data name="ExceptionThrown" xml:space="preserve">
-    <value>There was an error with the program…</value>
+  <data name="ManufacturerTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>用于酷安的设备识别，如 OnePlus</value>
   </data>
-  <data name="GotoGithub" xml:space="preserve">
-    <value>Go to Github</value>
+  <data name="OSVersionTextBox.Header" xml:space="preserve">
+    <value>系统版本号</value>
   </data>
-  <data name="HasUpdate" xml:space="preserve">
-    <value>Update to v({0}.{1}.{2} -&gt; {3})。</value>
-    <comment>{0}.{1}.{2}和{3} 表示版本号</comment>
+  <data name="OSVersionTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>用于酷安的设备识别，如 11</value>
   </data>
-  <data name="HasUpdateTitle" xml:space="preserve">
-    <value>Update Checked</value>
+  <data name="ProductNameTextBox.Header" xml:space="preserve">
+    <value>设备型号</value>
   </data>
-  <data name="ImageLoadError" xml:space="preserve">
-    <value>Picture failed to load</value>
+  <data name="ProductNameTextBox.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>用于酷安的设备识别，如 GM1910</value>
   </data>
-  <data name="IndexPageError" xml:space="preserve">
-    <value>Home Page load failure</value>
+  <data name="UserAgentDialog.CloseButtonText" xml:space="preserve">
+    <value>取消</value>
   </data>
-  <data name="MyPageError" xml:space="preserve">
-    <value>Personal Page load failure</value>
+  <data name="UserAgentDialog.PrimaryButtonText" xml:space="preserve">
+    <value>完成</value>
   </data>
-  <data name="NetworkError" xml:space="preserve">
-    <value>Failed to connect to network</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="NoUpdate" xml:space="preserve">
-    <value>No update</value>
-  </data>
-  <data name="OSSUploaderDescription" xml:space="preserve">
-    <value>An uploader to upload images through Aliyun OSS</value>
-  </data>
-  <data name="OSSUploaderName" xml:space="preserve">
-    <value>OSS Uploader</value>
-  </data>
-  <data name="PinnedTileFailed" xml:space="preserve">
-    <value>Failed to pinned tile</value>
-  </data>
-  <data name="PinnedTileSucceeded" xml:space="preserve">
-    <value>Pinned tile successful</value>
-  </data>
-  <data name="UserNameError" xml:space="preserve">
-    <value>Please enter your username</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+  <data name="UserAgentDialog.Title" xml:space="preserve">
+    <value>修改 UserAgent</value>
   </data>
 </root>

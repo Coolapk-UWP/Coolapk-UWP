@@ -163,6 +163,12 @@
   <data name="NoUpdate" xml:space="preserve">
     <value>當前無可用更新。</value>
   </data>
+  <data name="OSSUploaderDescription" xml:space="preserve">
+    <value>一個用於上傳圖片到阿裡雲 OSS 的擴展</value>
+  </data>
+  <data name="OSSUploaderName" xml:space="preserve">
+    <value>OSS 上傳擴展</value>
+  </data>
   <data name="PinnedTileFailed" xml:space="preserve">
     <value>固定磁貼失敗</value>
   </data>

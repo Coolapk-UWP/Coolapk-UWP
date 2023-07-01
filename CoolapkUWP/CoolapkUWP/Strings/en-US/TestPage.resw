@@ -174,6 +174,12 @@
   <data name="SetProgressValue.Header" xml:space="preserve">
     <value>Progress Value</value>
   </data>
+  <data name="SettingsFlyoutSettings.Description" xml:space="preserve">
+    <value>Show Settings Charm Pane</value>
+  </data>
+  <data name="SettingsFlyoutSettings.Header" xml:space="preserve">
+    <value>Open Settings</value>
+  </data>
   <data name="SlimCountSettings.Description" xml:space="preserve">
     <value>Number of images that can be loaded at the same time</value>
   </data>
@@ -218,5 +224,29 @@
   </data>
   <data name="WebTestSettingsHeader.Header" xml:space="preserve">
     <value>Network Tests</value>
+  </data>
+  <data name="APISettings.Description" xml:space="preserve">
+    <value>Modify the configuration of communication with Coolapk server</value>
+  </data>
+  <data name="APISettings.Header" xml:space="preserve">
+    <value>API Settings</value>
+  </data>
+  <data name="CustomUASettings.Header" xml:space="preserve">
+    <value>Change UserAgent</value>
+  </data>
+  <data name="IsCustomUASettings.Description" xml:space="preserve">
+    <value>Using custom UserAgent</value>
+  </data>
+  <data name="IsCustomUASettings.Header" xml:space="preserve">
+    <value>Change UserAgent</value>
+  </data>
+  <data name="WindowSettingsHeader.Header" xml:space="preserve">
+    <value>Window Tests</value>
+  </data>
+  <data name="CustomAPISettings.Description" xml:space="preserve">
+    <value>Set custom compatible version</value>
+  </data>
+  <data name="CustomAPISettings.Header" xml:space="preserve">
+    <value>Custom API version</value>
   </data>
 </root>
