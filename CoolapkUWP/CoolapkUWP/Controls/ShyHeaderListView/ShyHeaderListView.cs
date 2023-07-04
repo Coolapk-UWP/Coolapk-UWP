@@ -375,14 +375,14 @@ namespace CoolapkUWP.Controls
                 double offset = System.Convert.ToDouble(value);
                 UpdateVisualState(offset);
                 double result = offset < ShyHeaderListView._topheight ? 0 : -ShyHeaderListView._topheight + offset;
-                return result.Convert(targetType);
+                return ConverterTools.Convert(result, targetType);
             }
 
             public object ConvertBack(object value, Type targetType, object parameter, string language)
             {
                 double offset = System.Convert.ToDouble(value);
                 double result = offset + ShyHeaderListView._topheight;
-                return result.Convert(targetType);
+                return ConverterTools.Convert(result, targetType);
             }
 
             private void UpdateVisualState(double offset)

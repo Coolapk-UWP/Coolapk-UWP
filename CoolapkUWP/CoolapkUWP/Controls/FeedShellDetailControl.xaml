@@ -83,6 +83,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid
                 x:Name="FeedArticleTitle"
@@ -103,6 +104,7 @@
                     CornerRadius="0,0,8,8">
                     <TextBlock
                         Margin="8,4"
+                        HorizontalAlignment="Left"
                         FontSize="20"
                         IsTextSelectionEnabled="True"
                         Text="{Binding MessageTitle, Mode=OneWay}"
@@ -131,6 +133,7 @@
                     <TextBlock
                         Grid.Column="1"
                         Margin="8,0,0,2"
+                        HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         TextTrimming="CharacterEllipsis">
@@ -182,6 +185,7 @@
                     <TextBlock
                         Grid.Column="1"
                         Margin="0,0,0,2"
+                        HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="16"
                         Text="{Binding TopicTitle}"
@@ -235,6 +239,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock
                             Margin="0,0,0,2"
+                            HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             FontSize="16"
                             Text="{Binding DyhName}"
@@ -354,6 +359,7 @@
                         CornerRadius="{ThemeResource ControlCornerRadius}">
                         <TextBlock
                             x:Uid="/Feed/Rating"
+                            HorizontalAlignment="Left"
                             FontSize="12"
                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
                     </Border>
@@ -365,6 +371,7 @@
                         Value="{Binding RatingStar, Mode=OneWay}" />
                     <TextBlock
                         Grid.Column="2"
+                        HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="12"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}">
@@ -373,13 +380,35 @@
                     </TextBlock>
                 </Grid>
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Border
+                        Grid.Row="0"
+                        Margin="0,4"
+                        Visibility="{Binding IsFeedArticle, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true', FallbackValue='Collapsed'}">
+                        <local:TextBlockEx
+                            x:Name="MessageTitle"
+                            HorizontalAlignment="Left"
+                            FontSize="16"
+                            FontWeight="Black"
+                            IsTextSelectionEnabled="True"
+                            Text="{Binding MessageTitle}"
+                            TextWrapping="Wrap"
+                            Visibility="{Binding MessageTitle, Converter={StaticResource StringVisibilityConverter}}" />
+                    </Border>
                     <local:TextBlockEx
                         x:Name="Message"
+                        Grid.Row="1"
+                        HorizontalAlignment="Left"
                         IsTextSelectionEnabled="True"
                         Text="{Binding Message}"
                         Visibility="{Binding MessageRawOutput, Converter={StaticResource StringVisibilityConverter}, ConverterParameter='true'}" />
                     <local:TextBlockEx
                         x:Name="ArticleMessage"
+                        Grid.Row="1"
+                        HorizontalAlignment="Left"
                         IsTextSelectionEnabled="True"
                         Text="{Binding MessageRawOutput}"
                         Visibility="{Binding MessageRawOutput, Converter={StaticResource StringVisibilityConverter}}" />
@@ -406,8 +435,53 @@
                     </GridView.ItemsPanel>
                 </GridView>
             </Grid>
-            <Border
+            <StackPanel
                 Grid.Row="7"
+                Margin="0,4"
+                Padding="4"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{ThemeResource OverlayCornerRadius}"
+                Visibility="{Binding VoteRows, Converter={StaticResource CollectionVisibilityConverter}}">
+                <muxc:ItemsRepeater
+                    HorizontalAlignment="Stretch"
+                    ItemTemplate="{StaticResource VoteItemTemplate}"
+                    ItemsSource="{Binding VoteRows}">
+                    <muxc:ItemsRepeater.Layout>
+                        <muxc:StackLayout />
+                    </muxc:ItemsRepeater.Layout>
+                </muxc:ItemsRepeater>
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        FontSize="12"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        IsTextSelectionEnabled="{Binding IsCopyEnabled}">
+                        <Run FontWeight="Bold" Text="{Binding TotalVoteNum}" />
+                        <Run Text="人投票" />
+                        <Run Text="•" />
+                        <Run FontWeight="Bold" Text="{Binding TotalCommentNum}" />
+                        <Run Text="个观点" />
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        FontSize="12"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        IsTextSelectionEnabled="{Binding IsCopyEnabled}">
+                        <Run FontWeight="Bold" Text="{Binding VoteStartTime}" />
+                        <Run Text="-" />
+                        <Run FontWeight="Bold" Text="{Binding VoteEndTime}" />
+                    </TextBlock>
+                </Grid>
+            </StackPanel>
+            <Border
+                Grid.Row="8"
                 Margin="0,4"
                 HorizontalAlignment="Stretch"
                 Visibility="{Binding ShowSourceFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
@@ -419,6 +493,7 @@
                     <TextBlock
                         x:Uid="/Feed/SourceFeedNotFount"
                         Margin="12,8"
+                        HorizontalAlignment="Left"
                         Visibility="{Binding EmptySourceFeed, Converter={StaticResource BoolToVisibilityConverter}}" />
                     <Border Visibility="{Binding EmptySourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
                         <local:WebViewContentControl
@@ -429,7 +504,7 @@
                 </Grid>
             </Border>
             <Grid
-                Grid.Row="8"
+                Grid.Row="9"
                 Margin="0,4"
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1"
@@ -490,12 +565,14 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center">
                         <TextBlock
+                            HorizontalAlignment="Left"
                             MaxLines="2"
                             Text="{Binding ExtraTitle}"
                             TextTrimming="WordEllipsis"
                             TextWrapping="Wrap"
                             Visibility="{Binding ExtraTitle, Converter={StaticResource StringVisibilityConverter}}" />
                         <TextBlock
+                            HorizontalAlignment="Left"
                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             Text="{Binding ExtraSubtitle}"
                             TextWrapping="Wrap"
@@ -539,7 +616,7 @@
                 </Grid>
             </Grid>
             <Grid
-                Grid.Row="9"
+                Grid.Row="10"
                 Margin="0,4"
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1"
@@ -601,10 +678,12 @@
                         VerticalAlignment="Center">
                         <TextBlock
                             x:Uid="/Feed/MediaShare"
+                            HorizontalAlignment="Left"
                             MaxLines="2"
                             TextTrimming="WordEllipsis"
                             TextWrapping="Wrap" />
                         <TextBlock
+                            HorizontalAlignment="Left"
                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             Text="{Binding MediaSubtitle}"
                             TextWrapping="Wrap"
@@ -613,7 +692,7 @@
                 </Grid>
             </Grid>
             <muxc:ItemsRepeaterScrollHost
-                Grid.Row="10"
+                Grid.Row="11"
                 Margin="2,0"
                 Visibility="{Binding RelationRows, Converter={StaticResource CollectionVisibilityConverter}, FallbackValue='Collapsed'}">
                 <ScrollViewer
@@ -632,11 +711,12 @@
                 </ScrollViewer>
             </muxc:ItemsRepeaterScrollHost>
             <StackPanel
-                Grid.Row="11"
+                Grid.Row="12"
                 Margin="4"
                 HorizontalAlignment="Left"
                 Orientation="Horizontal">
                 <TextBlock
+                    HorizontalAlignment="Left"
                     FontSize="12"
                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     IsTextSelectionEnabled="True"
@@ -647,14 +727,19 @@
                     <Run FontWeight="Bold" Text="{Binding QuestionFollowNum}" />
                     <Run Text="人关注" />
                 </TextBlock>
-                <Border Margin="2,0" Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
+                <Border
+                    Margin="2,0"
+                    HorizontalAlignment="Left"
+                    Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue='Collapsed'}">
                     <TextBlock
+                        HorizontalAlignment="Left"
                         FontSize="12"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Text="•"
                         Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}" />
                 </Border>
                 <TextBlock
+                    HorizontalAlignment="Left"
                     FontSize="12"
                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     IsTextSelectionEnabled="True"
@@ -662,14 +747,19 @@
                     <Run x:Uid="/Feed/PublishFrom" />
                     <Run FontWeight="Bold" Text="{Binding IPLocation}" />
                 </TextBlock>
-                <Border Margin="2,0" Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
+                <Border
+                    Margin="2,0"
+                    HorizontalAlignment="Left"
+                    Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}">
                     <TextBlock
+                        HorizontalAlignment="Left"
                         FontSize="12"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Text="•"
                         Visibility="{Binding ReadNum, Converter={StaticResource DoubleToVisibilityConverter}, FallbackValue='Collapsed'}" />
                 </Border>
                 <TextBlock
+                    HorizontalAlignment="Left"
                     FontSize="12"
                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     IsTextSelectionEnabled="True"

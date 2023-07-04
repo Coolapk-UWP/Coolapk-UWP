@@ -11,9 +11,9 @@ namespace CoolapkUWP.Helpers.Converters
         {
             bool result = value is ICollection collection && collection.Count > 1;
             Visibility visibility = result ? Visibility.Visible : Visibility.Collapsed;
-            return visibility.Convert(targetType);
+            return ConverterTools.Convert(visibility, targetType);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language) => value.Convert(targetType);
+        public object ConvertBack(object value, Type targetType, object parameter, string language) => ConverterTools.Convert(value, targetType);
     }
 }

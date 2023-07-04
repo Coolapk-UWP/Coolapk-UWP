@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
+using Windows.ApplicationModel.Resources;
 
 namespace CoolapkUWP.Models.Feeds
 {
@@ -40,6 +41,7 @@ namespace CoolapkUWP.Models.Feeds
 
         public int RatingStar { get; private set; }
 
+        public bool IsVoteFeed { get; private set; }
         public bool IsRatingFeed { get; private set; }
         public bool IsCoolPicture { get; private set; }
         public bool IsQuestionFeed { get; private set; }
@@ -101,7 +103,8 @@ namespace CoolapkUWP.Models.Feeds
 
             if (token.TryGetValue("message", out JToken message))
             {
-                Message = message.ToString().Replace("<a href=\"\">查看更多</a>", $"<a href=\"{Url}\">查看更多</a>");
+                ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("Feed");
+                Message = message.ToString().Replace("<a href=\"\">查看更多</a>", $"<a href=\"{Url}\">{loader.GetString("ReadMore")}</a>");
             }
 
             if (token.TryGetValue("message_title", out JToken message_title))
@@ -114,9 +117,9 @@ namespace CoolapkUWP.Models.Feeds
                 FeedType = feedType.ToString();
                 switch (FeedType)
                 {
-                    case "question":
-                        IsQuestionFeed = true;
-                        Url = Url.Replace("/feed/", "/question/");
+                    case "vote":
+                        IsVoteFeed = true;
+                        Url = Url.Replace("/feed/", "/vote/");
                         break;
                     case "rating":
                         IsRatingFeed = true;
@@ -124,6 +127,10 @@ namespace CoolapkUWP.Models.Feeds
                         {
                             RatingStar = star.ToObject<int>();
                         }
+                        break;
+                    case "question":
+                        IsQuestionFeed = true;
+                        Url = Url.Replace("/feed/", "/question/");
                         break;
                 }
             }

@@ -9,9 +9,9 @@ namespace CoolapkUWP.Helpers.Converters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             int result = value is ICollection collection ? collection.Count : 0;
-            return result.Convert(targetType);
+            return ConverterTools.Convert(result, targetType);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language) => value.Convert(targetType);
+        public object ConvertBack(object value, Type targetType, object parameter, string language) => ConverterTools.Convert(value, targetType);
     }
 }

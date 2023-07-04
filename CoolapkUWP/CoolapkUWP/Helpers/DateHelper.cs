@@ -13,36 +13,46 @@ namespace CoolapkUWP.Helpers
             JustNow,
         }
 
-        private static readonly DateTime unixDateBase = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTime UnixDateBase = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        public static string ConvertUnixTimeStampToReadable(this long time)
-        {
-            return ConvertUnixTimeStampToReadable(time, DateTime.Now);
-        }
+        public static string ConvertUnixTimeStampToReadable(this long time) => ConvertUnixTimeStampToReadable(time, DateTime.Now);
 
-        public static string ConvertUnixTimeStampToReadable(this long time, DateTime baseTime)
+        public static string ConvertUnixTimeStampToReadable(this long time, DateTime? baseTime)
         {
-            (TimeIntervalType type, object time) ConvertUnixTimeStampToReadable(long _time, DateTime baseTimes)
+            object obj;
+            TimeIntervalType type;
+
+            TimeSpan ttime = new TimeSpan(time * 1000_0000);
+            DateTime tdate = UnixDateBase.Add(ttime);
+
+            if (baseTime == null)
             {
-                TimeSpan ttime = new TimeSpan(_time * 1000_0000);
-                DateTime tdate = unixDateBase.Add(ttime);
-                TimeSpan temp = baseTimes.ToUniversalTime()
-                                        .Subtract(tdate);
+                type = TimeIntervalType.MonthsAgo;
+                obj = tdate;
+            }
+            else
+            {
+                TimeSpan temp = baseTime.Value.ToUniversalTime().Subtract(tdate);
 
                 if (temp.TotalDays > 30)
                 {
-                    return (TimeIntervalType.MonthsAgo, tdate);
+                    type = TimeIntervalType.MonthsAgo;
+                    obj = tdate;
                 }
                 else
                 {
-                    TimeIntervalType timetype = temp.Days > 0
-                        ? TimeIntervalType.DaysAgo
-                        : temp.Hours > 0 ? TimeIntervalType.HoursAgo : temp.Minutes > 0 ? TimeIntervalType.MinutesAgo : TimeIntervalType.JustNow;
-                    return (timetype, temp);
+                    type =
+                        temp.Days > 0
+                            ? TimeIntervalType.DaysAgo
+                            : temp.Hours > 0
+                                ? TimeIntervalType.HoursAgo
+                                : temp.Minutes > 0
+                                    ? TimeIntervalType.MinutesAgo
+                                    : TimeIntervalType.JustNow;
+                    obj = temp;
                 }
             }
 
-            (TimeIntervalType type, object obj) = ConvertUnixTimeStampToReadable(time, baseTime);
             switch (type)
             {
                 case TimeIntervalType.MonthsAgo:
@@ -65,8 +75,8 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        public static DateTime ConvertUnixTimeStampToDateTime(this long time) => unixDateBase.Add(new TimeSpan(time * 1000_0000));
+        public static DateTime ConvertUnixTimeStampToDateTime(this long time) => UnixDateBase.Add(new TimeSpan(time * 1000_0000));
 
-        public static double ConvertDateTimeToUnixTimeStamp(this DateTime time) => Math.Round(time.ToUniversalTime().Subtract(unixDateBase).TotalSeconds);
+        public static double ConvertDateTimeToUnixTimeStamp(this DateTime time) => Math.Round(time.ToUniversalTime().Subtract(UnixDateBase).TotalSeconds);
     }
 }

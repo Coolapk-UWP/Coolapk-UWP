@@ -105,6 +105,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <StackPanel
                     x:Name="StickUp"
@@ -120,6 +121,7 @@
                     <TextBlock
                         x:Uid="/Feed/StickUp"
                         Margin="5,4,5,5"
+                        HorizontalAlignment="Left"
                         Foreground="Red"
                         IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}" />
                 </StackPanel>
@@ -262,6 +264,7 @@
                     x:Name="MessageTitle"
                     Grid.Row="3"
                     Margin="4"
+                    HorizontalAlignment="Left"
                     FontSize="16"
                     FontWeight="Black"
                     IsTextSelectionEnabled="{Binding IsCopyEnabled}"
@@ -287,6 +290,7 @@
                             CornerRadius="{ThemeResource ControlCornerRadius}">
                             <TextBlock
                                 x:Uid="/Feed/Rating"
+                                HorizontalAlignment="Left"
                                 FontSize="12"
                                 Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
                         </Border>
@@ -298,6 +302,7 @@
                             Value="{Binding RatingStar, Mode=OneWay}" />
                         <TextBlock
                             Grid.Column="2"
+                            HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             FontSize="12"
                             Foreground="{ThemeResource TextFillColorSecondaryBrush}">
@@ -307,6 +312,7 @@
                     </Grid>
                     <controls:TextBlockEx
                         x:Name="Message"
+                        HorizontalAlignment="Left"
                         IsTextSelectionEnabled="{Binding IsCopyEnabled}"
                         Text="{Binding Message}"
                         Visibility="{Binding Message, Converter={StaticResource StringVisibilityConverter}}" />
@@ -328,8 +334,53 @@
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                 </GridView>
-                <Border
+                <StackPanel
                     Grid.Row="6"
+                    Margin="0,4"
+                    Padding="4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{ThemeResource OverlayCornerRadius}"
+                    Visibility="{Binding VoteRows, Converter={StaticResource CollectionVisibilityConverter}}">
+                    <muxc:ItemsRepeater
+                        HorizontalAlignment="Stretch"
+                        ItemTemplate="{StaticResource VoteItemTemplate}"
+                        ItemsSource="{Binding VoteRows}">
+                        <muxc:ItemsRepeater.Layout>
+                            <muxc:StackLayout />
+                        </muxc:ItemsRepeater.Layout>
+                    </muxc:ItemsRepeater>
+                    <Grid Margin="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            HorizontalAlignment="Left"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="{Binding IsCopyEnabled}">
+                            <Run FontWeight="Bold" Text="{Binding TotalVoteNum}" />
+                            <Run Text="人投票" />
+                            <Run Text="•" />
+                            <Run FontWeight="Bold" Text="{Binding TotalCommentNum}" />
+                            <Run Text="个观点" />
+                        </TextBlock>
+                        <TextBlock
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="{Binding IsCopyEnabled}">
+                            <Run FontWeight="Bold" Text="{Binding VoteStartTime}" />
+                            <Run Text="-" />
+                            <Run FontWeight="Bold" Text="{Binding VoteEndTime}" />
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>
+                <Border
+                    Grid.Row="7"
                     Margin="0,4"
                     HorizontalAlignment="Stretch"
                     Visibility="{Binding ShowSourceFeed, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -341,6 +392,7 @@
                         <TextBlock
                             x:Uid="/Feed/SourceFeedNotFount"
                             Margin="12,8"
+                            HorizontalAlignment="Left"
                             Visibility="{Binding EmptySourceFeed, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <Border Visibility="{Binding EmptySourceFeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
                             <controls:WebViewContentControl
@@ -351,7 +403,7 @@
                     </Grid>
                 </Border>
                 <Grid
-                    Grid.Row="7"
+                    Grid.Row="8"
                     Margin="0,4"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
@@ -412,6 +464,7 @@
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center">
                             <TextBlock
+                                HorizontalAlignment="Left"
                                 Foreground="White"
                                 MaxLines="2"
                                 Text="{Binding ExtraTitle}"
@@ -419,6 +472,7 @@
                                 TextWrapping="Wrap"
                                 Visibility="{Binding ExtraTitle, Converter={StaticResource StringVisibilityConverter}}" />
                             <TextBlock
+                                HorizontalAlignment="Left"
                                 Foreground="LightGray"
                                 Text="{Binding ExtraSubtitle}"
                                 TextWrapping="Wrap"
@@ -462,7 +516,7 @@
                     </Grid>
                 </Grid>
                 <Grid
-                    Grid.Row="8"
+                    Grid.Row="9"
                     Margin="0,4"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
@@ -523,10 +577,12 @@
                             VerticalAlignment="Center">
                             <TextBlock
                                 x:Uid="/Feed/MediaShare"
+                                HorizontalAlignment="Left"
                                 MaxLines="2"
                                 TextTrimming="WordEllipsis"
                                 TextWrapping="Wrap" />
                             <TextBlock
+                                HorizontalAlignment="Left"
                                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                 Text="{Binding MediaSubtitle}"
                                 TextWrapping="Wrap"
@@ -535,7 +591,7 @@
                     </Grid>
                 </Grid>
                 <muxc:ItemsRepeaterScrollHost
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Margin="2,0"
                     Visibility="{Binding RelationRows, Converter={StaticResource CollectionVisibilityConverter}}">
                     <ScrollViewer
@@ -555,7 +611,7 @@
                 </muxc:ItemsRepeaterScrollHost>
                 <StackPanel
                     x:Name="ReplyRows"
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Margin="0,4"
                     Padding="4"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
@@ -572,6 +628,7 @@
                     </muxc:ItemsRepeater>
                     <TextBlock
                         Margin="4"
+                        HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}">
                         <Run x:Uid="/Feed/SeeAll" />
@@ -581,11 +638,12 @@
                     </TextBlock>
                 </StackPanel>
                 <StackPanel
-                    Grid.Row="11"
+                    Grid.Row="12"
                     Margin="4"
                     HorizontalAlignment="Left"
                     Orientation="Horizontal">
                     <TextBlock
+                        HorizontalAlignment="Left"
                         FontSize="12"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         IsTextSelectionEnabled="True"
@@ -596,14 +654,19 @@
                         <Run FontWeight="Bold" Text="{Binding QuestionFollowNum}" />
                         <Run Text="人关注" />
                     </TextBlock>
-                    <Border Margin="2,0" Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Border
+                        Margin="2,0"
+                        HorizontalAlignment="Left"
+                        Visibility="{Binding IsQuestionFeed, Converter={StaticResource BoolToVisibilityConverter}}">
                         <TextBlock
+                            HorizontalAlignment="Left"
                             FontSize="12"
                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             Text="•"
                             Visibility="{Binding IPLocation, Converter={StaticResource StringVisibilityConverter}}" />
                     </Border>
                     <TextBlock
+                        HorizontalAlignment="Left"
                         FontSize="12"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         IsTextSelectionEnabled="True"
@@ -681,6 +744,7 @@
                         Tag="{Binding UserInfo.Url}" />
                     <TextBlock
                         Margin="4"
+                        HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
@@ -690,6 +754,7 @@
                     x:Name="Message"
                     Grid.Row="1"
                     Margin="4"
+                    HorizontalAlignment="Left"
                     IsTextSelectionEnabled="{Binding IsCopyEnabled}"
                     Text="{Binding Message}" />
                 <GridView
@@ -785,9 +850,13 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Orientation="Horizontal">
-                            <TextBlock IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}" Text="{Binding UserInfo.UserName}" />
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
+                                Text="{Binding UserInfo.UserName}" />
                             <Border
                                 Margin="6,0"
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 BorderBrush="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                 BorderThickness="1"
@@ -796,6 +865,7 @@
                                 <TextBlock
                                     x:Uid="/Feed/FeedAuthor"
                                     Margin="1"
+                                    HorizontalAlignment="Left"
                                     FontSize="12"
                                     Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                     IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}" />
@@ -803,12 +873,14 @@
                         </StackPanel>
                         <StackPanel Margin="-1,0" Orientation="Horizontal">
                             <TextBlock
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                 IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
                                 Text="{Binding Dateline}" />
                             <TextBlock
                                 Margin="2,0,0,0"
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                 IsTextSelectionEnabled="{Binding IsCopyEnabled, Mode=OneWay}"
@@ -880,6 +952,7 @@
                     x:Name="Message"
                     Grid.Row="3"
                     Margin="4"
+                    HorizontalAlignment="Left"
                     IsTextSelectionEnabled="{Binding IsCopyEnabled}"
                     Text="{Binding Message}" />
                 <GridView
@@ -925,6 +998,7 @@
                         Style="{StaticResource TransparentButtonStyle}"
                         Tag="{Binding}">
                         <TextBlock
+                            HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             FontSize="12"
                             Foreground="{ThemeResource TextFillColorSecondaryBrush}">
@@ -959,6 +1033,7 @@
                 Tapped="OnTopTapped">
                 <TextBlock
                     Margin="8"
+                    HorizontalAlignment="Left"
                     FontSize="16"
                     Text="{Binding MessageTitle}"
                     TextTrimming="WordEllipsis" />

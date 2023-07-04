@@ -8,13 +8,13 @@ namespace CoolapkUWP.Helpers.Converters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             double result = System.Convert.ToDouble(value) * System.Convert.ToDouble(parameter);
-            return result.Convert(targetType);
+            return ConverterTools.Convert(result, targetType);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             double result = System.Convert.ToDouble(value) / System.Convert.ToDouble(parameter);
-            return result.Convert(targetType);
+            return ConverterTools.Convert(result, targetType);
         }
     }
 }
