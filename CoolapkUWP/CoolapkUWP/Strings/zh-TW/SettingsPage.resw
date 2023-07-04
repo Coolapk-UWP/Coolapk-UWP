@@ -271,6 +271,12 @@
     <value>在新視窗查看圖片。</value>
   </data>
   <data name="UseMultiWindowSettings.Header" xml:space="preserve">
-    <value>使用多視窗（僅支援 1903 及以上）</value>
+    <value>使用多窗口 (仅支持 1903 及以上)</value>
+  </data>
+  <data name="TileUpdateTimeSettings.Description" xml:space="preserve">
+    <value>设置磁贴更新的间隔，单位分钟 (小于 15 分钟停止更新)</value>
+  </data>
+  <data name="TileUpdateTimeSettings.Header" xml:space="preserve">
+    <value>磁贴更新间隔</value>
   </data>
 </root>
