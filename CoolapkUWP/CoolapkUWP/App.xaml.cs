@@ -290,16 +290,23 @@ namespace CoolapkUWP
         private static async void RegisterBackgroundTask()
         {
             // Check for background access (optional)
-            await BackgroundExecutionManager.RequestAccessAsync();
-
-            RegisterLiveTileTask();
-            RegisterNotificationsTask();
-            RegisterToastBackgroundTask();
+            BackgroundAccessStatus status = await BackgroundExecutionManager.RequestAccessAsync();
+            if (status != BackgroundAccessStatus.Unspecified
+                && status != BackgroundAccessStatus.Denied
+                && status != (BackgroundAccessStatus)7)
+            {
+                RegisterLiveTileTask();
+                RegisterNotificationsTask();
+                RegisterToastBackgroundTask();
+            }
 
             #region LiveTileTask
 
             void RegisterLiveTileTask()
             {
+                uint time = SettingsHelper.Get<uint>(SettingsHelper.TileUpdateTime);
+                if (time < 15) { return; }
+
                 const string LiveTileTask = "LiveTileTask";
 
                 // If background task is already registered, do nothing
@@ -307,7 +314,7 @@ namespace CoolapkUWP
                 { return; }
 
                 // Register (Single Process)
-                BackgroundTaskRegistration _LiveTileTask = BackgroundTaskHelper.Register(LiveTileTask, new TimeTrigger(15, false), true);
+                BackgroundTaskRegistration _LiveTileTask = BackgroundTaskHelper.Register(LiveTileTask, new TimeTrigger(time, false), true);
             }
 
             #endregion

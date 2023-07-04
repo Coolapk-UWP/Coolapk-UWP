@@ -14,7 +14,6 @@ namespace CoolapkUWP.Controls.Dialogs
         {
             InitializeComponent();
             APIVersion = APIVersion.Parse(line);
-            Closing += OnClosing;
         }
 
         private void OnClosing(ContentDialog sender, ContentDialogClosingEventArgs args)

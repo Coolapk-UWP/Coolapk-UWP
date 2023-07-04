@@ -14,7 +14,6 @@ namespace CoolapkUWP.Controls
         {
             InitializeComponent();
             UserAgent = UserAgent.Parse(line);
-            Closing += OnClosing;
         }
 
         private void OnClosing(ContentDialog sender, ContentDialogClosingEventArgs args)

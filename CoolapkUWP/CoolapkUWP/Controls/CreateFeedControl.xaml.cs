@@ -74,9 +74,18 @@ namespace CoolapkUWP.Controls
         {
             InitializeComponent();
             Provider = new CreateFeedViewModel(Dispatcher);
+        }
+
+        private void Picker_Loaded(object sender, RoutedEventArgs e)
+        {
             Clipboard.ContentChanged += Clipboard_ContentChanged;
             Clipboard_ContentChanged(null, null);
             UpdateTitle();
+        }
+
+        private void Picker_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Clipboard.ContentChanged -= Clipboard_ContentChanged;
         }
 
         private void UpdateTitle()

@@ -17,13 +17,15 @@ namespace CoolapkUWP.Controls
 {
     public sealed partial class SettingsFlyoutControl : SettingsFlyout
     {
+        private Action<UISettingChangedType> UISettingChanged;
+
         internal SettingsViewModel Provider;
 
-        public SettingsFlyoutControl()
+        public SettingsFlyoutControl() => InitializeComponent();
+
+        private void SettingsFlyout_Loaded(object sender, RoutedEventArgs e)
         {
-            InitializeComponent();
-            Provider = SettingsViewModel.Caches ?? new SettingsViewModel(Dispatcher);
-            ThemeHelper.UISettingChanged.Add(mode =>
+            UISettingChanged = (mode) =>
             {
                 switch (mode)
                 {
@@ -36,8 +38,15 @@ namespace CoolapkUWP.Controls
                     default:
                         break;
                 }
-            });
+            };
+            Provider = SettingsViewModel.Caches ?? new SettingsViewModel(Dispatcher);
+            ThemeHelper.UISettingChanged.Add(UISettingChanged);
             DataContext = Provider;
+        }
+
+        private void SettingsFlyout_Unloaded(object sender, RoutedEventArgs e)
+        {
+            ThemeHelper.UISettingChanged.Remove(UISettingChanged);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

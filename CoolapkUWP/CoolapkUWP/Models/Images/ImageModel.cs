@@ -19,6 +19,8 @@ namespace CoolapkUWP.Models.Images
     {
         private static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(SettingsHelper.Get<int>(SettingsHelper.SemaphoreSlimCount));
 
+        private readonly Action<UISettingChangedType> UISettingChanged;
+
         public CoreDispatcher Dispatcher { get; }
 
         protected WeakReference<BitmapImage> pic;
@@ -167,7 +169,7 @@ namespace CoolapkUWP.Models.Images
             Dispatcher = dispatcher;
             Uri = uri;
             Type = type;
-            ThemeHelper.UISettingChanged.Add(mode =>
+            UISettingChanged = (mode) =>
             {
                 switch (mode)
                 {
@@ -189,7 +191,13 @@ namespace CoolapkUWP.Models.Images
                         }
                         break;
                 }
-            });
+            };
+            ThemeHelper.UISettingChanged.Add(UISettingChanged);
+        }
+
+        ~ImageModel()
+        {
+            ThemeHelper.UISettingChanged.Remove(UISettingChanged);
         }
 
         public event TypedEventHandler<ImageModel, object> LoadStarted;

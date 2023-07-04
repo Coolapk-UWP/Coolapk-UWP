@@ -14,6 +14,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Padding="25"
+    Loaded="Picker_Loaded"
+    Unloaded="Picker_Unloaded"
     mc:Ignorable="d">
     <local:Picker.Resources>
         <ResourceDictionary>

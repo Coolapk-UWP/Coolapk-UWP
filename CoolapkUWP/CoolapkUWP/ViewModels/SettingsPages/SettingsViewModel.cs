@@ -115,6 +115,19 @@ namespace CoolapkUWP.ViewModels.SettingsPages
             }
         }
 
+        public uint TileUpdateTime
+        {
+            get => SettingsHelper.Get<uint>(SettingsHelper.TileUpdateTime);
+            set
+            {
+                if (TileUpdateTime != value)
+                {
+                    SettingsHelper.Set(SettingsHelper.TileUpdateTime, value);
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
         private bool isCleanCache;
         public bool IsCleanCache
         {

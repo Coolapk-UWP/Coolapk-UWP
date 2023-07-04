@@ -54,7 +54,6 @@ namespace CoolapkUWP.Controls
         public LoginDialog()
         {
             InitializeComponent();
-            Closing += OnClosing;
             CheckText();
         }
 

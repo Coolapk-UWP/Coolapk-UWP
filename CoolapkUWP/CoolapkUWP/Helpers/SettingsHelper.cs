@@ -27,6 +27,7 @@ namespace CoolapkUWP.Helpers
         public const string UpdateDate = nameof(UpdateDate);
         public const string IsNoPicsMode = nameof(IsNoPicsMode);
         public const string TokenVersion = nameof(TokenVersion);
+        public const string TileUpdateTime = nameof(TileUpdateTime);
         public const string IsUseCompositor = nameof(IsUseCompositor);
         public const string CurrentLanguage = nameof(CurrentLanguage);
         public const string IsUseMultiWindow = nameof(IsUseMultiWindow);
@@ -94,6 +95,10 @@ namespace CoolapkUWP.Helpers
             if (!LocalObject.KeyExists(TokenVersion))
             {
                 LocalObject.Save(TokenVersion, Common.TokenVersions.TokenV2);
+            }
+            if (!LocalObject.KeyExists(TileUpdateTime))
+            {
+                LocalObject.Save(TileUpdateTime, SystemInformation.Instance.OperatingSystemVersion.Build < 21996 ? 15u : 0u);
             }
             if (!LocalObject.KeyExists(IsUseCompositor))
             {

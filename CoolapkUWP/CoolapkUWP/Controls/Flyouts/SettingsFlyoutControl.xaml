@@ -17,7 +17,9 @@
     xmlns:settingspages="using:CoolapkUWP.ViewModels.SettingsPages"
     Title="{Binding Title}"
     d:DataContext="{d:DesignInstance Type=settingspages:SettingsViewModel}"
+    Loaded="SettingsFlyout_Loaded"
     Style="{StaticResource DefaultSettingsFlyoutStyle}"
+    Unloaded="SettingsFlyout_Unloaded"
     mc:Ignorable="d">
     <StackPanel x:Name="StackPanel">
         <StackPanel.ChildrenTransitions>
@@ -47,6 +49,16 @@
             </local:Setting>
             <local:Setting x:Uid="/SettingsPage/DisplayOriginPictureSettings" Icon="&#xE8B9;">
                 <ToggleSwitch IsOn="{Binding IsDisplayOriginPicture, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
+            </local:Setting>
+            <local:Setting x:Uid="/SettingsPage/TileUpdateTimeSettings" Icon="&#xEA79;">
+                <Slider
+                    Width="{StaticResource SettingCardContentMinWidth}"
+                    Maximum="1440"
+                    Minimum="0"
+                    StepFrequency="15"
+                    TickFrequency="15"
+                    TickPlacement="Outside"
+                    Value="{Binding TileUpdateTime, Mode=TwoWay}" />
             </local:Setting>
         </local:SettingsGroup>
         <local:SettingsGroup
