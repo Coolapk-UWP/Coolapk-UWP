@@ -8,6 +8,7 @@
     xmlns:contract6NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 6)"
     xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
+    xmlns:cwuh="using:Microsoft.Toolkit.Uwp.UI.Helpers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:Microsoft.UI.Xaml.Media"
@@ -114,22 +115,11 @@
                     Padding="4,2"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
+                    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
                     CornerRadius="6"
-                    Visibility="{Binding Visibility, ElementName=CommandBar}">
-                    <contract5NotPresent:Border.Background>
-                        <media:AcrylicBrush
-                            BackgroundSource="Backdrop"
-                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
-                            TintColor="{ThemeResource SystemChromeMediumHighColor}"
-                            TintOpacity="0" />
-                    </contract5NotPresent:Border.Background>
-                    <contract5Present:Border.Background>
-                        <contract5Present:AcrylicBrush
-                            BackgroundSource="Backdrop"
-                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
-                            TintColor="{ThemeResource SystemChromeMediumHighColor}"
-                            TintOpacity="0" />
-                    </contract5Present:Border.Background>
+                    Visibility="{Binding IsShowHub, Converter={StaticResource BoolToVisibilityConverter}}">
                     <TextBlock
                         x:Name="AppTitle"
                         MaxLines="1"
@@ -146,64 +136,106 @@
                     IsTabStop="True"
                     ItemsSource="{Binding Images}"
                     SelectedIndex="{Binding Index, Mode=TwoWay}">
+                    <FlipView.Resources>
+                        <cwuh:BindableValueHolder x:Key="IsShowHubProxy" Value="{Binding IsShowHub}" />
+                    </FlipView.Resources>
                     <FlipView.ItemTemplate>
                         <DataTemplate>
-                            <ScrollViewer
-                                x:Name="ImageScrollViewer"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                Background="{ThemeResource SystemControlTransparentBrush}"
-                                DoubleTapped="ScrollViewer_DoubleTapped"
-                                HorizontalScrollBarVisibility="Hidden"
-                                HorizontalScrollMode="Auto"
-                                MaxZoomFactor="3"
-                                MinZoomFactor="0.5"
-                                Tapped="ScrollViewer_Tapped"
-                                VerticalScrollBarVisibility="Hidden"
-                                VerticalScrollMode="Auto"
-                                ViewChanged="ScrollViewer_ViewChanged"
-                                ZoomMode="Enabled">
-                                <Image
-                                    x:Name="Image"
-                                    MaxWidth="{Binding Path=ViewportWidth, ElementName=ImageScrollViewer}"
-                                    MaxHeight="{Binding Path=ViewportHeight, ElementName=ImageScrollViewer}"
-                                    HorizontalAlignment="Center"
+                            <Grid>
+                                <ScrollViewer
+                                    x:Name="ImageScrollViewer"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Background="{ThemeResource SystemControlTransparentBrush}"
+                                    DoubleTapped="ScrollViewer_DoubleTapped"
+                                    HorizontalScrollBarVisibility="Hidden"
+                                    HorizontalScrollMode="Auto"
+                                    MaxZoomFactor="3"
+                                    MinZoomFactor="0.5"
+                                    Tapped="ScrollViewer_Tapped"
+                                    VerticalScrollBarVisibility="Hidden"
+                                    VerticalScrollMode="Auto"
+                                    ViewChanged="ScrollViewer_ViewChanged"
+                                    ZoomMode="Enabled">
+                                    <Image
+                                        x:Name="Image"
+                                        MaxWidth="{Binding Path=ViewportWidth, ElementName=ImageScrollViewer}"
+                                        MaxHeight="{Binding Path=ViewportHeight, ElementName=ImageScrollViewer}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        CanDrag="True"
+                                        DragStarting="Image_DragStarting"
+                                        PointerMoved="Image_PointerMoved"
+                                        PointerPressed="Image_PointerPressed"
+                                        RenderTransformOrigin="0.5,0.5"
+                                        Source="{Binding Pic, Mode=OneWay}" />
+                                </ScrollViewer>
+                                <Grid
+                                    Height="200"
+                                    Margin="0,0,28,0"
+                                    HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
-                                    CanDrag="True"
-                                    DragStarting="Image_DragStarting"
-                                    ManipulationDelta="Image_ManipulationDelta"
-                                    PointerMoved="Image_PointerMoved"
-                                    PointerPressed="Image_PointerPressed"
-                                    RenderTransformOrigin="0.5,0.5"
-                                    Source="{Binding Pic, Mode=OneWay}" />
-                            </ScrollViewer>
+                                    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="{ThemeResource ControlCornerRadius}"
+                                    Visibility="{Binding Value, Source={StaticResource IsShowHubProxy}, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <RepeatButton
+                                        x:Name="ZoomUp"
+                                        Grid.Row="0"
+                                        Width="32"
+                                        Height="32"
+                                        Padding="0"
+                                        HorizontalAlignment="Center"
+                                        Click="Button_Click"
+                                        Content="&#xE8A3;"
+                                        Style="{StaticResource NavigationIconRepeatButtonNormalStyle}"
+                                        Tag="{Binding ElementName=ImageScrollViewer}"
+                                        ToolTipService.ToolTip="放大" />
+                                    <Slider
+                                        Grid.Row="1"
+                                        Margin="0,8"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Stretch"
+                                        Maximum="300"
+                                        Minimum="50"
+                                        Orientation="Vertical"
+                                        Value="{Binding ZoomFactor, ElementName=ImageScrollViewer, Converter={StaticResource NumMultConverter}, ConverterParameter='100', Mode=TwoWay}" />
+                                    <RepeatButton
+                                        x:Name="ZoomDown"
+                                        Grid.Row="2"
+                                        Width="32"
+                                        Height="32"
+                                        Padding="0"
+                                        HorizontalAlignment="Center"
+                                        Click="Button_Click"
+                                        Content="&#xE71F;"
+                                        Style="{StaticResource NavigationIconRepeatButtonNormalStyle}"
+                                        Tag="{Binding ElementName=ImageScrollViewer}"
+                                        ToolTipService.ToolTip="缩小" />
+                                </Grid>
+                            </Grid>
                         </DataTemplate>
                     </FlipView.ItemTemplate>
                 </FlipView>
-                <Border
-                    Margin="4"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    CornerRadius="6"
-                    Visibility="{Binding Images, Converter={StaticResource PipsPagerVisibilityConverter}}">
-                    <contract5NotPresent:Border.Background>
-                        <media:AcrylicBrush
-                            BackgroundSource="Backdrop"
-                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
-                            TintColor="{ThemeResource SystemChromeMediumHighColor}"
-                            TintOpacity="0" />
-                    </contract5NotPresent:Border.Background>
-                    <contract5Present:Border.Background>
-                        <contract5Present:AcrylicBrush
-                            BackgroundSource="Backdrop"
-                            FallbackColor="{ThemeResource SystemChromeMediumHighColor}"
-                            TintColor="{ThemeResource SystemChromeMediumHighColor}"
-                            TintOpacity="0" />
-                    </contract5Present:Border.Background>
-                    <muxc:PipsPager
-                        Margin="2,0"
-                        NumberOfPages="{Binding Images, Converter={StaticResource CollectionCountConverter}}"
-                        SelectedPageIndex="{Binding SelectedIndex, ElementName=FlipView, Mode=TwoWay}" />
+                <Border Visibility="{Binding IsShowHub, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Border
+                        Margin="4"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                        CornerRadius="6"
+                        Visibility="{Binding Images, Converter={StaticResource PipsPagerVisibilityConverter}}">
+                        <muxc:PipsPager
+                            Margin="2,0"
+                            NumberOfPages="{Binding Images, Converter={StaticResource CollectionCountConverter}}"
+                            SelectedPageIndex="{Binding SelectedIndex, ElementName=FlipView, Mode=TwoWay}" />
+                    </Border>
                 </Border>
                 <Border
                     HorizontalAlignment="Center"
@@ -230,7 +262,7 @@
             VerticalAlignment="Bottom"
             contract12Present:DefaultLabelPosition="Right"
             Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-            Visibility="Collapsed">
+            Visibility="{Binding IsShowHub, Converter={StaticResource BoolToVisibilityConverter}}">
             <CommandBar.PrimaryCommands>
                 <AppBarButton
                     x:Uid="/ShowImagePage/RefreshButton"

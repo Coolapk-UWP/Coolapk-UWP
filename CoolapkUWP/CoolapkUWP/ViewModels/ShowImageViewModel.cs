@@ -69,6 +69,20 @@ namespace CoolapkUWP.ViewModels
             }
         }
 
+        private bool isShowHub = true;
+        public bool IsShowHub
+        {
+            get => isShowHub;
+            set
+            {
+                if (isShowHub != value)
+                {
+                    isShowHub = value;
+                    RaisePropertyChangedEvent();
+                }
+            }
+        }
+
         private IList<ImageModel> images;
         public IList<ImageModel> Images
         {

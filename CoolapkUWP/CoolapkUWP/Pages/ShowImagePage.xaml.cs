@@ -140,6 +140,21 @@ namespace CoolapkUWP.Pages
             RightPaddingColumn.Width = new GridLength(TitleBar.SystemOverlayRightInset);
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            FrameworkElement element = sender as FrameworkElement;
+            ScrollViewer scrollViewer = element.Tag as ScrollViewer;
+            switch (element.Name)
+            {
+                case "ZoomUp":
+                    _ = scrollViewer.ChangeView(null, null, scrollViewer.ZoomFactor + 0.1f);
+                    break;
+                case "ZoomDown":
+                    _ = scrollViewer.ChangeView(null, null, scrollViewer.ZoomFactor - 0.1f);
+                    break;
+            }
+        }
+
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             switch ((sender as FrameworkElement).Tag as string)
@@ -165,19 +180,14 @@ namespace CoolapkUWP.Pages
 
         private void ScrollViewer_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            CommandBar.Visibility = CommandBar.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            Provider.IsShowHub = !Provider.IsShowHub;
         }
 
         private void ScrollViewer_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             ScrollViewer scrollViewer = sender as ScrollViewer;
-            Point doubleTapPoint = e.GetPosition(scrollViewer);
-
-            _ = scrollViewer.ZoomFactor != 1
-                ? scrollViewer.ChangeView(0, 0, 1)
-                : scrollViewer.ChangeView(doubleTapPoint.X, doubleTapPoint.Y, 2);
-
-            CommandBar.Visibility = CommandBar.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            scrollViewer.ChangeView(0, 0, 1);
+            Provider.IsShowHub = !Provider.IsShowHub;
         }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
@@ -217,12 +227,6 @@ namespace CoolapkUWP.Pages
                 y = _clickPoint.Y - point.Y;
                 _ = scrollViewer.ChangeView(scrollViewer.HorizontalOffset + x, scrollViewer.VerticalOffset + y, null);
             }
-        }
-
-        private void Image_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
-        {
-            ScrollViewer view = (sender as FrameworkElement).Parent as ScrollViewer;
-            _ = view.ChangeView(view.HorizontalOffset - (e.Delta.Translation.X * view.ZoomFactor), view.VerticalOffset - (e.Delta.Translation.Y * view.ZoomFactor), null);
         }
 
         private void TitleBar_IsVisibleChanged(CoreApplicationViewTitleBar sender, object args) => UpdateContentLayout(sender);
