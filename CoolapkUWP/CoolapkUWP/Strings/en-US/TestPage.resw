@@ -151,7 +151,7 @@
     <value>Create a new window</value>
   </data>
   <data name="NewWindowSettings.Header" xml:space="preserve">
-    <value>New Window (only supported 1903 and above)</value>
+    <value>新窗口 (仅支持 1903 及以上)</value>
   </data>
   <data name="OpenBrowser.Header" xml:space="preserve">
     <value>Open with built-in browser</value>
