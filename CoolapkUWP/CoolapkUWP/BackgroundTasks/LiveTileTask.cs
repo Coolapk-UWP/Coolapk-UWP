@@ -110,7 +110,7 @@ namespace CoolapkUWP.BackgroundTasks
                                 new AdaptiveText
                                 {
                                     Text = FeedDetail.UserInfo.UserName,
-                                    HintStyle = AdaptiveTextStyle.Caption,
+                                    HintStyle = AdaptiveTextStyle.Caption
                                 },
 
                                 new AdaptiveText
@@ -159,7 +159,7 @@ namespace CoolapkUWP.BackgroundTasks
                                                 new AdaptiveText
                                                 {
                                                     Text = FeedDetail.UserInfo.UserName,
-                                                    HintStyle = AdaptiveTextStyle.Caption,
+                                                    HintStyle = AdaptiveTextStyle.Caption
                                                 },
 
                                                 new AdaptiveText
@@ -213,7 +213,7 @@ namespace CoolapkUWP.BackgroundTasks
                                 new AdaptiveText
                                 {
                                     Text = FeedDetail.UserInfo.UserName,
-                                    HintStyle = AdaptiveTextStyle.Caption,
+                                    HintStyle = AdaptiveTextStyle.Caption
                                 },
 
                                 new AdaptiveText
@@ -280,7 +280,7 @@ namespace CoolapkUWP.BackgroundTasks
                             PeekImage = new TilePeekImage
                             {
                                 Source = UserDetail.UserAvatar.Uri,
-                                HintCrop = TilePeekImageCrop.Circle,
+                                HintCrop = TilePeekImageCrop.Circle
                             },
 
                             Children =
@@ -288,19 +288,19 @@ namespace CoolapkUWP.BackgroundTasks
                                 new AdaptiveText
                                 {
                                     Text = UserDetail.UserName,
-                                    HintStyle = AdaptiveTextStyle.Caption,
+                                    HintStyle = AdaptiveTextStyle.Caption
                                 },
 
                                 new AdaptiveText
                                 {
                                     Text = $"{UserDetail.FollowNum}{loader.GetString("Follow")} {UserDetail.FansNum}{loader.GetString("Fan")}",
-                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
                                 },
 
                                 new AdaptiveText
                                 {
                                     Text = $"{UserDetail.LoginTime}{loader.GetString("Active")}",
-                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
                                 },
 
                                 new AdaptiveText
@@ -349,19 +349,19 @@ namespace CoolapkUWP.BackgroundTasks
                                                 new AdaptiveText
                                                 {
                                                     Text = UserDetail.UserName,
-                                                    HintStyle = AdaptiveTextStyle.Caption,
+                                                    HintStyle = AdaptiveTextStyle.Caption
                                                 },
 
                                                 new AdaptiveText
                                                 {
                                                     Text = $"{UserDetail.FollowNum}{loader.GetString("Follow")} {UserDetail.FansNum}{loader.GetString("Fan")}",
-                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
                                                 },
 
                                                 new AdaptiveText
                                                 {
                                                     Text = $"{UserDetail.LoginTime}{loader.GetString("Active")}",
-                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
                                                 },
 
                                                 new AdaptiveText
@@ -415,26 +415,326 @@ namespace CoolapkUWP.BackgroundTasks
                                 new AdaptiveText
                                 {
                                     Text = UserDetail.UserName,
-                                    HintStyle = AdaptiveTextStyle.Caption,
+                                    HintStyle = AdaptiveTextStyle.Caption
                                 },
 
                                 new AdaptiveText
                                 {
                                     Text = $"{UserDetail.FollowNum}{loader.GetString("Follow")} {UserDetail.FansNum}{loader.GetString("Fan")}",
-                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
                                 },
 
                                 new AdaptiveText
                                 {
                                     Text = $"{UserDetail.LoginTime}{loader.GetString("Active")}",
-                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
                                 },
 
                                 new AdaptiveText
                                 {
                                     Text = UserDetail.Bio,
                                     HintStyle = AdaptiveTextStyle.CaptionSubtle,
-                                    HintWrap = true,
+                                    HintWrap = true
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        public static TileContent GetListTitle(IHasDescription ListDetail)
+        {
+            return new TileContent
+            {
+                Visual = new TileVisual
+                {
+                    Branding = TileBranding.NameAndLogo,
+                    DisplayName = ListDetail.Title,
+
+                    TileSmall = new TileBinding
+                    {
+                        Content = new TileBindingContentAdaptive
+                        {
+                            Children =
+                            {
+                                new AdaptiveImage
+                                {
+                                    Source = ListDetail.Pic.Uri
+                                }
+                            }
+                        }
+                    },
+
+                    TileMedium = new TileBinding
+                    {
+                        Content = new TileBindingContentAdaptive
+                        {
+                            PeekImage = new TilePeekImage
+                            {
+                                Source = ListDetail.Pic.Uri
+                            },
+
+                            Children =
+                            {
+                                new AdaptiveText
+                                {
+                                    Text = ListDetail.Title,
+                                    HintStyle = AdaptiveTextStyle.Caption
+                                },
+
+                                new AdaptiveText
+                                {
+                                    Text = ListDetail.Description,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true
+                                }
+                            }
+                        }
+                    },
+
+                    TileWide = new TileBinding
+                    {
+                        Content = new TileBindingContentAdaptive
+                        {
+                            Children =
+                            {
+                                new AdaptiveGroup
+                                {
+                                    Children =
+                                    {
+                                        new AdaptiveSubgroup
+                                        {
+                                            HintWeight = 33,
+                                            Children =
+                                            {
+                                                new AdaptiveImage
+                                                {
+                                                    Source = ListDetail.Pic.Uri
+                                                }
+                                            },
+                                        },
+                                        new AdaptiveSubgroup
+                                        {
+                                            Children =
+                                            {
+                                                new AdaptiveText
+                                                {
+                                                    Text = ListDetail.Title,
+                                                    HintStyle = AdaptiveTextStyle.Caption
+                                                },
+
+                                                new AdaptiveText
+                                                {
+                                                    Text = ListDetail.Description,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                                    HintWrap = true
+                                                }
+                                            },
+                                        }
+                                    }
+                                },
+                            }
+                        }
+                    },
+
+                    TileLarge = new TileBinding
+                    {
+                        Content = new TileBindingContentAdaptive
+                        {
+                            Children =
+                            {
+                                new AdaptiveGroup
+                                {
+                                    Children =
+                                    {
+                                        new AdaptiveSubgroup
+                                        {
+                                            HintWeight = 33,
+                                            Children =
+                                            {
+                                                new AdaptiveImage
+                                                {
+                                                    Source = ListDetail.Pic.Uri
+                                                }
+                                            }
+                                        },
+
+                                        new AdaptiveSubgroup()
+                                    }
+                                },
+
+                                new AdaptiveText
+                                {
+                                    Text = ListDetail.Title,
+                                    HintStyle = AdaptiveTextStyle.Caption
+                                },
+
+                                new AdaptiveText
+                                {
+                                    Text = ListDetail.Description,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        public static TileContent GetListTitle(IHasSubtitle ListDetail)
+        {
+            return new TileContent
+            {
+                Visual = new TileVisual
+                {
+                    Branding = TileBranding.NameAndLogo,
+                    DisplayName = ListDetail.Title,
+
+                    TileSmall = new TileBinding
+                    {
+                        Content = new TileBindingContentAdaptive
+                        {
+                            Children =
+                            {
+                                new AdaptiveImage
+                                {
+                                    Source = ListDetail.Pic.Uri
+                                }
+                            }
+                        }
+                    },
+
+                    TileMedium = new TileBinding
+                    {
+                        Content = new TileBindingContentAdaptive
+                        {
+                            PeekImage = new TilePeekImage
+                            {
+                                Source = ListDetail.Pic.Uri
+                            },
+
+                            Children =
+                            {
+                                new AdaptiveText
+                                {
+                                    Text = ListDetail.Title,
+                                    HintStyle = AdaptiveTextStyle.Caption
+                                },
+
+                                new AdaptiveText
+                                {
+                                    Text = ListDetail.SubTitle,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true
+                                },
+
+                                new AdaptiveText
+                                {
+                                    Text = ListDetail.Description,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true
+                                }
+                            }
+                        }
+                    },
+
+                    TileWide = new TileBinding
+                    {
+                        Content = new TileBindingContentAdaptive
+                        {
+                            Children =
+                            {
+                                new AdaptiveGroup
+                                {
+                                    Children =
+                                    {
+                                        new AdaptiveSubgroup
+                                        {
+                                            HintWeight = 33,
+                                            Children =
+                                            {
+                                                new AdaptiveImage
+                                                {
+                                                    Source = ListDetail.Pic.Uri
+                                                }
+                                            },
+                                        },
+                                        new AdaptiveSubgroup
+                                        {
+                                            Children =
+                                            {
+                                                new AdaptiveText
+                                                {
+                                                    Text = ListDetail.Title,
+                                                    HintStyle = AdaptiveTextStyle.Caption
+                                                },
+
+                                                new AdaptiveText
+                                                {
+                                                    Text = ListDetail.SubTitle,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                                    HintWrap = true
+                                                },
+
+                                                new AdaptiveText
+                                                {
+                                                    Text = ListDetail.Description,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                                    HintWrap = true
+                                                }
+                                            },
+                                        }
+                                    }
+                                },
+                            }
+                        }
+                    },
+
+                    TileLarge = new TileBinding
+                    {
+                        Content = new TileBindingContentAdaptive
+                        {
+                            Children =
+                            {
+                                new AdaptiveGroup
+                                {
+                                    Children =
+                                    {
+                                        new AdaptiveSubgroup
+                                        {
+                                            HintWeight = 33,
+                                            Children =
+                                            {
+                                                new AdaptiveImage
+                                                {
+                                                    Source = ListDetail.Pic.Uri
+                                                }
+                                            }
+                                        },
+
+                                        new AdaptiveSubgroup()
+                                    }
+                                },
+
+                                new AdaptiveText
+                                {
+                                    Text = ListDetail.Title,
+                                    HintStyle = AdaptiveTextStyle.Caption
+                                },
+
+                                new AdaptiveText
+                                {
+                                    Text = ListDetail.SubTitle,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true
+                                },
+
+                                new AdaptiveText
+                                {
+                                    Text = ListDetail.Description,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintWrap = true
                                 }
                             }
                         }

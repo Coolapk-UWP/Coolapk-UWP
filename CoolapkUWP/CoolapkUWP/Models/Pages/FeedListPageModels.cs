@@ -261,7 +261,7 @@ namespace CoolapkUWP.Models.Pages
         public override string ToString() => $"{UserName} - {Bio}";
     }
 
-    internal class TopicDetail : FeedListDetailBase, ICanFollow
+    internal class TopicDetail : FeedListDetailBase, IHasSubtitle, ICanFollow
     {
         private bool followed;
         public bool Followed
@@ -308,19 +308,33 @@ namespace CoolapkUWP.Models.Pages
 
         public int ID { get; private set; }
 
+        public string Url { get; private set; }
         public string Title { get; private set; }
         public string HotNum { get; private set; }
+        public string SubTitle { get; private set; }
         public string FollowNum { get; private set; }
         public string CommentNum { get; private set; }
         public string Description { get; private set; }
 
         public ImageModel Logo { get; private set; }
 
+        public ImageModel Pic => Logo;
+
         public ImmutableArray<UserModel> FollowUsers { get; private set; } = ImmutableArray<UserModel>.Empty;
 
         internal TopicDetail(JObject token) : base(token)
         {
             ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("FeedListPage");
+
+            if (token.TryGetValue("id", out JToken id))
+            {
+                ID = id.ToObject<int>();
+            }
+
+            if (token.TryGetValue("url", out JToken url))
+            {
+                Url = url.ToString();
+            }
 
             if (token.TryGetValue("title", out JToken title))
             {
@@ -351,9 +365,10 @@ namespace CoolapkUWP.Models.Pages
             {
                 Description = description.ToString();
             }
-            else if (token.TryGetValue("intro", out JToken intro))
+
+            if (token.TryGetValue("intro", out JToken intro) && Description != intro.ToString())
             {
-                Description = intro.ToString();
+                SubTitle = intro.ToString();
             }
 
             if (token.TryGetValue("logo", out JToken logo))
@@ -393,7 +408,7 @@ namespace CoolapkUWP.Models.Pages
         public override string ToString() => $"{Title} - {Description}";
     }
 
-    internal class DyhDetail : FeedListDetailBase, ICanFollow
+    internal class DyhDetail : FeedListDetailBase, IHasDescription, ICanFollow
     {
         private bool followed;
         public bool Followed
@@ -461,6 +476,10 @@ namespace CoolapkUWP.Models.Pages
 
         public ImageModel Logo { get; private set; }
         public ImageModel UserAvatar { get; private set; }
+
+        public ImageModel Pic => Logo;
+
+        public string Url => $"/dyh/{ID}";
 
         internal DyhDetail(JObject token) : base(token)
         {

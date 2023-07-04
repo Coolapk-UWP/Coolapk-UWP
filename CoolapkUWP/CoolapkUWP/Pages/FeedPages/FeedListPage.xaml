@@ -282,14 +282,30 @@
                 </Border>
             </DataTemplate>
             <DataTemplate x:Key="TopicDetailCard">
-                <Grid
+                <Border
                     Padding="10"
                     HorizontalAlignment="Stretch"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
                     CornerRadius="{ThemeResource OverlayCornerRadius}">
-                    <control:StackPanel Spacing="8">
+                    <Border.Resources>
+                        <MenuFlyout x:Key="MoreFlyout">
+                            <MenuFlyoutItem
+                                x:Name="PinTileButton"
+                                x:Uid="/Feed/PinTile"
+                                Click="Button_Click"
+                                Tag="{Binding}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE840;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Border.Resources>
+                    <control:StackPanel
+                        Background="{ThemeResource SystemControlTransparentBrush}"
+                        ContextFlyout="{StaticResource MoreFlyout}"
+                        Spacing="8">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -370,18 +386,38 @@
                             Text="{Binding Description}"
                             TextWrapping="WrapWholeWords"
                             Visibility="{Binding Description, Converter={StaticResource StringVisibilityConverter}}" />
+                        <TextBlock
+                            Text="{Binding SubTitle}"
+                            TextWrapping="WrapWholeWords"
+                            Visibility="{Binding SubTitle, Converter={StaticResource StringVisibilityConverter}}" />
                     </control:StackPanel>
-                </Grid>
+                </Border>
             </DataTemplate>
             <DataTemplate x:Key="DyhDetailCard">
-                <Grid
+                <Border
                     Padding="10"
                     HorizontalAlignment="Stretch"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
                     CornerRadius="{ThemeResource OverlayCornerRadius}">
-                    <control:StackPanel Spacing="8">
+                    <Border.Resources>
+                        <MenuFlyout x:Key="MoreFlyout">
+                            <MenuFlyoutItem
+                                x:Name="PinTileButton"
+                                x:Uid="/Feed/PinTile"
+                                Click="Button_Click"
+                                Tag="{Binding}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE840;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Border.Resources>
+                    <control:StackPanel
+                        Background="{ThemeResource SystemControlTransparentBrush}"
+                        ContextFlyout="{StaticResource MoreFlyout}"
+                        Spacing="8">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -454,7 +490,7 @@
                             TextWrapping="WrapWholeWords"
                             Visibility="{Binding Description, Converter={StaticResource StringVisibilityConverter}}" />
                     </control:StackPanel>
-                </Grid>
+                </Border>
             </DataTemplate>
             <DataTemplate x:Key="ProductDetailCard">
                 <control:StackPanel Spacing="6">
