@@ -398,6 +398,14 @@ namespace CoolapkUWP.Helpers
                     return frame.Navigate(typeof(FeedShellPage), new QuestionViewModel(id));
                 }
             }
+            else if (link.StartsWith("/vote/", StringComparison.OrdinalIgnoreCase))
+            {
+                string id = link.Substring(6, "?");
+                if (int.TryParse(id, out _))
+                {
+                    return await frame.NavigateAsync(typeof(FeedShellPage), new VoteViewModel(id));
+                }
+            }
             else if (link.StartsWith("/t/", StringComparison.OrdinalIgnoreCase))
             {
                 string tag = link.Substring(3, "?");

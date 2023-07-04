@@ -398,7 +398,7 @@ namespace CoolapkUWP.Pages
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                ObservableCollection<object> observableCollection = new ObservableCollection<object>();
+                ObservableCollection<Entity> observableCollection = new ObservableCollection<Entity>();
                 sender.ItemsSource = observableCollection;
                 string keyWord = sender.Text;
                 await ThreadSwitcher.ResumeBackgroundAsync();
@@ -410,7 +410,7 @@ namespace CoolapkUWP.Pages
                         switch (token.Value<string>("entityType"))
                         {
                             case "apk":
-                                await Dispatcher.AwaitableRunAsync(() => observableCollection.Add(new SearchWord(token as JObject)));
+                                await Dispatcher.AwaitableRunAsync(() => observableCollection.Add(new AppModel(token as JObject)));
                                 break;
                             case "searchWord":
                             default:
@@ -424,18 +424,17 @@ namespace CoolapkUWP.Pages
 
         private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            //if (args.ChosenSuggestion is AppModel app)
-            //{
-            //    UIHelper.NavigateInSplitPane(typeof(AppPages.AppPage), "https://www.coolapk.com" + app.Url);
-            //}
-            //else
-            if (args.ChosenSuggestion is SearchWord word)
+            if (args.ChosenSuggestion is AppModel app)
             {
-                NavigationViewFrame.Navigate(typeof(SearchingPage), new SearchingViewModel(word.ToString(), word.Glyph == "\uE77B" ? 1 : -1));
+                _ = NavigationViewFrame.Navigate(typeof(BrowserPage), new BrowserViewModel($"https://www.coolapk.com{app.Url}"));
+            }
+            else if (args.ChosenSuggestion is SearchWord word)
+            {
+                _ = NavigationViewFrame.Navigate(typeof(SearchingPage), new SearchingViewModel(word.ToString(), word.Glyph == "\uE77B" ? 1 : -1));
             }
             else if (args.ChosenSuggestion is null && !string.IsNullOrEmpty(sender.Text))
             {
-                NavigationViewFrame.Navigate(typeof(SearchingPage), new SearchingViewModel(sender.Text));
+                _ = NavigationViewFrame.Navigate(typeof(SearchingPage), new SearchingViewModel(sender.Text));
             }
         }
 

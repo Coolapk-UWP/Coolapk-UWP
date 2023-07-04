@@ -23,8 +23,8 @@
             </ResourceDictionary.MergedDictionaries>
             <templates:SearchTemplateSelector
                 x:Key="SearchTemplateSelector"
-                App="{StaticResource Empty}"
-                SearchWord="{StaticResource SearchWord}" />
+                App="{StaticResource AppsTemplate}"
+                SearchWord="{StaticResource SearchWordTemplate}" />
         </ResourceDictionary>
     </Page.Resources>
     <Grid>

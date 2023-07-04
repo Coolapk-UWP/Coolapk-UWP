@@ -31,6 +31,7 @@ namespace CoolapkUWP.Helpers
         GetFeedDetail,
         GetFeedReplies,
         GetFeedInfos,
+        GetVoteComments,
         GetChangeHistoryList,
         GetHotReplies,
         GetIndexPage,
@@ -154,6 +155,7 @@ namespace CoolapkUWP.Helpers
                 case UriType.GetFeedDetail: return "/v6/feed/detail?id={0}";
                 case UriType.GetFeedReplies: return "/v6/feed/replyList?id={0}&listType={1}&page={2}{3}&discussMode=1&feedType=feed&blockStatus=0&fromFeedAuthor={4}";
                 case UriType.GetFeedInfos: return "/v6/feed/{4}List?id={0}&page={1}{2}{3}";
+                case UriType.GetVoteComments: return "/v6/vote/commentList?fid={0}&extra_key={1}&page={2}{3}{4}";
                 case UriType.GetChangeHistoryList: return "/v6/feed/changeHistoryList?id={0}";
                 case UriType.GetHotReplies: return "/v6/feed/hotReplyList?id={0}&page={1}{2}&discussMode=1";
                 case UriType.GetIndexPage: return "/v6{0}{1}page={2}";

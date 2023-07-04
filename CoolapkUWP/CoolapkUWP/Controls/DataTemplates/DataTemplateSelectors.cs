@@ -201,11 +201,12 @@ namespace CoolapkUWP.Controls.DataTemplates
     {
         public DataTemplate App { get; set; }
         public DataTemplate SearchWord { get; set; }
+
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            //if (item is AppModel) return App;
-            return SearchWord;
+            return item is AppModel ? App : SearchWord;
         }
+
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
 

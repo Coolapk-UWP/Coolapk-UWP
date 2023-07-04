@@ -244,6 +244,7 @@
     <Compile Include="Helpers\UriHelper.cs" />
     <Compile Include="Helpers\VisualStateHelper.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />
+    <Compile Include="Models\AppModel.cs" />
     <Compile Include="Models\CollectionModel.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\Exceptions\CoolapkMessageException.cs" />
