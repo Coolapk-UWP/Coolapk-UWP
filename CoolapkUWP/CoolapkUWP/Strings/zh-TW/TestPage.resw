@@ -151,7 +151,7 @@
     <value>新建一個視窗</value>
   </data>
   <data name="NewWindowSettings.Header" xml:space="preserve">
-    <value>新窗口 (仅支持 1903 及以上)</value>
+    <value>新視窗 (僅支援 1903 及以上)</value>
   </data>
   <data name="OpenBrowser.Header" xml:space="preserve">
     <value>用內置瀏覽器打開</value>
@@ -250,9 +250,9 @@
     <value>自訂版本號</value>
   </data>
   <data name="ExtensionSettings.Description" xml:space="preserve">
-    <value>前往插件管理页面</value>
+    <value>前往擴展管理頁面</value>
   </data>
   <data name="ExtensionSettings.Header" xml:space="preserve">
-    <value>管理插件</value>
+    <value>管理擴展</value>
   </data>
 </root>
