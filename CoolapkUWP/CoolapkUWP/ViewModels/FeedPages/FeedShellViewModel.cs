@@ -210,16 +210,41 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 if (FeedDetail == null) { return; }
                 List<ShyHeaderItem> ItemSource = new List<ShyHeaderItem>();
                 Title = FeedDetail.Title;
-                foreach (VoteItem vote in FeedDetail.VoteRows)
+                if (FeedDetail.VoteType == 0)
                 {
-                    VoteItemSource VoteItemSource = new VoteItemSource(vote.ID.ToString(), vote.VoteID.ToString());
+                    foreach (VoteItem vote in FeedDetail.VoteRows)
+                    {
+                        VoteItemSource VoteItemSource = new VoteItemSource(vote.ID.ToString(), vote.VoteID.ToString());
+                        VoteItemSource.LoadMoreStarted += UIHelper.ShowProgressBar;
+                        VoteItemSource.LoadMoreCompleted += UIHelper.HideProgressBar;
+                        ItemSource.Add(new ShyHeaderItem
+                        {
+                            Header = vote.Title,
+                            ItemSource = VoteItemSource
+                        });
+                    }
+                }
+                else
+                {
+                    VoteItemSource VoteItemSource = new VoteItemSource(string.Empty, FeedDetail.ID.ToString());
                     VoteItemSource.LoadMoreStarted += UIHelper.ShowProgressBar;
                     VoteItemSource.LoadMoreCompleted += UIHelper.HideProgressBar;
                     ItemSource.Add(new ShyHeaderItem
                     {
-                        Header = vote.Title,
+                        Header = "观点",
                         ItemSource = VoteItemSource
                     });
+                    if (!string.IsNullOrEmpty(FeedDetail.VoteTag))
+                    {
+                        TagItemSource TagItemSource = new TagItemSource(FeedDetail.VoteTag);
+                        TagItemSource.LoadMoreStarted += UIHelper.ShowProgressBar;
+                        TagItemSource.LoadMoreCompleted += UIHelper.HideProgressBar;
+                        ItemSource.Add(new ShyHeaderItem
+                        {
+                            Header = "话题",
+                            ItemSource = TagItemSource
+                        });
+                    }
                 }
                 base.ItemSource = ItemSource;
             }
@@ -417,10 +442,36 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 UriHelper.GetUri(
                     UriType.GetVoteComments,
                     fid,
-                    id,
+                    string.IsNullOrEmpty(id) ? string.Empty : $"&extra_key={id}",
                     p,
                     string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                     string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
+                GetEntities,
+                "id");
+        }
+
+        private IEnumerable<Entity> GetEntities(JObject json)
+        {
+            yield return new FeedModel(json);
+        }
+    }
+
+    public class TagItemSource : EntityItemSource
+    {
+        public string ID;
+
+        public TagItemSource(string id)
+        {
+            ID = id;
+            Provider = new CoolapkListProvider(
+                (p, firstItem, lastItem) =>
+                UriHelper.GetUri(
+                    UriType.GetTagFeeds,
+                    id,
+                    p,
+                    string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
+                    string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}",
+                    "lastupdate_desc"),
                 GetEntities,
                 "id");
         }
