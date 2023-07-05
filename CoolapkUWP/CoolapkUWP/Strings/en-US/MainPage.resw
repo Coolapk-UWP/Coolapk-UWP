@@ -121,7 +121,7 @@
     <value>Circle</value>
   </data>
   <data name="Extension" xml:space="preserve">
-    <value>插件</value>
+    <value>Extensions</value>
   </data>
   <data name="Find.Content" xml:space="preserve">
     <value>Discover</value>
