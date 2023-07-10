@@ -411,7 +411,7 @@
                         HorizontalAlignment="Left"
                         IsTextSelectionEnabled="True"
                         Text="{Binding MessageRawOutput}"
-                        Visibility="{Binding MessageRawOutput, Converter={StaticResource StringVisibilityConverter}}" />
+                        Visibility="{Binding MessageRawOutput, Converter={StaticResource StringVisibilityConverter}, FallbackValue='Collapsed'}" />
                 </Grid>
             </local:StackPanel>
             <Grid
@@ -443,7 +443,7 @@
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1"
                 CornerRadius="{ThemeResource OverlayCornerRadius}"
-                Visibility="{Binding VoteRows, Converter={StaticResource CollectionVisibilityConverter}}">
+                Visibility="{Binding VoteRows, Converter={StaticResource CollectionVisibilityConverter}, FallbackValue='Collapsed'}">
                 <muxc:ItemsRepeater
                     HorizontalAlignment="Stretch"
                     ItemTemplate="{StaticResource VoteItemTemplate}"

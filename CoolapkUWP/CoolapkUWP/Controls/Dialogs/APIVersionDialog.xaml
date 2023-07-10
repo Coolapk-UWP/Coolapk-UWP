@@ -10,6 +10,18 @@
     DefaultButton="Primary"
     Style="{StaticResource DefaultContentDialogStyle}"
     mc:Ignorable="d">
+    <ContentDialog.ContextFlyout>
+        <MenuFlyout>
+            <MenuFlyoutItem
+                Click="MenuFlyoutItem_Click"
+                Tag="Refresh"
+                Text="获取最新版本号">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE117;" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+    </ContentDialog.ContextFlyout>
     <controls:StackPanel Spacing="4">
         <TextBox
             x:Uid="/ContentDialog/APIVersionTextBox"
