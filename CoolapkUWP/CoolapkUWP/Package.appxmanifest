@@ -62,6 +62,9 @@
         <uap:LockScreen BadgeLogo="Assets\BadgeLogo.png" Notification="badgeAndTileText"/>
       </uap:VisualElements>
       <Extensions>
+        <uap:Extension Category="windows.appService">
+          <uap:AppService Name="com.coolapkuwp.ossuploader" />
+        </uap:Extension>
         <uap:Extension Category="windows.protocol">
           <uap:Protocol Name="coolmarket" ReturnResults="optional">
             <uap:DisplayName>ms-resource:CoolMarketProtocol</uap:DisplayName>
@@ -74,9 +77,7 @@
             <uap:Logo>Assets\StoreLogo.png</uap:Logo>
           </uap:Protocol>
         </uap:Extension>
-        <uap:Extension Category="windows.appService">
-          <uap:AppService Name="com.coolapkuwp.ossuploader" />
-        </uap:Extension>
+        <uap:Extension Category="windows.search" />
         <uap3:Extension Category="windows.appExtension">
           <uap3:AppExtension
 			Name="CoolapkUWP.OSSUploader"

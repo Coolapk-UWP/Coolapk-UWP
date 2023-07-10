@@ -177,6 +177,22 @@
                         </controls:Setting.Icon>
                     </controls:Setting>
                     <controls:Setting
+                        x:Uid="/TestPage/SearchFlyoutSettings"
+                        Click="Button_Click"
+                        IsClickEnabled="True"
+                        Tag="SearchFlyout">
+                        <controls:Setting.Icon>
+                            <muxc:AnimatedIcon>
+                                <muxc:AnimatedIcon.Source>
+                                    <animatedvisuals:AnimatedFindVisualSource />
+                                </muxc:AnimatedIcon.Source>
+                                <muxc:AnimatedIcon.FallbackIconSource>
+                                    <muxc:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE721;" />
+                                </muxc:AnimatedIcon.FallbackIconSource>
+                            </muxc:AnimatedIcon>
+                        </controls:Setting.Icon>
+                    </controls:Setting>
+                    <controls:Setting
                         x:Name="ExtensionSettings"
                         x:Uid="/TestPage/ExtensionSettings"
                         x:Load="{x:Bind local:TestPage.IsFeature2}"

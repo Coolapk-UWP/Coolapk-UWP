@@ -1,11 +1,16 @@
 ﻿using CoolapkUWP.BackgroundTasks;
 using CoolapkUWP.Controls;
 using CoolapkUWP.Helpers;
+using CoolapkUWP.Models;
 using CoolapkUWP.Models.Exceptions;
 using CoolapkUWP.Pages;
+using CoolapkUWP.Pages.FeedPages;
+using CoolapkUWP.ViewModels.FeedPages;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.Notifications;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -14,6 +19,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
+using Windows.ApplicationModel.Search;
 using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
 using Windows.Security.Authorization.AppCapabilityAccess;
@@ -112,6 +118,13 @@ namespace CoolapkUWP
                     SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
                     rootFrame.Dispatcher.AcceleratorKeyActivated += Dispatcher_AcceleratorKeyActivated;
                     Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("ms-appx:///Styles/SettingsFlyout.xaml") });
+                }
+
+                if (ApiInformation.IsTypePresent("Windows.ApplicationModel.Search.SearchPane"))
+                {
+                    SearchPane searchPane = SearchPane.GetForCurrentView();
+                    searchPane.QuerySubmitted += SearchPane_QuerySubmitted;
+                    searchPane.SuggestionsRequested += SearchPane_SuggestionsRequested;
                 }
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
@@ -222,9 +235,55 @@ namespace CoolapkUWP
                                 SettingsPane.Show();
                                 args.Handled = true;
                                 break;
+                            case VirtualKey.Q:
+                                SearchPane.GetForCurrentView().Show();
+                                args.Handled = true;
+                                break;
                         }
                     }
                 }
+            }
+        }
+
+        private async void SearchPane_SuggestionsRequested(SearchPane sender, SearchPaneSuggestionsRequestedEventArgs args)
+        {
+            string keyWord = args.QueryText;
+            List<string> results = new List<string>();
+            SearchPaneSuggestionsRequestDeferral deferral = args.Request.GetDeferral();
+            await Task.Run(async () =>
+            {
+                (bool isSucceed, JToken result) = await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.SearchWords, keyWord), true);
+                if (isSucceed && result != null && result is JArray array && array.Count > 0)
+                {
+                    foreach (JToken token in array)
+                    {
+                        string key = string.Empty;
+                        switch (token.Value<string>("entityType"))
+                        {
+                            case "apk":
+                                key = new AppModel(token as JObject).Title;
+                                break;
+                            case "searchWord":
+                            default:
+                                key = new SearchWord(token as JObject).ToString();
+                                break;
+                        }
+                        if (!string.IsNullOrEmpty(key) && !results.Contains(key))
+                        {
+                            results.Add(key);
+                        }
+                    }
+                }
+            });
+            args.Request.SearchSuggestionCollection.AppendQuerySuggestions(results);
+            deferral.Complete();
+        }
+
+        private void SearchPane_QuerySubmitted(SearchPane sender, SearchPaneQuerySubmittedEventArgs args)
+        {
+            if (!string.IsNullOrEmpty(args.QueryText))
+            {
+                _ = UIHelper.MainPage.NavigateAsync(typeof(SearchingPage), new SearchingViewModel(args.QueryText));
             }
         }
 

@@ -10,6 +10,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.Search;
 using Windows.Foundation.Metadata;
 using Windows.Globalization;
 using Windows.UI;
@@ -231,6 +232,10 @@ namespace CoolapkUWP.Pages.SettingsPages
                     break;
                 case "OpenBrowser":
                     _ = Frame.Navigate(typeof(BrowserPage), new BrowserViewModel(URLTextBox.Text));
+                    break;
+                case "SearchFlyout":
+                    if (ApiInformation.IsTypePresent("Windows.ApplicationModel.Search.SearchPane"))
+                    { SearchPane.GetForCurrentView().Show(); }
                     break;
                 case "GetURLContent":
                     GetURLContent();
