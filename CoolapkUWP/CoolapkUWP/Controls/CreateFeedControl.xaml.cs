@@ -264,7 +264,7 @@ namespace CoolapkUWP.Controls
 
         private void InputBox_Loaded(object sender, RoutedEventArgs e)
         {
-            if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.Controls.RichEditBox", "ContextFlyout"))
+            if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.UIElement", "ContextFlyout"))
             {
                 InputBox.ContextFlyout.Opening += Menu_Opening;
                 InputBox.ContextFlyout.Closing += Menu_Closing;
@@ -366,12 +366,12 @@ namespace CoolapkUWP.Controls
                 InputBox.Document.Selection.GetText(TextGetOptions.UseObjectText, out string SelectionText);
 
                 SelectionText = UnderLineButton.IsChecked == true
-                    ? UnicodeLiner.AddLine(SelectionText, true, UnicodeLines.Underline)
-                    : UnicodeLiner.RemoveLine(SelectionText, UnicodeLines.Underline);
+                    ? UnicodeLine.AddLine(SelectionText, true, UnicodeLines.Underline)
+                    : UnicodeLine.RemoveLine(SelectionText, UnicodeLines.Underline);
 
                 SelectionText = StrikethroughButton.IsChecked == true
-                    ? UnicodeLiner.AddLine(SelectionText, true, UnicodeLines.LongStrokeOverlay)
-                    : UnicodeLiner.RemoveLine(SelectionText, UnicodeLines.LongStrokeOverlay);
+                    ? UnicodeLine.AddLine(SelectionText, true, UnicodeLines.LongStrokeOverlay)
+                    : UnicodeLine.RemoveLine(SelectionText, UnicodeLines.LongStrokeOverlay);
 
                 UnicodeStyles Style = BoldButton.IsChecked == true
                     ? ItalicButton.IsChecked == true
@@ -381,9 +381,9 @@ namespace CoolapkUWP.Controls
                         ? UnicodeStyles.Italic
                         : UnicodeStyles.Regular;
 
-                using (UnicodeStyler Styler = new UnicodeStyler())
+                using (UnicodeStyle.UnicodeStyle UnicodeStyle = new UnicodeStyle.UnicodeStyle())
                 {
-                    SelectionText = Styler.StyleConvert(SelectionText, Style);
+                    SelectionText = UnicodeStyle.StyleConvert(SelectionText, Style);
                 }
 
                 InputBox.Document.Selection.Text = SelectionText;
