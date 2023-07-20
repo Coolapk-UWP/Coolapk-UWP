@@ -120,6 +120,9 @@
   <data name="Circle.Content" xml:space="preserve">
     <value>Circle</value>
   </data>
+  <data name="Extension" xml:space="preserve">
+    <value>Extensions</value>
+  </data>
   <data name="Find.Content" xml:space="preserve">
     <value>Discover</value>
   </data>

@@ -151,7 +151,7 @@
     <value>Create a new window</value>
   </data>
   <data name="NewWindowSettings.Header" xml:space="preserve">
-    <value>New Window (only supported 1903 and above)</value>
+    <value>Use Multiple Windows (only supported 1903 and above)</value>
   </data>
   <data name="OpenBrowser.Header" xml:space="preserve">
     <value>Open with built-in browser</value>
@@ -248,5 +248,17 @@
   </data>
   <data name="CustomAPISettings.Header" xml:space="preserve">
     <value>Custom API version</value>
+  </data>
+  <data name="ExtensionSettings.Description" xml:space="preserve">
+    <value>Go to extension management page</value>
+  </data>
+  <data name="ExtensionSettings.Header" xml:space="preserve">
+    <value>Manage Extensions</value>
+  </data>
+  <data name="SearchFlyoutSettings.Description" xml:space="preserve">
+    <value>Show Search Charm Pane</value>
+  </data>
+  <data name="SearchFlyoutSettings.Header" xml:space="preserve">
+    <value>Open Search</value>
   </data>
 </root>

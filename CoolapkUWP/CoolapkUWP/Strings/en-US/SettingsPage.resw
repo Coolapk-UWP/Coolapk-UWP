@@ -273,4 +273,10 @@
   <data name="UseMultiWindowSettings.Header" xml:space="preserve">
     <value>Use Multiple Windows (only supported 1903 and above)</value>
   </data>
+  <data name="TileUpdateTimeSettings.Description" xml:space="preserve">
+    <value>Sets the interval between tile updates, per minute (Stop updating when less than 15 minutes)</value>
+  </data>
+  <data name="TileUpdateTimeSettings.Header" xml:space="preserve">
+    <value>Tile Update Interval</value>
+  </data>
 </root>

@@ -120,6 +120,9 @@
   <data name="Circle.Content" xml:space="preserve">
     <value>圈子</value>
   </data>
+  <data name="Extension" xml:space="preserve">
+    <value>擴展</value>
+  </data>
   <data name="Find.Content" xml:space="preserve">
     <value>發現</value>
   </data>
