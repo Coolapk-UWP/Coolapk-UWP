@@ -256,9 +256,9 @@
     <value>管理擴展</value>
   </data>
   <data name="SearchFlyoutSettings.Description" xml:space="preserve">
-    <value>打开 Charm 侧边栏搜索</value>
+    <value>打開 Charm 側邊欄搜索</value>
   </data>
   <data name="SearchFlyoutSettings.Header" xml:space="preserve">
-    <value>打开搜索</value>
+    <value>打開搜索</value>
   </data>
 </root>
