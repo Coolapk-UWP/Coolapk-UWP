@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using mtuc = Microsoft.Toolkit.Uwp.Connectivity;
 
@@ -172,14 +173,20 @@ namespace CoolapkUWP.Models
             {
                 Interval = TimeSpan.FromMinutes(1)
             };
-            timer.Tick += (o, a) =>
+            timer.Tick += async (o, a) =>
             {
                 if (mtuc.NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable)
                 {
-                    Update();
+                    await Update();
                 }
             };
             timer.Start();
+        }
+
+        ~NotificationsModel()
+        {
+            Clear();
+            timer.Stop();
         }
 
         /// <summary>
@@ -187,7 +194,7 @@ namespace CoolapkUWP.Models
         /// </summary>
         public void Clear() => BadgeNum = FollowNum = MessageNum = AtMeNum = AtCommentMeNum = CommentMeNum = FeedLikeNum = CloudInstall = Notification = 0;
 
-        public async void Update()
+        public async Task Update()
         {
             try
             {

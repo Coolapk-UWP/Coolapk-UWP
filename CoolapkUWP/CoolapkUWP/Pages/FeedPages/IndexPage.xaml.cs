@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.ViewModels.FeedPages;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -18,7 +19,7 @@ namespace CoolapkUWP.Pages.FeedPages
         private static int PivotIndex = 0;
 
         private bool isLoaded;
-        private Action Refresh;
+        private Func<bool, Task> Refresh;
 
         public IndexPage() => InitializeComponent();
 
@@ -49,11 +50,11 @@ namespace CoolapkUWP.Pages.FeedPages
                         ? "/user/dyhSubscribe"
                         : $"/page?url={MenuItem.Tag}";
                 _ = Frame.Navigate(typeof(AdaptivePage), new AdaptiveViewModel(url));
-                Refresh = () => _ = (Frame.Content as AdaptivePage).Refresh(true);
+                Refresh = (reset) => _ = (Frame.Content as AdaptivePage).Refresh(reset);
             }
             else if ((Pivot.SelectedItem as PivotItem).Content is Frame __ && __.Content is AdaptivePage AdaptivePage)
             {
-                Refresh = () => _ = AdaptivePage.Refresh(true);
+                Refresh = (reset) => _ = AdaptivePage.Refresh(reset);
             }
         }
 
@@ -74,6 +75,6 @@ namespace CoolapkUWP.Pages.FeedPages
             return items;
         }
 
-        private void RefreshButton_Click(object sender, RoutedEventArgs e) => Refresh();
+        private void RefreshButton_Click(object sender, RoutedEventArgs e) => _ = Refresh(true);
     }
 }

@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -109,7 +110,7 @@ namespace CoolapkUWP.Pages
             UIHelper.MainPage = this;
             LiveTileTask.Instance?.UpdateTile();
             UIHelper.ShellDispatcher = Dispatcher;
-            NotificationsModel.Instance?.Update();
+            _ = (NotificationsModel.Instance?.Update());
             NotificationsModel = NotificationsModel.Instance;
             SearchBoxHolder.RegisterPropertyChangedCallback(Slot.IsStretchProperty, new DependencyPropertyChangedCallback(OnIsStretchProperty));
             NavigationView.RegisterPropertyChangedCallback(muxc.NavigationView.IsBackButtonVisibleProperty, new DependencyPropertyChangedCallback(OnIsBackButtonVisibleChanged));
@@ -394,6 +395,8 @@ namespace CoolapkUWP.Pages
 
         #region 搜索框
 
+        private static readonly SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);
+
         private async void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
@@ -402,22 +405,30 @@ namespace CoolapkUWP.Pages
                 sender.ItemsSource = observableCollection;
                 string keyWord = sender.Text;
                 await ThreadSwitcher.ResumeBackgroundAsync();
-                (bool isSucceed, JToken result) = await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.SearchWords, keyWord), true);
-                if (isSucceed && result != null && result is JArray array && array.Count > 0)
+                await semaphoreSlim.WaitAsync();
+                try
                 {
-                    foreach (JToken token in array)
+                    (bool isSucceed, JToken result) = await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.SearchWords, keyWord), true);
+                    if (isSucceed && result != null && result is JArray array && array.Count > 0)
                     {
-                        switch (token.Value<string>("entityType"))
+                        foreach (JToken token in array)
                         {
-                            case "apk":
-                                await Dispatcher.AwaitableRunAsync(() => observableCollection.Add(new AppModel(token as JObject)));
-                                break;
-                            case "searchWord":
-                            default:
-                                await Dispatcher.AwaitableRunAsync(() => observableCollection.Add(new SearchWord(token as JObject)));
-                                break;
+                            switch (token.Value<string>("entityType"))
+                            {
+                                case "apk":
+                                    await Dispatcher.AwaitableRunAsync(() => observableCollection.Add(new AppModel(token as JObject)));
+                                    break;
+                                case "searchWord":
+                                default:
+                                    await Dispatcher.AwaitableRunAsync(() => observableCollection.Add(new SearchWord(token as JObject)));
+                                    break;
+                            }
                         }
                     }
+                }
+                finally
+                {
+                    semaphoreSlim.Release();
                 }
             }
         }
