@@ -237,6 +237,7 @@
     <Compile Include="Helpers\Converters\NumMultConverter.cs" />
     <Compile Include="Helpers\Converters\PipsPagerVisibilityConverter.cs" />
     <Compile Include="Helpers\Converters\StringToBoolConverter.cs" />
+    <Compile Include="Helpers\Converters\ZoomToolTipValueConverter.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Helpers\EmojiHelper.cs" />
