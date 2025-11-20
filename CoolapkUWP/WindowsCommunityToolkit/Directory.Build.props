@@ -1,6 +1,7 @@
 <Project>
 
   <PropertyGroup>
+    <VersionPrefix>7.1.3</VersionPrefix>
     <RepositoryDirectory>$(MSBuildThisFileDirectory)</RepositoryDirectory>
     <BuildToolsDirectory>$(RepositoryDirectory)build\</BuildToolsDirectory>
   </PropertyGroup>
