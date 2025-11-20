@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Coolapk UWP Project")]
 [assembly: AssemblyProduct("CoolapkUWP")]
-[assembly: AssemblyCopyright("Copyright © 2017 - 2023 Coolapk UWP Project. All Rights Reserved.")]
+[assembly: AssemblyCopyright("Copyright © 2017 - 2025 Coolapk UWP Project. All Rights Reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

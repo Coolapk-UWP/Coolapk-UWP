@@ -1,6 +1,5 @@
 ﻿using CoolapkUWP.Common;
 using Microsoft.Toolkit.Uwp.Helpers;
-using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +11,7 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Media.Imaging;
+using ImageCache = CoolapkUWP.Common.ImageCache;
 
 namespace CoolapkUWP.Helpers
 {

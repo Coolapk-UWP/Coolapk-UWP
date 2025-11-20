@@ -3,6 +3,7 @@ using CoolapkUWP.Common;
 using CoolapkUWP.Controls;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Models.Images;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.Pages.SettingsPages;
@@ -60,8 +61,8 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private ImageSource _userAvatar;
-        public ImageSource UserAvatar
+        private ImageModel _userAvatar;
+        public ImageModel UserAvatar
         {
             get => _userAvatar;
             set
@@ -332,7 +333,7 @@ namespace CoolapkUWP.Pages
                     (string UID, string UserName, string UserAvatar) results = await NetworkHelper.GetUserInfoByNameAsync(UID);
                     if (results.UID != UID) { return; }
                     UserName = results.UserName;
-                    UserAvatar = new BitmapImage(new Uri(results.UserAvatar));
+                    UserAvatar = new ImageModel(results.UserAvatar, ImageType.Avatar);
                 }
             }
             else

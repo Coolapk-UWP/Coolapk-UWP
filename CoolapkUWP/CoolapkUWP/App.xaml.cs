@@ -40,7 +40,6 @@ using NetworkHelper = Microsoft.Toolkit.Uwp.Connectivity.NetworkHelper;
 using CoolapkUWP.Models.Upload;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using Windows.ApplicationModel.AppService;
 #endif
 

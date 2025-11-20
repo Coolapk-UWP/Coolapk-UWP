@@ -147,10 +147,10 @@ namespace CoolapkUWP.Helpers
                     Client.DefaultRequestHeaders.Add("X-Api-Version", "12");
                     break;
                 case APIVersions.V13:
-                    Client.DefaultRequestHeaders.UserAgent.ParseAdd(" +CoolMarket/13.3-2307071-universal");
-                    Client.DefaultRequestHeaders.Add("X-App-Version", "13.3");
-                    Client.DefaultRequestHeaders.Add("X-Api-Supported", "2307071");
-                    Client.DefaultRequestHeaders.Add("X-App-Code", "2307071");
+                    Client.DefaultRequestHeaders.UserAgent.ParseAdd(" +CoolMarket/13.4.1-2312121-universal");
+                    Client.DefaultRequestHeaders.Add("X-App-Version", "13.4.1");
+                    Client.DefaultRequestHeaders.Add("X-Api-Supported", "2312121");
+                    Client.DefaultRequestHeaders.Add("X-App-Code", "2312121");
                     Client.DefaultRequestHeaders.Add("X-Api-Version", "13");
                     break;
                 case APIVersions.Custom:

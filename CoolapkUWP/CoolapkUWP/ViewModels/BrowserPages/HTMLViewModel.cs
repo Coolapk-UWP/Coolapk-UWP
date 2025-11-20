@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Common;
 using CoolapkUWP.Helpers;
+using HtmlAgilityPack;
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
@@ -119,15 +120,33 @@ namespace CoolapkUWP.ViewModels.BrowserPages
             if (isSucceed)
             {
                 JObject json = JObject.Parse(result);
-                RawHTML = json.TryGetValue("html", out JToken html) && !string.IsNullOrEmpty(html.ToString())
-                    ? html.ToString()
-                    : json.TryGetValue("description", out JToken description) && !string.IsNullOrEmpty(description.ToString())
-                        ? description.ToString()
-                        : "<h1>网络错误</h1>";
 
                 if (json.TryGetValue("title", out JToken title))
                 {
                     Title = title.ToString();
+                }
+
+                if (json.TryGetValue("html", out JToken html) && !string.IsNullOrEmpty(html.ToString()))
+                {
+                    RawHTML = html.ToString();
+                }
+                else if (json.TryGetValue("description", out JToken description) && !string.IsNullOrEmpty(description.ToString()))
+                {
+                    RawHTML = description.ToString();
+                }
+                else
+                {
+                    (isSucceed, result) = await RequestHelper.GetStringAsync(uri).ConfigureAwait(false);
+                    if (isSucceed && !string.IsNullOrWhiteSpace(result))
+                    {
+                        HtmlDocument doc = new HtmlDocument();
+                        doc.LoadHtml(result);
+                        string content = doc.DocumentNode.ChildNodes.FindFirst("html")?.ChildNodes.FindFirst("body")?.InnerHtml;
+                        if (!string.IsNullOrEmpty(content))
+                        {
+                            RawHTML = content;
+                        }
+                    }
                 }
             }
             UIHelper.HideProgressBar();
