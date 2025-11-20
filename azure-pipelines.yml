@@ -23,47 +23,102 @@ pool:
   vmImage: 'windows-2022'
 
 variables:
-  solution: '*.Feature2.sln'
-  buildPlatform: 'x86|x64|ARM'
   buildConfiguration: 'Release'
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
 
-steps:
-- task: DownloadSecureFile@1
-  name: signingCert
-  displayName: 'Download CA certificate'
-  inputs:
-    secureFile: 'where.pfx'
+jobs:
+  - job:
+    displayName: Job
+    continueOnError: true
 
-- task: VSBuild@1
-  displayName: 'Restore Solution'
-  inputs:
-    platform: 'x64'
-    solution: '$(solution)'
-    configuration: '$(buildConfiguration)'
-    msbuildArgs: '/t:restore'
-    msbuildArchitecture: 'x64'
-    maximumCpuCount: true
+    variables:
+      solution: 'CoolapkUWP.sln'
+      buildPlatform: 'x86|x64|ARM|ARM64'
 
-- task: VSBuild@1
-  displayName: 'Build Solution'
-  inputs:
-    platform: 'x64'
-    solution: '$(solution)'
-    configuration: '$(buildConfiguration)'
-    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)"
-                  /p:AppxPackageDir="$(appxPackageDir)"
-                  /p:AppxBundle=Always
-                  /p:UapAppxPackageBuildMode=SideloadOnly
-                  /p:AppxPackageSigningEnabled=true
-                  /p:PackageCertificateThumbprint="0CDF4A03E9BE9DD789894BB3C7AD3DEDECD9AB25"
-                  /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"
-                  /p:PackageCertificatePassword="$(Password)"'
-    msbuildArchitecture: 'x64'
-    maximumCpuCount: true
+    steps:
+    - task: DownloadSecureFile@1
+      name: signingCert
+      displayName: 'Download CA certificate'
+      inputs:
+        secureFile: 'where.pfx'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
-  inputs:
-    ArtifactName: 'MSIX Package'
-    PathtoPublish: '$(build.artifactstagingdirectory)'
+    - task: VSBuild@1
+      displayName: 'Restore Solution'
+      inputs:
+        platform: 'x64'
+        solution: '$(solution)'
+        configuration: '$(buildConfiguration)'
+        msbuildArgs: '/t:restore'
+        msbuildArchitecture: 'x64'
+        maximumCpuCount: true
+
+    - task: VSBuild@1
+      displayName: 'Build Solution'
+      inputs:
+        platform: 'x64'
+        solution: '$(solution)'
+        configuration: '$(buildConfiguration)'
+        msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)"
+                      /p:AppxPackageDir="$(appxPackageDir)"
+                      /p:AppxBundle=Always
+                      /p:UapAppxPackageBuildMode=SideloadOnly
+                      /p:AppxPackageSigningEnabled=true
+                      /p:PackageCertificateThumbprint="0CDF4A03E9BE9DD789894BB3C7AD3DEDECD9AB25"
+                      /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"
+                      /p:PackageCertificatePassword="$(Password)"'
+        msbuildArchitecture: 'x64'
+        maximumCpuCount: true
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+        ArtifactName: 'MSIX Package'
+        PathtoPublish: '$(build.artifactstagingdirectory)'
+
+  - job:
+    displayName: Job (Feature2)
+    continueOnError: true
+
+    variables:
+      solution: 'CoolapkUWP.Feature2.sln'
+      buildPlatform: 'x86|x64|ARM'
+
+    steps:
+    - task: DownloadSecureFile@1
+      name: signingCert
+      displayName: 'Download CA certificate'
+      inputs:
+        secureFile: 'where.pfx'
+
+    - task: VSBuild@1
+      displayName: 'Restore Solution'
+      inputs:
+        platform: 'x64'
+        solution: '$(solution)'
+        configuration: '$(buildConfiguration)'
+        msbuildArgs: '/t:restore'
+        msbuildArchitecture: 'x64'
+        maximumCpuCount: true
+
+    - task: VSBuild@1
+      displayName: 'Build Solution'
+      inputs:
+        platform: 'x64'
+        solution: '$(solution)'
+        configuration: '$(buildConfiguration)'
+        msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)"
+                      /p:AppxPackageDir="$(appxPackageDir)"
+                      /p:AppxBundle=Always
+                      /p:UapAppxPackageBuildMode=SideloadOnly
+                      /p:AppxPackageSigningEnabled=true
+                      /p:PackageCertificateThumbprint="0CDF4A03E9BE9DD789894BB3C7AD3DEDECD9AB25"
+                      /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"
+                      /p:PackageCertificatePassword="$(Password)"'
+        msbuildArchitecture: 'x64'
+        maximumCpuCount: true
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+        ArtifactName: 'MSIX Package (Feature2)'
+        PathtoPublish: '$(build.artifactstagingdirectory)'
