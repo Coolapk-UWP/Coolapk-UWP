@@ -2,6 +2,7 @@ name: Bug report
 description: Create a report to help us improve
 title: Bug title
 labels: [bug]
+type: Bug
 body:
   - type: textarea
     validations:
