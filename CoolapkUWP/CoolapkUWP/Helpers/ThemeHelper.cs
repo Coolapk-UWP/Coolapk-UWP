@@ -148,10 +148,7 @@ namespace CoolapkUWP.Helpers
             Color ForegroundColor = IsDark || IsHighContrast ? Colors.White : Colors.Black;
             Color BackgroundColor = IsHighContrast ? Color.FromArgb(255, 0, 0, 0) : IsDark ? Color.FromArgb(255, 32, 32, 32) : Color.FromArgb(255, 243, 243, 243);
 
-            if (CurrentApplicationWindow?.Dispatcher?.HasThreadAccess == false)
-            {
-                await CurrentApplicationWindow.Dispatcher.ResumeForegroundAsync();
-            }
+            await (CurrentApplicationWindow?.Dispatcher).ResumeForegroundAsync();
 
             if (UIHelper.HasStatusBar)
             {
@@ -184,10 +181,7 @@ namespace CoolapkUWP.Helpers
 
         public static async void UpdateSystemCaptionButtonColors(Window window)
         {
-            if (!window.Dispatcher.HasThreadAccess)
-            {
-                await window.Dispatcher.ResumeForegroundAsync();
-            }
+            await window.Dispatcher.ResumeForegroundAsync();
 
             bool IsDark = window?.Content is FrameworkElement rootElement ? IsDarkTheme(rootElement.RequestedTheme) : IsDarkTheme();
             bool IsHighContrast = new AccessibilitySettings().HighContrast;

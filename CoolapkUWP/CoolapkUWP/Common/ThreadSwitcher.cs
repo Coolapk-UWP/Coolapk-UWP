@@ -11,7 +11,7 @@ namespace CoolapkUWP.Common
     {
         private readonly CoreDispatcher dispatcher;
 
-        public bool IsCompleted => dispatcher.HasThreadAccess;
+        public bool IsCompleted => dispatcher?.HasThreadAccess != false;
 
         internal DispatcherThreadSwitcher(CoreDispatcher dispatcher) => this.dispatcher = dispatcher;
 
@@ -19,17 +19,7 @@ namespace CoolapkUWP.Common
 
         public DispatcherThreadSwitcher GetAwaiter() => this;
 
-        public void OnCompleted(Action continuation)
-        {
-            if (IsCompleted)
-            {
-                continuation();
-            }
-            else
-            {
-                _ = dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => continuation());
-            }
-        }
+        public void OnCompleted(Action continuation) => _ = dispatcher.RunAsync(CoreDispatcherPriority.Normal, continuation.Invoke);
     }
 
     public readonly struct ThreadPoolThreadSwitcher : INotifyCompletion

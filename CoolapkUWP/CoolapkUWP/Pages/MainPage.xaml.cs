@@ -456,10 +456,7 @@ namespace CoolapkUWP.Pages
 
         public async void ShowProgressBar()
         {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-            }
+            await Dispatcher.ResumeForegroundAsync();
             ProgressBar.Visibility = Visibility.Visible;
             ProgressBar.IsIndeterminate = true;
             ProgressBar.ShowError = false;
@@ -468,10 +465,7 @@ namespace CoolapkUWP.Pages
 
         public async void ShowProgressBar(double value)
         {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-            }
+            await Dispatcher.ResumeForegroundAsync();
             ProgressBar.Visibility = Visibility.Visible;
             ProgressBar.IsIndeterminate = false;
             ProgressBar.ShowError = false;
@@ -481,10 +475,7 @@ namespace CoolapkUWP.Pages
 
         public async void PausedProgressBar()
         {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-            }
+            await Dispatcher.ResumeForegroundAsync();
             ProgressBar.Visibility = Visibility.Visible;
             ProgressBar.IsIndeterminate = true;
             ProgressBar.ShowError = false;
@@ -493,10 +484,7 @@ namespace CoolapkUWP.Pages
 
         public async void ErrorProgressBar()
         {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-            }
+            await Dispatcher.ResumeForegroundAsync();
             ProgressBar.Visibility = Visibility.Visible;
             ProgressBar.IsIndeterminate = true;
             ProgressBar.ShowPaused = false;
@@ -505,10 +493,7 @@ namespace CoolapkUWP.Pages
 
         public async void HideProgressBar()
         {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-            }
+            await Dispatcher.ResumeForegroundAsync();
             ProgressBar.Visibility = Visibility.Collapsed;
             ProgressBar.IsIndeterminate = false;
             ProgressBar.ShowError = false;
@@ -518,10 +503,7 @@ namespace CoolapkUWP.Pages
 
         public async void ShowMessage(string message = null)
         {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-            }
+            await Dispatcher.ResumeForegroundAsync();
 
             AppTitleText.Text = message ?? ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安";
 

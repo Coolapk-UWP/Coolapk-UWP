@@ -61,7 +61,7 @@ namespace CoolapkUWP.Helpers
 
             if (url.IndexOf("ms-appx", StringComparison.Ordinal) == 0)
             {
-                if (!dispatcher.HasThreadAccess) { await dispatcher.ResumeForegroundAsync(); }
+                await dispatcher.ResumeForegroundAsync();
                 return new BitmapImage(uri);
             }
             else if (!isForce && SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))

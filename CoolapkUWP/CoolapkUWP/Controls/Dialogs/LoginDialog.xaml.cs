@@ -1,4 +1,5 @@
 ﻿using CoolapkUWP.Helpers;
+using System.Net;
 using Windows.UI.Xaml.Controls;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
@@ -96,7 +97,7 @@ namespace CoolapkUWP.Controls
             }
             if (!string.IsNullOrWhiteSpace(results.UserName))
             {
-                UserName = results.UserName;
+                UserName = WebUtility.UrlEncode(results.UserName);
             }
         }
     }

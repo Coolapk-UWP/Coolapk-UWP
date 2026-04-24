@@ -9,15 +9,13 @@ trigger:
       - revived
   paths:
     include:
+      - azure-pipelines.yml
       - CoolapkUWP/**
 
 pr:
   branches:
     include:
       - revived
-  paths:
-    include:
-      - CoolapkUWP/**
 
 pool:
   vmImage: windows-2022
