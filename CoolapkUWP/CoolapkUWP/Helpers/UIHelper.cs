@@ -196,7 +196,7 @@ namespace CoolapkUWP.Helpers
             StringBuilder builder = new StringBuilder();
             builder.Append('\n');
             if (!string.IsNullOrWhiteSpace(ex.Message)) { builder.AppendLine($"Message: {ex.Message}"); }
-            builder.AppendLine($"HResult: {ex.HResult} (0x{Convert.ToString(ex.HResult, 16)})");
+            builder.AppendLine($"HResult: {ex.HResult} (0x{ex.HResult:X})");
             if (!string.IsNullOrWhiteSpace(ex.StackTrace)) { builder.AppendLine(ex.StackTrace); }
             if (!string.IsNullOrWhiteSpace(ex.HelpLink)) { builder.Append($"HelperLink: {ex.HelpLink}"); }
             return builder.ToString();

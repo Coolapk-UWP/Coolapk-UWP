@@ -70,7 +70,7 @@ namespace CoolapkUWP.Common
         private static string GetCoolapkAppToken()
         {
             double timeStamp = DateTime.Now.ConvertDateTimeToUnixTimeStamp();
-            string hex_timeStamp = $"0x{Convert.ToString((int)timeStamp, 16)}";
+            string hex_timeStamp = $"0x{timeStamp:x}";
             // 时间戳加密
             string md5_timeStamp = $"{timeStamp}".GetMD5();
             string token = $"token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?{md5_timeStamp}${guid}&com.coolapk.market";
