@@ -126,6 +126,3 @@
 - Coolapk-kotlin作者[@bjzhou](http://www.coolapk.com/u/528097 "bjzhou")([Github](https://github.com/bjzhou "hinnka"))
 - 以及所有为酷安UWP项目做出贡献的同志们
 - **铺路尚未成功，同志仍需努力！**
-
-## Star 数量统计
-[![Star 数量统计](https://starchart.cc/Coolapk-UWP/Coolapk-UWP.svg)](https://starchart.cc/Coolapk-UWP/Coolapk-UWP "Star 数量统计")

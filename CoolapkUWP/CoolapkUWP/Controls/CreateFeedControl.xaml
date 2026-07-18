@@ -334,6 +334,15 @@
                                         ItemsSource="{x:Bind helpers:EmojiHelper.CoolCoins}"
                                         SelectionChanged="GridView_SelectionChanged" />
                                 </PivotItem>
+                                <PivotItem Header="牛牛">
+                                    <GridView
+                                        Padding="8,0"
+                                        IsItemClickEnabled="True"
+                                        ItemClick="EmojiGridView_ItemClick"
+                                        ItemTemplate="{StaticResource EmojiImageTemplate}"
+                                        ItemsSource="{x:Bind helpers:EmojiHelper.MooMoo}"
+                                        SelectionChanged="GridView_SelectionChanged" />
+                                </PivotItem>
                                 <PivotItem Header="滑稽">
                                     <GridView
                                         Padding="8,0"
