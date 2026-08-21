@@ -787,10 +787,12 @@
     <Content Include="Assets\Emoji\[牛牛星星眼].png" />
     <Content Include="Assets\Emoji\[牛牛求饶].png" />
     <Content Include="Assets\Emoji\[牛牛点赞].png" />
+    <Content Include="Assets\Emoji\[牛牛爆赞].png" />
     <Content Include="Assets\Emoji\[牛牛生气].png" />
     <Content Include="Assets\Emoji\[牛牛生病].png" />
     <Content Include="Assets\Emoji\[牛牛疑惑].png" />
     <Content Include="Assets\Emoji\[牛牛疲惫].png" />
+    <Content Include="Assets\Emoji\[牛牛真香].png" />
     <Content Include="Assets\Emoji\[牛牛眨眼].png" />
     <Content Include="Assets\Emoji\[牛牛认真脸].png" />
     <Content Include="Assets\Emoji\[牛牛财奴].png" />
