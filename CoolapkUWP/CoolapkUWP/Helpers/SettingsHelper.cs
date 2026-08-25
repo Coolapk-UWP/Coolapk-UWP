@@ -24,6 +24,7 @@ namespace CoolapkUWP.Helpers
         public const string IsFirstRun = nameof(IsFirstRun);
         public const string IsCustomUA = nameof(IsCustomUA);
         public const string APIVersion = nameof(APIVersion);
+        public const string DeviceInfo = nameof(DeviceInfo);
         public const string UpdateDate = nameof(UpdateDate);
         public const string IsNoPicsMode = nameof(IsNoPicsMode);
         public const string TokenVersion = nameof(TokenVersion);
@@ -70,7 +71,7 @@ namespace CoolapkUWP.Helpers
             }
             if (!LocalObject.KeyExists(CustomAPI))
             {
-                LocalObject.Save(CustomAPI, new APIVersion("9.2.2", "1905301"));
+                LocalObject.Save(CustomAPI, new APIVersion("9.2.2", 1905301));
             }
             if (!LocalObject.KeyExists(IsFirstRun))
             {
@@ -82,7 +83,11 @@ namespace CoolapkUWP.Helpers
             }
             if (!LocalObject.KeyExists(APIVersion))
             {
-                LocalObject.Save(APIVersion, Common.APIVersions.V13);
+                LocalObject.Save(APIVersion, APIVersions.V13);
+            }
+            if (!LocalObject.KeyExists(DeviceInfo))
+            {
+                LocalObject.Save(DeviceInfo, Models.Update.DeviceInfo.Default);
             }
             if (!LocalObject.KeyExists(UpdateDate))
             {
@@ -94,7 +99,7 @@ namespace CoolapkUWP.Helpers
             }
             if (!LocalObject.KeyExists(TokenVersion))
             {
-                LocalObject.Save(TokenVersion, Common.TokenVersions.TokenV2);
+                LocalObject.Save(TokenVersion, Common.TokenVersion.TokenV2);
             }
             if (!LocalObject.KeyExists(TileUpdateTime))
             {

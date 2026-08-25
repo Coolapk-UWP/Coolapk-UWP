@@ -237,11 +237,7 @@ namespace CoolapkUWP.Helpers
             }
             else
             {
-                folder = await ApplicationData.Current.LocalCacheFolder.TryGetItemAsync(type.ToString()) as StorageFolder;
-                if (folder is null)
-                {
-                    folder = await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync(type.ToString(), CreationCollisionOption.OpenIfExists);
-                }
+                folder = await ApplicationData.Current.LocalCacheFolder.TryGetItemAsync(type.ToString()) as StorageFolder ?? await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync(type.ToString(), CreationCollisionOption.OpenIfExists);
                 if (!folders.ContainsKey(type))
                 {
                     folders.Add(type, folder);

@@ -45,11 +45,11 @@ namespace CoolapkUWP.Pages.FeedPages
             if ((Pivot.SelectedItem as PivotItem).Content is Frame Frame && Frame.Content is null)
             {
                 _ = Frame.Navigate(typeof(AdaptivePage), new AdaptiveViewModel(MenuItem.Tag.ToString().Contains("V") ? $"/page?url={MenuItem.Tag}" : $"/page?url=V9_HOME_TAB_FOLLOW&type={MenuItem.Tag}"));
-                Refresh = (reset) => _ = (Frame.Content as AdaptivePage).Refresh(reset);
+                Refresh = reset => _ = (Frame.Content as AdaptivePage).Refresh(reset);
             }
             else if ((Pivot.SelectedItem as PivotItem).Content is Frame __ && __.Content is AdaptivePage AdaptivePage)
             {
-                Refresh = (reset) => _ = AdaptivePage.Refresh(reset);
+                Refresh = reset => _ = AdaptivePage.Refresh(reset);
             }
         }
 

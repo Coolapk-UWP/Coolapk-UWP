@@ -70,7 +70,7 @@ namespace CoolapkUWP.ViewModels.SettingsPages
                 if (IsNoPicsMode != value)
                 {
                     SettingsHelper.Set(SettingsHelper.IsNoPicsMode, value);
-                    ThemeHelper.UISettingChanged?.Invoke(UISettingChangedType.NoPicChanged);
+                    ThemeHelper.InvokeNoPicsModeChanged(value);
                     RaisePropertyChangedEvent();
                 }
             }

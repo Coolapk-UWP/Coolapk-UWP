@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 
 namespace CoolapkUWP.ViewModels.BrowserPages
 {
@@ -16,7 +17,6 @@ namespace CoolapkUWP.ViewModels.BrowserPages
         public CoreDispatcher Dispatcher { get; }
 
         private readonly Uri uri;
-        private Action<UISettingChangedType> UISettingChanged;
 
         private string title;
         public string Title
@@ -76,26 +76,25 @@ namespace CoolapkUWP.ViewModels.BrowserPages
         {
             Dispatcher = dispatcher;
             uri = url.ValidateAndGetUri();
-            UISettingChanged = (mode) =>
-            {
-                switch (mode)
-                {
-                    case UISettingChangedType.LightMode:
-                        _ = GetHtmlAsync(RawHTML, "Light");
-                        break;
-                    case UISettingChangedType.DarkMode:
-                        _ = GetHtmlAsync(RawHTML, "Dark");
-                        break;
-                    case UISettingChangedType.NoPicChanged:
-                        break;
-                }
-            };
-            ThemeHelper.UISettingChanged.Add(UISettingChanged);
+            ThemeHelper.UISettingChanged += OnUISettingChanged;
         }
 
         ~HTMLViewModel()
         {
-            ThemeHelper.UISettingChanged.Remove(UISettingChanged);
+            ThemeHelper.UISettingChanged -= OnUISettingChanged;
+        }
+
+        private void OnUISettingChanged(ApplicationTheme mode)
+        {
+            switch (mode)
+            {
+                case ApplicationTheme.Light:
+                    _ = GetHtmlAsync(RawHTML, "Light");
+                    break;
+                case ApplicationTheme.Dark:
+                    _ = GetHtmlAsync(RawHTML, "Dark");
+                    break;
+            }
         }
 
         public async Task Refresh(bool reset)

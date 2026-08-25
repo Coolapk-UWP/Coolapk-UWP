@@ -50,11 +50,11 @@ namespace CoolapkUWP.Pages.FeedPages
                         ? "/user/dyhSubscribe"
                         : $"/page?url={MenuItem.Tag}";
                 _ = Frame.Navigate(typeof(AdaptivePage), new AdaptiveViewModel(url));
-                Refresh = (reset) => _ = (Frame.Content as AdaptivePage).Refresh(reset);
+                Refresh = reset => _ = (Frame.Content as AdaptivePage).Refresh(reset);
             }
             else if ((Pivot.SelectedItem as PivotItem).Content is Frame __ && __.Content is AdaptivePage AdaptivePage)
             {
-                Refresh = (reset) => _ = AdaptivePage.Refresh(reset);
+                Refresh = reset => _ = AdaptivePage.Refresh(reset);
             }
         }
 

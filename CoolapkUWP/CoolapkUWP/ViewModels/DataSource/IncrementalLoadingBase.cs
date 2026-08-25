@@ -45,7 +45,7 @@ namespace CoolapkUWP.ViewModels.DataSource
             _busy = true;
 
             // We need to use AsyncInfo.Run to invoke async operation, as this method cannot return a Task.
-            return AsyncInfo.Run((c) => LoadMoreItemsAsync(c, count));
+            return AsyncInfo.Run(c => LoadMoreItemsAsync(c, count));
         }
 
         #endregion

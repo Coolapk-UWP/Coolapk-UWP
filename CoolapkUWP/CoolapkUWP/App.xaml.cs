@@ -196,12 +196,12 @@ namespace CoolapkUWP
                 new SettingsCommand(
                     "Settings",
                     loader.GetString("Settings"),
-                    (handler) => new SettingsFlyoutControl { RequestedTheme = ThemeHelper.ActualTheme }.Show()));
+                    handler => new SettingsFlyoutControl { RequestedTheme = ThemeHelper.ActualTheme }.Show()));
             args.Request.ApplicationCommands.Add(
                 new SettingsCommand(
                     "Feedback",
                     loader.GetString("Feedback"),
-                    (handler) => _ = Launcher.LaunchUriAsync(new Uri("https://github.com/Coolapk-UWP/Coolapk-UWP/issues"))));
+                    handler => _ = Launcher.LaunchUriAsync(new Uri("https://github.com/Coolapk-UWP/Coolapk-UWP/issues"))));
             args.Request.ApplicationCommands.Add(
                 new SettingsCommand(
                     "LogFolder",
@@ -211,12 +211,12 @@ namespace CoolapkUWP
                 new SettingsCommand(
                     "Translate",
                     loader.GetString("Translate"),
-                    (handler) => _ = Launcher.LaunchUriAsync(new Uri("https://crowdin.com/project/CoolapkUWP"))));
+                    handler => _ = Launcher.LaunchUriAsync(new Uri("https://crowdin.com/project/CoolapkUWP"))));
             args.Request.ApplicationCommands.Add(
                 new SettingsCommand(
                     "Repository",
                     loader.GetString("Repository"),
-                    (handler) => _ = Launcher.LaunchUriAsync(new Uri("https://github.com/Coolapk-UWP/Coolapk-UWP"))));
+                    handler => _ = Launcher.LaunchUriAsync(new Uri("https://github.com/Coolapk-UWP/Coolapk-UWP"))));
         }
 
         private void Dispatcher_AcceleratorKeyActivated(CoreDispatcher sender, AcceleratorKeyEventArgs args)
