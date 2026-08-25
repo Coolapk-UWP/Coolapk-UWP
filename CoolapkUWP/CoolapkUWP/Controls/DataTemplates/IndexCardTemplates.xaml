@@ -517,7 +517,7 @@
             <Grid
                 Padding="4"
                 VerticalAlignment="Bottom"
-                CornerRadius="0,0,8,8"
+                CornerRadius="0,0,7,7"
                 Tag="{Binding}"
                 Tapped="Grid_Tapped">
                 <contract5NotPresent:Grid.Background>
@@ -559,7 +559,7 @@
             <Border.Background>
                 <ImageBrush ImageSource="{Binding Pic.Pic, Mode=OneWay}" Stretch="UniformToFill" />
             </Border.Background>
-            <StackPanel Padding="4" CornerRadius="{ThemeResource OverlayCornerRadius}">
+            <StackPanel Padding="4" CornerRadius="7">
                 <contract5NotPresent:StackPanel.Background>
                     <media:AcrylicBrush
                         BackgroundSource="Backdrop"
@@ -649,7 +649,7 @@
             <Border
                 VerticalAlignment="Bottom"
                 Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                CornerRadius="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}">
+                CornerRadius="0,0,7,7">
                 <TextBlock
                     Margin="8"
                     FontSize="16"

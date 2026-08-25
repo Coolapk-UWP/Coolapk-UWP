@@ -1100,7 +1100,7 @@
                         Padding="8"
                         VerticalAlignment="Bottom"
                         Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                        CornerRadius="0,0,8,8">
+                        CornerRadius="0,0,7,7">
                         <control:StackPanel>
                             <Grid>
                                 <Grid.ColumnDefinitions>
