@@ -56,9 +56,11 @@
                         <x:String>动态</x:String>
                         <x:String>图文</x:String>
                         <x:String>点评</x:String>
+                        <x:String>好物</x:String>
                         <x:String>酷图</x:String>
                         <x:String>提问</x:String>
                         <x:String>回答</x:String>
+                        <x:String>评论</x:String>
                         <x:String>视频</x:String>
                         <x:String>二手</x:String>
                         <x:String>投票</x:String>
@@ -67,9 +69,11 @@
                         Margin="4,6,8,6"
                         VerticalAlignment="Center"
                         SelectedIndex="{Binding SearchFeedItemSource.SearchFeedSortTypeComboBoxSelectedIndex, Mode=TwoWay}">
+                        <x:String>综合</x:String>
                         <x:String>实时</x:String>
                         <x:String>热度</x:String>
-                        <x:String>评论数</x:String>
+                        <x:String>评论</x:String>
+                        <x:String>精确</x:String>
                     </ComboBox>
                 </StackPanel>
                 <Button
