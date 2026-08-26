@@ -78,7 +78,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                             p,
                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                             string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
-                    (o) => new Entity[] { new UserModel((JObject)(isFollowList ? o["fUserInfo"] : o["userInfo"])) },
+                    o => new Entity[] { new UserModel((JObject)(isFollowList ? o["fUserInfo"] : o["userInfo"])) },
                     "fuid"))
                 { Title = $"{name}的{(isFollowList ? "关注" : "粉丝")}" };
         }
@@ -96,7 +96,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                                 id,
                                 p,
                                 p > 1 ? $"&firstItem={firstItem}&lastItem={lastItem}" : string.Empty),
-                        (o) => new Entity[] { new FeedReplyModel(o) },
+                        o => new Entity[] { new FeedReplyModel(o) },
                         "uid"))
                 { Title = $"热门回复" }
                 : new AdaptiveViewModel(
@@ -107,7 +107,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                                 id,
                                 p,
                                 p > 1 ? $"&lastItem={lastItem}" : string.Empty),
-                        (o) => new Entity[] { new FeedReplyModel(o, false) },
+                        o => new Entity[] { new FeedReplyModel(o, false) },
                         "uid"))
                 { Title = $"回复({reply.ReplyNum})" };
         }
@@ -137,7 +137,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                             p,
                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                             string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
-                    (o) => new Entity[] { new HistoryModel(o) },
+                    o => new Entity[] { new HistoryModel(o) },
                     "uid"))
             { Title = title };
         }
@@ -156,7 +156,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                                 string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                                 string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}",
                                 branch),
-                        (o) => new Entity[] { new FeedModel(o) },
+                        o => new Entity[] { new FeedModel(o) },
                         "uid"));
         }
 

@@ -159,7 +159,7 @@ namespace CoolapkUWP.Controls
                                         if (SettingsHelper.Get<bool>("IsUseOldEmojiMode") && EmojiHelper.OldEmojis.Contains(item))
                                         {
                                             InlineUIContainer container = new InlineUIContainer();
-                                            Image image = new Image { Source = new BitmapImage(new Uri($"ms-appx:///Assets/Emoji/{item}.png")) };
+                                            Image image = new Image { Source = new BitmapImage(new Uri($"ms-appx:///Assets/Emoji/{item}2.png")) };
                                             ToolTipService.SetToolTip(image, new ToolTip { Content = item });
                                             Viewbox viewbox = new Viewbox
                                             {

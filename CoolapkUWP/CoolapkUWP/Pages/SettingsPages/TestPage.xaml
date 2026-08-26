@@ -211,16 +211,19 @@
                         </controls:SettingExpander.Icon>
                         <controls:Setting x:Uid="/TestPage/APIVersionSettings" Style="{StaticResource DefaultSettingExpanderItemStyle}">
                             <ComboBox SelectedIndex="{x:Bind APIVersion, Mode=TwoWay}">
-                                <ComboBoxItem>Custom</ComboBoxItem>
-                                <ComboBoxItem>小程序</ComboBoxItem>
-                                <ComboBoxItem>V6</ComboBoxItem>
-                                <ComboBoxItem>V7</ComboBoxItem>
-                                <ComboBoxItem>V8</ComboBoxItem>
-                                <ComboBoxItem>V9</ComboBoxItem>
-                                <ComboBoxItem>V10</ComboBoxItem>
-                                <ComboBoxItem>V11</ComboBoxItem>
-                                <ComboBoxItem>V12</ComboBoxItem>
-                                <ComboBoxItem>V13</ComboBoxItem>
+                                <x:String>Custom</x:String>
+                                <x:String>小程序</x:String>
+                                <x:String>V6</x:String>
+                                <x:String>V7</x:String>
+                                <x:String>V8</x:String>
+                                <x:String>V9</x:String>
+                                <x:String>V10</x:String>
+                                <x:String>V11</x:String>
+                                <x:String>V12</x:String>
+                                <x:String>V13</x:String>
+                                <x:String>V14</x:String>
+                                <x:String>V15</x:String>
+                                <x:String>V16</x:String>
                             </ComboBox>
                         </controls:Setting>
                         <controls:Setting
@@ -232,10 +235,18 @@
                             Tag="CustomAPI" />
                         <controls:Setting x:Uid="/TestPage/TokenVersionSettings" Style="{StaticResource DefaultSettingExpanderItemStyle}">
                             <ComboBox SelectedIndex="{x:Bind TokenVersion, Mode=TwoWay}">
-                                <ComboBoxItem>Token V1</ComboBoxItem>
-                                <ComboBoxItem>Token V2</ComboBoxItem>
+                                <x:String>Token V1</x:String>
+                                <x:String>Token V2</x:String>
+                                <x:String>Token V3</x:String>
                             </ComboBox>
                         </controls:Setting>
+                        <controls:Setting
+                            x:Uid="/TestPage/DeviceInfoSettings"
+                            ActionIcon="&#xE8A7;"
+                            Click="Button_Click"
+                            IsClickEnabled="True"
+                            Style="{StaticResource ClickableSettingExpanderItemStyle}"
+                            Tag="DeviceInfo" />
                         <controls:Setting x:Uid="/TestPage/UseAPI2Settings" Style="{StaticResource DefaultSettingExpanderItemStyle}">
                             <ToggleSwitch IsOn="{x:Bind IsUseAPI2, Mode=TwoWay}" Style="{StaticResource ToggleSwitchSettingStyle}" />
                         </controls:Setting>

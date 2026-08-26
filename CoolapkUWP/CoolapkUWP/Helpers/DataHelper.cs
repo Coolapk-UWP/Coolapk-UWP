@@ -12,6 +12,11 @@ namespace CoolapkUWP.Helpers
 {
     public static partial class DataHelper
     {
+        /// <summary>
+        /// Get the MD5 hash of the input string.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <returns>The MD5 hash of the input string.</returns>
         public static string GetMD5(this string input)
         {
             // Create a new instance of the MD5CryptoServiceProvider object.
@@ -19,18 +24,22 @@ namespace CoolapkUWP.Helpers
             {
                 // Convert the input string to a byte array and compute the hash.
                 byte[] data = md5Hasher.ComputeHash(Encoding.UTF8.GetBytes(input));
-
                 string results = BitConverter.ToString(data).ToLowerInvariant();
-
-                return results.Replace("-", "");
+                return results.Replace("-", string.Empty);
             }
         }
 
-        public static string GetBase64(this string input, bool israw = false)
+        /// <summary>
+        /// Get the Base64 string of the input string.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="isRaw"><see langword="true"/> to remove the padding characters; otherwise, <see langword="false"/>.</param>
+        /// <returns>The Base64 string of the input string.</returns>
+        public static string GetBase64(this string input, bool isRaw = false)
         {
             byte[] bytes = Encoding.UTF8.GetBytes(input);
             string result = Convert.ToBase64String(bytes);
-            if (israw) { result = result.Replace("=", ""); }
+            if (!isRaw) { result = result.Replace("=", string.Empty); }
             return result;
         }
 

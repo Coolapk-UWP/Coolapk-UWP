@@ -59,10 +59,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         {
             if (name != null)
             {
-                if (Dispatcher?.HasThreadAccess == false)
-                {
-                    await Dispatcher.ResumeForegroundAsync();
-                }
+                await Dispatcher.ResumeForegroundAsync();
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
             }
         }
@@ -291,7 +288,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                             p,
                             string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                             string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
-                    (o) => new Entity[] { new UserModel((JObject)o["fUserInfo"]) },
+                    o => new Entity[] { new UserModel((JObject)o["fUserInfo"]) },
                     "fuid");
             }
         }

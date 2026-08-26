@@ -19,8 +19,6 @@ namespace CoolapkUWP.Models.Images
     {
         private static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(SettingsHelper.Get<int>(SettingsHelper.SemaphoreSlimCount));
 
-        private readonly Action<UISettingChangedType> UISettingChanged;
-
         public CoreDispatcher Dispatcher { get; }
 
         protected WeakReference<BitmapImage> pic;
@@ -169,35 +167,14 @@ namespace CoolapkUWP.Models.Images
             Dispatcher = dispatcher;
             Uri = uri;
             Type = type;
-            UISettingChanged = (mode) =>
-            {
-                switch (mode)
-                {
-                    case UISettingChangedType.LightMode:
-                    case UISettingChangedType.DarkMode:
-                        if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
-                        {
-                            if (pic != null && pic.TryGetTarget(out BitmapImage _))
-                            {
-                                Pic = ImageCacheHelper.NoPic;
-                            }
-                        }
-                        break;
-
-                    case UISettingChangedType.NoPicChanged:
-                        if (pic != null && pic.TryGetTarget(out BitmapImage _))
-                        {
-                            _ = GetImage();
-                        }
-                        break;
-                }
-            };
-            ThemeHelper.UISettingChanged.Add(UISettingChanged);
+            ThemeHelper.UISettingChanged += OnUISettingChanged;
+            ThemeHelper.NoPicsModeChanged += OnNoPicsModeChanged;
         }
 
         ~ImageModel()
         {
-            ThemeHelper.UISettingChanged.Remove(UISettingChanged);
+            ThemeHelper.UISettingChanged -= OnUISettingChanged;
+            ThemeHelper.NoPicsModeChanged -= OnNoPicsModeChanged;
         }
 
         public event TypedEventHandler<ImageModel, object> LoadStarted;
@@ -209,10 +186,7 @@ namespace CoolapkUWP.Models.Images
         {
             if (name != null)
             {
-                if (Dispatcher?.HasThreadAccess == false)
-                {
-                    await Dispatcher.ResumeForegroundAsync();
-                }
+                await Dispatcher.ResumeForegroundAsync();
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
             }
         }
@@ -221,6 +195,31 @@ namespace CoolapkUWP.Models.Images
         {
             semaphoreSlim.Dispose();
             semaphoreSlim = new SemaphoreSlim(initialCount);
+        }
+
+        private void OnUISettingChanged(ApplicationTheme mode)
+        {
+            switch (mode)
+            {
+                case ApplicationTheme.Light:
+                case ApplicationTheme.Dark:
+                    if (SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
+                    {
+                        if (pic != null && pic.TryGetTarget(out BitmapImage _))
+                        {
+                            Pic = ImageCacheHelper.NoPic;
+                        }
+                    }
+                    break;
+            }
+        }
+
+        private void OnNoPicsModeChanged(bool arg)
+        {
+            if (pic != null && pic.TryGetTarget(out BitmapImage _))
+            {
+                _ = GetImage();
+            }
         }
 
         private async Task GetImage()

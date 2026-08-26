@@ -1028,7 +1028,7 @@
             <Border
                 VerticalAlignment="Bottom"
                 Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                CornerRadius="{Binding Source={StaticResource OverlayCornerRadius}, Converter={StaticResource BottomCornerRadiusFilterConverter}}"
+                CornerRadius="0,0,7,7"
                 Tag="{Binding Url}"
                 Tapped="OnTopTapped">
                 <TextBlock

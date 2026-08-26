@@ -45,7 +45,7 @@ namespace CoolapkUWP.ViewModels.DataSource
             _busy = true;
 
             // We need to use AsyncInfo.Run to invoke async operation, as this method cannot return a Task.
-            return AsyncInfo.Run((c) => LoadMoreItemsAsync(c, count));
+            return AsyncInfo.Run(c => LoadMoreItemsAsync(c, count));
         }
 
         #endregion
@@ -86,10 +86,7 @@ namespace CoolapkUWP.ViewModels.DataSource
         {
             if (name != null)
             {
-                if (Dispatcher?.HasThreadAccess == false)
-                {
-                    await Dispatcher.ResumeForegroundAsync();
-                }
+                await Dispatcher.ResumeForegroundAsync();
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
             }
         }
@@ -161,10 +158,7 @@ namespace CoolapkUWP.ViewModels.DataSource
 
         public virtual async Task AddAsync(T item)
         {
-            if (Dispatcher?.HasThreadAccess == false)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-            }
+            await Dispatcher.ResumeForegroundAsync();
             Add(item);
         }
 

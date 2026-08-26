@@ -1,0 +1,54 @@
+﻿<ContentDialog
+    x:Class="CoolapkUWP.Controls.Dialogs.DeviceInfoDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CoolapkUWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:CoolapkUWP.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Uid="/ContentDialog/DeviceInfoDialog"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Closing="OnClosing"
+    DefaultButton="Primary"
+    Loaded="ContentDialog_Loaded"
+    Unloaded="ContentDialog_Unloaded"
+    mc:Ignorable="d">
+    <ContentDialog.ContextFlyout>
+        <MenuFlyout>
+            <MenuFlyoutItem
+                x:Uid="/ShowImagePage/CopyMenuItem"
+                Click="MenuFlyoutItem_Click"
+                Tag="Copy">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8C8;" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem
+                x:Name="PasteItem"
+                x:Uid="/CreateFeedControl/PastePicItem"
+                Click="MenuFlyoutItem_Click"
+                Tag="Paste">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77F;" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem
+                x:Uid="/ContentDialog/ResetFlyoutItem"
+                Click="MenuFlyoutItem_Click"
+                Tag="Reset">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE777;" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+    </ContentDialog.ContextFlyout>
+    <controls:StackPanel Spacing="4">
+        <TextBox Header="Android ID" Text="{x:Bind DeviceInfo.AndroidID, Mode=TwoWay}" />
+        <TextBox Header="MAC ID" Text="{x:Bind DeviceInfo.MAC, Mode=TwoWay}" />
+        <TextBox x:Uid="/ContentDialog/ManufactoryTextBox" Text="{x:Bind DeviceInfo.Manufactory, Mode=TwoWay}" />
+        <TextBox x:Uid="/ContentDialog/BrandTextBox" Text="{x:Bind DeviceInfo.Brand, Mode=TwoWay}" />
+        <TextBox x:Uid="/ContentDialog/ModelTextBox" Text="{x:Bind DeviceInfo.Model, Mode=TwoWay}" />
+        <TextBox x:Uid="/ContentDialog/BuildNumberTextBox" Text="{x:Bind DeviceInfo.BuildNumber, Mode=TwoWay}" />
+        <TextBox Header="OAID" Text="{x:Bind DeviceInfo.OAID, Mode=TwoWay}" />
+    </controls:StackPanel>
+</ContentDialog>

@@ -17,36 +17,35 @@ namespace CoolapkUWP.Controls
 {
     public sealed partial class SettingsFlyoutControl : SettingsFlyout
     {
-        private Action<UISettingChangedType> UISettingChanged;
-
         internal SettingsViewModel Provider;
 
         public SettingsFlyoutControl() => InitializeComponent();
 
         private void SettingsFlyout_Loaded(object sender, RoutedEventArgs e)
         {
-            UISettingChanged = (mode) =>
-            {
-                switch (mode)
-                {
-                    case UISettingChangedType.LightMode:
-                        RequestedTheme = ElementTheme.Light;
-                        break;
-                    case UISettingChangedType.DarkMode:
-                        RequestedTheme = ElementTheme.Dark;
-                        break;
-                    default:
-                        break;
-                }
-            };
             Provider = SettingsViewModel.Caches ?? new SettingsViewModel(Dispatcher);
-            ThemeHelper.UISettingChanged.Add(UISettingChanged);
+            ThemeHelper.UISettingChanged += OnUISettingChanged;
             DataContext = Provider;
         }
 
         private void SettingsFlyout_Unloaded(object sender, RoutedEventArgs e)
         {
-            ThemeHelper.UISettingChanged.Remove(UISettingChanged);
+            ThemeHelper.UISettingChanged -= OnUISettingChanged;
+        }
+
+        private void OnUISettingChanged(ApplicationTheme mode)
+        {
+            switch (mode)
+            {
+                case ApplicationTheme.Light:
+                    RequestedTheme = ElementTheme.Light;
+                    break;
+                case ApplicationTheme.Dark:
+                    RequestedTheme = ElementTheme.Dark;
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

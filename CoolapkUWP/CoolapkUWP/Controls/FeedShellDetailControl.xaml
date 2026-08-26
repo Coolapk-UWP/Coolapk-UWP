@@ -595,7 +595,7 @@
                             TintOpacity="1" />
                     </contract5Present:Grid.Background>
                     <local:WebViewContentControl
-                        ContentCornerRadius="{ThemeResource OverlayCornerRadius}"
+                        ContentCornerRadius="7"
                         ContentTemplate="{StaticResource SourceFeedDefaultTemplate}"
                         DataContext="{Binding LinkSourceFeed}" />
                     <Border Visibility="{Binding LinkSourceFeed.Succeed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">

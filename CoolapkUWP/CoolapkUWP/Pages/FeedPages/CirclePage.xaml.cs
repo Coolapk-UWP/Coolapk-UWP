@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.ViewModels.FeedPages;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -18,7 +19,7 @@ namespace CoolapkUWP.Pages.FeedPages
         private static int PivotIndex = 0;
 
         private bool isLoaded;
-        private Action Refresh;
+        private Func<bool, Task> Refresh;
 
         public CirclePage() => InitializeComponent();
 
@@ -44,11 +45,11 @@ namespace CoolapkUWP.Pages.FeedPages
             if ((Pivot.SelectedItem as PivotItem).Content is Frame Frame && Frame.Content is null)
             {
                 _ = Frame.Navigate(typeof(AdaptivePage), new AdaptiveViewModel(MenuItem.Tag.ToString().Contains("V") ? $"/page?url={MenuItem.Tag}" : $"/page?url=V9_HOME_TAB_FOLLOW&type={MenuItem.Tag}"));
-                Refresh = () => _ = (Frame.Content as AdaptivePage).Refresh(true);
+                Refresh = reset => _ = (Frame.Content as AdaptivePage).Refresh(reset);
             }
             else if ((Pivot.SelectedItem as PivotItem).Content is Frame __ && __.Content is AdaptivePage AdaptivePage)
             {
-                Refresh = () => _ = AdaptivePage.Refresh(true);
+                Refresh = reset => _ = AdaptivePage.Refresh(reset);
             }
         }
 
@@ -57,16 +58,17 @@ namespace CoolapkUWP.Pages.FeedPages
             ResourceLoader loader = ResourceLoader.GetForCurrentView("CirclePage");
             ObservableCollection<PivotItem> items = new ObservableCollection<PivotItem>
             {
-                new PivotItem() { Tag = "V9_HOME_TAB_FOLLOW", Header = loader.GetString("V9_HOME_TAB_FOLLOW"), Content = new Frame() },
-                new PivotItem() { Tag = "circle", Header = loader.GetString("circle"), Content = new Frame() },
-                new PivotItem() { Tag = "apk", Header = loader.GetString("apk"), Content = new Frame() },
-                new PivotItem() { Tag = "topic", Header = loader.GetString("topic"), Content = new Frame() },
-                new PivotItem() { Tag = "question", Header = loader.GetString("question"), Content = new Frame() },
-                new PivotItem() { Tag = "product", Header = loader.GetString("product"), Content = new Frame() }
+                new PivotItem { Tag = "V9_HOME_TAB_FOLLOW", Header = loader.GetString("all"), Content = new Frame() },
+                new PivotItem { Tag = "circle", Header = loader.GetString("circle"), Content = new Frame() },
+                new PivotItem { Tag = "apk", Header = loader.GetString("apk"), Content = new Frame() },
+                new PivotItem { Tag = "topic", Header = loader.GetString("topic"), Content = new Frame() },
+                new PivotItem { Tag = "question", Header = loader.GetString("question"), Content = new Frame() },
+                new PivotItem { Tag = "product", Header = loader.GetString("product"), Content = new Frame() },
+                new PivotItem { Tag = "recent", Header = loader.GetString("recent"), Content = new Frame() }
             };
             return items;
         }
 
-        private void RefreshButton_Click(object sender, RoutedEventArgs e) => Refresh();
+        private void RefreshButton_Click(object sender, RoutedEventArgs e) => _ = Refresh(true);
     }
 }

@@ -160,18 +160,22 @@ namespace CoolapkUWP.ViewModels.FeedPages
                 case 1: feedType = "feed"; break;
                 case 2: feedType = "feedArticle"; break;
                 case 3: feedType = "rating"; break;
-                case 4: feedType = "picture"; break;
-                case 5: feedType = "question"; break;
-                case 6: feedType = "answer"; break;
-                case 7: feedType = "video"; break;
-                case 8: feedType = "ershou"; break;
-                case 9: feedType = "vote"; break;
+                case 4: feedType = "goods"; break;
+                case 5: feedType = "picture"; break;
+                case 6: feedType = "question"; break;
+                case 7: feedType = "answer"; break;
+                case 8: feedType = "comment"; break;
+                case 9: feedType = "video"; break;
+                case 10: feedType = "ershou"; break;
+                case 11: feedType = "vote"; break;
             }
             switch (SearchFeedSortTypeComboBoxSelectedIndex)
             {
-                case 0: sortType = "default"; break;
-                case 1: sortType = "hot"; break;
-                case 2: sortType = "reply"; break;
+                case 0: sortType = "none"; break;
+                case 1: sortType = "dateline"; break;
+                case 2: sortType = "hot"; break;
+                case 3: sortType = "reply"; break;
+                case 4: sortType = string.Empty; break;
             }
             Provider = new CoolapkListProvider(
                 (p, firstItem, lastItem) =>

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -39,7 +40,6 @@ using NetworkHelper = Microsoft.Toolkit.Uwp.Connectivity.NetworkHelper;
 using CoolapkUWP.Models.Upload;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using Windows.ApplicationModel.AppService;
 #endif
 
@@ -91,7 +91,7 @@ namespace CoolapkUWP
         {
             if (MainWindow == null)
             {
-                RequestWifiAccess();
+                RequestWIFIAccess();
                 RegisterBackgroundTask();
                 RegisterExceptionHandlingSynchronizationContext();
 
@@ -196,12 +196,12 @@ namespace CoolapkUWP
                 new SettingsCommand(
                     "Settings",
                     loader.GetString("Settings"),
-                    (handler) => new SettingsFlyoutControl { RequestedTheme = ThemeHelper.ActualTheme }.Show()));
+                    handler => new SettingsFlyoutControl { RequestedTheme = ThemeHelper.ActualTheme }.Show()));
             args.Request.ApplicationCommands.Add(
                 new SettingsCommand(
                     "Feedback",
                     loader.GetString("Feedback"),
-                    (handler) => _ = Launcher.LaunchUriAsync(new Uri("https://github.com/Coolapk-UWP/Coolapk-UWP/issues"))));
+                    handler => _ = Launcher.LaunchUriAsync(new Uri("https://github.com/Coolapk-UWP/Coolapk-UWP/issues"))));
             args.Request.ApplicationCommands.Add(
                 new SettingsCommand(
                     "LogFolder",
@@ -211,12 +211,12 @@ namespace CoolapkUWP
                 new SettingsCommand(
                     "Translate",
                     loader.GetString("Translate"),
-                    (handler) => _ = Launcher.LaunchUriAsync(new Uri("https://crowdin.com/project/CoolapkUWP"))));
+                    handler => _ = Launcher.LaunchUriAsync(new Uri("https://crowdin.com/project/CoolapkUWP"))));
             args.Request.ApplicationCommands.Add(
                 new SettingsCommand(
                     "Repository",
                     loader.GetString("Repository"),
-                    (handler) => _ = Launcher.LaunchUriAsync(new Uri("https://github.com/Coolapk-UWP/Coolapk-UWP"))));
+                    handler => _ = Launcher.LaunchUriAsync(new Uri("https://github.com/Coolapk-UWP/Coolapk-UWP"))));
         }
 
         private void Dispatcher_AcceleratorKeyActivated(CoreDispatcher sender, AcceleratorKeyEventArgs args)
@@ -245,6 +245,8 @@ namespace CoolapkUWP
             }
         }
 
+        private static readonly SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);
+
         private async void SearchPane_SuggestionsRequested(SearchPane sender, SearchPaneSuggestionsRequestedEventArgs args)
         {
             string keyWord = args.QueryText;
@@ -252,27 +254,35 @@ namespace CoolapkUWP
             SearchPaneSuggestionsRequestDeferral deferral = args.Request.GetDeferral();
             await Task.Run(async () =>
             {
-                (bool isSucceed, JToken result) = await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.SearchWords, keyWord), true);
-                if (isSucceed && result != null && result is JArray array && array.Count > 0)
+                await semaphoreSlim.WaitAsync();
+                try
                 {
-                    foreach (JToken token in array)
+                    (bool isSucceed, JToken result) = await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.SearchWords, keyWord), true);
+                    if (isSucceed && result != null && result is JArray array && array.Count > 0)
                     {
-                        string key = string.Empty;
-                        switch (token.Value<string>("entityType"))
+                        foreach (JToken token in array)
                         {
-                            case "apk":
-                                key = new AppModel(token as JObject).Title;
-                                break;
-                            case "searchWord":
-                            default:
-                                key = new SearchWord(token as JObject).ToString();
-                                break;
-                        }
-                        if (!string.IsNullOrEmpty(key) && !results.Contains(key))
-                        {
-                            results.Add(key);
+                            string key = string.Empty;
+                            switch (token.Value<string>("entityType"))
+                            {
+                                case "apk":
+                                    key = new AppModel(token as JObject).Title;
+                                    break;
+                                case "searchWord":
+                                default:
+                                    key = new SearchWord(token as JObject).ToString();
+                                    break;
+                            }
+                            if (!string.IsNullOrEmpty(key) && !results.Contains(key))
+                            {
+                                results.Add(key);
+                            }
                         }
                     }
+                }
+                finally
+                {
+                    semaphoreSlim.Release();
                 }
             });
             args.Request.SearchSuggestionCollection.AppendQuerySuggestions(results);
@@ -287,17 +297,17 @@ namespace CoolapkUWP
             }
         }
 
-        private async void RequestWifiAccess()
+        private async void RequestWIFIAccess()
         {
             if (ApiInformation.IsMethodPresent("Windows.Security.Authorization.AppCapabilityAccess.AppCapability", "Create"))
             {
-                AppCapability wifiData = AppCapability.Create("wifiData");
-                switch (wifiData.CheckAccess())
+                AppCapability WIFIData = AppCapability.Create("wifiData");
+                switch (WIFIData.CheckAccess())
                 {
                     case AppCapabilityAccessStatus.DeniedByUser:
                     case AppCapabilityAccessStatus.DeniedBySystem:
                         // Do something
-                        await wifiData.RequestAccessAsync();
+                        await WIFIData.RequestAccessAsync();
                         break;
                 }
             }
@@ -308,7 +318,7 @@ namespace CoolapkUWP
             if (!(!SettingsHelper.Get<bool>(SettingsHelper.ShowOtherException) || e.Exception is TaskCanceledException || e.Exception is OperationCanceledException))
             {
                 ResourceLoader loader = ResourceLoader.GetForViewIndependentUse();
-                UIHelper.ShowMessage($"{(string.IsNullOrEmpty(e.Exception.Message) ? loader.GetString("ExceptionThrown") : e.Exception.Message)} (0x{Convert.ToString(e.Exception.HResult, 16)})");
+                UIHelper.ShowMessage($"{(string.IsNullOrEmpty(e.Exception.Message) ? loader.GetString("ExceptionThrown") : e.Exception.Message)} (0x{e.Exception.HResult:X})");
             }
             SettingsHelper.LogManager.GetLogger("Unhandled Exception - Application").Error(e.Exception.ExceptionToMessage(), e.Exception);
             e.Handled = true;
@@ -331,7 +341,7 @@ namespace CoolapkUWP
                 ResourceLoader loader = ResourceLoader.GetForViewIndependentUse();
                 if (e.Exception is HttpRequestException || (e.Exception.HResult <= -2147012721 && e.Exception.HResult >= -2147012895))
                 {
-                    UIHelper.ShowMessage($"{loader.GetString("NetworkError")}(0x{Convert.ToString(e.Exception.HResult, 16)})");
+                    UIHelper.ShowMessage($"{loader.GetString("NetworkError")}(0x{e.Exception.HResult:X})");
                 }
                 else if (e.Exception is CoolapkMessageException)
                 {
@@ -339,7 +349,7 @@ namespace CoolapkUWP
                 }
                 else if (SettingsHelper.Get<bool>(SettingsHelper.ShowOtherException))
                 {
-                    UIHelper.ShowMessage($"{(string.IsNullOrEmpty(e.Exception.Message) ? loader.GetString("ExceptionThrown") : e.Exception.Message)} (0x{Convert.ToString(e.Exception.HResult, 16)})");
+                    UIHelper.ShowMessage($"{(string.IsNullOrEmpty(e.Exception.Message) ? loader.GetString("ExceptionThrown") : e.Exception.Message)} (0x{e.Exception.HResult:X})");
                 }
             }
             SettingsHelper.LogManager.GetLogger("Unhandled Exception - SynchronizationContext").Error(e.Exception.ExceptionToMessage(), e.Exception);
@@ -368,12 +378,8 @@ namespace CoolapkUWP
 
                 const string LiveTileTask = "LiveTileTask";
 
-                // If background task is already registered, do nothing
-                if (BackgroundTaskRegistration.AllTasks.Any(i => i.Value.Name.Equals(LiveTileTask)))
-                { return; }
-
                 // Register (Single Process)
-                BackgroundTaskRegistration _LiveTileTask = BackgroundTaskHelper.Register(LiveTileTask, new TimeTrigger(time, false), true);
+                _ = BackgroundTaskHelper.Register(LiveTileTask, new TimeTrigger(time, false), true);
             }
 
             #endregion
@@ -384,12 +390,8 @@ namespace CoolapkUWP
             {
                 const string NotificationsTask = "NotificationsModel";
 
-                // If background task is already registered, do nothing
-                if (BackgroundTaskRegistration.AllTasks.Any(i => i.Value.Name.Equals(NotificationsTask)))
-                { return; }
-
                 // Register (Single Process)
-                BackgroundTaskRegistration _NotificationsTask = BackgroundTaskHelper.Register(NotificationsTask, new TimeTrigger(15, false), true);
+                _ = BackgroundTaskHelper.Register(NotificationsTask, new TimeTrigger(15, false), true);
             }
 
             #endregion
@@ -400,19 +402,8 @@ namespace CoolapkUWP
             {
                 const string ToastBackgroundTask = "ToastBackgroundTask";
 
-                // If background task is already registered, do nothing
-                if (BackgroundTaskRegistration.AllTasks.Any(i => i.Value.Name.Equals(ToastBackgroundTask)))
-                { return; }
-
-                // Create the background task
-                BackgroundTaskBuilder builder = new BackgroundTaskBuilder
-                { Name = ToastBackgroundTask };
-
-                // Assign the toast action trigger
-                builder.SetTrigger(new ToastNotificationActionTrigger());
-
-                // And register the task
-                BackgroundTaskRegistration registration = builder.Register();
+                // Register the task
+                _ = BackgroundTaskHelper.Register(ToastBackgroundTask, new ToastNotificationActionTrigger());
             }
 
             #endregion
@@ -421,61 +412,44 @@ namespace CoolapkUWP
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
         {
             base.OnBackgroundActivated(args);
-
-            BackgroundTaskDeferral deferral = args.TaskInstance.GetDeferral();
-
-            switch (args.TaskInstance.Task.Name)
+            IBackgroundTaskInstance instance = args.TaskInstance;
+            switch (instance.Task.Name)
             {
                 case "LiveTileTask":
                     if (NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable)
                     {
-                        LiveTileTask.Instance?.Run(args.TaskInstance);
+                        LiveTileTask.Instance?.Run(instance);
                     }
-                    deferral.Complete();
                     break;
-
                 case "NotificationsModel":
                     if (NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable)
                     {
-                        NotificationsTask.Instance?.Run(args.TaskInstance);
+                        NotificationsTask.Instance?.Run(instance);
                     }
-                    deferral.Complete();
                     break;
-
                 case "ToastBackgroundTask":
-                    if (args.TaskInstance.TriggerDetails is ToastNotificationActionTriggerDetail details)
+                    if (instance.TriggerDetails is ToastNotificationActionTriggerDetail details)
                     {
                         ToastArguments arguments = ToastArguments.Parse(details.Argument);
                         ValueSet userInput = details.UserInput;
 
                         // Perform tasks
                     }
-                    deferral.Complete();
                     break;
-
                 default:
 #if !FEATURE2
-                    IBackgroundTaskInstance taskInstance = args.TaskInstance;
-                    if (taskInstance.TriggerDetails is AppServiceTriggerDetails appService)
+                    if (instance.TriggerDetails is AppServiceTriggerDetails appService
+                        && _appServiceInitialized == false) // Only need to setup the handlers once
                     {
-                        if (_appServiceInitialized == false) // Only need to setup the handlers once
-                        {
-                            _appServiceInitialized = true;
+                        _appServiceInitialized = true;
 
-                            taskInstance.Canceled += OnAppServicesCanceled;
+                        instance.Canceled += OnAppServicesCanceled;
 
-                            _appServiceDeferral = deferral;
-                            _appServiceConnection = appService.AppServiceConnection;
-                            _appServiceConnection.RequestReceived += OnAppServiceRequestReceived;
-                            _appServiceConnection.ServiceClosed += AppServiceConnection_ServiceClosed;
-                        }
+                        _appServiceDeferral = instance.GetDeferral();
+                        _appServiceConnection = appService.AppServiceConnection;
+                        _appServiceConnection.RequestReceived += OnAppServiceRequestReceived;
+                        _appServiceConnection.ServiceClosed += AppServiceConnection_ServiceClosed;
                     }
-                    else
-                    {
-                        deferral.Complete();
-                    }
-#else
-                    deferral.Complete();
 #endif
                     break;
             }

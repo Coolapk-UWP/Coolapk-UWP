@@ -3,15 +3,14 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:contract12Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 12)"
-    xmlns:contract5NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
     xmlns:contract6NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 6)"
     xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract, 7)"
     xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
+    xmlns:converters="using:CoolapkUWP.Helpers.Converters"
     xmlns:cwuh="using:Microsoft.Toolkit.Uwp.UI.Helpers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:media="using:Microsoft.UI.Xaml.Media"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:viewmodels="using:CoolapkUWP.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodels:ShowImageViewModel}"
@@ -19,6 +18,7 @@
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
+        <converters:ZoomToolTipValueConverter x:Key="ZoomToolTipValueConverter" />
         <MenuFlyout x:Key="FlipViewContextFlyout">
             <MenuFlyoutItem
                 x:Uid="/ShowImagePage/RefreshMenuItem"
@@ -205,6 +205,7 @@
                                         Maximum="300"
                                         Minimum="50"
                                         Orientation="Vertical"
+                                        ThumbToolTipValueConverter="{StaticResource ZoomToolTipValueConverter}"
                                         Value="{Binding ZoomFactor, ElementName=ImageScrollViewer, Converter={StaticResource NumMultConverter}, ConverterParameter='100', Mode=TwoWay}" />
                                     <RepeatButton
                                         x:Name="ZoomDown"

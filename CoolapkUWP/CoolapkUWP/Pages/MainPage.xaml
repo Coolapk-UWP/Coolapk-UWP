@@ -82,8 +82,8 @@
             <controls:Slot
                 x:Name="SearchBoxHolder"
                 Grid.Column="2"
-                LastControl="{x:Bind AppTitle}"
-                Orientation="Horizontal">
+                Orientation="Horizontal"
+                PreviousElement="{x:Bind AppTitle}">
                 <Border x:Name="SearchBoxBorder">
                     <AutoSuggestBox
                         x:Name="SearchTextBox"
@@ -182,7 +182,7 @@
                         Width="28"
                         Height="28"
                         DisplayName="{x:Bind UserName, Mode=OneWay}"
-                        ProfilePicture="{x:Bind UserAvatar, Mode=OneWay}" />
+                        ProfilePicture="{x:Bind UserAvatar.Pic, Mode=OneWay}" />
                 </Button>
             </Grid>
         </Grid>

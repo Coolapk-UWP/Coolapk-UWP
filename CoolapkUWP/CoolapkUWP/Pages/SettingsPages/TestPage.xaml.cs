@@ -3,6 +3,7 @@ using CoolapkUWP.Controls;
 using CoolapkUWP.Controls.Dialogs;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Images;
+using CoolapkUWP.Models.Update;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.ViewModels.BrowserPages;
 using Microsoft.Toolkit.Uwp.UI.Controls;
@@ -84,7 +85,7 @@ namespace CoolapkUWP.Pages.SettingsPages
             {
                 if (APIVersion != value)
                 {
-                    SettingsHelper.Set(SettingsHelper.APIVersion, value + 4);
+                    SettingsHelper.Set<APIVersions>(SettingsHelper.APIVersion, (APIVersions)value + 4);
                     NetworkHelper.SetRequestHeaders();
                     UserAgent = NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString();
                 }
@@ -93,12 +94,12 @@ namespace CoolapkUWP.Pages.SettingsPages
 
         internal int TokenVersion
         {
-            get => (int)SettingsHelper.Get<TokenVersions>(SettingsHelper.TokenVersion);
+            get => (int)SettingsHelper.Get<TokenVersion>(SettingsHelper.TokenVersion) - 1;
             set
             {
                 if (TokenVersion != value)
                 {
-                    SettingsHelper.Set(SettingsHelper.TokenVersion, value);
+                    SettingsHelper.Set(SettingsHelper.TokenVersion, (TokenVersion)value + 1);
                     NetworkHelper.SetRequestHeaders();
                 }
             }
@@ -119,7 +120,6 @@ namespace CoolapkUWP.Pages.SettingsPages
                 {
                     int result = (int)Math.Floor(value);
                     SettingsHelper.Set(SettingsHelper.SemaphoreSlimCount, result);
-                    NetworkHelper.SetSemaphoreSlim(result);
                     ImageModel.SetSemaphoreSlim(result);
                 }
             }
@@ -229,6 +229,9 @@ namespace CoolapkUWP.Pages.SettingsPages
                         frame.Navigate(typeof(MainPage));
                         await window.TryShowAsync();
                     }
+                    break;
+                case "DeviceInfo":
+                    _ = new DeviceInfoDialog().ShowAsync();
                     break;
                 case "OpenBrowser":
                     _ = Frame.Navigate(typeof(BrowserPage), new BrowserViewModel(URLTextBox.Text));

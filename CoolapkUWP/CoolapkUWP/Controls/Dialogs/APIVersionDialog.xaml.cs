@@ -1,12 +1,15 @@
 ﻿using CoolapkUWP.Common;
 using CoolapkUWP.Helpers;
+using CoolapkUWP.Helpers.Converters;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Update;
 using Newtonsoft.Json.Linq;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“内容对话框”项模板
 
@@ -22,10 +25,7 @@ namespace CoolapkUWP.Controls.Dialogs
         {
             if (name != null)
             {
-                if (Dispatcher?.HasThreadAccess == false)
-                {
-                    await Dispatcher.ResumeForegroundAsync();
-                }
+                await Dispatcher.ResumeForegroundAsync();
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
             }
         }
@@ -48,17 +48,38 @@ namespace CoolapkUWP.Controls.Dialogs
         private async void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
             UIHelper.ShowProgressBar();
-            (bool isSucceed, JToken result) = await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.GetAppDetail, "com.coolapk.market"));
-            if (isSucceed)
+            if (await APIVersion.GetLatestAsync() is APIVersion version)
             {
-                AppModel model = new AppModel((JObject)result);
-                if (!string.IsNullOrEmpty(model.VersionCode) && !string.IsNullOrEmpty(model.VersionName))
-                {
-                    APIVersion = new APIVersion(model.VersionName, model.VersionCode);
-                    RaisePropertyChangedEvent(nameof(APIVersion));
-                }
+                APIVersion = version;
             }
             UIHelper.HideProgressBar();
+        }
+    }
+
+    public class Int32ToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            string result = value?.ToString();
+            return ConverterTools.Convert(result, targetType);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            int result;
+            switch (value)
+            {
+                case null:
+                    result = 0;
+                    break;
+                case string str:
+                    int.TryParse(str, out result);
+                    break;
+                default:
+                    result = System.Convert.ToInt32(value);
+                    break;
+            }
+            return ConverterTools.Convert(result, targetType);
         }
     }
 }

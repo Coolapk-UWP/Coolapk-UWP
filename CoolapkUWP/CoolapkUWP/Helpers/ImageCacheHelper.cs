@@ -1,6 +1,5 @@
 ﻿using CoolapkUWP.Common;
 using Microsoft.Toolkit.Uwp.Helpers;
-using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +11,7 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Media.Imaging;
+using ImageCache = CoolapkUWP.Common.ImageCache;
 
 namespace CoolapkUWP.Helpers
 {
@@ -40,13 +40,12 @@ namespace CoolapkUWP.Helpers
 
         private static BitmapImage DarkNoPicMode { get; set; }
         private static BitmapImage WhiteNoPicMode { get; set; }
-        internal static BitmapImage NoPic { get => ThemeHelper.IsDarkTheme() ? DarkNoPicMode : WhiteNoPicMode; }
+        internal static BitmapImage NoPic => ThemeHelper.IsDarkTheme() ? DarkNoPicMode : WhiteNoPicMode;
 
         internal static CoreDispatcher Dispatcher { get; } = CoreApplication.MainView.Dispatcher;
 
         static ImageCacheHelper()
         {
-            ImageCache.Instance.CacheDuration = TimeSpan.FromHours(8);
             _ = Dispatcher.AwaitableRunAsync(() =>
             {
                 DarkNoPicMode = new BitmapImage(DarkNoPicUri) { DecodePixelHeight = 768, DecodePixelWidth = 768 };
@@ -61,7 +60,7 @@ namespace CoolapkUWP.Helpers
 
             if (url.IndexOf("ms-appx", StringComparison.Ordinal) == 0)
             {
-                if (!dispatcher.HasThreadAccess) { await dispatcher.ResumeForegroundAsync(); }
+                await dispatcher.ResumeForegroundAsync();
                 return new BitmapImage(uri);
             }
             else if (!isForce && SettingsHelper.Get<bool>(SettingsHelper.IsNoPicsMode))
@@ -237,11 +236,7 @@ namespace CoolapkUWP.Helpers
             }
             else
             {
-                folder = await ApplicationData.Current.LocalCacheFolder.TryGetItemAsync(type.ToString()) as StorageFolder;
-                if (folder is null)
-                {
-                    folder = await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync(type.ToString(), CreationCollisionOption.OpenIfExists);
-                }
+                folder = await ApplicationData.Current.LocalCacheFolder.TryGetItemAsync(type.ToString()) as StorageFolder ?? await ApplicationData.Current.LocalCacheFolder.CreateFolderAsync(type.ToString(), CreationCollisionOption.OpenIfExists);
                 if (!folders.ContainsKey(type))
                 {
                     folders.Add(type, folder);

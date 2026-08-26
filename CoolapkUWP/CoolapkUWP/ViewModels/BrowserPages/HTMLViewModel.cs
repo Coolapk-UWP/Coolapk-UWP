@@ -1,5 +1,6 @@
 ﻿using CoolapkUWP.Common;
 using CoolapkUWP.Helpers;
+using HtmlAgilityPack;
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
@@ -7,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 
 namespace CoolapkUWP.ViewModels.BrowserPages
 {
@@ -15,7 +17,6 @@ namespace CoolapkUWP.ViewModels.BrowserPages
         public CoreDispatcher Dispatcher { get; }
 
         private readonly Uri uri;
-        private Action<UISettingChangedType> UISettingChanged;
 
         private string title;
         public string Title
@@ -66,10 +67,7 @@ namespace CoolapkUWP.ViewModels.BrowserPages
         {
             if (name != null)
             {
-                if (Dispatcher?.HasThreadAccess == false)
-                {
-                    await Dispatcher.ResumeForegroundAsync();
-                }
+                await Dispatcher.ResumeForegroundAsync();
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
             }
         }
@@ -78,26 +76,25 @@ namespace CoolapkUWP.ViewModels.BrowserPages
         {
             Dispatcher = dispatcher;
             uri = url.ValidateAndGetUri();
-            UISettingChanged = (mode) =>
-            {
-                switch (mode)
-                {
-                    case UISettingChangedType.LightMode:
-                        _ = GetHtmlAsync(RawHTML, "Light");
-                        break;
-                    case UISettingChangedType.DarkMode:
-                        _ = GetHtmlAsync(RawHTML, "Dark");
-                        break;
-                    case UISettingChangedType.NoPicChanged:
-                        break;
-                }
-            };
-            ThemeHelper.UISettingChanged.Add(UISettingChanged);
+            ThemeHelper.UISettingChanged += OnUISettingChanged;
         }
 
         ~HTMLViewModel()
         {
-            ThemeHelper.UISettingChanged.Remove(UISettingChanged);
+            ThemeHelper.UISettingChanged -= OnUISettingChanged;
+        }
+
+        private void OnUISettingChanged(ApplicationTheme mode)
+        {
+            switch (mode)
+            {
+                case ApplicationTheme.Light:
+                    _ = GetHtmlAsync(RawHTML, "Light");
+                    break;
+                case ApplicationTheme.Dark:
+                    _ = GetHtmlAsync(RawHTML, "Dark");
+                    break;
+            }
         }
 
         public async Task Refresh(bool reset)
@@ -119,15 +116,33 @@ namespace CoolapkUWP.ViewModels.BrowserPages
             if (isSucceed)
             {
                 JObject json = JObject.Parse(result);
-                RawHTML = json.TryGetValue("html", out JToken html) && !string.IsNullOrEmpty(html.ToString())
-                    ? html.ToString()
-                    : json.TryGetValue("description", out JToken description) && !string.IsNullOrEmpty(description.ToString())
-                        ? description.ToString()
-                        : "<h1>网络错误</h1>";
 
                 if (json.TryGetValue("title", out JToken title))
                 {
                     Title = title.ToString();
+                }
+
+                if (json.TryGetValue("html", out JToken html) && !string.IsNullOrEmpty(html.ToString()))
+                {
+                    RawHTML = html.ToString();
+                }
+                else if (json.TryGetValue("description", out JToken description) && !string.IsNullOrEmpty(description.ToString()))
+                {
+                    RawHTML = description.ToString();
+                }
+                else
+                {
+                    (isSucceed, result) = await RequestHelper.GetStringAsync(uri).ConfigureAwait(false);
+                    if (isSucceed && !string.IsNullOrWhiteSpace(result))
+                    {
+                        HtmlDocument doc = new HtmlDocument();
+                        doc.LoadHtml(result);
+                        string content = doc.DocumentNode.ChildNodes.FindFirst("html")?.ChildNodes.FindFirst("body")?.InnerHtml;
+                        if (!string.IsNullOrEmpty(content))
+                        {
+                            RawHTML = content;
+                        }
+                    }
                 }
             }
             UIHelper.HideProgressBar();

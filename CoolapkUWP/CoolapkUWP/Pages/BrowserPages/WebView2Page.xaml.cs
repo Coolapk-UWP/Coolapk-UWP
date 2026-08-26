@@ -3,7 +3,9 @@ using CoolapkUWP.Helpers;
 using CoolapkUWP.ViewModels.BrowserPages;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.System;
@@ -76,10 +78,10 @@ namespace CoolapkUWP.Pages.BrowserPages
             }
         }
 
-        private async Task CheckLogin()
+        private async Task CheckLogin(bool manual = false)
         {
             ResourceLoader loader = ResourceLoader.GetForCurrentView("BrowserPage");
-            if (await SetLoginCookie() && await SettingsHelper.Login())
+            if (await SetLoginCookie(manual) && await SettingsHelper.Login())
             {
                 if (Frame.CanGoBack)
                 {
@@ -95,42 +97,79 @@ namespace CoolapkUWP.Pages.BrowserPages
             }
         }
 
-        public async Task<bool> SetLoginCookie()
+        public async Task<bool> SetLoginCookie(bool manual = false)
         {
             string Uid = string.Empty, Token = string.Empty, UserName = string.Empty;
-            foreach (CoreWebView2Cookie item in await WebView.CoreWebView2.CookieManager.GetCookiesAsync("https://coolapk.com"))
-            {
-                switch (item.Name)
-                {
-                    case "uid":
-                        Uid = item.Value;
-                        break;
-                    case "username":
-                        UserName = item.Value;
-                        break;
-                    case "token":
-                        Token = item.Value;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            if (!string.IsNullOrEmpty(Uid) && !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Token))
+            if (manual)
             {
                 using (HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter())
                 {
-                    HttpCookieManager cookieManager = filter.CookieManager;
-                    HttpCookie uid = new HttpCookie("uid", ".coolapk.com", "/");
-                    HttpCookie username = new HttpCookie("username", ".coolapk.com", "/");
-                    HttpCookie token = new HttpCookie("token", ".coolapk.com", "/");
-                    uid.Value = Uid;
-                    username.Value = UserName;
-                    token.Value = Token;
-                    cookieManager.SetCookie(uid);
-                    cookieManager.SetCookie(username);
-                    cookieManager.SetCookie(token);
+                    foreach (HttpCookie item in filter.CookieManager.GetCookies(UriHelper.CoolapkUri))
+                    {
+                        switch (item.Name)
+                        {
+                            case "uid":
+                                Uid = item.Value;
+                                break;
+                            case "username":
+                                UserName = item.Value;
+                                break;
+                            case "token":
+                                Token = item.Value;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                 }
-                return true;
+                if (!string.IsNullOrEmpty(Uid) && !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Token))
+                {
+                    CoreWebView2CookieManager cookieManager = WebView.CoreWebView2.CookieManager;
+                    CoreWebView2Cookie uid = cookieManager.CreateCookie("uid", Uid, ".coolapk.com", "/");
+                    CoreWebView2Cookie username = cookieManager.CreateCookie("username", UserName, ".coolapk.com", "/");
+                    CoreWebView2Cookie token = cookieManager.CreateCookie("token", Token, ".coolapk.com", "/");
+                    cookieManager.AddOrUpdateCookie(uid);
+                    cookieManager.AddOrUpdateCookie(username);
+                    cookieManager.AddOrUpdateCookie(token);
+                    return true;
+                }
+            }
+            else
+            {
+                foreach (CoreWebView2Cookie item in await WebView.CoreWebView2.CookieManager.GetCookiesAsync("https://coolapk.com"))
+                {
+                    switch (item.Name)
+                    {
+                        case "uid":
+                            Uid = item.Value;
+                            break;
+                        case "username":
+                            UserName = item.Value;
+                            break;
+                        case "token":
+                            Token = item.Value;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (!string.IsNullOrEmpty(Uid) && !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Token))
+                {
+                    using (HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter())
+                    {
+                        HttpCookieManager cookieManager = filter.CookieManager;
+                        HttpCookie uid = new HttpCookie("uid", ".coolapk.com", "/");
+                        HttpCookie username = new HttpCookie("username", ".coolapk.com", "/");
+                        HttpCookie token = new HttpCookie("token", ".coolapk.com", "/");
+                        uid.Value = Uid;
+                        username.Value = UserName;
+                        token.Value = Token;
+                        cookieManager.SetCookie(uid);
+                        cookieManager.SetCookie(username);
+                        cookieManager.SetCookie(token);
+                    }
+                    return true;
+                }
             }
             return false;
         }
@@ -138,11 +177,11 @@ namespace CoolapkUWP.Pages.BrowserPages
         private async void ManualLoginButton_Click(object sender, RoutedEventArgs e)
         {
             UIHelper.ShowProgressBar();
-            LoginDialog Dialog = new LoginDialog();
-            ContentDialogResult result = await Dialog.ShowAsync();
+            LoginDialog dialog = new LoginDialog();
+            ContentDialogResult result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                _ = CheckLogin();
+                _ = CheckLogin(true);
             }
             else
             {

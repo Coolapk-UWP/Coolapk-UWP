@@ -1,7 +1,8 @@
 name: Feature request
 description: Suggest an idea for this project
-title: "Feature title"
+title: Feature title
 labels: [enhancement]
+type: Feature
 body:
   - type: textarea
     validations:
@@ -16,9 +17,9 @@ body:
     attributes:
       label: How important is this to you?
       options:
-        - "Nice-to-have"
-        - "Important"
-        - "Critical"
+        - Nice-to-have
+        - Important
+        - Critical
   - type: textarea
     attributes:
       label: Describe the solution you'd like

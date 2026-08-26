@@ -3,6 +3,7 @@ using CoolapkUWP.Common;
 using CoolapkUWP.Controls;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
+using CoolapkUWP.Models.Images;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.Pages.SettingsPages;
@@ -16,6 +17,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -59,8 +61,8 @@ namespace CoolapkUWP.Pages
             }
         }
 
-        private ImageSource _userAvatar;
-        public ImageSource UserAvatar
+        private ImageModel _userAvatar;
+        public ImageModel UserAvatar
         {
             get => _userAvatar;
             set
@@ -109,7 +111,7 @@ namespace CoolapkUWP.Pages
             UIHelper.MainPage = this;
             LiveTileTask.Instance?.UpdateTile();
             UIHelper.ShellDispatcher = Dispatcher;
-            NotificationsModel.Instance?.Update();
+            _ = (NotificationsModel.Instance?.Update());
             NotificationsModel = NotificationsModel.Instance;
             SearchBoxHolder.RegisterPropertyChangedCallback(Slot.IsStretchProperty, new DependencyPropertyChangedCallback(OnIsStretchProperty));
             NavigationView.RegisterPropertyChangedCallback(muxc.NavigationView.IsBackButtonVisibleProperty, new DependencyPropertyChangedCallback(OnIsBackButtonVisibleChanged));
@@ -331,7 +333,7 @@ namespace CoolapkUWP.Pages
                     (string UID, string UserName, string UserAvatar) results = await NetworkHelper.GetUserInfoByNameAsync(UID);
                     if (results.UID != UID) { return; }
                     UserName = results.UserName;
-                    UserAvatar = new BitmapImage(new Uri(results.UserAvatar));
+                    UserAvatar = new ImageModel(results.UserAvatar, ImageType.Avatar);
                 }
             }
             else
@@ -394,6 +396,8 @@ namespace CoolapkUWP.Pages
 
         #region 搜索框
 
+        private static readonly SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);
+
         private async void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
@@ -402,22 +406,30 @@ namespace CoolapkUWP.Pages
                 sender.ItemsSource = observableCollection;
                 string keyWord = sender.Text;
                 await ThreadSwitcher.ResumeBackgroundAsync();
-                (bool isSucceed, JToken result) = await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.SearchWords, keyWord), true);
-                if (isSucceed && result != null && result is JArray array && array.Count > 0)
+                await semaphoreSlim.WaitAsync();
+                try
                 {
-                    foreach (JToken token in array)
+                    (bool isSucceed, JToken result) = await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.SearchWords, keyWord), true);
+                    if (isSucceed && result != null && result is JArray array && array.Count > 0)
                     {
-                        switch (token.Value<string>("entityType"))
+                        foreach (JToken token in array)
                         {
-                            case "apk":
-                                await Dispatcher.AwaitableRunAsync(() => observableCollection.Add(new AppModel(token as JObject)));
-                                break;
-                            case "searchWord":
-                            default:
-                                await Dispatcher.AwaitableRunAsync(() => observableCollection.Add(new SearchWord(token as JObject)));
-                                break;
+                            switch (token.Value<string>("entityType"))
+                            {
+                                case "apk":
+                                    await Dispatcher.AwaitableRunAsync(() => observableCollection.Add(new AppModel(token as JObject)));
+                                    break;
+                                case "searchWord":
+                                default:
+                                    await Dispatcher.AwaitableRunAsync(() => observableCollection.Add(new SearchWord(token as JObject)));
+                                    break;
+                            }
                         }
                     }
+                }
+                finally
+                {
+                    semaphoreSlim.Release();
                 }
             }
         }
@@ -444,10 +456,7 @@ namespace CoolapkUWP.Pages
 
         public async void ShowProgressBar()
         {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-            }
+            await Dispatcher.ResumeForegroundAsync();
             ProgressBar.Visibility = Visibility.Visible;
             ProgressBar.IsIndeterminate = true;
             ProgressBar.ShowError = false;
@@ -456,10 +465,7 @@ namespace CoolapkUWP.Pages
 
         public async void ShowProgressBar(double value)
         {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-            }
+            await Dispatcher.ResumeForegroundAsync();
             ProgressBar.Visibility = Visibility.Visible;
             ProgressBar.IsIndeterminate = false;
             ProgressBar.ShowError = false;
@@ -469,10 +475,7 @@ namespace CoolapkUWP.Pages
 
         public async void PausedProgressBar()
         {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-            }
+            await Dispatcher.ResumeForegroundAsync();
             ProgressBar.Visibility = Visibility.Visible;
             ProgressBar.IsIndeterminate = true;
             ProgressBar.ShowError = false;
@@ -481,10 +484,7 @@ namespace CoolapkUWP.Pages
 
         public async void ErrorProgressBar()
         {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-            }
+            await Dispatcher.ResumeForegroundAsync();
             ProgressBar.Visibility = Visibility.Visible;
             ProgressBar.IsIndeterminate = true;
             ProgressBar.ShowPaused = false;
@@ -493,10 +493,7 @@ namespace CoolapkUWP.Pages
 
         public async void HideProgressBar()
         {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-            }
+            await Dispatcher.ResumeForegroundAsync();
             ProgressBar.Visibility = Visibility.Collapsed;
             ProgressBar.IsIndeterminate = false;
             ProgressBar.ShowError = false;
@@ -506,10 +503,7 @@ namespace CoolapkUWP.Pages
 
         public async void ShowMessage(string message = null)
         {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-            }
+            await Dispatcher.ResumeForegroundAsync();
 
             AppTitleText.Text = message ?? ResourceLoader.GetForViewIndependentUse().GetString("AppName") ?? "酷安";
 

@@ -11,7 +11,7 @@
 [![Issues](https://img.shields.io/github/issues/Coolapk-UWP/Coolapk-UWP.svg?label=Issues&style=flat-square)](https://github.com/Coolapk-UWP/Coolapk-UWP/issues "Issues")
 [![Stargazers](https://img.shields.io/github/stars/Coolapk-UWP/Coolapk-UWP.svg?label=Stars&style=flat-square)](https://github.com/Coolapk-UWP/Coolapk-UWP/stargazers "Stargazers")
 
-[![Microsoft Store](https://img.shields.io/badge/download-%e4%b8%8b%e8%bd%bd-magenta.svg?label=Microsoft%20Store&logo=Microsoft&style=for-the-badge&color=11a2f8)](https://www.microsoft.com/store/apps/9N0DMXZVMQVL "Microsoft Store")
+[![Microsoft Store](https://img.shields.io/badge/download-下载-magenta.svg?label=Microsoft%20Store&logo=data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+TWljcm9zb2Z0IFN0b3JlPC90aXRsZT48cGF0aCBkPSJNMTEuNCA5LjZ2NC4ySDcuMlY5LjZoNC4yem0wIDkuNlYxNUg3LjJ2NC4yaDQuMnptNS40LTkuNnY0LjJoLTQuMlY5LjZoNC4yem0wIDkuNlYxNWgtNC4ydjQuMmg0LjJ6TTcuMiA1LjRWMi43YzAtMS4xNi45NC0yLjEgMi4xLTIuMWg1LjRjMS4xNiAwIDIuMS45NCAyLjEgMi4xdjIuN2g2LjNhLjkuOSAwIDAgMSAuOS45djEzLjhhMy4zIDMuMyAwIDAgMS0zLjMgMy4zSDMuM0EzLjMgMy4zIDAgMCAxIDAgMjAuMVY2LjNhLjkuOSAwIDAgMSAuOS0uOWg2LjN6TTkgMi43djIuN2g2VjIuN2EuMy4zIDAgMCAwLS4zLS4zSDkuM2EuMy4zIDAgMCAwLS4zLjN6TTEuOCAyMC4xYTEuNSAxLjUgMCAwIDAgMS41IDEuNWgxNy40YTEuNSAxLjUgMCAwIDAgMS41LTEuNVY3LjJIMS44djEyLjl6Ii8+PC9zdmc+&style=for-the-badge&color=11a2f8)](https://www.microsoft.com/store/apps/9N0DMXZVMQVL "Microsoft Store")
 [![GitHub All Releases](https://img.shields.io/github/downloads/Coolapk-UWP/Coolapk-UWP/total.svg?label=DOWNLOAD&logo=github&style=for-the-badge)](https://github.com/Coolapk-UWP/Coolapk-UWP/releases/latest "GitHub All Releases")
 
 ## 目录
@@ -126,6 +126,3 @@
 - Coolapk-kotlin作者[@bjzhou](http://www.coolapk.com/u/528097 "bjzhou")([Github](https://github.com/bjzhou "hinnka"))
 - 以及所有为酷安UWP项目做出贡献的同志们
 - **铺路尚未成功，同志仍需努力！**
-
-## Star 数量统计
-[![Star 数量统计](https://starchart.cc/Coolapk-UWP/Coolapk-UWP.svg)](https://starchart.cc/Coolapk-UWP/Coolapk-UWP "Star 数量统计")

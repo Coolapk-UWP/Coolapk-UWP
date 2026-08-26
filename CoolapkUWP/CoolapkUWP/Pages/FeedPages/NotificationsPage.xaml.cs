@@ -6,6 +6,7 @@ using CoolapkUWP.ViewModels.FeedPages;
 using CoolapkUWP.ViewModels.Providers;
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -22,7 +23,7 @@ namespace CoolapkUWP.Pages.FeedPages
         private static int PivotIndex = 0;
 
         private bool isLoaded;
-        private Action Refresh;
+        private Func<bool, Task> RefreshTask;
 
         private NotificationsModel _notificationsModel = NotificationsModel.Instance;
         public NotificationsModel NotificationsModel
@@ -60,7 +61,7 @@ namespace CoolapkUWP.Pages.FeedPages
                 Pivot.SelectedIndex = PivotIndex;
                 isLoaded = true;
             }
-            NotificationsModel?.Update();
+            _ = (NotificationsModel?.Update());
         }
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -80,7 +81,7 @@ namespace CoolapkUWP.Pages.FeedPages
                                         p,
                                         string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                                         string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
-                                    (o) => new Entity[] { new SimpleNotificationModel(o) },
+                                    o => new Entity[] { new SimpleNotificationModel(o) },
                                     "id")));
                         break;
                     case "AtMe":
@@ -93,7 +94,7 @@ namespace CoolapkUWP.Pages.FeedPages
                                         p,
                                         string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                                         string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
-                                    (o) => new Entity[] { new FeedModel(o) },
+                                    o => new Entity[] { new FeedModel(o) },
                                     "id")));
                         break;
                     case "AtCommentMe":
@@ -106,7 +107,7 @@ namespace CoolapkUWP.Pages.FeedPages
                                         p,
                                         string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                                         string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
-                                    (o) => new Entity[] { new AtCommentMeNotificationModel(o) },
+                                    o => new Entity[] { new AtCommentMeNotificationModel(o) },
                                     "id")));
                         break;
                     case "FeedLike":
@@ -119,7 +120,7 @@ namespace CoolapkUWP.Pages.FeedPages
                                         p,
                                         string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                                         string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
-                                    (o) => new Entity[] { new LikeNotificationModel(o) },
+                                    o => new Entity[] { new LikeNotificationModel(o) },
                                     "id")));
                         break;
                     case "Follow":
@@ -132,7 +133,7 @@ namespace CoolapkUWP.Pages.FeedPages
                                         p,
                                         string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                                         string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
-                                    (o) => new Entity[] { new SimpleNotificationModel(o) },
+                                    o => new Entity[] { new SimpleNotificationModel(o) },
                                     "id")));
                         break;
                     case "Message":
@@ -144,25 +145,26 @@ namespace CoolapkUWP.Pages.FeedPages
                                         p,
                                         string.IsNullOrEmpty(firstItem) ? string.Empty : $"&firstItem={firstItem}",
                                         string.IsNullOrEmpty(lastItem) ? string.Empty : $"&lastItem={lastItem}"),
-                                    (o) => new Entity[] { new MessageNotificationModel(o) },
+                                    o => new Entity[] { new MessageNotificationModel(o) },
                                     "id")));
                         break;
                     default:
                         break;
                 }
-                Refresh = () => _ = (Frame.Content as AdaptivePage).Refresh(true);
+                RefreshTask = reset => (Frame.Content as AdaptivePage).Refresh(reset);
             }
             else if ((Pivot.SelectedItem as PivotItem).Content is Frame __ && __.Content is AdaptivePage AdaptivePage)
             {
-                Refresh = () => _ = AdaptivePage.Refresh(true);
+                RefreshTask = reset => AdaptivePage.Refresh(reset);
             }
-            NotificationsModel?.Update();
         }
 
-        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        private async Task Refresh(bool reset = false)
         {
-            Refresh();
-            NotificationsModel?.Update();
+            await NotificationsModel?.Update();
+            await RefreshTask(reset);
         }
+
+        private void RefreshButton_Click(object sender, RoutedEventArgs e) => _ = Refresh(true);
     }
 }
