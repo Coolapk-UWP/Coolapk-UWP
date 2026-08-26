@@ -243,9 +243,6 @@
   <data name="WindowSettingsHeader.Header" xml:space="preserve">
     <value>Window Tests</value>
   </data>
-  <data name="CustomAPISettings.Description" xml:space="preserve">
-    <value>Set custom compatible version</value>
-  </data>
   <data name="CustomAPISettings.Header" xml:space="preserve">
     <value>Custom API version</value>
   </data>
@@ -260,5 +257,14 @@
   </data>
   <data name="SearchFlyoutSettings.Header" xml:space="preserve">
     <value>Open Search</value>
+  </data>
+  <data name="CustomAPISettings.Description" xml:space="preserve">
+    <value>Set custom compatible version</value>
+  </data>
+  <data name="DeviceInfoSettings.Header" xml:space="preserve">
+    <value>修改设备信息</value>
+  </data>
+  <data name="DeviceInfoSettings.Description" xml:space="preserve">
+    <value>设置自定义的设备信息</value>
   </data>
 </root>
