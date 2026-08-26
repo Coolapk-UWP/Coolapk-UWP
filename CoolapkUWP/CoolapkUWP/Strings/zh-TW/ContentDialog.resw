@@ -190,7 +190,7 @@
     <value>完成</value>
   </data>
   <data name="DeviceInfoDialog.Title" xml:space="preserve">
-    <value>修改设备信息</value>
+    <value>修改設備資訊</value>
   </data>
   <data name="DeviceInfoDialog.CloseButtonText" xml:space="preserve">
     <value>取消</value>
@@ -202,13 +202,13 @@
     <value>設備型號</value>
   </data>
   <data name="BrandTextBox.Header" xml:space="preserve">
-    <value>主板型号</value>
+    <value>主板型號</value>
   </data>
   <data name="BuildNumberTextBox.Header" xml:space="preserve">
-    <value>Build 版本号</value>
+    <value>Build 版本號</value>
   </data>
   <data name="UpdateVersionItem.Text" xml:space="preserve">
-    <value>获取最新版本号</value>
+    <value>獲取最新版本號</value>
   </data>
   <data name="ResetFlyoutItem.Text" xml:space="preserve">
     <value>重置</value>
