@@ -12,6 +12,7 @@
     xmlns:local="using:CoolapkUWP.Pages.SettingsPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:root="using:CoolapkUWP"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Grid>
@@ -177,7 +178,9 @@
                         </controls:Setting.Icon>
                     </controls:Setting>
                     <controls:Setting
+                        x:Name="SearchFlyout"
                         x:Uid="/TestPage/SearchFlyoutSettings"
+                        x:Load="{x:Bind root:App.IsSearchPaneSupported}"
                         Click="Button_Click"
                         IsClickEnabled="True"
                         Tag="SearchFlyout">

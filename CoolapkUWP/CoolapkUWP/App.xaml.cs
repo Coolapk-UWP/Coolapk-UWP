@@ -11,7 +11,6 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,6 +34,10 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using NetworkHelper = Microsoft.Toolkit.Uwp.Connectivity.NetworkHelper;
+using System.Xml.Linq;
+using System.IO;
+
+
 
 #if !FEATURE2
 using CoolapkUWP.Models.Upload;
@@ -120,7 +123,7 @@ namespace CoolapkUWP
                     Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("ms-appx:///Styles/SettingsFlyout.xaml") });
                 }
 
-                if (ApiInformation.IsTypePresent("Windows.ApplicationModel.Search.SearchPane"))
+                if (IsSearchPaneSupported)
                 {
                     SearchPane searchPane = SearchPane.GetForCurrentView();
                     searchPane.QuerySubmitted += SearchPane_QuerySubmitted;
@@ -235,7 +238,7 @@ namespace CoolapkUWP
                                 SettingsPane.Show();
                                 args.Handled = true;
                                 break;
-                            case VirtualKey.Q:
+                            case VirtualKey.Q when IsSearchPaneSupported:
                                 SearchPane.GetForCurrentView().Show();
                                 args.Handled = true;
                                 break;
@@ -295,6 +298,32 @@ namespace CoolapkUWP
             {
                 _ = UIHelper.MainPage.NavigateAsync(typeof(SearchingPage), new SearchingViewModel(args.QueryText));
             }
+        }
+
+        private static bool CheckSearchExtension()
+        {
+            try
+            {
+                XDocument doc = XDocument.Load(Path.Combine(Package.Current.InstalledLocation.Path, "AppxManifest.xml"));
+                XNamespace ns = XNamespace.Get("http://schemas.microsoft.com/appx/manifest/uap/windows10");
+                IEnumerable<XElement> extensions = doc.Root.Descendants(ns + "Extension");
+                if (extensions != null)
+                {
+                    foreach (XElement extension in extensions)
+                    {
+                        XAttribute category = extension.Attribute("Category");
+                        if (category != null && category.Value == "windows.search")
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SettingsHelper.LogManager.GetLogger(nameof(App)).Error(ex.ExceptionToMessage(), ex);
+            }
+            return false;
         }
 
         private async void RequestWIFIAccess()
@@ -528,5 +557,6 @@ namespace CoolapkUWP
 #endif
 
         public static Window MainWindow { get; private set; }
+        public static bool IsSearchPaneSupported { get; } = ApiInformation.IsTypePresent("Windows.ApplicationModel.Search.SearchPane") && CheckSearchExtension();
     }
 }

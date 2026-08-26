@@ -71,7 +71,9 @@
             <uap:Logo>Assets\StoreLogo.png</uap:Logo>
           </uap:Protocol>
         </uap:Extension>
+        <!-- Search Pane can only be registered by Windows.Desktop
         <uap:Extension Category="windows.search" />
+        -->
         <uap3:Extension Category="windows.appExtensionHost">
           <uap3:AppExtensionHost>
             <uap3:Name>CoolapkUWP.OSSUploader</uap3:Name>
