@@ -1,9 +1,7 @@
 ﻿using CoolapkUWP.Common;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Helpers.Converters;
-using CoolapkUWP.Models;
 using CoolapkUWP.Models.Update;
-using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -29,7 +27,7 @@ namespace CoolapkUWP.Controls.Dialogs
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
             }
         }
-        
+
         public APIVersionDialog(string line)
         {
             InitializeComponent();

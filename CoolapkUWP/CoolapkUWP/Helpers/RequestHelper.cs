@@ -5,13 +5,10 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
-using mtuc = Microsoft.Toolkit.Uwp.Connectivity;
 using System.Collections.Generic;
 using CoolapkUWP.Models.Upload;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Windows.Web.Http.Filters;
-using Windows.Web.Http;
 
 #if FEATURE2
 using System.Net.Http.Headers;
