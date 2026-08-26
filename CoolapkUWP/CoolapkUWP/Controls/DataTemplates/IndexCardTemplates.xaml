@@ -147,6 +147,7 @@
 
     <DataTemplate x:Key="ImageCardTemplate">
         <Grid
+            Background="{ThemeResource SystemControlTransparentBrush}"
             KeyDown="Grid_KeyDown"
             Tag="{Binding}"
             Tapped="Grid_Tapped">
@@ -244,6 +245,7 @@
             </Border>
             <Border
                 Grid.Row="2"
+                Background="{ThemeResource SystemControlTransparentBrush}"
                 CornerRadius="{ThemeResource OverlayCornerRadius}"
                 Tag="{Binding}"
                 Tapped="Grid_Tapped"
@@ -608,6 +610,7 @@
 
     <DataTemplate x:Key="LinkTemplate">
         <Grid
+            Background="{ThemeResource SystemControlTransparentBrush}"
             BorderBrush="{ThemeResource SystemControlTransparentRevealBorderBrush}"
             BorderThickness="1"
             CornerRadius="{ThemeResource OverlayCornerRadius}"

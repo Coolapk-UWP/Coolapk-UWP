@@ -13,6 +13,7 @@
     <DataTemplate x:Key="UserTemplate">
         <Grid
             Padding="8"
+            Background="{ThemeResource SystemControlTransparentBrush}"
             KeyDown="OnKeyDown"
             Tag="{Binding Url}"
             Tapped="OnTapped">
@@ -66,6 +67,7 @@
     <DataTemplate x:Key="ListDefaultTemplate">
         <Grid
             Padding="0,8"
+            Background="{ThemeResource SystemControlTransparentBrush}"
             KeyDown="OnKeyDown"
             Tag="{Binding Url}"
             Tapped="OnTapped">
@@ -111,6 +113,7 @@
     <DataTemplate x:Key="SubtitleListDefaultTemplate">
         <Grid
             Padding="0,8"
+            Background="{ThemeResource SystemControlTransparentBrush}"
             KeyDown="OnKeyDown"
             Tag="{Binding Url}"
             Tapped="OnTapped">
