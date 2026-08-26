@@ -6,7 +6,6 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -57,9 +56,7 @@ namespace CoolapkUWP.Controls.Dialogs
         {
             if (args.Result == ContentDialogResult.Primary)
             {
-                SettingsHelper.Set(SettingsHelper.DeviceInfo, DeviceInfo);
-                TokenCreator.UpdateDeviceInfo(DeviceInfo);
-                NetworkHelper.SetRequestHeaders();
+                NetworkHelper.UpdateDeviceInfo(DeviceInfo);
             }
         }
 

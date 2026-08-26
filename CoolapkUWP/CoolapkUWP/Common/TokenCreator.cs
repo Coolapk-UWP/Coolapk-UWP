@@ -142,8 +142,8 @@ namespace CoolapkUWP.Common
         /// <summary>
         /// Update the API version.
         /// </summary>
-        /// <param name="apiVersion">The API version to update.</param>
-        public static void UpdateAPIVersion(APIVersions apiVersion) => APIVersion = APIVersion.Create(apiVersion);
+        /// <param name="version">The API version to update.</param>
+        public static void UpdateAPIVersion(APIVersions version) => APIVersion = APIVersion.Create(version);
 
         /// <inheritdoc/>
         public override string ToString() => GetToken();

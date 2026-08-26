@@ -8,7 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.Web.Http;
@@ -104,6 +103,20 @@ namespace CoolapkUWP.Helpers
             headers.Add("X-Api-Supported", version.VersionCode.ToString());
             headers.Add("X-App-Code", version.VersionCode.ToString());
             headers.Add("X-Api-Version", version.MajorVersion);
+        }
+
+        public static void UpdateDeviceInfo(DeviceInfo deviceInfo)
+        {
+            SettingsHelper.Set(SettingsHelper.DeviceInfo, deviceInfo);
+            TokenCreator.UpdateDeviceInfo(deviceInfo);
+            SetRequestHeaders();
+        }
+
+        public static void UpdateAPIVersion(APIVersions version)
+        {
+            SettingsHelper.Set(SettingsHelper.APIVersion, version);
+            TokenCreator.UpdateAPIVersion(version);
+            SetRequestHeaders();
         }
 
         private static HttpCookieCollection GetCoolapkCookies(Uri uri)

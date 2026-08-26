@@ -85,8 +85,7 @@ namespace CoolapkUWP.Pages.SettingsPages
             {
                 if (APIVersion != value)
                 {
-                    SettingsHelper.Set<APIVersions>(SettingsHelper.APIVersion, (APIVersions)value + 4);
-                    NetworkHelper.SetRequestHeaders();
+                    NetworkHelper.UpdateAPIVersion((APIVersions)value + 4);
                     UserAgent = NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString();
                 }
             }
