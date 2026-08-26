@@ -186,4 +186,31 @@
   <data name="UserAgentDialog.CloseButtonText" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="DeviceInfoDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="DeviceInfoDialog.Title" xml:space="preserve">
+    <value>修改设备信息</value>
+  </data>
+  <data name="DeviceInfoDialog.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ManufactoryTextBox.Header" xml:space="preserve">
+    <value>Device Manufacturer</value>
+  </data>
+  <data name="ModelTextBox.Header" xml:space="preserve">
+    <value>Device Model</value>
+  </data>
+  <data name="BrandTextBox.Header" xml:space="preserve">
+    <value>主板型号</value>
+  </data>
+  <data name="BuildNumberTextBox.Header" xml:space="preserve">
+    <value>Build 版本号</value>
+  </data>
+  <data name="UpdateVersionItem.Text" xml:space="preserve">
+    <value>获取最新版本号</value>
+  </data>
+  <data name="ResetFlyoutItem.Text" xml:space="preserve">
+    <value>Reset</value>
+  </data>
 </root>
