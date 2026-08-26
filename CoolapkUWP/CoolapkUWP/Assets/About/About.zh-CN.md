@@ -15,6 +15,7 @@
 | [原作(CoolApk-UWP)](https://github.com/oboard/CoolApk-UWP "CoolApk-UWP")                             | [oboard](https://github.com/oboard)             |
 | [Token获取方法(CoolapkTokenCrack)](https://github.com/ZCKun/CoolapkTokenCrack "CoolapkTokenCrack")     | [ZCKun](https://github.com/ZCKun)               |
 | [TokenV2获取方法(CoolapkTokenV2)](https://github.com/XiaoMengXinX/FuckCoolapkTokenV2 "CoolapkTokenV2") | [XiaoMengXinX](https://github.com/XiaoMengXinX) |
+| TokenV3获取方法                                                                                        | [Skirky](https://github.com/skirky3605)         |
 
 ##### 引用及参考
 - [QRCoder](https://github.com/codebude/QRCoder "QRCoder")
