@@ -953,7 +953,6 @@
     <Content Include="Assets\StoreLogo.scale-150.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
-    <Content Include="Assets\WebView\HTMLView.css" />
     <Content Include="Assets\WebView\HTMLView.Dark.css" />
     <Content Include="Assets\WebView\HTMLView.html" />
     <Content Include="Assets\WebView\HTMLView.Light.css" />
