@@ -262,9 +262,9 @@
     <value>Set custom compatible version</value>
   </data>
   <data name="DeviceInfoSettings.Header" xml:space="preserve">
-    <value>修改设备信息</value>
+    <value>Edit Device Info</value>
   </data>
   <data name="DeviceInfoSettings.Description" xml:space="preserve">
-    <value>设置自定义的设备信息</value>
+    <value>Set custom device info</value>
   </data>
 </root>
