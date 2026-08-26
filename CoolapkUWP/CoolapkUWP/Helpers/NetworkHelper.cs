@@ -25,7 +25,7 @@ namespace CoolapkUWP.Helpers
         private static readonly object appTokenLock = new object();
         private static readonly TimeSpan timeout = TimeSpan.FromTicks(863970000000 / 2);
 
-        private static DateTimeOffset lastUpdate = DateTimeOffset.MinValue;
+        private static DateTimeOffset lastUpdate;
 
         public const string XMLHttpRequest = "XMLHttpRequest";
 
@@ -47,6 +47,7 @@ namespace CoolapkUWP.Helpers
         {
             TokenCreator = new TokenCreator(SettingsHelper.Get<TokenVersion>(SettingsHelper.TokenVersion));
             SetRequestHeaders(Client, ClientHandler);
+            Client.DefaultRequestHeaders.ReplaceAppToken(true);
         }
 
         public static void SetRequestHeaders(HttpClient client, HttpClientHandler handler = null)
@@ -121,12 +122,12 @@ namespace CoolapkUWP.Helpers
             headers.Add(name, theme == ApplicationTheme.Dark ? "1" : "0");
         }
 
-        private static void ReplaceAppToken(this HttpRequestHeaders headers)
+        private static void ReplaceAppToken(this HttpRequestHeaders headers, bool forces = false)
         {
             lock (appTokenLock)
             {
                 DateTimeOffset now = DateTimeOffset.UtcNow;
-                if (now - lastUpdate > timeout)
+                if (forces || now - lastUpdate > timeout)
                 {
                     lastUpdate = now;
                     const string name = "X-App-Token";
