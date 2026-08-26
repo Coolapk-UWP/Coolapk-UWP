@@ -15,7 +15,7 @@ Thanks to [Crowdin](https://crowdin.com/project/CoolapkUWP "Crowdin") translator
 | [Original (CoolApk-UWP)](https://github.com/oboard/CoolApk-UWP "CoolApk-UWP")                              | [oboard](https://github.com/oboard)             |
 | [Token Get Method (CoolapkTokenCrack)](https://github.com/ZCKun/CoolapkTokenCrack "CoolapkTokenCrack")     | [ZCKun](https://github.com/ZCKun)               |
 | [TokenV2 Get Method (CoolapkTokenV2)](https://github.com/XiaoMengXinX/FuckCoolapkTokenV2 "CoolapkTokenV2") | [XiaoMengXinX](https://github.com/XiaoMengXinX) |
-| TokenV3获取方法                                                                                                | [Skirky](https://github.com/skirky3605)         |
+| TokenV3 Get Method                                                                                         | [Skirky](https://github.com/skirky3605)         |
 
 ##### Citations and References
 - [QRCoder](https://github.com/codebude/QRCoder "QRCoder")
