@@ -170,7 +170,7 @@
     <value>OSS Uploader</value>
   </data>
   <data name="PinnedTileFailed" xml:space="preserve">
-    <value>Failed to pinned tile</value>
+    <value>Failed to pin tile</value>
   </data>
   <data name="PinnedTileSucceeded" xml:space="preserve">
     <value>Pinned tile successful</value>
