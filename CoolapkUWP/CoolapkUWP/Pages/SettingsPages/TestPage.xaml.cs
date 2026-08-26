@@ -120,7 +120,6 @@ namespace CoolapkUWP.Pages.SettingsPages
                 {
                     int result = (int)Math.Floor(value);
                     SettingsHelper.Set(SettingsHelper.SemaphoreSlimCount, result);
-                    NetworkHelper.SetSemaphoreSlim(result);
                     ImageModel.SetSemaphoreSlim(result);
                 }
             }

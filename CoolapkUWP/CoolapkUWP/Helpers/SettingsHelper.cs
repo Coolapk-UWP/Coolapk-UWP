@@ -146,9 +146,38 @@ namespace CoolapkUWP.Helpers
         public static readonly ApplicationDataStorageHelper LocalObject = ApplicationDataStorageHelper.GetCurrent(new SystemTextJsonObjectSerializer());
         public static readonly ILogManager LogManager = LogManagerFactory.CreateLogManager();
 
-        static SettingsHelper() => SetDefaultSettings();
+        static SettingsHelper()
+        {
+            SetDefaultSettings();
+            SetLoginCookie();
+        }
 
-        public static void InvokeLoginChanged(string sender, bool args) => LoginChanged?.Invoke(sender, args);
+        private static void InvokeLoginChanged(string sender, bool args) => LoginChanged?.Invoke(sender, args);
+
+        private static void SetLoginCookie()
+        {
+            string Uid = Get<string>(SettingsHelper.Uid);
+            string UserName = Get<string>(SettingsHelper.UserName);
+            string Token = Get<string>(SettingsHelper.Token);
+
+            if (!string.IsNullOrEmpty(Uid) && !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Token))
+            {
+                using (HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter())
+                {
+                    HttpCookieManager cookieManager = filter.CookieManager;
+                    HttpCookie uid = new HttpCookie("uid", ".coolapk.com", "/");
+                    HttpCookie username = new HttpCookie("username", ".coolapk.com", "/");
+                    HttpCookie token = new HttpCookie("token", ".coolapk.com", "/");
+                    uid.Value = Uid;
+                    username.Value = UserName;
+                    token.Value = Token;
+                    cookieManager.SetCookie(uid);
+                    cookieManager.SetCookie(username);
+                    cookieManager.SetCookie(token);
+                }
+                InvokeLoginChanged(Uid, true);
+            }
+        }
 
         public static async Task<bool> Login()
         {

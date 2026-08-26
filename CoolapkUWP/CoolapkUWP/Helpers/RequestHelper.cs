@@ -26,18 +26,9 @@ namespace CoolapkUWP.Helpers
 {
     public static class RequestHelper
     {
-        public static HttpCookieCollection GetCoolapkCookies(Uri uri)
-        {
-            using (HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter())
-            {
-                HttpCookieManager cookieManager = filter.CookieManager;
-                return cookieManager.GetCookies(NetworkHelper.GetHost(uri));
-            }
-        }
-
         public static async Task<(bool isSucceed, JToken result)> GetDataAsync(Uri uri, bool isBackground = false)
         {
-            string results = await NetworkHelper.GetStringAsync(uri, GetCoolapkCookies(uri), "XMLHttpRequest", isBackground);
+            string results = await NetworkHelper.GetStringAsync(uri, NetworkHelper.XMLHttpRequest, isBackground);
             if (string.IsNullOrEmpty(results)) { return (false, null); }
             JObject token;
             try { token = JObject.Parse(results); }
@@ -57,7 +48,7 @@ namespace CoolapkUWP.Helpers
 
         public static async Task<(bool isSucceed, string result)> GetStringAsync(Uri uri, string request = "com.coolapk.market", bool isBackground = false)
         {
-            string results = await NetworkHelper.GetStringAsync(uri, GetCoolapkCookies(uri), request, isBackground);
+            string results = await NetworkHelper.GetStringAsync(uri, request, isBackground);
             if (string.IsNullOrWhiteSpace(results))
             {
                 UIHelper.ShowMessage("加载失败");
@@ -68,7 +59,7 @@ namespace CoolapkUWP.Helpers
 
         public static async Task<(bool isSucceed, JToken result)> PostDataAsync(Uri uri, HttpContent content = null, bool isBackground = false)
         {
-            string json = await NetworkHelper.PostAsync(uri, content, GetCoolapkCookies(uri), isBackground);
+            string json = await NetworkHelper.PostAsync(uri, content, isBackground);
             if (string.IsNullOrEmpty(json)) { return (false, null); }
             JObject token;
             try { token = JObject.Parse(json); }
@@ -94,7 +85,7 @@ namespace CoolapkUWP.Helpers
 
         public static async Task<(bool isSucceed, string result)> PostStringAsync(Uri uri, HttpContent content = null, bool isBackground = false)
         {
-            string json = await NetworkHelper.PostAsync(uri, content, GetCoolapkCookies(uri), isBackground);
+            string json = await NetworkHelper.PostAsync(uri, content, isBackground);
             if (string.IsNullOrEmpty(json))
             {
                 UIHelper.ShowMessage("加载失败");
@@ -122,7 +113,7 @@ namespace CoolapkUWP.Helpers
             StorageFolder folder = await ImageCacheHelper.GetFolderAsync(ImageType.Captcha);
             StorageFile file = await folder.CreateFileAsync(DataHelper.GetMD5(uri));
 
-            Stream s = await NetworkHelper.GetStreamAsync(new Uri(uri), GetCoolapkCookies(new Uri(uri)), "XMLHttpRequest", isBackground);
+            Stream s = await NetworkHelper.GetStreamAsync(new Uri(uri), NetworkHelper.XMLHttpRequest, isBackground);
 
             using (Stream ss = await file.OpenStreamForWriteAsync())
             {
@@ -141,7 +132,7 @@ namespace CoolapkUWP.Helpers
                 ["UID"] = SettingsHelper.Get<string>(SettingsHelper.Uid),
                 ["UserName"] = SettingsHelper.Get<string>(SettingsHelper.UserName),
                 ["Token"] = SettingsHelper.Get<string>(SettingsHelper.Token),
-                ["TokenVersion"] = (int)SettingsHelper.Get<TokenVersions>(SettingsHelper.TokenVersion),
+                ["TokenVersion"] = (int)SettingsHelper.Get<TokenVersion>(SettingsHelper.TokenVersion),
                 ["UserAgent"] = JsonConvert.SerializeObject(UserAgent.Parse(NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString())),
                 ["APIVersion"] = JsonConvert.SerializeObject(APIVersion.Parse(NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString())),
                 ["Images"] = JsonConvert.SerializeObject(fragments, new JsonSerializerSettings { ContractResolver = new IgnoreIgnoredContractResolver() })

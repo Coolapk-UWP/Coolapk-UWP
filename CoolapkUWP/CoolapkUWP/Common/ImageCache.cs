@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Windows.Media.Protection.PlayReady;
 
 namespace CoolapkUWP.Common
 {
@@ -14,23 +15,14 @@ namespace CoolapkUWP.Common
         [ThreadStatic]
         private static ImageCache _instance;
 
-        public new static ImageCache Instance = _instance ?? (_instance = new ImageCache());
+        public new static ImageCache Instance => _instance ?? (_instance = new ImageCache { CacheDuration = TimeSpan.FromHours(8) });
 
         public ImageCache() => Initialize();
 
         private void Initialize()
         {
-            HttpRequestHeaders headers = HttpClient.DefaultRequestHeaders;
-            headers.Clear();
-            foreach (KeyValuePair<string, IEnumerable<string>> header in NetworkHelper.Client.DefaultRequestHeaders)
-            {
-                headers.Add(header.Key, header.Value);
-            }
-            headers.UserAgent.Clear();
-            foreach (ProductInfoHeaderValue ua in NetworkHelper.Client.DefaultRequestHeaders.UserAgent)
-            {
-                headers.UserAgent.Add(ua);
-            }
+            NetworkHelper.SetRequestHeaders(HttpClient);
+            HttpClient.DefaultRequestHeaders.Add("X-App-Token", NetworkHelper.TokenCreator.GetToken());
         }
     }
 }

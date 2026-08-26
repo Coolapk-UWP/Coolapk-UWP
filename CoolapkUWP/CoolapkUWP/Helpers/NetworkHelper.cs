@@ -4,6 +4,7 @@ using CoolapkUWP.Models.Update;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -22,65 +23,33 @@ namespace CoolapkUWP.Helpers
     public static partial class NetworkHelper
     {
         private static readonly object appTokenLock = new object();
-        private static readonly object darkModeLock = new object();
-        private static readonly object requestedLock = new object();
+        private static readonly TimeSpan timeout = TimeSpan.FromTicks(863970000000 / 2);
+
+        private static DateTimeOffset lastUpdate = DateTimeOffset.MinValue;
 
         public const string XMLHttpRequest = "XMLHttpRequest";
 
         public static readonly HttpClientHandler ClientHandler;
         public static readonly HttpClient Client;
 
-        private static SemaphoreSlim semaphoreSlim;
         public static TokenCreator TokenCreator;
 
         static NetworkHelper()
         {
-            semaphoreSlim = new SemaphoreSlim(SettingsHelper.Get<int>(SettingsHelper.SemaphoreSlimCount));
             ClientHandler = new HttpClientHandler { MaxConnectionsPerServer = 20 };
             Client = new HttpClient(ClientHandler);
             ThemeHelper.UISettingChanged += arg => Client.DefaultRequestHeaders.ReplaceDarkMode(arg);
+            SettingsHelper.LoginChanged += (sender, arg) => ClientHandler.CookieContainer.ReplaceCoolapkCookie();
             SetRequestHeaders();
-            SetLoginCookie();
-        }
-
-        public static void SetSemaphoreSlim(int initialCount)
-        {
-            semaphoreSlim.Dispose();
-            semaphoreSlim = new SemaphoreSlim(initialCount);
-        }
-
-        public static void SetLoginCookie()
-        {
-            string Uid = SettingsHelper.Get<string>(SettingsHelper.Uid);
-            string UserName = SettingsHelper.Get<string>(SettingsHelper.UserName);
-            string Token = SettingsHelper.Get<string>(SettingsHelper.Token);
-
-            if (!string.IsNullOrEmpty(Uid) && !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Token))
-            {
-                using (HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter())
-                {
-                    HttpCookieManager cookieManager = filter.CookieManager;
-                    HttpCookie uid = new HttpCookie("uid", ".coolapk.com", "/");
-                    HttpCookie username = new HttpCookie("username", ".coolapk.com", "/");
-                    HttpCookie token = new HttpCookie("token", ".coolapk.com", "/");
-                    uid.Value = Uid;
-                    username.Value = UserName;
-                    token.Value = Token;
-                    cookieManager.SetCookie(uid);
-                    cookieManager.SetCookie(username);
-                    cookieManager.SetCookie(token);
-                }
-                SettingsHelper.InvokeLoginChanged(Uid, true);
-            }
         }
 
         public static void SetRequestHeaders()
         {
             TokenCreator = new TokenCreator(SettingsHelper.Get<TokenVersion>(SettingsHelper.TokenVersion));
-            SetRequestHeaders(Client);
+            SetRequestHeaders(Client, ClientHandler);
         }
 
-        public static void SetRequestHeaders(HttpClient client)
+        public static void SetRequestHeaders(HttpClient client, HttpClientHandler handler = null)
         {
             HttpRequestHeaders headers = client.DefaultRequestHeaders;
 
@@ -105,6 +74,8 @@ namespace CoolapkUWP.Helpers
             headers.Add("X-Api-Supported", version.VersionCode.ToString());
             headers.Add("X-App-Code", version.VersionCode.ToString());
             headers.Add("X-Api-Version", version.MajorVersion);
+
+            handler?.CookieContainer.ReplaceCoolapkCookie();
         }
 
         public static void SetRequestHeaders(Windows.Web.Http.HttpClient client)
@@ -134,85 +105,85 @@ namespace CoolapkUWP.Helpers
             headers.Add("X-Api-Version", version.MajorVersion);
         }
 
+        private static HttpCookieCollection GetCoolapkCookies(Uri uri)
+        {
+            using (HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter())
+            {
+                HttpCookieManager cookieManager = filter.CookieManager;
+                return cookieManager.GetCookies(uri);
+            }
+        }
+
         private static void ReplaceDarkMode(this HttpRequestHeaders headers, ApplicationTheme theme)
         {
-            lock (darkModeLock)
-            {
-                const string name = "X-Dark-Mode";
-                _ = headers.Remove(name);
-                headers.Add(name, theme == ApplicationTheme.Dark ? "1" : "0");
-            }
+            const string name = "X-Dark-Mode";
+            _ = headers.Remove(name);
+            headers.Add(name, theme == ApplicationTheme.Dark ? "1" : "0");
         }
 
         private static void ReplaceAppToken(this HttpRequestHeaders headers)
         {
             lock (appTokenLock)
             {
-                const string name = "X-App-Token";
-                _ = headers.Remove(name);
-                headers.Add(name, TokenCreator.GetToken());
+                DateTimeOffset now = DateTimeOffset.UtcNow;
+                if (now - lastUpdate > timeout)
+                {
+                    lastUpdate = now;
+                    const string name = "X-App-Token";
+                    _ = headers.Remove(name);
+                    headers.Add(name, TokenCreator.GetToken());
+                }
             }
         }
 
         private static void ReplaceRequested(this HttpRequestHeaders headers, string request)
         {
-            lock (requestedLock)
-            {
-                const string name = "X-Requested-With";
-                _ = headers.Remove(name);
-                if (request != null) { headers.Add(name, request); }
-            }
+            const string name = "X-Requested-With";
+            _ = headers.Remove(name);
+            if (request != null) { headers.Add(name, request); }
         }
 
-        private static void ReplaceCoolapkCookie(this CookieContainer container, HttpCookieCollection cookies, Uri uri)
+        private static void ReplaceCoolapkCookie(this CookieContainer container)
         {
-            if (cookies == null) { return; }
-            Uri host = GetHost(uri);
+            Uri host = new Uri("http://coolapk.com");
+            foreach (Cookie cookie in container.GetCookies(host).OfType<Cookie>())
+            {
+                cookie.Expired = true;
+            }
+            HttpCookieCollection cookies = GetCoolapkCookies(host);
             foreach (HttpCookie cookie in cookies)
             {
-                container.SetCookies(host, $"{cookie.Name}={cookie.Value}");
+                container.Add(
+#if FEATURE2
+                    host,
+#endif
+                    new Cookie(
+                        cookie.Name,
+                        cookie.Value,
+                        cookie.Path,
+                        cookie.Domain));
             }
-        }
-
-        private static void BeforeGetOrPost(HttpCookieCollection coolapkCookies, Uri uri, string request)
-        {
-            ClientHandler.CookieContainer.ReplaceCoolapkCookie(coolapkCookies, uri);
-            HttpRequestHeaders headers = Client.DefaultRequestHeaders;
-            headers.ReplaceAppToken();
-            headers.ReplaceRequested(request);
         }
     }
 
     public static partial class NetworkHelper
     {
-        public static async Task<string> PostAsync(Uri uri, HttpContent content, HttpCookieCollection coolapkCookies, bool isBackground)
-        {
-            try
-            {
-                HttpResponseMessage response;
-                BeforeGetOrPost(coolapkCookies, uri, "XMLHttpRequest");
-                response = await Client.PostAsync(uri, content);
-                return await response.Content.ReadAsStringAsync();
-            }
-            catch (HttpRequestException e)
-            {
-                SettingsHelper.LogManager.GetLogger(nameof(ImageCacheHelper)).Error(e.ExceptionToMessage(), e);
-                if (!isBackground) { UIHelper.ShowHttpExceptionMessage(e); }
-                return null;
-            }
-            catch (Exception ex)
-            {
-                SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Error(ex.ExceptionToMessage(), ex);
-                return null;
-            }
-        }
+        private static readonly object requestedLock = new object();
 
-        public static async Task<Stream> GetStreamAsync(Uri uri, HttpCookieCollection coolapkCookies, string request = "XMLHttpRequest", bool isBackground = false)
+        public static async Task<string> PostAsync(Uri uri, HttpContent content, bool isBackground)
         {
             try
             {
-                BeforeGetOrPost(coolapkCookies, uri, request);
-                return await Client.GetStreamAsync(uri);
+                HttpRequestHeaders headers = Client.DefaultRequestHeaders;
+                headers.ReplaceAppToken();
+                Task<HttpResponseMessage> task;
+                lock (requestedLock)
+                {
+                    headers.ReplaceRequested(XMLHttpRequest);
+                    task = Client.PostAsync(uri, content);
+                }
+                HttpResponseMessage response = await task.ConfigureAwait(false);
+                return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             }
             catch (HttpRequestException e)
             {
@@ -227,12 +198,73 @@ namespace CoolapkUWP.Helpers
             }
         }
 
-        public static async Task<string> GetStringAsync(Uri uri, HttpCookieCollection coolapkCookies, string request = "XMLHttpRequest", bool isBackground = false)
+        public static async Task<HttpResponseMessage> GetAsync(Uri uri, string request = XMLHttpRequest, bool isBackground = false)
         {
             try
             {
-                BeforeGetOrPost(coolapkCookies, uri, request);
-                return await Client.GetStringAsync(uri);
+                HttpRequestHeaders headers = Client.DefaultRequestHeaders;
+                headers.ReplaceAppToken();
+                Task<HttpResponseMessage> task;
+                lock (requestedLock)
+                {
+                    headers.ReplaceRequested(request);
+                    task = Client.GetAsync(uri);
+                }
+                return await task.ConfigureAwait(false);
+            }
+            catch (HttpRequestException e)
+            {
+                SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Error(e.ExceptionToMessage(), e);
+                if (!isBackground) { UIHelper.ShowHttpExceptionMessage(e); }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Error(ex.ExceptionToMessage(), ex);
+                return null;
+            }
+        }
+
+        public static async Task<Stream> GetStreamAsync(Uri uri, string request = XMLHttpRequest, bool isBackground = false)
+        {
+            try
+            {
+                HttpRequestHeaders headers = Client.DefaultRequestHeaders;
+                headers.ReplaceAppToken();
+                Task<Stream> task;
+                lock (requestedLock)
+                {
+                    headers.ReplaceRequested(request);
+                    task = Client.GetStreamAsync(uri);
+                }
+                return await task.ConfigureAwait(false);
+            }
+            catch (HttpRequestException e)
+            {
+                SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Error(e.ExceptionToMessage(), e);
+                if (!isBackground) { UIHelper.ShowHttpExceptionMessage(e); }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Error(ex.ExceptionToMessage(), ex);
+                return null;
+            }
+        }
+
+        public static async Task<string> GetStringAsync(Uri uri, string request = XMLHttpRequest, bool isBackground = false)
+        {
+            try
+            {
+                HttpRequestHeaders headers = Client.DefaultRequestHeaders;
+                headers.ReplaceAppToken();
+                Task<string> task;
+                lock (requestedLock)
+                {
+                    headers.ReplaceRequested(request);
+                    task = Client.GetStringAsync(uri);
+                }
+                return await task.ConfigureAwait(false);
             }
             catch (HttpRequestException e)
             {
