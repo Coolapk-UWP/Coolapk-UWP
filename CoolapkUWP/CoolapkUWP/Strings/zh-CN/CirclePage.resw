@@ -132,7 +132,10 @@
   <data name="topic" xml:space="preserve">
     <value>话题</value>
   </data>
-  <data name="V9_HOME_TAB_FOLLOW" xml:space="preserve">
+  <data name="all" xml:space="preserve">
     <value>全部</value>
+  </data>
+  <data name="recent" xml:space="preserve">
+    <value>常看</value>
   </data>
 </root>
