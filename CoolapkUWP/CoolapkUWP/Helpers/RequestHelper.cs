@@ -236,6 +236,7 @@ namespace CoolapkUWP.Helpers
 
         public static async Task<bool> CheckLogin()
         {
+            NetworkHelper.UpdateCoolapkCookie();
             (bool isSucceed, _) = await GetDataAsync(UriHelper.GetUri(UriType.CheckLoginInfo), true);
             return isSucceed;
         }

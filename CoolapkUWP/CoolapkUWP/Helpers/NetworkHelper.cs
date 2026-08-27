@@ -38,7 +38,7 @@ namespace CoolapkUWP.Helpers
             ClientHandler = new HttpClientHandler { MaxConnectionsPerServer = 20 };
             Client = new HttpClient(ClientHandler);
             ThemeHelper.UISettingChanged += arg => Client.DefaultRequestHeaders.ReplaceDarkMode(arg);
-            SettingsHelper.LoginChanged += (sender, arg) => ClientHandler.CookieContainer.ReplaceCoolapkCookie();
+            SettingsHelper.LoginChanged += (sender, arg) => UpdateCoolapkCookie();
             SetRequestHeaders();
         }
 
@@ -118,6 +118,8 @@ namespace CoolapkUWP.Helpers
             TokenCreator.UpdateAPIVersion(version);
             SetRequestHeaders();
         }
+
+        public static void UpdateCoolapkCookie() => ClientHandler.CookieContainer.ReplaceCoolapkCookie();
 
         private static HttpCookieCollection GetCoolapkCookies(Uri uri)
         {
