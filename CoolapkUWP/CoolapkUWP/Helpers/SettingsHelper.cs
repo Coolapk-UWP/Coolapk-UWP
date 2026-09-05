@@ -296,7 +296,7 @@ namespace CoolapkUWP.Helpers
         }
     }
 
-    public class SystemTextJsonObjectSerializer : IObjectSerializer
+    public sealed class SystemTextJsonObjectSerializer : IObjectSerializer
     {
         // Specify your serialization settings
         private readonly JsonSerializerSettings settings = new JsonSerializerSettings() { DefaultValueHandling = DefaultValueHandling.Ignore };

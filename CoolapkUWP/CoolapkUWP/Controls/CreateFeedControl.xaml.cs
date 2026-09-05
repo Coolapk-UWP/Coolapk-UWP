@@ -469,7 +469,7 @@ namespace CoolapkUWP.Controls
         #endregion
     }
 
-    public class StringToEmojiConverter : IValueConverter
+    public sealed class StringToEmojiConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -485,7 +485,7 @@ namespace CoolapkUWP.Controls
         public object ConvertBack(object value, Type targetType, object parameter, string language) => ConverterTools.Convert(value, targetType);
     }
 
-    public class EmojiNameConverter : IValueConverter
+    public sealed class EmojiNameConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

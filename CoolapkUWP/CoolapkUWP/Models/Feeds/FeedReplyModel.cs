@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CoolapkUWP.Models.Feeds
 {
-    public class FeedReplyModel : SourceFeedReplyModel, INotifyPropertyChanged, ICanLike, ICanReply, ICanCopy
+    public sealed class FeedReplyModel : SourceFeedReplyModel, INotifyPropertyChanged, ICanLike, ICanReply, ICanCopy
     {
         private int likeNum;
         public int LikeNum

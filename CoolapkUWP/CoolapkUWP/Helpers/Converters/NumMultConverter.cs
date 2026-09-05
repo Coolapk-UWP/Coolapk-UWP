@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Data;
 
 namespace CoolapkUWP.Helpers.Converters
 {
-    public class NumMultConverter : IValueConverter
+    public sealed class NumMultConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

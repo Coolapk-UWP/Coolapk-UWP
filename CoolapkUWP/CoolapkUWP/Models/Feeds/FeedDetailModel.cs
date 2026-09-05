@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CoolapkUWP.Models.Feeds
 {
-    public class FeedDetailModel : FeedModelBase
+    public sealed class FeedDetailModel : FeedModelBase
     {
         public int ReadNum { get; private set; }
 

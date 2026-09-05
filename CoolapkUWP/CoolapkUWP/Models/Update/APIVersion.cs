@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoolapkUWP.Models.Update
 {
-    public class APIVersion
+    public sealed class APIVersion
     {
         public string Version { get; set; }
         public int VersionCode { get; set; }

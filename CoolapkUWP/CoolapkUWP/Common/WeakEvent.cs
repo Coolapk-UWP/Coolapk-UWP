@@ -6,9 +6,9 @@ using System.Reflection;
 
 namespace CoolapkUWP.Common
 {
-    public class WeakEvent<TEventArgs> : IList<Action<TEventArgs>>
+    public sealed class WeakEvent<TEventArgs> : IList<Action<TEventArgs>>
     {
-        private class Method
+        private sealed class Method
         {
             private readonly bool _isStatic;
             private readonly WeakReference _reference;

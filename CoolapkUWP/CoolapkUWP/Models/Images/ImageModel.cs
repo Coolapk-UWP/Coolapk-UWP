@@ -15,13 +15,13 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace CoolapkUWP.Models.Images
 {
-    public class ImageModel : INotifyPropertyChanged, IPic
+    public sealed class ImageModel : INotifyPropertyChanged, IPic
     {
         private static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(SettingsHelper.Get<int>(SettingsHelper.SemaphoreSlimCount));
 
         public CoreDispatcher Dispatcher { get; }
 
-        protected WeakReference<BitmapImage> pic;
+        private WeakReference<BitmapImage> pic;
         public BitmapImage Pic
         {
             get
@@ -36,7 +36,7 @@ namespace CoolapkUWP.Models.Images
                     return ImageCacheHelper.NoPic;
                 }
             }
-            protected set
+            private set
             {
                 if (pic == null)
                 {
@@ -78,7 +78,7 @@ namespace CoolapkUWP.Models.Images
             }
         }
 
-        protected ImmutableArray<ImageModel> contextArray = ImmutableArray<ImageModel>.Empty;
+        private ImmutableArray<ImageModel> contextArray = ImmutableArray<ImageModel>.Empty;
         public ImmutableArray<ImageModel> ContextArray
         {
             get => contextArray;

@@ -7,7 +7,7 @@ using Windows.Security.ExchangeActiveSyncProvisioning;
 
 namespace CoolapkUWP.Models.Update
 {
-    public class DeviceInfo
+    public sealed class DeviceInfo
     {
         private const string random = "Random";
         //private static readonly char[] constant = new char[62]

@@ -2,7 +2,7 @@
 
 namespace CoolapkUWP.Models
 {
-    public class SearchWord : Entity
+    public sealed class SearchWord : Entity
     {
         public string Glyph { get; set; }
         public string Title { get; set; }

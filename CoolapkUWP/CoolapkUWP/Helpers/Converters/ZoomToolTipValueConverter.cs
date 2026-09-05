@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Data;
 
 namespace CoolapkUWP.Helpers.Converters
 {
-    public class ZoomToolTipValueConverter : IValueConverter
+    public sealed class ZoomToolTipValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language) => ConverterTools.Convert($"{value}%", targetType);
 

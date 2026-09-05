@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 
 namespace CoolapkUWP.Models
 {
-    public class CollectionModel : Entity, IHasSubtitle
+    public sealed class CollectionModel : Entity, IHasSubtitle
     {
         public int ID { get; private set; }
         public string Url { get; private set; }

@@ -15,7 +15,7 @@ namespace CoolapkUWP.Helpers
     /// <summary>
     /// Based on <see cref="Material Libs" href="https://github.com/cnbluefire/MaterialLibs"./>
     /// </summary>
-    public class TipsRectangleHelper : DependencyObject
+    public sealed class TipsRectangleHelper : DependencyObject
     {
         private static readonly Dictionary<string, TipsRectangleServiceItem> TokenRectangles = new Dictionary<string, TipsRectangleServiceItem>();
         private static readonly Collection<WeakReference<Selector>> Selectors = new Collection<WeakReference<Selector>>();
@@ -386,7 +386,7 @@ namespace CoolapkUWP.Helpers
         }
     }
 
-    internal class TipsRectangleServiceItem
+    internal sealed class TipsRectangleServiceItem
     {
         public FrameworkElement SourceItem { get; set; }
         public FrameworkElement TargetItem { get; set; }

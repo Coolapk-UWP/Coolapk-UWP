@@ -424,7 +424,7 @@ namespace CoolapkUWP.Models.Feeds
         }
     }
 
-    public class VoteItem
+    public sealed class VoteItem
     {
         public int ID { get; set; }
         public int Order { get; set; }
@@ -483,7 +483,7 @@ namespace CoolapkUWP.Models.Feeds
         }
     }
 
-    public class RelationRowsItem
+    public sealed class RelationRowsItem
     {
         public string Url { get; set; }
         public string Title { get; set; }

@@ -22,7 +22,7 @@ namespace CoolapkUWP.Common
     /// Maintains the list of extensions available to the host.
     /// Also responds to extension additions and removals
     /// </summary>
-    public class ExtensionManager
+    public sealed class ExtensionManager
     {
         public const string OSSUploader = "CoolapkUWP.OSSUploader";
 
@@ -319,7 +319,7 @@ namespace CoolapkUWP.Common
         #region Extra exceptions
 
         // For exceptions using the Extension Manager
-        public class ExtensionManagerException : Exception
+        public sealed class ExtensionManagerException : Exception
         {
             public ExtensionManagerException() { }
 
@@ -334,7 +334,7 @@ namespace CoolapkUWP.Common
     /// <summary>
     /// Represents an extension in the ExtensionManager
     /// </summary>
-    public class Extension : INotifyPropertyChanged
+    public sealed class Extension : INotifyPropertyChanged
     {
         #region Member Vars
 

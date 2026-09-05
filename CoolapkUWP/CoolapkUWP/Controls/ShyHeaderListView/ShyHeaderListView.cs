@@ -364,7 +364,7 @@ namespace CoolapkUWP.Controls
             }
         }
 
-        public class VerticalOffsetConverter : IValueConverter
+        public sealed class VerticalOffsetConverter : IValueConverter
         {
             public ShyHeaderListView ShyHeaderListView { get; private set; }
 
@@ -394,7 +394,7 @@ namespace CoolapkUWP.Controls
         }
     }
 
-    public class ShyHeaderItem : DependencyObject
+    public sealed class ShyHeaderItem : DependencyObject
     {
         public static readonly DependencyProperty TagProperty =
             DependencyProperty.Register(

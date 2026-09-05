@@ -2,7 +2,7 @@
 
 namespace CoolapkUWP.Models.Feeds
 {
-    internal class FeedModel : FeedModelBase
+    internal sealed class FeedModel : FeedModelBase
     {
         public bool IsStickTop { get; private set; }
         public bool ShowLikes { get; private set; } = true;

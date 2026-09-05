@@ -3,7 +3,7 @@ using System;
 
 namespace CoolapkUWP.Models.Users
 {
-    public class ContactModel : Entity
+    public sealed class ContactModel : Entity
     {
         public int DateLine { get; private set; }
         public bool IsFriend { get; private set; }

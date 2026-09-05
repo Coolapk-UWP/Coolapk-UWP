@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 
 namespace CoolapkUWP.Models.Pages
 {
-    public class ProfileDetailModel : Entity
+    public sealed class ProfileDetailModel : Entity
     {
         public ImageModel UserAvatar { get; private set; }
         public string Url { get; private set; }

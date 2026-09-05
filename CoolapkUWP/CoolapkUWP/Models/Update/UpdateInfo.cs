@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CoolapkUWP.Models.Update
 {
-    public class UpdateInfo
+    public sealed class UpdateInfo
     {
         [JsonProperty("url")]
         public string ApiUrl { get; set; }
@@ -25,7 +25,7 @@ namespace CoolapkUWP.Models.Update
         public bool IsExistNewVersion { get; set; }
     }
 
-    public class Asset
+    public sealed class Asset
     {
         [JsonProperty("size")]
         public int Size { get; set; }

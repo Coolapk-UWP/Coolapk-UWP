@@ -4,7 +4,7 @@ using Windows.Security.ExchangeActiveSyncProvisioning;
 
 namespace CoolapkUWP.Models.Update
 {
-    public class UserAgent
+    public sealed class UserAgent
     {
         public static UserAgent Default
         {

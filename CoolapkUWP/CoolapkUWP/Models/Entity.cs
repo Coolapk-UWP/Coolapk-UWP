@@ -4,7 +4,7 @@ using System;
 
 namespace CoolapkUWP.Models
 {
-    public class Entity
+    public abstract class Entity
     {
         public bool EntityFixed { get; set; }
         public int EntityID { get; private set; }
@@ -48,7 +48,7 @@ namespace CoolapkUWP.Models
         public override string ToString() => $"{EntityType} - {EntityID}";
     }
 
-    public class NullEntity : Entity
+    public sealed class NullEntity : Entity
     {
         public NullEntity(JObject token = null) : base(token) { }
     }

@@ -9,7 +9,7 @@ using Windows.ApplicationModel.Resources;
 
 namespace CoolapkUWP.Models
 {
-    internal class IndexPageModel : Entity, IHasDescription
+    internal sealed class IndexPageModel : Entity, IHasDescription
     {
         public string Url { get; private set; }
         public string Title { get; private set; }
@@ -148,7 +148,7 @@ namespace CoolapkUWP.Models
         public override string ToString() => $"{Title} - {Description}";
     }
 
-    internal class IndexPageMessageCardModel : Entity
+    internal sealed class IndexPageMessageCardModel : Entity
     {
         public string Title { get; private set; }
         public bool ShowEntities { get; private set; }
@@ -246,7 +246,7 @@ namespace CoolapkUWP.Models
         SelectorLink,
     }
 
-    internal class IndexPageHasEntitiesModel : Entity, IHasDescription
+    internal sealed class IndexPageHasEntitiesModel : Entity, IHasDescription
     {
         public string Url { get; private set; }
         public string Title { get; private set; }
@@ -370,7 +370,7 @@ namespace CoolapkUWP.Models
         ShowTitle,
     }
 
-    internal class IndexPageOperationCardModel : Entity, IHasTitle
+    internal sealed class IndexPageOperationCardModel : Entity, IHasTitle
     {
         public string Url { get; private set; }
         public string Title { get; private set; }

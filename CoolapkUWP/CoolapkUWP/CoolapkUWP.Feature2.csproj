@@ -33,7 +33,7 @@
     <OutputPath>bin\Feature2\x86\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;FEATURE2;CODE_ANALYSIS</DefineConstants>
     <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
-    <NoWarn>;2008</NoWarn>
+    <NoWarn>;2008;MSB3277</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -45,7 +45,7 @@
     <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;FEATURE2;CODE_ANALYSIS</DefineConstants>
     <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
     <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
+    <NoWarn>;2008;MSB3277</NoWarn>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -58,7 +58,7 @@
     <OutputPath>bin\Feature2\ARM\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;FEATURE2;CODE_ANALYSIS</DefineConstants>
     <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
-    <NoWarn>;2008</NoWarn>
+    <NoWarn>;2008;MSB3277</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>ARM</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -70,7 +70,7 @@
     <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;FEATURE2;CODE_ANALYSIS</DefineConstants>
     <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
     <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
+    <NoWarn>;2008;MSB3277</NoWarn>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>ARM</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -109,7 +109,7 @@
     <OutputPath>bin\Feature2\x64\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;FEATURE2</DefineConstants>
     <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
-    <NoWarn>;2008</NoWarn>
+    <NoWarn>;2008;MSB3277</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -121,7 +121,7 @@
     <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;FEATURE2;CODE_ANALYSIS</DefineConstants>
     <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
     <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
+    <NoWarn>;2008;MSB3277</NoWarn>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>

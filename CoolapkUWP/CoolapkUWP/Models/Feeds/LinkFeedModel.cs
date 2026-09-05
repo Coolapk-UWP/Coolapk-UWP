@@ -11,7 +11,7 @@ using Windows.ApplicationModel.Resources;
 
 namespace CoolapkUWP.Models.Feeds
 {
-    public class LinkFeedModel : INotifyPropertyChanged
+    public sealed class LinkFeedModel : INotifyPropertyChanged
     {
         private string url;
         public string Url

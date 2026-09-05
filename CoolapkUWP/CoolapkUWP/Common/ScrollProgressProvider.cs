@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Hosting;
 
 namespace CoolapkUWP.Common
 {
-    public class ScrollProgressProvider : DependencyObject
+    public sealed class ScrollProgressProvider : DependencyObject
     {
         private readonly CompositionPropertySet propSet;
         private readonly ExpressionAnimation progressBind;
@@ -280,7 +280,7 @@ namespace CoolapkUWP.Common
         #region Events
 
         public event TypedEventHandler<object, double> ProgressChanged;
-        protected void OnProgressChanged()
+        private void OnProgressChanged()
         {
             ProgressChanged?.Invoke(this, Progress);
         }

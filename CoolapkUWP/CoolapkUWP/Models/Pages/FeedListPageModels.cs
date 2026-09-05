@@ -240,7 +240,7 @@ namespace CoolapkUWP.Models.Pages
             {
                 ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("FeedListPage");
                 FollowStatus = IsBlackList ? loader.GetString("InBlackList")
-                    : Followed ? IsFans ? loader.GetString("UnfollowFan") : loader.GetString("UnFollow")
+                    : Followed ? IsFans ? loader.GetString("UnfollowFan") : loader.GetString("Unfollow")
                     : IsFans ? loader.GetString("FollowFan") : loader.GetString("Follow");
                 FollowGlyph = IsBlackList ? "\uE8F8"
                     : Followed ? IsFans ? "\uE8EE" : "\uE8FB"
@@ -391,7 +391,7 @@ namespace CoolapkUWP.Models.Pages
         private void OnFollowChanged()
         {
             ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("FeedListPage");
-            FollowStatus = Followed ? loader.GetString("UnFollow") : loader.GetString("Follow");
+            FollowStatus = Followed ? loader.GetString("Unfollow") : loader.GetString("Follow");
             FollowGlyph = Followed ? "\uE8FB" : "\uE710";
         }
 
@@ -819,7 +819,7 @@ namespace CoolapkUWP.Models.Pages
         private void OnFollowChanged()
         {
             ResourceLoader loader = ResourceLoader.GetForViewIndependentUse("FeedListPage");
-            FollowStatus = Followed ? loader.GetString("UnFollow") : loader.GetString("Follow");
+            FollowStatus = Followed ? loader.GetString("Unfollow") : loader.GetString("Follow");
             FollowGlyph = Followed ? "\uE8FB" : "\uE710";
         }
 

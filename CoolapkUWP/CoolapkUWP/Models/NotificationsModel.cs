@@ -8,7 +8,7 @@ using mtuc = Microsoft.Toolkit.Uwp.Connectivity;
 
 namespace CoolapkUWP.Models
 {
-    public class NotificationsModel : INotifyPropertyChanged
+    public sealed class NotificationsModel : INotifyPropertyChanged
     {
         public static NotificationsModel Instance = new NotificationsModel();
 
