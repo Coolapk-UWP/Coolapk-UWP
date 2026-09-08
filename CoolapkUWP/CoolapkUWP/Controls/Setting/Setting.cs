@@ -10,9 +10,9 @@ namespace CoolapkUWP.Controls
 {
     /// <summary>
     /// This is the base control to create consistent settings experiences, inline with the Windows 11 design language.
-    /// A Setting can also be hosted within a SettingExpander.
+    /// A Setting can also be hosted within a <see cref="SettingExpander"/>.
     /// </summary>
-    public partial class Setting : ButtonBase
+    public sealed partial class Setting : ButtonBase
     {
         internal const string NormalState = "Normal";
         internal const string PointerOverState = "PointerOver";

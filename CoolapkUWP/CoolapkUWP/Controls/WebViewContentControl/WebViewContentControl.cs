@@ -5,7 +5,7 @@ namespace CoolapkUWP.Controls
 {
     [TemplatePart(Name = PartOuterBorder, Type = typeof(Border))]
     [TemplatePart(Name = PartInnerBorder, Type = typeof(Border))]
-    public class WebViewContentControl : ContentControl
+    public sealed class WebViewContentControl : ContentControl
     {
         private const string PartOuterBorder = "OuterBorder";
         private const string PartInnerBorder = "InnerBorder";

@@ -4,7 +4,7 @@ using System.Net.Http;
 
 namespace CoolapkUWP.Common
 {
-    public class ImageCache : Microsoft.Toolkit.Uwp.UI.ImageCache
+    public sealed class ImageCache : Microsoft.Toolkit.Uwp.UI.ImageCache
     {
         /// <summary>
         /// Private singleton field.

@@ -41,7 +41,7 @@ namespace CoolapkUWP.Models.Pages
         }
     }
 
-    internal class UserDetail : FeedListDetailBase, IUserModel, ICanFollow
+    internal sealed class UserDetail : FeedListDetailBase, IUserModel, ICanFollow
     {
         private bool followed;
         public bool Followed
@@ -261,7 +261,7 @@ namespace CoolapkUWP.Models.Pages
         public override string ToString() => $"{UserName} - {Bio}";
     }
 
-    internal class TopicDetail : FeedListDetailBase, IHasSubtitle, ICanFollow
+    internal sealed class TopicDetail : FeedListDetailBase, IHasSubtitle, ICanFollow
     {
         private bool followed;
         public bool Followed
@@ -408,7 +408,7 @@ namespace CoolapkUWP.Models.Pages
         public override string ToString() => $"{Title} - {Description}";
     }
 
-    internal class DyhDetail : FeedListDetailBase, IHasDescription, ICanFollow
+    internal sealed class DyhDetail : FeedListDetailBase, IHasDescription, ICanFollow
     {
         private bool followed;
         public bool Followed
@@ -558,7 +558,7 @@ namespace CoolapkUWP.Models.Pages
         public override string ToString() => $"{Title} - {Description}";
     }
 
-    internal class ProductDetail : FeedListDetailBase, ICanFollow
+    internal sealed class ProductDetail : FeedListDetailBase, ICanFollow
     {
         private bool followed;
         public bool Followed
@@ -842,7 +842,7 @@ namespace CoolapkUWP.Models.Pages
         public override string ToString() => $"{Title} - {Description}";
     }
 
-    internal class CollectionDetail : FeedListDetailBase, ICanLike, ICanFollow
+    internal sealed class CollectionDetail : FeedListDetailBase, ICanLike, ICanFollow
     {
         private bool followed;
         public bool Followed

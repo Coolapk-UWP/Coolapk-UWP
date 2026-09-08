@@ -9,7 +9,7 @@ namespace CoolapkUWP.Controls
     /// Arranges child elements into a single line that can be oriented horizontally
     /// or vertically.
     /// </summary>
-    public class StackPanel : Panel
+    public sealed class StackPanel : Panel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StackPanel"/> class.

@@ -12,19 +12,19 @@ using System.Threading.Tasks;
 
 namespace CoolapkUWP.ViewModels.FeedPages
 {
-    public class AdaptiveViewModel : EntityItemSource, IViewModel
+    public sealed class AdaptiveViewModel : EntityItemSource, IViewModel
     {
         private readonly string Uri;
         private readonly List<Type> EntityTypes;
-        protected bool IsInitPage => Uri == "/main/init";
-        protected bool IsIndexPage => !Uri.Contains("?");
-        protected bool IsHotFeedPage => Uri == "/main/indexV8" || Uri == "/main/index";
+        private bool IsInitPage => Uri == "/main/init";
+        private bool IsIndexPage => !Uri.Contains("?");
+        private bool IsHotFeedPage => Uri == "/main/indexV8" || Uri == "/main/index";
 
         private string title = string.Empty;
         public string Title
         {
             get => title;
-            protected set
+            private set
             {
                 if (title != value)
                 {

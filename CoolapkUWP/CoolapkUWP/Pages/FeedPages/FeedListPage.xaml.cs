@@ -257,7 +257,7 @@ namespace CoolapkUWP.Pages.FeedPages
         #endregion 界面模式切换
     }
 
-    internal class DetailTemplateSelector : DataTemplateSelector
+    internal sealed class DetailTemplateSelector : DataTemplateSelector
     {
         public DataTemplate Others { get; set; }
         public DataTemplate DyhDetail { get; set; }

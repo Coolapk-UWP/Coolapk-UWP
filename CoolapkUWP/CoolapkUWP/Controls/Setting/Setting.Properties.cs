@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.Controls
 {
     public partial class Setting
     {
         /// <summary>
-        /// Gets or sets the content of a ContentControl.
+        /// Gets or sets the content of a <see cref="ContentControl"/>.
         /// </summary>
         /// <returns>An object that contains the control's content. The default is <see langword="null"/>.</returns>
         [Obsolete("Use Content instead of ActionContent.")]

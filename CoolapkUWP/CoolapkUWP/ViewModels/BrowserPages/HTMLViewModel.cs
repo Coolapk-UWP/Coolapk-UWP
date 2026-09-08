@@ -12,7 +12,7 @@ using Windows.UI.Xaml;
 
 namespace CoolapkUWP.ViewModels.BrowserPages
 {
-    public class HTMLViewModel : IViewModel
+    public sealed class HTMLViewModel : IViewModel
     {
         public CoreDispatcher Dispatcher { get; }
 

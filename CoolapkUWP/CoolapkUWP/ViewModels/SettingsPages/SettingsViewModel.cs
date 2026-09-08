@@ -16,7 +16,7 @@ using Windows.UI.Xaml;
 
 namespace CoolapkUWP.ViewModels.SettingsPages
 {
-    public class SettingsViewModel : IViewModel
+    public sealed class SettingsViewModel : IViewModel
     {
         public static SettingsViewModel Caches { get; set; }
 

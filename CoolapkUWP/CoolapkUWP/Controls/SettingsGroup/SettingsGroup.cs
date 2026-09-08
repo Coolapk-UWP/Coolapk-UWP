@@ -12,7 +12,7 @@ namespace CoolapkUWP.Controls
     /// </summary>
     [TemplateVisualState(Name = "Normal", GroupName = "CommonStates")]
     [TemplateVisualState(Name = "Disabled", GroupName = "CommonStates")]
-    public partial class SettingsGroup : ItemsControl
+    public sealed partial class SettingsGroup : ItemsControl
     {
         public SettingsGroup()
         {

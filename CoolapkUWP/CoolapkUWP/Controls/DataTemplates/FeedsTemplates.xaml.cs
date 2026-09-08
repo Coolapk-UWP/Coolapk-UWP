@@ -28,7 +28,7 @@ using TileSize = Windows.UI.StartScreen.TileSize;
 
 namespace CoolapkUWP.Controls.DataTemplates
 {
-    public partial class FeedsTemplates : ResourceDictionary
+    public sealed partial class FeedsTemplates : ResourceDictionary
     {
         public FeedsTemplates() => InitializeComponent();
 

@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace CoolapkUWP.ViewModels.FeedPages
 {
-    public class SearchingViewModel : IViewModel
+    public sealed class SearchingViewModel : IViewModel
     {
         public int PivotIndex = -1;
 
@@ -62,7 +62,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        private void RaisePropertyChangedEvent([System.Runtime.CompilerServices.CallerMemberName] string name = null)
         {
             if (name != null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)); }
         }
@@ -119,7 +119,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         public bool IsEqual(SearchingViewModel other) => Title == other.Title;
     }
 
-    public class SearchFeedItemSource : EntityItemSource, INotifyPropertyChanged
+    public sealed class SearchFeedItemSource : EntityItemSource, INotifyPropertyChanged
     {
         public string Keyword;
 
@@ -232,7 +232,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class SearchUserItemSource : EntityItemSource
+    public sealed class SearchUserItemSource : EntityItemSource
     {
         public string Keyword;
 
@@ -256,7 +256,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class SearchTopicItemSource : EntityItemSource
+    public sealed class SearchTopicItemSource : EntityItemSource
     {
         public string Keyword;
 

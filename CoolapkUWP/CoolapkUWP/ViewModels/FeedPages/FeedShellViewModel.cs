@@ -90,7 +90,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         public bool IsEqual(FeedShellViewModel other) => ID == other.ID;
     }
 
-    public class FeedDetailViewModel : FeedShellViewModel
+    public sealed class FeedDetailViewModel : FeedShellViewModel
     {
         public ReplyItemSource ReplyItemSource { get; private set; }
         public LikeItemSource LikeItemSource { get; private set; }
@@ -144,7 +144,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class QuestionViewModel : FeedShellViewModel
+    public sealed class QuestionViewModel : FeedShellViewModel
     {
         public QuestionItemSource ReplyItemSource { get; private set; }
         public QuestionItemSource LikeItemSource { get; private set; }
@@ -198,7 +198,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class VoteViewModel : FeedShellViewModel
+    public sealed class VoteViewModel : FeedShellViewModel
     {
         internal VoteViewModel(string id) : base(id) { }
 
@@ -252,7 +252,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class ReplyItemSource : EntityItemSource, INotifyPropertyChanged, ICanComboBoxChangeSelectedIndex, ICanToggleChangeSelectedIndex
+    public sealed class ReplyItemSource : EntityItemSource, INotifyPropertyChanged, ICanComboBoxChangeSelectedIndex, ICanToggleChangeSelectedIndex
     {
         public string ID;
         public List<string> ItemSource { get; private set; }
@@ -356,7 +356,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class LikeItemSource : EntityItemSource
+    public sealed class LikeItemSource : EntityItemSource
     {
         public string ID;
 
@@ -380,7 +380,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class ShareItemSource : EntityItemSource
+    public sealed class ShareItemSource : EntityItemSource
     {
         public string ID;
 
@@ -404,7 +404,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class QuestionItemSource : EntityItemSource
+    public sealed class QuestionItemSource : EntityItemSource
     {
         public string ID;
 
@@ -430,7 +430,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class VoteItemSource : EntityItemSource
+    public sealed class VoteItemSource : EntityItemSource
     {
         public string ID;
 
@@ -456,7 +456,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class TagItemSource : EntityItemSource
+    public sealed class TagItemSource : EntityItemSource
     {
         public string ID;
 

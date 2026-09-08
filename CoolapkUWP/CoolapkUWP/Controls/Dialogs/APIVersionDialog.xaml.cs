@@ -1,10 +1,7 @@
-﻿using CoolapkUWP.Common;
-using CoolapkUWP.Helpers;
+﻿using CoolapkUWP.Helpers;
 using CoolapkUWP.Helpers.Converters;
 using CoolapkUWP.Models.Update;
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
@@ -13,20 +10,9 @@ using Windows.UI.Xaml.Data;
 
 namespace CoolapkUWP.Controls.Dialogs
 {
-    public sealed partial class APIVersionDialog : ContentDialog, INotifyPropertyChanged
+    public sealed partial class APIVersionDialog : ContentDialog
     {
         internal APIVersion APIVersion { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private async void RaisePropertyChangedEvent([CallerMemberName] string name = null)
-        {
-            if (name != null)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-            }
-        }
 
         public APIVersionDialog(string line)
         {

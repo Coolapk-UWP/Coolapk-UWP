@@ -35,7 +35,7 @@ namespace CoolapkUWP.Helpers
     /// }
     /// </code>
     /// </example>
-    public class ExceptionHandlingSynchronizationContext : SynchronizationContext
+    public sealed class ExceptionHandlingSynchronizationContext : SynchronizationContext
     {
         /// <summary>
         /// Registration method.  Call this from OnLaunched and OnActivated inside the App.xaml.cs
@@ -158,7 +158,7 @@ namespace CoolapkUWP.Helpers
         public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
     }
 
-    public class UnhandledExceptionEventArgs : EventArgs
+    public sealed class UnhandledExceptionEventArgs : EventArgs
     {
         public bool Handled { get; set; }
         public Exception Exception { get; set; }

@@ -13,7 +13,7 @@ namespace CoolapkUWP.Controls
 {
     [ContentProperty(Name = "Content")]
     [TemplatePart(Name = QRCodePathName, Type = typeof(Path))]
-    public partial class QRCode : Control
+    public sealed partial class QRCode : Control
     {
         private const string QRCodePathName = "PART_QRCodePath";
 

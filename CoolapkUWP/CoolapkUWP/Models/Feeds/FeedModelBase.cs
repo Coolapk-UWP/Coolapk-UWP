@@ -13,7 +13,7 @@ using Windows.UI;
 
 namespace CoolapkUWP.Models.Feeds
 {
-    public class FeedModelBase : SourceFeedModel, ICanFollow, ICanLike, ICanReply, ICanStar
+    public abstract class FeedModelBase : SourceFeedModel, ICanFollow, ICanLike, ICanReply, ICanStar
     {
         private int likeNum;
         public int LikeNum

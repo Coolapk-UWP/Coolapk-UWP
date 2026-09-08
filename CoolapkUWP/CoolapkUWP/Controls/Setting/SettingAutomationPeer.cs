@@ -5,7 +5,7 @@ namespace CoolapkUWP.Controls
     /// <summary>
     /// AutomationPeer for SettingsCard
     /// </summary>
-    public class SettingAutomationPeer : ButtonBaseAutomationPeer
+    public sealed class SettingAutomationPeer : ButtonBaseAutomationPeer
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Setting"/> class.

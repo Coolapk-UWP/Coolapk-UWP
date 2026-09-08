@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Controls
 {
-    public class Slot : Panel
+    public sealed class Slot : Panel
     {
         private FrameworkElement RootElement;
 

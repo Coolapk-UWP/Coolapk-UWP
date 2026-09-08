@@ -8,9 +8,9 @@ using Windows.UI.Xaml.Controls;
 namespace CoolapkUWP.Controls
 {
     /// <summary>
-    /// The SettingExpander is a collapsable control to host multiple SettingsCards.
+    /// The <see cref="SettingExpander"/> is a collapsable control to host multiple SettingsCards.
     /// </summary>
-    public partial class SettingExpander : ItemsControl
+    public sealed partial class SettingExpander : ItemsControl
     {
         /// <summary>
         /// Creates a new instance of the <see cref="SettingExpander"/> class.

@@ -18,7 +18,7 @@ using Windows.UI.Core;
 
 namespace CoolapkUWP.ViewModels
 {
-    public class ShowImageViewModel : IViewModel
+    public sealed class ShowImageViewModel : IViewModel
     {
         private string ImageName = string.Empty;
 
@@ -28,7 +28,7 @@ namespace CoolapkUWP.ViewModels
         public string Title
         {
             get => title;
-            protected set
+            private set
             {
                 if (title != value)
                 {
@@ -59,7 +59,7 @@ namespace CoolapkUWP.ViewModels
         public bool IsLoading
         {
             get => isLoading;
-            protected set
+            private set
             {
                 if (isLoading != value)
                 {

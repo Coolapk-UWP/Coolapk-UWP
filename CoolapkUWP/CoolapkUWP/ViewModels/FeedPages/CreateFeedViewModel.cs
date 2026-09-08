@@ -28,7 +28,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace CoolapkUWP.ViewModels.FeedPages
 {
-    public class CreateFeedViewModel : IViewModel
+    public sealed class CreateFeedViewModel : IViewModel
     {
         public static string[] ImageTypes = new string[] { ".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".tif", ".heif", ".heic" };
 
@@ -242,7 +242,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class CreateUserItemSource : EntityItemSource
+    public sealed class CreateUserItemSource : EntityItemSource
     {
         private string keyword = string.Empty;
         public string Keyword
@@ -299,7 +299,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class CreateTopicItemSource : EntityItemSource
+    public sealed class CreateTopicItemSource : EntityItemSource
     {
         private string keyword = string.Empty;
         public string Keyword

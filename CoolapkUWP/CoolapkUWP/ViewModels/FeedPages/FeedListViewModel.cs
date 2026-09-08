@@ -229,7 +229,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
             yield return EntityTemplateSelector.GetEntity(jo);
         }
 
-        public class UserViewModel : FeedListViewModel
+        public sealed class UserViewModel : FeedListViewModel
         {
             public FeedListItemSource FeedItemSource { get; private set; }
             public FeedListItemSource HtmlFeedItemSource { get; private set; }
@@ -398,7 +398,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
 
         }
 
-        internal class TagViewModel : FeedListViewModel
+        internal sealed class TagViewModel : FeedListViewModel
         {
             public FeedListItemSource LastUpdateItemSource { get; private set; }
             public FeedListItemSource DatelineItemSource { get; private set; }
@@ -552,7 +552,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
             }
         }
 
-        internal class DyhViewModel : FeedListViewModel
+        internal sealed class DyhViewModel : FeedListViewModel
         {
             public FeedListItemSource AllItemSource { get; private set; }
             public FeedListItemSource SquareItemSource { get; private set; }
@@ -692,7 +692,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
             }
         }
 
-        internal class ProductViewModel : FeedListViewModel
+        internal sealed class ProductViewModel : FeedListViewModel
         {
             public FeedListItemSource FeedItemSource { get; private set; }
             public FeedListItemSource AnswerItemSource { get; private set; }
@@ -801,7 +801,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
             public override Task<bool> PinSecondaryTile(Entity entity) => Task.Run(() => false);
         }
 
-        internal class CollectionViewModel : FeedListViewModel
+        internal sealed class CollectionViewModel : FeedListViewModel
         {
             internal CollectionViewModel(string id) : base(id, FeedListType.CollectionPageList) { }
 
@@ -888,7 +888,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
         }
     }
 
-    public class FeedListItemSource : EntityItemSource
+    public sealed class FeedListItemSource : EntityItemSource
     {
         public string ID;
 

@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Input;
 
 namespace CoolapkUWP.Controls.DataTemplates
 {
-    public partial class PicTemplates : ResourceDictionary
+    public sealed partial class PicTemplates : ResourceDictionary
     {
         public PicTemplates() => InitializeComponent();
 

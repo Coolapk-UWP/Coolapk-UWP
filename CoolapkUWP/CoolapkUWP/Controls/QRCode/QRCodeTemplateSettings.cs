@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Media;
 
 namespace CoolapkUWP.Controls
 {
-    public partial class QRCodeTemplateSettings : DependencyObject
+    public sealed partial class QRCodeTemplateSettings : DependencyObject
     {
         #region GeometryGroup
 
