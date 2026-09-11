@@ -309,7 +309,11 @@ namespace CoolapkUWP.ViewModels.SettingsPages
             UpdateInfo info = null;
             try
             {
+#if CANARY
+                info = await UpdateHelper.CheckUpdateAsync("wherewhere", "Coolapk-UWP", 10);
+#else
                 info = await UpdateHelper.CheckUpdateAsync("Coolapk-UWP", "Coolapk-UWP");
+#endif
             }
             catch (Exception ex)
             {
@@ -329,7 +333,7 @@ namespace CoolapkUWP.ViewModels.SettingsPages
                     GotoUpdateVisibility = Visibility.Visible;
                     UpdateStateSeverity = InfoBarSeverity.Warning;
                     UpdateStateTitle = _loader.GetString("FindUpdate");
-                    UpdateStateMessage = $"{VersionTextBlockText} -> {info.TagName}";
+                    UpdateStateMessage = $"{VersionTextBlockText} -> {info.Version.ToString(3)}";
                 }
                 else
                 {
