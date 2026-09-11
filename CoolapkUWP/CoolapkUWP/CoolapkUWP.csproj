@@ -28,6 +28,7 @@
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
+    <IsUpdateCIManifest Condition="'$(IsUpdateCIManifest)' == ''">False</IsUpdateCIManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -124,6 +125,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <DefineConstants Condition="'$(IsUpdateCIManifest)' == 'True'">$(DefineConstants);CANARY</DefineConstants>
+    <AppxManifestName Condition="'$(AppxManifestName)' == ''">Package.appxmanifest</AppxManifestName>
   </PropertyGroup>
   <PropertyGroup>
     <!-- Workaround for https://github.com/unoplatform/uno/discussions/5007, to remove when original VS issue is fixed. -->
@@ -1306,6 +1309,7 @@
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
+  <Import Project="UpdateCIManifest.targets" Condition="'$(IsUpdateCIManifest)' == 'True' and Exists('UpdateCIManifest.targets')" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

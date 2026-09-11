@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask
+    TaskName="UpdateCIManifest"
+    TaskFactory="CodeTaskFactory"
+    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <AppxManifestPath ParameterType="System.String" Required="true" />
+      <CIBuildID ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.Xml" />
+      <Reference Include="System.Xml.Linq" />
+      <Using Namespace="System.Xml.Linq" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+            if (string.IsNullOrEmpty(AppxManifestPath))
+            {
+                _Success = false;
+                return _Success;
+            }
+
+            try
+            {
+                var xdoc = XDocument.Load(AppxManifestPath);
+                var ns = xdoc.Root.Name.Namespace;
+                var identity = xdoc.Root.Descendants(ns + "Identity");
+                if (identity != null)
+                {
+                    foreach (var node in identity)
+                    {
+                        var name = node.Attribute("Name");
+                        if (name != null)
+                        {
+                            name.SetValue("18184wherewhere.CoolapkUWP.Canary");
+                            var version = node.Attribute("Version");
+                            if (version != null)
+                            {
+                                var dateTime = DateTime.UtcNow;
+                                var major = int.Parse(dateTime.ToString("yy"));
+                                var minor = int.Parse(dateTime.ToString("MMdd"));
+                                version.SetValue(string.Join(".", major, minor, CIBuildID, 0));
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Log.LogWarning("No identity node found in Appx Manifest.");
+                }
+                xdoc.Save(AppxManifestPath);
+            }
+            catch (Exception)
+            {
+                Log.LogError("Failed to load Appx Manifest.");
+                _Success = false;
+            }
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <Target
+    Name="UpdateCIPackageManifest"
+    AfterTargets="BeforeBuild"
+    Condition="'$(IsUpdateCIManifest)' == 'True'">
+    <Message Importance="high" Text="UpdateCIPackageManifest" />
+    <Message Importance="high" Text="Current Build ID: $(CIBuildID)" />
+    <UpdateCIManifest
+      AppxManifestPath="$(AppxManifestName)"
+      CIBuildID="$(CIBuildID)" />
+  </Target>
+</Project>
