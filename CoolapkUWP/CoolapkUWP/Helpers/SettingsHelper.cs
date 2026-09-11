@@ -63,7 +63,7 @@ namespace CoolapkUWP.Helpers
             }
             if (!LocalObject.KeyExists(CustomUA))
             {
-                LocalObject.Save(CustomUA, UserAgent.Parse(NetworkHelper.Client.DefaultRequestHeaders.UserAgent.ToString()));
+                LocalObject.Save(CustomUA, UserAgent.Default);
             }
             if (!LocalObject.KeyExists(IsUseAPI2))
             {

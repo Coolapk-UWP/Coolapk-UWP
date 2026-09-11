@@ -354,7 +354,7 @@
     <Compile Include="ViewModels\ShowImageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AppxManifest Include="Package.Feature2.appxmanifest">
+    <AppxManifest Include="$(AppxManifestName)">
       <SubType>Designer</SubType>
     </AppxManifest>
   </ItemGroup>
