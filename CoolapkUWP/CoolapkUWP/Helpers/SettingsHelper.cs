@@ -143,7 +143,7 @@ namespace CoolapkUWP.Helpers
     internal static partial class SettingsHelper
     {
         public static event TypedEventHandler<string, bool> LoginChanged;
-        public static readonly ApplicationDataStorageHelper LocalObject = ApplicationDataStorageHelper.GetCurrent(new SystemTextJsonObjectSerializer());
+        public static readonly ApplicationDataStorageHelper LocalObject = ApplicationDataStorageHelper.GetCurrent(new NewtonsoftJsonObjectSerializer());
         public static readonly ILogManager LogManager = LogManagerFactory.CreateLogManager();
 
         static SettingsHelper()
@@ -296,13 +296,35 @@ namespace CoolapkUWP.Helpers
         }
     }
 
-    public sealed class SystemTextJsonObjectSerializer : IObjectSerializer
+    public sealed class NewtonsoftJsonObjectSerializer : IObjectSerializer
     {
         // Specify your serialization settings
-        private readonly JsonSerializerSettings settings = new JsonSerializerSettings() { DefaultValueHandling = DefaultValueHandling.Ignore };
+        private readonly JsonSerializerSettings settings = new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore };
 
-        string IObjectSerializer.Serialize<T>(T value) => JsonConvert.SerializeObject(value, typeof(T), Formatting.Indented, settings);
+        public string Serialize<T>(T value)
+        {
+            try
+            {
+                return JsonConvert.SerializeObject(value, typeof(T), Formatting.Indented, settings);
+            }
+            catch (Exception ex)
+            {
+                SettingsHelper.LogManager.GetLogger(nameof(NewtonsoftJsonObjectSerializer)).Error(ex.ExceptionToMessage(), ex);
+                return string.Empty;
+            }
+        }
 
-        public T Deserialize<T>(string value) => JsonConvert.DeserializeObject<T>(value, settings);
+        public T Deserialize<T>(string value)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(value, settings);
+            }
+            catch (Exception ex)
+            {
+                SettingsHelper.LogManager.GetLogger(nameof(NewtonsoftJsonObjectSerializer)).Error(ex.ExceptionToMessage(), ex);
+                return default;
+            }
+        }
     }
 }
