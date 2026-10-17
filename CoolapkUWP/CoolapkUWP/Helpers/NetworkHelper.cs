@@ -375,21 +375,29 @@ namespace CoolapkUWP.Helpers
             return NativeUrl ?? ShortUrl.ToString();
         }
 
-        public static Uri ValidateAndGetUri(this string url)
+        public static Uri TryGetUri(this string url)
         {
-            if (string.IsNullOrWhiteSpace(url)) { return null; }
-            Uri uri = null;
+            _ = url.TryGetUri(out Uri uri);
+            return uri;
+        }
+
+        public static bool TryGetUri(this string url, out Uri uri)
+        {
+            uri = default;
+            if (string.IsNullOrWhiteSpace(url)) { return false; }
             try
             {
-                uri = url.Contains("://") ? new Uri(url)
-                    : url[0] == '/' ? new Uri(UriHelper.CoolapkUri, url)
-                    : new Uri($"https://{url}");
+                return url.Contains(':')
+                    ? Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out uri)
+                    : url.FirstOrDefault() == '/'
+                        ? Uri.TryCreate(UriHelper.CoolapkUri, url, out uri)
+                        : Uri.TryCreate($"https://{url}", UriKind.RelativeOrAbsolute, out uri);
             }
             catch (FormatException ex)
             {
                 SettingsHelper.LogManager.GetLogger(nameof(NetworkHelper)).Warn(ex.ExceptionToMessage(), ex);
             }
-            return uri;
+            return false;
         }
     }
 }

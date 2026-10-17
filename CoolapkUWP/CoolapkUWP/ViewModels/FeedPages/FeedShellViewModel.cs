@@ -74,13 +74,22 @@ namespace CoolapkUWP.ViewModels.FeedPages
             ID = id;
         }
 
-        protected virtual async Task<FeedDetailModel> GetFeedDetailAsync(string id)
+        protected static async Task<FeedDetailModel> GetFeedDetailAsync(string id)
         {
-            (bool isSucceed, JToken result) = id.Contains("changeHistoryDetail") ? await RequestHelper.GetDataAsync(new Uri(UriHelper.BaseUri.ToString() + "v6/feed/" + id), true) : await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.GetFeedDetail, id), true);
-            if (!isSucceed) { return null; }
-
-            JObject detail = (JObject)result;
-            return detail != null ? new FeedDetailModel(detail) : null;
+            if (id.Contains("changeHistoryDetail"))
+            {
+                (bool isSucceed, JToken result) = await RequestHelper.GetDataAsync(new Uri(UriHelper.BaseUri.ToString() + "v6/feed/" + id), true);
+                return isSucceed && result is JObject detail ? new FeedDetailModel(detail) : null;
+            }
+            else
+            {
+                (bool isSucceed, JToken result) = await RequestHelper.GetDataAsync(UriHelper.GetUri(UriType.GetFeedDetail, id), true).ConfigureAwait(false);
+                if (!isSucceed)
+                {
+                    (isSucceed, result) = await RequestHelper.GetDataAsync($"https://www.coolapk.com/feed/{id}".TryGetUri(), true).ConfigureAwait(false);
+                }
+                return isSucceed && result is JObject detail ? new FeedDetailModel(detail) : null;
+            }
         }
 
         public abstract Task Refresh(bool reset = false);

@@ -440,7 +440,7 @@ namespace CoolapkUWP.Helpers
             else if (origin.Contains("://"))
             {
                 await frame.Dispatcher.ResumeForegroundAsync();
-                return await Launcher.LaunchUriAsync(origin.ValidateAndGetUri());
+                return await Launcher.LaunchUriAsync(origin.TryGetUri());
             }
             else
             {

@@ -75,6 +75,10 @@ body:
       description: Which Windows versions did you see the issue on?
       options:
         - Insider Build (xxxxx)
+        - Windows 11 version 26H1 (28000, 2026 Update)
+        - Windows 11 version 25H2 (26200, 2025 Update)
+        - Windows 11 version 24H2 (26100, 2024 Update)
+        - Windows 11 version 23H2 (22631, November 2023 Update)
         - Windows 11 version 22H2 (22621, 2022 Update)
         - Windows 11 version 21H2 (22000)
         - Windows 10 version 22H2 (19045, 2022 Update)

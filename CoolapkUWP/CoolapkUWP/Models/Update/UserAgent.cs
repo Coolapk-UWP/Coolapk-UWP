@@ -13,7 +13,7 @@ namespace CoolapkUWP.Models.Update
                 EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
                 return new UserAgent
                 {
-                    Header = $"Dalvik/2.1.0 (Windows NT {SystemInformation.Instance.OperatingSystemVersion.Major}.{SystemInformation.Instance.OperatingSystemVersion.Minor}; Win{(SystemInformation.Instance.OperatingSystemArchitecture.ToString().Contains("64") ? "64" : "32")}; {SystemInformation.Instance.OperatingSystemArchitecture.ToString().ToLower()}; WebView/3.0)",
+                    Header = $"Dalvik/2.1.0 (Windows {SystemInformation.Instance.OperatingSystemVersion.Major}.{SystemInformation.Instance.OperatingSystemVersion.Minor}; Win{(SystemInformation.Instance.OperatingSystemArchitecture.ToString().Contains("64") ? "64" : "32")}; {SystemInformation.Instance.OperatingSystemArchitecture.ToString().ToLower()}; WebView/3.0)",
                     Manufacturer = deviceInfo.SystemManufacturer,
                     ProductName = deviceInfo.SystemProductName,
                     FullProductName = deviceInfo.SystemSku ?? $"{deviceInfo.SystemManufacturer}_{deviceInfo.SystemProductName}".Replace(' ', '_'),

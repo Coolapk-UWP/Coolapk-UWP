@@ -75,7 +75,7 @@ namespace CoolapkUWP.ViewModels.BrowserPages
         public HTMLViewModel(string url, CoreDispatcher dispatcher)
         {
             Dispatcher = dispatcher;
-            uri = url.ValidateAndGetUri();
+            uri = url.TryGetUri();
             ThemeHelper.UISettingChanged += OnUISettingChanged;
         }
 

@@ -43,7 +43,7 @@ namespace CoolapkUWP.Controls
         {
             DataPackage dataPackage = new DataPackage();
 
-            Uri shareLinkString = QRCodeText.ValidateAndGetUri();
+            Uri shareLinkString = QRCodeText.TryGetUri();
             if (shareLinkString != null)
             {
                 dataPackage.SetWebLink(shareLinkString);

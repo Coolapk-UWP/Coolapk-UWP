@@ -288,7 +288,7 @@ namespace CoolapkUWP.Pages.SettingsPages
 
         private async void GetURLContent()
         {
-            Uri uri = URLTextBox.Text.ValidateAndGetUri();
+            Uri uri = URLTextBox.Text.TryGetUri();
             (bool isSucceed, string result) = await RequestHelper.GetStringAsync(uri, "XMLHttpRequest");
             if (!isSucceed)
             {

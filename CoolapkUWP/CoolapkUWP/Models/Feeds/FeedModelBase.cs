@@ -250,10 +250,10 @@ namespace CoolapkUWP.Models.Feeds
 
                     if (ExtraUrl.Contains("b23.tv") || ExtraUrl.Contains("t.cn"))
                     {
-                        ExtraUrl = ExtraUrl.ValidateAndGetUri().ExpandShortUrl();
+                        ExtraUrl = ExtraUrl.TryGetUri().ExpandShortUrl();
                     }
 
-                    ExtraSubtitle = ExtraUrl.ValidateAndGetUri() is Uri ExtraUri && ExtraUri != null ? ExtraUri.Host : ExtraUrl;
+                    ExtraSubtitle = ExtraUrl.TryGetUri() is Uri ExtraUri && ExtraUri != null ? ExtraUri.Host : ExtraUrl;
 
                     if (token.TryGetValue("extra_pic", out JToken extra_pic))
                     {
@@ -286,7 +286,7 @@ namespace CoolapkUWP.Models.Feeds
             if (token.TryGetValue("media_url", out JToken media_url))
             {
                 MediaUrl = media_url.ToString();
-                MediaSubtitle = MediaUrl.ValidateAndGetUri() is Uri ExtraUri && ExtraUri != null ? ExtraUri.Host : MediaUrl;
+                MediaSubtitle = MediaUrl.TryGetUri() is Uri ExtraUri && ExtraUri != null ? ExtraUri.Host : MediaUrl;
 
                 if (token.TryGetValue("media_pic", out JToken media_pic))
                 {

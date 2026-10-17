@@ -1014,7 +1014,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack">
-      <Version>1.13.0</Version>
+      <Version>1.13.1</Version>
     </PackageReference>
     <PackageReference Include="MetroLog">
       <Version>1.0.1</Version>
@@ -1032,7 +1032,7 @@
       <Version>13.0.4</Version>
     </PackageReference>
     <PackageReference Include="QRCoder">
-      <Version>1.8.0</Version>
+      <Version>1.8.1</Version>
     </PackageReference>
     <PackageReference Include="System.ValueTuple" IsImplicitlyDefined="true">
       <Version>4.5.0</Version>
