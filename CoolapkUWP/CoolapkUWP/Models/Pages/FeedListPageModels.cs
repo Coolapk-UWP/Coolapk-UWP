@@ -109,7 +109,7 @@ namespace CoolapkUWP.Models.Pages
 
         public double NextLevelExperience { get; private set; }
         public double NextLevelPercentage { get; private set; }
-        public string NextLevelNowExperience { get; private set; }
+        public string NextLevelNowExperience => $"{NextLevelPercentage / 100 * NextLevelExperience:F0}/{NextLevelExperience}";
 
         public ImageModel Cover { get; private set; }
         public ImageModel UserAvatar { get; private set; }
@@ -218,8 +218,6 @@ namespace CoolapkUWP.Models.Pages
             {
                 NextLevelPercentage = next_level_percentage.ToObject<double>();
             }
-
-            NextLevelNowExperience = $"{NextLevelPercentage / 100 * NextLevelExperience:F0}/{NextLevelExperience}";
 
             if (token.TryGetValue("cover", out JToken cover))
             {

@@ -179,11 +179,8 @@ namespace CoolapkUWP.Common
         private async void StartScrollProgressAnimation(ScrollViewer sv, bool delay)
         {
             readyToScroll = false;
-            if (delayCancellationTokenSource != null)
-            {
-                delayCancellationTokenSource.Cancel();
-                delayCancellationTokenSource = null;
-            }
+            delayCancellationTokenSource?.Cancel();
+            delayCancellationTokenSource = null;
 
             if (delay)
             {

@@ -4,6 +4,7 @@ using CoolapkUWP.Controls;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models;
 using CoolapkUWP.Models.Images;
+using CoolapkUWP.Models.Pages;
 using CoolapkUWP.Pages.BrowserPages;
 using CoolapkUWP.Pages.FeedPages;
 using CoolapkUWP.Pages.SettingsPages;
@@ -325,13 +326,15 @@ namespace CoolapkUWP.Pages
         {
             if (isLogin && await SettingsHelper.CheckLoginAsync())
             {
-                string UID = SettingsHelper.Get<string>(SettingsHelper.Uid);
-                if (!string.IsNullOrEmpty(UID))
+                string uid = SettingsHelper.Get<string>(SettingsHelper.Uid);
+                if (!string.IsNullOrEmpty(uid))
                 {
-                    (string UID, string UserName, string UserAvatar) results = await NetworkHelper.GetUserInfoByNameAsync(UID);
-                    if (results.UID != UID) { return; }
-                    UserName = results.UserName;
-                    UserAvatar = new ImageModel(results.UserAvatar, ImageType.Avatar);
+                    ProfileDetailModel results = await ProfileFlyoutViewModel.GetProfileDetailAsync(uid);
+                    if (results != null)
+                    {
+                        UserName = results.UserName;
+                        UserAvatar = results.UserAvatar;
+                    }
                 }
             }
             else

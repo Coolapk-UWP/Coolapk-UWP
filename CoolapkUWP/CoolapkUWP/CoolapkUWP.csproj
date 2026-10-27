@@ -1041,7 +1041,7 @@
       <Version>2.8.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2">
-      <Version>1.0.4258.31</Version>
+      <Version>1.0.4314.35</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.4</Version>

@@ -1,6 +1,7 @@
 ﻿using CoolapkUWP.Common;
 using CoolapkUWP.Helpers;
 using CoolapkUWP.Models.Update;
+using Microsoft.Toolkit.Uwp;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.ComponentModel;
@@ -28,7 +29,7 @@ namespace CoolapkUWP.ViewModels.SettingsPages
 
         public static string DeviceFamily => AnalyticsInfo.VersionInfo.DeviceFamily.Replace('.', ' ');
 
-        public static string ToolkitVersion => Assembly.Load(new AssemblyName("Microsoft.Toolkit.Uwp")).GetName().Version.ToString();
+        public static string ToolkitVersion => typeof(HsvColor).GetTypeInfo().Assembly.GetName().Version.ToString(3);
 
         public bool IsLogin
         {

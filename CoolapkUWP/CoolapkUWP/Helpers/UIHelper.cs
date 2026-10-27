@@ -342,8 +342,7 @@ namespace CoolapkUWP.Helpers
             }
             else if (link.StartsWith("/u/", StringComparison.OrdinalIgnoreCase))
             {
-                string url = link.Substring(3, "?");
-                string uid = int.TryParse(url, out _) ? url : (await NetworkHelper.GetUserInfoByNameAsync(url)).UID;
+                string uid = link.Substring(3, "?");
                 FeedListViewModel provider = FeedListViewModel.GetProvider(FeedListType.UserPageList, uid);
                 if (provider != null)
                 {

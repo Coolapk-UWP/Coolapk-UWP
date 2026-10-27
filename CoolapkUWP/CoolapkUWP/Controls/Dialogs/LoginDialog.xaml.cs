@@ -1,4 +1,6 @@
 ﻿using CoolapkUWP.Helpers;
+using CoolapkUWP.Models.Pages;
+using CoolapkUWP.ViewModels.FeedPages;
 using System.Net;
 using Windows.UI.Xaml.Controls;
 using Windows.Web.Http;
@@ -90,14 +92,14 @@ namespace CoolapkUWP.Controls
 
         private void GetText(string name)
         {
-            (string UID, string UserName, string UserAvatar) results = UIHelper.AwaitByTaskCompleteSource(() => NetworkHelper.GetUserInfoByNameAsync(name));
-            if (!string.IsNullOrWhiteSpace(results.UID))
+            ProfileDetailModel results = UIHelper.AwaitByTaskCompleteSource(() => ProfileFlyoutViewModel.GetProfileDetailAsync(name));
+            if (results != null)
             {
-                UID = results.UID;
-            }
-            if (!string.IsNullOrWhiteSpace(results.UserName))
-            {
-                UserName = WebUtility.UrlEncode(results.UserName);
+                UID = results.UID.ToString();
+                if (!string.IsNullOrWhiteSpace(results.UserName))
+                {
+                    UserName = WebUtility.UrlEncode(results.UserName);
+                }
             }
         }
     }

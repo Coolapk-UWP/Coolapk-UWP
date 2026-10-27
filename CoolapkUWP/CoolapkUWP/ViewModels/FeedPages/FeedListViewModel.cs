@@ -858,7 +858,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                             ShyHeaderItem ShyHeaderItem = new ShyHeaderItem
                             {
                                 ItemSource = FeedListItemSource,
-                                Header = Detail is CollectionDetail CollectionDetail && CollectionDetail.ItemNum > 0 ? $"全部({CollectionDetail.ItemNum})" : (object)$"全部"
+                                Header = Detail is CollectionDetail CollectionDetail && CollectionDetail.ItemNum > 0 ? $"全部({CollectionDetail.ItemNum})" : $"全部"
                             };
                             ItemSource.Add(ShyHeaderItem);
                             this.ItemSource = ItemSource;
@@ -866,6 +866,7 @@ namespace CoolapkUWP.ViewModels.FeedPages
                     }
                 }
             }
+
             protected override string GetTitleBarText(FeedListDetailBase detail) => (detail as CollectionDetail)?.Title;
 
             public override async Task<FeedListDetailBase> GetDetail()

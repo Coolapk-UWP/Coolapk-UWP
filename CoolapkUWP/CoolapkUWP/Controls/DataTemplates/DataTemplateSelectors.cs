@@ -32,38 +32,38 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            if (item is FeedModel) { return Feed; }
-            else if (item is UserModel) { return User; }
-            else if (item is FeedReplyModel) { return FeedReply; }
-            else if (item is IndexPageMessageCardModel) { return MessageCard; }
-            else if (item is IndexPageHasEntitiesModel IndexPageHasEntitiesModel)
+            switch (item)
             {
-                switch (IndexPageHasEntitiesModel.EntitiesType)
-                {
-                    case EntityType.Image: return Images;
-                    case EntityType.IconLink: return IconLinks;
-                    case EntityType.GridLink: return GridScrollCard;
-                    case EntityType.Others:
-                    default: return ImageTextScrollCard;
-                }
+                case FeedModel _: return Feed;
+                case UserModel _: return User;
+                case FeedReplyModel _: return FeedReply;
+                case IndexPageMessageCardModel _: return MessageCard;
+                case IndexPageHasEntitiesModel indexPageHasEntitiesModel:
+                    switch (indexPageHasEntitiesModel.EntitiesType)
+                    {
+                        case EntityType.Image: return Images;
+                        case EntityType.IconLink: return IconLinks;
+                        case EntityType.GridLink: return GridScrollCard;
+                        case EntityType.Others:
+                        default: return ImageTextScrollCard;
+                    }
+                case IndexPageOperationCardModel indexPageOperationCardModel:
+                    switch (indexPageOperationCardModel.OperationType)
+                    {
+                        case OperationType.Refresh: return RefreshCard;
+                        case OperationType.Login: return LoginCard;
+                        case OperationType.ShowTitle: return TitleCard;
+                        default: return Others;
+                    }
+                case LikeNotificationModel _: return LikeNotify;
+                case SimpleNotificationModel _: return CommentMe;
+                case MessageNotificationModel _: return MessageNotify;
+                case AtCommentMeNotificationModel _: return AtCommentMe;
+                case IHasSubtitle _: return SubtitleList;
+                case IHasDescription _: return List;
+                default: return Others;
+
             }
-            else if (item is IndexPageOperationCardModel IndexPageOperationCardModel)
-            {
-                switch (IndexPageOperationCardModel.OperationType)
-                {
-                    case OperationType.Refresh: return RefreshCard;
-                    case OperationType.Login: return LoginCard;
-                    case OperationType.ShowTitle: return TitleCard;
-                    default: return Others;
-                }
-            }
-            else if (item is LikeNotificationModel) { return LikeNotify; }
-            else if (item is SimpleNotificationModel) { return CommentMe; }
-            else if (item is MessageNotificationModel) { return MessageNotify; }
-            else if (item is AtCommentMeNotificationModel) { return AtCommentMe; }
-            else if (item is IHasDescription) { return List; }
-            else if (item is IHasSubtitle) { return SubtitleList; }
-            else { return Others; }
         }
     }
 
@@ -85,52 +85,46 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            if (item is UserModel user)
+            switch (item)
             {
-                return user.EntityForward == "iconScrollCard" ? MiniUser : User;
-            }
-            else if (item is SourceFeedModel feed)
-            {
-                return feed.EntityForward == "imageTextScrollCard" ? FeedImageText : Feed;
-            }
-            else if (item is CollectionModel collection)
-            {
-                return collection.EntityForward == "iconMiniGridCard" ? MiniIconLink : List;
-            }
-            else if (item is FeedReplyModel) { return FeedReply; }
-            else if (item is IndexPageModel IndexPageModel)
-            {
-                switch (IndexPageModel?.EntityType ?? string.Empty)
-                {
-                    case "imageSquare":
-                    case "icon":
-                    case "iconMiniLink":
-                    case "recentHistory":
-                    case "iconMini":
-                    case "IconLink":
-                    case "dyh":
-                    case "apk":
-                    case "appForum":
-                    case "picCategory":
-                    case "product":
-                    case "entity":
-                    case "topic":
-                        switch ((item as IndexPageModel).EntityForward)
-                        {
-                            case "imageSquareScrollCard": return SquareLinkCard;
-                            case "apkListCard":
-                            case "feedListCard": return List;
-                            default: return IconLink;
-                        }
-                    case "iconButton":
-                    case "link": return Link;
-                    case "imageText": return ImageText;
-                    default: return Empty;
-                }
-            }
-            else
-            {
-                return item is IHasDescription ? List : item is IHasSubtitle ? SubtitleList : Empty;
+                case UserModel user:
+                    return user.EntityForward == "iconScrollCard" ? MiniUser : User;
+                case SourceFeedModel feed:
+                    return feed.EntityForward == "imageTextScrollCard" ? FeedImageText : Feed;
+                case CollectionModel collection:
+                    return collection.EntityForward == "iconMiniGridCard" ? MiniIconLink : List;
+                case FeedReplyModel _: return FeedReply;
+                case IndexPageModel indexPageModel:
+                    switch (indexPageModel.EntityType ?? string.Empty)
+                    {
+                        case "imageSquare":
+                        case "icon":
+                        case "iconMiniLink":
+                        case "recentHistory":
+                        case "iconMini":
+                        case "IconLink":
+                        case "dyh":
+                        case "apk":
+                        case "appForum":
+                        case "picCategory":
+                        case "product":
+                        case "entity":
+                        case "topic":
+                            switch (indexPageModel.EntityForward)
+                            {
+                                case "imageSquareScrollCard": return SquareLinkCard;
+                                case "apkListCard":
+                                case "feedListCard": return List;
+                                default: return IconLink;
+                            }
+                        case "iconButton":
+                        case "link": return Link;
+                        case "imageText": return ImageText;
+                        default: return Empty;
+                    }
+                case IHasSubtitle _: return SubtitleList;
+                case IHasDescription _: return List;
+                default: return Empty;
             }
         }
     }
@@ -144,23 +138,22 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            if (item is IndexPageHasEntitiesModel IndexPageHasEntitiesModel)
+            switch (item)
             {
-                switch (IndexPageHasEntitiesModel.EntitiesType)
-                {
-                    case EntityType.TextLinks: return TextLinkList;
-                    default: return ImageTextScrollCard;
-                }
+                case IndexPageHasEntitiesModel indexPageHasEntitiesModel:
+                    switch (indexPageHasEntitiesModel.EntitiesType)
+                    {
+                        case EntityType.TextLinks: return TextLinkList;
+                        default: return ImageTextScrollCard;
+                    }
+                case IndexPageOperationCardModel indexPageOperationCardModel:
+                    switch (indexPageOperationCardModel.OperationType)
+                    {
+                        case OperationType.ShowTitle: return TitleCard;
+                        default: return Others;
+                    }
+                default: return Others;
             }
-            else if (item is IndexPageOperationCardModel IndexPageOperationCardModel)
-            {
-                switch (IndexPageOperationCardModel.OperationType)
-                {
-                    case OperationType.ShowTitle: return TitleCard;
-                    default: return Others;
-                }
-            }
-            else { return Others; }
         }
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
@@ -175,23 +168,21 @@ namespace CoolapkUWP.Controls.DataTemplates
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            if (item is CollectionModel)
+            switch (item)
             {
-                return History;
+                case CollectionModel _: return History;
+                case IndexPageModel indexPageModel:
+                    switch (indexPageModel.EntityType)
+                    {
+                        case "topic":
+                        case "recentHistory": return IconLink;
+                        case "textLink": return TextLink;
+                        case "collection":
+                        case "history": return History;
+                        default: return Empty;
+                    }
+                default: return Empty;
             }
-            else if (item is IndexPageModel IndexPageModel)
-            {
-                switch (IndexPageModel?.EntityType)
-                {
-                    case "topic":
-                    case "recentHistory": return IconLink;
-                    case "textLink": return TextLink;
-                    case "collection":
-                    case "history": return History;
-                    default: return Empty;
-                }
-            }
-            else { return Empty; }
         }
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
@@ -202,10 +193,7 @@ namespace CoolapkUWP.Controls.DataTemplates
         public DataTemplate App { get; set; }
         public DataTemplate SearchWord { get; set; }
 
-        protected override DataTemplate SelectTemplateCore(object item)
-        {
-            return item is AppModel ? App : SearchWord;
-        }
+        protected override DataTemplate SelectTemplateCore(object item) => item is AppModel ? App : SearchWord;
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container) => SelectTemplateCore(item);
     }
